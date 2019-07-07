@@ -1135,6 +1135,28 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
     return Base::Tools::toStdString(formatSpec);
 }
 
+//! is refName a target of this Dim (2D references)
+bool DrawViewDimension::references(std::string refName) const
+{
+    Base::Console().Message("DVD::references(%s) - %s\n",refName.c_str(),getNameInDocument());
+    bool result = false;
+    const std::vector<App::DocumentObject*> &objects = References2D.getValues();
+    if (!objects.empty()) {
+        const std::vector<std::string> &subElements = References2D.getSubValues();
+        if (!subElements.empty()) {
+            for (auto& s: subElements) {
+                if (!s.empty()) { 
+                    if (s == refName) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return result;
+}
+
 PyObject *DrawViewDimension::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {

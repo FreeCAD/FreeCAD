@@ -66,7 +66,7 @@ PyObject* DrawViewPartPy::clearCosmeticVertices(PyObject *args)
 {
     (void) args;
     DrawViewPart* item = getDrawViewPartPtr();
-    item->clearCosmeticVertices();
+    item->clearCosmeticVertexes();
     Py_INCREF(Py_None);
     return Py_None;
 }
@@ -107,7 +107,8 @@ PyObject* DrawViewPartPy::makeCosmeticVertex(PyObject *args)
     }
 
     DrawViewPart* item = getDrawViewPartPtr();
-    Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
+//    Base::Vector3d pnt1 = DrawUtil::invertY(static_cast<Base::VectorPy*>(pPnt1)->value());
+    Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     int idx = item->addCosmeticVertex(pnt1);
     return PyLong_FromLong(idx);
 }
@@ -134,14 +135,18 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     Base::Vector3d pnt2 = static_cast<Base::VectorPy*>(pPnt2)->value();
     int idx = dvp->addCosmeticEdge(pnt1, pnt2);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
-    ce->m_format.m_style = style;
-    ce->m_format.m_weight = weight;
-    if (pColor == nullptr) {
-        ce->m_format.m_color = defCol;
+    if (ce != nullptr) {
+        ce->m_format.m_style = style;
+        ce->m_format.m_weight = weight;
+        if (pColor == nullptr) {
+            ce->m_format.m_color = defCol;
+        } else {
+            ce->m_format.m_color = pyTupleToColor(pColor);
+        }
     } else {
-        ce->m_format.m_color = pyTupleToColor(pColor);
+        //TODO: throw something
+        idx = -1;
     }
-    dvp->writeCEdgeProp();
     return PyLong_FromLong(idx);
 }
 
@@ -177,14 +182,18 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     TopoDS_Edge edge = aMakeEdge.Edge();
     int idx = dvp->addCosmeticEdge(edge);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
-    ce->m_format.m_style = style;
-    ce->m_format.m_weight = weight;
-    if (pColor == nullptr) {
-        ce->m_format.m_color = defCol;
+    if (ce != nullptr) {
+        ce->m_format.m_style = style;
+        ce->m_format.m_weight = weight;
+        if (pColor == nullptr) {
+            ce->m_format.m_color = defCol;
+        } else {
+            ce->m_format.m_color = pyTupleToColor(pColor);
+        }
     } else {
-        ce->m_format.m_color = pyTupleToColor(pColor);
+        //TODO: throw something
+        idx = -1;
     }
-    dvp->writeCEdgeProp();
     return PyLong_FromLong(idx);
 }
 
@@ -223,14 +232,18 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     TopoDS_Edge edge = aMakeEdge.Edge();
     int idx = dvp->addCosmeticEdge(edge);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
-    ce->m_format.m_style = style;
-    ce->m_format.m_weight = weight;
-    if (pColor == nullptr) {
-        ce->m_format.m_color = defCol;
+    if (ce != nullptr) {
+        ce->m_format.m_style = style;
+        ce->m_format.m_weight = weight;
+        if (pColor == nullptr) {
+            ce->m_format.m_color = defCol;
+        } else {
+            ce->m_format.m_color = pyTupleToColor(pColor);
+        }
     } else {
-        ce->m_format.m_color = pyTupleToColor(pColor);
+        //TODO: throw something
+        idx = -1;
     }
-    dvp->writeCEdgeProp();
     return PyLong_FromLong(idx);
 }
 
@@ -244,9 +257,7 @@ PyObject* DrawViewPartPy::getCosmeticVertexByIndex(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::CosmeticVertex* cv = dvp->getCosmeticVertexByIndex(idx);
     if (cv != nullptr) {
-        Base::Console().Message("DVPPI::getCosVertbyIdx - CosmeticVertexPy not implemented yet\n");
-        //make a py object
-
+        result = new CosmeticVertexPy(new CosmeticVertex(cv));
     }
     return result;
 }

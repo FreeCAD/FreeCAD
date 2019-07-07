@@ -25,6 +25,8 @@
 
 #include <Base/Tools2D.h>
 #include <Base/Vector3D.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -85,8 +87,10 @@ class TechDrawExport BaseGeom
         int sourceIndex(void) { return m_sourceIndex; }
         void sourceIndex(int si) { m_sourceIndex = si; }
 
-        virtual std::string toCSV(void) const;
-        virtual bool fromCSV(std::string s);
+        virtual std::string toString(void) const;
+/*        virtual bool fromCSV(std::string s);*/
+        virtual void Save(Base::Writer& w) const;
+        virtual void Restore(Base::XMLReader& r);
         std::vector<Base::Vector3d> findEndPoints();
         Base::Vector3d getStartPoint();
         Base::Vector3d getEndPoint();
@@ -97,6 +101,7 @@ class TechDrawExport BaseGeom
         Base::Vector3d nearPoint(const BaseGeom* p);
         static BaseGeom* baseFactory(TopoDS_Edge edge);
         bool closed(void);
+        BaseGeom* copy();
         std::string dump();
 
     protected:
@@ -115,8 +120,10 @@ class TechDrawExport Circle: public BaseGeom
         ~Circle() = default;
 
     public:
-        virtual std::string toCSV(void) const override;
-        virtual bool fromCSV(std::string s) override;
+        virtual std::string toString(void) const override;
+/*        virtual bool fromCSV(std::string s) override;*/
+        virtual void Save(Base::Writer& w) const override;
+        virtual void Restore(Base::XMLReader& r) override;
 
         Base::Vector3d center;
         double radius;
@@ -167,8 +174,10 @@ class TechDrawExport AOC: public Circle
         ~AOC() = default;
 
     public:
-        virtual std::string toCSV(void) const override;
-        virtual bool fromCSV(std::string s) override;
+        virtual std::string toString(void) const override;
+/*        virtual bool fromCSV(std::string s) override;*/
+        virtual void Save(Base::Writer& w) const override;
+        virtual void Restore(Base::XMLReader& r) override;
 
         Base::Vector3d startPnt;
         Base::Vector3d endPnt;
@@ -234,8 +243,10 @@ class TechDrawExport Generic: public BaseGeom
         Generic();
         ~Generic() = default;
 
-        virtual std::string toCSV(void) const override;
-        virtual bool fromCSV(std::string s) override;
+        virtual std::string toString(void) const override;
+/*        virtual bool fromCSV(std::string s) override;*/
+        virtual void Save(Base::Writer& w) const override;
+        virtual void Restore(Base::XMLReader& r) override;
         Base::Vector3d asVector(void);
         double slope(void);
         Base::Vector3d apparentInter(Generic* g);
@@ -264,14 +275,17 @@ class TechDrawExport Face
         std::vector<Wire *> wires;
 };
 
-//! 2D Vertex
 class TechDrawExport Vertex
 {
     public:
         Vertex();
+        Vertex(const Vertex* v);
         Vertex(double x, double y);
         Vertex(Base::Vector3d v) : Vertex(v.x,v.y) {}
-        ~Vertex() = default;
+        virtual ~Vertex() {}
+
+        virtual void Save(Base::Writer &/*writer*/) const;
+        virtual void Restore(Base::XMLReader &/*reader*/);
 
         Base::Vector3d pnt;
         ExtractionType extractType;       //obs?
@@ -282,6 +296,8 @@ class TechDrawExport Vertex
         bool isEqual(Vertex* v, double tol);
         Base::Vector3d point(void) const { return Base::Vector3d(pnt.x,pnt.y,0.0); }
         void point(Base::Vector3d v){ pnt = Base::Vector3d(v.x, v.y); }
+        bool cosmetic;
+        int cosmeticLink;
 
         double x() {return pnt.x;}
         double y() {return pnt.y;}

@@ -134,7 +134,7 @@ public:
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
     //Are removeXXXXX functions really needed for GO?
-    int addCosmeticVertex(Base::Vector3d pos);
+    int addCosmeticVertex(Base::Vector3d pos, int link = -1);
 /*    void removeCosmeticVertex(TechDraw::CosmeticVertex* cv);*/
 /*    void removeCosmeticVertex(int idx);*/
     int addCosmeticEdge(TechDraw::BaseGeom* bg, int s = 0, int si = -1);

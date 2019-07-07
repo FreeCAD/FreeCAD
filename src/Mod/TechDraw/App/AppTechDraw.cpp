@@ -42,6 +42,11 @@
 #include "DrawViewBalloon.h"
 #include "DrawLeaderLine.h"
 #include "DrawRichAnno.h"
+#include "Cosmetic.h"
+#include "PropertyGeomFormatList.h"
+#include "PropertyCenterLineList.h"
+#include "PropertyCosmeticEdgeList.h"
+#include "PropertyCosmeticVertexList.h"
 
 namespace TechDraw {
     extern PyObject* initModule();
@@ -83,7 +88,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawViewDetail      ::init();
     TechDraw::DrawViewBalloon     ::init();
     TechDraw::DrawLeaderLine      ::init();
-    TechDraw::DrawRichAnno      ::init();
+    TechDraw::DrawRichAnno        ::init();
 
     TechDraw::DrawTemplate        ::init();
     TechDraw::DrawParametricTemplate::init();
@@ -91,19 +96,28 @@ PyMOD_INIT_FUNC(TechDraw)
 
     TechDraw::DrawViewClip        ::init();
     TechDraw::DrawHatch           ::init();
-    TechDraw::DrawGeomHatch      ::init();
+    TechDraw::DrawGeomHatch       ::init();
     TechDraw::DrawViewDraft       ::init();
     TechDraw::DrawViewArch        ::init();
     TechDraw::DrawViewImage       ::init();
+
+    TechDraw::PropertyGeomFormatList::init();
+    TechDraw::GeomFormat            ::init();
+    TechDraw::PropertyCenterLineList::init();
+    TechDraw::CenterLine            ::init();
+    TechDraw::PropertyCosmeticEdgeList::init();
+    TechDraw::CosmeticEdge          ::init();
+    TechDraw::PropertyCosmeticVertexList::init();
+    TechDraw::CosmeticVertex        ::init();
 
    // Python Types
     TechDraw::DrawPagePython      ::init();
     TechDraw::DrawViewPython      ::init();
     TechDraw::DrawViewPartPython  ::init();
-    TechDraw::DrawViewMultiPython  ::init();
+    TechDraw::DrawViewMultiPython ::init();
     TechDraw::DrawTemplatePython  ::init();
     TechDraw::DrawViewSymbolPython::init();
     TechDraw::DrawLeaderLinePython::init();
-    TechDraw::DrawRichAnnoPython::init();
+    TechDraw::DrawRichAnnoPython  ::init();
     PyMOD_Return(mod);
 }

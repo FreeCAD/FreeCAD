@@ -326,11 +326,8 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn(e2.GetMessageString());
     }
 
-    //add back the cosmetic vertices
-    for (auto& v: CVertexTable) {
-        int idx = geometryObject->addCosmeticVertex(v->point() * getScale());
-        v->linkGeom = idx;
-    }
+    //add the cosmetic vertices to the geometry vertices list
+    addCosmeticVertexesToGeom();
     //add the cosmetic Edges to geometry Edges list
     addCosmeticEdgesToGeom();
     //add centerlines to geometry edges list

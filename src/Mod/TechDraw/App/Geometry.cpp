@@ -69,6 +69,8 @@
 #include <Base/Exception.h>
 #include <Base/Tools2D.h>
 #include <Base/Parameter.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -119,11 +121,30 @@ BaseGeom::BaseGeom() :
     cosmetic(false),
     m_source(0),
     m_sourceIndex(-1)
-    
 {
 }
 
-std::string BaseGeom::toCSV(void) const
+BaseGeom* BaseGeom::copy()
+{
+    BaseGeom* result = nullptr;
+    if (!occEdge.IsNull()) {
+        result = baseFactory(occEdge);
+        if (result != nullptr) {
+            result->extractType = extractType;
+            result->classOfEdge = classOfEdge;
+            result->visible = visible;
+            result->reversed = reversed;
+            result->ref3D = ref3D;
+            result->cosmetic = cosmetic;
+            result->source(m_source);
+            result->sourceIndex(m_sourceIndex);
+       }
+    }
+    
+    return result;
+}
+
+std::string BaseGeom::toString(void) const
 {
     std::stringstream ss;
     ss << geomType << "," <<
@@ -138,29 +159,67 @@ std::string BaseGeom::toCSV(void) const
     return ss.str();
 }
 
-bool BaseGeom::fromCSV(std::string lineSpec)
-{
-    unsigned int maxCells = 9;
-    if (lineSpec.length() == 0) {
-        Base::Console().Message( "BG::fromCSV - lineSpec empty\n");
-        return false;
-    }
-    std::vector<std::string> values = DrawUtil::split(lineSpec);
-    if (values.size() < maxCells) {
-        Base::Console().Message( "BG::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-        return false;
-    }
+//bool BaseGeom::fromCSV(std::string lineSpec)
+//{
+//    unsigned int maxCells = 9;
+//    if (lineSpec.length() == 0) {
+//        Base::Console().Message( "BG::fromCSV - lineSpec empty\n");
+//        return false;
+//    }
+//    std::vector<std::string> values = DrawUtil::split(lineSpec);
+//    if (values.size() < maxCells) {
+//        Base::Console().Message( "BG::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
+//        return false;
+//    }
 
-    geomType = (TechDraw::GeomType) atoi(values[0].c_str());
-    extractType = (TechDraw::ExtractionType) atoi(values[1].c_str());
-    classOfEdge = (TechDraw::edgeClass) atoi(values[2].c_str());
-    visible = (bool) atoi(values[3].c_str());
-    reversed = (bool) atoi(values[4].c_str());
-    ref3D = atoi(values[5].c_str());
-    cosmetic = (bool) atoi(values[6].c_str());
-    m_source = atoi(values[7].c_str());
-    m_sourceIndex = atoi(values[8].c_str());
-    return true;
+//    geomType = (TechDraw::GeomType) atoi(values[0].c_str());
+//    extractType = (TechDraw::ExtractionType) atoi(values[1].c_str());
+//    classOfEdge = (TechDraw::edgeClass) atoi(values[2].c_str());
+//    visible = (bool) atoi(values[3].c_str());
+//    reversed = (bool) atoi(values[4].c_str());
+//    ref3D = atoi(values[5].c_str());
+//    cosmetic = (bool) atoi(values[6].c_str());
+//    m_source = atoi(values[7].c_str());
+//    m_sourceIndex = atoi(values[8].c_str());
+//    return true;
+//}
+
+void BaseGeom::Save(Base::Writer &writer) const
+{
+    writer.Stream() << writer.ind() << "<GeomType value=\"" << geomType << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<ExtractType value=\"" << extractType << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<EdgeClass value=\"" << classOfEdge << "\"/>" << endl;
+    const char v = visible?'1':'0';
+    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+    const char r = reversed?'1':'0';
+    writer.Stream() << writer.ind() << "<Reversed value=\"" << r << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Ref3D value=\"" << ref3D << "\"/>" << endl;
+    const char c = cosmetic?'1':'0';
+    writer.Stream() << writer.ind() << "<Cosmetic value=\"" << c << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Source value=\"" << m_source << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<SourceIndex value=\"" << m_sourceIndex << "\"/>" << endl;
+}
+
+void BaseGeom::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("GeomType");
+    geomType = (TechDraw::GeomType) reader.getAttributeAsInteger("value");
+    reader.readElement("ExtractType");
+    extractType = (TechDraw::ExtractionType) reader.getAttributeAsInteger("value");
+    reader.readElement("EdgeClass");
+    classOfEdge = (TechDraw::edgeClass) reader.getAttributeAsInteger("value");
+    reader.readElement("Visible");
+    visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    reader.readElement("Reversed");
+    reversed = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    reader.readElement("Ref3D");
+    ref3D = reader.getAttributeAsInteger("value");
+    reader.readElement("Cosmetic");
+    cosmetic = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    reader.readElement("Source");
+    m_source = reader.getAttributeAsInteger("value");
+    reader.readElement("SourceIndex");
+    m_sourceIndex = reader.getAttributeAsInteger("value");
 }
 
 std::vector<Base::Vector3d> BaseGeom::findEndPoints()
@@ -454,9 +513,9 @@ Circle::Circle(const TopoDS_Edge &e)
     radius = circ.Radius();
     center = Base::Vector3d(p.X(), p.Y(), p.Z());
 }
-std::string Circle::toCSV(void) const
+std::string Circle::toString(void) const
 {
-    std::string baseCSV = BaseGeom::toCSV();
+    std::string baseCSV = BaseGeom::toString();
     std::stringstream ss;
     ss << center.x << "," <<
           center.y << "," <<
@@ -465,34 +524,59 @@ std::string Circle::toCSV(void) const
     return baseCSV + ",$$$," + ss.str();
 }
 
-bool Circle::fromCSV(std::string lineSpec)
+//bool Circle::fromCSV(std::string lineSpec)
+//{
+//    if (lineSpec.length() == 0) {
+//        Base::Console().Message( "Circle::fromCSV - lineSpec empty\n");
+//        return false;
+//    }
+
+//    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
+//    //"baseCSV,$$$,circleCSV"
+//    if (tokens.size() != 2) {
+//        Base::Console().Message("CosmeticEdge::fromCSV - tokenize failed - size: %d\n",tokens.size());
+//    }
+
+//    BaseGeom::fromCSV(tokens[0]);
+//    unsigned int maxCells = 4;
+//    std::vector<std::string> values = DrawUtil::split(tokens[1]);
+//    if (values.size() < maxCells) {
+//        Base::Console().Message( "Circle::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
+//        return false;
+//    }
+//    double x = atof(values[0].c_str());
+//    double y = atof(values[1].c_str());
+//    double z = atof(values[2].c_str());
+//    center = Base::Vector3d(x,y,z);
+//    radius = atof(values[3].c_str());
+//    return true;
+//}
+
+void Circle::Save(Base::Writer &writer) const
 {
-    if (lineSpec.length() == 0) {
-        Base::Console().Message( "Circle::fromCSV - lineSpec empty\n");
-        return false;
-    }
+    BaseGeom::Save(writer);
+    writer.Stream() << writer.ind() << "<Center "
+                << "X=\"" <<  center.x <<
+                "\" Y=\"" <<  center.y <<
+                "\" Z=\"" <<  center.z <<
+                 "\"/>" << endl;
 
-    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
-    //"baseCSV,$$$,circleCSV"
-    if (tokens.size() != 2) {
-        Base::Console().Message("CosmeticEdge::fromCSV - tokenize failed - size: %d\n",tokens.size());
-    }
-
-    BaseGeom::fromCSV(tokens[0]);
-    unsigned int maxCells = 4;
-    std::vector<std::string> values = DrawUtil::split(tokens[1]);
-    if (values.size() < maxCells) {
-        Base::Console().Message( "Circle::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-        return false;
-    }
-    double x = atof(values[0].c_str());
-    double y = atof(values[1].c_str());
-    double z = atof(values[2].c_str());
-    center = Base::Vector3d(x,y,z);
-    radius = atof(values[3].c_str());
-    return true;
+    writer.Stream() << writer.ind() << "<Radius value=\"" << radius << "\"/>" << endl;
 }
 
+void Circle::Restore(Base::XMLReader &reader)
+{
+    BaseGeom::Restore(reader);
+    // read my Element
+    reader.readElement("Center");
+    // get the value of my Attribute
+    center.x = reader.getAttributeAsFloat("X");
+    center.y = reader.getAttributeAsFloat("Y");
+    center.z = reader.getAttributeAsFloat("Z");
+
+    reader.readElement("Radius");
+    radius = reader.getAttributeAsFloat("value");
+}
 
 AOC::AOC(const TopoDS_Edge &e) : Circle(e)
 {
@@ -583,9 +667,9 @@ bool AOC::intersectsArc(Base::Vector3d p1, Base::Vector3d p2)
     return result;
 }
 
-std::string AOC::toCSV(void) const
+std::string AOC::toString(void) const
 {
-    std::string circleCSV = Circle::toCSV();
+    std::string circleCSV = Circle::toString();
     std::stringstream ss;
 
     ss << startPnt.x << "," <<
@@ -606,44 +690,96 @@ std::string AOC::toCSV(void) const
     return result;
 }
 
-bool AOC::fromCSV(std::string lineSpec)
-{
-//    Base::Console().Message( "AOC::fromCSV(%s)\n", lineSpec.c_str());
-    if (lineSpec.length() == 0) {
-        Base::Console().Message( "AOC::fromCSV - lineSpec empty\n");
-        return false;
-    }
-    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
-    //"(baseCSV,$$$,circleCSV),$$$,AOCCSV"
-    //   [0]          [1]           [2]
-    if (tokens.size() != 3) {
-        Base::Console().Message("CosmeticEdge::fromCSV - tokenize failed - size: %d\n",tokens.size());
-    }
+//bool AOC::fromCSV(std::string lineSpec)
+//{
+////    Base::Console().Message( "AOC::fromCSV(%s)\n", lineSpec.c_str());
+//    if (lineSpec.length() == 0) {
+//        Base::Console().Message( "AOC::fromCSV - lineSpec empty\n");
+//        return false;
+//    }
+//    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
+//    //"(baseCSV,$$$,circleCSV),$$$,AOCCSV"
+//    //   [0]          [1]           [2]
+//    if (tokens.size() != 3) {
+//        Base::Console().Message("CosmeticEdge::fromCSV - tokenize failed - size: %d\n",tokens.size());
+//    }
 
-    Circle::fromCSV(tokens[0] + ",$$$," + tokens[1]);    //extra work here.
-    unsigned int maxCells = 13;
-    std::vector<std::string> values = DrawUtil::split(tokens[2]);   // we are only interested in last token
-    if (values.size() < maxCells) {
-        Base::Console().Message( "AOC::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-        return false;
-    }
-    double x = atof(values[0].c_str());
-    double y = atof(values[1].c_str());
-    double z = atof(values[2].c_str());
-    startPnt = Base::Vector3d(x,y,z);
-    x = atof(values[3].c_str());
-    y = atof(values[4].c_str());
-    z = atof(values[5].c_str());
-    endPnt = Base::Vector3d(x,y,z);
-    x = atof(values[6].c_str());
-    y = atof(values[7].c_str());
-    z = atof(values[8].c_str());
-    midPnt = Base::Vector3d(x,y,z);
-    startAngle = atof(values[9].c_str());
-    endAngle = atof(values[10].c_str());
-    cw = atoi(values[11].c_str());
-    largeArc = atoi(values[12].c_str());
-    return true;
+//    Circle::fromCSV(tokens[0] + ",$$$," + tokens[1]);    //extra work here.
+//    unsigned int maxCells = 13;
+//    std::vector<std::string> values = DrawUtil::split(tokens[2]);   // we are only interested in last token
+//    if (values.size() < maxCells) {
+//        Base::Console().Message( "AOC::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
+//        return false;
+//    }
+//    double x = atof(values[0].c_str());
+//    double y = atof(values[1].c_str());
+//    double z = atof(values[2].c_str());
+//    startPnt = Base::Vector3d(x,y,z);
+//    x = atof(values[3].c_str());
+//    y = atof(values[4].c_str());
+//    z = atof(values[5].c_str());
+//    endPnt = Base::Vector3d(x,y,z);
+//    x = atof(values[6].c_str());
+//    y = atof(values[7].c_str());
+//    z = atof(values[8].c_str());
+//    midPnt = Base::Vector3d(x,y,z);
+//    startAngle = atof(values[9].c_str());
+//    endAngle = atof(values[10].c_str());
+//    cw = atoi(values[11].c_str());
+//    largeArc = atoi(values[12].c_str());
+//    return true;
+//}
+
+void AOC::Save(Base::Writer &writer) const
+{
+    Circle::Save(writer);
+    writer.Stream() << writer.ind() << "<Start "
+                << "X=\"" <<  startPnt.x <<
+                "\" Y=\"" <<  startPnt.y <<
+                "\" Z=\"" <<  startPnt.z <<
+                 "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<End "
+                << "X=\"" <<  endPnt.x <<
+                "\" Y=\"" <<  endPnt.y <<
+                "\" Z=\"" <<  endPnt.z <<
+                 "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Middle "
+                << "X=\"" <<  midPnt.x <<
+                "\" Y=\"" <<  midPnt.y <<
+                "\" Z=\"" <<  midPnt.z <<
+                 "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<StartAngle value=\"" << startAngle << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<EndAngle value=\"" << endAngle << "\"/>" << endl;
+    const char c = cw?'1':'0';
+    writer.Stream() << writer.ind() << "<Clockwise value=\"" <<  c << "\"/>" << endl;
+    const char la = largeArc?'1':'0';
+    writer.Stream() << writer.ind() << "<Large value=\"" <<  la << "\"/>" << endl;
+}
+
+void AOC::Restore(Base::XMLReader &reader)
+{
+    Circle::Restore(reader);
+    reader.readElement("Start");
+    startPnt.x = reader.getAttributeAsFloat("X");
+    startPnt.y = reader.getAttributeAsFloat("Y");
+    startPnt.z = reader.getAttributeAsFloat("Z");
+    reader.readElement("End");
+    endPnt.x = reader.getAttributeAsFloat("X");
+    endPnt.y = reader.getAttributeAsFloat("Y");
+    endPnt.z = reader.getAttributeAsFloat("Z");
+    reader.readElement("Middle");
+    midPnt.x = reader.getAttributeAsFloat("X");
+    midPnt.y = reader.getAttributeAsFloat("Y");
+    midPnt.z = reader.getAttributeAsFloat("Z");
+
+    reader.readElement("StartAngle");
+    startAngle = reader.getAttributeAsFloat("value");
+    reader.readElement("EndAngle");
+    endAngle = reader.getAttributeAsFloat("value");
+    reader.readElement("Clockwise");
+    cw = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    reader.readElement("Large");
+    largeArc = (int)reader.getAttributeAsInteger("value")==0?false:true;
 }
 
 //! Generic is a multiline
@@ -676,9 +812,9 @@ Generic::Generic()
     geomType = GENERIC;
 }
 
-std::string Generic::toCSV(void) const
+std::string Generic::toString(void) const
 {
-    std::string baseCSV = BaseGeom::toCSV();
+    std::string baseCSV = BaseGeom::toString();
     std::stringstream ss;
     ss << points.size() << ",";
     for (auto& p: points) {
@@ -691,34 +827,69 @@ std::string Generic::toCSV(void) const
     return baseCSV + ",$$$," + genericCSV;
 }
 
-bool Generic::fromCSV(std::string lineSpec)
+//bool Generic::fromCSV(std::string lineSpec)
+//{
+
+//    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
+//    //"baseCSV,$$$,genericCSV"
+//    if (tokens.size() != 2) {
+//        Base::Console().Message("Generic::fromCSV - tokenize failed - size: %d\n",tokens.size());
+//    }
+
+//    BaseGeom::fromCSV(tokens[0]);
+//    if (lineSpec.length() == 0) {
+//        Base::Console().Message( "Generic::fromCSV - lineSpec empty\n");
+//        return false;
+//    }
+//    std::vector<std::string> values = DrawUtil::split(tokens[1]);
+//    if (!values.empty()) {
+//        double count = atoi(values[0].c_str());
+//        points.clear();
+//        int i = 0;
+//        for ( ; i < count; i++) {
+//            int idx = i * 3;
+//            double x = atof(values[idx+1].c_str());
+//            double y = atof(values[idx+2].c_str());
+//            double z = atof(values[idx+3].c_str());
+//            points.push_back(Base::Vector3d(x, y, z));
+//        }
+//    }
+//    return true;
+//}
+
+void Generic::Save(Base::Writer &writer) const
 {
+    BaseGeom::Save(writer);
+    writer.Stream() << writer.ind() 
+                        << "<Points PointsCount =\"" << points.size() << "\">" << endl;
+    writer.incInd();
+    for (auto& p: points) {
+        writer.Stream() << writer.ind() << "<Point "
+                    << "X=\"" <<  p.x <<
+                    "\" Y=\"" <<  p.y <<
+                    "\" Z=\"" <<  p.z <<
+                     "\"/>" << endl;
+    }
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</Points>" << endl ;
 
-    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
-    //"baseCSV,$$$,genericCSV"
-    if (tokens.size() != 2) {
-        Base::Console().Message("Generic::fromCSV - tokenize failed - size: %d\n",tokens.size());
-    }
+}
 
-    BaseGeom::fromCSV(tokens[0]);
-    if (lineSpec.length() == 0) {
-        Base::Console().Message( "Generic::fromCSV - lineSpec empty\n");
-        return false;
+void Generic::Restore(Base::XMLReader &reader)
+{
+    BaseGeom::Restore(reader);
+    reader.readElement("Points");
+    int stop = reader.getAttributeAsInteger("PointsCount");
+    int i = 0;
+    for ( ; i < stop; i++) {
+        reader.readElement("Point");
+        Base::Vector3d p;
+        p.x = reader.getAttributeAsFloat("X");
+        p.y = reader.getAttributeAsFloat("Y");
+        p.z = reader.getAttributeAsFloat("Z");
+        points.push_back(p);
     }
-    std::vector<std::string> values = DrawUtil::split(tokens[1]);
-    if (!values.empty()) {
-        double count = atoi(values[0].c_str());
-        points.clear();
-        int i = 0;
-        for ( ; i < count; i++) {
-            int idx = i * 3;
-            double x = atof(values[idx+1].c_str());
-            double y = atof(values[idx+2].c_str());
-            double z = atof(values[idx+3].c_str());
-            points.push_back(Base::Vector3d(x, y, z));
-        }
-    }
-    return true;
+    reader.readEndElement("Points");
 }
 
 Base::Vector3d Generic::asVector(void)
@@ -1117,6 +1288,20 @@ Vertex::Vertex()
     isCenter = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(0.0, 0.0, 0.0));
     occVertex = mkVert.Vertex();
+    cosmetic = false;
+    cosmeticLink = -1;
+}
+
+Vertex::Vertex(const Vertex* v)
+{
+    pnt = v->pnt;
+    extractType = v->extractType;       //obs?
+    visible = v->visible;
+    ref3D = v->ref3D;                  //obs. never used.
+    isCenter = v->isCenter;
+    occVertex = v->occVertex;
+    cosmetic = v->cosmetic;
+    cosmeticLink = v->cosmeticLink;
 }
 
 Vertex::Vertex(double x, double y)
@@ -1128,6 +1313,8 @@ Vertex::Vertex(double x, double y)
     isCenter = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(x,y,0.0));
     occVertex = mkVert.Vertex();
+    cosmetic = false;
+    cosmeticLink = -1;
 }
 
 bool Vertex::isEqual(Vertex* v, double tol)
@@ -1138,6 +1325,49 @@ bool Vertex::isEqual(Vertex* v, double tol)
         result = true;
     }
     return result;
+}
+
+void Vertex::Save(Base::Writer &writer) const
+{
+    writer.Stream() << writer.ind() << "<Point "
+                << "X=\"" <<  pnt.x <<
+                "\" Y=\"" <<  pnt.y <<
+                "\" Z=\"" <<  pnt.z <<
+                 "\"/>" << endl;
+
+    writer.Stream() << writer.ind() << "<Extract value=\"" <<  extractType << "\"/>" << endl;
+    const char v = visible?'1':'0';
+    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Ref3D value=\"" <<  ref3D << "\"/>" << endl;
+    const char c = isCenter?'1':'0';
+    writer.Stream() << writer.ind() << "<IsCenter value=\"" <<  c << "\"/>" << endl;
+    const char c2 = cosmetic?'1':'0';
+    writer.Stream() << writer.ind() << "<Cosmetic value=\"" <<  c2 << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<CosmeticLink value=\"" <<  cosmeticLink << "\"/>" << endl;
+}
+
+void Vertex::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Point");
+    pnt.x = reader.getAttributeAsFloat("X");
+    pnt.y = reader.getAttributeAsFloat("Y");
+    pnt.z = reader.getAttributeAsFloat("Z");
+
+    reader.readElement("Extract");
+    extractType = (ExtractionType) reader.getAttributeAsInteger("value");
+    reader.readElement("Visible");
+    visible = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+    reader.readElement("Ref3D");
+    ref3D = reader.getAttributeAsInteger("value");
+    reader.readElement("IsCenter");
+    visible = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+    reader.readElement("Cosmetic");
+    cosmetic = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+    reader.readElement("CosmeticLink");
+    cosmeticLink = reader.getAttributeAsInteger("value");
+
+    BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(pnt.x, pnt.y, pnt.z));
+    occVertex = mkVert.Vertex();
 }
 
 
