@@ -235,21 +235,37 @@ CmdPartRefineShape::CmdPartRefineShape()
 void CmdPartRefineShape::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
+    bool parametric = hGrp->GetBool("ParametricRefine", true);
+
     Gui::WaitCursor wc;
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
     openCommand("Refine shape");
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         try {
-            doCommand(Doc,"App.ActiveDocument.addObject('Part::Feature','%s').Shape="
-                          "App.ActiveDocument.%s.Shape.removeSplitter()\n"
-                          "App.ActiveDocument.ActiveObject.Label="
-                          "App.ActiveDocument.%s.Label\n"
-                          "Gui.ActiveDocument.%s.hide()\n",
-                          (*it)->getNameInDocument(),
-                          (*it)->getNameInDocument(),
-                          (*it)->getNameInDocument(),
-                          (*it)->getNameInDocument());
+            if (parametric) {
+                doCommand(Doc,"App.ActiveDocument.addObject('Part::Refine','%s').Source="
+                              "App.ActiveDocument.%s\n"
+                              "App.ActiveDocument.ActiveObject.Label="
+                              "App.ActiveDocument.%s.Label\n"
+                              "Gui.ActiveDocument.%s.hide()\n",
+                              (*it)->getNameInDocument(),
+                              (*it)->getNameInDocument(),
+                              (*it)->getNameInDocument(),
+                              (*it)->getNameInDocument());
+            }
+            else {
+                doCommand(Doc,"App.ActiveDocument.addObject('Part::Feature','%s').Shape="
+                              "App.ActiveDocument.%s.Shape.removeSplitter()\n"
+                              "App.ActiveDocument.ActiveObject.Label="
+                              "App.ActiveDocument.%s.Label\n"
+                              "Gui.ActiveDocument.%s.hide()\n",
+                              (*it)->getNameInDocument(),
+                              (*it)->getNameInDocument(),
+                              (*it)->getNameInDocument(),
+                              (*it)->getNameInDocument());
+            }
             copyVisual("ActiveObject", "ShapeColor", (*it)->getNameInDocument());
             copyVisual("ActiveObject", "LineColor", (*it)->getNameInDocument());
             copyVisual("ActiveObject", "PointColor", (*it)->getNameInDocument());
