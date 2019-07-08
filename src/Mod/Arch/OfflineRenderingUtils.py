@@ -103,6 +103,7 @@ import xml.sax
 import zipfile
 import tempfile
 import inspect
+import binascii
 from pivy import coin
 
 
@@ -122,6 +123,7 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
         self.properties = {}
         self.currentprop = None
         self.currentval = None
+        self.currenttype = None
 
     # Call when an element starts
 
@@ -130,9 +132,8 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
         if tag == "ViewProvider":
             self.current = attributes["name"]
         elif tag == "Property":
-            name = attributes["name"]
-            if name in ["Visibility","ShapeColor","Transparency","DiffuseColor"]:
-                self.currentprop = name
+            self.currenttype = attributes["type"]
+            self.currentprop = attributes["name"]
         elif tag == "Bool":
             if attributes["value"] == "true":
                 self.currentval = True
@@ -146,10 +147,27 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
             self.currentval = (r,g,b)
         elif tag == "Integer":
             self.currentval = int(attributes["value"])
+        elif tag == "String":
+            self.currentval = int(attributes["value"])
         elif tag == "Float":
             self.currentval = float(attributes["value"])
         elif tag == "ColorList":
             self.currentval = attributes["file"]
+        elif tag == "PropertyMaterial":
+            a = int(attributes["ambientColor"])
+            d = int(attributes["diffuseColor"])
+            s = int(attributes["specularColor"])
+            e = int(attributes["emissiveColor"])
+            i = float(attributes["shininess"])
+            t = float(attributes["transparency"])
+            self.currentval = (a,d,s,e,i,t)
+        elif tag == "Enum":
+            if isinstance(self.currentval,int):
+                self.currentval = [self.currentval,attributes["value"]]
+            elif isinstance(self.currentval,list):
+                self.currentval.append(attributes["value"])
+        elif tag == "Python":
+            self.currentval = (attributes["value"],attributes["encoded"],attributes["module"],attributes["class"])
         elif tag == "Camera":
             self.guidata["GuiCameraSettings"] = attributes["settings"]
 
@@ -164,9 +182,10 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
                 self.properties = {}
         elif tag == "Property":
             if self.currentprop and (self.currentval != None):
-                self.properties[self.currentprop] = self.currentval
+                self.properties[self.currentprop] = {"type":self.currenttype,"value":self.currentval}
                 self.currentprop = None
                 self.currentval = None
+                self.currenttype = None
 
 
 
@@ -190,16 +209,20 @@ def getGuiData(filename):
             for key,properties in guidata.items():
                 # open each diffusecolor files and retrieve values
                 # first 4 bytes are the array length, then each group of 4 bytes is abgr
-                if "DiffuseColor" in properties:
-                    #print ("opening:",guidata[key]["DiffuseColor"])
-                    df = zdoc.open(guidata[key]["DiffuseColor"])
-                    buf = df.read()
-                    #print (buf," length ",len(buf))
-                    df.close()
-                    cols = []
-                    for i in range(1,int(len(buf)/4)):
-                        cols.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
-                    guidata[key]["DiffuseColor"] = cols
+                # https://forum.freecadweb.org/viewtopic.php?t=29382
+                if isinstance(properties,dict):
+                    for propname in properties.keys():
+                        if properties[propname]["type"] == "App::PropertyColorList":
+                            df = zdoc.open(guidata[key][propname]["value"])
+                            buf = df.read()
+                            df.close()
+                            cols = []
+                            for i in range(1,int(len(buf)/4)):
+                                if sys.version_info.major < 3:
+                                    cols.append(ord(buf[i*4+3])/255.0,ord(buf[i*4+2])/255.0,ord(buf[i*4+1])/255.0,ord(buf[i*4])/255.0)
+                                else:
+                                    cols.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
+                            guidata[key][propname]["value"] = cols
         zdoc.close()
         #print ("guidata:",guidata)
     return guidata
@@ -217,17 +240,17 @@ def getColors(filename,nodiffuse=False):
     This is a reduced version of getGuiData(), which returns more information.
     If nodiffuse = True, DiffuseColor info is discarded, only ShapeColor is read."""
 
-    data = getGuiData(filename)
+    guidata = getGuiData(filename)
     colors = {}
-    for k,v in data.items():
+    for k,v in guidata.items():
         if ("DiffuseColor" in v) and (not nodiffuse):
-            if len(v["DiffuseColor"]) == 1:
+            if len(v["DiffuseColor"]["value"]) == 1:
                 # only one color in DiffuseColor: used for the whole object
-                 colors[k] = v["DiffuseColor"][0]
+                 colors[k] = v["DiffuseColor"]["value"][0]
             else:
-                colors[k] = v["DiffuseColor"]
+                colors[k] = v["DiffuseColor"]["value"]
         elif "ShapeColor" in v:
-            colors[k] = v["ShapeColor"]
+            colors[k] = v["ShapeColor"]["value"]
     return colors
 
 
@@ -424,15 +447,31 @@ def viewer(scene=None,background=(1.0,1.0,1.0)):
 
 
 
-def save(document,filename=None,colors=None,camera=None):
+def save(document,filename=None,guidata=None,colors=None,camera=None):
 
-    """save(document,filename=None,colors=None,camera=None): Saves the current document. If no filename 
-       is given, the filename stored in the document (document.FileName) is used. A color dictionary of 
-       objName:ShapeColorTuple or obj:DiffuseColorList pairs.can be provided, in that case the objects 
-       will keep their colors when opened in the FreeCAD GUI. If given, camera is a string representing
-       a coin camera node."""
+    """save(document,filename=None,guidata=None,colors=None,camera=None): Saves the current document. If no filename 
+       is given, the filename stored in the document (document.FileName) is used. 
+       
+       You can provide a guidata dictionary, wich can be obtained by the getGuiData() function, and has the form:
+       
+        { "objectName" :
+            { "propertyName" :
+                { "type"  : "App::PropertyString",
+                  "value" : "My Value"
+                }
+            }
+        }
+        
+       The type of the "value" contents depends on the type (int, string, float,tuple...) see inside the FreeCADGuiHandler
+       class to get an idea.
+       
+       If guidata is provided, colors and camera attributes are discarded.
+       
+       Alternatively, a color dictionary of objName:ShapeColorTuple or obj:DiffuseColorList pairs.can be provided, 
+       in that case the objects will keep their colors when opened in the FreeCAD GUI. If given, camera is a string 
+       representing a coin camera node."""
 
-    if filename:
+    if filename: 
         print("Saving as",filename)
         document.saveAs(filename)
     else:
@@ -443,21 +482,30 @@ def save(document,filename=None,colors=None,camera=None):
             print("Unable to save this document. Please provide a file name")
             return
 
-    if colors:
-        zf = zipfile.ZipFile(filename, mode='a')
-
-        guidoc = buildGuiDocument(document,colors,camera)
+    if guidata:
+        guidocs = buildGuiDocumentFromGuiData(document,guidata)
+        if guidocs:
+            zf = zipfile.ZipFile(filename, mode='a')
+            for guidoc in guidocs:
+                zf.write(guidoc[0],guidoc[1])
+            zf.close()
+            # delete the temp files
+            for guidoc in guidocs:
+                os.remove(guidoc[0])
+    elif colors:
+        guidoc = buildGuiDocumentFromColors(document,colors,camera)
         if guidoc:
+            zf = zipfile.ZipFile(filename, mode='a')
             zf.write(guidoc,'GuiDocument.xml')
-        zf.close()
-        # delete the temp file
-        os.remove(guidoc)
+            zf.close()
+            # delete the temp file
+            os.remove(guidoc)
 
 
 
-def getunsigned(color):
+def getUnsigned(color):
 
-    """getunsigned(color): returns an unsigned int from a (r,g,b) color tuple"""
+    """getUnsigned(color): returns an unsigned int from a (r,g,b) color tuple"""
 
     if (color[0] <= 1) and (color[1] <= 1) and (color[2] <= 1):
         # 0->1 float colors, convert to 0->255
@@ -471,9 +519,9 @@ def getunsigned(color):
 
 
 
-def buildGuiDocument(document,colors,camera=None):
+def buildGuiDocumentFromColors(document,colors,camera=None):
 
-    """buildGuiDocument(document,colors,camera=None): Returns the path to a temporary GuiDocument.xml for the given document.
+    """buildGuiDocumentFromColors(document,colors,camera=None): Returns the path to a temporary GuiDocument.xml for the given document.
     Colors is a color dictionary of objName:ShapeColorTuple or obj:DiffuseColorList. Camera, if given, is a string representing
     a coin camera. You must delete the temporary file after using it."""
 
@@ -481,6 +529,9 @@ def buildGuiDocument(document,colors,camera=None):
         camera = "OrthographicCamera {   viewportMapping ADJUST_CAMERA   position 0 -0 20000   orientation 0.0, 0.8939966636005564, 0.0, -0.44807361612917324   nearDistance 7561.228   farDistance 63175.688   aspectRatio 1   focalDistance 35368.102   height 2883.365  }"
 
     guidoc =  "<?xml version='1.0' encoding='utf-8'?>\n"
+    guidoc += "<!--\n"
+    guidoc += " FreeCAD Document, see http://www.freecadweb.org for more information...\n"
+    guidoc += "-->\n"
     guidoc += "<Document SchemaVersion=\"1\">\n"
 
     vps = [obj for obj in document.Objects if obj.Name in colors]
@@ -497,11 +548,11 @@ def buildGuiDocument(document,colors,camera=None):
             #guidoc += "                    <ColorList file=\"DiffuseColor\"/>\n"
             #guidoc += "                </Property>\n"
             guidoc += "                <Property name=\"ShapeColor\" type=\"App::PropertyColor\">\n"
-            guidoc += "                    <PropertyColor value=\""+getunsigned(vpcol[0])+"\"/>\n"
+            guidoc += "                    <PropertyColor value=\""+getUnsigned(vpcol[0])+"\"/>\n"
             guidoc += "                </Property>\n"
         else:
             guidoc += "                <Property name=\"ShapeColor\" type=\"App::PropertyColor\">\n"
-            guidoc += "                    <PropertyColor value=\""+getunsigned(vpcol)+"\"/>\n"
+            guidoc += "                    <PropertyColor value=\""+getUnsigned(vpcol)+"\"/>\n"
             guidoc += "                </Property>\n"
         guidoc += "                <Property name=\"Visibility\" type=\"App::PropertyBool\">\n"
         guidoc += "                    <Bool value=\"true\"/>\n"
@@ -534,6 +585,117 @@ def buildGuiDocument(document,colors,camera=None):
     return tempxml
 
 
+
+def buildGuiDocumentFromGuiData(document,guidata):
+
+    """buildGuiDocumentFromColors(document,guidata): Returns the path to a temporary GuiDocument.xml for the given document.
+    
+       GuiData is a dictionary, wich can be obtained by the getGuiData() function, and has the form:
+       
+        { "objectName" :
+            { "propertyName" :
+                { "type"  : "App::PropertyString",
+                  "value" : "My Value"
+                }
+            }
+        }
+    This function returns a list of (filepath,name) tuples, the first one named GuiDocument.xml and the next ones being color files
+    """
+
+    files = []
+    colorindex = 1
+
+    guidoc =  "<?xml version='1.0' encoding='utf-8'?>\n"
+    guidoc += "<!--\n"
+    guidoc += " FreeCAD Document, see http://www.freecadweb.org for more information...\n"
+    guidoc += "-->\n"
+    guidoc += "<Document SchemaVersion=\"1\">\n"
+
+    vps = [obj for obj in document.Objects if obj.Name in guidata]
+    if not vps:
+        return None
+    guidoc += "    <ViewProviderData Count=\""+str(len(vps))+"\">\n"
+    for vp in vps:
+        properties = guidata[vp.Name]
+        guidoc += "        <ViewProvider name=\""+vp.Name+"\" expanded=\"0\">\n"
+        guidoc += "            <Properties Count=\""+str(len(properties))+"\">\n"
+        for name,prop in properties.items():
+            guidoc += "                <Property name=\""+name+"\" type=\""+prop["type"]+"\">\n"
+            if prop["type"] in ["App::PropertyString","PropertyFont"]:
+                guidoc += "                    <String value=\""+prop["value"]+"\"/>\n"
+            elif prop["type"] in ["App::PropertyAngle","App::PropertyFloat","App::PropertyFloatConstraint","App::PropertyDistance","App::PropertyLength"]:
+                guidoc += "                    <Float value=\""+str(prop["value"])+"\"/>\n"
+            elif prop["type"] in ["App::PropertyInteger","App::PropertyPercent"]:
+                guidoc += "                    <Integer value=\""+str(prop["value"])+"\"/>\n"
+            elif prop["type"] in ["App::PropertyBool"]:
+                guidoc += "                    <Bool value=\""+str(prop["value"]).lower()+"\"/>\n"
+            elif prop["type"] in ["App::PropertyEnumeration"]:
+                if isinstance(prop["value"],int):
+                    guidoc += "                    <Integer value=\""+str(prop["value"])+"\"/>\n"
+                elif isinstance(prop["value"],list):
+                    guidoc += "                    <Integer value=\""+str(prop["value"][0])+"\" CustomEnum=\"true\"/>\n"
+                    guidoc += "                    <CustomEnumList count=\""+str(len(prop["value"])-1)+"\">\n"
+                    for v in prop["value"][1:]:
+                        guidoc += "                        <Enum value=\""+v+"\"/>\n"
+                    guidoc += "                    </CustomEnumList>\n"
+            elif prop["type"] in ["App::PropertyColorList"]:
+                # number of colors
+                buf = binascii.unhexlify(hex(len(prop["value"]))[2:].zfill(2))
+                # fill 3 other bytes (the number of colors occupies 4 bytes)
+                buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                # fill colors in abgr order
+                for color in prop["value"]:
+                    if len(color) >= 4:
+                        buf += binascii.unhexlify(hex(int(color[3]*255))[2:].zfill(2))
+                    else:
+                        buf += binascii.unhexlify(hex(0)[2:].zfill(2))
+                    buf += binascii.unhexlify(hex(int(color[2]*255))[2:].zfill(2))
+                    buf += binascii.unhexlify(hex(int(color[1]*255))[2:].zfill(2))
+                    buf += binascii.unhexlify(hex(int(color[0]*255))[2:].zfill(2))
+                tempcolorfile = tempfile.mkstemp(suffix=".xml")[-1]
+                f = open(tempcolorfile,"wb")
+                f.write(buf)
+                f.close()
+                tempcolorname = "ColorFile" + str(colorindex)
+                colorindex += 1
+                guidoc += "                    <ColorList file=\""+tempcolorname+"\"/>\n"
+                files.append((tempcolorfile,tempcolorname))
+            elif prop["type"] in ["App::PropertyMaterial"]:
+                guidoc += "                    <PropertyMaterial ambientColor=\""+str(prop["value"][0])
+                guidoc += "\" diffuseColor=\""+str(prop["value"][1])+"\" specularColor=\""+str(prop["value"][2])
+                guidoc += "\" emissiveColor=\""+str(prop["value"][3])+"\" shininess=\""+str(prop["value"][4])
+                guidoc += "\" transparency=\""+str(prop["value"][5])+"\"/>\n"
+            elif prop["type"] in ["App::PropertyPythonObject"]:
+                guidoc += "                    <Python value=\""+str(prop["value"][0])+"\" encoded=\""
+                guidoc += str(prop["value"][1])+"\" module=\""+str(prop["value"][2])+"\" class=\""
+                guidoc += str(prop["value"][3])+"\"/>\n"
+            elif prop["type"] in ["App::PropertyColor"]:
+                guidoc += "                    <PropertyColor value=\""+str(getUnsigned(prop["value"]))+"\"/>\n"
+            guidoc += "                </Property>\n"
+        guidoc += "            </Properties>\n"
+        guidoc += "        </ViewProvider>\n"
+    guidoc +="    </ViewProviderData>\n"
+    if "GuiCameraSettings" in guidata:
+        guidoc +="    <Camera settings=\"  " + guidata["GuiCameraSettings"] + " \"/>\n"
+    guidoc += "</Document>\n"
+
+    # although the zipfile module has a writestr() function that should allow us to write the
+    # string above directly to the zip file, I couldn't manage to make it work.. So we rather
+    # use a temp file here, which works.
+    
+    #print(guidoc)
+
+    tempxml = tempfile.mkstemp(suffix=".xml")[-1]
+    f = open(tempxml,"w")
+    f.write(guidoc)
+    f.close()
+    files.insert(0,(tempxml,"GuiDocument.xml"))
+    return files
+
+
+
 def getViewProviderClass(obj):
 
     """getViewProviderClass(obj): tries to identify the associated view provider for a 
@@ -562,3 +724,28 @@ def getViewProviderClass(obj):
         return(mod,"_ViewProviderDraft")
     print("Found no matching view provider for",mod,objclass)
     return None
+
+
+
+def extract(filename,inputpath,outputpath=None):
+    
+    """extract(filename,inputpath,outputpath=None): extracts 'inputpath' which is a filename
+    stored in infile (a FreeCAD or zip file). If outputpath is given, the file is saved as outputpath and
+    nothing is returned. If not, the contents of the inputfile are returned and nothing is saved."""
+    
+    zdoc = zipfile.ZipFile(filename)
+    if zdoc:
+        if inputpath in zdoc.namelist():
+            gf = zdoc.open(inputpath)
+            data = gf.read()
+            gf.close()
+            if data:
+                if outputpath:
+                    if isinstance(data,str):
+                        of = open(outputpath,"w")
+                    else:
+                        of = open(outputpath,"wb")
+                    of.write(data)
+                    of.close()
+                else:
+                    return data
