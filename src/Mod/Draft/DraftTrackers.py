@@ -1073,11 +1073,8 @@ class archDimTracker(Tracker):
         elif m == 3:
             self.Distance = (DraftVecUtils.project(p2.sub(p1),Vector(0,1,0))).Length
         else:
-            self.Distance = (p2.sub(p1)).Length 
-        if not text:
-            text = Draft.getParam("dimPrecision",2)
-            text = "%."+str(text)+"f"
-            text = (text % self.Distance)
+            self.Distance = (p2.sub(p1)).Length
+        text = FreeCAD.Units.Quantity(self.Distance,FreeCAD.Units.Length).UserString
         self.dimnode.string.setValue(text)
         
     def setMode(self,mode=1):
