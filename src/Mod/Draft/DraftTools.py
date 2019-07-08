@@ -4280,12 +4280,16 @@ class Scale(Modifier):
         self.point = Vector(numx,numy,numz)
         self.node.append(self.point)
         if not self.pickmode:
+            if not self.ghosts:
+                self.set_ghosts()
             self.ui.offUi()
             if self.call:
                 self.view.removeEventCallback("SoEvent",self.call)
             self.task = DraftGui.ScaleTaskPanel()
             self.task.sourceCmd = self
             DraftGui.todo.delay(FreeCADGui.Control.showDialog,self.task)
+            DraftGui.todo.delay(self.task.xValue.selectAll,None)
+            DraftGui.todo.delay(self.task.xValue.setFocus,None)
             for ghost in self.ghosts:
                 ghost.on()
         elif len(self.node) == 2:
