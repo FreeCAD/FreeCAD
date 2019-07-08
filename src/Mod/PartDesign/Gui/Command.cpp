@@ -66,6 +66,7 @@
 #include "ReferenceSelection.h"
 #include "Utils.h"
 #include "WorkflowManager.h"
+#include "ViewProviderBody.h"
 
 // TODO Remove this header after fixing code so it won;t be needed here (2015-10-20, Fat-Zer)
 #include "ui_DlgReference.h"
@@ -461,15 +462,42 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         App::DocumentObject* obj;
 
         if (FaceFilter.match()) {
-            obj = FaceFilter.Result[0][0].getObject();
+            Gui::SelectionObject faceSelObject = FaceFilter.Result[0][0];
+            const std::vector<std::string>& subNames = faceSelObject.getSubNames();
+            obj = faceSelObject.getObject();
 
-            if(!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
+            if (!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
                 return;
+
+            // In case the selected face belongs to the body then it means its
+            // Display Mode Body is set to Tip. But the body face is not allowed
+            // to be used as support because otherwise it would cause a cyclic
+            // dependency. So, instead we use the tip object as reference.
+            // https://forum.freecadweb.org/viewtopic.php?f=3&t=37448
+            if (obj == pcActiveBody) {
+                App::DocumentObject* tip = pcActiveBody->Tip.getValue();
+                if (tip && tip->isDerivedFrom(Part::Feature::getClassTypeId()) && subNames.size() == 1) {
+                    Gui::SelectionChanges msg;
+                    msg.pDocName = faceSelObject.getDocName();
+                    msg.pObjectName = tip->getNameInDocument();
+                    msg.pSubName = subNames[0].c_str();
+                    msg.pTypeName = tip->getTypeId().getName();
+
+                    faceSelObject = Gui::SelectionObject(msg);
+                    obj = tip;
+
+                    // automatically switch to 'Through' mode
+                    PartDesignGui::ViewProviderBody* vpBody = dynamic_cast<PartDesignGui::ViewProviderBody*>
+                            (Gui::Application::Instance->getViewProvider(pcActiveBody));
+                    if (vpBody) {
+                        vpBody->DisplayModeBody.setValue("Through");
+                    }
+                }
+            }
 
             Part::Feature* feat = static_cast<Part::Feature*>(obj);
 
-            const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
-            if (sub.size() > 1) {
+            if (subNames.size() > 1) {
                 // No assert for wrong user input!
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Several sub-elements selected"),
                     QObject::tr("You have to select a single face as support for a sketch!"));
@@ -478,7 +506,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
             // get the selected sub shape (a Face)
             const Part::TopoShape &shape = feat->Shape.getValue();
-            TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
+            TopoDS_Shape sh = shape.getSubShape(subNames[0].c_str());
             const TopoDS_Face& face = TopoDS::Face(sh);
             if (face.IsNull()) {
                 // No assert for wrong user input!
@@ -498,8 +526,9 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 }
             }
 
-            supportString = FaceFilter.Result[0][0].getAsPropertyLinkSubString();
-        } else {
+            supportString = faceSelObject.getAsPropertyLinkSubString();
+        }
+        else {
             obj = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
             supportString = std::string("(App.activeDocument().") + obj->getNameInDocument() + ", '')";
         }
