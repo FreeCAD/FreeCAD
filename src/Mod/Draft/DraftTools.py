@@ -4715,13 +4715,16 @@ class Shape2DView(Modifier):
                 if "Face" in e:
                     faces.append(int(e[4:])-1)
         #print(objs,faces)
-        if len(objs) == 1:
-            if faces:
-                Draft.makeShape2DView(objs[0],vec,facenumbers=faces)
-                return
-        for o in objs:
-            Draft.makeShape2DView(o,vec)
-        FreeCAD.ActiveDocument.recompute()
+        commitlist = []
+        FreeCADGui.addModule("Draft")
+        if (len(objs) == 1) and faces:
+            commitlist.append("Draft.makeShape2DView(FreeCAD.ActiveDocument."+objs[0].Name+",FreeCAD.Vector"+str(tuple(vec))+",facenumbers="+str(faces)+")")
+        else:
+            for o in objs:
+                commitlist.append("Draft.makeShape2DView(FreeCAD.ActiveDocument."+o.Name+",FreeCAD.Vector"+str(tuple(vec))+")")
+        if commitlist:
+            commitlist.append("FreeCAD.ActiveDocument.recompute()")
+            self.commit(translate("draft","Create 2D view"),commitlist)
         self.finish()
 
 
