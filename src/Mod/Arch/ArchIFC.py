@@ -108,29 +108,34 @@ def addIfcAttributeValueExpressions(obj, attribute):
     if obj.getGroupOfProperty(attribute["name"]) != "IFC Attributes":
         return
     if attribute["name"] == "OverallWidth":
-        if hasattr(obj, "Length"):
+        if "Length" in obj.PropertiesList:
             obj.setExpression("OverallWidth", "Length.Value")
-        elif hasattr(obj, "Width"):
+        elif "Width" in obj.PropertiesList:
             obj.setExpression("OverallWidth", "Width.Value")
-        elif obj.Shape.BoundBox.XLength > obj.Shape.BoundBox.YLength:
+        elif obj.Shape and (obj.Shape.BoundBox.XLength > obj.Shape.BoundBox.YLength):
             obj.setExpression("OverallWidth", "Shape.BoundBox.XLength")
-        else:
+        elif obj.Shape:
             obj.setExpression("OverallWidth", "Shape.BoundBox.YLength")
     elif attribute["name"] == "OverallHeight":
-        if hasattr(obj, "Height"):
+        if "Height" in obj.PropertiesList:
             obj.setExpression("OverallHeight", "Height.Value")
         else:
             obj.setExpression("OverallHeight", "Shape.BoundBox.ZLength")
     elif attribute["name"] == "ElevationWithFlooring":
-        obj.setExpression("ElevationWithFlooring", "Shape.BoundBox.ZMin")
+        if "Shape" in obj.PropertiesList:
+            obj.setExpression("ElevationWithFlooring", "Shape.BoundBox.ZMin")
     elif attribute["name"] == "Elevation":
-        obj.setExpression("Elevation", "Placement.Base.z")
+        if "Placement" in obj.PropertiesList:
+            obj.setExpression("Elevation", "Placement.Base.z")
     elif attribute["name"] == "NominalDiameter":
-        obj.setExpression("NominalDiameter", "Diameter.Value")
+        if "Diameter" in obj.PropertiesList:
+            obj.setExpression("NominalDiameter", "Diameter.Value")
     elif attribute["name"] == "BarLength":
-        obj.setExpression("BarLength", "Length.Value")
+        if "Length" in obj.PropertiesList:
+            obj.setExpression("BarLength", "Length.Value")
     elif attribute["name"] == "RefElevation":
-        obj.setExpression("RefElevation", "Elevation.Value")
+        if "Elevation" in obj.PropertiesList:
+            obj.setExpression("RefElevation", "Elevation.Value")
     elif attribute["name"] == "LongName":
         obj.LongName = obj.Label
 
