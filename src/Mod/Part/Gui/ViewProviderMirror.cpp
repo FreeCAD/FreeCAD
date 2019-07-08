@@ -667,3 +667,16 @@ bool ViewProviderThickness::onDelete(const std::vector<std::string> &)
 
     return true;
 }
+
+// ---------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderRefine, PartGui::ViewProviderPart)
+
+ViewProviderRefine::ViewProviderRefine()
+{
+    sPixmap = "Part_Refine_Shape";
+}
+
+ViewProviderRefine::~ViewProviderRefine()
+{
+}

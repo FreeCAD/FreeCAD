@@ -673,3 +673,28 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
         this->Shape.setValue(shape);
     return App::DocumentObject::StdReturn;
 }
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(Part::Refine, Part::Feature)
+
+Refine::Refine()
+{
+    ADD_PROPERTY_TYPE(Source,(0),"Refine",App::Prop_None,"Source shape");
+}
+
+App::DocumentObjectExecReturn *Refine::execute(void)
+{
+    Part::Feature* source = Source.getValue<Part::Feature*>();
+    if (!source)
+        return new App::DocumentObjectExecReturn("No part object linked.");
+
+    try {
+        TopoShape myShape = source->Shape.getShape();
+        this->Shape.setValue(myShape.removeSplitter());
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+}
