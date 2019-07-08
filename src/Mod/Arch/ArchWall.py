@@ -95,6 +95,7 @@ def joinWalls(walls,delete=False):
     """joins the given list of walls into one sketch-based wall. If delete
     is True, merged wall objects are deleted"""
 
+    import Part
     if not walls:
         return None
     if not isinstance(walls,list):
@@ -116,7 +117,10 @@ def joinWalls(walls,delete=False):
         if w.Base:
             if not w.Base.Shape.Faces:
                 for e in w.Base.Shape.Edges:
-                    sk.addGeometry(e.Curve)
+                    l = e.Curve
+                    if isinstance(l,Part.Line):
+                        l = Part.LineSegment(e.Vertexes[0].Point,e.Vertexes[-1].Point)
+                    sk.addGeometry(l)
                     deleteList.append(w.Name)
     if delete:
         for n in deleteList:
