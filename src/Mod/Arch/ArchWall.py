@@ -761,7 +761,10 @@ class _Wall(ArchComponent.Component):
                                     #print "modifying p2"
                                     obj.Base.End = p2
                                 elif Draft.getType(obj.Base) == "Sketch":
-                                    obj.Base.movePoint(0,2,p2,0)
+                                    try:
+                                        obj.Base.movePoint(0,2,p2,0)
+                                    except:
+                                        print("Debug: The base sketch of this wall could not be changed, because the sketch has not been edited yet in this session (this is a bug in FreeCAD). Try entering and exiting edit mode in this sketch first, and then changing the wall length should work.")
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
         self.hideSubobjects(obj,prop)
