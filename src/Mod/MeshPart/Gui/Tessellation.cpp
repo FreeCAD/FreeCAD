@@ -62,7 +62,20 @@ Tessellation::Tessellation(QWidget* parent)
     connect(buttonGroup, SIGNAL(buttonClicked(int)),
             this, SLOT(meshingMethod(int)));
 
+    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard");
+    double value = ui->spinSurfaceDeviation->value().getValue();
+    value = handle->GetFloat("LinearDeflection", value);
+    double angle = ui->spinAngularDeviation->value().getValue();
+    angle = handle->GetFloat("AngularDeflection", angle);
+    bool relative = ui->relativeDeviation->isChecked();
+    relative = handle->GetBool("RelativeLinearDeflection", relative);
+    ui->relativeDeviation->setChecked(relative);
+
     ui->spinSurfaceDeviation->setMaximum(INT_MAX);
+    ui->spinSurfaceDeviation->setValue(value);
+    ui->spinAngularDeviation->setValue(angle);
+
     ui->spinMaximumEdgeLength->setRange(0, INT_MAX);
 
     // set the standard method
@@ -239,6 +252,18 @@ bool Tessellation::accept()
         Gui::WaitCursor wc;
 
         int method = buttonGroup->checkedId();
+
+        // Save parameters
+        if (method == 0) {
+            ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard");
+            double value = ui->spinSurfaceDeviation->value().getValue();
+            handle->SetFloat("LinearDeflection", value);
+            double angle = ui->spinAngularDeviation->value().getValue();
+            handle->SetFloat("AngularDeflection", angle);
+            bool relative = ui->relativeDeviation->isChecked();
+            handle->SetBool("RelativeLinearDeflection", relative);
+        }
 
         activeDoc->openTransaction("Meshing");
         QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
