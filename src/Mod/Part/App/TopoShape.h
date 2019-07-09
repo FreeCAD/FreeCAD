@@ -635,10 +635,12 @@ public:
     const std::string &shapeName(bool silent=false) const;
     static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const char *name);
 
+    class Cache;
+    friend class Cache;
+
 private:
     TopoDS_Shape _Shape;
 
-    class Cache;
     mutable std::shared_ptr<Cache> _Cache;
 };
 
