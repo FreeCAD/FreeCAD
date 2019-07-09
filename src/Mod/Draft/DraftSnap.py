@@ -865,18 +865,22 @@ class Snapper:
                             import Part
                             for e in obj.Shape.Edges:
                                 # get the intersection points
-                                if self.isEnabled("WorkingPlane") and hasattr(e,"Curve") and isinstance(e.Curve,(Part.Line,Part.LineSegment)) and hasattr(shape,"Curve") and isinstance(shape.Curve,(Part.Line,Part.LineSegment)):
-                                    # get apparent intersection (lines projected on WP)
-                                    p1 = self.toWP(e.Vertexes[0].Point)
-                                    p2 = self.toWP(e.Vertexes[-1].Point)
-                                    p3 = self.toWP(shape.Vertexes[0].Point)
-                                    p4 = self.toWP(shape.Vertexes[-1].Point)
-                                    pt = DraftGeomUtils.findIntersection(p1,p2,p3,p4,True,True)
-                                else:
-                                    pt = DraftGeomUtils.findIntersection(e,shape)
-                                if pt:
-                                    for p in pt:
-                                        snaps.append([p,'intersection',self.toWP(p)])
+                                try:
+                                    if self.isEnabled("WorkingPlane") and hasattr(e,"Curve") and isinstance(e.Curve,(Part.Line,Part.LineSegment)) and hasattr(shape,"Curve") and isinstance(shape.Curve,(Part.Line,Part.LineSegment)):
+                                        # get apparent intersection (lines projected on WP)
+                                        p1 = self.toWP(e.Vertexes[0].Point)
+                                        p2 = self.toWP(e.Vertexes[-1].Point)
+                                        p3 = self.toWP(shape.Vertexes[0].Point)
+                                        p4 = self.toWP(shape.Vertexes[-1].Point)
+                                        pt = DraftGeomUtils.findIntersection(p1,p2,p3,p4,True,True)
+                                    else:
+                                        pt = DraftGeomUtils.findIntersection(e,shape)
+                                    if pt:
+                                        for p in pt:
+                                            snaps.append([p,'intersection',self.toWP(p)])
+                                except:
+                                    pass
+                                    # some curve types yield an error when trying to read their types...
         return snaps
 
     def snapToPolygon(self,obj):
