@@ -150,7 +150,7 @@ public:
     }
     virtual void forceUpdate(bool enable = true) override;
 
-    void updateColors(Part::Feature *feature, App::Document *sourceDoc=0, bool forceColorMap=false);
+    void updateColors(App::Document *sourceDoc=0, bool forceColorMap=false);
 
     static App::Color getElementColor(App::Color color, Part::TopoShape shape, App::Document *doc, 
             int type, std::string mapped,std::map<App::DocumentObject*,Part::TopoShape> &cache);
@@ -172,7 +172,7 @@ protected:
     /// get called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop);
     bool loadParameter();
-    void updateVisual(const TopoDS_Shape &);
+    void updateVisual();
     void getNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,
                     TColgp_Array1OfDir& theNormals);
 

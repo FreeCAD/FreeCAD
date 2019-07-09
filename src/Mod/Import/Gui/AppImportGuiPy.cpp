@@ -305,7 +305,7 @@ private:
         if(colors.empty()) {
             vp->MapFaceColor.setValue(true);
             vp->MapLineColor.setValue(true);
-            vp->updateColors(part,0,true);
+            vp->updateColors(0,true);
             return;
         }
         vp->MapFaceColor.setValue(false);

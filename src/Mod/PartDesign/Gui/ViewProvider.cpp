@@ -329,7 +329,7 @@ void ViewProvider::makeTemporaryVisible(bool onoff)
     //make sure to not use the overridden versions, as they change properties
     if (onoff) {
         if (VisualTouched) {
-            updateVisual(static_cast<Part::Feature*>(getObject())->Shape.getValue());
+            updateVisual();
         }
         Gui::ViewProvider::show();
     }

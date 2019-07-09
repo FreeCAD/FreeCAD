@@ -55,7 +55,7 @@ PyObject *ViewProviderPartExtPy::mapShapeColors(PyObject *args) {
     App::Document *doc = 0;
     if(pyDoc!=Py_None)
         doc = static_cast<App::DocumentPy*>(pyDoc)->getDocumentPtr();
-    vp->updateColors(dynamic_cast<Part::Feature*>(vp->getObject()),doc,true);
+    vp->updateColors(doc,true);
     Py_Return;
 }
 
