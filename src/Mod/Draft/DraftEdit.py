@@ -89,7 +89,6 @@ class Edit():
         self.parseSelection()
 
         if not self.obj:
-            for obj in FreeCADGui.Selection.getSelection():
             self.finish()
             return
 
