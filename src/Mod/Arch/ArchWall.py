@@ -95,6 +95,7 @@ def joinWalls(walls,delete=False):
     """joins the given list of walls into one sketch-based wall. If delete
     is True, merged wall objects are deleted"""
 
+    import Part
     if not walls:
         return None
     if not isinstance(walls,list):
@@ -116,7 +117,10 @@ def joinWalls(walls,delete=False):
         if w.Base:
             if not w.Base.Shape.Faces:
                 for e in w.Base.Shape.Edges:
-                    sk.addGeometry(e.Curve)
+                    l = e.Curve
+                    if isinstance(l,Part.Line):
+                        l = Part.LineSegment(e.Vertexes[0].Point,e.Vertexes[-1].Point)
+                    sk.addGeometry(l)
                     deleteList.append(w.Name)
     if delete:
         for n in deleteList:
@@ -757,7 +761,10 @@ class _Wall(ArchComponent.Component):
                                     #print "modifying p2"
                                     obj.Base.End = p2
                                 elif Draft.getType(obj.Base) == "Sketch":
-                                    obj.Base.movePoint(0,2,p2,0)
+                                    try:
+                                        obj.Base.movePoint(0,2,p2,0)
+                                    except:
+                                        print("Debug: The base sketch of this wall could not be changed, because the sketch has not been edited yet in this session (this is a bug in FreeCAD). Try entering and exiting edit mode in this sketch first, and then changing the wall length should work.")
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
         self.hideSubobjects(obj,prop)
@@ -804,6 +811,7 @@ class _Wall(ArchComponent.Component):
         if hasattr(obj,"Material"):
             if obj.Material:
                 if hasattr(obj.Material,"Materials"):
+                    # multimaterials
                     varwidth = 0
                     restwidth = width - sum(obj.Material.Thicknesses)
                     if restwidth > 0:
@@ -935,14 +943,15 @@ class _Wall(ArchComponent.Component):
                 offset = 0
                 base = []
                 for l in layers:
-                    l2 = length/2 or 0.5
-                    w1 = -totalwidth/2 + offset
-                    w2 = w1 + l
-                    v1 = Vector(-l2,w1,0)
-                    v2 = Vector(l2,w1,0)
-                    v3 = Vector(l2,w2,0)
-                    v4 = Vector(-l2,w2,0)
-                    base.append(Part.Face(Part.makePolygon([v1,v2,v3,v4,v1])))
+                    if l > 0:
+                        l2 = length/2 or 0.5
+                        w1 = -totalwidth/2 + offset
+                        w2 = w1 + l
+                        v1 = Vector(-l2,w1,0)
+                        v2 = Vector(l2,w1,0)
+                        v3 = Vector(l2,w2,0)
+                        v4 = Vector(-l2,w2,0)
+                        base.append(Part.Face(Part.makePolygon([v1,v2,v3,v4,v1])))
                     offset += l
             else:
                 l2 = length/2 or 0.5

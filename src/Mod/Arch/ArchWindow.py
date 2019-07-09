@@ -1881,6 +1881,8 @@ class _ArchWindowTaskPanel:
                     hinge = self.field6.property("text")
                     n = self.field7.currentIndex()
                     if (hinge.startswith("Edge")) and (n > 0):
+                        # remove accelerator added by Qt
+                        hinge = hinge.replace("&","")
                         t += "," + hinge + ",Mode" + str(n)
             ar.append(t)
 

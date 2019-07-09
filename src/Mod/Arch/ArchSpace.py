@@ -425,7 +425,7 @@ class _Space(ArchComponent.Component):
                         obj.Area = a
                 return
 
-        print("Arch: error computing space boundary")
+        print("Arch: error computing space boundary for",obj.Label)
 
     def getArea(self,obj,notouch=False):
 

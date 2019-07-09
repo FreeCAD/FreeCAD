@@ -404,9 +404,9 @@ class BuildingPart:
         obj.Area = self.getArea(obj)
 
     def getArea(self,obj):
-        
+
         "computes the area of this floor by adding its inner spaces"
-        
+
         area = 0
         if hasattr(obj,"Group"):
             for child in obj.Group:
@@ -515,6 +515,14 @@ class ViewProviderBuildingPart:
         if not "ChildrenTransparency" in pl:
             vobj.addProperty("App::PropertyPercent","ChildrenTransparency","Children",QT_TRANSLATE_NOOP("App::Property","The transparency of child objects"))
 
+        if not "CutView" in pl:
+            vobj.addProperty("App::PropertyBool","CutView","Clip",QT_TRANSLATE_NOOP("App::Property","Cut the view above this level"))
+        if not "CutMargin" in pl:
+            vobj.addProperty("App::PropertyLength","CutMargin","Clip",QT_TRANSLATE_NOOP("App::Property","The distance between the level plane and the cut line"))
+            vobj.CutMargin = 1600
+        if not "AutoCutView" in pl:
+            vobj.addProperty("App::PropertyBool","AutoCutView","Clip",QT_TRANSLATE_NOOP("App::Property","Turn cutting on when activating this level"))
+
     def onDocumentRestored(self,vobj):
 
         selt.setProperties(vobj)
@@ -532,6 +540,7 @@ class ViewProviderBuildingPart:
     def attach(self,vobj):
 
         self.Object = vobj.Object
+        self.clip = None
         from pivy import coin
         self.sep = coin.SoGroup()
         self.mat = coin.SoMaterial()
@@ -614,7 +623,7 @@ class ViewProviderBuildingPart:
     def onChanged(self,vobj,prop):
 
         #print(vobj.Object.Label," - ",prop)
-        
+
         if prop == "ShapeColor":
             if hasattr(vobj,"ShapeColor"):
                 l = vobj.ShapeColor
@@ -679,7 +688,55 @@ class ViewProviderBuildingPart:
                     for prop in props:
                         if hasattr(vobj,prop) and hasattr(child.ViewObject,prop[8:]) and not hasattr(child,"ChildrenOverride"):
                             setattr(child.ViewObject,prop[8:],getattr(vobj,prop))
-                    
+        elif prop in ["CutView","CutMargin"]:
+            if hasattr(vobj,"CutView") and FreeCADGui.ActiveDocument.ActiveView:
+                sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+                if vobj.CutView:
+                    from pivy import coin
+                    if self.clip:
+                        sg.removeChild(self.clip)
+                        self.clip = None
+                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                        if hasattr(o.ViewObject,"Lighting"):
+                            o.ViewObject.Lighting = "One side"
+                    self.clip = coin.SoClipPlane()
+                    self.clip.on.setValue(True)
+                    norm = vobj.Object.Placement.multVec(FreeCAD.Vector(0,0,1))
+                    mp = vobj.Object.Placement.Base
+                    mp = DraftVecUtils.project(mp,norm)
+                    dist = mp.Length #- 0.1 # to not clip exactly on the section object
+                    norm = norm.negative()
+                    marg = 1
+                    if hasattr(vobj,"CutMargin"):
+                        marg = vobj.CutMargin.Value
+                    if mp.getAngle(norm) > 1:
+                        dist += marg
+                        dist = -dist
+                    else:
+                        dist -= marg
+                    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),dist)
+                    self.clip.plane.setValue(plane)
+                    sg.insertChild(self.clip,0)
+                else:
+                    if self.clip:
+                        sg.removeChild(self.clip)
+                        self.clip = None
+                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                        if hasattr(o.ViewObject,"Lighting"):
+                            o.ViewObject.Lighting = "Two side"
+        elif prop == "Visibility":
+            # turn clipping off when turning the object off
+            if hasattr(vobj,"Visibility") and not(vobj.Visibility) and hasattr(vobj,"CutView"):
+                vobj.CutView = False
+
+    def onDelete(self,vobj,subelements):
+
+        if self.clip:
+            sg.removeChild(self.clip)
+            self.clip = None
+        for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+            if hasattr(o.ViewObject,"Lighting"):
+                o.ViewObject.Lighting = "Two side"
 
     def doubleClicked(self,vobj):
 
@@ -757,13 +814,13 @@ class ViewProviderBuildingPart:
             self.Object.ViewObject.ViewData = cdata
 
     def createGroup(self):
-        
+
         if hasattr(self,"Object"):
             s = "FreeCAD.ActiveDocument.getObject(\"%s\").newObject(\"App::DocumentObjectGroup\",\"Group\")" % self.Object.Name
             FreeCADGui.doCommand(s)
 
     def reorder(self):
-        
+
         if hasattr(self,"Object"):
             if hasattr(self.Object,"Group") and self.Object.Group:
                 g = self.Object.Group
@@ -772,7 +829,7 @@ class ViewProviderBuildingPart:
                 FreeCAD.ActiveDocument.recompute()
 
     def cloneUp(self):
-        
+
         if hasattr(self,"Object"):
             if not self.Object.Height.Value:
                 FreeCAD.Console.PrintError("This level has no height value. Please define a height before using this function.\n")

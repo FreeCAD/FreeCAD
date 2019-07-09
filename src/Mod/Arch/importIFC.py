@@ -1534,7 +1534,7 @@ def export(exportList,filename,colors=None):
     # clean objects list of unwanted types
     objectslist = [obj for obj in objectslist if obj not in annotations]
     objectslist = Arch.pruneIncluded(objectslist,strict=True)
-    objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Material","MaterialContainer","WorkingPlaneProxy"]]
+    objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Dimension","Material","MaterialContainer","WorkingPlaneProxy"]]
     if FULL_PARAMETRIC:
         objectslist = Arch.getAllChildren(objectslist)
     products = {} # { Name: IfcEntity, ... }
@@ -2146,7 +2146,7 @@ def export(exportList,filename,colors=None):
                         treated.append(c.Name)
                 if subs:
                     ifcfile.createIfcRelAggregates(
-                        ifcopenshell.new(),
+                        ifcopenshell.guid.new(),
                         history,
                         'Assembly',
                         '',
@@ -2170,7 +2170,7 @@ def export(exportList,filename,colors=None):
             f = products[floor.Name]
             if children:
                 ifcfile.createIfcRelContainedInSpatialStructure(
-                    ifcopenshell.new(),
+                    ifcopenshell.guid.new(),
                     history,
                     'StoreyLink',
                     '',
@@ -3040,7 +3040,7 @@ def getProfile(ifcfile,p):
         d = vec(p.Edges[0])
         d.normalize()
         pxvc = ifcbin.createIfcDirection(tuple(d))
-        povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
+        povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass))
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         #semiPerimeter = p.Length/2
         #diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
@@ -3262,16 +3262,16 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                         # old method
 
                         solids = []
+
+                        # if this is a clone, place back the shape in null position
+                        if tostore:
+                            fcshape.Placement = FreeCAD.Placement()
+
                         if fcshape.Solids:
                             dataset = fcshape.Solids
                         else:
                             dataset = fcshape.Shells
                             #if DEBUG: print("Warning! object contains no solids")
-
-                        # if this is a clone, place back the shapes in null position
-                        if tostore:
-                            for shape in dataset:
-                                shape.Placement = FreeCAD.Placement()
 
                         for fcsolid in dataset:
                             fcsolid.scale(0.001) # to meters
@@ -3357,6 +3357,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
     if shapes:
 
+        colorshapes = shapes # to keep track of individual shapes for coloring below
         if tostore:
             subrep = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
             xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
@@ -3376,6 +3377,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             solidType = "MappedRepresentation"
 
         # set surface style
+
         shapecolor = None
         diffusecolor = None
         transparency = 0.0
@@ -3396,18 +3398,18 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             transparency = obj.ViewObject.Transparency/100.0
             if hasattr(obj.ViewObject,"DiffuseColor"):
                 diffusecolor = obj.ViewObject.DiffuseColor
-        if shapecolor:
+        if shapecolor and (shapetype != "clone"): # cloned objects are already colored
             key = None
             rgbt = [shapecolor+(transparency,) for shape in shapes]
             if diffusecolor \
                     and (len(diffusecolor) == len(obj.Shape.Faces)) \
-                    and (len(obj.Shape.Solids) == len(shapes)):
+                    and (len(obj.Shape.Solids) == len(colorshapes)):
                 i = 0
                 rgbt = []
                 for sol in obj.Shape.Solids:
                     rgbt.append(diffusecolor[i])
                     i += len(sol.Faces)
-            for i,shape in enumerate(shapes):
+            for i,shape in enumerate(colorshapes):
                 key = rgbt[i]
                 #if hasattr(obj,"Material"):
                 #    if obj.Material:

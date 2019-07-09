@@ -474,6 +474,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Offset                ::init();
     Part::Offset2D              ::init();
     Part::Thickness             ::init();
+    Part::Refine                ::init();
 
     // Geometry types
     Part::Geometry                ::init();

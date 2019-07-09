@@ -82,13 +82,16 @@ class Edit():
             self.view.removeEventCallback("SoEvent",self.call)
             self.call = None
 
+        if not FreeCAD.ActiveDocument:
+            self.finish()
+            return
+
         self.parseSelection()
 
         if not self.obj:
+            for obj in FreeCADGui.Selection.getSelection():
             self.finish()
-
-        if not FreeCAD.ActiveDocument:
-            self.finish()
+            return
 
         # store selectable state of the object
         if hasattr(self.obj.ViewObject,"Selectable"):
@@ -120,19 +123,20 @@ class Edit():
         else:
             FreeCAD.Console.PrintWarning(translate("draft", "No edit point found for selected object")+"\n")
             self.finish()
+            return
     
     def parseSelection(self):
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintMessage(translate("draft", "Please select only one object")+"\n")
+            FreeCAD.Console.PrintMessage(translate("draft", "Please select exactly one object")+"\n")
             self.finish()
-        try:
-            if "Proxy" in selection[0].PropertiesList and hasattr(selection[0].Proxy,"Type"):
-                if Draft.getType(selection[0]) in self.supportedObjs:
-                    self.obj = selection[0]
-        except:    
-            FreeCAD.Console.PrintWarning(translate("draft", "This object is not editable")+"\n")
-            self.finish()
+            return
+        if "Proxy" in selection[0].PropertiesList and hasattr(selection[0].Proxy,"Type"):
+            if Draft.getType(selection[0]) in self.supportedObjs:
+                self.obj = selection[0]
+                return
+        FreeCAD.Console.PrintWarning(translate("draft", "This object is not editable")+"\n")
+        return
     
     def getPlacement(self,obj):
         if "Placement" in obj.PropertiesList:
@@ -353,8 +357,9 @@ class Edit():
         if FreeCADGui.Snapper.grid:
             FreeCADGui.Snapper.grid.set()
         self.running = False
-        # following line causes crash
-        # FreeCADGui.ActiveDocument.resetEdit()
+        # delay resetting edit mode otherwise it doesn't happen
+        from PySide import QtCore
+        QtCore.QTimer.singleShot(0,FreeCADGui.ActiveDocument.resetEdit)
 
     #---------------------------------------------------------------------------
     # PREVIEW

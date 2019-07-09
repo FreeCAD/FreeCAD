@@ -60,6 +60,7 @@ class Snapper:
     """
 
     def __init__(self):
+        self.activeview = None
         self.lastObj = [None,None]
         self.maxEdges = 0
         self.radius = 0
@@ -193,6 +194,10 @@ class Snapper:
 
         # setup trackers if needed
         self.setTrackers()
+        
+        # show the grid if it's off (new view, for ex)
+        if self.grid and Draft.getParam("grid",True):
+            self.grid.on()
 
         # getting current snap Radius
         self.radius =  self.getScreenDist(Draft.getParam("snapRange", 8),screenpos)
@@ -1391,69 +1396,59 @@ class Snapper:
             self.toolbar.hide()
             self.toolbar.toggleViewAction().setVisible(True)
 
-    def setGrid(self,init=False):
+    def setGrid(self):
         "sets the grid, if visible"
-        if init:
-            if not self.grid:
-                self.grid = DraftTrackers.gridTracker()
+        self.setTrackers()
         if self.grid and (not self.forceGridOff):
-            if init or self.grid.Visible:
+            if self.grid.Visible:
                 self.grid.set()
-            self.setTrackers()
-
-    def respawnGrid(self):
-        "recreates a grid in the current view if needed"
-        if self.grid:
-            if Draft.getParam("grid",True):
-                if FreeCADGui.ActiveDocument:
-                    s = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
-                    if not s.getByName("gridTracker"):
-                        self.grid = DraftTrackers.gridTracker()
 
     def setTrackers(self):
         v = Draft.get3DView()
-        if v in self.trackers[0]:
-            i = self.trackers[0].index(v)
-            self.grid = self.trackers[1][i]
-            self.tracker = self.trackers[2][i]
-            self.extLine = self.trackers[3][i]
-            self.radiusTracker = self.trackers[4][i]
-            self.dim1 = self.trackers[5][i]
-            self.dim2 = self.trackers[6][i]
-            self.trackLine = self.trackers[7][i]
-            self.extLine2 = self.trackers[8][i]
-            self.holdTracker = self.trackers[9][i]
-        else:
-            if not self.grid:
+        if v != self.activeview:
+            if v in self.trackers[0]:
+                i = self.trackers[0].index(v)
+                self.grid = self.trackers[1][i]
+                self.tracker = self.trackers[2][i]
+                self.extLine = self.trackers[3][i]
+                self.radiusTracker = self.trackers[4][i]
+                self.dim1 = self.trackers[5][i]
+                self.dim2 = self.trackers[6][i]
+                self.trackLine = self.trackers[7][i]
+                self.extLine2 = self.trackers[8][i]
+                self.holdTracker = self.trackers[9][i]
+            else:
                 if Draft.getParam("grid",True):
                     self.grid = DraftTrackers.gridTracker()
+                    self.grid.on()
                 else:
                     self.grid = None
-            self.tracker = DraftTrackers.snapTracker()
-            self.trackLine = DraftTrackers.lineTracker()
-            if self.snapStyle:
-                c = FreeCADGui.draftToolBar.getDefaultColor("snap")
-                self.extLine = DraftTrackers.lineTracker(scolor=c)
-                self.extLine2 = DraftTrackers.lineTracker(scolor = c)
-            else:
-                self.extLine = DraftTrackers.lineTracker(dotted=True)
-                self.extLine2 = DraftTrackers.lineTracker(dotted=True)
-            self.radiusTracker = DraftTrackers.radiusTracker()
-            self.dim1 = DraftTrackers.archDimTracker(mode=2)
-            self.dim2 = DraftTrackers.archDimTracker(mode=3)
-            self.holdTracker = DraftTrackers.snapTracker()
-            self.holdTracker.setMarker("cross")
-            self.holdTracker.clear()
-            self.trackers[0].append(v)
-            self.trackers[1].append(self.grid)
-            self.trackers[2].append(self.tracker)
-            self.trackers[3].append(self.extLine)
-            self.trackers[4].append(self.radiusTracker)
-            self.trackers[5].append(self.dim1)
-            self.trackers[6].append(self.dim2)
-            self.trackers[7].append(self.trackLine)
-            self.trackers[8].append(self.extLine2)
-            self.trackers[9].append(self.holdTracker)
+                self.tracker = DraftTrackers.snapTracker()
+                self.trackLine = DraftTrackers.lineTracker()
+                if self.snapStyle:
+                    c = FreeCADGui.draftToolBar.getDefaultColor("snap")
+                    self.extLine = DraftTrackers.lineTracker(scolor=c)
+                    self.extLine2 = DraftTrackers.lineTracker(scolor = c)
+                else:
+                    self.extLine = DraftTrackers.lineTracker(dotted=True)
+                    self.extLine2 = DraftTrackers.lineTracker(dotted=True)
+                self.radiusTracker = DraftTrackers.radiusTracker()
+                self.dim1 = DraftTrackers.archDimTracker(mode=2)
+                self.dim2 = DraftTrackers.archDimTracker(mode=3)
+                self.holdTracker = DraftTrackers.snapTracker()
+                self.holdTracker.setMarker("cross")
+                self.holdTracker.clear()
+                self.trackers[0].append(v)
+                self.trackers[1].append(self.grid)
+                self.trackers[2].append(self.tracker)
+                self.trackers[3].append(self.extLine)
+                self.trackers[4].append(self.radiusTracker)
+                self.trackers[5].append(self.dim1)
+                self.trackers[6].append(self.dim2)
+                self.trackers[7].append(self.trackLine)
+                self.trackers[8].append(self.extLine2)
+                self.trackers[9].append(self.holdTracker)
+            self.activeview = v
         if self.grid and (not self.forceGridOff):
             self.grid.set()
 

@@ -37,11 +37,9 @@ class WorkbenchTestCase(unittest.TestCase):
         wbs=FreeCADGui.listWorkbenches()
         try:
             for i in wbs:
-                FreeCADGui.activateWorkbench(i)
-                FreeCADGui.updateGui()
+                success = FreeCADGui.activateWorkbench(i)
                 FreeCAD.Console.PrintLog("Active: "+FreeCADGui.activeWorkbench().name()+ " Expected: "+i+"\n")
-                FreeCADGui.updateGui()
-                self.assertEqual(FreeCADGui.activeWorkbench().name(), i, "Test on activating workbench {0} failed".format(i))
+                self.assertTrue(success, "Test on activating workbench {0} failed".format(i))
         except Exception as e:
             self.fail("Loading of workbench '{0}' failed: {1}".format(i, e))
         
