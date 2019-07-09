@@ -26,6 +26,8 @@
 # include <QInputDialog>
 # include <QHeaderView>
 # include <QMessageBox>
+# include <QComboBox>
+# include <QPointer>
 #endif
 
 #include "DlgMacroExecuteImp.h"
@@ -38,6 +40,8 @@
 #include "Document.h"
 #include "EditorView.h"
 #include "PythonEditor.h"
+#include "DlgCustomizeImp.h"
+#include "DlgToolbarsImp.h"
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -136,6 +140,7 @@ void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem*
 
         executeButton->setEnabled(true);
         deleteButton->setEnabled(true);
+        toolbarButton->setEnabled(true);
         createButton->setEnabled(true);
         editButton->setEnabled(true);
         renameButton->setEnabled(true);
@@ -144,6 +149,7 @@ void DlgMacroExecuteImp::on_userMacroListBox_currentItemChanged(QTreeWidgetItem*
     else {
         executeButton->setEnabled(false);
         deleteButton->setEnabled(false);
+        toolbarButton->setEnabled(false);
         createButton->setEnabled(true);
         editButton->setEnabled(false);
         renameButton->setEnabled(false);
@@ -158,6 +164,7 @@ void DlgMacroExecuteImp::on_systemMacroListBox_currentItemChanged(QTreeWidgetIte
 
         executeButton->setEnabled(true);
         deleteButton->setEnabled(false);
+        toolbarButton->setEnabled(false);
         createButton->setEnabled(false);
         editButton->setEnabled(true); //look but don't touch
         renameButton->setEnabled(false);
@@ -166,6 +173,7 @@ void DlgMacroExecuteImp::on_systemMacroListBox_currentItemChanged(QTreeWidgetIte
     else {
         executeButton->setEnabled(false);
         deleteButton->setEnabled(false);
+        toolbarButton->setEnabled(false);
         createButton->setEnabled(false);
         editButton->setEnabled(false);
         renameButton->setEnabled(false);
@@ -182,6 +190,7 @@ void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
         if (item) {
             executeButton->setEnabled(true);
             deleteButton->setEnabled(true);
+            toolbarButton->setEnabled(true);
             createButton->setEnabled(true);
             editButton->setEnabled(true);
             renameButton->setEnabled(true);
@@ -190,6 +199,7 @@ void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
         else {
             executeButton->setEnabled(false);
             deleteButton->setEnabled(false);
+            toolbarButton->setEnabled(false);
             createButton->setEnabled(true);
             editButton->setEnabled(false);
             renameButton->setEnabled(false);
@@ -202,6 +212,7 @@ void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
         if (item) {
             executeButton->setEnabled(true);
             deleteButton->setEnabled(false);
+            toolbarButton->setEnabled(false);
             createButton->setEnabled(false);
             editButton->setEnabled(true); //but you can't save it
             renameButton->setEnabled(false);
@@ -210,6 +221,7 @@ void DlgMacroExecuteImp::on_tabMacroWidget_currentChanged(int index)
         else {
             executeButton->setEnabled(false);
             deleteButton->setEnabled(false);
+            toolbarButton->setEnabled(false);
             createButton->setEnabled(false);
             editButton->setEnabled(false);
             renameButton->setEnabled(false);
@@ -400,6 +412,142 @@ void DlgMacroExecuteImp::on_deleteButton_clicked()
         delete item;
     }
 }
+
+/**
+ * Walk user through process of adding macro to global custom toolbar
+ * We create a custom customize dialog with instructions embedded
+ * within the dialog itself for the user, and the buttons to push in red text
+ * There are 2 dialogs we need to create: the macros dialog and the
+ * toolbar dialog.
+ */
+
+void DlgMacroExecuteImp::on_toolbarButton_clicked(){
+
+    /** advise user of what we are doing, offer chance to cancel **/
+    QMessageBox msgBox;
+    msgBox.setText(tr("Guided Walkthrough"));
+    msgBox.setInformativeText(tr("This will guide you in setting up this macro in a custom \
+global toolbar.  Instructions will be in red text in the 2 dialogs that follow.\n"));
+    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    int result = msgBox.exec();
+    if (result == QMessageBox::Cancel){
+        return;
+    }
+    QTreeWidgetItem* item = userMacroListBox->currentItem();
+    if (!item)
+        return;
+
+    QString fn = item->text(0);
+    QString bareFileName = fn; //for use as default menu text (filename without extension)
+    bareFileName.remove(QString::fromLatin1(".FCMacro").remove(QString::fromLatin1(".py")));
+
+    /** check if user already has custom toolbar, so we can tailor instructions accordingly **/
+    bool hasCustomToolbar = true;
+    if (App::GetApplication().GetParameterGroupByPath( QByteArray("User parameter:BaseApp/Workbench/Global/Toolbar"))->GetGroups().size()==0){
+        hasCustomToolbar=false;
+    }
+
+    /** first the custom macros page dialog **/
+
+    static QPointer<QDialog> dlg = 0;
+    if (!dlg)
+        dlg = new Gui::Dialog::DlgCustomizeImp(getMainWindow());
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setModal(true);
+    /** title is normally "Customize" **/
+    dlg->setWindowTitle(tr("Walkthrough, dialog 1 of 2"));
+
+    QTabWidget* tabWidget = dlg->findChild<QTabWidget*>(QString::fromLatin1("Gui__Dialog__TabWidget"));
+    QWidget* setupCustomMacrosPage = tabWidget->findChild<QWidget*>(QString::fromUtf8("Gui__Dialog__DlgCustomActions"));
+    tabWidget->setCurrentWidget(setupCustomMacrosPage);
+    QGroupBox* groupBox7 = setupCustomMacrosPage->findChild<QGroupBox*>(QString::fromUtf8("GroupBox7"));
+    QPushButton* buttonAddAction = setupCustomMacrosPage->findChild<QPushButton*>(QString::fromUtf8("buttonAddAction"));
+    buttonAddAction->setStyleSheet(QString::fromLatin1("color:red"));
+
+    /** normally the groupbox title is "Setup Custom Macros", but we change it here **/
+    groupBox7->setTitle(tr("Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close"));
+    groupBox7->setStyleSheet(QString::fromLatin1("QGroupBox::title {color:red}"));
+
+    QComboBox* macroListBox = setupCustomMacrosPage->findChild<QComboBox*>(QString::fromUtf8("actionMacros"));
+    int macroIndex = macroListBox->findText(fn); //fn is the macro filename
+    macroListBox->setCurrentIndex(macroIndex); //select it for the user so he doesn't have to
+    QLineEdit* menuText = setupCustomMacrosPage->findChild<QLineEdit*>(QString::fromUtf8("actionMenu"));
+    menuText->setText(bareFileName); //user can fill in other fields, e.g. tooltip
+    dlg->exec();
+
+    /** now for the toolbar selection dialog **/
+
+    dlg = 0;
+    if (!dlg){
+        dlg = new Gui::Dialog::DlgCustomizeImp(getMainWindow());
+    }
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->setModal(true);
+    dlg->setWindowTitle(tr("Walkthrough, dialog 2 of 2"));
+
+    tabWidget = dlg->findChild<QTabWidget*>(QString::fromLatin1("Gui__Dialog__TabWidget"));
+    DlgCustomToolbars* setupToolbarPage = tabWidget->findChild<DlgCustomToolbars*>(QString::fromUtf8("Gui__Dialog__DlgCustomToolbars"));
+    tabWidget->setCurrentWidget(setupToolbarPage);
+    QPushButton* moveActionRightButton = setupToolbarPage->findChild<QPushButton*>(QString::fromUtf8("moveActionRightButton"));
+    moveActionRightButton->setStyleSheet(QString::fromLatin1("background-color: red"));
+
+    /** tailor instructions depending on whether user already has custom toolbar created
+     * if not he needs to click New button to create one first
+    **/
+
+    QString instructions2 = tr("Walkthrough instructions: Click right arrow button (->), then Close.");
+    QComboBox* workbenchBox = setupToolbarPage->findChild<QComboBox*>(QString::fromUtf8("workbenchBox"));
+    if (!hasCustomToolbar){
+        QPushButton* newButton = setupToolbarPage->findChild<QPushButton*>(QString::fromUtf8("newButton"));
+        newButton->setStyleSheet(QString::fromLatin1("color:red"));
+        instructions2 = tr("Walkthrough instructions: Click New, then right arrow (->) button, then Close.");
+    }
+
+    /** "label" normally says "Note: the changes become active the next time you load the appropriate workbench" **/
+
+    QLabel *label = setupToolbarPage->findChild<QLabel*>(QString::fromLatin1("label"));
+    label->setText(instructions2);
+    label->setStyleSheet(QString::fromLatin1("color:red"));
+
+    /** find the Global workbench and select it for the user **/
+
+    int globalIdx = workbenchBox->findText(tr("Global"));
+    if (globalIdx != -1){
+        workbenchBox->setCurrentIndex(globalIdx);
+        setupToolbarPage->on_workbenchBox_activated(globalIdx);
+    } else {
+        workbenchBox->setCurrentIndex(0);
+        setupToolbarPage->on_workbenchBox_activated(0);
+    }
+
+    /** find Macros category and select it for the user **/
+
+    QComboBox* categoryBox = setupToolbarPage->findChild<QComboBox*>(QString::fromUtf8("categoryBox"));
+    int macrosIdx = categoryBox->findText(tr("Macros"));
+    if (macrosIdx != -1){
+        categoryBox->setCurrentIndex(macrosIdx);
+        setupToolbarPage->on_categoryBox_activated(macrosIdx);
+    } else {
+        categoryBox->setCurrentIndex(7); //Macros is our desired selection
+        setupToolbarPage->on_categoryBox_activated(7);
+    }
+
+    /** the macro we just added in the first dialog will be at the bottom of this list **/
+
+    QTreeWidget* commandTreeWidget = setupToolbarPage->findChild<QTreeWidget*>(QString::fromUtf8("commandTreeWidget"));
+    commandTreeWidget->setCurrentItem(commandTreeWidget->topLevelItem(commandTreeWidget->topLevelItemCount()-1));
+    commandTreeWidget->scrollToItem(commandTreeWidget->currentItem());
+
+    dlg->exec();
+
+    QMessageBox msgBox2;
+    msgBox2.setText(tr("Guided Walkthrough"));
+    msgBox2.setInformativeText(tr("Your changes will take effect when you switch workbenches."));
+    msgBox2.exec();
+}
+
+
 
 /**
  * renames the selected macro

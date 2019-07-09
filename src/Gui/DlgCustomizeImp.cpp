@@ -78,6 +78,7 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
     customLayout->addLayout( layout, 1, 0 );
 
     tabWidget = new QTabWidget( this );
+    tabWidget->setObjectName(QString::fromLatin1("Gui__Dialog__TabWidget"));//so we can find it in DlgMacroExecuteImp
 
     // make sure that pages are ready to create
     GetWidgetFactorySupplier();
