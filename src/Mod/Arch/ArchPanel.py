@@ -485,9 +485,10 @@ class _Panel(ArchComponent.Component):
             if obj.Material:
                 if hasattr(obj.Material,"Materials"):
                     varwidth = 0
-                    restwidth = thickness - sum(obj.Material.Thicknesses)
+                    thicknesses = [t for t in obj.Material.Thicknesses if t >= 0]
+                    restwidth = thickness - sum(thicknesses)
                     if restwidth > 0:
-                        varwidth = [t for t in obj.Material.Thicknesses if t == 0]
+                        varwidth = [t for t in thicknesses if t == 0]
                         if varwidth:
                             varwidth = restwidth/len(varwidth)
                     for t in obj.Material.Thicknesses:
@@ -517,13 +518,14 @@ class _Panel(ArchComponent.Component):
                         layeroffset = 0
                         shps = []
                         for l in layers:
-                            n = Vector(normal).normalize().multiply(l)
-                            b = base.extrude(n)
-                            if layeroffset:
-                                o = Vector(normal).normalize().multiply(layeroffset)
-                                b.translate(o)
-                            shps.append(b)
-                            layeroffset += l
+                            if l >= 0:
+                                n = Vector(normal).normalize().multiply(abs(l))
+                                b = base.extrude(n)
+                                if layeroffset:
+                                    o = Vector(normal).normalize().multiply(layeroffset)
+                                    b.translate(o)
+                                shps.append(b)
+                            layeroffset += abs(l)
                         base = Part.makeCompound(shps)
                     else:
                         base = base.extrude(normal)
@@ -550,13 +552,14 @@ class _Panel(ArchComponent.Component):
                         layeroffset = 0
                         shps = []
                         for l in layers:
-                            n = Vector(normal).normalize().multiply(l)
-                            b = baseprofile.extrude(n)
-                            if layeroffset:
-                                o = Vector(normal).normalize().multiply(layeroffset)
-                                b.translate(o)
-                            shps.append(b)
-                            layeroffset += l
+                            if l >= 0:
+                                n = Vector(normal).normalize().multiply(abs(l))
+                                b = baseprofile.extrude(n)
+                                if layeroffset:
+                                    o = Vector(normal).normalize().multiply(layeroffset)
+                                    b.translate(o)
+                                shps.append(b)
+                            layeroffset += abs(l)
                         base = Part.makeCompound(shps)
                     else:
                         base = baseprofile.extrude(normal)
@@ -571,21 +574,22 @@ class _Panel(ArchComponent.Component):
                 shps = []
                 layeroffset = 0
                 for l in layers:
-                    if normal:
-                        n = Vector(normal).normalize().multiply(l)
-                    else:
-                        n = Vector(0,0,1).multiply(l)
-                    l2 = length/2 or 0.5
-                    w2 = width/2 or 0.5
-                    v1 = Vector(-l2,-w2,layeroffset)
-                    v2 = Vector(l2,-w2,layeroffset)
-                    v3 = Vector(l2,w2,layeroffset)
-                    v4 = Vector(-l2,w2,layeroffset)
-                    base = Part.makePolygon([v1,v2,v3,v4,v1])
-                    baseprofile = Part.Face(base)
-                    base = baseprofile.extrude(n)
-                    shps.append(base)
-                    layeroffset += l
+                    if l >= 0:
+                        if normal:
+                            n = Vector(normal).normalize().multiply(l)
+                        else:
+                            n = Vector(0,0,1).multiply(abs(l))
+                        l2 = length/2 or 0.5
+                        w2 = width/2 or 0.5
+                        v1 = Vector(-l2,-w2,layeroffset)
+                        v2 = Vector(l2,-w2,layeroffset)
+                        v3 = Vector(l2,w2,layeroffset)
+                        v4 = Vector(-l2,w2,layeroffset)
+                        base = Part.makePolygon([v1,v2,v3,v4,v1])
+                        baseprofile = Part.Face(base)
+                        base = baseprofile.extrude(n)
+                        shps.append(base)
+                    layeroffset += abs(l)
                 base = Part.makeCompound(shps)
             else:
                 if not normal:
@@ -719,12 +723,10 @@ class _Panel(ArchComponent.Component):
                     w = Part.makePolygon([p1,p2,p3,p4])
                     basewire = Part.Wire(upwire.Edges+w.Edges)
 
-                #
                 FreeCAD.basewire = basewire
                 if not basewire.isClosed():
                     print("Error closing base wire - check FreeCAD.basewire")
                     return
-                #
 
                 baseface = Part.Face(basewire)
                 base = baseface.extrude(Vector(0,bb.YLength,0))
@@ -795,13 +797,14 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
 
     def updateData(self,obj,prop):
 
-        if prop in ["Placement","Shape"]:
+        if prop in ["Placement","Shape","Material"]:
             if hasattr(obj,"Material"):
                 if obj.Material:
                     if hasattr(obj.Material,"Materials"):
-                        if len(obj.Material.Materials) == len(obj.Shape.Solids):
+                        activematerials = [obj.Material.Materials[i] for i in range(len(obj.Material.Materials)) if obj.Material.Thicknesses[i] >= 0]
+                        if len(activematerials) == len(obj.Shape.Solids):
                             cols = []
-                            for i,mat in enumerate(obj.Material.Materials):
+                            for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
                                 c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
                                 if 'DiffuseColor' in mat.Material:
