@@ -810,12 +810,13 @@ class _Wall(ArchComponent.Component):
         layers = []
         if hasattr(obj,"Material"):
             if obj.Material:
+                thicknesses = [abs(t) for t in obj.Material.Thicknesses]
                 if hasattr(obj.Material,"Materials"):
                     # multimaterials
                     varwidth = 0
-                    restwidth = width - sum(obj.Material.Thicknesses)
+                    restwidth = width - sum(thicknesses)
                     if restwidth > 0:
-                        varwidth = [t for t in obj.Material.Thicknesses if t == 0]
+                        varwidth = [t for t in thicknesses if t == 0]
                         if varwidth:
                             varwidth = restwidth/len(varwidth)
                     for t in obj.Material.Thicknesses:
@@ -878,8 +879,8 @@ class _Wall(ArchComponent.Component):
                                 off = obj.Offset.Value
                                 if layers:
                                     off = off+layeroffset
-                                    dvec.multiply(layers[i])
-                                    layeroffset += layers[i]
+                                    dvec.multiply(abs(layers[i]))
+                                    layeroffset += abs(layers[i])
                                 else:
                                     dvec.multiply(width)
                                 if off:
@@ -893,8 +894,8 @@ class _Wall(ArchComponent.Component):
                                 off = obj.Offset.Value
                                 if layers:
                                     off = off+layeroffset
-                                    dvec.multiply(layers[i])
-                                    layeroffset += layers[i]
+                                    dvec.multiply(abs(layers[i]))
+                                    layeroffset += abs(layers[i])
                                 else:
                                     dvec.multiply(width)
                                 if off:
@@ -908,7 +909,7 @@ class _Wall(ArchComponent.Component):
                                     off = width/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
                                     w1 = DraftGeomUtils.offsetWire(wire,d1)
-                                    layeroffset += layers[i]
+                                    layeroffset += abs(layers[i])
                                     off = width/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
                                     w2 = DraftGeomUtils.offsetWire(wire,d1)
@@ -918,7 +919,7 @@ class _Wall(ArchComponent.Component):
                                     dvec = dvec.negative()
                                     w2 = DraftGeomUtils.offsetWire(wire,dvec)
                                 sh = DraftGeomUtils.bind(w1,w2)
-                            if sh:
+                            if sh and layers and (layers[i] >= 0):
                                 sh.fix(0.1,0,1) # fixes self-intersecting wires
                                 f = Part.Face(sh)
                                 if baseface:
@@ -939,7 +940,7 @@ class _Wall(ArchComponent.Component):
                             base,placement = self.rebase(baseface)
         else:
             if layers:
-                totalwidth = sum(layers)
+                totalwidth = sum([abs(l) for l in layers])
                 offset = 0
                 base = []
                 for l in layers:
@@ -952,7 +953,7 @@ class _Wall(ArchComponent.Component):
                         v3 = Vector(l2,w2,0)
                         v4 = Vector(-l2,w2,0)
                         base.append(Part.Face(Part.makePolygon([v1,v2,v3,v4,v1])))
-                    offset += l
+                    offset += abs(l)
             else:
                 l2 = length/2 or 0.5
                 w2 = width/2 or 0.5
@@ -1016,9 +1017,10 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             if hasattr(obj,"Material"):
                 if obj.Material and obj.Shape:
                     if hasattr(obj.Material,"Materials"):
-                        if len(obj.Material.Materials) == len(obj.Shape.Solids):
+                        activematerials = [obj.Material.Materials[i] for i in range(len(obj.Material.Materials)) if obj.Material.Thicknesses[i] >= 0]
+                        if len(activematerials) == len(obj.Shape.Solids):
                             cols = []
-                            for i,mat in enumerate(obj.Material.Materials):
+                            for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
                                 c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
                                 if 'DiffuseColor' in mat.Material:
