@@ -810,8 +810,8 @@ class _Wall(ArchComponent.Component):
         layers = []
         if hasattr(obj,"Material"):
             if obj.Material:
-                thicknesses = [abs(t) for t in obj.Material.Thicknesses]
                 if hasattr(obj.Material,"Materials"):
+                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
                     # multimaterials
                     varwidth = 0
                     restwidth = width - sum(thicknesses)
@@ -919,12 +919,13 @@ class _Wall(ArchComponent.Component):
                                     dvec = dvec.negative()
                                     w2 = DraftGeomUtils.offsetWire(wire,dvec)
                                 sh = DraftGeomUtils.bind(w1,w2)
-                            if sh and layers and (layers[i] >= 0):
+                            if sh:
                                 sh.fix(0.1,0,1) # fixes self-intersecting wires
                                 f = Part.Face(sh)
                                 if baseface:
                                     if layers:
-                                        baseface.append(f)
+                                        if layers[i] >= 0:
+                                            baseface.append(f)
                                     else:
                                         baseface = baseface.fuse(f)
                                         # baseface = baseface.removeSplitter()
@@ -933,7 +934,8 @@ class _Wall(ArchComponent.Component):
                                             baseface = s
                                 else:
                                     if layers:
-                                        baseface = [f]
+                                        if layers[i] >= 0:
+                                            baseface = [f]
                                     else:
                                         baseface = f
                         if baseface:
