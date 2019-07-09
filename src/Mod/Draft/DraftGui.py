@@ -660,6 +660,9 @@ class DraftToolBar:
         self.snapLabel = self._label("snapLabel", gl)
         self.snapValue = self._spinbox("snapValue", gl)
         self.snapValue.setValue(Draft.getParam("snapRange", 8))
+        bl = QtGui.QHBoxLayout()
+        self.layout.addLayout(bl)
+        self.alignToWPButton = self._pushbutton("alignToWP", bl,icon="dagViewVisible")
 
         # spacer
         if not self.taskmode:
@@ -732,6 +735,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.mainlineValue,QtCore.SIGNAL("valueChanged(int)"),self.setMainline)
         QtCore.QObject.connect(self.centerPlane,QtCore.SIGNAL("stateChanged(int)"),self.setCenterPlane)
         QtCore.QObject.connect(self.snapValue,QtCore.SIGNAL("valueChanged(int)"),self.setSnapValue)
+        QtCore.QObject.connect(self.alignToWPButton,QtCore.SIGNAL("clicked()"),self.alignToWP)
 
         # following lines can cause a crash and are not needed anymore when using the task panel
         # http://forum.freecadweb.org/viewtopic.php?f=3&t=6952
@@ -888,6 +892,8 @@ class DraftToolBar:
         self.centerPlane.setToolTip(translate("draft", "Centers the working plane on the current view"))
         self.snapLabel.setText(translate("draft", "Snapping radius"))
         self.snapValue.setToolTip(translate("draft", "This is the distance in screen pixels under which a point will be snapped. You can also change the radius while drawing, using keys")+" "+inCommandShortcuts["Increase"][0]+" , "+inCommandShortcuts["Decrease"][0])
+        self.alignToWPButton.setText(translate("draft", "Align view"))
+        self.alignToWPButton.setToolTip(translate("draft", "Aligns the view direction to face the current working plane"))
         self.retranslateTray(widget)
 
         # Update the maximum width of the push buttons
@@ -1014,6 +1020,7 @@ class DraftToolBar:
         self.snapValue.show()
         p = Draft.getParam("snapRange", 8)
         self.snapValue.setValue(p)
+        self.alignToWPButton.show()
 
     def extraLineUi(self):
         '''shows length and angle controls'''
@@ -1198,6 +1205,7 @@ class DraftToolBar:
             self.snapLabel.hide()
             self.snapValue.hide()
             self.WPLabel.hide()
+            self.alignToWPButton.hide()
 
     def trimUi(self,title=translate("draft","Trim")):
         self.taskUi(title)
@@ -1713,6 +1721,9 @@ class DraftToolBar:
 
     def selectResetPlane(self):
         self.sourceCmd.selectHandler("reset")
+
+    def alignToWP(self):
+        self.sourceCmd.selectHandler("alignToWP")
 
     def undoSegment(self):
         "undo last line segment"

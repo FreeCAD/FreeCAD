@@ -509,6 +509,11 @@ class SelectPlane(DraftTool):
             FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.reset()")
             self.display('Auto')
             self.finish()
+        elif arg == "alignToWP":
+            c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+            r = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
+            c.orientation.setValue(r)
+            self.finish()
 
     def offsetHandler(self, arg):
         self.offset = arg
