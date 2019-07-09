@@ -132,8 +132,10 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
     if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')) 
         return App::DocumentObject::getSubObject(subname,pyObj,pmat,transform,depth);
 
-    if(pmat && transform)
-        *pmat *= Placement.getValue().toMatrix();
+    Base::Matrix4D _mat;
+    auto &mat = pmat?*pmat:_mat;
+    if(transform)
+        mat *= Placement.getValue().toMatrix();
 
     if(!pyObj) {
 #if 0
@@ -148,11 +150,9 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
 
     try {
         TopoShape ts(Shape.getShape());
-        bool doTransform = pmat && *pmat!=ts.getTransform();
-        if(doTransform) {
+        bool doTransform = mat!=ts.getTransform();
+        if(doTransform) 
             ts.setShape(ts.getShape().Located(TopLoc_Location()),false);
-            ts.initCache(1);
-        }
         if(subname && *subname && !ts.isNull())
             ts = ts.getSubTopoShape(subname,true);
         if(doTransform && !ts.isNull()) {
@@ -177,7 +177,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
                     }
                 }
             }
-            ts.transformShape(*pmat,copy,true);
+            ts.transformShape(mat,copy,true);
         }
         *pyObj =  Py::new_reference_to(shape2pyshape(ts));
         return const_cast<Feature*>(this);
@@ -372,11 +372,19 @@ struct ShapeCache {
         App::GetApplication().signalDeletedObject.connect(
                 boost::bind(&ShapeCache::slotClear, this, _1));
         App::GetApplication().signalChangedObject.connect(
-                boost::bind(&ShapeCache::slotClear, this, _1));
+                boost::bind(&ShapeCache::slotChanged, this, _1,_2));
     }
 
     void slotDeleteDocument(const App::Document &doc) {
         cache.erase(&doc);
+    }
+
+    void slotChanged(const App::DocumentObject &obj, const App::Property &prop) {
+        const char *propName = prop.getName();
+        if(!propName)
+            return;
+        if(strcmp(propName,"Shape")==0 || strstr(propName,"Touched")!=0)
+            slotClear(obj);
     }
 
     void slotClear(const App::DocumentObject &obj) {
@@ -618,10 +626,13 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 
         bool resolveLink, bool transform, bool noElementMap)
 {
+    if(!obj || !obj->getNameInDocument()) 
+        return TopoShape();
+
     std::vector<App::DocumentObject*> linkStack;
 
     // NOTE! _getTopoShape() always return shape without top level
-    // transformation for the easy of shape caching, i.e.  with `transform` set
+    // transformation for easy shape caching, i.e.  with `transform` set
     // to false. So we manually apply the top level transform if asked.
 
     Base::Matrix4D mat;
