@@ -259,6 +259,8 @@ class DraftTool:
         self.planetrack = None
         if Draft.getParam("showPlaneTracker",False):
             self.planetrack = PlaneTracker()
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.setTrackers()
 
     def finish(self,close=False):
         self.node = []
@@ -522,7 +524,7 @@ class SelectPlane(DraftTool):
             plv = 'd('+str(arg.x)+','+str(arg.y)+','+str(arg.z)+')'
             self.ui.wplabel.setText(plv+suffix)
         self.ui.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.ui.wplabel.text())
-        FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid(init=True)")
+        FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
 
 #---------------------------------------------------------------------------
 # Geometry constructors
@@ -5038,17 +5040,14 @@ class ToggleGrid():
 
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.setTrackers()
             if FreeCADGui.Snapper.grid:
-                FreeCADGui.Snapper.respawnGrid()
                 if FreeCADGui.Snapper.grid.Visible:
                     FreeCADGui.Snapper.grid.off()
                     FreeCADGui.Snapper.forceGridOff=True
                 else:
-                    FreeCADGui.Snapper.grid.reset()
                     FreeCADGui.Snapper.grid.on()
                     FreeCADGui.Snapper.forceGridOff=False
-            else:
-                FreeCADGui.Snapper.show()
 
 class Heal():
     "The Draft Heal command definition"
