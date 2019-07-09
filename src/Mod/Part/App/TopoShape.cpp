@@ -343,28 +343,27 @@ TopoDS_Shape TopoShape::getSubShape(TopAbs_ShapeEnum type, int idx, bool silent)
     return s.getSubTopoShape(type,idx,silent).getShape();
 }
 
-typedef std::map<TopAbs_ShapeEnum,std::string> ShapeNameMap;
-static  ShapeNameMap _ShapeNameMap;
+static std::array<std::string,TopAbs_SHAPE> _ShapeNames;
 
 static void initShapeNameMap() {
-    if(_ShapeNameMap.empty()) {
-        _ShapeNameMap[TopAbs_VERTEX] = "Vertex";
-        _ShapeNameMap[TopAbs_EDGE] = "Edge";
-        _ShapeNameMap[TopAbs_FACE] = "Face";
-        _ShapeNameMap[TopAbs_WIRE] = "Wire";
-        _ShapeNameMap[TopAbs_SHELL] = "Shell";
-        _ShapeNameMap[TopAbs_SOLID] = "Solid";
-        _ShapeNameMap[TopAbs_COMPOUND] = "Compound";
-        _ShapeNameMap[TopAbs_COMPSOLID] = "CompSolid";
+    if(_ShapeNames[TopAbs_VERTEX].empty()) {
+        _ShapeNames[TopAbs_VERTEX] = "Vertex";
+        _ShapeNames[TopAbs_EDGE] = "Edge";
+        _ShapeNames[TopAbs_FACE] = "Face";
+        _ShapeNames[TopAbs_WIRE] = "Wire";
+        _ShapeNames[TopAbs_SHELL] = "Shell";
+        _ShapeNames[TopAbs_SOLID] = "Solid";
+        _ShapeNames[TopAbs_COMPOUND] = "Compound";
+        _ShapeNames[TopAbs_COMPSOLID] = "CompSolid";
     }
 }
 
 TopAbs_ShapeEnum TopoShape::shapeType(const char *type, bool silent) {
     if(type) {
         initShapeNameMap();
-        for(auto &v : _ShapeNameMap) {
-            if(boost::starts_with(type,v.second))
-                return v.first;
+        for(size_t idx=0;idx<_ShapeNames.size();++idx) {
+            if(boost::starts_with(type,_ShapeNames[idx]))
+                return (TopAbs_ShapeEnum)idx;
         }
     }
     if(!silent) {
@@ -401,9 +400,8 @@ TopAbs_ShapeEnum TopoShape::shapeType(bool silent) const {
 
 const std::string &TopoShape::shapeName(TopAbs_ShapeEnum type, bool silent) {
     initShapeNameMap();
-    auto it = _ShapeNameMap.find(type);
-    if(it != _ShapeNameMap.end())
-        return it->second;
+    if(type>=0 && type<_ShapeNames.size() && _ShapeNames[type].size())
+        return _ShapeNames[type];
     if(!silent)
         FC_THROWM(Base::CADKernelError, "invalid shape type '" << type << "'");
     static std::string ret("");
