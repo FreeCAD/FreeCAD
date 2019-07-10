@@ -78,12 +78,12 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
 
     def highlightBlock(self, text):
 
-        for pattern, format in self.highlightingRules:
+        for pattern, fmt in self.highlightingRules:
             expression = QtCore.QRegExp(pattern)
             index = expression.indexIn(text)
             while index >= 0:
                 length = expression.matchedLength()
-                self.setFormat(index, length, format)
+                self.setFormat(index, length, fmt)
                 index = expression.indexIn(text, index + length)
 
 
@@ -201,7 +201,6 @@ def show(obj):
             # exec_() returns 0 or 1 depending on the button pressed (Ok or
             # Cancel)
             if result:
-                import Path
                 p = Path.Path(dia.editor.toPlainText())
                 FreeCAD.ActiveDocument.openTransaction("Edit Path")
                 obj.Path = p
@@ -221,7 +220,7 @@ class CommandPathInspect:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):
