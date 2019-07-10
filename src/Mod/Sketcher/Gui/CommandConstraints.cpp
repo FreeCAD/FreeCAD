@@ -152,15 +152,15 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
                     if (ui_ins_datum.labelEdit->hasExpression())
                         ui_ins_datum.labelEdit->apply();
                     else
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
-                                                sketch->getNameInDocument(),
+                        FCMD_OBJ_CMD2("setDatum(%i,App.Units.Quantity('%f %s'))",
+                                                sketch,
                                                 ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
 
                     QString constraintName = ui_ins_datum.name->text().trimmed();
                     if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
                         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                                                sketch->getNameInDocument(),
+                        FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
+                                                sketch,
                                                 ConstrNbr, escapedstr.c_str());
                     }
                     Gui::Command::commitCommand();
@@ -394,20 +394,19 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 
     try {
         // Add a point
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-            Obj->getNameInDocument(), PoE.x,PoE.y);
+        FCMD_OBJ_CMD2("addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+            Obj, PoE.x,PoE.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-            Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,geoId1); // constrain major axis
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+            Obj,GeoIdPoint,Sketcher::start,geoId1); // constrain major axis
         // Point on second object
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-            Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,geoId2); // constrain major axis
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+            Obj,GeoIdPoint,Sketcher::start,geoId2); // constrain major axis
         // tangent via point
-        Gui::Command::doCommand(
-            Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
-            Obj->getNameInDocument(), geoId1, geoId2 ,GeoIdPoint, Sketcher::start);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
+            Obj, geoId1, geoId2 ,GeoIdPoint, Sketcher::start);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
@@ -459,20 +458,19 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* O
 
     try {
         // Add a point
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-            Obj->getNameInDocument(), PoE.x,PoE.y);
+        FCMD_OBJ_CMD2("addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+            Obj, PoE.x,PoE.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-            Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,geoId1); // constrain major axis
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+            Obj,GeoIdPoint,Sketcher::start,geoId1); // constrain major axis
         // Point on second object
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-            Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,geoId2); // constrain major axis
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+            Obj,GeoIdPoint,Sketcher::start,geoId2); // constrain major axis
         // tangent via point
-        Gui::Command::doCommand(
-            Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
-            Obj->getNameInDocument(), geoId1, geoId2 ,GeoIdPoint, Sketcher::start);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
+            Obj, geoId1, geoId2 ,GeoIdPoint, Sketcher::start);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
@@ -541,20 +539,19 @@ void SketcherGui::makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject*
 
     try {
         // Add a point
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                                Obj->getNameInDocument(), PoH.x,PoH.y);
+        FCMD_OBJ_CMD2("addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                Obj, PoH.x,PoH.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                                Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,geoId1); // constrain major axis
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                                Obj,GeoIdPoint,Sketcher::start,geoId1); // constrain major axis
         // Point on second object
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                                Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,geoId2); // constrain major axis
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                                Obj,GeoIdPoint,Sketcher::start,geoId2); // constrain major axis
         // tangent via point
-        Gui::Command::doCommand(
-            Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
-                                Obj->getNameInDocument(), geoId1, geoId2 ,GeoIdPoint, Sketcher::start);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
+                                Obj, geoId1, geoId2 ,GeoIdPoint, Sketcher::start);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
@@ -618,20 +615,19 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* 
 
     try {
         // Add a point
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                                Obj->getNameInDocument(), PoP.x,PoP.y);
+        FCMD_OBJ_CMD2("addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                Obj, PoP.x,PoP.y);
         int GeoIdPoint = Obj->getHighestCurveIndex();
 
         // Point on first object
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                                Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,geoId1); // constrain major axis
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                                Obj,GeoIdPoint,Sketcher::start,geoId1); // constrain major axis
         // Point on second object
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                                Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,geoId2); // constrain major axis
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                                Obj,GeoIdPoint,Sketcher::start,geoId2); // constrain major axis
         // tangent via point
-        Gui::Command::doCommand(
-            Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
-                                Obj->getNameInDocument(), geoId1, geoId2 ,GeoIdPoint, Sketcher::start);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d))",
+                                Obj, geoId1, geoId2 ,GeoIdPoint, Sketcher::start);
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
@@ -727,9 +723,8 @@ void SketcherGui::doEndpointTangency(Sketcher::SketchObject* Obj, Gui::Selection
         // GeoId1 is the B-spline now
         } // end of code supports simple B-spline endpoint tangency
 
-        Gui::Command::doCommand(
-            Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
-                                selection.getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
+                selection.getObject(),GeoId1,PosId1,GeoId2,PosId2);
 }
 
 
@@ -1290,8 +1285,8 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
         openCommand("add horizontal constraint");
         for (std::vector<int>::iterator it=edgegeoids.begin(); it != edgegeoids.end(); it++) {
             // issue the actual commands to create the constraint
-            doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%d)) "
-                    ,selection[0].getFeatName(),*it);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Horizontal',%d)) "
+                    ,selection[0].getObject(),*it);
         }
     }
     else if (fixedpoints <= 1) { // pointgeoids
@@ -1301,8 +1296,8 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
         std::vector<Sketcher::PointPos>::iterator itp;
         for (it=pointgeoids.begin(), itp=pointpos.begin(); it != std::prev(pointgeoids.end()) && itp != std::prev(pointpos.end()); it++,itp++) {
             // issue the actual commands to create the constraint
-            doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) "
-            ,selection[0].getFeatName(),*it,*itp,*std::next(it),*std::next(itp));
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) "
+            ,selection[0].getObject(),*it,*itp,*std::next(it),*std::next(itp));
         }
     }
     else { // vertex mode, fixedpoints > 1
@@ -1362,8 +1357,8 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
             // undo command open
             Gui::Command::openCommand("add horizontal constraint");
             // issue the actual commands to create the constraint
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                      sketchgui->getObject()->getNameInDocument(),CrvId);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
+                      sketchgui->getObject(),CrvId);
             // finish the transaction and update
             Gui::Command::commitCommand();
 
@@ -1536,8 +1531,8 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
         openCommand("add vertical constraint");
         for (std::vector<int>::iterator it=edgegeoids.begin(); it != edgegeoids.end(); it++) {
             // issue the actual commands to create the constraint
-            doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%d)) "
-            ,selection[0].getFeatName(),*it);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Vertical',%d)) "
+            ,selection[0].getObject(),*it);
         }
     }
     else if (fixedpoints <= 1) { // vertex mode, maximum one fixed point
@@ -1547,8 +1542,8 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
         std::vector<Sketcher::PointPos>::iterator itp;
         for (it=pointgeoids.begin(), itp=pointpos.begin(); it != std::prev(pointgeoids.end()) && itp != std::prev(pointpos.end()); it++,itp++) {
             // issue the actual commands to create the constraint
-            doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) "
-            ,selection[0].getFeatName(),*it,*itp,*std::next(it),*std::next(itp));
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) "
+            ,selection[0].getObject(),*it,*itp,*std::next(it),*std::next(itp));
         }
     }
     else { // vertex mode, fixedpoints > 1
@@ -1609,8 +1604,8 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
             // undo command open
             Gui::Command::openCommand("add vertical constraint");
             // issue the actual commands to create the constraint
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                      sketchgui->getObject()->getNameInDocument(),CrvId);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Vertical',%d)) ",
+                      sketchgui->getObject(),CrvId);
             // finish the transaction and update
             Gui::Command::commitCommand();
             tryAutoRecompute(Obj);
@@ -1757,23 +1752,21 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
         // undo command open
         openCommand("add fixed constraint");
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-                                selection[0].getFeatName(),GeoId[0],PosId[0],pnt.x);
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-                                selection[0].getFeatName(),GeoId[0],PosId[0],pnt.y);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
+                                selection[0].getObject(),GeoId[0],PosId[0],pnt.x);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
+                                selection[0].getObject(),GeoId[0],PosId[0],pnt.y);
 
         lastconstraintindex+=2;
 
         if (edgeisblocked || GeoId[0] <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId[0]) || constraintCreationMode==Reference) {
             // it is a constraint on a external line, make it non-driving
 
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                                    selection[0].getFeatName(),lastconstraintindex-2,"False");
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                                    selection[0].getObject(),lastconstraintindex-2,"False");
 
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                                    selection[0].getFeatName(),lastconstraintindex,"False");
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                                    selection[0].getObject(),lastconstraintindex,"False");
         }
     }
     else {
@@ -1798,23 +1791,21 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
             // undo command open
             openCommand("add relative lock constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
-                                    selection[0].getFeatName(),*itg,*itp,GeoId.back(),PosId.back(),pntr.x-pnt.x);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
+                                    selection[0].getObject(),*itg,*itp,GeoId.back(),PosId.back(),pntr.x-pnt.x);
 
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
-                                    selection[0].getFeatName(),*itg,*itp,GeoId.back(),PosId.back(),pntr.y-pnt.y);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
+                                    selection[0].getObject(),*itg,*itp,GeoId.back(),PosId.back(),pntr.y-pnt.y);
             lastconstraintindex+=2;
 
             if ( (refpointfixed && pointfixed) || constraintCreationMode==Reference) {
                 // it is a constraint on a external line, make it non-driving
 
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                                        selection[0].getFeatName(),lastconstraintindex-1,"False");
+                FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                                        selection[0].getObject(),lastconstraintindex-1,"False");
 
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                                        selection[0].getFeatName(),lastconstraintindex,"False");
+                FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                                        selection[0].getObject(),lastconstraintindex,"False");
             }
         }
     }
@@ -1845,22 +1836,20 @@ void CmdSketcherConstrainLock::applyConstraint(std::vector<SelIdPair> &selSeq, i
 
         // undo command open
         Gui::Command::openCommand("add fixed constraint");
-        Gui::Command::doCommand(
-            Gui::Command::Doc, "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX', %d, %d, %f)) ",
-            sketchgui->getObject()->getNameInDocument(), selSeq.front().GeoId, selSeq.front().PosId, pnt.x);
-        Gui::Command::doCommand(
-            Gui::Command::Doc, "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY', %d, %d, %f)) ",
-            sketchgui->getObject()->getNameInDocument(), selSeq.front().GeoId, selSeq.front().PosId, pnt.y);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceX', %d, %d, %f)) ",
+            sketchgui->getObject(), selSeq.front().GeoId, selSeq.front().PosId, pnt.x);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceY', %d, %d, %f)) ",
+            sketchgui->getObject(), selSeq.front().GeoId, selSeq.front().PosId, pnt.y);
 
         if (pointfixed || constraintCreationMode==Reference) {
             // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.setDriving(%i, %s)",
-            sketchgui->getObject()->getNameInDocument(), ConStr.size()-2, "False");
+            FCMD_OBJ_CMD2("setDriving(%i, %s)",
+            sketchgui->getObject(), ConStr.size()-2, "False");
 
-            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.setDriving(%i, %s)",
-            sketchgui->getObject()->getNameInDocument(), ConStr.size()-1, "False");
+            FCMD_OBJ_CMD2("setDriving(%i, %s)",
+            sketchgui->getObject(), ConStr.size()-1, "False");
         }
 
         // finish the transaction and update
@@ -2222,9 +2211,8 @@ public:
             // check if this coincidence is already enforced (even indirectly)
             bool constraintExists = Obj->arePointsCoincident(GeoId1,PosId1,GeoId2,PosId2);
             if (!constraintExists && (GeoId1 != GeoId2)) {
-                Gui::Command::doCommand(
-                    Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-                    sketchgui->getObject()->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                    sketchgui->getObject(),GeoId1,PosId1,GeoId2,PosId2);
                 Gui::Command::commitCommand();
             }
             else {
@@ -2373,9 +2361,8 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
 
         if (!constraintExists) {
             constraintsAdded = true;
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2);
         }
     }
 
@@ -2415,9 +2402,8 @@ void CmdSketcherConstrainCoincident::applyConstraint(std::vector<SelIdPair> &sel
         // check if this coincidence is already enforced (even indirectly)
         bool constraintExists = Obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
         if (!constraintExists && (GeoId1 != GeoId2)) {
-            Gui::Command::doCommand(
-                Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident', %d, %d, %d, %d)) ",
-                sketchgui->getObject()->getNameInDocument(), GeoId1, PosId1, GeoId2, PosId2);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident', %d, %d, %d, %d)) ",
+                sketchgui->getObject(), GeoId1, PosId1, GeoId2, PosId2);
             Gui::Command::commitCommand();
         }
         else {
@@ -2519,32 +2505,29 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             PosId1 = Sketcher::start;
 
             openCommand("add distance from horizontal axis constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,pnt2.y);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
+                selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2,pnt2.y);
         }
         else if (GeoId1 == Sketcher::GeoEnum::VAxis && PosId1 == Sketcher::none) {
             PosId1 = Sketcher::start;
 
             openCommand("add distance from vertical axis constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,pnt2.x);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
+                selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2,pnt2.x);
         }
         else {
             Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
 
             openCommand("add point to point distance constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,(pnt2-pnt1).Length());
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2,(pnt2-pnt1).Length());
         }
 
         if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-            selection[0].getFeatName(),ConStr.size()-1,"False");
+            
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+            selection[0].getObject(),ConStr.size()-1,"False");
             finishDistanceConstraint(this, Obj,false);
         }
         else
@@ -2568,15 +2551,14 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             double ActDist = std::abs(-pnt.x*d.y+pnt.y*d.x+pnt1.x*pnt2.y-pnt2.x*pnt1.y) / d.Length();
 
             openCommand("add point to line Distance constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,ActDist);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
+                selection[0].getObject(),GeoId1,PosId1,GeoId2,ActDist);
 
             if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                selection[0].getFeatName(),ConStr.size()-1,"False");
+                FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                selection[0].getObject(),ConStr.size()-1,"False");
                 finishDistanceConstraint(this, Obj,false);
             }
             else
@@ -2601,15 +2583,14 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             double ActLength = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Length();
 
             openCommand("add length constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%f)) ",
-                selection[0].getFeatName(),GeoId1,ActLength);
-
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Distance',%d,%f)) ",
+                selection[0].getObject(),GeoId1,ActLength);
+            
             if (arebothpointsorsegmentsfixed || GeoId1 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId1) || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                selection[0].getFeatName(),ConStr.size()-1,"False");
+                
+                FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                selection[0].getObject(),ConStr.size()-1,"False");
                 finishDistanceConstraint(this, Obj,false);
             }
             else
@@ -2647,32 +2628,29 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
             PosId1 = Sketcher::start;
 
             openCommand("add distance from horizontal axis constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
-                Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,pnt2.y);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
+                Obj,GeoId1,PosId1,GeoId2,PosId2,pnt2.y);
         }
         else if (GeoId1 == Sketcher::GeoEnum::VAxis && PosId1 == Sketcher::none) {
             PosId1 = Sketcher::start;
 
             openCommand("add distance from vertical axis constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
-                Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,pnt2.x);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
+                Obj,GeoId1,PosId1,GeoId2,PosId2,pnt2.x);
         }
         else {
             Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
 
             openCommand("add point to point distance constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,(pnt2-pnt1).Length());
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+                Obj,GeoId1,PosId1,GeoId2,PosId2,(pnt2-pnt1).Length());
         }
 
         if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-            Obj->getNameInDocument(),ConStr.size()-1,"False");
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+            Obj,ConStr.size()-1,"False");
             finishDistanceConstraint(this, Obj,false);
         }
         else
@@ -2695,15 +2673,14 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
             double ActLength = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Length();
 
             openCommand("add length constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%f)) ",
-                Obj->getNameInDocument(),GeoId1,ActLength);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Distance',%d,%f)) ",
+                Obj,GeoId1,ActLength);
 
             if (arebothpointsorsegmentsfixed || GeoId1 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId1) || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                Obj->getNameInDocument(),ConStr.size()-1,"False");
+                FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                Obj,ConStr.size()-1,"False");
                 finishDistanceConstraint(this, Obj,false);
             }
             else
@@ -2735,15 +2712,14 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair> &selSe
             double ActDist = std::abs(-pnt.x*d.y+pnt.y*d.x+pnt1.x*pnt2.y-pnt2.x*pnt1.y) / d.Length();
 
             openCommand("add point to line Distance constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
-                Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,ActDist);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
+                Obj,GeoId1,PosId1,GeoId2,ActDist);
 
             if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                Obj->getNameInDocument(),ConStr.size()-1,"False");
+                FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                Obj,ConStr.size()-1,"False");
                 finishDistanceConstraint(this, Obj,false);
             }
             else
@@ -2910,9 +2886,8 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
                 }
 
                 cnt++;
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    selection[0].getFeatName(),points[iPnt].GeoId, points[iPnt].PosId, curves[iCrv].GeoId);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    selection[0].getObject(),points[iPnt].GeoId, points[iPnt].PosId, curves[iCrv].GeoId);
             }
         }
         if (cnt) {
@@ -2982,9 +2957,8 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
     }
 
     if (allOK) {
-        Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                sketchgui->getObject()->getNameInDocument(), GeoIdVt, PosIdVt, GeoIdCrv);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                sketchgui->getObject(), GeoIdVt, PosIdVt, GeoIdCrv);
 
         commitCommand();
         tryAutoRecompute(Obj);
@@ -3117,15 +3091,14 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         }
 
         openCommand("add point to point horizontal distance constraint");
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
-            selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
+            selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
 
         if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-            selection[0].getFeatName(),ConStr.size()-1,"False");
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+            selection[0].getObject(),ConStr.size()-1,"False");
             finishDistanceConstraint(this, Obj,false);
         }
         else
@@ -3147,16 +3120,15 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         arebothpointsorsegmentsfixed=isPointOrSegmentFixed(Obj,GeoId1);
 
         openCommand("add fixed x-coordinate constraint");
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
-            selection[0].getFeatName(),GeoId1,PosId1,ActX);
-
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
+            selection[0].getObject(),GeoId1,PosId1,ActX);
+        
 
         if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-            selection[0].getFeatName(),ConStr.size()-1,"False");
+            
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+            selection[0].getObject(),ConStr.size()-1,"False");
             finishDistanceConstraint(this, Obj,false);
         }
         else
@@ -3218,15 +3190,14 @@ void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair> &selS
     }
 
     openCommand("add point to point horizontal distance constraint");
-    Gui::Command::doCommand(
-        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
-        Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
+    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
+        Obj,GeoId1,PosId1,GeoId2,PosId2,ActLength);
 
     if (areBothPointsOrSegmentsFixed(Obj,GeoId1, GeoId2) || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-        Obj->getNameInDocument(),ConStr.size()-1,"False");
+        FCMD_OBJ_CMD2("setDriving(%i,%s)",
+        Obj,ConStr.size()-1,"False");
         finishDistanceConstraint(this, Obj, false);
     }
     else
@@ -3365,15 +3336,14 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         }
 
         openCommand("add point to point vertical distance constraint");
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
-            selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
+            selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
 
         if (arebothpointsorsegmentsfixed || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-            selection[0].getFeatName(),ConStr.size()-1,"False");
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+            selection[0].getObject(),ConStr.size()-1,"False");
             finishDistanceConstraint(this, Obj,false);
         }
         else
@@ -3395,15 +3365,14 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         arebothpointsorsegmentsfixed=isPointOrSegmentFixed(Obj,GeoId1);
 
         openCommand("add fixed y-coordinate constraint");
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
-            selection[0].getFeatName(),GeoId1,PosId1,ActY);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
+            selection[0].getObject(),GeoId1,PosId1,ActY);
 
         if (GeoId1 <= Sketcher::GeoEnum::RefExt || isConstructionPoint(Obj,GeoId1) || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-            selection[0].getFeatName(),ConStr.size()-1,"False");
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+            selection[0].getObject(),ConStr.size()-1,"False");
             finishDistanceConstraint(this, Obj,false);
         }
         else
@@ -3465,15 +3434,14 @@ void CmdSketcherConstrainDistanceY::applyConstraint(std::vector<SelIdPair> &selS
     }
 
     openCommand("add point to point vertical distance constraint");
-    Gui::Command::doCommand(
-        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
-        Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
+    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
+        Obj,GeoId1,PosId1,GeoId2,PosId2,ActLength);
 
     if (areBothPointsOrSegmentsFixed(Obj,GeoId1, GeoId2) || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-        Obj->getNameInDocument(),ConStr.size()-1,"False");
+        FCMD_OBJ_CMD2("setDriving(%i,%s)",
+        Obj,ConStr.size()-1,"False");
         finishDistanceConstraint(this, Obj,false);
     }
     else
@@ -3636,9 +3604,8 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     // undo command open
     openCommand("add parallel constraint");
     for (int i=0; i < int(ids.size()-1); i++) {
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
-            selection[0].getFeatName(),ids[i],ids[i+1]);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
+            selection[0].getObject(),ids[i],ids[i+1]);
     }
     // finish the transaction and update
     commitCommand();
@@ -3677,9 +3644,8 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair> &selSe
 
         // undo command open
         openCommand("add parallel constraint");
-        Gui::Command::doCommand(
-            Doc, "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
-            sketchgui->getObject()->getNameInDocument(), GeoId1, GeoId2);
+        FCMD_OBJ_CMD2(".addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
+            sketchgui->getObject(), GeoId1, GeoId2);
         // finish the transaction and update
         commitCommand();
         tryAutoRecompute(Obj);
@@ -3840,26 +3806,22 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             try{
                 //add missing point-on-object constraints
                 if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
-                    Gui::Command::doCommand(
-                        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                        selection[0].getFeatName(),GeoId3,PosId3,GeoId1);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                        selection[0].getObject(),GeoId3,PosId3,GeoId1);
                 };
 
                 if(! IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)){
-                    Gui::Command::doCommand(
-                        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                        selection[0].getFeatName(),GeoId3,PosId3,GeoId2);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                        selection[0].getObject(),GeoId3,PosId3,GeoId2);
                 };
 
                 if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){//FIXME: it's a good idea to add a check if the sketch is solved
-                    Gui::Command::doCommand(
-                        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                        selection[0].getFeatName(),GeoId3,PosId3,GeoId1);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                        selection[0].getObject(),GeoId3,PosId3,GeoId1);
                 };
 
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d)) ",
-                    selection[0].getFeatName(),GeoId1,GeoId2,GeoId3,PosId3);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d)) ",
+                    selection[0].getObject(),GeoId1,GeoId2,GeoId3,PosId3);
             } catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
                 QMessageBox::warning(Gui::getMainWindow(),
@@ -3908,9 +3870,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             } // end of code supports simple B-spline endpoint tangency
 
             openCommand("add perpendicular constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d,%d)) ",
+                selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2);
             commitCommand();
             tryAutoRecompute(Obj);
 
@@ -3940,9 +3901,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             }
 
             openCommand("add perpendicularity constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d)) ",
+                selection[0].getObject(),GeoId1,PosId1,GeoId2);
             commitCommand();
             tryAutoRecompute(Obj);
 
@@ -4055,21 +4015,20 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
                 try {
                     // Add a point
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                        Obj->getNameInDocument(), PoO.x,PoO.y);
+                    FCMD_OBJ_CMD2("addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                        Obj, PoO.x,PoO.y);
                     int GeoIdPoint = Obj->getHighestCurveIndex();
 
                     // Point on first object (ellipse, arc of ellipse)
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                        selection[0].getFeatName(),GeoIdPoint,Sketcher::start,GeoId1);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                        selection[0].getObject(),GeoIdPoint,Sketcher::start,GeoId1);
                     // Point on second object
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                        selection[0].getFeatName(),GeoIdPoint,Sketcher::start,GeoId2);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                        selection[0].getObject(),GeoIdPoint,Sketcher::start,GeoId2);
 
                     // add constraint: Perpendicular-via-point
-                    Gui::Command::doCommand(
-                        Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
-                        Obj->getNameInDocument(), GeoId1, GeoId2 ,GeoIdPoint, Sketcher::start);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
+                        Obj, GeoId1, GeoId2 ,GeoIdPoint, Sketcher::start);
 
                 }
                 catch (const Base::Exception& e) {
@@ -4089,9 +4048,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             }
 
             openCommand("add perpendicular constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,GeoId2);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
+                selection[0].getObject(),GeoId1,GeoId2);
             commitCommand();
             tryAutoRecompute(Obj);
 
@@ -4232,21 +4190,20 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 
             try {
                 // Add a point
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                    Obj->getNameInDocument(), PoO.x,PoO.y);
+                FCMD_OBJ_CMD2("addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                    Obj, PoO.x,PoO.y);
                 int GeoIdPoint = Obj->getHighestCurveIndex();
 
                 // Point on first object (ellipse, arc of ellipse)
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,GeoId1);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj,GeoIdPoint,Sketcher::start,GeoId1);
                 // Point on second object
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,GeoId2);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj,GeoIdPoint,Sketcher::start,GeoId2);
 
                 // add constraint: Perpendicular-via-point
-                Gui::Command::doCommand(
-                    Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
-                    Obj->getNameInDocument(), GeoId1, GeoId2 ,GeoIdPoint, Sketcher::start);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
+                    Obj, GeoId1, GeoId2 ,GeoIdPoint, Sketcher::start);
 
                 commitCommand();
             }
@@ -4264,9 +4221,8 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
         }
 
         openCommand("add perpendicular constraint");
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
-            Obj->getNameInDocument(),GeoId1,GeoId2);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
+            Obj,GeoId1,GeoId2);
         commitCommand();
 
         tryAutoRecompute(Obj);
@@ -4305,26 +4261,22 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
         try{
             //add missing point-on-object constraints
             if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj,GeoId3,PosId3,GeoId1);
             };
 
             if(! IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)){
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId2);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj,GeoId3,PosId3,GeoId2);
             };
 
             if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){//FIXME: it's a good idea to add a check if the sketch is solved
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj,GeoId3,PosId3,GeoId1);
             };
 
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d)) ",
-                Obj->getNameInDocument(),GeoId1,GeoId2,GeoId3,PosId3);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d)) ",
+                Obj,GeoId1,GeoId2,GeoId3,PosId3);
         } catch (const Base::Exception& e) {
             Base::Console().Error("%s\n", e.what());
             QMessageBox::warning(Gui::getMainWindow(),
@@ -4459,26 +4411,22 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             try{
                 //add missing point-on-object constraints
                 if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
-                    Gui::Command::doCommand(
-                        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                        selection[0].getFeatName(),GeoId3,PosId3,GeoId1);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                        selection[0].getObject(),GeoId3,PosId3,GeoId1);
                 };
 
                 if(! IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)){
-                    Gui::Command::doCommand(
-                        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                        selection[0].getFeatName(),GeoId3,PosId3,GeoId2);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                        selection[0].getObject(),GeoId3,PosId3,GeoId2);
                 };
 
                 if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){//FIXME: it's a good idea to add a check if the sketch is solved
-                    Gui::Command::doCommand(
-                        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                        selection[0].getFeatName(),GeoId3,PosId3,GeoId1);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                        selection[0].getObject(),GeoId3,PosId3,GeoId1);
                 };
 
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d)) ",
-                    selection[0].getFeatName(),GeoId1,GeoId2,GeoId3,PosId3);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d)) ",
+                    selection[0].getObject(),GeoId1,GeoId2,GeoId3,PosId3);
             } catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
                 QMessageBox::warning(Gui::getMainWindow(),
@@ -4541,9 +4489,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             }
 
             openCommand("add tangent constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d)) ",
+                selection[0].getObject(),GeoId1,PosId1,GeoId2);
             commitCommand();
             tryAutoRecompute(Obj);
 
@@ -4730,9 +4677,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             }
 
             openCommand("add tangent constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,GeoId2);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Tangent',%d,%d)) ",
+                selection[0].getObject(),GeoId1,GeoId2);
             commitCommand();
             tryAutoRecompute(Obj);
 
@@ -4881,9 +4827,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
         }
 
         openCommand("add tangent constraint");
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d)) ",
-            Obj->getNameInDocument(),GeoId1,GeoId2);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Tangent',%d,%d)) ",
+            Obj,GeoId1,GeoId2);
         commitCommand();
         tryAutoRecompute(Obj);
 
@@ -4940,9 +4885,8 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
         } // end of code supports simple B-spline endpoint tangency
 
         openCommand("add tangent constraint");
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
-            Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
+            Obj,GeoId1,PosId1,GeoId2,PosId2);
         commitCommand();
         tryAutoRecompute(Obj);
 
@@ -4960,26 +4904,22 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
         try{
             //add missing point-on-object constraints
             if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj,GeoId3,PosId3,GeoId1);
             };
 
             if(! IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)){
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId2);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj,GeoId3,PosId3,GeoId2);
             };
 
             if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){//FIXME: it's a good idea to add a check if the sketch is solved
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj,GeoId3,PosId3,GeoId1);
             };
 
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d)) ",
-                Obj->getNameInDocument(), GeoId1,GeoId2,GeoId3,PosId3);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d)) ",
+                Obj, GeoId1,GeoId2,GeoId3,PosId3);
         } catch (const Base::Exception& e) {
             Base::Console().Error("%s\n", e.what());
             QMessageBox::warning(Gui::getMainWindow(),
@@ -5126,16 +5066,15 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         unsigned int constrSize = 0;
 
         for (std::vector< std::pair<int, double> >::iterator it = externalGeoIdRadiusMap.begin(); it != externalGeoIdRadiusMap.end(); ++it) {
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                selection[0].getFeatName(),it->first,it->second);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                selection[0].getObject(),it->first,it->second);
 
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
             constrSize=ConStr.size();
-
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-            selection[0].getFeatName(),constrSize-1,"False");
+            
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+            selection[0].getObject(),constrSize-1,"False");
         }
 
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
@@ -5184,16 +5123,14 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
             if(!commandopened)
                 openCommand("Add radius constraint");
-
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                selection[0].getFeatName(),refGeoId,radius);
+            
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                selection[0].getObject(),refGeoId,radius);
 
             // Add the equality constraints
             for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin()+1; it != geoIdRadiusMap.end(); ++it) {
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
-                    selection[0].getFeatName(),refGeoId,it->first);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
+                    selection[0].getObject(),refGeoId,it->first);
             }
         }
         else {
@@ -5201,16 +5138,15 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             if(!commandopened)
                 openCommand("Add radius constraint");
             for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin(); it != geoIdRadiusMap.end(); ++it) {
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                    selection[0].getFeatName(),it->first,it->second);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                    selection[0].getObject(),it->first,it->second);
 
                     if(constraintCreationMode==Reference) {
 
                         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                        selection[0].getFeatName(),ConStr.size()-1,"False");
+                        FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                        selection[0].getObject(),ConStr.size()-1,"False");
 
                     }
 
@@ -5260,22 +5196,22 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
                 try {
                     if (constrainEqual || geoIdRadiusMap.size() == 1) {
-                        doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
-                                    Obj->getNameInDocument(),
+                        FCMD_OBJ_CMD2("setDatum(%i,App.Units.Quantity('%f %s'))",
+                                    Obj,
                                     indexConstr, newRadius, (const char*)newQuant.getUnit().getString().toUtf8());
 
                         QString constraintName = ui_Datum.name->text().trimmed();
                         if (Base::Tools::toStdString(constraintName) != Obj->Constraints[indexConstr]->Name) {
                             std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                                                    Obj->getNameInDocument(),
+                            FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
+                                                    Obj,
                                                     indexConstr, escapedstr.c_str());
                         }
                     }
                     else {
                         for (std::size_t i=0; i<geoIdRadiusMap.size();i++) {
-                            doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
-                                        Obj->getNameInDocument(),
+                            FCMD_OBJ_CMD2("setDatum(%i,App.Units.Quantity('%f %s'))",
+                                        Obj,
                                         indexConstr+i, newRadius, (const char*)newQuant.getUnit().getString().toUtf8());
                         }
                     }
@@ -5355,16 +5291,16 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
 
         // Create the radius constraint now
         openCommand("Add radius constraint");
-        Gui::Command::doCommand(Doc, "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                Obj->getNameInDocument(), GeoId, radius);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                                Obj, GeoId, radius);
 
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
         int indexConstr = ConStr.size() - 1;
         bool fixed = isPointOrSegmentFixed(Obj,GeoId);
         if(fixed || constraintCreationMode==Reference) {
-            Gui::Command::doCommand(Doc, "App.ActiveDocument.%s.setDriving(%i,%s)",
-                                    Obj->getNameInDocument(), ConStr.size()-1, "False");
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                                    Obj, ConStr.size()-1, "False");
         }
 
         // Guess some reasonable distance for placing the datum text
@@ -5401,15 +5337,15 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
                 double newRadius = newQuant.getValue();
 
                 try {
-                    doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
-                                Obj->getNameInDocument(),
+                    FCMD_OBJ_CMD2("setDatum(%i,App.Units.Quantity('%f %s'))",
+                                Obj,
                                 indexConstr, newRadius, (const char*)newQuant.getUnit().getString().toUtf8());
 
                     QString constraintName = ui_Datum.name->text().trimmed();
                     if (Base::Tools::toStdString(constraintName) != Obj->Constraints[indexConstr]->Name) {
                         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                                                Obj->getNameInDocument(),
+                        FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
+                                                Obj,
                                                 indexConstr, escapedstr.c_str());
                     }
 
@@ -6158,19 +6094,16 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
             //add missing point-on-object constraints
             if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    selection[0].getFeatName(),GeoId3,PosId3,GeoId1);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    selection[0].getObject(),GeoId3,PosId3,GeoId1);
             };
             if(! IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)){
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    selection[0].getFeatName(),GeoId3,PosId3,GeoId2);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    selection[0].getObject(),GeoId3,PosId3,GeoId2);
             };
             if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){//FIXME: it's a good idea to add a check if the sketch is solved
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                    selection[0].getFeatName(),GeoId3,PosId3,GeoId1);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    selection[0].getObject(),GeoId3,PosId3,GeoId1);
             };
 
             //assuming point-on-curves have been solved, calculate the angle.
@@ -6185,15 +6118,14 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 ActAngle = -ActAngle;
             }
 
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('AngleViaPoint',%d,%d,%d,%d,%f)) ",
-                selection[0].getFeatName(),GeoId1,GeoId2,GeoId3,PosId3,ActAngle);
-
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('AngleViaPoint',%d,%d,%d,%d,%f)) ",
+                selection[0].getObject(),GeoId1,GeoId2,GeoId3,PosId3,ActAngle);
+            
             if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                selection[0].getFeatName(),ConStr.size()-1,"False");
+                FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                selection[0].getObject(),ConStr.size()-1,"False");
                 finishDistanceConstraint(this, Obj,false);
             }
             else
@@ -6285,15 +6217,14 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 }
 
                 openCommand("Add angle constraint");
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
-                    selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActAngle);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
+                    selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2,ActAngle);
 
                 if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                    selection[0].getFeatName(),ConStr.size()-1,"False");
+                    FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                    selection[0].getObject(),ConStr.size()-1,"False");
                     finishDistanceConstraint(this, Obj,false);
                 }
                 else
@@ -6316,15 +6247,14 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 double ActAngle = atan2(dir.y,dir.x);
 
                 openCommand("Add angle constraint");
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
-                    selection[0].getFeatName(),GeoId1,ActAngle);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
+                    selection[0].getObject(),GeoId1,ActAngle);
 
                 if (GeoId1 <= Sketcher::GeoEnum::RefExt || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                    selection[0].getFeatName(),ConStr.size()-1,"False");
+                    FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                    selection[0].getObject(),ConStr.size()-1,"False");
                     finishDistanceConstraint(this, Obj,false);
                 }
                 else
@@ -6340,15 +6270,14 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 double angle = endangle - startangle;
 
                 openCommand("Add angle constraint");
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
-                    selection[0].getFeatName(),GeoId1,angle);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
+                    selection[0].getObject(),GeoId1,angle);
 
                 if (GeoId1 <= Sketcher::GeoEnum::RefExt || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                    selection[0].getFeatName(),ConStr.size()-1,"False");
+                    FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                    selection[0].getObject(),ConStr.size()-1,"False");
                     finishDistanceConstraint(this, Obj,false);
                 }
                 else
@@ -6453,15 +6382,14 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
             }
 
             openCommand("Add angle constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
-                Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,ActAngle);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
+                Obj,GeoId1,PosId1,GeoId2,PosId2,ActAngle);
 
             if (areBothPointsOrSegmentsFixed(Obj,GeoId1, GeoId2) || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                Obj->getNameInDocument(),ConStr.size()-1,"False");
+                FCMD_OBJ_CMD2("setDriving(%i,%s)",
+                Obj,ConStr.size()-1,"False");
                 finishDistanceConstraint(this, Obj,false);
             }
             else
@@ -6503,19 +6431,16 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
 
         //add missing point-on-object constraints
         if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                Obj,GeoId3,PosId3,GeoId1);
         };
         if(! IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)){
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                Obj->getNameInDocument(),GeoId3,PosId3,GeoId2);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                Obj,GeoId3,PosId3,GeoId2);
         };
         if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){//FIXME: it's a good idea to add a check if the sketch is solved
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                Obj,GeoId3,PosId3,GeoId1);
         };
 
         //assuming point-on-curves have been solved, calculate the angle.
@@ -6530,15 +6455,14 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair> &selSeq, 
             ActAngle = -ActAngle;
         }
 
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('AngleViaPoint',%d,%d,%d,%d,%f)) ",
-            Obj->getNameInDocument(),GeoId1,GeoId2,GeoId3,PosId3,ActAngle);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('AngleViaPoint',%d,%d,%d,%d,%f)) ",
+            Obj,GeoId1,GeoId2,GeoId3,PosId3,ActAngle);
 
         if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-            Obj->getNameInDocument(),ConStr.size()-1,"False");
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+            Obj,ConStr.size()-1,"False");
             finishDistanceConstraint(this, Obj,false);
         }
         else
@@ -6706,8 +6630,8 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     // undo command open
     openCommand("add equality constraint");
     for (int i=0; i < int(ids.size()-1); i++) {
-        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
-            selection[0].getFeatName(),ids[i],ids[i+1]);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
+            selection[0].getObject(),ids[i],ids[i+1]);
     }
     // finish the transaction and update
     commitCommand();
@@ -6740,8 +6664,8 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
 
         // undo command open
         openCommand("add equality constraint");
-        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
-            Obj->getNameInDocument(), GeoId1, GeoId2);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
+            Obj, GeoId1, GeoId2);
         // finish the transaction and update
         commitCommand();
         tryAutoRecompute(Obj);
@@ -6852,9 +6776,8 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
                 // undo command open
                 openCommand("add symmetric constraint");
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
-                    selection[0].getFeatName(),GeoId1,Sketcher::start,GeoId1,Sketcher::end,GeoId2,PosId2);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
+                    selection[0].getObject(),GeoId1,Sketcher::start,GeoId1,Sketcher::end,GeoId2,PosId2);
 
                 // finish the transaction and update
                 commitCommand();
@@ -6902,9 +6825,8 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
                 // undo command open
                 openCommand("add symmetric constraint");
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d)) ",
-                    selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,GeoId3);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d)) ",
+                    selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2,GeoId3);
 
                 // finish the transaction and update
                 commitCommand();
@@ -6918,9 +6840,8 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         else if (isVertex(GeoId3,PosId3)) {
             // undo command open
             openCommand("add symmetric constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,GeoId3,PosId3);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
+                selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2,GeoId3,PosId3);
 
             // finish the transaction and update
             commitCommand();
@@ -6987,9 +6908,8 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
 
             // undo command open
             openCommand("add symmetric constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d)) ",
-                Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,GeoId3);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d)) ",
+                Obj,GeoId1,PosId1,GeoId2,PosId2,GeoId3);
 
             // finish the transaction and update
             commitCommand();
@@ -7022,9 +6942,8 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
 
     // undo command open
     openCommand("add symmetric constraint");
-    Gui::Command::doCommand(
-        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
-        Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,GeoId3,PosId3);
+    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
+        Obj,GeoId1,PosId1,GeoId2,PosId2,GeoId3,PosId3);
 
     // finish the transaction and update
     commitCommand();
@@ -7152,24 +7071,21 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
         openCommand("add Snell's law constraint");
 
         if (! IsPointAlreadyOnCurve(GeoId2,GeoId1,PosId1,Obj))
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2);
 
         if (! IsPointAlreadyOnCurve(GeoId3,GeoId1,PosId1,Obj))
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId3);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                selection[0].getObject(),GeoId1,PosId1,GeoId3);
 
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('SnellsLaw',%d,%d,%d,%d,%d,%.12f)) ",
-            selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,GeoId3,n2divn1);
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('SnellsLaw',%d,%d,%d,%d,%d,%.12f)) ",
+            selection[0].getObject(),GeoId1,PosId1,GeoId2,PosId2,GeoId3,n2divn1);
 
         /*if (allexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-            selection[0].getFeatName(),ConStr.size()-1,"False");
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",
+            selection[0].getObject(),ConStr.size()-1,"False");
         }*/
 
         commitCommand();
@@ -7354,12 +7270,12 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             if(pointids.size()>=1)
             {
                 if(!focus1) {
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
-                        selection[0].getFeatName(),pointids[0],Sketcher::start,ellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
+                        selection[0].getObject(),pointids[0],Sketcher::start,ellipseids[0]);
                 }
                 else if(!focus2) {
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
-                        selection[0].getFeatName(),pointids[0],Sketcher::start,ellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
+                        selection[0].getObject(),pointids[0],Sketcher::start,ellipseids[0]);
                     focus2=true;
                 }
                 else
@@ -7369,8 +7285,8 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             if(pointids.size()==2)
             {
                 if(!focus2) {
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
-                        selection[0].getFeatName(),pointids[1],Sketcher::start,ellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
+                        selection[0].getObject(),pointids[1],Sketcher::start,ellipseids[0]);
                 }
                 else
                     extra_elements=true;
@@ -7379,23 +7295,23 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             if(lineids.size()>=1)
             {
                 if(!major) {
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
-                        selection[0].getFeatName(),lineids[0],ellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
+                        selection[0].getObject(),lineids[0],ellipseids[0]);
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
-                    if(!geo->Construction)
-                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),lineids[0]);
+                    if(!geo->Construction) 
+                        FCMD_OBJ_CMD2("toggleConstruction(%d) ",selection[0].getObject(),lineids[0]);
 
                 }
                 else if(!minor) {
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
-                            selection[0].getFeatName(),lineids[0],ellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
+                            selection[0].getObject(),lineids[0],ellipseids[0]);
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
                     if(!geo->Construction)
-                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),lineids[0]);
+                        FCMD_OBJ_CMD2("toggleConstruction(%d) ",selection[0].getObject(),lineids[0]);
 
                     minor=true;
                 }
@@ -7405,13 +7321,13 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             if(lineids.size()==2)
             {
                 if(!minor){
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
-                        selection[0].getFeatName(),lineids[1],ellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
+                        selection[0].getObject(),lineids[1],ellipseids[0]);
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[1]));
 
                     if(!geo->Construction)
-                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),lineids[1]);
+                        FCMD_OBJ_CMD2("toggleConstruction(%d) ",selection[0].getObject(),lineids[1]);
                 }
                 else
                     extra_elements=true;
@@ -7513,12 +7429,12 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             if(pointids.size()>=1)
             {
                 if(!focus1) {
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
-                        selection[0].getFeatName(),pointids[0],Sketcher::start,arcsofellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
+                        selection[0].getObject(),pointids[0],Sketcher::start,arcsofellipseids[0]);
                 }
                 else if(!focus2) {
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
-                        selection[0].getFeatName(),pointids[0],Sketcher::start,arcsofellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
+                        selection[0].getObject(),pointids[0],Sketcher::start,arcsofellipseids[0]);
                     focus2=true;
                 }
                 else
@@ -7528,8 +7444,8 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             if(pointids.size()==2)
             {
                 if(!focus2) {
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
-                        selection[0].getFeatName(),pointids[1],Sketcher::start,arcsofellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
+                        selection[0].getObject(),pointids[1],Sketcher::start,arcsofellipseids[0]);
                 }
                 else
                     extra_elements=true;
@@ -7538,23 +7454,23 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             if(lineids.size()>=1)
             {
                 if(!major) {
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
-                        selection[0].getFeatName(),lineids[0],arcsofellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
+                        selection[0].getObject(),lineids[0],arcsofellipseids[0]);
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
                     if(!geo->Construction)
-                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),lineids[0]);
+                        FCMD_OBJ_CMD2("toggleConstruction(%d) ",selection[0].getObject(),lineids[0]);
 
                 }
                 else if(!minor) {
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
-                            selection[0].getFeatName(),lineids[0],arcsofellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
+                            selection[0].getObject(),lineids[0],arcsofellipseids[0]);
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[0]));
 
                     if(!geo->Construction)
-                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),lineids[0]);
+                        FCMD_OBJ_CMD2("toggleConstruction(%d) ",selection[0].getObject(),lineids[0]);
 
                     minor=true;
                 }
@@ -7564,13 +7480,13 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
             if(lineids.size()==2)
             {
                 if(!minor){
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
-                        selection[0].getFeatName(),lineids[1],arcsofellipseids[0]);
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
+                        selection[0].getObject(),lineids[1],arcsofellipseids[0]);
 
                     const Part::GeomLineSegment *geo = static_cast<const Part::GeomLineSegment *>(Obj->getGeometry(lineids[1]));
 
                     if(!geo->Construction)
-                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),lineids[1]);
+                        FCMD_OBJ_CMD2("toggleConstruction(%d) ",selection[0].getObject(),lineids[1]);
                 }
                 else
                     extra_elements=true;
@@ -7706,7 +7622,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
                 int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
                 try {
                     // issue the actual commands to toggle
-                    doCommand(Doc,"App.ActiveDocument.%s.toggleDriving(%d) ",selection[0].getFeatName(),ConstrId);
+                    FCMD_OBJ_CMD2("toggleDriving(%d) ",selection[0].getObject(),ConstrId);
                 }
                 catch(const Base::Exception&) {
                     successful--;
@@ -7787,7 +7703,7 @@ void CmdSketcherToggleActiveConstraint::activated(int iMsg)
                 int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
                 try {
                     // issue the actual commands to toggle
-                    doCommand(Doc,"App.ActiveDocument.%s.toggleActive(%d) ",selection[0].getFeatName(),ConstrId);
+                    FCMD_OBJ_CMD2("toggleActive(%d) ",selection[0].getObject(),ConstrId);
                 }
                 catch(const Base::Exception&) {
                     successful--;
