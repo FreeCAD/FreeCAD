@@ -44,12 +44,8 @@ import stat
 import sys
 import tempfile
 
-from addonmanager_utilities import translate
-from addonmanager_utilities import update_macro_details
-from addonmanager_utilities import install_macro
-from addonmanager_utilities import remove_macro
-from addonmanager_utilities import remove_directory_if_empty
-from addonmanager_utilities import restartFreeCAD
+import addonmanager_utilities as utils
+from addonmanager_utilities import translate # this needs to be as is for pylupdate
 from addonmanager_workers import *
 
 def QT_TRANSLATE_NOOP(ctx,txt):
@@ -194,7 +190,7 @@ class CommandAddonManager:
                 if ret == m.Ok:
                     shutil.rmtree(self.macro_repo_dir,onerror=self.remove_readonly)
                     # restart FreeCAD after a delay to give time to this dialog to close
-                    QtCore.QTimer.singleShot(1000,restartFreeCAD)
+                    QtCore.QTimer.singleShot(1000,utils.restartFreeCAD)
             try:
                 shutil.rmtree(self.macro_repo_dir,onerror=self.remove_readonly)
             except:
@@ -359,7 +355,7 @@ class CommandAddonManager:
             if macro in self.macros:
                 # The macro is already in the list of macros.
                 old_macro = self.macros[self.macros.index(macro)]
-                update_macro_details(old_macro, macro)
+                utils.update_macro_details(old_macro, macro)
             else:
                 from PySide import QtGui
                 self.macros.append(macro)
@@ -402,7 +398,7 @@ class CommandAddonManager:
         elif self.dialog.tabWidget.currentIndex() == 1:
             # Tab "Macros".
             macro = self.macros[self.dialog.listMacros.currentRow()]
-            if install_macro(macro, self.macro_repo_dir):
+            if utils.install_macro(macro, self.macro_repo_dir):
                 self.dialog.description.setText(translate("AddonsInstaller", "Macro successfully installed. The macro is now available from the Macros dialog."))
             else:
                 self.dialog.description.setText(translate("AddonsInstaller", "Unable to install"))
@@ -474,7 +470,7 @@ class CommandAddonManager:
         elif self.dialog.tabWidget.currentIndex() == 1:
             # Tab "Macros".
             macro = self.macros[self.dialog.listMacros.currentRow()]
-            if remove_macro(macro):
+            if utils.remove_macro(macro):
                 self.dialog.description.setText(translate('AddonsInstaller', 'Macro successfully removed.'))
             else:
                 self.dialog.description.setText(translate('AddonsInstaller', 'Macro could not be removed.'))
