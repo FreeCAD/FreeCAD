@@ -30,6 +30,7 @@
 #include <vector>
 
 #include <Base/Type.h>
+#include <Base/Placement.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/SbRotation.h>
@@ -56,6 +57,7 @@ class QImage;
 class SoGroup;
 class SoPickStyle;
 class NaviCube;
+class SoClipPlane;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -190,11 +192,22 @@ public:
     /// get all view providers of given type
     std::vector<ViewProvider*> getViewProvidersOfType(const Base::Type& typeId) const;
     /// set the ViewProvider in special edit mode
-    SbBool setEditingViewProvider(Gui::ViewProvider* p, int ModNum=0);
+    void setEditingViewProvider(Gui::ViewProvider* p, int ModNum);
     /// return whether a view provider is edited
     SbBool isEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
+    void setupEditingRoot(SoNode *node=0, const Base::Matrix4D *mat=0);
+    void resetEditingRoot(bool updateLinks=true);
+    void setEditingTransform(const Base::Matrix4D &mat);
+    /** Helper method to get picked entities while editing.
+     * It's in the responsibility of the caller to delete the returned instance.
+     */
+    SoPickedPoint* getPointOnRay(const SbVec2s& pos, ViewProvider* vp) const;
+    /** Helper method to get picked entities while editing.
+     * It's in the responsibility of the caller to delete the returned instance.
+     */
+    SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir, ViewProvider* vp) const;
     /// display override mode
     void setOverrideMode(const std::string &mode);
     void updateOverrideMode(const std::string &mode);
@@ -280,7 +293,8 @@ public:
     /** Returns the far plane represented by its normal and base point. */
     void getFarPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const;
     /** Adds or remove a manipulator to/from the scenegraph. */
-    void toggleClippingPlane();
+    void toggleClippingPlane(int toggle=-1, bool beforeEditing=false, 
+            bool noManip=false, const Base::Placement &pla = Base::Placement());
     /** Checks whether a clipping plane is set or not. */
     bool hasClippingPlane() const;
     /** Project the given normalized 2d point onto the near plane */
@@ -424,9 +438,14 @@ private:
     std::map<std::string,SoNode*> objectsOnTop;
     std::map<std::string,SoNode*> objectsOnTopPreSel;
 
+    SoSeparator * pcEditingRoot;
+    SoTransform * pcEditingTransform;
+    bool restoreEditingRoot;
     SoEventCallback* pEventCallback;
     NavigationStyle* navigation;
     SoFCUnifiedSelection* selectionRoot;
+
+    SoClipPlane *pcClipPlane;
 
     RenderType renderType;
     QtGLFramebufferObject* framebuffer;

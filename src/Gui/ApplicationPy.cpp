@@ -165,6 +165,9 @@ PyMethodDef Application::Methods[] = {
   {"activateView", (PyCFunction)Application::sActivateView, METH_VARARGS,
    "activateView(type)\n\n"
    "Activate a view of the given type of the active document"},
+  {"editDocument", (PyCFunction)Application::sEditDocument, METH_VARARGS,
+   "editDocument() -> object or None\n\n"
+   "Return the current editing document or None if no one exists" },
   {"getDocument",             (PyCFunction) Application::sGetDocument, METH_VARARGS,
    "getDocument(string) -> object\n\n"
    "Get a document by its name"},
@@ -202,6 +205,20 @@ PyMethodDef Application::Methods[] = {
 
   {NULL, NULL, 0, NULL}		/* Sentinel */
 };
+
+PyObject* Gui::Application::sEditDocument(PyObject * /*self*/, PyObject *args)
+{
+	if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+		return NULL;                       // NULL triggers exception 
+
+	Document *pcDoc = Instance->editDocument();
+	if (pcDoc) {
+		return pcDoc->getPyObject();
+	}
+	else {
+		Py_Return;
+	}
+}
 
 PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
 {

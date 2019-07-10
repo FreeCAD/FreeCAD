@@ -142,6 +142,7 @@ struct ApplicationP
 {
     ApplicationP() :
     activeDocument(0L),
+    editDocument(0L),
     isClosing(false),
     startingUp(true)
     {
@@ -158,6 +159,7 @@ struct ApplicationP
     std::map<const App::Document*, Gui::Document*> documents;
     /// Active document
     Gui::Document*   activeDocument;
+    Gui::Document*  editDocument;
     MacroManager*  macroMngr;
     /// List of all registered views
     std::list<Gui::BaseView*> passive;
@@ -861,6 +863,25 @@ void Application::activateView(const Base::Type& type, bool create)
 Gui::Document* Application::activeDocument(void) const
 {
     return d->activeDocument;
+}
+
+Gui::Document* Application::editDocument(void) const
+{
+    return d->editDocument;
+}
+
+Gui::MDIView* Application::editViewOfNode(SoNode *node) const
+{
+    return d->editDocument?d->editDocument->getViewOfNode(node):0;
+}
+
+void Application::setEditDocument(Gui::Document *doc) {
+    if(!doc) 
+        d->editDocument = 0;
+    for(auto &v : d->documents)
+        v.second->_resetEdit();
+    d->editDocument = doc;
+    getMainWindow()->updateActions();
 }
 
 void Application::setActiveDocument(Gui::Document* pcDocument)
