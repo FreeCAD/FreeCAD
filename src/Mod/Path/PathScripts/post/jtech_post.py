@@ -110,6 +110,7 @@ if open.__module__ == '__builtin__':
 
 
 def processArguments(argstring):
+    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -151,7 +152,7 @@ def processArguments(argstring):
             OUTPUT_DOUBLES = False
         POWER_ON_DELAY = float(args.power_on_delay) / 1000  # milliseconds
 
-    except Exception:
+    except Exception: # pylint: disable=broad-except
         return False
 
     return True
@@ -160,9 +161,6 @@ def processArguments(argstring):
 def export(objectslist, filename, argstring):
     if not processArguments(argstring):
         return None
-    global UNITS
-    global UNIT_FORMAT
-    global UNIT_SPEED_FORMAT
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -229,7 +227,7 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
-    global LINENR
+    global LINENR # pylint: disable=global-statement
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10
         return "N" + str(LINENR) + " "
@@ -237,15 +235,6 @@ def linenumber():
 
 
 def parse(pathobj):
-    global PRECISION
-    global MODAL
-    global OUTPUT_DOUBLES
-    global UNIT_FORMAT
-    global UNIT_SPEED_FORMAT
-    global POWER_ON_DELAY
-    global PRE_FEED
-    global POST_FEED
-
     out = ""
     lastcommand = None
     precision_string = '.' + str(PRECISION) + 'f'

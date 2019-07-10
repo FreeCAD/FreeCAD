@@ -68,9 +68,9 @@ def open(filename):
 
 
 def insert(filename, docname):
-    "called when freecad imports a file"
-    "This insert expects parse to return a list of strings"
-    "each string will become a separate path"
+    '''called when freecad imports a file
+    This insert expects parse to return a list of strings
+    each string will become a separate path'''
     gfile = pythonopen(filename)
     gcode = gfile.read()
     gfile.close()

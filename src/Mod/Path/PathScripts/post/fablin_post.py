@@ -94,6 +94,7 @@ if open.__module__ in ['__builtin__', 'io']:
 
 
 def processArguments(argstring):
+    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -124,6 +125,7 @@ def processArguments(argstring):
 
 
 def export(objectslist, filename, argstring):
+    # pylint: disable=global-statement
     processArguments(argstring)
     global UNITS
     for obj in objectslist:
@@ -205,6 +207,7 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
+    # pylint: disable=global-statement
     global LINENR
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10

@@ -27,7 +27,6 @@
 #   reload(generic_post)
 
 import FreeCAD
-from FreeCAD import Units
 import argparse
 import time
 from PathScripts import PostUtils
@@ -220,31 +219,19 @@ parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up
 TOOLTIP_ARGS = parser.format_help()
 
 def processArguments(argstring):
-    global OUTPUT_HEADER
-    global OUTPUT_COMMENTS
-    global OUTPUT_LINE_NUMBERS
+    # pylint: disable=global-statement
+    global LINENUMBERS
     global SHOW_EDITOR
-    global PRECISION
 
     for arg in argstring.split():
-        if arg == '--header':
-            OUTPUT_HEADER = True
-        elif arg == '--no-header':
-            OUTPUT_HEADER = False
-        elif arg == '--comments':
-            OUTPUT_COMMENTS = True
-        elif arg == '--no-comments':
-            OUTPUT_COMMENTS = False
-        elif arg == '--line-numbers':
-            OUTPUT_LINE_NUMBERS = True
+        if arg == '--line-numbers':
+            LINENUMBERS = True
         elif arg == '--no-line-numbers':
-            OUTPUT_LINE_NUMBERS = False
+            LINENUMBERS = False
         elif arg == '--show-editor':
             SHOW_EDITOR = True
         elif arg == '--no-show-editor':
             SHOW_EDITOR = False
-        elif arg.split('=')[0] == '--output-precision':
-            PRECISION = arg.split('=')[1]
 
 def mkHeader(selection):
     job = PathUtils.findParentJob(selection[0])
@@ -324,7 +311,7 @@ def mapGCode(command):
 
 def linenumberify(GCodeString):
     # add a linenumber at every beginning of line
-    global linenr
+    global linenr # pylint: disable=global-statement
     if not LINENUMBERS:
         result = GCodeString + "\n"
     else:
@@ -342,11 +329,9 @@ def linenumberify(GCodeString):
     return result
 
 def export(objectslist, filename, argstring):
+    # pylint: disable=unused-argument,global-statement
     global UNITS
     global linenr
-    global ABSOLUTE_CIRCLE_CENTER
-    global USE_RADIUS_IF_POSSIBLE
-    global RADIUS_COMMENT
 
     linenr = STARTLINENR
     lastX = 0
@@ -474,7 +459,7 @@ def export(objectslist, filename, argstring):
                                 # absolute center
                                 outstring.append(
                                     '(' + param + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS) + ')')
-                                z = c.Parameters['Z']
+                                z = c.Parameters['Z'] # pylint: disable=unused-variable
                                 k = c.Parameters['K']
                                 if USE_RADIUS_IF_POSSIBLE and angleUnder180(command, lastX, lastY, c.Parameters['X'], c.Parameters['Y'], i, j):
                                     # R is handled with the I parameter, here:

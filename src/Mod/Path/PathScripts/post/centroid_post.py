@@ -116,6 +116,7 @@ if open.__module__ in ['__builtin__', 'io']:
 
 
 def processArguments(argstring):
+    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -147,6 +148,7 @@ def processArguments(argstring):
 
 
 def export(objectslist, filename, argstring):
+    # pylint: disable=global-statement
     processArguments(argstring)
     for i in objectslist:
         print(i.Name)
@@ -221,6 +223,7 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
+    # pylint: disable=global-statement
     global LINENR
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10
@@ -229,8 +232,6 @@ def linenumber():
 
 
 def parse(pathobj):
-    global AXIS_PRECISION
-    global FEED_PRECISION
     out = ""
     lastcommand = None
     axis_precision_string = '.' + str(AXIS_PRECISION) + 'f'
