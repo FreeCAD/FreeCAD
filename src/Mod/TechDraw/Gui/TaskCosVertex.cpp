@@ -65,14 +65,12 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-//ctor for creation
 TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
                                TechDraw::DrawPage* page) :
     ui(new Ui_TaskCosVertex),
     m_tracker(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
-    m_createMode(true),
     m_inProgressLock(false),
     m_pbTrackerState(TRACKERPICK),
     m_savePoint(QPointF(0.0,0.0)),
@@ -139,10 +137,6 @@ void TaskCosVertex::setUiPrimary()
 
 void TaskCosVertex::updateUi(void)
 {
-    //need to unscale & unRez m_savePoint for display
-//    double scale = m_baseFeat->getScale();
-//    double x = Rez::appX(m_savePoint.x() / scale);
-//    double y = Rez::appX(- m_savePoint.y() / scale) ;
     double x = m_savePoint.x();
     double y = - m_savePoint.y();
     double z = 0.0;
@@ -154,7 +148,7 @@ void TaskCosVertex::updateUi(void)
 void TaskCosVertex::addCosVertex(QPointF qPos)
 {
 //    Base::Console().Message("TCV::addCosVertex(%s)\n", TechDraw::DrawUtil::formatVector(qPos).c_str());
-    Base::Vector3d pos(qPos.x(), qPos.y());
+    Base::Vector3d pos(qPos.x(), -qPos.y());
 //    int idx = 
     (void) m_baseFeat->addCosmeticVertex(pos);
     m_baseFeat->requestPaint();
@@ -178,22 +172,20 @@ void TaskCosVertex::onTrackerClicked(bool b)
         return;
     }
 
-    if (getCreateMode()) {
-        m_inProgressLock = true;
-        m_saveContextPolicy = m_mdi->contextMenuPolicy();
-        m_mdi->setContextMenuPolicy(Qt::PreventContextMenu);
-        m_trackerMode = QGTracker::TrackerMode::Point;
-        setEditCursor(Qt::CrossCursor);
-        startTracker();
+    m_inProgressLock = true;
+    m_saveContextPolicy = m_mdi->contextMenuPolicy();
+    m_mdi->setContextMenuPolicy(Qt::PreventContextMenu);
+    m_trackerMode = QGTracker::TrackerMode::Point;
+    setEditCursor(Qt::CrossCursor);
+    startTracker();
 
-        QString msg = tr("Pick a point for cosmetic vertex");
-        getMainWindow()->statusBar()->show();
-        Gui::getMainWindow()->showMessage(msg,3000);
-        ui->pbTracker->setText(QString::fromUtf8("Escape picking"));
-        ui->pbTracker->setEnabled(true);
-        m_pbTrackerState = TRACKERCANCEL;
-        enableTaskButtons(false);
-    } 
+    QString msg = tr("Pick a point for cosmetic vertex");
+    getMainWindow()->statusBar()->show();
+    Gui::getMainWindow()->showMessage(msg,3000);
+    ui->pbTracker->setText(QString::fromUtf8("Escape picking"));
+    ui->pbTracker->setEnabled(true);
+    m_pbTrackerState = TRACKERCANCEL;
+    enableTaskButtons(false);
 }
 
 void TaskCosVertex::startTracker(void)
@@ -249,6 +241,8 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     ui->pbTracker->setEnabled(false);
     enableTaskButtons(true);
     setEditCursor(Qt::ArrowCursor);
+    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+
 }
 
 void TaskCosVertex::removeTracker(void)

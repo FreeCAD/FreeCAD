@@ -70,7 +70,6 @@ class TaskCosVertex : public QWidget
 public:
     TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
                   TechDraw::DrawPage* page);
-/*    TaskCosVertex(TechDrawGui::ViewProviderLeader* leadVP);*/
     ~TaskCosVertex();
 
 public Q_SLOTS:
@@ -80,15 +79,10 @@ public Q_SLOTS:
 public:
     virtual bool accept();
     virtual bool reject();
-    virtual void setCreateMode(bool b) { m_createMode = b; }
-    virtual bool getCreateMode(void) { return m_createMode; }
     void updateTask();
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
     void enableTaskButtons(bool b);
-
-/*protected Q_SLOTS:*/
-/*    void onPointPicked(QPointF pt);*/
 
 protected:
     void changeEvent(QEvent *e);
@@ -114,16 +108,10 @@ private:
     MDIViewPage* m_mdi;
     QGraphicsScene* m_scene;
     QGVPage* m_view;
-/*    ViewProviderLeader* m_lineVP;*/
     TechDraw::DrawViewPart* m_baseFeat;
     TechDraw::DrawPage* m_basePage;
-/*    TechDraw::DrawCosVertex* m_lineFeat;*/
-/*    std::string m_leaderName;*/
-/*    std::string m_leaderType;*/
     QGIView* m_qgParent;
     std::string m_qgParentName;
-
-    bool m_createMode;
 
     QGTracker::TrackerMode m_trackerMode;
     Qt::ContextMenuPolicy  m_saveContextPolicy;
