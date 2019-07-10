@@ -246,6 +246,8 @@ public:
     boost::signals2::signal<void ()> signalElementsChanged;
 
 protected:
+    Base::Placement getEditingPlacement() const;
+
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum);
@@ -422,6 +424,10 @@ protected:
     bool visibleInformationChanged;
     double combrepscalehyst;
 
+    std::string editDocName;
+    std::string editObjName;
+    std::string editSubName;
+    
     // Virtual space variables
     bool isShownVirtualSpace; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
 

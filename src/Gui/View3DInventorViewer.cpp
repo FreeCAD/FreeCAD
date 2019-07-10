@@ -515,6 +515,18 @@ void View3DInventorViewer::init()
     pcGroupOnTopPreSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopPreSel);
 
+    pcClipPlane = 0;
+
+    pcEditingRoot = new SoSeparator;
+    pcEditingRoot->ref();
+    pcEditingRoot->setName("EditingRoot");
+    pcEditingTransform = new SoTransform;
+    pcEditingTransform->ref();
+    pcEditingTransform->setName("EditingTransform");
+    restoreEditingRoot = false;
+    pcEditingRoot->addChild(pcEditingTransform);
+    pcViewProviderRoot->addChild(pcEditingRoot);
+
     // Set our own render action which show a bounding box if
     // the SoFCSelection::BOX style is set
     //
@@ -988,20 +1000,163 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     _ViewProviderSet.erase(pcProvider);
 }
 
-SbBool View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int ModNum)
-{
-    if (this->editViewProvider)
-        return false; // only one view provider is editable at a time
-
-    bool ok = p->startEditing(ModNum);
-
-    if (ok) {
-        this->editViewProvider = p;
-        this->editViewProvider->setEditViewer(this, ModNum);
-        addEventCallback(SoEvent::getClassTypeId(), Gui::ViewProvider::eventCallback,this->editViewProvider);
+void View3DInventorViewer::setEditingTransform(const Base::Matrix4D &mat) {
+    if(pcEditingTransform) {
+        double dMtrx[16];
+        mat.getGLMatrix(dMtrx);
+        pcEditingTransform->setMatrix(SbMatrix(
+                    dMtrx[0], dMtrx[1], dMtrx[2],  dMtrx[3],
+                    dMtrx[4], dMtrx[5], dMtrx[6],  dMtrx[7],
+                    dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
+                    dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]));
     }
+}
 
-    return ok;
+void View3DInventorViewer::setupEditingRoot(SoNode *node, const Base::Matrix4D *mat) {
+    if(!editViewProvider) 
+        return;
+    resetEditingRoot(false);
+    if(mat)
+        setEditingTransform(*mat);
+    else
+        setEditingTransform(getDocument()->getEditingTransform());
+    if(node) {
+        restoreEditingRoot = false;
+        pcEditingRoot->addChild(node);
+        return;
+    }
+    restoreEditingRoot = true;
+    auto root = editViewProvider->getRoot();
+    for(int i=0,count=root->getNumChildren();i<count;++i) {
+        SoNode *node = root->getChild(i);
+        if(node != editViewProvider->getTransformNode())
+            pcEditingRoot->addChild(node);
+    }
+    coinRemoveAllChildren(root);
+    ViewProviderLink::updateLinks(editViewProvider);
+}
+
+void View3DInventorViewer::resetEditingRoot(bool updateLinks) {
+    if(!editViewProvider || pcEditingRoot->getNumChildren()<=1)
+        return;
+    if(!restoreEditingRoot) {
+        pcEditingRoot->getChildren()->truncate(1);
+        return;
+    }
+    restoreEditingRoot = false;
+    auto root = editViewProvider->getRoot();
+    if(root->getNumChildren()) 
+        FC_ERR("WARNING!!! Editing view provider root node is tampered");
+    root->addChild(editViewProvider->getTransformNode());
+    for(int i=1,count=pcEditingRoot->getNumChildren();i<count;++i)
+        root->addChild(pcEditingRoot->getChild(i));
+    pcEditingRoot->getChildren()->truncate(1);
+    if(updateLinks)
+        ViewProviderLink::updateLinks(editViewProvider);
+}
+
+SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, ViewProvider* vp) const
+{
+    SoPath *path;
+    if(vp == editViewProvider && pcEditingRoot->getNumChildren()>1) {
+        path = new SoPath(1);
+        path->ref();
+        path->append(pcEditingRoot);
+    }else{
+        //first get the path to this node and calculate the current transformation
+        SoSearchAction sa;
+        sa.setNode(vp->getRoot());
+        sa.setSearchingAll(true);
+        sa.apply(getSoRenderManager()->getSceneGraph());
+        path = sa.getPath();
+        if (!path)
+            return nullptr;
+        path->ref();
+    }
+    SoGetMatrixAction gm(getSoRenderManager()->getViewportRegion());
+    gm.apply(path);
+
+    SoTransform* trans = new SoTransform;
+    trans->setMatrix(gm.getMatrix());
+    trans->ref();
+    
+    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
+    // transformation
+    SoSeparator* root = new SoSeparator;
+    root->ref();
+    root->addChild(getSoRenderManager()->getCamera());
+    root->addChild(trans);
+    root->addChild(path->getTail());
+
+    //get the picked point
+    SoRayPickAction rp(getSoRenderManager()->getViewportRegion());
+    rp.setPoint(pos);
+    rp.setRadius(getPickRadius());
+    rp.apply(root);
+    root->unref();
+    trans->unref();
+    path->unref();
+
+    SoPickedPoint* pick = rp.getPickedPoint();
+    return (pick ? new SoPickedPoint(*pick) : 0);
+}
+
+SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir, ViewProvider* vp) const
+{
+    // Note: There seems to be a  bug with setRay() which causes SoRayPickAction
+    // to fail to get intersections between the ray and a line
+    
+    SoPath *path;
+    if(vp == editViewProvider && pcEditingRoot->getNumChildren()>1) {
+        path = new SoPath(1);
+        path->ref();
+        path->append(pcEditingRoot);
+    }else{
+        //first get the path to this node and calculate the current setTransformation
+        SoSearchAction sa;
+        sa.setNode(vp->getRoot());
+        sa.setSearchingAll(true);
+        sa.apply(getSoRenderManager()->getSceneGraph());
+        path = sa.getPath();
+        if (!path)
+            return nullptr;
+        path->ref();
+    }
+    SoGetMatrixAction gm(getSoRenderManager()->getViewportRegion());
+    gm.apply(path);
+    
+    // build a temporary scenegraph only keeping this viewproviders nodes and the accumulated 
+    // transformation
+    SoTransform* trans = new SoTransform;
+    trans->ref();
+    trans->setMatrix(gm.getMatrix());
+    
+    SoSeparator* root = new SoSeparator;
+    root->ref();
+    root->addChild(getSoRenderManager()->getCamera());
+    root->addChild(trans);
+    root->addChild(path->getTail());
+    
+    //get the picked point
+    SoRayPickAction rp(getSoRenderManager()->getViewportRegion());
+    rp.setRay(pos,dir);
+    rp.setRadius(getPickRadius());
+    rp.apply(root);
+    root->unref();
+    trans->unref();
+    path->unref();
+
+    // returns a copy of the point
+    SoPickedPoint* pick = rp.getPickedPoint();
+    //return (pick ? pick->copy() : 0); // needs the same instance of CRT under MS Windows
+    return (pick ? new SoPickedPoint(*pick) : 0);
+}
+
+void View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int ModNum)
+{
+    this->editViewProvider = p;
+    this->editViewProvider->setEditViewer(this, ModNum);
+    addEventCallback(SoEvent::getClassTypeId(), Gui::ViewProvider::eventCallback,this->editViewProvider);
 }
 
 /// reset from edit mode
@@ -1015,6 +1170,8 @@ void View3DInventorViewer::resetEditingViewProvider()
         SoHandleEventAction* heaction = mgr->getHandleEventAction();
         if (heaction && heaction->getGrabber())
             heaction->releaseGrabber();
+
+        resetEditingRoot();
 
         this->editViewProvider->unsetEditViewer(this);
         removeEventCallback(SoEvent::getClassTypeId(), Gui::ViewProvider::eventCallback,this->editViewProvider);
@@ -2368,36 +2525,48 @@ SbVec3f View3DInventorViewer::projectOnFarPlane(const SbVec2f& pt) const
     return pt2;
 }
 
-void View3DInventorViewer::toggleClippingPlane()
+void View3DInventorViewer::toggleClippingPlane(int toggle, bool beforeEditing,
+        bool noManip, const Base::Placement &pla)
 {
-    if (pcViewProviderRoot->getNumChildren() > 0 &&
-        pcViewProviderRoot->getChild(0)->getTypeId() ==
-        SoClipPlaneManip::getClassTypeId()) {
-        pcViewProviderRoot->removeChild(0);
-    }
-    else {
+    if(pcClipPlane) {
+        if(toggle<=0) {
+            pcViewProviderRoot->removeChild(pcClipPlane);
+            pcClipPlane->unref();
+            pcClipPlane = 0;
+        }
+        return;
+    }else if(toggle==0)
+        return;
+
+    Base::Vector3d dir;
+    pla.getRotation().multVec(Base::Vector3d(0,0,-1),dir);
+    Base::Vector3d base = pla.getPosition();
+
+    if(!noManip) {
         SoClipPlaneManip* clip = new SoClipPlaneManip;
+        pcClipPlane = clip;
         SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
         action.apply(this->getSoRenderManager()->getSceneGraph());
         SbBox3f box = action.getBoundingBox();
 
         if (!box.isEmpty()) {
             // adjust to overall bounding box of the scene
-            clip->setValue(box, SbVec3f(0.0f,0.0f,1.0f), 1.0f);
+            clip->setValue(box, SbVec3f(dir.x,dir.y,dir.z), 1.0f);
         }
-
-        pcViewProviderRoot->insertChild(clip,0);
-    }
+    }else
+        pcClipPlane = new SoClipPlane;
+    pcClipPlane->plane.setValue(
+            SbPlane(SbVec3f(dir.x,dir.y,dir.z),SbVec3f(base.x,base.y,base.z)));
+    pcClipPlane->ref();
+    if(beforeEditing)
+        pcViewProviderRoot->insertChild(pcClipPlane,0);
+    else 
+        pcViewProviderRoot->insertChild(pcClipPlane,pcViewProviderRoot->findChild(pcEditingRoot)+1);
 }
 
 bool View3DInventorViewer::hasClippingPlane() const
 {
-    if (pcViewProviderRoot && pcViewProviderRoot->getNumChildren() > 0) {
-        return (pcViewProviderRoot->getChild(0)->getTypeId()
-                == SoClipPlaneManip::getClassTypeId());
-    }
-
-    return false;
+    return !!pcClipPlane;
 }
 
 /**
@@ -2442,10 +2611,12 @@ SoPickedPoint* View3DInventorViewer::pickPoint(const SbVec2s& pos) const
 
 const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const
 {
-    if (selectionRoot)
-        return selectionRoot->getPickedPoint(n->getAction());
-    else
-        return n->getPickedPoint();
+    if (selectionRoot) {
+        auto ret = selectionRoot->getPickedList(n->getAction(), true);
+        if(ret.size()) return ret[0].pp;
+        return nullptr;
+    }
+    return n->getPickedPoint();
 }
 
 SbBool View3DInventorViewer::pubSeekToPoint(const SbVec2s& pos)

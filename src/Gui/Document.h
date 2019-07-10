@@ -216,11 +216,18 @@ public:
     std::vector<ViewProvider*> getViewProvidersOfType(const Base::Type& typeId) const;
     ViewProvider *getViewProviderByName(const char* name) const;
     /// set the ViewProvider in special edit mode
-    bool setEdit(Gui::ViewProvider* p, int ModNum=0);
-    /// reset from edit mode
+    bool setEdit(Gui::ViewProvider* p, int ModNum=0, const char *subname=0);
+    const Base::Matrix4D &getEditingTransform() const;
+    void setEditingTransform(const Base::Matrix4D &mat);
+    /// reset from edit mode, this cause all document to reset edit
     void resetEdit(void);
+    /// reset edit of this document
+    void _resetEdit(void);
     /// get the in edit ViewProvider or NULL
-    ViewProvider *getInEdit(void) const;
+    ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=0, 
+            std::string *subname=0, int *mode=0, std::string *subElement=0) const;
+    /// set the in edit ViewProvider subname reference
+    void setInEdit(ViewProviderDocumentObject *parentVp, const char *subname);
     //@}
 
     /** @name methods for the UNDO REDO handling */
@@ -246,6 +253,9 @@ public:
     /// handles the application close event
     bool canClose();
     bool isLastView(void);
+
+    /// called by Application before being deleted
+    void beforeDelete();
 
     virtual PyObject *getPyObject(void);
 
