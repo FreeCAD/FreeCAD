@@ -171,7 +171,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"ShowNaviCube");
     OnChange(*hGrp,"CornerNaviCube");
     OnChange(*hGrp,"UseVBO");
-    OnChange(*hGrp,"ForceCache");
+    OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
     OnChange(*hGrp,"HeadlightColor");
     OnChange(*hGrp,"HeadlightDirection");
