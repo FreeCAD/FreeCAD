@@ -604,8 +604,10 @@ TechDraw::BaseGeom* CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
                                           m_mode, m_extendBy,
                                           m_hShift,m_vShift, m_rotate);
     TechDraw::BaseGeom* newGeom = nullptr;
-    Base::Vector3d p1 = DrawUtil::invertY(ends.first);
-    Base::Vector3d p2 = DrawUtil::invertY(ends.second);
+//    Base::Vector3d p1 = DrawUtil::invertY(ends.first);
+//    Base::Vector3d p2 = DrawUtil::invertY(ends.second);
+    Base::Vector3d p1 = ends.first;
+    Base::Vector3d p2 = ends.second;
     gp_Pnt gp1(p1.x,p1.y,p1.z);
     gp_Pnt gp2(p2.x,p2.y,p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
