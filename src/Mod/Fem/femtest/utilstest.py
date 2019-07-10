@@ -230,7 +230,7 @@ def compare_stats(
         for s in loc_stat_types:
             statval = resulttools.get_stats(obj, s)
             stats.append(
-                "{0}: ({1:.14g}, {2:.14g}, {3:.14g})\n"
+                "{}: ({:.10f}, {:.10f}, {:.10f})\n"
                 .format(s, statval[0], statval[1], statval[2])
             )
     else:
