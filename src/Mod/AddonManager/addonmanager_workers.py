@@ -677,6 +677,8 @@ class InstallWorker(QtCore.QThread):
             u = urlopen(zipurl)
         except:
             return translate("AddonsInstaller", "Error: Unable to download") + " " + zipurl
+        if not u:
+            return translate("AddonsInstaller", "Error: Unable to download") + " " + zipurl
         if sys.version_info.major < 3:
             import StringIO as io
             _stringio = io.StringIO
