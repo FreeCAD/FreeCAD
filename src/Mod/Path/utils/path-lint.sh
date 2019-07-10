@@ -62,15 +62,17 @@ EXTERNAL_MODULES+=' importlib'
 EXTERNAL_MODULES+=' ocl'
 EXTERNAL_MODULES+=' pivy'
 
-IGNORE_MODULES+=' post'
+IGNORE_MODULES+=' grbl_post.py'
 IGNORE_MODULES+=' PathSimulatorGui.py'
 IGNORE_MODULES+=' PathSurface.py'
 
 #ARGS+=" --errors-only"
 ARGS+=" --disable=C,R"
 ARGS+=" --ignored-modules=$(echo ${EXTERNAL_MODULES} | tr ' ' ',')"
-ARGS+=" --ignore=$(echo ${IGNORE_MODULES} | tr ' ' ',')"
-ARGS+=" --jobs=4"
+if [ -n "${IGNORE_MODULES}" ]; then
+  ARGS+=" --ignore=$(echo ${IGNORE_MODULES} | tr ' ' ',')"
+fi
+ARGS+=" --jobs=0"
 
 if [ -z "$(which pylint3)" ]; then
   echo "Cannot find pylint, please install and try again!"
