@@ -62,10 +62,14 @@ EXTERNAL_MODULES+=' importlib'
 EXTERNAL_MODULES+=' ocl'
 EXTERNAL_MODULES+=' pivy'
 
+IGNORE_MODULES+=' post'
+IGNORE_MODULES+=' PathSimulatorGui.py'
+IGNORE_MODULES+=' PathSurface.py'
+
 #ARGS+=" --errors-only"
 ARGS+=" --disable=C,R"
 ARGS+=" --ignored-modules=$(echo ${EXTERNAL_MODULES} | tr ' ' ',')"
-ARGS+=" --ignore=post"
+ARGS+=" --ignore=$(echo ${IGNORE_MODULES} | tr ' ' ',')"
 ARGS+=" --jobs=4"
 
 if [ -z "$(which pylint3)" ]; then
