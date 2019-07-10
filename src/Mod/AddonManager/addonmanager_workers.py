@@ -31,11 +31,9 @@ import FreeCAD
 
 from PySide import QtCore
 
+import addonmanager_utilities as utils
+from addonmanager_utilities import translate # this needs to be as is for pylupdate
 from addonmanager_macro import Macro
-from addonmanager_utilities import urlopen
-from addonmanager_utilities import translate
-from addonmanager_utilities import symlink
-from addonmanager_utilities import getserver
 
 MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
 OBSOLETE = ["assembly2","drawing_dimensioning","cura_engine"] # These addons will print an additional message informing the user
@@ -65,7 +63,7 @@ class UpdateWorker(QtCore.QThread):
         "populates the list of addons"
 
         self.progressbar_show.emit(True)
-        u = urlopen("https://github.com/FreeCAD/FreeCAD-addons")
+        u = utils.urlopen("https://github.com/FreeCAD/FreeCAD-addons")
         if not u:
             self.progressbar_show.emit(False)
             self.done.emit()
@@ -134,7 +132,7 @@ class InfoWorker(QtCore.QThread):
         i = 0
         for repo in self.repos:
             url = repo[1]
-            u = urlopen(url)
+            u = utils.urlopen(url)
             if not u:
                 self.stop = True
                 return
@@ -275,7 +273,7 @@ class FillMacroListWorker(QtCore.QThread):
 
         self.info_label_signal.emit("Downloading list of macros from the FreeCAD wiki...")
         self.progressbar_show.emit(True)
-        u = urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
+        u = utils.urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
         if not u:
            return
         p = u.read()
@@ -319,20 +317,25 @@ class ShowWorker(QtCore.QThread):
             self.info_label.emit(translate("AddonsInstaller", "Retrieving info from") + ' ' + str(url))
             desc = ""
             # get the README if possible
-            u = urlopen(url+"/blob/master/README.md")
+            readmeurl = utils.getreadmeurl(url)
+            if not readmeurl:
+                print("Debug: README not found for",url)
+            u = utils.urlopen(readmeurl)
             if not u:
-                u = urlopen(url+"/blob/master/Readme.md")
+                print("Debug: README not found at",readmeurl)
             if u:
                 p = u.read()
                 if sys.version_info.major >= 3 and isinstance(p, bytes):
                     p = p.decode("utf-8")
                 u.close()
-                readme = re.findall("<article.*?>(.*?)</article>",p,flags=re.MULTILINE|re.DOTALL)
-                if readme:
-                    desc += readme[0]
+                readmeregex = utils.getreadmeregex(url)
+                if readmeregex:
+                    readme = re.findall(readmeregex,p,flags=re.MULTILINE|re.DOTALL)
+                    if readme:
+                        desc += readme[0]
             else:
                 # fall back to the description text
-                u = urlopen(url)
+                u = utils.urlopen(url)
                 if not u:
                     self.progressbar_show.emit(False)
                     self.stop = True
@@ -341,9 +344,11 @@ class ShowWorker(QtCore.QThread):
                 if sys.version_info.major >= 3 and isinstance(p, bytes):
                     p = p.decode("utf-8")
                 u.close()
-                desc = re.findall("<meta property=\"og:description\" content=\"(.*?)\"",p)
-                if desc:
-                    desc = desc[0]
+                descregex = utils.getdescregex(url)
+                if descregex:
+                    desc = re.findall(descregex,p)
+                    if desc:
+                        desc = desc[0]
             if not desc:
                 desc = "Unable to retrieve addon description"
             self.repos[self.idx].append(desc)
@@ -414,7 +419,7 @@ class ShowWorker(QtCore.QThread):
                     # remove everything after the ?
                     path = path.split("?")[0]
                 if not path.startswith("http"):
-                    path = getserver(url) + path
+                    path = utils.getserver(url) + path
                 name = path.split("/")[-1]
                 if name and path.startswith("http"):
                     storename = os.path.join(store,name)
@@ -423,7 +428,7 @@ class ShowWorker(QtCore.QThread):
                         storename = os.path.join(store,wbName+name[-remainChars:])
                     if not os.path.exists(storename):
                         try:
-                            u = urlopen(path)
+                            u = utils.urlopen(path)
                             imagedata = u.read()
                             u.close()
                         except:
@@ -595,7 +600,7 @@ class InstallWorker(QtCore.QThread):
                 for f in os.listdir(clonedir):
                     if f.lower().endswith(".fcmacro"):
                         print("copying macro:",f)
-                        symlink(os.path.join(clonedir, f), os.path.join(macro_dir, f))
+                        utils.symlink(os.path.join(clonedir, f), os.path.join(macro_dir, f))
                         FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[idx][0]).SetString("destination",clonedir)
                         answer += "\n\n"+translate("AddonsInstaller", "A macro has been installed and is available under Macro -> Macros menu")+":"
                         answer += "\n<b>" + f + "</b>"
@@ -615,7 +620,7 @@ class InstallWorker(QtCore.QThread):
         if not depsurl.endswith("/"):
             depsurl += "/"
         depsurl += "master/metadata.txt"
-        mu = urlopen(depsurl)
+        mu = utils.urlopen(depsurl)
         if mu:
             # metadata.txt found
             depsfile = mu.read()
@@ -659,9 +664,9 @@ class InstallWorker(QtCore.QThread):
             message += translate("AddonsInstaller","Please install the missing components first.")
         return ok, message
 
-    def download(self,giturl,clonedir):
+    def download(self,baseurl,clonedir):
 
-        "downloads and unzip from github"
+        "downloads and unzip a zip version from a git repo"
 
         import zipfile
         bakdir = None
@@ -671,10 +676,12 @@ class InstallWorker(QtCore.QThread):
                 shutil.rmtree(bakdir)
             os.rename(clonedir,bakdir)
         os.makedirs(clonedir)
-        zipurl = giturl+"/archive/master.zip"
+        zipurl = utils.getzipurl(baseurl)
+        if not zipurl:
+            return translate("AddonsInstaller", "Error: Unable to locate zip from") + " " + baseurl
         try:
             print("Downloading "+zipurl)
-            u = urlopen(zipurl)
+            u = utils.urlopen(zipurl)
         except:
             return translate("AddonsInstaller", "Error: Unable to download") + " " + zipurl
         if not u:
