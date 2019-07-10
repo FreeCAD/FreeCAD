@@ -57,6 +57,7 @@ EXTERNAL_MODULES+=' PySide'
 EXTERNAL_MODULES+=' PySide.QtCore'
 EXTERNAL_MODULES+=' PySide.QtGui'
 EXTERNAL_MODULES+=' TechDraw'
+EXTERNAL_MODULES+=' TestSketcherApp'
 EXTERNAL_MODULES+=' area'
 EXTERNAL_MODULES+=' importlib'
 EXTERNAL_MODULES+=' ocl'
@@ -79,6 +80,7 @@ if [ -z "$(which pylint3)" ]; then
   exit 1
 fi
 
-#pylint3 ${ARGS} PathScripts/ PathTests/
-pylint3 ${ARGS} PathScripts/
+pylint3 ${ARGS} PathScripts/ PathTests/
+#pylint3 ${ARGS} PathScripts/
+#pylint3 ${ARGS} PathTests/
 
