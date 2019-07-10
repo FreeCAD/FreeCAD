@@ -55,8 +55,6 @@ scenePathNodes = [] #for scene cleanup aftewards
 topZ = 10
 
 def sceneDrawPath(path, color=(0, 0, 1)):
-    global sceneGraph
-    global scenePathNodes
     coPoint = coin.SoCoordinate3()
 
     pts = []
@@ -76,8 +74,6 @@ def sceneDrawPath(path, color=(0, 0, 1)):
     scenePathNodes.append(pathNode) #for scene cleanup afterwards
 
 def sceneClean():
-    global scenePathNodes
-
     for n in scenePathNodes:
         sceneGraph.removeChild(n)
 
@@ -91,6 +87,7 @@ def discretize(edge, flipDirection = False):
     return pts
 
 def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
+    # pylint: disable=unused-argument
     if len(adaptiveResults) == 0 or len(adaptiveResults[0]["AdaptivePaths"]) == 0:
         return
 
@@ -138,6 +135,9 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
 
 
+    # ml: this is dangerous because it'll hide all unused variables hence forward
+    #     however, I don't know wht lx and ly signify so I leave them for now
+    # pylint: disable=unused-variable
     lx = adaptiveResults[0]["HelixCenterPoint"][0]
     ly = adaptiveResults[0]["HelixCenterPoint"][1]
     lz = passStartDepth
@@ -307,6 +307,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     lz = z
 
 def Execute(op,obj):
+    # pylint: disable=global-statement
     global sceneGraph
     global topZ
 
@@ -400,11 +401,11 @@ def Execute(op,obj):
         adaptiveResults = None
 
         if obj.AdaptiveOutputState != None and obj.AdaptiveOutputState != "":
-             adaptiveResults = obj.AdaptiveOutputState
+            adaptiveResults = obj.AdaptiveOutputState
 
         if json.dumps(obj.AdaptiveInputState) != json.dumps(inputStateObject):
-             inputStateChanged = True
-             adaptiveResults = None
+            inputStateChanged = True
+            adaptiveResults = None
 
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):

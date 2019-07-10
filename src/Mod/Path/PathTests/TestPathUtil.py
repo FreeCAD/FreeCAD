@@ -23,10 +23,7 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
-import Path
 import PathScripts.PathUtil as PathUtil
-import Sketcher
 import TestSketcherApp
 
 from PathTests.PathTestUtils import PathTestBase

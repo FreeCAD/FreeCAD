@@ -98,6 +98,7 @@ GetValue = getMetricValue
 
 
 def export(objectslist, filename, argstring):
+    # pylint: disable=global-statement
     global OUTPUT_COMMENTS
     global OUTPUT_HEADER
     global SHOW_EDITOR
@@ -182,8 +183,6 @@ def export(objectslist, filename, argstring):
 
 
 def move(command):
-    global CurrentState
-
     txt = ""
 
     # if 'F' in command.Parameters:
@@ -298,7 +297,7 @@ def tool_change(command):
 
 
 def comment(command):
-    print("a comment")
+    print("a comment", command)
     return
 
 
@@ -333,8 +332,6 @@ scommands = {
 
 
 def parse(pathobj):
-    global CurrentState
-
     output = ""
     # Above list controls the order of parameters
 
