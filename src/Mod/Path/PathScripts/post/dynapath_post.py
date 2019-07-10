@@ -111,7 +111,8 @@ if open.__module__ in ['__builtin__','io']:
 
 
 def export(objectslist,filename,argstring):
-    global UNITS
+    # pylint: disable=unused-argument
+    global UNITS # pylint: disable=global-statement
     for obj in objectslist:
         if not hasattr(obj,"Path"):
             print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
@@ -128,9 +129,9 @@ def export(objectslist,filename,argstring):
             myMachine = pathobj.MachineName
         if hasattr(pathobj, "MachineUnits"):
             if pathobj.MachineUnits == "Metric":
-               UNITS = "G21"
+                UNITS = "G21"
             else:
-               UNITS = "G20"
+                UNITS = "G20"
     if myMachine is None:
         print("No machine found in this selection")
 
@@ -185,7 +186,7 @@ def export(objectslist,filename,argstring):
 
 
 def linenumber():
-    global LINENR
+    global LINENR # pylint: disable=global-statement
     if OUTPUT_LINE_NUMBERS == True:
         LINENR += 1
         return "N" + str(LINENR) + " "
