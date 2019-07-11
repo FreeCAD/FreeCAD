@@ -119,6 +119,8 @@
 #include "ViewProviderMaterialObject.h"
 #include "ViewProviderTextDocument.h"
 #include "ViewProviderGroupExtension.h"
+#include "ViewProviderLink.h"
+#include "LinkViewPy.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskView.h"
@@ -401,6 +403,7 @@ Application::Application(bool GUIenabled)
         Gui::TaskView::ControlPy::init_type();
         Py::Module(module).setAttr(std::string("Control"),
             Py::Object(Gui::TaskView::ControlPy::getInstance(), true));
+        Base::Interpreter().addType(&LinkViewPy::Type,module,"LinkView");
     }
 
     Base::PyGILStateLocker lock;
@@ -668,6 +671,7 @@ void Application::createStandardOperations()
     Gui::CreateWindowStdCommands();
     Gui::CreateStructureCommands();
     Gui::CreateTestCommands();
+    Gui::CreateLinkCommands();
 }
 
 void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
@@ -1681,6 +1685,10 @@ void Application::initTypes(void)
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
     Gui::ViewProviderTextDocument               ::init();
+    Gui::ViewProviderLinkObserver               ::init();
+    Gui::LinkView                               ::init();
+    Gui::ViewProviderLink                       ::init();
+    Gui::ViewProviderLinkPython                 ::init();
 
     // Workbench
     Gui::Workbench                              ::init();
