@@ -210,6 +210,8 @@ generate_from_xml(ViewProviderPy)
 generate_from_xml(ViewProviderDocumentObjectPy)
 generate_from_xml(WorkbenchPy)
 generate_from_xml(SelectionObjectPy)
+generate_from_xml(LinkViewPy)
+generate_from_xml(ViewProviderLinkPy)
 
 generate_from_py(FreeCADGuiInit GuiInitScript.h)
 
@@ -221,6 +223,8 @@ SET(FreeCADGui_XML_SRCS
     WorkbenchPy.xml
     SelectionObjectPy.xml
     DocumentPy.xml
+    LinkViewPy.xml
+    ViewProviderLinkPy.xml
 )
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
@@ -361,6 +365,7 @@ set(Gui_MOC_HDRS
     TaskView/TaskView.h
     DAGView/DAGView.h
     DAGView/DAGModel.h
+    TaskElementColors.h
     DlgObjectSelection.h
     ${FreeCADGui_SDK_MOC_HDRS}
 )
@@ -434,6 +439,7 @@ SET(Gui_UIC_SRCS
     TextureMapping.ui
     TaskView/TaskAppearance.ui
     TaskView/TaskSelectLinkProperty.ui
+    TaskElementColors.ui
     DlgObjectSelection.ui
 )
 
@@ -466,6 +472,7 @@ SET(Command_CPP_SRCS
     CommandTest.cpp
     CommandView.cpp
     CommandStructure.cpp
+    CommandLink.cpp
 )
 SET(Command_SRCS
     ${Command_CPP_SRCS}
@@ -507,6 +514,7 @@ SET(Dialog_CPP_SRCS
     DownloadItem.cpp
     DownloadManager.cpp
     DocumentRecovery.cpp
+    TaskElementColors.cpp
     DlgObjectSelection.cpp
 )
 
@@ -541,6 +549,7 @@ SET(Dialog_HPP_SRCS
     DownloadItem.h
     DownloadManager.h
     DocumentRecovery.h
+    TaskElementColors.h
     DlgObjectSelection.h
 )
 
@@ -577,6 +586,7 @@ SET(Dialog_SRCS
     Placement.ui
     SceneInspector.ui
     TextureMapping.ui
+    TaskElementColors.ui
     DlgObjectSelection.ui
 )
 SOURCE_GROUP("Dialog" FILES ${Dialog_SRCS})
@@ -983,6 +993,9 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderOrigin.cpp
     ViewProviderMaterialObject.cpp
     ViewProviderTextDocument.cpp
+    ViewProviderLink.cpp
+    LinkViewPyImp.cpp
+    ViewProviderLinkPyImp.cpp
 )
 SET(Viewprovider_SRCS
     ${Viewprovider_CPP_SRCS}
@@ -1013,6 +1026,7 @@ SET(Viewprovider_SRCS
     ViewProviderOrigin.h
     ViewProviderMaterialObject.h
     ViewProviderTextDocument.h
+    ViewProviderLink.h
 )
 SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})
 
