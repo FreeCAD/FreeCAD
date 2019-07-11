@@ -73,6 +73,8 @@
 #include <queue>
 #include <sstream>
 #include <bitset>
+#include <unordered_set>
+#include <unordered_map>
 
 // Boost
 #include <boost/signals2.hpp>

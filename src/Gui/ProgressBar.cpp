@@ -48,6 +48,7 @@ struct SequencerPrivate
     WaitCursor* waitCursor;
     QTime measureTime;
     QTime progressTime;
+    QTime checkAbortTime;
     QString text;
     bool guiThread;
 };
@@ -133,6 +134,7 @@ void Sequencer::startStep()
         d->guiThread = false;
         d->bar->setRange(0, (int)nTotalSteps);
         d->progressTime.start();
+        d->checkAbortTime.start();
         d->measureTime.start();
         QMetaObject::invokeMethod(d->bar, "aboutToShow", Qt::QueuedConnection);
     }
@@ -140,10 +142,35 @@ void Sequencer::startStep()
         d->guiThread = true;
         d->bar->setRange(0, (int)nTotalSteps);
         d->progressTime.start();
+        d->checkAbortTime.start();
         d->measureTime.start();
         d->waitCursor = new Gui::WaitCursor;
         d->bar->enterControlEvents();
         d->bar->aboutToShow();
+    }
+}
+
+void Sequencer::checkAbort() {
+    if(d->bar->thread() != QThread::currentThread())
+        return;
+    if (!wasCanceled()) {
+        if(d->checkAbortTime.elapsed() < 500)
+            return;
+        d->checkAbortTime.restart();
+        qApp->processEvents();
+        return;
+    }
+    // restore cursor
+    pause();
+    bool ok = d->bar->canAbort();
+    // continue and show up wait cursor if needed
+    resume();
+
+    // force to abort the operation
+    if ( ok ) {
+        abort();
+    } else {
+        rejectCancel();
     }
 }
 
@@ -246,7 +273,7 @@ void Sequencer::showRemainingTime()
             QString status = QString::fromLatin1("%1\t[%2]").arg(txt, remain);
 
             if (thr != currentThread) {
-                QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
+                QMetaObject::invokeMethod(getMainWindow(), "showMessage",
                     Qt::/*Blocking*/QueuedConnection,
                     QGenericReturnArgument(),
                     Q_ARG(QString,status));
@@ -265,7 +292,7 @@ void Sequencer::resetData()
     if (thr != currentThread) {
         QMetaObject::invokeMethod(d->bar, "reset", Qt::QueuedConnection);
         QMetaObject::invokeMethod(d->bar, "aboutToHide", Qt::QueuedConnection);
-        QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
+        QMetaObject::invokeMethod(getMainWindow(), "showMessage",
             Qt::/*Blocking*/QueuedConnection,
             QGenericReturnArgument(),
             Q_ARG(QString,QString()));
@@ -295,7 +322,7 @@ void Sequencer::abort()
 {
     //resets
     resetData();
-    Base::AbortException exc("Aborting...");
+    Base::AbortException exc("User aborted");
     throw exc;
 }
 
@@ -307,7 +334,7 @@ void Sequencer::setText (const char* pszTxt)
     // print message to the statusbar
     d->text = pszTxt ? QString::fromUtf8(pszTxt) : QLatin1String("");
     if (thr != currentThread) {
-        QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
+        QMetaObject::invokeMethod(getMainWindow(), "showMessage",
             Qt::/*Blocking*/QueuedConnection,
             QGenericReturnArgument(),
             Q_ARG(QString,d->text));
