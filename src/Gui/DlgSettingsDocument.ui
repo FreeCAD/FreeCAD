@@ -376,6 +376,19 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefPartialLoading">
+        <property name="text">
+         <string>Disable partial loading of external linked objects</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>NoPartialLoading</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
