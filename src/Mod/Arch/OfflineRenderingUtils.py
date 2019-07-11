@@ -449,11 +449,11 @@ def viewer(scene=None,background=(1.0,1.0,1.0)):
 
 def save(document,filename=None,guidata=None,colors=None,camera=None):
 
-    """save(document,filename=None,guidata=None,colors=None,camera=None): Saves the current document. If no filename 
-       is given, the filename stored in the document (document.FileName) is used. 
-       
-       You can provide a guidata dictionary, wich can be obtained by the getGuiData() function, and has the form:
-       
+    """save(document,filename=None,guidata=None,colors=None,camera=None): Saves the current document. If no filename
+       is given, the filename stored in the document (document.FileName) is used.
+
+       You can provide a guidata dictionary, which can be obtained by the getGuiData() function, and has the form:
+
         { "objectName" :
             { "propertyName" :
                 { "type"  : "App::PropertyString",
@@ -461,17 +461,17 @@ def save(document,filename=None,guidata=None,colors=None,camera=None):
                 }
             }
         }
-        
+
        The type of the "value" contents depends on the type (int, string, float,tuple...) see inside the FreeCADGuiHandler
        class to get an idea.
-       
+
        If guidata is provided, colors and camera attributes are discarded.
-       
-       Alternatively, a color dictionary of objName:ShapeColorTuple or obj:DiffuseColorList pairs.can be provided, 
-       in that case the objects will keep their colors when opened in the FreeCAD GUI. If given, camera is a string 
+
+       Alternatively, a color dictionary of objName:ShapeColorTuple or obj:DiffuseColorList pairs.can be provided,
+       in that case the objects will keep their colors when opened in the FreeCAD GUI. If given, camera is a string
        representing a coin camera node."""
 
-    if filename: 
+    if filename:
         print("Saving as",filename)
         document.saveAs(filename)
     else:
@@ -589,9 +589,9 @@ def buildGuiDocumentFromColors(document,colors,camera=None):
 def buildGuiDocumentFromGuiData(document,guidata):
 
     """buildGuiDocumentFromColors(document,guidata): Returns the path to a temporary GuiDocument.xml for the given document.
-    
-       GuiData is a dictionary, wich can be obtained by the getGuiData() function, and has the form:
-       
+
+       GuiData is a dictionary, which can be obtained by the getGuiData() function, and has the form:
+
         { "objectName" :
             { "propertyName" :
                 { "type"  : "App::PropertyString",
@@ -684,7 +684,7 @@ def buildGuiDocumentFromGuiData(document,guidata):
     # although the zipfile module has a writestr() function that should allow us to write the
     # string above directly to the zip file, I couldn't manage to make it work.. So we rather
     # use a temp file here, which works.
-    
+
     #print(guidoc)
 
     tempxml = tempfile.mkstemp(suffix=".xml")[-1]
@@ -728,11 +728,11 @@ def getViewProviderClass(obj):
 
 
 def extract(filename,inputpath,outputpath=None):
-    
+
     """extract(filename,inputpath,outputpath=None): extracts 'inputpath' which is a filename
     stored in infile (a FreeCAD or zip file). If outputpath is given, the file is saved as outputpath and
     nothing is returned. If not, the contents of the inputfile are returned and nothing is saved."""
-    
+
     zdoc = zipfile.ZipFile(filename)
     if zdoc:
         if inputpath in zdoc.namelist():
