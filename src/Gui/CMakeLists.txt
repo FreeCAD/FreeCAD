@@ -77,6 +77,11 @@ else(MSVC)
 endif(MSVC)
 
 if (BUILD_QT5)
+
+    if (Qt5WebEngineWidgets_FOUND AND BUILD_WITH_CONDA)
+        add_definitions(-DQTWEBENGINE)
+    endif()
+
     include_directories(
         ${Qt5Core_INCLUDE_DIRS}
         ${Qt5Widgets_INCLUDE_DIRS}
@@ -356,6 +361,7 @@ set(Gui_MOC_HDRS
     TaskView/TaskView.h
     DAGView/DAGView.h
     DAGView/DAGModel.h
+    DlgObjectSelection.h
     ${FreeCADGui_SDK_MOC_HDRS}
 )
 
@@ -428,6 +434,7 @@ SET(Gui_UIC_SRCS
     TextureMapping.ui
     TaskView/TaskAppearance.ui
     TaskView/TaskSelectLinkProperty.ui
+    DlgObjectSelection.ui
 )
 
 SET(Gui_RES_SRCS
@@ -500,6 +507,7 @@ SET(Dialog_CPP_SRCS
     DownloadItem.cpp
     DownloadManager.cpp
     DocumentRecovery.cpp
+    DlgObjectSelection.cpp
 )
 
 SET(Dialog_HPP_SRCS
@@ -533,6 +541,7 @@ SET(Dialog_HPP_SRCS
     DownloadItem.h
     DownloadManager.h
     DocumentRecovery.h
+    DlgObjectSelection.h
 )
 
 SET(Dialog_SRCS
@@ -568,6 +577,7 @@ SET(Dialog_SRCS
     Placement.ui
     SceneInspector.ui
     TextureMapping.ui
+    DlgObjectSelection.ui
 )
 SOURCE_GROUP("Dialog" FILES ${Dialog_SRCS})
 

@@ -169,18 +169,18 @@ StdCmdCloseAllWindows::StdCmdCloseAllWindows()
     sToolTipText  = QT_TR_NOOP("Close all windows");
     sWhatsThis    = "Std_CloseAllWindows";
     sStatusTip    = QT_TR_NOOP("Close all windows");
-    eType         = 0;
+    eType         = NoTransaction;
 }
 
 void StdCmdCloseAllWindows::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    getMainWindow()->closeAllWindows();
+    getMainWindow()->closeAllDocuments();
 }
 
 bool StdCmdCloseAllWindows::isActive(void)
 {
-    return !(getMainWindow()->windows().isEmpty());
+    return !(getMainWindow()->windows().isEmpty()) || App::GetApplication().getDocuments().size();
 }
 
 //===========================================================================
