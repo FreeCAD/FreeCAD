@@ -498,6 +498,7 @@ int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
 int GeometryObject::addCenterLine(TechDraw::BaseGeom* base,
                                     int s, int si)
 {
+//    Base::Console().Message("GO::addCenterLine()\n");
     base->cosmetic = true;
     base->source(s);           //1-CosmeticEdge, 2-CenterLine
     base->sourceIndex(si);     //index into source;

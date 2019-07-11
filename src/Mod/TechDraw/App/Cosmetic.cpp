@@ -96,25 +96,6 @@ std::string LineFormat::toString(void) const
     return ss.str();
 }
 
-//bool LineFormat::fromCSV(std::string& lineSpec)
-//{
-//    unsigned int maxCells = 4;
-//    if (lineSpec.length() == 0) {
-//        Base::Console().Message( "LineFormat::fromCSV - lineSpec empty\n");
-//        return false;
-//    }
-//    std::vector<std::string> values = DrawUtil::split(lineSpec);
-//    if (values.size() < maxCells) {
-//        Base::Console().Message( "LineFormat::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-//        return false;
-//    }
-//    m_style = atoi(values[0].c_str());
-//    m_weight= atof(values[1].c_str());
-//    m_color.fromHexString(values[2]);
-//    m_visible = atoi(values[3].c_str());
-//    return true;
-//}
-
 //static preference getters.
 double LineFormat::getDefEdgeWidth()
 {
@@ -202,30 +183,6 @@ std::string CosmeticVertex::toString(void) const
           visible;
     return ss.str();
 }
-
-//bool CosmeticVertex::fromCSV(std::string& lineSpec)
-//{
-//    unsigned int maxCells = 8;
-//    if (lineSpec.length() == 0) {
-//        Base::Console().Message( "CosmeticVertex::fromCSV - lineSpec empty\n");
-//        return false;
-//    }
-//    std::vector<std::string> values = DrawUtil::split(lineSpec);
-//    if (values.size() < maxCells) {
-//        Base::Console().Message( "CosmeticVertex::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-//        return false;
-//    }
-//    double x = atof(values[0].c_str());
-//    double y = atof(values[1].c_str());
-//    double z = atof(values[2].c_str());
-//    point(Base::Vector3d (x,y,z));
-//    linkGeom = atoi(values[3].c_str());
-//    color.fromHexString(values[4]);
-//    size = atof(values[5].c_str());
-//    style = atoi(values[6].c_str());
-//    visible = atoi(values[7].c_str());
-//    return true;
-//}
 
 // Persistence implementers
 unsigned int CosmeticVertex::getMemSize (void) const
@@ -373,71 +330,6 @@ std::string CosmeticEdge::toString(void) const
     return ss.str();
 }
 
-//bool CosmeticEdge::fromCSV(std::string& lineSpec)
-//{
-//    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
-//    if (tokens.empty()) {
-//        Base::Console().Message("CosmeticEdge::fromCSV - tokenize failed - no tokens\n");
-//        return false;
-//    }
-
-//    if (tokens[0].length() == 0) {
-//        Base::Console().Message( "CosmeticEdge::fromCSV - token0 empty\n");
-//        return false;
-//    }
-//    
-//    std::vector<std::string> values = DrawUtil::split(tokens[0]);
-//    unsigned int maxCells = 1;
-//    if (values.size() < maxCells) {
-//        Base::Console().Message( "CosmeticEdge::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-//        return false;
-//    }
-//    int geomType = atoi(values[0].c_str());
-
-//    int lastToken = 0;
-//    if (geomType == TechDraw::GeomType::GENERIC) {
-//        if (tokens.size() != 4) {
-//            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
-//            return false;
-//        }
-//        TechDraw::Generic* tempGeom = new TechDraw::Generic();
-//        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2]);
-//        lastToken = 3;
-//        m_geometry = tempGeom;
-//        m_geometry->occEdge = GeometryUtils::edgeFromGeneric(tempGeom);
-//    } else if (geomType == TechDraw::GeomType::CIRCLE) {
-//        if (tokens.size() != 4) {
-//            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
-//            return false;
-//        }
-//        TechDraw::Circle* tempGeom = new TechDraw::Circle();
-//        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2]);
-//        lastToken = 3;
-//        m_geometry = tempGeom;
-//        m_geometry->occEdge = GeometryUtils::edgeFromCircle(tempGeom);
-//    } else if (geomType == TechDraw::GeomType::ARCOFCIRCLE) {
-//        if (tokens.size() != 5) {
-//            Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
-//            return false;
-//        }
-//        TechDraw::AOC* tempGeom = new TechDraw::AOC();
-//        tempGeom->fromCSV(tokens[1] + ",$$$," + tokens[2] + ",$$$," + tokens[3]);
-//        lastToken = 4;
-//        m_geometry = tempGeom;
-//        m_geometry->occEdge = GeometryUtils::edgeFromCircleArc(tempGeom);
-//    } else {
-//        Base::Console().Message("Cosmetic::fromCSV - unimplemented geomType: %d\n", geomType);
-//        return false;
-//    }
-
-//    m_format.fromCSV(tokens[lastToken]);
-
-//    m_geometry->classOfEdge = ecHARD;
-//    m_geometry->visible = true;
-//    m_geometry->cosmetic = true;
-//    return true;
-//}
-
 void CosmeticEdge::dump(char* title)
 {
     Base::Console().Message("CE::dump - %s \n",title);
@@ -543,6 +435,9 @@ CenterLine::CenterLine(void)
     m_vShift = 0.0;
     m_rotate = 0.0;
     m_extendBy = 0.0;
+    m_type = 0;
+    m_flip2Line = false;
+
 }
 
 CenterLine::CenterLine(CenterLine* cl)
@@ -556,6 +451,10 @@ CenterLine::CenterLine(CenterLine* cl)
     m_extendBy = cl->m_extendBy;
     m_faces = cl->m_faces;
     m_format = cl->m_format;
+    m_type = cl->m_type;
+    m_flip2Line = cl->m_flip2Line;
+    m_edges = cl->m_edges;
+    m_verts = cl->m_verts;
 }
 
 CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2)
@@ -567,6 +466,8 @@ CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2)
     m_vShift = 0.0;
     m_rotate = 0.0;
     m_extendBy = 0.0;
+    m_type = 0;
+    m_flip2Line = false;
 }
 
 CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2,
@@ -583,7 +484,8 @@ CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2,
     m_vShift = v;
     m_rotate = r;
     m_extendBy = x;
-    //m_faces = ??
+    m_type = 0;
+    m_flip2Line = false;
 }
 
 CenterLine::~CenterLine()
@@ -592,20 +494,36 @@ CenterLine::~CenterLine()
 
 TechDraw::BaseGeom* CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
 {
+//    Base::Console().Message("CL::scaledGeometry() - m_type: %d\n", m_type);
     double scale = partFeat->getScale();
-    if (m_faces.empty() ) {
-        Base::Console().Message("CL::scaledGeometry - no Faces!\n");
+    if (m_faces.empty() &&
+        m_edges.empty() &&
+        m_verts.empty() ) {
+        Base::Console().Message("CL::scaledGeometry - no geometry to scale!\n");
         return nullptr;
     }
     
-    std::pair<Base::Vector3d, Base::Vector3d> ends = 
-                             calcEndPoints(partFeat,
-                                          m_faces,
-                                          m_mode, m_extendBy,
-                                          m_hShift,m_vShift, m_rotate);
+    std::pair<Base::Vector3d, Base::Vector3d> ends;
+    if (m_type == 0) {
+        ends = calcEndPoints(partFeat,
+                             m_faces,
+                             m_mode, m_extendBy,
+                             m_hShift,m_vShift, m_rotate);
+    } else if (m_type == 1) {
+        ends = calcEndPoints2Lines(partFeat,
+                                   m_edges,
+                                   m_mode,
+                                   m_extendBy,
+                                   m_hShift, m_vShift, m_rotate, m_flip2Line);
+    } else if (m_type == 2) {
+        ends = calcEndPoints2Points(partFeat,
+                                    m_verts,
+                                    m_mode,
+                                    m_extendBy,
+                                    m_hShift, m_vShift, m_rotate, m_flip2Line);
+    }
+                             
     TechDraw::BaseGeom* newGeom = nullptr;
-//    Base::Vector3d p1 = DrawUtil::invertY(ends.first);
-//    Base::Vector3d p2 = DrawUtil::invertY(ends.second);
     Base::Vector3d p1 = ends.first;
     Base::Vector3d p2 = ends.second;
     gp_Pnt gp1(p1.x,p1.y,p1.z);
@@ -630,9 +548,11 @@ std::string CenterLine::toString(void) const
           m_end.y << "," <<
           m_end.z << "," <<
           m_mode << "," <<
+          m_type << "," <<
           m_hShift << "," <<
           m_vShift << "," <<
           m_rotate << "," <<
+          m_flip2Line << "," <<
           m_extendBy << "," <<
           m_faces.size();
     if (!m_faces.empty()) {
@@ -648,58 +568,17 @@ std::string CenterLine::toString(void) const
     return clCSV + ",$$$," + fmtCSV;
 }
 
-//bool CenterLine::fromCSV(std::string& lineSpec)
-//{
-//    if (lineSpec.length() == 0) {
-//        Base::Console().Message( "CenterLine::fromCSV - lineSpec empty\n");
-//        return false;
-//    }
-//    
-//    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
-//    if (tokens.size() != 2) {
-//        Base::Console().Message("CenterLine::fromCSV - tokenize failed - size: %d\n",tokens.size());
-//    }
-
-//    if (tokens[0].length() == 0) {
-//        Base::Console().Message( "CenterLine::fromCSV - token0 empty\n");
-//        return false;
-//    }
-
-//    std::vector<std::string> values = DrawUtil::split(tokens[0]);
-
-//// variable length record, can't determine maxCells in advance.
-//    double x = atof(values[0].c_str());
-//    double y = atof(values[1].c_str());
-//    double z = atof(values[2].c_str());
-//    m_start = Base::Vector3d (x,y,z);
-//    x = atof(values[3].c_str());
-//    y = atof(values[4].c_str());
-//    z = atof(values[5].c_str());
-//    m_end = Base::Vector3d (x,y,z);
-//    m_mode = atoi(values[6].c_str());
-//    m_hShift = atof(values[7].c_str());
-//    m_vShift = atof(values[8].c_str());
-//    m_rotate = atof(values[9].c_str());
-//    m_extendBy = atof(values[10].c_str());
-//    int m_faceCount = atoi(values[11].c_str());
-//    int i = 0;
-//    for ( ; i < m_faceCount; i++ ) {
-//        m_faces.push_back(values[12 + i]);
-//    }
-//    m_format.fromCSV(tokens[1]);
-//    return true;
-//}
-
 void CenterLine::dump(char* title)
 {
     Base::Console().Message("CL::dump - %s \n",title);
     Base::Console().Message("CL::dump - %s \n",toString().c_str());
 }
 
+//end points for face centerline
 std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart* partFeat,
                                                       std::vector<std::string> faceNames, 
                                                       int vert, double ext,
-                                                      double m_hShift, double m_vShift,
+                                                      double hShift, double vShift,
                                                       double rotate)
 {
     std::pair<Base::Vector3d, Base::Vector3d> result;
@@ -712,8 +591,6 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     faceBox.SetGap(0.0);
 
     double scale = partFeat->getScale();
-    double hss = m_hShift * scale;
-    double vss = m_vShift * scale;
 
     for (auto& fn: faceNames) {
         if (TechDraw::DrawUtil::getGeomTypeFromName(fn) != "Face") {
@@ -729,49 +606,260 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
         }
     }
 
+    if (faceBox.IsVoid()) {
+        Base::Console().Error("CL::calcEndPoints - faceBox is void!\n");
+        return result;
+    }
+
     double Xmin,Ymin,Zmin,Xmax,Ymax,Zmax;
     faceBox.Get(Xmin,Ymin,Zmin,Xmax,Ymax,Zmax);
 
     double Xspan = fabs(Xmax - Xmin);
     Xspan = (Xspan / 2.0);
-    double Xmid = Xmin + fabs(Xmax - Xmin) / 2.0;
+    double Xmid = Xmin + Xspan;
 
     double Yspan = fabs(Ymax - Ymin);
     Yspan = (Yspan / 2.0);
-    double Ymid = Ymin + fabs(Ymax - Ymin) / 2.0;
+    double Ymid = Ymin + Yspan;
 
     Base::Vector3d p1, p2;
     if (vert == 0) {                    //vertical
-        Base::Vector3d top(Xmid + hss, (Ymid - Yspan - ext) + vss, 0.0);
-        Base::Vector3d bottom(Xmid + hss, (Ymid + Yspan + ext) + vss, 0.0);
-        p1 = top;
-        p2 = bottom;
+        p1 = Base::Vector3d(Xmid, Ymax, 0.0);
+        p2 = Base::Vector3d(Xmid, Ymin, 0.0);
     } else if (vert == 1) {            //horizontal
-        Base::Vector3d left((Xmid - Xspan - ext) + hss, Ymid + vss, 0.0);
-        Base::Vector3d right((Xmid + Xspan + ext) + hss, Ymid + vss, 0.0);
-        p1 = left;
-        p2 = right;
-    } else {      //vert == 2 //aligned
-        Base::Console().Message("CL::calcEndPoints - aligned is not implemented yet\n");
-        Base::Vector3d top(Xmid + hss, (Ymid - Yspan - ext) + vss, 0.0);
-        Base::Vector3d bottom(Xmid + hss, (Ymid + Yspan + ext) + vss, 0.0);
-        p1 = top;
-        p2 = bottom;
+        p1 = Base::Vector3d(Xmin, Ymid, 0.0);
+        p2 = Base::Vector3d(Xmax,Ymid, 0.0);
+    } else {      //vert == 2 //aligned, but aligned doesn't make sense for face(s) bbox
+        Base::Console().Message("CL::calcEndPoints - aligned is not applicable to Face center lines\n");
+        p1 = Base::Vector3d(Xmid, Ymax, 0.0);
+        p2 = Base::Vector3d(Xmid, Ymin, 0.0);
     }
     
-    Base::Vector3d bbxCenter(Xmid, Ymid, 0.0);
+    Base::Vector3d mid = (p1 + p2) / 2.0;
+
+    //extend
+    Base::Vector3d clDir = p2 - p1;
+    clDir.Normalize();
+    p1 = p1 - (clDir * ext);
+    p2 = p2 + (clDir * ext);
+
+    //rotate
     if (!DrawUtil::fpCompare(rotate, 0.0)) {
-        //rotate p1, p2 about bbxCenter
-        double cosTheta = cos(rotate * M_PI / 180.0);
-        double sinTheta = sin(rotate * M_PI / 180.0);
-        Base::Vector3d toOrg = p1 - bbxCenter;
+        //rotate p1, p2 about mid point
+        double revRotate = -rotate;
+        double cosTheta = cos(revRotate * M_PI / 180.0);
+        double sinTheta = sin(revRotate * M_PI / 180.0);
+        Base::Vector3d toOrg = p1 - mid;
         double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
         double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-        p1 = Base::Vector3d(xRot, yRot, 0.0) + bbxCenter;
-        toOrg = p2 - bbxCenter;
+        p1 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+        toOrg = p2 - mid;
         xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
         yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
-        p2 = Base::Vector3d(xRot, yRot, 0.0) + bbxCenter;
+        p2 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+    }
+
+    //shift
+    if (!DrawUtil::fpCompare(hShift, 0.0)) {
+        double hss = hShift * scale;
+        p1.x = p1.x + hss;
+        p2.x = p2.x + hss;
+    }
+    if (!DrawUtil::fpCompare(vShift, 0.0)) {
+        double vss = vShift * scale;
+        p1.y = p1.y + vss;
+        p2.y = p2.y + vss;
+    }
+
+    result.first = p1 / scale;
+    result.second = p2 / scale;
+    return result;
+}
+
+std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawViewPart* partFeat,
+                                                      std::vector<std::string> edgeNames, 
+                                                      int mode, double ext,
+                                                      double hShift, double vShift,
+                                                      double rotate, bool flip)
+                                                      
+{
+//    Base::Console().Message("CL::calc2Lines()\n");
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+    if (edgeNames.empty()) {
+        Base::Console().Message("CL::calcEndPoints2Lines - no edges!\n");
+        return result;
+    }
+
+    double scale = partFeat->getScale();
+
+    std::vector<TechDraw::BaseGeom*> edges;
+    for (auto& en: edgeNames) {
+        if (TechDraw::DrawUtil::getGeomTypeFromName(en) != "Edge") {
+            continue;
+        }
+        int idx = TechDraw::DrawUtil::getIndexFromName(en);
+        TechDraw::BaseGeom* bg = partFeat->getGeomByIndex(idx);
+        edges.push_back(bg);
+    }
+    if (edges.size() != 2) {
+        Base::Console().Message("CL::calcEndPoints2Lines - wrong number of edges!\n");
+        return result;
+    }
+
+    Base::Vector3d l1p1 = edges.front()->getStartPoint();
+    Base::Vector3d l1p2 = edges.front()->getEndPoint();
+    Base::Vector3d l2p1 = edges.back()->getStartPoint();
+    Base::Vector3d l2p2 = edges.back()->getEndPoint();
+
+    if (flip) {
+        Base::Vector3d temp;
+        temp = l2p1;
+        l2p1 = l2p2;
+        l2p2 = temp;
+    }
+    Base::Vector3d p1 = (l1p1 + l2p1) / 2.0;
+    Base::Vector3d p2   = (l1p2 + l2p2) / 2.0;
+    Base::Vector3d mid = (p1 + p2) / 2.0;
+
+    if (mode == 0) {           //Vertical
+            p1.x = mid.x;
+            p2.x = mid.x;
+    } else if (mode == 1) {    //Horizontal
+            p1.y = mid.y;
+            p2.y = mid.y;
+    } else if (mode == 2) {    //Aligned
+        // no op
+    }
+
+    //extend
+    Base::Vector3d clDir = p2 - p1;
+    clDir.Normalize();
+    p1 = p1 - (clDir * ext);
+    p2 = p2 + (clDir * ext);
+
+    //rotate
+    if (!DrawUtil::fpCompare(rotate, 0.0)) {
+        //rotate p1, p2 about mid 
+        double revRotate = -rotate;
+        double cosTheta = cos(revRotate * M_PI / 180.0);
+        double sinTheta = sin(revRotate * M_PI / 180.0);
+        Base::Vector3d toOrg = p1 - mid;
+        double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
+        double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
+        p1 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+        toOrg = p2 - mid;
+        xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
+        yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
+        p2 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+    }
+
+    //shift
+    if (!DrawUtil::fpCompare(hShift, 0.0)) {
+        double hss = hShift * scale;
+        p1.x = p1.x + hss;
+        p2.x = p2.x + hss;
+    }
+    if (!DrawUtil::fpCompare(vShift, 0.0)) {
+        double vss = vShift * scale;
+        p1.y = p1.y + vss;
+        p2.y = p2.y + vss;
+    }
+
+    result.first = p1 / scale;
+    result.second = p2 / scale;
+    return result;
+}
+
+std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawViewPart* partFeat,
+                                                      std::vector<std::string> vertNames, 
+                                                      int mode, double ext,
+                                                      double hShift, double vShift,
+                                                      double rotate, bool flip)
+                                                      
+{
+//    Base::Console().Message("CL::calc2Points()\n");
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+    if (vertNames.empty()) {
+        Base::Console().Message("CL::calcEndPoints2Points - no points!\n");
+        return result;
+    }
+
+    double scale = partFeat->getScale();
+
+    std::vector<TechDraw::Vertex*> points;
+    for (auto& vn: vertNames) {
+        if (TechDraw::DrawUtil::getGeomTypeFromName(vn) != "Vertex") {
+            continue;
+        }
+        int idx = TechDraw::DrawUtil::getIndexFromName(vn);
+        TechDraw::Vertex* v = partFeat->getProjVertexByIndex(idx);
+        points.push_back(v);
+    }
+    if (points.size() != 2) {
+        Base::Console().Message("CL::calcEndPoints2Points - wrong number of points!\n");
+        return result;
+    }
+
+    Base::Vector3d v1 = points.front()->point();
+    Base::Vector3d v2 = points.back()->point();
+
+    Base::Vector3d mid = (v1 + v2) / 2.0;
+    Base::Vector3d dir = v2 - v1;
+    double length = dir.Length();
+    dir.Normalize();
+    Base::Vector3d clDir(dir.y, -dir.x, dir.z);
+
+    Base::Vector3d p1 = mid + clDir * (length / 2.0);
+    Base::Vector3d p2 = mid - clDir * (length / 2.0);
+
+    if (flip) {
+        Base::Vector3d temp;
+        temp = p1;
+        p1 = p2;
+        p2 = temp;
+    }
+    
+    if (mode == 0) {           //Vertical
+            p1.x = mid.x;
+            p2.x = mid.x;
+    } else if (mode == 1) {    //Horizontal
+            p1.y = mid.y;
+            p2.y = mid.y;
+    } else if (mode == 2) {    //Aligned
+        // no op
+    }
+
+
+    //extend
+    p1 = p1 - (clDir * ext);
+    p2 = p2 + (clDir * ext);
+
+    //rotate
+    if (!DrawUtil::fpCompare(rotate, 0.0)) {
+        //rotate p1, p2 about mid
+        double revRotate = -rotate;
+        double cosTheta = cos(revRotate * M_PI / 180.0);
+        double sinTheta = sin(revRotate * M_PI / 180.0);
+        Base::Vector3d toOrg = p1 - mid;
+        double xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
+        double yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
+        p1 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+        toOrg = p2 - mid;
+        xRot = toOrg.x * cosTheta - toOrg.y * sinTheta;
+        yRot = toOrg.y * cosTheta + toOrg.x * sinTheta;
+        p2 = Base::Vector3d(xRot, yRot, 0.0) + mid;
+    }
+
+    //shift
+    if (!DrawUtil::fpCompare(hShift, 0.0)) {
+        double hss = hShift * scale;
+        p1.x = p1.x + hss;
+        p2.x = p2.x + hss;
+    }
+    if (!DrawUtil::fpCompare(vShift, 0.0)) {
+        double vss = vShift * scale;
+        p1.y = p1.y + vss;
+        p2.y = p2.y + vss;
     }
 
     result.first = p1 / scale;
@@ -802,6 +890,8 @@ void CenterLine::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<VShift value=\"" << m_vShift <<"\"/>" << endl;
     writer.Stream() << writer.ind() << "<Rotate value=\"" << m_rotate <<"\"/>" << endl;
     writer.Stream() << writer.ind() << "<Extend value=\"" << m_extendBy <<"\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Type value=\"" << m_type <<"\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Flip value=\"" << m_flip2Line <<"\"/>" << endl;
     writer.Stream()
          << writer.ind()
              << "<Faces "
@@ -817,6 +907,36 @@ void CenterLine::Save(Base::Writer &writer) const
     writer.decInd();
 
     writer.Stream() << writer.ind() << "</Faces>" << endl ;
+
+    writer.Stream()
+         << writer.ind()
+             << "<Edges "
+                << "EdgeCount=\"" <<  m_edges.size() <<
+             "\">" << endl;
+
+    writer.incInd();
+    for (auto& e: m_edges) {
+        writer.Stream()
+            << writer.ind()
+            << "<Edge value=\"" << e <<"\"/>" << endl;
+    }
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</Edges>" << endl ;
+
+    writer.Stream()
+         << writer.ind()
+             << "<Points "
+                << "PointCount=\"" <<  m_verts.size() <<
+             "\">" << endl;
+
+    writer.incInd();
+    for (auto& p: m_verts) {
+        writer.Stream()
+            << writer.ind()
+            << "<Point value=\"" << p <<"\"/>" << endl;
+    }
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</Points>" << endl ;
 
     writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
@@ -850,6 +970,10 @@ void CenterLine::Restore(Base::XMLReader &reader)
     m_rotate = reader.getAttributeAsFloat("value");
     reader.readElement("Extend");
     m_extendBy = reader.getAttributeAsFloat("value");
+    reader.readElement("Type");
+    m_type = reader.getAttributeAsInteger("value");
+    reader.readElement("Flip");
+    m_flip2Line = (bool)reader.getAttributeAsInteger("value")==0?false:true;
 
     reader.readElement("Faces");
     int count = reader.getAttributeAsInteger("FaceCount");
@@ -861,6 +985,28 @@ void CenterLine::Restore(Base::XMLReader &reader)
         m_faces.push_back(f);
     }
     reader.readEndElement("Faces");
+
+    reader.readElement("Edges");
+    count = reader.getAttributeAsInteger("EdgeCount");
+
+    i = 0;
+    for ( ; i < count; i++) {
+        reader.readElement("Edge");
+        std::string e = reader.getAttribute("value");
+        m_edges.push_back(e);
+    }
+    reader.readEndElement("Edges");
+
+    reader.readElement("Points");
+    count = reader.getAttributeAsInteger("PointCount");
+
+    i = 0;
+    for ( ; i < count; i++) {
+        reader.readElement("Point");
+        std::string p = reader.getAttribute("value");
+        m_verts.push_back(p);
+    }
+    reader.readEndElement("Points");
 
     reader.readElement("Style");
     m_format.m_style = reader.getAttributeAsInteger("value");
@@ -883,7 +1029,12 @@ CenterLine* CenterLine::copy(void) const
     newCL->m_vShift = m_vShift;
     newCL->m_rotate = m_rotate;
     newCL->m_extendBy = m_extendBy;
+    newCL->m_type = m_type;
+    newCL->m_flip2Line = m_flip2Line;
+
     newCL->m_faces = m_faces;
+    newCL->m_edges = m_edges;
+    newCL->m_verts = m_verts;
 
     newCL->m_format.m_style = m_format.m_style;
     newCL->m_format.m_weight = m_format.m_weight;
@@ -954,36 +1105,6 @@ std::string GeomFormat::toString(void) const
           m_format.toString();
     return ss.str();
 }
-
-//bool GeomFormat::fromCSV(std::string& lineSpec)
-//{
-//    std::vector<std::string> tokens = DrawUtil::tokenize(lineSpec);
-//    if (tokens.empty()) {
-//        Base::Console().Message("GeomFormat::fromCSV - tokenize failed - no tokens\n");
-//        return false;
-//    }
-
-//    if (tokens[0].length() == 0) {
-//        Base::Console().Message( "GeomFormat::fromCSV - token0 empty\n");
-//        return false;
-//    }
-
-//    std::vector<std::string> values = DrawUtil::split(tokens[0]);
-//    unsigned int maxCells = 1;
-//    if (values.size() < maxCells) {
-//        Base::Console().Message( "GeomFormat::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-//        return false;
-//    }
-//    m_geomIndex = atoi(values[0].c_str());
-
-//    int lastToken = 1;
-//    if (tokens.size() != 2) {
-//        Base::Console().Message("CE::fromCSV - wrong number of tokens\n");
-//        return false;
-//    }
-//    m_format.fromCSV(tokens[lastToken]);
-//    return true;
-//}
 
 // Persistence implementer
 unsigned int GeomFormat::getMemSize (void) const
