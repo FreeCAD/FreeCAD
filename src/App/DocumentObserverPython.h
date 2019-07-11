@@ -77,6 +77,8 @@ private:
     void slotRedoDocument(const App::Document& Doc);
     /** Called when a given object is recomputed */
     void slotRecomputedObject(const App::DocumentObject& Obj);
+    /** Called before an observed document is recomputed */
+    void slotBeforeRecomputeDocument(const App::Document& Doc);
     /** Called when an observed document is recomputed */
     void slotRecomputedDocument(const App::Document& Doc);
     /** Called when an observed document opens a transaction */
@@ -85,12 +87,20 @@ private:
     void slotCommitTransaction(const App::Document& Doc);
     /** Called when an observed document aborts a transaction */
     void slotAbortTransaction(const App::Document& Doc);
+    /** Called after application wide undo */
+    void slotUndo();
+    /** Called after application wide redo */
+    void slotRedo();
+    /** Called before closing/aborting application active transaction */
+    void slotBeforeCloseTransaction(bool abort);
+    /** Called after closing/aborting application active transaction */
+    void slotCloseTransaction(bool abort);
     /** Called when an object gets a new dynamic property added*/
     void slotAppendDynamicProperty(const App::Property& Prop);
     /** Called when an object gets a dynamic property removed*/
     void slotRemoveDynamicProperty(const App::Property& Prop);
     /** Called when an object property gets a new editor relevant status like hidden or read only*/
-    void slotChangePropertyEditor(const App::Property& Prop);
+    void slotChangePropertyEditor(const App::Document &Doc, const App::Property& Prop);
     /** Called when a document is about to be saved*/
     void slotStartSaveDocument(const App::Document&, const std::string&);
     /** Called when an document has been saved*/
@@ -101,28 +111,42 @@ private:
     static std::vector<DocumentObserverPython*> _instances;
 
     typedef boost::signals2::connection Connection;
-    Connection connectApplicationCreatedDocument;
-    Connection connectApplicationDeletedDocument;
-    Connection connectApplicationRelabelDocument;
-    Connection connectApplicationActivateDocument;
-    Connection connectApplicationUndoDocument;
-    Connection connectApplicationRedoDocument;
-    Connection connectDocumentBeforeChange;
-    Connection connectDocumentChanged;
-    Connection connectDocumentCreatedObject;
-    Connection connectDocumentDeletedObject;
-    Connection connectDocumentBeforeChangeObject;
-    Connection connectDocumentChangedObject;
-    Connection connectDocumentObjectRecomputed;
-    Connection connectDocumentRecomputed;
-    Connection connectDocumentOpenTransaction;
-    Connection connectDocumentCommitTransaction;
-    Connection connectDocumentAbortTransaction;
-    Connection connectDocumentStartSave;
-    Connection connectDocumentFinishSave;
-    Connection connectObjectAppendDynamicProperty;
-    Connection connectObjectRemoveDynamicProperty;
-    Connection connectObjectChangePropertyEditor;
+
+#define FC_PY_DOC_OBSERVER \
+    FC_PY_ELEMENT(CreatedDocument,_1) \
+    FC_PY_ELEMENT(DeletedDocument,_1) \
+    FC_PY_ELEMENT(RelabelDocument,_1) \
+    FC_PY_ELEMENT(ActivateDocument,_1) \
+    FC_PY_ELEMENT(UndoDocument,_1) \
+    FC_PY_ELEMENT(RedoDocument,_1) \
+    FC_PY_ELEMENT(BeforeChangeDocument,_1,_2) \
+    FC_PY_ELEMENT(ChangedDocument,_1,_2) \
+    FC_PY_ELEMENT(CreatedObject,_1) \
+    FC_PY_ELEMENT(DeletedObject,_1) \
+    FC_PY_ELEMENT(BeforeChangeObject,_1,_2) \
+    FC_PY_ELEMENT(ChangedObject,_1,_2) \
+    FC_PY_ELEMENT(RecomputedObject,_1) \
+    FC_PY_ELEMENT(BeforeRecomputeDocument,_1) \
+    FC_PY_ELEMENT(RecomputedDocument,_1) \
+    FC_PY_ELEMENT(OpenTransaction,_1,_2) \
+    FC_PY_ELEMENT(CommitTransaction,_1) \
+    FC_PY_ELEMENT(AbortTransaction,_1) \
+    FC_PY_ELEMENT(Undo) \
+    FC_PY_ELEMENT(Redo) \
+    FC_PY_ELEMENT(BeforeCloseTransaction,_1) \
+    FC_PY_ELEMENT(CloseTransaction,_1) \
+    FC_PY_ELEMENT(StartSaveDocument,_1,_2) \
+    FC_PY_ELEMENT(FinishSaveDocument,_1,_2) \
+    FC_PY_ELEMENT(AppendDynamicProperty,_1) \
+    FC_PY_ELEMENT(RemoveDynamicProperty,_1) \
+    FC_PY_ELEMENT(ChangePropertyEditor,_1,_2)
+
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name,...) \
+    Connection connect##_name;\
+    Py::Object py##_name;
+
+    FC_PY_DOC_OBSERVER
 };
 
 } //namespace App

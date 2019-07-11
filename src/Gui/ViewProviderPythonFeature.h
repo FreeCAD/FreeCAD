@@ -24,9 +24,12 @@
 #ifndef GUI_VIEWPROVIDERPYTHONFEATURE_H
 #define GUI_VIEWPROVIDERPYTHONFEATURE_H
 
+#include <App/Application.h>
 #include <Gui/ViewProviderGeometryObject.h>
+#include <Gui/Document.h>
 #include <App/PropertyPythonObject.h>
 #include <App/DynamicProperty.h>
+#include <App/FeaturePython.h>
 
 class SoSensor;
 class SoDragger;
@@ -44,19 +47,23 @@ public:
     };
 
     /// constructor.
-    ViewProviderPythonFeatureImp(ViewProviderDocumentObject*);
+    ViewProviderPythonFeatureImp(ViewProviderDocumentObject*, App::PropertyPythonObject &);
     /// destructor.
     ~ViewProviderPythonFeatureImp();
 
     // Returns the icon
     QIcon getIcon() const;
-    std::vector<App::DocumentObject*> claimChildren(const std::vector<App::DocumentObject*>&) const;
+    std::vector<App::DocumentObject*> claimChildren(std::vector<App::DocumentObject*>&&) const;
     bool useNewSelectionModel() const;
+    ValueT getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
     std::string getElement(const SoDetail *det) const;
     SoDetail* getDetail(const char*) const;
+    ValueT getDetailPath(const char *name, SoFullPath *path, bool append, SoDetail *&det) const;
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
     ValueT setEdit(int ModNum);
     ValueT unsetEdit(int ModNum);
+    bool setEditViewer(View3DInventorViewer*, int ModNum);
+    bool unsetEditViewer(View3DInventorViewer*);
     ValueT doubleClicked(void);
     void setupContextMenu(QMenu* menu);
 
@@ -68,6 +75,7 @@ public:
     void startRestoring();
     void finishRestoring();
     bool onDelete(const std::vector<std::string> & sub);
+    ValueT canDelete(App::DocumentObject *obj) const;
     //@}
 
     /** @name Display methods */
@@ -81,6 +89,8 @@ public:
     /// set the display mode
     std::string setDisplayMode(const char* ModeName);
     //@}
+
+    ValueT canRemoveChildrenFromRoot() const;
 
     /** @name Drag and drop */
     //@{
@@ -96,10 +106,86 @@ public:
     ValueT canDropObject(App::DocumentObject*) const;
     /// If the dropped object type is accepted the object will be added as child
     ValueT dropObject(App::DocumentObject*);
+    /** Return false to force drop only operation for a give object*/
+    ValueT canDragAndDropObject(App::DocumentObject*) const;
+    /** Query object dropping with full quanlified name */
+    ValueT canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, 
+            const char *,const std::vector<std::string> &elements) const;
+    /** Add an object with full quanlified name to the view provider by drag and drop */
+    ValueT dropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
+            const char *, const std::vector<std::string> &elements, std::string &ret);
+    ValueT replaceObject(App::DocumentObject *, App::DocumentObject *);
     //@}
+
+    ViewProviderDocumentObject *getLinkedViewProvider(bool recursive) const;
+
+    bool canAddToSceneGraph() const;
+
+    bool getDropPrefix(std::string &prefix) const;
 
 private:
     ViewProviderDocumentObject* object;
+    App::PropertyPythonObject &Proxy;
+    bool has__object__;
+
+#define FC_PY_VIEW_OBJECT \
+    FC_PY_ELEMENT(getIcon) \
+    FC_PY_ELEMENT(claimChildren) \
+    FC_PY_ELEMENT(useNewSelectionModel) \
+    FC_PY_ELEMENT(getElementPicked) \
+    FC_PY_ELEMENT(getElement) \
+    FC_PY_ELEMENT(getDetail) \
+    FC_PY_ELEMENT(getDetailPath) \
+    FC_PY_ELEMENT(getSelectionShape) \
+    FC_PY_ELEMENT(setEdit) \
+    FC_PY_ELEMENT(unsetEdit) \
+    FC_PY_ELEMENT(setEditViewer) \
+    FC_PY_ELEMENT(unsetEditViewer) \
+    FC_PY_ELEMENT(doubleClicked) \
+    FC_PY_ELEMENT(setupContextMenu) \
+    FC_PY_ELEMENT(attach) \
+    FC_PY_ELEMENT(updateData) \
+    FC_PY_ELEMENT(onChanged) \
+    FC_PY_ELEMENT(startRestoring) \
+    FC_PY_ELEMENT(finishRestoring) \
+    FC_PY_ELEMENT(onDelete) \
+    FC_PY_ELEMENT(canDelete) \
+    FC_PY_ELEMENT(isShow) \
+    FC_PY_ELEMENT(getDefaultDisplayMode) \
+    FC_PY_ELEMENT(getDisplayModes) \
+    FC_PY_ELEMENT(setDisplayMode) \
+    FC_PY_ELEMENT(canRemoveChildrenFromRoot) \
+    FC_PY_ELEMENT(canDragObjects) \
+    FC_PY_ELEMENT(canDragObject) \
+    FC_PY_ELEMENT(dragObject) \
+    FC_PY_ELEMENT(canDropObjects) \
+    FC_PY_ELEMENT(canDropObject) \
+    FC_PY_ELEMENT(dropObject) \
+    FC_PY_ELEMENT(canDragAndDropObject) \
+    FC_PY_ELEMENT(canDropObjectEx) \
+    FC_PY_ELEMENT(dropObjectEx) \
+    FC_PY_ELEMENT(canAddToSceneGraph) \
+    FC_PY_ELEMENT(getDropPrefix) \
+    FC_PY_ELEMENT(replaceObject) \
+    FC_PY_ELEMENT(getLinkedViewProvider) \
+
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_DEFINE(_name)
+
+    FC_PY_VIEW_OBJECT
+
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_FLAG(_name)
+
+    enum Flag {
+        FC_PY_VIEW_OBJECT
+        FlagMax,
+    };
+    typedef std::bitset<FlagMax> Flags;
+    mutable Flags _Flags;
+
+public:
+    void init(PyObject *pyobj);
 };
 
 template <class ViewProviderT>
@@ -111,7 +197,7 @@ public:
     /// constructor.
     ViewProviderPythonFeatureT() : _attached(false) {
         ADD_PROPERTY(Proxy,(Py::Object()));
-        imp = new ViewProviderPythonFeatureImp(this);
+        imp = new ViewProviderPythonFeatureImp(this,Proxy);
     }
     /// destructor.
     virtual ~ViewProviderPythonFeatureT() {
@@ -149,6 +235,14 @@ public:
     virtual bool useNewSelectionModel() const {
         return imp->useNewSelectionModel();
     }
+    virtual bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
+        auto ret = imp->getElementPicked(pp,subname);
+        if(ret == ViewProviderPythonFeatureImp::NotImplemented)
+            return ViewProviderT::getElementPicked(pp,subname);
+        else if(ret == ViewProviderPythonFeatureImp::Accepted)
+            return true;
+        return false;
+    }
     virtual std::string getElement(const SoDetail *det) const {
         std::string name = imp->getElement(det);
         if (!name.empty()) return name;
@@ -158,6 +252,12 @@ public:
         SoDetail* det = imp->getDetail(name);
         if (det) return det;
         return ViewProviderT::getDetail(name);
+    }
+    virtual bool getDetailPath(const char *name, SoFullPath *path, bool append,SoDetail *&det) const {
+        auto ret = imp->getDetailPath(name,path,append,det);
+        if(ret == ViewProviderPythonFeatureImp::NotImplemented)
+            return ViewProviderT::getDetailPath(name,path,append,det);
+        return ret == ViewProviderPythonFeatureImp::Accepted;
     }
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const {
         return ViewProviderT::getSelectionShape(Element);
@@ -183,15 +283,27 @@ public:
         if (!ok) return ok;
         return ViewProviderT::onDelete(sub);
     }
+    virtual bool canDelete(App::DocumentObject *obj) const override {
+        switch(imp->canDelete(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDelete(obj);
+        }
+    }
     //@}
 
     /** @name Restoring view provider from document load */
     //@{
     virtual void startRestoring() {
+        ViewProviderT::startRestoring();
         imp->startRestoring();
     }
     virtual void finishRestoring() {
         imp->finishRestoring();
+        ViewProviderT::finishRestoring();
     }
     //@}
 
@@ -221,6 +333,7 @@ public:
     }
     /// Starts to drag the object
     virtual void dragObject(App::DocumentObject* obj) {
+        App::AutoTransaction committer;
         switch (imp->dragObject(obj)) {
         case ViewProviderPythonFeatureImp::Accepted:
         case ViewProviderPythonFeatureImp::Rejected:
@@ -253,6 +366,7 @@ public:
     }
     /// If the dropped object type is accepted the object will be added as child
     virtual void dropObject(App::DocumentObject* obj) {
+        App::AutoTransaction committer;
         switch (imp->dropObject(obj)) {
         case ViewProviderPythonFeatureImp::Accepted:
         case ViewProviderPythonFeatureImp::Rejected:
@@ -260,6 +374,44 @@ public:
         default:
             return ViewProviderT::dropObject(obj);
         }
+    }
+    /** Return false to force drop only operation for a give object*/
+    virtual bool canDragAndDropObject(App::DocumentObject *obj) const override {
+        switch (imp->canDragAndDropObject(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDragAndDropObject(obj);
+        }
+    }
+    virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+            const char *subname, const std::vector<std::string> &elements) const override
+    {
+        switch (imp->canDropObjectEx(obj,owner,subname,elements)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDropObjectEx(obj,owner,subname,elements);
+        }
+    }
+    /** Add an object with full quanlified name to the view provider by drag and drop */
+    virtual std::string dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+            const char *subname, const std::vector<std::string> &elements) 
+    {
+        App::AutoTransaction committer;
+        std::string ret;
+        switch (imp->dropObjectEx(obj,owner,subname,elements,ret)) {
+        case ViewProviderPythonFeatureImp::NotImplemented:
+            ret = ViewProviderT::dropObjectEx(obj,owner,subname,elements);
+            break;
+        default:
+            break;
+        }
+        return ret;
     }
     //@}
 
@@ -290,14 +442,29 @@ public:
     }
     //@}
 
+    virtual bool canRemoveChildrenFromRoot() const override {
+        switch(imp->canRemoveChildrenFromRoot()) {
+        case ViewProviderPythonFeatureImp::NotImplemented:
+            return ViewProviderT::canRemoveChildrenFromRoot();
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        default:
+            return false;
+        }
+    }
 
     PyObject* getPyObject() {
         return ViewProviderT::getPyObject();
     }
 
+    virtual bool canAddToSceneGraph() const override {
+        return ViewProviderT::canAddToSceneGraph() && imp->canAddToSceneGraph();
+    }
+
 protected:
     virtual void onChanged(const App::Property* prop) {
         if (prop == &Proxy) {
+            imp->init(Proxy.getValue().ptr());
             if (ViewProviderT::pcObject && !Proxy.getValue().is(Py::_None())) {
                 if (!_attached) {
                     _attached = true;
@@ -306,6 +473,12 @@ protected:
                     // needed to load the right display mode after they're known now
                     ViewProviderT::DisplayMode.touch();
                     ViewProviderT::setOverrideMode(viewerMode);
+                }
+                if(!this->testStatus(Gui::isRestoring) && 
+                    ViewProviderT::canAddToSceneGraph() && 
+                    !imp->canAddToSceneGraph())
+                {
+                    this->getDocument()->toggleInSceneGraph(this);
                 }
                 ViewProviderT::updateView();
             }
@@ -338,6 +511,40 @@ protected:
             return ViewProviderT::unsetEdit(ModNum);
         }
     }
+    virtual void setEditViewer(View3DInventorViewer *viewer, int ModNum) {
+        if(!imp->setEditViewer(viewer,ModNum))
+            ViewProviderT::setEditViewer(viewer,ModNum);
+    }
+    virtual void unsetEditViewer(View3DInventorViewer *viewer) {
+        if(!imp->unsetEditViewer(viewer))
+            ViewProviderT::unsetEditViewer(viewer);
+    }
+
+    virtual std::string getDropPrefix() const {
+        std::string prefix;
+        if(!imp->getDropPrefix(prefix))
+            return ViewProviderT::getDropPrefix();
+        return prefix;
+    }
+
+    virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) {
+        App::AutoTransaction committer;
+        switch (imp->replaceObject(oldObj,newObj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return 1;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return 0;
+        default:
+            return ViewProviderT::replaceObject(oldObj,newObj);
+        }
+    }
+
+    virtual ViewProviderDocumentObject *getLinkedViewProvider(bool recursive=false) const {
+        auto res = imp->getLinkedViewProvider(recursive);
+        if(!res)
+            res = ViewProviderT::getLinkedViewProvider();
+        return res;
+    }
 
 public:
     virtual void setupContextMenu(QMenu* menu, QObject* recipient, const char* member)
@@ -349,6 +556,7 @@ public:
 protected:
     virtual bool doubleClicked(void)
     {
+        App::AutoTransaction committer;
         switch (imp->doubleClicked()) {
         case ViewProviderPythonFeatureImp::Accepted:
             return true;
