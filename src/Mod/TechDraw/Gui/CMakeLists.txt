@@ -88,6 +88,7 @@ set(TechDrawGui_UIC_SRCS
     TaskBalloon.ui
     TaskCosVertex.ui
     TaskCenterLine.ui
+    TaskCL2Lines.ui
     TaskLineDecor.ui
     TaskRestoreLines.ui
 )
@@ -166,6 +167,7 @@ SET(TechDrawGui_SRCS
     TaskLineDecor.cpp
     TaskLineDecor.h
     TaskRestoreLines.ui
+    TaskCL2Lines.ui
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
@@ -320,6 +322,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskCenterLine.ui
     TaskLineDecor.ui
     TaskRestoreLines.ui
+    TaskCL2Lines.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

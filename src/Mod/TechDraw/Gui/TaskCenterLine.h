@@ -28,7 +28,8 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-/*#include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>*/
+#include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>
+#include <Mod/TechDraw/Gui/ui_TaskCL2Lines.h>
 
 /*#include "QGTracker.h"*/
 
@@ -41,6 +42,7 @@
 #define TRACKERSAVE 5
 
 class Ui_TaskCenterLine;
+class Ui_TaskCL2Lines;
 
 namespace App {
 class DocumentObject;
@@ -92,6 +94,7 @@ public:
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
     void enableTaskButtons(bool b);
+    void setFlipped(bool b);
 
 
 protected Q_SLOTS:
@@ -104,7 +107,12 @@ protected:
     void setUiEdit(void);
 
     void createCenterLine(void);
+    void create2Lines(void);
+    void create2Points(void);
+
     void updateCenterLine(void);
+    void update2Lines(void);
+    void update2Points(void);
 
     double getCenterWidth();
     QColor getCenterColor();
@@ -128,7 +136,36 @@ private:
     int m_geomIndex;
     TechDraw::CenterLine* m_cl;
     int m_clIdx;
+    bool m_flipped;
+    int m_type;
+    int m_mode;
 };
+
+class TaskCL2Lines : public QWidget
+{
+    Q_OBJECT
+
+public:
+    TaskCL2Lines(TaskCenterLine* tcl);
+    ~TaskCL2Lines();
+
+public:
+    virtual bool accept();
+    virtual bool reject();
+
+protected Q_SLOTS:
+    void onFlipToggled(bool b);
+
+protected:
+    void changeEvent(QEvent *e);
+    void initUi(void);
+
+private:
+    Ui_TaskCL2Lines* ui;
+    TechDraw::DrawViewPart* m_partFeat;
+    TechDrawGui::TaskCenterLine* m_tcl;
+};
+
 
 class TaskDlgCenterLine : public Gui::TaskView::TaskDialog
 {
@@ -163,8 +200,12 @@ public:
 protected:
 
 private:
-    TaskCenterLine * widget;
+    TaskCenterLine* widget;
     Gui::TaskView::TaskBox* taskbox;
+
+    TaskCL2Lines* cl2Lines;
+    Gui::TaskView::TaskBox* linesBox;
+
 };
 
 } //namespace TechDrawGui
