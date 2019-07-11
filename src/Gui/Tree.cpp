@@ -140,6 +140,7 @@ void TreeParams::onSyncPlacementChanged() {}
 void TreeParams::onRecordSelectionChanged() {}
 void TreeParams::onRecomputeOnDropChanged() {}
 void TreeParams::onKeepRootOrderChanged() {}
+void TreeParams::onTreeActiveAutoExpandChanged() {}
 
 void TreeParams::onDocumentModeChanged() {
     App::GetApplication().setActiveDocument(App::GetApplication().getActiveDocument());

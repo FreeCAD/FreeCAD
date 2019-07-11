@@ -504,6 +504,7 @@ public:
     FC_TREEPARAM_DEF(PreSelectionDelay,int,Int,700) \
     FC_TREEPARAM_DEF(RecomputeOnDrop,bool,Bool,true) \
     FC_TREEPARAM_DEF(KeepRootOrder,bool,Bool,true) \
+    FC_TREEPARAM_DEF(TreeActiveAutoExpand,bool,Bool,true) \
 
 #define FC_TREEPARAM_FUNCS(_name,_type,_Type,_default) \
     _type _name() const {return _##_name;} \

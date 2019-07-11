@@ -34,6 +34,7 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderDocumentObject.h>
+#include "Tree.h"
 
 FC_LOG_LEVEL_INIT("MDIView",true,true);
 
@@ -61,10 +62,7 @@ void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, 
     auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
     if(!vp) return;
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/TreeView");
-    bool autoExpand = hGrp->GetBool("TreeActiveAutoExpand", true);
-    if (autoExpand)
+    if(FC_TREEPARAM(TreeActiveAutoExpand))
         vp->getDocument()->signalExpandObject(*vp, 
                 enable?Gui::ExpandPath:Gui::CollapseItem, info.obj, info.subname.c_str());
 
