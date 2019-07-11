@@ -402,6 +402,23 @@ Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
     throw Py::RuntimeError("Failed to wrap icon");
 }
 
+QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    PyTypeObject * type = Shiboken::SbkType<QIcon>();
+    if(type) {
+        if (Shiboken::Object::checkType(pyobj)) {
+            SbkObject* sbkobject = reinterpret_cast<SbkObject *>(pyobj);
+            void* cppobject = Shiboken::Object::cppPointer(sbkobject, type);
+            return reinterpret_cast<QIcon*>(cppobject);
+        }
+    }
+#else
+    Q_UNUSED(pyobj);
+#endif
+    return 0;
+}
+
 Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
