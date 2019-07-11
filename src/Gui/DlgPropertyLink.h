@@ -27,6 +27,8 @@
 #include <QDialog>
 #include <QAbstractItemView>
 
+#define FC_XLINK_VALUE_INDEX 5
+
 namespace Gui { namespace Dialog {
 
 class Ui_DlgPropertyLink;
@@ -35,7 +37,7 @@ class DlgPropertyLink : public QDialog
     Q_OBJECT
 
 public:
-    DlgPropertyLink(const QStringList& list, QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    DlgPropertyLink(const QStringList& list, QWidget* parent = 0, Qt::WindowFlags fl = 0, bool xlink=false);
     ~DlgPropertyLink();
 
     void setSelectionMode(QAbstractItemView::SelectionMode mode);
@@ -45,14 +47,21 @@ public:
 
 private Q_SLOTS:
     void on_checkObjectType_toggled(bool);
+    void on_typeTree_itemSelectionChanged();
     void on_searchBox_textChanged(const QString&);
+    void on_comboBox_currentIndexChanged(int);
+    void onItemExpanded(QTreeWidgetItem * item);
 
 private:
-    void findObjects(bool on, const QString& searchText);
+    QTreeWidgetItem *createItem(App::DocumentObject *obj, QTreeWidgetItem *parent);
+    void findObjects();
 
 private:
     QStringList link;
     Ui_DlgPropertyLink* ui;
+    std::set<App::DocumentObject*> inList;
+    std::set<std::string> types;
+    bool refreshTypes = true;
 };
 
 } // namespace Dialog
