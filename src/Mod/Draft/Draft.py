@@ -2635,6 +2635,7 @@ def clone(obj,delta=None,forcedraft=False):
     even if the input object is an Arch object.'''
 
     prefix = getParam("ClonePrefix","")
+    cl = None
     if prefix:
         prefix = prefix.strip()+" "
     if not isinstance(obj,list):
@@ -2648,29 +2649,36 @@ def clone(obj,delta=None,forcedraft=False):
         if getType(obj[0]) == "BuildingPart":
             cl = Arch.makeComponent()
         else:
-            cl = getattr(Arch,"make"+obj[0].Proxy.Type)()
-        base = getCloneBase(obj[0])
-        cl.Label = prefix + base.Label
-        cl.CloneOf = base
-        if hasattr(cl,"Material") and hasattr(obj[0],"Material"):
-            cl.Material = obj[0].Material
-        if getType(obj[0]) != "BuildingPart":
-            cl.Placement = obj[0].Placement
-        try:
-            cl.Role = base.Role
-            cl.Description = base.Description
-            cl.Tag = base.Tag
-        except:
-            pass
-        if gui:
-            formatObject(cl,base)
-            cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
-            if getType(obj[0]) in ["Window","BuildingPart"]:
-                from DraftGui import todo
-                todo.delay(Arch.recolorize,cl)
-        select(cl)
-        return cl
-    else:
+            try:
+                clonfunc = getattr(Arch,"make"+obj[0].Proxy.Type)
+            except:
+                pass # not a standard Arch object... Fall back to Draft mode
+            else:
+                cl = clonefunc()
+        if cl:
+            base = getCloneBase(obj[0])
+            cl.Label = prefix + base.Label
+            cl.CloneOf = base
+            if hasattr(cl,"Material") and hasattr(obj[0],"Material"):
+                cl.Material = obj[0].Material
+            if getType(obj[0]) != "BuildingPart":
+                cl.Placement = obj[0].Placement
+            try:
+                cl.Role = base.Role
+                cl.Description = base.Description
+                cl.Tag = base.Tag
+            except:
+                pass
+            if gui:
+                formatObject(cl,base)
+                cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
+                if getType(obj[0]) in ["Window","BuildingPart"]:
+                    from DraftGui import todo
+                    todo.delay(Arch.recolorize,cl)
+            select(cl)
+            return cl
+    # fall back to Draft clone mode
+    if not cl:
         cl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Clone")
         cl.addExtension("Part::AttachExtensionPython", None)
         cl.Label = prefix + obj[0].Label
@@ -2680,7 +2688,7 @@ def clone(obj,delta=None,forcedraft=False):
     cl.Objects = obj
     if delta:
         cl.Placement.move(delta)
-    elif len(obj) == 1:
+    elif (len(obj) == 1) and hasattr(obj[0],"Placement"):
         cl.Placement = obj[0].Placement
     formatObject(cl,obj[0])
     if hasattr(cl,"LongName") and hasattr(obj[0],"LongName"):

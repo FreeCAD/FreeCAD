@@ -5019,7 +5019,7 @@ class Draft_Clone(Modifier):
             nonRepeatList = []
             for obj in FreeCADGui.Selection.getSelection():
                 if obj not in nonRepeatList:
-                    FreeCADGui.doCommand("Draft.clone(FreeCAD.ActiveDocument."+obj.Name+")")
+                    FreeCADGui.doCommand("Draft.clone(FreeCAD.ActiveDocument.getObject(\""+obj.Name+"\"))")
                     nonRepeatList.append(obj)
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
