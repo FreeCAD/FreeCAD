@@ -278,6 +278,7 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
+//    Base::Console().Message("DVP::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -696,7 +697,7 @@ std::vector<TechDraw::BaseGeom*> DrawViewPart::getFaceEdgesByIndex(int idx) cons
             for (auto& g:w->geoms) {
                 if (g->cosmetic) {
                     //if g is cosmetic, we should skip it
-                    Base::Console().Message("DVP::getFaceEdgesByIndex - found cosmetic edge\n");
+                    Base::Console().Log("DVP::getFaceEdgesByIndex - found cosmetic edge\n");
                 } else {
                     result.push_back(g);
                 }
@@ -1214,7 +1215,7 @@ void DrawViewPart::addCosmeticEdgesToGeom(void)
     for ( ; i < stop; i++) {
         TechDraw::BaseGeom* scaledGeom = edges.at(i)->scaledGeometry(getScale());
         if (scaledGeom == nullptr) { 
-            Base::Console().Message("DVP::addCosmeticEdgesToGeom - scaledGeometry is null\n");
+            Base::Console().Error("DVP::addCosmeticEdgesToGeom - scaledGeometry is null\n");
             continue;
         }
 //        int idx = 
@@ -1235,6 +1236,7 @@ void DrawViewPart::clearCenterLines(void)
 
 int DrawViewPart::addCenterLine(CenterLine* cl)
 {
+//    Base::Console().Message("DVP::addCL(cl)\n");
     std::vector<CenterLine*> lines = CenterLines.getValues();
     int newIdx = (int) lines.size();
     lines.push_back(cl);
@@ -1311,13 +1313,14 @@ TechDraw::CenterLine* DrawViewPart::getCenterLineByGeom(int idx) const
 //add the center lines to geometry Edges list
 void DrawViewPart::addCenterLinesToGeom(void)
 {
-    int i = 0;
+//   Base::Console().Message("DVP::addCenterLinesToGeom()\n");
+   int i = 0;
     const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
     int stop = (int) lines.size();
     for ( ; i < stop; i++) {
         TechDraw::BaseGeom* scaledGeom = lines.at(i)->scaledGeometry(this);
         if (scaledGeom == nullptr) { 
-            Base::Console().Message("DVP::addCenterLinesToGeom - scaledGeometry is null\n");
+            Base::Console().Error("DVP::addCenterLinesToGeom - scaledGeometry is null\n");
             continue;
         }
 //        int idx = 

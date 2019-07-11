@@ -125,7 +125,7 @@
           <item row="0" column="2">
            <widget class="QRadioButton" name="rbAligned">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="toolTip">
              <string>Option not implemented yet</string>

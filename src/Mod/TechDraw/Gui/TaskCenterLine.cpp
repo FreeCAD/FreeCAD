@@ -54,6 +54,7 @@
 #include <Mod/TechDraw/App/Cosmetic.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>
+#include <Mod/TechDraw/Gui/ui_TaskCL2Lines.h>
 
 #include "DrawGuiStd.h"
 #include "QGVPage.h"
@@ -78,7 +79,11 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     m_partFeat(partFeat),
     m_basePage(page),
     m_createMode(false),
-    m_edgeName(edgeName)
+    m_edgeName(edgeName),
+    m_flipped(false),
+    m_type(0),          //0 - Face, 1 - 2 Lines, 2 - 2 points
+    m_mode(0)           //0 - vertical, 1 - horizontal, 2 - aligned
+
 {
 //    Base::Console().Message("TCL::TCL() - edit mode\n");
     ui->setupUi(this);
@@ -91,6 +96,9 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     if (m_cl == nullptr) {         //checked by CommandAnnotate.  Should never happen.
         Base::Console().Message("TCL::TCL() - no centerline found\n");
     }
+    m_type = m_cl->m_type;
+    m_flipped = m_cl->m_flip2Line;
+    m_mode = m_cl->m_mode;
 
     setUiEdit();
 }
@@ -103,7 +111,10 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     m_partFeat(partFeat),
     m_basePage(page),
     m_createMode(true),
-    m_subNames(subNames)
+    m_subNames(subNames),
+    m_flipped(false),
+    m_type(0),          //0 - Face, 1 - 2 Lines, 2 - 2 points
+    m_mode(0)           //0 - vertical, 1 - horizontal, 2 - aligned
 {
 //    Base::Console().Message("TCL::TCL() - create mode\n");
     if ( (m_basePage == nullptr) ||
@@ -114,7 +125,18 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     }
 
     ui->setupUi(this);
-
+    std::string check = subNames.front();
+    std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(check);
+    if (geomType == "Face") {
+        m_type = 0;
+    } else if (geomType == "Edge") {
+        m_type = 1;
+    } else if (geomType == "Vertex") {
+        m_type = 2;
+    } else {
+        Base::Console().Error("TaskCenterLine - unknow geometry type: %s.  Can not proceed.\n", geomType.c_str());
+        return;
+    }
     setUiPrimary();
 }
 
@@ -204,22 +226,43 @@ void TaskCenterLine::setUiEdit()
 //******************************************************************************
 void TaskCenterLine::createCenterLine(void)
 {
-//    Base::Console().Message("TCL::createCenterLine()\n");
+//    Base::Console().Message("TCL::createCenterLine() - m_type: %d\n", m_type);
     Gui::Command::openCommand("Create CenterLine");
     bool vertical = false;
-    if (ui->rbVertical->isChecked()) {
-        vertical = true;
-    }
     double hShift = ui->qsbHorizShift->rawValue();
     double vShift = ui->qsbVertShift->rawValue();
     double rotate = ui->dsbRotate->value();
     double extendBy = ui->qsbExtend->rawValue();
     std::pair<Base::Vector3d, Base::Vector3d> ends;
-    ends = TechDraw::CenterLine::calcEndPoints(m_partFeat,
+    if (ui->rbVertical->isChecked()) {
+        m_mode = 0;
+        vertical = true;
+    } else if (ui->rbHorizontal->isChecked()) {
+        m_mode = 1;
+    } else if (ui->rbAligned->isChecked()) {
+        m_mode =2;
+    }
+
+    if (m_type == 0) {
+        ends = TechDraw::CenterLine::calcEndPoints(m_partFeat,
+                             m_subNames,
+                             vertical,
+                             extendBy,
+                             hShift, vShift, rotate);
+    } else if (m_type == 1) {
+        ends = TechDraw::CenterLine::calcEndPoints2Lines(m_partFeat,
                          m_subNames,
-                         vertical,
+                         m_mode,
                          extendBy,
-                         hShift, vShift, rotate);
+                         hShift, vShift, rotate, m_flipped);
+    } else if (m_type == 2) {
+        ends = TechDraw::CenterLine::calcEndPoints2Points(m_partFeat,
+                         m_subNames,
+                         m_mode,
+                         extendBy,
+                         hShift, vShift, rotate, m_flipped);
+    }
+
     TechDraw::CenterLine* cl = new TechDraw::CenterLine(ends.first, ends.second);
     cl->m_start = ends.first;
     cl->m_end = ends.second;
@@ -231,22 +274,26 @@ void TaskCenterLine::createCenterLine(void)
     cl->m_format.m_style = ui->cboxStyle->currentIndex();
     cl->m_format.m_visible = true;
 
-    if (ui->rbVertical->isChecked()) {
-        cl->m_mode = 0;
-    } else if (ui->rbHorizontal->isChecked()) {
-        cl->m_mode = 1;
-    } else if (ui->rbAligned->isChecked()) {
-        cl->m_mode = 2;
+    if (m_type == 0) {
+        cl->m_faces = m_subNames;
+    } else if (m_type == 1) {
+        cl->m_edges = m_subNames;
+    } else if (m_type == 2) {
+        cl->m_verts = m_subNames;
     }
-    cl->m_faces = m_subNames;
+
+    cl->m_mode = m_mode;
     cl->m_rotate = rotate;
     cl->m_vShift = vShift;
     cl->m_hShift = hShift;
     cl->m_extendBy = extendBy;
+    cl->m_mode = m_mode;
+    cl->m_type = m_type;
+    cl->m_flip2Line = m_flipped;
+
 
     m_partFeat->addCenterLine(cl);
     
-//    m_partFeat->requestPaint();       //if execute has not run, then CL will not be in Geoms.
     m_partFeat->recomputeFeature();
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
@@ -262,19 +309,28 @@ void TaskCenterLine::updateCenterLine(void)
     m_cl->m_format.m_visible = true;
 
     if (ui->rbVertical->isChecked()) {
-        m_cl->m_mode = 0;
+        m_mode = 0;
     } else if (ui->rbHorizontal->isChecked()) {
-        m_cl->m_mode = 1;
+        m_mode = 1;
     } else if (ui->rbAligned->isChecked()) {
-        m_cl->m_mode = 2;
+        m_mode =2;
     }
+    m_cl->m_mode = m_mode;
+//    if (ui->rbVertical->isChecked()) {
+//        m_cl->m_mode = 0;
+//    } else if (ui->rbHorizontal->isChecked()) {
+//        m_cl->m_mode = 1;
+//    } else if (ui->rbAligned->isChecked()) {
+//        m_cl->m_mode = 2;
+//    }
     m_cl->m_rotate = ui->dsbRotate->value();
     m_cl->m_vShift = ui->qsbVertShift->rawValue();
     m_cl->m_hShift = ui->qsbHorizShift->rawValue();
     m_cl->m_extendBy = ui->qsbExtend->rawValue();
     m_partFeat->replaceCenterLine(m_clIdx, m_cl);
-    m_partFeat->requestPaint();         //is requestPaint enough here?
-//    m_partFeat->recomputeFeature();
+    m_partFeat->requestPaint();
+    m_cl->m_type = m_type;
+    m_cl->m_flip2Line = m_flipped;
 
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
@@ -329,6 +385,11 @@ double TaskCenterLine::getExtendBy(void)
     return ext;
 }
 
+void TaskCenterLine::setFlipped(bool b)
+{
+    m_flipped = b;
+}
+
 //******************************************************************************
 
 bool TaskCenterLine::accept()
@@ -354,7 +415,7 @@ bool TaskCenterLine::reject()
 
     if (getCreateMode() &&
         (m_partFeat != nullptr) )  {
-//        Base::Console().Message("TCL::reject - credit Mode!!\n");
+//        Base::Console().Message("TCL::reject - create Mode!!\n");
         //nothing to remove. 
     }
 
@@ -370,6 +431,51 @@ bool TaskCenterLine::reject()
 
     return false;
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+TaskCL2Lines::TaskCL2Lines(TechDrawGui::TaskCenterLine* tcl) :
+    ui(new Ui_TaskCL2Lines),
+    m_tcl(tcl)
+{
+    ui->setupUi(this);
+
+    connect(ui->rbFlip, SIGNAL(toggled( bool )), this, SLOT(onFlipToggled( bool )));
+
+    initUi();
+}
+
+TaskCL2Lines::~TaskCL2Lines()
+{
+    delete ui;
+}
+
+void TaskCL2Lines::initUi()
+{
+}
+
+void TaskCL2Lines::onFlipToggled(bool b)
+{
+    Base::Console().Message("TCL2L::onFlipToggled(%d)\n", b);
+    m_tcl->setFlipped(b);
+}
+
+bool TaskCL2Lines::accept()
+{
+    Base::Console().Message("TCL2L::accept()\n");
+    return true;
+}
+
+bool TaskCL2Lines::reject()
+{
+    Base::Console().Message("TCL2L::reject()\n");
+    return false;
+}
+
+void TaskCL2Lines::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -383,6 +489,18 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+
+    cl2Lines  = new TaskCL2Lines(widget);
+    linesBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-2linecenterline"),
+                                             widget->windowTitle(), true, 0);
+    linesBox->groupLayout()->addWidget(cl2Lines);
+    Content.push_back(linesBox);
+
+//    cl2Points  = new TaskCL2Points(widget);
+//    pointsBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-2pointcenterline"),
+//                                             widget->windowTitle(), true, 0);
+//    pointsBox->groupLayout()->addWidget(cl2Lines);
+//    Content.push_back(pointsBox);
 }
 
 TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
@@ -395,6 +513,18 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+
+    cl2Lines  = new TaskCL2Lines(widget);
+    linesBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-2linecenterline"),
+                                             widget->windowTitle(), true, 0);
+    linesBox->groupLayout()->addWidget(cl2Lines);
+    Content.push_back(linesBox);
+
+//    cl2Points  = new TaskCL2Points(widget);
+//    pointsBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-2pointcenterline"),
+//                                             widget->windowTitle(), true, 0);
+//    pointsBox->groupLayout()->addWidget(cl2Lines);
+//    Content.push_back(pointsBox);
 }
 
 TaskDlgCenterLine::~TaskDlgCenterLine()

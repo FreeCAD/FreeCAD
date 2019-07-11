@@ -163,17 +163,33 @@ public:
                                           int vert, double ext,
                                           double m_hShift, double m_vShift,
                                           double rotate);
+    static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints2Lines(
+                                          TechDraw::DrawViewPart* partFeat,
+                                          std::vector<std::string> faceNames,
+                                          int vert, double ext,
+                                          double m_hShift, double m_vShift,
+                                          double rotate, bool flip);
+    static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints2Points(
+                                          TechDraw::DrawViewPart* partFeat,
+                                          std::vector<std::string> faceNames,
+                                          int vert, double ext,
+                                          double m_hShift, double m_vShift,
+                                          double rotate, bool flip);
     void dump(char* title);
 
     Base::Vector3d m_start;
     Base::Vector3d m_end;
     std::vector<std::string> m_faces;
+    std::vector<std::string> m_edges;
+    std::vector<std::string> m_verts;
+    int m_type;          // 0 - face, 1 - 2 line, 2 - 2 point
     int m_mode;          // 0 - vert/ 1 - horiz/ 2 - aligned
     double m_hShift;
     double m_vShift;
     double m_rotate;
     double m_extendBy;
     LineFormat m_format;
+    bool m_flip2Line;
 
 protected:
 

@@ -136,7 +136,7 @@ public:
     TechDraw::GeometryObject* getGeometryObject(void) const { return geometryObject; }
 
     TechDraw::BaseGeom* getGeomByIndex(int idx) const;               //get existing geom for edge idx in projection
-    TechDraw::Vertex* getProjVertexByIndex(int idx) const;               //get existing geom for vertex idx in projection
+    TechDraw::Vertex* getProjVertexByIndex(int idx) const;           //get existing geom for vertex idx in projection
     std::vector<TechDraw::BaseGeom*> getFaceEdgesByIndex(int idx) const;  //get edges for face idx in projection
 
     virtual Base::BoundBox3d getBoundingBox() const;
