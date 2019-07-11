@@ -50,7 +50,9 @@ public Q_SLOTS:
     void editorClosed (QWidget * editor, QAbstractItemDelegate::EndEditHint hint);
 
 private:
+    mutable QWidget *expressionEditor;
     mutable bool pressed;
+    bool changed;
 };
 
 } // namespace PropertyEditor
