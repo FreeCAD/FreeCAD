@@ -204,13 +204,21 @@ void ViewProviderDocumentObject::hide(void)
 
 void ViewProviderDocumentObject::show(void)
 {
+    if(TreeWidget::isObjectShowable(getObject()))
+        ViewProvider::show();
+    else {
+        Visibility.setValue(false);
+        if(getObject())
+            getObject()->Visibility.setValue(false);
+        return;
+    }
+
     // use this bit to check whether 'Visibility' must be adjusted
     if (Visibility.testStatus(App::Property::User2) == false) {
         Visibility.setStatus(App::Property::User2, true);
         Visibility.setValue(true);
         Visibility.setStatus(App::Property::User2, false);
     }
-    ViewProvider::show();
 }
 
 void ViewProviderDocumentObject::updateView()
