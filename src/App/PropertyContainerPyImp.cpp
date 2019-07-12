@@ -506,6 +506,27 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
             }
         }
         return dict;
+    } else if(Base::streq(attr,"Shape")
+            && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) 
+    {
+        // Special treatment of Shape property
+        static PyObject *_getShape = 0;
+        if(!_getShape) {
+            _getShape = Py_None;
+            PyObject *mod = PyImport_ImportModule("Part");
+            if(!mod) {
+                PyErr_Clear();
+            } else {
+                Py::Object pyMod = Py::asObject(mod);
+                if(pyMod.hasAttr("getShape"))
+                    _getShape = Py::new_reference_to(pyMod.getAttr("getShape"));
+            }
+        }
+        if(_getShape != Py_None) {
+            Py::Tuple args(1);
+            args.setItem(0,Py::Object(const_cast<PropertyContainerPy*>(this)));
+            return PyObject_CallObject(_getShape, args.ptr());
+        }
     }
 
     return 0;

@@ -28,6 +28,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <App/Document.h>
 #include <Gui/Command.h>
 
 #include <Mod/Part/App/PartFeature.h>
@@ -54,8 +55,7 @@ bool ViewProviderPart::doubleClicked(void)
     Msg += this->pcObject->Label.getValue();
     try {
         Gui::Command::openCommand(Msg.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.setEdit('%s',0)",
-                                this->pcObject->getNameInDocument());
+        FCMD_SET_EDIT(pcObject);
         return true;
     }
     catch (const Base::Exception& e) {

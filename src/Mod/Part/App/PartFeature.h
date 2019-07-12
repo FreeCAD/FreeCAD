@@ -71,6 +71,44 @@ public:
     virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
             Base::Matrix4D *mat, bool transform, int depth) const override;
 
+    /** Convenience function to extract shape from fully qualified subname 
+     *
+     * @param obj: the parent object
+     *
+     * @param subname: dot separated full qualified subname
+     *
+     * @param needSubElement: whether to ignore the non-object subelement
+     * reference inside \c subname
+     *
+     * @param pmat: used as current transformation on input, and return the
+     * accumulated transformation on output
+     *
+     * @param owner: return the owner of the shape returned
+     *
+     * @param resolveLink: if true, resolve link(s) of the returned 'owner'
+     * by calling its getLinkedObject(true) function
+     *
+     * @param transform: if true, apply obj's transformation. Set to false
+     * if pmat already include obj's transformation matrix.
+     */
+    static TopoDS_Shape getShape(const App::DocumentObject *obj,
+            const char *subname=0, bool needSubElement=false, Base::Matrix4D *pmat=0, 
+            App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true);
+
+    static TopoShape getTopoShape(const App::DocumentObject *obj,
+            const char *subname=0, bool needSubElement=false, Base::Matrix4D *pmat=0, 
+            App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true, 
+            bool noElementMap=false);
+
+    static void clearShapeCache();
+
+    static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=0);
+
+    static bool hasShapeOwner(const App::DocumentObject *obj, const char *subname=0) {
+        auto owner = getShapeOwner(obj,subname);
+        return owner && owner->isDerivedFrom(getClassTypeId());
+    }
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);
