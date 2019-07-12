@@ -51,7 +51,7 @@ __doc__ = "Base class an implementation for operations on circular holes."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2017"
 __scriptVersion__ = "1d testing"
-__lastModified__ = "2019-07-09 22:59 CST"
+__lastModified__ = "2019-07-12 09:58 CST"
 
 
 # Qt translation handling
@@ -323,7 +323,7 @@ class ObjectOp(PathOp.ObjectOp):
 
                         # If user has not adjusted Final Depth value, attempt to determine from sub
                         if obj.OpFinalDepth.Value == obj.FinalDepth.Value:
-                            PathLog.info(translate('Path', 'Auto detecting Final Depth based on {}.'.format(sub)))
+                            PathLog.debug(translate('Path', 'Auto detecting Final Depth based on {}.'.format(sub)))
                             trgtDep = finDep
                         else:
                             trgtDep = max(obj.FinalDepth.Value, finDep)
