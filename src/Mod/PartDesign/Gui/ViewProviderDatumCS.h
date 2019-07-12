@@ -30,6 +30,10 @@
 class SoFont;
 class SoTranslation;
 
+namespace Gui {
+class SoAutoZoomTranslation;
+}
+
 namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderDatumCoordinateSystem : public PartDesignGui::ViewProviderDatum
@@ -37,20 +41,34 @@ class PartDesignGuiExport ViewProviderDatumCoordinateSystem : public PartDesignG
     PROPERTY_HEADER(PartDesignGui::ViewProviderDatumCoordinateSystem);
 
 public:
+    App::PropertyFloatConstraint Zoom;
+    App::PropertyIntegerConstraint FontSize;
+    App::PropertyBool ShowLabel;
+
     /// Constructor
     ViewProviderDatumCoordinateSystem();
     virtual ~ViewProviderDatumCoordinateSystem();
 
     virtual void attach ( App::DocumentObject *obj );
     virtual void updateData(const App::Property*);
+    virtual void onChanged(const App::Property*);
 
     virtual void setExtents (Base::BoundBox3d bbox);
+
+    virtual SoDetail* getDetail(const char* subelement) const;
+    virtual std::string getElement(const SoDetail* detail) const;
+
+private:
+    void setupLabels();
+
 private:
     SoCoordinate3 *coord;
     SoTranslation *axisLabelXTrans;
     SoTranslation *axisLabelXToYTrans;
     SoTranslation *axisLabelYToZTrans;
     SoFont* font;
+    SoSwitch *labelSwitch;
+    Gui::SoAutoZoomTranslation *autoZoom;
 };
 
 } // namespace PartDesignGui
