@@ -1862,6 +1862,7 @@ void Application::initTypes(void)
     App ::MaterialObjectPython      ::init();
     App ::TextDocument              ::init();
     App ::Placement                 ::init();
+    App ::PlacementPython           ::init();
     App ::OriginFeature             ::init();
     App ::Plane                     ::init();
     App ::Line                      ::init();
