@@ -39,6 +39,8 @@ public:
 
     void setValue(int row, int height);
 
+    void setValues(const std::map<int,int> &);
+
     int getValue(int row) const {
         std::map<int, int>::const_iterator i = find(row);
         return i != end() ? i->second : defaultHeight;

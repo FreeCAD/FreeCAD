@@ -57,13 +57,15 @@ public:
 
     Spreadsheet::Sheet* getSpreadsheetObject() const;
 
-    virtual bool onDelete(const std::vector<std::string> &);
+    virtual void beforeDelete() override;
 
     QIcon getIcon() const;
 
     virtual bool setEdit(int ModNum);
 
     virtual bool isShow(void) const { return true; }
+
+    virtual Gui::MDIView *getMDIView() override;
 
 protected:
     SheetView* showSpreadsheetView();

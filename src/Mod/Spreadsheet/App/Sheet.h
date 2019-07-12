@@ -152,6 +152,7 @@ public:
 
     void providesTo(App::CellAddress address, std::set<std::string> & result) const;
 
+    bool hasCell(const std::vector<App::Range> &ranges) const;
     PyObject *getPyObject();
 
     PropertySheet *getCells() { return &cells; }
@@ -190,8 +191,6 @@ public:
 
 protected:
 
-    virtual void onChanged(const App::Property *prop);
-
     void updateColumnsOrRows(bool horizontal, int section, int count) ;
 
     std::set<App::CellAddress> providesTo(App::CellAddress address) const;
@@ -210,7 +209,11 @@ protected:
 
     App::Property *setStringProperty(App::CellAddress key, const std::string & value) ;
 
+    App::Property *setObjectProperty(App::CellAddress key, Py::Object obj) ;
+
     App::Property *setFloatProperty(App::CellAddress key, double value);
+
+    App::Property *setIntegerProperty(App::CellAddress key, long value);
 
     App::Property *setQuantityProperty(App::CellAddress key, double value, const Base::Unit &unit);
 
