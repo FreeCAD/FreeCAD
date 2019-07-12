@@ -240,6 +240,10 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
     return result;
 }
 
+Gui::MDIView *ViewProviderDrawingView::getMDIView() {
+    return getMDIViewPage();
+}
+
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv) 
 {
 //   Base::Console().Message("VPDV::onGuiRepaint(%s)\n", dv->getNameInDocument());
