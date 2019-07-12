@@ -50,8 +50,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class an implementation for operations on circular holes."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2017"
-__scriptVersion__ = "1c testing"
-__lastModified__ = "2019-06-25 14:49 CST"
+__scriptVersion__ = "1d testing"
+__lastModified__ = "2019-07-09 22:59 CST"
 
 
 # Qt translation handling
@@ -479,7 +479,6 @@ class ObjectOp(PathOp.ObjectOp):
 
         praInfo = "faceRotationAnalysis(): "
         rtn = True
-        axis = 'X'
         orientation = 'X'
         angle = 500.0
         precision = 6
@@ -582,6 +581,8 @@ class ObjectOp(PathOp.ObjectOp):
                     axis = 'X'
                 else:
                     rtn = False
+        elif orientation == 'Z':
+            axis = 'X'
 
         if math.fabs(angle) == 0.0:
             angle = 0.0
