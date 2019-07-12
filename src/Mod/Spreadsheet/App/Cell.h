@@ -37,11 +37,6 @@ class XMLReader;
 class Writer;
 }
 
-namespace App {
-class Expression;
-class ExpressionVisitor;
-}
-
 namespace Spreadsheet {
 
 class PropertySheet;
@@ -152,9 +147,7 @@ private:
 
     void setParseException(const std::string & e);
 
-    //void setExpression(const Expression * expr);
-
-    void setExpression(App::Expression *expr);
+    void setExpression(App::ExpressionPtr &&expr);
 
     void setUsed(int mask, bool state = true);
 
@@ -184,7 +177,7 @@ private:
     PropertySheet * owner;
 
     int used;
-    App::Expression * expression;
+    mutable App::ExpressionPtr expression;
     int alignment;
     std::set<std::string> style;
     App::Color foregroundColor;

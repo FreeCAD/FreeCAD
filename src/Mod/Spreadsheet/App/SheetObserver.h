@@ -29,6 +29,7 @@ namespace Spreadsheet {
 
 class PropertySheet;
 
+// SheetObserver is obselete as PropertySheet is now derived from PropertyLinkBase
 class SheetObserver : public App::DocumentObserver {
 public:
     SheetObserver(App::Document* document, PropertySheet *_sheet);

@@ -254,6 +254,8 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
             field << static_cast<PropertyQuantity*>(prop)->getValue();
         else if (prop->isDerivedFrom((PropertyFloat::getClassTypeId())))
             field << static_cast<PropertyFloat*>(prop)->getValue();
+        else if (prop->isDerivedFrom((PropertyInteger::getClassTypeId())))
+            field << static_cast<PropertyInteger*>(prop)->getValue();
         else if (prop->isDerivedFrom((PropertyString::getClassTypeId())))
             field << static_cast<PropertyString*>(prop)->getValue();
         else
@@ -498,6 +500,30 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
     return floatProp;
 }
 
+Property * Sheet::setIntegerProperty(CellAddress key, long value)
+{
+    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    PropertyInteger * intProp;
+
+    if (!prop || prop->getTypeId() != PropertyInteger::getClassTypeId()) {
+        if (prop) {
+            this->removeDynamicProperty(key.toString().c_str());
+            propAddress.erase(prop);
+        }
+        intProp = freecad_dynamic_cast<PropertyInteger>(addDynamicProperty(
+                    "App::PropertyInteger", key.toString().c_str(), 0, 0, 
+                    Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+    }
+    else
+        intProp = static_cast<PropertyInteger*>(prop);
+
+    propAddress[intProp] = key;
+    intProp->setValue(value);
+
+    return intProp;
+}
+
+
 /**
   * Set the property for cell \p key to a PropertyQuantity with \a value and \a unit.
   * If the Property exists, but of wrong type, the previous Property is destroyed and recreated as the correct type.
@@ -559,6 +585,25 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
     stringProp->setValue(value.c_str());
 
     return stringProp;
+}
+
+Property * Sheet::setObjectProperty(CellAddress key, Py::Object object)
+{
+    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
+    PropertyPythonObject * pyProp = freecad_dynamic_cast<PropertyPythonObject>(prop);
+
+    if (!pyProp) {
+        if (prop) {
+            this->removeDynamicProperty(key.toString().c_str());
+            propAddress.erase(prop);
+        }
+        pyProp = freecad_dynamic_cast<PropertyPythonObject>(addDynamicProperty("App::PropertyPythonObject", key.toString().c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+    }
+
+    propAddress[pyProp] = key;
+    pyProp->setValue(object);
+
+    return pyProp;
 }
 
 /**
@@ -630,27 +675,41 @@ void Sheet::updateProperty(CellAddress key)
 
         if (input) {
             CurrentAddressLock lock(currentRow,currentCol,key);
-            output = cells.eval(input);
+            output.reset(input->eval());
         }
         else {
             std::string s;
 
             if (cell->getStringContent(s))
-                output = new StringExpression(this, s);
+                output.reset(new StringExpression(this, s));
             else
-                output = new StringExpression(this, "");
+                output.reset(new StringExpression(this, ""));
         }
 
-        /* Eval returns either NumberExpression or StringExpression objects */
-        if (freecad_dynamic_cast<NumberExpression>(output)) {
-            NumberExpression * number = static_cast<NumberExpression*>(output);
-            if (number->getUnit().isEmpty())
-                setFloatProperty(key, number->getValue());
-            else
+        /* Eval returns either NumberExpression or StringExpression, or
+         * PyObjectExpression objects */
+        auto number = freecad_dynamic_cast<NumberExpression>(output.get());
+        if(number) {
+            long l;
+            if (!number->getUnit().isEmpty())
                 setQuantityProperty(key, number->getValue(), number->getUnit());
+            else if(number->isInteger(&l))
+                setIntegerProperty(key,l);
+            else
+                setFloatProperty(key, number->getValue());
+        }else{
+            auto str_expr = freecad_dynamic_cast<StringExpression>(output.get());
+            if(str_expr) 
+                setStringProperty(key, str_expr->getText().c_str());
+            else {
+                Base::PyGILStateLocker lock;
+                auto py_expr = freecad_dynamic_cast<PyObjectExpression>(output.get());
+                if(py_expr) 
+                    setObjectProperty(key, py_expr->getPyObject());
+                else
+                    setObjectProperty(key, Py::Object());
+            }
         }
-        else
-            setStringProperty(key, freecad_dynamic_cast<StringExpression>(output)->getText().c_str());
     }
     else
         clear(key);
@@ -1024,24 +1083,6 @@ std::vector<std::string> Sheet::getUsedCells() const
 
 void Sheet::updateColumnsOrRows(bool horizontal, int section, int count) 
 {
-    auto &hiddenProp = horizontal?hiddenColumns:hiddenRows;
-    const auto &hidden = hiddenProp.getValues();
-    auto it = hidden.lower_bound(section);
-    if(it!=hidden.end()) {
-        std::set<long> newHidden(hidden.begin(),it);
-        if(count>0) {
-            for(;it!=hidden.end();++it)
-                newHidden.insert(*it + count);
-        } else {
-            it = hidden.lower_bound(section-count);
-            if(it!=hidden.end()) {
-                for(;it!=hidden.end();++it)
-                    newHidden.insert(*it+count);
-            }
-        }
-        hiddenProp.setValues(newHidden);
-    }
-
     const auto &sizes = horizontal?columnWidths.getValues():rowHeights.getValues();
     auto iter = sizes.lower_bound(section);
     if(iter!=sizes.end()) {
@@ -1366,6 +1407,16 @@ void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdent
 
     cells.renameObjectIdentifiers(paths);
 }
+bool Sheet::hasCell(const std::vector<App::Range> &ranges) const {
+    for(auto range : ranges) {
+        do {
+            if(cells.getValue(*range))
+                return true;
+        }while(range.next());
+    }
+    return false;
+}
+
 std::string Sheet::getRow(int offset) const {
     if(currentRow < 0)
         throw Base::RuntimeError("No current row");
@@ -1394,14 +1445,6 @@ std::string Sheet::getColumn(int offset) const {
     txt[1] = (char)('A' + (col % 26));
     txt[2] = 0;
     return txt;
-}
-
-void Sheet::onChanged(const App::Property *prop) {
-    if(!isRestoring() && getDocument() && !getDocument()->isPerformingTransaction()) {
-        if(prop == &PythonMode) 
-            cells.setDirty();
-    }
-    App::DocumentObject::onChanged(prop);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
