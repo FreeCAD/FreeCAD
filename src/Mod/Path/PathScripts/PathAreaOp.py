@@ -43,10 +43,10 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "russ4262 (Russell Johnson)"
 __createdDate__ = "2017"
-__scriptVersion__ = "2h testing"
-__lastModified__ = "2019-06-30 17:17 CST"
+__scriptVersion__ = "2j testing"
+__lastModified__ = "2019-07-12 00:11 CST"
 
-LOGLEVEL = PathLog.Level.DEBUG
+LOGLEVEL = PathLog.Level.INFO
 PathLog.setLevel(LOGLEVEL, PathLog.thisModule())
 # PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
@@ -578,7 +578,6 @@ class ObjectOp(PathOp.ObjectOp):
 
         praInfo = "faceRotationAnalysis()"
         rtn = True
-        # axis = 'X'
         orientation = 'X'
         angle = 500.0
         precision = 6
@@ -681,6 +680,8 @@ class ObjectOp(PathOp.ObjectOp):
                     axis = 'X'
                 else:
                     rtn = False
+        elif orientation == 'Z':
+            axis = 'X'
 
         if math.fabs(angle) == 0.0:
             angle = 0.0
