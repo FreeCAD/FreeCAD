@@ -407,7 +407,7 @@ void QGIViewPart::drawViewPart()
                     }
                 }
             }
-            bool drawEdges = getFaceEdgesPref();
+            bool drawEdges = prefFaceEdges();
             newFace->setDrawEdges(drawEdges);                                        //pref. for debugging only
             newFace->setZValue(ZVALUE::FACE);
             newFace->draw();
@@ -482,23 +482,43 @@ void QGIViewPart::drawViewPart()
     fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x00000000));
     QColor vertexColor = fcColor.asValue<QColor>();
 
-    if (getFrameState()) {
-        bool usePolygonHLR = viewPart->CoarseView.getValue();
-        const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
-        std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
-        bool showCenters = vp->ArcCenterMarks.getValue();
-        double cAdjust = vp->CenterScale.getValue();
-        for(int i = 0 ; vert != verts.end(); ++vert, i++) {
-            if ((*vert)->isCenter) {
-                if (showCenters) {
-                    QGICMark* cmItem = new QGICMark(i);
-                    addToGroup(cmItem);
-                    cmItem->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
-                    cmItem->setThick(0.5 * lineWidth);             //need minimum?
-                    cmItem->setSize( cAdjust * lineWidth * vertexScaleFactor);
-                    cmItem->setZValue(ZVALUE::VERTEX);
-                }
-            } else if(!usePolygonHLR){ //Disable dots WHEN usePolygonHLR
+    bool showVertices = true;
+    bool showCenterMarks = true;
+//    bool usePolygonHLR = viewPart->CoarseView.getValue();
+    if (getFrameState()) {              //frames are on
+        if (viewPart->CoarseView.getValue()) {
+            showVertices = false;
+        }
+        if (!vp->ArcCenterMarks.getValue()) {
+            showCenterMarks = false;
+        }
+    } else {                            //frames are off
+        showVertices = false;
+        if (!prefPrintCenters()) {             //based on preference (!frame && !pref)
+            showCenterMarks = false;
+        }
+        if (!vp->ArcCenterMarks.getValue()) {  //based on property (!frame && !prop)
+            showCenterMarks = false;
+        }
+    }
+
+    const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
+    std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
+    double cAdjust = vp->CenterScale.getValue();
+
+    for(int i = 0 ; vert != verts.end(); ++vert, i++) {
+        if ((*vert)->isCenter) {
+            if (showCenterMarks) {
+                QGICMark* cmItem = new QGICMark(i);
+                addToGroup(cmItem);
+                cmItem->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
+                cmItem->setThick(0.5 * lineWidth);             //need minimum?
+                cmItem->setSize( cAdjust * lineWidth * vertexScaleFactor);
+                cmItem->setPrettyNormal();
+                cmItem->setZValue(ZVALUE::VERTEX);
+            }
+        } else {        //regular Vertex
+            if (showVertices) {
                 QGIVertex *item = new QGIVertex(i);
                 TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByLink(i);
                 if (cv != nullptr) {
@@ -508,9 +528,9 @@ void QGIViewPart::drawViewPart()
                     item->setNormalColor(vertexColor);
                     item->setRadius(lineWidth * vertexScaleFactor);
                 }
-                item->setPrettyNormal();
                 addToGroup(item);
                 item->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
+                item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
             }
         }
@@ -973,26 +993,6 @@ void QGIViewPart::toggleCosmeticLines(bool state)
     }
 }
 
-//// is there any circumstance where vertices need to be in a different state from frames?
-//void QGIViewPart::toggleVertices(bool state)
-//{
-//    Base::Console().Message("QGIVP::toggleVertices(%d) - %s\n",state,getViewName());
-////    QList<QGraphicsItem*> items = childItems();
-////    for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
-////        QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
-////        QGICMark *mark = dynamic_cast<QGICMark *>(*it);
-
-////        if(vert) {
-////            if (!mark) {             //leave center marks showing
-////                if(state)
-////                    vert->show();
-////                else
-////                    vert->hide();
-////            }
-////        }
-////    }
-//}
-
 TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const
 {
     TechDraw::DrawHatch* result = nullptr;
@@ -1063,11 +1063,19 @@ void QGIViewPart::rotateView(void)
 {
 }
 
-bool QGIViewPart::getFaceEdgesPref(void)
+bool QGIViewPart::prefFaceEdges(void)
 {
     bool result = false;
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     result = hGrp->GetBool("DrawFaceEdges", 0l);
     return result;
+}
+
+bool QGIViewPart::prefPrintCenters(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    bool   printCenters = hGrp->GetBool("PrintCenterMarks", true);   //true matches v0.18 behaviour
+    return printCenters;
 }
