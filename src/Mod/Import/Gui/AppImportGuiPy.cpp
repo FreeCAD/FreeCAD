@@ -82,14 +82,14 @@
 #include <App/DocumentObjectPy.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Command.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/encodeFilename.h>
-#include <Mod/Import/App/ImportOCAF.h>
-#include <Mod/Import/App/ExportOCAF.h>
+#include <Mod/Import/App/ImportOCAF2.h>
 
 #include <TDataStd.hxx>
 #include <TDataStd_Integer.hxx>
@@ -121,6 +121,10 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/ViewProviderLink.h>
+
+
+FC_LOG_LEVEL_INIT("Import", true, true)
 
 class OCAFBrowser
 {
@@ -286,22 +290,65 @@ void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QStr
     }
 }
 
-class ImportOCAFGui : public Import::ImportOCAF
+class ImportOCAFExt : public Import::ImportOCAF2
 {
 public:
-    ImportOCAFGui(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-        : ImportOCAF(h, d, name)
+    ImportOCAFExt(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
+        : ImportOCAF2(h, d, name)
     {
     }
 
 private:
-    void applyColors(Part::Feature* part, const std::vector<App::Color>& colors)
-    {
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-        if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-            static_cast<PartGui::ViewProviderPartExt*>(vp)->ShapeColor.setValue(colors.front());
-            static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.setValues(colors);
+    virtual void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
+        auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
+        if (!vp) return;
+        if(colors.empty()) {
+            // vp->MapFaceColor.setValue(true);
+            // vp->MapLineColor.setValue(true);
+            // vp->updateColors(0,true);
+            return;
         }
+        // vp->MapFaceColor.setValue(false);
+        if(colors.size() == 1)
+            vp->ShapeColor.setValue(colors.front());
+        else 
+            vp->DiffuseColor.setValues(colors);
+    }
+    virtual void applyEdgeColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
+        auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
+        if (!vp) return;
+        // vp->MapLineColor.setValue(false);
+        if(colors.size() == 1)
+            vp->LineColor.setValue(colors.front());
+        else
+            vp->LineColorArray.setValues(colors);
+    }
+    virtual void applyLinkColor(App::DocumentObject *obj, int index, App::Color color) override {
+        auto vp = dynamic_cast<Gui::ViewProviderLink*>(Gui::Application::Instance->getViewProvider(obj));
+        if(!vp)
+            return;
+        if(index<0) {
+            vp->OverrideMaterial.setValue(true);
+            vp->ShapeMaterial.setDiffuseColor(color);
+            return;
+        }
+        if(vp->OverrideMaterialList.getSize()<=index)
+            vp->OverrideMaterialList.setSize(index+1);
+        vp->OverrideMaterialList.set1Value(index,true);
+        App::Material mat(App::Material::DEFAULT);
+        if(vp->MaterialList.getSize()<=index)
+            vp->MaterialList.setSize(index+1,mat);
+        mat.diffuseColor = color;
+        vp->MaterialList.set1Value(index,mat);
+    }
+    virtual void applyElementColors(App::DocumentObject *obj, 
+            const std::map<std::string,App::Color> &colors) override 
+    {
+        auto vp = Gui::Application::Instance->getViewProvider(obj);
+        if(!vp)
+            return;
+        (void)colors;
+        // vp->setElementColors(colors);
     }
 };
 
@@ -329,13 +376,13 @@ class Module : public Py::ExtensionModule<Module>
 public:
     Module() : Py::ExtensionModule<Module>("ImportGui")
     {
-        add_varargs_method("open",&Module::open,
+        add_keyword_method("open",&Module::insert,
             "open(string) -- Open the file and create a new document."
         );
-        add_varargs_method("insert",&Module::insert,
+        add_keyword_method("insert",&Module::insert,
             "insert(string,string) -- Insert the file into the given document."
         );
-        add_varargs_method("export",&Module::exporter,
+        add_keyword_method("export",&Module::exporter,
             "export(list,string) -- Export a list of objects into a single file."
         );
         add_varargs_method("ocaf",&Module::ocaf,
@@ -347,15 +394,17 @@ public:
     virtual ~Module() {}
 
 private:
-    Py::Object open(const Py::Tuple& args)
-    {
-        return insert(args);
-    }
-    Py::Object insert(const Py::Tuple& args)
+    Py::Object insert(const Py::Tuple& args, const Py::Dict &kwds)
     {
         char* Name;
         char* DocName=0;
-        if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
+        PyObject *importHidden = Py_None;
+        PyObject *merge = Py_None;
+        PyObject *useLinkGroup = Py_None;
+        int mode = -1;
+        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode",0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOOi", 
+                    kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup,&mode))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -380,17 +429,29 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
             optionReadShapeCompoundMode = hGrp->GetBool("ReadShapeCompoundMode", optionReadShapeCompoundMode);
+            ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
+            FC_TIME_INIT(t);
+            FC_DURATION_DECL_INIT2(d1,d2);
 
             if (file.hasExtension("stp") || file.hasExtension("step")) {
+
+                if(mode<0)
+                    mode = ocaf.getMode();
+                if(mode && !pcDoc->isSaved()) {
+                    auto gdoc = Gui::Application::Instance->getDocument(pcDoc);
+                    if(!gdoc->save())
+                        return Py::Object();
+                }
+
                 try {
                     STEPCAFControl_Reader aReader;
                     aReader.SetColorMode(true);
                     aReader.SetNameMode(true);
                     aReader.SetLayerMode(true);
+                    aReader.SetSHUOMode(true);
                     if (aReader.ReadFile((const char*)name8bit.c_str()) != IFSelect_RetDone) {
                         throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                     }
-
                     Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
                     aReader.Reader().WS()->MapReader()->SetProgress(pi);
                     pi->NewScope(100, "Reading STEP file...");
@@ -445,18 +506,30 @@ private:
                 throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");
             }
 
-            ImportOCAFGui ocaf(hDoc, pcDoc, file.fileNamePure());
-            // We must recompute the doc before loading shapes as they are going to be
-            // inserted into the document and computed at the same time so we are going to
-            // purge the document before recomputing it to clear it and settle it in the proper
-            // way. This is drastically improving STEP rendering time on complex STEP files.
-            pcDoc->recompute();
-            if (file.hasExtension("stp") || file.hasExtension("step"))
-                ocaf.setMerge(optionReadShapeCompoundMode);
-            ocaf.loadShapes();
-            pcDoc->purgeTouched();
-            pcDoc->recompute();
+            FC_DURATION_PLUS(d1,t);
+            if(merge!=Py_None)
+                ocaf.setMerge(PyObject_IsTrue(merge));
+            if(importHidden!=Py_None)
+                ocaf.setImportHiddenObject(PyObject_IsTrue(importHidden));
+            if(useLinkGroup!=Py_None)
+                ocaf.setUseLinkGroup(PyObject_IsTrue(useLinkGroup));
+            ocaf.setMode(mode);
+            auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
+            FC_DURATION_PLUS(d2,t);
+            FC_DURATION_MSG(d1,"file read");
+            FC_DURATION_MSG(d2,"import");
+            FC_DURATION_MSG((d1+d2),"total");
+
+            if(ret) {
+                App::GetApplication().setActiveDocument(pcDoc);
+                auto gdoc = Gui::Application::Instance->getDocument(pcDoc);
+                if(gdoc) {
+                    gdoc->setActiveView();
+                    Gui::Application::Instance->commandManager().runCommandByName("Std_ViewFitAll");
+                }
+                return Py::asObject(ret->getPyObject());
+            }
         }
         catch (Standard_Failure& e) {
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
@@ -468,11 +541,23 @@ private:
         return Py::None();
     }
 
-    Py::Object exporter(const Py::Tuple& args)
+    static std::map<std::string, App::Color> getShapeColors(App::DocumentObject *obj, const char *subname) {
+        auto vp = Gui::Application::Instance->getViewProvider(obj);
+        if(vp)
+            return vp->getElementColors(subname);
+        return std::map<std::string,App::Color>();
+    }
+
+    Py::Object exporter(const Py::Tuple& args, const Py::Dict &kwds)
     {
         PyObject* object;
         char* Name;
-        if (!PyArg_ParseTuple(args.ptr(), "Oet",&object,"utf-8",&Name))
+        PyObject *exportHidden = Py_None;
+        PyObject *legacy = Py_None;
+        PyObject *keepPlacement = Py_None;
+        static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|OOO",
+                    kwd_list,&object,"utf-8",&Name,&exportHidden,&legacy,&keepPlacement))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -485,37 +570,52 @@ private:
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            //bool keepExplicitPlacement = list.size() > 1;
-            bool keepExplicitPlacement = Standard_True;
-            ExportOCAFGui ocaf(hDoc, keepExplicitPlacement);
-
-            // That stuff is exporting a list of selected objects into FreeCAD Tree
-            std::vector <TDF_Label> hierarchical_label;
-            std::vector <TopLoc_Location> hierarchical_loc;
-            std::vector <App::DocumentObject*> hierarchical_part;
-
+            std::vector<App::DocumentObject *> objs;
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 PyObject* item = (*it).ptr();
-                if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                    App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                    ocaf.exportObject(obj, hierarchical_label, hierarchical_loc, hierarchical_part);
-                }
+                if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type)))
+                    objs.push_back(static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
             }
 
-            // Free Shapes must have absolute placement and not explicit
-            std::vector <TDF_Label> FreeLabels;
-            std::vector <int> part_id;
-            ocaf.getFreeLabels(hierarchical_label, FreeLabels, part_id);
-            // Got issue with the colors as they are coming from the View Provider they can't be determined into
-            // the App Code.
-            std::vector< std::vector<App::Color> > Colors;
-            ocaf.getPartColors(hierarchical_part, FreeLabels, part_id, Colors);
-            ocaf.reallocateFreeShape(hierarchical_part, FreeLabels, part_id, Colors);
+            if(legacy == Py_None) {
+                auto hGrp = App::GetApplication().GetParameterGroupByPath(
+                        "User parameter:BaseApp/Preferences/Mod/Import");
+                legacy = hGrp->GetBool("ExportLegacy",false)?Py_True:Py_False;
+            }
+
+            Import::ExportOCAF2 ocaf(hDoc, &getShapeColors);
+            if(!PyObject_IsTrue(legacy) || !ocaf.canFallback(objs)) {
+                if(exportHidden!=Py_None)
+                    ocaf.setExportHiddenObject(PyObject_IsTrue(exportHidden));
+                if(keepPlacement!=Py_None)
+                    ocaf.setKeepPlacement(PyObject_IsTrue(keepPlacement));
+                ocaf.exportObjects(objs);
+            } else {
+                bool keepExplicitPlacement = objs.size() > 1;
+                keepExplicitPlacement = Standard_True;
+                ExportOCAFGui ocaf(hDoc, keepExplicitPlacement);
+                // That stuff is exporting a list of selected objects into FreeCAD Tree
+                std::vector <TDF_Label> hierarchical_label;
+                std::vector <TopLoc_Location> hierarchical_loc;
+                std::vector <App::DocumentObject*> hierarchical_part;
+                for(auto obj : objs)
+                    ocaf.exportObject(obj,hierarchical_label, hierarchical_loc,hierarchical_part);
+
+                // Free Shapes must have absolute placement and not explicit
+                std::vector <TDF_Label> FreeLabels;
+                std::vector <int> part_id;
+                ocaf.getFreeLabels(hierarchical_label,FreeLabels, part_id);
+                // Got issue with the colors as they are coming from the View Provider they can't be determined into
+                // the App Code.
+                std::vector< std::vector<App::Color> > Colors;
+                ocaf.getPartColors(hierarchical_part,FreeLabels,part_id,Colors);
+                ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
 #if OCC_VERSION_HEX >= 0x070200
             // Update is not performed automatically anymore: https://tracker.dev.opencascade.org/view.php?id=28055
-            XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
+                XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
 #endif
+            }
 
             Base::FileInfo file(Utf8Name.c_str());
             if (file.hasExtension("stp") || file.hasExtension("step")) {
@@ -597,6 +697,7 @@ private:
                 aReader.SetColorMode(true);
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
+                    aReader.SetSHUOMode(true);
                 if (aReader.ReadFile((Standard_CString)Name) != IFSelect_RetDone) {
                     throw Py::Exception(PyExc_IOError, "cannot read STEP file");
                 }

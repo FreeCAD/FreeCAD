@@ -31,6 +31,8 @@ SET(Import_SRCS
     ExportOCAF.h
     ImportOCAF.cpp
     ImportOCAF.h
+    ImportOCAF2.cpp
+    ImportOCAF2.h
     #ImportOCAFAssembly.cpp
     #ImportOCAFAssembly.h
     StepShapePy.xml
