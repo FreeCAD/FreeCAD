@@ -64,8 +64,6 @@ public:
     
     virtual short mustExecute() const override;
 
-    void Restore(Base::XMLReader &reader) override;
-
 
 protected:
 /*    virtual void onChanged(const App::Property* prop) override;*/

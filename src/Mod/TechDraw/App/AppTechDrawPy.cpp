@@ -308,11 +308,13 @@ private:
         try {
             EdgeWalker ew;
             ew.loadEdges(edgeList);
-            success = ew.perform();
-            if (success) {
+            if(ew.perform()) {
                 std::vector<TopoDS_Wire> rw = ew.getResultNoDups();
                 std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(rw,true);
-                outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
+                if(sortedWires.size()) {
+                    outerWire = new TopoShapeWirePy(new TopoShape(*sortedWires.begin()));
+                    success = true;
+                }
             } else {
                 Base::Console().Warning("ATDP::findShapeOutline: input is not planar graph. Wire detection not done\n");
             }
@@ -461,6 +463,8 @@ private:
 
     void write1ViewDxf( ImpExpDxfWrite& writer, TechDraw::DrawViewPart* dvp, bool alignPage)
     {
+        if(!dvp->hasGeometry())
+            return;
         TechDraw::GeometryObject* go = dvp->getGeometryObject();
         TopoDS_Shape s = TechDraw::mirrorShape(go->getVisHard());
         double offX = 0.0;
