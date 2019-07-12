@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport 
+        Father="BaseClassPy" 
+        Name="AxisOriginPy" 
+        Twin="AxisOrigin" 
+        TwinPointer="AxisOrigin" 
+        Include="Gui/AxisOrigin.h" 
+        Namespace="Gui" 
+        FatherInclude="Base/BaseClassPy.h"
+        FatherNamespace="Base"
+        Constructor="true"
+        Delete="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
+            <UserDocu>Class for creating a Coin3D representation of a coordinate system</UserDocu>
+        </Documentation>
+        <Methode Name="getElementPicked" Const="true">
+			<Documentation>
+                <UserDocu>getElementPicked(pickPoint): return the picked subelement</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="getDetailPath" Const="true">
+			<Documentation>
+                <UserDocu>
+getDetailPath(subname,path): return Coin detail and path of an subelement
+
+subelement: dot separated string reference to the sub element
+pPath: output coin path leading to the returned element detail
+                </UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="AxisLength">
+			<Documentation>
+                <UserDocu>Get/set the axis length</UserDocu>
+			</Documentation>
+			<Parameter Name="AxisLength" Type="Float" />
+		</Attribute>
+		<Attribute Name="LineWidth">
+			<Documentation>
+                <UserDocu>Get/set the axis line width for rendering</UserDocu>
+			</Documentation>
+			<Parameter Name="LineWidth" Type="Float" />
+		</Attribute>
+		<Attribute Name="PointSize">
+			<Documentation>
+                <UserDocu>Get/set the origin point size for rendering</UserDocu>
+			</Documentation>
+			<Parameter Name="PointSize" Type="Float" />
+		</Attribute>
+		<Attribute Name="Scale">
+			<Documentation>
+                <UserDocu>Get/set auto scaling factor, 0 to disable</UserDocu>
+			</Documentation>
+			<Parameter Name="Scale" Type="Float" />
+		</Attribute>
+		<Attribute Name="Plane">
+			<Documentation>
+                <UserDocu>Get/set axis plane size and distance to axis line</UserDocu>
+			</Documentation>
+			<Parameter Name="Plane" Type="Tuple" />
+		</Attribute>
+		<Attribute Name="Labels">
+			<Documentation>
+                <UserDocu>
+Get/set axis component names as a dictionary. Avaiable keys are,
+'O': origin
+'X': x axis
+'Y': y axis
+'Z': z axis
+'XY': xy plane
+'XZ': xz plane
+'YZ': yz plane
+                </UserDocu>
+			</Documentation>
+			<Parameter Name="Labels" Type="Dict" />
+		</Attribute>
+		<Attribute Name="Node" ReadOnly='true'>
+			<Documentation>
+                <UserDocu>Get the Coin3D node</UserDocu>
+			</Documentation>
+			<Parameter Name="Node" Type="Object" />
+		</Attribute>
+    </PythonExport>
+</GenerateModel>

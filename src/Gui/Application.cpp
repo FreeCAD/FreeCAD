@@ -121,6 +121,7 @@
 #include "ViewProviderGroupExtension.h"
 #include "ViewProviderLink.h"
 #include "LinkViewPy.h"
+#include "AxisOriginPy.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskView.h"
@@ -403,7 +404,9 @@ Application::Application(bool GUIenabled)
         Gui::TaskView::ControlPy::init_type();
         Py::Module(module).setAttr(std::string("Control"),
             Py::Object(Gui::TaskView::ControlPy::getInstance(), true));
+
         Base::Interpreter().addType(&LinkViewPy::Type,module,"LinkView");
+        Base::Interpreter().addType(&AxisOriginPy::Type,module,"AxisOrigin");
     }
 
     Base::PyGILStateLocker lock;
@@ -1674,6 +1677,7 @@ void Application::initTypes(void)
     Gui::ViewProviderPythonFeature              ::init();
     Gui::ViewProviderPythonGeometry             ::init();
     Gui::ViewProviderPlacement                  ::init();
+    Gui::ViewProviderPlacementPython            ::init();
     Gui::ViewProviderOriginFeature              ::init();
     Gui::ViewProviderPlane                      ::init();
     Gui::ViewProviderLine                       ::init();
@@ -1689,6 +1693,7 @@ void Application::initTypes(void)
     Gui::LinkView                               ::init();
     Gui::ViewProviderLink                       ::init();
     Gui::ViewProviderLinkPython                 ::init();
+    Gui::AxisOrigin                             ::init();
 
     // Workbench
     Gui::Workbench                              ::init();
