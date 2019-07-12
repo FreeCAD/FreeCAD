@@ -51,7 +51,7 @@ class TechDrawGuiExport DrawGuiUtil {
     static void dumpRectF(const char* text, const QRectF& r);
     static void dumpPointF(const char* text, const QPointF& p);
     static std::pair<Base::Vector3d,Base::Vector3d> get3DDirAndRot();
-    static std::pair<Base::Vector3d,Base::Vector3d> getProjDirFromFace(Part::Feature* obj, std::string faceName);
+    static std::pair<Base::Vector3d,Base::Vector3d> getProjDirFromFace(App::DocumentObject* obj, std::string faceName);
 
 };
 
