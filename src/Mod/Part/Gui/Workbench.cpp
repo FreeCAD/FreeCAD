@@ -72,6 +72,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << "Part_MakeTube";
 
+    Gui::MenuItem* copy = new Gui::MenuItem;
+    copy->setCommand("Create a copy");
+    *copy << "Part_SimpleCopy"
+          << "Part_TransformedCopy"
+          << "Part_ElementCopy"
+          << "Part_RefineShape";
+
     Gui::MenuItem* bop = new Gui::MenuItem;
     bop->setCommand("Boolean");
     *bop << "Part_Boolean"
@@ -113,8 +120,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_ShapeFromMesh"
           << "Part_MakeSolid"
           << "Part_ReverseShape"
-          << "Part_SimpleCopy"
-          << "Part_RefineShape"
+          << copy
           << "Part_CheckGeometry"
           << "Part_Defeaturing"
           << "Separator"
@@ -144,6 +150,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *measure << "Part_Measure_Linear"
              << "Part_Measure_Angular"
              << "Separator"
+             << "Part_Measure_Refresh"
              << "Part_Measure_Clear_All"
              << "Part_Measure_Toggle_All"
              << "Part_Measure_Toggle_3d"
@@ -211,6 +218,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *measure << "Part_Measure_Linear"
              << "Part_Measure_Angular"
              << "Separator"
+             << "Part_Measure_Refresh"
              << "Part_Measure_Clear_All"
              << "Part_Measure_Toggle_All"
              << "Part_Measure_Toggle_3d"

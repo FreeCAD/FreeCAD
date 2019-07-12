@@ -72,12 +72,10 @@ App::DocumentObjectExecReturn *Compound::execute(void)
 
         const std::vector<DocumentObject*>& links = Links.getValues();
         for (std::vector<DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-            if (*it && (*it)->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                Part::Feature* fea = static_cast<Part::Feature*>(*it);
-
-                auto pos = tempLinks.insert(fea);
+            if (*it) {
+                auto pos = tempLinks.insert(*it);
                 if (pos.second) {
-                    const TopoDS_Shape& sh = fea->Shape.getValue();
+                    const TopoDS_Shape& sh = Feature::getShape(*it);
                     if (!sh.IsNull()) {
                         builder.Add(comp, sh);
                         TopTools_IndexedMapOfShape faceMap;
@@ -108,3 +106,15 @@ App::DocumentObjectExecReturn *Compound::execute(void)
     }
 }
 
+////////////////////////////////////////////////////////////////////////
+
+PROPERTY_SOURCE(Part::Compound2, Part::Compound)
+
+Compound2::Compound2() {
+    Shape.setStatus(App::Property::Transient,true);
+}
+
+void Compound2::onDocumentRestored() {
+    auto res = execute();
+    delete res;
+}

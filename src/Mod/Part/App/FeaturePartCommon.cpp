@@ -89,9 +89,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
 
     std::vector<App::DocumentObject*>::iterator it;
     for (it = obj.begin(); it != obj.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            s.push_back(static_cast<Part::Feature*>(*it)->Shape.getValue());
-        }
+        s.push_back(Feature::getShape(*it));
     }
 
     bool argumentsAreInCompound = false;

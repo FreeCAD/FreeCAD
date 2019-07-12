@@ -84,9 +84,9 @@ App::DocumentObjectExecReturn *Face::execute(void)
     std::unique_ptr<FaceMaker> facemaker = FaceMaker::ConstructFromType(this->FaceMakerClass.getValue());
 
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
-        if (!(*it && (*it)->isDerivedFrom(Part::Feature::getClassTypeId())))
+        if (!(*it))
             return new App::DocumentObjectExecReturn("Linked object is not a Part object (has no Shape).");
-        TopoDS_Shape shape = static_cast<Part::Part2DObject*>(*it)->Shape.getShape().getShape();
+        TopoDS_Shape shape = Feature::getShape(*it);
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Linked shape object is empty");
 

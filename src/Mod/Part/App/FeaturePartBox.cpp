@@ -91,6 +91,16 @@ void Box::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Properties");
     int Cnt = reader.getAttributeAsInteger("Count");
+    int transientCount = 0;
+    if(reader.hasAttribute("TransientCount"))
+        transientCount = reader.getAttributeAsUnsigned("TransientCount");
+
+    for (int i=0;i<transientCount; ++i) {
+        reader.readElement("_Property");
+        App::Property* prop = getPropertyByName(reader.getAttribute("name"));
+        if(prop && reader.hasAttribute("status"))
+            prop->setStatusValue(reader.getAttributeAsUnsigned("status"));
+    }
 
     bool location_xyz = false;
     bool location_axis = false;
@@ -104,7 +114,27 @@ void Box::Restore(Base::XMLReader &reader)
         reader.readElement("Property");
         const char* PropName = reader.getAttribute("name");
         const char* TypeName = reader.getAttribute("type");
-        App::Property* prop = getPropertyByName(PropName);
+        auto prop = dynamicProps.restore(*this,PropName,TypeName,reader);
+        if(!prop)
+            prop = getPropertyByName(PropName);
+
+        std::bitset<32> status;
+        if(reader.hasAttribute("status")) {
+            status = reader.getAttributeAsUnsigned("status");
+            if(prop)
+                prop->setStatusValue(status.to_ulong());
+        }
+        if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+            if (!prop->testStatus(App::Property::Transient) 
+                    && !status.test(App::Property::Transient)
+                    && !status.test(App::Property::PropTransient)
+                    && !(getPropertyType(prop) & App::Prop_Transient))
+            {
+                prop->Restore(reader);
+            }
+            reader.readEndElement("Property");
+            continue;
+        }
         if (!prop) {
             // in case this comes from an old document we must use the new properties
             if (strcmp(PropName, "l") == 0) {
