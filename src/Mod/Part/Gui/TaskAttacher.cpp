@@ -109,6 +109,7 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
 
 TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget *parent, QString picture, QString text)
     : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent),
+      SelectionObserver(ViewProvider),
       ViewProvider(ViewProvider)
 {
     //check if we are attachable
@@ -348,8 +349,8 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::vector<App::DocumentObject*> refs = pcAttach->Support.getValues();
         std::vector<std::string> refnames = pcAttach->Support.getSubValues();
         App::DocumentObject* selObj = ViewProvider->getObject()->getDocument()->getObject(msg.pObjectName);
-        if (selObj == ViewProvider->getObject()) return;//prevent self-referencing
-
+        if (!selObj || selObj == ViewProvider->getObject()) return;//prevent self-referencing
+        
         std::string subname = msg.pSubName;
 
         // Remove subname for planes and datum features
@@ -1021,36 +1022,28 @@ bool TaskDlgAttacher::accept()
             return true;
 
         Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-        std::string name = ViewProvider->getObject()->getNameInDocument();
-        std::string appDocument = doc.getAppDocumentPython();
-        std::string guiDocument = doc.getGuiDocumentPython();
+        auto obj = ViewProvider->getObject();
 
         //DeepSOIC: changed this to heavily rely on dialog constantly updating feature properties
         if (pcAttach->AttachmentOffset.isTouched()){
             Base::Placement plm = pcAttach->AttachmentOffset.getValue();
             double yaw, pitch, roll;
             plm.getRotation().getYawPitchRoll(yaw,pitch,roll);
-            Gui::Command::doCommand(Gui::Command::Doc,"%s.%s.AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
-                                    appDocument.c_str(), name.c_str(),
+            FCMD_OBJ_CMD2("AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
+                                    obj,
                                     plm.getPosition().x, plm.getPosition().y, plm.getPosition().z,
                                     yaw, pitch, roll);
         }
 
-        Gui::Command::doCommand(Gui::Command::Doc,"%s.%s.MapReversed = %s",
-                                appDocument.c_str(), name.c_str(),
-                                pcAttach->MapReversed.getValue() ? "True" : "False");
+        FCMD_OBJ_CMD2("MapReversed = %s", obj, pcAttach->MapReversed.getValue() ? "True" : "False");
 
-        Gui::Command::doCommand(Gui::Command::Doc,"%s.%s.Support = %s",
-                                appDocument.c_str(), name.c_str(),
-                                pcAttach->Support.getPyReprString().c_str());
+        FCMD_OBJ_CMD2("Support = %s", obj, pcAttach->Support.getPyReprString().c_str());
 
-        Gui::Command::doCommand(Gui::Command::Doc,"%s.%s.MapMode = '%s'",
-                                appDocument.c_str(), name.c_str(),
-                                AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
+        FCMD_OBJ_CMD2("MapMode = '%s'", obj, AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
 
-        Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", appDocument.c_str());
+        FCMD_OBJ_DOC_CMD(obj, "recompute()");
 
-        Gui::Command::doCommand(Gui::Command::Gui, "%s.resetEdit()", guiDocument.c_str());
+        FCMD_VOBJ_DOC_CMD(obj,"resetEdit()");
         document->commitCommand();
     }
     catch (const Base::Exception& e) {

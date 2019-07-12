@@ -33,6 +33,7 @@
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <map>
+#include <Mod/Part/App/PartFeature.h>
 
 class TopoDS_Shape;
 class TopoDS_Edge;
@@ -128,9 +129,15 @@ public:
     void unsetHighlightedPoints();
     //@}
 
+    virtual bool isUpdateForced() const override {
+        return forceUpdateCount>0;
+    }
+    virtual void forceUpdate(bool enable = true) override;
+
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*);
+
 protected:
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
@@ -140,7 +147,7 @@ protected:
     /// get called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop);
     bool loadParameter();
-    void updateVisual(const TopoDS_Shape &);
+    void updateVisual();
     void getNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,
                     TColgp_Array1OfDir& theNormals);
 
@@ -166,6 +173,7 @@ protected:
 
 private:
     // settings stuff
+    int forceUpdateCount;
     static App::PropertyFloatConstraint::Constraints sizeRange;
     static App::PropertyFloatConstraint::Constraints tessRange;
     static App::PropertyQuantityConstraint::Constraints angDeflectionRange;
