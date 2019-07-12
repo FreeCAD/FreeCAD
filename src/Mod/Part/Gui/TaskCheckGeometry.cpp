@@ -415,38 +415,25 @@ void TaskCheckGeometryResults::goCheck()
 {
     Gui::WaitCursor wc;
     int selectedCount(0), checkedCount(0), invalidShapes(0);
-    std::vector<Gui::SelectionSingleton::SelObj> selection = Gui::Selection().getSelection();
-    std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
     ResultEntry *theRoot = new ResultEntry();
-
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"), Gui::getMainWindow());
     theProgress->NewScope("BOP check...");
 #if OCC_VERSION_HEX >= 0x060900
     theProgress->Show();
 #endif
 
-    selectedCount = static_cast<int>(selection.size());
-    for (it = selection.begin(); it != selection.end(); ++it)
-    {
-        Part::Feature *feature = dynamic_cast<Part::Feature *>((*it).pObject);
-        if (!feature)
-            continue;
-        currentSeparator = Gui::Application::Instance->activeDocument()->getViewProvider(feature)->getRoot();
-        if (!currentSeparator)
-            continue;
-        TopoDS_Shape shape = feature->Shape.getValue();
-        QString baseName;
-        QTextStream baseStream(&baseName);
-        baseStream << (*it).DocName;
-        baseStream << "." << (*it).FeatName;
-        if (strlen((*it).SubName) > 0)
-        {
-            shape = feature->Shape.getShape().getSubShape((*it).SubName);
-            baseStream << "." << (*it).SubName;
-        }
-
+    for(const auto &sel :  Gui::Selection().getSelection()) {
+        selectedCount++;
+        TopoDS_Shape shape = Part::Feature::getShape(sel.pObject,sel.SubName,true);
         if (shape.IsNull())
             continue;
+        currentSeparator = Gui::Application::Instance->getViewProvider(sel.pObject)->getRoot();
+        if (!currentSeparator)
+            continue;
+        QString baseName;
+        QTextStream baseStream(&baseName);
+        baseStream << sel.DocName;
+        baseStream << "." << sel.FeatName;
         checkedCount++;
         checkedMap.Clear();
 
@@ -483,7 +470,7 @@ void TaskCheckGeometryResults::goCheck()
           group->SetBool("RunBOPCheck", runSignal);
           if (runSignal) {
             std::string label = "Checking ";
-            label += feature->Label.getStrValue();
+            label += sel.pObject->Label.getStrValue();
             label += "...";
             theProgress->NewScope(label.c_str());
             invalidShapes += goBOPSingleCheck(shape, theRoot, baseName, theProgress);

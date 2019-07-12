@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
   <PythonExport
-      Father="PyObjectBase"
+      Father="PersistencePy"
       Name="GeometryPy"
       Twin="Geometry"
       TwinPointer="Geometry"
       Include="Mod/Part/App/Geometry.h"
       Namespace="Part"
-      FatherInclude="Base/PyObjectBase.h"
+      FatherInclude="Base/PersistencePy.h"
       FatherNamespace="Base"
       Constructor="true"
       Delete="true">

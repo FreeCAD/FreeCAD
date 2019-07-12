@@ -632,6 +632,11 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         std::vector<Gui::SelectionObject>::iterator selIt = std::find_if(selObj.begin(), selObj.end(),
             Private::SelectionObjectCompare(d->object));
 
+
+         /*
+          * Edit: the following check is no longer necessary, as Gui::Selection
+          * will do the check
+          *
         // If sub-objects are already selected then only add the un-selected parts.
         // This is impotant to avoid recursive calls of rmvSelection() which
         // invalidates the internal iterator (#0002200).
@@ -645,9 +650,12 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
             std::set_difference(subElements.begin(), subElements.end(), selElements.begin(), selElements.end(), biit);
             subElements = complementary;
         }
+        */
+
+        Gui::Selection().clearSelection(doc->getName());
 
         if (!subElements.empty()) {
-            Gui::Selection().addSelection(doc->getName(),
+            Gui::Selection().addSelections(doc->getName(),
                 d->object->getNameInDocument(),
                 subElements);
         }
@@ -795,7 +803,7 @@ void DlgFilletEdges::on_selectAllButton_clicked()
 
     if (d->object) {
         App::Document* doc = d->object->getDocument();
-        Gui::Selection().addSelection(doc->getName(),
+        Gui::Selection().addSelections(doc->getName(),
             d->object->getNameInDocument(),
             subElements);
     }

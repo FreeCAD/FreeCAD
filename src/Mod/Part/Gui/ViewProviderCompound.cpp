@@ -102,7 +102,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
-            Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            Part::Feature* objBase = dynamic_cast<Part::Feature*>(Part::Feature::getShapeOwner(*it));
             if (!objBase)
                 continue;
 
@@ -174,10 +174,3 @@ void ViewProviderCompound::dropObject(App::DocumentObject* obj)
     pComp->Links.setValues(pShapes);
 }
 
-void ViewProviderCompound::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
-{
-    Part::Compound* pBool = static_cast<Part::Compound*>(getObject());
-    std::vector<App::DocumentObject*> pShapes = pBool->Links.getValues();
-    std::replace(pShapes.begin(), pShapes.end(), oldValue, newValue);
-    pBool->Links.setValues(pShapes);
-}

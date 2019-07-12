@@ -515,6 +515,8 @@ public:
      */
     virtual int canLoadPartial() const {return 0;}
 
+    virtual void onUpdateElementReference(const Property *) {}
+
     /** Allow object to redirect a subname path
      *
      * @param ss: input as the current subname path from \a topParent leading
