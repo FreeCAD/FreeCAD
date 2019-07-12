@@ -164,6 +164,7 @@ void ViewProviderPage::updateData(const App::Property* prop)
        } else {
            sPixmap = "TechDraw_Tree_Page_Unsync";
        }
+       signalChangeIcon();
     //if the template is changed, rebuild the visual
     } else if (prop == &(getDrawPage()->Template)) {
        if(m_mdiView && 
@@ -218,8 +219,7 @@ bool ViewProviderPage::setEdit(int ModNum)
 
 bool ViewProviderPage::doubleClicked(void)
 {
-    Visibility.setValue(true);
-    showMDIViewPage();
+    show();
     Gui::getMainWindow()->setActiveWindow(m_mdiView);
     return true;
 }
@@ -249,6 +249,8 @@ bool ViewProviderPage::showMDIViewPage()
         Gui::getMainWindow()->addWindow(m_mdiView);
         m_mdiView->viewAll();  //this is empty function
         m_mdiView->showMaximized();
+        if(!getDrawPage()->KeepUpdated.getValue())
+            getDrawPage()->KeepUpdated.setValue(true);
     } else {
         m_mdiView->updateDrawing();
         m_mdiView->redrawAllViews();
@@ -428,4 +430,9 @@ TechDraw::DrawPage* ViewProviderPage::getDrawPage() const
         return nullptr;
     }
     return dynamic_cast<TechDraw::DrawPage*>(pcObject);
+}
+
+Gui::MDIView *ViewProviderPage::getMDIView() {
+    showMDIViewPage();
+    return m_mdiView.data();
 }
