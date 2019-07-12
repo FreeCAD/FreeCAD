@@ -84,14 +84,15 @@ class UpdateWorker(QtCore.QThread):
             name = re.findall("title=\"(.*?) @",l)[0]
             self.info_label.emit(name)
             #url = re.findall("title=\"(.*?) @",l)[0]
-            url = "https://github.com/" + re.findall("href=\"\/(.*?)\/tree",l)[0]
-            addondir = moddir + os.sep + name
-            #print ("found:",name," at ",url)
-            if not os.path.exists(addondir):
-                state = 0
-            else:
-                state = 1
-            repos.append([name,url,state])
+            url = utils.getRepoUrl(l)
+            if url:
+                addondir = moddir + os.sep + name
+                #print ("found:",name," at ",url)
+                if not os.path.exists(addondir):
+                    state = 0
+                else:
+                    state = 1
+                repos.append([name,url,state])
         # querying custom addons
         customaddons = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons").GetString("CustomRepositories","").split("\n")
         for url in customaddons:
@@ -317,7 +318,7 @@ class ShowWorker(QtCore.QThread):
             self.info_label.emit(translate("AddonsInstaller", "Retrieving info from") + ' ' + str(url))
             desc = ""
             # get the README if possible
-            readmeurl = utils.getreadmeurl(url)
+            readmeurl = utils.getReadmeUrl(url)
             if not readmeurl:
                 print("Debug: README not found for",url)
             u = utils.urlopen(readmeurl)
@@ -328,12 +329,12 @@ class ShowWorker(QtCore.QThread):
                 if sys.version_info.major >= 3 and isinstance(p, bytes):
                     p = p.decode("utf-8")
                 u.close()
-                readmeregex = utils.getreadmeregex(url)
+                readmeregex = utils.getReadmeRegex(url)
                 if readmeregex:
                     readme = re.findall(readmeregex,p,flags=re.MULTILINE|re.DOTALL)
                     if readme:
                         desc += readme[0]
-            else:
+            if not desc:
                 # fall back to the description text
                 u = utils.urlopen(url)
                 if not u:
@@ -344,11 +345,11 @@ class ShowWorker(QtCore.QThread):
                 if sys.version_info.major >= 3 and isinstance(p, bytes):
                     p = p.decode("utf-8")
                 u.close()
-                descregex = utils.getdescregex(url)
+                descregex = utils.getDescRegex(url)
                 if descregex:
                     desc = re.findall(descregex,p)
                     if desc:
-                        desc = desc[0]
+                        desc = "<br/>"+desc[0]
             if not desc:
                 desc = "Unable to retrieve addon description"
             self.repos[self.idx].append(desc)
@@ -676,7 +677,7 @@ class InstallWorker(QtCore.QThread):
                 shutil.rmtree(bakdir)
             os.rename(clonedir,bakdir)
         os.makedirs(clonedir)
-        zipurl = utils.getzipurl(baseurl)
+        zipurl = utils.getZipUrl(baseurl)
         if not zipurl:
             return translate("AddonsInstaller", "Error: Unable to locate zip from") + " " + baseurl
         try:
