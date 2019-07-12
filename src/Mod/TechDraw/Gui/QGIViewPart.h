@@ -102,7 +102,9 @@ protected:
     void dumpPath(const char* text,QPainterPath path);
     void removePrimitives(void);
     void removeDecorations(void);
-    bool getFaceEdgesPref(void);
+    bool prefFaceEdges(void);
+    bool prefPrintCenters(void);
+
 
 private:
     QList<QGraphicsItem*> deleteItems;
