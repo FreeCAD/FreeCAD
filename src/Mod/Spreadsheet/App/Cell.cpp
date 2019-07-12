@@ -102,7 +102,6 @@ Cell::Cell(const CellAddress &_address, PropertySheet *_owner)
     : address(_address)
     , owner(_owner)
     , used(0)
-    , expression(0)
     , alignment(ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER)
     , style()
     , foregroundColor(0, 0, 0, 1)
@@ -142,7 +141,7 @@ Cell &Cell::operator =(const Cell &rhs)
 
     address = rhs.address;
 
-    setExpression(rhs.expression ? rhs.expression->copy() : 0);
+    setExpression(App::ExpressionPtr(rhs.expression ? rhs.expression->copy() : nullptr));
     setAlignment(rhs.alignment);
     setStyle(rhs.style);
     setBackground(rhs.backgroundColor);
@@ -166,8 +165,6 @@ Cell &Cell::operator =(const Cell &rhs)
 
 Cell::~Cell()
 {
-    if (expression)
-        delete expression;
 }
 
 /**
@@ -175,7 +172,7 @@ Cell::~Cell()
   *
   */
 
-void Cell::setExpression(App::Expression *expr)
+void Cell::setExpression(App::ExpressionPtr &&expr)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
@@ -204,9 +201,7 @@ void Cell::setExpression(App::Expression *expr)
         expr->comment.clear();
     }
 
-    if (expression)
-        delete expression;
-    expression = expr;
+    expression = std::move(expr);
     setUsed(EXPRESSION_SET, !!expression);
 
     /* Update dependencies */
@@ -247,8 +242,8 @@ const App::Expression *Cell::getExpression(bool withFormat) const
 bool Cell::getStringContent(std::string & s, bool persistent) const
 {
     if (expression) {
-        if (freecad_dynamic_cast<App::StringExpression>(expression)) {
-            s = static_cast<App::StringExpression*>(expression)->getText();
+        if (freecad_dynamic_cast<App::StringExpression>(expression.get())) {
+            s = static_cast<App::StringExpression*>(expression.get())->getText();
             char * end;
             errno = 0;
             double d = strtod(s.c_str(), &end);
@@ -256,12 +251,12 @@ bool Cell::getStringContent(std::string & s, bool persistent) const
             if (!*end && errno == 0)
                 s = "'" + s;
         }
-        else if (freecad_dynamic_cast<App::ConstantExpression>(expression))
+        else if (freecad_dynamic_cast<App::ConstantExpression>(expression.get()))
             s = "=" + expression->toString();
-        else if (freecad_dynamic_cast<App::NumberExpression>(expression))
+        else if (freecad_dynamic_cast<App::NumberExpression>(expression.get()))
             s = expression->toString();
         else
-            s = "=" + expression->toString();
+            s = "=" + expression->toString(persistent);
 
         return true;
     }
@@ -272,7 +267,7 @@ bool Cell::getStringContent(std::string & s, bool persistent) const
 }
 
 void Cell::afterRestore() {
-    auto expr = freecad_dynamic_cast<StringExpression>(expression);
+    auto expr = freecad_dynamic_cast<StringExpression>(expression.get());
     if(expr) 
         setContent(expr->getText().c_str());
 }
@@ -285,7 +280,7 @@ void Cell::setContent(const char * value)
     clearException();
     if (value != 0) {
         if(owner->sheet()->isRestoring()) {
-            expression = new App::StringExpression(owner->sheet(),value);
+            expression.reset(new App::StringExpression(owner->sheet(),value));
             setUsed(EXPRESSION_SET, true);
             return;
         }
@@ -320,7 +315,7 @@ void Cell::setContent(const char * value)
     }
 
     try {
-        setExpression(expr);
+        setExpression(App::ExpressionPtr(expr));
         signaller.tryInvoke();
     } catch (Base::Exception &e) {
         if(value) {
@@ -330,7 +325,7 @@ void Cell::setContent(const char * value)
                 _value += value;
                 value = _value.c_str();
             }
-            setExpression(new App::StringExpression(owner->sheet(), value));
+            setExpression(App::ExpressionPtr(new App::StringExpression(owner->sheet(), value)));
             setParseException(e.what());
         }
     }
@@ -769,9 +764,6 @@ void Cell::save(std::ostream &os, const char *indent, bool noContent) const {
         os << "rowSpan=\"" << rowSpan<< "\" ";
         os << "colSpan=\"" << colSpan << "\" ";
     }
-
-    if(editMode) 
-        os << "editMode=\"" << editMode << "\" ";
 
     os << "/>";
     if(!noContent)
