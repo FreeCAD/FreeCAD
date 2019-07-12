@@ -577,14 +577,18 @@ class UpdateWorker(QtCore.QThread):
             name = re.findall("title=\"(.*?) @",l)[0]
             self.info_label.emit(name)
             #url = re.findall("title=\"(.*?) @",l)[0]
-            url = "https://github.com/" + re.findall("href=\"\/(.*?)\/tree",l)[0]
-            addondir = moddir + os.sep + name
-            #print ("found:",name," at ",url)
-            if not os.path.exists(addondir):
-                state = 0
+            try:
+                url = "https://github.com/" + re.findall("href=\"\/(.*?)\/tree",l)[0]
+            except:
+                pass
             else:
-                state = 1
-            repos.append([name,url,state])
+                addondir = moddir + os.sep + name
+                #print ("found:",name," at ",url)
+                if not os.path.exists(addondir):
+                    state = 0
+                else:
+                    state = 1
+                repos.append([name,url,state])
         if not repos:
             self.info_label.emit(translate("AddonsInstaller", "Unable to download addon list."))
         else:
