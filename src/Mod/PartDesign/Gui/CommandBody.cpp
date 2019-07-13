@@ -455,7 +455,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
-#ifndef FCMD_DEBUG
+#ifndef FC_DEBUG
         if ( chainIt->empty () ) { // prevent crash in release in case of errors
             continue;
         }
