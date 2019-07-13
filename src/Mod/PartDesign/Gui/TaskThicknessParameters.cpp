@@ -138,6 +138,7 @@ void TaskThicknessParameters::onRefDeleted(void)
     App::DocumentObject* base = pcThickness->Base.getValue();
     std::vector<std::string> faces = pcThickness->Base.getSubValues();
     faces.erase(faces.begin() + ui->listWidgetReferences->currentRow());
+    setupTransaction();
     pcThickness->Base.setValue(base, faces);
     ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
     pcThickness->getDocument()->recomputeFeature(pcThickness);
@@ -149,6 +150,7 @@ void TaskThicknessParameters::onValueChanged(double angle)
 {
     clearButtons(none);
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    setupTransaction();
     pcThickness->Value.setValue(angle);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
 }
@@ -157,6 +159,7 @@ void TaskThicknessParameters::onJoinTypeChanged(int join) {
 
     clearButtons(none);
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    setupTransaction();
     pcThickness->Join.setValue(join);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
 }
@@ -165,6 +168,7 @@ void TaskThicknessParameters::onModeChanged(int mode) {
 
     clearButtons(none);
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    setupTransaction();
     pcThickness->Mode.setValue(mode);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
 }
@@ -178,6 +182,7 @@ double TaskThicknessParameters::getValue(void) const
 void TaskThicknessParameters::onReversedChanged(const bool on) {
     clearButtons(none);
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    setupTransaction();
     pcThickness->Reversed.setValue(on);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
 }
@@ -254,12 +259,12 @@ bool TaskDlgThicknessParameters::accept()
 
     TaskThicknessParameters* draftparameter = static_cast<TaskThicknessParameters*>(parameter);
 
-    std::string name = vp->getObject()->getNameInDocument();
+    auto obj = vp->getObject();
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",name.c_str(),draftparameter->getValue());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),draftparameter->getReversed());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Mode = %u",name.c_str(),draftparameter->getMode());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %u",name.c_str(),draftparameter->getJoinType());
+    FCMD_OBJ_CMD(obj,"Value = " << draftparameter->getValue());
+    FCMD_OBJ_CMD(obj,"Reversed = " << draftparameter->getReversed());
+    FCMD_OBJ_CMD(obj,"Mode = " << draftparameter->getMode());
+    FCMD_OBJ_CMD(obj,"Join = " << draftparameter->getJoinType());
 
     return TaskDlgDressUpParameters::accept();
 }
