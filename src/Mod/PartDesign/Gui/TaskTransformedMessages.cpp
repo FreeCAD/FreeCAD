@@ -52,6 +52,7 @@ TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transf
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);
+    ui->labelTransformationStatus->setText(transformedView->getMessage());
 
     connectionDiagnosis = transformedView->signalDiagnosis.connect(boost::bind(&PartDesignGui::TaskTransformedMessages::slotDiagnosis, this,_1));
 }
