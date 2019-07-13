@@ -42,6 +42,7 @@
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include "Utils.h"
 #include "TaskFeatureParameters.h"
 
 #include "ViewProvider.h"
@@ -64,7 +65,6 @@ ViewProvider::~ViewProvider()
 bool ViewProvider::doubleClicked(void)
 {
 #if 0
-	PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
     // TODO May be move to setEdit()? (2015-07-26, Fat-Zer)
 	if (body != NULL) {
         // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
@@ -80,11 +80,11 @@ bool ViewProvider::doubleClicked(void)
 #endif
 
     try {
+	    PartDesign::Body* body = PartDesign::Body::findBodyOf(getObject());
         std::string Msg("Edit ");
         Msg += this->pcObject->Label.getValue();
         Gui::Command::openCommand(Msg.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",
-                this->pcObject->getNameInDocument());
+        PartDesignGui::setEdit(pcObject,body);
     }
     catch (const Base::Exception&) {
         Gui::Command::abortCommand();
@@ -201,12 +201,9 @@ void ViewProvider::onChanged(const App::Property* prop) {
             for(App::DocumentObject* obj : body->Group.getValues()) {
 
                 if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && obj != getObject()) {
-                   Gui::ViewProvider* vp = Gui::Application::Instance->activeDocument()->getViewProvider(obj);
-                   if(!vp)
-                       return;
-
-                   Gui::ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
-                   if (vpd->Visibility.getValue())
+                   auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
+                           Gui::Application::Instance->getViewProvider(obj));
+                   if(vpd && vpd->Visibility.getValue())
                        vpd->Visibility.setValue(false);
                 }
             }
@@ -282,8 +279,7 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
         //
         // fixes (#3084)
 
-        Gui::Command::doCommand ( Gui::Command::Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                                body->getNameInDocument(), feature->getNameInDocument() );
+        FCMD_OBJ_CMD(body,"removeObject(" << Gui::Command::getObjectCmd(feature) << ')');
     }
 
     return true;
@@ -318,7 +314,7 @@ void ViewProvider::makeTemporaryVisible(bool onoff)
     //make sure to not use the overridden versions, as they change properties
     if (onoff) {
         if (VisualTouched) {
-            updateVisual(static_cast<Part::Feature*>(getObject())->Shape.getValue());
+            updateVisual();
         }
         Gui::ViewProvider::show();
     }

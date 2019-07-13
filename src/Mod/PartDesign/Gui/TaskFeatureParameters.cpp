@@ -108,10 +108,7 @@ bool TaskDlgFeatureParameters::accept() {
 
         App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
 
-        if (previous) {
-            Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")",
-                    previous->getNameInDocument());
-        }
+        FCMD_OBJ_HIDE(previous);
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
 

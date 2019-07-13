@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <App/Document.h>
 #include "ViewProviderBase.h"
 #include <Mod/PartDesign/App/FeatureBase.h>
 #include <Gui/Command.h>
@@ -58,8 +59,7 @@ bool ViewProviderBase::doubleClicked(void)
             std::string Msg("Edit ");
             Msg += base->Label.getValue();
             Gui::Command::openCommand(Msg.c_str());
-            Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",
-                    base->getNameInDocument());
+            FCMD_SET_EDIT(base);
         }
         catch (const Base::Exception&) {
             Gui::Command::abortCommand();
