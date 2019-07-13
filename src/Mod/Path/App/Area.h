@@ -35,12 +35,9 @@
 
 #include <Base/Console.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/PartPyCXX.h>
 #include "Path.h"
 #include "AreaParams.h"
-
-namespace Part {
-extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
-}
 
 class CArea;
 class CCurve;
