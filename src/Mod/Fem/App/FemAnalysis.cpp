@@ -89,9 +89,9 @@ template<> const char* Fem::FemAnalysisPython::getViewProviderName(void) const {
     return "FemGui::ViewProviderFemAnalysisPython";
 }
 
-template<> void Fem::FemAnalysisPython::Restore(Base::XMLReader& reader) {
-    FemAnalysis::Restore(reader);
-}
+// template<> void Fem::FemAnalysisPython::Restore(Base::XMLReader& reader) {
+//     FemAnalysis::Restore(reader);
+// }
 //template<> PyObject* Fem::FemAnalysisPython::getPyObject(void) {
 //    if (PythonObject.is(Py::_None())) {
 //        // ref counter is set to 1
