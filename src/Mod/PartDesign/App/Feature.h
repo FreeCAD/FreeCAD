@@ -52,7 +52,7 @@ public:
 
     /// Base feature which this feature will be fused into or cut out of
     App::PropertyLink   BaseFeature;
-    App::PropertyLinkHidden Owner;
+    App::PropertyLinkHidden _Body;
 
     short mustExecute() const;
 

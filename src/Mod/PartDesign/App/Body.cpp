@@ -330,7 +330,7 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     Group.setValues (model);
 
     if(feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
-        static_cast<PartDesign::Feature*>(feature)->Owner.setValue(this);
+        static_cast<PartDesign::Feature*>(feature)->_Body.setValue(this);
 
     // Set the BaseFeature property
     setBaseProperty(feature);
@@ -541,7 +541,7 @@ void Body::onDocumentRestored()
 {
     for(auto obj : Group.getValues()) {
         if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
-            static_cast<PartDesign::Feature*>(obj)->Owner.setValue(this);
+            static_cast<PartDesign::Feature*>(obj)->_Body.setValue(this);
     }
     DocumentObject::onDocumentRestored();
 }
