@@ -51,6 +51,31 @@ private:
 
 };
 
+class PartDesignGuiExport ViewProviderSubShapeBinder : public PartGui::ViewProviderPart
+{
+    PROPERTY_HEADER(PartDesignGui::ViewProviderShapeBinder);
+
+public:
+
+    /// Constructor
+    ViewProviderSubShapeBinder();
+
+    bool canDropObjects() const override {return true;}
+    bool canDragAndDropObject(App::DocumentObject*) const override {return false;}
+    bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+            const char *subname, const std::vector<std::string> &elements) const override;
+    std::string dropObjectEx(App::DocumentObject*, App::DocumentObject*, const char *, 
+            const std::vector<std::string> &) override;
+    std::vector<App::DocumentObject*> claimChildren(void) const override;
+
+    virtual bool doubleClicked() override;
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    virtual bool setEdit(int ModNum) override;
+
+private:
+    void updatePlacement(bool transaction);
+};
+
 } // namespace PartDesignGui
 
 
