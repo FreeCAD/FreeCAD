@@ -383,7 +383,9 @@ struct ShapeCache {
         const char *propName = prop.getName();
         if(!propName)
             return;
-        if(strcmp(propName,"Shape")==0 || strstr(propName,"Touched")!=0)
+        if(strcmp(propName,"Shape")==0 
+                || strcmp(propName,"Group")==0
+                || strstr(propName,"Touched")!=0)
             slotClear(obj);
     }
 
