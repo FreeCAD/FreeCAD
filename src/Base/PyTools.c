@@ -16,6 +16,7 @@ is provided on an as is basis, without warranties of any kind.
 #include <assert.h>
 #include <compile.h>
 #include <eval.h>
+#include <frameobject.h>
 
 #if PY_VERSION_HEX <= 0x02050000
 #error "Use Python2.5.x or higher"
@@ -255,7 +256,8 @@ void PP_Fetch_Error_Text()
     }
     else
     {
-        strcpy(PP_last_error_type, "<unknown exception type>");
+        /* strcpy(PP_last_error_type, "<unknown exception type>"); */
+        PP_last_error_type[0] = '\0';
     }
     
     Py_XDECREF(pystring);
@@ -319,8 +321,24 @@ void PP_Fetch_Error_Text()
         PP_last_error_trace[MAX-1] = '\0';
         free(tempstr);  /* it's a strdup */
     }
-    else 
-        strcpy(PP_last_error_trace, "<unknown exception traceback>"); 
+    else {
+        PyFrameObject* frame = PyEval_GetFrame();
+        if(!frame) 
+            return;
+        int line = PyFrame_GetLineNumber(frame);
+#if PY_MAJOR_VERSION >= 3
+        const char *file = PyUnicode_AsUTF8(frame->f_code->co_filename);
+#else
+        const char *file = PyString_AsString(frame->f_code->co_filename);
+#endif
+#ifdef FC_OS_WIN32
+        const char *_f = strstr(file, "\\src\\");
+#else
+        const char *_f = strstr(file, "/src/");
+#endif
+        /* strcpy(PP_last_error_trace, "<unknown exception traceback>");  */
+        snprintf(PP_last_error_trace,sizeof(PP_last_error_trace),"%s(%d)",(_f?_f+5:file),line);
+    }
     Py_XDECREF(pystring);
 
     Py_XDECREF(PP_last_exception_type);
