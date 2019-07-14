@@ -482,7 +482,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
     if (!hasMacroCommand){
         /** first the custom macros page dialog **/
         if (!dlg)
-            dlg = new Gui::Dialog::DlgCustomizeImp(getMainWindow());
+            dlg = new Gui::Dialog::DlgCustomizeImp(this);
         dlg->setAttribute(Qt::WA_DeleteOnClose);
         dlg->setModal(true);
         /** title is normally "Customize" **/
@@ -536,7 +536,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
 
     dlg = 0;
     if (!dlg){
-        dlg = new Gui::Dialog::DlgCustomizeImp(getMainWindow());
+        dlg = new Gui::Dialog::DlgCustomizeImp(this);
     }
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setModal(true);
