@@ -723,6 +723,7 @@ class editTracker(Tracker):
         else:
             selnode = coin.SoType.fromName("SoFCSelection").createInstance()
             if name:
+                selnode.useNewSelection = False
                 selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
                 selnode.objectName.setValue(name)
                 selnode.subElementName.setValue("EditNode"+str(idx))
