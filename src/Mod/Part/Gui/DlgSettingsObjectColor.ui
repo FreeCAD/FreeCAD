@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxDefaultColors">
      <property name="title">
-      <string>Default Part colors</string>
+      <string>Default part colors</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -64,7 +64,7 @@
         <item row="1" column="1">
          <widget class="Gui::PrefColorButton" name="DefaultShapeLineColor">
           <property name="toolTip">
-           <string>The default line color for new shapes</string>
+           <string>Default line color for new shapes</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -84,7 +84,7 @@
         <item row="0" column="1">
          <widget class="Gui::PrefColorButton" name="DefaultShapeColor">
           <property name="toolTip">
-           <string>The default color for new shapes</string>
+           <string>Default color for new shapes</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -104,7 +104,7 @@
         <item row="2" column="1">
          <widget class="Gui::PrefSpinBox" name="DefaultShapeLineWidth">
           <property name="toolTip">
-           <string>The default line thickness for new shapes</string>
+           <string>Default line thickness for new shapes</string>
           </property>
           <property name="suffix">
            <string>px</string>
@@ -126,7 +126,7 @@
         <item row="4" column="1">
          <widget class="Gui::PrefSpinBox" name="DefaultShapeVertexWidth">
           <property name="toolTip">
-           <string>The default size for new vertices</string>
+           <string>Default size for new vertices</string>
           </property>
           <property name="suffix">
            <string>px</string>
@@ -148,7 +148,7 @@
         <item row="5" column="1">
          <widget class="Gui::PrefColorButton" name="BoundingBoxColor">
           <property name="toolTip">
-           <string>The color of bounding boxes in the 3D view</string>
+           <string>Color of bounding boxes in the 3D view</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -207,7 +207,7 @@
         <item row="3" column="1">
          <widget class="Gui::PrefColorButton" name="DefaultShapeVertexColor">
           <property name="toolTip">
-           <string>The default color for new vertices</string>
+           <string>Default color for new vertices</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -226,6 +226,9 @@
         </item>
         <item row="0" column="2">
          <widget class="Gui::PrefCheckBox" name="checkRandomColor">
+          <property name="toolTip">
+           <string>A random color is used</string>
+          </property>
           <property name="text">
            <string>Random shape color</string>
           </property>
@@ -278,6 +281,9 @@
         </item>
         <item row="0" column="1">
          <widget class="Gui::PrefColorButton" name="AnnotationTextColor">
+          <property name="toolTip">
+           <string>Default text color for document annotations</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>AnnotationTextColor</cstring>
           </property>
