@@ -251,6 +251,14 @@ Py::String ComplexGeoDataPy::getElementMapVersion() const {
     return Py::String(getComplexGeoDataPtr()->getElementMapVersion());
 }
 
+Py::Int ComplexGeoDataPy::getTag() const {
+    return Py::Int(getComplexGeoDataPtr()->Tag);
+}
+
+void ComplexGeoDataPy::setTag(Py::Int tag) {
+    getComplexGeoDataPtr()->Tag = tag;
+}
+
 PyObject *ComplexGeoDataPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

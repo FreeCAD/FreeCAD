@@ -94,5 +94,11 @@ to one element
 		  </Documentation>
 		  <Parameter Name="ElementMapVersion" Type="String" />
 	  </Attribute>
+      <Attribute Name="Tag">
+          <Documentation>
+              <UserDocu>Geometry Tag</UserDocu>
+          </Documentation>
+          <Parameter Name="Tag" Type="Int"/>
+      </Attribute>
   </PythonExport>
 </GenerateModel>

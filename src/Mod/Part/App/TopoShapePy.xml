@@ -931,11 +931,5 @@ or None if no history.
       </Documentation>
       <Parameter Name="Volume" Type="Float"/>
     </Attribute>
-    <Attribute Name="Tag">
-      <Documentation>
-        <UserDocu>Shape Tag</UserDocu>
-      </Documentation>
-      <Parameter Name="Tag" Type="Int"/>
-    </Attribute>
   </PythonExport>
 </GenerateModel>

@@ -2891,14 +2891,6 @@ Py::Float TopoShapePy::getVolume(void) const
     return Py::Float(props.Mass());
 }
 
-Py::Int TopoShapePy::getTag() const {
-    return Py::Int(getTopoShapePtr()->Tag);
-}
-
-void TopoShapePy::setTag(Py::Int tag) {
-    getTopoShapePtr()->Tag = tag;
-}
-
 PyObject *TopoShapePy::getElementHistory(PyObject *args) {
     const char *name;
     if (!PyArg_ParseTuple(args, "s", &name))
