@@ -234,8 +234,8 @@ class Snapper:
             self.trackLine.p1(lastpoint)
 
         # checking if parallel to one of the edges of the last objects or to a polar direction
+        eline = None
         if active:
-            eline = None
             point,eline = self.snapToPolar(point,lastpoint)
             point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
 
@@ -273,14 +273,21 @@ class Snapper:
 
     def snapToObject(self, lastpoint, active, constrain, eline, point, oldActive):
         # we have an object to snap to
-        snaps = []
 
-        obj = FreeCAD.ActiveDocument.getObject(self.snapInfo['Object'])
+        parent = self.snapInfo.get('ParentObject',None)
+        if parent:
+            subname = self.snapInfo['SubName']
+            obj = parent.getSubObject(subname,retType=1)
+        else:
+            obj = FreeCAD.ActiveDocument.getObject(self.snapInfo['Object'])
+            parent = obj
+            subname = self.snapInfo['Component']
         if not obj:
-            self.spoint = self.cstr(lastpoint, constrain, point)
+            self.spoint = cstr(point)
             self.running = False
             return self.spoint
 
+        snaps = []
         self.lastSnappedObject = obj
 
         if hasattr(obj.ViewObject,"Selectable"):
@@ -303,11 +310,10 @@ class Snapper:
             # active snapping
             comp = self.snapInfo['Component']
 
-            if obj.isDerivedFrom("Part::Feature"):
+            shape = Part.getShape(parent,subname,
+                        needSubElement=True,noElementMap=True)
 
-                # applying global placements
-                shape = obj.Shape.copy()
-                shape.Placement = obj.getGlobalPlacement()
+            if not shape.isNull():
 
                 snaps.extend(self.snapToSpecials(obj,lastpoint,eline))
 
