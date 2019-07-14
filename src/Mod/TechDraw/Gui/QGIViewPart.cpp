@@ -547,7 +547,7 @@ void QGIViewPart::drawViewPart()
                     item->setRadius(lineWidth * vertexScaleFactor);
                 }
                 addToGroup(item);
-                item->setPos(Rez::guiX((*vert)->point.x), Rez::guiX((*vert)->point.y));
+                item->setPos(Rez::guiX((*vert)->point().x), Rez::guiX((*vert)->point().y));
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
             }
