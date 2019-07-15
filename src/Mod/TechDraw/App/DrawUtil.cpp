@@ -62,6 +62,7 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
@@ -542,6 +543,7 @@ Base::Vector3d DrawUtil::invertY(Base::Vector3d v)
     return result;
 }
 
+//obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::split(std::string csvLine)
 {
 //    Base::Console().Message("DU::split - csvLine: %s\n",csvLine.c_str());
@@ -556,6 +558,7 @@ std::vector<std::string> DrawUtil::split(std::string csvLine)
     return result;
 }
 
+//obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::tokenize(std::string csvLine, std::string delimiter)
 {
 //    Base::Console().Message("DU::tokenize - csvLine: %s delimit: %s\n",csvLine.c_str(), delimiter.c_str());
@@ -570,6 +573,47 @@ std::vector<std::string> DrawUtil::tokenize(std::string csvLine, std::string del
         tokens.push_back(s);
     }
     return tokens;
+}
+
+App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
+{
+//    Base::Console().Message("DU::pyTupleToColor()\n");
+    double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
+    App::Color c(red, blue, green, alpha);
+    if (PyTuple_Check(pColor)) {
+        int tSize = (int) PyTuple_Size(pColor);
+        if (tSize > 2) {
+            PyObject* pRed = PyTuple_GetItem(pColor,0);
+            red = PyFloat_AsDouble(pRed);
+            PyObject* pGreen = PyTuple_GetItem(pColor,1);
+            green = PyFloat_AsDouble(pGreen);
+            PyObject* pBlue = PyTuple_GetItem(pColor,2);
+            blue = PyFloat_AsDouble(pBlue);
+        }
+        if (tSize > 3) {
+            PyObject* pAlpha = PyTuple_GetItem(pColor,3);
+            alpha = PyFloat_AsDouble(pAlpha);
+        }
+        c = App::Color(red, blue, green, alpha);
+    }
+    return c;
+}
+
+PyObject* DrawUtil::colorToPyTuple(App::Color color)
+{
+//    Base::Console().Message("DU::pyTupleToColor()\n");
+    PyObject* pTuple = PyTuple_New(4);
+    PyObject* pRed = PyFloat_FromDouble(color.r);
+    PyObject* pGreen = PyFloat_FromDouble(color.g);
+    PyObject* pBlue = PyFloat_FromDouble(color.b);
+    PyObject* pAlpha = PyFloat_FromDouble(color.a);
+
+    PyTuple_SET_ITEM(pTuple, 0,pRed);
+    PyTuple_SET_ITEM(pTuple, 1,pGreen);
+    PyTuple_SET_ITEM(pTuple, 2,pBlue);
+    PyTuple_SET_ITEM(pTuple, 3,pAlpha);
+
+    return pTuple;
 }
 
 

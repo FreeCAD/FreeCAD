@@ -49,12 +49,15 @@
 #include "GeometryObject.h"
 
 // inclusion of the generated files (generated out of DrawViewPartPy.xml)
+#include <Mod/TechDraw/App/CosmeticVertexPy.h>
+#include <Mod/TechDraw/App/CosmeticEdgePy.h>
+#include <Mod/TechDraw/App/CenterLinePy.h>
 #include <Mod/TechDraw/App/DrawViewPartPy.h>
 #include <Mod/TechDraw/App/DrawViewPartPy.cpp>
 
 using namespace TechDraw;
 
-App::Color pyTupleToColor(PyObject* pColor);
+//TODO: errors to PyErrors
 
 // returns a string which represents the object e.g. when printed in python
 std::string DrawViewPartPy::representation(void) const
@@ -141,11 +144,12 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
         if (pColor == nullptr) {
             ce->m_format.m_color = defCol;
         } else {
-            ce->m_format.m_color = pyTupleToColor(pColor);
+            ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
         }
     } else {
-        //TODO: throw something
-        idx = -1;
+        std::string msg = "DVPPI:makeCosmeticLine - line creation failed";
+        Base::Console().Message("%s\n",msg.c_str());
+        throw Py::RuntimeError(msg);
     }
     return PyLong_FromLong(idx);
 }
@@ -188,11 +192,12 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
         if (pColor == nullptr) {
             ce->m_format.m_color = defCol;
         } else {
-            ce->m_format.m_color = pyTupleToColor(pColor);
+            ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
         }
     } else {
-        //TODO: throw something
-        idx = -1;
+        std::string msg = "DVPPI:makeCosmeticCircle - circle creation failed";
+        Base::Console().Message("%s\n",msg.c_str());
+        throw Py::RuntimeError(msg);
     }
     return PyLong_FromLong(idx);
 }
@@ -238,11 +243,12 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
         if (pColor == nullptr) {
             ce->m_format.m_color = defCol;
         } else {
-            ce->m_format.m_color = pyTupleToColor(pColor);
+            ce->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
         }
     } else {
-        //TODO: throw something
-        idx = -1;
+        std::string msg = "DVPPI:makeCosmeticCircleArc - arc creation failed";
+        Base::Console().Message("%s\n",msg.c_str());
+        throw Py::RuntimeError(msg);
     }
     return PyLong_FromLong(idx);
 }
@@ -250,7 +256,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
 PyObject* DrawViewPartPy::getCosmeticVertexByIndex(PyObject *args)
 {
     PyObject* result = nullptr;
-    int idx = 0;
+    int idx = -1;
     if (!PyArg_ParseTuple(args, "i", &idx)) {
         throw Py::TypeError("expected (index)");
     }
@@ -258,6 +264,8 @@ PyObject* DrawViewPartPy::getCosmeticVertexByIndex(PyObject *args)
     TechDraw::CosmeticVertex* cv = dvp->getCosmeticVertexByIndex(idx);
     if (cv != nullptr) {
         result = new CosmeticVertexPy(new CosmeticVertex(cv));
+    } else {
+        result = Py_None;
     }
     return result;
 }
@@ -277,16 +285,61 @@ PyObject* DrawViewPartPy::removeCosmeticVertex(PyObject *args)
 PyObject* DrawViewPartPy::getCosmeticEdgeByIndex(PyObject *args)
 {
     int idx = 0;
-    PyObject* result = nullptr;
+    PyObject* result = Py_None;
     if (!PyArg_ParseTuple(args, "i", &idx)) {
         throw Py::TypeError("expected (index)");
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
     if (ce != nullptr) {
-        Base::Console().Message("DVPPI::getCosEdgebyIdx - CosmeticEdgePy not implemented yet\n");
-        //make a py object?
+        result = new CosmeticEdgePy(new CosmeticEdge(ce));
+    } else {
+        Base::Console().Error("DVPPI::getCosEdgebyIdx - edge %d not found\n", idx);
     }
+
+    return result;
+}
+
+PyObject* DrawViewPartPy::getCosmeticEdgeByGeom(PyObject *args)
+{
+//    Base::Console().Message("DVPPI::getCosmeticEdgeByGeom()\n");
+    int idx = 0;
+    PyObject* result = Py_None;
+    if (!PyArg_ParseTuple(args, "i", &idx)) {
+        throw Py::TypeError("expected (index)");
+    }
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    
+    TechDraw::BaseGeom* bg = dvp->getGeomByIndex(idx);
+    if (bg == nullptr) {
+        Base::Console().Error("DVPPI::getCEbyGeom - geom: %d not found\n",idx);
+        return result;
+    }
+    int source = bg->source();
+    int sourceIndex = bg->sourceIndex();
+    if (source == 1) {           //cosmetic edge
+        TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(sourceIndex);
+        if (ce != nullptr) {
+            result = new CosmeticEdgePy(new CosmeticEdge(ce));
+        } else {
+            Base::Console().Error("DVPPI::getCosEdgebyGeom - edge %d not found\n", idx);
+        }
+    }
+    return result;
+}
+
+PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
+{
+//    Base::Console().Message("DVPPI::replaceCosmeticEdge()\n");
+    int idx = 0;
+    PyObject* result = Py_None;
+    PyObject* pCE;
+    if (!PyArg_ParseTuple(args, "iO!", &idx, &(TechDraw::CosmeticEdgePy::Type), &pCE)) {
+        throw Py::TypeError("expected (index, CosmeticEdge)");
+    }
+    TechDraw::CosmeticEdge* ce = static_cast<CosmeticEdgePy*>(pCE)->getCosmeticEdgePtr();
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    dvp->replaceCosmeticEdge(idx, ce);
 
     return result;
 }
@@ -304,6 +357,153 @@ PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
     return Py_None;
 }
 
+PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
+{
+//    Base::Console().Message("DVPPI::makeCenterLine()\n");
+    PyObject* pSubs;
+    int mode = 0;
+    std::vector<std::string> subs;
+
+    if (!PyArg_ParseTuple(args, "Oi",&pSubs, &mode)) {
+        throw Py::TypeError("expected (subNameList, mode)");
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    if (PyList_Check(pSubs)) {
+        int size = PyList_Size(pSubs);
+        int i = 0;
+        for ( ; i < size; i++) {
+            PyObject* po = PyList_GetItem(pSubs, i);
+#if PY_MAJOR_VERSION >= 3
+            if (PyUnicode_Check(po)) {
+                std::string s = PyUnicode_AsUTF8(po);       //py3 only!!!
+                subs.push_back(s);
+            }
+#else
+            if (PyString_Check(po)) {
+                std::string s = PyString_AsString(po);         //py2 only!!!
+                subs.push_back(s);
+            }
+#endif
+        }
+    }
+
+    CenterLine* cl = nullptr;
+    int idx = -1;
+    if (!subs.empty()) {
+        cl = CenterLine::CenterLineBuilder(dvp,
+                                           subs,
+                                           mode);     //vert,horiz,align
+        if (cl != nullptr) {
+            idx = dvp->addCenterLine(cl);
+        } else {
+            std::string msg = "DVPPI:makeCenterLine - line creation failed";
+            Base::Console().Message("%s\n",msg.c_str());
+            throw Py::RuntimeError(msg);
+        }
+    }
+    return PyLong_FromLong(idx);
+}
+
+PyObject* DrawViewPartPy::adjustCenterLine(PyObject *args)
+{
+//    Base::Console().Message("DVPPI::adjustCenterLine()\n");
+    int idx = -1;
+    double hShift = 0.0;
+    double vShift = 0.0;
+    double rotate = 0.0;
+    double extend = 0.0;
+    bool flip = false;
+
+    if (!PyArg_ParseTuple(args, "idddd|p",&idx, &hShift, &vShift, &rotate, &extend, &flip)) {
+        throw Py::TypeError("expected (index, hShift, vShift, rotate, extend [,flip])");
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    CenterLine* cl = dvp->getCenterLineByIndex(idx);
+    if (cl != nullptr) {
+        cl->m_hShift = hShift;
+        cl->m_vShift = vShift;
+        cl->m_rotate = rotate;
+        cl->m_extendBy = extend;
+        cl->m_flip2Line = flip;
+    } else {
+        std::string msg = "DVPPI:adjustCenterLine - CenterLine not found";
+        Base::Console().Message("%s\n",msg.c_str());
+        throw Py::RuntimeError(msg);
+    }
+    return Py_None;
+}
+
+PyObject* DrawViewPartPy::formatCenterLine(PyObject *args)
+{
+//    Base::Console().Message("DVPPI::formatCenterLine()\n");
+    int idx = -1;
+    int style = Qt::SolidLine;
+    App::Color defColor = LineFormat::getDefEdgeColor();
+    double weight = 0.5;
+    int visible = 1;
+    PyObject* pColor;
+
+    if (!PyArg_ParseTuple(args, "iidOi",&idx, &style, &weight, &pColor, &visible)) {
+        throw Py::TypeError("expected (index, style, weight, color, visible)");
+    }
+
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    CenterLine* cl = dvp->getCenterLineByIndex(idx);
+    if (cl != nullptr) {
+        cl->m_format.m_style = style;
+        cl->m_format.m_weight = weight;
+        if (pColor == nullptr) {
+            cl->m_format.m_color = defColor;
+        } else {
+            cl->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
+        }
+        cl->m_format.m_visible = visible;
+    } else {
+        std::string msg = "DVPPI:formatCenterLine - CenterLine not found";
+        Base::Console().Message("%s\n",msg.c_str());
+        throw Py::RuntimeError(msg);
+    }
+    return Py_None;
+}
+
+PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
+{
+//    Base::Console().Message("DVPPI::formatGeometricEdge()\n");
+    int idx = -1;
+    int style = Qt::SolidLine;
+    App::Color color = LineFormat::getDefEdgeColor();
+    double weight = 0.5;
+    int visible = 1;
+    PyObject* pColor;
+
+    if (!PyArg_ParseTuple(args, "iidOi",&idx, &style, &weight, &pColor, &visible)) {
+        throw Py::TypeError("expected (index, style, weight, color, visible)");
+    }
+
+    color = DrawUtil::pyTupleToColor(pColor);
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    TechDraw::GeomFormat* gf = dvp->getGeomFormatByGeom(idx);
+    if (gf != nullptr) {
+        gf->m_format.m_style = style;
+        gf->m_format.m_color = color;
+        gf->m_format.m_weight = weight;
+        gf->m_format.m_visible = visible;
+    } else {
+        TechDraw::LineFormat fmt(style,
+                                 weight,
+                                 color,
+                                 visible);
+        TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(idx,
+                                                               fmt);
+//                    int idx = 
+        dvp->addGeomFormat(newGF);
+    }
+    return Py_None;
+}
+
+
 PyObject *DrawViewPartPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
@@ -312,29 +512,5 @@ PyObject *DrawViewPartPy::getCustomAttributes(const char* /*attr*/) const
 int DrawViewPartPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
-}
-
-App::Color pyTupleToColor(PyObject* pColor)
-{
-//    Base::Console().Message("DVPPI::pyTupleToColor()\n");
-    double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
-    App::Color c(red, blue, green, alpha);
-    if (PyTuple_Check(pColor)) {
-        int tSize = (int) PyTuple_Size(pColor);
-        if (tSize > 2) {
-            PyObject* pRed = PyTuple_GetItem(pColor,0);
-            red = PyFloat_AsDouble(pRed);
-            PyObject* pGreen = PyTuple_GetItem(pColor,1);
-            green = PyFloat_AsDouble(pGreen);
-            PyObject* pBlue = PyTuple_GetItem(pColor,2);
-            blue = PyFloat_AsDouble(pBlue);
-        }
-        if (tSize > 3) {
-            PyObject* pAlpha = PyTuple_GetItem(pColor,3);
-            alpha = PyFloat_AsDouble(pAlpha);
-        }
-        c = App::Color(red, blue, green, alpha);
-    }
-    return c;
 }
 
