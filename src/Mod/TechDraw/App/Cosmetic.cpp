@@ -430,12 +430,12 @@ CenterLine::CenterLine(void)
 {
     m_start = Base::Vector3d(0.0, 0.0, 0.0);
     m_end = Base::Vector3d(0.0, 0.0, 0.0);
-    m_mode = 0;
+    m_mode = CLMODE::VERTICAL;
     m_hShift = 0.0;
     m_vShift = 0.0;
     m_rotate = 0.0;
     m_extendBy = 0.0;
-    m_type = 0;
+    m_type = CLTYPE::FACE;
     m_flip2Line = false;
 
 }
@@ -461,12 +461,12 @@ CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2)
 {
     m_start = p1;
     m_end = p2;
-    m_mode = 0;
+    m_mode = CLMODE::VERTICAL;
     m_hShift = 0.0;
     m_vShift = 0.0;
     m_rotate = 0.0;
     m_extendBy = 0.0;
-    m_type = 0;
+    m_type = CLTYPE::FACE;
     m_flip2Line = false;
 }
 
@@ -484,12 +484,61 @@ CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2,
     m_vShift = v;
     m_rotate = r;
     m_extendBy = x;
-    m_type = 0;
+    m_type = CLTYPE::FACE;
     m_flip2Line = false;
 }
 
 CenterLine::~CenterLine()
 {
+}
+
+CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat, std::vector<std::string> subNames, int mode)
+{
+//    Base::Console().Message("CL::CLBuilder()\n");
+    std::pair<Base::Vector3d, Base::Vector3d> ends;
+    std::vector<std::string> faces;
+    std::vector<std::string> edges;
+    std::vector<std::string> verts;
+    
+    std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(subNames.front());
+    int type = CLTYPE::FACE;
+    if (geomType == "Face") {
+        type = CLTYPE::FACE;
+        ends = TechDraw::CenterLine::calcEndPoints(partFeat,
+                             subNames,
+                             mode,
+                             0.0,
+                             0.0, 0.0, 0.0);
+        faces = subNames;
+    } else if (geomType == "Edge") {
+        type = CLTYPE::EDGE;
+        ends = TechDraw::CenterLine::calcEndPoints2Lines(partFeat,
+                         subNames,
+                         mode,
+                         0.0,
+                         0.0, 0.0, 0.0, false);
+        edges = subNames;
+    } else if (geomType == "Vertex") {
+        type = CLTYPE::VERTEX;
+        ends = TechDraw::CenterLine::calcEndPoints2Points(partFeat,
+                         subNames,
+                         mode,
+                         0.0,
+                         0.0, 0.0, 0.0, false);
+        verts = subNames;
+    }
+    TechDraw::CenterLine* cl = new TechDraw::CenterLine(ends.first, ends.second);
+    if (cl != nullptr) {
+//        cl->m_start = ends.first;
+//        cl->m_end = ends.second;
+        cl->m_type = type;
+        cl->m_mode = mode;
+        cl->m_faces = faces;
+        cl->m_edges = edges;
+        cl->m_verts = verts;
+//        cl->m_flip2Line = false;
+    }
+    return cl;
 }
 
 TechDraw::BaseGeom* CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
@@ -504,18 +553,18 @@ TechDraw::BaseGeom* CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
     }
     
     std::pair<Base::Vector3d, Base::Vector3d> ends;
-    if (m_type == 0) {
+    if (m_type == CLTYPE::FACE) {
         ends = calcEndPoints(partFeat,
                              m_faces,
                              m_mode, m_extendBy,
                              m_hShift,m_vShift, m_rotate);
-    } else if (m_type == 1) {
+    } else if (m_type == CLTYPE::EDGE) {
         ends = calcEndPoints2Lines(partFeat,
                                    m_edges,
                                    m_mode,
                                    m_extendBy,
                                    m_hShift, m_vShift, m_rotate, m_flip2Line);
-    } else if (m_type == 2) {
+    } else if (m_type == CLTYPE::VERTEX) {
         ends = calcEndPoints2Points(partFeat,
                                     m_verts,
                                     m_mode,
@@ -577,7 +626,7 @@ void CenterLine::dump(char* title)
 //end points for face centerline
 std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart* partFeat,
                                                       std::vector<std::string> faceNames, 
-                                                      int vert, double ext,
+                                                      int mode, double ext,
                                                       double hShift, double vShift,
                                                       double rotate)
 {
@@ -623,10 +672,10 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
     double Ymid = Ymin + Yspan;
 
     Base::Vector3d p1, p2;
-    if (vert == 0) {                    //vertical
+    if (mode == 0) {                    //vertical
         p1 = Base::Vector3d(Xmid, Ymax, 0.0);
         p2 = Base::Vector3d(Xmid, Ymin, 0.0);
-    } else if (vert == 1) {            //horizontal
+    } else if (mode == 1) {            //horizontal
         p1 = Base::Vector3d(Xmin, Ymid, 0.0);
         p2 = Base::Vector3d(Xmax,Ymid, 0.0);
     } else {      //vert == 2 //aligned, but aligned doesn't make sense for face(s) bbox
@@ -1054,7 +1103,51 @@ PyObject* CenterLine::getPyObject(void)
     return new CenterLinePy(new CenterLine(this->copy()));
 }
 
+void CenterLine::setShifts(double h, double v)
+{
+    m_hShift = h;
+    m_vShift = v;
+}
 
+double CenterLine::getHShift(void)
+{
+    return m_hShift;
+}
+
+double CenterLine::getVShift(void)
+{
+    return m_vShift;
+}
+
+void CenterLine::setRotate(double r)
+{
+    m_rotate = r;
+}
+
+double CenterLine::getRotate(void)
+{
+    return m_rotate;
+}
+
+void CenterLine::setExtend(double e)
+{
+    m_extendBy = e;
+}
+
+double CenterLine::getExtend(void)
+{
+    return m_extendBy;
+}
+
+void CenterLine::setFlip(bool f)
+{
+    m_flip2Line = f;
+}
+
+bool CenterLine::getFlip(void)
+{
+    return m_flip2Line;
+}
 //------------------------------------------------------------------------------
 
 TYPESYSTEM_SOURCE(TechDraw::GeomFormat,Base::Persistence)
