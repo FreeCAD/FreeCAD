@@ -114,15 +114,17 @@ class ViewProvider:
         self.switch = None
         self.taskPanel = None
         self.vobj = None
-        self.baseVisibility = None
-        self.stockVisibility = None
+        self.baseVisibility = {}
+        self.stockVisibility = False
 
     def attach(self, vobj):
         self.vobj = vobj
         self.obj = vobj.Object
         self.taskPanel = None
-        self.baseVisibility = None
-        self.stockVisibility = None
+        if not hasattr(self, 'baseVisibility'):
+            self.baseVisibility = {}
+        if not hasattr(self, 'stockVisibility'):
+            self.stockVisibility = False
 
         # setup the axis display at the origin
         self.switch = coin.SoSwitch()

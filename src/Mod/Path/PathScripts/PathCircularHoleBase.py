@@ -134,15 +134,20 @@ class ObjectOp(PathOp.ObjectOp):
             edge = self.getArchPanelEdge(obj, base, sub)
             return edge.BoundBox.XLength
 
-        shape = base.Shape.getElement(sub)
-        if shape.ShapeType == 'Vertex':
-            return 0
+        try:
+            shape = base.Shape.getElement(sub)
+            if shape.ShapeType == 'Vertex':
+                return 0
 
-        if shape.ShapeType == 'Edge' and type(shape.Curve) == Part.Circle:
-            return shape.Curve.Radius * 2
+            if shape.ShapeType == 'Edge' and type(shape.Curve) == Part.Circle:
+                return shape.Curve.Radius * 2
 
-        # for all other shapes the diameter is just the dimension in X
-        return shape.BoundBox.XLength
+            # for all other shapes the diameter is just the dimension in X
+            return shape.BoundBox.XLength
+        except Part.OCCError as e:
+            PathLog.error(e)
+
+        return 0
 
     def holePosition(self, obj, base, sub):
         '''holePosition(obj, base, sub) ... returns a Vector for the position defined by the given features.
@@ -184,7 +189,6 @@ class ObjectOp(PathOp.ObjectOp):
         calculated and assigned.
         Do not overwrite, implement circularHoleExecute(obj, holes) instead.'''
         PathLog.track()
-        PathLog.debug("\nopExecute() in PathCircularHoleBase.py")
 
         holes = []
         baseSubsTuples = []
@@ -364,6 +368,8 @@ class ObjectOp(PathOp.ObjectOp):
         pass # pylint: disable=unnecessary-pass
 
     def findAllHoles(self, obj):
+        '''findAllHoles(obj) ... find all holes of all base models and assign as features.'''
+        PathLog.track()
         if not self.getJob(obj):
             return
         features = []
