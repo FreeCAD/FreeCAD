@@ -134,15 +134,20 @@ class ObjectOp(PathOp.ObjectOp):
             edge = self.getArchPanelEdge(obj, base, sub)
             return edge.BoundBox.XLength
 
-        shape = base.Shape.getElement(sub)
-        if shape.ShapeType == 'Vertex':
-            return 0
+        try:
+            shape = base.Shape.getElement(sub)
+            if shape.ShapeType == 'Vertex':
+                return 0
 
-        if shape.ShapeType == 'Edge' and type(shape.Curve) == Part.Circle:
-            return shape.Curve.Radius * 2
+            if shape.ShapeType == 'Edge' and type(shape.Curve) == Part.Circle:
+                return shape.Curve.Radius * 2
 
-        # for all other shapes the diameter is just the dimension in X
-        return shape.BoundBox.XLength
+            # for all other shapes the diameter is just the dimension in X
+            return shape.BoundBox.XLength
+        except Part.OCCError as e:
+            PathLog.error(e)
+
+        return 0
 
     def holePosition(self, obj, base, sub):
         '''holePosition(obj, base, sub) ... returns a Vector for the position defined by the given features.
@@ -152,18 +157,21 @@ class ObjectOp(PathOp.ObjectOp):
             center = edge.Curve.Center
             return FreeCAD.Vector(center.x, center.y, 0)
 
-        shape = base.Shape.getElement(sub)
-        if shape.ShapeType == 'Vertex':
-            return FreeCAD.Vector(shape.X, shape.Y, 0)
+        try:
+            shape = base.Shape.getElement(sub)
+            if shape.ShapeType == 'Vertex':
+                return FreeCAD.Vector(shape.X, shape.Y, 0)
 
-        if shape.ShapeType == 'Edge' and hasattr(shape.Curve, 'Center'):
-            return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
+            if shape.ShapeType == 'Edge' and hasattr(shape.Curve, 'Center'):
+                return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
 
-        if shape.ShapeType == 'Face':
-            if hasattr(shape.Surface, 'Center'):
-                return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
-            if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
-                return shape.Edges[0].Curve.Center
+            if shape.ShapeType == 'Face':
+                if hasattr(shape.Surface, 'Center'):
+                    return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
+                if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
+                    return shape.Edges[0].Curve.Center
+        except Part.OCCError as e:
+            PathLog.error(e)
 
         PathLog.error(translate("Path", "Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.") % (base.Label, sub))
         return None
@@ -181,7 +189,6 @@ class ObjectOp(PathOp.ObjectOp):
         calculated and assigned.
         Do not overwrite, implement circularHoleExecute(obj, holes) instead.'''
         PathLog.track()
-        PathLog.debug("\nopExecute() in PathCircularHoleBase.py")
 
         holes = []
         baseSubsTuples = []
@@ -239,7 +246,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         # Complete rotational analysis and temp clone creation as needed
         if obj.EnableRotation == 'Off':
-            PathLog.info("Enable Rotation setting is 'Off' for {}.".format(obj.Name))
+            PathLog.debug("Enable Rotation setting is 'Off' for {}.".format(obj.Name))
             stock = PathUtils.findParentJob(obj).Stock
             for (base, subList) in obj.Base:
                 baseSubsTuples.append((base, subList, 0.0, 'A', stock))
@@ -361,6 +368,8 @@ class ObjectOp(PathOp.ObjectOp):
         pass # pylint: disable=unnecessary-pass
 
     def findAllHoles(self, obj):
+        '''findAllHoles(obj) ... find all holes of all base models and assign as features.'''
+        PathLog.track()
         if not self.getJob(obj):
             return
         features = []
