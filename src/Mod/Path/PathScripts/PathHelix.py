@@ -71,6 +71,10 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
             obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
+    def opOnDocumentRestored(self, obj):
+        if not hasattr(obj, 'StartRadius'):
+            obj.addProperty("App::PropertyLength", "StartRadius", "Helix Drill", translate("PathHelix", "Starting Radius"))
+
     def circularHoleExecute(self, obj, holes):
         '''circularHoleExecute(obj, holes) ... generate helix commands for each hole in holes'''
         PathLog.track()

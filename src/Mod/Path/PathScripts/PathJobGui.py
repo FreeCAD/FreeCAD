@@ -121,6 +121,8 @@ class ViewProvider:
         self.vobj = vobj
         self.obj = vobj.Object
         self.taskPanel = None
+        self.baseVisibility = None
+        self.stockVisibility = None
 
         # setup the axis display at the origin
         self.switch = coin.SoSwitch()
