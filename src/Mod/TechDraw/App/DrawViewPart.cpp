@@ -1098,6 +1098,7 @@ int DrawViewPart::addCosmeticEdge(Base::Vector3d p1, Base::Vector3d p2)
     int newIdx = (int) (edges.size());
     edges.push_back(ce);
     CosmeticEdges.setValues(edges);
+    recomputeFeature();                 //execute needs to run to replace Geoms
     return newIdx;
 }
 
@@ -1109,6 +1110,7 @@ int DrawViewPart::addCosmeticEdge(TopoDS_Edge e)
     int newIdx = (int) (edges.size());
     edges.push_back(ce);
     CosmeticEdges.setValues(edges);
+    recomputeFeature();                 //execute needs to run to replace Geoms
     return newIdx;
 }
 
@@ -1118,6 +1120,7 @@ int DrawViewPart::addCosmeticEdge(CosmeticEdge* ce)
     int newIdx = (int) (edges.size());
     edges.push_back(ce);
     CosmeticEdges.setValues(edges);
+    recomputeFeature();                 //execute needs to run to replace Geoms
     return newIdx;
 }
 
@@ -1152,6 +1155,7 @@ void DrawViewPart::removeCosmeticEdge(int idx)
 
 void DrawViewPart::replaceCosmeticEdge(int idx, TechDraw::CosmeticEdge* ce)
 {
+//    Base::Console().Message("DVP::replaceCosmeticEdge(%d, ce)\n", idx);
     std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
     if (idx < (int) edges.size())  {
         edges.at(idx) = ce;
@@ -1163,9 +1167,11 @@ void DrawViewPart::replaceCosmeticEdge(int idx, TechDraw::CosmeticEdge* ce)
 void DrawViewPart::replaceCosmeticEdgeByGeom(int geomIndex, TechDraw::CosmeticEdge* ce)
 {
     const std::vector<TechDraw::BaseGeom*> &geoms = getEdgeGeometry();
-    //TODO: check that geom has m_source == cosmetic
-    int sourceIndex = geoms.at(geomIndex)->sourceIndex();
-    replaceCosmeticEdge(sourceIndex, ce);
+    int source = geoms.at(geomIndex)->source();
+    if (source == 1) {     //CosmeticEdge
+        int sourceIndex = geoms.at(geomIndex)->sourceIndex();
+        replaceCosmeticEdge(sourceIndex, ce);
+    }
 }
 
 TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByIndex(int idx) const

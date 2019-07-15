@@ -228,34 +228,35 @@ void TaskCenterLine::createCenterLine(void)
 {
 //    Base::Console().Message("TCL::createCenterLine() - m_type: %d\n", m_type);
     Gui::Command::openCommand("Create CenterLine");
-    bool vertical = false;
+//    bool vertical = false;
     double hShift = ui->qsbHorizShift->rawValue();
     double vShift = ui->qsbVertShift->rawValue();
     double rotate = ui->dsbRotate->value();
     double extendBy = ui->qsbExtend->rawValue();
     std::pair<Base::Vector3d, Base::Vector3d> ends;
     if (ui->rbVertical->isChecked()) {
-        m_mode = 0;
-        vertical = true;
+        m_mode = CenterLine::CLMODE::VERTICAL;
+//        vertical = true;
     } else if (ui->rbHorizontal->isChecked()) {
-        m_mode = 1;
+        m_mode = CenterLine::CLMODE::HORIZONTAL;
     } else if (ui->rbAligned->isChecked()) {
-        m_mode =2;
+        m_mode = CenterLine::CLMODE::ALIGNED;
     }
-
-    if (m_type == 0) {
+    
+    //TODO: call CLBuilder here.
+    if (m_type == CenterLine::CLTYPE::FACE) {
         ends = TechDraw::CenterLine::calcEndPoints(m_partFeat,
                              m_subNames,
-                             vertical,
+                             m_mode,
                              extendBy,
                              hShift, vShift, rotate);
-    } else if (m_type == 1) {
+    } else if (m_type == CenterLine::CLTYPE::EDGE) {
         ends = TechDraw::CenterLine::calcEndPoints2Lines(m_partFeat,
                          m_subNames,
                          m_mode,
                          extendBy,
                          hShift, vShift, rotate, m_flipped);
-    } else if (m_type == 2) {
+    } else if (m_type == CenterLine::CLTYPE::VERTEX) {
         ends = TechDraw::CenterLine::calcEndPoints2Points(m_partFeat,
                          m_subNames,
                          m_mode,
@@ -267,6 +268,10 @@ void TaskCenterLine::createCenterLine(void)
     cl->m_start = ends.first;
     cl->m_end = ends.second;
 
+    //TODO: cl->setShifts(hShift, vShift);
+    //      cl->setExtend(extendBy);
+    //      cl->setRotate(rotate);
+    //      cl->setFlip(m_flipped);
     App::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     cl->m_format.m_color = ac;
@@ -274,11 +279,12 @@ void TaskCenterLine::createCenterLine(void)
     cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;  //Qt Styles start at 0:NoLine
     cl->m_format.m_visible = true;
 
-    if (m_type == 0) {
+    //TODO: CLBuilder replaces this
+    if (m_type == CenterLine::CLTYPE::FACE) {
         cl->m_faces = m_subNames;
-    } else if (m_type == 1) {
+    } else if (m_type == CenterLine::CLTYPE::EDGE) {
         cl->m_edges = m_subNames;
-    } else if (m_type == 2) {
+    } else if (m_type == CenterLine::CLTYPE::VERTEX) {
         cl->m_verts = m_subNames;
     }
 
@@ -290,7 +296,7 @@ void TaskCenterLine::createCenterLine(void)
     cl->m_mode = m_mode;
     cl->m_type = m_type;
     cl->m_flip2Line = m_flipped;
-
+    //end TODO
 
     m_partFeat->addCenterLine(cl);
     
@@ -309,11 +315,11 @@ void TaskCenterLine::updateCenterLine(void)
     m_cl->m_format.m_visible = true;
 
     if (ui->rbVertical->isChecked()) {
-        m_mode = 0;
+        m_mode = CenterLine::CLMODE::VERTICAL;
     } else if (ui->rbHorizontal->isChecked()) {
-        m_mode = 1;
+        m_mode = CenterLine::CLMODE::HORIZONTAL;
     } else if (ui->rbAligned->isChecked()) {
-        m_mode =2;
+        m_mode = CenterLine::CLMODE::ALIGNED;
     }
     m_cl->m_mode = m_mode;
     m_cl->m_rotate = ui->dsbRotate->value();

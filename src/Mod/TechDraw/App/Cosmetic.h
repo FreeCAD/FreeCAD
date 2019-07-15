@@ -144,6 +144,19 @@ public:
                double x);
     virtual ~CenterLine();
 
+    enum CLMODE {
+        VERTICAL,
+        HORIZONTAL,
+        ALIGNED
+    };
+
+    enum CLTYPE {
+        FACE,
+        EDGE,
+        VERTEX
+    };
+
+
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
@@ -154,13 +167,15 @@ public:
     CenterLine* clone(void) const;
 
     std::string toString(void) const;
-/*    bool fromCSV(std::string& lineSpec);*/
-/*    CosmeticEdge* toCosmeticEdge(TechDraw::DrawViewPart* partFeat); //??*/
+
+    static CenterLine* CenterLineBuilder(TechDraw::DrawViewPart* partFeat,
+                                         std::vector<std::string> subs,
+                                         int mode = 0);
     TechDraw::BaseGeom* scaledGeometry(TechDraw::DrawViewPart* partFeat);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints(
                                           TechDraw::DrawViewPart* partFeat,
                                           std::vector<std::string> faceNames,
-                                          int vert, double ext,
+                                          int mode, double ext,
                                           double m_hShift, double m_vShift,
                                           double rotate);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints2Lines(
@@ -176,6 +191,15 @@ public:
                                           double m_hShift, double m_vShift,
                                           double rotate, bool flip);
     void dump(char* title);
+    void setShifts(double h, double v);
+    double getHShift(void);
+    double getVShift(void);
+    void setRotate(double r);
+    double getRotate(void);
+    void setExtend(double e);
+    double getExtend(void);
+    void setFlip(bool f);
+    bool getFlip(void);
 
     Base::Vector3d m_start;
     Base::Vector3d m_end;
