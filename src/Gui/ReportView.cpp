@@ -190,7 +190,6 @@ void ReportHighlighter::highlightBlock (const QString & text)
                 }
             }
         }
-
     }
 }
 
