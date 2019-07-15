@@ -77,6 +77,22 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnWarningOrError">
+        <property name="text">
+         <string>Show report view on warning or error</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>checkShowReportViewOnWarningOrError</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>OutputWindow</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -440,6 +456,7 @@
   <tabstop>checkLogging</tabstop>
   <tabstop>checkWarning</tabstop>
   <tabstop>checkError</tabstop>
+  <tabstop>checkShowReportViewOnWarningOrError</tabstop>
   <tabstop>colorText</tabstop>
   <tabstop>colorLogging</tabstop>
   <tabstop>colorWarning</tabstop>

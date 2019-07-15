@@ -171,6 +171,8 @@ public Q_SLOTS:
     void onToggleWarning();
     /** Toggles the report of log messages. */
     void onToggleLogging();
+    /** Toggles whether to show report view on warnings or errors */
+    void onToggleShowReportViewOnWarningOrError();
     /** Toggles the redirection of Python stdout. */
     void onToggleRedirectPythonStdout();
     /** Toggles the redirection of Python stderr. */

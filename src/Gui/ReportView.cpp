@@ -37,6 +37,8 @@
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
 #include "BitmapFactory.h"
+#include "MainWindow.h"
+#include "Application.h"
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -148,6 +150,8 @@ void ReportHighlighter::highlightBlock (const QString & text)
     ud->block.append(b);
 
     QVector<TextBlockData::State> block = ud->block;
+    bool hasErrors = false;
+    bool hasWarnings = false;
     int start = 0;
     for (QVector<TextBlockData::State>::Iterator it = block.begin(); it != block.end(); ++it) {
         switch (it->type)
@@ -157,9 +161,11 @@ void ReportHighlighter::highlightBlock (const QString & text)
             break;
         case Warning:
             setFormat(start, it->length-start, warnCol);
+            hasWarnings = true;
             break;
         case Error:
             setFormat(start, it->length-start, errCol);
+            hasErrors = true;
             break;
         case LogText:
             setFormat(start, it->length-start, logCol);
@@ -169,6 +175,22 @@ void ReportHighlighter::highlightBlock (const QString & text)
         }
 
         start = it->length;
+    }
+    if(hasErrors || hasWarnings){
+        //activate report view unless this is disabled in preferences
+
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
+        bool showReportViewOnWarningOrError = group->GetBool("checkShowReportViewOnWarningOrError", true);
+        if (showReportViewOnWarningOrError){
+            QWidget* reportView = Gui::getMainWindow()->findChild<QWidget*>(QString::fromLatin1("Report view"));
+            if (reportView){
+                if (!reportView->isVisible()){
+                    reportView->show();
+                }
+            }
+        }
+
     }
 }
 
@@ -470,6 +492,10 @@ void ReportOutput::onToggleError()
     getWindowParameter()->SetBool( "checkError", bErr );
 }
 
+void ReportOutput::onToggleShowReportViewOnWarningOrError(){
+    bShow = bShow ? false : true;
+    getWindowParameter()->SetBool("checkShowReportViewOnWarningOrError", bShow);
+}
 void ReportOutput::onToggleWarning()
 {
     bWrn = bWrn ? false : true;
