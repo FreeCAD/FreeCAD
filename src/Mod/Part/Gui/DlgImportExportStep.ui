@@ -16,6 +16,9 @@
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBoxHeader">
+     <property name="toolTip">
+      <string>If not empty, field contents will be used in the STEP file header.</string>
+     </property>
      <property name="title">
       <string>Header</string>
      </property>
@@ -156,7 +159,8 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxMergeCompound">
         <property name="toolTip">
-         <string>If this is checked, no Compound merge will be done during file reading (slower but higher details).</string>
+         <string>If checked, no Compound merge will be done
+during file reading (slower but higher details).</string>
         </property>
         <property name="text">
          <string>Enable STEP Compound merge</string>
