@@ -152,18 +152,21 @@ class ObjectOp(PathOp.ObjectOp):
             center = edge.Curve.Center
             return FreeCAD.Vector(center.x, center.y, 0)
 
-        shape = base.Shape.getElement(sub)
-        if shape.ShapeType == 'Vertex':
-            return FreeCAD.Vector(shape.X, shape.Y, 0)
+        try:
+            shape = base.Shape.getElement(sub)
+            if shape.ShapeType == 'Vertex':
+                return FreeCAD.Vector(shape.X, shape.Y, 0)
 
-        if shape.ShapeType == 'Edge' and hasattr(shape.Curve, 'Center'):
-            return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
+            if shape.ShapeType == 'Edge' and hasattr(shape.Curve, 'Center'):
+                return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
 
-        if shape.ShapeType == 'Face':
-            if hasattr(shape.Surface, 'Center'):
-                return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
-            if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
-                return shape.Edges[0].Curve.Center
+            if shape.ShapeType == 'Face':
+                if hasattr(shape.Surface, 'Center'):
+                    return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
+                if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
+                    return shape.Edges[0].Curve.Center
+        except Part.OCCError as e:
+            PathLog.error(e)
 
         PathLog.error(translate("Path", "Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.") % (base.Label, sub))
         return None

@@ -23,6 +23,7 @@
 # ***************************************************************************
 
 import FreeCAD
+import Part
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
@@ -215,6 +216,10 @@ class ObjectOp(object):
         if not hasattr(obj, 'OpStockZMax'):
             self.addOpValues(obj, ['stockz'])
 
+        if not hasattr(obj, 'EnableRotation'):
+            obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
+            obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
+
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
 
@@ -393,9 +398,13 @@ class ObjectOp(object):
                 bb = base.Shape.BoundBox
                 zmax = max(zmax, bb.ZMax)
                 for sub in sublist:
-                    fbb = base.Shape.getElement(sub).BoundBox
-                    zmin = max(zmin, faceZmin(bb, fbb))
-                    zmax = max(zmax, fbb.ZMax)
+                    try:
+                        fbb = base.Shape.getElement(sub).BoundBox
+                        zmin = max(zmin, faceZmin(bb, fbb))
+                        zmax = max(zmax, fbb.ZMax)
+                    except Part.OCCError as e:
+                        PathLog.error(e)
+
         else:
             # clearing with stock boundaries
             job = PathUtils.findParentJob(obj)
