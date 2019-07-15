@@ -381,7 +381,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step. </string>
        <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
         <property name="toolTip">
          <string>Prevents view tilting when pinch-zooming.
-Affects only Gesture navigation style.
+Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</string>
         </property>
         <property name="text">
