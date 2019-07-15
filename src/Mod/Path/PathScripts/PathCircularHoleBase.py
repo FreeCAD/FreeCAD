@@ -246,7 +246,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         # Complete rotational analysis and temp clone creation as needed
         if obj.EnableRotation == 'Off':
-            PathLog.info("Enable Rotation setting is 'Off' for {}.".format(obj.Name))
+            PathLog.debug("Enable Rotation setting is 'Off' for {}.".format(obj.Name))
             stock = PathUtils.findParentJob(obj).Stock
             for (base, subList) in obj.Base:
                 baseSubsTuples.append((base, subList, 0.0, 'A', stock))
