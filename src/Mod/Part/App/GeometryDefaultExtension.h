@@ -63,7 +63,7 @@ namespace Part {
     //
     // Warnings:
     // - The default constructor relies on the default constructor of T for initialisation. Built-in types
-    //   so constructed will be uninitialised. Use the specific constructor from a T to initiliase it. Note
+    //   so constructed will be uninitialised. Use the specific constructor from a T to initialise it. Note
     //   that the default constructor is required by the type system (see TYPESYSTEM_SOURCE_TEMPLATE_T).
     //
     // Default assumptions:
@@ -79,7 +79,7 @@ namespace Part {
     //
     // Instructions:
     //
-    // 1. Read the assumptions above and provide template initilisation if needed.
+    // 1. Read the assumptions above and provide template initialisation if needed.
     // 2. Add an alias to your type under these comments
     // 3. Add a TYPESYSTEM_SOURCE_TEMPLATE_T in the cpp file to generate class type information
     // 4. Provide a specialisation of getPyObject to generate a py object of the corresponding type (cpp file)
