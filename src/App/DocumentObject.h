@@ -119,10 +119,11 @@ public:
 
     /// returns the name which is set in the document for this object (not the name property!)
     const char *getNameInDocument(void) const;
-    ///
+    /// Return the object ID that is unique within its owner document
     long getID() const {return _Id;}
     /// returns the name that is safe to be exported to other document
     std::string getExportName(bool forced=false) const;
+    /// Return the object full name of the form DocName#ObjName
     virtual std::string getFullName() const override;
     virtual bool isAttachedToDocument() const;
     virtual const char* detachFromDocument();
@@ -401,9 +402,6 @@ public:
      */
     virtual void onBeforeChangeLabel(std::string &newLabel) {(void)newLabel;}
 
-    /// Return a list object to be copied together with this object
-    virtual std::vector<App::DocumentObject*> getCopyObjects() const { return {}; }
-
     friend class Document;
     friend class Transaction;
     friend class ObjectExecution;
@@ -461,7 +459,7 @@ public:
      * output, it may be offseted to be rid off any common parent.
      *
      * @return The corrected top parent of the object that is to be assigned the
-     * link. 
+     * link. If the output 'subname' is empty, then return the object itself.
      *
      * To avoid any cyclic reference, an object must not be assign a link to any
      * of the object in its parent. This function can be used to resolve any
@@ -470,23 +468,25 @@ public:
      * For example, with the following object hierarchy
      *
      * Group
-     *   |--Fuse
+     *   |--Group001
      *   |   |--Box
      *   |   |--Cylinder
-     *   |--Cut
+     *   |--Group002
      *       |--Box001
      *       |--Cylinder001
      *
-     * If you want add a link of Group.Cut.Box001 to Group.Fuse, you can call
-     *      std::string subname("Fuse.");
+     * If you want add a link of Group.Group002.Box001 to Group.Group001, you
+     * can call with the following parameter (which are usually obtained from
+     * Selection.getSelectionEx(), check usage in TreeWidget::onDropEvent()):
+     *      std::string subname("Group002.");
      *      auto link = Group;
-     *      std::string linkSub("Cut.Box001.");
+     *      std::string linkSub("Group001.Box001.");
      *      parent = Group.resolveRelativeLink(subname,link,linkSub);
      *
      * The resolving result is as follow:
-     *      parent  -> Fuse
+     *      return  -> Group001
      *      subname -> ""
-     *      link    -> Cut
+     *      link    -> Group002
      *      linkSub -> "Box001."
      *
      * The common parent 'Group' is removed.
@@ -537,7 +537,7 @@ public:
     virtual bool redirectSubName(std::ostringstream &ss,
             DocumentObject *topParent, DocumentObject *child) const;
 
-    /** Sepecial marker to mark the object has hidden
+    /** Sepecial marker to mark the object as hidden
      *
      * It is used by Gui::ViewProvider::getElementColors(), but exposed here
      * for convenience

@@ -108,34 +108,34 @@ Return a list of objects referenced by a given subname including this object
         <Methode Name="getLinkedObject" Keyword="true">
             <Documentation>
                 <UserDocu>
-                    getLinkedObject(recursive=True, matrix=None, transform=True, depth=0)
-                    Returns the linked object if there is one, or else return itself
+getLinkedObject(recursive=True, matrix=None, transform=True, depth=0)
+Returns the linked object if there is one, or else return itself
 
-                    * recusive: whether to recursively resolve the links
+* recusive: whether to recursively resolve the links
 
-                    * transform: whether to transform the sub object using this object's placement
+* transform: whether to transform the sub object using this object's placement
 
-                    * matrix: If not none, this sepcifies the initial transformation to be applied
-                    to the sub object. And cause the method to return a tuple (object, matrix)
-                    containing the accumulated transformation matrix
+* matrix: If not none, this sepcifies the initial transformation to be applied
+to the sub object. And cause the method to return a tuple (object, matrix)
+containing the accumulated transformation matrix
 
-                    * depth: current recursive depth
+* depth: current recursive depth
                 </UserDocu>
             </Documentation>
         </Methode>
 		<Methode Name="setElementVisible">
 			<Documentation>
                 <UserDocu>
-                    setElementVisible(element,visible): Set the visibility of a child element
-                    Return -1 if element visibility is not supported, 0 if element not found, 1 if success
+setElementVisible(element,visible): Set the visibility of a child element
+Return -1 if element visibility is not supported, 0 if element not found, 1 if success
                 </UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="isElementVisible">
 			<Documentation>
                 <UserDocu>
-                    isElementVisible(element): Check if a child element is visible
-                    Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
+isElementVisible(element): Check if a child element is visible
+Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
                 </UserDocu>
 			</Documentation>
 		</Methode>
