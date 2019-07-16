@@ -1181,7 +1181,7 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None):
         If widthList is provided (values only, not lengths - i.e. no unit),
         each value will be used to offset each corresponding edge in the wire
 
-        (The 1st value override 'dvec' for 1st segement of wire;
+        (The 1st value override 'dvec' for 1st segment of wire;
          if a value is zero, value of 'widthList[0]' will follow;
          if widthList[0]' == 0, but dvec still provided, dvec will be followed)
     '''
@@ -1295,7 +1295,7 @@ def connect(edges,closed=False):
               #print("debug: DraftGeomUtils.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point)
 
               # If the edge pairs has intersection 
-              # ... and if there is prev v2 (prev v2 was caculated intersection), do not calculate again, just use it as current v1 - avoid chance of slight difference in result
+              # ... and if there is prev v2 (prev v2 was calculated intersection), do not calculate again, just use it as current v1 - avoid chance of slight difference in result
               # Otherwise, if edge pairs has no intersection (parallel edges, line - arc do no intersect, etc.), so just just current edge endpoints as v1
               # ... and connect these 2 non-intersecting edges
 
