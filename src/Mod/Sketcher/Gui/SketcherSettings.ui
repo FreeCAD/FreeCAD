@@ -56,7 +56,7 @@
          <item>
           <widget class="Gui::PrefCheckBox" name="checkBoxNotifyConstraintSubstitutions">
            <property name="toolTip">
-            <string>Notify automatic constraint substitutions</string>
+            <string>Notifies about automatic constraint substitutions</string>
            </property>
            <property name="text">
             <string>Notify automatic constraint substitutions</string>
@@ -90,6 +90,9 @@
       </item>
       <item row="0" column="1">
        <widget class="Gui::PrefSpinBox" name="EditSketcherFontSize">
+        <property name="toolTip">
+         <string>Font size used for labels and constraints</string>
+        </property>
         <property name="suffix">
          <string>px</string>
         </property>
@@ -112,6 +115,9 @@
       </item>
       <item row="1" column="1">
        <widget class="QComboBox" name="comboBox">
+        <property name="toolTip">
+         <string>Line pattern used for grid lines</string>
+        </property>
         <property name="currentIndex">
          <number>-1</number>
         </property>
@@ -119,6 +125,9 @@
       </item>
       <item row="3" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
+        <property name="toolTip">
+         <string>A dialog will pop up to input a value for new dimensional constraints</string>
+        </property>
         <property name="text">
          <string>Ask for value after creating a dimensional constraint</string>
         </property>
@@ -142,8 +151,11 @@
       </item>
       <item row="4" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="continueMode">
+        <property name="toolTip">
+         <string>Current sketcher creation tool will remain active after creation</string>
+        </property>
         <property name="text">
-         <string>Geometry Creation &quot;Continue Mode&quot;</string>
+         <string>Geometry creation &quot;Continue Mode&quot;</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -158,8 +170,11 @@
       </item>
       <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="constraintMode">
+        <property name="toolTip">
+         <string>Current constraint creation tool will remain active after creation</string>
+        </property>
         <property name="text">
-         <string>Constraint Creation &quot;Continue Mode&quot;</string>
+         <string>Constraint creation &quot;Continue Mode&quot;</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -208,7 +223,7 @@
          <item>
           <widget class="Gui::PrefCheckBox" name="checkBoxTVHideDependent">
            <property name="toolTip">
-            <string>When opening sketch, hide all features that depend on it.</string>
+            <string>When opening sketch, hide all features that depend on it</string>
            </property>
            <property name="text">
             <string>Hide all objects that depend on the sketch</string>
@@ -227,7 +242,7 @@
          <item>
           <widget class="Gui::PrefCheckBox" name="checkBoxTVShowLinks">
            <property name="toolTip">
-            <string>When opening sketch, show sources for external geometry links.</string>
+            <string>When opening sketch, show sources for external geometry links</string>
            </property>
            <property name="text">
             <string>Show objects used for external geometry</string>
@@ -246,7 +261,7 @@
          <item>
           <widget class="Gui::PrefCheckBox" name="checkBoxTVShowSupport">
            <property name="toolTip">
-            <string>When opening sketch, show objects the sketch is attached to.</string>
+            <string>When opening sketch, show objects the sketch is attached to</string>
            </property>
            <property name="text">
             <string>Show object(s) sketch is attached to</string>
@@ -265,7 +280,7 @@
          <item>
           <widget class="Gui::PrefCheckBox" name="checkBoxTVRestoreCamera">
            <property name="toolTip">
-            <string>When closing sketch, move camera back to where it was before sketch was opened.</string>
+            <string>When closing sketch, move camera back to where it was before sketch was opened</string>
            </property>
            <property name="text">
             <string>Restore camera position after editing</string>
@@ -309,7 +324,7 @@
             </sizepolicy>
            </property>
            <property name="toolTip">
-            <string>Apply current smart visibility to all sketches in open documents (update properties to match).</string>
+            <string>Applies current visibility automation settings to all sketches in open documents</string>
            </property>
            <property name="text">
             <string>Apply to existing sketches</string>
@@ -328,6 +343,9 @@
       </item>
       <item row="2" column="1">
        <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
+        <property name="toolTip">
+         <string>Number of polygons for geometry approximation</string>
+        </property>
         <property name="minimum">
          <number>50</number>
         </property>
@@ -345,7 +363,8 @@
       <item row="6" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxHideUnits">
         <property name="toolTip">
-         <string>Do not show base length units in sketches. Supports all unit systems except US Customary and Building US/Euro.</string>
+         <string>Base length units will not be displayed in constraints.
+Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
         <property name="text">
          <string>Hide base length units for supported unit systems</string>
@@ -364,13 +383,17 @@
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Sketcher Solver</string>
+      <string>Sketcher solver</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxAdvancedSolverTaskBox">
+        <property name="toolTip">
+         <string>Sketcher dialog will have additional section
+'Advanced solver control' to adjust solver settings</string>
+        </property>
         <property name="text">
-         <string>Show Advanced Solver Control in the Task bar</string>
+         <string>Show section 'Advanced solver control' in task dialog</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowSolverAdvancedWidget</cstring>
@@ -386,13 +409,17 @@
    <item row="3" column="0">
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
-      <string>Dragging Performance</string>
+      <string>Dragging performance</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5" rowstretch="0,0" columnstretch="0,0">
       <item row="1" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="checkBoxRecalculateInitialSolutionWhileDragging">
+        <property name="toolTip">
+         <string>Special solver algorithm will be used while dragging sketch elements.
+Requires to re-enter edit mode to take effect.</string>
+        </property>
         <property name="text">
-         <string>Improve solving while dragging (requires to re-enter edit mode to take effect)</string>
+         <string>Improve solving while dragging</string>
         </property>
         <property name="checked">
          <bool>true</bool>
