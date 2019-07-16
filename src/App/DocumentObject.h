@@ -225,9 +225,20 @@ public:
 #endif
     /// get all objects link directly or indirectly to this object
     std::vector<App::DocumentObject*> getInListRecursive(void) const;
-    /// Get a set of all objects linking to this object, including possible external parent objects
-    void getInListEx(std::set<App::DocumentObject*> &inList, bool recursive) const;
+    /** Get a set of all objects linking to this object, including possible external parent objects
+     *
+     * @param inSet [out]: a set containing all objects linking to this object.
+     * @param recursive [in]: whether to obtain recursive in list
+     * @param inList [in, out]: optional pointer to a vector holding the output
+     * objects, with the furthest linking object ordered last.
+     */
+    void getInListEx(std::set<App::DocumentObject*> &inSet, 
+            bool recursive, std::vector<App::DocumentObject*> *inList=0) const;
+    /** Return a set of all objects linking to this object, including possible external parent objects
+     * @param recursive [in]: whether to obtain recursive in list
+     */
     std::set<App::DocumentObject*> getInListEx(bool recursive) const;
+
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
 

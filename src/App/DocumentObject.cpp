@@ -365,9 +365,10 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
 // problem.
 
 std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const {
-    std::set<App::DocumentObject*> res;
-    getInListEx(res,true);
-    return std::vector<App::DocumentObject*>(res.begin(),res.end());
+    std::set<App::DocumentObject*> inSet;
+    std::vector<App::DocumentObject*> res;
+    getInListEx(inSet,true,&res);
+    return res;
 }
 
 #endif
@@ -375,11 +376,15 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
 // More efficient algorithm to find the recursive inList of an object,
 // including possible external parents.  One shortcoming of this algorithm is
 // it does not detect cyclic reference, althgouth it won't crash either.
-void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inList, bool recursive) const
+void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet, 
+        bool recursive, std::vector<App::DocumentObject*> *inList) const
 {
+#ifdef USE_OLD_DAG
     std::map<DocumentObject*,std::set<App::DocumentObject*> > outLists;
 
-    // collect all objects and their outLists from all documents.
+    // Old DAG does not have pre-built InList, and must calculate The InList by
+    // going through all objects' OutLists. So we collect all objects and their
+    // outLists first here.
     for(auto doc : GetApplication().getDocuments()) {
         for(auto obj : doc->getObjects()) {
             if(!obj || !obj->getNameInDocument() || obj==this)
@@ -400,13 +405,37 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inList, bool re
             // Check the outList to see if the object is there, and pend the
             // object for recrusive check if it's not already in the inList
             if(outList.find(obj)!=outList.end() && 
-               inList.insert(v.first).second &&
+               inSet.insert(v.first).second &&
                recursive)
             {
                 pendings.push(v.first);
             }
         }
     }
+#else // USE_OLD_DAG
+
+    if(!recursive) {
+        inSet.insert(_inList.begin(),_inList.end());
+        if(inList)
+            *inList = _inList;
+        return;
+    }
+
+    std::stack<DocumentObject*> pendings;
+    pendings.push(const_cast<DocumentObject*>(this));
+    while(pendings.size()) {
+        auto obj = pendings.top();
+        pendings.pop();
+        for(auto o : obj->getInList()) {
+            if(o && o->getNameInDocument() && inSet.insert(o).second) {
+                pendings.push(o);
+                if(inList)
+                    inList->push_back(o);
+            }
+        }
+    }
+
+#endif
 }
 
 std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const {
