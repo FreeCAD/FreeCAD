@@ -792,6 +792,24 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
     return ret;
 }
 
+std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char *subname) const {
+    std::vector<DocumentObject*> res;
+    res.push_back(const_cast<DocumentObject*>(this));
+    if(!subname || !subname[0])
+        return res;
+    std::string sub(subname);
+    for(auto pos=sub.find('.');pos!=std::string::npos;pos=sub.find('.',pos+1)) {
+        char c = sub[pos+1];
+        sub[pos+1] = 0;
+        auto sobj = getSubObject(sub.c_str());
+        if(!sobj || !sobj->getNameInDocument())
+            break;
+        res.push_back(sobj);
+        sub[pos+1] = c;
+    }
+    return res;
+}
+
 std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
     std::vector<std::string> ret;
     auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();

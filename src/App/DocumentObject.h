@@ -338,6 +338,9 @@ public:
     virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
             Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
 
+    /// Return a list of objects referenced by a given subname including this object
+    std::vector<DocumentObject*> getSubObjectList(const char *subname) const;
+
     /// reason of calling getSubObjects()
     enum GSReason {
         /// default, mostly for exporting shape objects

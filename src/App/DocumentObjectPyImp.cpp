@@ -530,6 +530,18 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     }PY_CATCH
 }
 
+PyObject*  DocumentObjectPy::getSubObjectList(PyObject *args) {
+    const char *subname;
+    if (!PyArg_ParseTuple(args, "s", &subname))
+        return NULL;
+    Py::List res;
+    PY_TRY {
+        for(auto o : getDocumentObjectPtr()->getSubObjectList(subname))
+            res.append(Py::asObject(o->getPyObject()));
+        return Py::new_reference_to(res);
+    }PY_CATCH
+}
+
 PyObject*  DocumentObjectPy::getSubObjects(PyObject *args) {
     int reason = 0;
     if (!PyArg_ParseTuple(args, "|i", &reason))

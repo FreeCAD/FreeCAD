@@ -91,6 +91,15 @@ referencing subobject.
                 </UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getSubObjectList">
+            <Documentation>
+                <UserDocu>
+getSubObjectList(subname)
+
+Return a list of objects referenced by a given subname including this object
+                </UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getSubObjects">
             <Documentation>
                 <UserDocu>getSubObjects(reason=0): Return subname reference of all sub-objects</UserDocu>
