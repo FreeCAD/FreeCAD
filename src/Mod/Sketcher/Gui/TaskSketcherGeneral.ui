@@ -16,6 +16,9 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QCheckBox" name="checkBoxShowGrid">
+     <property name="toolTip">
+      <string>A grid will be shown</string>
+     </property>
      <property name="text">
       <string>Show grid</string>
      </property>
@@ -35,6 +38,9 @@
      </item>
      <item>
       <widget class="Gui::PrefQuantitySpinBox" name="gridSize" native="true">
+       <property name="toolTip">
+        <string>Distance between two subsequent grid lines</string>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
@@ -62,6 +68,10 @@
      <property name="enabled">
       <bool>true</bool>
      </property>
+     <property name="toolTip">
+      <string>New points will snap to the nearest grid line.
+Points must be set closer than a fifth of the grid size to a grid line to snap.</string>
+     </property>
      <property name="text">
       <string>Grid snap</string>
      </property>
@@ -71,6 +81,9 @@
     <widget class="QCheckBox" name="checkBoxAutoconstraints">
      <property name="enabled">
       <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Sketcher proposes automatically sensible constraints.</string>
      </property>
      <property name="text">
       <string>Auto constraints</string>
@@ -82,6 +95,9 @@
    </item>
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBoxRedundantAutoconstraints">
+     <property name="toolTip">
+      <string>Sketcher tries not to propose redundant auto constraints</string>
+     </property>
      <property name="text">
       <string>Avoid redundant auto constraints</string>
      </property>
@@ -105,6 +121,9 @@
    </item>
    <item>
     <widget class="QListWidget" name="renderingOrder">
+     <property name="toolTip">
+      <string>To change, drag and drop a geometry type to top or bottom</string>
+     </property>
      <property name="dragEnabled">
       <bool>true</bool>
      </property>

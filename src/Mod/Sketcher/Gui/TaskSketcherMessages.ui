@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>253</width>
-    <height>115</height>
+    <height>132</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,10 +49,10 @@
    <item>
     <widget class="Gui::PrefCheckBox" name="autoRemoveRedundants">
      <property name="toolTip">
-      <string>Automatically removes redundant constraints.</string>
+      <string>New constraints that would be redundant will automatically be removed</string>
      </property>
      <property name="text">
-      <string>Auto Remove Redundants</string>
+      <string>Auto remove redundants</string>
      </property>
      <property name="checked">
       <bool>false</bool>
@@ -64,7 +64,7 @@
       <cstring>Mod/Sketcher</cstring>
      </property>
     </widget>
-   </item>   
+   </item>
    <item>
     <spacer name="horizontalSpacer">
      <property name="orientation">
@@ -83,10 +83,10 @@
      <item>
       <widget class="Gui::PrefCheckBox" name="autoUpdate">
        <property name="toolTip">
-        <string>Executes a recompute of the active document after every command</string>
+        <string>Executes a recomputation of active document after every sketch action</string>
        </property>
        <property name="text">
-        <string>Auto Update</string>
+        <string>Auto update</string>
        </property>
        <property name="checked">
         <bool>false</bool>
@@ -98,11 +98,11 @@
         <cstring>Mod/Sketcher</cstring>
        </property>
       </widget>
-     </item>     
+     </item>
      <item>
       <widget class="QPushButton" name="manualUpdate">
        <property name="toolTip">
-        <string>Forces a recompute of the active document</string>
+        <string>Forces recomputation of active document</string>
        </property>
        <property name="text">
         <string>Update</string>
