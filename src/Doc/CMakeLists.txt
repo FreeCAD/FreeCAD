@@ -65,7 +65,7 @@ if(DOXYGEN_FOUND)
                            ${CMAKE_BINARY_DIR}/src/Gui 
                            ${CMAKE_SOURCE_DIR}/src/Mod
                            ${CMAKE_BINARY_DIR}/src/Mod
-                           ${CMAKE_SOURCE_DIR}/src/Main 
+                           #${CMAKE_SOURCE_DIR}/src/Main #nothing to document there ATM...
                            ${CMAKE_SOURCE_DIR}/src/Doc 
     )
     STRING(REGEX REPLACE ";" " " DOXYGEN_INPUT_LIST "${DOXYGEN_SOURCE_DIR}")
@@ -75,8 +75,6 @@ if(DOXYGEN_FOUND)
     # src/3rdParty/CxImage : Windows thumbnailer
     set(        DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Tools)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/CxImage)
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh)
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Mod/Arch/Dice3DS)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Doc/sphinx)
     # deprecated modules
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Mod/Assembly)

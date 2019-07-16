@@ -24,6 +24,7 @@
 #define PARAMS_HELPER_H
 
 /** \page ParamPage Parameter helper macros
+ * \ingroup PATH
  * Collections of macros for managing groups of parameters.
  *
  * \section Motivation 
@@ -178,6 +179,7 @@
 #include <boost/preprocessor/comparison/greater.hpp>
 
 /** \defgroup ParamHelper Parameters helper macros
+ * \ingroup PATH
  * Collections of macros for managing groups of parameters */
 
 /**

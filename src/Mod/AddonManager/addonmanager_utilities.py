@@ -27,6 +27,10 @@ import FreeCAD
 import shutil
 import re
 
+## @package AddonManager_utilities
+#  \ingroup ADDONMANAGER
+#  \brief Utilities to work across different platforms, providers and python versions
+
 # check for SSL support
 
 ssl_ctx = None
