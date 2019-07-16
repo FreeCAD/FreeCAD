@@ -22,8 +22,16 @@
 #*                                                                         *
 #***************************************************************************
 
+## \defgroup OFFLINERENDERINGUTILS OfflineRenderingUtils
+#  \ingroup UTILITIES
+#  \brief Utility functions to work with FreeCAD files in console mode
+#
+# Offline rendering utilities
 
-"""
+## \addtogroup OFFLINERENDERINGUTILS
+#  @{
+
+"""@package docstring
 OfflineRenderingUtils - Utilities to help producing files with colors from FreeCAD in non-GUI mode
 
 
@@ -95,7 +103,6 @@ OfflineRenderingUtils.viewer(scene)
 
 OfflineRenderingUtils.save(doc,filename=baseFileName+"_exported.FCStd",colors=colors,camera=camera)
 """
-
 
 import sys
 import os
@@ -749,3 +756,5 @@ def extract(filename,inputpath,outputpath=None):
                     of.close()
                 else:
                     return data
+
+##  @}

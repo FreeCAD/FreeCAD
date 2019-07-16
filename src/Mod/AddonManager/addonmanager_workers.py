@@ -35,19 +35,22 @@ import addonmanager_utilities as utils
 from addonmanager_utilities import translate # this needs to be as is for pylupdate
 from addonmanager_macro import Macro
 
+## @package AddonManager_workers
+#  \ingroup ADDONMANAGER
+#  \brief Multithread workers for the addon manager
+
 MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
 OBSOLETE = ["assembly2","drawing_dimensioning","cura_engine"] # These addons will print an additional message informing the user
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
 
 
-"Multithread workers for the Addon Manager"
+"""Multithread workers for the Addon Manager"""
 
 
 
 class UpdateWorker(QtCore.QThread):
-
-    "This worker updates the list of available workbenches"
+    """This worker updates the list of available workbenches"""
 
     info_label = QtCore.Signal(str)
     addon_repo = QtCore.Signal(object)
@@ -119,8 +122,7 @@ class UpdateWorker(QtCore.QThread):
 
 
 class InfoWorker(QtCore.QThread):
-
-    "This worker retrieves the description text of a workbench"
+    """This worker retrieves the description text of a workbench"""
 
     addon_repos = QtCore.Signal(object)
 
@@ -153,8 +155,7 @@ class InfoWorker(QtCore.QThread):
 
 
 class CheckWBWorker(QtCore.QThread):
-
-    "This worker checks for available updates for all workbenches"
+    """This worker checks for available updates for all workbenches"""
 
     enable = QtCore.Signal(int)
     mark = QtCore.Signal(str)
@@ -212,8 +213,7 @@ class CheckWBWorker(QtCore.QThread):
 
 
 class FillMacroListWorker(QtCore.QThread):
-
-    "This worker opulates the list of macros"
+    """This worker opulates the list of macros"""
 
     add_macro_signal = QtCore.Signal(Macro)
     info_label_signal = QtCore.Signal(str)
@@ -293,8 +293,7 @@ class FillMacroListWorker(QtCore.QThread):
 
 
 class ShowWorker(QtCore.QThread):
-
-    "This worker retrieves info of a given workbench"
+    """This worker retrieves info of a given workbench"""
 
     info_label = QtCore.Signal(str)
     addon_repos = QtCore.Signal(object)

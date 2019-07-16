@@ -28,7 +28,7 @@ __url__ = ["http://www.freecadweb.org"]
 "a vector math library for FreeCAD"
 
 ## \defgroup DRAFTVECUTILS DraftVecUtils
-#  \ingroup DRAFT
+#  \ingroup UTILITIES
 #  \brief Vector math utilities used in Draft workbench
 #
 # Vector math utilities
