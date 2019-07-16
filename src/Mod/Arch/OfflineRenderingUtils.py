@@ -155,7 +155,7 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
         elif tag == "Integer":
             self.currentval = int(attributes["value"])
         elif tag == "String":
-            self.currentval = int(attributes["value"])
+            self.currentval = attributes["value"]
         elif tag == "Float":
             self.currentval = float(attributes["value"])
         elif tag == "ColorList":
@@ -174,7 +174,8 @@ class FreeCADGuiHandler(xml.sax.ContentHandler):
             elif isinstance(self.currentval,list):
                 self.currentval.append(attributes["value"])
         elif tag == "Python":
-            self.currentval = (attributes["value"],attributes["encoded"],attributes["module"],attributes["class"])
+            if "module" in attributes:
+                self.currentval = (attributes["value"],attributes["encoded"],attributes["module"],attributes["class"])
         elif tag == "Camera":
             self.guidata["GuiCameraSettings"] = attributes["settings"]
 
@@ -289,12 +290,14 @@ def getStepData(objects,colors):
     return data
 
 
-def render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,background=(1.0,1.0,1.0)):
+def render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,background=(1.0,1.0,1.0),lightdir=None):
 
-    """render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,background=(1.0,1.0,1.0)):
+    """render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,background=(1.0,1.0,1.0),lightdir=None):
     Renders a PNG image of given width and height and background color from the given coin scene, using
     the given coin camera (ortho or perspective). If zoom is True the camera will be resized to fit all
-    objects. The outputfile must be a file path to save a png image."""
+    objects. The outputfile must be a file path to save a png image. Optionally a light direction as a (x,y,z)
+    tuple can be given. In this case, a directional light will be added and shadows will
+    be turned on. This might not work with soem 3D drivers."""
 
     # On Linux, the X server must have indirect rendering enabled in order to be able to do offline
     # PNG rendering. Unfortunately, this is turned off by default on most recent distros. The easiest
@@ -313,9 +316,10 @@ def render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,bac
     print("Starting offline renderer")
     # build an offline scene root separator
     root = coin.SoSeparator()
-    # add one light (mandatory)
-    light = coin.SoDirectionalLight()
-    root.addChild(light)
+    if not lightdir:
+        # add one light (mandatory)
+        light = coin.SoDirectionalLight()
+        root.addChild(light)
     if not camera:
         # create a default camera if none was given
         camera = coin.SoPerspectiveCamera()
@@ -332,6 +336,8 @@ def render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,bac
         # no scene was given, add a simple cube
         cube = coin.SoCube()
         root.addChild(cube)
+    if lightdir:
+        root = embedLight(root,lightdir)
     vpRegion = coin.SbViewportRegion(width,height)
     if zoom:
         camera.viewAll(root,vpRegion)
@@ -416,9 +422,13 @@ def getCoinCamera(camerastring):
 
 
 
-def viewer(scene=None,background=(1.0,1.0,1.0)):
+def viewer(scene=None,background=(1.0,1.0,1.0),lightdir=None):
 
-    """viewer(scene=None,background=(1.0,1.0,1.0)): starts a standalone coin viewer with the contents of the given scene"""
+    """viewer(scene=None,background=(1.0,1.0,1.0),lightdir=None): starts
+    a standalone coin viewer with the contents of the given scene. You can
+    give a background color, and optionally a light direction as a (x,y,z)
+    tuple. In this case, a directional light will be added and shadows will
+    be turned on. This might not work with soem 3D drivers."""
 
     # Initialize Coin. This returns a main window to use
     from pivy import sogui
@@ -438,6 +448,9 @@ def viewer(scene=None,background=(1.0,1.0,1.0)):
         scene.addChild(mat)
         scene.addChild(coin.SoCone())
 
+    if lightdir:
+        scene = embedLight(scene,lightdir)
+
     # ref the scene so it doesn't get garbage-collected
     scene.ref()
 
@@ -451,6 +464,44 @@ def viewer(scene=None,background=(1.0,1.0,1.0)):
 
     sogui.SoGui.show(win) # Display main window
     sogui.SoGui.mainLoop()     # Main Coin event loop
+
+
+
+def embedLight(scene,lightdir):
+
+    """embedLight(scene,lightdir): embeds a given coin node
+    inside a shadow group with directional light with the
+    given direction (x,y,z) tuple. Returns the final coin node"""
+
+    from pivy import coin
+
+    # buggy - no SoShadowGroup in pivy?
+    #sgroup = coin.SoShadowGroup()
+    #sgroup.quality = 1
+    #sgroup.precision = 1
+    #slight = SoShadowDirectionalLight()
+    #slight.direction = lightdir
+    #slight.intensity = 20.0
+
+    buf = """
+#Inventor V2.1 ascii
+ShadowGroup {
+    quality 1
+    precision 1
+    ShadowDirectionalLight {
+        direction """+str(lightdir[0])+" "+str(lightdir[1])+" "+str(lightdir[2])+"""
+        intensity 200.0
+        # enable this to reduce the shadow view distance
+        # maxShadowDistance 200
+    }
+}"""
+
+    inp = coin.SoInput()
+    inp.setBuffer(buf)
+    sgroup = coin.SoDB.readAll(inp)
+
+    sgroup.addChild(scene)
+    return sgroup
 
 
 
@@ -737,7 +788,7 @@ def getViewProviderClass(obj):
 def extract(filename,inputpath,outputpath=None):
 
     """extract(filename,inputpath,outputpath=None): extracts 'inputpath' which is a filename
-    stored in infile (a FreeCAD or zip file). If outputpath is given, the file is saved as outputpath and
+    stored in filename (a FreeCAD or zip file). If outputpath is given, the file is saved as outputpath and
     nothing is returned. If not, the contents of the inputfile are returned and nothing is saved."""
 
     zdoc = zipfile.ZipFile(filename)
@@ -756,5 +807,33 @@ def extract(filename,inputpath,outputpath=None):
                     of.close()
                 else:
                     return data
+
+
+
+def openiv(filename):
+
+    """openiv(filename): opens an .iv file and returns a coin node from it"""
+
+    f = open(filename,"r")
+    buf = f.read()
+    f.close()
+    inp = coin.SoInput()
+    inp.setBuffer(buf)
+    node = coin.SoDB.readAll(inp)
+    return node
+
+
+
+def saveiv(scene,filename):
+
+    """saveiv(scene,filename): saves an .iv file with the contents of the given coin node"""
+
+    wa=coin.SoWriteAction()
+    wa.getOutput().openFile(filename)
+    wa.getOutput().setBinary(False)
+    wa.apply(sc)
+    wa.getOutput().closeFile()
+
+
 
 ##  @}
