@@ -29,6 +29,8 @@
 # include <QContextMenuEvent>
 # include <QTextCursor>
 # include <QTextStream>
+# include <QDockWidget>
+# include <QPointer>
 #endif
 
 #include <Base/Interpreter.h>
@@ -150,8 +152,6 @@ void ReportHighlighter::highlightBlock (const QString & text)
     ud->block.append(b);
 
     QVector<TextBlockData::State> block = ud->block;
-    bool hasErrors = false;
-    bool hasWarnings = false;
     int start = 0;
     for (QVector<TextBlockData::State>::Iterator it = block.begin(); it != block.end(); ++it) {
         switch (it->type)
@@ -161,11 +161,9 @@ void ReportHighlighter::highlightBlock (const QString & text)
             break;
         case Warning:
             setFormat(start, it->length-start, warnCol);
-            hasWarnings = true;
             break;
         case Error:
             setFormat(start, it->length-start, errCol);
-            hasErrors = true;
             break;
         case LogText:
             setFormat(start, it->length-start, logCol);
@@ -175,21 +173,6 @@ void ReportHighlighter::highlightBlock (const QString & text)
         }
 
         start = it->length;
-    }
-    if(hasErrors || hasWarnings){
-        //activate report view unless this is disabled in preferences
-
-        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
-        bool showReportViewOnWarningOrError = group->GetBool("checkShowReportViewOnWarningOrError", true);
-        if (showReportViewOnWarningOrError){
-            QWidget* reportView = Gui::getMainWindow()->findChild<QWidget*>(QString::fromLatin1("Report view"));
-            if (reportView){
-                if (!reportView->isVisible()){
-                    reportView->show();
-                }
-            }
-        }
     }
 }
 
@@ -244,6 +227,48 @@ private:
     ReportHighlighter::Paragraph par;
     QString msg;
 };
+
+// ----------------------------------------------------------
+
+/**
+ * The ReportOutputObserver class is used to check if messages sent to the
+ * report view are warnings or errors, and if so and if the user has not
+ * disabled this in preferences, the report view is toggled on so the
+ * user always gets the warnings/errors
+ */
+
+ReportOutputObserver::ReportOutputObserver(QDockWidget *parent)
+{
+   this->reportViewParent = parent;
+}
+
+ReportOutputObserver::~ReportOutputObserver(){
+
+}
+
+bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event){
+    if (event->type() == QEvent::User) {
+        CustomReportEvent* cr = (CustomReportEvent*) event;
+        QDockWidget* rv = this->reportViewParent->findChild
+                <QDockWidget*>(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
+        if(cr && rv){
+            ReportHighlighter::Paragraph msgType = cr->messageType();
+            if (msgType == ReportHighlighter::Error || msgType == ReportHighlighter::Warning){
+                ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
+                if(group->GetBool("checkShowReportViewOnWarningOrError", true)){
+                    if(!rv->toggleViewAction()->isChecked()){
+                        rv->toggleViewAction()->activate(QAction::Trigger);
+                    }
+                }
+            }
+        }
+        return false;  //true would prevent the messages reaching the report view
+    } else {
+        // standard event processing
+        return QObject::eventFilter(obj, event);
+    }
+}
 
 // ----------------------------------------------------------
 
@@ -492,8 +517,8 @@ void ReportOutput::onToggleError()
 }
 
 void ReportOutput::onToggleShowReportViewOnWarningOrError(){
-    bShow = bShow ? false : true;
-    getWindowParameter()->SetBool("checkShowReportViewOnWarningOrError", bShow);
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarningOrError", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnWarningOrError", !show);
 }
 void ReportOutput::onToggleWarning()
 {
