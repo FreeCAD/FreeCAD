@@ -27,6 +27,8 @@
 #include <QTextEdit>
 #include <QSyntaxHighlighter>
 #include <Base/Console.h>
+#include <QPointer>
+#include <QDockWidget>
 #include "DockWindow.h"
 #include "Window.h"
 
@@ -38,6 +40,7 @@ namespace DockWnd {
 
 class ReportOutput;
 class ReportHighlighter;
+class ReportOutputObserver;
 
 /** Report view containing an output window and a very simple Python console.
  * @see ReportOutput
@@ -186,6 +189,23 @@ private:
     bool gotoEnd;
     ReportHighlighter* reportHl; /**< Syntax highlighter */
     ParameterGrp::handle _prefs; 
+};
+
+/**
+ * Observer to enable report view on warnings / errors if not already
+ * enabled.
+ */
+
+class ReportOutputObserver : public QObject
+{
+    Q_OBJECT
+
+public:
+    ReportOutputObserver (QDockWidget* parent = 0);
+    ~ReportOutputObserver();
+    bool eventFilter(QObject *obj, QEvent *event);
+protected:
+    QPointer <QDockWidget> reportViewParent;
 };
 
 } // namespace DockWnd

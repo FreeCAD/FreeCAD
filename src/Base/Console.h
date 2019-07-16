@@ -458,7 +458,7 @@ class BaseExport ConsoleObserver
 {
 public:
     ConsoleObserver()
-        :bErr(true),bMsg(true),bLog(true),bWrn(true),bShow(true) {}
+        :bErr(true),bMsg(true),bLog(true),bWrn(true){}
     virtual ~ConsoleObserver() {}
     /// get calls when a Warning is issued
     virtual void Warning(const char *){}
@@ -470,7 +470,7 @@ public:
     virtual void Log    (const char *){}
 
     virtual const char *Name(void){return 0L;}
-    bool bErr,bMsg,bLog,bWrn,bShow;
+    bool bErr,bMsg,bLog,bWrn;
 };
 
 
