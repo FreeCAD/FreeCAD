@@ -76,11 +76,67 @@ def makeSite(objectslist=None,baseobj=None,name="Site"):
     return obj
 
 
-def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
+def getSunDirections(longitude,latitude,tz=None):
 
-    """makeSolarDiagram(longitude,latitude,[scale,complete]):
+    """getSunDirections(longitude,latitude,[tz]): returns a list of 9
+    directional 3D vectors corresponding to sun direction at 9h, 12h
+    and 15h on summer solstice, equinox and winter solstice. Tz is the
+    timezone related to UTC (ex: -3 = UTC-3)"""
+
+    oldversion = False
+    try:
+        import pysolar
+    except:
+        try:
+            import Pysolar as pysolar
+        except:
+            FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
+            return None
+        else:
+            oldversion = True
+
+    if tz:
+        tz = datetime.timezone(datetime.timedelta(hours=-3))
+    else:
+        tz = datetime.timezone.utc
+
+    year = datetime.datetime.now().year
+    hpts = [ [] for i in range(24) ]
+    m = [(6,21),(9,21),(12,21)]
+    pts = []
+    for i,d in enumerate(m):
+        for h in [9,12,15]:
+            if oldversion:
+                dt = datetime.datetime(year, d[0], d[1], h)
+                alt = math.radians(pysolar.solar.GetAltitudeFast(latitude, longitude, dt))
+                az = pysolar.solar.GetAzimuth(latitude, longitude, dt)
+                az = -90 + az # pysolar's zero is south, ours is X direction
+            else:
+                dt = datetime.datetime(year, d[0], d[1], h, tzinfo=tz)
+                alt = math.radians(pysolar.solar.get_altitude_fast(latitude, longitude, dt))
+                az = pysolar.solar.get_azimuth(latitude, longitude, dt)
+                az = 90 + az # pysolar's zero is north, ours is X direction
+            if az < 0:
+                az = 360 + az
+            az = math.radians(az)
+            zc = math.sin(alt)
+            ic = math.cos(alt)
+            xc = math.cos(az)*ic
+            yc = math.sin(az)*ic
+            p = FreeCAD.Vector(xc,yc,zc).negative()
+            p.normalize()
+            if not oldversion:
+                p.x = -p.x # No idea why that is, empirical find
+            pts.append(p)
+    return pts
+
+
+def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
+
+    """makeSolarDiagram(longitude,latitude,[scale,complete,tz]):
     returns a solar diagram as a pivy node. If complete is
-    True, the 12 months are drawn"""
+    True, the 12 months are drawn. Tz is the timezone related to
+    UTC (ex: -3 = UTC-3)"""
 
     oldversion = False
     try:
@@ -98,6 +154,11 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
 
     if not scale:
         return None
+
+    if tz:
+        tz = datetime.timezone(datetime.timedelta(hours=-3))
+    else:
+        tz = datetime.timezone.utc
 
     def toNode(shape):
         "builds a pivy node from a simple linear shape"
@@ -150,11 +211,12 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
                 dt = datetime.datetime(year, d[0], d[1], h)
                 alt = math.radians(pysolar.solar.GetAltitudeFast(latitude, longitude, dt))
                 az = pysolar.solar.GetAzimuth(latitude, longitude, dt)
+                az = -90 + az # pysolar's zero is south, ours is X direction
             else:
-                dt = datetime.datetime(year, d[0], d[1], h, tzinfo=datetime.timezone.utc)
+                dt = datetime.datetime(year, d[0], d[1], h, tzinfo=tz)
                 alt = math.radians(pysolar.solar.get_altitude_fast(latitude, longitude, dt))
                 az = pysolar.solar.get_azimuth(latitude, longitude, dt)
-            az = -90 + az # pysolar's zero is south
+                az = 90 + az # pysolar's zero is north, ours is X direction
             if az < 0:
                 az = 360 + az
             az = math.radians(az)
@@ -169,6 +231,8 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
                 ep = FreeCAD.Vector(p)
                 ep.multiply(1.08)
                 if ep.z >= 0:
+                    if not oldversion:
+                        h = 24-h # not sure why this is needed now... But it is.
                     if h == 12:
                         if i == 0:
                             h = "SUMMER"
@@ -523,6 +587,8 @@ class _Site:
             obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
             obj.IfcType = ArchIFC.IfcTypes
             obj.IcfType = "Site"
+        if not "TimeZone" in pl:
+            obj.addProperty("App::PropertyInteger","TimeZone","Site",QT_TRANSLATE_NOOP("App::Property","The time zone where this site is located"))
         self.Type = "Site"
 
     def onDocumentRestored(self,obj):
@@ -775,7 +841,10 @@ class _ViewProviderSite:
                 del self.diagramnode
             if hasattr(vobj,"SolarDiagram") and hasattr(vobj,"SolarDiagramScale"):
                 if vobj.SolarDiagram:
-                    self.diagramnode = makeSolarDiagram(vobj.Object.Longitude,vobj.Object.Latitude,vobj.SolarDiagramScale)
+                    tz = 0
+                    if hasattr(vobj.Object,"TimeZone"):
+                        tz = vobj.Object.TimeZone
+                    self.diagramnode = makeSolarDiagram(vobj.Object.Longitude,vobj.Object.Latitude,vobj.SolarDiagramScale,tz=tz)
                     if self.diagramnode:
                         self.diagramsep.addChild(self.diagramnode)
                         self.diagramswitch.whichChild = 0
