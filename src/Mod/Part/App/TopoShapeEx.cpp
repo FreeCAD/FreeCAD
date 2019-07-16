@@ -571,11 +571,23 @@ std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type) const 
     return _Cache->getInfo(type).getTopoShapes(*this);
 }
 
+static const std::string _SubShape("SubShape");
+
 std::pair<TopAbs_ShapeEnum,int> TopoShape::shapeTypeAndIndex(const char *name) {
     int idx = 0;
     auto type = shapeType(name,true);
-    if(type != TopAbs_SHAPE) {
-        std::istringstream iss(name+shapeName(type).size());
+    size_t len;
+    if(type != TopAbs_SHAPE) 
+        len = shapeName(type).size();
+    else {
+        if(boost::starts_with(name,_SubShape))
+            len = _SubShape.size();
+        else
+            len = 0;
+    }
+
+    if(len) {
+        std::istringstream iss(name+len);
         iss >> idx;
         if(!iss.eof())
             idx = 0;
@@ -592,8 +604,11 @@ unsigned long TopoShape::countSubShapes(TopAbs_ShapeEnum type) const {
 
 unsigned long TopoShape::countSubShapes(const char* Type) const {
     auto type = shapeType(getElementName(Type),true);
-    if(type == TopAbs_SHAPE)
+    if(type == TopAbs_SHAPE) {
+        if(Type && _SubShape == Type)
+            return countSubShapes(type);
         return 0;
+    }
     return countSubShapes(type);
 }
 
@@ -614,11 +629,13 @@ TopoShape TopoShape::getSubTopoShape(const char *Type, bool silent) const {
         return TopoShape();
     }
 
-    auto type = shapeType(Type,silent);
-    if(silent && type == TopAbs_SHAPE)
+    auto res = shapeTypeAndIndex(Type);
+    if(res.second<=0) {
+        if(!silent)
+            FC_THROWM(Base::CADKernelError,"Invalid shape name " << (Type?Type:""));
         return TopoShape();
-    int idx = std::atoi(Type+shapeName(type).size());
-    return getSubTopoShape(type,idx,silent);
+    }
+    return getSubTopoShape(res.first,res.second,silent);
 }
 
 TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent) const {
@@ -630,6 +647,11 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     if(idx <= 0) {
         if(!silent)
             FC_THROWM(Base::CADKernelError,"Invalid shape index " << idx);
+        return TopoShape();
+    }
+    if(type<0 || type>=TopAbs_SHAPE) {
+        if(!silent)
+            FC_THROWM(Base::CADKernelError,"Invalid shape type " << type);
         return TopoShape();
     }
     INIT_SHAPE_CACHE();
@@ -710,6 +732,9 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf,
     }
     TopoShape tmp(shape);
     if(copy) {
+        if(shape.isNull())
+            HANDLE_NULL_INPUT;
+
         BRepBuilderAPI_Transform mkTrf(shape.getShape(), trsf, Standard_True);
         // TODO: calling Moved() is to make sure the shape has some Location,
         // which is necessary for STEP export to work. However, if we reach
@@ -732,6 +757,9 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf,
 TopoShape &TopoShape::makEGTransform(const TopoShape &shape, 
         const Base::Matrix4D &rclTrf, const char *op, bool copy)
 {
+    if(shape.isNull())
+        HANDLE_NULL_INPUT;
+
     if(!op) op = TOPOP_GTRANSFORM;
     gp_GTrsf mat;
     mat.SetValue(1,1,rclTrf[0][0]);
