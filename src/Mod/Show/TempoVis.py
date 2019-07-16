@@ -135,9 +135,15 @@ class TempoVis(FrozenClass):
         self.saveBodyVisibleFeature(doc_obj_or_list)
         self.modifyVPProperty(doc_obj_or_list, ('Visibility',"LinkVisibility"), False)
 
-    def get_all_dependent(self, doc_obj):
+    def get_all_dependent(self, doc_obj, subname=None):
         '''get_all_dependent(doc_obj): gets all objects that depend on doc_obj. Containers of the object are excluded from the list.'''
-        cnt_chain = Containers.ContainerChain(doc_obj)
+        if subname:
+            cnt_chain = doc_obj.getSubObjectList(subname)
+            doc_obj = cnt_chain[-1].getLinkedObject()
+            cnt_chain = [ o for o in cnt_chain
+                            if o==cnt_chain[-1] or isContainer(o) ]
+        else:
+            cnt_chain = Containers.ContainerChain(doc_obj)
         return [o for o in getAllDependent(doc_obj) if not o in cnt_chain]
 
     def hide_all_dependent(self, doc_obj):

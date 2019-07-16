@@ -5301,8 +5301,6 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
         if(fixed || constraintCreationMode==Reference) {
             FCMD_OBJ_CMD2("setDriving(%i,%s)",
                                     Obj, ConStr.size()-1, "False");
-            Gui::Command::doCommand(Doc, "App.ActiveDocument.%s.setDriving(%i,%s)",
-                                    Obj->getNameInDocument(), ConStr.size()-1, "False");
         }
 
         // Guess some reasonable distance for placing the datum text
@@ -5353,7 +5351,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
 
                     commitCommand();
 
-                    if (Obj->noRecomputes) {
+                    if (Obj->noRecomputes && Obj->ExpressionEngine.depsAreTouched()) {
                         Obj->ExpressionEngine.execute();
                         Obj->solve();
                     }

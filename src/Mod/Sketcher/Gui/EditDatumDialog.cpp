@@ -168,7 +168,7 @@ void EditDatumDialog::exec(bool atCursor)
 
                     Gui::Command::commitCommand();
 
-                    if (sketch->noRecomputes) {
+                    if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
                         sketch->ExpressionEngine.execute();
                         sketch->solve();
                     }
@@ -177,9 +177,9 @@ void EditDatumDialog::exec(bool atCursor)
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
+                    Gui::Command::abortCommand();
                 }
             }
         }
-        Gui::Command::abortCommand();
     }
 }

@@ -5650,6 +5650,16 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     createEditInventorNodes();
 
+    auto editDoc = Gui::Application::Instance->editDocument();
+    App::DocumentObject *editObj = getSketchObject();
+    std::string editSubName;
+    ViewProviderDocumentObject *editVp = 0;
+    if(editDoc) {
+        editDoc->getInEdit(&editVp,&editSubName);
+        if(editVp)
+            editObj = editVp->getObject();
+    }
+
     //visibility automation
     try{
         Gui::Command::addModule(Gui::Command::Gui,"Show.TempoVis");
@@ -5658,7 +5668,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
                         "tv = Show.TempoVis(App.ActiveDocument)\n"
                         "if ActiveSketch.ViewObject.HideDependent:\n"
-                        "  objs = tv.get_all_dependent(ActiveSketch)\n"
+                        "  objs = tv.get_all_dependent(%3, '%4')\n"
                         "  objs = filter(lambda x: not x.TypeId.startswith(\"TechDraw::\"), objs)\n"
                         "  objs = filter(lambda x: not x.TypeId.startswith(\"Drawing::\"), objs)\n"
                         "  tv.hide(objs)\n"
@@ -5670,8 +5680,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "tv.hide(ActiveSketch)\n"
                         "ActiveSketch.ViewObject.TempoVis = tv\n"
                         "del(tv)\n"
-                        ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
-                              QString::fromLatin1(getSketchObject()->getNameInDocument()));
+                        ).arg(QString::fromLatin1(getDocument()->getDocument()->getName()),
+                              QString::fromLatin1(getSketchObject()->getNameInDocument()),
+                              QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
+                              QString::fromLatin1(editSubName.c_str()));
             QByteArray cmdstr_bytearray = cmdstr.toLatin1();
             Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
         } catch (Base::PyException &e){
