@@ -54,6 +54,13 @@
        <widget class="QTreeView" name="tree"/>
       </item>
       <item>
+       <widget class="QLabel" name="labelTotalThickness">
+        <property name="text">
+         <string>Total thickness</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QPushButton" name="addButton">
