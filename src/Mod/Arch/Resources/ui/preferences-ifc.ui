@@ -434,7 +434,7 @@ If this is checked, additional calculation is done to join coplanar facets.</str
         <property name="toolTip">
          <string>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
-is exported. This leads to smaller differences between file versions. </string>
+is exported. This leads to smaller differences between file versions.</string>
         </property>
         <property name="text">
          <string>Store IFC unique ID in FreeCAD objects</string>
@@ -455,7 +455,7 @@ is exported. This leads to smaller differences between file versions. </string>
         <property name="toolTip">
          <string>IFCOpenShell is a library that allows to import IFC files.
 Its serializer functionality allows to give it an OCC shape and it will
-produce adequate IFC geometry: NURBS, faceted, or anything else
+produce adequate IFC geometry: NURBS, faceted, or anything else.
 Note: The serializer this is still an experimental feature!</string>
         </property>
         <property name="text">
@@ -492,7 +492,7 @@ Note: The serializer this is still an experimental feature!</string>
        <widget class="Gui::PrefCheckBox" name="checkBox_13">
         <property name="toolTip">
          <string>All FreeCAD object properties will be stored inside the exported objects,
-allowing to recreate a full parametric model on reimport. </string>
+allowing to recreate a full parametric model on reimport.</string>
         </property>
         <property name="text">
          <string>Export full FreeCAD parametric model</string>
