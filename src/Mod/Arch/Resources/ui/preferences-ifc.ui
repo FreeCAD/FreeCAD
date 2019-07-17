@@ -60,7 +60,7 @@ of IFC files in the Report view panel</string>
        <widget class="Gui::PrefCheckBox" name="checkBox_6">
         <property name="toolTip">
          <string>Clones are used when objects have shared geometry
-One object is the base object, the others are clones. </string>
+One object is the base object, the others are clones.</string>
         </property>
         <property name="text">
          <string>Create clones when objects have shared geometry</string>
@@ -191,7 +191,7 @@ One object is the base object, the others are clones. </string>
          <widget class="Gui::PrefLineEdit" name="lineEdit_2">
           <property name="toolTip">
            <string>Only subtypes of the specified element will be imported.
-Keep the element IfcProduct to import all building elements. </string>
+Keep the element IfcProduct to import all building elements.</string>
           </property>
           <property name="text">
            <string notr="true">IfcProduct</string>
@@ -317,7 +317,7 @@ they will be treated as one.</string>
         <item>
          <widget class="Gui::PrefLineEdit" name="gui::preflineedit">
           <property name="toolTip">
-           <string>Comma-separated list of IFC entities to be excluded from imports </string>
+           <string>Comma-separated list of IFC entities to be excluded from imports</string>
           </property>
           <property name="text">
            <string/>
@@ -339,7 +339,7 @@ they will be treated as one.</string>
        <widget class="Gui::PrefCheckBox" name="checkBox_14">
         <property name="toolTip">
          <string>Fit view during import on the imported objects.
-This will slow down the import, but one can watch the import. </string>
+This will slow down the import, but one can watch the import.</string>
         </property>
         <property name="text">
          <string>Fit view while importing</string>
@@ -382,7 +382,7 @@ FreeCAD object properties</string>
        <widget class="Gui::PrefCheckBox" name="checkBox">
         <property name="toolTip">
          <string>Some IFC viewers don't like objects exported as extrusions.
-Use this to force all objects to be exported as BREP geometry. </string>
+Use this to force all objects to be exported as BREP geometry.</string>
         </property>
         <property name="text">
          <string>Force export as Brep</string>
@@ -416,7 +416,7 @@ Use this to force all objects to be exported as BREP geometry. </string>
         <property name="toolTip">
          <string>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
-If this is checked, additional calculation is done to join coplanar facets. </string>
+If this is checked, additional calculation is done to join coplanar facets.</string>
         </property>
         <property name="text">
          <string>Join coplanar facets when triangulating</string>
@@ -509,7 +509,7 @@ allowing to recreate a full parametric model on reimport. </string>
        <widget class="Gui::PrefCheckBox" name="checkBox_15">
         <property name="toolTip">
          <string>When possible, similar entities will be used only once in the file if possible.
-This can reduce the file size a lot, but will make it less easily readable. </string>
+This can reduce the file size a lot, but will make it less easily readable.</string>
         </property>
         <property name="text">
          <string>Reuse similar entities</string>
@@ -567,7 +567,7 @@ as standard cases when the necessary conditions are met.</string>
        <widget class="Gui::PrefCheckBox" name="checkBox_19">
         <property name="toolTip">
          <string>If no site is found in the FreeCAD document, a default one will be added.
-A site is not mandatory but a common practice to have at least one in the file.</string>
+A site is not mandatory but a common practice is to have at least one in the file.</string>
         </property>
         <property name="text">
          <string>Add default site if one is not found in the document</string>
