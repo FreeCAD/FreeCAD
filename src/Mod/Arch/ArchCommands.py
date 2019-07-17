@@ -765,7 +765,7 @@ def pruneIncluded(objectslist,strict=False):
         if toplevel:
             newlist.append(obj)
         else:
-            FreeCAD.Console.PrintLog("pruning "+obj.Label+"n")
+            FreeCAD.Console.PrintLog("pruning "+obj.Label+"\n")
     return newlist
 
 def getAllChildren(objectlist):
