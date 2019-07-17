@@ -21,7 +21,16 @@
  ***************************************************************************/
 
 
-/*! \namespace App \class App::Document
+/*!
+\defgroup Document Document
+\ingroup APP
+\brief The Base class of the FreeCAD Document
+
+This is besides the Application class the most important class in FreeCAD
+It contains all the data of the opened, saved or newly created FreeCAD Document.
+The Document manage the Undo and Redo mechanism and the linking of documents.
+
+\namespace App \class App::Document
 This is besides the Application class the most important class in FreeCAD
 It contains all the data of the opened, saved or newly created FreeCAD Document.
 The Document manage the Undo and Redo mechanism and the linking of documents.
