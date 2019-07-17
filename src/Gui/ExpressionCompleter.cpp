@@ -388,6 +388,8 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
 
 void ExpressionCompleter::slotUpdate(const QString & prefix)
 {
+    init();
+
     using namespace boost::tuples;
     std::string completionPrefix;
 
