@@ -208,6 +208,9 @@ class _ViewProviderArchMaterialContainer:
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Material_Group.svg"),"Merge duplicates",menu)
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.mergeByName)
         menu.addAction(action1)
+        action2 = QtGui.QAction(QtGui.QIcon(),"Reorder children alphabetically",menu)
+        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.reorder)
+        menu.addAction(action2)
 
     def mergeByName(self):
         if hasattr(self,"Object"):
@@ -237,6 +240,14 @@ class _ViewProviderArchMaterialContainer:
                 else:
                     FreeCAD.Console.PrintMessage("Unable to delete material "+tod.Label+": InList not empty\n")
 
+    def reorder(self):
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"Group") and self.Object.Group:
+                g = self.Object.Group
+                g.sort(key=lambda obj: obj.Label)
+                self.Object.Group = g
+                FreeCAD.ActiveDocument.recompute()
+
     def __getstate__(self):
         return None
 
@@ -260,7 +271,7 @@ class _ArchMaterial:
         obj.addProperty("App::PropertyColor","Color","Arch",QT_TRANSLATE_NOOP("App::Property","The color of this material"))
 
     def isSameColor(self,c1,c2):
-        
+
         r = 4
         if round(c1[0],r) == round(c2[0],r):
             if round(c1[1],r) == round(c2[1],r):
@@ -541,7 +552,7 @@ class _ArchMaterialTaskPanel:
         if father and not found:
             self.form.comboFather.addItem(father)
             self.form.comboFather.setCurrentIndex(self.form.comboFather.count()-1)
-            
+
 
     def getFields(self):
         "sets self.material from the contents of the task box"
@@ -689,7 +700,7 @@ class _ViewProviderArchMultiMaterial:
 
     def doubleClicked(self,vobj):
         self.setEdit(vobj)
-        
+
     def isShow(self):
         return True
 
@@ -703,7 +714,7 @@ if FreeCAD.GuiUp:
                 if obj.isDerivedFrom("App::MaterialObject"):
                     self.mats.append(obj)
             QtGui.QStyledItemDelegate.__init__(self, parent, *args)
-    
+
         def createEditor(self,parent,option,index):
             if index.column() == 0:
                 editor = QtGui.QComboBox(parent)
@@ -718,7 +729,7 @@ if FreeCAD.GuiUp:
             else:
                 editor = QtGui.QLineEdit(parent)
             return editor
-    
+
         def setEditorData(self, editor, index):
             if index.column() == 0:
                 import ArchWindow
@@ -732,7 +743,7 @@ if FreeCAD.GuiUp:
                 editor.setCurrentIndex(idx)
             else:
                 QtGui.QStyledItemDelegate.setEditorData(self, editor, index)
-    
+
         def setModelData(self, editor, model, index):
             if index.column() == 0:
                 if editor.currentIndex() == -1:
@@ -766,15 +777,20 @@ class _ArchMultiMaterialTaskPanel:
         QtCore.QObject.connect(self.form.downButton,QtCore.SIGNAL("pressed()"),self.downLayer)
         QtCore.QObject.connect(self.form.delButton,QtCore.SIGNAL("pressed()"),self.delLayer)
         QtCore.QObject.connect(self.form.invertButton,QtCore.SIGNAL("pressed()"),self.invertLayer)
+        QtCore.QObject.connect(self.model,QtCore.SIGNAL("itemChanged(QStandardItem*)"),self.recalcThickness)
         self.fillExistingCombo()
         self.fillData()
-        
+
     def fillData(self,obj=None):
         if not obj:
             obj = self.obj
         if obj:
             self.model.clear()
             self.model.setHorizontalHeaderLabels([translate("Arch","Name"),translate("Arch","Material"),translate("Arch","Thickness")])
+            # restore widths
+            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+            self.form.tree.setColumnWidth(0,p.GetInt("MultiMaterialColumnWidth0",60))
+            self.form.tree.setColumnWidth(1,p.GetInt("MultiMaterialColumnWidth1",60))
             for i in range(len(obj.Names)):
                 item1 = QtGui.QStandardItem(obj.Names[i])
                 item2 = QtGui.QStandardItem(obj.Materials[i].Label)
@@ -792,7 +808,7 @@ class _ArchMultiMaterialTaskPanel:
                     self.existingmaterials.append(obj)
         for m in self.existingmaterials:
             self.form.chooseCombo.addItem(m.Label)
-            
+
     def fromExisting(self,index):
         "sets the contents from an existing material"
         if index > 0:
@@ -800,20 +816,21 @@ class _ArchMultiMaterialTaskPanel:
                 m = self.existingmaterials[index-1]
                 if m:
                     self.fillData(m)
-            
+
     def addLayer(self):
         item1 = QtGui.QStandardItem(translate("Arch","New layer"))
         item2 = QtGui.QStandardItem()
         item3 = QtGui.QStandardItem()
         self.model.appendRow([item1,item2,item3])
-        
+
     def delLayer(self):
         sel = self.form.tree.selectedIndexes()
         if sel:
             row = sel[0].row()
             if row >= 0:
                 self.model.takeRow(row)
-        
+        self.recalcThickness()
+
     def moveLayer(self,mvt=0):
         sel = self.form.tree.selectedIndexes()
         if sel and mvt:
@@ -827,7 +844,7 @@ class _ArchMultiMaterialTaskPanel:
 
     def upLayer(self):
         self.moveLayer(mvt=-1)
-        
+
     def downLayer(self):
         self.moveLayer(mvt=1)
 
@@ -837,7 +854,30 @@ class _ArchMultiMaterialTaskPanel:
         for item in items:
             self.model.insertRow(0,item)
 
+    def recalcThickness(self,item=None):
+        prefix = translate("Arch","Total thickness")+": "
+        th = 0
+        suffix = ""
+        for row in range(self.model.rowCount()):
+            thick = 0
+            d = self.model.item(row,2).text()
+            try:
+                d = float(d)
+            except:
+                thick = FreeCAD.Units.Quantity(d).Value
+            else:
+                thick = FreeCAD.Units.Quantity(d,FreeCAD.Units.Length).Value
+            th += thick
+            if not thick:
+                suffix = " ("+translate("Arch","depends on the object")+")"
+        val = FreeCAD.Units.Quantity(th,FreeCAD.Units.Length).UserString
+        self.form.labelTotalThickness.setText(prefix + val + suffix)
+
     def accept(self):
+        # store widths
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        p.SetInt("MultiMaterialColumnWidth0",self.form.tree.columnWidth(0))
+        p.SetInt("MultiMaterialColumnWidth1",self.form.tree.columnWidth(1))
         if self.obj:
             mats = []
             for m in FreeCAD.ActiveDocument.Objects:
