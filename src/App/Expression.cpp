@@ -2345,6 +2345,13 @@ Expression* PyObjectExpression::_copy() const
     return new PyObjectExpression(owner,pyObj,false);
 }
 
+boost::any PyObjectExpression::getValueAsAny() const {
+    if(!pyObj || pyObj == Py_None)
+        return boost::any();
+    Base::PyGILStateLocker lock;
+    return App::any(pyObjectWrap(pyObj));
+}
+
 //
 // StringExpression class
 //
