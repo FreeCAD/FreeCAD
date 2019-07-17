@@ -16,6 +16,9 @@
   <layout class="QGridLayout" name="gridLayout_7">
    <item row="0" column="0">
     <widget class="QTreeWidget" name="treeWidget">
+     <property name="toolTip">
+      <string>Select a shape to be meshed</string>
+     </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::ExtendedSelection</enum>
      </property>
@@ -34,6 +37,9 @@
      <layout class="QGridLayout" name="gridLayout_6">
       <item row="0" column="0">
        <widget class="QRadioButton" name="radioButtonStandard">
+        <property name="toolTip">
+         <string>Use the standard mesher</string>
+        </property>
         <property name="text">
          <string>Standard</string>
         </property>
@@ -41,6 +47,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QRadioButton" name="radioButtonMefisto">
+        <property name="toolTip">
+         <string>Use the Mefisto mesher</string>
+        </property>
         <property name="text">
          <string>Mefisto</string>
         </property>
@@ -48,6 +57,9 @@
       </item>
       <item row="0" column="2">
        <widget class="QRadioButton" name="radioButtonNetgen">
+        <property name="toolTip">
+         <string>Use the Netgen mesher</string>
+        </property>
         <property name="text">
          <string>Netgen</string>
         </property>
@@ -71,6 +83,9 @@
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="spinSurfaceDeviation">
+              <property name="toolTip">
+               <string>Maximal linear deflection of a mesh section from the surface of the object</string>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -94,6 +109,9 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="spinAngularDeviation">
+              <property name="toolTip">
+               <string>Maximal angular deflection of a mesh section to the next section</string>
+              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
@@ -115,6 +133,10 @@
           </item>
           <item row="1" column="0">
            <widget class="QCheckBox" name="relativeDeviation">
+            <property name="toolTip">
+             <string>The maximal linear deviation of a mesh segment will be the specified
+Surface deviation multiplied by the length of the current mesh segment (edge)</string>
+            </property>
             <property name="text">
              <string>Relative surface deviation</string>
             </property>
@@ -122,6 +144,9 @@
           </item>
           <item row="2" column="0">
            <widget class="QCheckBox" name="meshShapeColors">
+            <property name="toolTip">
+             <string>Mesh will get face colors of the object</string>
+            </property>
             <property name="text">
              <string>Apply face colors to mesh</string>
             </property>
@@ -129,6 +154,11 @@
           </item>
           <item row="3" column="0">
            <widget class="QCheckBox" name="groupsFaceColors">
+            <property name="toolTip">
+             <string>Mesh segments will be grouped according to the color of the object faces.
+These groups will be exported for mesh output formats supporting
+this feature (e.g. the format OBJ).</string>
+            </property>
             <property name="text">
              <string>Define segments by face colors</string>
             </property>
@@ -150,6 +180,10 @@
          </layout>
         </widget>
         <widget class="QWidget" name="pageMefisto">
+         <property name="toolTip">
+          <string>If this number is smaller the mesh becomes finer.
+The smallest value is 0.</string>
+         </property>
          <layout class="QGridLayout" name="gridLayout_9">
           <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -261,6 +295,10 @@
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
+                <property name="toolTip">
+                 <string>If this parameter is smaller, the mesh becomes finer.
+A value in the range of 0.1-1.</string>
+                </property>
                 <property name="decimals">
                  <number>1</number>
                 </property>
@@ -289,6 +327,10 @@
                <widget class="QDoubleSpinBox" name="spinEdgeElements">
                 <property name="enabled">
                  <bool>false</bool>
+                </property>
+                <property name="toolTip">
+                 <string>If this parameter is larger, the mesh becomes finer.
+A value in the range of 0.2-10.</string>
                 </property>
                 <property name="decimals">
                  <number>1</number>
@@ -319,6 +361,10 @@
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
+                <property name="toolTip">
+                 <string>If this parameter is larger, the mesh becomes finer.
+A value in the range of 0.2-10.</string>
+                </property>
                 <property name="decimals">
                  <number>1</number>
                 </property>
@@ -340,6 +386,9 @@
             </item>
             <item row="2" column="0" colspan="2">
              <widget class="QCheckBox" name="checkOptimizeSurface">
+              <property name="toolTip">
+               <string>Whether optimization of surface shape will be done</string>
+              </property>
               <property name="text">
                <string>Optimize surface</string>
               </property>
@@ -350,6 +399,9 @@
             </item>
             <item row="3" column="0" colspan="2">
              <widget class="QCheckBox" name="checkSecondOrder">
+              <property name="toolTip">
+               <string>Whether second order elements will be generated</string>
+              </property>
               <property name="text">
                <string>Second order elements</string>
               </property>
@@ -357,6 +409,9 @@
             </item>
             <item row="4" column="0" colspan="2">
              <widget class="QCheckBox" name="checkQuadDominated">
+              <property name="toolTip">
+               <string>Whether meshes will be arranged preferably using quadrilateral faces</string>
+              </property>
               <property name="text">
                <string>Quad dominated</string>
               </property>
