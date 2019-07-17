@@ -465,14 +465,13 @@ Note: your changes will be applied when you next switch workbenches\n"));
     /** check if user already has this macro command created, if so skip dialog 1 **/
     bool hasMacroCommand = false;
     QString macroMenuText;
-    std::vector <Base::Reference<ParameterGrp>> macroGroups =
-            App::GetApplication().GetParameterGroupByPath(QByteArray("User parameter:BaseApp/Macro/Macros"))->GetGroups();
-    for (std::vector<Base::Reference<ParameterGrp>>::iterator it = macroGroups.begin(); it != macroGroups.end(); ++it){
-        QString script = QString::fromUtf8((*it)->GetASCII("Script").c_str()); //macro filename
-        if(script == fn){
+    CommandManager & cCmdMgr = Application::Instance->commandManager();
+    std::vector<Command*> aCmds = cCmdMgr.getGroupCommands("Macros");
+    for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
+        MacroCommand* mc = (MacroCommand*)(*it);
+        if(QString::fromLatin1(mc->getScriptName()) == fn){
             hasMacroCommand = true;
-            macroMenuText = QString::fromUtf8((*it)->GetASCII("Menu").c_str()); //this text is in the command list in the toolbars tab
-            break;
+            macroMenuText = QString::fromLatin1(mc->getMenuText());
         }
     }
 
@@ -575,7 +574,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
     } else {
         /** find the Global workbench and select it for the user **/
 
-        int globalIdx = workbenchBox->findText(tr("Global"));
+        int globalIdx = workbenchBox->findText(QString::fromLatin1("Global"));;
         if (globalIdx != -1){
             workbenchBox->setCurrentIndex(globalIdx);
             setupToolbarPage->on_workbenchBox_activated(globalIdx);
