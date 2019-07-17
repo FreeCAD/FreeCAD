@@ -118,10 +118,12 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>AttachmentOffset property. The placement is expressed in local space of object being attached.</string>
+      <string>Attachment offset.
+Note: The placement is expressed in local coordinate system
+of object being attached.</string>
      </property>
      <property name="title">
-      <string>Attachment Offset:</string>
+      <string>Attachment Offset: (in local coordinates)</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
@@ -324,6 +326,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="checkBoxFlip">
+     <property name="toolTip">
+      <string>Flip side of attachment and offset</string>
+     </property>
      <property name="text">
       <string>Flip sides</string>
      </property>
