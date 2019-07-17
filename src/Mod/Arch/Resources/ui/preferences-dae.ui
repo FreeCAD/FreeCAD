@@ -38,7 +38,7 @@
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
           <property name="toolTip">
-           <string>All dimensions in the file will be scaled with this factor </string>
+           <string>All dimensions in the file will be scaled with this factor</string>
           </property>
           <property name="decimals">
            <number>4</number>
@@ -244,7 +244,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</stri
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
-           <string>Allow a second order mesh </string>
+           <string>Allow a second order mesh</string>
           </property>
           <property name="text">
            <string>Second order</string>
