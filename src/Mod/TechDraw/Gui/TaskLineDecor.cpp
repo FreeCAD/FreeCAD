@@ -51,6 +51,8 @@
 #include <Mod/TechDraw/Gui/ui_TaskLineDecor.h>
 #include <Mod/TechDraw/Gui/ui_TaskRestoreLines.h>
 
+#include "QGIView.h"
+#include "ViewProviderViewPart.h"
 #include "TaskLineDecor.h"
 
 using namespace Gui;
@@ -61,7 +63,8 @@ TaskLineDecor::TaskLineDecor(TechDraw::DrawViewPart* partFeat,
                              std::vector<std::string> edgeNames) :
     ui(new Ui_TaskLineDecor),
     m_partFeat(partFeat),
-    m_edges(edgeNames)
+    m_edges(edgeNames),
+    m_apply(true)
 {
     getDefaults();
     ui->setupUi(this);
@@ -95,7 +98,7 @@ void TaskLineDecor::initUi()
     }
     ui->le_Lines->setText(Base::Tools::fromStdString(temp));
 
-    ui->cb_Style->setCurrentIndex(m_style);
+    ui->cb_Style->setCurrentIndex(m_style - 1);          //combobox does not have 0:NoLine choice
     ui->cc_Color->setColor(m_color.asValue<QColor>());
     ui->dsb_Weight->setValue(m_weight);
     ui->cb_Visible->setCurrentIndex(m_visible);
@@ -103,6 +106,7 @@ void TaskLineDecor::initUi()
 
 void TaskLineDecor::getDefaults(void) 
 {
+//    Base::Console().Message("TLD::getDefaults()\n");
     m_style = LineFormat::getDefEdgeStyle();
     m_color = LineFormat::getDefEdgeColor();
     m_weight = LineFormat::getDefEdgeWidth();
@@ -128,13 +132,22 @@ void TaskLineDecor::getDefaults(void)
                     m_visible = cl->m_format.m_visible;
                 }
             } else {
-                    TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatByGeom(num);
-                    if (gf != nullptr) {
-                        m_style = gf->m_format.m_style;
-                        m_color = gf->m_format.m_color;
-                        m_weight = gf->m_format.m_weight;
-                        m_visible = gf->m_format.m_visible;
+                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatByGeom(num);
+                if (gf != nullptr) {
+                    m_style = gf->m_format.m_style;
+                    m_color = gf->m_format.m_color;
+                    m_weight = gf->m_format.m_weight;
+                    m_visible = gf->m_format.m_visible;
+                } else {
+                    Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
+                    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
+                    if ( vp != nullptr ) {
+                        m_weight = partVP->LineWidth.getValue();
+                        m_style = Qt::SolidLine;                  // = 1
+                        m_color = LineFormat::getDefEdgeColor();
+                        m_visible = 1;
                     }
+                }
             }
         }
     }
@@ -142,7 +155,7 @@ void TaskLineDecor::getDefaults(void)
 
 void TaskLineDecor::onStyleChanged(void)
 {
-    m_style = ui->cb_Style->currentIndex();
+    m_style = ui->cb_Style->currentIndex() + 1;
     //livePreview(); 
 }
 
@@ -214,7 +227,9 @@ bool TaskLineDecor::accept()
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_partFeat->getDocument());
     if (!doc) return false;
 
-    applyDecorations();
+    if (apply()) {
+        applyDecorations();
+    }
 
     m_partFeat->requestPaint();
 
@@ -241,9 +256,11 @@ void TaskLineDecor::changeEvent(QEvent *e)
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-TaskRestoreLines::TaskRestoreLines(TechDraw::DrawViewPart* partFeat) :
+TaskRestoreLines::TaskRestoreLines(TechDraw::DrawViewPart* partFeat,
+                                   TaskLineDecor* parent) :
     ui(new Ui_TaskRestoreLines),
-    m_partFeat(partFeat)
+    m_partFeat(partFeat),
+    m_parent(parent)
 {
     ui->setupUi(this);
 
@@ -361,6 +378,7 @@ void TaskRestoreLines::restoreInvisibleGeoms(void)
         }
     }
     m_partFeat->GeomFormats.setValues(geoms);
+    m_parent->apply(false);                   //don't undo the work we just did
 }
 
 void TaskRestoreLines::restoreInvisibleCosmetics(void)
@@ -372,6 +390,7 @@ void TaskRestoreLines::restoreInvisibleCosmetics(void)
         }
     }
     m_partFeat->CosmeticEdges.setValues(cosmos);
+    m_parent->apply(false);                   //don't undo the work we just did
 }
 
 void TaskRestoreLines::restoreInvisibleCenters(void)
@@ -383,6 +402,7 @@ void TaskRestoreLines::restoreInvisibleCenters(void)
         }
     }
     m_partFeat->CenterLines.setValues(centers);
+    m_parent->apply(false);                   //don't undo the work we just did
 }
 
 
@@ -418,12 +438,15 @@ TaskDlgLineDecor::TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
     if (edgeNames.empty()) {
         taskbox->hideGroupBox();
     }
-    
-    restore = new TaskRestoreLines(partFeat);
-    restoreBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-linedecor"),
-                                         tr("Restore Invisible Lines"), true, 0);
-    restoreBox->groupLayout()->addWidget(restore);
-    Content.push_back(restoreBox);
+
+    TaskLineDecor* parent = dynamic_cast<TaskLineDecor*>(widget);
+    if (parent != nullptr) {
+        restore = new TaskRestoreLines(partFeat, parent);
+        restoreBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-linedecor"),
+                                             tr("Restore Invisible Lines"), true, 0);
+        restoreBox->groupLayout()->addWidget(restore);
+        Content.push_back(restoreBox);
+    }
 }
 
 TaskDlgLineDecor::~TaskDlgLineDecor()
