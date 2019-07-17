@@ -432,7 +432,7 @@ class _CommandWall:
         self.Width = d
         self.tracker.width(d)
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("WallWidth",d)
-        
+
 
     def setHeight(self,d):
 
@@ -541,6 +541,9 @@ class _Wall(ArchComponent.Component):
 
         if not "Height" in lp:
             obj.addProperty("App::PropertyLength","Height","Wall",QT_TRANSLATE_NOOP("App::Property","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid"))
+        if not "Area" in lp:
+            obj.addProperty("App::PropertyArea","Area","Wall",QT_TRANSLATE_NOOP("App::Property","The area of this wall as a simple Height * Length calculation"))
+            obj.setEditorMode("Area",1)
         if not "Align" in lp:
             obj.addProperty("App::PropertyEnumeration","Align","Wall",QT_TRANSLATE_NOOP("App::Property","The alignment of this wall on its base object, if applicable"))
             obj.Align = ['Left','Right','Center']
@@ -742,6 +745,9 @@ class _Wall(ArchComponent.Component):
                             if obj.Length.Value != l:
                                 obj.Length = l
                                 self.oldLength = None # delete the stored value to prevent triggering base change below
+
+        # set the Area property
+        obj.Area = obj.Length.Value * obj.Height.Value
 
     def onBeforeChange(self,obj,prop):
 

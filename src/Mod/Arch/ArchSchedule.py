@@ -162,7 +162,7 @@ class _ArchSchedule:
 
         self.data = {} # store all results in self.data, so it lives even without spreadsheet
         li = 1 # row index - starts at 2 to leave 2 blank rows for the title
-    
+
         for i in range(len(obj.Description)):
             li += 1
             if not obj.Description[i]:
@@ -311,7 +311,7 @@ class _ArchSchedule:
                     val = sumval
                     if tp:
                         q = FreeCAD.Units.Quantity(val,tp)
-                    
+
                     # write data
                     if obj.DetailedResults:
                         li += 1
@@ -400,9 +400,9 @@ class ArchScheduleTaskPanel:
     '''The editmode TaskPanel for Schedules'''
 
     def __init__(self,obj=None):
-        
+
         """Sets the panel up"""
-        
+
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchSchedule.ui")
         self.form.setWindowIcon(QtGui.QIcon(":/icons/Arch_Schedule.svg"))
@@ -451,29 +451,29 @@ class ArchScheduleTaskPanel:
             self.form.checkSpreadsheet.setChecked(self.obj.CreateSpreadsheet)
 
     def add(self):
-        
+
         """Adds a new row below the last one"""
-        
+
         self.form.list.insertRow(self.form.list.currentRow()+1)
 
     def remove(self):
-        
+
         """Removes the current row"""
-        
+
         if self.form.list.currentRow() >= 0:
             self.form.list.removeRow(self.form.list.currentRow())
 
     def clear(self):
-        
+
         """Clears the list"""
-        
+
         self.form.list.clearContents()
         self.form.list.setRowCount(0)
 
     def importCSV(self):
-        
+
         """Imports a CSV file"""
-        
+
         filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), translate("Arch","Import CSV File"), None, "CSV file (*.csv)");
         if filename:
             filename = filename[0]
@@ -494,12 +494,12 @@ class ArchScheduleTaskPanel:
                     r += 1
 
     def export(self):
-        
+
         """Exports the results as MD or CSV"""
 
         # commit latest changes
         self.writeValues()
-        
+
         # tests
         if not("Up-to-date" in self.obj.State):
             self.obj.Proxy.execute(self.obj)
@@ -528,7 +528,7 @@ class ArchScheduleTaskPanel:
                 FreeCAD.Console.PrintError(translate("Arch","Unable to recognize that file type")+":"+filename+"\n")
 
     def getRows(self):
-        
+
         """get the rows that contain data"""
 
         rows = []
@@ -541,12 +541,12 @@ class ArchScheduleTaskPanel:
         return rows
 
     def exportCSV(self,filename):
-        
+
         """Exports the results as a CSV file"""
-        
+
         # use TAB to separate values
         DELIMITER = "\t"
-        
+
         import csv
         with open(filename, 'w') as csvfile:
             csvfile = csv.writer(csvfile,delimiter=DELIMITER)
@@ -564,7 +564,7 @@ class ArchScheduleTaskPanel:
         print("successfully exported ",filename)
 
     def exportMD(self,filename):
-        
+
         """Exports the results as a Markdown file"""
 
         with open(filename, 'w') as mdfile:
@@ -583,9 +583,9 @@ class ArchScheduleTaskPanel:
         print("successfully exported ",filename)
 
     def select(self):
-        
+
         """Adds selected objects to current row"""
-        
+
         if self.form.list.currentRow() >= 0:
             sel = ""
             for o in FreeCADGui.Selection.getSelection():
@@ -597,24 +597,24 @@ class ArchScheduleTaskPanel:
                 self.form.list.setItem(self.form.list.currentRow(),3,QtGui.QTableWidgetItem(sel))
 
     def accept(self):
-        
+
         """executes when OK button has been pressed"""
-        
+
         # store widths
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         p.SetInt("ScheduleColumnWidth0",self.form.list.columnWidth(0))
         p.SetInt("ScheduleColumnWidth1",self.form.list.columnWidth(1))
         p.SetInt("ScheduleColumnWidth2",self.form.list.columnWidth(2))
         p.SetInt("ScheduleColumnWidth3",self.form.list.columnWidth(3))
-        
+
         # commit values
         self.writeValues()
         return True
 
     def writeValues(self):
-        
+
         """commits values and recalculate"""
-        
+
         if not self.obj:
             self.obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Schedule")
             self.obj.Label = translate("Arch","Schedule")
