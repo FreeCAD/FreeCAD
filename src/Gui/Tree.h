@@ -24,6 +24,7 @@
 #ifndef GUI_TREE_H
 #define GUI_TREE_H
 
+#include <unordered_map>
 #include <QTreeWidget>
 #include <QTime>
 #include <QStyledItemDelegate>

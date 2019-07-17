@@ -24,6 +24,7 @@
 #ifndef APP_TRANSACTION_H
 #define APP_TRANSACTION_H
 
+#include <unordered_map>
 #include <Base/Factory.h>
 #include <Base/Persistence.h>
 #include <App/PropertyContainer.h>
