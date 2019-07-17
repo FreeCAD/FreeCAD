@@ -175,7 +175,7 @@ void TaskCenterLine::setUiPrimary()
 
     ui->cpLineColor->setColor(getCenterColor());
     ui->dsbWeight->setValue(getCenterWidth());
-    ui->cboxStyle->setCurrentIndex(getCenterStyle());
+    ui->cboxStyle->setCurrentIndex(getCenterStyle() - 1);
     Base::Quantity qVal;
     qVal.setUnit(Base::Unit::Length);
     qVal.setValue(getExtendBy());
@@ -197,7 +197,7 @@ void TaskCenterLine::setUiEdit()
 
     ui->cpLineColor->setColor(m_cl->m_format.m_color.asValue<QColor>());
     ui->dsbWeight->setValue(m_cl->m_format.m_weight);
-    ui->cboxStyle->setCurrentIndex(m_cl->m_format.m_style);
+    ui->cboxStyle->setCurrentIndex(m_cl->m_format.m_style - 1);
 
     int precision = Base::UnitsApi::getDecimals();
     ui->dsbRotate->setDecimals(precision);
@@ -271,7 +271,7 @@ void TaskCenterLine::createCenterLine(void)
     ac.setValue<QColor>(ui->cpLineColor->color());
     cl->m_format.m_color = ac;
     cl->m_format.m_weight = ui->dsbWeight->value();
-    cl->m_format.m_style = ui->cboxStyle->currentIndex();
+    cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;  //Qt Styles start at 0:NoLine
     cl->m_format.m_visible = true;
 
     if (m_type == 0) {
@@ -305,7 +305,7 @@ void TaskCenterLine::updateCenterLine(void)
     Gui::Command::openCommand("Edit CenterLine");
     m_cl->m_format.m_color.setValue<QColor>(ui->cpLineColor->color() );
     m_cl->m_format.m_weight = ui->dsbWeight->value();
-    m_cl->m_format.m_style = ui->cboxStyle->currentIndex();
+    m_cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;
     m_cl->m_format.m_visible = true;
 
     if (ui->rbVertical->isChecked()) {
@@ -316,21 +316,14 @@ void TaskCenterLine::updateCenterLine(void)
         m_mode =2;
     }
     m_cl->m_mode = m_mode;
-//    if (ui->rbVertical->isChecked()) {
-//        m_cl->m_mode = 0;
-//    } else if (ui->rbHorizontal->isChecked()) {
-//        m_cl->m_mode = 1;
-//    } else if (ui->rbAligned->isChecked()) {
-//        m_cl->m_mode = 2;
-//    }
     m_cl->m_rotate = ui->dsbRotate->value();
     m_cl->m_vShift = ui->qsbVertShift->rawValue();
     m_cl->m_hShift = ui->qsbHorizShift->rawValue();
     m_cl->m_extendBy = ui->qsbExtend->rawValue();
-    m_partFeat->replaceCenterLine(m_clIdx, m_cl);
-    m_partFeat->requestPaint();
     m_cl->m_type = m_type;
     m_cl->m_flip2Line = m_flipped;
+    m_partFeat->replaceCenterLine(m_clIdx, m_cl);
+    m_partFeat->requestPaint();
 
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
@@ -358,6 +351,11 @@ double TaskCenterLine::getCenterWidth()
 
     double width = lg->getWeight("Graphic");
     delete lg; 
+    Gui::ViewProvider* vp = QGIView::getViewProvider(m_partFeat);
+    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
+    if ( vp != nullptr ) {
+        width = partVP->IsoWidth.getValue();
+    }
     return width;
 }
 

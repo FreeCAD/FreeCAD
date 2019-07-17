@@ -252,13 +252,8 @@
           <item row="4" column="1">
            <widget class="QComboBox" name="cboxStyle">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
-            <item>
-             <property name="text">
-              <string>NoLine</string>
-             </property>
-            </item>
             <item>
              <property name="text">
               <string>Solid</string>
