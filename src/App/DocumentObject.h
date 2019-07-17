@@ -33,6 +33,7 @@
 #include <Base/Matrix.h>
 #include <CXX/Objects.hxx>
 
+#include <unordered_map>
 #include <bitset>
 #include <boost/signals2.hpp>
 

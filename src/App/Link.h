@@ -23,6 +23,7 @@
 #ifndef APP_LINK_H
 #define APP_LINK_H
 
+#include <unordered_set>
 #include <boost/signals2.hpp>
 #include <boost/preprocessor/facilities/expand.hpp>
 #include <boost/preprocessor/cat.hpp>
