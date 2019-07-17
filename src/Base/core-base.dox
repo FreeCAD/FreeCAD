@@ -21,3 +21,7 @@
     - Units: Management and conversion of different units
 */
 
+/** \defgroup GeomPrimers Geometry primers
+ *  \ingroup BASE
+    \brief Basic structures used by geomoetric objects
+*/
