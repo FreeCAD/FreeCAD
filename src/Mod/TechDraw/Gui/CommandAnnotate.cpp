@@ -61,6 +61,7 @@
 #include "TaskCenterLine.h"
 #include "TaskLineDecor.h"
 #include "ViewProviderPage.h"
+#include "ViewProviderViewPart.h"
 #include "QGVPage.h"
 
 using namespace TechDrawGui;
@@ -1204,6 +1205,63 @@ bool CmdTechDrawDecorateLine::isActive(void)
     return (havePage && haveView);
 }
 
+//===========================================================================
+// TechDraw_ShowAll
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawShowAll);
+
+CmdTechDrawShowAll::CmdTechDrawShowAll()
+  : Command("TechDraw_ShowAll")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Show/Hide invisible edges in a View");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_ShowAll";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-showall";
+}
+
+void CmdTechDrawShowAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    TechDraw::DrawView* baseFeat = nullptr;
+    if (!selection.empty()) {
+        baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
+    }
+
+    Gui::ViewProvider* vp = QGIView::getViewProvider(baseFeat);
+    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
+    if ( vp != nullptr ) {
+        bool state = partVP->ShowAllEdges.getValue();
+        state = !state;
+        partVP->ShowAllEdges.setValue(state);
+        baseFeat->requestPaint();
+    }
+
+}
+
+bool CmdTechDrawShowAll::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
 void CreateTechDrawCommandsAnnotate(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1221,6 +1279,7 @@ void CreateTechDrawCommandsAnnotate(void)
     rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticEraser());
     rcCmdMgr.addCommand(new CmdTechDrawDecorateLine());
+    rcCmdMgr.addCommand(new CmdTechDrawShowAll());
 }
 
 //===========================================================================
