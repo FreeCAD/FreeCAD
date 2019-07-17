@@ -529,6 +529,7 @@ public:
     void setPyObject(PyObject *pyobj, bool owned=false);
 
     virtual std::string toString(bool) const;
+    virtual boost::any getValueAsAny() const;
 
     virtual Expression * eval() const { return copy(); }
     virtual Expression * simplify() const { return copy(); }
