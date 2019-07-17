@@ -54,6 +54,8 @@ public:
 public:
     virtual bool accept();
     virtual bool reject();
+    bool apply(void) { return m_apply; }
+    void apply(bool b) { m_apply = b; }
 
 protected Q_SLOTS:
     void onStyleChanged(void);
@@ -75,6 +77,7 @@ private:
     App::Color m_color;
     double m_weight;
     bool m_visible;
+    bool m_apply;
 };
 
 class TaskRestoreLines : public QWidget
@@ -82,7 +85,8 @@ class TaskRestoreLines : public QWidget
     Q_OBJECT
 
 public:
-    TaskRestoreLines(TechDraw::DrawViewPart* partFeat);
+    TaskRestoreLines(TechDraw::DrawViewPart* partFeat,
+                     TechDrawGui::TaskLineDecor* parent);
     ~TaskRestoreLines();
 
 public:
@@ -110,6 +114,7 @@ protected:
 private:
     Ui_TaskRestoreLines* ui;
     TechDraw::DrawViewPart* m_partFeat;
+    TaskLineDecor* m_parent;
 };
 
 
