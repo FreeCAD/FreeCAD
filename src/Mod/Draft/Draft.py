@@ -6589,13 +6589,13 @@ class DraftLabel:
             elif obj.LabelType == "Area":
                 if obj.Target[0].isDerivedFrom("Part::Feature"):
                     if hasattr(obj.Target[0].Shape,"Area"):
-                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Area,FreeCAD.Units.Area).UserString]
+                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Area,FreeCAD.Units.Area).UserString.replace("^2","²")]
                     if obj.Target[1] and ("Face" in obj.Target[1][0]):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Faces[int(obj.Target[1][0][4:])-1].Area,FreeCAD.Units.Area).UserString]
             elif obj.LabelType == "Volume":
                 if obj.Target[0].isDerivedFrom("Part::Feature"):
                     if hasattr(obj.Target[0].Shape,"Volume"):
-                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Volume,FreeCAD.Units.Volume).UserString]
+                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Volume,FreeCAD.Units.Volume).UserString.replace("^3","³")]
 
     def onChanged(self,obj,prop):
         pass
@@ -6703,6 +6703,7 @@ class ViewProviderDraftLabel:
         self.onChanged(vobj,"LineColor")
         self.onChanged(vobj,"TextColor")
         self.onChanged(vobj,"ArrowSize")
+        self.onChanged(vobj,"Line")
 
     def getDisplayModes(self,vobj):
         return ["2D text","3D text"]
