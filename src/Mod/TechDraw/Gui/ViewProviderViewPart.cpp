@@ -98,6 +98,8 @@ ViewProviderViewPart::ViewProviderViewPart()
     
     //properties that affect Detail Highlights
     ADD_PROPERTY_TYPE(HighlightAdjust,(0.0),hgroup,App::Prop_None,"Adjusts the rotation of the Detail highlight");
+
+    ADD_PROPERTY_TYPE(ShowAllEdges ,(false)    ,dgroup,App::Prop_None,"Temporarily show invisible lines");
 }
 
 ViewProviderViewPart::~ViewProviderViewPart()
