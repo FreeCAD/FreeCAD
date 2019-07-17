@@ -53,6 +53,7 @@ public:
     App::PropertyBool   VertCenterLine;
     App::PropertyBool   ShowSectionLine;
     App::PropertyFloat  HighlightAdjust;
+    App::PropertyBool   ShowAllEdges;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
