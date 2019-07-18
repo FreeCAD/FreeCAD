@@ -46,6 +46,9 @@ endif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 
 # ================================================================================
 
+# needed for boost1.70
+add_definitions(-DHAVE_SNPRINTF)
+
 # Allow developers to use Boost < 1.48
 if (NOT BOOST_MIN_VERSION)
     set(BOOST_MIN_VERSION 1.48)
