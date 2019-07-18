@@ -64,8 +64,10 @@ class CommandArchSchedule:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Schedule","Creates a schedule to collect data from the model")}
 
     def Activated(self):
-        taskd = ArchScheduleTaskPanel()
-        FreeCADGui.Control.showDialog(taskd)
+        if hasattr(self,"taskd"):
+            if self.taskd:
+                self.taskd.form.hide()
+        self.taskd = ArchScheduleTaskPanel()
 
     def IsActive(self):
         if FreeCAD.ActiveDocument:
@@ -205,30 +207,30 @@ class _ArchSchedule:
                     # apply filters
                     nobjs = []
                     for o in objs:
+                        props = [p.upper() for p in o.PropertiesList]
                         ok = True
                         for f in obj.Filter[i].split(";"):
                             args = [a.strip() for a in f.strip().split(":")]
-                            if args[0].upper() == "NAME":
-                                if not(args[1].upper() in o.Name.upper()):
-                                    ok = False
-                            elif args[0].upper() == "!NAME":
-                                if (args[1].upper() in o.Name.upper()):
-                                    ok = False
-                            elif args[0].upper() == "LABEL":
-                                if not(args[1].upper() in o.Label.upper()):
-                                    ok = False
-                            elif args[0].upper() == "!LABEL":
-                                if args[1].upper() in o.Label.upper():
-                                    ok = False
-                            elif args[0].upper() == "TYPE":
-                                if hasattr(o,"IfcType"):
-                                    if o.IfcType.upper() != args[1].upper():
+                            if args[0][0] == "!":
+                                inv = True
+                                prop = args[0][1:].upper()
+                            else:
+                                inv = False
+                                prop = args[0].upper()
+                            val = args[1].upper()
+                            if prop == "TYPE":
+                                prop == "IFCTYPE"
+                            if inv:
+                                if prop in props:
+                                    csprop = o.PropertiesList[props.index(prop)]
+                                    if args[1].upper() in getattr(o,csprop).upper():
                                         ok = False
-                                else:
+                            else:
+                                if not (prop in props):
                                     ok = False
-                            elif args[0].upper() == "!TYPE":
-                                if hasattr(o,"IfcType"):
-                                    if o.IfcType.upper() == args[1].upper():
+                                else:
+                                    csprop = o.PropertiesList[props.index(prop)]
+                                    if not (args[1].upper() in getattr(o,csprop).upper()):
                                         ok = False
                         if ok:
                             nobjs.append(o)
@@ -361,19 +363,18 @@ class _ViewProviderArchSchedule:
     def attach(self, vobj):
         self.Object = vobj.Object
 
-    def setEdit(self,vobj,mode):
-        taskd = ArchScheduleTaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(taskd)
+    def setEdit(self,vobj,mode=0):
+        if hasattr(self,"taskd"):
+            if self.taskd:
+                self.taskd.form.hide()
+        self.taskd = ArchScheduleTaskPanel(vobj.Object)
         return True
 
     def doubleClicked(self,vobj):
-        taskd = ArchScheduleTaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(taskd)
-        return True
+        self.setEdit(vobj)
 
     def unsetEdit(self,vobj,mode):
-        FreeCADGui.Control.closeDialog()
-        return
+        return True
 
     def claimChildren(self):
         if hasattr(self,"Object"):
@@ -421,6 +422,9 @@ class ArchScheduleTaskPanel:
         self.form.list.setColumnWidth(1,p.GetInt("ScheduleColumnWidth1",100))
         self.form.list.setColumnWidth(2,p.GetInt("ScheduleColumnWidth2",50))
         self.form.list.setColumnWidth(3,p.GetInt("ScheduleColumnWidth3",100))
+        w = p.GetInt("ScheduleDialogWidth",300)
+        h = p.GetInt("ScheduleDialogHeight",200)
+        self.form.resize(w,h)
 
         # set delegate - Not using custom delegates for now...
         #self.form.list.setItemDelegate(ScheduleDelegate())
@@ -433,6 +437,9 @@ class ArchScheduleTaskPanel:
         QtCore.QObject.connect(self.form.buttonImport, QtCore.SIGNAL("clicked()"), self.importCSV)
         QtCore.QObject.connect(self.form.buttonExport, QtCore.SIGNAL("clicked()"), self.export)
         QtCore.QObject.connect(self.form.buttonSelect, QtCore.SIGNAL("clicked()"), self.select)
+        QtCore.QObject.connect(self.form.buttonBox, QtCore.SIGNAL("accepted()"), self.accept)
+        QtCore.QObject.connect(self.form.buttonBox, QtCore.SIGNAL("rejected()"), self.reject)
+        QtCore.QObject.connect(self.form, QtCore.SIGNAL("rejected()"), self.reject)
         self.form.list.clearContents()
 
         if self.obj:
@@ -449,6 +456,12 @@ class ArchScheduleTaskPanel:
             self.form.lineEditName.setText(self.obj.Label)
             self.form.checkDetailed.setChecked(self.obj.DetailedResults)
             self.form.checkSpreadsheet.setChecked(self.obj.CreateSpreadsheet)
+
+        # center over FreeCAD window
+        mw = FreeCADGui.getMainWindow()
+        self.form.move(mw.frameGeometry().topLeft() + mw.rect().center() - self.form.rect().center())
+        
+        self.form.show()
 
     def add(self):
 
@@ -598,7 +611,7 @@ class ArchScheduleTaskPanel:
 
     def accept(self):
 
-        """executes when OK button has been pressed"""
+        """Saves the changes and closes the dialog"""
 
         # store widths
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
@@ -606,9 +619,19 @@ class ArchScheduleTaskPanel:
         p.SetInt("ScheduleColumnWidth1",self.form.list.columnWidth(1))
         p.SetInt("ScheduleColumnWidth2",self.form.list.columnWidth(2))
         p.SetInt("ScheduleColumnWidth3",self.form.list.columnWidth(3))
+        p.SetInt("ScheduleDialogWidth",self.form.width())
+        p.SetInt("ScheduleDialogHeight",self.form.height())
 
         # commit values
         self.writeValues()
+        self.form.hide()
+        return True
+
+    def reject(self):
+        
+        """Close dialog without saving"""
+        
+        self.form.hide()
         return True
 
     def writeValues(self):
