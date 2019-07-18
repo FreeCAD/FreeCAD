@@ -119,16 +119,18 @@ class _ArchSchedule:
                     sp = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","Result")
                     obj.Result = sp
 
-    def setSpreadsheetData(self,obj):
+    def setSpreadsheetData(self,obj,force=False):
 
         """Fills a spreadsheet with the stored data"""
 
+        if not hasattr(self,"data"):
+            self.execute(obj)
         if not hasattr(self,"data"):
             return
         if not self.data:
             return
         if not obj.Result:
-            if obj.CreateSpreadsheet:
+            if obj.CreateSpreadsheet or force:
                 import Spreadsheet
                 sp = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","Result")
                 obj.Result = sp
@@ -217,20 +219,20 @@ class _ArchSchedule:
                             else:
                                 inv = False
                                 prop = args[0].upper()
-                            val = args[1].upper()
+                            fval = args[1].upper()
                             if prop == "TYPE":
                                 prop == "IFCTYPE"
                             if inv:
                                 if prop in props:
                                     csprop = o.PropertiesList[props.index(prop)]
-                                    if args[1].upper() in getattr(o,csprop).upper():
+                                    if fval in getattr(o,csprop).upper():
                                         ok = False
                             else:
                                 if not (prop in props):
                                     ok = False
                                 else:
                                     csprop = o.PropertiesList[props.index(prop)]
-                                    if not (args[1].upper() in getattr(o,csprop).upper()):
+                                    if not (fval in getattr(o,csprop).upper()):
                                         ok = False
                         if ok:
                             nobjs.append(o)
@@ -288,6 +290,9 @@ class _ArchSchedule:
                                 d = getattr(d,v)
                             if hasattr(d,"Value"):
                                 d = d.Value
+                        except:
+                            FreeCAD.Console.PrintWarning(translate("Arch","Unable to retrieve value from object")+": "+o.Name+"."+".".join(vals)+"\n")
+                        else:
                             if verbose:
                                 if tp and unit:
                                     v = fs.format(FreeCAD.Units.Quantity(d,tp).getValueAs(unit).Value)
@@ -303,9 +308,7 @@ class _ArchSchedule:
                                     self.data["C"+str(li)] = unit
                                 else:
                                     self.data["B"+str(li)] = str(d)
-                        except:
-                            FreeCAD.Console.PrintWarning(translate("Arch","Unable to retrieve value from object")+": "+o.Name+"."+".".join(vals)+"\n")
-                        else:
+
                             if not sumval:
                                 sumval = d
                             else:
@@ -395,6 +398,15 @@ class _ViewProviderArchSchedule:
     def setDisplayMode(self,mode):
         return mode
 
+    def setupContextMenu(self,vobj,menu):
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Schedule.svg"),"Attach spreadsheet",menu)
+        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.attachSpreadsheet)
+        menu.addAction(action1)
+
+    def attachSpreadsheet(self):
+        if hasattr(self,"Object"):
+            self.Object.Proxy.setSpreadsheetData(self.Object,force=True)
+
 
 class ArchScheduleTaskPanel:
 
@@ -460,10 +472,10 @@ class ArchScheduleTaskPanel:
         # center over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.form.move(mw.frameGeometry().topLeft() + mw.rect().center() - self.form.rect().center())
-        
+
         # maintain above FreeCAD window
         self.form.setWindowFlags(self.form.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
-        
+
         self.form.show()
 
     def add(self):
@@ -631,9 +643,9 @@ class ArchScheduleTaskPanel:
         return True
 
     def reject(self):
-        
+
         """Close dialog without saving"""
-        
+
         self.form.hide()
         return True
 
