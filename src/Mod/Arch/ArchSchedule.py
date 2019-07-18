@@ -461,6 +461,9 @@ class ArchScheduleTaskPanel:
         mw = FreeCADGui.getMainWindow()
         self.form.move(mw.frameGeometry().topLeft() + mw.rect().center() - self.form.rect().center())
         
+        # maintain above FreeCAD window
+        self.form.setWindowFlags(self.form.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+        
         self.form.show()
 
     def add(self):
