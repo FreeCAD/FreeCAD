@@ -158,7 +158,13 @@ public:
 
   virtual unsigned int getMemSize (void) const;
 
-  virtual std::string getFullName() const {return std::string();}
+  /** Return a full quanlified name for this container
+   *  @param python: if true, then return an expression for accessing this container in Python
+   */
+  virtual std::string getFullName(bool python=false) const {
+      (void)python;
+      return std::string();
+  }
 
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;

@@ -137,7 +137,7 @@ public:
     virtual ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=0, bool recursive=false) const;
 
-    virtual std::string getFullName() const override;
+    virtual std::string getFullName(bool python=false) const override;
 
 protected:
     /*! Get the active mdi view of the document this view provider is part of.

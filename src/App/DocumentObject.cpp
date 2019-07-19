@@ -203,13 +203,16 @@ const char* DocumentObject::getStatusString(void) const
         return "Valid";
 }
 
-std::string DocumentObject::getFullName() const {
-    if(!getDocument() || !pcNameInDocument)
-        return "?";
-    std::string name(getDocument()->getName());
-    name += '#';
-    name += *pcNameInDocument;
-    return name;
+std::string DocumentObject::getFullName(bool python) const {
+    if(!getDocument() || !pcNameInDocument) 
+        return std::string(python?"None":"?");
+    std::ostringstream ss;
+    if(python) {
+        ss << "FreeCAD.getDocument('" << getDocument()->getName()
+            << "').getObject('" << *pcNameInDocument << "')";
+    }else
+        ss << getDocument()->getName() << '#' << *pcNameInDocument;
+    return ss.str();
 }
 
 const char *DocumentObject::getNameInDocument() const
