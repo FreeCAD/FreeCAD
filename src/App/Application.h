@@ -141,14 +141,14 @@ public:
     /** Setup a pending application-wide active transaction
      *
      * @param name: new transaction name
-     * @param persist: by default, if the calling code is inside any invokation
+     * @param persist: by default, if the calling code is inside any invocation
      * of a command, it will be auto closed once all command within the current
      * stack exists. To disable auto closing, set persist=true
      *
      * @return The new transaction ID.
      *
      * Call this function to setup an application-wide transaction. All current
-     * pending transactions of opening documents will be commited first.
+     * pending transactions of opening documents will be committed first.
      * However, no new transaction is created by this call. Any subsequent
      * changes in any current opening document will auto create a transaction
      * with the given name and ID. If more than one document is changed, the
@@ -163,7 +163,7 @@ public:
      *
      * Bsides calling this function directly, it will be called by automatically
      * if 1) any new transaction is created with a different ID, or 2) any
-     * transaction with the current active transaction ID is either commited or
+     * transaction with the current active transaction ID is either committed or
      * aborted
      */
     void closeActiveTransaction(bool abort=false, int id=0);
@@ -575,11 +575,11 @@ private:
     void* operator new(size_t size);
 
 public:
-    /** Construtor
+    /** Constructor
      *
      * @param name: optional new transaction name on construction
      * @param tmpName: if true and a new transaction is setup, the name given is
-     * considered as temperary, and subsequent construction of this class (or
+     * considered as temporary, and subsequent construction of this class (or
      * calling Application::setActiveTransaction()) can override the transaction
      * name.
      *
@@ -609,7 +609,7 @@ public:
 
     /** Enable/Disable any AutoTransaction instance in the current stack
      *
-     * Once disabled, any empty temperary named transaction is closed. If there
+     * Once disabled, any empty temporary named transaction is closed. If there
      * are non-empty or non-temperary named active transaction, it will not be
      * auto closed. 
      *

@@ -137,7 +137,7 @@ std::string PropertyLinkBase::updateLabelReference(const App::DocumentObject *pa
         return std::string();
 
     // Because the label is allowed to be the same across different
-    // hierarchy, we have to search for all occurance, and make sure the
+    // hierarchies, we have to search for all occurrences, and make sure the
     // referenced sub-object at the found hierarchy is actually the given
     // object.
     for(const char *pos=subname; ((pos=strstr(pos,ref.c_str()))!=0); pos+=ref.size()) {
@@ -235,7 +235,7 @@ void PropertyLinkBase::restoreLabelReference(const DocumentObject *obj,
             StringGuard guard(dot-1);
             sobj = obj->getSubObject(subname.c_str());
             if(!sobj) {
-                FC_ERR("Failed to restore lable reference " << obj->getFullName() 
+                FC_ERR("Failed to restore label reference " << obj->getFullName() 
                         << '.' << ss.str());
                 return;
             }
@@ -797,7 +797,7 @@ Property *PropertyLinkList::CopyOnLinkReplace(const App::DocumentObject *parent,
             links.push_back(res.first);
         } else if(*it == newObj) {
             // in case newObj already exists here, we shall remove all existing
-            // entry, and instert it to take over oldObj's position.
+            // entry, and insert it to take over oldObj's position.
             if(!copied) {
                 copied = true;
                 links.insert(links.end(),_lValueList.begin(),it);
@@ -1251,7 +1251,7 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
         StringGuard guard(dot);
         auto sobj = obj->getSubObject(subname.c_str());
         if(!sobj) {
-            FC_ERR("Failed to restore lable reference " << obj->getFullName() << '.' << subname);
+            FC_ERR("Failed to restore label reference " << obj->getFullName() << '.' << subname);
             return std::string();
         }
         dot[0] = 0;
@@ -1305,7 +1305,7 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
         const auto &shadow = _ShadowSubList[i];
         // shadow.second stores the old style element name. For backward
         // compatibility reason, we shall store the old name into attribute
-        // 'value' whenver possible.
+        // 'value' whenever possible.
         const auto &sub = shadow.second.empty()?_cSubList[i]:shadow.second;
         writer.Stream() << writer.ind() << "<Sub value=\"";
         if(exporting) {
@@ -2082,7 +2082,7 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
         const auto &shadow = _ShadowSubList[i];
         // shadow.second stores the old style element name. For backward
         // compatibility reason, we shall store the old name into attribute
-        // 'value' whenver possible.
+        // 'value' whenever possible.
         const auto &sub = shadow.second.empty()?_lSubList[i]:shadow.second;
 
         writer.Stream() << writer.ind() << "<Link obj=\"" << obj->getExportName() << "\" sub=\"";
@@ -2429,7 +2429,7 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inLis
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // Key on aboslute path. 
-// Becuase of possible symbolic links, multiple entry may refer to the same
+// Because of possible symbolic links, multiple entry may refer to the same
 // file. We use QFileInfo::canonicalPath to resolve that.
 typedef std::map<QString,DocInfoPtr> DocInfoMap;
 DocInfoMap _DocInfoMap;
@@ -3154,7 +3154,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
             const auto &shadow = _ShadowSubList[i];
             // shadow.second stores the old style element name. For backward
             // compatibility reason, we shall store the old name into attribute
-            // 'value' whenver possible.
+            // 'value' whenever possible.
             const auto &sub = shadow.second.empty()?_SubList[i]:shadow.second;
             writer.Stream() << writer.ind() << "<Sub value=\"";
             if(exporting) {
@@ -3342,7 +3342,7 @@ Property *PropertyXLink::Copy(void) const
 void PropertyXLink::Paste(const Property &from)
 {
     if(!from.isDerivedFrom(PropertyXLink::getClassTypeId()))
-        throw Base::TypeError("Incompatible proeprty to paste to");
+        throw Base::TypeError("Incompatible property to paste to");
 
     const auto &other = static_cast<const PropertyXLink&>(from);
     if(other.docName.size()) {
@@ -4077,7 +4077,7 @@ Property *PropertyXLinkSubList::Copy(void) const
 void PropertyXLinkSubList::Paste(const Property &from)
 {
     if(!from.isDerivedFrom(PropertyXLinkSubList::getClassTypeId()))
-        throw Base::TypeError("Incompatible proeprty to paste to");
+        throw Base::TypeError("Incompatible property to paste to");
 
     aboutToSetValue();
     _Links.clear();
@@ -4484,4 +4484,3 @@ void PropertyXLinkContainer::getLinks(std::vector<App::DocumentObject *> &objs,
 {
     objs.insert(objs.end(),_Deps.begin(),_Deps.end());
 }
-

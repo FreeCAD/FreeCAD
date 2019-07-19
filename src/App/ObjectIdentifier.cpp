@@ -560,7 +560,7 @@ std::string ObjectIdentifier::getSubPathStr(bool toPython) const {
  * @brief Construct a Component part
  * @param _name Name of component
  * @param _type Type; simple, array, range or map
- * @param _begin Array index or begining of a Range, or INT_MAX for other type.
+ * @param _begin Array index or beginning of a Range, or INT_MAX for other type.
  * @param _end ending of a Range, or INT_MAX for other type.
  */
 
@@ -723,7 +723,7 @@ ObjectIdentifier::Component ObjectIdentifier::Component::MapComponent(String &&_
 
 /**
  * @brief Create a range component with given begin and end.
- * @param _begin begining index of the range
+ * @param _begin beginning index of the range
  * @param _end ending index of the range
  * @return A new Component object.
  */

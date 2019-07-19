@@ -348,7 +348,7 @@ public:
      * transactions, meaning that there are other transactions before the given
      * ID. The Gui component shall ask user if he wants to undo multiple steps.
      * And if the user agrees, call undo(id) to unroll all transaction before
-     * and including the the one with the give ID. Same apllies for redo.
+     * and including the the one with the give ID. Same applies for redo.
      *
      * The new transaction ID describe here is fully backward compatible.
      * Calling the APIs with a default id=0 gives the original behavior.
@@ -432,7 +432,7 @@ public:
      *
      * This function is defined as static because it accpets objects from
      * different documents, and the returned list will contain dependent
-     * objects from all relavent documents
+     * objects from all relevant documents
      *
      * @param objs: input objects to query for dependency. 
      * @param options: See DependencyOption

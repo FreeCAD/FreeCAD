@@ -726,7 +726,7 @@ void PropertyExpressionEngine::setPyObject(PyObject *)
 
 /* The policy implemented in the following function is to auto erase binding in
  * case linked object is gone. I think it is better to cause error and get
- * user's attension
+ * user's attention
  *
 void PropertyExpressionEngine::breakLink(App::DocumentObject *obj, bool clear) {
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
