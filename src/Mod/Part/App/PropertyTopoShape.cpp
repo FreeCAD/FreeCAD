@@ -796,3 +796,93 @@ void PropertyFilletEdges::Paste(const Property &from)
     _lValueList = dynamic_cast<const PropertyFilletEdges&>(from)._lValueList;
     hasSetValue();
 }
+
+// -------------------------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Part::PropertyShapeCache, App::Property);
+
+App::Property *PropertyShapeCache::Copy(void) const {
+    return new PropertyShapeCache();
+}
+
+void PropertyShapeCache::Paste(const App::Property &) {
+    cache.clear();
+}
+
+void PropertyShapeCache::Save (Base::Writer &) const
+{
+}
+
+void PropertyShapeCache::Restore(Base::XMLReader &)
+{
+}
+
+PyObject *PropertyShapeCache::getPyObject() {
+    Py::List res;
+    for(auto &v : cache)
+        res.append(Py::TupleN(Py::String(v.first),shape2pyshape(v.second)));
+    return Py::new_reference_to(res);
+}
+
+void PropertyShapeCache::setPyObject(PyObject *value) {
+    if(!value)
+        return;
+    if(value == Py_None)
+        cache.clear();
+    App::PropertyStringList prop;
+    prop.setPyObject(value);
+    for(const auto &sub : prop.getValues())
+        cache.erase(sub);
+}
+
+#define SHAPE_CACHE_NAME "_Part_ShapeCache"
+PropertyShapeCache *PropertyShapeCache::get(const App::DocumentObject *obj, bool create) {
+    auto prop = Base::freecad_dynamic_cast<PropertyShapeCache>(
+            obj->getDynamicPropertyByName(SHAPE_CACHE_NAME));
+    if(prop && prop->getContainer()==obj)
+        return prop;
+    if(!create)
+        return 0;
+
+    prop = static_cast<PropertyShapeCache*>(
+            const_cast<App::DocumentObject*>(obj)->addDynamicProperty("Part::PropertyShapeCache",
+                SHAPE_CACHE_NAME,"Part","Shape cache",
+                App::Prop_NoPersist|App::Prop_Output|App::Prop_Hidden));
+    if(!prop) 
+        FC_ERR("Failed to add shape cache for " << obj->getFullName());
+    prop->connChanged = const_cast<App::DocumentObject*>(obj)->signalChanged.connect(
+            boost::bind(&PropertyShapeCache::slotChanged,prop,_1,_2));
+    return prop;
+}
+
+bool PropertyShapeCache::getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname) {
+    auto prop = get(obj,false);
+    if(!prop)
+        return false;
+    if(!subname) subname = "";
+    auto it = prop->cache.find(subname);
+    if(it!=prop->cache.end()) {
+        shape = it->second;
+        return !shape.isNull();
+    }
+    return false;
+}
+
+void PropertyShapeCache::setShape(
+        const App::DocumentObject *obj, const TopoShape &shape, const char *subname) 
+{
+    auto prop = get(obj,true);
+    if(!prop)
+        return;
+    if(!subname) subname = "";
+    prop->cache[subname] = shape;
+}
+
+void PropertyShapeCache::slotChanged(const App::DocumentObject &, const App::Property &prop) {
+    auto propName = prop.getName();
+    if(!propName) return;
+    if(strcmp(propName,"Group")==0
+            || strstr(propName,"Touched")!=0)
+        cache.clear();
+}
+

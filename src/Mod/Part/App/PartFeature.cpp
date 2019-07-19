@@ -357,78 +357,10 @@ TopoDS_Shape Feature::getShape(const App::DocumentObject *obj, const char *subna
     return getTopoShape(obj,subname,needSubElement,pmat,powner,resolveLink,transform,true).getShape();
 }
 
-struct ShapeCache {
-
-    std::unordered_map<const App::Document*,
-        std::map<std::pair<const App::DocumentObject*, std::string> ,TopoShape> > cache;
-
-    bool inited = false;
-    void init() {
-        if(inited)
-            return;
-        inited = true;
-        App::GetApplication().signalDeleteDocument.connect(
-                boost::bind(&ShapeCache::slotDeleteDocument, this, _1));
-        App::GetApplication().signalDeletedObject.connect(
-                boost::bind(&ShapeCache::slotClear, this, _1));
-        App::GetApplication().signalChangedObject.connect(
-                boost::bind(&ShapeCache::slotChanged, this, _1,_2));
-    }
-
-    void slotDeleteDocument(const App::Document &doc) {
-        cache.erase(&doc);
-    }
-
-    void slotChanged(const App::DocumentObject &obj, const App::Property &prop) {
-        const char *propName = prop.getName();
-        if(!propName)
-            return;
-        if(strcmp(propName,"Shape")==0 
-                || strcmp(propName,"Group")==0
-                || strstr(propName,"Touched")!=0)
-            slotClear(obj);
-    }
-
-    void slotClear(const App::DocumentObject &obj) {
-        auto it = cache.find(obj.getDocument());
-        if(it==cache.end())
-            return;
-        auto &map = it->second;
-        for(auto it2=map.lower_bound(std::make_pair(&obj,std::string()));
-                it2!=map.end() && it2->first.first==&obj;)
-        {
-            it2 = map.erase(it2);
-        }
-    }
-
-    bool getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname=0) {
-        init();
-        auto &entry = cache[obj->getDocument()];
-        if(!subname) subname = "";
-        auto it = entry.find(std::make_pair(obj,std::string(subname)));
-        if(it!=entry.end()) {
-            shape = it->second;
-            return !shape.isNull();
-        }
-        return false;
-    }
-
-    void setShape(const App::DocumentObject *obj, const TopoShape &shape, const char *subname=0) {
-        init();
-        if(!subname) subname = "";
-        cache[obj->getDocument()][std::make_pair(obj,std::string(subname))] = shape;
-    }
-};
-static ShapeCache _ShapeCache;
-
-void Feature::clearShapeCache() {
-    _ShapeCache.cache.clear();
-}
 
 static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subname, 
         bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 
         bool resolveLink, bool noElementMap, std::vector<App::DocumentObject*> &linkStack)
-
 {
     TopoShape shape;
 
@@ -448,7 +380,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         }
     }
 
-    if(_ShapeCache.getShape(obj,shape,subname)) {
+    if(PropertyShapeCache::getShape(obj,shape,subname)) {
         if(noElementMap) {
             shape.resetElementMap();
             shape.Tag = 0;
@@ -487,7 +419,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
             if(!shape.isNull()) {
                 if(obj->getDocument() != linked->getDocument())
-                    _ShapeCache.setShape(obj,shape,subname);
+                    PropertyShapeCache::setShape(obj,shape,subname);
                 if(noElementMap) {
                     shape.resetElementMap();
                     shape.Tag = 0;
@@ -507,13 +439,13 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
 
     bool scaled = false;
     if(obj!=owner) {
-        if(_ShapeCache.getShape(owner,shape)) {
+        if(PropertyShapeCache::getShape(owner,shape)) {
             auto scaled = shape.transformShape(mat,false,true);
             if(owner->getDocument()!=obj->getDocument()) {
                 shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
-                _ShapeCache.setShape(obj,shape,subname);
+                PropertyShapeCache::setShape(obj,shape,subname);
             } else if(scaled)
-                _ShapeCache.setShape(obj,shape,subname);
+                PropertyShapeCache::setShape(obj,shape,subname);
         }
         if(!shape.isNull()) {
             if(noElementMap) {
@@ -606,15 +538,15 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         shape.makECompound(shapes);
     }
 
-    _ShapeCache.setShape(owner,shape);
+    PropertyShapeCache::setShape(owner,shape);
 
     if(owner!=obj) {
         scaled = shape.transformShape(mat,false,true);
         if(owner->getDocument()!=obj->getDocument()) {
             shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
-            _ShapeCache.setShape(obj,shape,subname);
+            PropertyShapeCache::setShape(obj,shape,subname);
         }else if(scaled)
-            _ShapeCache.setShape(obj,shape,subname);
+            PropertyShapeCache::setShape(obj,shape,subname);
     }
     if(noElementMap) {
         shape.resetElementMap();

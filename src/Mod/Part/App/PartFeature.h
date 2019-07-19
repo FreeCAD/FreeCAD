@@ -99,8 +99,6 @@ public:
             App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true, 
             bool noElementMap=false);
 
-    static void clearShapeCache();
-
     struct HistoryItem {
         App::DocumentObject *obj;
         long tag;

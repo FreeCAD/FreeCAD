@@ -233,6 +233,34 @@ private:
     std::vector<FilletElement> _lValueList;
 };
 
+
+class PartExport PropertyShapeCache: public App::Property {
+    TYPESYSTEM_HEADER();
+public:
+    virtual App::Property *Copy(void) const override;
+
+    virtual void Paste(const App::Property &) override;
+
+    virtual PyObject *getPyObject() override;
+
+    virtual void setPyObject(PyObject *value) override;
+
+    virtual void Save (Base::Writer &writer) const override;
+
+    virtual void Restore(Base::XMLReader &reader) override;
+
+    static PropertyShapeCache *get(const App::DocumentObject *obj, bool create);
+    static bool getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname=0);
+    static void setShape(const App::DocumentObject *obj, const TopoShape &shape, const char *subname=0);
+
+private:
+    void slotChanged(const App::DocumentObject &, const App::Property &prop);
+
+private:
+    std::unordered_map<std::string, TopoShape> cache;
+    boost::signals2::scoped_connection connChanged;
+};
+
 } //namespace Part
 
 
