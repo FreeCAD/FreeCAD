@@ -612,7 +612,7 @@ public:
             }
             if(vp->getChildRoot()) {
                 // In case the children is also a geo group, it will visually
-                // hold all of its own children, so stop going futher down.
+                // hold all of its own children, so stop going further down.
                 break;
             }
             // new style mapped sub-element
@@ -1041,7 +1041,7 @@ void LinkView::setTransform(SoTransform *pcTransform, const Base::Matrix4D &mat)
                                     dMtrx[8], dMtrx[9], dMtrx[10], dMtrx[11],
                                     dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]));
 #else
-    // extract scale factor from colum vector length
+    // extract scale factor from column vector length
     double sx = Base::Vector3d(mat[0][0],mat[1][0],mat[2][0]).Sqr();
     double sy = Base::Vector3d(mat[0][1],mat[1][1],mat[2][1]).Sqr();
     double sz = Base::Vector3d(mat[0][2],mat[1][2],mat[2][2]).Sqr();
@@ -2432,11 +2432,11 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
         return 0;
     }
 
-    // TODO: the 0x8000 mask here is for caller to disambiguate the intension
-    // here. Whether he wants to, say transform the link itself or the linked
-    // object. Use a mask here will allow forwarding those editing mode that
-    // supported by both the link and the linked object, such as transform and
-    // set color. We need to find a better place to declare this constant.
+    // TODO: the 0x8000 mask here is for caller to disambiguate the intention
+    // here, whether he wants to, say transform the link itself or the linked
+    // object. Use of a mask here will allow forwarding those editing modes that
+    // are supported by both the link and the linked object, such as transform
+    // and set color. We need to find a better place to declare this constant.
     mode &= ~0x8000;
 
     auto doc = Application::Instance->editDocument();
@@ -2503,8 +2503,8 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
             group->addChild(pickStyle);
             group->addChild(pcDragger);
 
-            // Because the dragger is not grouped with the actually geometry,
-            // we use an invisible cube sized by the bound box obtained from
+            // Because the dragger is not grouped with the actual geometry,
+            // we use an invisible cube sized by the bounding box obtained from
             // initDraggingPlacement() to scale the centerball dragger properly
 
             auto * ss = (SoSurroundScale*)dragger->getPart("surroundScale", TRUE);

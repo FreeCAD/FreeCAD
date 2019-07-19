@@ -186,10 +186,10 @@ void View3DInventorPy::init_type()
     add_varargs_method("setName",&View3DInventorPy::setName,"setName(str): sets a name to this viewer\nThe name sets the widget's windowTitle and appears on the viewer tab");
     add_keyword_method("toggleClippingPlane", &View3DInventorPy::toggleClippingPlane,
         "toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()\n"
-        "Toggle a golbal clipping plane\n\n"
+        "Toggle a global clipping plane\n\n"
         "toggle: -1 toggle, 1 show, 0 hide\n"
-        "beforeEditing: whether insert the clipping node before or after editing root node\n"
-        "noManip: wether to create a manipulator\n"
+        "beforeEditing: whether to insert the clipping node before or after editing root node\n"
+        "noManip: whether to create a manipulator\n"
         "pla: clipping plane placement");
 }
 
