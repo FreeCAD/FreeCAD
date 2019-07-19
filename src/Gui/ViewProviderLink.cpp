@@ -1322,7 +1322,7 @@ void LinkView::onLinkedUpdateData(LinkInfoPtr info, const App::Property *prop) {
         // of links, to inform tree view of children change, and other
         // parent objects about the change. But we need to be careful to not
         // touch the object if the property of change is marked as output.
-        ext->_LinkRecomputed.touch();
+        ext->_LinkTouched.touch();
     }else{
         // In case the owner object does not have link extension, here is a
         // trick to link the signalChangedObject from linked object to the
@@ -1791,7 +1791,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     if(!prop) return;
     if(prop == &ext->_ChildCache) {
         updateElementList(ext);
-    } else if(prop == &ext->_LinkRecomputed) {
+    } else if(prop == &ext->_LinkTouched) {
         if(linkView->hasSubs())
             linkView->updateLink();
         applyColors();
@@ -2037,7 +2037,7 @@ void ViewProviderLink::finishRestoring() {
     applyColors();
 
     // TODO: notify the tree. This is ugly, any other way?
-    getDocument()->signalChangedObject(*this,ext->_LinkRecomputed);
+    getDocument()->signalChangedObject(*this,ext->_LinkTouched);
 
     if(childVp)
         childVp->finishRestoring();

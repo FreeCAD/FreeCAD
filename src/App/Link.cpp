@@ -47,10 +47,10 @@ LinkBaseExtension::LinkBaseExtension(void)
     :enableLabelCache(false),myOwner(0)
 {
     initExtensionType(LinkBaseExtension::getExtensionClassTypeId());
-    EXTENSION_ADD_PROPERTY_TYPE(_LinkRecomputed, (false), " Link", 
-            PropertyType(Prop_Hidden|Prop_Transient),0);
+    EXTENSION_ADD_PROPERTY_TYPE(_LinkTouched, (false), " Link", 
+            PropertyType(Prop_Hidden|Prop_NoPersist),0);
     EXTENSION_ADD_PROPERTY_TYPE(_ChildCache, (), " Link", 
-            PropertyType(Prop_Hidden|Prop_Transient|Prop_ReadOnly),0);
+            PropertyType(Prop_Hidden|Prop_NoPersist|Prop_ReadOnly),0);
     _ChildCache.setScope(LinkScope::Global);
     props.resize(PropMax,0);
 }
@@ -174,7 +174,7 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute(void) {
     // The actual value of LinkRecompouted is not important, just to notify view
     // provider that the link (in fact, its dependents, i.e. linked ones) have
     // recomputed.
-    _LinkRecomputed.touch();
+    _LinkTouched.touch();
 
     if(getLinkedObjectProperty() && !getTrueLinkedObject(true))
         return new App::DocumentObjectExecReturn("Link broken");
