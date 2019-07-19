@@ -53,9 +53,9 @@ using namespace Base;
 
 PyException::PyException(const Py::Object &obj) {
     _sErrMsg = obj.as_string();
-    // WARNING: we are assumming that python type object will never be
-    // destroied, so we don't keep reference here to save book-keeping in
-    // our copy constructor and desctructor
+    // WARNING: we are assuming that python type object will never be
+    // destroyed, so we don't keep reference here to save book-keeping in
+    // our copy constructor and destructor
     _exceptionType = (PyObject*)obj.ptr()->ob_type;
     _errorType = obj.ptr()->ob_type->tp_name;
 }
@@ -84,9 +84,9 @@ PyException::PyException(void)
     _exceptionType = PP_last_exception_type;
 
     if(PP_last_exception_type) {
-        // WARNING: we are assumming that python type object will never be
-        // destroied, so we don't keep reference here to save book-keeping in
-        // our copy constructor and desctructor
+        // WARNING: we are assuming that python type object will never be
+        // destroyed, so we don't keep reference here to save book-keeping in
+        // our copy constructor and destructor
         Py_DECREF(PP_last_exception_type);
         PP_last_exception_type = 0;
 
