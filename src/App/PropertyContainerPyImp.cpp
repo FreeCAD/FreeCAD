@@ -54,16 +54,19 @@ std::string PropertyContainerPy::representation(void) const
 PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
 {
     char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+    int checkOwner=0;
+    if (!PyArg_ParseTuple(args, "s|i", &pstr, &checkOwner))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (prop) {
-        return prop->getPyObject();
+        if(!checkOwner || (checkOwner==1 && prop->getContainer()==getPropertyContainerPtr()))
+            return prop->getPyObject();
+        Py::TupleN res(Py::asObject(prop->getContainer()->getPyObject()),
+                       Py::asObject(prop->getPyObject()));
+        return Py::new_reference_to(res);
     }
-    else {
-        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
-        return NULL;
-    }
+    PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
+    return NULL;
 }
 
 PyObject*  PropertyContainerPy::getPropertyTouchList(PyObject *args)
