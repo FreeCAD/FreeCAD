@@ -170,7 +170,8 @@ public:
 
     static CenterLine* CenterLineBuilder(TechDraw::DrawViewPart* partFeat,
                                          std::vector<std::string> subs,
-                                         int mode = 0);
+                                         int mode = 0,
+                                         bool flip = false);
     TechDraw::BaseGeom* scaledGeometry(TechDraw::DrawViewPart* partFeat);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints(
                                           TechDraw::DrawViewPart* partFeat,
