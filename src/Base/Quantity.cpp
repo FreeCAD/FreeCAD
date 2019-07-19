@@ -34,6 +34,11 @@
 #include "UnitsApi.h"
 #include "Console.h"
 
+/** \defgroup Units Units system
+    \ingroup BASE
+    \brief The quantities and units system enables FreeCAD to work transparently with many different units
+*/
+
 // suppress annoying warnings from generated source files
 #ifdef _MSC_VER
 # pragma warning(disable : 4003)

@@ -355,6 +355,7 @@ void QGIViewPart::drawViewPart()
     float lineWidthHid = vp->HiddenWidth.getValue() * lineScaleFactor;
     float lineWidthIso = vp->IsoWidth.getValue() * lineScaleFactor;
 //    float lineWidthExtra = viewPart->ExtraWidth.getValue() * lineScaleFactor;
+    bool showAll = vp->ShowAllEdges.getValue();
 
     prepareGeometryChange();
     removePrimitives();                      //clean the slate
@@ -385,7 +386,10 @@ void QGIViewPart::drawViewPart()
                         }
                         newFace->isHatched(true);
                         newFace->setFillMode(QGIFace::GeomHatchFill);
-                        newFace->setHatchScale(fGeom->ScalePattern.getValue());
+                        double hatchScale = fGeom->ScalePattern.getValue();
+                        if (hatchScale > 0.0) {
+                            newFace->setHatchScale(fGeom->ScalePattern.getValue());
+                        }
                         newFace->setHatchFile(fGeom->FilePattern.getValue());
                         Gui::ViewProvider* gvp = QGIView::getViewProvider(fGeom);
                         ViewProviderGeomHatch* geomVp = dynamic_cast<ViewProviderGeomHatch*>(gvp);
@@ -403,7 +407,10 @@ void QGIViewPart::drawViewPart()
                     Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
                     ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
                     if (hatchVp != nullptr) {
-                        newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                        double hatchScale = hatchVp->HatchScale.getValue();
+                        if (hatchScale > 0.0) {
+                            newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                        }
                         newFace->setHatchColor(hatchVp->HatchColor.getValue());
                     }
                 }
@@ -418,6 +425,12 @@ void QGIViewPart::drawViewPart()
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     // Draw Edges
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcEdgeColor;
+    fcEdgeColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
+    QColor edgeColor = fcEdgeColor.asValue<QColor>();
+
     const std::vector<TechDraw::BaseGeom *> &geoms = viewPart->getEdgeGeometry();
     std::vector<TechDraw::BaseGeom *>::const_iterator itGeom = geoms.begin();
     QGIEdge* item;
@@ -441,9 +454,11 @@ void QGIViewPart::drawViewPart()
             }
         }
         bool showItem = true;
-        if (showEdge) {
+        if (showEdge) {                     //based on hard/seam/hidden/etc
             item = new QGIEdge(i);
             item->setWidth(lineWidth);
+            item->setNormalColor(edgeColor);
+            item->setStyle(Qt::SolidLine);
             if ((*itGeom)->cosmetic == true) {
                 int source = (*itGeom)->source();
                 int sourceIndex = (*itGeom)->sourceIndex();
@@ -455,7 +470,6 @@ void QGIViewPart::drawViewPart()
                     Base::Console().Message("QGIVP::drawVP - edge: %d is confused - source: %d\n",i,source);
                 }
             } else {
-                //TODO: implement formats for geom lines.
                 TechDraw::GeomFormat* gf = viewPart->getGeomFormatByGeom(i);
                 if (gf != nullptr) {
                     item->setNormalColor(gf->m_format.m_color.asValue<QColor>());
@@ -478,8 +492,10 @@ void QGIViewPart::drawViewPart()
                 item->setWidth(lineWidthIso);
             }
             item->setPrettyNormal();
-            if (!showItem) {
-                item->hide();
+            if (!showAll) {             //view level "show" status
+                if (!showItem) {        //individual edge "show" status
+                    item->hide();
+                }
             }
             //debug a path
 //            QPainterPath edgePath=drawPainterPath(*itGeom);
@@ -491,7 +507,7 @@ void QGIViewPart::drawViewPart()
 
 
     // Draw Vertexs:
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     double vertexScaleFactor = hGrp->GetFloat("VertexScale", 3.0);
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->

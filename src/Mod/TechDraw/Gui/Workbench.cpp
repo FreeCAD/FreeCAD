@@ -98,6 +98,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_2PointCenterLine";
     *draw << "TechDraw_CosmeticEraser";
     *draw << "TechDraw_DecorateLine";
+    *draw << "TechDraw_ShowAll";
 
     return root;
 }
@@ -166,6 +167,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 //    *anno << "TechDraw_2PointCenterLine";
     *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
+    *anno << "TechDraw_ShowAll";
     return root;
 }
 
@@ -231,6 +233,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 //    *anno << "TechDraw_2PointCenterLine";
     *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
+    *anno << "TechDraw_ShowAll";
 
     return root;
 }

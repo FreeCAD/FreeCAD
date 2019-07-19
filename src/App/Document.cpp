@@ -21,7 +21,16 @@
  ***************************************************************************/
 
 
-/*! \namespace App \class App::Document
+/*!
+\defgroup Document Document
+\ingroup APP
+\brief The Base class of the FreeCAD Document
+
+This is (besides the App::Application class) the most important class in FreeCAD.
+It contains all the data of the opened, saved, or newly created FreeCAD Document.
+The App::Document manages the Undo and Redo mechanism and the linking of documents.
+
+\namespace App \class App::Document
 This is besides the Application class the most important class in FreeCAD
 It contains all the data of the opened, saved or newly created FreeCAD Document.
 The Document manage the Undo and Redo mechanism and the linking of documents.
@@ -31,16 +40,16 @@ App::Application. Only the Application can Open or destroy a document.
 
 \section Exception Exception handling
 As the document is the main data structure of FreeCAD we have to take a close
-look on how Exceptions affect the integrity of the App::Document.
+look at how Exceptions affect the integrity of the App::Document.
 
 \section UndoRedo Undo Redo an Transactions
-Undo Redo handling is one of the major mechanism of an document in terms of
+Undo Redo handling is one of the major mechanism of a document in terms of
 user friendliness and speed (no one will wait for Undo too long).
 
 \section Dependency Graph and dependency handling
 The FreeCAD document handles the dependencies of its DocumentObjects with
 an adjacence list. This gives the opportunity to calculate the shortest
-recompute path. Also enables more complicated dependencies beyond trees.
+recompute path. Also, it enables more complicated dependencies beyond trees.
 
 
 @see App::Application

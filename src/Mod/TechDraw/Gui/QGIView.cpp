@@ -108,7 +108,7 @@ QGIView::QGIView()
     m_caption = new QGICaption();
     addToGroup(m_caption);
     m_lock = new QGCustomImage();
-    m_lock->setParentItem(m_label);
+    m_lock->setParentItem(m_border);
     m_lock->load(QString::fromUtf8(":/icons/techdraw-lock.png"));
     QSize sizeLock = m_lock->imageSize();
     m_lockWidth = (double) sizeLock.width();
@@ -403,14 +403,6 @@ void QGIView::toggleCache(bool state)
     setCacheMode(NoCache);
 }
 
-////this is obs? 
-//void QGIView::toggleBorder(bool state)
-//{
-//    Base::Console().Message("QGIV::toggleBorder(%d)\n",state);
-////    m_borderVisible = state;
-////    QGIView::draw();
-//}
-
 void QGIView::draw()
 {
     if (isVisible()) {
@@ -474,7 +466,7 @@ void QGIView::drawBorder()
     m_label->setFont(m_font);
     QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
     m_label->setPlainText(labelStr);
-    QRectF labelArea = m_label->boundingRect();
+    QRectF labelArea = m_label->boundingRect();                //m_label coords
     double labelWidth = m_label->boundingRect().width();
     double labelHeight = (1 - labelCaptionFudge) * m_label->boundingRect().height();
 
@@ -501,8 +493,8 @@ void QGIView::drawBorder()
                               frameWidth,
                               frameHeight);
 
-    double lockX = labelArea.left();
-    double lockY = labelArea.bottom() - (2 * m_lockHeight);
+    double lockX = frameArea.left();
+    double lockY = frameArea.bottom() - m_lockHeight;
     if (feat->isLocked()) {
         m_lock->setZValue(ZVALUE::LOCK);
         m_lock->setPos(lockX,lockY);

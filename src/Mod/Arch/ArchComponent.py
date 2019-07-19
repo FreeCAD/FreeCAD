@@ -620,17 +620,18 @@ class Component:
     def computeAreas(self,obj):
 
         "computes the area properties"
-        if not obj.Shape:
-            return
-        if obj.Shape.isNull():
-            return
-        if not obj.Shape.isValid():
-            return
-        if not obj.Shape.Faces:
+
+        if (not obj.Shape) or obj.Shape.isNull() or (not obj.Shape.isValid()) or (not obj.Shape.Faces):
+            obj.VerticalArea = 0
+            obj.HorizontalArea = 0
+            obj.PerimeterLength = 0
             return
         import Drawing,Part
         fmax = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("MaxComputeAreas",20)
         if len(obj.Shape.Faces) > fmax:
+            obj.VerticalArea = 0
+            obj.HorizontalArea = 0
+            obj.PerimeterLength = 0
             return
         a = 0
         fset = []
@@ -639,6 +640,9 @@ class Component:
                 ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
             except Part.OCCError:
                 print("Debug: Error computing areas for ",obj.Label,": normalAt() Face ",i)
+                obj.VerticalArea = 0
+                obj.HorizontalArea = 0
+                obj.PerimeterLength = 0
                 return
             else:
                 if (ang > 1.57) and (ang < 1.571):

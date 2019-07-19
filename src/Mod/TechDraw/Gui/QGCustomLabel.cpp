@@ -76,6 +76,8 @@ void QGCustomLabel::centerAt(double cX, double cY)
 void QGCustomLabel::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
-    
+
+//    painter->drawRect(boundingRect());          //good for debugging
+
     QGraphicsTextItem::paint (painter, &myOption, widget);
 }
