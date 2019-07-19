@@ -513,7 +513,7 @@ App::DocumentObject *Body::getSubObject(const char *subname,
        (subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')))
         return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
 
-    // We return the shape only if there are feature visibile inside
+    // We return the shape only if there are feature visible inside
     for(auto obj : Group.getValues()) {
         if(obj->Visibility.getValue() && 
            obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) 

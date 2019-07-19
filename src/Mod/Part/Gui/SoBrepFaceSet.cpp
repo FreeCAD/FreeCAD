@@ -717,7 +717,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
     //
     // Criteria of using material binding override:
     // 1) original material binding is either overall or per_part. We can
-    //    support others, but ommitted here to simplify coding logic, and
+    //    support others, but omitted here to simplify coding logic, and
     //    because it seems FC only uses these two.
     // 2) either of the following :
     //      a) has highlight or selection and Selection().needPickPoint, so that

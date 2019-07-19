@@ -200,7 +200,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderSubShapeBinder,PartGui::ViewProviderP
 ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
     sPixmap = "PartDesign_SubShapeBinder.svg";
 
-    //get the datum coloring sheme
+    //get the datum coloring scheme
     // set default color for datums (golden yellow with 60% transparency)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
             "User parameter:BaseApp/Preferences/Mod/PartDesign");

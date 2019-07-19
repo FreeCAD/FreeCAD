@@ -1181,7 +1181,7 @@ void PropertySheet::renameObjectIdentifiers(const std::map<App::ObjectIdentifier
 void PropertySheet::deletedDocumentObject(const App::DocumentObject *docObj)
 {
     (void)docObj;
-    // This function is only used in SheetObserver, which is obselete.
+    // This function is only used in SheetObserver, which is obsolete.
     //
     // if(docDeps.erase(const_cast<App::DocumentObject*>(docObj))) {
     //     const App::DocumentObject * docObj = dynamic_cast<const App::DocumentObject*>(getContainer());

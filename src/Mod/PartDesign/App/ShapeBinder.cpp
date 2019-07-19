@@ -538,7 +538,7 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject *, std::vector<std::s
         if(!v.first || !v.first->getNameInDocument())
             FC_THROWM(Base::ValueError,"Invalid document object");
         if(inSet.find(v.first)!=inSet.end())
-            FC_THROWM(Base::ValueError, "Cyclic referece to " << v.first->getFullName());
+            FC_THROWM(Base::ValueError, "Cyclic reference to " << v.first->getFullName());
 
         if(v.second.empty()) {
             v.second.push_back("");
