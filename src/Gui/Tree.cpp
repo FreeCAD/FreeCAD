@@ -3209,6 +3209,8 @@ bool DocumentItem::populateObject(App::DocumentObject *obj) {
 
 void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool delay)
 {
+    (void)delay;
+
     if (item->populated && !refresh)
         return;
 
@@ -3362,7 +3364,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
         getTree()->blockConnection(lock);
     }
     if(updated) 
-        getTree()->_updateStatus(delay);
+        getTree()->_updateStatus();
 }
 
 int DocumentItem::findRootIndex(App::DocumentObject *childObj) {
