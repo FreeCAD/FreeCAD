@@ -16,7 +16,18 @@
     </Documentation>
     <Methode Name="getPropertyByName">
       <Documentation>
-        <UserDocu>Return the value of a named property.</UserDocu>
+        <UserDocu>
+getPropertyByName(name,checkOwner=0)
+
+Return the value of a named property. Note that the returned property may not
+always belong to this container (e.g. from a linked object).
+
+* name: name of the property
+* checkOwner:  0: just return the property
+               1: raise exception if not found or the property 
+                  does not belong to this container
+               2: return a tuple(owner,property_value)
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getPropertyTouchList">
