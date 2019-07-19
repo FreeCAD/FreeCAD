@@ -1002,8 +1002,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
             else:
                 if DEBUG: print("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
-                if six.PY2:
-                    grp_name = grp_name.encode("utf8")
+            if six.PY2:
+                grp_name = grp_name.encode("utf8")
             grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name)
             grp.Label = grp_name
             objects[host] = grp
