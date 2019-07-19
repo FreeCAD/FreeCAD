@@ -697,7 +697,7 @@ PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
 
 PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
-    // Dynamic proeprty is now directly supported in PropertyContainer. So we
+    // Dynamic property is now directly supported in PropertyContainer. So we
     // can comment out here and let PropertyContainerPy handle it.
 #if 1
     (void)attr;
@@ -714,7 +714,7 @@ PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
 {
     // The following code is practically the same as in PropertyContainerPy,
-    // especially since now dynamic proeprty is directly supported in
+    // especially since now dynamic property is directly supported in
     // PropertyContainer. So we can comment out here and let PropertyContainerPy
     // handle it.
 #if 1

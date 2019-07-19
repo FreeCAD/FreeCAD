@@ -155,7 +155,7 @@ public:
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
-    /** Called at the begining of Document::afterRestore()
+    /** Called at the beginning of Document::afterRestore()
      *
      * This function is called without dependency sorting, because some
      * types of link property can only reconstructs the linking information
@@ -170,7 +170,7 @@ public:
      * restored expression in afterRestore(). The reason, in addition to
      * subname mapping like PropertyLinkSub, is that it can handle document
      * name adjustment as well. It internally relies on PropertyXLink to store
-     * the external document path for external linking. When the extenal
+     * the external document path for external linking. When the external
      * document is restored, its internal name may change due to name conflict
      * with existing documents.  PropertyExpressionEngine can now auto adjust
      * external references without any problem.
@@ -180,7 +180,7 @@ public:
     /** Called before calling DocumentObject::onDocumentRestored()
      *
      * This function is called after finished calling Property::afterRestore()
-     * of all properies of objects. By then, the object dependency information
+     * of all properties of objects. By then, the object dependency information
      * is assumed ready. So, unlike Property::afterRestore(), this function is
      * called on objects with dependency order.
      */
@@ -292,7 +292,7 @@ private:
  * AtomicPropertyChange::aboutToChange() before actual change, this enables you
  * to prevent unnecessary property copy for undo/redo where there is actual
  * changes. AtomicPropertyChange will guaranetee calling hasSetValue() when the
- * last instance in the current call stack is destroied.
+ * last instance in the current call stack is destroyed.
  *
  * One thing to take note is that, because C++ does not allow throwing
  * exception in destructor, any exception thrown when calling property's
@@ -358,7 +358,7 @@ public:
 
         /** Check and invoke property's hasSetValue()
          *
-         * Check if this is the last instance and the proeprty has been marked
+         * Check if this is the last instance and the property has been marked
          * as changed. If so, invoke property's hasSetValue().
          */
         // Destructor cannot throw. So we provide this function to allow error

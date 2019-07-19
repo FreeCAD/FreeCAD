@@ -407,7 +407,7 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet,
             if(v.first == obj) continue;
             auto &outList = v.second;
             // Check the outList to see if the object is there, and pend the
-            // object for recrusive check if it's not already in the inList
+            // object for recursive check if it's not already in the inList
             if(outList.find(obj)!=outList.end() && 
                inSet.insert(v.first).second &&
                recursive)
@@ -1016,7 +1016,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
     if(!parent && !subElement)
         return obj;
 
-    // NOTE, the convension of '.' separated SubName demands a mandatory ending
+    // NOTE, the convention of '.' separated SubName demands a mandatory ending
     // '.' for each object name in SubName, even if there is no subelement
     // following it. So finding the last dot will give us the end of the last
     // object name.

@@ -135,15 +135,15 @@ public:
     /** Register label reference for future object relabel update
      *
      *  @param labels: labels to be registered
-     *  @param reset: if ture, then calls unregisterLabelReference() before
+     *  @param reset: if true, then calls unregisterLabelReference() before
      *  registering
      */
     void registerLabelReferences(std::vector<std::string> &&labels, bool reset=true);
 
-    /** Check subnames for label registeration
+    /** Check subnames for label registration
      *
      *  @param subs: subname references
-     *  @param reset: if ture, then calls unregisterLabelReference() before
+     *  @param reset: if true, then calls unregisterLabelReference() before
      *  registering
      *
      *  Check the give subname references and extract any label reference
@@ -186,7 +186,7 @@ public:
     /** Called to reset this link property
      *
      * @param obj: reset link property if it is linked to this object
-     * @param clear: if true, then also reset property if the owner of this proeprty is \a obj
+     * @param clear: if true, then also reset property if the owner of this property is \a obj
      *
      * @sa breakLinks()
      */
@@ -324,7 +324,7 @@ public:
             const App::DocumentObject *parent, App::DocumentObject *oldObj, 
             App::DocumentObject *newObj, const char *sub=0);
 
-    /** Helper function to check and replace a link with multiple subname refereces
+    /** Helper function to check and replace a link with multiple subname references
      *
      * @param owner: the owner of the current property
      * @param obj: the current linked object
@@ -385,7 +385,7 @@ public:
      *
      * @param link: reset link property if it is linked to this object
      * @param objs: the objects to check for the link properties
-     * @param clear: if ture, then also reset property if the owner of the link property is \a link
+     * @param clear: if true, then also reset property if the owner of the link property is \a link
      *
      * App::Document::breakDependency() calls this function to break the link property
      */
@@ -495,7 +495,7 @@ public:
      *
      * @sa registerLabelReferences()
      *
-     * This function is used to extrac label from subname reference for
+     * This function is used to extract label from subname reference for
      * registering of label changes.
      */
     static void getLabelReferences(std::vector<std::string> &labels, const char *subname);

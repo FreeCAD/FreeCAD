@@ -191,7 +191,7 @@ struct DocumentP
         static std::random_device _RD;
         static std::mt19937 _RGEN(_RD());
         static std::uniform_int_distribution<> _RDIST(0,5000);
-        // Set some random offset to reduce likelyhood of ID collison when
+        // Set some random offset to reduce likelihood of ID collison when
         // copying shape from other document. It is probably better to randomize
         // on each object ID.
         lastObjectId = _RDIST(_RGEN); 
@@ -2131,7 +2131,7 @@ static std::string checkFileName(const char *file) {
     std::string fn(file);
 
     // Append extension if missing. This option is added for security reason, so
-    // that the user won't accidently overwrite other file that may be critical.
+    // that the user won't accidentally overwrite other file that may be critical.
     if(App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Document")->GetBool("CheckExtension",true))
     {
@@ -3990,7 +3990,7 @@ Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
 
     // Then change them in one go. Note that we don't make change in previous
     // loop, because a changed link property may break other depending link
-    // properties, e.g. a link sub refering to some sub object of an xlink, If
+    // properties, e.g. a link sub referring to some sub object of an xlink, If
     // that sub object is imported with a different name, and xlink is changed
     // before this link sub, it will break.
     for(auto &v : propMap) 
@@ -4029,7 +4029,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     if(objs.empty()) 
         return 0;
     // Some object may delete its children if deleted, so we collect the IDs
-    // or all depdending objects for saftey reason.
+    // or all depdending objects for safety reason.
     std::vector<int> ids;
     ids.reserve(deps.size());
     for(auto o : deps)
