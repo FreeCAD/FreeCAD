@@ -37,6 +37,7 @@
 # include <QtGlobal>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -370,33 +371,8 @@ void PropertyItem::setValue(const QVariant& /*value*/)
 
 QString PropertyItem::pythonIdentifier(const App::Property* prop) const
 {
-    App::PropertyContainer* parent = prop->getContainer();
-    QString propPrefix = QString::fromLatin1(parent->getPropertyPrefix());
-    if (parent->getTypeId() == App::Document::getClassTypeId()) {
-        App::Document* doc = static_cast<App::Document*>(parent);
-        QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
-        QString propName = QString::fromLatin1(prop->getName());
-        return QString::fromLatin1("FreeCAD.getDocument(\"%1\").%3%2").arg(docName).arg(propName).arg(propPrefix);
-    }
-    if (parent->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* obj = static_cast<App::DocumentObject*>(parent);
-        App::Document* doc = obj->getDocument();
-        QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
-        QString objName = QString::fromLatin1(obj->getNameInDocument());
-        QString propName = QString::fromLatin1(prop->getName());
-        return QString::fromLatin1("FreeCAD.getDocument(\"%1\").getObject(\"%2\").%4%3")
-            .arg(docName,objName,propName,propPrefix);
-    }
-    auto* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(parent);
-    if (vp) {
-        App::DocumentObject* obj = vp->getObject();
-        App::Document* doc = obj->getDocument();
-        QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
-        QString objName = QString::fromLatin1(obj->getNameInDocument());
-        QString propName = QString::fromLatin1(prop->getName());
-        return QString::fromLatin1("FreeCADGui.getDocument(\"%1\").getObject(\"%2\").%4%3")
-            .arg(docName,objName,propName,propPrefix);
-    }
+    if(prop)
+        return QString::fromLatin1(prop->getFullName(true).c_str());
     return QString();
 }
 
@@ -449,9 +425,15 @@ QString PropertyItem::propertyName() const
     return propName;
 }
 
-void PropertyItem::setPropertyName(const QString& name)
+void PropertyItem::setPropertyName(QString name, QString realName)
 {
-    setObjectName(name);
+    if(realName.size())
+        propName = realName;
+    else
+        propName = name;
+
+    setObjectName(propName);
+
     QString display;
     bool upper = false;
     for (int i=0; i<name.length(); i++) {
@@ -467,11 +449,37 @@ void PropertyItem::setPropertyName(const QString& name)
         display += name[i];
     }
 
-    propName = display;
-
-    QString str = QApplication::translate("App::Property", propName.toLatin1());
+    QString str = QApplication::translate("App::Property", display.toLatin1());
     displayText = str;
 }
+
+void PropertyItem::setPropertyName(const App::Property &prop) {
+    const char *name = prop.getName();
+    if(!name || !name[0])
+        return;
+    const char *group = prop.getGroup();
+    if(!group)
+        group = "Base";
+    std::size_t nameLen = std::strlen(name);
+    std::size_t groupLen = std::strlen(group);
+    if(nameLen>groupLen+1) {
+        if(boost::starts_with(name,group) && name[groupLen] == '_') {
+            // For property name with format <group_name>_<name>, it will be displayed as <name>
+            setPropertyName(QString::fromLatin1(name+groupLen+1),QString::fromLatin1(name));
+            return;
+        } else if(nameLen>groupLen+1
+                    && name[0] == '_' 
+                    && name[groupLen+1] == '_'
+                    && boost::starts_with(name+1,group))
+        {
+            // For property name with format _<group_name>_<name>, it will be displayed as _<name>
+            setPropertyName(QString::fromLatin1(name+groupLen+1),QString::fromLatin1(name));
+            return;
+        }
+    }
+    setPropertyName(QString::fromLatin1(name));
+}
+
 
 void PropertyItem::setPropertyValue(const QString& value)
 {

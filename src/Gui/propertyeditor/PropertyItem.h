@@ -156,7 +156,8 @@ public:
     int childCount() const;
     int columnCount() const;
     QString propertyName() const;
-    void setPropertyName(const QString&);
+    void setPropertyName(QString name, QString realName=QString());
+    void setPropertyName(const App::Property &prop);
     void setPropertyValue(const QString&);
     virtual QVariant data(int column, int role) const;
     bool setData (const QVariant& value);

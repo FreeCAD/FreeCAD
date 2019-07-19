@@ -43,6 +43,7 @@
 #include "PropertyItemDelegate.h"
 #include "PropertyModel.h"
 #include "PropertyView.h"
+#include "Command.h"
 
 FC_LOG_LEVEL_INIT("PropertyView",true,true);
 
@@ -421,6 +422,7 @@ void PropertyEditor::removeProperty(const App::Property& prop)
 }
 
 enum MenuAction {
+    MA_Print,
     MA_ShowAll,
     MA_Expression,
     MA_RemoveProp,
@@ -441,6 +443,8 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     showAll->setChecked(PropertyView::showAll());
     showAll->setData(QVariant(MA_ShowAll));
 
+    menu.addAction(tr("Print to console"))->setData(QVariant(MA_Print));
+
     auto contextIndex = currentIndex();
 
     std::unordered_set<App::Property*> props;
@@ -450,7 +454,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
             auto item = static_cast<PropertyItem*>(index.internalPointer());
             if(item->isSeparator())
                 continue;
-            for(auto parent=item;parent;parent=item->parent()) {
+            for(auto parent=item;parent;parent=parent->parent()) {
                 const auto &ps = parent->getPropertyData();
                 if(ps.size()) {
                     props.insert(ps.begin(),ps.end());
@@ -528,7 +532,21 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         return;
 
     switch(action->data().toInt()) {
-    case MA_ShowAll:
+    case MA_Print: {
+        std::set<App::Property*> propSet;
+        for(auto index : selectedIndexes()) {
+            auto item = static_cast<PropertyItem*>(index.internalPointer());
+            if(item->isSeparator())
+                continue;
+            for(auto parent=item;parent;parent=parent->parent()) {
+                for(auto prop : parent->getPropertyData()) {
+                    if(propSet.insert(prop).second)
+                        Command::runCommand(Command::Doc,prop->getFullName(true).c_str());
+                }
+            }
+        }
+        break;
+    } case MA_ShowAll:
         PropertyView::setShowAll(action->isChecked());
         return;
 #define ACTION_CHECK(_name) \
