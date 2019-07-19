@@ -450,7 +450,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
             auto item = static_cast<PropertyItem*>(index.internalPointer());
             if(item->isSeparator())
                 continue;
-            for(auto parent=item;parent;parent=item->parent()) {
+            for(auto parent=item;parent;parent=parent->parent()) {
                 const auto &ps = parent->getPropertyData();
                 if(ps.size()) {
                     props.insert(ps.begin(),ps.end());
