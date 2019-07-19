@@ -242,64 +242,27 @@ void TaskCenterLine::createCenterLine(void)
     } else if (ui->rbAligned->isChecked()) {
         m_mode = CenterLine::CLMODE::ALIGNED;
     }
-    
-    //TODO: call CLBuilder here.
-    if (m_type == CenterLine::CLTYPE::FACE) {
-        ends = TechDraw::CenterLine::calcEndPoints(m_partFeat,
-                             m_subNames,
-                             m_mode,
-                             extendBy,
-                             hShift, vShift, rotate);
-    } else if (m_type == CenterLine::CLTYPE::EDGE) {
-        ends = TechDraw::CenterLine::calcEndPoints2Lines(m_partFeat,
-                         m_subNames,
-                         m_mode,
-                         extendBy,
-                         hShift, vShift, rotate, m_flipped);
-    } else if (m_type == CenterLine::CLTYPE::VERTEX) {
-        ends = TechDraw::CenterLine::calcEndPoints2Points(m_partFeat,
-                         m_subNames,
-                         m_mode,
-                         extendBy,
-                         hShift, vShift, rotate, m_flipped);
+
+    TechDraw::CenterLine* cl = CenterLine::CenterLineBuilder(m_partFeat,
+                                                             m_subNames,
+                                                             m_mode,
+                                                             m_flipped);
+    if (cl != nullptr) {
+        cl->setShifts(hShift, vShift);
+        cl->setExtend(extendBy);
+        cl->setRotate(rotate);
+        cl->setFlip(m_flipped);
+        App::Color ac;
+        ac.setValue<QColor>(ui->cpLineColor->color());
+        cl->m_format.m_color = ac;
+        cl->m_format.m_weight = ui->dsbWeight->value();
+        cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;  //Qt Styles start at 0:NoLine
+        cl->m_format.m_visible = true;
+        m_partFeat->addCenterLine(cl);
+    } else {
+        Base::Console().Log("TCL::createCenterLine - CenterLine creation failed!\n");
     }
 
-    TechDraw::CenterLine* cl = new TechDraw::CenterLine(ends.first, ends.second);
-    cl->m_start = ends.first;
-    cl->m_end = ends.second;
-
-    //TODO: cl->setShifts(hShift, vShift);
-    //      cl->setExtend(extendBy);
-    //      cl->setRotate(rotate);
-    //      cl->setFlip(m_flipped);
-    App::Color ac;
-    ac.setValue<QColor>(ui->cpLineColor->color());
-    cl->m_format.m_color = ac;
-    cl->m_format.m_weight = ui->dsbWeight->value();
-    cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;  //Qt Styles start at 0:NoLine
-    cl->m_format.m_visible = true;
-
-    //TODO: CLBuilder replaces this
-    if (m_type == CenterLine::CLTYPE::FACE) {
-        cl->m_faces = m_subNames;
-    } else if (m_type == CenterLine::CLTYPE::EDGE) {
-        cl->m_edges = m_subNames;
-    } else if (m_type == CenterLine::CLTYPE::VERTEX) {
-        cl->m_verts = m_subNames;
-    }
-
-    cl->m_mode = m_mode;
-    cl->m_rotate = rotate;
-    cl->m_vShift = vShift;
-    cl->m_hShift = hShift;
-    cl->m_extendBy = extendBy;
-    cl->m_mode = m_mode;
-    cl->m_type = m_type;
-    cl->m_flip2Line = m_flipped;
-    //end TODO
-
-    m_partFeat->addCenterLine(cl);
-    
     m_partFeat->recomputeFeature();
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
@@ -391,6 +354,7 @@ double TaskCenterLine::getExtendBy(void)
 
 void TaskCenterLine::setFlipped(bool b)
 {
+//    Base::Console().Message("TCL::setFlipped(%d)\n",b);
     m_flipped = b;
 }
 
@@ -458,19 +422,19 @@ void TaskCL2Lines::initUi()
 
 void TaskCL2Lines::onFlipToggled(bool b)
 {
-    Base::Console().Message("TCL2L::onFlipToggled(%d)\n", b);
+//    Base::Console().Message("TCL2L::onFlipToggled(%d)\n", b);
     m_tcl->setFlipped(b);
 }
 
 bool TaskCL2Lines::accept()
 {
-    Base::Console().Message("TCL2L::accept()\n");
+//    Base::Console().Message("TCL2L::accept()\n");
     return true;
 }
 
 bool TaskCL2Lines::reject()
 {
-    Base::Console().Message("TCL2L::reject()\n");
+//    Base::Console().Message("TCL2L::reject()\n");
     return false;
 }
 
@@ -496,7 +460,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
 
     cl2Lines  = new TaskCL2Lines(widget);
     linesBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-2linecenterline"),
-                                             widget->windowTitle(), true, 0);
+                                             cl2Lines->windowTitle(), true, 0);
     linesBox->groupLayout()->addWidget(cl2Lines);
     Content.push_back(linesBox);
 
