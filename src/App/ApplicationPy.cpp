@@ -161,8 +161,8 @@ PyMethodDef Application::Methods[] = {
     {"setActiveTransaction", (PyCFunction) Application::sSetActiveTransaction, METH_VARARGS,
      "setActiveTransaction(name, persist=False) -- setup active transaction with the given name\n\n"
      "name: the transaction name\n"
-     "persist(False): by default, if the calling code is inside any invokation of a command, it\n"
-     "                will be auto closed once all command within the current stack exists. To\n"
+     "persist(False): by default, if the calling code is inside any invocation of a command, it\n"
+     "                will be auto closed once all commands within the current stack exists. To\n"
      "                disable auto closing, set persist=True\n"
      "Returns the transaction ID for the active transaction. An application-wide\n"
      "active transaction causes any document changes to open a transaction with\n"
