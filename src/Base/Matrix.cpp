@@ -951,7 +951,7 @@ Matrix4D& Matrix4D::Hat(const Vector3d& rV)
 int Matrix4D::hasScale(double tol) const {
     // check for uniform scaling
     //
-    // scaling factors are the colum vector length. We use square distance and
+    // scaling factors are the column vector length. We use square distance and
     // ignore the actual scaling signess
     //
     if(!tol)
