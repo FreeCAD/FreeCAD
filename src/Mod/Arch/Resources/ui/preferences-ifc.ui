@@ -456,7 +456,7 @@ is exported. This leads to smaller differences between file versions.</string>
          <string>IFCOpenShell is a library that allows to import IFC files.
 Its serializer functionality allows to give it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
-Note: The serializer this is still an experimental feature!</string>
+Note: The serializer is still an experimental feature!</string>
         </property>
         <property name="text">
          <string>Use IfcOpenShell serializer if available</string>
@@ -531,7 +531,7 @@ This can reduce the file size a lot, but will make it less easily readable.</str
          <string>When possible, IFC objects that are extruded rectangles will be
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
-If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef. </string>
+If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</string>
         </property>
         <property name="text">
          <string>Disable IfcRectangleProfileDef</string>
