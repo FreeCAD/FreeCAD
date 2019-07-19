@@ -34,6 +34,7 @@
 #include <TopoDS_Edge.hxx>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
+#include <Precision.hxx>
 #endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
@@ -492,7 +493,10 @@ CenterLine::~CenterLine()
 {
 }
 
-CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat, std::vector<std::string> subNames, int mode)
+CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat, 
+                                          std::vector<std::string> subNames, 
+                                          int mode,
+                                          bool flip)
 {
 //    Base::Console().Message("CL::CLBuilder()\n");
     std::pair<Base::Vector3d, Base::Vector3d> ends;
@@ -516,7 +520,7 @@ CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat, std::vector<st
                          subNames,
                          mode,
                          0.0,
-                         0.0, 0.0, 0.0, false);
+                         0.0, 0.0, 0.0, flip);
         edges = subNames;
     } else if (geomType == "Vertex") {
         type = CLTYPE::VERTEX;
@@ -524,19 +528,23 @@ CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat, std::vector<st
                          subNames,
                          mode,
                          0.0,
-                         0.0, 0.0, 0.0, false);
+                         0.0, 0.0, 0.0, flip);
         verts = subNames;
+    }
+    if ((ends.first).IsEqual(ends.second, Precision::Confusion())) {
+        Base::Console().Warning("CenterLineBuilder - endpoints are equal: %s\n",
+                              DrawUtil::formatVector(ends.first).c_str());
+        Base::Console().Warning("CenterLineBuilder - check V/H/A and/or Flip parameters\n");
+        return nullptr;
     }
     TechDraw::CenterLine* cl = new TechDraw::CenterLine(ends.first, ends.second);
     if (cl != nullptr) {
-//        cl->m_start = ends.first;
-//        cl->m_end = ends.second;
         cl->m_type = type;
         cl->m_mode = mode;
         cl->m_faces = faces;
         cl->m_edges = edges;
         cl->m_verts = verts;
-//        cl->m_flip2Line = false;
+        cl->m_flip2Line = flip;
     }
     return cl;
 }
@@ -732,7 +740,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
                                                       double rotate, bool flip)
                                                       
 {
-//    Base::Console().Message("CL::calc2Lines()\n");
+//    Base::Console().Message("CL::calc2Lines() - mode: %d flip: %d\n", mode, flip);
     std::pair<Base::Vector3d, Base::Vector3d> result;
     if (edgeNames.empty()) {
         Base::Console().Message("CL::calcEndPoints2Lines - no edges!\n");
@@ -760,12 +768,13 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     Base::Vector3d l2p1 = edges.back()->getStartPoint();
     Base::Vector3d l2p2 = edges.back()->getEndPoint();
 
-    if (flip) {
+    if (flip) {             //reverse line 2
         Base::Vector3d temp;
         temp = l2p1;
         l2p1 = l2p2;
         l2p2 = temp;
     }
+
     Base::Vector3d p1 = (l1p1 + l2p1) / 2.0;
     Base::Vector3d p2   = (l1p2 + l2p2) / 2.0;
     Base::Vector3d mid = (p1 + p2) / 2.0;
@@ -861,7 +870,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
     Base::Vector3d p1 = mid + clDir * (length / 2.0);
     Base::Vector3d p2 = mid - clDir * (length / 2.0);
 
-    if (flip) {
+    if (flip) {                   //is flip relevant to 2 point???
         Base::Vector3d temp;
         temp = p1;
         p1 = p2;
