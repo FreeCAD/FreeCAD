@@ -163,7 +163,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
             bool copy = sCopy?true:false;
             if(!copy) {
                 // Work around OCC bug on transforming circular edge with an
-                // offseted surface. The bug probably affect other shape type,
+                // offsetted surface. The bug probably affect other shape type,
                 // too.
                 TopExp_Explorer exp(ts.getShape(),TopAbs_EDGE);
                 if(exp.More()) {

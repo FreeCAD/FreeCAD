@@ -120,7 +120,7 @@ ViewProvider *ViewProviderDragger::startEditing(int mode) {
 bool ViewProviderDragger::checkLink() {
     // Trying to detect if the editing request is forwarded by a link object,
     // usually by doubleClicked(). If so, we route the request back. There shall
-    // be no risk of infinit recursion, as ViewProviderLink handles
+    // be no risk of infinite recursion, as ViewProviderLink handles
     // ViewProvider::Transform request by itself.
     ViewProviderDocumentObject *vpParent = 0;
     std::string subname;

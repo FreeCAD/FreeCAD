@@ -287,7 +287,7 @@ public:
      *
      * @param owner: the (grand)parent object of the dropping object. Maybe
      * null. This may not be the top parent object, as tree view will try to
-     * find a parent of the dropping object realtive to this object to avoid
+     * find a parent of the dropping object relative to this object to avoid
      * cyclic dependency
      *
      * @param subname: subname reference to the dropping object
@@ -309,7 +309,7 @@ public:
      *
      * @param owner: the (grand)parent object of the dropping object. Maybe
      * null. This may not be the top parent object, as tree view will try to
-     * find a parent of the dropping object realtive to this object to avoid
+     * find a parent of the dropping object relative to this object to avoid
      * cyclic dependency
      *
      * @param subname: subname reference to the dropping object
@@ -328,12 +328,12 @@ public:
      * @param oldObj: object to be replaced
      * @param newObj: object to replace with
      *
-     * @return Returns 0 if not found, 1 if succeed, -1 if not supported
+     * @return Returns 0 if not found, 1 if succeeded, -1 if not supported
      */
     virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj);
     //@}
 
-    /** Tell the tree view if this object should apear there */
+    /** Tell the tree view if this object should appear there */
     virtual bool showInTree() const { return true; }
     /** Tell the tree view to remove children items from the tree root*/
     virtual bool canRemoveChildrenFromRoot() const {return true;}
@@ -392,7 +392,7 @@ public:
     const std::string getOverrideMode();
     //@}
 
-    /** @name Color mangement methods 
+    /** @name Color management methods 
      */
     //@{
     virtual std::map<std::string, App::Color> getElementColors(const char *element=0) const {

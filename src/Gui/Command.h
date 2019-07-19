@@ -46,7 +46,7 @@
  * @endcode
  *
  * Translates to command (assuming doc's name is 'DocName', and
- * and objName constains value 'ObjName'):
+ * and objName constrains value 'ObjName'):
  * @code{.py}
  *       Gui.getDocument('DocName').getObject('ObjName')
  * @endcode
