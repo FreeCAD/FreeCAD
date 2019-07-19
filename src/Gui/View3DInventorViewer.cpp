@@ -715,7 +715,7 @@ void View3DInventorViewer::clearGroupOnTop() {
         action.apply(pcGroupOnTopSel);
         coinRemoveAllChildren(pcGroupOnTopSel);
         coinRemoveAllChildren(pcGroupOnTopPreSel);
-        FC_LOG("clear annoation");
+        FC_LOG("clear annotation");
     }
 }
 
@@ -765,9 +765,9 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             action.apply(&tmpPath);
             tmpPath.unrefNoDelete();
             pcGroup->removeChild(index);
-            FC_LOG("remove annoation " << Reason.Type << " " << key);
+            FC_LOG("remove annotation " << Reason.Type << " " << key);
         }else
-            FC_LOG("remove annoation object " << Reason.Type << " " << key);
+            FC_LOG("remove annotation object " << Reason.Type << " " << key);
         objs.erase(it);
         return;
     }
@@ -881,7 +881,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             node->setDetail(det);
             det = 0;
         }
-        FC_LOG("add annoation " << Reason.Type << " " << key);
+        FC_LOG("add annotation " << Reason.Type << " " << key);
         objs[key.c_str()] = node;
     }
     delete det;

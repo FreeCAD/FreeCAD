@@ -393,7 +393,7 @@ public:
     App::DocumentObject *getFullSubName(std::ostringstream &str,
             DocumentObjectItem *parent = 0) const;
 
-    // return the immediate decendent of the common ancestor of this item and
+    // return the immediate descendent of the common ancestor of this item and
     // 'cousin'.
     App::DocumentObject *getRelativeParent(
             std::ostringstream &str,

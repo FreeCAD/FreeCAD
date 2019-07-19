@@ -331,7 +331,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         // tracking purpose. Because, bringing an unrelated external object to
         // the current view for editing will confuse user, and is certainly a
         // bug. By right, the top parent object should always belong to the
-        // editing document, and the acutally editing sub object can be
+        // editing document, and the actually editing sub object can be
         // external.
         //
         // So, you can either call setEdit() with subname set to 0, which cause
@@ -446,7 +446,7 @@ void Document::_resetEdit(void)
         // The logic below is not necessary anymore, because this method is
         // changed into a private one,  _resetEdit(). And the exposed
         // resetEdit() above calls into Application->setEditDocument(0) which
-        // will prevent recrusive calling.
+        // will prevent recursive calling.
 #if 0
         // Nullify the member variable before calling finishEditing().
         // This is to avoid a possible stack overflow when a view provider wrongly
@@ -1490,7 +1490,7 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
 
 void Document::slotFinishImportObjects(const std::vector<App::DocumentObject*> &objs) {
     (void)objs;
-    // finishRestoring() is now trigged by signalFinishRestoreObject
+    // finishRestoring() is now triggered by signalFinishRestoreObject
     //
     // for(auto obj : objs) {
     //     auto vp = getViewProvider(obj);
@@ -2053,7 +2053,7 @@ bool Document::checkTransactionID(bool undo, int iSteps) {
                             "There are grouped transactions in the following documents with "
                             "other preceding transactions"))
                         .arg(QString::fromUtf8(str.str().c_str()))
-                        .arg(QObject::tr("Choose 'Yes' to roll back all preceeding transactions.\n"
+                        .arg(QObject::tr("Choose 'Yes' to roll back all preceding transactions.\n"
                                          "Choose 'No' to roll back in the active document only.\n"
                                          "Choose 'Abort' to abort")),
                     QMessageBox::Yes|QMessageBox::No|QMessageBox::Abort, QMessageBox::Yes);

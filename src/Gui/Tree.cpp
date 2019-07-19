@@ -1172,7 +1172,7 @@ void TreeWidget::selectAllLinks(App::DocumentObject *obj) {
         return;
 
     if(!obj || !obj->getNameInDocument()) {
-        TREE_ERR("invlaid object");
+        TREE_ERR("invalid object");
         return;
     }
 
@@ -3257,7 +3257,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
 
     int i=-1;
     // iterate through the claimed children, and try to synchronize them with the 
-    // children tree item with the same order of apperance. 
+    // children tree item with the same order of appearance. 
     int childCount = item->childCount();
     for(auto child : item->myData->children) {
 
@@ -3938,7 +3938,7 @@ App::DocumentObject *DocumentItem::getTopParent(App::DocumentObject *obj, std::s
         return obj;
 
     for(auto item : it->second->items) {
-        // non group object do not provide a cooridnate system, hence its
+        // non group object do not provide a coordinate system, hence its
         // claimed child is still in the global coordinate space, so the
         // child can still be considered a top level object
         if(!item->isParentGroup())
@@ -3987,7 +3987,7 @@ DocumentObjectItem *DocumentItem::findItemByObject(
         return findItem(sync,it->second->rootItem,subname,select);
 
     for(auto item : it->second->items) {
-        // non group object do not provide a cooridnate system, hence its
+        // non group object do not provide a coordinate system, hence its
         // claimed child is still in the global coordinate space, so the
         // child can still be considered a top level object
         if(!item->isParentGroup()) 
@@ -4163,7 +4163,7 @@ void DocumentItem::selectAllInstances(const ViewProviderDocumentObject &vpd) {
     bool lock = getTree()->blockConnection(true);
 
     // We are trying to select all items corresponding to a given view
-    // provider, i.e. all apperance of the object inside all its parent items
+    // provider, i.e. all appearance of the object inside all its parent items
     //
     // Build a map of object to all its parent    
     for(auto &v : ObjectMap) {
@@ -4612,7 +4612,7 @@ bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const{
         if(it!=myOwner->_ParentMap.end()) {
             // Reaching here means all items of this corresponding object is
             // going to be deleted, but the object itself is not deleted and
-            // still being refered to by some parent item that is not expanded
+            // still being referred to by some parent item that is not expanded
             // yet. So, we force populate at least one item of the parent
             // object to make sure that there is at least one corresponding
             // item for each object. 

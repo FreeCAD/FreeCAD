@@ -1617,7 +1617,7 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
 {
     if(!Obj.getNameInDocument()) return;
 
-    // For safty reason, don't bother checking
+    // For safety reason, don't bother checking
     rmvPreselect();
 
     // Remove also from the selection, if selected
@@ -1732,13 +1732,13 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "second argumeht defines the document name. If no document name is given the\n"
      "currently active document is used"},
     {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, METH_VARARGS,
-     "getSelection(docName=None,resolve=True,single=False) -- Return a list of selected objets\n"
+     "getSelection(docName=None,resolve=True,single=False) -- Return a list of selected objects\n"
      "\ndocName - document name. None means the active document, and '*' means all document"
      "\nresolve - whether to resolve the subname references."
      "\n          0: do not resolve, 1: resolve, 2: resolve with element map"
      "\nsingle - only return if there is only one selection"},
     {"getPickedList",         (PyCFunction) SelectionSingleton::sGetPickedList, 1,
-     "getPickedList(docName=None) -- Return a list of objets under the last mouse click\n"
+     "getPickedList(docName=None) -- Return a list of objects under the last mouse click\n"
      "\ndocName - document name. None means the active document, and '*' means all document"},
     {"enablePickedList",      (PyCFunction) SelectionSingleton::sEnablePickedList, METH_VARARGS,
      "enablePickedList(boolean) -- Enable/disable pick list"},

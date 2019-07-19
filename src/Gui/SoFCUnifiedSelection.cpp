@@ -1493,8 +1493,8 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     // Selection action short-circuit optimization. In case of whole object
     // selection/pre-selection, we shall store a SelContext keyed by ourself.
     // And the action traversal can be short-curcuited once the first targeted
-    // SoFCSelectionRoot is found here. New fuction checkSelection() is exposed
-    // to check for whole object selection. This greatly imporve performance on
+    // SoFCSelectionRoot is found here. New function checkSelection() is exposed
+    // to check for whole object selection. This greatly improve performance on
     // large group.
 
     SelContextPtr ctx2;
@@ -1556,7 +1556,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
         if(selAction->getType() == SoSelectionElementAction::None) {
             if(action->getWhatAppliedTo() == SoAction::NODE) {
                 // Here the 'select none' action is applied to a node, and we
-                // are the first SoFCSelectionRoot encounted (which means all
+                // are the first SoFCSelectionRoot encountered (which means all
                 // children stores selection context here, both whole object
                 // and element selection), then we can simply perform the
                 // action by clearing the selection context here, and save the
@@ -1751,4 +1751,3 @@ void SoFCPathAnnotation::setPath(SoPath *newPath) {
     path->ref();
     addChild(path->getNode(0));
 }
-
