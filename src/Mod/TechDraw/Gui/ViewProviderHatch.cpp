@@ -47,8 +47,13 @@
 
 using namespace TechDrawGui;
 
-App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {Precision::Confusion(),
-                                                                  std::numeric_limits<double>::max(),
+//scaleRange = {lowerLimit, upperLimit, stepSize}
+//original range is far too broad for drawing.  causes massive loop counts.
+//App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {Precision::Confusion(),
+//                                                                  std::numeric_limits<double>::max(),
+//                                                                  pow(10,- Base::UnitsApi::getDecimals())};
+App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {pow(10,- Base::UnitsApi::getDecimals()),
+                                                                  1000.0,
                                                                   pow(10,- Base::UnitsApi::getDecimals())};
 
 
@@ -99,9 +104,11 @@ void ViewProviderHatch::onChanged(const App::Property* prop)
 {
     if ((prop == &HatchScale) ||
         (prop == &HatchColor)) {
-        TechDraw::DrawViewPart* parent = getViewObject()->getSourceView();
-        if (parent) {
-            parent->requestPaint();
+        if (HatchScale.getValue() > 0.0) {
+            TechDraw::DrawViewPart* parent = getViewObject()->getSourceView();
+            if (parent) {
+                parent->requestPaint();
+            }
         }
     }
 }

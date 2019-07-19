@@ -386,7 +386,10 @@ void QGIViewPart::drawViewPart()
                         }
                         newFace->isHatched(true);
                         newFace->setFillMode(QGIFace::GeomHatchFill);
-                        newFace->setHatchScale(fGeom->ScalePattern.getValue());
+                        double hatchScale = fGeom->ScalePattern.getValue();
+                        if (hatchScale > 0.0) {
+                            newFace->setHatchScale(fGeom->ScalePattern.getValue());
+                        }
                         newFace->setHatchFile(fGeom->FilePattern.getValue());
                         Gui::ViewProvider* gvp = QGIView::getViewProvider(fGeom);
                         ViewProviderGeomHatch* geomVp = dynamic_cast<ViewProviderGeomHatch*>(gvp);
@@ -404,7 +407,10 @@ void QGIViewPart::drawViewPart()
                     Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
                     ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
                     if (hatchVp != nullptr) {
-                        newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                        double hatchScale = hatchVp->HatchScale.getValue();
+                        if (hatchScale > 0.0) {
+                            newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                        }
                         newFace->setHatchColor(hatchVp->HatchColor.getValue());
                     }
                 }

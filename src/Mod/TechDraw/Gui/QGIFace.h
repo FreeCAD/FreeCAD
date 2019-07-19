@@ -147,6 +147,7 @@ protected:
     std::vector<DashSpec> m_dashSpecs;
     long int m_segCount;
     long int m_maxSeg;
+    long int m_maxTile;
 
 
 private:
