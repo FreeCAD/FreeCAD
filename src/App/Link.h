@@ -56,7 +56,7 @@ public:
     LinkBaseExtension();
     virtual ~LinkBaseExtension();
 
-    PropertyBool _LinkRecomputed;
+    PropertyBool _LinkTouched;
     PropertyLinkList _ChildCache; // cache for plain group expansion
 
     enum {
