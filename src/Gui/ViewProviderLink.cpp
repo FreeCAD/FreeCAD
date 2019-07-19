@@ -116,6 +116,7 @@ public:
     SoNodeSensor sensor;
     SoNodeSensor switchSensor;
     SoNodeSensor childSensor;
+    SoNodeSensor transformSensor;
 
     std::array<CoinPtr<SoSeparator>,LinkView::SnapshotMax> pcSnapshots;
     std::array<CoinPtr<SoSwitch>,LinkView::SnapshotMax> pcSwitches;
@@ -175,6 +176,14 @@ public:
         static_cast<LinkInfo*>(data)->updateChildren();
     }
 
+    static void transformSensorCB(void *data, SoSensor *) {
+        auto self = static_cast<LinkInfo*>(data);
+        for(size_t i=0;i<self->pcSnapshots.size();++i)  {
+            if(self->pcSnapshots[i] && i!=LinkView::SnapshotTransform)
+                self->getSnapshot(i,true);
+        }
+    }
+
     LinkInfo(ViewProviderDocumentObject *vp)
         :ref(0),pcLinked(vp) 
     {
@@ -188,6 +197,8 @@ public:
         switchSensor.setData(this);
         childSensor.setFunction(childSensorCB);
         childSensor.setData(this);
+        transformSensor.setFunction(transformSensorCB);
+        transformSensor.setData(this);
     }
 
     ~LinkInfo() {
@@ -233,6 +244,7 @@ public:
         sensor.detach();
         switchSensor.detach();
         childSensor.detach();
+        transformSensor.detach();
         for(auto &node : pcSnapshots) {
             if(node)
                 coinRemoveAllChildren(node);
@@ -369,14 +381,27 @@ public:
 
         auto childRoot = pcLinked->getChildRoot();
 
-        if(type!=LinkView::SnapshotTransform)
-            pcSnapshot->addChild(pcLinked->getTransformNode());
-
         for(int i=0,count=root->getNumChildren();i<count;++i) {
             SoNode *node = root->getChild(i);
-            if(node==pcLinked->getTransformNode())
+            if(node==pcLinked->getTransformNode()) {
+                if(type!=LinkView::SnapshotTransform)
+                    pcSnapshot->addChild(node);
+                else {
+                    auto transform = pcLinked->getTransformNode();
+                    const auto &scale = transform->scaleFactor.getValue();
+                    if(scale[0]!=1.0 || scale[1]!=1.0 || scale[2]!=1.0) {
+                        SoTransform *trans = new SoTransform;
+                        pcSnapshot->addChild(trans);
+                        trans->scaleFactor.setValue(scale);
+                        trans->scaleOrientation = transform->scaleOrientation;
+                        if(transformSensor.getAttachedNode()!=transform) {
+                            transformSensor.detach();
+                            transformSensor.attach(transform);
+                        }
+                    }
+                }
                 continue;
-            else if(node!=pcLinked->getModeSwitch()) {
+            } else if(node!=pcLinked->getModeSwitch()) {
                 pcSnapshot->addChild(node);
                 continue;
             }
