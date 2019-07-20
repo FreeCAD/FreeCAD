@@ -294,7 +294,7 @@ public:
      * tracking of external objects, therefore the link will not by auto broken
      * when external document is closed. Only use this for temporary case, or
      * if you handle signalDeleteDocument yourself, or use one of the
-     * ProeprtyXLink related property.
+     * PropertyXLink related property.
      */
     void setAllowExternal(bool allow);
 
