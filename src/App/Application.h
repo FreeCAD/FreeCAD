@@ -96,7 +96,7 @@ public:
     /** Open multiple documents
      *
      * @param filenames: input file names
-     * @param pathes: optional input file path in case it is different from
+     * @param paths: optional input file path in case it is different from
      * filenames (mainly used during recovery).
      * @param labels: optional label assign to document (mainly used during recovery).
      * @param errs: optional output error message corresponding to each input
@@ -111,7 +111,7 @@ public:
      * This function will also open any external referenced files.
      */
     std::vector<Document*> openDocuments(const std::vector<std::string> &filenames, 
-            const std::vector<std::string> *pathes=0,
+            const std::vector<std::string> *paths=0,
             const std::vector<std::string> *labels=0,
             std::vector<std::string> *errs=0,
             bool createView = true);

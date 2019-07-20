@@ -595,7 +595,7 @@ Document* Application::openDocument(const char * FileName, bool createView) {
 
 std::vector<Document*> Application::openDocuments(
         const std::vector<std::string> &filenames, 
-        const std::vector<std::string> *pathes, 
+        const std::vector<std::string> *paths, 
         const std::vector<std::string> *labels, 
         std::vector<std::string> *errs,
         bool createView)
@@ -641,8 +641,8 @@ std::vector<Document*> Application::openDocuments(
             const char *path = name;
             const char *label = 0;
             if(isMainDoc) {
-                if(pathes && pathes->size()>count)
-                    path = (*pathes)[count].c_str();
+                if(paths && paths->size()>count)
+                    path = (*paths)[count].c_str();
                 if(labels && labels->size()>count)
                     label = (*labels)[count].c_str();
             }
