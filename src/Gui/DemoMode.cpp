@@ -35,6 +35,7 @@
 #include "ui_DemoMode.h"
 
 #include "Application.h"
+#include "Command.h"
 #include "Document.h"
 #include "MainWindow.h"
 #include "View3DInventor.h"
@@ -46,10 +47,12 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DemoMode */
 
 DemoMode::DemoMode(QWidget* /*parent*/, Qt::WindowFlags fl)
-  : QDialog(0, fl|Qt::WindowStaysOnTopHint), viewAxis(0,0,-1), ui(new Ui_DemoMode)
+  : QDialog(nullptr, fl|Qt::WindowStaysOnTopHint), viewAxis(0,0,-1), ui(new Ui_DemoMode)
 {
     // create widgets
     ui->setupUi(this);
+    ui->playButton->setCheckable(true);
+
     timer = new QTimer(this);
     timer->setInterval(1000 * ui->timeout->value());
     connect(timer, SIGNAL(timeout()), this, SLOT(onAutoPlay()));
@@ -70,7 +73,9 @@ DemoMode::~DemoMode()
 void DemoMode::reset()
 {
     on_fullscreen_toggled(false);
-    on_stopButton_clicked();
+    Gui::View3DInventor* view = activeView();
+    if (view)
+        view->getViewer()->stopAnimating();
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
     hGrp->Notify("UseAutoRotation");
@@ -127,12 +132,12 @@ Gui::View3DInventor* DemoMode::activeView() const
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 float DemoMode::getSpeed(int v) const
 {
-    float speed = ((float)v)/50.0f; // let 2.0 be the maximum speed
+    float speed = (static_cast<float>(v))/50.0f; // let 2.0 be the maximum speed
     return speed;
 }
 
@@ -191,36 +196,39 @@ void DemoMode::on_speedSlider_valueChanged(int v)
     }
 }
 
-void DemoMode::on_playButton_clicked()
+void DemoMode::on_playButton_toggled(bool pressed)
 {
     Gui::View3DInventor* view = activeView();
     if (view) {
-        if (!view->getViewer()->isAnimating()) {
-            SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
-            if (cam) {
-                SbRotation rot = cam->orientation.getValue();
-                SbVec3f vec(0,-1,0);
-                rot.multVec(vec, this->viewAxis);
+        if (pressed) {
+            if (!view->getViewer()->isAnimating()) {
+                SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
+                if (cam) {
+                    SbRotation rot = cam->orientation.getValue();
+                    SbVec3f vec(0,-1,0);
+                    rot.multVec(vec, this->viewAxis);
+                }
             }
+
+            startAnimation(view);
+            ui->playButton->setText(tr("Stop"));
         }
-
-        startAnimation(view);
+        else {
+            view->getViewer()->stopAnimating();
+            ui->playButton->setText(tr("Play"));
+        }
     }
-}
-
-void DemoMode::on_stopButton_clicked()
-{
-    Gui::View3DInventor* view = activeView();
-    if (view)
-        view->getViewer()->stopAnimating();
 }
 
 void DemoMode::on_fullscreen_toggled(bool on)
 {
     Gui::View3DInventor* view = activeView();
     if (view) {
-        view->setCurrentViewMode(on ? MDIView::/*TopLevel*/FullScreen : MDIView::Child);
+        CommandManager &rcCmdMgr = Application::Instance->commandManager();
+        Command* cmd = rcCmdMgr.getCommandByName("Std_ViewDockUndockFullscreen");
+        if (cmd) cmd->invoke(on ? MDIView::FullScreen : MDIView::Child);
         this->activateWindow();
+        ui->playButton->setChecked(false);
     }
     if (on) {
         qApp->installEventFilter(this);
@@ -241,7 +249,7 @@ void DemoMode::onAutoPlay()
 {
     Gui::View3DInventor* view = activeView();
     if (view && !view->getViewer()->isAnimating()) {
-        startAnimation(view);
+        ui->playButton->setChecked(true);
     }
 }
 
