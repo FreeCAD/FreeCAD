@@ -260,10 +260,10 @@ bool ExpressionVisitor::renameObjectIdentifier(Expression &e,
 }
 
 void ExpressionVisitor::collectReplacement(Expression &e, 
-        std::map<ObjectIdentifier,ObjectIdentifier> &pathes,
+        std::map<ObjectIdentifier,ObjectIdentifier> &paths,
         const App::DocumentObject *parent, App::DocumentObject *oldObj, App::DocumentObject *newObj) const
 {
-    return e._collectReplacement(pathes,parent,oldObj,newObj);
+    return e._collectReplacement(paths,parent,oldObj,newObj);
 }
 
 void ExpressionVisitor::moveCells(Expression &e, const CellAddress &address, int rowCount, int colCount) {
@@ -875,16 +875,16 @@ public:
 
     void visit(Expression &e) {
         if(collect) 
-            this->collectReplacement(e,pathes,parent,oldObj,newObj);
+            this->collectReplacement(e,paths,parent,oldObj,newObj);
         else 
-            this->renameObjectIdentifier(e,pathes,dummy);
+            this->renameObjectIdentifier(e,paths,dummy);
     }
 
     const DocumentObject *parent;
     DocumentObject *oldObj;
     DocumentObject *newObj;
     ObjectIdentifier dummy;
-    std::map<ObjectIdentifier, ObjectIdentifier> pathes;
+    std::map<ObjectIdentifier, ObjectIdentifier> paths;
     bool collect = true;
 };
 
@@ -897,7 +897,7 @@ ExpressionPtr Expression::replaceObject(const DocumentObject *parent,
     // not const. This is ugly...
     const_cast<Expression*>(this)->visit(v);
 
-    if(v.pathes.empty())
+    if(v.paths.empty())
         return ExpressionPtr();
 
     // Now make a copy and do the actual replacement
@@ -2248,14 +2248,14 @@ bool VariableExpression::_renameObjectIdentifier(
 }
 
 void VariableExpression::_collectReplacement(
-        std::map<ObjectIdentifier,ObjectIdentifier> &pathes,
+        std::map<ObjectIdentifier,ObjectIdentifier> &paths,
         const App::DocumentObject *parent, 
         App::DocumentObject *oldObj, 
         App::DocumentObject *newObj) const
 {
     ObjectIdentifier path;
     if(var.replaceObject(path,parent,oldObj,newObj))
-        pathes[var.canonicalPath()] = std::move(path);
+        paths[var.canonicalPath()] = std::move(path);
 }
 
 void VariableExpression::_moveCells(const CellAddress &address, 
