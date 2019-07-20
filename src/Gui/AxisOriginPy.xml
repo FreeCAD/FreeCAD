@@ -63,7 +63,7 @@ pPath: output coin path leading to the returned element detail
 		<Attribute Name="Labels">
 			<Documentation>
                 <UserDocu>
-Get/set axis component names as a dictionary. Avaiable keys are,
+Get/set axis component names as a dictionary. Available keys are,
 'O': origin
 'X': x axis
 'Y': y axis

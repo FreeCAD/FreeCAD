@@ -432,7 +432,7 @@ public:
      *
      * This function is defined as static because it accpets objects from
      * different documents, and the returned list will contain dependent
-     * objects from all relavent documents
+     * objects from all relevant documents
      *
      * @param objs: input objects to query for dependency. 
      * @param options: See DependencyOption
@@ -515,7 +515,7 @@ protected:
     /// callback from the Document objects after property was changed
     void onChangedProperty(const DocumentObject *Who, const Property *What);
     /// helper which Recompute only this feature
-    /// @return 0 if succeed, 1 if failed, -1 if aborted by user.
+    /// @return 0 if succeeded, 1 if failed, -1 if aborted by user.
     int _recomputeFeature(DocumentObject* Feat);
     void _clearRedos();
 

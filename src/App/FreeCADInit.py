@@ -285,7 +285,7 @@ class FCADLogger(object):
         you to define your own levels. The level set is persisted to user
         configuration file.
 
-        By defult any tag has a log level of 2 for release, and 3 for debug
+        By default any tag has a log level of 2 for release, and 3 for debug
         build.
     '''
 
@@ -325,7 +325,7 @@ class FCADLogger(object):
 
         * lineno (True): whether to print source file and line number
 
-        * parent (None): provide a parent logger, so that the log printting will
+        * parent (None): provide a parent logger, so that the log printing will
                          check for parent's log level in addition of its own
 
         * title ('FreeCAD'): message box title used by report()
@@ -363,8 +363,8 @@ class FCADLogger(object):
 
             This function accepts additional positional and keyword arguments,
             which are forward to string.format() to generate the logging
-            message. It is strongly recommanded to not directly use Python
-            string formating, but pass additional arguments here, because the
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
             printer can skip string evaluation in case the logging level is
             disabled.
         '''
@@ -379,8 +379,8 @@ class FCADLogger(object):
 
             This function accepts additional positional and keyword arguments,
             which are forward to string.format() to generate the logging
-            message. It is strongly recommanded to not directly use Python
-            string formating, but pass additional arguments here, because the
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
             printer can skip string evaluation in case the logging level is
             disabled.
         '''
@@ -395,8 +395,8 @@ class FCADLogger(object):
 
             This function accepts additional positional and keyword arguments,
             which are forward to string.format() to generate the logging
-            message. It is strongly recommanded to not directly use Python
-            string formating, but pass additional arguments here, because the
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
             printer can skip string evaluation in case the logging level is
             disabled.
         '''
@@ -413,8 +413,8 @@ class FCADLogger(object):
 
             This function accepts additional positional and keyword arguments,
             which are forward to string.format() to generate the logging
-            message. It is strongly recommanded to not directly use Python
-            string formating, but pass additional arguments here, because the
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
             printer can skip string evaluation in case the logging level is
             disabled.
         '''
@@ -431,8 +431,8 @@ class FCADLogger(object):
 
             This function accepts additional positional and keyword arguments,
             which are forward to string.format() to generate the logging
-            message. It is strongly recommanded to not directly use Python
-            string formating, but pass additional arguments here, because the
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
             printer can skip string evaluation in case the logging level is
             disabled.
         '''

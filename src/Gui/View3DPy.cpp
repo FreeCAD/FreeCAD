@@ -186,10 +186,10 @@ void View3DInventorPy::init_type()
 
     add_keyword_method("toggleClippingPlane", &View3DInventorPy::toggleClippingPlane,
         "toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()\n"
-        "Toggle a golbal clipping plane\n\n"
+        "Toggle a global clipping plane\n\n"
         "toggle: -1 toggle, 1 show, 0 hide\n"
-        "beforeEditing: whether insert the clipping node before or after editing root node\n"
-        "noManip: wether to create a manipulator\n"
+        "beforeEditing: whether to insert the clipping node before or after editing root node\n"
+        "noManip: whether to create a manipulator\n"
         "pla: clipping plane placement");
 }
 
@@ -2528,4 +2528,3 @@ Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py
             PyObject_IsTrue(noManip),pla);
     return Py::None();
 }
-

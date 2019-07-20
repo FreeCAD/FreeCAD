@@ -4052,7 +4052,7 @@ TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf,
         BRepBuilderAPI_Transform mkTrf(shape.getShape(), trsf, Standard_True);
         // TODO: calling Moved() is to make sure the shape has some Location,
         // which is necessary for STEP export to work. However, if we reach
-        // here, it porabably means BRepBuilderAPI_Transform has modified
+        // here, it probably means BRepBuilderAPI_Transform has modified
         // underlying shapes (because of scaling), it will break compound child
         // parent relationship anyway. In short, STEP import/export will most
         // likely break badly if there is any scaling involved

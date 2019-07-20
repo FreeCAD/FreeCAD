@@ -175,14 +175,14 @@ public:
      * For performance reason, \c element must not contain any further
      * sub-elements, i.e. there should be no '.' inside \c element.
      *
-     * @return -1 if element visiblity is not supported, 0 if element is not
+     * @return -1 if element visibility is not supported, 0 if element is not
      * found, 1 if success
      */
     virtual int setElementVisible(const char *element, bool visible); 
 
     /** Get sub-element visibility
      *
-     * @return -1 if element visiblity is not supported or element not found, 0
+     * @return -1 if element visibility is not supported or element not found, 0
      * if element is invisible, or else 1
      */
     virtual int isElementVisible(const char *element) const;
@@ -329,7 +329,7 @@ public:
      *
      * @param depth: depth limitation as hint for cyclic link detection
      *
-     * @return The last document object refered in subname. If subname is empty,
+     * @return The last document object referred in subname. If subname is empty,
      * then it shall return itself. If subname is invalid, then it shall return
      * zero.
      */
@@ -447,13 +447,13 @@ public:
     /** Resolve a link reference that is relative to this object reference
      *
      * @param subname: on input, this is the subname reference to the object
-     * that is to be assigned a link. On output, the reference may be offseted
+     * that is to be assigned a link. On output, the reference may be offsetted
      * to be rid off any common parent.
      * @param link: on input, this is the top parent of the link reference. On
      * output, it may be altered to one of its child to be rid off any common
      * parent.
      * @param linkSub: on input, this the subname of the link reference. On
-     * output, it may be offseted to be rid off any common parent.
+     * output, it may be offsetted to be rid off any common parent.
      *
      * @return The corrected top parent of the object that is to be assigned the
      * link. If the output 'subname' is empty, then return the object itself.
@@ -534,7 +534,7 @@ public:
     virtual bool redirectSubName(std::ostringstream &ss,
             DocumentObject *topParent, DocumentObject *child) const;
 
-    /** Sepecial marker to mark the object as hidden
+    /** Special marker to mark the object as hidden
      *
      * It is used by Gui::ViewProvider::getElementColors(), but exposed here
      * for convenience
