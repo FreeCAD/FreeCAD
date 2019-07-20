@@ -356,18 +356,16 @@ void execMidpoints(Gui::Command* cmd)
         }
     }
 
-    //combine 2 loops?
     const std::vector<TechDraw::BaseGeom*> edges = objFeat->getEdgeGeometry();
     double scale = objFeat->getScale();
     for (auto& s: SubNames) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
         TechDraw::BaseGeom* geom = edges.at(GeoId);
         Base::Vector3d mid = geom->getMidPoint();
-//        Base::Vector3d mid3(mid.x / scale, - mid.y / scale, 0.0);
+        mid = DrawUtil::invertY(mid);
         objFeat->addCosmeticVertex(mid / scale);
     }
     cmd->updateActive();
-//    Base::Console().Message("execMidpoints - exits\n");
 }
 
 void execQuadrant(Gui::Command* cmd)
@@ -397,32 +395,18 @@ void execQuadrant(Gui::Command* cmd)
         }
     }
 
-    //combine 2 loops?
     const std::vector<TechDraw::BaseGeom*> edges = objFeat->getEdgeGeometry();
     double scale = objFeat->getScale();
-    bool nonCircles = false;
     for (auto& s: SubNames) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
         TechDraw::BaseGeom* geom = edges.at(GeoId);
-        //TODO: should this be restricted to circles??
-//        if (geom->geomType == TechDraw::CIRCLE) {
             std::vector<Base::Vector3d> quads = geom->getQuads();
             for (auto& q: quads) {
-//                Base::Vector3d q3(q.x / scale, - q.y / scale, 0.0);
-                objFeat->addCosmeticVertex(q / scale);
+                Base::Vector3d iq = DrawUtil::invertY(q);
+                objFeat->addCosmeticVertex(iq / scale);
             }
-//        } else {
-//            nonCircles = true;
-//        }
-    }
-    if (nonCircles) {
-        std::stringstream edgeMsg;
-        edgeMsg << "Non circular edges found in selection.";
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                             QObject::tr(edgeMsg.str().c_str()));
     }
     cmd->updateActive();
-//    Base::Console().Message("execQuadrant - exits\n");
 }
 
 DEF_STD_CMD_A(CmdTechDrawCosmeticVertex);
