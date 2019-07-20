@@ -3938,7 +3938,7 @@ App::DocumentObject *DocumentItem::getTopParent(App::DocumentObject *obj, std::s
         return obj;
 
     for(auto item : it->second->items) {
-        // non group object do not provide a cooridnate system, hence its
+        // non group object do not provide a coordinate system, hence its
         // claimed child is still in the global coordinate space, so the
         // child can still be considered a top level object
         if(!item->isParentGroup())
@@ -4823,4 +4823,3 @@ TreeWidget *DocumentObjectItem::getTree() const{
 }
 
 #include "moc_Tree.cpp"
-
