@@ -260,10 +260,10 @@ class FCADLogger(object):
        The default output format is:
            <timestamp> <tag> <source file>(line number): message
 
-       The message is formated using new style Python string formating, e.g.
-       'test {}'.format(1). It is strongly recommanded to not directly use
-       Python string formating, but pass additional argument indirectly through
-       various logger print function, because the logger can skip string
+       The message is formatted using new style Python string formatting, e.g.
+       'test {}'.format(1). It is strongly recommended to not directly use
+       Python string formatting, but pass additional argument indirectly through
+       various logger print functions, because the logger can skip string
        evaluation in case the logging level is disabled. For more options,
        please consult the docstring of __init__(), catch() and report().
 

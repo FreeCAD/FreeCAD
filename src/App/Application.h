@@ -141,7 +141,7 @@ public:
     /** Setup a pending application-wide active transaction
      *
      * @param name: new transaction name
-     * @param persist: by default, if the calling code is inside any invokation
+     * @param persist: by default, if the calling code is inside any invocation
      * of a command, it will be auto closed once all command within the current
      * stack exists. To disable auto closing, set persist=true
      *

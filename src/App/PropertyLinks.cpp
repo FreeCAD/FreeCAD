@@ -3342,7 +3342,7 @@ Property *PropertyXLink::Copy(void) const
 void PropertyXLink::Paste(const Property &from)
 {
     if(!from.isDerivedFrom(PropertyXLink::getClassTypeId()))
-        throw Base::TypeError("Incompatible proeprty to paste to");
+        throw Base::TypeError("Incompatible property to paste to");
 
     const auto &other = static_cast<const PropertyXLink&>(from);
     if(other.docName.size()) {
@@ -4077,7 +4077,7 @@ Property *PropertyXLinkSubList::Copy(void) const
 void PropertyXLinkSubList::Paste(const Property &from)
 {
     if(!from.isDerivedFrom(PropertyXLinkSubList::getClassTypeId()))
-        throw Base::TypeError("Incompatible proeprty to paste to");
+        throw Base::TypeError("Incompatible property to paste to");
 
     aboutToSetValue();
     _Links.clear();
