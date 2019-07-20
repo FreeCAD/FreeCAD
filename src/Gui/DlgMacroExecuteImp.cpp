@@ -329,6 +329,7 @@ void DlgMacroExecuteImp::on_editButton_clicked()
     edit->open(file);
     edit->resize(400, 300);
     getMainWindow()->addWindow(edit);
+    edit->setWindowTitle(item->text(0));
 
     if (mitem->systemWide) {
         editor->setReadOnly(true);
