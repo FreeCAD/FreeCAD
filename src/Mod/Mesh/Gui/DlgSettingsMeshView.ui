@@ -334,7 +334,7 @@ to a smoother appearance.
          <string>Crease angle is a threshold angle between two faces.
 
  If face angle ≥ crease angle, facet shading is used
- If face angle &amp;lt; crease angle, smooth shading is used</string>
+ If face angle &lt; crease angle, smooth shading is used</string>
         </property>
         <property name="suffix">
          <string> °</string>
