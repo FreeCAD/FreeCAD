@@ -166,6 +166,9 @@
           <property name="focusPolicy">
            <enum>Qt::StrongFocus</enum>
           </property>
+          <property name="mode" >
+           <enum>Gui::FileChooser::Directory</enum>
+          </property>
          </widget>
         </item>
        </layout>
