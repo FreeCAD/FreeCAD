@@ -201,11 +201,11 @@ class ReportOutputObserver : public QObject
     Q_OBJECT
 
 public:
-    ReportOutputObserver (QDockWidget* parent = 0);
-    ~ReportOutputObserver();
+    ReportOutputObserver (ReportOutput* view);
     bool eventFilter(QObject *obj, QEvent *event);
+
 protected:
-    QPointer <QDockWidget> reportViewParent;
+    QPointer <ReportOutput> reportView;
 };
 
 } // namespace DockWnd

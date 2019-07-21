@@ -237,37 +237,43 @@ private:
  * user always gets the warnings/errors
  */
 
-ReportOutputObserver::ReportOutputObserver(QDockWidget *parent)
+ReportOutputObserver::ReportOutputObserver(ReportOutput *report)
 {
-   this->reportViewParent = parent;
+    this->reportView = report;
 }
 
-ReportOutputObserver::~ReportOutputObserver(){
-
-}
-
-bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event){
-    if (event->type() == QEvent::User) {
-        CustomReportEvent* cr = (CustomReportEvent*) event;
-        QDockWidget* rv = this->reportViewParent->findChild
-                <QDockWidget*>(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
-        if(cr && rv){
+bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::User && obj == reportView.data()) {
+        CustomReportEvent* cr = dynamic_cast<CustomReportEvent*>(event);
+        if (cr) {
             ReportHighlighter::Paragraph msgType = cr->messageType();
             if (msgType == ReportHighlighter::Error || msgType == ReportHighlighter::Warning){
                 ParameterGrp::handle group = App::GetApplication().GetUserParameter().
                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
-                if(group->GetBool("checkShowReportViewOnWarningOrError", true)){
-                    if(!rv->toggleViewAction()->isChecked()){
-                        rv->toggleViewAction()->activate(QAction::Trigger);
+
+                if (group->GetBool("checkShowReportViewOnWarningOrError", true)) {
+                    // get the QDockWidget parent of the report view
+                    QDockWidget* dw = nullptr;
+                    QWidget* par = reportView->parentWidget();
+                    while (par) {
+                        dw = qobject_cast<QDockWidget*>(par);
+                        if (dw)
+                            break;
+                        par = par->parentWidget();
+                    }
+
+                    if (dw && !dw->toggleViewAction()->isChecked()) {
+                        dw->toggleViewAction()->activate(QAction::Trigger);
                     }
                 }
             }
         }
         return false;  //true would prevent the messages reaching the report view
-    } else {
-        // standard event processing
-        return QObject::eventFilter(obj, event);
     }
+
+    // standard event processing
+    return QObject::eventFilter(obj, event);
 }
 
 // ----------------------------------------------------------
