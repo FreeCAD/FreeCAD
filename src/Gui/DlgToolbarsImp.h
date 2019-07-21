@@ -26,7 +26,6 @@
 
 #include "ui_DlgToolbars.h"
 #include "PropertyPage.h"
-#include "DlgMacroExecuteImp.h"
 
 namespace Gui {
 namespace Dialog {
@@ -44,7 +43,6 @@ class DlgCustomToolbars : public CustomizeActionPage, public Ui_DlgCustomToolbar
     Q_OBJECT
 
 protected:
-    friend class DlgMacroExecuteImp;
     enum Type { Toolbar, Toolboxbar };
     
     DlgCustomToolbars(Type, QWidget* parent = 0);
