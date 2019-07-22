@@ -144,6 +144,8 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
     size  = 3.0;
     style = 1;
     visible = true;
+
+    createNewTag();
 }
 
 CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::Vertex(cv)
@@ -153,6 +155,8 @@ CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::V
     size  = cv->size;
     style = cv->style;
     visible = cv->visible;
+
+    createNewTag();
 }
 
 CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
@@ -168,6 +172,9 @@ CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
     size  = 30.0;
     style = 1;        //TODO: implement styled vertexes
     visible = true;
+
+    createNewTag();
+
 }
 
 std::string CosmeticVertex::toString(void) const
@@ -218,6 +225,40 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
     visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
 }
 
+boost::uuids::uuid CosmeticVertex::getTag() const
+{
+    return tag;
+}
+
+std::string CosmeticVertex::getTagAsString(void) const
+{
+    std::string tmp = boost::uuids::to_string(getTag());
+    return tmp;
+}
+
+void CosmeticVertex::createNewTag()
+{
+    // Initialize a random number generator, to avoid Valgrind false positives.
+    static boost::mt19937 ran;
+    static bool seeded = false;
+
+    if (!seeded) {
+        ran.seed(static_cast<unsigned int>(std::time(0)));
+        seeded = true;
+    }
+    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
+
+    tag = gen();
+}
+
+void CosmeticVertex::assignTag(const TechDraw::CosmeticVertex * cv)
+{
+    if(cv->getTypeId() == this->getTypeId())
+        this->tag = cv->tag;
+    else
+        throw Base::TypeError("CosmeticVertex tag can not be assigned as types do not match.");
+}
+
 CosmeticVertex* CosmeticVertex::copy(void) const
 {
 //    Base::Console().Message("CV::copy()\n");
@@ -229,6 +270,7 @@ CosmeticVertex* CosmeticVertex::clone(void) const
 {
 //    Base::Console().Message("CV::clone()\n");
     CosmeticVertex* cpy = this->copy();
+    cpy->tag = this->tag;
     return cpy;
 }
 
@@ -303,6 +345,9 @@ void CosmeticEdge::initialize(void)
     m_geometry->classOfEdge = ecHARD;
     m_geometry->visible = true;
     m_geometry->cosmetic = true;
+
+    createNewTag();
+
 }
 
 TechDraw::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
@@ -401,6 +446,34 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     }
 }
 
+boost::uuids::uuid CosmeticEdge::getTag() const
+{
+    return tag;
+}
+
+void CosmeticEdge::createNewTag()
+{
+    // Initialize a random number generator, to avoid Valgrind false positives.
+    static boost::mt19937 ran;
+    static bool seeded = false;
+
+    if (!seeded) {
+        ran.seed(static_cast<unsigned int>(std::time(0)));
+        seeded = true;
+    }
+    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
+
+    tag = gen();
+}
+
+void CosmeticEdge::assignTag(const TechDraw::CosmeticEdge * ce)
+{
+    if(ce->getTypeId() == this->getTypeId())
+        this->tag = ce->tag;
+    else
+        throw Base::TypeError("CosmeticEdge tag can not be assigned as types do not match.");
+}
+
 CosmeticEdge* CosmeticEdge::copy(void) const
 {
 //    Base::Console().Message("CE::copy()\n");
@@ -415,6 +488,7 @@ CosmeticEdge* CosmeticEdge::clone(void) const
 {
 //    Base::Console().Message("CE::clone()\n");
     CosmeticEdge* cpy = this->copy();
+    cpy->tag = this->tag;
     return cpy;
 }
 
@@ -439,6 +513,7 @@ CenterLine::CenterLine(void)
     m_type = CLTYPE::FACE;
     m_flip2Line = false;
 
+    createNewTag();
 }
 
 CenterLine::CenterLine(CenterLine* cl)
@@ -456,6 +531,8 @@ CenterLine::CenterLine(CenterLine* cl)
     m_flip2Line = cl->m_flip2Line;
     m_edges = cl->m_edges;
     m_verts = cl->m_verts;
+
+    createNewTag();
 }
 
 CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2)
@@ -469,6 +546,8 @@ CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2)
     m_extendBy = 0.0;
     m_type = CLTYPE::FACE;
     m_flip2Line = false;
+
+    createNewTag();
 }
 
 CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2,
@@ -487,6 +566,8 @@ CenterLine::CenterLine(Base::Vector3d p1, Base::Vector3d p2,
     m_extendBy = x;
     m_type = CLTYPE::FACE;
     m_flip2Line = false;
+
+    createNewTag();
 }
 
 CenterLine::~CenterLine()
@@ -1101,9 +1182,39 @@ CenterLine* CenterLine::copy(void) const
     return newCL;
 }
 
-CenterLine* CenterLine::clone(void) const
+boost::uuids::uuid CenterLine::getTag() const
+{
+    return tag;
+}
+
+void CenterLine::createNewTag()
+{
+    // Initialize a random number generator, to avoid Valgrind false positives.
+    static boost::mt19937 ran;
+    static bool seeded = false;
+
+    if (!seeded) {
+        ran.seed(static_cast<unsigned int>(std::time(0)));
+        seeded = true;
+    }
+    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
+
+    tag = gen();
+}
+
+void CenterLine::assignTag(const TechDraw::CenterLine * ce)
+{
+    if(ce->getTypeId() == this->getTypeId())
+        this->tag = ce->tag;
+    else
+        throw Base::TypeError("CenterLine tag can not be assigned as types do not match.");
+}
+
+CenterLine *CenterLine::clone(void) const
 {
     CenterLine* cpy = this->copy();
+    cpy->tag = this->tag;
+
     return cpy;
 }
 
@@ -1168,6 +1279,8 @@ GeomFormat::GeomFormat() :
     m_format.m_weight = LineFormat::getDefEdgeWidth();
     m_format.m_color = LineFormat::getDefEdgeColor();
     m_format.m_visible = true;
+
+    createNewTag();
 }
 
 GeomFormat::GeomFormat(GeomFormat* gf) 
@@ -1177,6 +1290,8 @@ GeomFormat::GeomFormat(GeomFormat* gf)
     m_format.m_weight = gf->m_format.m_weight;
     m_format.m_color = gf->m_format.m_color;
     m_format.m_visible = gf->m_format.m_visible;
+
+    createNewTag();
 }
 
 GeomFormat::GeomFormat(int idx,
@@ -1188,6 +1303,7 @@ GeomFormat::GeomFormat(int idx,
     m_format.m_color = fmt.m_color;
     m_format.m_visible = fmt.m_visible;
 
+    createNewTag();
 }
 
 GeomFormat::~GeomFormat()
@@ -1242,6 +1358,42 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     m_format.m_visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
 }
 
+boost::uuids::uuid GeomFormat::getTag() const
+{
+    return tag;
+}
+
+void GeomFormat::createNewTag()
+{
+    // Initialize a random number generator, to avoid Valgrind false positives.
+    static boost::mt19937 ran;
+    static bool seeded = false;
+
+    if (!seeded) {
+        ran.seed(static_cast<unsigned int>(std::time(0)));
+        seeded = true;
+    }
+    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
+
+    tag = gen();
+}
+
+void GeomFormat::assignTag(const TechDraw::GeomFormat * ce)
+{
+    if(ce->getTypeId() == this->getTypeId())
+        this->tag = ce->tag;
+    else
+        throw Base::TypeError("GeomFormat tag can not be assigned as types do not match.");
+}
+
+GeomFormat *GeomFormat::clone(void) const
+{
+    GeomFormat* cpy = this->copy();
+    cpy->tag = this->tag;
+
+    return cpy;
+}
+
 GeomFormat* GeomFormat::copy(void) const
 {
     GeomFormat* newFmt = new GeomFormat();
@@ -1253,15 +1405,8 @@ GeomFormat* GeomFormat::copy(void) const
     return newFmt;
 }
 
-GeomFormat* GeomFormat::clone(void) const
-{
-    GeomFormat* cpy = this->copy();
-    return cpy;
-}
-
 PyObject* GeomFormat::getPyObject(void)
 {
     return new GeomFormatPy(new GeomFormat(this->copy()));
 }
-
 
