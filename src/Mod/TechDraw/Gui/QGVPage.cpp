@@ -785,7 +785,7 @@ void QGVPage::saveSvg(QString filename)
     double width  =  Rez::guiX(page->getPageWidth());
     double height =  Rez::guiX(page->getPageHeight());
     QRectF sourceRect(0.0,-height,width,height);
-    QRectF targetRect;
+    QRectF targetRect(0.0,0.0,width,height);
 
     Gui::Selection().clearSelection();
     QPainter p;
