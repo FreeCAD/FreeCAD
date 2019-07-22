@@ -41,7 +41,8 @@
 using namespace TechDrawGui;
 
 QGIPrimPath::QGIPrimPath():
-    m_width(0)
+    m_width(0),
+    m_capStyle(Qt::RoundCap)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -57,7 +58,9 @@ QGIPrimPath::QGIPrimPath():
     m_colCurrent = getNormalColor();
     m_styleCurrent = Qt::SolidLine;
     m_pen.setStyle(m_styleCurrent);
-    m_pen.setCapStyle(Qt::RoundCap);
+    m_capStyle = prefCapStyle();
+    m_pen.setCapStyle(m_capStyle);
+//    m_pen.setCapStyle(Qt::FlatCap);
     m_pen.setWidthF(m_width);
 
     setPrettyNormal();
@@ -228,12 +231,27 @@ void QGIPrimPath::setNormalColor(QColor c)
     m_colOverride = true;
 }
 
+void QGIPrimPath::setCapStyle(Qt::PenCapStyle c)
+{
+    m_capStyle = c;
+    m_pen.setCapStyle(c);
+}
 
 Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     return hGrp;
+}
+
+Qt::PenCapStyle QGIPrimPath::prefCapStyle()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    Qt::PenCapStyle result;
+    unsigned int cap = hGrp->GetUnsigned("EdgeCapStyle", 0x20);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+    result = (Qt::PenCapStyle) cap;
+    return result;
 }
 
 void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)

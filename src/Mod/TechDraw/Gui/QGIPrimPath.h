@@ -57,6 +57,7 @@ public:
     void setStyle(Qt::PenStyle s);
     void setStyle(int s);
     virtual void setNormalColor(QColor c);
+    virtual void setCapStyle(Qt::PenCapStyle c);
 
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
@@ -68,6 +69,7 @@ protected:
     virtual QColor getPreColor(void);
     virtual QColor getSelectColor(void);
     Base::Reference<ParameterGrp> getParmGroup(void);
+    virtual Qt::PenCapStyle prefCapStyle(void);
 
     bool isHighlighted;
     QPen m_pen;
@@ -76,6 +78,7 @@ protected:
     bool   m_colOverride;
     Qt::PenStyle m_styleCurrent;
     double m_width;
+    Qt::PenCapStyle m_capStyle;
 
 private:
 
