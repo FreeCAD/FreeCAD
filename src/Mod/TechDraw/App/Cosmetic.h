@@ -23,6 +23,11 @@
 #ifndef TECHDRAW_COSMETIC_H
 #define TECHDRAW_COSMETIC_H
 
+# include <boost/uuid/uuid_io.hpp>
+
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+
 #include <App/FeaturePython.h>
 
 #include <Base/Persistence.h>
@@ -57,7 +62,6 @@ public:
 
     void dump(char* title);
     std::string toString() const;
-/*    bool fromCSV(std::string& lineSpec);*/
 };
 
 class TechDrawExport CosmeticVertex: public Base::Persistence, public TechDraw::Vertex
@@ -89,7 +93,16 @@ public:
     int            style;
     bool           visible;
 
+    boost::uuids::uuid getTag() const;
+    std::string getTagAsString(void) const;
+
+
 protected:
+    //Uniqueness
+    void createNewTag();
+    void assignTag(const TechDraw::CosmeticVertex* cv);
+
+    boost::uuids::uuid tag;
 
 };
 
@@ -123,8 +136,14 @@ public:
     TechDraw::BaseGeom* m_geometry;
     LineFormat m_format;
 
-protected:
+    boost::uuids::uuid getTag() const;
 
+protected:
+    //Uniqueness
+    void createNewTag();
+    void assignTag(const TechDraw::CosmeticEdge* ce);
+
+    boost::uuids::uuid tag;
 };
 
 class TechDrawExport CenterLine: public Base::Persistence
@@ -216,7 +235,13 @@ public:
     LineFormat m_format;
     bool m_flip2Line;
 
+    //Uniqueness
+    boost::uuids::uuid getTag() const;
 protected:
+    void createNewTag();
+    void assignTag(const TechDraw::CenterLine* cl);
+
+    boost::uuids::uuid tag;
 
 };
 
@@ -241,14 +266,18 @@ public:
     GeomFormat* clone(void) const;
 
     std::string toString(void) const;
-/*    bool fromCSV(std::string& lineSpec);*/
     void dump(char* title) const;
 
     int m_geomIndex;
     LineFormat m_format;
 
+    //Uniqueness
+    boost::uuids::uuid getTag() const;
 protected:
+    void createNewTag();
+    void assignTag(const TechDraw::GeomFormat* gf);
 
+    boost::uuids::uuid tag;
 };
 
 } //end namespace TechDraw

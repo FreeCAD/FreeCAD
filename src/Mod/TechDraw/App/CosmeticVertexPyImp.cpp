@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 
+# include <boost/uuid/uuid_io.hpp>
 #endif
 
 #include "Cosmetic.h"
@@ -106,6 +107,12 @@ PyObject* CosmeticVertexPy::copy(PyObject *args)
     }
     geompy->_pcTwinPointer = geom->copy();
     return cpy;
+}
+
+Py::String CosmeticVertexPy::getTag(void) const
+{
+    std::string tmp = boost::uuids::to_string(getCosmeticVertexPtr()->getTag());
+    return Py::String(tmp);
 }
 
 PyObject *CosmeticVertexPy::getCustomAttributes(const char* /*attr*/) const
