@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 
-//# include <boost/uuid/uuid_io.hpp>
+# include <boost/uuid/uuid_io.hpp>
 #endif
 
 #include "DrawUtil.h"
@@ -165,6 +165,12 @@ PyObject* CenterLinePy::getFormat(PyObject *args)
     PyTuple_SET_ITEM(result, 3, pVisible);
 
     return result;
+}
+
+Py::String CenterLinePy::getTag(void) const
+{
+    std::string tmp = boost::uuids::to_string(getCenterLinePtr()->getTag());
+    return Py::String(tmp);
 }
 
 PyObject *CenterLinePy::getCustomAttributes(const char* /*attr*/) const

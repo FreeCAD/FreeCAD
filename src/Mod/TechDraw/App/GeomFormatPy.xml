@@ -25,5 +25,11 @@
             <UserDocu>Create a copy of this geomformat</UserDocu>
         </Documentation>
     </Methode>
+    <Attribute Name="Tag" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Gives the tag of the GeomFormat as string.</UserDocu>
+      </Documentation>
+      <Parameter Name="Tag" Type="String"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>
