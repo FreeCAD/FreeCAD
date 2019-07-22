@@ -36,5 +36,11 @@
             <UserDocu>returns the appearance attributes of this CenterLine.  returns tuple(style, color, weight, visible).</UserDocu>
         </Documentation>
     </Methode>
+    <Attribute Name="Tag" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Gives the tag of the CenterLine as string.</UserDocu>
+      </Documentation>
+      <Parameter Name="Tag" Type="String"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>
