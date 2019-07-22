@@ -651,9 +651,24 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
     double q23 = quat[2]*quat[3];
     double qd2 = 2.0*(q13-q02);
 
-    y = atan2(2.0*(q01+q23),(q00+q33)-(q11+q22));
-    p = qd2 > 1.0 ? D_PI/2.0 : (qd2 < -1.0 ? -D_PI/2.0 : asin (qd2));
-    r = atan2(2.0*(q12+q03),(q22+q33)-(q00+q11));
+    // handle gimbal lock
+    if (fabs(qd2-1.0) < DBL_EPSILON) {
+        // north pole
+        y = 0.0;
+        p = D_PI/2.0;
+        r = 2.0 * atan2(quat[0],quat[3]);
+    }
+    else if (fabs(qd2+1.0) < DBL_EPSILON) {
+        // south pole
+        y = 0.0;
+        p = -D_PI/2.0;
+        r = -2.0 * atan2(quat[0],quat[3]);
+    }
+    else {
+        y = atan2(2.0*(q01+q23),(q00+q33)-(q11+q22));
+        p = qd2 > 1.0 ? D_PI/2.0 : (qd2 < -1.0 ? -D_PI/2.0 : asin (qd2));
+        r = atan2(2.0*(q12+q03),(q22+q33)-(q00+q11));
+    }
 
     // convert to degree
     y = (y/D_PI)*180;
