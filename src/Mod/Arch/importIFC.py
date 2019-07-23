@@ -59,6 +59,7 @@ if open.__module__ in ['__builtin__','io']:
 # ************************************************************************************************
 # ********** templates and other definitions ****
 # which IFC type must create which FreeCAD type
+
 typesmap = {
     "Site": [
         "IfcSite"
@@ -187,7 +188,7 @@ END-ISO-10303-21;
 
 
 # ************************************************************************************************
-# ********** some helper, used in import and export and exploerer
+# ********** some helper, used in import and export
 
 def decode(filename,utf=False):
 
@@ -198,6 +199,7 @@ def decode(filename,utf=False):
         encoding = "utf8" if utf else sys.getfilesystemencoding()
         filename = filename.encode(encoding)
     return filename
+
 
 def dd2dms(dd):
 
@@ -260,8 +262,10 @@ def getPreferences():
     ADD_DEFAULT_STOREY = p.GetBool("IfcAddDefaultStorey",False)
     ADD_DEFAULT_BUILDING = p.GetBool("IfcAddDefaultBuilding",True)
 
+
 # ************************************************************************************************
 # ********** open and import IFC ****************
+
 def open(filename,skip=[],only=[],root=None):
 
     "opens an IFC file in a new document"
@@ -1270,6 +1274,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
 # ************************************************************************************************
 # ********** helper for import IFC **************
+
 class recycler:
 
     "the compression engine - a mechanism to reuse ifc entities if needed"
@@ -1462,7 +1467,6 @@ class recycler:
 
 # ************************************************************************************************
 # ********** export IFC ****************
-
 
 def export(exportList,filename,colors=None):
 
@@ -2730,7 +2734,6 @@ def export(exportList,filename,colors=None):
 
 # ************************************************************************************************
 # ********** helper for export IFC **************
-
 
 def isStandardCase(obj,ifctype):
 
