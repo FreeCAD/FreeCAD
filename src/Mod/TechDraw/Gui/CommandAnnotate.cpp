@@ -1073,6 +1073,9 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
         }
+        std::vector<int> cv2Delete;
+        std::vector<int> ce2Delete;
+        std::vector<int> cl2Delete;
         for (auto& s: SubNames) {
             int idx = TechDraw::DrawUtil::getIndexFromName(s);
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
@@ -1083,23 +1086,53 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                     int source = bg->source();
                     int sourceIndex = bg->sourceIndex();
                     if (source == 1) {  //this is a "CosmeticEdge"
-                        objFeat->removeCosmeticEdge(sourceIndex);
+                        ce2Delete.push_back(sourceIndex);
                     } else if (source == 2) { //this is a "CenterLine"
-                        objFeat->removeCenterLine(sourceIndex);
+                        cl2Delete.push_back(sourceIndex);
                     } else {
                         Base::Console().Message(
                             "CMD::CosmeticEraserP - edge: %d is confused - source: %d\n",idx,source);
                     }
                 }
             } else if (geomType == "Vertex") {
-                TechDraw::CosmeticVertex* cv = objFeat->getCosmeticVertexByGeom(idx);
-                if (cv != nullptr) {
-                    objFeat->removeCosmeticVertex(cv);
+                TechDraw::Vertex* tdv = objFeat->getProjVertexByIndex(idx);
+                if (tdv != nullptr) {
+                    int delIndex = tdv->cosmeticLink;
+                    if (!(delIndex < 0)) {
+                        cv2Delete.push_back(delIndex);
+                    } else {
+                        Base::Console().Message("CMD::eraser - geom: %d has no cv\n", idx);
+                    }
+                } else {
+                    Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
                 }
             } else {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                            QObject::tr("Unknown object type in selection"));
                 return;
+            }
+
+        }
+        // delete items in reverse order so as not to invalidate indices
+        if (!cv2Delete.empty()) {
+            std::sort(cv2Delete.begin(), cv2Delete.end());
+            auto it = cv2Delete.rbegin();
+            for ( ; it != cv2Delete.rend(); it++) {
+                objFeat->removeCosmeticVertex((*it));
+            }
+        }
+        if (!ce2Delete.empty()) {
+            std::sort(ce2Delete.begin(), ce2Delete.end());
+            auto itce = ce2Delete.rbegin();
+            for ( ; itce != ce2Delete.rend(); itce++) {
+                objFeat->removeCosmeticEdge((*itce));
+            }
+        }
+        if (!cl2Delete.empty()) {
+            std::sort(cl2Delete.begin(), cl2Delete.end());
+            auto itcl = cl2Delete.rbegin();
+            for ( ; itcl != cl2Delete.rend(); itcl++) {
+                objFeat->removeCenterLine((*itcl));
             }
         }
     }
