@@ -877,31 +877,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     # 0.18 behaviour: properties are saved as pset;;type;;value in IfcProperties
 
                     d = obj.IfcProperties
-                    for pset in properties[pid].keys():
-                        #print("adding pset",pset,"to object",obj.Label)
-                        psetname = ifcfile[pset].Name
-                        if six.PY2:
-                            psetname = psetname.encode("utf8")
-                        for prop in properties[pid][pset]:
-                            e = ifcfile[prop]
-                            pname = e.Name
-                            if six.PY2:
-                                pname = pname.encode("utf8")
-                            if e.is_a("IfcPropertySingleValue"):
-                                if e.NominalValue:
-                                    ptype = e.NominalValue.is_a()
-                                    if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
-                                        pvalue = e.NominalValue.wrappedValue
-                                        if six.PY2:
-                                            pvalue = pvalue.encode("utf8")
-                                    else:
-                                        pvalue = str(e.NominalValue.wrappedValue)
-                                    if hasattr(e.NominalValue,'Unit'):
-                                        if e.NominalValue.Unit:
-                                            pvalue += e.NominalValue.Unit
-                                    d[pname+";;"+psetname] = ptype+";;"+pvalue
-                                #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
-                    obj.IfcProperties = d
+                    obj.IfcProperties = getIfcProperties(ifcfile, pid, properties, d)
 
                 elif hasattr(obj,"IfcData"):
 
@@ -1274,6 +1250,35 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
 # ************************************************************************************************
 # ********** helper for import IFC **************
+
+def getIfcProperties(ifcfile, pid, properties, d):
+
+    for pset in properties[pid].keys():
+        #print("reading pset: ",pset)
+        psetname = ifcfile[pset].Name
+        if six.PY2:
+            psetname = psetname.encode("utf8")
+        for prop in properties[pid][pset]:
+            e = ifcfile[prop]
+            pname = e.Name
+            if six.PY2:
+                pname = pname.encode("utf8")
+            if e.is_a("IfcPropertySingleValue"):
+                if e.NominalValue:
+                    ptype = e.NominalValue.is_a()
+                    if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
+                        pvalue = e.NominalValue.wrappedValue
+                        if six.PY2:
+                            pvalue = pvalue.encode("utf8")
+                    else:
+                        pvalue = str(e.NominalValue.wrappedValue)
+                    if hasattr(e.NominalValue,'Unit'):
+                        if e.NominalValue.Unit:
+                            pvalue += e.NominalValue.Unit
+                    d[pname+";;"+psetname] = ptype+";;"+pvalue
+                #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
+    return d
+
 
 class recycler:
 
