@@ -1803,57 +1803,9 @@ def export(exportList,filename,colors=None):
 
                     psets = {}
                     for key,value in obj.IfcProperties.items():
-
-                            # in 0.18, properties in IfcProperties dict are stored as "key":"pset;;type;;value" or "key":"type;;value"
-                            # in 0.19, key = name;;pset, value = ptype;;value (because there can be several props with same name)
-
-                            pset = None
-                            pname = key
-                            if ";;" in pname:
-                                pname = key.split(";;")[0]
-                                pset = key.split(";;")[-1]
-                            value = value.split(";;")
-                            if len(value) == 3:
-                                pset = value[0]
-                                ptype = value[1]
-                                pvalue = value[2]
-                            elif len(value) == 2:
-                                if not pset:
-                                    pset = "Default property set"
-                                ptype = value[0]
-                                pvalue = value[1]
-                            else:
-                                if DEBUG:print("      unable to export property:",pname,value)
-                                continue
-
-                            #if DEBUG: print("      property ",pname," : ",pvalue.encode("utf8"), " (", str(ptype), ") in ",pset)
-                            if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
-                                if six.PY2:
-                                    pvalue = pvalue.encode("utf8")
-                            elif ptype == "IfcBoolean":
-                                if pvalue == ".T.":
-                                    pvalue = True
-                                else:
-                                    pvalue = False
-                            elif ptype == "IfcLogical":
-                                if pvalue.upper() == "TRUE":
-                                    pvalue = True
-                                else:
-                                    pvalue = False
-                            elif ptype == "IfcInteger":
-                                pvalue = int(pvalue)
-                            else:
-                                try:
-                                    pvalue = float(pvalue)
-                                except:
-                                    try:
-                                        pvalue = FreeCAD.Units.Quantity(pvalue).Value
-                                    except:
-                                        if six.PY2:
-                                            pvalue = pvalue.encode("utf8")
-                                        if DEBUG:print("      warning: unable to export property as numeric value:",pname,pvalue)
-                            p = ifcbin.createIfcPropertySingleValue(str(pname),str(ptype),pvalue)
-                            psets.setdefault(pset,[]).append(p)
+                        pset, pname, ptype, pvalue = getPropertyData(key,value)
+                        p = ifcbin.createIfcPropertySingleValue(str(pname),str(ptype),pvalue)
+                        psets.setdefault(pset,[]).append(p)
                     for pname,props in psets.items():
                         pset = ifcfile.createIfcPropertySet(
                             ifcopenshell.guid.new(),
@@ -2739,6 +2691,61 @@ def export(exportList,filename,colors=None):
 
 # ************************************************************************************************
 # ********** helper for export IFC **************
+
+def getPropertyData(key,value):
+
+    # in 0.18, properties in IfcProperties dict are stored as "key":"pset;;type;;value" or "key":"type;;value"
+    # in 0.19, key = name;;pset, value = ptype;;value (because there can be several props with same name)
+
+    pset = None
+    pname = key
+    if ";;" in pname:
+        pname = key.split(";;")[0]
+        pset = key.split(";;")[-1]
+    value = value.split(";;")
+    if len(value) == 3:
+        pset = value[0]
+        ptype = value[1]
+        pvalue = value[2]
+    elif len(value) == 2:
+        if not pset:
+            pset = "Default property set"
+        ptype = value[0]
+        pvalue = value[1]
+    else:
+        if DEBUG:print("      unable to export property:",pname,value)
+        return pset, pname, ptype, None
+
+    #if DEBUG: print("      property ",pname," : ",pvalue.encode("utf8"), " (", str(ptype), ") in ",pset)
+    if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
+        if six.PY2:
+            pvalue = pvalue.encode("utf8")
+    elif ptype == "IfcBoolean":
+        if pvalue == ".T.":
+            pvalue = True
+        else:
+            pvalue = False
+    elif ptype == "IfcLogical":
+        if pvalue.upper() == "TRUE":
+            pvalue = True
+        else:
+            pvalue = False
+    elif ptype == "IfcInteger":
+        pvalue = int(pvalue)
+    else:
+        try:
+            pvalue = float(pvalue)
+        except:
+            try:
+                pvalue = FreeCAD.Units.Quantity(pvalue).Value
+            except:
+                if six.PY2:
+                    pvalue = pvalue.encode("utf8")
+                if DEBUG:print("      warning: unable to export property as numeric value:",pname,pvalue)
+
+    # print('pset: {}, pname: {}, ptype: {}, pvalue: {}'.format(pset, pname, ptype, pvalue))
+    return pset, pname, ptype, pvalue
+
 
 def isStandardCase(obj,ifctype):
 
