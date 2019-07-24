@@ -49,6 +49,7 @@
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 #include "MDIViewPage.h"
 #include "QGVPage.h"
@@ -153,11 +154,14 @@ std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren(void) const
     // Collect any child Document Objects and put them in the right place in the Feature tree
     // valid children of a ViewLeader are:
     //    - Rich Annotations
+    //    - Weld Symbols
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getFeature()->getInList();
     try {
        for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
            if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
+                temp.push_back((*it));
+           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())) {
                 temp.push_back((*it));
             }
         }

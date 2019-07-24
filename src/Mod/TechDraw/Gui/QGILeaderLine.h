@@ -82,6 +82,8 @@ public:
 
     void abandonEdit(void);
     void closeEdit(void);
+    
+    double getLineWidth(void);
 
 public Q_SLOTS:
     void onLineEditFinished(QPointF attach, std::vector<QPointF> deltas);    //QGEPath is finished editing points

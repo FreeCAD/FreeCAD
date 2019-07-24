@@ -48,6 +48,8 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
@@ -60,6 +62,7 @@
 #include "TaskCosVertex.h"
 #include "TaskCenterLine.h"
 #include "TaskLineDecor.h"
+#include "TaskWeldingSymbol.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderViewPart.h"
 #include "QGVPage.h"
@@ -1279,6 +1282,61 @@ bool CmdTechDrawShowAll::isActive(void)
     return (havePage && haveView);
 }
 
+//===========================================================================
+// TechDraw_WeldSymbol
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawWeldSymbol);
+
+CmdTechDrawWeldSymbol::CmdTechDrawWeldSymbol()
+  : Command("TechDraw_WeldSymbol")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Add welding information to a leader");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_WeldSymbol";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-weldsymbol";
+}
+
+void CmdTechDrawWeldSymbol::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    
+    std::vector<App::DocumentObject*> leaders = getSelection().
+                                         getObjectsOfType(TechDraw::DrawLeaderLine::getClassTypeId());
+    if (leaders.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select exactly one Leader line."));
+        return;
+    }
+    TechDraw::DrawLeaderLine* baseFeat = nullptr;
+    baseFeat = static_cast<TechDraw::DrawLeaderLine*> (leaders.front());
+
+    Gui::Control().showDialog(new TaskDlgWeldingSymbol(baseFeat));
+}
+
+bool CmdTechDrawWeldSymbol::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
+
 void CreateTechDrawCommandsAnnotate(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1297,6 +1355,7 @@ void CreateTechDrawCommandsAnnotate(void)
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticEraser());
     rcCmdMgr.addCommand(new CmdTechDrawDecorateLine());
     rcCmdMgr.addCommand(new CmdTechDrawShowAll());
+    rcCmdMgr.addCommand(new CmdTechDrawWeldSymbol());
 }
 
 //===========================================================================
