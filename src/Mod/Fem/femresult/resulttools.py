@@ -30,6 +30,7 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import femtools.femutils as femutils
 import numpy as np
+from math import isnan
 
 
 ## Removes all result objects and result meshes from an analysis group
@@ -141,8 +142,9 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
 def get_stats(res_obj, result_type):
     match_table = get_all_stats(res_obj)
     match_table["None"] = (0.0, 0.0, 0.0)
-    stats = (0.0, 0.0, 0.0)
-    stats = match_table[result_type]
+    stats = ()
+    if result_type in match_table:
+        stats = match_table[result_type]
     return stats
 
 
@@ -289,7 +291,7 @@ def fill_femresult_stats(res_obj):
 
 def add_disp_apps(res_obj):
     res_obj.DisplacementLengths = calculate_disp_abs(res_obj.DisplacementVectors)
-    FreeCAD.Console.PrintMessage('Added DisplacementLengths.\n')
+    FreeCAD.Console.PrintLog('Added DisplacementLengths.\n')
     return res_obj
 
 
@@ -306,7 +308,7 @@ def add_von_mises(res_obj):
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
         mstress.append(calculate_von_mises((Sxx, Syy, Szz, Sxy, Sxz, Syz)))
     res_obj.StressValues = mstress
-    FreeCAD.Console.PrintMessage('Added StressValues (von Mises).\n')
+    FreeCAD.Console.PrintLog('Added StressValues (von Mises).\n')
     return res_obj
 
 
@@ -333,7 +335,7 @@ def add_principal_stress_std(res_obj):
     res_obj.PrincipalMed = prinstress2
     res_obj.PrincipalMin = prinstress3
     res_obj.MaxShear = shearstress
-    FreeCAD.Console.PrintMessage('Added principal stress and max shear values.\n')
+    FreeCAD.Console.PrintLog('Added principal stress and max shear values.\n')
     return res_obj
 
 
@@ -532,7 +534,17 @@ def calculate_von_mises(stress_tensor):
     return np.sqrt(1.5 * np.linalg.norm(normal - pressure)**2 + 3.0 * np.linalg.norm(shear)**2)
 
 
-def calculate_principal_stress_std(stress_tensor):
+def calculate_principal_stress_std(
+    stress_tensor
+):
+
+    # if NaN is inside the array, which can happen on Calculix frd result files return NaN
+    # https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=32649#p274291
+    for s in stress_tensor:
+        if isnan(s) is True:
+            return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
+
     s11 = stress_tensor[0]  # Sxx
     s22 = stress_tensor[1]  # Syy
     s33 = stress_tensor[2]  # Szz
@@ -545,17 +557,11 @@ def calculate_principal_stress_std(stress_tensor):
         [s31, s23, s33]
     ])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
 
-    try:  # it will fail if NaN is inside the array, which can happen on Calculix frd result files
-        # compute principal stresses
-        eigvals = list(np.linalg.eigvalsh(sigma))
-        eigvals.sort()
-        eigvals.reverse()
-        maxshear = (eigvals[0] - eigvals[2]) / 2.0
-        return (eigvals[0], eigvals[1], eigvals[2], maxshear)
-    except:
-        return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
-    # TODO might be possible without a try except for NaN
-    # https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
+    eigvals = list(np.linalg.eigvalsh(sigma))
+    eigvals.sort()
+    eigvals.reverse()
+    maxshear = (eigvals[0] - eigvals[2]) / 2.0
+    return (eigvals[0], eigvals[1], eigvals[2], maxshear)
 
 
 def calculate_principal_stress_reinforced(stress_tensor):

@@ -21,8 +21,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+# pylint: disable=unused-import
 
-import PathScripts
 import PathScripts.PathLog as PathLog
 
 LOGLEVEL = False
@@ -36,7 +36,7 @@ else:
 Processed = False
 
 def Startup():
-    global Processed
+    global Processed # pylint: disable=global-statement
     if not Processed:
         PathLog.debug('Initializing PathGui')
         from PathScripts import PathAdaptiveGui
@@ -74,7 +74,6 @@ def Startup():
         except ImportError:
             import FreeCAD
             FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
-            pass
         from PathScripts import PathToolController
         from PathScripts import PathToolControllerGui
         from PathScripts import PathToolLibraryManager

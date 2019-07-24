@@ -85,6 +85,7 @@ Segment::Segment(const Segment& s)
   : _mesh(s._mesh)
   , _indices(s._indices)
   , _name(s._name)
+  , _color(s._color)
   , _save(s._save)
   , _modifykernel(s._modifykernel)
 {

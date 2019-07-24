@@ -1178,6 +1178,7 @@ def offsetWire(wire,dvec,bind=False,occ=False):
     the wire. If bind is True (and the shape is open), the original
     wire and the offsetted one are bound by 2 edges, forming a face.
     '''
+
     edges = wire.Edges								# Seems has repeatedly sortEdges, remark out here - edges = Part.__sortEdges__(wire.Edges)
     norm = getNormal(wire)
     closed = isReallyClosed(wire)
@@ -1218,7 +1219,12 @@ def offsetWire(wire,dvec,bind=False,occ=False):
         if not nedge:
             return None
         nedges.append(nedge)
-    nedges = connect(nedges,closed)
+
+    if len(edges) >1:
+        nedges = connect(nedges,closed)
+    else:
+        nedges = Part.Wire(nedges[0])
+
     if bind and not closed:
         e1 = Part.LineSegment(edges[0].Vertexes[0].Point,nedges[0].Vertexes[0].Point).toShape()
         e2 = Part.LineSegment(edges[-1].Vertexes[-1].Point,nedges[-1].Vertexes[-1].Point).toShape()

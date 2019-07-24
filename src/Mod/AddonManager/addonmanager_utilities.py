@@ -24,6 +24,7 @@
 import os
 import sys
 import FreeCAD
+import shutil
 
 # check for SSL support
 

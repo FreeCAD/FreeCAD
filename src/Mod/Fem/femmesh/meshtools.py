@@ -1287,7 +1287,7 @@ def get_ref_facenodes_areas(
 
             mesh_face_t1_area = get_triangle_area(P1, P2, P3)
             mesh_face_t2_area = get_triangle_area(P1, P3, P4)
-            mesh_face_area = mesh_face_t1_area + mesh_face_t1_area
+            mesh_face_area = mesh_face_t1_area + mesh_face_t2_area
             corner_node_area = mesh_face_area / 4.0
 
             node_area_table.append((face_table[mf][0], corner_node_area))
@@ -2194,40 +2194,29 @@ def get_rectangular_coords(
     a_x = A[0]
     a_y = A[1]
     a_z = A[2]
-    b_x = A[0]
-    b_y = A[1]
-    b_z = A[2]
+    b_x = B[0]
+    b_y = B[1]
+    b_z = B[2]
     x_rot = radians(obj.X_rot)
     y_rot = radians(obj.Y_rot)
     z_rot = radians(obj.Z_rot)
     if obj.X_rot != 0:
-        a_x = A[0]
         a_y = A[1] * cos(x_rot) + A[2] * sin(x_rot)
         a_z = A[2] * cos(x_rot) - A[1] * sin(x_rot)
-        b_x = B[0]
         b_y = B[1] * cos(x_rot) + B[2] * sin(x_rot)
         b_z = B[2] * cos(x_rot) - B[1] * sin(x_rot)
-        A = [a_x, a_y, a_z]
-        B = [b_x, b_y, b_z]
     if obj.Y_rot != 0:
         a_x = A[0] * cos(y_rot) - A[2] * sin(y_rot)
-        a_y = A[1]
         a_z = A[2] * cos(y_rot) + A[0] * sin(y_rot)
         b_x = B[0] * cos(y_rot) - B[2] * sin(y_rot)
-        b_y = B[1]
         b_z = B[2] * cos(y_rot) + B[0] * sin(z_rot)
-        A = [a_x, a_y, a_z]
-        B = [b_x, b_y, b_z]
     if obj.Z_rot != 0:
         a_x = A[0] * cos(z_rot) + A[1] * sin(z_rot)
         a_y = A[1] * cos(z_rot) - A[0] * sin(z_rot)
-        a_z = A[2]
         b_x = B[0] * cos(z_rot) + B[1] * sin(z_rot)
         b_y = B[1] * cos(z_rot) - B[0] * sin(z_rot)
-        b_z = B[2]
-        A = [a_x, a_y, a_z]
-        B = [b_x, b_y, b_z]
-
+    A = [a_x, a_y, a_z]
+    B = [b_x, b_y, b_z]
     A_coords = str(round(A[0], 4)) + ',' + str(round(A[1], 4)) + ',' + str(round(A[2], 4))
     B_coords = str(round(B[0], 4)) + ',' + str(round(B[1], 4)) + ',' + str(round(B[2], 4))
     coords = A_coords + ',' + B_coords

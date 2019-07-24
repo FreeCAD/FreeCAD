@@ -36,6 +36,7 @@
 
 class SoSeparator;
 class SoSwitch;
+class QCheckBox;
 class QTextEdit;
 
 namespace PartGui {
@@ -105,6 +106,7 @@ public:
 private Q_SLOTS:
     void currentRowChanged (const QModelIndex &current, const QModelIndex &previous);
 
+
 private:
     void setupInterface();
     void goCheck();
@@ -125,6 +127,7 @@ private:
     SoSeparator *currentSeparator;
     std::vector<FunctionMapType> functionMap;
     std::string shapeContentString;
+
 };
 
 class TaskCheckGeometryDialog : public Gui::TaskView::TaskDialog
@@ -140,11 +143,16 @@ public:
         {return false;}
     virtual bool needsFullSpace() const {return true;}
 
+private Q_SLOTS:
+    void on_runBOPCheckBox_toggled(bool isOn);
+
 private:
     TaskCheckGeometryResults* widget;
     Gui::TaskView::TaskBox* taskbox;
     Gui::TaskView::TaskBox* shapeContentBox;
+    Gui::TaskView::TaskBox* settingsBox;
     QTextEdit *contentLabel;
+    QCheckBox *runBOPCheckBox;
 };
 
 class BOPProgressIndicator : public Message_ProgressIndicator

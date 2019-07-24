@@ -81,9 +81,11 @@ def importFrd(
         mesh = importToolsFem.make_femmesh(m)
         result_mesh_object = ObjectsFem.makeMeshResult(
             FreeCAD.ActiveDocument,
-            'Result_mesh'
+            'ResultMesh'
         )
         result_mesh_object.FemMesh = mesh
+        res_mesh_is_compacted = False
+        nodenumbers_for_compacted_mesh = []
 
         number_of_increments = len(m['Results'])
         FreeCAD.Console.PrintLog(
@@ -99,17 +101,17 @@ def importFrd(
                 step_time = round(step_time, 2)
                 if eigenmode_number > 0:
                     results_name = (
-                        '{}mode_{}_results'
+                        '{}Mode{}_Results'
                         .format(result_name_prefix, eigenmode_number)
                     )
                 elif number_of_increments > 1:
                     results_name = (
-                        '{}time_{}_results'
+                        '{}Time{}_Results'
                         .format(result_name_prefix, step_time)
                     )
                 else:
                     results_name = (
-                        '{}results'
+                        '{}Results'
                         .format(result_name_prefix)
                     )
 
@@ -118,14 +120,30 @@ def importFrd(
                 res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
                 if analysis:
                     analysis_object.addObject(res_obj)
+
                 # complementary result object calculations
                 import femresult.resulttools as restools
                 import femtools.femutils as femutils
                 if not res_obj.MassFlowRate:
+                    # information 1:
                     # only compact result if not Flow 1D results
                     # compact result object, workaround for bug 2873
                     # https://www.freecadweb.org/tracker/view.php?id=2873
-                    res_obj = restools.compact_result(res_obj)
+                    # information 2:
+                    # if the result data has multiple result sets there will be multiple result objs
+                    # they all will use one mesh obj
+                    # on the first res obj fill the mesh obj will be compacted, thus
+                    # it does not need to be compacted on further result sets
+                    # but NodeNumbers need to be compacted for every result set (res object fill)
+                    # example frd file: https://forum.freecadweb.org/viewtopic.php?t=32649#p274291
+                    if res_mesh_is_compacted is False:
+                        # first result set, compact FemMesh and NodeNumbers
+                        res_obj = restools.compact_result(res_obj)
+                        res_mesh_is_compacted = True
+                        nodenumbers_for_compacted_mesh = res_obj.NodeNumbers
+                    else:
+                        # all other result sets, do not compact FemMesh, only set NodeNumbers
+                        res_obj.NodeNumbers = nodenumbers_for_compacted_mesh
 
                 # fill DisplacementLengths
                 res_obj = restools.add_disp_apps(res_obj)
@@ -142,6 +160,10 @@ def importFrd(
                     if has_reinforced_mat is False:
                         # fill PrincipalMax, PrincipalMed, PrincipalMin, MaxShear
                         res_obj = restools.add_principal_stress_std(res_obj)
+                else:
+                    # if a pure frd file was opened no analysis and thus no parent group
+                    # fill PrincipalMax, PrincipalMed, PrincipalMin, MaxShear
+                    res_obj = restools.add_principal_stress_std(res_obj)
                 # fill Stats
                 res_obj = restools.fill_femresult_stats(res_obj)
 

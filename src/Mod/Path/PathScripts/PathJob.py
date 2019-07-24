@@ -45,13 +45,13 @@ if LOGLEVEL:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-"""Path Job object and FreeCAD command"""
 
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class JobTemplate:
+    # pylint: disable=no-init
     '''Attribute and sub element strings for template export/import.'''
     Description = 'Desc'
     GeometryTolerance = 'Tolerance'
@@ -68,6 +68,7 @@ def isArchPanelSheet(obj):
     return hasattr(obj, 'Proxy') and isinstance(obj.Proxy, ArchPanel.PanelSheet)
 
 def isResourceClone(obj, propLink, resourceName):
+    # pylint: disable=unused-argument
     if hasattr(propLink, 'PathResource') and (resourceName is None or resourceName == propLink.PathResource):
         return True
     return False
@@ -134,6 +135,9 @@ class ObjectJob:
 
         self.setupSetupSheet(obj)
         self.setupBaseModel(obj, models)
+
+        self.tooltip = None
+        self.tooltipArgs = None
 
         obj.Proxy = self
 
@@ -229,7 +233,7 @@ class ObjectJob:
         if obj.Operations.ViewObject:
             try:
                 obj.Operations.ViewObject.DisplayMode
-            except Exception:
+            except Exception: # pylint: disable=broad-except
                 name = obj.Operations.Name
                 label = obj.Operations.Label
                 ops = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Operations")
@@ -345,7 +349,7 @@ class ObjectJob:
             if before:
                 try:
                     group.insert(group.index(before), op)
-                except Exception as e:
+                except Exception as e: # pylint: disable=broad-except
                     PathLog.error(e)
                     group.append(op)
             else:
@@ -388,7 +392,7 @@ class ObjectJob:
     @classmethod
     def baseCandidates(cls):
         '''Answer all objects in the current document which could serve as a Base for a job.'''
-        return sorted(filter(lambda obj: cls.isBaseCandidate(obj) , FreeCAD.ActiveDocument.Objects), key=lambda o: o.Label)
+        return sorted([obj for obj in FreeCAD.ActiveDocument.Objects if cls.isBaseCandidate(obj)], key=lambda o: o.Label)
 
     @classmethod
     def isBaseCandidate(cls, obj):

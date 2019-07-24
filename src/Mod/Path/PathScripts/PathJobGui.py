@@ -62,6 +62,7 @@ else:
 
 
 def _OpenCloseResourceEditor(obj, vobj, edit):
+    # pylint: disable=unused-argument
     job = PathUtils.findParentJob(obj)
     if job and job.ViewObject and job.ViewObject.Proxy:
         if edit:
@@ -94,7 +95,6 @@ def selectionEx():
 class ViewProvider:
 
     def __init__(self, vobj):
-        vobj.Proxy = self
         mode = 2
         vobj.setEditorMode('BoundingBox', mode)
         vobj.setEditorMode('DisplayMode', mode)
@@ -102,6 +102,20 @@ class ViewProvider:
         vobj.setEditorMode('ShapeColor', mode)
         vobj.setEditorMode('Transparency', mode)
         self.deleteOnReject = True
+
+        # initialized later
+        self.axs = None
+        self.mat = None
+        self.obj = None
+        self.sca = None
+        self.scs = None
+        self.sep = None
+        self.sph = None
+        self.switch = None
+        self.taskPanel = None
+        self.vobj = None
+        self.baseVisibility = None
+        self.stockVisibility = None
 
     def attach(self, vobj):
         self.vobj = vobj
@@ -146,6 +160,7 @@ class ViewProvider:
         return hasattr(self, 'deleteOnReject') and self.deleteOnReject
 
     def setEdit(self, vobj=None, mode=0):
+        # pylint: disable=unused-argument
         PathLog.track(mode)
         if 0 == mode:
             self.openTaskPanel()
@@ -164,6 +179,7 @@ class ViewProvider:
         self.taskPanel = None
 
     def unsetEdit(self, arg1, arg2):
+        # pylint: disable=unused-argument
         if self.taskPanel:
             self.taskPanel.reject(False)
 
@@ -177,6 +193,7 @@ class ViewProvider:
         return self.openTaskPanel()
 
     def uneditObject(self, obj=None):
+        # pylint: disable=unused-argument
         self.unsetEdit(None, None)
 
     def getIcon(self):
@@ -220,6 +237,7 @@ class ViewProvider:
             base.ViewObject.Visibility = True
 
     def forgetBaseVisibility(self, obj, base):
+        # pylint: disable=unused-argument
         if self.baseVisibility.get(base.Name):
             visibility = self.baseVisibility[base.Name]
             visibility[0].ViewObject.Visibility = visibility[1]
@@ -243,6 +261,7 @@ class ViewProvider:
             obj.Stock.ViewObject.Visibility = self.stockVisibility
 
     def setupContextMenu(self, vobj, menu):
+        # pylint: disable=unused-argument
         PathLog.track()
         for action in menu.actions():
             menu.removeAction(action)
@@ -276,7 +295,7 @@ class StockEdit(object):
                 widget.hide()
         if select:
             self.form.stock.setCurrentIndex(self.Index)
-        editor = self.editorFrame()
+        editor = self.editorFrame() # pylint: disable=assignment-from-none
         showHide(self.form.stockFromExisting, editor)
         showHide(self.form.stockFromBase, editor)
         showHide(self.form.stockCreateBox, editor)
@@ -311,11 +330,20 @@ class StockFromBaseBoundBoxEdit(StockEdit):
     Index = 2
     StockType = PathStock.StockType.FromBase
 
+    def __init__(self, obj, form, force):
+        super(StockFromBaseBoundBoxEdit, self).__init__(obj, form, force)
+
+        self.trackXpos = None
+        self.trackYpos = None
+        self.trackZpos = None
+
     def editorFrame(self):
         PathLog.track()
         return self.form.stockFromBase
 
-    def getFieldsStock(self, stock, fields=['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']):
+    def getFieldsStock(self, stock, fields=None):
+        if fields is None:
+            fields = ['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']
         try:
             if 'xneg' in fields:
                 stock.ExtXneg = FreeCAD.Units.Quantity(self.form.stockExtXneg.text())
@@ -329,10 +357,12 @@ class StockFromBaseBoundBoxEdit(StockEdit):
                 stock.ExtZneg = FreeCAD.Units.Quantity(self.form.stockExtZneg.text())
             if 'zpos' in fields:
                 stock.ExtZpos = FreeCAD.Units.Quantity(self.form.stockExtZpos.text())
-        except Exception:
+        except Exception: # pylint: disable=broad-except
             pass
 
-    def getFields(self, obj, fields=['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']):
+    def getFields(self, obj, fields=None):
+        if fields is None:
+            fields = ['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']
         PathLog.track(obj.Label, fields)
         if self.IsStock(obj):
             self.getFieldsStock(obj.Stock, fields)
@@ -409,7 +439,9 @@ class StockCreateBoxEdit(StockEdit):
     def editorFrame(self):
         return self.form.stockCreateBox
 
-    def getFields(self, obj, fields=['length', 'widht', 'height']):
+    def getFields(self, obj, fields=None):
+        if fields is None:
+            fields = ['length', 'widht', 'height']
         try:
             if self.IsStock(obj):
                 if 'length' in fields:
@@ -420,7 +452,7 @@ class StockCreateBoxEdit(StockEdit):
                     obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockBoxHeight.text())
             else:
                 PathLog.error(translate('PathJob', 'Stock not a box!'))
-        except Exception:
+        except Exception: # pylint: disable=broad-except
             pass
 
     def setFields(self, obj):
@@ -445,7 +477,9 @@ class StockCreateCylinderEdit(StockEdit):
     def editorFrame(self):
         return self.form.stockCreateCylinder
 
-    def getFields(self, obj, fields=['radius', 'height']):
+    def getFields(self, obj, fields=None):
+        if fields is None:
+            fields = ['radius', 'height']
         try:
             if self.IsStock(obj):
                 if 'radius' in fields:
@@ -454,7 +488,7 @@ class StockCreateCylinderEdit(StockEdit):
                     obj.Stock.Height = FreeCAD.Units.Quantity(self.form.stockCylinderHeight.text())
             else:
                 PathLog.error(translate('PathJob', 'Stock not a cylinder!'))
-        except Exception:
+        except Exception: # pylint: disable=broad-except
             pass
 
     def setFields(self, obj):
@@ -624,7 +658,7 @@ class TaskPanel:
                     if self.form.wcslist.item(i).checkState() == QtCore.Qt.CheckState.Checked:
                         flist.append(self.form.wcslist.item(i).text())
                 self.obj.Fixtures = flist
-            except Exception:
+            except Exception: # pylint: disable=broad-except
                 FreeCAD.Console.PrintWarning("The Job was created without fixture support.  Please delete and recreate the job\r\n")
 
             self.updateTooltips()
@@ -830,7 +864,7 @@ class TaskPanel:
         elif 'Number' == prop:
             try:
                 tc.ToolNumber = int(item.text())
-            except Exception:
+            except Exception: # pylint: disable=broad-except
                 pass
             item.setText("%d" % tc.ToolNumber)
         elif 'Spindle' == prop:
@@ -842,7 +876,7 @@ class TaskPanel:
                     speed = -speed
                 tc.SpindleDir = rot
                 tc.SpindleSpeed = speed
-            except Exception:
+            except Exception: # pylint: disable=broad-except
                 pass
             item.setText("%s%g" % ('+' if tc.SpindleDir == 'Forward' else '-', tc.SpindleSpeed))
         elif 'HorizFeed' == prop or 'VertFeed' == prop:
@@ -854,14 +888,14 @@ class TaskPanel:
                 elif FreeCAD.Units.Unit() == val.Unit:
                     val = FreeCAD.Units.Quantity(item.text() + vUnit)
                     setattr(tc, prop, val)
-            except Exception:
+            except Exception: # pylint: disable=broad-except
                 pass
             item.setText("%g" % getattr(tc, prop).getValueAs(vUnit))
         else:
             try:
                 val = FreeCAD.Units.Quantity(item.text())
                 setattr(tc, prop, val)
-            except Exception:
+            except Exception: # pylint: disable=broad-except
                 pass
             item.setText("%g" % getattr(tc, prop).Value)
 
@@ -1126,7 +1160,7 @@ class TaskPanel:
 
                 # first remove all obsolete base models
                 for model, count in PathUtil.keyValueIter(obsolete):
-                    for i in range(count):
+                    for i in range(count): # pylint: disable=unused-variable
                         # it seems natural to remove the last of all the base objects for a given model
                         base = [b for b in obj.Model.Group if proxy.baseObject(obj, b) == model][-1]
                         self.vproxy.forgetBaseVisibility(obj, base)
@@ -1248,15 +1282,19 @@ class TaskPanel:
 
     # SelectionObserver interface
     def addSelection(self, doc, obj, sub, pnt):
+        # pylint: disable=unused-argument
         self.updateSelection()
 
     def removeSelection(self, doc, obj, sub):
+        # pylint: disable=unused-argument
         self.updateSelection()
 
     def setSelection(self, doc):
+        # pylint: disable=unused-argument
         self.updateSelection()
 
     def clearSelection(self, doc):
+        # pylint: disable=unused-argument
         self.updateSelection()
 
 
@@ -1267,14 +1305,14 @@ def Create(base, template=None):
     FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Create Job"))
     try:
         obj = PathJob.Create('Job', base, template)
-        ViewProvider(obj.ViewObject)
+        obj.ViewObject.Proxy = ViewProvider(obj.ViewObject)
         FreeCAD.ActiveDocument.commitTransaction()
         obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)
         return obj
-    except Exception as exc:
+    except Exception as exc: # pylint: disable=broad-except
         PathLog.error(exc)
-        traceback.print_exc(exc)
+        traceback.print_exc()
         FreeCAD.ActiveDocument.abortTransaction()
 
 

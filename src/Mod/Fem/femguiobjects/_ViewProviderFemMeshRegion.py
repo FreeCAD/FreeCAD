@@ -36,7 +36,7 @@ import FemGui  # needed to display the icons in TreeView
 from PySide import QtCore
 from . import FemSelectionWidgets
 
-False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
 class _ViewProviderFemMeshRegion:

@@ -35,16 +35,14 @@ def get_FemMeshObjectMeshGroups(
     fem_mesh_obj
 ):
     """
-        Get mesh groups from mesh. This also throws no exception if there
-        is no Groups property at all (e.g. Netgen meshes).
+        Get mesh groups from mesh.
     """
-    fem_mesh = fem_mesh_obj.FemMesh
-    try:
-        gmshgroups = fem_mesh.Groups
-    except:
-        gmshgroups = ()
+    # this method is not really needed. It is used in Fenics mesh only.
+    # there was an exception handling if there was no Group property, but
+    # any FemMesh should have the Group property
+    # if not it would be a bug SMESH
 
-    return gmshgroups
+    return fem_mesh_obj.FemMesh.Groups
 
 
 def get_FemMeshObjectOrder(
@@ -338,12 +336,18 @@ def fill_femresult_mechanical(
 ):
     ''' fills a FreeCAD FEM mechanical result object with result data
     '''
+    if 'number' in result_set:
+        eigenmode_number = result_set['number']
+    else:
+        eigenmode_number = 0
+
     if 'time' in result_set:
         step_time = result_set['time']
         step_time = round(step_time, 2)
 
     # if disp exists, fill res_obj.NodeNumbers and
     # res_obj.DisplacementVectors as well as stress and strain
+    # furthermore the eigenmode number
     if 'disp' in result_set:
         disp = result_set['disp']
         res_obj.DisplacementVectors = list(map((lambda x: x), disp.values()))
@@ -416,6 +420,10 @@ def fill_femresult_mechanical(
                     res_obj.Peeq = Pe
                 else:
                     res_obj.Peeq = list(Peeq.values())
+
+        # fill eigenmode number if they exist
+        if eigenmode_number > 0:
+            res_obj.Eigenmode = eigenmode_number
 
     # fill res_obj.Temperature if they exist
     # TODO, check if it is possible to have Temperature without disp

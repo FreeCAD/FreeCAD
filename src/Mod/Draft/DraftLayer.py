@@ -34,9 +34,10 @@ def QT_TRANSLATE_NOOP(ctx,txt):
 "This module contains everything related to Draft Layers"
 
 
-def makeLayer(name=None):
+def makeLayer(name=None,linecolor=None,drawstyle=None,shapecolor=None,transparency=None):
 
-    '''makeLayer([name]): creates a Layer object in the active document'''
+    '''makeLayer([name,linecolor,drawstyle,shapecolor,transparency]):
+       creates a Layer object in the active document'''
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError(translate("draft","No active document. Aborting")+"\n")
@@ -49,6 +50,14 @@ def makeLayer(name=None):
         obj.Label = translate("draft","Layer")
     if FreeCAD.GuiUp:
         ViewProviderLayer(obj.ViewObject)
+        if linecolor:
+            obj.ViewObject.LineColor = linecolor
+        if drawstyle:
+            obj.ViewObject.DrawStyle = drawstyle
+        if shapecolor:
+            obj.ViewObject.ShapeColor = shapecolor
+        if transparency:
+            obj.ViewObject.Transparency = transparency
     getLayerContainer().addObject(obj)
     return obj
 
@@ -120,6 +129,13 @@ class Layer:
 
     def execute(self,obj):
         pass
+
+    def addObject(self,obj,child):
+
+        g = obj.Group
+        if not child in g:
+            g.append(child)
+        obj.Group = g
 
 
 class ViewProviderLayer:
@@ -207,7 +223,7 @@ class ViewProviderLayer:
                 for o in vobj.Object.Group:
                     if o.ViewObject and hasattr(o.ViewObject,"Visibility"):
                         o.ViewObject.Visibility = vobj.Visibility
-        
+
         if (prop in ["LineColor","ShapeColor"]) and hasattr(vobj,"LineColor") and hasattr(vobj,"ShapeColor"):
             from PySide import QtCore,QtGui
             lc = vobj.LineColor
@@ -277,6 +293,20 @@ class ViewProviderLayer:
                                     parent.Group = g
                     FreeCAD.ActiveDocument.recompute()
 
+    def setupContextMenu(self,vobj,menu):
+
+        from PySide import QtCore,QtGui
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/button_right.svg"),translate("draft","Activate this layer"),menu)
+        action1.triggered.connect(self.activate)
+        menu.addAction(action1)
+
+    def activate(self):
+
+        if hasattr(self,"Object"):
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(self.Object)
+            FreeCADGui.runCommand("Draft_AutoGroup")
+
 
 class LayerContainer:
 
@@ -289,7 +319,9 @@ class LayerContainer:
 
     def execute(self,obj):
 
-        return
+        g = obj.Group
+        g.sort(key=lambda o: o.Label)
+        obj.Group = g
 
     def __getstate__(self):
 
@@ -330,7 +362,7 @@ class ViewProviderLayerContainer:
     def mergeByName(self):
 
         if hasattr(self,"Object") and hasattr(self.Object,"Group"):
-            layers = [o for o in self.Object.Group if (hasattr(o,"Proxy") and isinstance(otherobj.Proxy,Layer))]
+            layers = [o for o in self.Object.Group if (hasattr(o,"Proxy") and isinstance(o.Proxy,Layer))]
             todelete = []
             for layer in layerss:
                 if layer.Label[-1].isdigit() and layer.Label[-2].isdigit() and layer.Label[-3].isdigit():

@@ -104,7 +104,7 @@ There is currently a bug that invalidates the DAG if an object
 is deleted that still has one or more expressions attached to it.
 Use this function to remove all expressions before deletion.'''
     if hasattr(obj, 'ExpressionEngine'):
-        for attr,expr in obj.ExpressionEngine:
+        for attr, expr in obj.ExpressionEngine: # pylint: disable=unused-variable
             obj.setExpression(attr, None)
 
 def toUnicode(string):

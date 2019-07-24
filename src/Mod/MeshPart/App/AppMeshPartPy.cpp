@@ -79,6 +79,11 @@ public:
             "projectShapeOnMesh(Shape, Mesh, Vector) -> list of polygons\n"
             "projectShapeOnMesh(list of polygons, Mesh, Vector) -> list of polygons\n"
         );
+        add_varargs_method("projectPointsOnMesh",&Module::projectPointsOnMesh,
+            "Projects points onto a mesh with a given direction\n"
+            "and tolerance."
+            "projectPointsOnMesh(list of points, Mesh, Vector, [float]) -> list of points\n"
+        );
         add_varargs_method("wireFromSegment",&Module::wireFromSegment,
             "Create wire(s) from boundary of segment\n"
         );
@@ -360,6 +365,47 @@ private:
                             "Shape, Mesh, float or\n"
                             "Shape, Mesh, Vector or\n"
                             "Polygons, Mesh, Vector\n");
+    }
+    Py::Object projectPointsOnMesh(const Py::Tuple& args)
+    {
+        PyObject *seq, *m, *v;
+        double precision = -1;
+        if (PyArg_ParseTuple(args.ptr(), "OO!O!|d",
+                                        &seq,
+                                        &Mesh::MeshPy::Type, &m,
+                                        &Base::VectorPy::Type, &v,
+                                        &precision)) {
+            std::vector<Base::Vector3f> pointsIn;
+            Py::Sequence points(seq);
+            pointsIn.reserve(points.size());
+
+            // collect list of input points
+            for (Py::Sequence::iterator it = points.begin(); it != points.end(); ++it) {
+                Py::Vector pnt(*it);
+                pointsIn.push_back(Base::convertTo<Base::Vector3f>(pnt.toVector()));
+            }
+
+            const Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(m)->getMeshObjectPtr();
+            Base::Vector3d* vec = static_cast<Base::VectorPy*>(v)->getVectorPtr();
+            Base::Vector3f dir = Base::convertTo<Base::Vector3f>(*vec);
+
+            MeshCore::MeshKernel kernel(mesh->getKernel());
+            kernel.Transform(mesh->getTransform());
+
+            MeshProjection proj(kernel);
+            std::vector<Base::Vector3f> pointsOut;
+            proj.projectOnMesh(pointsIn, dir, static_cast<float>(precision), pointsOut);
+
+            Py::List list;
+            for (auto it : pointsOut) {
+                Py::Vector v(it);
+                list.append(v);
+            }
+
+            return list;
+        }
+
+        throw Py::Exception();
     }
     Py::Object wireFromSegment(const Py::Tuple& args)
     {

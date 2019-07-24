@@ -294,6 +294,7 @@ bool ViewProviderDatum::doubleClicked(void)
     if (datumBody != NULL) {
         if (datumBody != activeBody) {
             Gui::Command::doCommand(Gui::Command::Gui,
+                "Gui.activateView('Gui::View3DInventor', True)\n"
                 "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
                 datumBody->getDocument()->getName(),
                 PDBODYKEY,

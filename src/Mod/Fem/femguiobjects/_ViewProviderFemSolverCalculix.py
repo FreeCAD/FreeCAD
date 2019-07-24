@@ -286,20 +286,28 @@ class _TaskPanelFemSolverCalculix:
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         self.fea.reset_mesh_purge_results_checked()
         self.fea.inp_file_name = self.fea.inp_file_name
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        try:
-            self.fea.load_results()
-        except:
-            QApplication.restoreOverrideCursor()
-            majorVersion, minorVersion = self.fea.get_ccx_version()
-            if majorVersion == 2 and minorVersion <= 10:
-                message = "The used CalculiX version {}.{} creates broken output files.\n" \
-                    "Please upgrade to a newer version.".format(majorVersion, minorVersion)
-                QtGui.QMessageBox.warning(None, "Upgrade CalculiX", message)
+
+        # check if ccx is greater than 2.10, if not do not read results
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548#p183829 Point 3
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548&start=20#p183909
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548&start=30#p185027
+        # https://github.com/FreeCAD/FreeCAD/commit/3dd1c9f
+        majorVersion, minorVersion = self.fea.get_ccx_version()
+        if majorVersion == 2 and minorVersion <= 10:
+            message = (
+                "The used CalculiX version {}.{} creates broken output files. "
+                "The result file will not be read by FreeCAD FEM. "
+                "You still can try to read it stand alone with FreeCAD, but it is "
+                "strongly recommended to upgrade CalculiX to a newer version.\n"
+                .format(majorVersion, minorVersion)
+            )
+            QtGui.QMessageBox.warning(None, "Upgrade CalculiX", message)
             raise
-        else:
-            QApplication.restoreOverrideCursor()
-            self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        self.fea.load_results()
+        QApplication.restoreOverrideCursor()
+        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def choose_working_dir(self):
         wd = QtGui.QFileDialog.getExistingDirectory(None, 'Choose CalculiX working directory',

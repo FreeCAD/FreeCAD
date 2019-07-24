@@ -652,7 +652,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     FreeCAD.Console.PrintMessage(
                         "Dir given as parameter \'{}\' doesn't exist.\n".format(self.working_dir)
                     )
-                    pass
                 else:
                     FreeCAD.Console.PrintError(
                         "Dir given as parameter \'{}\' doesn't exist "
@@ -891,7 +890,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ccx_stdout, ccx_stderr = p.communicate()
         if sys.version_info.major >= 3:
             ccx_stdout = ccx_stdout.decode()
-            ccx_stderr = ccx_stderr.decode()
+            # ccx_stderr = ccx_stderr.decode()
         m = re.search(r"(\d+).(\d+)", ccx_stdout)
         return (int(m.group(1)), int(m.group(2)))
 
@@ -1117,8 +1116,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         import feminout.importCcxFrdResults as importCcxFrdResults
         frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
         if os.path.isfile(frd_result_file):
-            result_name_prefix = 'CalculiX_' + self.solver.AnalysisType + '_'
-            importCcxFrdResults.importFrd(frd_result_file, self.analysis, result_name_prefix)
+            importCcxFrdResults.importFrd(frd_result_file, self.analysis, 'CCX_')
             for m in self.analysis.Group:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.results_present = True

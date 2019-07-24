@@ -847,7 +847,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             Base::Console().Log("    The PropertyVectorList %s was exported to VTK vector list: %s\n", it->first.c_str(), it->second.c_str());
         }
         else
-            Base::Console().Message("    PropertyVectorList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
+            Base::Console().Log("    PropertyVectorList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
     }
 
     // scalars
@@ -883,7 +883,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             Base::Console().Log("    The PropertyFloatList %s was exported to VTK scalar list: %s\n", it->first.c_str(), it->second.c_str());
        }
         else
-            Base::Console().Message("    PropertyFloatList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
+            Base::Console().Log("    PropertyFloatList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
     }
 
     Base::Console().Log("End: Create VTK result data from FreeCAD result data.\n");
