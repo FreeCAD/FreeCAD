@@ -67,6 +67,9 @@
      <property name="title">
       <string>Object naming</string>
      </property>
+     <property name="visible">
+      <bool>false</bool>
+     </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkObjectNaming">
