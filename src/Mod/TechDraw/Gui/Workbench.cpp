@@ -87,6 +87,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_Image";
     *draw << "TechDraw_ToggleFrame";
 //    *decor << "TechDraw_RedrawPage";
+    *draw << "Separator";
     *draw << "TechDraw_Annotation";
     *draw << "TechDraw_LeaderLine";
     *draw << "TechDraw_RichAnno";
@@ -99,7 +100,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_CosmeticEraser";
     *draw << "TechDraw_DecorateLine";
     *draw << "TechDraw_ShowAll";
-
+    *draw << "TechDraw_WeldSymbol";
     return root;
 }
 
@@ -168,6 +169,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
+    *anno << "TechDraw_WeldSymbol";
     return root;
 }
 
@@ -234,6 +236,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
+    *anno << "TechDraw_WeldSymbol";
 
     return root;
 }

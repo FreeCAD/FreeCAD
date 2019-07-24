@@ -52,13 +52,22 @@ public:
     void setWidth(double w);
     void setStyle(Qt::PenStyle s);
     void setColor(QColor c);
+    QColor getColor(void) { return m_colNormal; }
+    void setFill(Qt::BrushStyle bs) { m_brushCurrent = bs; }
     void makeMark(double x, double y);
     void makeMark(Base::Vector3d v);
 
 protected:
+    void setPrettyNormal();
+    void setPrettyPre();
+    void setPrettySel();
+    virtual QColor prefNormalColor(void);
+    virtual QColor prefPreColor(void);
+    virtual QColor prefSelectColor(void);
     QPen m_pen;
     QBrush m_brush;
     QColor m_colCurrent;
+    QColor m_colNormal;
     double m_width;
     Qt::PenStyle m_styleCurrent;
     Qt::BrushStyle m_brushCurrent;

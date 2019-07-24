@@ -48,6 +48,7 @@ QGIEdge::QGIEdge(int index) :
 {
     m_width = 1.0;
     setCosmetic(isCosmetic);
+    setFill(Qt::NoBrush);
 }
 
 //NOTE this refers to Qt cosmetic lines

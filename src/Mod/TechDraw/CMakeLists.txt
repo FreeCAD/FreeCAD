@@ -24,7 +24,7 @@ SET(TechDraw_LineGroupFile
 )
 
 add_custom_target(TechDraw_Data ALL
-    SOURCES ${TechDraw_Scripts} ${TechDraw_PATFile} ${TechDraw_LineGroupFile}
+SOURCES ${TechDraw_Scripts} ${TechDraw_PATFile} ${TechDraw_LineGroupFile}
 )
 
 fc_target_copy_resource(TechDraw_Data
@@ -80,6 +80,15 @@ INSTALL(
 INSTALL(
     DIRECTORY
         Patterns
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    FILES_MATCHING
+        PATTERN "*.svg*"
+)
+
+INSTALL(
+    DIRECTORY
+        Symbols
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     FILES_MATCHING
