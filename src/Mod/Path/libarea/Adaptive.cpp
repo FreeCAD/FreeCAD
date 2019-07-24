@@ -620,7 +620,7 @@ void SmoothPaths(Paths &paths, double stepSize, long pointCount, long iterations
 				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
 				continue;
 			}
-			const auto &back=points.back();
+			const auto back=points.back();
 			const IntPoint & lastPt = back.second;
 
 
