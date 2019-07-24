@@ -14,18 +14,20 @@ class ProjectImporter:
 
     def setAttributes(self):
         for property in self.object.PropertiesList:
-            if hasattr(self.project, property):
+            if hasattr(self.project, property) and getattr(self.project, property):
                 setattr(self.object, property, getattr(self.project, property))
 
     def setComplexAttributes(self):
-        hasCoordinateOperation = self.project.RepresentationContexts[0].HasCoordinateOperation
-        if not hasCoordinateOperation:
+        try:
+            mapConversion = self.project.RepresentationContexts[0].HasCoordinateOperation[0]
+            
+            data = self.extractTargetCRSData(mapConversion.TargetCRS)
+            data.update(self.extractMapConversionData(mapConversion))
+            ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(self, self.object, "RepresentationContexts", data)
+        except:
+            # This scenario occurs validly in IFC2X3, as the mapConversion does
+            # not exist
             return
-        mapConversion = hasCoordinateOperation[0]
-        
-        data = self.extractTargetCRSData(mapConversion.TargetCRS)
-        data.update(self.extractMapConversionData(mapConversion))
-        ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(self, self.object, "RepresentationContexts", data)
 
     def extractTargetCRSData(self, targetCRS):
         mappings = {
