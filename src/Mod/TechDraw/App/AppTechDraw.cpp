@@ -42,6 +42,9 @@
 #include "DrawViewBalloon.h"
 #include "DrawLeaderLine.h"
 #include "DrawRichAnno.h"
+#include "DrawTile.h"
+#include "DrawTileWeld.h"
+#include "DrawWeldSymbol.h"
 #include "Cosmetic.h"
 #include "PropertyGeomFormatList.h"
 #include "PropertyCenterLineList.h"
@@ -100,6 +103,9 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawViewDraft       ::init();
     TechDraw::DrawViewArch        ::init();
     TechDraw::DrawViewImage       ::init();
+    TechDraw::DrawTile            ::init();
+    TechDraw::DrawTileWeld        ::init();
+    TechDraw::DrawWeldSymbol      ::init();
 
     TechDraw::PropertyGeomFormatList::init();
     TechDraw::GeomFormat            ::init();
@@ -119,5 +125,8 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawViewSymbolPython::init();
     TechDraw::DrawLeaderLinePython::init();
     TechDraw::DrawRichAnnoPython  ::init();
+    TechDraw::DrawTilePython      ::init();
+    TechDraw::DrawTileWeldPython  ::init();
+    TechDraw::DrawWeldSymbolPython::init();
     PyMOD_Return(mod);
 }

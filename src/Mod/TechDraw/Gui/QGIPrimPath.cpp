@@ -42,7 +42,9 @@ using namespace TechDrawGui;
 
 QGIPrimPath::QGIPrimPath():
     m_width(0),
-    m_capStyle(Qt::RoundCap)
+    m_capStyle(Qt::RoundCap),
+    m_fill(Qt::NoBrush)
+//    m_fill(Qt::SolidPattern)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -129,6 +131,11 @@ void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
     m_pen.setColor(m_colCurrent);
     m_pen.setStyle(m_styleCurrent);
     setPen(m_pen);
+
+    m_brush.setColor(m_colCurrent);
+    m_brush.setStyle(m_fill);
+    setBrush(m_brush);
+
     QGraphicsPathItem::paint (painter, &myOption, widget);
 }
 
@@ -256,15 +263,21 @@ Qt::PenCapStyle QGIPrimPath::prefCapStyle()
 
 void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+    //wf: this seems a bit of a hack. does it mess up selection of QGIPP??
     QGIView *parent;
     QGraphicsItem* qparent = parentItem();
     if (qparent != nullptr) {
         parent = dynamic_cast<QGIView *> (qparent);
         if (parent != nullptr) {
+//            Base::Console().Message("QGIPP::mousePressEvent - passing event to QGIV parent\n");
             parent->mousePressEvent(event);
         } else {
+//            qparent->mousePressEvent(event);  //protected!
+            QGraphicsPathItem::mousePressEvent(event);
             Base::Console().Log("QGIPP::mousePressEvent - no QGIView parent\n");
         }
+    } else {
+//        Base::Console().Message("QGIPP::mousePressEvent - passing event to ancestor\n");
+        QGraphicsPathItem::mousePressEvent(event);
     }
-    QGraphicsPathItem::mousePressEvent(event);
 }

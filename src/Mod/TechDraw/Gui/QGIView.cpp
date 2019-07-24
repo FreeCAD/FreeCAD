@@ -82,7 +82,8 @@ QGIView::QGIView()
     :QGraphicsItemGroup(),
      viewObj(nullptr),
      m_locked(false),
-     m_innerView(false)
+     m_innerView(false),
+     m_selectState(0)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -215,8 +216,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             m_colCurrent = getSelectColor();
+            m_selectState = 2;
         } else {
             m_colCurrent = getNormalColor();
+            m_selectState = 0;
         }
         drawBorder();
     }
@@ -257,8 +260,10 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     // TODO don't like this but only solution at the minute (MLP)
     if (isSelected()) {
         m_colCurrent = getSelectColor();
+        m_selectState = 2;
     } else {
         m_colCurrent = getPreColor();
+        m_selectState = 1;
     }
     drawBorder();
 }
@@ -268,8 +273,10 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     Q_UNUSED(event);
     if(isSelected()) {
         m_colCurrent = getSelectColor();
+        m_selectState = 1;
     } else {
         m_colCurrent = getNormalColor();
+        m_selectState = 0;
     }
     drawBorder();
 }
@@ -622,6 +629,7 @@ bool QGIView::getFrameState(void)
     return result;
 }
 
+//TODO: change name to prefNormalColor()
 QColor QGIView::getNormalColor()
 {
     Base::Reference<ParameterGrp> hGrp = getParmGroupCol();

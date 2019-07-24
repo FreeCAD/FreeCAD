@@ -58,6 +58,8 @@ public:
     void setStyle(int s);
     virtual void setNormalColor(QColor c);
     virtual void setCapStyle(Qt::PenCapStyle c);
+    Qt::BrushStyle getFill() { return m_fill; }
+    void setFill(Qt::BrushStyle f) { m_fill = f; }
 
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
@@ -79,6 +81,9 @@ protected:
     Qt::PenStyle m_styleCurrent;
     double m_width;
     Qt::PenCapStyle m_capStyle;
+    QBrush m_brush;
+    Qt::BrushStyle m_fill;
+
 
 private:
 

@@ -58,6 +58,8 @@
 #include "ViewProviderImage.h"
 #include "ViewProviderRichAnno.h"
 #include "ViewProviderLeader.h"
+#include "ViewProviderTile.h"
+#include "ViewProviderWeld.h"
 
 
 // use a different name to CreateCommand()
@@ -134,6 +136,8 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderImage::init();
     TechDrawGui::ViewProviderLeader::init();
     TechDrawGui::ViewProviderRichAnno::init();
+    TechDrawGui::ViewProviderTile::init();
+    TechDrawGui::ViewProviderWeld::init();
 
     // register preferences pages
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawImp> ("TechDraw");

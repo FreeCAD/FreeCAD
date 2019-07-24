@@ -49,8 +49,10 @@ QGIArrow::QGIArrow() :
     m_dirMode(false),
     m_dir(Base::Vector3d(1.0,0.0,0.0))
 {
+    isFlipped = false;
+    setFill(Qt::SolidPattern);
     m_brush.setStyle(m_fill);
-
+    
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
@@ -60,6 +62,7 @@ QGIArrow::QGIArrow() :
 void QGIArrow::draw() {
     QPainterPath path;
     if (m_style == 0) {
+        setFill(Qt::SolidPattern);
         if (m_dirMode) {
             path = makeFilledTriangle(getDirection(), m_size,m_size/6.0);
         } else {

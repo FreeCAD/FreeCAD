@@ -105,9 +105,12 @@ public:
     void alignTo(QGraphicsItem*, const QString &alignment);
     void setLocked(bool b) { m_locked = b; }
 
-    virtual QColor getNormalColor(void);
-    virtual QColor getPreColor(void);
-    virtual QColor getSelectColor(void);
+    virtual QColor getNormalColor(void);  //preference
+    virtual QColor getPreColor(void);     //preference
+    virtual QColor getSelectColor(void);  //preference
+    virtual QColor getCurrentColor(void) { return m_colCurrent; }
+    virtual QColor getSettingColor(void) { return m_colSetting; }
+    virtual void   setSettingColor(QColor c) { m_colSetting = c; }
     
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
     static QGVPage* getGraphicsView(TechDraw::DrawView* dv);
@@ -156,6 +159,7 @@ protected:
     QColor m_colNormal;
     QColor m_colPre;
     QColor m_colSel;
+    QColor m_colSetting;
     QFont m_font;
     QGCustomLabel* m_label;
     QGCustomBorder* m_border;
@@ -165,6 +169,7 @@ protected:
     double m_lockWidth;
     double m_lockHeight;
 
+    int m_selectState;
 };
 
 } // namespace
