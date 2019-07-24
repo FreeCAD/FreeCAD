@@ -88,9 +88,17 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
         //TODO: would be good to start the QGIV creation process here, but no guarantee we actually have
         //      MDIVP or QGVP yet.
+        // but parent page might.  we may not be part of the document yet though!
+        // :( we're not part of the page yet either!
     } else {
         Base::Console().Warning("VPDV::attach has no Feature!\n");
     }
+//    TechDraw::DrawView* view = static_cast<TechDraw::DrawView*>(pcFeat);
+//    TechDraw::DrawPage* page = view->findParentPage();
+//    TechDraw::DrawPage* page = feature->findParentPage();
+//    Base::Console().Message("VPDV::attach(%X) - parent: %X\n", 
+//            pcFeat, page);
+//            pcFeat->getNameInDocument(), page->getNameInDocument());
 }
 
 void ViewProviderDrawingView::setDisplayMode(const char* ModeName)
@@ -232,7 +240,7 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 {
     MDIViewPage* result = nullptr;
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-    Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+    Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage()); //if not in page.views, !@#$%
     ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
     if (dvp) {
         result = dvp->getMDIViewPage();
@@ -252,6 +260,9 @@ void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
             } else {                                //we are not part of the Gui page yet. ask page to add us.
                 //TODO: this bit causes trouble.  Should move QGIV creation to attach?
                 //      is MDIVP/QGVP available at attach time?
+                // wf: mdivp/qgvp is not necessarily directly available at attach time.  It should be available
+                //     via the parent DrawPage since the DP is created before any views.
+//                Base::Console().Message("VPDV::onGuiRepaint - no QGIV for: %s\n",dv->getNameInDocument());
                 MDIViewPage* page = getMDIViewPage();
                 if (page != nullptr) {
                     page->addView(dv);

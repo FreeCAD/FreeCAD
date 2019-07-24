@@ -361,6 +361,7 @@ void QGILeaderLine::draw()
         return;
     }
 
+    m_line->setFill(Qt::NoBrush);
     m_line->setStyle(m_lineStyle);
     double scaler = 1.0;
     m_line->setWidth(scaler * m_lineWidth);
@@ -498,6 +499,11 @@ void QGILeaderLine::abandonEdit(void)
     restoreState();
 }
 
+double QGILeaderLine::getLineWidth(void)
+{
+    return m_lineWidth;
+}
+
 TechDraw::DrawLeaderLine* QGILeaderLine::getFeature(void)
 {
     TechDraw::DrawLeaderLine* result = 
@@ -548,6 +554,7 @@ void QGILeaderLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem *
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+//    painter->setPen(Qt::blue);
 //    painter->drawRect(boundingRect());          //good for debugging
 
     QGIView::paint (painter, &myOption, widget);

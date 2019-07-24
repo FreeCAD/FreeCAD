@@ -75,6 +75,7 @@
 #include <Mod/TechDraw/App/DrawViewImage.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/QDomNodeModel.h>
 
 #include "Rez.h"
@@ -96,6 +97,7 @@
 #include "QGIFace.h"
 #include "QGILeaderLine.h"
 #include "QGIRichAnno.h"
+#include "QGIWeldSymbol.h"
 
 #include "ZVALUE.h"
 #include "ViewProviderPage.h"
@@ -544,6 +546,34 @@ QGIView * QGVPage::addRichAnno(TechDraw::DrawRichAnno* anno)
     }
     return annoGroup;
 }
+
+QGIView * QGVPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weld)
+{
+//    Base::Console().Message("QGVP::addWeldSymbol()\n");
+    QGIWeldSymbol* weldGroup = nullptr;
+    TechDraw::DrawView*  parentDV = nullptr;
+    
+    App::DocumentObject* parentObj = weld->Leader.getValue();
+    if (parentObj != nullptr) {
+        parentDV  = dynamic_cast<TechDraw::DrawView*>(parentObj);
+    } else {
+        Base::Console().Message("QGVP::addWeldSymbol - no parent doc obj\n");
+    }
+    if (parentDV != nullptr) {
+        QGIView* parentQV = findQViewForDocObj(parentObj);
+        QGILeaderLine* leadParent = dynamic_cast<QGILeaderLine*>(parentQV);
+        if (leadParent != nullptr) {
+            weldGroup = new QGIWeldSymbol(leadParent, weld);
+            weldGroup->updateView(true);
+        } else {
+            Base::Console().Message("QGVP::addWeldSymbol - no parent QGILL\n");
+        }
+    } else {
+        Base::Console().Message("QGVP::addWeldSymbol - parent is not DV!\n");
+    }
+    return weldGroup;
+}
+
 
 //! find the graphic for a DocumentObject
 QGIView * QGVPage::findQViewForDocObj(App::DocumentObject *obj) const

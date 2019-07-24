@@ -69,7 +69,7 @@ public:
     virtual void unsetEdit(int ModNum);
 
     QGIView* getQView(void);
-    MDIViewPage* getMDIViewPage() const;
+    virtual MDIViewPage* getMDIViewPage() const;
 
     /** @name Restoring view provider from document load */
     //@{

@@ -66,6 +66,10 @@ public:
     void adjustLastSegment(void);
     bool getDefAuto(void) const;
 
+    Base::Vector3d getTileOrigin(void) const;
+    Base::Vector3d getKinkPoint(void) const;
+    Base::Vector3d getTailPoint(void) const;
+
 
 protected:
     virtual void onChanged(const App::Property* prop) override;

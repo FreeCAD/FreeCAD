@@ -45,6 +45,7 @@ class DrawViewImage;
 class DrawLeaderLine;
 class DrawViewBalloon;
 class DrawRichAnno;
+class DrawWeldSymbol;
 }
 
 namespace TechDrawGui
@@ -84,6 +85,7 @@ public:
     QGIView * addDrawViewImage(TechDraw::DrawViewImage *view);
     QGIView * addViewLeader(TechDraw::DrawLeaderLine* view);
     QGIView * addRichAnno(TechDraw::DrawRichAnno* anno);
+    QGIView * addWeldSymbol(TechDraw::DrawWeldSymbol* weld);
 
     QGIView* findQViewForDocObj(App::DocumentObject *obj) const;
     QGIView* getQGIVByName(std::string name);
