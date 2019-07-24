@@ -133,7 +133,14 @@ class CommandJobTemplateExport:
                 "Path - Job Template",
                 PathPreferences.filePath(),
                 "job_*.json")[0]
-        if foo: 
+        if foo:
+            s = '/'
+            splitList = foo.split(s)
+            li = len(splitList) - 1
+            if splitList[li][-5:] == '.json':
+                if splitList[li][:4] != 'job_' and splitList[li][:4] != 'Job_':
+                    splitList[li] = 'Job_' + splitList[li]
+                    foo = s.join(splitList)
             cls.Execute(job, foo, dialog)
 
     @classmethod
