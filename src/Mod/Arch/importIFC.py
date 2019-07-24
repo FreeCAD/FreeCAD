@@ -342,13 +342,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if DEBUG: print("Building relationships table...",end="")
 
     # building relations tables
+    # TODO use inverse attributes, see https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
 
     objects = {} # { id:object, ... }
     prodrepr = {} # product/representations table
     additions = {} # { host:[child,...], ... }
     groups = {} # { host:[child,...], ... }     # used in structural IFC
     subtractions = [] # [ [opening,host], ... ]
-    properties = {} # { objid : { psetid : [propertyid, ... ], ... }, ... }
     colors = {} # { id:(r,g,b) }
     shapes = {} # { id:shaoe } only used for merge mode
     structshapes = {} # { id:shaoe } only used for merge mode
@@ -365,16 +365,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
         groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
     for r in ifcfile.by_type("IfcRelVoidsElement"):
         subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
-    for r in ifcfile.by_type("IfcRelDefinesByProperties"):
-        for obj in r.RelatedObjects:
-            if not obj.id() in properties:
-                properties[obj.id()] = {}
-            psets = {}
-            props = []
-            if r.RelatingPropertyDefinition.is_a("IfcPropertySet"):
-                props.extend([prop.id() for prop in r.RelatingPropertyDefinition.HasProperties])
-                psets[r.RelatingPropertyDefinition.id()] = props
-                properties[obj.id()].update(psets)
+    # properties = {} # { objid : { psetid : [propertyid, ... ], ... }, ... }
+    properties = getRelProperties(ifcfile)
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         for o in r.RelatedObjects:
             if r.RelatingMaterial.is_a("IfcMaterial"):
@@ -1250,6 +1242,22 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
 # ************************************************************************************************
 # ********** helper for import IFC **************
+
+def getRelProperties(ifcfile):
+
+    properties = {} # { objid : { psetid : [propertyid, ... ], ... }, ... }
+    for r in ifcfile.by_type("IfcRelDefinesByProperties"):
+        for obj in r.RelatedObjects:
+            if not obj.id() in properties:
+                properties[obj.id()] = {}
+            psets = {}
+            props = []
+            if r.RelatingPropertyDefinition.is_a("IfcPropertySet"):
+                props.extend([prop.id() for prop in r.RelatingPropertyDefinition.HasProperties])
+                psets[r.RelatingPropertyDefinition.id()] = props
+                properties[obj.id()].update(psets)
+    return properties
+
 
 def getIfcProperties(ifcfile, pid, properties, d):
 
