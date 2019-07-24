@@ -43,13 +43,11 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "russ4262 (Russell Johnson)"
 __createdDate__ = "2017"
-__scriptVersion__ = "2j testing"
-__lastModified__ = "2019-07-12 00:11 CST"
+__scriptVersion__ = "2m testing"
+__lastModified__ = "2019-07-20 13:29 CST"
 
 LOGLEVEL = PathLog.Level.INFO
 PathLog.setLevel(LOGLEVEL, PathLog.thisModule())
-# PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-
 
 if LOGLEVEL is PathLog.Level.DEBUG:
     PathLog.trackModule()
@@ -328,6 +326,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.leadIn = 2.0  # pylint: disable=attribute-defined-outside-init
         self.cloneNames = [] # pylint: disable=attribute-defined-outside-init
         self.guiMsgs = []  # pylint: disable=attribute-defined-outside-init
+        self.tempObjectNames = []  # pylint: disable=attribute-defined-outside-init
         self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox # pylint: disable=attribute-defined-outside-init
         self.useTempJobClones('Delete')  # Clear temporary group and recreate for temp job clones
 
@@ -405,7 +404,7 @@ class ObjectOp(PathOp.ObjectOp):
         for shp in aOS:
             if len(shp) == 2:
                 (fc, iH) = shp
-                #    fc, iH,   sub,     angle, axis
+                #     fc, iH,   sub,   angle, axis,      strtDep,             finDep
                 tup = fc, iH, 'otherOp', 0.0, 'S', obj.StartDepth.Value, obj.FinalDepth.Value
                 shapes.append(tup)
             else:
@@ -422,16 +421,8 @@ class ObjectOp(PathOp.ObjectOp):
 
             shapes = [j['shape'] for j in jobs]
 
-        # PathLog.debug("Pre_path depths are Start: {}, and Final: {}".format(obj.StartDepth.Value, obj.FinalDepth.Value))
         sims = []
         numShapes = len(shapes)
-
-        # if numShapes == 1:
-        #     nextAxis = shapes[0][4]
-        # elif numShapes > 1:
-        #     nextAxis = shapes[1][4]
-        # else:
-        #     nextAxis = 'L'
 
         for ns in range(0, numShapes):
             (shape, isHole, sub, angle, axis, strDep, finDep) = shapes[ns] # pylint: disable=unused-variable
@@ -497,6 +488,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         self.useTempJobClones('Delete')  # Delete temp job clone group and contents
         self.guiMessage('title', None, show=True)  # Process GUI messages to user
+        for ton in self.tempObjectNames:  # remove temporary objects by name
+            FreeCAD.ActiveDocument.removeObject(ton)
         PathLog.debug("obj.Name: " + str(obj.Name) + "\n\n")
         return sims
 
