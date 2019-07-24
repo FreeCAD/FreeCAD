@@ -920,6 +920,12 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj.Country = product.SiteAddress.Country
                     if product.SiteAddress.PostalCode:
                         obj.PostalCode = product.SiteAddress.PostalCode
+                project = product.Decomposes[0].RelatingObject
+                modelRC = next((rc for rc in project.RepresentationContexts if rc.ContextType == "Model"), None)
+                if modelRC and modelRC.TrueNorth:
+                    obj.Declination = -math.degrees(math.atan(modelRC.TrueNorth.DirectionRatios[0] / modelRC.TrueNorth.DirectionRatios[1]))
+                    if(FreeCAD.GuiUp):
+                        obj.ViewObject.CompassRotation.Value = obj.Declination
 
         try:
             progressbar.next(True)
@@ -1538,6 +1544,8 @@ def export(exportList,filename,colors=None):
     context = ifcfile.by_type("IfcGeometricRepresentationContext")[0]
     project = ifcfile.by_type("IfcProject")[0]
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    trueNorthX = math.tan(-Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)) # we assume one site and one representation context only
+    context.TrueNorth.DirectionRatios = (trueNorthX, 1., 1.)
     annotations = []
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):
