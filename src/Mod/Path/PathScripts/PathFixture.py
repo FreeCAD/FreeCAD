@@ -83,6 +83,7 @@ class _ViewProviderFixture:
         return ":/icons/Path-Datums.svg"
 
     def onChanged(self, vobj, prop):  # optional
+        # pylint: disable=unused-argument
         mode = 2
         vobj.setEditorMode('LineWidth', mode)
         vobj.setEditorMode('MarkerColor', mode)
@@ -118,7 +119,7 @@ class CommandPathFixture:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):

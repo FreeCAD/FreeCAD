@@ -57,6 +57,9 @@
         </item>
         <item>
          <widget class="Gui::PrefSpinBox" name="prefCompression">
+          <property name="toolTip">
+           <string>Compression level for FCStd files</string>
+          </property>
           <property name="value">
            <number>3</number>
           </property>
@@ -87,6 +90,9 @@
         </item>
         <item>
          <widget class="Gui::PrefSpinBox" name="prefUndoRedoSize">
+          <property name="toolTip">
+           <string>How many Undo/Redo steps should be recorded</string>
+          </property>
           <property name="value">
            <number>20</number>
           </property>
@@ -102,6 +108,9 @@
       </item>
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="prefCheckNewDoc">
+        <property name="toolTip">
+         <string>FreeCAD will create a new document when started</string>
+        </property>
         <property name="text">
          <string>Create new document at start up</string>
         </property>
@@ -144,6 +153,9 @@
       </item>
       <item row="4" column="0">
        <widget class="Gui::PrefCheckBox" name="prefUndoRedo">
+        <property name="toolTip">
+         <string>All changes in documents are stored so that they can be undone/redone</string>
+        </property>
         <property name="text">
          <string>Using Undo/Redo on documents</string>
         </property>
@@ -201,6 +213,10 @@
       </item>
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="prefRecovery">
+        <property name="toolTip">
+         <string>If there is a recovery file available FreeCAD will
+automatically run a file recovery when it is started.</string>
+        </property>
         <property name="text">
          <string>Run AutoRecovery at startup</string>
         </property>
@@ -219,6 +235,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="Gui::PrefCheckBox" name="prefAutoSaveEnabled">
+          <property name="toolTip">
+           <string>How often a recovery file is written</string>
+          </property>
           <property name="text">
            <string>Save AutoRecovery information every</string>
           </property>
@@ -272,6 +291,9 @@
       </item>
       <item row="5" column="0">
        <widget class="Gui::PrefCheckBox" name="prefSaveThumbnail">
+        <property name="toolTip">
+         <string>A thumbnail will be stored when document is saved</string>
+        </property>
         <property name="text">
          <string>Save thumbnail into project file when saving document</string>
         </property>
@@ -293,6 +315,9 @@
         </property>
         <item>
          <widget class="Gui::PrefCheckBox" name="prefSaveBackupFiles">
+          <property name="toolTip">
+           <string>How many backup files will be kept when saving document</string>
+          </property>
           <property name="text">
            <string>Maximum number of backup files to keep when resaving document</string>
           </property>
@@ -340,6 +365,9 @@
       </item>
       <item row="6" column="0">
        <widget class="Gui::PrefCheckBox" name="prefAddLogo">
+        <property name="toolTip">
+         <string>FreeCAD program logo will be added to the thumbnail</string>
+        </property>
         <property name="text">
          <string>Add the program logo to the generated thumbnail</string>
         </property>
@@ -365,6 +393,9 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="prefDuplicateLabel">
+        <property name="toolTip">
+         <string>Allow objects to have same label/name</string>
+        </property>
         <property name="text">
          <string>Allow duplicate object labels in one document</string>
         </property>
@@ -395,7 +426,9 @@
       <item row="0" column="1">
        <widget class="Gui::PrefLineEdit" name="prefAuthor">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>All documents that will be created will get the specified author name.
+Keep blank for anonymous.
+You can also use the form: John Doe &lt;john@doe.com&gt;</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>prefAuthor</cstring>
@@ -408,7 +441,7 @@
       <item row="0" column="2">
        <widget class="Gui::PrefCheckBox" name="prefSetAuthorOnSave">
         <property name="toolTip">
-         <string>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</string>
+         <string>The field 'Last modified by' will be set to specified author when saving the file</string>
         </property>
         <property name="text">
          <string>Set on save</string>
@@ -431,7 +464,7 @@
       <item row="1" column="1" colspan="2">
        <widget class="Gui::PrefLineEdit" name="prefCompany">
         <property name="toolTip">
-         <string>The default company to use for new files</string>
+         <string>Default company name to use for new files</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>prefCompany</cstring>
@@ -454,7 +487,7 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>The default license for new documents</string>
+         <string>Default license for new documents</string>
         </property>
         <property name="editable">
          <bool>false</bool>
@@ -527,7 +560,7 @@
       <item row="3" column="1" colspan="2">
        <widget class="Gui::PrefLineEdit" name="prefLicenseUrl">
         <property name="toolTip">
-         <string>A URL where the user can find more details about the license</string>
+         <string>URL describing more about the license</string>
         </property>
         <property name="text">
          <string notr="true">http://en.wikipedia.org/wiki/All_rights_reserved</string>

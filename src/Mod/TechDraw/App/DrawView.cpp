@@ -54,7 +54,6 @@
 #include "DrawView.h"
 
 using namespace TechDraw;
-using namespace TechDrawGeometry;
 
 //===========================================================================
 // DrawView
@@ -193,7 +192,8 @@ short DrawView::mustExecute() const
                     ScaleType.isTouched() ||
                     Caption.isTouched() ||
                     X.isTouched() ||
-                    Y.isTouched() );
+                    Y.isTouched() ||
+                    LockPosition.isTouched());
     }
     if ((bool) result) {
         return result;

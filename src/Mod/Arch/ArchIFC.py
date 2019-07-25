@@ -9,6 +9,7 @@ else:
         return txt
 
 import ArchIFCSchema
+
 IfcTypes = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in ArchIFCSchema.IfcProducts.keys()]
 
 class IfcRoot:
@@ -55,8 +56,11 @@ class IfcRoot:
 
     def getIfcTypeSchema(self, IfcType):
         name = "Ifc" + IfcType.replace(" ", "")
+        if IfcType == "Undefined":
+            name = "IfcBuildingElementProxy"
         if name in self.getIfcSchema():
             return self.getIfcSchema()[name]
+        return None
 
     def getIfcSchema(self):
         return {}
@@ -82,6 +86,8 @@ class IfcRoot:
             self.addIfcAttributeValueExpressions(obj, attribute)
 
     def addIfcAttribute(self, obj, attribute):
+        if not hasattr(obj, "IfcData"):
+            return
         IfcData = obj.IfcData
         if "attributes" not in IfcData:
             IfcData["attributes"] = "{}"
@@ -98,31 +104,32 @@ class IfcRoot:
             obj.addProperty(propertyType, attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
 
     def addIfcAttributeValueExpressions(self, obj, attribute):
-        if obj.getGroupOfProperty(attribute["name"]) != "IFC Attributes":
+        if obj.getGroupOfProperty(attribute["name"]) != "IFC Attributes" \
+            or attribute["name"] not in obj.PropertiesList:
             return
         if attribute["name"] == "OverallWidth":
-            if hasattr(obj, "Length"):
+            if "Length" in obj.PropertiesList:
                 obj.setExpression("OverallWidth", "Length.Value")
-            elif hasattr(obj, "Width"):
+            elif "Width" in obj.PropertiesList:
                 obj.setExpression("OverallWidth", "Width.Value")
-            elif obj.Shape.BoundBox.XLength > obj.Shape.BoundBox.YLength:
+            elif obj.Shape and (obj.Shape.BoundBox.XLength > obj.Shape.BoundBox.YLength:
                 obj.setExpression("OverallWidth", "Shape.BoundBox.XLength")
-            else:
+            elif obj.Shape:
                 obj.setExpression("OverallWidth", "Shape.BoundBox.YLength")
         elif attribute["name"] == "OverallHeight":
-            if hasattr(obj, "Height"):
+            if "Height" in obj.PropertiesList:
                 obj.setExpression("OverallHeight", "Height.Value")
             else:
                 obj.setExpression("OverallHeight", "Shape.BoundBox.ZLength")
-        elif attribute["name"] == "ElevationWithFlooring":
+        elif attribute["name"] == "ElevationWithFlooring" and "Shape" in obj.PropertiesList:
             obj.setExpression("ElevationWithFlooring", "Shape.BoundBox.ZMin")
-        elif attribute["name"] == "Elevation":
+        elif attribute["name"] == "Elevation" and "Placement" in obj.PropertiesList:
             obj.setExpression("Elevation", "Placement.Base.z")
-        elif attribute["name"] == "NominalDiameter":
+        elif attribute["name"] == "NominalDiameter" and "Diameter" in obj.PropertiesList:
             obj.setExpression("NominalDiameter", "Diameter.Value")
-        elif attribute["name"] == "BarLength":
+        elif attribute["name"] == "BarLength" and "Length" in obj.PropertiesList:
             obj.setExpression("BarLength", "Length.Value")
-        elif attribute["name"] == "RefElevation":
+        elif attribute["name"] == "RefElevation" and "Elevation" in obj.PropertiesList:
             obj.setExpression("RefElevation", "Elevation.Value")
         elif attribute["name"] == "LongName":
             obj.LongName = obj.Label

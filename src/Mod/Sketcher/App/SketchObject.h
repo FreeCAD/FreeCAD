@@ -38,6 +38,8 @@
 
 #include "Sketch.h"
 
+#include "SketchGeometryExtension.h"
+
 namespace Sketcher
 {
 

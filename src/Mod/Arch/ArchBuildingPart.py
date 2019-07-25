@@ -22,7 +22,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchCommands,DraftVecUtils,sys,ArchIFC
+import FreeCAD
+import Draft
+import ArchCommands
+import DraftVecUtils
+import sys
+import ArchIFC
+import tempfile
+import os
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -35,7 +42,6 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-import sys
 if sys.version_info.major >= 3:
     unicode = str
 
@@ -335,6 +341,9 @@ class BuildingPart(ArchIFC.IfcProduct):
             obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
         if not "Shape" in pl:
             obj.addProperty("Part::PropertyPartShape","Shape","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
+        if not "SavedInventor" in pl:
+            obj.addProperty("App::PropertyFileIncluded","SavedInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","This property stores an inventor representation for this object"))
+            obj.setEditorMode("SavedInventor",2)
 
         self.Type = "BuildingPart"
 
@@ -368,7 +377,7 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         elif prop == "Placement":
             if hasattr(self,"oldPlacement"):
-                if self.oldPlacement:
+                if self.oldPlacement and (self.oldPlacement != obj.Placement):
                     deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
                     if deltap.Length == 0:
                         deltap = None
@@ -399,14 +408,20 @@ class BuildingPart(ArchIFC.IfcProduct):
         # gather all the child shapes into a compound
         shapes = self.getShapes(obj)
         if shapes:
+            f = []
+            for s in shapes:
+                f.extend(s.Faces)
+            #print("faces before compound:",len(f))
             import Part
-            obj.Shape = Part.makeCompound(shapes)
+            obj.Shape = Part.makeCompound(f)
+            #print("faces after compound:",len(obj.Shape.Faces))
+            #print("recomputing ",obj.Label)
         obj.Area = self.getArea(obj)
 
     def getArea(self,obj):
-        
+
         "computes the area of this floor by adding its inner spaces"
-        
+
         area = 0
         if hasattr(obj,"Group"):
             for child in obj.Group:
@@ -421,18 +436,9 @@ class BuildingPart(ArchIFC.IfcProduct):
         "recursively get the shapes of objects inside this BuildingPart"
 
         shapes = []
-        if obj.isDerivedFrom("Part::Feature") and obj.Shape and (not obj.Shape.isNull()):
-            shapes.append(obj.Shape)
-        if hasattr(obj,"Group"):
-            for child in obj.Group:
-                shapes.extend(self.getShapes(child))
-        for i in obj.InList:
-            if hasattr(i,"Hosts"):
-                if obj in i.Hosts:
-                    shapes.extend(self.getShapes(i))
-            elif hasattr(i,"Host"):
-                if obj == i.Host:
-                    shapes.extend(self.getShapes(i))
+        for child in Draft.getGroupContents(obj):
+            if child.isDerivedFrom("Part::Feature"):
+                shapes.extend(child.Shape.Faces)
         return shapes
 
     def getSpaces(self,obj):
@@ -514,6 +520,15 @@ class ViewProviderBuildingPart:
             vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
         if not "ChildrenTransparency" in pl:
             vobj.addProperty("App::PropertyPercent","ChildrenTransparency","Children",QT_TRANSLATE_NOOP("App::Property","The transparency of child objects"))
+        if not "CutView" in pl:
+            vobj.addProperty("App::PropertyBool","CutView","Clip",QT_TRANSLATE_NOOP("App::Property","Cut the view above this level"))
+        if not "CutMargin" in pl:
+            vobj.addProperty("App::PropertyLength","CutMargin","Clip",QT_TRANSLATE_NOOP("App::Property","The distance between the level plane and the cut line"))
+            vobj.CutMargin = 1600
+        if not "AutoCutView" in pl:
+            vobj.addProperty("App::PropertyBool","AutoCutView","Clip",QT_TRANSLATE_NOOP("App::Property","Turn cutting on when activating this level"))
+        if not "SaveInventor" in pl:
+            vobj.addProperty("App::PropertyBool","SaveInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other file sin lightweight mode."))
 
     def onDocumentRestored(self,vobj):
 
@@ -532,6 +547,7 @@ class ViewProviderBuildingPart:
     def attach(self,vobj):
 
         self.Object = vobj.Object
+        self.clip = None
         from pivy import coin
         self.sep = coin.SoGroup()
         self.mat = coin.SoMaterial()
@@ -582,6 +598,9 @@ class ViewProviderBuildingPart:
                 if len(colors) == len(obj.Shape.Faces):
                     if colors != obj.ViewObject.DiffuseColor:
                         obj.ViewObject.DiffuseColor = colors
+                        self.writeInventor(obj)
+                #else:
+                    #print("color mismatch:",len(colors),"colors,",len(obj.Shape.Faces),"faces")
         elif prop == "Group":
             self.onChanged(obj.ViewObject,"ChildrenOverride")
         elif prop == "Label":
@@ -592,29 +611,20 @@ class ViewProviderBuildingPart:
         "recursively get the colors of objects inside this BuildingPart"
 
         colors = []
-        if obj.isDerivedFrom("Part::Feature") and obj.Shape and (not obj.Shape.isNull()):
-            if hasattr(obj.ViewObject,"DiffuseColor") and (len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)):
-                colors.extend(obj.ViewObject.DiffuseColor)
-            elif hasattr(obj.ViewObject,"ShapeColor"):
-                c = obj.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,)
-                for i in range(len(obj.Shape.Faces)):
-                    colors.append(c)
-        if hasattr(obj,"Group"):
-            for child in obj.Group:
-                colors.extend(self.getColors(child))
-        for i in obj.InList:
-            if hasattr(i,"Hosts"):
-                if obj in i.Hosts:
-                    colors.extend(self.getColors(i))
-            elif hasattr(i,"Host"):
-                if obj == i.Host:
-                    colors.extend(self.getColors(i))
+        for child in Draft.getGroupContents(obj):
+            if child.isDerivedFrom("Part::Feature"):
+                if len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
+                    colors.extend(child.ViewObject.DiffuseColor)
+                else:
+                    c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)
+                    for i in range(len(child.Shape.Faces)):
+                        colors.append(c)
         return colors
 
     def onChanged(self,vobj,prop):
 
         #print(vobj.Object.Label," - ",prop)
-        
+
         if prop == "ShapeColor":
             if hasattr(vobj,"ShapeColor"):
                 l = vobj.ShapeColor
@@ -679,7 +689,58 @@ class ViewProviderBuildingPart:
                     for prop in props:
                         if hasattr(vobj,prop) and hasattr(child.ViewObject,prop[8:]) and not hasattr(child,"ChildrenOverride"):
                             setattr(child.ViewObject,prop[8:],getattr(vobj,prop))
-                    
+        elif prop in ["CutView","CutMargin"]:
+            if hasattr(vobj,"CutView") and FreeCADGui.ActiveDocument.ActiveView:
+                sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+                if vobj.CutView:
+                    from pivy import coin
+                    if self.clip:
+                        sg.removeChild(self.clip)
+                        self.clip = None
+                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                        if hasattr(o.ViewObject,"Lighting"):
+                            o.ViewObject.Lighting = "One side"
+                    self.clip = coin.SoClipPlane()
+                    self.clip.on.setValue(True)
+                    norm = vobj.Object.Placement.multVec(FreeCAD.Vector(0,0,1))
+                    mp = vobj.Object.Placement.Base
+                    mp = DraftVecUtils.project(mp,norm)
+                    dist = mp.Length #- 0.1 # to not clip exactly on the section object
+                    norm = norm.negative()
+                    marg = 1
+                    if hasattr(vobj,"CutMargin"):
+                        marg = vobj.CutMargin.Value
+                    if mp.getAngle(norm) > 1:
+                        dist += marg
+                        dist = -dist
+                    else:
+                        dist -= marg
+                    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),dist)
+                    self.clip.plane.setValue(plane)
+                    sg.insertChild(self.clip,0)
+                else:
+                    if self.clip:
+                        sg.removeChild(self.clip)
+                        self.clip = None
+                    for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+                        if hasattr(o.ViewObject,"Lighting"):
+                            o.ViewObject.Lighting = "Two side"
+        elif prop == "Visibility":
+            # turn clipping off when turning the object off
+            if hasattr(vobj,"Visibility") and not(vobj.Visibility) and hasattr(vobj,"CutView"):
+                vobj.CutView = False
+        elif prop == "SaveInventor":
+            self.writeInventor(vobj.Object)
+
+    def onDelete(self,vobj,subelements):
+
+        if self.clip:
+            sg.removeChild(self.clip)
+            self.clip = None
+        for o in Draft.getGroupContents(vobj.Object.Group,walls=True):
+            if hasattr(o.ViewObject,"Lighting"):
+                o.ViewObject.Lighting = "Two side"
+        return True
 
     def doubleClicked(self,vobj):
 
@@ -757,13 +818,13 @@ class ViewProviderBuildingPart:
             self.Object.ViewObject.ViewData = cdata
 
     def createGroup(self):
-        
+
         if hasattr(self,"Object"):
             s = "FreeCAD.ActiveDocument.getObject(\"%s\").newObject(\"App::DocumentObjectGroup\",\"Group\")" % self.Object.Name
             FreeCADGui.doCommand(s)
 
     def reorder(self):
-        
+
         if hasattr(self,"Object"):
             if hasattr(self.Object,"Group") and self.Object.Group:
                 g = self.Object.Group
@@ -772,7 +833,7 @@ class ViewProviderBuildingPart:
                 FreeCAD.ActiveDocument.recompute()
 
     def cloneUp(self):
-        
+
         if hasattr(self,"Object"):
             if not self.Object.Height.Value:
                 FreeCAD.Console.PrintError("This level has no height value. Please define a height before using this function.\n")
@@ -807,6 +868,37 @@ class ViewProviderBuildingPart:
 
     def __setstate__(self,state):
         return None
+
+    def writeInventor(self,obj):
+
+        def callback(match):
+            return next(callback.v)
+
+        if hasattr(obj.ViewObject,"SaveInventor") and obj.ViewObject.SaveInventor:
+            if obj.Shape and obj.Shape.Faces and hasattr(obj,"SavedInventor"):
+                colors = obj.ViewObject.DiffuseColor
+                if len(colors) != len(obj.Shape.Faces):
+                    print("Debug: Colors mismatch in",obj.Label)
+                    colors = None
+                iv = self.Object.Shape.writeInventor()
+                import re
+                if colors:
+                    if len(re.findall("IndexedFaceSet",iv)) == len(obj.Shape.Faces):
+                        # convert colors to iv representations
+                        colors = ["Material { diffuseColor "+str(color[0])+" "+str(color[1])+" "+str(color[2])+"}\n    IndexedFaceSet" for color in colors]
+                        # replace
+                        callback.v=iter(colors)
+                        iv = re.sub("IndexedFaceSet",callback,iv)
+                    else:
+                        print("Debug: IndexedFaceSet mismatch in",obj.Label)
+                # save embedded file
+                tf = tempfile.mkstemp(prefix=obj.Name,suffix=".iv")[1]
+                f = open(tf,"w")
+                f.write(iv)
+                f.close()
+                obj.SavedInventor = tf
+                os.remove(tf)
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_BuildingPart',CommandBuildingPart())

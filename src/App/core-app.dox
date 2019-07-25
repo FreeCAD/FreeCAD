@@ -1,4 +1,4 @@
-/** \defgroup APP App side
+/** \defgroup APP App
  * \ingroup CORE 
  * \brief The part of FreeCAD that works without GUI (console or server mode)
 */

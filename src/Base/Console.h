@@ -458,7 +458,7 @@ class BaseExport ConsoleObserver
 {
 public:
     ConsoleObserver()
-        :bErr(true),bMsg(true),bLog(true),bWrn(true) {}
+        :bErr(true),bMsg(true),bLog(true),bWrn(true){}
     virtual ~ConsoleObserver() {}
     /// get calls when a Warning is issued
     virtual void Warning(const char *){}

@@ -400,6 +400,8 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         pcReport->setObjectName
             (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
         pDockMgr->registerDockWindow("Std_ReportView", pcReport);
+        ReportOutputObserver* rvObserver = new ReportOutputObserver(pcReport);
+        qApp->installEventFilter(rvObserver);
     }
 
     // Python console

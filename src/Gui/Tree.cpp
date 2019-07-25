@@ -159,6 +159,8 @@ TreeWidget::TreeWidget(QWidget* parent)
     this->statusTimer->setSingleShot(true);
     this->statusTimer->start(300);
     documentPixmap = new QPixmap(Gui::BitmapFactory().pixmap("Document"));
+
+    this->setDefaultDropAction(Qt::MoveAction);
 }
 
 TreeWidget::~TreeWidget()

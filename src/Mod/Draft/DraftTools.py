@@ -244,6 +244,7 @@ class DraftTool:
         FreeCAD.activeDraftCommand = self
         self.view = Draft.get3DView()
         self.ui = FreeCADGui.draftToolBar
+        self.featureName = name
         self.ui.sourceCmd = self
         self.ui.setTitle(name)
         self.ui.show()
@@ -255,10 +256,11 @@ class DraftTool:
         self.obj = None
         self.extendedCopy = False
         self.ui.setTitle(name)
-        self.featureName = name
         self.planetrack = None
         if Draft.getParam("showPlaneTracker",False):
             self.planetrack = PlaneTracker()
+        if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.setTrackers()
 
     def finish(self,close=False):
         self.node = []
@@ -372,6 +374,9 @@ class SelectPlane(DraftTool):
                 if hasattr(sel.Object.ViewObject,"AutoWorkingPlane"):
                     if sel.Object.ViewObject.AutoWorkingPlane:
                         plane.weak = True
+                if hasattr(sel.Object.ViewObject,"CutView") and hasattr(sel.Object.ViewObject,"AutoCutView"):
+                    if sel.Object.ViewObject.AutoCutView:
+                        sel.Object.ViewObject.CutView = True
                 if hasattr(sel.Object.ViewObject,"RestoreView"):
                     if sel.Object.ViewObject.RestoreView:
                         if hasattr(sel.Object.ViewObject,"ViewData"):
@@ -504,6 +509,11 @@ class SelectPlane(DraftTool):
             FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.reset()")
             self.display('Auto')
             self.finish()
+        elif arg == "alignToWP":
+            c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+            r = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
+            c.orientation.setValue(r)
+            self.finish()
 
     def offsetHandler(self, arg):
         self.offset = arg
@@ -519,7 +529,7 @@ class SelectPlane(DraftTool):
             plv = 'd('+str(arg.x)+','+str(arg.y)+','+str(arg.z)+')'
             self.ui.wplabel.setText(plv+suffix)
         self.ui.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.ui.wplabel.text())
-        FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid(init=True)")
+        FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
 
 #---------------------------------------------------------------------------
 # Geometry constructors
@@ -4277,12 +4287,16 @@ class Scale(Modifier):
         self.point = Vector(numx,numy,numz)
         self.node.append(self.point)
         if not self.pickmode:
+            if not self.ghosts:
+                self.set_ghosts()
             self.ui.offUi()
             if self.call:
                 self.view.removeEventCallback("SoEvent",self.call)
             self.task = DraftGui.ScaleTaskPanel()
             self.task.sourceCmd = self
             DraftGui.todo.delay(FreeCADGui.Control.showDialog,self.task)
+            DraftGui.todo.delay(self.task.xValue.selectAll,None)
+            DraftGui.todo.delay(self.task.xValue.setFocus,None)
             for ghost in self.ghosts:
                 ghost.on()
         elif len(self.node) == 2:
@@ -4712,13 +4726,16 @@ class Shape2DView(Modifier):
                 if "Face" in e:
                     faces.append(int(e[4:])-1)
         #print(objs,faces)
-        if len(objs) == 1:
-            if faces:
-                Draft.makeShape2DView(objs[0],vec,facenumbers=faces)
-                return
-        for o in objs:
-            Draft.makeShape2DView(o,vec)
-        FreeCAD.ActiveDocument.recompute()
+        commitlist = []
+        FreeCADGui.addModule("Draft")
+        if (len(objs) == 1) and faces:
+            commitlist.append("Draft.makeShape2DView(FreeCAD.ActiveDocument."+objs[0].Name+",FreeCAD.Vector"+str(tuple(vec))+",facenumbers="+str(faces)+")")
+        else:
+            for o in objs:
+                commitlist.append("Draft.makeShape2DView(FreeCAD.ActiveDocument."+o.Name+",FreeCAD.Vector"+str(tuple(vec))+")")
+        if commitlist:
+            commitlist.append("FreeCAD.ActiveDocument.recompute()")
+            self.commit(translate("draft","Create 2D view"),commitlist)
         self.finish()
 
 
@@ -5002,7 +5019,7 @@ class Draft_Clone(Modifier):
             nonRepeatList = []
             for obj in FreeCADGui.Selection.getSelection():
                 if obj not in nonRepeatList:
-                    FreeCADGui.doCommand("Draft.clone(FreeCAD.ActiveDocument."+obj.Name+")")
+                    FreeCADGui.doCommand("Draft.clone(FreeCAD.ActiveDocument.getObject(\""+obj.Name+"\"))")
                     nonRepeatList.append(obj)
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
@@ -5028,17 +5045,14 @@ class ToggleGrid():
 
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
+            FreeCADGui.Snapper.setTrackers()
             if FreeCADGui.Snapper.grid:
-                FreeCADGui.Snapper.respawnGrid()
                 if FreeCADGui.Snapper.grid.Visible:
                     FreeCADGui.Snapper.grid.off()
                     FreeCADGui.Snapper.forceGridOff=True
                 else:
-                    FreeCADGui.Snapper.grid.reset()
                     FreeCADGui.Snapper.grid.on()
                     FreeCADGui.Snapper.forceGridOff=False
-            else:
-                FreeCADGui.Snapper.show()
 
 class Heal():
     "The Draft Heal command definition"

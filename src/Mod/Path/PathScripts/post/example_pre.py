@@ -50,8 +50,8 @@ if open.__module__ in ['__builtin__', 'io']:
 
 
 def open(filename):
-    PathLog.track(filename)
     "called when freecad opens a file."
+    PathLog.track(filename)
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     insert(filename, doc.Name)

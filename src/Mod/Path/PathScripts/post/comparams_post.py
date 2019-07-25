@@ -23,7 +23,6 @@
 # ***************************************************************************
 import FreeCAD
 import Path
-import PathScripts
 import PathScripts.PostUtils as PostUtils
 
 TOOLTIP = ''' Example Post, using Path.Commands instead of Path.toGCode strings for Path gcode output. '''
@@ -81,6 +80,7 @@ def lineout(command, oldvals, modal):
 
 
 def export(obj, filename, argstring):
+    # pylint: disable=unused-argument
     modal = True
     gcode = ''
     safetyblock1 = 'G90G40G49\n'

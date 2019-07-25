@@ -50,8 +50,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class an implementation for operations on circular holes."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2017"
-__scriptVersion__ = "1c testing"
-__lastModified__ = "2019-06-25 14:49 CST"
+__scriptVersion__ = "1d testing"
+__lastModified__ = "2019-07-12 09:58 CST"
 
 
 # Qt translation handling
@@ -134,15 +134,20 @@ class ObjectOp(PathOp.ObjectOp):
             edge = self.getArchPanelEdge(obj, base, sub)
             return edge.BoundBox.XLength
 
-        shape = base.Shape.getElement(sub)
-        if shape.ShapeType == 'Vertex':
-            return 0
+        try:
+            shape = base.Shape.getElement(sub)
+            if shape.ShapeType == 'Vertex':
+                return 0
 
-        if shape.ShapeType == 'Edge' and type(shape.Curve) == Part.Circle:
-            return shape.Curve.Radius * 2
+            if shape.ShapeType == 'Edge' and type(shape.Curve) == Part.Circle:
+                return shape.Curve.Radius * 2
 
-        # for all other shapes the diameter is just the dimension in X
-        return shape.BoundBox.XLength
+            # for all other shapes the diameter is just the dimension in X
+            return shape.BoundBox.XLength
+        except Part.OCCError as e:
+            PathLog.error(e)
+
+        return 0
 
     def holePosition(self, obj, base, sub):
         '''holePosition(obj, base, sub) ... returns a Vector for the position defined by the given features.
@@ -152,18 +157,21 @@ class ObjectOp(PathOp.ObjectOp):
             center = edge.Curve.Center
             return FreeCAD.Vector(center.x, center.y, 0)
 
-        shape = base.Shape.getElement(sub)
-        if shape.ShapeType == 'Vertex':
-            return FreeCAD.Vector(shape.X, shape.Y, 0)
+        try:
+            shape = base.Shape.getElement(sub)
+            if shape.ShapeType == 'Vertex':
+                return FreeCAD.Vector(shape.X, shape.Y, 0)
 
-        if shape.ShapeType == 'Edge' and hasattr(shape.Curve, 'Center'):
-            return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
+            if shape.ShapeType == 'Edge' and hasattr(shape.Curve, 'Center'):
+                return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
 
-        if shape.ShapeType == 'Face':
-            if hasattr(shape.Surface, 'Center'):
-                return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
-            if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
-                return shape.Edges[0].Curve.Center
+            if shape.ShapeType == 'Face':
+                if hasattr(shape.Surface, 'Center'):
+                    return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
+                if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
+                    return shape.Edges[0].Curve.Center
+        except Part.OCCError as e:
+            PathLog.error(e)
 
         PathLog.error(translate("Path", "Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.") % (base.Label, sub))
         return None
@@ -181,7 +189,6 @@ class ObjectOp(PathOp.ObjectOp):
         calculated and assigned.
         Do not overwrite, implement circularHoleExecute(obj, holes) instead.'''
         PathLog.track()
-        PathLog.debug("\nopExecute() in PathCircularHoleBase.py")
 
         holes = []
         baseSubsTuples = []
@@ -216,7 +223,7 @@ class ObjectOp(PathOp.ObjectOp):
             PathLog.debug("Exec. opHeights[0]: " + str(opHeights[0]))
             PathLog.debug("Exec. opHeights[1]: " + str(opHeights[1]))
 
-            # Set clearnance and safe heights based upon rotation radii
+            # Set clearance and safe heights based upon rotation radii
             if obj.EnableRotation == 'A(x)':
                 strDep = self.xRotRad
             elif obj.EnableRotation == 'B(y)':
@@ -228,7 +235,7 @@ class ObjectOp(PathOp.ObjectOp):
             obj.ClearanceHeight.Value = strDep + clrOfset
             obj.SafeHeight.Value = strDep + safOfst
 
-            # Create visual axises when debugging.
+            # Create visual axes when debugging.
             if PathLog.getLevel(PathLog.thisModule()) == 4:
                 self.visualAxis()
 
@@ -239,7 +246,7 @@ class ObjectOp(PathOp.ObjectOp):
 
         # Complete rotational analysis and temp clone creation as needed
         if obj.EnableRotation == 'Off':
-            PathLog.info("Enable Rotation setting is 'Off' for {}.".format(obj.Name))
+            PathLog.debug("Enable Rotation setting is 'Off' for {}.".format(obj.Name))
             stock = PathUtils.findParentJob(obj).Stock
             for (base, subList) in obj.Base:
                 baseSubsTuples.append((base, subList, 0.0, 'A', stock))
@@ -255,7 +262,7 @@ class ObjectOp(PathOp.ObjectOp):
                         if rtn is True:
                             (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, subCount)
                             # Verify faces are correctly oriented - InverseAngle might be necessary
-                            PathLog.debug("Verifing {} orientation: running faceRotationAnalysis() again.".format(sub))
+                            PathLog.debug("Verifying {} orientation: running faceRotationAnalysis() again.".format(sub))
                             faceIA = getattr(clnBase.Shape, sub)
                             (norm, surf) = self.getFaceNormAndSurf(faceIA)
                             (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
@@ -269,7 +276,7 @@ class ObjectOp(PathOp.ObjectOp):
                                     if len(subsList) == 1:
                                         msg += translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
                                     else:
-                                        msg += translate("Path", "Consider transfering '{}' to independent operation.".format(sub))
+                                        msg += translate("Path", "Consider transferring '{}' to independent operation.".format(sub))
                                 PathLog.warning(msg)
                                 # title = translate("Path", 'Rotation Warning')
                                 # self.guiMessage(title, msg, False)
@@ -323,7 +330,7 @@ class ObjectOp(PathOp.ObjectOp):
 
                         # If user has not adjusted Final Depth value, attempt to determine from sub
                         if obj.OpFinalDepth.Value == obj.FinalDepth.Value:
-                            PathLog.info(translate('Path', 'Auto detecting Final Depth based on {}.'.format(sub)))
+                            PathLog.debug(translate('Path', 'Auto detecting Final Depth based on {}.'.format(sub)))
                             trgtDep = finDep
                         else:
                             trgtDep = max(obj.FinalDepth.Value, finDep)
@@ -361,6 +368,8 @@ class ObjectOp(PathOp.ObjectOp):
         pass # pylint: disable=unnecessary-pass
 
     def findAllHoles(self, obj):
+        '''findAllHoles(obj) ... find all holes of all base models and assign as features.'''
+        PathLog.track()
         if not self.getJob(obj):
             return
         features = []
@@ -479,7 +488,6 @@ class ObjectOp(PathOp.ObjectOp):
 
         praInfo = "faceRotationAnalysis(): "
         rtn = True
-        axis = 'X'
         orientation = 'X'
         angle = 500.0
         precision = 6
@@ -582,6 +590,8 @@ class ObjectOp(PathOp.ObjectOp):
                     axis = 'X'
                 else:
                     rtn = False
+        elif orientation == 'Z':
+            axis = 'X'
 
         if math.fabs(angle) == 0.0:
             angle = 0.0

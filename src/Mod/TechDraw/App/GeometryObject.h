@@ -45,7 +45,7 @@ class CosmeticVertex;
 class CosmeticEdge;
 }
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
 class BaseGeom;
 class Vector;
@@ -53,9 +53,15 @@ class Face;
 class Vertex;
 
 //! scales & mirrors a shape about a center
+
+TopoDS_Shape TechDrawExport mirrorShapeVec(const TopoDS_Shape &input,
+                             const Base::Vector3d& inputCenter = Base::Vector3d(0.0, 0.0, 0.0),
+                             double scale = 1.0);
+
 TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
                         const gp_Pnt& inputCenter = gp_Pnt(0.0,0.0,0.0),
                         double scale = 1.0);
+
 TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape &input,
                                        double scale);
 TopoDS_Shape TechDrawExport rotateShape(const TopoDS_Shape &input,
@@ -102,7 +108,7 @@ public:
                       const gp_Ax2 viewAxis);
     void projectShapeWithPolygonAlgo(const TopoDS_Shape &input,
                                      const gp_Ax2 viewAxis);
-    
+
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(Face * f);
     void clearFaceGeom();
@@ -128,12 +134,13 @@ public:
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
     //Are removeXXXXX functions really needed for GO?
-    int addRandomVertex(Base::Vector3d pos);
-/*    void removeRandomVertex(TechDraw::CosmeticVertex* cv);*/
-/*    void removeRandomVertex(int idx);*/
-    int addRandomEdge(TechDrawGeometry::BaseGeom* bg);
-/*    void removeRandomEdge(TechDraw::CosmeticEdge* ce);*/
-/*    void removeRandomEdge(int idx);*/
+    int addCosmeticVertex(Base::Vector3d pos, int link = -1);
+/*    void removeCosmeticVertex(TechDraw::CosmeticVertex* cv);*/
+/*    void removeCosmeticVertex(int idx);*/
+    int addCosmeticEdge(TechDraw::BaseGeom* bg, int s = 0, int si = -1);
+    int addCenterLine(TechDraw::BaseGeom* bg, int s = 0, int si = -1);
+/*    void removeCosmeticEdge(TechDraw::CosmeticEdge* ce);*/
+/*    void removeCosmeticEdge(int idx);*/
 
 protected:
     //HLR output
@@ -163,7 +170,7 @@ protected:
     std::vector<Vertex *> vertexGeom;
     std::vector<Face *> faceGeom;
 
-    bool findVertex(Base::Vector2d v);
+    bool findVertex(Base::Vector3d v);
 
     std::string m_parentName;
     TechDraw::DrawView* m_parent;
@@ -173,6 +180,6 @@ protected:
     bool m_usePolygonHLR;
 };
 
-} //namespace TechDrawGeometry
+} //namespace TechDraw
 
 #endif

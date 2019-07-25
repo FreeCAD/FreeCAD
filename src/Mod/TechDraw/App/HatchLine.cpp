@@ -80,7 +80,7 @@ bool LineSet::isDashed(void)
 }
 
 //! calculates the apparent start point (ie start of overlay line) for dashed lines
-Base::Vector3d LineSet::calcApparentStart(TechDrawGeometry::BaseGeom* g)
+Base::Vector3d LineSet::calcApparentStart(TechDraw::BaseGeom* g)
 {
     Base::Vector3d result;
     Base::Vector3d start(g->getStartPoint().x,g->getStartPoint().y,0.0);
@@ -151,7 +151,7 @@ Base::Vector3d LineSet::findAtomStart(void)
     return result;
 }
 
-Base::Vector3d LineSet::getPatternStartPoint(TechDrawGeometry::BaseGeom* g, double &offset, double scale)
+Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeom* g, double &offset, double scale)
 {
     Base::Vector3d result = getOrigin();
     Base::Vector3d atomStart = findAtomStart();

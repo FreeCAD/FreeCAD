@@ -72,6 +72,9 @@
         </item>
         <item row="0" column="1">
          <widget class="Gui::PrefColorButton" name="buttonMeshColor">
+          <property name="toolTip">
+           <string>Default color for new meshes</string>
+          </property>
           <property name="color">
            <color>
             <red>204</red>
@@ -135,6 +138,9 @@
         </item>
         <item row="3" column="1" colspan="4">
          <widget class="Gui::PrefCheckBox" name="checkboxBoundbox">
+          <property name="toolTip">
+           <string>A yellow bounding box will be displayed</string>
+          </property>
           <property name="text">
            <string>Show bounding-box for highlighted or selected meshes</string>
           </property>
@@ -171,6 +177,9 @@
         </item>
         <item row="1" column="1">
          <widget class="Gui::PrefColorButton" name="buttonLineColor">
+          <property name="toolTip">
+           <string>Default line color for new meshes</string>
+          </property>
           <property name="color">
            <color>
             <red>0</red>
@@ -188,6 +197,12 @@
         </item>
         <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="checkboxRendering">
+          <property name="toolTip">
+           <string>The bottom side of surface will be rendered the same way than top side.
+If not checked, it depends on the option &quot;Enable backlight color&quot;
+(preferences section Display -&gt; 3D View). Either the backlight color
+will be used or black.</string>
+          </property>
           <property name="text">
            <string>Two-side rendering</string>
           </property>
@@ -278,7 +293,13 @@
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkboxNormal">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>If this option is set Phong shading is used, otherwise flat shading.
+Shading defines the appearance of surfaces.
+
+With flat shading the surface normals are not defined per vertex that leads
+to a unreal appearance for curved surfaces while using Phong shading leads
+to a smoother appearance.
+</string>
         </property>
         <property name="text">
          <string>Define normal per vertex</string>
@@ -308,6 +329,12 @@
        <widget class="Gui::PrefDoubleSpinBox" name="spinboxAngle">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Crease angle is a threshold angle between two faces.
+
+ If face angle ≥ crease angle, facet shading is used
+ If face angle &lt; crease angle, smooth shading is used</string>
         </property>
         <property name="suffix">
          <string> °</string>

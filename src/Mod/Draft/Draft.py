@@ -241,8 +241,9 @@ def get3DView():
     if FreeCAD.GuiUp:
         import FreeCADGui
         v = FreeCADGui.ActiveDocument.ActiveView
-        if str(type(v)) == "<type 'View3DInventorPy'>":
+        if "View3DInventor" in str(type(v)):
             return v
+        print("Debug: Draft: Warning, not working in active view")
         v = FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
         if v:
             return v[0]
@@ -2634,6 +2635,7 @@ def clone(obj,delta=None,forcedraft=False):
     even if the input object is an Arch object.'''
 
     prefix = getParam("ClonePrefix","")
+    cl = None
     if prefix:
         prefix = prefix.strip()+" "
     if not isinstance(obj,list):
@@ -2647,29 +2649,36 @@ def clone(obj,delta=None,forcedraft=False):
         if getType(obj[0]) == "BuildingPart":
             cl = Arch.makeComponent()
         else:
-            cl = getattr(Arch,"make"+obj[0].Proxy.Type)()
-        base = getCloneBase(obj[0])
-        cl.Label = prefix + base.Label
-        cl.CloneOf = base
-        if hasattr(cl,"Material") and hasattr(obj[0],"Material"):
-            cl.Material = obj[0].Material
-        if getType(obj[0]) != "BuildingPart":
-            cl.Placement = obj[0].Placement
-        try:
-            cl.Role = base.Role
-            cl.Description = base.Description
-            cl.Tag = base.Tag
-        except:
-            pass
-        if gui:
-            formatObject(cl,base)
-            cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
-            if getType(obj[0]) in ["Window","BuildingPart"]:
-                from DraftGui import todo
-                todo.delay(Arch.recolorize,cl)
-        select(cl)
-        return cl
-    else:
+            try:
+                clonfunc = getattr(Arch,"make"+obj[0].Proxy.Type)
+            except:
+                pass # not a standard Arch object... Fall back to Draft mode
+            else:
+                cl = clonefunc()
+        if cl:
+            base = getCloneBase(obj[0])
+            cl.Label = prefix + base.Label
+            cl.CloneOf = base
+            if hasattr(cl,"Material") and hasattr(obj[0],"Material"):
+                cl.Material = obj[0].Material
+            if getType(obj[0]) != "BuildingPart":
+                cl.Placement = obj[0].Placement
+            try:
+                cl.Role = base.Role
+                cl.Description = base.Description
+                cl.Tag = base.Tag
+            except:
+                pass
+            if gui:
+                formatObject(cl,base)
+                cl.ViewObject.DiffuseColor = base.ViewObject.DiffuseColor
+                if getType(obj[0]) in ["Window","BuildingPart"]:
+                    from DraftGui import todo
+                    todo.delay(Arch.recolorize,cl)
+            select(cl)
+            return cl
+    # fall back to Draft clone mode
+    if not cl:
         cl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Clone")
         cl.addExtension("Part::AttachExtensionPython", None)
         cl.Label = prefix + obj[0].Label
@@ -2679,7 +2688,7 @@ def clone(obj,delta=None,forcedraft=False):
     cl.Objects = obj
     if delta:
         cl.Placement.move(delta)
-    elif len(obj) == 1:
+    elif (len(obj) == 1) and hasattr(obj[0],"Placement"):
         cl.Placement = obj[0].Placement
     formatObject(cl,obj[0])
     if hasattr(cl,"LongName") and hasattr(obj[0],"LongName"):
@@ -5296,6 +5305,7 @@ class _BezCurve(_DraftObject):
         obj.addProperty("App::PropertyIntegerList","Continuity","Draft",QT_TRANSLATE_NOOP("App::Property","Continuity"))
         obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the Bezier curve should be closed or not"))
         obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this curve is closed"))
+        obj.addProperty("App::PropertyLength","Length","Draft",QT_TRANSLATE_NOOP("App::Property","The length of this object"))
         obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
@@ -5368,6 +5378,8 @@ class _BezCurve(_DraftObject):
             fp.Shape = w
             if hasattr(fp,"Area") and hasattr(w,"Area"):
                 fp.Area = w.Area
+            if hasattr(fp,"Length") and hasattr(w,"Length"):
+                fp.Length = w.Length            
         fp.Placement = plm
 
     @classmethod
@@ -6577,13 +6589,13 @@ class DraftLabel:
             elif obj.LabelType == "Area":
                 if obj.Target[0].isDerivedFrom("Part::Feature"):
                     if hasattr(obj.Target[0].Shape,"Area"):
-                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Area,FreeCAD.Units.Area).UserString]
+                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Area,FreeCAD.Units.Area).UserString.replace("^2","²")]
                     if obj.Target[1] and ("Face" in obj.Target[1][0]):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Faces[int(obj.Target[1][0][4:])-1].Area,FreeCAD.Units.Area).UserString]
             elif obj.LabelType == "Volume":
                 if obj.Target[0].isDerivedFrom("Part::Feature"):
                     if hasattr(obj.Target[0].Shape,"Volume"):
-                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Volume,FreeCAD.Units.Volume).UserString]
+                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Volume,FreeCAD.Units.Volume).UserString.replace("^3","³")]
 
     def onChanged(self,obj,prop):
         pass
@@ -6691,6 +6703,7 @@ class ViewProviderDraftLabel:
         self.onChanged(vobj,"LineColor")
         self.onChanged(vobj,"TextColor")
         self.onChanged(vobj,"ArrowSize")
+        self.onChanged(vobj,"Line")
 
     def getDisplayModes(self,vobj):
         return ["2D text","3D text"]

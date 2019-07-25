@@ -117,8 +117,11 @@
    </item>
    <item>
     <widget class="QCheckBox" name="namingBox">
+     <property name="toolTip">
+      <string>Extended naming containing info about element mode</string>
+     </property>
      <property name="text">
-      <string>Extended Naming</string>
+      <string>Extended naming</string>
      </property>
      <property name="checked">
       <bool>false</bool>
@@ -127,6 +130,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="autoSwitchBox">
+     <property name="toolTip">
+      <string>Only the type 'Edge' will be available for the list</string>
+     </property>
      <property name="text">
       <string>Auto-switch to Edge</string>
      </property>

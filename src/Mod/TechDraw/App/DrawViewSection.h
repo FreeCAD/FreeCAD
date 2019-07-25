@@ -40,7 +40,7 @@ class gp_Pln;
 class gp_Pnt;
 class TopoDS_Face;
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
 class Face;
 }
@@ -83,7 +83,7 @@ public:
     }
 
 public:
-    std::vector<TechDrawGeometry::Face*> getFaceGeometry();
+    std::vector<TechDraw::Face*> getFaceGeometry();
     Base::Vector3d getSectionVector (const std::string sectionName);
     TechDraw::DrawViewPart* getBaseDVP();
     TechDraw::DrawProjGroupItem* getBaseDPGI();

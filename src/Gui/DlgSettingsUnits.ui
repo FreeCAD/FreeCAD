@@ -44,6 +44,9 @@
         </item>
         <item>
          <widget class="QSpinBox" name="spinBoxDecimals">
+          <property name="toolTip">
+           <string>Number of decimals that should be shown for numbers and dimensions in FreeCAD</string>
+          </property>
           <property name="minimum">
            <number>1</number>
           </property>
@@ -65,6 +68,9 @@
         </item>
         <item>
          <widget class="QComboBox" name="comboBox_ViewSystem">
+          <property name="toolTip">
+           <string>Unit system that should be used for all parts of FreeCAD</string>
+          </property>
           <item>
            <property name="text">
             <string>Standard (mm/kg/s/degree)</string>
@@ -144,7 +150,7 @@
         <item>
          <widget class="QComboBox" name="comboBox_FracInch">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Minimum fractional inch to be displayed</string>
           </property>
           <item>
            <property name="text">

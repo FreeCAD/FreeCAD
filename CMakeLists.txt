@@ -1310,7 +1310,7 @@ message(STATUS "OCC:                 ${OCC_VERSION_STRING} [${OCC_LIBRARIES}]")
 
 if(BUILD_SMESH)
     if(FREECAD_USE_EXTERNAL_SMESH)
-        message(STATUS "SMESH:               ${SMESH_VERSION}")
+        message(STATUS "SMESH:               ${SMESH_VERSION_MAJOR}.${SMESH_VERSION_MINOR}.${SMESH_VERSION_PATCH}.${SMESH_VERSION_TWEAK}")
     else(FREECAD_USE_EXTERNAL_SMESH)
         message(STATUS "SMESH:               build internal")
         message(STATUS " MEDFile:            [${MEDFILE_LIBRARIES}] [${MEDFILE_INCLUDE_DIRS}]")

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>486</width>
-    <height>781</height>
+    <height>808</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -94,7 +94,7 @@
          <string>Global copy mode</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>copymode</cstring>

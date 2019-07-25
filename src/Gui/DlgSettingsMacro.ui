@@ -22,6 +22,9 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="PrefCheckBox_LocalEnv">
+        <property name="toolTip">
+         <string>Variables defined by macros are created as local variables</string>
+        </property>
         <property name="text">
          <string>Run macros in local environment</string>
         </property>
@@ -78,6 +81,9 @@
          </property>
          <item>
           <widget class="Gui::PrefCheckBox" name="PConsoleCheckBox">
+           <property name="toolTip">
+            <string>Commands executed by macro scripts are shown in Python console</string>
+           </property>
            <property name="text">
             <string>Show script commands in python console</string>
            </property>
@@ -135,6 +141,9 @@
          </property>
          <item row="0" column="0">
           <widget class="Gui::PrefCheckBox" name="PrefCheckBox_RecordGui">
+           <property name="toolTip">
+            <string>Recorded macros will also contain user interface commands</string>
+           </property>
            <property name="text">
             <string>Record GUI commands</string>
            </property>
@@ -151,6 +160,9 @@
          </item>
          <item row="1" column="0">
           <widget class="Gui::PrefCheckBox" name="PrefCheckBox_GuiAsComment">
+           <property name="toolTip">
+            <string>Recorded macros will also contain user interface commands as comments</string>
+           </property>
            <property name="text">
             <string>Record as comment</string>
            </property>

@@ -136,7 +136,6 @@ short DrawViewDetail::mustExecute() const
 void DrawViewDetail::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        //Base::Console().Message("TRACE - DVD::onChanged(%s) - %s\n",prop->getName(),Label.getValue());
         if (prop == &Reference) {
             std::string lblText = "Detail " +
                                   std::string(Reference.getValue());
@@ -157,9 +156,6 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
-
-    rebuildCosmoVertex();
-    rebuildCosmoEdge();
 
     App::DocumentObject* baseObj = BaseView.getValue();
     if (!baseObj)  {
@@ -221,7 +217,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     BRepBuilderAPI_Copy BuilderCopy(shape);
     TopoDS_Shape myShape = BuilderCopy.Shape();
 
-    gp_Pnt gpCenter = TechDrawGeometry::findCentroid(myShape,
+    gp_Pnt gpCenter = TechDraw::findCentroid(myShape,
                                                      dirDetail);
     Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
 
@@ -233,9 +229,9 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         viewAxis = dvp->getViewAxis(shapeCenter, dirDetail,false);
     }
 
-    myShape = TechDrawGeometry::moveShape(myShape,                     //centre on origin
+    myShape = TechDraw::moveShape(myShape,                     //centre on origin
                                           -shapeCenter);
-    gpCenter = TechDrawGeometry::findCentroid(myShape,                 //sb origin!
+    gpCenter = TechDraw::findCentroid(myShape,                 //sb origin!
                                               dirDetail);
     shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
 
@@ -293,7 +289,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     BRepBndLib::Add(detail, testBox);
     if (testBox.IsVoid()) {
 //        Base::Console().Warning("DrawViewDetail - detail area contains no geometry\n");
-        TechDrawGeometry::GeometryObject* go = getGeometryObject();
+        TechDraw::GeometryObject* go = getGeometryObject();
         if (go != nullptr) {
             go->clear();
         }
@@ -311,9 +307,9 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
 
     gp_Pnt inputCenter;
     try {
-        inputCenter = TechDrawGeometry::findCentroid(tool,
+        inputCenter = TechDraw::findCentroid(tool,
                                                      dirDetail);
-        TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(detail,
+        TopoDS_Shape mirroredShape = TechDraw::mirrorShape(detail,
                                                     inputCenter,
                                                     scale);
 
@@ -322,11 +318,11 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         double shapeRotate = dvp->Rotation.getValue();                      //degrees CW?
  
         if (!DrawUtil::fpCompare(shapeRotate,0.0)) {
-            mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,
+            mirroredShape = TechDraw::rotateShape(mirroredShape,
                                                           viewAxis,
                                                           shapeRotate);
         }
-        inputCenter = TechDrawGeometry::findCentroid(mirroredShape,
+        inputCenter = TechDraw::findCentroid(mirroredShape,
                                                      dirDetail);
 
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);
@@ -351,18 +347,12 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         return new App::DocumentObjectExecReturn(e1.GetMessageString());
     }
 
-    //add back the cosmetic vertices
-    for (auto& v: cosmoVertex) {
-        int idx = geometryObject->addRandomVertex(v->pageLocation * getScale());
-        v->linkGeom = idx;
-    }
-
+    //add the cosmetic vertices to the geometry vertices list
+    addCosmeticVertexesToGeom();
     //add the cosmetic Edges to geometry Edges list
-    for (auto& e: cosmoEdge) {
-        TechDrawGeometry::BaseGeom* scaledGeom = e->scaledGeometry(getScale());
-        int idx = geometryObject->addRandomEdge(scaledGeom);
-        e->linkGeom = idx;
-    }
+    addCosmeticEdgesToGeom();
+    //add centerlines to geometry edges list
+    addCenterLinesToGeom();
 
     requestPaint();
     dvp->requestPaint();  //to refresh detail highlight!

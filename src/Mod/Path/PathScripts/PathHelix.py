@@ -31,6 +31,7 @@ import PathScripts.PathOp as PathOp
 
 from PathScripts.PathUtils import fmt
 from PathScripts.PathUtils import findParentJob
+from PathScripts.PathUtils import sort_jobs
 from PySide import QtCore
 
 __title__ = "Path Helix Drill Operation"
@@ -39,8 +40,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of Helix Drill operation"
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2016"
-__scriptVersion__ = "1a testing"
-__lastModified__ = "2019-07-03 11:45 CST"
+__scriptVersion__ = "1b testing"
+__lastModified__ = "2019-07-12 09:50 CST"
 
 
 def translate(context, text, disambig=None):
@@ -70,6 +71,10 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
             obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
+    def opOnDocumentRestored(self, obj):
+        if not hasattr(obj, 'StartRadius'):
+            obj.addProperty("App::PropertyLength", "StartRadius", "Helix Drill", translate("PathHelix", "Starting Radius"))
+
     def circularHoleExecute(self, obj, holes):
         '''circularHoleExecute(obj, holes) ... generate helix commands for each hole in holes'''
         PathLog.track()
@@ -81,6 +86,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         output = ''
         output += "G0 Z" + fmt(zsafe)
 
+        holes = sort_jobs(holes, ['x', 'y'])
         for hole in holes:
             output += self.helix_cut(obj, hole['x'], hole['y'], hole['r'] / 2, float(obj.StartRadius.Value), (float(obj.StepOver.Value) / 50.0) * self.radius)
         PathLog.debug(output)

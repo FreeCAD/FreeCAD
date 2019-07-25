@@ -22,7 +22,7 @@
 
 /**
 
-  \if WEB_DOCUMENTATION
+
 
     \mainpage FreeCAD source documentation
 
@@ -50,7 +50,7 @@
     the source code documentation</a>. You can also browse through the <a href=https://github.com/FreeCAD/FreeCAD>source
     code on github</a>.
 
-  \endif
+
 
   \if DEV_DOCUMENTATION
 

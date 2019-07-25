@@ -37,6 +37,10 @@
 
 #include <Base/BoundBox.h>
 
+#include "PropertyGeomFormatList.h"
+#include "PropertyCenterLineList.h"
+#include "PropertyCosmeticEdgeList.h"
+#include "PropertyCosmeticVertexList.h"
 #include "DrawView.h"
 
 class gp_Pnt;
@@ -52,7 +56,7 @@ namespace App
 class Part;
 }
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
 class GeometryObject;
 class Vertex;
@@ -70,6 +74,8 @@ class DrawViewDetail;
 class DrawViewBalloon;
 class CosmeticVertex;
 class CosmeticEdge;
+class CenterLine;
+class GeomFormat;
 }
 
 namespace TechDraw
@@ -103,27 +109,35 @@ public:
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
 
-    App::PropertyStringList  CosmeticVertexList;
-    App::PropertyStringList  CosmeticEdgeList;
+    TechDraw::PropertyCosmeticVertexList CosmeticVertexes;
+    TechDraw::PropertyCosmeticEdgeList CosmeticEdges;
+    TechDraw::PropertyCenterLineList  CenterLines;
+    TechDraw::PropertyGeomFormatList  GeomFormats;
+
+    virtual short mustExecute() const;
+    virtual void onDocumentRestored() override;
+    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual const char* getViewProviderName(void) const {
+        return "TechDrawGui::ViewProviderViewPart";
+    }
+    virtual PyObject *getPyObject(void);
 
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
     std::vector<TechDraw::DrawViewBalloon*> getBalloons() const;
 
-    //TODO: are there use-cases for Python access to TechDrawGeometry???
-
-    const std::vector<TechDrawGeometry::Vertex *> & getVertexGeometry() const;
-    const std::vector<TechDrawGeometry::BaseGeom  *> & getEdgeGeometry() const;
-    const std::vector<TechDrawGeometry::BaseGeom  *> getVisibleFaceEdges() const;
-    const std::vector<TechDrawGeometry::Face *> & getFaceGeometry() const;
+    const std::vector<TechDraw::Vertex *> & getVertexGeometry() const;
+    const std::vector<TechDraw::BaseGeom  *> & getEdgeGeometry() const;
+    const std::vector<TechDraw::BaseGeom  *> getVisibleFaceEdges() const;
+    const std::vector<TechDraw::Face *> & getFaceGeometry() const;
 
     bool hasGeometry(void) const;
-    TechDrawGeometry::GeometryObject* getGeometryObject(void) const { return geometryObject; }
+    TechDraw::GeometryObject* getGeometryObject(void) const { return geometryObject; }
 
-    TechDrawGeometry::BaseGeom* getProjEdgeByIndex(int idx) const;               //get existing geom for edge idx in projection
-    TechDrawGeometry::Vertex* getProjVertexByIndex(int idx) const;               //get existing geom for vertex idx in projection
-    std::vector<TechDrawGeometry::BaseGeom*> getFaceEdgesByIndex(int idx) const;  //get edges for face idx in projection
+    TechDraw::BaseGeom* getGeomByIndex(int idx) const;               //get existing geom for edge idx in projection
+    TechDraw::Vertex* getProjVertexByIndex(int idx) const;           //get existing geom for vertex idx in projection
+    std::vector<TechDraw::BaseGeom*> getFaceEdgesByIndex(int idx) const;  //get edges for face idx in projection
 
     virtual Base::BoundBox3d getBoundingBox() const;
     double getBoxX(void) const;
@@ -140,24 +154,9 @@ public:
                                const Base::Vector3d& direction,
                                const bool flip=true) const;
 
-    virtual short mustExecute() const;
-//    virtual void onDocumentRestored() override;
-
     bool handleFaces(void);
     bool showSectionEdges(void);
 
-    /** @name methods override Feature */
-    //@{
-    /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    //@}
-
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "TechDrawGui::ViewProviderViewPart";
-    }
-    //return PyObject as DrawViewPartPy
-    virtual PyObject *getPyObject(void);
     bool isUnsetting(void) { return nowUnsetting; }
     
     gp_Pln getProjPlane(void) const;
@@ -167,32 +166,54 @@ public:
     virtual TopoDS_Shape getSourceShapeFused(void) const; 
     bool isIso(void) const;
 
-    virtual int addRandomVertex(Base::Vector3d pos);
-    virtual void removeRandomVertex(TechDraw::CosmeticVertex* cv);
-    virtual void removeRandomVertex(int idx);
-    const std::vector<TechDraw::CosmeticVertex*> & getCosmeticVertex(void) const { return cosmoVertex; }
+    virtual int addCosmeticVertex(Base::Vector3d pos);
+    virtual int addCosmeticVertex(CosmeticVertex* cv);
+    virtual void removeCosmeticVertex(TechDraw::CosmeticVertex* cv);
+    virtual void removeCosmeticVertex(int idx);
+    void replaceCosmeticVertex(int idx, TechDraw::CosmeticVertex* cv);
+    void replaceCosmeticVertexByGeom(int geomIndex, TechDraw::CosmeticVertex* cl);
     TechDraw::CosmeticVertex* getCosmeticVertexByIndex(int idx) const;
-    TechDraw::CosmeticVertex* getCosmeticVertexByLink(int idx) const;
-    void clearCV(void);
+    TechDraw::CosmeticVertex* getCosmeticVertexByGeom(int idx) const;
+    void clearCosmeticVertexes(void); 
+    void addCosmeticVertexesToGeom(void);
 
-    virtual int addRandomEdge(Base::Vector3d start, Base::Vector3d end);
-    virtual int addRandomEdge(TopoDS_Edge e);
-    virtual int addRandomEdge(TechDraw::CosmeticEdge*);
-    virtual void removeRandomEdge(TechDraw::CosmeticEdge* ce);
-    virtual void removeRandomEdge(int idx);
-    const std::vector<TechDraw::CosmeticEdge*> & getCosmeticEdge(void) const { return cosmoEdge; }
+    virtual int addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
+    virtual int addCosmeticEdge(TopoDS_Edge e);
+    virtual int addCosmeticEdge(TechDraw::CosmeticEdge*);
+    virtual void removeCosmeticEdge(TechDraw::CosmeticEdge* ce);
+    virtual void removeCosmeticEdge(int idx);
     TechDraw::CosmeticEdge* getCosmeticEdgeByIndex(int idx) const;
-    TechDraw::CosmeticEdge* getCosmeticEdgeByLink(int idx) const;
-    void clearCE(void);
+    TechDraw::CosmeticEdge* getCosmeticEdgeByGeom(int idx) const;
+    int getCosmeticEdgeIndex(TechDraw::CosmeticEdge* ce) const;
+    void replaceCosmeticEdge(int idx, TechDraw::CosmeticEdge* ce);
+    void replaceCosmeticEdgeByGeom(int geomIndex, TechDraw::CosmeticEdge* ce);
+    void clearCosmeticEdges(void);
+    void addCosmeticEdgesToGeom(void);
+
+    virtual int addCenterLine(TechDraw::CenterLine*);
+    virtual void removeCenterLine(TechDraw::CenterLine* cl);
+    virtual void removeCenterLine(int idx);
+    TechDraw::CenterLine* getCenterLineByIndex(int idx) const;
+    TechDraw::CenterLine* getCenterLineByGeom(int idx) const;
+    void replaceCenterLine(int idx, TechDraw::CenterLine* cl);
+    void replaceCenterLineByGeom(int geomIndex, TechDraw::CenterLine* cl);
+    void clearCenterLines(void);
+    void addCenterLinesToGeom(void);
+
+    int addGeomFormat(TechDraw::GeomFormat* gf);
+    virtual void removeGeomFormat(int idx);
+    TechDraw::GeomFormat* getGeomFormatByIndex(int idx) const;
+    TechDraw::GeomFormat* getGeomFormatByGeom(int idx) const;
+    void clearGeomFormats(void);
 
 protected:
-    TechDrawGeometry::GeometryObject *geometryObject;
+    TechDraw::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
     void onChanged(const App::Property* prop);
     virtual void unsetupObject();
 
-    virtual TechDrawGeometry::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis);
+    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis);
     void extractFaces();
 
     //Projection parameter space
@@ -206,19 +227,8 @@ protected:
     bool m_sectionEdges;
     bool m_handleFaces;
 
-    //Cosmetics
-    std::vector<TechDraw::CosmeticVertex*> cosmoVertex;
-    void rebuildCosmoVertex(void);
-    void stuffCosmeticVertexList(void);
-
-    std::vector<TechDraw::CosmeticEdge*> cosmoEdge;
-    void rebuildCosmoEdge(void);
-    void stuffCosmeticEdgeList(void);
-
-
 private:
     bool nowUnsetting;
-/*    bool m_restoreComplete;*/
 
 };
 

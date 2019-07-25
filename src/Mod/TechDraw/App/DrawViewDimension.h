@@ -137,6 +137,7 @@ public:
     arcPoints getArcPoints(void) {return m_arcPoints; }
     anglePoints getAnglePoints(void) {return m_anglePoints; }
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
+    bool references(std::string geomName) const;
 
 protected:
     void onChanged(const App::Property* prop);
@@ -152,10 +153,10 @@ protected:
 
 protected:
     Measure::Measurement *measurement;
-    double dist2Segs(Base::Vector2d s1,
-                     Base::Vector2d e1,
-                     Base::Vector2d s2,
-                     Base::Vector2d e2) const;
+    double dist2Segs(Base::Vector3d s1,
+                     Base::Vector3d e1,
+                     Base::Vector3d s2,
+                     Base::Vector3d e2) const;
     pointPair closestPoints(TopoDS_Shape s1,
                             TopoDS_Shape s2) const;
 

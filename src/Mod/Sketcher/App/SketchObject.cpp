@@ -80,6 +80,7 @@
 #include "SketchObject.h"
 #include "Sketch.h"
 #include <Mod/Sketcher/App/SketchObjectPy.h>
+#include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
 
 
 #undef DEBUG
@@ -87,6 +88,7 @@
 
 using namespace Sketcher;
 using namespace Base;
+
 
 const int GeoEnum::RtPnt  = -1;
 const int GeoEnum::HAxis  = -1;

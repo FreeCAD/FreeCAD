@@ -60,6 +60,7 @@ if open.__module__ in ['__builtin__','io']:
 # ************************************************************************************************
 # ********** templates and other definitions ****
 # which IFC type must create which FreeCAD type
+
 typesmap = {
     "Site": [
         "IfcSite"
@@ -185,7 +186,7 @@ END-ISO-10303-21;
 """
 
 # ************************************************************************************************
-# ********** some helper, used in import and export and exploerer
+# ********** some helper, used in import and export
 
 def decode(filename,utf=False):
 
@@ -196,6 +197,7 @@ def decode(filename,utf=False):
         encoding = "utf8" if utf else sys.getfilesystemencoding()
         filename = filename.encode(encoding)
     return filename
+
 
 def dd2dms(dd):
 
@@ -258,8 +260,10 @@ def getPreferences():
     ADD_DEFAULT_STOREY = p.GetBool("IfcAddDefaultStorey",False)
     ADD_DEFAULT_BUILDING = p.GetBool("IfcAddDefaultBuilding",True)
 
+
 # ************************************************************************************************
 # ********** open and import IFC ****************
+
 def open(filename,skip=[],only=[],root=None):
 
     "opens an IFC file in a new document"
@@ -336,13 +340,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if DEBUG: print("Building relationships table...",end="")
 
     # building relations tables
+    # TODO use inverse attributes, see https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
 
     objects = {} # { id:object, ... }
     prodrepr = {} # product/representations table
     additions = {} # { host:[child,...], ... }
     groups = {} # { host:[child,...], ... }     # used in structural IFC
     subtractions = [] # [ [opening,host], ... ]
-    properties = {} # { objid : { psetid : [propertyid, ... ], ... }, ... }
     colors = {} # { id:(r,g,b) }
     shapes = {} # { id:shaoe } only used for merge mode
     structshapes = {} # { id:shaoe } only used for merge mode
@@ -359,16 +363,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
         groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
     for r in ifcfile.by_type("IfcRelVoidsElement"):
         subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
-    for r in ifcfile.by_type("IfcRelDefinesByProperties"):
-        for obj in r.RelatedObjects:
-            if not obj.id() in properties:
-                properties[obj.id()] = {}
-            psets = {}
-            props = []
-            if r.RelatingPropertyDefinition.is_a("IfcPropertySet"):
-                props.extend([prop.id() for prop in r.RelatingPropertyDefinition.HasProperties])
-                psets[r.RelatingPropertyDefinition.id()] = props
-                properties[obj.id()].update(psets)
+    # properties = {} # { objid : { psetid : [propertyid, ... ], ... }, ... }
+    properties = getRelProperties(ifcfile)
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         for o in r.RelatedObjects:
             if r.RelatingMaterial.is_a("IfcMaterial"):
@@ -877,31 +873,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     # 0.18 behaviour: properties are saved as pset;;type;;value in IfcProperties
 
                     d = obj.IfcProperties
-                    for pset in properties[pid].keys():
-                        #print("adding pset",pset,"to object",obj.Label)
-                        psetname = ifcfile[pset].Name
-                        if six.PY2:
-                            psetname = psetname.encode("utf8")
-                        for prop in properties[pid][pset]:
-                            e = ifcfile[prop]
-                            pname = e.Name
-                            if six.PY2:
-                                pname = pname.encode("utf8")
-                            if e.is_a("IfcPropertySingleValue"):
-                                if e.NominalValue:
-                                    ptype = e.NominalValue.is_a()
-                                    if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
-                                        pvalue = e.NominalValue.wrappedValue
-                                        if six.PY2:
-                                            pvalue = pvalue.encode("utf8")
-                                    else:
-                                        pvalue = str(e.NominalValue.wrappedValue)
-                                    if hasattr(e.NominalValue,'Unit'):
-                                        if e.NominalValue.Unit:
-                                            pvalue += e.NominalValue.Unit
-                                    d[pname+";;"+psetname] = ptype+";;"+pvalue
-                                #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
-                    obj.IfcProperties = d
+                    obj.IfcProperties = getIfcProperties(ifcfile, pid, properties, d)
 
                 elif hasattr(obj,"IfcData"):
 
@@ -1276,6 +1248,52 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
 # ************************************************************************************************
 # ********** helper for import IFC **************
+
+def getRelProperties(ifcfile):
+
+    properties = {} # { objid : { psetid : [propertyid, ... ], ... }, ... }
+    for r in ifcfile.by_type("IfcRelDefinesByProperties"):
+        for obj in r.RelatedObjects:
+            if not obj.id() in properties:
+                properties[obj.id()] = {}
+            psets = {}
+            props = []
+            if r.RelatingPropertyDefinition.is_a("IfcPropertySet"):
+                props.extend([prop.id() for prop in r.RelatingPropertyDefinition.HasProperties])
+                psets[r.RelatingPropertyDefinition.id()] = props
+                properties[obj.id()].update(psets)
+    return properties
+
+
+def getIfcProperties(ifcfile, pid, properties, d):
+
+    for pset in properties[pid].keys():
+        #print("reading pset: ",pset)
+        psetname = ifcfile[pset].Name
+        if six.PY2:
+            psetname = psetname.encode("utf8")
+        for prop in properties[pid][pset]:
+            e = ifcfile[prop]
+            pname = e.Name
+            if six.PY2:
+                pname = pname.encode("utf8")
+            if e.is_a("IfcPropertySingleValue"):
+                if e.NominalValue:
+                    ptype = e.NominalValue.is_a()
+                    if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
+                        pvalue = e.NominalValue.wrappedValue
+                        if six.PY2:
+                            pvalue = pvalue.encode("utf8")
+                    else:
+                        pvalue = str(e.NominalValue.wrappedValue)
+                    if hasattr(e.NominalValue,'Unit'):
+                        if e.NominalValue.Unit:
+                            pvalue += e.NominalValue.Unit
+                    d[pname+";;"+psetname] = ptype+";;"+pvalue
+                #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
+    return d
+
+
 class recycler:
 
     "the compression engine - a mechanism to reuse ifc entities if needed"
@@ -1468,7 +1486,6 @@ class recycler:
 
 # ************************************************************************************************
 # ********** export IFC ****************
-
 
 def export(exportList,filename,colors=None):
 
@@ -1803,57 +1820,9 @@ def export(exportList,filename,colors=None):
 
                     psets = {}
                     for key,value in obj.IfcProperties.items():
-
-                            # in 0.18, properties in IfcProperties dict are stored as "key":"pset;;type;;value" or "key":"type;;value"
-                            # in 0.19, key = name;;pset, value = ptype;;value (because there can be several props with same name)
-
-                            pset = None
-                            pname = key
-                            if ";;" in pname:
-                                pname = key.split(";;")[0]
-                                pset = key.split(";;")[-1]
-                            value = value.split(";;")
-                            if len(value) == 3:
-                                pset = value[0]
-                                ptype = value[1]
-                                pvalue = value[2]
-                            elif len(value) == 2:
-                                if not pset:
-                                    pset = "Default property set"
-                                ptype = value[0]
-                                pvalue = value[1]
-                            else:
-                                if DEBUG:print("      unable to export property:",pname,value)
-                                continue
-
-                            #if DEBUG: print("      property ",pname," : ",pvalue.encode("utf8"), " (", str(ptype), ") in ",pset)
-                            if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
-                                if six.PY2:
-                                    pvalue = pvalue.encode("utf8")
-                            elif ptype == "IfcBoolean":
-                                if pvalue == ".T.":
-                                    pvalue = True
-                                else:
-                                    pvalue = False
-                            elif ptype == "IfcLogical":
-                                if pvalue.upper() == "TRUE":
-                                    pvalue = True
-                                else:
-                                    pvalue = False
-                            elif ptype == "IfcInteger":
-                                pvalue = int(pvalue)
-                            else:
-                                try:
-                                    pvalue = float(pvalue)
-                                except:
-                                    try:
-                                        pvalue = FreeCAD.Units.Quantity(pvalue).Value
-                                    except:
-                                        if six.PY2:
-                                            pvalue = pvalue.encode("utf8")
-                                        if DEBUG:print("      warning: unable to export property as numeric value:",pname,pvalue)
-                            p = ifcbin.createIfcPropertySingleValue(str(pname),str(ptype),pvalue)
-                            psets.setdefault(pset,[]).append(p)
+                        pset, pname, ptype, pvalue = getPropertyData(key,value)
+                        p = ifcbin.createIfcPropertySingleValue(str(pname),str(ptype),pvalue)
+                        psets.setdefault(pset,[]).append(p)
                     for pname,props in psets.items():
                         pset = ifcfile.createIfcPropertySet(
                             ifcopenshell.guid.new(),
@@ -2740,6 +2709,60 @@ def export(exportList,filename,colors=None):
 # ************************************************************************************************
 # ********** helper for export IFC **************
 
+def getPropertyData(key,value):
+
+    # in 0.18, properties in IfcProperties dict are stored as "key":"pset;;type;;value" or "key":"type;;value"
+    # in 0.19, key = name;;pset, value = ptype;;value (because there can be several props with same name)
+
+    pset = None
+    pname = key
+    if ";;" in pname:
+        pname = key.split(";;")[0]
+        pset = key.split(";;")[-1]
+    value = value.split(";;")
+    if len(value) == 3:
+        pset = value[0]
+        ptype = value[1]
+        pvalue = value[2]
+    elif len(value) == 2:
+        if not pset:
+            pset = "Default property set"
+        ptype = value[0]
+        pvalue = value[1]
+    else:
+        if DEBUG:print("      unable to export property:",pname,value)
+        return pset, pname, ptype, None
+
+    #if DEBUG: print("      property ",pname," : ",pvalue.encode("utf8"), " (", str(ptype), ") in ",pset)
+    if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
+        if six.PY2:
+            pvalue = pvalue.encode("utf8")
+    elif ptype == "IfcBoolean":
+        if pvalue == ".T.":
+            pvalue = True
+        else:
+            pvalue = False
+    elif ptype == "IfcLogical":
+        if pvalue.upper() == "TRUE":
+            pvalue = True
+        else:
+            pvalue = False
+    elif ptype == "IfcInteger":
+        pvalue = int(pvalue)
+    else:
+        try:
+            pvalue = float(pvalue)
+        except:
+            try:
+                pvalue = FreeCAD.Units.Quantity(pvalue).Value
+            except:
+                if six.PY2:
+                    pvalue = pvalue.encode("utf8")
+                if DEBUG:print("      warning: unable to export property as numeric value:",pname,pvalue)
+
+    # print('pset: {}, pname: {}, ptype: {}, pvalue: {}'.format(pset, pname, ptype, pvalue))
+    return pset, pname, ptype, pvalue
+
 
 def isStandardCase(obj,ifctype):
 
@@ -3049,7 +3072,7 @@ def getProfile(ifcfile,p):
         d = vec(p.Edges[0])
         d.normalize()
         pxvc = ifcbin.createIfcDirection(tuple(d))
-        povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
+        povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass))
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         #semiPerimeter = p.Length/2
         #diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
@@ -3271,16 +3294,16 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                         # old method
 
                         solids = []
+
+                        # if this is a clone, place back the shape in null position
+                        if tostore:
+                            fcshape.Placement = FreeCAD.Placement()
+
                         if fcshape.Solids:
                             dataset = fcshape.Solids
                         else:
                             dataset = fcshape.Shells
                             #if DEBUG: print("Warning! object contains no solids")
-
-                        # if this is a clone, place back the shapes in null position
-                        if tostore:
-                            for shape in dataset:
-                                shape.Placement = FreeCAD.Placement()
 
                         for fcsolid in dataset:
                             fcsolid.scale(0.001) # to meters
@@ -3366,6 +3389,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
     if shapes:
 
+        colorshapes = shapes # to keep track of individual shapes for coloring below
         if tostore:
             subrep = ifcfile.createIfcShapeRepresentation(context,'Body',solidType,shapes)
             xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
@@ -3385,6 +3409,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             solidType = "MappedRepresentation"
 
         # set surface style
+
         shapecolor = None
         diffusecolor = None
         transparency = 0.0
@@ -3405,18 +3430,18 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             transparency = obj.ViewObject.Transparency/100.0
             if hasattr(obj.ViewObject,"DiffuseColor"):
                 diffusecolor = obj.ViewObject.DiffuseColor
-        if shapecolor:
+        if shapecolor and (shapetype != "clone"): # cloned objects are already colored
             key = None
             rgbt = [shapecolor+(transparency,) for shape in shapes]
             if diffusecolor \
                     and (len(diffusecolor) == len(obj.Shape.Faces)) \
-                    and (len(obj.Shape.Solids) == len(shapes)):
+                    and (len(obj.Shape.Solids) == len(colorshapes)):
                 i = 0
                 rgbt = []
                 for sol in obj.Shape.Solids:
                     rgbt.append(diffusecolor[i])
                     i += len(sol.Faces)
-            for i,shape in enumerate(shapes):
+            for i,shape in enumerate(colorshapes):
                 key = rgbt[i]
                 #if hasattr(obj,"Material"):
                 #    if obj.Material:

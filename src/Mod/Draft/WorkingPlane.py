@@ -207,7 +207,9 @@ class plane:
 
 
     def alignToCurve(self, shape, offset):
-        if shape.ShapeType == 'Edge':
+        if shape.isNull():
+            return False
+        elif shape.ShapeType == 'Edge':
             #??? TODO: process curve here.  look at shape.edges[0].Curve
             return False
         elif shape.ShapeType == 'Wire':

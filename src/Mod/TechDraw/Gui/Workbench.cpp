@@ -93,7 +93,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_CosmeticVertex";
     *draw << "TechDraw_Midpoints";
     *draw << "TechDraw_Quadrant";
+    *draw << "TechDraw_FaceCenterLine";
+    *draw << "TechDraw_2LineCenterLine";
+    *draw << "TechDraw_2PointCenterLine";
     *draw << "TechDraw_CosmeticEraser";
+    *draw << "TechDraw_DecorateLine";
+    *draw << "TechDraw_ShowAll";
 
     return root;
 }
@@ -156,9 +161,13 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_RichAnno";
     *anno << "TechDraw_CosmeticVertexGrp";
-    *anno << "TechDraw_FaceCenterLine";
+    *anno << "TechDraw_CenterLineGrp";
+//    *anno << "TechDraw_FaceCenterLine";
+//    *anno << "TechDraw_2LineCenterLine";
+//    *anno << "TechDraw_2PointCenterLine";
     *anno << "TechDraw_CosmeticEraser";
-
+    *anno << "TechDraw_DecorateLine";
+    *anno << "TechDraw_ShowAll";
     return root;
 }
 
@@ -218,8 +227,13 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_RichAnno";
     *anno << "TechDraw_CosmeticVertexGrp";
-    *anno << "TechDraw_FaceCenterLine";
+    *anno << "TechDraw_CenterLineGrp";
+//    *anno << "TechDraw_FaceCenterLine";
+//    *anno << "TechDraw_2LineCenterLine";
+//    *anno << "TechDraw_2PointCenterLine";
     *anno << "TechDraw_CosmeticEraser";
+    *anno << "TechDraw_DecorateLine";
+    *anno << "TechDraw_ShowAll";
 
     return root;
 }

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Abaqus INP</string>
+   <string>INP</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="1" column="0">
@@ -38,7 +38,10 @@
         <item row="1" column="1">
          <widget class="Gui::PrefCheckBox" name="checkBoxWriteGroups">
           <property name="toolTip">
-           <string>If checked, the mesh groups from the mesh are exported as well.</string>
+           <string>Mesh groups are exported too.
+Every constraint and, if there are different materials, material
+consists of two mesh groups, faces and nodes where the
+constraint or material is applied.</string>
           </property>
           <property name="text">
            <string/>
@@ -64,7 +67,13 @@
         <item row="0" column="1">
          <widget class="Gui::PrefComboBox" name="comboBoxElemChoiceParam">
           <property name="toolTip">
-           <string>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</string>
+           <string>All: All elements will be exported.
+
+Highest: Only the highest elements will be exported. This means
+for means volumes for a volume mesh and faces for a shell mesh.
+
+FEM: Only FEM elements will be exported. This means only edges
+not belonging to faces and faces not belonging to volumes.</string>
           </property>
           <property name="statusTip">
            <string/>

@@ -38,7 +38,7 @@ namespace TechDraw
 class DrawPage;
 class DrawViewClip;
 class DrawLeaderLine;
-class CosmeticVertex;
+/*class CosmeticVertex;*/
 
 /** Base class of all View Features in the drawing module
  */

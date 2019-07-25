@@ -192,6 +192,7 @@ Geometry::Geometry()
 
 Geometry::~Geometry()
 {
+
 }
 
 // Persistence implementer
@@ -202,22 +203,148 @@ unsigned int Geometry::getMemSize (void) const
 
 void Geometry::Save(Base::Writer &writer) const
 {
+    if( extensions.size()>0 ) {
+
+        writer.incInd();
+
+        writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << extensions.size() << "\">" << endl;
+
+        for(auto att:extensions) {
+            att->Save(writer);
+        }
+
+        writer.decInd();
+        writer.Stream() << writer.ind() << "</GeoExtensions>" << endl;
+    }
+
     const char c = Construction?'1':'0';
     writer.Stream() << writer.ind() << "<Construction value=\"" <<  c << "\"/>" << endl;
 }
 
 void Geometry::Restore(Base::XMLReader &reader)
 {
-    // read my Element
-    reader.readElement("Construction");
-    // get the value of my Attribute
+    reader.readElement();
+
+    if(strcmp(reader.localName(),"GeoExtensions") == 0) {
+
+        int count = reader.getAttributeAsInteger("count");
+
+        for (int i = 0; i < count; i++) {
+            reader.readElement("GeoExtension");
+            const char* TypeName = reader.getAttribute("type");
+            Base::Type type = Base::Type::fromName(TypeName);
+            GeometryExtension *newE = (GeometryExtension *)type.createInstance();
+            newE->Restore(reader);
+
+            extensions.push_back(std::shared_ptr<GeometryExtension>(newE));
+        }
+
+        reader.readEndElement("GeoExtensions");
+
+        reader.readElement("Construction"); // prepare for reading construction attribute
+    }
+    else if(strcmp(reader.localName(),"Construction") != 0) { // ignore anything not known
+        reader.readElement("Construction");
+    }
+
     Construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+
 }
 
 boost::uuids::uuid Geometry::getTag() const
 {
     return tag;
 }
+
+const std::vector<std::weak_ptr<GeometryExtension>> Geometry::getExtensions() const
+{
+    std::vector<std::weak_ptr<GeometryExtension>> wp;
+
+    for(auto & ext:extensions)
+        wp.push_back(ext);
+
+    return wp;
+}
+
+bool Geometry::hasExtension(Base::Type type) const
+{
+    for( auto ext : extensions) {
+        if(ext->getTypeId() == type)
+            return true;
+    }
+
+    return false;
+}
+
+bool Geometry::hasExtension(std::string name) const
+{
+    for( auto ext : extensions) {
+        if(ext->getName() == name)
+            return true;
+    }
+
+    return false;
+}
+
+const std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type) const
+{
+    for( auto ext : extensions) {
+        if(ext->getTypeId() == type)
+            return ext;
+    }
+
+    throw Base::ValueError("No geometry extension of the requested type.");
+}
+
+const std::weak_ptr<GeometryExtension> Geometry::getExtension(std::string name) const
+{
+    for( auto ext : extensions) {
+        if(ext->getName() == name)
+            return ext;
+    }
+
+    throw Base::ValueError("No geometry extension with the requested name.");
+}
+
+void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geo)
+{
+    bool hasext=false;
+
+    for( auto & ext : extensions) {
+        // if same type and name, this modifies the existing extension.
+        if( ext->getTypeId() == geo->getTypeId() &&
+            ext->getName() == geo->getName()){
+            ext = std::move(geo);
+            hasext = true;
+        }
+    }
+
+    if(!hasext) // new type-name unique id, so add.
+        extensions.push_back(std::move(geo));
+}
+
+void Geometry::deleteExtension(Base::Type type)
+{
+    extensions.erase(
+        std::remove_if( extensions.begin(),
+                        extensions.end(),
+                        [&type](const std::shared_ptr<GeometryExtension>& ext){
+                            return ext->getTypeId() == type;
+                        }),
+        extensions.end());
+}
+
+void Geometry::deleteExtension(std::string name)
+{
+    extensions.erase(
+        std::remove_if( extensions.begin(),
+                        extensions.end(),
+                        [&name](const std::shared_ptr<GeometryExtension>& ext){
+                            return ext->getName() == name;
+                        }),
+        extensions.end());
+}
+
 
 void Geometry::createNewTag()
 {
@@ -246,6 +373,10 @@ Geometry *Geometry::clone(void) const
 {
     Geometry* cpy = this->copy();
     cpy->tag = this->tag;
+
+    for(auto & ext: extensions)
+        cpy->extensions.push_back(std::move(ext->copy()));
+
     return cpy;
 }
 

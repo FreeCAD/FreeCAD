@@ -29,6 +29,8 @@
 # include <QContextMenuEvent>
 # include <QTextCursor>
 # include <QTextStream>
+# include <QDockWidget>
+# include <QPointer>
 #endif
 
 #include <Base/Interpreter.h>
@@ -37,6 +39,8 @@
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
 #include "BitmapFactory.h"
+#include "MainWindow.h"
+#include "Application.h"
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -223,6 +227,54 @@ private:
     ReportHighlighter::Paragraph par;
     QString msg;
 };
+
+// ----------------------------------------------------------
+
+/**
+ * The ReportOutputObserver class is used to check if messages sent to the
+ * report view are warnings or errors, and if so and if the user has not
+ * disabled this in preferences, the report view is toggled on so the
+ * user always gets the warnings/errors
+ */
+
+ReportOutputObserver::ReportOutputObserver(ReportOutput *report)
+{
+    this->reportView = report;
+}
+
+bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::User && obj == reportView.data()) {
+        CustomReportEvent* cr = dynamic_cast<CustomReportEvent*>(event);
+        if (cr) {
+            ReportHighlighter::Paragraph msgType = cr->messageType();
+            if (msgType == ReportHighlighter::Error || msgType == ReportHighlighter::Warning){
+                ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
+
+                if (group->GetBool("checkShowReportViewOnWarningOrError", true)) {
+                    // get the QDockWidget parent of the report view
+                    QDockWidget* dw = nullptr;
+                    QWidget* par = reportView->parentWidget();
+                    while (par) {
+                        dw = qobject_cast<QDockWidget*>(par);
+                        if (dw)
+                            break;
+                        par = par->parentWidget();
+                    }
+
+                    if (dw && !dw->toggleViewAction()->isChecked()) {
+                        dw->toggleViewAction()->activate(QAction::Trigger);
+                    }
+                }
+            }
+        }
+        return false;  //true would prevent the messages reaching the report view
+    }
+
+    // standard event processing
+    return QObject::eventFilter(obj, event);
+}
 
 // ----------------------------------------------------------
 
@@ -470,6 +522,10 @@ void ReportOutput::onToggleError()
     getWindowParameter()->SetBool( "checkError", bErr );
 }
 
+void ReportOutput::onToggleShowReportViewOnWarningOrError(){
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarningOrError", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnWarningOrError", !show);
+}
 void ReportOutput::onToggleWarning()
 {
     bWrn = bWrn ? false : true;
