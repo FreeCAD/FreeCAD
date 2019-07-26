@@ -21,12 +21,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   Focus: 4th-axis integration                                           *
-# *   by Russell Johnson  <russ4262@gmail.com>                              *
-# *                                                                         *
-# ***************************************************************************
 
 import ArchPanel
 import FreeCAD
@@ -44,22 +38,15 @@ __title__ = "Path Profile Faces Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Profile operation based on faces."
-__contributors__ = "russ4262 (Russell Johnson)"
+__contributors__ = "russ4262 (Russell Johnson, russ4262@gmail.com)"
 __created__ = "2014"
-__scriptVersion__ = "2i testing"
-__lastModified__ = "2019-06-29 23:05 CST"
+__scriptVersion__ = "2j usable"
+__lastModified__ = "2019-07-25 14:48 CST"
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+LOGLEVEL = PathLog.Level.INFO  # change to .DEBUG to enable debugging messages
+PathLog.setLevel(LOGLEVEL, PathLog.thisModule())
 
 # Qt translation handling
-
-
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -217,9 +204,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                     drillable = PathUtils.isDrillable(shape, wire)
                     if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
-                        PathLog.track()
                         env = PathUtils.getEnvelope(shape, subshape=f, depthparams=self.depthparams)
-                        # shapes.append((env, True))
                         tup = env, True, 'pathProfileFaces', angle, axis, strDep, finDep
                         shapes.append(tup)
 
@@ -229,18 +214,17 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
                 if obj.processPerimeter:
                     if obj.HandleMultipleFeatures == 'Collectively':
-                        PathLog.track()
                         try:
                             env = PathUtils.getEnvelope(base.Shape, subshape=profileshape, depthparams=self.depthparams)
                         except Exception: # pylint: disable=broad-except
                             # PathUtils.getEnvelope() failed to return an object.
                             PathLog.error(translate('Path', 'Unable to create path for face(s).'))
                         else:
-                            # shapes.append((env, False))
                             tup = env, False, 'pathProfileFaces', angle, axis, strDep, finDep
                             shapes.append(tup)
                     elif obj.HandleMultipleFeatures == 'Individually':
                         for shape in faces:
+                            profShape = Part.makeCompound([shape])
                             finalDep = obj.FinalDepth.Value
                             custDepthparams = self.depthparams
                             if obj.Side == 'Inside':
@@ -255,7 +239,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                         z_finish_step=finish_step,
                                         final_depth=finalDep,  # obj.FinalDepth.Value,
                                         user_depths=None)
-                            env = PathUtils.getEnvelope(base.Shape, subshape=shape, depthparams=custDepthparams)
+                            env = PathUtils.getEnvelope(base.Shape, subshape=profShape, depthparams=custDepthparams)
                             tup = env, False, 'pathProfileFaces', angle, axis, strDep, finalDep
                             shapes.append(tup)
 
@@ -275,7 +259,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                     if (drillable and obj.processCircles) or (not drillable and obj.processHoles):
                                         f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                                         env = PathUtils.getEnvelope(self.model[0].Shape, subshape=f, depthparams=self.depthparams)
-                                        # shapes.append((env, True))
                                         tup = env, True, 'pathProfileFaces', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
                                         shapes.append(tup)
 
@@ -284,7 +267,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                 for wire in shape.Wires:
                                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                                     env = PathUtils.getEnvelope(self.model[0].Shape, subshape=f, depthparams=self.depthparams)
-                                    # shapes.append((env, False))
                                     tup = env, False, 'pathProfileFaces', 0.0, 'X', obj.StartDepth.Value, obj.FinalDepth.Value
                                     shapes.append(tup)
 
