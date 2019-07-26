@@ -1544,8 +1544,9 @@ def export(exportList,filename,colors=None):
     context = ifcfile.by_type("IfcGeometricRepresentationContext")[0]
     project = ifcfile.by_type("IfcProject")[0]
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
-    trueNorthX = math.tan(-Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian)) # we assume one site and one representation context only
-    context.TrueNorth.DirectionRatios = (trueNorthX, 1., 1.)
+    if(Draft.getObjectsOfType(objectslist, "Site")):  # we assume one site and one representation context only
+        trueNorthX = math.tan(-Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian))
+        context.TrueNorth.DirectionRatios = (trueNorthX, 1., 1.)
     annotations = []
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):
