@@ -253,7 +253,10 @@ class ObjectFace(PathPocketBase.ObjectPocket):
 
 
 def SetupProperties():
-    return PathPocketBase.SetupProperties().extend(["BoundaryShape", "ExcludeRaisedAreas"])
+    setup = PathPocketBase.SetupProperties()
+    setup.append("BoundaryShape")
+    setup.append("ExcludeRaisedAreas")
+    return setup
 
 
 def Create(name, obj=None):
