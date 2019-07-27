@@ -232,6 +232,7 @@ class CommandAddonManager:
             self.check_worker = CheckWBWorker(self.repos)
             self.check_worker.mark.connect(self.mark)
             self.check_worker.enable.connect(self.enable_updates)
+            self.check_worker.addon_repos.connect(self.update_repos)
             self.check_worker.start()
 
     def apply_updates(self):
@@ -263,7 +264,7 @@ class CommandAddonManager:
         addonicon = QtGui.QIcon(":/icons/" + addon_repo[0] + "_workbench_icon.svg")
         if addonicon.isNull():
             addonicon = QtGui.QIcon(":/icons/Group.svg")
-        if addon_repo[2] == 1:
+        if addon_repo[2] > 0:
             item = QtGui.QListWidgetItem(addonicon,str(addon_repo[0]) + str(" ("+translate("AddonsInstaller","Installed")+")"))
             item.setForeground(QtGui.QBrush(QtGui.QColor(0,182,41)))
             self.dialog.listWorkbenches.addItem(item)
@@ -348,7 +349,7 @@ class CommandAddonManager:
 
     def update_repos(self, repos):
 
-        """convenience function to update the internal list of workbenches"""
+        """this function allows threads to update the main list of workbenches"""
 
         self.repos = repos
 
