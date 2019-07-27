@@ -31,6 +31,7 @@
 #endif
 
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -159,6 +160,20 @@ void EditDatumDialog::exec(bool atCursor)
                     }
 
                     QString constraintName = ui_ins_datum.name->text().trimmed();
+
+                    /** check for invalid characters in constraint name, warn user if any are found */
+                    QRegExp re(QString::fromLatin1("[^\\d\\w]"));
+                    int idx = re.indexIn(constraintName);
+                    if(idx != -1){
+                        QString invalid = QString(constraintName[idx]);
+                        invalid.replace(QString::fromLatin1(" "),QString::fromLatin1("space"));
+                        Base::Console().Warning((tr("Constraint name") + QString::fromLatin1(": \"")
+                                                 + constraintName + QString::fromLatin1("\" ")
+                                                 + tr("is invalid. Bad character")
+                                                 + QString::fromLatin1(": \"") + invalid
+                                                 + QString::fromLatin1("\"\n")).toStdString().c_str());
+                    }
+
                     if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
                         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
                         FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
