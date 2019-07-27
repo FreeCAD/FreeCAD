@@ -36,7 +36,7 @@ if FreeCAD.GuiUp:
 else:
     FreeCADGui = None
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt,txt,utf8_decode=True):
         return txt
     # \endcond
 
