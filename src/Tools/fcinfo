@@ -108,7 +108,9 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
                 self.contents[self.obj] += " (" + s + ")"
 
         elif tag == "Property":
-            self.prop = attributes["name"]
+            self.prop = None
+            if attributes["name"] not in ["Symbol"]:
+                self.prop = attributes["name"]
 
         elif tag in ["String","Uuid","Float","Integer","Bool","Link"]:
             if self.prop and ("value" in attributes):
