@@ -158,7 +158,11 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
-           <widget class="QLineEdit" name="EditProperty"/>
+           <widget class="QLineEdit" name="EditProperty">
+            <property name="placeholderText">
+             <string>name of the parameter</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="ButtonAddProperty">
