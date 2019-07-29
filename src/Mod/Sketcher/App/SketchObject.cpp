@@ -6333,7 +6333,7 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
 
 int SketchObject::evaluateName(const QString candidateName) const
 {
-    QRegExp re(QString::fromLatin1("[^\\d\\w]"));
+    QRegExp re(QString::fromLatin1("[^\\d\\w]|^_|^\\d"));
     return re.indexIn(candidateName);
 }
 
