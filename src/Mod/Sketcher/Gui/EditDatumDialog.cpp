@@ -162,7 +162,7 @@ void EditDatumDialog::exec(bool atCursor)
                     QString constraintName = ui_ins_datum.name->text().trimmed();
 
                     /** check for invalid characters in constraint name, warn user if any are found */
-                    QRegExp re(QString::fromLatin1("[^\\d\\w]"));
+                    QRegExp re(QString::fromLatin1("[^\\d\\w]|^_|^\\d"));
                     int idx = re.indexIn(constraintName);
                     if(idx != -1){
                         QString invalid = QString(constraintName[idx]);

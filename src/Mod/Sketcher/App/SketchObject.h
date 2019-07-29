@@ -319,6 +319,12 @@ public:
     bool evaluateConstraints() const;
     /// Remove constraints with invalid indexes
     void validateConstraints();
+    /// looks for invalid characters, returns index of first invalid character or -1 if none
+    int evaluateName(const QString) const;
+    /// check if constraint name is valid
+    bool evaluateConstraintName(const Constraint *constraint) const;
+    /// check constraint names
+    bool evaluateConstraintNames() const;
     /// Checks if support is valid
     bool evaluateSupport(void);
     /// validate External Links (remove invalid external links)
