@@ -6329,6 +6329,31 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
     return ret;
 }
 
+/** returns the index of first invalid character or -1 if none */
+
+int SketchObject::evaluateName(const QString candidateName) const
+{
+    QRegExp re(QString::fromLatin1("[^\\d\\w]"));
+    return re.indexIn(candidateName);
+}
+
+bool SketchObject::evaluateConstraintName(const Constraint *constraint) const
+{
+    return evaluateName(QString::fromLatin1(constraint->Name.c_str())) == -1;
+}
+
+bool SketchObject::evaluateConstraintNames() const
+{
+    const std::vector<Sketcher::Constraint *>& constraints = Constraints.getValuesForce();
+    std::vector<Sketcher::Constraint *>::const_iterator it;
+    for (it = constraints.begin(); it != constraints.end(); ++it) {
+        if (!evaluateConstraintName(*it))
+            return false;
+    }
+    return true;
+}
+
+
 bool SketchObject::evaluateConstraints() const
 {
     int intGeoCount = getHighestCurveIndex() + 1;

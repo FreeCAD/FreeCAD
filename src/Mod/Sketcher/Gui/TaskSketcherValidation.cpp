@@ -28,6 +28,7 @@
 # include <QDoubleValidator>
 # include <QLocale>
 # include <QMessageBox>
+# include <QInputDialog>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -57,6 +58,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
+#include <Gui/Command.h>
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -71,6 +73,7 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
     ui->fixConstraint->setEnabled(false);
     ui->swapReversed->setEnabled(false);
     ui->checkBoxIgnoreConstruction->setEnabled(true);
+    ui->fixInvalidConstraintNames->setEnabled(false);
     double tolerances[8] = {
         Precision::Confusion() / 100,
         Precision::Confusion() / 10,
@@ -162,6 +165,55 @@ void SketcherValidation::on_fixButton_clicked()
     Gui::WaitCursor wc;
     doc->commitTransaction();
     doc->recompute();
+}
+
+void SketcherValidation::on_findInvalidConstraintNames_clicked(){
+    if (sketch->evaluateConstraintNames()) {
+        ui->groupBox_5->setTitle(tr("No invalid constraint names found"));
+        ui->fixInvalidConstraintNames->setEnabled(false);
+    }
+    else {
+        ui->groupBox_5->setStyleSheet(QString::fromLatin1("QGroupBox::title {color:red}"));
+        ui->groupBox_5->setTitle(tr("Invalid constraint names found"));
+        ui->fixInvalidConstraintNames->setEnabled(true);
+    }
+}
+
+void SketcherValidation::on_fixInvalidConstraintNames_clicked(){
+
+    const std::vector<Sketcher::Constraint *>& constraints = sketch->Constraints.getValuesForce();
+    std::vector<Sketcher::Constraint *>::const_iterator it;
+    for (it = constraints.begin(); it != constraints.end(); ++it) {
+        if (!sketch->evaluateConstraintName(*it)){
+            bool ok;
+            int idx = sketch->evaluateName(QString::fromLatin1((*it)->Name.c_str()));
+            QString newNameCandidate = QString::fromLatin1((*it)->Name.c_str());
+            while(idx != -1){
+                newNameCandidate[idx] = QChar::fromLatin1('_');
+                idx = sketch->evaluateName(newNameCandidate);
+            }
+            QString text = QInputDialog::getText(this, tr("Rename constraint"),
+                                                 tr("Enter new name for constraint: ")+QString::fromLatin1((*it)->Name.c_str()),
+                                                 QLineEdit::Normal, newNameCandidate, &ok);
+            if (ok){
+                if (sketch->evaluateName(text) == -1){
+                    Gui::Command::doCommand(Gui::Command::Gui,"App.ActiveDocument.%s.renameConstraint(%i,\'%s\')\n",
+                                            sketch->getNameInDocument(),
+                                            it - constraints.begin(),
+                                            text.toStdString().c_str());
+                } else {
+                    QMessageBox::critical(this,tr("Invalid name"),tr("Name is invalid"));
+                }
+            } else {
+                break; //user canceled
+            }
+        }
+
+    }
+    ui->groupBox_5->setStyleSheet(QString::fromLatin1("QGroupBox::title {color:black}"));
+    ui->groupBox_5->setTitle(tr("Constraint name checking"));
+    ui->fixInvalidConstraintNames->setEnabled(false);
+
 }
 
 void SketcherValidation::on_highlightButton_clicked()

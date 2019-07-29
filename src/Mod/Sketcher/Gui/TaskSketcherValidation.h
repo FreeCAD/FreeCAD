@@ -58,6 +58,8 @@ private Q_SLOTS:
     void on_orientLockEnable_clicked();
     void on_orientLockDisable_clicked();
     void on_delConstrExtr_clicked();
+    void on_findInvalidConstraintNames_clicked();
+    void on_fixInvalidConstraintNames_clicked();
 
 private:
     void showPoints(const std::vector<Base::Vector3d>&);
