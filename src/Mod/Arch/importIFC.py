@@ -343,6 +343,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     # building relations tables
     # TODO use inverse attributes, see https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
+    # done for properties
 
     objects = {} # { id:object, ... }
     prodrepr = {} # product/representations table
@@ -365,8 +366,6 @@ def insert(filename,docname,skip=[],only=[],root=None):
         groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
     for r in ifcfile.by_type("IfcRelVoidsElement"):
         subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
-    # properties = {} # { objid : { psetid : [propertyid, ... ], ... }, ... }
-    properties = getRelProperties(ifcfile)
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         for o in r.RelatedObjects:
             if r.RelatingMaterial.is_a("IfcMaterial"):
@@ -462,12 +461,15 @@ def insert(filename,docname,skip=[],only=[],root=None):
         ptype = product.is_a()
         if DEBUG: print(count,"/",len(products),"object #"+str(pid),":",ptype,end="")
 
+        # get psets
+        psets = getIfcPropertySets(ifcfile, pid)
+
         # checking for full FreeCAD parametric definition, overriding everything else
 
-        if pid in properties.keys() and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("IfcImportFreeCADProperties",False):
-            if "FreeCADPropertySet" in [ifcfile[pset].Name for pset in properties[pid].keys()]:
+        if psets and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("IfcImportFreeCADProperties",False):
+            if "FreeCADPropertySet" in [ifcfile[pset].Name for pset in psets.keys()]:
                 if DEBUG: print(" restoring from parametric definition...",end="")
-                obj = createFromProperties(properties[pid],ifcfile)
+                obj = createFromProperties(psets,ifcfile)
                 if obj:
                     objects[pid] = obj
                     if DEBUG: print("done")
@@ -816,7 +818,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             # handle properties
 
-            if pid in properties:
+            if psets:
 
                 if IMPORT_PROPERTIES and hasattr(obj,"IfcProperties"):
 
@@ -831,11 +833,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
                     ifc_spreadsheet = Arch.makeIfcSpreadsheet()
                     n=2
-                    for c in properties[pid].keys():
+                    for c in psets.keys():
                         o = ifcfile[c]
                         if DEBUG: print("propertyset Name",o.Name,type(o.Name))
                         catname = o.Name
-                        for p in properties[pid][c]:
+                        for p in psets[c]:
                             l = ifcfile[p]
                             lname = l.Name
                             if l.is_a("IfcPropertySingleValue"):
@@ -869,15 +871,15 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     # 0.18 behaviour: properties are saved as pset;;type;;value in IfcProperties
 
                     d = obj.IfcProperties
-                    obj.IfcProperties = getIfcProperties(ifcfile, pid, properties, d)
+                    obj.IfcProperties = getIfcProperties(ifcfile, pid, psets, d)
 
                 elif hasattr(obj,"IfcData"):
 
                     # 0.17: properties are saved as type(value) in IfcData
 
                     a = obj.IfcData
-                    for c in properties[pid].keys():
-                        for p in properties[pid][c]:
+                    for c in psets.keys():
+                        for p in psets[c]:
                             l = ifcfile[p]
                             if l.is_a("IfcPropertySingleValue"):
                                 a[l.Name.encode("utf8")] = str(l.NominalValue) # no py3 support here
@@ -1262,6 +1264,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
 def getRelProperties(ifcfile):
 
+    # this method no longer used by this importer module
+    # but this relation table might be useful anyway for other purposes
+
     properties = {} # { objid : { psetid : [propertyid, ... ], ... }, ... }
     for r in ifcfile.by_type("IfcRelDefinesByProperties"):
         for obj in r.RelatedObjects:
@@ -1276,14 +1281,29 @@ def getRelProperties(ifcfile):
     return properties
 
 
-def getIfcProperties(ifcfile, pid, properties, d):
+def getIfcPropertySets(ifcfile, pid):
 
-    for pset in properties[pid].keys():
+    # get psets for this pid
+    psets = {}
+    for rel in ifcfile[pid].IsDefinedBy:
+        # the following if condition is needed in IFC2x3 only
+        # https://forum.freecadweb.org/viewtopic.php?f=39&t=37892#p322884
+        if rel.is_a('IfcRelDefinesByProperties'):
+            props = []
+            if rel.RelatingPropertyDefinition.is_a("IfcPropertySet"):
+                props.extend([prop.id() for prop in rel.RelatingPropertyDefinition.HasProperties])
+                psets[rel.RelatingPropertyDefinition.id()] = props
+    return psets
+
+
+def getIfcProperties(ifcfile, pid, psets, d):
+
+    for pset in psets.keys():
         #print("reading pset: ",pset)
         psetname = ifcfile[pset].Name
         if six.PY2:
             psetname = psetname.encode("utf8")
-        for prop in properties[pid][pset]:
+        for prop in psets[pset]:
             e = ifcfile[prop]
             pname = e.Name
             if six.PY2:
