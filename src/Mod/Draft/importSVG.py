@@ -1233,7 +1233,8 @@ class svgHandler(xml.sax.ContentHandler):
 
                 # Process ellipses
                 if (name == "ellipse") :
-                        if not pathname: pathname = 'Ellipse'
+                        if not pathname:
+                            pathname = 'Ellipse'
                         c = Vector(data.get('cx',0),-data.get('cy',0),0)
                         rx = data['rx']
                         ry = data['ry']
@@ -1243,7 +1244,8 @@ class svgHandler(xml.sax.ContentHandler):
                                 sh = Part.Ellipse(c,ry,rx).toShape()
                                 m3=FreeCAD.Matrix()
                                 m3.move(c)
-                                rot90=FreeCAD.Matrix(0,-1,0,0,1,0) #90
+                                # 90
+                                rot90=FreeCAD.Matrix(0,-1,0,0,1,0)
                                 m3=m3.multiply(rot90)
                                 m3.move(c.multiply(-1))
                                 sh.transformShape(m3)
@@ -1258,11 +1260,10 @@ class svgHandler(xml.sax.ContentHandler):
                         if self.currentsymbol:
                             self.symbols[self.currentsymbol].append(obj)
 
-
-                # processing circles
-
+                # Process circles
                 if (name == "circle") and (not ("freecad:skip" in data)) :
-                        if not pathname: pathname = 'Circle'
+                        if not pathname:
+                            pathname = 'Circle'
                         c = Vector(data.get('cx',0),-data.get('cy',0),0)
                         r = data['r']
                         sh = Part.makeCircle(r)
@@ -1277,8 +1278,7 @@ class svgHandler(xml.sax.ContentHandler):
                         if self.currentsymbol:
                             self.symbols[self.currentsymbol].append(obj)
 
-                # processing texts
-
+                # Process texts
                 if name in ["text","tspan"]:
                         if not("freecad:skip" in data):
                                 FreeCAD.Console.PrintMessage("processing a text\n")
@@ -1298,13 +1298,12 @@ class svgHandler(xml.sax.ContentHandler):
                         else:
                                 if self.lastdim:
                                         self.lastdim.ViewObject.FontSize = int(getsize(data['font-size']))
-                                        
-                # processing symbols
-                
+
+                # Process symbols
                 if name == "symbol":
                     self.symbols[pathname] = []
                     self.currentsymbol = pathname
-                    
+
                 if name == "use":
                     if "xlink:href" in data:
                         symbol = data["xlink:href"][0][1:]
@@ -1326,8 +1325,10 @@ class svgHandler(xml.sax.ContentHandler):
                             FreeCAD.Console.PrintMessage("no symbol data\n")
 
                 FreeCAD.Console.PrintMessage("done processing element %d\n"%self.count)
-                
+        # startElement()
+
         def characters(self,content):
+            """Read characters from the given string."""
                 if self.text:
                         FreeCAD.Console.PrintMessage("reading characters %s\n" % content)
                         obj=self.doc.addObject("App::Annotation",'Text')
@@ -1345,10 +1346,19 @@ class svgHandler(xml.sax.ContentHandler):
                         obj.Position = vec
                         if gui:
                                 obj.ViewObject.FontSize = int(self.text)
-                                if self.fill: obj.ViewObject.TextColor = self.fill
-                                else: obj.ViewObject.TextColor = (0.0,0.0,0.0,0.0)
+                                if self.fill:
+                                    obj.ViewObject.TextColor = self.fill
+                                else:
+                                    obj.ViewObject.TextColor = (0.0,0.0,0.0,0.0)
 
         def endElement(self, name):
+            """Finish procesing the element indicated by the name.
+
+            Parameters
+            ----------
+            name : str
+                The name of the element
+            """
             if not name in ["tspan"]:
                 self.transform = None
                 self.text = None
@@ -1366,6 +1376,13 @@ class svgHandler(xml.sax.ContentHandler):
                     
 
         def applyTrans(self,sh):
+                """Apply transformation to the shape and return the new shape.
+
+                Parameters
+                ----------
+                sh : Part.Shape or Draft.Dimension
+                    Object to be transformed
+                """
                 if isinstance(sh,Part.Shape):
                         if self.transform:
                                 FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
@@ -1394,11 +1411,33 @@ class svgHandler(xml.sax.ContentHandler):
                         sh.Dimline = pts[2]
 
         def translateVec(self,vec,mat):
+                """Translate a point or vector by a matrix.
+
+                Parameters
+                ----------
+                vec : Base::Vector3
+                    The original vector
+                mat : Base::Matrix4D
+                    The translation matrix, from which only the elements 14, 24, 34
+                    are used.
+                """
                 v = Vector(mat.A14,mat.A24,mat.A34)
                 return vec.add(v)
 
         def getMatrix(self,tr):
-                "returns a FreeCAD matrix from a svg transform attribute"
+                """Return a FreeCAD matrix from an SVG transform attribute.
+
+                Parameters
+                ----------
+                tr : str
+                    The type of transform: 'matrix', 'translate', 'scale',
+                    'rotate', 'skewX', 'skewY' and its value
+
+                Returns
+                -------
+                Base::Matrix4D
+                    The translated matrix.
+                """
                 transformre=re.compile('(matrix|translate|scale|rotate|skewX|skewY)\s*?\((.*?)\)',re.DOTALL)
                 m = FreeCAD.Matrix()
                 for transformation, arguments in transformre.findall(tr):
@@ -1421,7 +1460,9 @@ class svgHandler(xml.sax.ContentHandler):
                                         cx = argsplit[1]
                                         cy = argsplit[2]
                                         m.move(Vector(cx,-cy,0))
-                                m.rotateZ(math.radians(-angle)) #mirroring one axis equals changing the direction of rotation
+                                # Mirroring one axis is equal to changing the direction
+                                # of rotation
+                                m.rotateZ(math.radians(-angle))
                                 if len(argsplit) >= 3:
                                         m.move(Vector(-cx,cy,0))
                         elif transformation == 'skewX':
@@ -1429,12 +1470,12 @@ class svgHandler(xml.sax.ContentHandler):
                         elif transformation == 'skewY':
                                 m=m.multiply(FreeCAD.Matrix(1,0,0,0,-math.tan(math.radians(argsplit[0]))))
                         elif transformation == 'matrix':
-#                            '''transformation matrix:
-#                                   FreeCAD                 SVG
-#                                (+A -C +0 +E)           (A C 0 E)
-#                                (-B +D -0 -F)  = (-Y) * (B D 0 F) *(-Y)
-#                                (+0 -0 +1 +0)           (0 0 1 0)
-#                                (+0 -0 +0 +1)           (0 0 0 1)'''
+#                               # transformation matrix:
+#                               #    FreeCAD                 SVG
+#                               # (+A -C +0 +E)           (A C 0 E)
+#                               # (-B +D -0 -F)  = (-Y) * (B D 0 F) *(-Y)
+#                               # (+0 -0 +1 +0)           (0 0 1 0)
+#                               # (+0 -0 +0 +1)           (0 0 0 1)
                                 m=m.multiply(FreeCAD.Matrix(argsplit[0],-argsplit[2],0,argsplit[4],-argsplit[1],argsplit[3],0,-argsplit[5]))
                         #else:
                                 #print 'SKIPPED %s' % transformation
@@ -1442,8 +1483,22 @@ class svgHandler(xml.sax.ContentHandler):
                 #print "generating transformation: ",m
                 return m
 
+
 def decodeName(name):
-        "decodes encoded strings"
+        """Decode encoded name.
+
+        Parameters
+        ----------
+        name : str
+            The string to decode.
+
+        Returns
+        -------
+        tuple
+        (string)
+            A tuple containing the decoded `name` in 'utf8', otherwise in 'latin1'.
+            If it fails it returns the original `name`.
+        """
         try:
                 decodedName = (name.decode("utf8"))
         except UnicodeDecodeError:
@@ -1451,19 +1506,43 @@ def decodeName(name):
                         decodedName = (name.decode("latin1"))
                 except UnicodeDecodeError:
                         FreeCAD.Console.PrintError("svg: error: couldn't determine character encoding\n")
-
                         decodedName = name
         return decodedName
 
+
 def getContents(filename,tag,stringmode=False):
-        "gets the contents of all the occurrences of the given tag in the given file"
+        """Get the contents of all occurrences of the given tag in the file.
+
+        Parameters
+        ----------
+        filename : str
+            A filename to scan for tags.
+        tag : str
+            An SVG tag to find inside a file, for example, `some`
+            in <some id="12">information</some>
+        stringmode : bool, optional
+            The default is False.
+            If False, `filename` is a path to a file.
+            If True, `filename` is already a pointer to an open file.
+
+        Returns
+        -------
+        dict
+            A dictionary with tagids and the information associated with that id
+            results[tagid] = information
+        """
         result = {}
         if stringmode:
                 contents = filename
         else:
+                # Use the native Python open which was saved as `pythonopen`.
                 f = pythonopen(filename)
                 contents = f.read()
                 f.close()
+
+        # Replace the newline character with a string
+        # so that it's easiert to parse; later on the newline character
+        # will be restored
         contents = contents.replace('\n','_linebreak')
         searchpat = '<'+tag+'.*?</'+tag+'>'
         tags = re.findall(searchpat,contents)
@@ -1477,42 +1556,99 @@ def getContents(filename,tag,stringmode=False):
                 result[tagid] = res
         return result
 
+
 def open(filename):
+        """Open filename and parse using the svgHandler().
+
+        Parameters
+        ----------
+        filename : str
+            The path to the filename to be opened.
+
+        Returns
+        -------
+        App::Document
+            The new FreeCAD document object created, with the parsed information.
+        """
         docname=os.path.split(filename)[1]
         doc=FreeCAD.newDocument(docname)
         doc.Label = docname[:-4]
+
+        # Set up the parser
         parser = xml.sax.make_parser()
         parser.setFeature(xml.sax.handler.feature_external_ges, False)
         parser.setContentHandler(svgHandler())
         parser._cont_handler.doc = doc
+
+        # Use the native Python open which was saved as `pythonopen`.
         f = pythonopen(filename)
         parser.parse(f)
         f.close()
         doc.recompute()
         return doc
 
+
 def insert(filename,docname):
+        """Get an active document and parse using the svgHandler().
+
+        If no document exist, it is created.
+
+        Parameters
+        ----------
+        filename : str
+            The path to the filename to be opened.
+        docname : str
+            The name of the active App::Document if one exists, or
+            of the new one created.
+
+        Returns
+        -------
+        App::Document
+            The active FreeCAD document, or the document created if none exists,
+            with the parsed information.
+        """
         try:
                 doc=FreeCAD.getDocument(docname)
         except NameError:
                 doc=FreeCAD.newDocument(docname)
         FreeCAD.ActiveDocument = doc
+
+        # Set up the parser
         parser = xml.sax.make_parser()
         parser.setFeature(xml.sax.handler.feature_external_ges, False)
         parser.setContentHandler(svgHandler())
         parser._cont_handler.doc = doc
+
+        # Use the native Python open which was saved as `pythonopen`
         parser.parse(pythonopen(filename))
         doc.recompute()
 
-def export(exportList,filename):
-        "called when freecad exports a file"
 
+def export(exportList,filename):
+        """Export the SVG file with a given list of objects.
+
+        The objects must be derived from Part::Feature, in order to be processed
+        and exported.
+
+        Parameters
+        ----------
+        exportList : list
+            List of document objects to export.
+        filename : str
+            Path to the new file.
+
+        Returns
+        -------
+        None
+            If `exportList` doesn't have shapes to export.
+        """
         svg_export_style = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("svg_export_style")
         if svg_export_style != 0 and svg_export_style != 1:
             FreeCAD.Console.PrintMessage(translate("Unknown SVG export style, switching to Translated")+"\n")
             svg_export_style = 0
 
-        # finding sheet size
+        # Determine the size of the page by adding the bounding boxes
+        # of all shapes
         bb = None
         for ob in exportList:
                 if ob.isDerivedFrom("Part::Feature"):
@@ -1544,10 +1680,12 @@ def export(exportList,filename):
         sizey = maxy-miny
         miny += margin
 
-        # writing header
-        # we specify the svg width and height in FreeCAD's physical units (mm),
-        # and specify the viewBox so that user units maps one-to-one to mm
-        svg = pythonopen(filename,'w') 
+        # Use the native Python open which was saved as `pythonopen`
+        svg = pythonopen(filename,'w')
+
+        # Write header.
+        # We specify the SVG width and height in FreeCAD's physical units (mm),
+        # and specify the viewBox so that user units maps one-to-one to mm.
         svg.write('<?xml version="1.0"?>\n')
         svg.write('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"')
         svg.write(' "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
@@ -1564,22 +1702,22 @@ def export(exportList,filename):
         svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
         svg.write('>\n')
 
-        # writing paths
+        # Write paths
         for ob in exportList:
                 if svg_export_style == 0:
-                    # translated-style exports have the entire sketch translated to fit in the X>0, Y>0 quadrant
+                    # translated-style exports have the entire sketch translated
+                    # to fit in the X>0, Y>0 quadrant
                     #svg.write('<g transform="translate('+str(-minx)+','+str(-miny+(2*margin))+') scale(1,-1)">\n')
                     svg.write('<g id="%s" transform="translate(%f,%f) '
-                            'scale(1,-1)">\n'% (ob.Name,-minx,maxy))
+                              'scale(1,-1)">\n'% (ob.Name,-minx,maxy))
                 else:
                     # raw-style exports do not translate the sketch
-                    svg.write('<g id="%s" transform="scale(1,-1)">\n' %\
-                            ob.Name)
+                    svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
                 svg.write(Draft.getSVG(ob))
-                svg.write('<title>%s</title>\n' % str(ob.Label.encode('utf8'))\
-                        .replace('<','&lt;').replace('>','&gt;'))
-                        # replace('"',\ "&quot;")
+                svg.write('<title>%s</title>\n' % str(ob.Label.encode('utf8')).replace('<','&lt;').replace('>','&gt;'))
+                # replace('"', "&quot;")
                 svg.write('</g>\n')
-        # closing
+
+        # Close the file
         svg.write('</svg>')
         svg.close()
