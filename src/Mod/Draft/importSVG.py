@@ -1606,34 +1606,34 @@ def getContents(filename, tag, stringmode=False):
 
 
 def open(filename):
-        """Open filename and parse using the svgHandler().
+    """Open filename and parse using the svgHandler().
 
-        Parameters
-        ----------
-        filename : str
-            The path to the filename to be opened.
+    Parameters
+    ----------
+    filename : str
+        The path to the filename to be opened.
 
-        Returns
-        -------
-        App::Document
-            The new FreeCAD document object created, with the parsed information.
-        """
-        docname = os.path.split(filename)[1]
-        doc = FreeCAD.newDocument(docname)
-        doc.Label = docname[:-4]
+    Returns
+    -------
+    App::Document
+        The new FreeCAD document object created, with the parsed information.
+    """
+    docname = os.path.split(filename)[1]
+    doc = FreeCAD.newDocument(docname)
+    doc.Label = docname[:-4]
 
-        # Set up the parser
-        parser = xml.sax.make_parser()
-        parser.setFeature(xml.sax.handler.feature_external_ges, False)
-        parser.setContentHandler(svgHandler())
-        parser._cont_handler.doc = doc
+    # Set up the parser
+    parser = xml.sax.make_parser()
+    parser.setFeature(xml.sax.handler.feature_external_ges, False)
+    parser.setContentHandler(svgHandler())
+    parser._cont_handler.doc = doc
 
-        # Use the native Python open which was saved as `pythonopen`.
-        f = pythonopen(filename)
-        parser.parse(f)
-        f.close()
-        doc.recompute()
-        return doc
+    # Use the native Python open which was saved as `pythonopen`
+    f = pythonopen(filename)
+    parser.parse(f)
+    f.close()
+    doc.recompute()
+    return doc
 
 
 def insert(filename, docname):
