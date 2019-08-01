@@ -609,22 +609,22 @@ def arcend2center(lastvec, currentvec, rx, ry,
 
 
 def getrgb(color):
-        """Return an RGB hexadecimal string '#00aaff' from a FreeCAD color.
+    """Return an RGB hexadecimal string '#00aaff' from a FreeCAD color.
 
-        Parameters
-        ----------
-        color : App::Color::Color
-            FreeCAD color.
+    Parameters
+    ----------
+    color : App::Color::Color
+        FreeCAD color.
 
-        Returns
-        -------
-        str
-            The hexadecimal string representation of the color '#00aaff'.
-        """
-        r = str(hex(int(color[0] * 255)))[2:].zfill(2)
-        g = str(hex(int(color[1] * 255)))[2:].zfill(2)
-        b = str(hex(int(color[2] * 255)))[2:].zfill(2)
-        return "#" + r + g + b
+    Returns
+    -------
+    str
+        The hexadecimal string representation of the color '#00aaff'.
+    """
+    r = str(hex(int(color[0] * 255)))[2:].zfill(2)
+    g = str(hex(int(color[1] * 255)))[2:].zfill(2)
+    b = str(hex(int(color[2] * 255)))[2:].zfill(2)
+    return "#" + r + g + b
 
 
 class svgHandler(xml.sax.ContentHandler):
@@ -1679,99 +1679,99 @@ def insert(filename, docname):
 
 
 def export(exportList, filename):
-        """Export the SVG file with a given list of objects.
+    """Export the SVG file with a given list of objects.
 
-        The objects must be derived from Part::Feature, in order to be processed
-        and exported.
+    The objects must be derived from Part::Feature, in order to be processed
+    and exported.
 
-        Parameters
-        ----------
-        exportList : list
-            List of document objects to export.
-        filename : str
-            Path to the new file.
+    Parameters
+    ----------
+    exportList : list
+        List of document objects to export.
+    filename : str
+        Path to the new file.
 
-        Returns
-        -------
-        None
-            If `exportList` doesn't have shapes to export.
-        """
-        svg_export_style = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("svg_export_style")
-        if svg_export_style != 0 and svg_export_style != 1:
-            FreeCAD.Console.PrintMessage(translate("Unknown SVG export style, switching to Translated") + "\n")
-            svg_export_style = 0
+    Returns
+    -------
+    None
+        If `exportList` doesn't have shapes to export.
+    """
+    svg_export_style = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("svg_export_style")
+    if svg_export_style != 0 and svg_export_style != 1:
+        FreeCAD.Console.PrintMessage(translate("Unknown SVG export style, switching to Translated") + "\n")
+        svg_export_style = 0
 
-        # Determine the size of the page by adding the bounding boxes
-        # of all shapes
-        bb = None
-        for ob in exportList:
-                if ob.isDerivedFrom("Part::Feature"):
-                    if bb:
-                        bb.add(ob.Shape.BoundBox)
-                    else:
-                        bb = ob.Shape.BoundBox
-        if bb:
-            minx = bb.XMin
-            maxx = bb.XMax
-            miny = bb.YMin
-            maxy = bb.YMax
-        else:
-            FreeCAD.Console.PrintError("The export list contains no shape\n")
-            return
+    # Determine the size of the page by adding the bounding boxes
+    # of all shapes
+    bb = None
+    for ob in exportList:
+        if ob.isDerivedFrom("Part::Feature"):
+            if bb:
+                bb.add(ob.Shape.BoundBox)
+            else:
+                bb = ob.Shape.BoundBox
+    if bb:
+        minx = bb.XMin
+        maxx = bb.XMax
+        miny = bb.YMin
+        maxy = bb.YMax
+    else:
+        FreeCAD.Console.PrintError("The export list contains no shape\n")
+        return
 
+    if svg_export_style == 0:
+        # translated-style exports get a bit of a margin
+        margin = (maxx - minx) * 0.01
+    else:
+        # raw-style exports get no margin
+        margin = 0
+
+    minx -= margin
+    maxx += margin
+    miny -= margin
+    maxy += margin
+    sizex = maxx - minx
+    sizey = maxy - miny
+    miny += margin
+
+    # Use the native Python open which was saved as `pythonopen`
+    svg = pythonopen(filename, 'w')
+
+    # Write header.
+    # We specify the SVG width and height in FreeCAD's physical units (mm),
+    # and specify the viewBox so that user units maps one-to-one to mm.
+    svg.write('<?xml version="1.0"?>\n')
+    svg.write('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"')
+    svg.write(' "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
+    svg.write('<svg')
+    svg.write(' width="' + str(sizex) + 'mm" height="' + str(sizey) + 'mm"')
+    if svg_export_style == 0:
+        # translated-style exports have the viewbox starting at X=0, Y=0
+        svg.write(' viewBox="0 0 ' + str(sizex) + ' ' + str(sizey) + '"')
+    else:
+        # Raw-style exports have the viewbox starting at X=xmin, Y=-ymax
+        # We need the negative Y here because SVG is upside down, and we
+        # flip the sketch right-way up with a scale later
+        svg.write(' viewBox="%f %f %f %f"' % (minx, -maxy, sizex, sizey))
+    svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
+    svg.write('>\n')
+
+    # Write paths
+    for ob in exportList:
         if svg_export_style == 0:
-            # translated-style exports get a bit of a margin
-            margin = (maxx - minx) * 0.01
+            # translated-style exports have the entire sketch translated
+            # to fit in the X>0, Y>0 quadrant
+            # svg.write('<g transform="translate(' + str(-minx) + ',' + str(-miny+(2*margin)) + ') scale(1,-1)">\n')
+            svg.write('<g id="%s" transform="translate(%f,%f) '
+                      'scale(1,-1)">\n' % (ob.Name, -minx, maxy))
         else:
-            # raw-style exports get no margin
-            margin = 0
+            # raw-style exports do not translate the sketch
+            svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
+        svg.write(Draft.getSVG(ob))
+        svg.write('<title>%s</title>\n' % str(ob.Label.encode('utf8')).replace('<', '&lt;').replace('>', '&gt;'))
+        # replace('"', "&quot;")
+        svg.write('</g>\n')
 
-        minx -= margin
-        maxx += margin
-        miny -= margin
-        maxy += margin
-        sizex = maxx - minx
-        sizey = maxy - miny
-        miny += margin
-
-        # Use the native Python open which was saved as `pythonopen`
-        svg = pythonopen(filename, 'w')
-
-        # Write header.
-        # We specify the SVG width and height in FreeCAD's physical units (mm),
-        # and specify the viewBox so that user units maps one-to-one to mm.
-        svg.write('<?xml version="1.0"?>\n')
-        svg.write('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"')
-        svg.write(' "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
-        svg.write('<svg')
-        svg.write(' width="' + str(sizex) + 'mm" height="' + str(sizey) + 'mm"')
-        if svg_export_style == 0:
-            # translated-style exports have the viewbox starting at X=0, Y=0
-            svg.write(' viewBox="0 0 ' + str(sizex) + ' ' + str(sizey) + '"')
-        else:
-            # Raw-style exports have the viewbox starting at X=xmin, Y=-ymax
-            # We need the negative Y here because SVG is upside down, and we
-            # flip the sketch right-way up with a scale later
-            svg.write(' viewBox="%f %f %f %f"' % (minx, -maxy, sizex, sizey))
-        svg.write(' xmlns="http://www.w3.org/2000/svg" version="1.1"')
-        svg.write('>\n')
-
-        # Write paths
-        for ob in exportList:
-                if svg_export_style == 0:
-                    # translated-style exports have the entire sketch translated
-                    # to fit in the X>0, Y>0 quadrant
-                    # svg.write('<g transform="translate(' + str(-minx) + ',' + str(-miny+(2*margin)) + ') scale(1,-1)">\n')
-                    svg.write('<g id="%s" transform="translate(%f,%f) '
-                              'scale(1,-1)">\n' % (ob.Name, -minx, maxy))
-                else:
-                    # raw-style exports do not translate the sketch
-                    svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
-                svg.write(Draft.getSVG(ob))
-                svg.write('<title>%s</title>\n' % str(ob.Label.encode('utf8')).replace('<', '&lt;').replace('>', '&gt;'))
-                # replace('"', "&quot;")
-                svg.write('</g>\n')
-
-        # Close the file
-        svg.write('</svg>')
-        svg.close()
+    # Close the file
+    svg.write('</svg>')
+    svg.close()
