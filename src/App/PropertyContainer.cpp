@@ -267,8 +267,17 @@ void PropertyContainer::Save (Base::Writer &writer) const
         auto status = it->second->getStatus();
         if(status)
             writer.Stream() << "\" status=\"" << status;
-        writer.Stream() << "\">" << std::endl;
+        writer.Stream() << "\">";
 
+        if(it->second->testStatus(Property::Transient) 
+                || it->second->getType() & Prop_Transient) 
+        {
+            writer.Stream() << "</Property>" << std::endl;
+            continue;
+        }
+
+        writer.Stream() << std::endl;
+       
         writer.incInd(); // indentation for the actual property
 
         try {
