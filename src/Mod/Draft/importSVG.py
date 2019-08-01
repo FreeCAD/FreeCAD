@@ -1559,50 +1559,50 @@ def decodeName(name):
 
 
 def getContents(filename, tag, stringmode=False):
-        """Get the contents of all occurrences of the given tag in the file.
+    """Get the contents of all occurrences of the given tag in the file.
 
-        Parameters
-        ----------
-        filename : str
-            A filename to scan for tags.
-        tag : str
-            An SVG tag to find inside a file, for example, `some`
-            in <some id="12">information</some>
-        stringmode : bool, optional
-            The default is False.
-            If False, `filename` is a path to a file.
-            If True, `filename` is already a pointer to an open file.
+    Parameters
+    ----------
+    filename : str
+        A filename to scan for tags.
+    tag : str
+        An SVG tag to find inside a file, for example, `some`
+        in <some id="12">information</some>
+    stringmode : bool, optional
+        The default is False.
+        If False, `filename` is a path to a file.
+        If True, `filename` is already a pointer to an open file.
 
-        Returns
-        -------
-        dict
-            A dictionary with tagids and the information associated with that id
-            results[tagid] = information
-        """
-        result = {}
-        if stringmode:
-                contents = filename
+    Returns
+    -------
+    dict
+        A dictionary with tagids and the information associated with that id
+        results[tagid] = information
+    """
+    result = {}
+    if stringmode:
+        contents = filename
+    else:
+        # Use the native Python open which was saved as `pythonopen`
+        f = pythonopen(filename)
+        contents = f.read()
+        f.close()
+
+    # Replace the newline character with a string
+    # so that it's easiert to parse; later on the newline character
+    # will be restored
+    contents = contents.replace('\n', '_linebreak')
+    searchpat = '<' + tag + '.*?</' + tag + '>'
+    tags = re.findall(searchpat, contents)
+    for t in tags:
+        tagid = re.findall('id="(.*?)"', t)
+        if tagid:
+            tagid = tagid[0]
         else:
-                # Use the native Python open which was saved as `pythonopen`
-                f = pythonopen(filename)
-                contents = f.read()
-                f.close()
-
-        # Replace the newline character with a string
-        # so that it's easiert to parse; later on the newline character
-        # will be restored
-        contents = contents.replace('\n', '_linebreak')
-        searchpat = '<'+tag+'.*?</'+tag+'>'
-        tags = re.findall(searchpat, contents)
-        for t in tags:
-                tagid = re.findall('id="(.*?)"', t)
-                if tagid:
-                        tagid = tagid[0]
-                else:
-                        tagid = 'none'
-                res = t.replace('_linebreak', '\n')
-                result[tagid] = res
-        return result
+            tagid = 'none'
+        res = t.replace('_linebreak', '\n')
+        result[tagid] = res
+    return result
 
 
 def open(filename):
