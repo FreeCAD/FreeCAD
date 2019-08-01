@@ -560,6 +560,7 @@ void QGIViewPart::drawViewPart()
                     item->setRadius(cv->size);
                 } else {
                     item->setNormalColor(vertexColor);
+                    item->setFillColor(vertexColor);
                     item->setRadius(lineWidth * vertexScaleFactor);
                 }
                 addToGroup(item);

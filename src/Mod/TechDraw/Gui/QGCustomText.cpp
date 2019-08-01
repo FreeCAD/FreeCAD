@@ -152,7 +152,7 @@ void QGCustomText::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void QGCustomText::setPrettyNormal() {
     m_colCurrent = m_colNormal;
-    setDefaultTextColor(m_colNormal);
+    setDefaultTextColor(m_colCurrent);
     update();
 }
 
