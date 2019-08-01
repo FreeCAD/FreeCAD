@@ -401,9 +401,31 @@ def getsize(length,mode='discard',base=1):
                 else:
                         return float(number)*base
 
+
 def makewire(path,checkclosed=False,donttry=False):
-        '''try to make a wire out of the list of edges. If the 'Wire' functions fails or the wire is not
-        closed if required the 'connectEdgesToWires' function is used'''
+        '''Try to make a wire out of the list of edges.
+
+        If the wire functions fails or the wire is not closed,
+        if required the TopoShapeCompoundPy::connectEdgesToWires()
+        function is used.
+
+        Parameters
+        ----------
+        path : Part.Edge
+            A collection of edges
+        checkclosed : bool, optional
+            Default is `False`.
+        donttry : bool, optional
+            Default is `False`. If it's `True` it won't try to check
+            for a closed path.
+
+        Returns
+        -------
+        Part::Wire
+            A wire created from the ordered edges.
+        Part::Compound
+            A compound made of the edges, but unable to form a wire.
+        '''
         if not donttry:
                 try:
                         import Part
@@ -424,10 +446,36 @@ def makewire(path,checkclosed=False,donttry=False):
                             sh = comp
         return sh
 
+
 def arccenter2end(center,rx,ry,angle1,angledelta,xrotation=0.0):
-        '''calculate start and end vector and flags of an arc given in center parametrization
-        see http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
-        returns (v1,v2,largerc,sweep)'''
+        '''Calculate start and end points, and flags of an arc.
+
+        Calculate start and end points, and flags of an arc given in
+        ``center parametrization``.
+        See http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
+
+        Parameters
+        ----------
+        center : Base::Vector3
+            Coordinates of the center of the ellipse.
+        rx : float
+            Radius of the ellipse, semi-major axis in the X direction
+        ry : float
+            Radius of the ellipse, semi-minor axis in the Y direction
+        angle1 : float
+            Initial angle in radians
+        angledelta : float
+            Additional angle in radians
+        xrotation : float, optional
+            Default 0. Rotation around the Z axis
+
+        Returns
+        -------
+        v1, v2, largerc, sweep
+            Tuple indicating the end points of the arc, and two boolean values
+            indicating whether the arc is less than 180 degrees or not,
+            and whether the angledelta is negative.
+        '''
         vr1=Vector(rx*math.cos(angle1),ry*math.sin(angle1),0)
         vr2=Vector(rx*math.cos(angle1+angledelta),ry*math.sin(angle1+angledelta),0)
         mxrot=FreeCAD.Matrix()
@@ -438,13 +486,49 @@ def arccenter2end(center,rx,ry,angle1,angledelta,xrotation=0.0):
         fs = angledelta < 0
         return v1,v2,fa,fs
 
+
 def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
-        '''calculate (positive and negative) possible centers for an arc in endpoint parameterization
-        see http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
-        rotation or x-axis has to be specified in radians (CCW)
-        the sweepflag is interpreted as: sweepflag <==>  arc is travelled clockwise 
-        returns [(vcenter+,angle1+,angledelta+),(...-)]'''
-        #scalefacsign = 1 if (largeflag != sweepflag) else -1
+        '''Calculate the possible centers for an arc in endpoint parameterization.
+
+        Calculate (positive and negative) possible centers for an arc given in
+        ``endpoint parametrization``.
+        See http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
+
+        the sweepflag is interpreted as: sweepflag <==>  arc is travelled clockwise
+
+        Parameters
+        ----------
+        lastvec : Base::Vector3
+            First point of the arc.
+        currentvec : Base::Vector3
+            End point (current) of the arc.
+        rx : float
+            Radius of the ellipse, semi-major axis in the X direction.
+        ry : float
+            Radius of the ellipse, semi-minor axis in the Y direction.
+        xrotation : float, optional
+            Default is 0. Rotation around the Z axis, in radians (CCW).
+        correction : bool, optional
+            Default is `False`. If it is `True`, the radii will be scaled
+            by a factor.
+
+        Returns
+        -------
+        list, (float, float)
+            A tuple that consists of one list, and a tuple of radii.
+        [(positive), (negative)], (rx, ry)
+            The first element of the list is the positive tuple,
+            the second is the negative tuple.
+        [(Base::Vector3, float, float),
+        (Base::Vector3, float, float)], (float, float)
+            Types
+        [(vcenter+, angle1+, angledelta+),
+        (vcenter-, angle1-, angledelta-)], (rx, ry)
+            The first element of the list is the positive tuple,
+            consisting of center, angle, and angle increment;
+            the second element is the negative tuple.
+        '''
+        # scalefacsign = 1 if (largeflag != sweepflag) else -1
         rx = float(rx)
         ry = float(ry)
         v0 = lastvec.sub(currentvec)
@@ -461,6 +545,9 @@ def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
         denom = rx**2 * v1.y**2+ ry**2 * v1.x**2
         numer = rx**2 * ry**2 -denom
         results=[]
+
+        # If the division is very small, set the scaling factor to zero,
+        # otherwise try to calculate it by taking the square root
         if abs(numer/denom) < 10**(-1*(Draft.precision())):
                 scalefacpos = 0
         else:
@@ -469,17 +556,25 @@ def arcend2center(lastvec,currentvec,rx,ry,xrotation=0.0,correction=False):
                 except ValueError:
                         FreeCAD.Console.PrintMessage('sqrt(%f/%f)\n' % (numer,denom))
                         scalefacpos = 0
+        # Calculate two values because the square root may be positive or negative
         for scalefacsign in (1,-1):
             scalefac = scalefacpos * scalefacsign
-            vcx1 = Vector(v1.y*rx/ry,-v1.x*ry/rx,0).multiply(scalefac)  # Step2 F.6.5.2
+            # Step2 F.6.5.2
+            vcx1 = Vector(v1.y*rx/ry,-v1.x*ry/rx,0).multiply(scalefac)
             m2=FreeCAD.Matrix()
             m2.rotateZ(xrotation)
             centeroff = currentvec.add(lastvec)
             centeroff.multiply(.5)
             vcenter = m2.multiply(vcx1).add(centeroff) # Step3 F.6.5.3
-            #angle1 = Vector(1,0,0).getAngle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
-            #angledelta = Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0).getAngle(Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
-            #we need the right sign for the angle 
+            # angle1 = Vector(1, 0, 0).getAngle(Vector((v1.x - vcx1.x) / rx,
+            #                                          (v1.y - vcx1.y) / ry,
+            #                                          0))  # F.6.5.5
+            # angledelta = Vector((v1.x - vcx1.x) / rx,
+            #                     (v1.y - vcx1.y) / ry,
+            #                     0).getAngle(Vector((-v1.x - vcx1.x) / rx,
+            #                                        (-v1.y - vcx1.y) / ry,
+            #                                        0))  # F.6.5.6
+            # we need the right sign for the angle
             angle1 = DraftVecUtils.angle(Vector(1,0,0),Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0)) # F.6.5.5
             angledelta = DraftVecUtils.angle(Vector((v1.x-vcx1.x)/rx,(v1.y-vcx1.y)/ry,0),Vector((-v1.x-vcx1.x)/rx,(-v1.y-vcx1.y)/ry,0)) # F.6.5.6
             results.append((vcenter,angle1,angledelta))
