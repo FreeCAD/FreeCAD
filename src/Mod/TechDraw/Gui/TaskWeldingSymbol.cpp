@@ -371,7 +371,7 @@ App::DocumentObject* TaskWeldingSymbol::createWeldingSymbol(void)
     Command::doCommand(Command::Doc,"App.activeDocument().%s.FieldWeld = %s",
                            symbolName.c_str(), fieldWeldText.c_str());
 
-    std::string tailText = Base::Tools::toStdString(ui->leProcessText->text());
+    std::string tailText = Base::Tools::toStdString(ui->leTailText->text());
     Command::doCommand(Command::Doc,"App.activeDocument().%s.TailText = '%s'",
                            symbolName.c_str(), tailText.c_str());
 

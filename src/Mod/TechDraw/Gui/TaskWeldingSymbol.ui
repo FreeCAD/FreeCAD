@@ -345,7 +345,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLineEdit" name="leProcessText">
+         <widget class="QLineEdit" name="leTailText">
           <property name="toolTip">
            <string>Text at end of symbol</string>
           </property>

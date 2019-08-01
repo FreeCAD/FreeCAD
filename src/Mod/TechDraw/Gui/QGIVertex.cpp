@@ -44,6 +44,8 @@ QGIVertex::QGIVertex(int index) :
     projIndex(index),
     m_radius(2)
 {
+    m_colDefFill = getNormalColor();
+    m_colNormalFill = m_colDefFill;
     m_fill = Qt::SolidPattern;
     m_brush.setStyle(m_fill);
 
