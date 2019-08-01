@@ -64,12 +64,6 @@
 # include <sbkmodule.h>
 # include <typeresolver.h>
 # include <shiboken.h>
-# ifdef HAVE_PYSIDE
-# include <pyside_qtcore_python.h>
-# include <pyside_qtgui_python.h>
-PyTypeObject** SbkPySide_QtCoreTypes=NULL;
-PyTypeObject** SbkPySide_QtGuiTypes=NULL;
-# endif
 #endif
 
 #ifdef HAVE_SHIBOKEN2
@@ -82,13 +76,7 @@ PyTypeObject** SbkPySide_QtGuiTypes=NULL;
 # include <shiboken.h>
 # ifdef HAVE_PYSIDE2
 # define HAVE_PYSIDE
-# include <pyside2_qtcore_python.h>
-# include <pyside2_qtgui_python.h>
-# include <pyside2_qtwidgets_python.h>
 # include <signalmanager.h>
-PyTypeObject** SbkPySide2_QtCoreTypes=NULL;
-PyTypeObject** SbkPySide2_QtGuiTypes=NULL;
-PyTypeObject** SbkPySide2_QtWidgetsTypes=NULL;
 # endif
 #endif
 
@@ -441,6 +429,7 @@ bool PythonWrapper::loadCoreModule()
 {
 #if defined (HAVE_SHIBOKEN2) && (HAVE_PYSIDE2)
     // QtCore
+    static PyTypeObject** SbkPySide2_QtCoreTypes=nullptr;
     if (!SbkPySide2_QtCoreTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide2.QtCore"));
         if (requiredModule.isNull())
@@ -449,6 +438,7 @@ bool PythonWrapper::loadCoreModule()
     }
 #elif defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // QtCore
+    static PyTypeObject** SbkPySide_QtCoreTypes=nullptr;
     if (!SbkPySide_QtCoreTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide.QtCore"));
         if (requiredModule.isNull())
@@ -463,6 +453,7 @@ bool PythonWrapper::loadGuiModule()
 {
 #if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
     // QtGui
+    static PyTypeObject** SbkPySide2_QtGuiTypes=nullptr;
     if (!SbkPySide2_QtGuiTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide2.QtGui"));
         if (requiredModule.isNull())
@@ -471,6 +462,7 @@ bool PythonWrapper::loadGuiModule()
     }
 #elif defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // QtGui
+    static PyTypeObject** SbkPySide_QtGuiTypes=nullptr;
     if (!SbkPySide_QtGuiTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide.QtGui"));
         if (requiredModule.isNull())
@@ -485,6 +477,7 @@ bool PythonWrapper::loadWidgetsModule()
 {
 #if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
     // QtWidgets
+    static PyTypeObject** SbkPySide2_QtWidgetsTypes=nullptr;
     if (!SbkPySide2_QtWidgetsTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide2.QtWidgets"));
         if (requiredModule.isNull())
