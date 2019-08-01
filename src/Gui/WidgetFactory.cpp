@@ -64,6 +64,12 @@
 # include <sbkmodule.h>
 # include <typeresolver.h>
 # include <shiboken.h>
+# ifdef HAVE_PYSIDE
+# include <pyside_qtcore_python.h>
+# include <pyside_qtgui_python.h>
+PyTypeObject** SbkPySide_QtCoreTypes=nullptr;
+PyTypeObject** SbkPySide_QtGuiTypes=nullptr;
+# endif
 #endif
 
 #ifdef HAVE_SHIBOKEN2
@@ -76,7 +82,18 @@
 # include <shiboken.h>
 # ifdef HAVE_PYSIDE2
 # define HAVE_PYSIDE
+// Since Qt >= 5.12 shiboken offers a method to get wrapper by class name (typeForTypeName)
+// This helps to avoid to include the PySide2 headers since MSVC has a compiler bug when
+// compiling together with std::bitset (https://bugreports.qt.io/browse/QTBUG-72073)
+# if (QT_VERSION < QT_VERSION_CHECK(5, 12, 0))
+# include <pyside2_qtcore_python.h>
+# include <pyside2_qtgui_python.h>
+# include <pyside2_qtwidgets_python.h>
+#endif
 # include <signalmanager.h>
+PyTypeObject** SbkPySide2_QtCoreTypes=nullptr;
+PyTypeObject** SbkPySide2_QtGuiTypes=nullptr;
+PyTypeObject** SbkPySide2_QtWidgetsTypes=nullptr;
 # endif
 #endif
 
@@ -262,6 +279,22 @@ void* qt_getCppPointer(const Py::Object& pyobject, const char* shiboken, const c
     void* ptr = PyLong_AsVoidPtr(result[0].ptr());
     return ptr;
 }
+
+
+template<typename qttype>
+PyTypeObject *getPyTypeObjectForTypeName()
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if (QT_VERSION < QT_VERSION_CHECK(5, 12, 0))
+    return Shiboken::SbkType<qttype>();
+#else
+    SbkObjectType* sbkType = Shiboken::ObjectType::typeForTypeName(typeid(qttype).name());
+    if (sbkType)
+        return &(sbkType->type);
+#endif
+#endif
+    return nullptr;
+}
 }
 
 // --------------------------------------------------------
@@ -314,7 +347,7 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 {
     // http://pastebin.com/JByDAF5Z
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    PyTypeObject * type = Shiboken::SbkType<QObject>();
+    PyTypeObject * type = getPyTypeObjectForTypeName<QObject>();
     if (type) {
         if (Shiboken::Object::checkType(pyobject.ptr())) {
             SbkObject* sbkobject = reinterpret_cast<SbkObject *>(pyobject.ptr());
@@ -346,7 +379,7 @@ Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     const char* typeName = typeid(*const_cast<QIcon*>(icon)).name();
-    PyObject* pyobj = Shiboken::Object::newObject(reinterpret_cast<SbkObjectType*>(Shiboken::SbkType<QIcon>()),
+    PyObject* pyobj = Shiboken::Object::newObject(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QIcon>()),
                               const_cast<QIcon*>(icon), true, false, typeName);
     if (pyobj)
         return Py::asObject(pyobj);
@@ -367,7 +400,7 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // Access shiboken/PySide via C++
     //
-    PyTypeObject * type = Shiboken::SbkType<QWidget>();
+    PyTypeObject * type = getPyTypeObjectForTypeName<QWidget>();
     if (type) {
         SbkObjectType* sbk_type = reinterpret_cast<SbkObjectType*>(type);
         std::string typeName;
@@ -429,7 +462,6 @@ bool PythonWrapper::loadCoreModule()
 {
 #if defined (HAVE_SHIBOKEN2) && (HAVE_PYSIDE2)
     // QtCore
-    static PyTypeObject** SbkPySide2_QtCoreTypes=nullptr;
     if (!SbkPySide2_QtCoreTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide2.QtCore"));
         if (requiredModule.isNull())
@@ -438,7 +470,6 @@ bool PythonWrapper::loadCoreModule()
     }
 #elif defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // QtCore
-    static PyTypeObject** SbkPySide_QtCoreTypes=nullptr;
     if (!SbkPySide_QtCoreTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide.QtCore"));
         if (requiredModule.isNull())
@@ -453,7 +484,6 @@ bool PythonWrapper::loadGuiModule()
 {
 #if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
     // QtGui
-    static PyTypeObject** SbkPySide2_QtGuiTypes=nullptr;
     if (!SbkPySide2_QtGuiTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide2.QtGui"));
         if (requiredModule.isNull())
@@ -462,7 +492,6 @@ bool PythonWrapper::loadGuiModule()
     }
 #elif defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // QtGui
-    static PyTypeObject** SbkPySide_QtGuiTypes=nullptr;
     if (!SbkPySide_QtGuiTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide.QtGui"));
         if (requiredModule.isNull())
@@ -477,7 +506,6 @@ bool PythonWrapper::loadWidgetsModule()
 {
 #if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
     // QtWidgets
-    static PyTypeObject** SbkPySide2_QtWidgetsTypes=nullptr;
     if (!SbkPySide2_QtWidgetsTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide2.QtWidgets"));
         if (requiredModule.isNull())
@@ -497,7 +525,7 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
             bool hasAttr = PyObject_HasAttrString(root, name.constData());
             if (!hasAttr) {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-                Shiboken::AutoDecRef pyChild(Shiboken::Conversions::pointerToPython(reinterpret_cast<SbkObjectType*>(Shiboken::SbkType<QObject>()), child));
+                Shiboken::AutoDecRef pyChild(Shiboken::Conversions::pointerToPython(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QObject>()), child));
                 PyObject_SetAttrString(root, name.constData(), pyChild);
 #elif QT_VERSION >= 0x050000
                 const char* className = qt_identifyType(child, "PySide2.QtWidgets");
@@ -533,7 +561,7 @@ void PythonWrapper::setParent(PyObject* pyWdg, QObject* parent)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     if (parent) {
-        Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython(reinterpret_cast<SbkObjectType*>(Shiboken::SbkType<QWidget>()), parent));
+        Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython(reinterpret_cast<SbkObjectType*>(getPyTypeObjectForTypeName<QWidget>()), parent));
         Shiboken::Object::setParent(pyParent, pyWdg);
     }
 #else
