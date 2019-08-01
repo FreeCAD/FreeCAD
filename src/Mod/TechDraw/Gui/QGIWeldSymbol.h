@@ -93,7 +93,7 @@ protected:
     void drawTile(TechDraw::DrawTileWeld* dtw,
                   QGITile* tile);
     void drawAllAround(void);
-    void drawProcessText(void);
+    void drawTailText(void);
     void drawFieldFlag();
     void removeDecorations();
 
