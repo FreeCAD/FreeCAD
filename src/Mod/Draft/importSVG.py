@@ -1637,39 +1637,39 @@ def open(filename):
 
 
 def insert(filename, docname):
-        """Get an active document and parse using the svgHandler().
+    """Get an active document and parse using the svgHandler().
 
-        If no document exist, it is created.
+    If no document exist, it is created.
 
-        Parameters
-        ----------
-        filename : str
-            The path to the filename to be opened.
-        docname : str
-            The name of the active App::Document if one exists, or
-            of the new one created.
+    Parameters
+    ----------
+    filename : str
+        The path to the filename to be opened.
+    docname : str
+        The name of the active App::Document if one exists, or
+        of the new one created.
 
-        Returns
-        -------
-        App::Document
-            The active FreeCAD document, or the document created if none exists,
-            with the parsed information.
-        """
-        try:
-                doc = FreeCAD.getDocument(docname)
-        except NameError:
-                doc = FreeCAD.newDocument(docname)
-        FreeCAD.ActiveDocument = doc
+    Returns
+    -------
+    App::Document
+        The active FreeCAD document, or the document created if none exists,
+        with the parsed information.
+    """
+    try:
+        doc = FreeCAD.getDocument(docname)
+    except NameError:
+        doc = FreeCAD.newDocument(docname)
+    FreeCAD.ActiveDocument = doc
 
-        # Set up the parser
-        parser = xml.sax.make_parser()
-        parser.setFeature(xml.sax.handler.feature_external_ges, False)
-        parser.setContentHandler(svgHandler())
-        parser._cont_handler.doc = doc
+    # Set up the parser
+    parser = xml.sax.make_parser()
+    parser.setFeature(xml.sax.handler.feature_external_ges, False)
+    parser.setContentHandler(svgHandler())
+    parser._cont_handler.doc = doc
 
-        # Use the native Python open which was saved as `pythonopen`
-        parser.parse(pythonopen(filename))
-        doc.recompute()
+    # Use the native Python open which was saved as `pythonopen`
+    parser.parse(pythonopen(filename))
+    doc.recompute()
 
 
 def export(exportList, filename):
