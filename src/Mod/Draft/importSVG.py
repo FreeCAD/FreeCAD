@@ -731,9 +731,11 @@ class svgHandler(xml.sax.ContentHandler):
                                 content = content.split(';')
                                 for i in content:
                                         pair = i.split(':')
-                                        if len(pair)>1: data[pair[0]]=pair[1]
+                                        if len(pair)>1:
+                                            data[pair[0]]=pair[1]
 
-                for k in ['x','y','x1','y1','x2','y2','r','rx','ry','cx','cy','width','height']:
+                for k in ['x','y','x1','y1','x2','y2',
+                          'r','rx','ry','cx','cy','width','height']:
                         if k in data:
                                 data[k] = getsize(data[k][0],'css'+str(self.svgdpi))
 
@@ -789,7 +791,7 @@ class svgHandler(xml.sax.ContentHandler):
                             elif len(self.grouptransform)==0:
                                 # fallback to current dpi
                                 m.scale(Vector(25.4/self.svgdpi,25.4/self.svgdpi,1))
-                        self.grouptransform.append(m) 
+                        self.grouptransform.append(m)
                 if 'fill' in data:
                         if data['fill'][0] != 'none':
                                 self.fill = getcolor(data['fill'])
@@ -879,6 +881,7 @@ class svgHandler(xml.sax.ContentHandler):
                                         firstvec = lastvec
                                         FreeCAD.Console.PrintMessage('move %s\n'%str(lastvec))
                                         lastpole = None
+
                                 if (d == "L" or d == "l") or \
                                         ((d == 'm' or d == 'M') and pointlist) :
                                         for x,y in zip(pointlist[0::2],pointlist[1::2]):
@@ -916,14 +919,14 @@ class svgHandler(xml.sax.ContentHandler):
                                 elif (d == "A" or d == "a"):
                                         for rx,ry,xrotation, largeflag, sweepflag,x,y in \
                                                 zip(pointlist[0::7],pointlist[1::7],pointlist[2::7],pointlist[3::7],pointlist[4::7],pointlist[5::7],pointlist[6::7]):
-
                                                 #support for large-arc and x-rotation are missing
                                                 if relative:
                                                         currentvec = lastvec.add(Vector(x,-y,0))
                                                 else:
                                                         currentvec = Vector(x,-y,0)
                                                 chord = currentvec.sub(lastvec)
-                                                if (not largeflag) and abs(rx-ry) < 10**(-1*Draft.precision()): # small circular arc
+                                                # small circular arc
+                                                if (not largeflag) and abs(rx-ry) < 10**(-1*Draft.precision()):
                                                         # perp = chord.cross(Vector(0,0,-1))
                                                         # here is a better way to find the perpendicular
                                                         if sweepflag == 1:
@@ -939,8 +942,12 @@ class svgHandler(xml.sax.ContentHandler):
                                                         perp.multiply(s/perp.Length)
                                                         midpoint = lastvec.add(chord.add(perp))
                                                         seg = Part.Arc(lastvec,midpoint,currentvec).toShape()
-                                                else:# big arc or elliptical arc
+                                                # big arc or elliptical arc
+                                                else:
+                                                        # Calculate the possible centers for an arc
+                                                        # in 'endpoint parameterization'.
                                                         solution,(rx,ry) = arcend2center(lastvec,currentvec,rx,ry,math.radians(-xrotation),True) 
+                                                        # Chose one of the two solutions
                                                         negsol = (largeflag != sweepflag)
                                                         vcenter,angle1,angledelta = solution[negsol]
                                                         #print angle1
@@ -950,7 +957,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                                 swapaxis = True
                                                         else:
                                                                 swapaxis = False
-                                                         #print 'Elliptical arc %s rx=%f ry=%f' % (vcenter,rx,ry)
+                                                        #print 'Elliptical arc %s rx=%f ry=%f' % (vcenter,rx,ry)
                                                         e1 = Part.Ellipse(vcenter,rx,ry)
                                                         if sweepflag:
                                                                 #angledelta=-(-angledelta % (math.pi *2)) # Step4
@@ -965,7 +972,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                         if swapaxis or xrotation >  10**(-1*Draft.precision()):
                                                                 m3=FreeCAD.Matrix()
                                                                 m3.move(vcenter)
-                                                                rot90=FreeCAD.Matrix(0,-1,0,0,1,0) #90
+                                                                # 90
+                                                                rot90=FreeCAD.Matrix(0,-1,0,0,1,0)
                                                                 #swapaxism=FreeCAD.Matrix(0,1,0,0,1,0) 
                                                                 if swapaxis:
                                                                         m3=m3.multiply(rot90)
@@ -975,9 +983,10 @@ class svgHandler(xml.sax.ContentHandler):
                                                         seg = e1a.toShape()
                                                         if sweepflag:
                                                                 seg.reverse()
-                                                                #obj = self.doc.addObject("Part::Feature",'DEBUG %s'%pathname) #DEBUG
-                                                                #obj.Shape = seg #DEBUG
-                                                                #seg = Part.LineSegment(lastvec,currentvec).toShape() #DEBUG
+                                                                # DEBUG
+                                                                #obj = self.doc.addObject("Part::Feature",'DEBUG %s'%pathname)
+                                                                #obj.Shape = seg
+                                                                #seg = Part.LineSegment(lastvec,currentvec).toShape()
                                                 lastvec = currentvec
                                                 lastpole = None
                                                 path.append(seg)
@@ -1070,7 +1079,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                 pass
                                             else:
                                                 path.append(seg)
-                                        if path: #the path should be closed by now
+                                        if path:
+                                                # the path should be closed by now
                                                 #sh=makewire(path,True)
                                                 sh=makewire(path,donttry=False)
                                                 if self.fill and (len(sh.Wires) == 1) and sh.Wires[0].isClosed():
@@ -1081,7 +1091,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                 self.format(obj)
                                                 path = []
                                                 if firstvec:
-                                                        lastvec = firstvec #Move relative to recent draw command
+                                                        # Move relative to recent draw command
+                                                        lastvec = firstvec
                                                 point = []
                                                 command = None
                                                 if self.currentsymbol:
@@ -1098,19 +1109,19 @@ class svgHandler(xml.sax.ContentHandler):
                                 if self.currentsymbol:
                                     self.symbols[self.currentsymbol].append(obj)
 
-
-                # processing rects
-
+                # Process rects
                 if name == "rect":
-                        if not pathname: pathname = 'Rectangle'
+                        if not pathname:
+                            pathname = 'Rectangle'
                         edges = []
                         if not "x" in data:
                             data["x"] = 0
                         if not "y" in data:
                             data["y"] = 0
+                        # Negative values are invalid
                         if ('rx' not in data or data['rx'] < 10**(-1*Draft.precision())) and \
-                           ('ry' not in data or data['ry'] < 10**(-1*Draft.precision())): #negative values are invalid
-#                        if True: 
+                           ('ry' not in data or data['ry'] < 10**(-1*Draft.precision())):
+                                # if True:
                                 p1 = Vector(data['x'],-data['y'],0)
                                 p2 = Vector(data['x']+data['width'],-data['y'],0)
                                 p3 = Vector(data['x']+data['width'],-data['y']-data['height'],0)
@@ -1119,7 +1130,8 @@ class svgHandler(xml.sax.ContentHandler):
                                 edges.append(Part.LineSegment(p2,p3).toShape())
                                 edges.append(Part.LineSegment(p3,p4).toShape())
                                 edges.append(Part.LineSegment(p4,p1).toShape())
-                        else: #rounded edges
+                        else:
+                                # rounded edges
                                 rx = data.get('rx')
                                 ry = data.get('ry') or rx
                                 rx = rx or ry 
@@ -1146,7 +1158,8 @@ class svgHandler(xml.sax.ContentHandler):
                                         e2a=Part.Arc(e,math.radians(180),math.radians(270))
                                         e3a=Part.Arc(e,math.radians(270),math.radians(360))
                                         e4a=Part.Arc(e,math.radians(0),math.radians(90))
-                                        m=FreeCAD.Matrix(0,-1,0,0,1,0) # rotate +90 degree
+                                        # rotate +90 degree
+                                        m=FreeCAD.Matrix(0,-1,0,0,1,0)
                                 esh=[]
                                 for arc,point in ((e1a,p1),(e2a,p2),(e3a,p3),(e4a,p4)):
                                         m1=FreeCAD.Matrix(m)
@@ -1156,10 +1169,13 @@ class svgHandler(xml.sax.ContentHandler):
                                 for esh1,esh2 in zip(esh[-1:]+esh[:-1],esh):
                                         p1,p2 = esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point
                                         if not DraftVecUtils.equals(p1,p2):
-                                            edges.append(Part.LineSegment(esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point).toShape()) #straight segments
-                                        edges.append(esh2) # elliptical segments
+                                            # straight segments
+                                            edges.append(Part.LineSegment(esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point).toShape())
+                                        # elliptical segments
+                                        edges.append(esh2)
                         sh = Part.Wire(edges)
-                        if self.fill: sh = Part.Face(sh)
+                        if self.fill:
+                            sh = Part.Face(sh)
                         sh = self.applyTrans(sh)
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
@@ -1167,10 +1183,10 @@ class svgHandler(xml.sax.ContentHandler):
                         if self.currentsymbol:
                             self.symbols[self.currentsymbol].append(obj)
                         
-                # processing lines
-
+                # Process lines
                 if name == "line":
-                        if not pathname: pathname = 'Line'
+                        if not pathname:
+                            pathname = 'Line'
                         p1 = Vector(data['x1'],-data['y1'],0)
                         p2 = Vector(data['x2'],-data['y2'],0)
                         sh = Part.LineSegment(p1,p2).toShape()
@@ -1181,12 +1197,15 @@ class svgHandler(xml.sax.ContentHandler):
                         if self.currentsymbol:
                             self.symbols[self.currentsymbol].append(obj)
 
-                # processing polylines and polygons
-
+                # Process polylines and polygons
                 if name == "polyline" or name == "polygon":
-                        '''a simpler implementation would be sh = Part.makePolygon([Vector(svgx,-svgy,0) for svgx,svgy in zip(points[0::2],points[1::2])])
-                        but there would be more difficlult to search for duplicate points beforehand.'''
-                        if not pathname: pathname = 'Polyline'
+                        # A simpler implementation would be
+                        # sh = Part.makePolygon([Vector(svgx,-svgy,0) for svgx,svgy in zip(points[0::2],points[1::2])])
+                        #
+                        # but there would be more difficlult to search for duplicate
+                        # points beforehand.
+                        if not pathname:
+                            pathname = 'Polyline'
                         points=[float(d) for d in data['points']]
                         FreeCAD.Console.PrintMessage('points %s\n'%str(points))
                         lenpoints=len(points)
@@ -1212,8 +1231,7 @@ class svgHandler(xml.sax.ContentHandler):
                                         if self.currentsymbol:
                                             self.symbols[self.currentsymbol].append(obj)
 
-                # processing ellipses
-
+                # Process ellipses
                 if (name == "ellipse") :
                         if not pathname: pathname = 'Ellipse'
                         c = Vector(data.get('cx',0),-data.get('cy',0),0)
