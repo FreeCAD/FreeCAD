@@ -56,13 +56,19 @@ else:
     def translate(ctxt,txt):
         return txt
 
-try: import FreeCADGui
-except ImportError: gui = False
-else: gui = True
+try:
+    import FreeCADGui
+except ImportError:
+    gui = False
+else:
+    gui = True
 
-try: draftui = FreeCADGui.draftToolBar
-except AttributeError: draftui = None
+try:
+    draftui = FreeCADGui.draftToolBar
+except AttributeError:
+    draftui = None
 
+# Save the native open function to avoid collisions
 if open.__module__ in ['__builtin__','io']:
   pythonopen = open
 
@@ -220,7 +226,19 @@ svgcolorslower = dict((key.lower(),value) for key,value in \
     list(svgcolors.items()))
 
 def getcolor(color):
-    "checks if the given string is a RGB value, or if it is a named color. returns 1-based RGBA tuple."
+    """Check if the given string is an RGB value, or if it is a named color.
+
+    Parameters
+    ----------
+    color : str
+        Color in hexadecimal format, long '#12ab9f' or short '#1af'
+
+    Returns
+    -------
+    tuple
+    (r, g, b, a)
+        RGBA float tuple, where each value is between 0.0 and 1.0.
+    """
     if (color[0] == "#"):
         if len(color) == 7:
             r = float(int(color[1:3],16)/255.0)
@@ -247,10 +265,27 @@ def getcolor(color):
         #    if (k.lower() == color.lower()): pass
 
 def transformCopyShape(shape,m):
-    """apply transformation matrix m on given shape
-since OCCT 6.8.0 transformShape can be used to apply certain non-orthogonal
-transformations on shapes. This way a conversion to BSplines in
-transformGeometry can be avoided."""
+    """Apply transformation matrix m on given shape.
+
+    Since OCCT 6.8.0 transformShape can be used to apply certain
+    non-orthogonal transformations on shapes. This way a conversion
+    to BSplines in transformGeometry can be avoided.
+
+    @sa: Part::TopoShape::transformGeometry(), TopoShapePy::transformGeometry()
+    @sa: Part::TopoShape::transformShape(), TopoShapePy::transformShape()
+
+    Parameters
+    ----------
+    shape : Part::TopoShape
+        A given shape
+    m : Base::Matrix4D
+        A transformation matrix
+
+    Returns
+    -------
+    shape : Part::TopoShape
+        The shape transformed by the matrix
+    """
     if abs(m.A11**2+m.A12**2 -m.A21**2-m.A22**2) < 1e-8 and \
             abs(m.A11*m.A21+m.A12*m.A22) < 1e-8: #no shear
         try:
@@ -261,14 +296,43 @@ transformGeometry can be avoided."""
             pass              # non-orthogonal matrices
     return shape.transformGeometry(m)
 
+
 def getsize(length,mode='discard',base=1):
-        """parses length values containing number and unit
-        with mode 'discard': extracts a number from the given string (removes unit suffixes)
-        with mode 'tuple': return number and unit as a tuple
-        with mode 'css90.0': convert the unit to px assuming 90dpi
-        with mode 'css96.0': convert the unit to px assuming 96dpi
-        with mode 'mm90.0': convert the unit to millimeter assuming 90dpi
-        with mode 'mm96.0': convert the unit to millimeter assuming 96dpi"""
+        """Parse the length string containing number and unit.
+
+        Parameters
+        ----------
+        length : str
+            The length is a string, including sign, exponential notation,
+            and unit: '+56215.14565E+6mm', '-23.156e-2px'.
+        mode : str, optional
+            One of 'discard', 'tuple', 'css90.0', 'css96.0', 'mm90.0', 'mm96.0'.
+            'discard' (default), it discards the unit suffix, and extracts
+                a number from the given string.
+            'tuple', return number and unit as a tuple
+            'css90.0', convert the unit to pixels assuming 90 dpi
+            'css96.0', convert the unit to pixels assuming 96 dpi
+            'mm90.0', convert the unit to millimeters assuming 90 dpi
+            'mm96.0', convert the unit to millimeters assuming 96 dpi
+        base : float, optional
+            A base to scale the length.
+
+        Returns
+        -------
+        float
+            The numeric value of the length, as is, or transformed to
+            millimeters or pixels.
+        float, string
+            A tuple with the numeric value, and the unit if `mode='tuple'`.
+        """
+        # Dictionaries to convert units to millimeters or pixels.
+        #
+        # The `em` and `ex` units are typographical units used in systems
+        # like LaTeX. Here the conversion factors are arbitrarily chosen,
+        # as they should depend on a specific font size used.
+        #
+        # The percentage factor is arbitrarily chosen, as it should depend
+        # on the viewport size or for filling patterns on the bounding box.
         if mode == 'mm90.0':
             tomm={
                     '' : 25.4/90, #default
@@ -280,7 +344,6 @@ def getsize(length,mode='discard',base=1):
                     'in' : 25.4,
                     'em':  15*2.54/90, #arbitrarily chosen; has to depend on font size
                     'ex': 10*2.54/90, #arbitrarily chosen; has to depend on font size
-
                     '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
                     }
         if mode == 'mm96.0':
@@ -294,7 +357,6 @@ def getsize(length,mode='discard',base=1):
                     'in' : 25.4,
                     'em':  15*2.54/96, #arbitrarily chosen; has to depend on font size
                     'ex': 10*2.54/96, #arbitrarily chosen; has to depend on font size
-
                     '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
                     }
         if mode == 'css90.0':
@@ -308,7 +370,6 @@ def getsize(length,mode='discard',base=1):
                     'in' : 90,
                     'em':  15, #arbitrarily chosen; has to depend on font size
                     'ex':  10, #arbitrarily chosen; has to depend on font size
-
                     '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
                     }
         if mode == 'css96.0':
@@ -322,9 +383,9 @@ def getsize(length,mode='discard',base=1):
                     'in' : 96,
                     'em':  15, #arbitrarily chosen; has to depend on font size
                     'ex':  10, #arbitrarily chosen; has to depend on font size
-
                     '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
                     }
+        # Extract a number from a string like '+56215.14565E+6mm'
         number, exponent, unit=re.findall('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)(px|pt|pc|mm|cm|in|em|ex|%)?',length)[0]
         if mode =='discard':
                 return float(number)
