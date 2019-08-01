@@ -80,8 +80,12 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent,
     m_qgLead(myParent),
     m_blockDraw(false)
 {
-//    setHandlesChildEvents(true);    //qt4 deprecated in qt5
+
+#if PY_MAJOR_VERSION < 3
+    setHandlesChildEvents(true);    //qt4 deprecated in qt5
+#else
     setFiltersChildEvents(true);    //qt5
+#endif
     setFlag(QGraphicsItem::ItemIsMovable, false);
     
     setCacheMode(QGraphicsItem::NoCache);
@@ -106,7 +110,6 @@ QVariant QGIWeldSymbol::itemChange(GraphicsItemChange change, const QVariant &va
         } else {
             setPrettyNormal();
         }
-        draw();
     } else if(change == ItemSceneChange && scene()) {
         // nothing special!
     }
@@ -152,7 +155,7 @@ void QGIWeldSymbol::draw()
     }
 
     if (strlen(m_weldFeat->TailText.getValue()) != 0) {
-        drawProcessText();
+        drawTailText();
     }
 }
 
@@ -186,9 +189,12 @@ void QGIWeldSymbol::drawAllAround(void)
     m_allAround = new QGIVertex(-1);
     m_allAround->setParentItem(this);
 
+    m_allAround->setAcceptHoverEvents(false);
     m_allAround->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_allAround->setFlag(QGraphicsItem::ItemIsMovable, false);
-    m_allAround->setAcceptHoverEvents(false);
+    m_allAround->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
+    m_allAround->setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    m_allAround->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
 
     m_allAround->setNormalColor(getCurrentColor());
 
@@ -202,9 +208,9 @@ void QGIWeldSymbol::drawAllAround(void)
     m_allAround->setPos(allAroundPos);
 }
 
-void QGIWeldSymbol::drawProcessText(void)
+void QGIWeldSymbol::drawTailText(void)
 {
-//    Base::Console().Message("QGIWS::drawProcessText()\n");
+//    Base::Console().Message("QGIWS::drawTailText()\n");
     m_tailText = new QGCustomText();
     m_tailText->setParentItem(this);
 
@@ -251,16 +257,23 @@ void QGIWeldSymbol::drawFieldFlag()
     m_fieldFlag = new QGIPrimPath();
     m_fieldFlag->setParentItem(this);
 
+    m_fieldFlag->setAcceptHoverEvents(false);
     m_fieldFlag->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_fieldFlag->setFlag(QGraphicsItem::ItemIsMovable, false);
-    m_fieldFlag->setAcceptHoverEvents(false);
-    m_fieldFlag->setPath(path);
+    m_fieldFlag->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
+    m_fieldFlag->setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+    m_fieldFlag->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
 
-    m_fieldFlag->setNormalColor(getCurrentColor());
-    m_fieldFlag->setFill(Qt::SolidPattern);
+    m_fieldFlag->setNormalColor(getCurrentColor());     //penColor
     double width = m_qgLead->getLineWidth();
+
+    m_fieldFlag->setFillColor(getCurrentColor());
+    m_fieldFlag->setFill(Qt::SolidPattern);
+
     m_fieldFlag->setWidth(width);
     m_fieldFlag->setZValue(ZVALUE::DIMENSION);
+
+    m_fieldFlag->setPath(path);
 
     QPointF fieldFlagPos = getKinkPoint();
     m_fieldFlag->setPos(fieldFlagPos); 
@@ -296,8 +309,8 @@ void QGIWeldSymbol::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     Q_UNUSED(event);
     if (isSelected()) {
-        setPrettySel();
         m_colCurrent = getSelectColor();
+        setPrettySel();
     } else {
         m_colCurrent = getPreColor();
         setPrettyPre();
@@ -330,8 +343,13 @@ void QGIWeldSymbol::setPrettyNormal()
         t->setColor(m_colNormal);
         t->draw();
     }
+    m_colCurrent = m_colNormal;
+    m_fieldFlag->setNormalColor(m_colCurrent);
+    m_fieldFlag->setFillColor(m_colCurrent);
     m_fieldFlag->setPrettyNormal();
+    m_allAround->setNormalColor(m_colCurrent);
     m_allAround->setPrettyNormal();
+    m_tailText->setColor(m_colCurrent);
     m_tailText->setPrettyNormal();
 }
 
