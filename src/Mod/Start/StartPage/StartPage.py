@@ -25,7 +25,7 @@
 # the html code of the start page. It is built only once per FreeCAD session for now...
 
 import six
-import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re
+import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,hashlib
 from . import TranslationTexts
 from PySide import QtCore,QtGui
 
@@ -64,7 +64,7 @@ def isOpenableByFreeCAD(filename):
     "check if FreeCAD can handle this file type"
 
     if os.path.isdir(filename):
-        return False
+        return os.path.exists(filename+'/Document.xml')
     if os.path.basename(filename)[0] == ".":
         return False
     extensions = [key.lower() for key in FreeCAD.getImportType().keys()]
@@ -76,7 +76,70 @@ def isOpenableByFreeCAD(filename):
         return True
     return False
 
+def saveIcon(key,data,ext):
+    '''
+    Save icon data into iconbank
+    
+    key: the text key of the icon
+    data: data of the icon. Can either be a QImage, QPixmap, QByteArray or
+          Python bytes
+    ext: extension of the file. In case of data being QImage/QPixmap, this is
+         also used as the image file saving format.
 
+    This function computes the sha1 hash of the icon data and save the file
+    using the hash as the name with the given extension. If a file with a same
+    hash exists, it is not saved
+    '''
+
+    if isinstance(data,(QtGui.QImage,QtGui.QPixmap)):
+        array = QtCore.QByteArray()
+        buf = QtCore.QBuffer(array)
+        buf.open(QtCore.QIODevice.WriteOnly)
+        data.save(buf,ext)
+        buf.close()
+
+        content = array
+
+        if ext != 'xpm':
+            # PNG format seems to store timestamps that messes up digest. Let's
+            # calculate digest on XPM instead
+            content = QtCore.QByteArray()
+            buf = QtCore.QBuffer(content)
+            data.save(buf,'xpm')
+            buf.close()
+
+        data = array
+
+    if isinstance(data,QtCore.QByteArray):
+        sha = QtCore.QCryptographicHash.hash(
+                content,QtCore.QCryptographicHash.Sha1).toHex()
+    else:
+        sha = hashlib.sha1()
+        sha.update(data)
+        sha = sha.hexdigest()
+
+    name = '{}/{}.{}'.format(tempfolder,sha,ext)
+
+    if not os.path.exists(name):
+        if isinstance(data,QtCore.QByteArray):
+            f = QtCore.QFile(name)
+            f.open(QtCore.QIODevice.WriteOnly)
+            f.write(data)
+            f.close()
+        else:
+            with open(name,'wb') as f:
+                f.write(data)
+
+    iconbank[key] = name
+    return name
+
+_Re_Pattern = "<Property name=\"{}\".*?String value=\"(.*?)\"\/>"
+_Re_CreatedBy = re.compile(_Re_Pattern.format("CreatedBy"))
+_Re_Company = re.compile(_Re_Pattern.format("Company"))
+_Re_License = re.compile(_Re_Pattern.format("License"))
+_Re_Comment = re.compile(_Re_Pattern.format("Comment"))
+_Re_CreationDate = re.compile(_Re_Pattern.format("CreationDate"))
+_Re_LastModifiedDate = re.compile(_Re_Pattern.format("LastModifiedDate"))
 
 def getInfo(filename):
 
@@ -102,54 +165,76 @@ def getInfo(filename):
 
     if os.path.exists(filename):
 
+        docfile = None
+        zfile = None
         if os.path.isdir(filename):
-            return None
+            docfile = filename + '/Document.xml'
+            if not os.path.exists(docfile):
+                return None
+            s = os.stat(docfile)
+            size = sum(os.path.getsize(filename+'/'+f) for f in \
+                    os.listdir(filename) if os.path.isfile(filename+'/'+f))
+        else:
+            # get normal file info
+            s = os.stat(filename)
+            size = s.st_size
 
-        # get normal file info
-        s = os.stat(filename)
-        size = getSize(s.st_size)
+            if filename.lower().endswith(".fcstd"):
+                try:
+                    zfile=zipfile.ZipFile(filename)
+                except:
+                    print("Cannot read file: ",filename)
+                    return None
+                files=zfile.namelist()
+
+        size = getSize(size)
         ctime = getLocalTime(s.st_ctime)
         mtime = getLocalTime(s.st_mtime)
         author = ""
         company = TranslationTexts.T_UNKNOWN
         lic = TranslationTexts.T_UNKNOWN
         image = None
+        doc = None
         descr = ""
 
         # get additional info from fcstd files
-        if filename.lower().endswith(".fcstd"):
-            try:
-                zfile=zipfile.ZipFile(filename)
-            except:
-                print("Cannot read file: ",filename)
-                return None
-            files=zfile.namelist()
+        imagePath="thumbnails/Thumbnail.png"
+        if zfile:
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
                 doc = str(zfile.read(files[0]))
                 doc = doc.replace("\n"," ")
-                r = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
-                if r:
-                    author = r[0]
-                r = re.findall("Property name=\"Company.*?String value=\"(.*?)\"\/>",doc)
-                if r:
-                    company = r[0]
-                r = re.findall("Property name=\"License.*?String value=\"(.*?)\"\/>",doc)
-                if r:
-                    lic = r[0]
-                r = re.findall("Property name=\"Comment.*?String value=\"(.*?)\"\/>",doc)
-                if r:
-                    descr = r[0]
-                if "thumbnails/Thumbnail.png" in files:
-                    if filename in iconbank:
-                        image = iconbank[filename]
-                    else:
-                        imagedata=zfile.read("thumbnails/Thumbnail.png")
-                        image = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
-                        thumb = open(image,"wb")
-                        thumb.write(imagedata)
-                        thumb.close()
-                        iconbank[filename] = image
+            if  imagePath in files:
+                if filename in iconbank:
+                    image = iconbank[filename]
+                else:
+                    image = saveIcon(filename,zfile.read(imagePath),'png')
+        elif docfile:
+            with open(docfile) as f:
+                doc = f.read().replace('\n',' ')
+            image=filename+'/'+imagePath
+            if not os.path.exists(image):
+                image = None
+
+        if doc:
+            r = _Re_CreatedBy.search(doc)
+            if r:
+                author = r.group(1)
+            r = _Re_Company.search(doc)
+            if r:
+                company = r.group(1)
+            r = _Re_License.search(doc)
+            if r:
+                lic = r.group(1)
+            r = _Re_Comment.search(doc)
+            if r:
+                descr = r.group(1)
+            r = _Re_CreationDate.search(doc)
+            if r:
+                ctime = r.group(1)
+            r = _Re_LastModifiedDate.search(doc)
+            if r:
+                mtime = r.group(1)
 
         # retrieve default mime icon if needed
         if not image:
@@ -163,12 +248,9 @@ def getInfo(filename):
                 icon = iconprovider.icon(i)
                 if icon.availableSizes():
                     preferred = icon.actualSize(QtCore.QSize(128,128))
-                    px = icon.pixmap(preferred)
-                    image = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
-                    px.save(image)
+                    image = saveIcon(t,icon.pixmap(preferred),'png')
                 else:
                     image = getDefaultIcon()
-                iconbank[t] = image
         return [image,size,author,ctime,mtime,descr,company,lic]
 
     return None
@@ -185,10 +267,7 @@ def getDefaultIcon():
         i = QtCore.QFileInfo(__file__) # MUST provide an existing file in qt5
         icon = iconprovider.icon(i)
         preferred = icon.actualSize(QtCore.QSize(128,128))
-        px = icon.pixmap(preferred)
-        image = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
-        px.save(image)
-        defaulticon = image
+        defaulticon = saveIcon('defaulticon',icon.pixmap(preferred),'png')
 
     return defaulticon
 
@@ -208,7 +287,8 @@ def buildCard(filename,method,arg=None):
             image = finfo[0]
             size = finfo[1]
             author = finfo[2]
-            infostring = encode(TranslationTexts.T_CREATIONDATE+": "+finfo[3]+"\n")
+            infostring = encode(TranslationTexts.T_LOCATION+": "+os.path.dirname(filename)+"\n")
+            infostring += encode(TranslationTexts.T_CREATIONDATE+": "+finfo[3]+"\n")
             infostring += encode(TranslationTexts.T_LASTMODIFIED+": "+finfo[4])
             if finfo[5]:
                 infostring += "\n\n" + encode(finfo[5])
@@ -241,7 +321,10 @@ def handle():
     if hasattr(Start,"tempfolder"):
         tempfolder = Start.tempfolder
     else:
-        tempfolder = tempfile.mkdtemp(prefix="FreeCADStartThumbnails")
+        tempfolder = tempfile.gettempdir() + '/FreeCADStartThumbnails'
+
+    if not os.path.exists(tempfolder):
+        os.makedirs(tempfolder)
 
     # build the html page skeleton
 
@@ -298,9 +381,7 @@ def handle():
         pa = QtGui.QPainter(i)
         pa.fillRect(i.rect(),gradient)
         pa.end()
-        createimg = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
-        i.save(createimg)
-        iconbank["createimg"] = createimg
+        saveIcon('createimg',i,'xpm')
 
     # build SECTION_RECENTFILES
 
@@ -416,8 +497,7 @@ def handle():
                         r = [s[:-1].strip('"') for s in re.findall("(?s)\{(.*?)\};",xpm)[0].split("\n")[1:]]
                         p = QtGui.QPixmap(r)
                         p = p.scaled(24,24)
-                        img = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
-                        p.save(img)
+                        img = saveIcon(wb,p,'png')
                     else:
                         img = xpm
                 else:
