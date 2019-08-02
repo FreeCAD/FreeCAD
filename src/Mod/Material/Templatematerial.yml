@@ -156,14 +156,10 @@
       URL: 'https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient'
       Description: "Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit]"
 - Electrical:
-    SpecificResistance:
-      Type: 'Quantity'
-      URL: 'https://en.wikipedia.org/wiki/Electrical_resistivity_and_conductivity'
-      Description: "specific electrical resistance"
     RelativePermittivity:
-      Type: 'Quantity'
+      Type: 'Float'
       URL: 'https://en.wikipedia.org/wiki/Relative_permittivity'
-      Description: "a material prperty, expressing the ratio to the permittivity of the Vaccum"
+      Description: "a material property, expressing the ratio to the permittivity of the Vaccum"
 - Architectural:
     Color:
       Type:  'String'
