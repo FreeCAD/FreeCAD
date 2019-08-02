@@ -1460,84 +1460,84 @@ class svgHandler(xml.sax.ContentHandler):
             sh.End = pts[1]
             sh.Dimline = pts[2]
 
-        def translateVec(self, vec, mat):
-            """Translate a point or vector by a matrix.
+    def translateVec(self, vec, mat):
+        """Translate a point or vector by a matrix.
 
-            Parameters
-            ----------
-            vec : Base::Vector3
-                The original vector
-            mat : Base::Matrix4D
-                The translation matrix, from which only the elements 14, 24, 34
-                are used.
-            """
-            v = Vector(mat.A14, mat.A24, mat.A34)
-            return vec.add(v)
+        Parameters
+        ----------
+        vec : Base::Vector3
+            The original vector
+        mat : Base::Matrix4D
+            The translation matrix, from which only the elements 14, 24, 34
+            are used.
+        """
+        v = Vector(mat.A14, mat.A24, mat.A34)
+        return vec.add(v)
 
-        def getMatrix(self, tr):
-            """Return a FreeCAD matrix from an SVG transform attribute.
+    def getMatrix(self, tr):
+        """Return a FreeCAD matrix from an SVG transform attribute.
 
-            Parameters
-            ----------
-            tr : str
-                The type of transform: 'matrix', 'translate', 'scale',
-                'rotate', 'skewX', 'skewY' and its value
+        Parameters
+        ----------
+        tr : str
+            The type of transform: 'matrix', 'translate', 'scale',
+            'rotate', 'skewX', 'skewY' and its value
 
-            Returns
-            -------
-            Base::Matrix4D
-                The translated matrix.
-            """
-            transformre = re.compile('(matrix|translate|scale|rotate|skewX|skewY)\s*?\((.*?)\)', re.DOTALL)
-            m = FreeCAD.Matrix()
-            for transformation, arguments in transformre.findall(tr):
-                argsplit = [float(arg) for arg in arguments.replace(',', ' ').split()]
-                # m.multiply(FreeCAD.Matrix(1, 0, 0, 0, 0, -1))
-                # print('%s:%s %s %d' % (transformation, arguments, argsplit, len(argsplit)))
-                if transformation == 'translate':
-                    tx = argsplit[0]
-                    ty = argsplit[1] if len(argsplit) > 1 else 0.0
-                    m.move(Vector(tx, -ty, 0))
-                elif transformation == 'scale':
-                    sx = argsplit[0]
-                    sy = argsplit[1] if len(argsplit) > 1 else sx
-                    m.scale(Vector(sx, sy, 1))
-                elif transformation == 'rotate':
-                    cx = 0
-                    cy = 0
-                    angle = argsplit[0]
-                    if len(argsplit) >= 3:
-                        cx = argsplit[1]
-                        cy = argsplit[2]
-                        m.move(Vector(cx, -cy, 0))
-                    # Mirroring one axis is equal to changing the direction
-                    # of rotation
-                    m.rotateZ(math.radians(-angle))
-                    if len(argsplit) >= 3:
-                        m.move(Vector(-cx, cy, 0))
-                elif transformation == 'skewX':
-                    m = m.multiply(FreeCAD.Matrix(1,
-                                                  -math.tan(math.radians(argsplit[0]))))
-                elif transformation == 'skewY':
-                    m = m.multiply(FreeCAD.Matrix(1, 0, 0, 0,
-                                                  -math.tan(math.radians(argsplit[0]))))
-                elif transformation == 'matrix':
-                    # transformation matrix:
-                    #    FreeCAD                 SVG
-                    # (+A -C +0 +E)           (A C 0 E)
-                    # (-B +D -0 -F)  = (-Y) * (B D 0 F) *(-Y)
-                    # (+0 -0 +1 +0)           (0 0 1 0)
-                    # (+0 -0 +0 +1)           (0 0 0 1)
-                    m = m.multiply(FreeCAD.Matrix(argsplit[0], -argsplit[2],
-                                                  0, argsplit[4],
-                                                  -argsplit[1], argsplit[3],
-                                                  0, -argsplit[5]))
-                # else:
-                #    print 'SKIPPED %s' % transformation
-                # print "m= ",m
-            # print "generating transformation: ",m
-            return m
-        # getMatrix
+        Returns
+        -------
+        Base::Matrix4D
+            The translated matrix.
+        """
+        transformre = re.compile('(matrix|translate|scale|rotate|skewX|skewY)\s*?\((.*?)\)', re.DOTALL)
+        m = FreeCAD.Matrix()
+        for transformation, arguments in transformre.findall(tr):
+            argsplit = [float(arg) for arg in arguments.replace(',', ' ').split()]
+            # m.multiply(FreeCAD.Matrix(1, 0, 0, 0, 0, -1))
+            # print('%s:%s %s %d' % (transformation, arguments, argsplit, len(argsplit)))
+            if transformation == 'translate':
+                tx = argsplit[0]
+                ty = argsplit[1] if len(argsplit) > 1 else 0.0
+                m.move(Vector(tx, -ty, 0))
+            elif transformation == 'scale':
+                sx = argsplit[0]
+                sy = argsplit[1] if len(argsplit) > 1 else sx
+                m.scale(Vector(sx, sy, 1))
+            elif transformation == 'rotate':
+                cx = 0
+                cy = 0
+                angle = argsplit[0]
+                if len(argsplit) >= 3:
+                    cx = argsplit[1]
+                    cy = argsplit[2]
+                    m.move(Vector(cx, -cy, 0))
+                # Mirroring one axis is equal to changing the direction
+                # of rotation
+                m.rotateZ(math.radians(-angle))
+                if len(argsplit) >= 3:
+                    m.move(Vector(-cx, cy, 0))
+            elif transformation == 'skewX':
+                m = m.multiply(FreeCAD.Matrix(1,
+                                              -math.tan(math.radians(argsplit[0]))))
+            elif transformation == 'skewY':
+                m = m.multiply(FreeCAD.Matrix(1, 0, 0, 0,
+                                              -math.tan(math.radians(argsplit[0]))))
+            elif transformation == 'matrix':
+                # transformation matrix:
+                #    FreeCAD                 SVG
+                # (+A -C +0 +E)           (A C 0 E)
+                # (-B +D -0 -F)  = (-Y) * (B D 0 F) * (-Y)
+                # (+0 -0 +1 +0)           (0 0 1 0)
+                # (+0 -0 +0 +1)           (0 0 0 1)
+                m = m.multiply(FreeCAD.Matrix(argsplit[0], -argsplit[2],
+                                              0, argsplit[4],
+                                              -argsplit[1], argsplit[3],
+                                              0, -argsplit[5]))
+            # else:
+            #    print 'SKIPPED %s' % transformation
+            # print "m= ",m
+        # print "generating transformation: ",m
+        return m
+    # getMatrix
 # class svgHandler
 
 
