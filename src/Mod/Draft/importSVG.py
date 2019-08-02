@@ -1377,88 +1377,88 @@ class svgHandler(xml.sax.ContentHandler):
         FreeCAD.Console.PrintMessage("done processing element %d\n" % self.count)
     # startElement()
 
-        def characters(self, content):
-            """Read characters from the given string."""
-            if self.text:
-                FreeCAD.Console.PrintMessage("reading characters %s\n" % content)
-                obj = self.doc.addObject("App::Annotation", 'Text')
-                obj.LabelText = content.encode('latin1')
-                if self.currentsymbol:
-                    self.symbols[self.currentsymbol].append(obj)
-                vec = Vector(self.x, -self.y, 0)
-                if self.transform:
-                    vec = self.translateVec(vec, self.transform)
-                    #print "own transform: ",self.transform, vec
-                for transform in self.grouptransform[::-1]:
-                    # vec = self.translateVec(vec, transform)
-                    vec = transform.multiply(vec)
-                #print "applying vector: ",vec
-                obj.Position = vec
-                if gui:
-                    obj.ViewObject.FontSize = int(self.text)
-                    if self.fill:
-                        obj.ViewObject.TextColor = self.fill
-                    else:
-                        obj.ViewObject.TextColor = (0.0, 0.0, 0.0, 0.0)
-
-        def endElement(self, name):
-            """Finish procesing the element indicated by the name.
-
-            Parameters
-            ----------
-            name : str
-                The name of the element
-            """
-            if not name in ["tspan"]:
-                self.transform = None
-                self.text = None
-            if name == "g" or name == "svg":
-                FreeCAD.Console.PrintMessage("closing group\n")
-                self.grouptransform.pop()
-            if name == "symbol":
-                if self.doc.getObject("svgsymbols"):
-                    group = self.doc.getObject("svgsymbols")
+    def characters(self, content):
+        """Read characters from the given string."""
+        if self.text:
+            FreeCAD.Console.PrintMessage("reading characters %s\n" % content)
+            obj = self.doc.addObject("App::Annotation", 'Text')
+            obj.LabelText = content.encode('latin1')
+            if self.currentsymbol:
+                self.symbols[self.currentsymbol].append(obj)
+            vec = Vector(self.x, -self.y, 0)
+            if self.transform:
+                vec = self.translateVec(vec, self.transform)
+                #print "own transform: ",self.transform, vec
+            for transform in self.grouptransform[::-1]:
+                # vec = self.translateVec(vec, transform)
+                vec = transform.multiply(vec)
+            #print "applying vector: ",vec
+            obj.Position = vec
+            if gui:
+                obj.ViewObject.FontSize = int(self.text)
+                if self.fill:
+                    obj.ViewObject.TextColor = self.fill
                 else:
-                    group = self.doc.addObject("App::DocumentObjectGroup",
-                                               "svgsymbols")
-                for o in self.symbols[self.currentsymbol]:
-                    group.addObject(o)
-                self.currentsymbol = None
+                    obj.ViewObject.TextColor = (0.0, 0.0, 0.0, 0.0)
 
-        def applyTrans(self, sh):
-            """Apply transformation to the shape and return the new shape.
+    def endElement(self, name):
+        """Finish procesing the element indicated by the name.
 
-            Parameters
-            ----------
-            sh : Part.Shape or Draft.Dimension
-                Object to be transformed
-            """
-            if isinstance(sh, Part.Shape):
+        Parameters
+        ----------
+        name : str
+            The name of the element
+        """
+        if not name in ["tspan"]:
+            self.transform = None
+            self.text = None
+        if name == "g" or name == "svg":
+            FreeCAD.Console.PrintMessage("closing group\n")
+            self.grouptransform.pop()
+        if name == "symbol":
+            if self.doc.getObject("svgsymbols"):
+                group = self.doc.getObject("svgsymbols")
+            else:
+                group = self.doc.addObject("App::DocumentObjectGroup",
+                                           "svgsymbols")
+            for o in self.symbols[self.currentsymbol]:
+                group.addObject(o)
+            self.currentsymbol = None
+
+    def applyTrans(self, sh):
+        """Apply transformation to the shape and return the new shape.
+
+        Parameters
+        ----------
+        sh : Part.Shape or Draft.Dimension
+            Object to be transformed
+        """
+        if isinstance(sh, Part.Shape):
+            if self.transform:
+                FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
+                # sh = transformCopyShape(sh, self.transform)
+                # see issue #2062
+                sh = sh.transformGeometry(self.transform)
+            for transform in self.grouptransform[::-1]:
+                FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
+                # sh = transformCopyShape(sh, transform)
+                # see issue 2062
+                sh = sh.transformGeometry(transform)
+            return sh
+        elif Draft.getType(sh) == "Dimension":
+            pts = []
+            for p in [sh.Start, sh.End, sh.Dimline]:
+                cp = Vector(p)
                 if self.transform:
                     FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
-                    # sh = transformCopyShape(sh, self.transform)
-                    # see issue #2062
-                    sh = sh.transformGeometry(self.transform)
+                    cp = self.transform.multiply(cp)
                 for transform in self.grouptransform[::-1]:
                     FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
-                    # sh = transformCopyShape(sh, transform)
-                    # see issue 2062
-                    sh = sh.transformGeometry(transform)
-                return sh
-            elif Draft.getType(sh) == "Dimension":
-                pts = []
-                for p in [sh.Start, sh.End, sh.Dimline]:
-                    cp = Vector(p)
-                    if self.transform:
-                        FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
-                        cp = self.transform.multiply(cp)
-                    for transform in self.grouptransform[::-1]:
-                        FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
-                        cp = transform.multiply(cp)
-                    pts.append(cp)
-                sh.Start = pts[0]
-                sh.End = pts[1]
-                sh.Dimline = pts[2]
+                    cp = transform.multiply(cp)
+                pts.append(cp)
+            sh.Start = pts[0]
+            sh.End = pts[1]
+            sh.Dimline = pts[2]
 
         def translateVec(self, vec, mat):
             """Translate a point or vector by a matrix.
