@@ -923,16 +923,16 @@ class svgHandler(xml.sax.ContentHandler):
                                             lastpole = None
                                             path.append(seg)
                                 elif (d == "V" or d == "v"):
-                                        for y in pointlist:
-                                            if relative:
-                                                currentvec = lastvec.add(Vector(0, -y, 0))
-                                            else:
-                                                currentvec = Vector(lastvec.x, -y, 0)
-                                            if lastvec != currentvec:
-                                                seg = Part.LineSegment(lastvec, currentvec).toShape()
-                                                lastvec = currentvec
-                                                lastpole = None
-                                                path.append(seg)
+                                    for y in pointlist:
+                                        if relative:
+                                            currentvec = lastvec.add(Vector(0, -y, 0))
+                                        else:
+                                            currentvec = Vector(lastvec.x, -y, 0)
+                                        if lastvec != currentvec:
+                                            seg = Part.LineSegment(lastvec, currentvec).toShape()
+                                            lastvec = currentvec
+                                            lastpole = None
+                                            path.append(seg)
                                 elif (d == "A" or d == "a"):
                                         piter = zip(pointlist[0::7], pointlist[1::7],
                                                     pointlist[2::7], pointlist[3::7],
@@ -941,85 +941,85 @@ class svgHandler(xml.sax.ContentHandler):
                                         for (rx, ry, xrotation,
                                              largeflag, sweepflag,
                                              x, y) in piter:
-                                                # support for large-arc and x-rotation are missing
-                                                if relative:
-                                                    currentvec = lastvec.add(Vector(x, -y, 0))
+                                            # support for large-arc and x-rotation are missing
+                                            if relative:
+                                                currentvec = lastvec.add(Vector(x, -y, 0))
+                                            else:
+                                                currentvec = Vector(x, -y, 0)
+                                            chord = currentvec.sub(lastvec)
+                                            # small circular arc
+                                            if (not largeflag) and abs(rx-ry) < 10**(-1*Draft.precision()):
+                                                # perp = chord.cross(Vector(0, 0, -1))
+                                                # here is a better way to find the perpendicular
+                                                if sweepflag == 1:
+                                                    # clockwise
+                                                    perp = DraftVecUtils.rotate2D(chord, -math.pi / 2)
                                                 else:
-                                                    currentvec = Vector(x, -y, 0)
-                                                chord = currentvec.sub(lastvec)
-                                                # small circular arc
-                                                if (not largeflag) and abs(rx-ry) < 10**(-1*Draft.precision()):
-                                                    # perp = chord.cross(Vector(0, 0, -1))
-                                                    # here is a better way to find the perpendicular
-                                                    if sweepflag == 1:
-                                                        # clockwise
-                                                        perp = DraftVecUtils.rotate2D(chord, -math.pi / 2)
-                                                    else:
-                                                        # anticlockwise
-                                                        perp = DraftVecUtils.rotate2D(chord, math.pi / 2)
-                                                    chord.multiply(0.5)
-                                                    if chord.Length > rx:
-                                                        a = 0
-                                                    else:
-                                                        a = math.sqrt(rx**2 - chord.Length**2)
-                                                    s = rx - a
-                                                    perp.multiply(s/perp.Length)
-                                                    midpoint = lastvec.add(chord.add(perp))
-                                                    seg = Part.Arc(lastvec, midpoint, currentvec).toShape()
-                                                # big arc or elliptical arc
+                                                    # anticlockwise
+                                                    perp = DraftVecUtils.rotate2D(chord, math.pi / 2)
+                                                chord.multiply(0.5)
+                                                if chord.Length > rx:
+                                                    a = 0
                                                 else:
-                                                    # Calculate the possible centers for an arc
-                                                    # in 'endpoint parameterization'.
-                                                    solution, (rx, ry) = arcend2center(lastvec, currentvec,
-                                                                                       rx, ry,
-                                                                                       xrotation=math.radians(-xrotation),
-                                                                                       correction=True)
-                                                    # Chose one of the two solutions
-                                                    negsol = (largeflag != sweepflag)
-                                                    vcenter, angle1, angledelta = solution[negsol]
-                                                    #print angle1
-                                                    #print angledelta
-                                                    if ry > rx:
-                                                        rx, ry = ry, rx
-                                                        swapaxis = True
-                                                    else:
-                                                        swapaxis = False
-                                                    #print 'Elliptical arc %s rx=%f ry=%f' % (vcenter,rx,ry)
-                                                    e1 = Part.Ellipse(vcenter, rx, ry)
-                                                    if sweepflag:
-                                                        #angledelta=-(-angledelta % (math.pi *2)) # Step4
-                                                        #angledelta=(-angledelta % (math.pi *2)) # Step4
-                                                        angle1  = angle1 + angledelta
-                                                        angledelta = -angledelta
-                                                        #angle1 = math.pi - angle1 
+                                                    a = math.sqrt(rx**2 - chord.Length**2)
+                                                s = rx - a
+                                                perp.multiply(s/perp.Length)
+                                                midpoint = lastvec.add(chord.add(perp))
+                                                seg = Part.Arc(lastvec, midpoint, currentvec).toShape()
+                                            # big arc or elliptical arc
+                                            else:
+                                                # Calculate the possible centers for an arc
+                                                # in 'endpoint parameterization'.
+                                                solution, (rx, ry) = arcend2center(lastvec, currentvec,
+                                                                                   rx, ry,
+                                                                                   xrotation=math.radians(-xrotation),
+                                                                                   correction=True)
+                                                # Chose one of the two solutions
+                                                negsol = (largeflag != sweepflag)
+                                                vcenter, angle1, angledelta = solution[negsol]
+                                                #print angle1
+                                                #print angledelta
+                                                if ry > rx:
+                                                    rx, ry = ry, rx
+                                                    swapaxis = True
+                                                else:
+                                                    swapaxis = False
+                                                #print 'Elliptical arc %s rx=%f ry=%f' % (vcenter,rx,ry)
+                                                e1 = Part.Ellipse(vcenter, rx, ry)
+                                                if sweepflag:
+                                                    #angledelta=-(-angledelta % (math.pi *2)) # Step4
+                                                    #angledelta=(-angledelta % (math.pi *2)) # Step4
+                                                    angle1  = angle1 + angledelta
+                                                    angledelta = -angledelta
+                                                    #angle1 = math.pi - angle1 
 
-                                                    e1a = Part.Arc(e1,
-                                                                   angle1 - swapaxis * math.radians(90),
-                                                                   angle1 + angledelta - swapaxis * math.radians(90))
-                                                    # e1a = Part.Arc(e1,
-                                                    #                angle1 - 0*swapaxis*math.radians(90),
-                                                    #                angle1 + angledelta - 0*swapaxis*math.radians(90))
-                                                    if swapaxis or xrotation >  10**(-1*Draft.precision()):
-                                                        m3 = FreeCAD.Matrix()
-                                                        m3.move(vcenter)
-                                                        # 90
-                                                        rot90 = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
-                                                        # swapaxism = FreeCAD.Matrix(0, 1, 0, 0, 1, 0)
-                                                        if swapaxis:
-                                                            m3 = m3.multiply(rot90)
-                                                        m3.rotateZ(math.radians(-xrotation))
-                                                        m3.move(vcenter.multiply(-1))
-                                                        e1a.transform(m3)
-                                                    seg = e1a.toShape()
-                                                    if sweepflag:
-                                                        seg.reverse()
-                                                        # DEBUG
-                                                        # obj = self.doc.addObject("Part::Feature", 'DEBUG %s' % pathname)
-                                                        # obj.Shape = seg
-                                                        # seg = Part.LineSegment(lastvec, currentvec).toShape()
-                                                lastvec = currentvec
-                                                lastpole = None
-                                                path.append(seg)
+                                                e1a = Part.Arc(e1,
+                                                               angle1 - swapaxis * math.radians(90),
+                                                               angle1 + angledelta - swapaxis * math.radians(90))
+                                                # e1a = Part.Arc(e1,
+                                                #                angle1 - 0*swapaxis*math.radians(90),
+                                                #                angle1 + angledelta - 0*swapaxis*math.radians(90))
+                                                if swapaxis or xrotation >  10**(-1*Draft.precision()):
+                                                    m3 = FreeCAD.Matrix()
+                                                    m3.move(vcenter)
+                                                    # 90
+                                                    rot90 = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
+                                                    # swapaxism = FreeCAD.Matrix(0, 1, 0, 0, 1, 0)
+                                                    if swapaxis:
+                                                        m3 = m3.multiply(rot90)
+                                                    m3.rotateZ(math.radians(-xrotation))
+                                                    m3.move(vcenter.multiply(-1))
+                                                    e1a.transform(m3)
+                                                seg = e1a.toShape()
+                                                if sweepflag:
+                                                    seg.reverse()
+                                                    # DEBUG
+                                                    # obj = self.doc.addObject("Part::Feature", 'DEBUG %s' % pathname)
+                                                    # obj.Shape = seg
+                                                    # seg = Part.LineSegment(lastvec, currentvec).toShape()
+                                            lastvec = currentvec
+                                            lastpole = None
+                                            path.append(seg)
                                 elif (d == "C" or d == "c") or (d =="S" or d == "s"):
                                         smooth = (d == 'S'  or d == 's')
                                         if smooth:
@@ -1037,42 +1037,42 @@ class svgHandler(xml.sax.ContentHandler):
                                                              pointlist[4::6],
                                                              pointlist[5::6]))
                                         for p1x, p1y, p2x, p2y, x, y in piter:
-                                                if smooth:
-                                                    if lastpole is not None and lastpole[0] == 'cubic':
-                                                        pole1 = lastvec.sub(lastpole[1]).add(lastvec)
-                                                    else:
-                                                        pole1 = lastvec
+                                            if smooth:
+                                                if lastpole is not None and lastpole[0] == 'cubic':
+                                                    pole1 = lastvec.sub(lastpole[1]).add(lastvec)
                                                 else:
-                                                    if relative:
-                                                        pole1 = lastvec.add(Vector(p1x, -p1y, 0))
-                                                    else:
-                                                        pole1 = Vector(p1x, -p1y, 0)
+                                                    pole1 = lastvec
+                                            else:
                                                 if relative:
-                                                    currentvec = lastvec.add(Vector(x, -y, 0))
-                                                    pole2 = lastvec.add(Vector(p2x, -p2y, 0))
+                                                    pole1 = lastvec.add(Vector(p1x, -p1y, 0))
                                                 else:
-                                                    currentvec = Vector(x, -y, 0)
-                                                    pole2 = Vector(p2x, -p2y, 0)
+                                                    pole1 = Vector(p1x, -p1y, 0)
+                                            if relative:
+                                                currentvec = lastvec.add(Vector(x, -y, 0))
+                                                pole2 = lastvec.add(Vector(p2x, -p2y, 0))
+                                            else:
+                                                currentvec = Vector(x, -y, 0)
+                                                pole2 = Vector(p2x, -p2y, 0)
 
-                                                if not DraftVecUtils.equals(currentvec, lastvec):
-                                                    mainv = currentvec.sub(lastvec)
-                                                    pole1v = lastvec.add(pole1)
-                                                    pole2v = currentvec.add(pole2)
-                                                    #print "cubic curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
-                                                    if True and \
+                                            if not DraftVecUtils.equals(currentvec, lastvec):
+                                                mainv = currentvec.sub(lastvec)
+                                                pole1v = lastvec.add(pole1)
+                                                pole2v = currentvec.add(pole2)
+                                                #print "cubic curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
+                                                if True and \
                                                         pole1.distanceToLine(lastvec, currentvec) < 10**(-1*(2+Draft.precision())) and \
                                                         pole2.distanceToLine(lastvec, currentvec) < 10**(-1*(2+Draft.precision())):
-                                                        #print "straight segment"
-                                                        seg = Part.LineSegment(lastvec, currentvec).toShape()
-                                                    else:
-                                                        #print "cubic bezier segment"
-                                                        b = Part.BezierCurve()
-                                                        b.setPoles([lastvec, pole1, pole2, currentvec])
-                                                        seg = b.toShape()
-                                                    #print "connect ",lastvec,currentvec
-                                                    lastvec = currentvec
-                                                    lastpole = ('cubic', pole2)
-                                                    path.append(seg)
+                                                    #print "straight segment"
+                                                    seg = Part.LineSegment(lastvec, currentvec).toShape()
+                                                else:
+                                                    #print "cubic bezier segment"
+                                                    b = Part.BezierCurve()
+                                                    b.setPoles([lastvec, pole1, pole2, currentvec])
+                                                    seg = b.toShape()
+                                                #print "connect ",lastvec,currentvec
+                                                lastvec = currentvec
+                                                lastpole = ('cubic', pole2)
+                                                path.append(seg)
                                 elif (d == "Q" or d == "q") or (d =="T" or d == "t"):
                                         smooth = (d == 'T'  or d == 't')
                                         if smooth:
@@ -1086,63 +1086,63 @@ class svgHandler(xml.sax.ContentHandler):
                                                              pointlist[2::4],
                                                              pointlist[3::4]))
                                         for px, py, x, y in piter:
-                                                if smooth:
-                                                    if lastpole is not None and lastpole[0]=='quadratic':
-                                                        pole = lastvec.sub(lastpole[1]).add(lastvec)
-                                                    else:
-                                                        pole = lastvec
+                                            if smooth:
+                                                if lastpole is not None and lastpole[0]=='quadratic':
+                                                    pole = lastvec.sub(lastpole[1]).add(lastvec)
                                                 else:
-                                                    if relative:
-                                                        pole = lastvec.add(Vector(px, -py, 0))
-                                                    else:
-                                                        pole = Vector(px, -py, 0)
-                                                if relative:
-                                                    currentvec = lastvec.add(Vector(x, -y, 0))
-                                                else:
-                                                    currentvec = Vector(x, -y, 0)
-
-                                                if not DraftVecUtils.equals(currentvec, lastvec):
-                                                    if True and \
-                                                        pole.distanceToLine(lastvec, currentvec) < 20**(-1*(2+Draft.precision())):
-                                                        #print "straight segment"
-                                                        seg = Part.LineSegment(lastvec, currentvec).toShape()
-                                                    else:
-                                                        #print "quadratic bezier segment"
-                                                        b = Part.BezierCurve()
-                                                        b.setPoles([lastvec, pole, currentvec])
-                                                        seg = b.toShape()
-                                                    #print "connect ",lastvec,currentvec
-                                                    lastvec = currentvec
-                                                    lastpole = ('quadratic', pole)
-                                                    path.append(seg)
-                                elif (d == "Z") or (d == "z"):
-                                        if not DraftVecUtils.equals(lastvec, firstvec):
-                                            try:
-                                                seg = Part.LineSegment(lastvec, firstvec).toShape()
-                                            except Part.OCCError:
-                                                pass
+                                                    pole = lastvec
                                             else:
+                                                if relative:
+                                                    pole = lastvec.add(Vector(px, -py, 0))
+                                                else:
+                                                    pole = Vector(px, -py, 0)
+                                            if relative:
+                                                currentvec = lastvec.add(Vector(x, -y, 0))
+                                            else:
+                                                currentvec = Vector(x, -y, 0)
+
+                                            if not DraftVecUtils.equals(currentvec, lastvec):
+                                                if True and \
+                                                        pole.distanceToLine(lastvec, currentvec) < 20**(-1*(2+Draft.precision())):
+                                                    #print "straight segment"
+                                                    seg = Part.LineSegment(lastvec, currentvec).toShape()
+                                                else:
+                                                    #print "quadratic bezier segment"
+                                                    b = Part.BezierCurve()
+                                                    b.setPoles([lastvec, pole, currentvec])
+                                                    seg = b.toShape()
+                                                #print "connect ",lastvec,currentvec
+                                                lastvec = currentvec
+                                                lastpole = ('quadratic', pole)
                                                 path.append(seg)
-                                        if path:
-                                            # The path should be closed by now
-                                            # sh = makewire(path, True)
-                                            sh = makewire(path, donttry=False)
-                                            if self.fill \
-                                                    and (len(sh.Wires) == 1) \
-                                                    and sh.Wires[0].isClosed():
-                                                sh = Part.Face(sh)
-                                            sh = self.applyTrans(sh)
-                                            obj = self.doc.addObject("Part::Feature", pathname)
-                                            obj.Shape = sh
-                                            self.format(obj)
-                                            path = []
-                                            if firstvec:
-                                                # Move relative to recent draw command
-                                                lastvec = firstvec
-                                            point = []
-                                            command = None
-                                            if self.currentsymbol:
-                                                self.symbols[self.currentsymbol].append(obj)
+                                elif (d == "Z") or (d == "z"):
+                                    if not DraftVecUtils.equals(lastvec, firstvec):
+                                        try:
+                                            seg = Part.LineSegment(lastvec, firstvec).toShape()
+                                        except Part.OCCError:
+                                            pass
+                                        else:
+                                            path.append(seg)
+                                    if path:
+                                        # The path should be closed by now
+                                        # sh = makewire(path, True)
+                                        sh = makewire(path, donttry=False)
+                                        if self.fill \
+                                                and (len(sh.Wires) == 1) \
+                                                and sh.Wires[0].isClosed():
+                                            sh = Part.Face(sh)
+                                        sh = self.applyTrans(sh)
+                                        obj = self.doc.addObject("Part::Feature", pathname)
+                                        obj.Shape = sh
+                                        self.format(obj)
+                                        path = []
+                                        if firstvec:
+                                            # Move relative to recent draw command
+                                            lastvec = firstvec
+                                        point = []
+                                        command = None
+                                        if self.currentsymbol:
+                                            self.symbols[self.currentsymbol].append(obj)
                         if path:
                             sh = makewire(path, checkclosed=False)
                             # sh = Part.Wire(path)
@@ -1177,50 +1177,50 @@ class svgHandler(xml.sax.ContentHandler):
                             edges.append(Part.LineSegment(p3, p4).toShape())
                             edges.append(Part.LineSegment(p4, p1).toShape())
                         else:
-                                # rounded edges
-                                rx = data.get('rx')
-                                ry = data.get('ry') or rx
-                                rx = rx or ry 
-                                if rx > 2 * data['width']:
-                                    rx = data['width'] / 2.0
-                                if ry > 2 * data['height']:
-                                    ry = data['height'] / 2.0
+                            # rounded edges
+                            rx = data.get('rx')
+                            ry = data.get('ry') or rx
+                            rx = rx or ry 
+                            if rx > 2 * data['width']:
+                                rx = data['width'] / 2.0
+                            if ry > 2 * data['height']:
+                                ry = data['height'] / 2.0
 
-                                p1 = Vector(data['x'] + rx, -data['y'] - data['height'] + ry, 0)
-                                p2 = Vector(data['x'] + data['width'] - rx, -data['y'] - data['height'] + ry, 0)
-                                p3 = Vector(data['x'] + data['width'] - rx, -data['y'] - ry, 0)
-                                p4 = Vector(data['x'] + rx, -data['y'] - ry, 0)
+                            p1 = Vector(data['x'] + rx, -data['y'] - data['height'] + ry, 0)
+                            p2 = Vector(data['x'] + data['width'] - rx, -data['y'] - data['height'] + ry, 0)
+                            p3 = Vector(data['x'] + data['width'] - rx, -data['y'] - ry, 0)
+                            p4 = Vector(data['x'] + rx, -data['y'] - ry, 0)
 
-                                if rx >= ry:
-                                    e = Part.Ellipse(Vector(), rx, ry)
-                                    e1a = Part.Arc(e, math.radians(180), math.radians(270))
-                                    e2a = Part.Arc(e, math.radians(270), math.radians(360))
-                                    e3a = Part.Arc(e, math.radians(0), math.radians(90))
-                                    e4a = Part.Arc(e, math.radians(90), math.radians(180))
-                                    m = FreeCAD.Matrix()
-                                else:
-                                    e = Part.Ellipse(Vector(), ry, rx)
-                                    e1a = Part.Arc(e, math.radians(90), math.radians(180))
-                                    e2a = Part.Arc(e, math.radians(180), math.radians(270))
-                                    e3a = Part.Arc(e, math.radians(270), math.radians(360))
-                                    e4a = Part.Arc(e, math.radians(0), math.radians(90))
-                                    # rotate +90 degree
-                                    m = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
-                                esh = []
-                                for arc, point in ((e1a, p1), (e2a, p2),
-                                                   (e3a, p3), (e4a, p4)):
-                                    m1 = FreeCAD.Matrix(m)
-                                    m1.move(point)
-                                    arc.transform(m1)
-                                    esh.append(arc.toShape())
-                                for esh1, esh2 in zip(esh[-1:] + esh[:-1], esh):
-                                    p1, p2 = esh1.Vertexes[-1].Point, esh2.Vertexes[0].Point
-                                    if not DraftVecUtils.equals(p1, p2):
-                                        # straight segments
-                                        edges.append(Part.LineSegment(esh1.Vertexes[-1].Point,
-                                                                      esh2.Vertexes[0].Point).toShape())
-                                    # elliptical segments
-                                    edges.append(esh2)
+                            if rx >= ry:
+                                e = Part.Ellipse(Vector(), rx, ry)
+                                e1a = Part.Arc(e, math.radians(180), math.radians(270))
+                                e2a = Part.Arc(e, math.radians(270), math.radians(360))
+                                e3a = Part.Arc(e, math.radians(0), math.radians(90))
+                                e4a = Part.Arc(e, math.radians(90), math.radians(180))
+                                m = FreeCAD.Matrix()
+                            else:
+                                e = Part.Ellipse(Vector(), ry, rx)
+                                e1a = Part.Arc(e, math.radians(90), math.radians(180))
+                                e2a = Part.Arc(e, math.radians(180), math.radians(270))
+                                e3a = Part.Arc(e, math.radians(270), math.radians(360))
+                                e4a = Part.Arc(e, math.radians(0), math.radians(90))
+                                # rotate +90 degree
+                                m = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
+                            esh = []
+                            for arc, point in ((e1a, p1), (e2a, p2),
+                                               (e3a, p3), (e4a, p4)):
+                                m1 = FreeCAD.Matrix(m)
+                                m1.move(point)
+                                arc.transform(m1)
+                                esh.append(arc.toShape())
+                            for esh1, esh2 in zip(esh[-1:] + esh[:-1], esh):
+                                p1, p2 = esh1.Vertexes[-1].Point, esh2.Vertexes[0].Point
+                                if not DraftVecUtils.equals(p1, p2):
+                                    # straight segments
+                                    edges.append(Part.LineSegment(esh1.Vertexes[-1].Point,
+                                                                  esh2.Vertexes[0].Point).toShape())
+                                # elliptical segments
+                                edges.append(esh2)
                         sh = Part.Wire(edges)
                         if self.fill:
                             sh = Part.Face(sh)
@@ -1247,106 +1247,106 @@ class svgHandler(xml.sax.ContentHandler):
 
                 # Process polylines and polygons
                 if name == "polyline" or name == "polygon":
-                        # A simpler implementation would be
-                        # sh = Part.makePolygon([Vector(svgx,-svgy,0) for svgx,svgy in zip(points[0::2],points[1::2])])
-                        #
-                        # but it would be more difficult to search for duplicate
-                        # points beforehand.
-                        if not pathname:
-                            pathname = 'Polyline'
-                        points = [float(d) for d in data['points']]
-                        FreeCAD.Console.PrintMessage('points %s\n' % str(points))
-                        lenpoints = len(points)
-                        if lenpoints >= 4 and lenpoints % 2 == 0:
-                            lastvec = Vector(points[0], -points[1], 0)
-                            path = []
-                            if name == 'polygon':
-                                points = points+points[:2]  # emulate closepath
-                            for svgx, svgy in zip(points[2::2], points[3::2]):
-                                currentvec = Vector(svgx, -svgy, 0)
-                                if not DraftVecUtils.equals(lastvec, currentvec):
-                                    seg = Part.LineSegment(lastvec, currentvec).toShape()
-                                    #print "polyline seg ",lastvec,currentvec
-                                    lastvec = currentvec
-                                    path.append(seg)
-                            if path:
-                                sh = Part.Wire(path)
-                                if self.fill and sh.isClosed():
-                                    sh = Part.Face(sh)
-                                sh = self.applyTrans(sh)
-                                obj = self.doc.addObject("Part::Feature", pathname)
-                                obj.Shape = sh
-                                if self.currentsymbol:
-                                    self.symbols[self.currentsymbol].append(obj)
+                    # A simpler implementation would be
+                    # sh = Part.makePolygon([Vector(svgx,-svgy,0) for svgx,svgy in zip(points[0::2],points[1::2])])
+                    #
+                    # but it would be more difficult to search for duplicate
+                    # points beforehand.
+                    if not pathname:
+                        pathname = 'Polyline'
+                    points = [float(d) for d in data['points']]
+                    FreeCAD.Console.PrintMessage('points %s\n' % str(points))
+                    lenpoints = len(points)
+                    if lenpoints >= 4 and lenpoints % 2 == 0:
+                        lastvec = Vector(points[0], -points[1], 0)
+                        path = []
+                        if name == 'polygon':
+                            points = points+points[:2]  # emulate closepath
+                        for svgx, svgy in zip(points[2::2], points[3::2]):
+                            currentvec = Vector(svgx, -svgy, 0)
+                            if not DraftVecUtils.equals(lastvec, currentvec):
+                                seg = Part.LineSegment(lastvec, currentvec).toShape()
+                                #print "polyline seg ",lastvec,currentvec
+                                lastvec = currentvec
+                                path.append(seg)
+                        if path:
+                            sh = Part.Wire(path)
+                            if self.fill and sh.isClosed():
+                                sh = Part.Face(sh)
+                            sh = self.applyTrans(sh)
+                            obj = self.doc.addObject("Part::Feature", pathname)
+                            obj.Shape = sh
+                            if self.currentsymbol:
+                                self.symbols[self.currentsymbol].append(obj)
 
                 # Process ellipses
                 if name == "ellipse":
-                        if not pathname:
-                            pathname = 'Ellipse'
-                        c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
-                        rx = data['rx']
-                        ry = data['ry']
-                        if rx > ry:
-                            sh = Part.Ellipse(c, rx, ry).toShape()
-                        else:
-                            sh = Part.Ellipse(c, ry, rx).toShape()
-                            m3 = FreeCAD.Matrix()
-                            m3.move(c)
-                            # 90
-                            rot90 = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
-                            m3 = m3.multiply(rot90)
-                            m3.move(c.multiply(-1))
-                            sh.transformShape(m3)
-                            # sh = sh.transformGeometry(m3)
-                        if self.fill:
-                            sh = Part.Wire([sh])
-                            sh = Part.Face(sh)
-                        sh = self.applyTrans(sh)
-                        obj = self.doc.addObject("Part::Feature", pathname)
-                        obj.Shape = sh
-                        self.format(obj)
-                        if self.currentsymbol:
-                            self.symbols[self.currentsymbol].append(obj)
+                    if not pathname:
+                        pathname = 'Ellipse'
+                    c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
+                    rx = data['rx']
+                    ry = data['ry']
+                    if rx > ry:
+                        sh = Part.Ellipse(c, rx, ry).toShape()
+                    else:
+                        sh = Part.Ellipse(c, ry, rx).toShape()
+                        m3 = FreeCAD.Matrix()
+                        m3.move(c)
+                        # 90
+                        rot90 = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
+                        m3 = m3.multiply(rot90)
+                        m3.move(c.multiply(-1))
+                        sh.transformShape(m3)
+                        # sh = sh.transformGeometry(m3)
+                    if self.fill:
+                        sh = Part.Wire([sh])
+                        sh = Part.Face(sh)
+                    sh = self.applyTrans(sh)
+                    obj = self.doc.addObject("Part::Feature", pathname)
+                    obj.Shape = sh
+                    self.format(obj)
+                    if self.currentsymbol:
+                        self.symbols[self.currentsymbol].append(obj)
 
                 # Process circles
                 if (name == "circle") and (not ("freecad:skip" in data)) :
-                        if not pathname:
-                            pathname = 'Circle'
-                        c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
-                        r = data['r']
-                        sh = Part.makeCircle(r)
-                        if self.fill:
-                            sh = Part.Wire([sh])
-                            sh = Part.Face(sh)
-                        sh.translate(c)
-                        sh = self.applyTrans(sh)
-                        obj = self.doc.addObject("Part::Feature", pathname)
-                        obj.Shape = sh
-                        self.format(obj)
-                        if self.currentsymbol:
-                            self.symbols[self.currentsymbol].append(obj)
+                    if not pathname:
+                        pathname = 'Circle'
+                    c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
+                    r = data['r']
+                    sh = Part.makeCircle(r)
+                    if self.fill:
+                        sh = Part.Wire([sh])
+                        sh = Part.Face(sh)
+                    sh.translate(c)
+                    sh = self.applyTrans(sh)
+                    obj = self.doc.addObject("Part::Feature", pathname)
+                    obj.Shape = sh
+                    self.format(obj)
+                    if self.currentsymbol:
+                        self.symbols[self.currentsymbol].append(obj)
 
                 # Process texts
                 if name in ["text", "tspan"]:
-                        if not("freecad:skip" in data):
-                                FreeCAD.Console.PrintMessage("processing a text\n")
-                                if 'x' in data:
-                                    self.x = data['x']
-                                else:
-                                    self.x = 0
-                                if 'y' in data:
-                                    self.y = data['y']
-                                else:
-                                    self.y = 0
-                                if 'font-size' in data:
-                                    if data['font-size'] != 'none':
-                                        self.text = getsize(data['font-size'],
-                                                            'css' + str(self.svgdpi))
-                                else:
-                                    self.text = 1
+                    if not("freecad:skip" in data):
+                        FreeCAD.Console.PrintMessage("processing a text\n")
+                        if 'x' in data:
+                            self.x = data['x']
                         else:
-                            if self.lastdim:
-                                self.lastdim.ViewObject.FontSize = int(getsize(data['font-size']))
+                            self.x = 0
+                        if 'y' in data:
+                            self.y = data['y']
+                        else:
+                            self.y = 0
+                        if 'font-size' in data:
+                            if data['font-size'] != 'none':
+                                self.text = getsize(data['font-size'],
+                                                    'css' + str(self.svgdpi))
+                        else:
+                            self.text = 1
+                    else:
+                        if self.lastdim:
+                            self.lastdim.ViewObject.FontSize = int(getsize(data['font-size']))
 
                 # Process symbols
                 if name == "symbol":
