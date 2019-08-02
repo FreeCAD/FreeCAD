@@ -101,14 +101,29 @@ std::wstring ConvertToWideString(const std::string& string)
 // FileInfo
 
 
-FileInfo::FileInfo (const char* _FileName)
+FileInfo::FileInfo (const char* _FileName, bool autoDelete)
+    :AutoDelete(autoDelete)
 {
     setFile(_FileName);
 }
 
-FileInfo::FileInfo (const std::string &_FileName)
+FileInfo::FileInfo (const std::string &_FileName, bool autoDelete)
+    :AutoDelete(autoDelete)
 {
     setFile(_FileName.c_str());
+}
+
+FileInfo::~FileInfo() 
+{
+    if(AutoDelete) {
+        try {
+            if(isDir())
+                deleteDirectoryRecursive();
+            else
+                deleteFile();
+        } catch (...)
+        {}
+    }
 }
 
 const std::string &FileInfo::getTempPath(void)
@@ -215,7 +230,7 @@ void FileInfo::setFile(const char* name)
         std::replace(FileName.begin(), FileName.end(), '\\', '/');
 }
 
-std::string FileInfo::filePath () const
+const std::string &FileInfo::filePath () const
 {
     return FileName;
 }

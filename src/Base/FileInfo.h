@@ -49,8 +49,10 @@ public:
     };
 
     /// Constrction
-    FileInfo (const char* _FileName="");
-    FileInfo (const std::string &_FileName);
+    FileInfo (const char* _FileName="", bool autoDelete=false);
+    FileInfo (const std::string &_FileName, bool autoDelete=false);
+    /// Destruction
+    ~FileInfo(); 
     /// Set a new file name
     void setFile(const char* name);
     /// Set a new file name
@@ -60,7 +62,7 @@ public:
     /** @name extraction of information */
     //@{
     /// Returns the file name, including the path (which may be absolute or relative).
-    std::string filePath () const;
+    const std::string &filePath () const;
     /// Returns the dir path name (which may be absolute or relative).
     std::string dirPath () const;
     /// Returns the name of the file, excluding the path, including the extension.
@@ -142,6 +144,7 @@ public:
 
 protected:
     std::string FileName;
+    bool AutoDelete;
 };
 
 } //namespace Base
