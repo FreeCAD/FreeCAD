@@ -79,6 +79,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/ProgressBar.h>
 #include <Gui/Command.h>
+#include <Gui/Action.h>
 #include <Gui/OnlineDocumentation.h>
 #include <Gui/DownloadManager.h>
 #include <Gui/TextDocumentEditorView.h>
@@ -256,6 +257,8 @@ void WebView::setTextSizeMultiplier(qreal factor)
     fontSize = static_cast<int>(fontSize * factor);
     sett->setFontSize(QWebEngineSettings::MinimumFontSize, fontSize);
 }
+
+
 #else // QTWEBKIT
 
 void WebView::mousePressEvent(QMouseEvent *event)
@@ -270,6 +273,15 @@ void WebView::mousePressEvent(QMouseEvent *event)
     QWEBVIEW::mousePressEvent(event);
 }
 #endif
+
+bool WebView::event(QEvent *event) {
+    if(event->type() == QEvent::ToolTipChange) {
+        QString tooltip = this->toolTip();
+        if(tooltip.size()>7 && tooltip.startsWith(QLatin1String("<p>")))
+            this->setToolTip(tooltip.mid(3,tooltip.size()-7));
+    }
+    return QWEBVIEW::event(event);
+}
 
 void WebView::wheelEvent(QWheelEvent *event)
 {
@@ -528,14 +540,17 @@ void BrowserView::onLinkClicked (const QUrl & url)
                     }
                     // Gui::Command::doCommand(Gui::Command::Gui,"execfile('%s')",(const char*) fi.absoluteFilePath().	toLocal8Bit());
                     Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) fi.absoluteFilePath()	.toLocal8Bit());
+                    App::Document *doc = BaseView::getAppDocument();
+                    if(doc) {
+                        Gui::getMainWindow()->appendRecentFile(QString::fromUtf8(doc->FileName.getValue()));
+                        if(doc->testStatus(App::Document::PartialRestore)) {
+                            QMessageBox::critical(this, tr("Error"), tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+                        }
+                    }
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(this, tr("Error"), QString::fromUtf8(e.what()));
                 }
-
-                App::Document *doc = BaseView::getAppDocument();
-                if(doc && doc->testStatus(App::Document::PartialRestore))
-                    QMessageBox::critical(this, tr("Error"), tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
             }
         }
         else {
@@ -688,13 +703,39 @@ void BrowserView::onLoadFinished(bool ok)
     isLoading = false;
 }
 
+static bool checkLink(const QUrl &url, bool explore) {
+    if(!url.isLocalFile())
+        return false;
+    QString s = url.toString();
+    int idx = s.lastIndexOf(QLatin1String("="));
+    if(idx>0 && s.left(idx).endsWith(QLatin1String("LoadMRU.py?MRU"))) {
+        int index = s.right(s.size()-idx-1).toInt();
+        auto *recent = Gui::getMainWindow()->findChild<Gui::RecentFilesAction *>
+                            (QString::fromLatin1("recentFiles"));
+        if (recent) {
+            auto files = recent->files();
+            if(index<(int)files.size()) {
+                if(explore)
+                    QDesktopServices::openUrl(QUrl::fromLocalFile(files[index]));
+                else
+                    recent->activateFile(index);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void BrowserView::onOpenLinkInExternalBrowser(const QUrl& url)
 {
-    QDesktopServices::openUrl(url);
+    if(!checkLink(url,true))
+        QDesktopServices::openUrl(url);
 }
 
 void BrowserView::onOpenLinkInNewWindow(const QUrl& url)
 {
+    if(checkLink(url,false))
+        return;
     BrowserView* view = new WebGui::BrowserView(Gui::getMainWindow());
     view->setWindowTitle(QObject::tr("Browser"));
     view->resize(400, 300);

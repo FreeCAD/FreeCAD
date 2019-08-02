@@ -736,7 +736,7 @@ void RecentFilesAction::activateFile(int id)
 
     QString filename = files[id];
     QFileInfo fi(filename);
-    if (!fi.exists() || !fi.isFile()) {
+    if (!fi.exists()) {
         QMessageBox::critical(getMainWindow(), tr("File not found"), tr("The file '%1' cannot be opened.").arg(filename));
         files.removeAll(filename);
         setFiles(files);

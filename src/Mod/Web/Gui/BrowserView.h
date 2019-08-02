@@ -66,6 +66,7 @@ protected:
 #endif
     void wheelEvent(QWheelEvent *event);
     void contextMenuEvent(QContextMenuEvent *event);
+    bool event(QEvent *event);
 
 private Q_SLOTS:
     void triggerContextMenuAction(int);

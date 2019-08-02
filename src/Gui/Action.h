@@ -198,10 +198,10 @@ public:
     void appendFile(const QString&);
     void activateFile(int);
     void resizeList(int);
+    QStringList files() const;
 
 private:
     void setFiles(const QStringList&);
-    QStringList files() const;
     void restore();
     void save();
 
