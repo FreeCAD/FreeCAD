@@ -629,49 +629,49 @@ def getrgb(color):
 
 
 class svgHandler(xml.sax.ContentHandler):
-        """Parse SVG files and create FreeCAD objects."""
+    """Parse SVG files and create FreeCAD objects."""
 
-        def __init__(self):
-            """Retrieve Draft parameters and initialize."""
-            params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-            self.style = params.GetInt("svgstyle")
-            self.disableUnitScaling = params.GetBool("svgDisableUnitScaling",
-                                                     False)
-            self.count = 0
-            self.transform = None
-            self.grouptransform = []
-            self.lastdim = None
-            self.viewbox = None
-            self.symbols = {}
-            self.currentsymbol = None
-            self.svgdpi = 1.0
+    def __init__(self):
+        """Retrieve Draft parameters and initialize."""
+        params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        self.style = params.GetInt("svgstyle")
+        self.disableUnitScaling = params.GetBool("svgDisableUnitScaling",
+                                                 False)
+        self.count = 0
+        self.transform = None
+        self.grouptransform = []
+        self.lastdim = None
+        self.viewbox = None
+        self.symbols = {}
+        self.currentsymbol = None
+        self.svgdpi = 1.0
 
-            global Part
-            import Part
+        global Part
+        import Part
 
-            if gui and draftui:
-                r = float(draftui.color.red()/255.0)
-                g = float(draftui.color.green()/255.0)
-                b = float(draftui.color.blue()/255.0)
-                self.lw = float(draftui.linewidth)
-            else:
-                self.lw = float(params.GetInt("linewidth"))
-                c = params.GetUnsigned("color")
-                r = float(((c >> 24) & 0xFF)/255)
-                g = float(((c >> 16) & 0xFF)/255)
-                b = float(((c >> 8) & 0xFF)/255)
-            self.col = (r, g, b, 0.0)
+        if gui and draftui:
+            r = float(draftui.color.red()/255.0)
+            g = float(draftui.color.green()/255.0)
+            b = float(draftui.color.blue()/255.0)
+            self.lw = float(draftui.linewidth)
+        else:
+            self.lw = float(params.GetInt("linewidth"))
+            c = params.GetUnsigned("color")
+            r = float(((c >> 24) & 0xFF)/255)
+            g = float(((c >> 16) & 0xFF)/255)
+            b = float(((c >> 8) & 0xFF)/255)
+        self.col = (r, g, b, 0.0)
 
-        def format(self, obj):
-            """Apply styles to the object if the graphical interface is up."""
-            if gui:
-                v = obj.ViewObject
-                if self.color:
-                    v.LineColor = self.color
-                if self.width:
-                    v.LineWidth = self.width
-                if self.fill:
-                    v.ShapeColor = self.fill
+    def format(self, obj):
+        """Apply styles to the object if the graphical interface is up."""
+        if gui:
+            v = obj.ViewObject
+            if self.color:
+                v.LineColor = self.color
+            if self.width:
+                v.LineWidth = self.width
+            if self.fill:
+                v.ShapeColor = self.fill
 
         def startElement(self, name, attrs):
                 """Re-organize data into a nice clean dictionary.
