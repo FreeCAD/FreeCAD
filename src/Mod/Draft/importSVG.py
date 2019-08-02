@@ -1068,16 +1068,16 @@ class svgHandler(xml.sax.ContentHandler):
                                 # print("straight segment")
                                 seg = Part.LineSegment(lastvec, currentvec).toShape()
                             else:
-                                #print "cubic bezier segment"
+                                # print("cubic bezier segment")
                                 b = Part.BezierCurve()
                                 b.setPoles([lastvec, pole1, pole2, currentvec])
                                 seg = b.toShape()
-                            #print "connect ",lastvec,currentvec
+                            # print("connect ", lastvec, currentvec)
                             lastvec = currentvec
                             lastpole = ('cubic', pole2)
                             path.append(seg)
-                elif (d == "Q" or d == "q") or (d =="T" or d == "t"):
-                    smooth = (d == 'T'  or d == 't')
+                elif (d == "Q" or d == "q") or (d == "T" or d == "t"):
+                    smooth = (d == 'T' or d == 't')
                     if smooth:
                         piter = list(zip(pointlist[1::2],
                                          pointlist[1::2],
@@ -1090,7 +1090,7 @@ class svgHandler(xml.sax.ContentHandler):
                                          pointlist[3::4]))
                     for px, py, x, y in piter:
                         if smooth:
-                            if lastpole is not None and lastpole[0]=='quadratic':
+                            if lastpole is not None and lastpole[0] == 'quadratic':
                                 pole = lastvec.sub(lastpole[1]).add(lastvec)
                             else:
                                 pole = lastvec
@@ -1105,16 +1105,18 @@ class svgHandler(xml.sax.ContentHandler):
                             currentvec = Vector(x, -y, 0)
 
                         if not DraftVecUtils.equals(currentvec, lastvec):
+                            _precision = 20**(-1*(2+Draft.precision()))
+                            _distance = pole.distanceToLine(lastvec, currentvec)
                             if True and \
-                                    pole.distanceToLine(lastvec, currentvec) < 20**(-1*(2+Draft.precision())):
-                                #print "straight segment"
+                                    _distance < _precision:
+                                # print("straight segment")
                                 seg = Part.LineSegment(lastvec, currentvec).toShape()
                             else:
-                                #print "quadratic bezier segment"
+                                # print("quadratic bezier segment")
                                 b = Part.BezierCurve()
                                 b.setPoles([lastvec, pole, currentvec])
                                 seg = b.toShape()
-                            #print "connect ",lastvec,currentvec
+                            # print("connect ", lastvec, currentvec)
                             lastvec = currentvec
                             lastpole = ('quadratic', pole)
                             path.append(seg)
@@ -1131,7 +1133,7 @@ class svgHandler(xml.sax.ContentHandler):
                         # sh = makewire(path, True)
                         sh = makewire(path, donttry=False)
                         if self.fill \
-                                and (len(sh.Wires) == 1) \
+                                and len(sh.Wires) == 1 \
                                 and sh.Wires[0].isClosed():
                             sh = Part.Face(sh)
                         sh = self.applyTrans(sh)
@@ -1164,13 +1166,14 @@ class svgHandler(xml.sax.ContentHandler):
             if not pathname:
                 pathname = 'Rectangle'
             edges = []
-            if not "x" in data:
+            if "x" not in data:
                 data["x"] = 0
-            if not "y" in data:
+            if "y" not in data:
                 data["y"] = 0
             # Negative values are invalid
-            if ('rx' not in data or data['rx'] < 10**(-1*Draft.precision())) \
-                    and ('ry' not in data or data['ry'] < 10**(-1*Draft.precision())):
+            _precision = 10**(-1*Draft.precision())
+            if ('rx' not in data or data['rx'] < _precision) \
+                    and ('ry' not in data or data['ry'] < _precision):
                 # if True:
                 p1 = Vector(data['x'], -data['y'], 0)
                 p2 = Vector(data['x'] + data['width'], -data['y'], 0)
@@ -1184,7 +1187,7 @@ class svgHandler(xml.sax.ContentHandler):
                 # rounded edges
                 rx = data.get('rx')
                 ry = data.get('ry') or rx
-                rx = rx or ry 
+                rx = rx or ry
                 if rx > 2 * data['width']:
                     rx = data['width'] / 2.0
                 if ry > 2 * data['height']:
@@ -1208,7 +1211,7 @@ class svgHandler(xml.sax.ContentHandler):
                     e2a = Part.Arc(e, math.radians(180), math.radians(270))
                     e3a = Part.Arc(e, math.radians(270), math.radians(360))
                     e4a = Part.Arc(e, math.radians(0), math.radians(90))
-                    # rotate +90 degree
+                    # rotate +90 degrees
                     m = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
                 esh = []
                 for arc, point in ((e1a, p1), (e2a, p2),
@@ -1218,11 +1221,12 @@ class svgHandler(xml.sax.ContentHandler):
                     arc.transform(m1)
                     esh.append(arc.toShape())
                 for esh1, esh2 in zip(esh[-1:] + esh[:-1], esh):
-                    p1, p2 = esh1.Vertexes[-1].Point, esh2.Vertexes[0].Point
+                    p1 = esh1.Vertexes[-1].Point
+                    p2 = esh2.Vertexes[0].Point
                     if not DraftVecUtils.equals(p1, p2):
                         # straight segments
-                        edges.append(Part.LineSegment(esh1.Vertexes[-1].Point,
-                                                      esh2.Vertexes[0].Point).toShape())
+                        _sh = Part.LineSegment(p1, p2).toShape()
+                        edges.append(_sh)
                     # elliptical segments
                     edges.append(esh2)
             sh = Part.Wire(edges)
@@ -1252,7 +1256,7 @@ class svgHandler(xml.sax.ContentHandler):
         # Process polylines and polygons
         if name == "polyline" or name == "polygon":
             # A simpler implementation would be
-            # sh = Part.makePolygon([Vector(svgx,-svgy,0) for svgx,svgy in zip(points[0::2],points[1::2])])
+            # sh = Part.makePolygon([Vector(svgx, -svgy, 0) for svgx, svgy in zip(points[0::2], points[1::2])])
             #
             # but it would be more difficult to search for duplicate
             # points beforehand.
@@ -1265,12 +1269,12 @@ class svgHandler(xml.sax.ContentHandler):
                 lastvec = Vector(points[0], -points[1], 0)
                 path = []
                 if name == 'polygon':
-                    points = points+points[:2]  # emulate closepath
+                    points = points + points[:2]  # emulate closepath
                 for svgx, svgy in zip(points[2::2], points[3::2]):
                     currentvec = Vector(svgx, -svgy, 0)
                     if not DraftVecUtils.equals(lastvec, currentvec):
                         seg = Part.LineSegment(lastvec, currentvec).toShape()
-                        #print "polyline seg ",lastvec,currentvec
+                        # print("polyline seg ", lastvec, currentvec)
                         lastvec = currentvec
                         path.append(seg)
                 if path:
@@ -1313,7 +1317,7 @@ class svgHandler(xml.sax.ContentHandler):
                 self.symbols[self.currentsymbol].append(obj)
 
         # Process circles
-        if (name == "circle") and (not ("freecad:skip" in data)) :
+        if name == "circle" and "freecad:skip" not in data:
             if not pathname:
                 pathname = 'Circle'
             c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
@@ -1332,7 +1336,7 @@ class svgHandler(xml.sax.ContentHandler):
 
         # Process texts
         if name in ["text", "tspan"]:
-            if not("freecad:skip" in data):
+            if "freecad:skip" not in data:
                 FreeCAD.Console.PrintMessage("processing a text\n")
                 if 'x' in data:
                     self.x = data['x']
@@ -1368,7 +1372,7 @@ class svgHandler(xml.sax.ContentHandler):
                             shapes.append(o.Shape)
                     if shapes:
                         sh = Part.makeCompound(shapes)
-                        v = FreeCAD.Vector(float(data['x']), -float(data['y']), 0)
+                        v = Vector(float(data['x']), -float(data['y']), 0)
                         sh.translate(v)
                         sh = self.applyTrans(sh)
                         obj = self.doc.addObject("Part::Feature", symbol)
@@ -1391,11 +1395,11 @@ class svgHandler(xml.sax.ContentHandler):
             vec = Vector(self.x, -self.y, 0)
             if self.transform:
                 vec = self.translateVec(vec, self.transform)
-                #print "own transform: ",self.transform, vec
+                # print("own transform: ", self.transform, vec)
             for transform in self.grouptransform[::-1]:
                 # vec = self.translateVec(vec, transform)
                 vec = transform.multiply(vec)
-            #print "applying vector: ",vec
+            # print("applying vector: ", vec)
             obj.Position = vec
             if gui:
                 obj.ViewObject.FontSize = int(self.text)
@@ -1412,7 +1416,7 @@ class svgHandler(xml.sax.ContentHandler):
         name : str
             The name of the element
         """
-        if not name in ["tspan"]:
+        if name not in ["tspan"]:
             self.transform = None
             self.text = None
         if name == "g" or name == "svg":
@@ -1445,7 +1449,7 @@ class svgHandler(xml.sax.ContentHandler):
             for transform in self.grouptransform[::-1]:
                 FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
                 # sh = transformCopyShape(sh, transform)
-                # see issue 2062
+                # see issue #2062
                 sh = sh.transformGeometry(transform)
             return sh
         elif Draft.getType(sh) == "Dimension":
@@ -1519,11 +1523,13 @@ class svgHandler(xml.sax.ContentHandler):
                 if len(argsplit) >= 3:
                     m.move(Vector(-cx, cy, 0))
             elif transformation == 'skewX':
-                m = m.multiply(FreeCAD.Matrix(1,
-                                              -math.tan(math.radians(argsplit[0]))))
+                _m = FreeCAD.Matrix(1,
+                                    -math.tan(math.radians(argsplit[0])))
+                m = m.multiply(_m)
             elif transformation == 'skewY':
-                m = m.multiply(FreeCAD.Matrix(1, 0, 0, 0,
-                                              -math.tan(math.radians(argsplit[0]))))
+                _m = FreeCAD.Matrix(1, 0, 0, 0,
+                                    -math.tan(math.radians(argsplit[0])))
+                m = m.multiply(_m)
             elif transformation == 'matrix':
                 # transformation matrix:
                 #    FreeCAD                 SVG
@@ -1531,14 +1537,17 @@ class svgHandler(xml.sax.ContentHandler):
                 # (-B +D -0 -F)  = (-Y) * (B D 0 F) * (-Y)
                 # (+0 -0 +1 +0)           (0 0 1 0)
                 # (+0 -0 +0 +1)           (0 0 0 1)
-                m = m.multiply(FreeCAD.Matrix(argsplit[0], -argsplit[2],
-                                              0, argsplit[4],
-                                              -argsplit[1], argsplit[3],
-                                              0, -argsplit[5]))
+                #
+                # Put the first two rows of the matrix
+                _m = FreeCAD.Matrix(argsplit[0], -argsplit[2],
+                                    0, argsplit[4],
+                                    -argsplit[1], argsplit[3],
+                                    0, -argsplit[5])
+                m = m.multiply(_m)
             # else:
-            #    print 'SKIPPED %s' % transformation
-            # print "m= ",m
-        # print "generating transformation: ",m
+            #    print('SKIPPED %s' % transformation)
+            # print("m = ", m)
+        # print("generating transformation: ", m)
         return m
     # getMatrix
 # class svgHandler
