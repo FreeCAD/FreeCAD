@@ -352,27 +352,27 @@ def getsize(length, mode='discard', base=1):
         tomm = {
             '': 25.4/90,  # default
             'px': 25.4/90,
-            'pt': 1.25*25.4/90,
-            'pc': 15*25.4/90,
+            'pt': 1.25 * 25.4/90,
+            'pc': 15 * 25.4/90,
             'mm': 1.0,
             'cm': 10.0,
             'in': 25.4,
-            'em': 15*2.54/90, #arbitrarily chosen; has to depend on font size
-            'ex': 10*2.54/90, #arbitrarily chosen; has to depend on font size
-            '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+            'em': 15 * 2.54/90,
+            'ex': 10 * 2.54/90,
+            '%': 100
         }
     if mode == 'mm96.0':
         tomm = {
             '': 25.4/96,  # default
             'px': 25.4/96,
-            'pt': 1.25*25.4/96,
-            'pc': 15*25.4/96,
+            'pt': 1.25 * 25.4/96,
+            'pc': 15 * 25.4/96,
             'mm': 1.0,
             'cm': 10.0,
             'in': 25.4,
-            'em': 15*2.54/96, #arbitrarily chosen; has to depend on font size
-            'ex': 10*2.54/96, #arbitrarily chosen; has to depend on font size
-            '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+            'em': 15 * 2.54/96,
+            'ex': 10 * 2.54/96,
+            '%': 100
         }
     if mode == 'css90.0':
         topx = {
@@ -383,9 +383,9 @@ def getsize(length, mode='discard', base=1):
             'mm': 90.0/25.4,
             'cm': 90.0/254.0,
             'in': 90,
-            'em': 15, #arbitrarily chosen; has to depend on font size
-            'ex': 10, #arbitrarily chosen; has to depend on font size
-            '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+            'em': 15,
+            'ex': 10,
+            '%': 100
         }
     if mode == 'css96.0':
         topx = {
@@ -396,9 +396,9 @@ def getsize(length, mode='discard', base=1):
             'mm': 96.0/25.4,
             'cm': 96.0/254.0,
             'in': 96,
-            'em': 15, #arbitrarily chosen; has to depend on font size
-            'ex': 10, #arbitrarily chosen; has to depend on font size
-            '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+            'em': 15,
+            'ex': 10,
+            '%': 100
         }
     # Extract a number from a string like '+56215.14565E+6mm'
     number, exponent, unit = re.findall('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)(px|pt|pc|mm|cm|in|em|ex|%)?', length)[0]
@@ -568,7 +568,7 @@ def arcend2center(lastvec, currentvec, rx, ry,
 
     # If the division is very small, set the scaling factor to zero,
     # otherwise try to calculate it by taking the square root
-    if abs(numer/denom) < 10**(-1*(Draft.precision())):
+    if abs(numer/denom) < 10**(-1 * (Draft.precision())):
         scalefacpos = 0
     else:
         try:
@@ -580,30 +580,30 @@ def arcend2center(lastvec, currentvec, rx, ry,
     for scalefacsign in (1, -1):
         scalefac = scalefacpos * scalefacsign
         # Step2 eq. 5.2
-        vcx1 = Vector(v1.y*rx/ry, -v1.x*ry/rx, 0).multiply(scalefac)
+        vcx1 = Vector(v1.y * rx/ry, -v1.x * ry/rx, 0).multiply(scalefac)
         m2 = FreeCAD.Matrix()
         m2.rotateZ(xrotation)
         centeroff = currentvec.add(lastvec)
         centeroff.multiply(0.5)
         vcenter = m2.multiply(vcx1).add(centeroff)  # Step3 eq. 5.3
-        # angle1 = Vector(1, 0, 0).getAngle(Vector((v1.x - vcx1.x) / rx,
-        #                                          (v1.y - vcx1.y) / ry,
-        #                                          0))  # F.6.5.5
-        # angledelta = Vector((v1.x - vcx1.x) / rx,
-        #                     (v1.y - vcx1.y) / ry,
-        #                     0).getAngle(Vector((-v1.x - vcx1.x) / rx,
-        #                                        (-v1.y - vcx1.y) / ry,
-        #                                        0))  # F.6.5.6
+        # angle1 = Vector(1, 0, 0).getAngle(Vector((v1.x - vcx1.x)/rx,
+        #                                          (v1.y - vcx1.y)/ry,
+        #                                          0))  # eq. 5.5
+        # angledelta = Vector((v1.x - vcx1.x)/rx,
+        #                     (v1.y - vcx1.y)/ry,
+        #                     0).getAngle(Vector((-v1.x - vcx1.x)/rx,
+        #                                        (-v1.y - vcx1.y)/ry,
+        #                                        0))  # eq. 5.6
         # we need the right sign for the angle
         angle1 = DraftVecUtils.angle(Vector(1, 0, 0),
-                                     Vector((v1.x-vcx1.x)/rx,
-                                            (v1.y-vcx1.y)/ry,
+                                     Vector((v1.x - vcx1.x)/rx,
+                                            (v1.y - vcx1.y)/ry,
                                             0))  # eq. 5.5
-        angledelta = DraftVecUtils.angle(Vector((v1.x-vcx1.x)/rx,
-                                                (v1.y-vcx1.y)/ry,
+        angledelta = DraftVecUtils.angle(Vector((v1.x - vcx1.x)/rx,
+                                                (v1.y - vcx1.y)/ry,
                                                 0),
-                                         Vector((-v1.x-vcx1.x)/rx,
-                                                (-v1.y-vcx1.y)/ry,
+                                         Vector((-v1.x - vcx1.x)/rx,
+                                                (-v1.y - vcx1.y)/ry,
                                                 0))  # eq. 5.6
         results.append((vcenter, angle1, angledelta))
     return results, (rx, ry)
