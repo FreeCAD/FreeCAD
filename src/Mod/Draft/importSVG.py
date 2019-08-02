@@ -1377,28 +1377,28 @@ class svgHandler(xml.sax.ContentHandler):
         # startElement()
 
         def characters(self, content):
-                """Read characters from the given string."""
-                if self.text:
-                    FreeCAD.Console.PrintMessage("reading characters %s\n" % content)
-                    obj = self.doc.addObject("App::Annotation", 'Text')
-                    obj.LabelText = content.encode('latin1')
-                    if self.currentsymbol:
-                        self.symbols[self.currentsymbol].append(obj)
-                    vec = Vector(self.x, -self.y, 0)
-                    if self.transform:
-                        vec = self.translateVec(vec, self.transform)
-                        #print "own transform: ",self.transform, vec
-                    for transform in self.grouptransform[::-1]:
-                        # vec = self.translateVec(vec, transform)
-                        vec = transform.multiply(vec)
-                    #print "applying vector: ",vec
-                    obj.Position = vec
-                    if gui:
-                        obj.ViewObject.FontSize = int(self.text)
-                        if self.fill:
-                            obj.ViewObject.TextColor = self.fill
-                        else:
-                            obj.ViewObject.TextColor = (0.0, 0.0, 0.0, 0.0)
+            """Read characters from the given string."""
+            if self.text:
+                FreeCAD.Console.PrintMessage("reading characters %s\n" % content)
+                obj = self.doc.addObject("App::Annotation", 'Text')
+                obj.LabelText = content.encode('latin1')
+                if self.currentsymbol:
+                    self.symbols[self.currentsymbol].append(obj)
+                vec = Vector(self.x, -self.y, 0)
+                if self.transform:
+                    vec = self.translateVec(vec, self.transform)
+                    #print "own transform: ",self.transform, vec
+                for transform in self.grouptransform[::-1]:
+                    # vec = self.translateVec(vec, transform)
+                    vec = transform.multiply(vec)
+                #print "applying vector: ",vec
+                obj.Position = vec
+                if gui:
+                    obj.ViewObject.FontSize = int(self.text)
+                    if self.fill:
+                        obj.ViewObject.TextColor = self.fill
+                    else:
+                        obj.ViewObject.TextColor = (0.0, 0.0, 0.0, 0.0)
 
         def endElement(self, name):
             """Finish procesing the element indicated by the name.
@@ -1425,39 +1425,39 @@ class svgHandler(xml.sax.ContentHandler):
                 self.currentsymbol = None
 
         def applyTrans(self, sh):
-                """Apply transformation to the shape and return the new shape.
+            """Apply transformation to the shape and return the new shape.
 
-                Parameters
-                ----------
-                sh : Part.Shape or Draft.Dimension
-                    Object to be transformed
-                """
-                if isinstance(sh, Part.Shape):
+            Parameters
+            ----------
+            sh : Part.Shape or Draft.Dimension
+                Object to be transformed
+            """
+            if isinstance(sh, Part.Shape):
+                if self.transform:
+                    FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
+                    # sh = transformCopyShape(sh, self.transform)
+                    # see issue #2062
+                    sh = sh.transformGeometry(self.transform)
+                for transform in self.grouptransform[::-1]:
+                    FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
+                    # sh = transformCopyShape(sh, transform)
+                    # see issue 2062
+                    sh = sh.transformGeometry(transform)
+                return sh
+            elif Draft.getType(sh) == "Dimension":
+                pts = []
+                for p in [sh.Start, sh.End, sh.Dimline]:
+                    cp = Vector(p)
                     if self.transform:
                         FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
-                        # sh = transformCopyShape(sh, self.transform)
-                        # see issue #2062
-                        sh = sh.transformGeometry(self.transform)
+                        cp = self.transform.multiply(cp)
                     for transform in self.grouptransform[::-1]:
                         FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
-                        # sh = transformCopyShape(sh, transform)
-                        # see issue 2062
-                        sh = sh.transformGeometry(transform)
-                    return sh
-                elif Draft.getType(sh) == "Dimension":
-                    pts = []
-                    for p in [sh.Start, sh.End, sh.Dimline]:
-                        cp = Vector(p)
-                        if self.transform:
-                            FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
-                            cp = self.transform.multiply(cp)
-                        for transform in self.grouptransform[::-1]:
-                            FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
-                            cp = transform.multiply(cp)
-                        pts.append(cp)
-                    sh.Start = pts[0]
-                    sh.End = pts[1]
-                    sh.Dimline = pts[2]
+                        cp = transform.multiply(cp)
+                    pts.append(cp)
+                sh.Start = pts[0]
+                sh.End = pts[1]
+                sh.Dimline = pts[2]
 
         def translateVec(self, vec, mat):
             """Translate a point or vector by a matrix.
@@ -1490,50 +1490,50 @@ class svgHandler(xml.sax.ContentHandler):
                 transformre = re.compile('(matrix|translate|scale|rotate|skewX|skewY)\s*?\((.*?)\)', re.DOTALL)
                 m = FreeCAD.Matrix()
                 for transformation, arguments in transformre.findall(tr):
-                        argsplit = [float(arg) for arg in arguments.replace(',', ' ').split()]
-                        # m.multiply(FreeCAD.Matrix(1, 0, 0, 0, 0, -1))
-                        # print('%s:%s %s %d' % (transformation, arguments, argsplit, len(argsplit)))
-                        if transformation == 'translate':
-                            tx = argsplit[0]
-                            ty = argsplit[1] if len(argsplit) > 1 else 0.0
-                            m.move(Vector(tx, -ty, 0))
-                        elif transformation == 'scale':
-                            sx = argsplit[0]
-                            sy = argsplit[1] if len(argsplit) > 1 else sx
-                            m.scale(Vector(sx, sy, 1))
-                        elif transformation == 'rotate':
-                            cx = 0
-                            cy = 0
-                            angle = argsplit[0]
-                            if len(argsplit) >= 3:
-                                cx = argsplit[1]
-                                cy = argsplit[2]
-                                m.move(Vector(cx, -cy, 0))
-                            # Mirroring one axis is equal to changing the direction
-                            # of rotation
-                            m.rotateZ(math.radians(-angle))
-                            if len(argsplit) >= 3:
-                                m.move(Vector(-cx, cy, 0))
-                        elif transformation == 'skewX':
-                            m = m.multiply(FreeCAD.Matrix(1,
-                                                          -math.tan(math.radians(argsplit[0]))))
-                        elif transformation == 'skewY':
-                            m = m.multiply(FreeCAD.Matrix(1, 0, 0, 0,
-                                                          -math.tan(math.radians(argsplit[0]))))
-                        elif transformation == 'matrix':
-                            # transformation matrix:
-                            #    FreeCAD                 SVG
-                            # (+A -C +0 +E)           (A C 0 E)
-                            # (-B +D -0 -F)  = (-Y) * (B D 0 F) *(-Y)
-                            # (+0 -0 +1 +0)           (0 0 1 0)
-                            # (+0 -0 +0 +1)           (0 0 0 1)
-                            m = m.multiply(FreeCAD.Matrix(argsplit[0], -argsplit[2],
-                                                          0, argsplit[4],
-                                                          -argsplit[1], argsplit[3],
-                                                          0, -argsplit[5]))
-                        # else:
-                        #    print 'SKIPPED %s' % transformation
-                        # print "m= ",m
+                    argsplit = [float(arg) for arg in arguments.replace(',', ' ').split()]
+                    # m.multiply(FreeCAD.Matrix(1, 0, 0, 0, 0, -1))
+                    # print('%s:%s %s %d' % (transformation, arguments, argsplit, len(argsplit)))
+                    if transformation == 'translate':
+                        tx = argsplit[0]
+                        ty = argsplit[1] if len(argsplit) > 1 else 0.0
+                        m.move(Vector(tx, -ty, 0))
+                    elif transformation == 'scale':
+                        sx = argsplit[0]
+                        sy = argsplit[1] if len(argsplit) > 1 else sx
+                        m.scale(Vector(sx, sy, 1))
+                    elif transformation == 'rotate':
+                        cx = 0
+                        cy = 0
+                        angle = argsplit[0]
+                        if len(argsplit) >= 3:
+                            cx = argsplit[1]
+                            cy = argsplit[2]
+                            m.move(Vector(cx, -cy, 0))
+                        # Mirroring one axis is equal to changing the direction
+                        # of rotation
+                        m.rotateZ(math.radians(-angle))
+                        if len(argsplit) >= 3:
+                            m.move(Vector(-cx, cy, 0))
+                    elif transformation == 'skewX':
+                        m = m.multiply(FreeCAD.Matrix(1,
+                                                      -math.tan(math.radians(argsplit[0]))))
+                    elif transformation == 'skewY':
+                        m = m.multiply(FreeCAD.Matrix(1, 0, 0, 0,
+                                                      -math.tan(math.radians(argsplit[0]))))
+                    elif transformation == 'matrix':
+                        # transformation matrix:
+                        #    FreeCAD                 SVG
+                        # (+A -C +0 +E)           (A C 0 E)
+                        # (-B +D -0 -F)  = (-Y) * (B D 0 F) *(-Y)
+                        # (+0 -0 +1 +0)           (0 0 1 0)
+                        # (+0 -0 +0 +1)           (0 0 0 1)
+                        m = m.multiply(FreeCAD.Matrix(argsplit[0], -argsplit[2],
+                                                      0, argsplit[4],
+                                                      -argsplit[1], argsplit[3],
+                                                      0, -argsplit[5]))
+                    # else:
+                    #    print 'SKIPPED %s' % transformation
+                    # print "m= ",m
                 # print "generating transformation: ",m
                 return m
         # getMatrix
