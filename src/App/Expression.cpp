@@ -3050,17 +3050,18 @@ public:
     PyIterable(const Py::Object &obj, const Expression *expr, bool toSeq)
         :Py::Object() ,i(-1)
     {
-        const char *msg = "Object not iterable.";
-        if(obj.isSequence()) {
-            set(PySequence_Fast(obj.ptr(),msg));
+        if(toSeq || obj.isSequence()) {
+            PyObject *seq = PySequence_Fast(obj.ptr(),"Object not iterable");
+            if(!seq)
+                EXPR_PY_THROW(expr);
+            set(seq,true);
             i = 0;
-        }else if(!PyIter_Check(obj.ptr())) {
-            __EXPR_THROW(TypeError,msg,expr);
-        } else if(toSeq) {
-            set(PySequence_Fast(obj.ptr(),msg),true);
-            i = 0;
-        }else
-            set(PyObject_GetIter(obj.ptr()),true);
+            return;
+        }
+        PyObject *iter = PyObject_GetIter(obj.ptr());
+        if(!iter)
+            EXPR_PY_THROW(expr);
+        set(iter,true);
     }
     bool next(Py::Object &obj,Expression *expr) {
         if(i>=0) {
