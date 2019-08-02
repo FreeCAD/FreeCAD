@@ -1309,73 +1309,73 @@ class svgHandler(xml.sax.ContentHandler):
             if self.currentsymbol:
                 self.symbols[self.currentsymbol].append(obj)
 
-                # Process circles
-                if (name == "circle") and (not ("freecad:skip" in data)) :
-                    if not pathname:
-                        pathname = 'Circle'
-                    c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
-                    r = data['r']
-                    sh = Part.makeCircle(r)
-                    if self.fill:
-                        sh = Part.Wire([sh])
-                        sh = Part.Face(sh)
-                    sh.translate(c)
-                    sh = self.applyTrans(sh)
-                    obj = self.doc.addObject("Part::Feature", pathname)
-                    obj.Shape = sh
-                    self.format(obj)
-                    if self.currentsymbol:
-                        self.symbols[self.currentsymbol].append(obj)
+        # Process circles
+        if (name == "circle") and (not ("freecad:skip" in data)) :
+            if not pathname:
+                pathname = 'Circle'
+            c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
+            r = data['r']
+            sh = Part.makeCircle(r)
+            if self.fill:
+                sh = Part.Wire([sh])
+                sh = Part.Face(sh)
+            sh.translate(c)
+            sh = self.applyTrans(sh)
+            obj = self.doc.addObject("Part::Feature", pathname)
+            obj.Shape = sh
+            self.format(obj)
+            if self.currentsymbol:
+                self.symbols[self.currentsymbol].append(obj)
 
-                # Process texts
-                if name in ["text", "tspan"]:
-                    if not("freecad:skip" in data):
-                        FreeCAD.Console.PrintMessage("processing a text\n")
-                        if 'x' in data:
-                            self.x = data['x']
-                        else:
-                            self.x = 0
-                        if 'y' in data:
-                            self.y = data['y']
-                        else:
-                            self.y = 0
-                        if 'font-size' in data:
-                            if data['font-size'] != 'none':
-                                self.text = getsize(data['font-size'],
-                                                    'css' + str(self.svgdpi))
-                        else:
-                            self.text = 1
-                    else:
-                        if self.lastdim:
-                            self.lastdim.ViewObject.FontSize = int(getsize(data['font-size']))
+        # Process texts
+        if name in ["text", "tspan"]:
+            if not("freecad:skip" in data):
+                FreeCAD.Console.PrintMessage("processing a text\n")
+                if 'x' in data:
+                    self.x = data['x']
+                else:
+                    self.x = 0
+                if 'y' in data:
+                    self.y = data['y']
+                else:
+                    self.y = 0
+                if 'font-size' in data:
+                    if data['font-size'] != 'none':
+                        self.text = getsize(data['font-size'],
+                                            'css' + str(self.svgdpi))
+                else:
+                    self.text = 1
+            else:
+                if self.lastdim:
+                    self.lastdim.ViewObject.FontSize = int(getsize(data['font-size']))
 
-                # Process symbols
-                if name == "symbol":
-                    self.symbols[pathname] = []
-                    self.currentsymbol = pathname
+        # Process symbols
+        if name == "symbol":
+            self.symbols[pathname] = []
+            self.currentsymbol = pathname
 
-                if name == "use":
-                    if "xlink:href" in data:
-                        symbol = data["xlink:href"][0][1:]
-                        if symbol in self.symbols:
-                            FreeCAD.Console.PrintMessage("using symbol " + symbol + "\n")
-                            shapes = []
-                            for o in self.symbols[symbol]:
-                                if o.isDerivedFrom("Part::Feature"):
-                                    shapes.append(o.Shape)
-                            if shapes:
-                                sh = Part.makeCompound(shapes)
-                                v = FreeCAD.Vector(float(data['x']), -float(data['y']), 0)
-                                sh.translate(v)
-                                sh = self.applyTrans(sh)
-                                obj = self.doc.addObject("Part::Feature", symbol)
-                                obj.Shape = sh
-                                self.format(obj)
-                        else:
-                            FreeCAD.Console.PrintMessage("no symbol data\n")
+        if name == "use":
+            if "xlink:href" in data:
+                symbol = data["xlink:href"][0][1:]
+                if symbol in self.symbols:
+                    FreeCAD.Console.PrintMessage("using symbol " + symbol + "\n")
+                    shapes = []
+                    for o in self.symbols[symbol]:
+                        if o.isDerivedFrom("Part::Feature"):
+                            shapes.append(o.Shape)
+                    if shapes:
+                        sh = Part.makeCompound(shapes)
+                        v = FreeCAD.Vector(float(data['x']), -float(data['y']), 0)
+                        sh.translate(v)
+                        sh = self.applyTrans(sh)
+                        obj = self.doc.addObject("Part::Feature", symbol)
+                        obj.Shape = sh
+                        self.format(obj)
+                else:
+                    FreeCAD.Console.PrintMessage("no symbol data\n")
 
-                FreeCAD.Console.PrintMessage("done processing element %d\n" % self.count)
-        # startElement()
+        FreeCAD.Console.PrintMessage("done processing element %d\n" % self.count)
+    # startElement()
 
         def characters(self, content):
             """Read characters from the given string."""
