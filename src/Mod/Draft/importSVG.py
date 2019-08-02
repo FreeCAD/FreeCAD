@@ -361,7 +361,7 @@ def getsize(length, mode='discard', base=1):
             'ex': 10 * 2.54/90,
             '%': 100
         }
-    if mode == 'mm96.0':
+    elif mode == 'mm96.0':
         tomm = {
             '': 25.4/96,  # default
             'px': 25.4/96,
@@ -374,7 +374,7 @@ def getsize(length, mode='discard', base=1):
             'ex': 10 * 2.54/96,
             '%': 100
         }
-    if mode == 'css90.0':
+    elif mode == 'css90.0':
         topx = {
             '': 1.0,  # default
             'px': 1.0,
@@ -387,7 +387,7 @@ def getsize(length, mode='discard', base=1):
             'ex': 10,
             '%': 100
         }
-    if mode == 'css96.0':
+    elif mode == 'css96.0':
         topx = {
             '': 1.0,  # default
             'px': 1.0,
@@ -456,8 +456,9 @@ def makewire(path, checkclosed=False, donttry=False):
         # Code from wmayer forum p15549 to fix the tolerance problem
         # original tolerance = 0.00001
         comp = Part.Compound(path)
-        sh = comp.connectEdgesToWires(False,
-                                      10**(-1 * (Draft.precision() - 2))).Wires[0]
+        _sh = comp.connectEdgesToWires(False,
+                                       10**(-1 * (Draft.precision() - 2)))
+        sh = _sh.Wires[0]
         if len(sh.Edges) != len(path):
             FreeCAD.Console.PrintWarning("Unable to form a wire\n")
             sh = comp
@@ -690,11 +691,11 @@ class svgHandler(xml.sax.ContentHandler):
 
         data = {}
         for (keyword, content) in list(attrs.items()):
-            #print keyword,content
+            # print(keyword, content)
             if keyword != "style":
                 content = content.replace(',', ' ')
                 content = content.split()
-            #print keyword,content
+            # print(keyword, content)
             data[keyword] = content
 
         # If it's the first element, which is <svg>,
@@ -705,24 +706,18 @@ class svgHandler(xml.sax.ContentHandler):
                 InksDocName = attrs.getValue('sodipodi:docname')
                 InksFullver = attrs.getValue('inkscape:version')[:4]
                 InksFullverlst = InksFullver.split('.')
+                _maj = int(InksFullverlst[0])
+                _min = int(InksFullverlst[1])
 
                 # Inkscape before 0.92 used 90 dpi as resolution
                 # Newer versions use 96 dpi
-                if (
-                    int(InksFullverlst[0]) == 0 and
-                    int(InksFullverlst[1]) > 91
-                   ):
+                if _maj == 0 and _min > 91:
                     self.svgdpi = 96.0
-                if (
-                    int(InksFullverlst[0]) == 0 and
-                    int(InksFullverlst[1]) < 92
-                   ):
+                elif _maj == 0 and _min < 92:
                     self.svgdpi = 90.0
-                if (
-                    int(InksFullverlst[0]) > 0
-                   ):
+                elif _maj > 0:
                     self.svgdpi = 96.0
-            if not 'inkscape:version' in data:
+            if 'inkscape:version' not in data:
                     msgBox = QtGui.QMessageBox()
                     msgBox.setText(translate("ImportSVG", "This SVG file does not appear to have been produced by Inkscape. If it does not contain absolute units then a DPI setting will be used."))
                     msgBox.setInformativeText(translate("ImportSVG", "Do you wish to use 96dpi? Choosing 'No' will revert to the older standard 90dpi"))
@@ -734,9 +729,9 @@ class svgHandler(xml.sax.ContentHandler):
                     else:
                         self.svgdpi = 90.0
                     if ret:
-                        FreeCAD.Console.PrintMessage("****** User specified "+str(self.svgdpi)+"dpi ******\n")
+                        FreeCAD.Console.PrintMessage("****** User specified " + str(self.svgdpi) + "dpi ******\n")
             if self.svgdpi == 1.0:
-                FreeCAD.Console.PrintWarning("This SVG file ("+InksDocName+") has an unrecognised format which means the dpi could not be determined; therefore importing with 96dpi\n")
+                FreeCAD.Console.PrintWarning("This SVG file (" + InksDocName + ") has an unrecognised format which means the dpi could not be determined; assuming 96 dpi\n")
                 self.svgdpi = 96.0
 
         if 'style' in data:
@@ -896,7 +891,7 @@ class svgHandler(xml.sax.ContentHandler):
                     else:
                         lastvec = Vector(x, -y, 0)
                     firstvec = lastvec
-                    FreeCAD.Console.PrintMessage('move %s\n'%str(lastvec))
+                    FreeCAD.Console.PrintMessage('move %s\n' % str(lastvec))
                     lastpole = None
 
                 if (d == "L" or d == "l") \
@@ -941,22 +936,23 @@ class svgHandler(xml.sax.ContentHandler):
                     for (rx, ry, xrotation,
                          largeflag, sweepflag,
                          x, y) in piter:
-                        # support for large-arc and x-rotation are missing
+                        # support for large-arc and x-rotation is missing
                         if relative:
                             currentvec = lastvec.add(Vector(x, -y, 0))
                         else:
                             currentvec = Vector(x, -y, 0)
                         chord = currentvec.sub(lastvec)
                         # small circular arc
-                        if (not largeflag) and abs(rx-ry) < 10**(-1*Draft.precision()):
+                        _precision = 10**(-1*Draft.precision())
+                        if (not largeflag) and abs(rx - ry) < _precision:
                             # perp = chord.cross(Vector(0, 0, -1))
                             # here is a better way to find the perpendicular
                             if sweepflag == 1:
                                 # clockwise
-                                perp = DraftVecUtils.rotate2D(chord, -math.pi / 2)
+                                perp = DraftVecUtils.rotate2D(chord, -math.pi/2)
                             else:
                                 # anticlockwise
-                                perp = DraftVecUtils.rotate2D(chord, math.pi / 2)
+                                perp = DraftVecUtils.rotate2D(chord, math.pi/2)
                             chord.multiply(0.5)
                             if chord.Length > rx:
                                 a = 0
@@ -977,21 +973,21 @@ class svgHandler(xml.sax.ContentHandler):
                             # Chose one of the two solutions
                             negsol = (largeflag != sweepflag)
                             vcenter, angle1, angledelta = solution[negsol]
-                            #print angle1
-                            #print angledelta
+                            # print(angle1)
+                            # print(angledelta)
                             if ry > rx:
                                 rx, ry = ry, rx
                                 swapaxis = True
                             else:
                                 swapaxis = False
-                            #print 'Elliptical arc %s rx=%f ry=%f' % (vcenter,rx,ry)
+                            # print('Elliptical arc %s rx=%f ry=%f' % (vcenter, rx, ry))
                             e1 = Part.Ellipse(vcenter, rx, ry)
                             if sweepflag:
-                                #angledelta=-(-angledelta % (math.pi *2)) # Step4
-                                #angledelta=(-angledelta % (math.pi *2)) # Step4
-                                angle1  = angle1 + angledelta
+                                # angledelta = -(-angledelta % (2*math.pi))  # Step4
+                                # angledelta = (-angledelta % (2*math.pi))  # Step4
+                                angle1 = angle1 + angledelta
                                 angledelta = -angledelta
-                                #angle1 = math.pi - angle1 
+                                # angle1 = math.pi - angle1
 
                             e1a = Part.Arc(e1,
                                            angle1 - swapaxis * math.radians(90),
@@ -999,7 +995,8 @@ class svgHandler(xml.sax.ContentHandler):
                             # e1a = Part.Arc(e1,
                             #                angle1 - 0*swapaxis*math.radians(90),
                             #                angle1 + angledelta - 0*swapaxis*math.radians(90))
-                            if swapaxis or xrotation >  10**(-1*Draft.precision()):
+                            _precision = 10**(-1*Draft.precision())
+                            if swapaxis or xrotation > _precision:
                                 m3 = FreeCAD.Matrix()
                                 m3.move(vcenter)
                                 # 90
@@ -1020,8 +1017,8 @@ class svgHandler(xml.sax.ContentHandler):
                         lastvec = currentvec
                         lastpole = None
                         path.append(seg)
-                elif (d == "C" or d == "c") or (d =="S" or d == "s"):
-                    smooth = (d == 'S'  or d == 's')
+                elif (d == "C" or d == "c") or (d == "S" or d == "s"):
+                    smooth = (d == 'S' or d == 's')
                     if smooth:
                         piter = list(zip(pointlist[2::4],
                                          pointlist[3::4],
@@ -1058,11 +1055,17 @@ class svgHandler(xml.sax.ContentHandler):
                             mainv = currentvec.sub(lastvec)
                             pole1v = lastvec.add(pole1)
                             pole2v = currentvec.add(pole2)
-                            #print "cubic curve data:",mainv.normalize(),pole1v.normalize(),pole2v.normalize()
+                            # print("cubic curve data:",
+                            #       mainv.normalize(),
+                            #       pole1v.normalize(),
+                            #       pole2v.normalize())
+                            _precision = 10**(-1*(2+Draft.precision()))
+                            _d1 = pole1.distanceToLine(lastvec, currentvec)
+                            _d2 = pole2.distanceToLine(lastvec, currentvec)
                             if True and \
-                                    pole1.distanceToLine(lastvec, currentvec) < 10**(-1*(2+Draft.precision())) and \
-                                    pole2.distanceToLine(lastvec, currentvec) < 10**(-1*(2+Draft.precision())):
-                                #print "straight segment"
+                                    _d1 < _precision and \
+                                    _d2 < _precision:
+                                # print("straight segment")
                                 seg = Part.LineSegment(lastvec, currentvec).toShape()
                             else:
                                 #print "cubic bezier segment"
