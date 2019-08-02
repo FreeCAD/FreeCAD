@@ -673,231 +673,231 @@ class svgHandler(xml.sax.ContentHandler):
             if self.fill:
                 v.ShapeColor = self.fill
 
-        def startElement(self, name, attrs):
-                """Re-organize data into a nice clean dictionary.
+    def startElement(self, name, attrs):
+        """Re-organize data into a nice clean dictionary.
 
-                Parameters
-                ----------
-                name : str
-                    Name of the element: 'path', 'rect', 'line', 'polyline',
-                    'polygon', 'ellipse', 'circle', 'text', 'tspan', 'symbol'
-                attrs : iterable
-                    Dictionary of content of the elements
-                """
-                self.count += 1
-                FreeCAD.Console.PrintMessage('processing element %d: %s\n' % (self.count, name))
-                FreeCAD.Console.PrintMessage('existing group transform: %s\n' % (str(self.grouptransform)))
+        Parameters
+        ----------
+        name : str
+            Name of the element: 'path', 'rect', 'line', 'polyline',
+            'polygon', 'ellipse', 'circle', 'text', 'tspan', 'symbol'
+        attrs : iterable
+            Dictionary of content of the elements
+        """
+        self.count += 1
+        FreeCAD.Console.PrintMessage('processing element %d: %s\n' % (self.count, name))
+        FreeCAD.Console.PrintMessage('existing group transform: %s\n' % (str(self.grouptransform)))
 
-                data = {}
-                for (keyword, content) in list(attrs.items()):
-                    #print keyword,content
-                    if keyword != "style":
-                        content = content.replace(',', ' ')
-                        content = content.split()
-                    #print keyword,content
-                    data[keyword] = content
+        data = {}
+        for (keyword, content) in list(attrs.items()):
+            #print keyword,content
+            if keyword != "style":
+                content = content.replace(',', ' ')
+                content = content.split()
+            #print keyword,content
+            data[keyword] = content
 
-                # If it's the first element, which is <svg>,
-                # check if the file is created by Inkscape, and its version,
-                # in order to consider some attributes of the SVG file.
-                if self.count == 1 and name == 'svg':
-                    if 'inkscape:version' in data:
-                        InksDocName = attrs.getValue('sodipodi:docname')
-                        InksFullver = attrs.getValue('inkscape:version')[:4]
-                        InksFullverlst = InksFullver.split('.')
+        # If it's the first element, which is <svg>,
+        # check if the file is created by Inkscape, and its version,
+        # in order to consider some attributes of the SVG file.
+        if self.count == 1 and name == 'svg':
+            if 'inkscape:version' in data:
+                InksDocName = attrs.getValue('sodipodi:docname')
+                InksFullver = attrs.getValue('inkscape:version')[:4]
+                InksFullverlst = InksFullver.split('.')
 
-                        # Inkscape before 0.92 used 90 dpi as resolution
-                        # Newer versions use 96 dpi
-                        if (
-                            int(InksFullverlst[0]) == 0 and
-                            int(InksFullverlst[1]) > 91
-                            ):
-                            self.svgdpi = 96.0
-                        if (
-                            int(InksFullverlst[0]) == 0 and
-                            int(InksFullverlst[1]) < 92
-                            ):
-                            self.svgdpi = 90.0
-                        if (
-                            int(InksFullverlst[0]) > 0
-                            ):
-                            self.svgdpi = 96.0
-                    if not 'inkscape:version' in data:
-                        msgBox = QtGui.QMessageBox()
-                        msgBox.setText(translate("ImportSVG", "This SVG file does not appear to have been produced by Inkscape. If it does not contain absolute units then a DPI setting will be used."))
-                        msgBox.setInformativeText(translate("ImportSVG", "Do you wish to use 96dpi? Choosing 'No' will revert to the older standard 90dpi"))
-                        msgBox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-                        msgBox.setDefaultButton(QtGui.QMessageBox.No)
-                        ret = msgBox.exec_()
-                        if ret == QtGui.QMessageBox.Yes:
-                            self.svgdpi = 96.0
-                        else:
-                            self.svgdpi = 90.0
-                        if ret:
-                            FreeCAD.Console.PrintMessage("****** User specified "+str(self.svgdpi)+"dpi ******\n")
-                    if self.svgdpi == 1.0:
-                        FreeCAD.Console.PrintWarning("This SVG file ("+InksDocName+") has an unrecognised format which means the dpi could not be determined; therefore importing with 96dpi\n")
+                # Inkscape before 0.92 used 90 dpi as resolution
+                # Newer versions use 96 dpi
+                if (
+                    int(InksFullverlst[0]) == 0 and
+                    int(InksFullverlst[1]) > 91
+                   ):
+                    self.svgdpi = 96.0
+                if (
+                    int(InksFullverlst[0]) == 0 and
+                    int(InksFullverlst[1]) < 92
+                   ):
+                    self.svgdpi = 90.0
+                if (
+                    int(InksFullverlst[0]) > 0
+                   ):
+                    self.svgdpi = 96.0
+            if not 'inkscape:version' in data:
+                    msgBox = QtGui.QMessageBox()
+                    msgBox.setText(translate("ImportSVG", "This SVG file does not appear to have been produced by Inkscape. If it does not contain absolute units then a DPI setting will be used."))
+                    msgBox.setInformativeText(translate("ImportSVG", "Do you wish to use 96dpi? Choosing 'No' will revert to the older standard 90dpi"))
+                    msgBox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                    msgBox.setDefaultButton(QtGui.QMessageBox.No)
+                    ret = msgBox.exec_()
+                    if ret == QtGui.QMessageBox.Yes:
                         self.svgdpi = 96.0
-
-                if 'style' in data:
-                    if not data['style']:
-                        # Empty style attribute stops inheriting from parent
-                        pass
                     else:
-                        content = data['style'].replace(' ', '')
-                        content = content.split(';')
-                        for i in content:
-                            pair = i.split(':')
-                            if len(pair) > 1:
-                                data[pair[0]] = pair[1]
+                        self.svgdpi = 90.0
+                    if ret:
+                        FreeCAD.Console.PrintMessage("****** User specified "+str(self.svgdpi)+"dpi ******\n")
+            if self.svgdpi == 1.0:
+                FreeCAD.Console.PrintWarning("This SVG file ("+InksDocName+") has an unrecognised format which means the dpi could not be determined; therefore importing with 96dpi\n")
+                self.svgdpi = 96.0
 
-                for k in ['x', 'y', 'x1', 'y1', 'x2', 'y2',
-                          'r', 'rx', 'ry', 'cx', 'cy', 'width', 'height']:
-                    if k in data:
-                        data[k] = getsize(data[k][0], 'css' + str(self.svgdpi))
+        if 'style' in data:
+            if not data['style']:
+                # Empty style attribute stops inheriting from parent
+                pass
+            else:
+                content = data['style'].replace(' ', '')
+                content = content.split(';')
+                for i in content:
+                    pair = i.split(':')
+                    if len(pair) > 1:
+                        data[pair[0]] = pair[1]
 
-                for k in ['fill', 'stroke', 'stroke-width', 'font-size']:
-                    if k in data:
-                        if isinstance(data[k], list):
-                            if data[k][0].lower().startswith("rgb("):
-                                data[k] = ",".join(data[k])
-                            else:
-                                data[k] = data[k][0]
+        for k in ['x', 'y', 'x1', 'y1', 'x2', 'y2',
+                  'r', 'rx', 'ry', 'cx', 'cy', 'width', 'height']:
+            if k in data:
+                data[k] = getsize(data[k][0], 'css' + str(self.svgdpi))
 
-                # Extract style info
-                self.fill = None
-                self.color = None
-                self.width = None
-                self.text = None
-
-                if name == 'svg':
-                    m = FreeCAD.Matrix()
-                    if not self.disableUnitScaling:
-                        if 'width' in data \
-                                and 'height' in data \
-                                and 'viewBox' in data:
-                            vbw = float(data['viewBox'][2])
-                            vbh = float(data['viewBox'][3])
-                            w = attrs.getValue('width')
-                            h = attrs.getValue('height')
-                            self.viewbox = (vbw, vbh)
-                            if len(self.grouptransform) == 0:
-                                unitmode = 'mm' + str(self.svgdpi)
-                            else:
-                                # nested svg element
-                                unitmode = 'css' + str(self.svgdpi)
-                            abw = getsize(w, unitmode)
-                            abh = getsize(h, unitmode)
-                            sx = abw / vbw
-                            sy = abh / vbh
-                            preservearstr = ' '.join(data.get('preserveAspectRatio', [])).lower()
-                            uniformscaling = round(sx/sy, 5) == 1
-                            if uniformscaling:
-                                m.scale(Vector(sx, sy, 1))
-                            else:
-                                FreeCAD.Console.PrintWarning('Scaling factors do not match!\n')
-                                if preservearstr.startswith('none'):
-                                    m.scale(Vector(sx, sy, 1))
-                                else:
-                                    # preserve the aspect ratio
-                                    if preservearstr.endswith('slice'):
-                                        sxy = max(sx, sy)
-                                    else:
-                                        sxy = min(sx, sy)
-                                    m.scale(Vector(sxy, sxy, 1))
-                        elif len(self.grouptransform) == 0:
-                            # fallback to current dpi
-                            m.scale(Vector(25.4/self.svgdpi, 25.4/self.svgdpi, 1))
-                    self.grouptransform.append(m)
-                if 'fill' in data:
-                    if data['fill'][0] != 'none':
-                        self.fill = getcolor(data['fill'])
-                if 'stroke' in data:
-                    if data['stroke'][0] != 'none':
-                        self.color = getcolor(data['stroke'])
-                if 'stroke-width' in data:
-                    if data['stroke-width'] != 'none':
-                        self.width = getsize(data['stroke-width'],
-                                             'css' + str(self.svgdpi))
-                if 'transform' in data:
-                    m = self.getMatrix(attrs.getValue('transform'))
-                    if name == "g":
-                        self.grouptransform.append(m)
+        for k in ['fill', 'stroke', 'stroke-width', 'font-size']:
+            if k in data:
+                if isinstance(data[k], list):
+                    if data[k][0].lower().startswith("rgb("):
+                        data[k] = ",".join(data[k])
                     else:
-                        self.transform = m
-                else:
-                    if name == "g":
-                        self.grouptransform.append(FreeCAD.Matrix())
+                        data[k] = data[k][0]
 
-                if self.style == 1:
-                    self.color = self.col
-                    self.width = self.lw
+        # Extract style info
+        self.fill = None
+        self.color = None
+        self.width = None
+        self.text = None
 
-                pathname = None
-                if 'id' in data:
-                    pathname = data['id'][0]
-                    FreeCAD.Console.PrintMessage('name: %s\n' % pathname)
+        if name == 'svg':
+            m = FreeCAD.Matrix()
+            if not self.disableUnitScaling:
+                if 'width' in data \
+                        and 'height' in data \
+                        and 'viewBox' in data:
+                    vbw = float(data['viewBox'][2])
+                    vbh = float(data['viewBox'][3])
+                    w = attrs.getValue('width')
+                    h = attrs.getValue('height')
+                    self.viewbox = (vbw, vbh)
+                    if len(self.grouptransform) == 0:
+                        unitmode = 'mm' + str(self.svgdpi)
+                    else:
+                        # nested svg element
+                        unitmode = 'css' + str(self.svgdpi)
+                    abw = getsize(w, unitmode)
+                    abh = getsize(h, unitmode)
+                    sx = abw / vbw
+                    sy = abh / vbh
+                    preservearstr = ' '.join(data.get('preserveAspectRatio', [])).lower()
+                    uniformscaling = round(sx/sy, 5) == 1
+                    if uniformscaling:
+                        m.scale(Vector(sx, sy, 1))
+                    else:
+                        FreeCAD.Console.PrintWarning('Scaling factors do not match!\n')
+                        if preservearstr.startswith('none'):
+                            m.scale(Vector(sx, sy, 1))
+                        else:
+                            # preserve the aspect ratio
+                            if preservearstr.endswith('slice'):
+                                sxy = max(sx, sy)
+                            else:
+                                sxy = min(sx, sy)
+                            m.scale(Vector(sxy, sxy, 1))
+                elif len(self.grouptransform) == 0:
+                    # fallback to current dpi
+                    m.scale(Vector(25.4/self.svgdpi, 25.4/self.svgdpi, 1))
+            self.grouptransform.append(m)
+        if 'fill' in data:
+            if data['fill'][0] != 'none':
+                self.fill = getcolor(data['fill'])
+        if 'stroke' in data:
+            if data['stroke'][0] != 'none':
+                self.color = getcolor(data['stroke'])
+        if 'stroke-width' in data:
+            if data['stroke-width'] != 'none':
+                self.width = getsize(data['stroke-width'],
+                                     'css' + str(self.svgdpi))
+        if 'transform' in data:
+            m = self.getMatrix(attrs.getValue('transform'))
+            if name == "g":
+                self.grouptransform.append(m)
+            else:
+                self.transform = m
+        else:
+            if name == "g":
+                self.grouptransform.append(FreeCAD.Matrix())
 
-                # Process paths
-                if name == "path":
-                        FreeCAD.Console.PrintMessage('data: %s\n' % str(data))
+        if self.style == 1:
+            self.color = self.col
+            self.width = self.lw
 
-                        if not pathname:
-                            pathname = 'Path'
+        pathname = None
+        if 'id' in data:
+            pathname = data['id'][0]
+            FreeCAD.Console.PrintMessage('name: %s\n' % pathname)
 
+        # Process paths
+        if name == "path":
+            FreeCAD.Console.PrintMessage('data: %s\n' % str(data))
+
+            if not pathname:
+                pathname = 'Path'
+
+            path = []
+            point = []
+            lastvec = Vector(0, 0, 0)
+            lastpole = None
+            command = None
+            relative = False
+            firstvec = None
+
+            if "freecad:basepoint1" in data:
+                p1 = data["freecad:basepoint1"]
+                p1 = Vector(float(p1[0]), -float(p1[1]), 0)
+                p2 = data["freecad:basepoint2"]
+                p2 = Vector(float(p2[0]), -float(p2[1]), 0)
+                p3 = data["freecad:dimpoint"]
+                p3 = Vector(float(p3[0]), -float(p3[1]), 0)
+                obj = Draft.makeDimension(p1, p2, p3)
+                self.applyTrans(obj)
+                self.format(obj)
+                self.lastdim = obj
+                data['d'] = []
+
+            pathcommandsre = re.compile('\s*?([mMlLhHvVaAcCqQsStTzZ])\s*?([^mMlLhHvVaAcCqQsStTzZ]*)\s*?', re.DOTALL)
+            pointsre = re.compile('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)', re.DOTALL)
+            for d, pointsstr in pathcommandsre.findall(' '.join(data['d'])):
+                relative = d.islower()
+                pointlist = [float(number) for number, exponent in pointsre.findall(pointsstr.replace(',', ' '))]
+
+                if (d == "M" or d == "m"):
+                    x = pointlist.pop(0)
+                    y = pointlist.pop(0)
+                    if path:
+                        # sh = Part.Wire(path)
+                        sh = makewire(path)
+                        if self.fill and sh.isClosed():
+                            sh = Part.Face(sh)
+                        sh = self.applyTrans(sh)
+                        obj = self.doc.addObject("Part::Feature", pathname)
+                        obj.Shape = sh
+                        self.format(obj)
+                        if self.currentsymbol:
+                            self.symbols[self.currentsymbol].append(obj)
                         path = []
-                        point = []
-                        lastvec = Vector(0, 0, 0)
-                        lastpole = None
-                        command = None
-                        relative = False
-                        firstvec = None
-
-                        if "freecad:basepoint1" in data:
-                            p1 = data["freecad:basepoint1"]
-                            p1 = Vector(float(p1[0]), -float(p1[1]), 0)
-                            p2 = data["freecad:basepoint2"]
-                            p2 = Vector(float(p2[0]), -float(p2[1]), 0)
-                            p3 = data["freecad:dimpoint"]
-                            p3 = Vector(float(p3[0]), -float(p3[1]), 0)
-                            obj = Draft.makeDimension(p1, p2, p3)
-                            self.applyTrans(obj)
-                            self.format(obj)
-                            self.lastdim = obj
-                            data['d'] = []
-
-                        pathcommandsre = re.compile('\s*?([mMlLhHvVaAcCqQsStTzZ])\s*?([^mMlLhHvVaAcCqQsStTzZ]*)\s*?', re.DOTALL)
-                        pointsre = re.compile('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)', re.DOTALL)
-                        for d, pointsstr in pathcommandsre.findall(' '.join(data['d'])):
-                                relative = d.islower()
-                                pointlist = [float(number) for number, exponent in pointsre.findall(pointsstr.replace(',', ' '))]
-
-                                if (d == "M" or d == "m"):
-                                    x = pointlist.pop(0)
-                                    y = pointlist.pop(0)
-                                    if path:
-                                        # sh = Part.Wire(path)
-                                        sh = makewire(path)
-                                        if self.fill and sh.isClosed():
-                                            sh = Part.Face(sh)
-                                        sh = self.applyTrans(sh)
-                                        obj = self.doc.addObject("Part::Feature", pathname)
-                                        obj.Shape = sh
-                                        self.format(obj)
-                                        if self.currentsymbol:
-                                            self.symbols[self.currentsymbol].append(obj)
-                                        path = []
-                                        # if firstvec:
-                                        #    Move relative to last move command
-                                        #    not last draw command
-                                        #    lastvec = firstvec
-                                    if relative:
-                                        lastvec = lastvec.add(Vector(x, -y, 0))
-                                    else:
-                                        lastvec = Vector(x, -y, 0)
-                                    firstvec = lastvec
-                                    FreeCAD.Console.PrintMessage('move %s\n'%str(lastvec))
-                                    lastpole = None
+                        # if firstvec:
+                        #    Move relative to last move command
+                        #    not last draw command
+                        #    lastvec = firstvec
+                    if relative:
+                        lastvec = lastvec.add(Vector(x, -y, 0))
+                    else:
+                        lastvec = Vector(x, -y, 0)
+                    firstvec = lastvec
+                    FreeCAD.Console.PrintMessage('move %s\n'%str(lastvec))
+                    lastpole = None
 
                                 if (d == "L" or d == "l") \
                                         or ((d == 'm' or d == 'M') and pointlist):
