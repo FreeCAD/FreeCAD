@@ -1223,6 +1223,9 @@ if(MSVC)
         set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG")
     endif(FREECAD_RELEASE_PDB)
     if(FREECAD_RELEASE_SEH)
+        # remove /EHsc or /EHs flags because they are incompatible with /EHa
+        string(REPLACE "/EHsc" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+        string(REPLACE "/EHs" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
         set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
     endif(FREECAD_RELEASE_SEH)
 
