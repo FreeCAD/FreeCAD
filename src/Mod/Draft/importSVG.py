@@ -313,108 +313,108 @@ def transformCopyShape(shape, m):
 
 
 def getsize(length, mode='discard', base=1):
-        """Parse the length string containing number and unit.
+    """Parse the length string containing number and unit.
 
-        Parameters
-        ----------
-        length : str
-            The length is a string, including sign, exponential notation,
-            and unit: '+56215.14565E+6mm', '-23.156e-2px'.
-        mode : str, optional
-            One of 'discard', 'tuple', 'css90.0', 'css96.0', 'mm90.0', 'mm96.0'.
-            'discard' (default), it discards the unit suffix, and extracts
-                a number from the given string.
-            'tuple', return number and unit as a tuple
-            'css90.0', convert the unit to pixels assuming 90 dpi
-            'css96.0', convert the unit to pixels assuming 96 dpi
-            'mm90.0', convert the unit to millimeters assuming 90 dpi
-            'mm96.0', convert the unit to millimeters assuming 96 dpi
-        base : float, optional
-            A base to scale the length.
+    Parameters
+    ----------
+    length : str
+        The length is a string, including sign, exponential notation,
+        and unit: '+56215.14565E+6mm', '-23.156e-2px'.
+    mode : str, optional
+        One of 'discard', 'tuple', 'css90.0', 'css96.0', 'mm90.0', 'mm96.0'.
+        'discard' (default), it discards the unit suffix, and extracts
+            a number from the given string.
+        'tuple', return number and unit as a tuple
+        'css90.0', convert the unit to pixels assuming 90 dpi
+        'css96.0', convert the unit to pixels assuming 96 dpi
+        'mm90.0', convert the unit to millimeters assuming 90 dpi
+        'mm96.0', convert the unit to millimeters assuming 96 dpi
+    base : float, optional
+        A base to scale the length.
 
-        Returns
-        -------
-        float
-            The numeric value of the length, as is, or transformed to
-            millimeters or pixels.
-        float, string
-            A tuple with the numeric value, and the unit if `mode='tuple'`.
-        """
-        # Dictionaries to convert units to millimeters or pixels.
-        #
-        # The `em` and `ex` units are typographical units used in systems
-        # like LaTeX. Here the conversion factors are arbitrarily chosen,
-        # as they should depend on a specific font size used.
-        #
-        # The percentage factor is arbitrarily chosen, as it should depend
-        # on the viewport size or for filling patterns on the bounding box.
-        if mode == 'mm90.0':
-            tomm = {
-                    '': 25.4/90,  # default
-                    'px': 25.4/90,
-                    'pt': 1.25*25.4/90,
-                    'pc': 15*25.4/90,
-                    'mm': 1.0,
-                    'cm': 10.0,
-                    'in': 25.4,
-                    'em': 15*2.54/90, #arbitrarily chosen; has to depend on font size
-                    'ex': 10*2.54/90, #arbitrarily chosen; has to depend on font size
-                    '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
-                    }
-        if mode == 'mm96.0':
-            tomm = {
-                    '': 25.4/96,  # default
-                    'px': 25.4/96,
-                    'pt': 1.25*25.4/96,
-                    'pc': 15*25.4/96,
-                    'mm': 1.0,
-                    'cm': 10.0,
-                    'in': 25.4,
-                    'em': 15*2.54/96, #arbitrarily chosen; has to depend on font size
-                    'ex': 10*2.54/96, #arbitrarily chosen; has to depend on font size
-                    '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
-                    }
-        if mode == 'css90.0':
-            topx = {
-                    '': 1.0,  # default
-                    'px': 1.0,
-                    'pt': 1.25,
-                    'pc': 15,
-                    'mm': 90.0/25.4,
-                    'cm': 90.0/254.0,
-                    'in': 90,
-                    'em': 15, #arbitrarily chosen; has to depend on font size
-                    'ex': 10, #arbitrarily chosen; has to depend on font size
-                    '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
-                    }
-        if mode == 'css96.0':
-            topx = {
-                    '': 1.0,  # default
-                    'px': 1.0,
-                    'pt': 1.25,
-                    'pc': 15,
-                    'mm': 96.0/25.4,
-                    'cm': 96.0/254.0,
-                    'in': 96,
-                    'em': 15, #arbitrarily chosen; has to depend on font size
-                    'ex': 10, #arbitrarily chosen; has to depend on font size
-                    '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
-                    }
-        # Extract a number from a string like '+56215.14565E+6mm'
-        number, exponent, unit = re.findall('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)(px|pt|pc|mm|cm|in|em|ex|%)?', length)[0]
-        if mode == 'discard':
-                return float(number)
-        elif mode == 'tuple':
-                return float(number), unit
-        elif mode == 'isabsolute':
-                return unit in ('mm', 'cm', 'in', 'px', 'pt')
-        elif mode == 'mm96.0' or mode == 'mm90.0':
-                return float(number) * tomm[unit]
-        elif mode == 'css96.0' or mode == 'css90.0':
-                if unit != '%':
-                        return float(number) * topx[unit]
-                else:
-                        return float(number) * base
+    Returns
+    -------
+    float
+        The numeric value of the length, as is, or transformed to
+        millimeters or pixels.
+    float, string
+        A tuple with the numeric value, and the unit if `mode='tuple'`.
+    """
+    # Dictionaries to convert units to millimeters or pixels.
+    #
+    # The `em` and `ex` units are typographical units used in systems
+    # like LaTeX. Here the conversion factors are arbitrarily chosen,
+    # as they should depend on a specific font size used.
+    #
+    # The percentage factor is arbitrarily chosen, as it should depend
+    # on the viewport size or for filling patterns on the bounding box.
+    if mode == 'mm90.0':
+        tomm = {
+            '': 25.4/90,  # default
+            'px': 25.4/90,
+            'pt': 1.25*25.4/90,
+            'pc': 15*25.4/90,
+            'mm': 1.0,
+            'cm': 10.0,
+            'in': 25.4,
+            'em': 15*2.54/90, #arbitrarily chosen; has to depend on font size
+            'ex': 10*2.54/90, #arbitrarily chosen; has to depend on font size
+            '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+        }
+    if mode == 'mm96.0':
+        tomm = {
+            '': 25.4/96,  # default
+            'px': 25.4/96,
+            'pt': 1.25*25.4/96,
+            'pc': 15*25.4/96,
+            'mm': 1.0,
+            'cm': 10.0,
+            'in': 25.4,
+            'em': 15*2.54/96, #arbitrarily chosen; has to depend on font size
+            'ex': 10*2.54/96, #arbitrarily chosen; has to depend on font size
+            '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+        }
+    if mode == 'css90.0':
+        topx = {
+            '': 1.0,  # default
+            'px': 1.0,
+            'pt': 1.25,
+            'pc': 15,
+            'mm': 90.0/25.4,
+            'cm': 90.0/254.0,
+            'in': 90,
+            'em': 15, #arbitrarily chosen; has to depend on font size
+            'ex': 10, #arbitrarily chosen; has to depend on font size
+            '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+        }
+    if mode == 'css96.0':
+        topx = {
+            '': 1.0,  # default
+            'px': 1.0,
+            'pt': 1.25,
+            'pc': 15,
+            'mm': 96.0/25.4,
+            'cm': 96.0/254.0,
+            'in': 96,
+            'em': 15, #arbitrarily chosen; has to depend on font size
+            'ex': 10, #arbitrarily chosen; has to depend on font size
+            '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+        }
+    # Extract a number from a string like '+56215.14565E+6mm'
+    number, exponent, unit = re.findall('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)(px|pt|pc|mm|cm|in|em|ex|%)?', length)[0]
+    if mode == 'discard':
+        return float(number)
+    elif mode == 'tuple':
+        return float(number), unit
+    elif mode == 'isabsolute':
+        return unit in ('mm', 'cm', 'in', 'px', 'pt')
+    elif mode == 'mm96.0' or mode == 'mm90.0':
+        return float(number) * tomm[unit]
+    elif mode == 'css96.0' or mode == 'css90.0':
+        if unit != '%':
+            return float(number) * topx[unit]
+        else:
+            return float(number) * base
 
 
 def makewire(path, checkclosed=False, donttry=False):
@@ -508,105 +508,105 @@ def arccenter2end(center, rx, ry, angle1, angledelta, xrotation=0.0):
 
 def arcend2center(lastvec, currentvec, rx, ry,
                   xrotation=0.0, correction=False):
-        '''Calculate the possible centers for an arc in endpoint parameterization.
+    '''Calculate the possible centers for an arc in endpoint parameterization.
 
-        Calculate (positive and negative) possible centers for an arc given in
-        ``endpoint parametrization``.
-        See http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
+    Calculate (positive and negative) possible centers for an arc given in
+    ``endpoint parametrization``.
+    See http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
 
-        the sweepflag is interpreted as: sweepflag <==>  arc is travelled clockwise
+    the sweepflag is interpreted as: sweepflag <==>  arc is travelled clockwise
 
-        Parameters
-        ----------
-        lastvec : Base::Vector3
-            First point of the arc.
-        currentvec : Base::Vector3
-            End point (current) of the arc.
-        rx : float
-            Radius of the ellipse, semi-major axis in the X direction.
-        ry : float
-            Radius of the ellipse, semi-minor axis in the Y direction.
-        xrotation : float, optional
-            Default is 0. Rotation around the Z axis, in radians (CCW).
-        correction : bool, optional
-            Default is `False`. If it is `True`, the radii will be scaled
-            by a factor.
+    Parameters
+    ----------
+    lastvec : Base::Vector3
+        First point of the arc.
+    currentvec : Base::Vector3
+        End point (current) of the arc.
+    rx : float
+        Radius of the ellipse, semi-major axis in the X direction.
+    ry : float
+        Radius of the ellipse, semi-minor axis in the Y direction.
+    xrotation : float, optional
+        Default is 0. Rotation around the Z axis, in radians (CCW).
+    correction : bool, optional
+        Default is `False`. If it is `True`, the radii will be scaled
+        by a factor.
 
-        Returns
-        -------
-        list, (float, float)
-            A tuple that consists of one list, and a tuple of radii.
-        [(positive), (negative)], (rx, ry)
-            The first element of the list is the positive tuple,
-            the second is the negative tuple.
-        [(Base::Vector3, float, float),
-        (Base::Vector3, float, float)], (float, float)
-            Types
-        [(vcenter+, angle1+, angledelta+),
-        (vcenter-, angle1-, angledelta-)], (rx, ry)
-            The first element of the list is the positive tuple,
-            consisting of center, angle, and angle increment;
-            the second element is the negative tuple.
-        '''
-        # scalefacsign = 1 if (largeflag != sweepflag) else -1
-        rx = float(rx)
-        ry = float(ry)
-        v0 = lastvec.sub(currentvec)
-        v0.multiply(0.5)
-        m1 = FreeCAD.Matrix()
-        m1.rotateZ(-xrotation)  # eq. 5.1
-        v1 = m1.multiply(v0)
-        if correction:
-                eparam = v1.x**2 / rx**2 + v1.y**2 / ry**2
-                if eparam > 1:
-                        eproot = math.sqrt(eparam)
-                        rx = eproot * rx
-                        ry = eproot * ry
-        denom = rx**2 * v1.y**2 + ry**2 * v1.x**2
-        numer = rx**2 * ry**2 - denom
-        results = []
+    Returns
+    -------
+    list, (float, float)
+        A tuple that consists of one list, and a tuple of radii.
+    [(positive), (negative)], (rx, ry)
+        The first element of the list is the positive tuple,
+        the second is the negative tuple.
+    [(Base::Vector3, float, float),
+    (Base::Vector3, float, float)], (float, float)
+        Types
+    [(vcenter+, angle1+, angledelta+),
+    (vcenter-, angle1-, angledelta-)], (rx, ry)
+        The first element of the list is the positive tuple,
+        consisting of center, angle, and angle increment;
+        the second element is the negative tuple.
+    '''
+    # scalefacsign = 1 if (largeflag != sweepflag) else -1
+    rx = float(rx)
+    ry = float(ry)
+    v0 = lastvec.sub(currentvec)
+    v0.multiply(0.5)
+    m1 = FreeCAD.Matrix()
+    m1.rotateZ(-xrotation)  # eq. 5.1
+    v1 = m1.multiply(v0)
+    if correction:
+        eparam = v1.x**2 / rx**2 + v1.y**2 / ry**2
+        if eparam > 1:
+            eproot = math.sqrt(eparam)
+            rx = eproot * rx
+            ry = eproot * ry
+    denom = rx**2 * v1.y**2 + ry**2 * v1.x**2
+    numer = rx**2 * ry**2 - denom
+    results = []
 
-        # If the division is very small, set the scaling factor to zero,
-        # otherwise try to calculate it by taking the square root
-        if abs(numer/denom) < 10**(-1*(Draft.precision())):
-                scalefacpos = 0
-        else:
-                try:
-                        scalefacpos = math.sqrt(numer/denom)
-                except ValueError:
-                        FreeCAD.Console.PrintMessage('sqrt(%f/%f)\n' % (numer, denom))
-                        scalefacpos = 0
-        # Calculate two values because the square root may be positive or negative
-        for scalefacsign in (1, -1):
-            scalefac = scalefacpos * scalefacsign
-            # Step2 eq. 5.2
-            vcx1 = Vector(v1.y*rx/ry, -v1.x*ry/rx, 0).multiply(scalefac)
-            m2 = FreeCAD.Matrix()
-            m2.rotateZ(xrotation)
-            centeroff = currentvec.add(lastvec)
-            centeroff.multiply(0.5)
-            vcenter = m2.multiply(vcx1).add(centeroff)  # Step3 eq. 5.3
-            # angle1 = Vector(1, 0, 0).getAngle(Vector((v1.x - vcx1.x) / rx,
-            #                                          (v1.y - vcx1.y) / ry,
-            #                                          0))  # F.6.5.5
-            # angledelta = Vector((v1.x - vcx1.x) / rx,
-            #                     (v1.y - vcx1.y) / ry,
-            #                     0).getAngle(Vector((-v1.x - vcx1.x) / rx,
-            #                                        (-v1.y - vcx1.y) / ry,
-            #                                        0))  # F.6.5.6
-            # we need the right sign for the angle
-            angle1 = DraftVecUtils.angle(Vector(1, 0, 0),
-                                         Vector((v1.x-vcx1.x)/rx,
+    # If the division is very small, set the scaling factor to zero,
+    # otherwise try to calculate it by taking the square root
+    if abs(numer/denom) < 10**(-1*(Draft.precision())):
+        scalefacpos = 0
+    else:
+        try:
+            scalefacpos = math.sqrt(numer/denom)
+        except ValueError:
+            FreeCAD.Console.PrintMessage('sqrt(%f/%f)\n' % (numer, denom))
+            scalefacpos = 0
+    # Calculate two values because the square root may be positive or negative
+    for scalefacsign in (1, -1):
+        scalefac = scalefacpos * scalefacsign
+        # Step2 eq. 5.2
+        vcx1 = Vector(v1.y*rx/ry, -v1.x*ry/rx, 0).multiply(scalefac)
+        m2 = FreeCAD.Matrix()
+        m2.rotateZ(xrotation)
+        centeroff = currentvec.add(lastvec)
+        centeroff.multiply(0.5)
+        vcenter = m2.multiply(vcx1).add(centeroff)  # Step3 eq. 5.3
+        # angle1 = Vector(1, 0, 0).getAngle(Vector((v1.x - vcx1.x) / rx,
+        #                                          (v1.y - vcx1.y) / ry,
+        #                                          0))  # F.6.5.5
+        # angledelta = Vector((v1.x - vcx1.x) / rx,
+        #                     (v1.y - vcx1.y) / ry,
+        #                     0).getAngle(Vector((-v1.x - vcx1.x) / rx,
+        #                                        (-v1.y - vcx1.y) / ry,
+        #                                        0))  # F.6.5.6
+        # we need the right sign for the angle
+        angle1 = DraftVecUtils.angle(Vector(1, 0, 0),
+                                     Vector((v1.x-vcx1.x)/rx,
+                                            (v1.y-vcx1.y)/ry,
+                                            0))  # eq. 5.5
+        angledelta = DraftVecUtils.angle(Vector((v1.x-vcx1.x)/rx,
                                                 (v1.y-vcx1.y)/ry,
-                                                0))  # eq. 5.5
-            angledelta = DraftVecUtils.angle(Vector((v1.x-vcx1.x)/rx,
-                                                    (v1.y-vcx1.y)/ry,
-                                                    0),
-                                             Vector((-v1.x-vcx1.x)/rx,
-                                                    (-v1.y-vcx1.y)/ry,
-                                                    0))  # eq. 5.6
-            results.append((vcenter, angle1, angledelta))
-        return results, (rx, ry)
+                                                0),
+                                         Vector((-v1.x-vcx1.x)/rx,
+                                                (-v1.y-vcx1.y)/ry,
+                                                0))  # eq. 5.6
+        results.append((vcenter, angle1, angledelta))
+    return results, (rx, ry)
 
 
 def getrgb(color):
