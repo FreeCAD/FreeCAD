@@ -1377,7 +1377,7 @@ class svgHandler(xml.sax.ContentHandler):
         # startElement()
 
         def characters(self, content):
-            """Read characters from the given string."""
+                """Read characters from the given string."""
                 if self.text:
                         FreeCAD.Console.PrintMessage("reading characters %s\n" % content)
                         obj = self.doc.addObject("App::Annotation", 'Text')
