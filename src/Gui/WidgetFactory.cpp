@@ -82,20 +82,27 @@ PyTypeObject** SbkPySide_QtGuiTypes=nullptr;
 # include <shiboken.h>
 # ifdef HAVE_PYSIDE2
 # define HAVE_PYSIDE
-// Since Qt >= 5.12 shiboken offers a method to get wrapper by class name (typeForTypeName)
+
+// Since version 5.12 shiboken offers a method to get wrapper by class name (typeForTypeName)
 // This helps to avoid to include the PySide2 headers since MSVC has a compiler bug when
 // compiling together with std::bitset (https://bugreports.qt.io/browse/QTBUG-72073)
-# if (QT_VERSION < QT_VERSION_CHECK(5, 12, 0))
+
+# define SHIBOKEN_FULL_VERSION QT_VERSION_CHECK(SHIBOKEN_MAJOR_VERSION, SHIBOKEN_MINOR_VERSION, SHIBOKEN_MICRO_VERSION)
+# if (SHIBOKEN_FULL_VERSION >= QT_VERSION_CHECK(5, 12, 0))
+# define HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
+# endif
+
+# ifndef HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
 # include <pyside2_qtcore_python.h>
 # include <pyside2_qtgui_python.h>
 # include <pyside2_qtwidgets_python.h>
-#endif
+# endif
 # include <signalmanager.h>
 PyTypeObject** SbkPySide2_QtCoreTypes=nullptr;
 PyTypeObject** SbkPySide2_QtGuiTypes=nullptr;
 PyTypeObject** SbkPySide2_QtWidgetsTypes=nullptr;
-# endif
-#endif
+# endif // HAVE_PYSIDE2
+#endif // HAVE_SHIBOKEN2
 
 #if defined(__clang__)
 # pragma clang diagnostic pop
@@ -285,12 +292,12 @@ template<typename qttype>
 PyTypeObject *getPyTypeObjectForTypeName()
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-#if (QT_VERSION < QT_VERSION_CHECK(5, 12, 0))
-    return Shiboken::SbkType<qttype>();
-#else
+#if defined (HAVE_SHIBOKEN_TYPE_FOR_TYPENAME)
     SbkObjectType* sbkType = Shiboken::ObjectType::typeForTypeName(typeid(qttype).name());
     if (sbkType)
         return &(sbkType->type);
+#else
+    return Shiboken::SbkType<qttype>();
 #endif
 #endif
     return nullptr;
