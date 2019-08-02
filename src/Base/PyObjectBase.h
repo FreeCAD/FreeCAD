@@ -466,24 +466,13 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
     {                                                               \
         e.ReportException();                                        \
         auto pye = e.getPyExceptionType();                          \
-        if(!pye) {                                                  \
+        if(!pye)                                                    \
             pye = Base::BaseExceptionFreeCADError;                  \
-            std::string str;                                        \
-            str += "FreeCAD exception thrown (";                    \
-            str += e.what();                                        \
-            str += ")";                                             \
-            e.setMessage(str);                                      \
-        }                                                           \
         _Py_ErrorObj(R,pye,e.getPyObject());                        \
     }                                                               \
     catch(std::exception &e)                                        \
     {                                                               \
-        std::string str;                                            \
-        str += "STL exception thrown (";                            \
-        str += e.what();                                            \
-        str += ")";                                                 \
-        Base::Console().Error(str.c_str());                         \
-        _Py_Error(R,Base::BaseExceptionFreeCADError,str.c_str());   \
+        _Py_Error(R,Base::BaseExceptionFreeCADError,e.what());      \
     }                                                               \
     catch(const Py::Exception&)                                     \
     {                                                               \
