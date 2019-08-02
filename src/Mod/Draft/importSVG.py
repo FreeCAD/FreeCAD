@@ -1156,81 +1156,81 @@ class svgHandler(xml.sax.ContentHandler):
                     self.symbols[self.currentsymbol].append(obj)
         # end process paths
 
-                # Process rects
-                if name == "rect":
-                        if not pathname:
-                            pathname = 'Rectangle'
-                        edges = []
-                        if not "x" in data:
-                            data["x"] = 0
-                        if not "y" in data:
-                            data["y"] = 0
-                        # Negative values are invalid
-                        if ('rx' not in data or data['rx'] < 10**(-1*Draft.precision())) \
-                                and ('ry' not in data or data['ry'] < 10**(-1*Draft.precision())):
-                            # if True:
-                            p1 = Vector(data['x'], -data['y'], 0)
-                            p2 = Vector(data['x'] + data['width'], -data['y'], 0)
-                            p3 = Vector(data['x'] + data['width'], -data['y'] - data['height'], 0)
-                            p4 = Vector(data['x'], -data['y'] - data['height'], 0)
-                            edges.append(Part.LineSegment(p1, p2).toShape())
-                            edges.append(Part.LineSegment(p2, p3).toShape())
-                            edges.append(Part.LineSegment(p3, p4).toShape())
-                            edges.append(Part.LineSegment(p4, p1).toShape())
-                        else:
-                            # rounded edges
-                            rx = data.get('rx')
-                            ry = data.get('ry') or rx
-                            rx = rx or ry 
-                            if rx > 2 * data['width']:
-                                rx = data['width'] / 2.0
-                            if ry > 2 * data['height']:
-                                ry = data['height'] / 2.0
+        # Process rects
+        if name == "rect":
+            if not pathname:
+                pathname = 'Rectangle'
+            edges = []
+            if not "x" in data:
+                data["x"] = 0
+            if not "y" in data:
+                data["y"] = 0
+            # Negative values are invalid
+            if ('rx' not in data or data['rx'] < 10**(-1*Draft.precision())) \
+                    and ('ry' not in data or data['ry'] < 10**(-1*Draft.precision())):
+                # if True:
+                p1 = Vector(data['x'], -data['y'], 0)
+                p2 = Vector(data['x'] + data['width'], -data['y'], 0)
+                p3 = Vector(data['x'] + data['width'], -data['y'] - data['height'], 0)
+                p4 = Vector(data['x'], -data['y'] - data['height'], 0)
+                edges.append(Part.LineSegment(p1, p2).toShape())
+                edges.append(Part.LineSegment(p2, p3).toShape())
+                edges.append(Part.LineSegment(p3, p4).toShape())
+                edges.append(Part.LineSegment(p4, p1).toShape())
+            else:
+                # rounded edges
+                rx = data.get('rx')
+                ry = data.get('ry') or rx
+                rx = rx or ry 
+                if rx > 2 * data['width']:
+                    rx = data['width'] / 2.0
+                if ry > 2 * data['height']:
+                    ry = data['height'] / 2.0
 
-                            p1 = Vector(data['x'] + rx, -data['y'] - data['height'] + ry, 0)
-                            p2 = Vector(data['x'] + data['width'] - rx, -data['y'] - data['height'] + ry, 0)
-                            p3 = Vector(data['x'] + data['width'] - rx, -data['y'] - ry, 0)
-                            p4 = Vector(data['x'] + rx, -data['y'] - ry, 0)
+                p1 = Vector(data['x'] + rx, -data['y'] - data['height'] + ry, 0)
+                p2 = Vector(data['x'] + data['width'] - rx, -data['y'] - data['height'] + ry, 0)
+                p3 = Vector(data['x'] + data['width'] - rx, -data['y'] - ry, 0)
+                p4 = Vector(data['x'] + rx, -data['y'] - ry, 0)
 
-                            if rx >= ry:
-                                e = Part.Ellipse(Vector(), rx, ry)
-                                e1a = Part.Arc(e, math.radians(180), math.radians(270))
-                                e2a = Part.Arc(e, math.radians(270), math.radians(360))
-                                e3a = Part.Arc(e, math.radians(0), math.radians(90))
-                                e4a = Part.Arc(e, math.radians(90), math.radians(180))
-                                m = FreeCAD.Matrix()
-                            else:
-                                e = Part.Ellipse(Vector(), ry, rx)
-                                e1a = Part.Arc(e, math.radians(90), math.radians(180))
-                                e2a = Part.Arc(e, math.radians(180), math.radians(270))
-                                e3a = Part.Arc(e, math.radians(270), math.radians(360))
-                                e4a = Part.Arc(e, math.radians(0), math.radians(90))
-                                # rotate +90 degree
-                                m = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
-                            esh = []
-                            for arc, point in ((e1a, p1), (e2a, p2),
-                                               (e3a, p3), (e4a, p4)):
-                                m1 = FreeCAD.Matrix(m)
-                                m1.move(point)
-                                arc.transform(m1)
-                                esh.append(arc.toShape())
-                            for esh1, esh2 in zip(esh[-1:] + esh[:-1], esh):
-                                p1, p2 = esh1.Vertexes[-1].Point, esh2.Vertexes[0].Point
-                                if not DraftVecUtils.equals(p1, p2):
-                                    # straight segments
-                                    edges.append(Part.LineSegment(esh1.Vertexes[-1].Point,
-                                                                  esh2.Vertexes[0].Point).toShape())
-                                # elliptical segments
-                                edges.append(esh2)
-                        sh = Part.Wire(edges)
-                        if self.fill:
-                            sh = Part.Face(sh)
-                        sh = self.applyTrans(sh)
-                        obj = self.doc.addObject("Part::Feature", pathname)
-                        obj.Shape = sh
-                        self.format(obj)
-                        if self.currentsymbol:
-                            self.symbols[self.currentsymbol].append(obj)
+                if rx >= ry:
+                    e = Part.Ellipse(Vector(), rx, ry)
+                    e1a = Part.Arc(e, math.radians(180), math.radians(270))
+                    e2a = Part.Arc(e, math.radians(270), math.radians(360))
+                    e3a = Part.Arc(e, math.radians(0), math.radians(90))
+                    e4a = Part.Arc(e, math.radians(90), math.radians(180))
+                    m = FreeCAD.Matrix()
+                else:
+                    e = Part.Ellipse(Vector(), ry, rx)
+                    e1a = Part.Arc(e, math.radians(90), math.radians(180))
+                    e2a = Part.Arc(e, math.radians(180), math.radians(270))
+                    e3a = Part.Arc(e, math.radians(270), math.radians(360))
+                    e4a = Part.Arc(e, math.radians(0), math.radians(90))
+                    # rotate +90 degree
+                    m = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
+                esh = []
+                for arc, point in ((e1a, p1), (e2a, p2),
+                                   (e3a, p3), (e4a, p4)):
+                    m1 = FreeCAD.Matrix(m)
+                    m1.move(point)
+                    arc.transform(m1)
+                    esh.append(arc.toShape())
+                for esh1, esh2 in zip(esh[-1:] + esh[:-1], esh):
+                    p1, p2 = esh1.Vertexes[-1].Point, esh2.Vertexes[0].Point
+                    if not DraftVecUtils.equals(p1, p2):
+                        # straight segments
+                        edges.append(Part.LineSegment(esh1.Vertexes[-1].Point,
+                                                      esh2.Vertexes[0].Point).toShape())
+                    # elliptical segments
+                    edges.append(esh2)
+            sh = Part.Wire(edges)
+            if self.fill:
+                sh = Part.Face(sh)
+            sh = self.applyTrans(sh)
+            obj = self.doc.addObject("Part::Feature", pathname)
+            obj.Shape = sh
+            self.format(obj)
+            if self.currentsymbol:
+                self.symbols[self.currentsymbol].append(obj)
 
                 # Process lines
                 if name == "line":
