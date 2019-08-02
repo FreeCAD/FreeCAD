@@ -213,43 +213,58 @@ void Property::setStatus(Status pos, bool on) {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 void PropertyListsBase::_setPyObject(PyObject *value) {
-    std::vector<PyObject *> vals;
     std::vector<int> indices;
+    std::vector<PyObject *> vals;
+    Py::Object pySeq;
+
     if (PyDict_Check(value)) {
-        PyObject* keyList = PyDict_Keys(value);
-        PyObject* itemList = PyDict_Values(value);
-        Py_ssize_t nSize = PyList_Size(keyList);
-        vals.reserve(nSize);
-        indices.reserve(nSize);
+        Py::Dict dict(value);
+        auto size = dict.size();
+        vals.reserve(size);
+        indices.reserve(size);
         int listSize = getSize();
-        for (Py_ssize_t i=0; i<nSize;++i) {
-            std::string keyStr;
-            PyObject* key = PyList_GetItem(keyList, i);
+        for(auto it=dict.begin();it!=dict.end();++it) {
+            const auto &item = *it;
+            PyObject *key = item.first.ptr();
 #if PY_MAJOR_VERSION < 3
             if(!PyInt_Check(key)) 
 #else
             if(!PyLong_Check(key))
 #endif
-                throw Base::TypeError("expect key type to be integer");
-            auto idx = PyLong_AsLong(key);
+                throw Base::TypeError("expect key type to be interger");
+            long idx = PyLong_AsLong(key);
             if(idx<-1 || idx>listSize) 
-                throw Base::RuntimeError("index out of bound");
+                throw Base::ValueError("index out of bound");
             if(idx==-1 || idx==listSize) {
                 idx = listSize;
                 ++listSize;
             }
             indices.push_back(idx);
-            vals.push_back(PyList_GetItem(itemList,i));
+            vals.push_back(item.second.ptr());
         }
-    }else if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
-        vals.reserve(nSize);
-        for (Py_ssize_t i=0; i<nSize;++i)
-            vals.push_back(PySequence_GetItem(value, i));
-    }else
-        vals.push_back(value);
+    } else {
+        if (PySequence_Check(value))
+            pySeq = value;
+        else {
+            PyObject *iter = PyObject_GetIter(value);
+            if(iter) {
+                Py::Object pyIter(iter,true);
+                pySeq = Py::asObject(PySequence_Fast(iter,""));
+            } else {
+                PyErr_Clear();
+                vals.push_back(value);
+            }
+        }
+        if(!pySeq.isNone()) {
+            Py::Sequence seq(pySeq);
+            vals.reserve(seq.size());
+            for(auto it=seq.begin();it!=seq.end();++it)
+                vals.push_back((*it).ptr());
+        }
+    }
     setPyValues(vals,indices);
 }
+
 
 //**************************************************************************
 //**************************************************************************

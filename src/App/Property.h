@@ -515,20 +515,19 @@ protected:
 
     void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) override 
     {
-        ListT values;
-        // old version boost::dynamic_bitset don't have reserve(). What a shame!
-        // values.reserve(vals.size());
-        for(auto item : vals)
-            values.push_back(getPyValue(item));
-        if(indices.empty())
-            setValues(values);
-        else {
-            atomic_change guard(*this);
-            assert(values.size()==indices.size());
-            for(int i=0,count=values.size();i<count;++i)
-                set1Value(indices[i],values[i]);
-            guard.tryInvoke();
+        if(indices.empty()) {
+            ListT values;
+            values.resize(vals.size());
+            for(std::size_t i=0,count=vals.size();i<count;++i)
+                values[i] = getPyValue(vals[i]);
+            setValues(std::move(values));
+            return;
         }
+        assert(vals.size()==indices.size());
+        atomic_change guard(*this);
+        for(int i=0,count=indices.size();i<count;++i)
+            set1Value(indices[i],getPyValue(vals[i]));
+        guard.tryInvoke();
     }
 
     virtual T getPyValue(PyObject *item) const = 0;
