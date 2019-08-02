@@ -663,15 +663,15 @@ class svgHandler(xml.sax.ContentHandler):
             self.col = (r, g, b, 0.0)
 
         def format(self, obj):
-                """Apply styles to the object if the graphical interface is up."""
-                if gui:
-                    v = obj.ViewObject
-                    if self.color:
-                        v.LineColor = self.color
-                    if self.width:
-                        v.LineWidth = self.width
-                    if self.fill:
-                        v.ShapeColor = self.fill
+            """Apply styles to the object if the graphical interface is up."""
+            if gui:
+                v = obj.ViewObject
+                if self.color:
+                    v.LineColor = self.color
+                if self.width:
+                    v.LineWidth = self.width
+                if self.fill:
+                    v.ShapeColor = self.fill
 
         def startElement(self, name, attrs):
                 """Re-organize data into a nice clean dictionary.
@@ -753,8 +753,8 @@ class svgHandler(xml.sax.ContentHandler):
 
                 for k in ['x', 'y', 'x1', 'y1', 'x2', 'y2',
                           'r', 'rx', 'ry', 'cx', 'cy', 'width', 'height']:
-                        if k in data:
-                            data[k] = getsize(data[k][0], 'css' + str(self.svgdpi))
+                    if k in data:
+                        data[k] = getsize(data[k][0], 'css' + str(self.svgdpi))
 
                 for k in ['fill', 'stroke', 'stroke-width', 'font-size']:
                     if k in data:
@@ -771,44 +771,44 @@ class svgHandler(xml.sax.ContentHandler):
                 self.text = None
 
                 if name == 'svg':
-                        m = FreeCAD.Matrix()
-                        if not self.disableUnitScaling:
-                            if 'width' in data \
-                                    and 'height' in data \
-                                    and 'viewBox' in data:
-                                vbw = float(data['viewBox'][2])
-                                vbh = float(data['viewBox'][3])
-                                w = attrs.getValue('width')
-                                h = attrs.getValue('height')
-                                self.viewbox = (vbw, vbh)
-                                if len(self.grouptransform) == 0:
-                                        unitmode = 'mm' + str(self.svgdpi)
-                                else:
-                                        # nested svg element
-                                        unitmode = 'css' + str(self.svgdpi)
-                                abw = getsize(w, unitmode)
-                                abh = getsize(h, unitmode)
-                                sx = abw/vbw
-                                sy = abh/vbh
-                                preservearstr = ' '.join(data.get('preserveAspectRatio', [])).lower()
-                                uniformscaling = round(sx/sy, 5) == 1
-                                if uniformscaling:
+                    m = FreeCAD.Matrix()
+                    if not self.disableUnitScaling:
+                        if 'width' in data \
+                                and 'height' in data \
+                                and 'viewBox' in data:
+                            vbw = float(data['viewBox'][2])
+                            vbh = float(data['viewBox'][3])
+                            w = attrs.getValue('width')
+                            h = attrs.getValue('height')
+                            self.viewbox = (vbw, vbh)
+                            if len(self.grouptransform) == 0:
+                                unitmode = 'mm' + str(self.svgdpi)
+                            else:
+                                # nested svg element
+                                unitmode = 'css' + str(self.svgdpi)
+                            abw = getsize(w, unitmode)
+                            abh = getsize(h, unitmode)
+                            sx = abw / vbw
+                            sy = abh / vbh
+                            preservearstr = ' '.join(data.get('preserveAspectRatio', [])).lower()
+                            uniformscaling = round(sx/sy, 5) == 1
+                            if uniformscaling:
+                                m.scale(Vector(sx, sy, 1))
+                            else:
+                                FreeCAD.Console.PrintWarning('Scaling factors do not match!\n')
+                                if preservearstr.startswith('none'):
                                     m.scale(Vector(sx, sy, 1))
                                 else:
-                                    FreeCAD.Console.PrintWarning('Scaling factors do not match!\n')
-                                    if preservearstr.startswith('none'):
-                                        m.scale(Vector(sx, sy, 1))
+                                    # preserve the aspect ratio
+                                    if preservearstr.endswith('slice'):
+                                        sxy = max(sx, sy)
                                     else:
-                                        # preserve the aspect ratio
-                                        if preservearstr.endswith('slice'):
-                                            sxy = max(sx, sy)
-                                        else:
-                                            sxy = min(sx, sy)
-                                        m.scale(Vector(sxy, sxy, 1))
-                            elif len(self.grouptransform) == 0:
-                                # fallback to current dpi
-                                m.scale(Vector(25.4/self.svgdpi, 25.4/self.svgdpi, 1))
-                        self.grouptransform.append(m)
+                                        sxy = min(sx, sy)
+                                    m.scale(Vector(sxy, sxy, 1))
+                        elif len(self.grouptransform) == 0:
+                            # fallback to current dpi
+                            m.scale(Vector(25.4/self.svgdpi, 25.4/self.svgdpi, 1))
+                    self.grouptransform.append(m)
                 if 'fill' in data:
                     if data['fill'][0] != 'none':
                         self.fill = getcolor(data['fill'])
@@ -873,55 +873,55 @@ class svgHandler(xml.sax.ContentHandler):
                                 pointlist = [float(number) for number, exponent in pointsre.findall(pointsstr.replace(',', ' '))]
 
                                 if (d == "M" or d == "m"):
-                                        x = pointlist.pop(0)
-                                        y = pointlist.pop(0)
-                                        if path:
-                                            # sh = Part.Wire(path)
-                                            sh = makewire(path)
-                                            if self.fill and sh.isClosed():
-                                                sh = Part.Face(sh)
-                                            sh = self.applyTrans(sh)
-                                            obj = self.doc.addObject("Part::Feature", pathname)
-                                            obj.Shape = sh
-                                            self.format(obj)
-                                            if self.currentsymbol:
-                                                self.symbols[self.currentsymbol].append(obj)
-                                            path = []
-                                            # if firstvec:
-                                            #    Move relative to last move command
-                                            #    not last draw command
-                                            #    lastvec = firstvec
-                                        if relative:
-                                            lastvec = lastvec.add(Vector(x, -y, 0))
-                                        else:
-                                            lastvec = Vector(x, -y, 0)
-                                        firstvec = lastvec
-                                        FreeCAD.Console.PrintMessage('move %s\n'%str(lastvec))
-                                        lastpole = None
+                                    x = pointlist.pop(0)
+                                    y = pointlist.pop(0)
+                                    if path:
+                                        # sh = Part.Wire(path)
+                                        sh = makewire(path)
+                                        if self.fill and sh.isClosed():
+                                            sh = Part.Face(sh)
+                                        sh = self.applyTrans(sh)
+                                        obj = self.doc.addObject("Part::Feature", pathname)
+                                        obj.Shape = sh
+                                        self.format(obj)
+                                        if self.currentsymbol:
+                                            self.symbols[self.currentsymbol].append(obj)
+                                        path = []
+                                        # if firstvec:
+                                        #    Move relative to last move command
+                                        #    not last draw command
+                                        #    lastvec = firstvec
+                                    if relative:
+                                        lastvec = lastvec.add(Vector(x, -y, 0))
+                                    else:
+                                        lastvec = Vector(x, -y, 0)
+                                    firstvec = lastvec
+                                    FreeCAD.Console.PrintMessage('move %s\n'%str(lastvec))
+                                    lastpole = None
 
                                 if (d == "L" or d == "l") \
                                         or ((d == 'm' or d == 'M') and pointlist):
-                                        for x, y in zip(pointlist[0::2], pointlist[1::2]):
-                                            if relative:
-                                                currentvec = lastvec.add(Vector(x, -y, 0))
-                                            else:
-                                                currentvec = Vector(x, -y, 0)
-                                            if not DraftVecUtils.equals(lastvec, currentvec):
-                                                seg = Part.LineSegment(lastvec, currentvec).toShape()
-                                                FreeCAD.Console.PrintMessage("line %s %s\n" % (lastvec, currentvec))
-                                                lastvec = currentvec
-                                                path.append(seg)
-                                            lastpole = None
-                                elif (d == "H" or d == "h"):
-                                        for x in pointlist:
-                                            if relative:
-                                                currentvec = lastvec.add(Vector(x, 0, 0))
-                                            else:
-                                                currentvec = Vector(x, lastvec.y, 0)
+                                    for x, y in zip(pointlist[0::2], pointlist[1::2]):
+                                        if relative:
+                                            currentvec = lastvec.add(Vector(x, -y, 0))
+                                        else:
+                                            currentvec = Vector(x, -y, 0)
+                                        if not DraftVecUtils.equals(lastvec, currentvec):
                                             seg = Part.LineSegment(lastvec, currentvec).toShape()
+                                            FreeCAD.Console.PrintMessage("line %s %s\n" % (lastvec, currentvec))
                                             lastvec = currentvec
-                                            lastpole = None
                                             path.append(seg)
+                                        lastpole = None
+                                elif (d == "H" or d == "h"):
+                                    for x in pointlist:
+                                        if relative:
+                                            currentvec = lastvec.add(Vector(x, 0, 0))
+                                        else:
+                                            currentvec = Vector(x, lastvec.y, 0)
+                                        seg = Part.LineSegment(lastvec, currentvec).toShape()
+                                        lastvec = currentvec
+                                        lastpole = None
+                                        path.append(seg)
                                 elif (d == "V" or d == "v"):
                                     for y in pointlist:
                                         if relative:
