@@ -1232,82 +1232,82 @@ class svgHandler(xml.sax.ContentHandler):
             if self.currentsymbol:
                 self.symbols[self.currentsymbol].append(obj)
 
-                # Process lines
-                if name == "line":
-                    if not pathname:
-                        pathname = 'Line'
-                    p1 = Vector(data['x1'], -data['y1'], 0)
-                    p2 = Vector(data['x2'], -data['y2'], 0)
-                    sh = Part.LineSegment(p1, p2).toShape()
-                    sh = self.applyTrans(sh)
-                    obj = self.doc.addObject("Part::Feature", pathname)
-                    obj.Shape = sh
-                    self.format(obj)
-                    if self.currentsymbol:
-                        self.symbols[self.currentsymbol].append(obj)
+        # Process lines
+        if name == "line":
+            if not pathname:
+                pathname = 'Line'
+            p1 = Vector(data['x1'], -data['y1'], 0)
+            p2 = Vector(data['x2'], -data['y2'], 0)
+            sh = Part.LineSegment(p1, p2).toShape()
+            sh = self.applyTrans(sh)
+            obj = self.doc.addObject("Part::Feature", pathname)
+            obj.Shape = sh
+            self.format(obj)
+            if self.currentsymbol:
+                self.symbols[self.currentsymbol].append(obj)
 
-                # Process polylines and polygons
-                if name == "polyline" or name == "polygon":
-                    # A simpler implementation would be
-                    # sh = Part.makePolygon([Vector(svgx,-svgy,0) for svgx,svgy in zip(points[0::2],points[1::2])])
-                    #
-                    # but it would be more difficult to search for duplicate
-                    # points beforehand.
-                    if not pathname:
-                        pathname = 'Polyline'
-                    points = [float(d) for d in data['points']]
-                    FreeCAD.Console.PrintMessage('points %s\n' % str(points))
-                    lenpoints = len(points)
-                    if lenpoints >= 4 and lenpoints % 2 == 0:
-                        lastvec = Vector(points[0], -points[1], 0)
-                        path = []
-                        if name == 'polygon':
-                            points = points+points[:2]  # emulate closepath
-                        for svgx, svgy in zip(points[2::2], points[3::2]):
-                            currentvec = Vector(svgx, -svgy, 0)
-                            if not DraftVecUtils.equals(lastvec, currentvec):
-                                seg = Part.LineSegment(lastvec, currentvec).toShape()
-                                #print "polyline seg ",lastvec,currentvec
-                                lastvec = currentvec
-                                path.append(seg)
-                        if path:
-                            sh = Part.Wire(path)
-                            if self.fill and sh.isClosed():
-                                sh = Part.Face(sh)
-                            sh = self.applyTrans(sh)
-                            obj = self.doc.addObject("Part::Feature", pathname)
-                            obj.Shape = sh
-                            if self.currentsymbol:
-                                self.symbols[self.currentsymbol].append(obj)
-
-                # Process ellipses
-                if name == "ellipse":
-                    if not pathname:
-                        pathname = 'Ellipse'
-                    c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
-                    rx = data['rx']
-                    ry = data['ry']
-                    if rx > ry:
-                        sh = Part.Ellipse(c, rx, ry).toShape()
-                    else:
-                        sh = Part.Ellipse(c, ry, rx).toShape()
-                        m3 = FreeCAD.Matrix()
-                        m3.move(c)
-                        # 90
-                        rot90 = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
-                        m3 = m3.multiply(rot90)
-                        m3.move(c.multiply(-1))
-                        sh.transformShape(m3)
-                        # sh = sh.transformGeometry(m3)
-                    if self.fill:
-                        sh = Part.Wire([sh])
+        # Process polylines and polygons
+        if name == "polyline" or name == "polygon":
+            # A simpler implementation would be
+            # sh = Part.makePolygon([Vector(svgx,-svgy,0) for svgx,svgy in zip(points[0::2],points[1::2])])
+            #
+            # but it would be more difficult to search for duplicate
+            # points beforehand.
+            if not pathname:
+                pathname = 'Polyline'
+            points = [float(d) for d in data['points']]
+            FreeCAD.Console.PrintMessage('points %s\n' % str(points))
+            lenpoints = len(points)
+            if lenpoints >= 4 and lenpoints % 2 == 0:
+                lastvec = Vector(points[0], -points[1], 0)
+                path = []
+                if name == 'polygon':
+                    points = points+points[:2]  # emulate closepath
+                for svgx, svgy in zip(points[2::2], points[3::2]):
+                    currentvec = Vector(svgx, -svgy, 0)
+                    if not DraftVecUtils.equals(lastvec, currentvec):
+                        seg = Part.LineSegment(lastvec, currentvec).toShape()
+                        #print "polyline seg ",lastvec,currentvec
+                        lastvec = currentvec
+                        path.append(seg)
+                if path:
+                    sh = Part.Wire(path)
+                    if self.fill and sh.isClosed():
                         sh = Part.Face(sh)
                     sh = self.applyTrans(sh)
                     obj = self.doc.addObject("Part::Feature", pathname)
                     obj.Shape = sh
-                    self.format(obj)
                     if self.currentsymbol:
                         self.symbols[self.currentsymbol].append(obj)
+
+        # Process ellipses
+        if name == "ellipse":
+            if not pathname:
+                pathname = 'Ellipse'
+            c = Vector(data.get('cx', 0), -data.get('cy', 0), 0)
+            rx = data['rx']
+            ry = data['ry']
+            if rx > ry:
+                sh = Part.Ellipse(c, rx, ry).toShape()
+            else:
+                sh = Part.Ellipse(c, ry, rx).toShape()
+                m3 = FreeCAD.Matrix()
+                m3.move(c)
+                # 90
+                rot90 = FreeCAD.Matrix(0, -1, 0, 0, 1, 0)
+                m3 = m3.multiply(rot90)
+                m3.move(c.multiply(-1))
+                sh.transformShape(m3)
+                # sh = sh.transformGeometry(m3)
+            if self.fill:
+                sh = Part.Wire([sh])
+                sh = Part.Face(sh)
+            sh = self.applyTrans(sh)
+            obj = self.doc.addObject("Part::Feature", pathname)
+            obj.Shape = sh
+            self.format(obj)
+            if self.currentsymbol:
+                self.symbols[self.currentsymbol].append(obj)
 
                 # Process circles
                 if (name == "circle") and (not ("freecad:skip" in data)) :
