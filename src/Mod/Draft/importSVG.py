@@ -418,91 +418,92 @@ def getsize(length, mode='discard', base=1):
 
 
 def makewire(path, checkclosed=False, donttry=False):
-        '''Try to make a wire out of the list of edges.
+    '''Try to make a wire out of the list of edges.
 
-        If the wire functions fails or the wire is not closed,
-        if required the TopoShapeCompoundPy::connectEdgesToWires()
-        function is used.
+    If the wire functions fail or the wire is not closed,
+    if required the TopoShapeCompoundPy::connectEdgesToWires()
+    function is used.
 
-        Parameters
-        ----------
-        path : Part.Edge
-            A collection of edges
-        checkclosed : bool, optional
-            Default is `False`.
-        donttry : bool, optional
-            Default is `False`. If it's `True` it won't try to check
-            for a closed path.
+    Parameters
+    ----------
+    path : Part.Edge
+        A collection of edges
+    checkclosed : bool, optional
+        Default is `False`.
+    donttry : bool, optional
+        Default is `False`. If it's `True` it won't try to check
+        for a closed path.
 
-        Returns
-        -------
-        Part::Wire
-            A wire created from the ordered edges.
-        Part::Compound
-            A compound made of the edges, but unable to form a wire.
-        '''
-        if not donttry:
-                try:
-                        import Part
-                        sh = Part.Wire(Part.__sortEdges__(path))
-                        #s h = Part.Wire(path)
-                        isok = (not checkclosed) or sh.isClosed()
-                        if len(sh.Edges) != len(path):
-                            isok = False
-                # BRep_API: command not done
-                except Part.OCCError:
-                        isok = False
-        if donttry or not isok:
-                        # Code from wmayer forum p15549 to fix the tolerance problem
-                        # original tolerance = 0.00001
-                        comp = Part.Compound(path)
-                        sh = comp.connectEdgesToWires(False,10**(-1*(Draft.precision()-2))).Wires[0]
-                        if len(sh.Edges) != len(path):
-                            FreeCAD.Console.PrintWarning("Unable to form a wire\n")
-                            sh = comp
-        return sh
+    Returns
+    -------
+    Part::Wire
+        A wire created from the ordered edges.
+    Part::Compound
+        A compound made of the edges, but unable to form a wire.
+    '''
+    if not donttry:
+        try:
+            import Part
+            sh = Part.Wire(Part.__sortEdges__(path))
+            # sh = Part.Wire(path)
+            isok = (not checkclosed) or sh.isClosed()
+            if len(sh.Edges) != len(path):
+                isok = False
+        # BRep_API: command not done
+        except Part.OCCError:
+            isok = False
+    if donttry or not isok:
+        # Code from wmayer forum p15549 to fix the tolerance problem
+        # original tolerance = 0.00001
+        comp = Part.Compound(path)
+        sh = comp.connectEdgesToWires(False,
+                                      10**(-1 * (Draft.precision() - 2))).Wires[0]
+        if len(sh.Edges) != len(path):
+            FreeCAD.Console.PrintWarning("Unable to form a wire\n")
+            sh = comp
+    return sh
 
 
 def arccenter2end(center, rx, ry, angle1, angledelta, xrotation=0.0):
-        '''Calculate start and end points, and flags of an arc.
+    '''Calculate start and end points, and flags of an arc.
 
-        Calculate start and end points, and flags of an arc given in
-        ``center parametrization``.
-        See http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
+    Calculate start and end points, and flags of an arc given in
+    ``center parametrization``.
+    See http://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
 
-        Parameters
-        ----------
-        center : Base::Vector3
-            Coordinates of the center of the ellipse.
-        rx : float
-            Radius of the ellipse, semi-major axis in the X direction
-        ry : float
-            Radius of the ellipse, semi-minor axis in the Y direction
-        angle1 : float
-            Initial angle in radians
-        angledelta : float
-            Additional angle in radians
-        xrotation : float, optional
-            Default 0. Rotation around the Z axis
+    Parameters
+    ----------
+    center : Base::Vector3
+        Coordinates of the center of the ellipse.
+    rx : float
+        Radius of the ellipse, semi-major axis in the X direction
+    ry : float
+        Radius of the ellipse, semi-minor axis in the Y direction
+    angle1 : float
+        Initial angle in radians
+    angledelta : float
+        Additional angle in radians
+    xrotation : float, optional
+        Default 0. Rotation around the Z axis
 
-        Returns
-        -------
-        v1, v2, largerc, sweep
-            Tuple indicating the end points of the arc, and two boolean values
-            indicating whether the arc is less than 180 degrees or not,
-            and whether the angledelta is negative.
-        '''
-        vr1 = Vector(rx * math.cos(angle1), ry * math.sin(angle1), 0)
-        vr2 = Vector(rx * math.cos(angle1 + angledelta),
-                     ry * math.sin(angle1 + angledelta),
-                     0)
-        mxrot = FreeCAD.Matrix()
-        mxrot.rotateZ(xrotation)
-        v1 = mxrot.multiply(vr1).add(center)
-        v2 = mxrot.multiply(vr2).add(center)
-        fa = ((abs(angledelta) / math.pi) % 2) > 1  # < 180 deg
-        fs = angledelta < 0
-        return v1, v2, fa, fs
+    Returns
+    -------
+    v1, v2, largerc, sweep
+        Tuple indicating the end points of the arc, and two boolean values
+        indicating whether the arc is less than 180 degrees or not,
+        and whether the angledelta is negative.
+    '''
+    vr1 = Vector(rx * math.cos(angle1), ry * math.sin(angle1), 0)
+    vr2 = Vector(rx * math.cos(angle1 + angledelta),
+                 ry * math.sin(angle1 + angledelta),
+                 0)
+    mxrot = FreeCAD.Matrix()
+    mxrot.rotateZ(xrotation)
+    v1 = mxrot.multiply(vr1).add(center)
+    v2 = mxrot.multiply(vr2).add(center)
+    fa = ((abs(angledelta) / math.pi) % 2) > 1  # < 180 deg
+    fs = angledelta < 0
+    return v1, v2, fa, fs
 
 
 def arcend2center(lastvec, currentvec, rx, ry,
