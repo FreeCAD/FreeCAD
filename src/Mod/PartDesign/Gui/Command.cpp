@@ -1673,6 +1673,42 @@ bool CmdPartDesignFillet::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_Dogbone
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignDogbone);
+
+CmdPartDesignDogbone::CmdPartDesignDogbone()
+  :Command("PartDesign_Dogbone")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Dogbone");
+    sToolTipText  = QT_TR_NOOP("Make a Dogbone on an edge, face or body");
+    sWhatsThis    = "PartDesign_Dogbone";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Dogbone";
+}
+
+void CmdPartDesignDogbone::activated(int iMsg)
+{
+
+    Gui::SelectionObject selected;
+    if (!dressupGetSelected (this, "Dogbone", selected))
+        return;
+
+    Part::Feature *base = static_cast<Part::Feature*>(selected.getObject());
+
+    std::vector<std::string> SubNames = std::vector<std::string>(selected.getSubNames());
+
+    finishDressupFeature (this, "Dogbone", base, SubNames);
+}
+
+bool CmdPartDesignDogbone::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
 // PartDesign_Chamfer
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignChamfer);
@@ -2362,6 +2398,7 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignSubtractiveLoft);
 
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
+    rcCmdMgr.addCommand(new CmdPartDesignDogbone());
     rcCmdMgr.addCommand(new CmdPartDesignDraft());
     rcCmdMgr.addCommand(new CmdPartDesignChamfer());
     rcCmdMgr.addCommand(new CmdPartDesignThickness());

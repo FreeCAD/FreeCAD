@@ -42,6 +42,7 @@
 #include "ViewProviderPad.h"
 #include "ViewProviderChamfer.h"
 #include "ViewProviderFillet.h"
+#include "ViewProviderDogbone.h"
 #include "ViewProviderDraft.h"
 #include "ViewProviderDressUp.h"
 #include "ViewProviderRevolution.h"
@@ -136,6 +137,7 @@ PyMOD_INIT_FUNC(PartDesignGui)
     PartDesignGui::ViewProviderGroove        ::init();
     PartDesignGui::ViewProviderChamfer       ::init();
     PartDesignGui::ViewProviderFillet        ::init();
+    PartDesignGui::ViewProviderDogbone       ::init();
     PartDesignGui::ViewProviderDraft         ::init();
     PartDesignGui::ViewProviderThickness     ::init();
     PartDesignGui::ViewProviderTransformed   ::init();

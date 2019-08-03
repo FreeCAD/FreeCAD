@@ -32,6 +32,10 @@
 #include <string>
 #include <QString>
 
+#ifndef BaseExport
+#define BaseExport
+#endif
+
 namespace Base {
 
 #define UnitSignatureLengthBits 4

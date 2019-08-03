@@ -267,6 +267,7 @@ void Workbench::activated()
 
     const char* Edge[] = {
         "PartDesign_Fillet",
+        "PartDesign_Dogbone",
         "PartDesign_Chamfer",
         "PartDesign_Point",
         "PartDesign_Line",
@@ -502,6 +503,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_MultiTransform"
           << "Separator"
           << "PartDesign_Fillet"
+          << "PartDesign_Dogbone"
           << "PartDesign_Chamfer"
           << "PartDesign_Draft"
           << "PartDesign_Thickness"

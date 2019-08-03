@@ -127,19 +127,19 @@ int main( int argc, char ** argv )
     // See https://forum.freecadweb.org/viewtopic.php?f=18&t=20600
     // See Gui::Application::runApplication()
     putenv("LC_NUMERIC=C");
-    putenv("PYTHONPATH=");
+    // putenv("PYTHONPATH=");
 #elif defined(FC_OS_MACOSX)
     (void)QLocale::system();
-    putenv("PYTHONPATH=");
+    // putenv("PYTHONPATH=");
 #else
-    _putenv("PYTHONPATH=");
+    // _putenv("PYTHONPATH=");
     // https://forum.freecadweb.org/viewtopic.php?f=4&t=18288
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=20515
-    const char* fc_py_home = getenv("FC_PYTHONHOME");
-    if (fc_py_home)
-        _putenv_s("PYTHONHOME", fc_py_home);
-    else
-        _putenv("PYTHONHOME=");
+    //const char* fc_py_home = getenv("FC_PYTHONHOME");
+    //if (fc_py_home)
+    //    _putenv_s("PYTHONHOME", fc_py_home);
+    //else
+    //    _putenv("PYTHONHOME=");
 #endif
 
 #if defined (FC_OS_WIN32)

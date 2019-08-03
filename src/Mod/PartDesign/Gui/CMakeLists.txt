@@ -35,6 +35,7 @@ set(PartDesignGui_MOC_HDRS
     TaskSketchBasedParameters.h
     TaskPadParameters.h
     TaskPocketParameters.h
+    TaskDogboneParameters.h
     TaskChamferParameters.h
     TaskFilletParameters.h
     TaskDraftParameters.h
@@ -69,6 +70,7 @@ set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui
     TaskPadParameters.ui
     TaskPocketParameters.ui
+    TaskDogboneParameters.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
     TaskDraftParameters.ui
@@ -110,6 +112,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderHole.h
     ViewProviderPocket.cpp
     ViewProviderPocket.h
+    ViewProviderDogbone.cpp
+    ViewProviderDogbone.h
     ViewProviderChamfer.cpp
     ViewProviderChamfer.h
     ViewProviderFillet.cpp
@@ -179,6 +183,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskPocketParameters.ui
     TaskPocketParameters.cpp
     TaskPocketParameters.h
+    TaskDogboneParameters.ui
+    TaskDogboneParameters.cpp
+    TaskDogboneParameters.h
     TaskChamferParameters.ui
     TaskChamferParameters.cpp
     TaskChamferParameters.h

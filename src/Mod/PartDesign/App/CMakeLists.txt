@@ -77,6 +77,8 @@ SET(FeaturesDressUp_SRCS
     FeatureDressUp.h
     FeatureFillet.cpp
     FeatureFillet.h
+    FeatureDogbone.cpp
+    FeatureDogbone.h
     FeatureChamfer.cpp
     FeatureChamfer.h
     FeatureDraft.cpp
