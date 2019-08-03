@@ -665,7 +665,7 @@ class svgHandler(xml.sax.ContentHandler):
 
     def format(self, obj):
         """Apply styles to the object if the graphical interface is up."""
-        if gui:
+        if FreeCAD.GuiUp:
             v = obj.ViewObject
             if self.color:
                 v.LineColor = self.color
@@ -718,6 +718,7 @@ class svgHandler(xml.sax.ContentHandler):
                 elif _maj > 0:
                     self.svgdpi = 96.0
             if 'inkscape:version' not in data:
+                if FreeCAD.GuiUp:
                     msgBox = QtGui.QMessageBox()
                     msgBox.setText(translate("ImportSVG", "This SVG file does not appear to have been produced by Inkscape. If it does not contain absolute units then a DPI setting will be used."))
                     msgBox.setInformativeText(translate("ImportSVG", "Do you wish to use 96dpi? Choosing 'No' will revert to the older standard 90dpi"))
@@ -730,6 +731,9 @@ class svgHandler(xml.sax.ContentHandler):
                         self.svgdpi = 90.0
                     if ret:
                         FreeCAD.Console.PrintMessage("****** User specified " + str(self.svgdpi) + "dpi ******\n")
+                else:
+                    self.svgdpi = 96.0
+                    FreeCAD.Console.PrintMessage("****** Assuming " + str(self.svgdpi) + "dpi ******\n")
             if self.svgdpi == 1.0:
                 FreeCAD.Console.PrintWarning("This SVG file (" + InksDocName + ") has an unrecognised format which means the dpi could not be determined; assuming 96 dpi\n")
                 self.svgdpi = 96.0
@@ -1401,7 +1405,7 @@ class svgHandler(xml.sax.ContentHandler):
                 vec = transform.multiply(vec)
             # print("applying vector: ", vec)
             obj.Position = vec
-            if gui:
+            if FreeCAD.GuiUp:
                 obj.ViewObject.FontSize = int(self.text)
                 if self.fill:
                     obj.ViewObject.TextColor = self.fill
