@@ -360,6 +360,7 @@ struct XYZ {
   XYZ()                               { x = 0; y = 0; z = 0; }
   XYZ( double X, double Y, double Z ) { x = X; y = Y; z = Z; }
   XYZ( const XYZ& other )             { x = other.x; y = other.y; z = other.z; }
+  XYZ& operator=( const XYZ& other ) = default;
   XYZ( const SMDS_MeshNode* n )       { x = n->X(); y = n->Y(); z = n->Z(); }
   inline XYZ operator-( const XYZ& other );
   inline XYZ operator+( const XYZ& other );
