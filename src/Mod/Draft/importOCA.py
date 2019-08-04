@@ -357,7 +357,6 @@ def decodeName(name):
         try:
             decodedName = (name.decode("latin1"))
         except UnicodeDecodeError:
-            print("oca: error: couldn't determine character encoding")
             FCC.PrintError(translate("importOCA",
                                      "OCA error: "
                                      "couldn't determine character encoding")
@@ -444,14 +443,13 @@ def export(exportList, filename):
             for e in ob.Shape.Edges:
                 edges.append(e)
     if not (edges or faces):
-        print("oca: found no data to export")
         FCC.PrintMessage(translate("importOCA",
                                    "OCA: found no data to export")
                          + "\n")
         return
 
     # writing file
-    oca = pythonopen(filename, 'wb')
+    oca = pythonopen(filename, 'w')
     oca.write("#oca file generated from FreeCAD\r\n")
     oca.write("# edges\r\n")
     count = 1
