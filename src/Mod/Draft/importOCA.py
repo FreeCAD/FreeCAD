@@ -1,53 +1,58 @@
 # -*- coding: utf8 -*-
+## @package importOCA
+#  \ingroup DRAFT
+#  \brief OCA (Open CAD Format) file importer & exporter
+'''
+@package importOCA
+\ingroup DRAFT
+\brief OCA (Open CAD Format) file importer & exporter
 
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+This module provides support for importing from and exporting to
+the OCA format or GCAD format from GCAD3D (http://www.gcad3d.org/).
+See: https://groups.google.com/forum/#!forum/open_cad_format
 
-__title__= "FreeCAD Draft Workbench - OCA importer/exporter"
+By 2019 this file format is practically obsolete, and this module is not
+maintained.
+'''
+# Check code with
+# flake8 --ignore=E226,E266,E401,W503
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+__title__ = "FreeCAD Draft Workbench - OCA importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
-## @package importOCA
-#  \ingroup DRAFT
-#  \brief OCA (Open CAD Format) file import & export
-#
-#  This module provides support for importing and exporting to the OCA format from GCAD3D.
-#  Warning, this file format is today practically obsolete and this module is not
-#  maintained anymore.
-
-'''
-This script imports OCA/gcad files into FreeCAD.
-'''
-
-import FreeCAD, os, Part, math, DraftVecUtils, DraftGeomUtils
+import FreeCAD, os, Part, DraftVecUtils, DraftGeomUtils
 from FreeCAD import Vector
 
-try:
-    import FreeCADGui
-except ValueError:
-    gui = False
+if FreeCAD.GuiUp:
+    from DraftTools import translate
 else:
-    gui = True
+    def translate(context, txt):
+        return txt
 
+# Save the native open function to avoid collisions
 if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
@@ -147,6 +152,7 @@ def getarc(data):
         # 2-point circle
         verts = []
         rad = None
+        lines = []
         for p in range(len(data)):
             if (data[p] == "P"):
                 verts.append(getpoint(data[p:p+4]))
@@ -260,7 +266,7 @@ def createobject(id, doc):
     if isinstance(objects[id], Part.Shape):
         ob = doc.addObject("Part::Feature", id)
         ob.Shape = objects[id]
-        if gui:
+        if FreeCAD.GuiUp:
             ob.ViewObject.ShapeColor = color
 
 
