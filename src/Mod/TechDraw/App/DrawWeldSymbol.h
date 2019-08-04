@@ -43,9 +43,9 @@ public:
     virtual ~DrawWeldSymbol();
 
     App::PropertyLink         Leader;
-//    App::PropertyLinkList     Tiles;
     App::PropertyBool         AllAround;
     App::PropertyBool         FieldWeld;
+    App::PropertyBool         AlternatingWeld;
     App::PropertyString       TailText;
 
     virtual short mustExecute() const;
@@ -57,8 +57,8 @@ public:
     virtual PyObject *getPyObject(void);
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}
 
+    bool isTailRightSide();
     std::vector<DrawTileWeld*> getTiles(void) const;
-//    void addTile(App::DocumentObject* d);
 
 protected:
     virtual void onChanged(const App::Property* prop);

@@ -97,6 +97,14 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent,
 
     m_tailText = new QGCustomText();
     addToGroup(m_tailText);
+    m_tailText->hide();
+    m_tailText->setPos(0.0, 0.0);         //avoid bRect issues
+
+    m_allAround = new QGIVertex(-1);
+    m_allAround->setParentItem(this);
+    m_fieldFlag = new QGIPrimPath();
+    m_fieldFlag->setParentItem(this);
+
     m_colCurrent = getNormalColor();   //preference
     m_colSetting = m_colCurrent;
 }
@@ -137,15 +145,40 @@ void QGIWeldSymbol::draw()
     removeDecorations();
 
     std::vector<TechDraw::DrawTileWeld*> tiles = m_weldFeat->getTiles();
-    for (auto& t: tiles) {
-        if (t != nullptr) {
-            QGITile* qt = new QGITile(t);
-            qt->setParentItem(this);
-            m_tiles.push_back(qt);
-            drawTile(t, qt);
+
+    TechDraw::DrawTileWeld* arrowTile = nullptr;
+    TechDraw::DrawTileWeld* otherTile = nullptr;
+    if (!tiles.empty()) {
+        TechDraw::DrawTileWeld* tempTile = tiles.at(0);
+        if (tempTile->TileRow.getValue() == 0) {
+            arrowTile = tempTile;
+        } else { 
+            otherTile = tempTile;
         }
     }
-    
+    if (tiles.size() > 1) {
+        TechDraw::DrawTileWeld* tempTile = tiles.at(1);
+        if (tempTile->TileRow.getValue() == 0) {
+            arrowTile = tempTile;
+        } else { 
+            otherTile = tempTile;
+        }
+    }
+
+    if (arrowTile != nullptr) {
+        QGITile* qt = new QGITile(arrowTile);
+        m_arrowTile = qt;
+        qt->setParentItem(this);
+        drawTile(arrowTile, m_arrowTile);
+    }
+
+    if (otherTile != nullptr) {
+        QGITile* qt = new QGITile(otherTile);
+        m_otherTile = qt;
+        qt->setParentItem(this);
+        drawTile(otherTile, m_otherTile);
+    }
+
     if (m_weldFeat->AllAround.getValue()) {
         drawAllAround();
     }
@@ -154,9 +187,7 @@ void QGIWeldSymbol::draw()
         drawFieldFlag();
     }
 
-    if (strlen(m_weldFeat->TailText.getValue()) != 0) {
-        drawTailText();
-    }
+    drawTailText();
 }
 
 void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* dtw,
@@ -169,12 +200,10 @@ void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* dtw,
     std::string tileTextR = dtw->RightText.getValue();
     std::string tileTextC = dtw->CenterText.getValue();
     tile->setSymbolFile(dtw->SymbolFile.getValue());
-    int tileRow = dtw->TileRow.getValue();
-    int tileCol = dtw->TileColumn.getValue();
     tile->setTileScale(featScale);
-
+    
     QPointF org = getTileOrigin();
-    tile->setTilePosition(org, tileRow, tileCol);
+    tile->setTilePosition(org);
     tile->setColor(getCurrentColor());
     tile->setTileTextLeft(tileTextL);
     tile->setTileTextRight(tileTextR);
@@ -211,26 +240,30 @@ void QGIWeldSymbol::drawAllAround(void)
 void QGIWeldSymbol::drawTailText(void)
 {
 //    Base::Console().Message("QGIWS::drawTailText()\n");
-    m_tailText = new QGCustomText();
-    m_tailText->setParentItem(this);
+    QPointF textPos = getTailPoint();
+    m_tailText->setPos(textPos);  //avoid messing up brect with empty item at 0,0
+    std::string tText = m_weldFeat->TailText.getValue();
+    if (tText.empty()) {
+        m_tailText->hide();
+        return;
+    } else {
+        m_tailText->show();
+    }
 
     m_font.setFamily(getPrefFont());
     m_font.setPixelSize(calculateFontPixelSize(getDimFontSize()));
 
     m_tailText->setFont(m_font);
-    std::string tText = m_weldFeat->TailText.getValue();
     m_tailText->setPlainText(
                 QString::fromUtf8(tText.c_str()));
     m_tailText->setColor(getCurrentColor());
     m_tailText->setZValue(ZVALUE::DIMENSION);
 
-    QPointF textPos = getTailPoint();
-
     double textWidth = m_tailText->boundingRect().width();
     double charWidth = textWidth / tText.size();
     double hMargin = charWidth + getPrefArrowSize();
 
-    if (isTextRightSide()) {
+    if (getFeature()->isTailRightSide()) {
         m_tailText->justifyLeftAt(textPos.x() + hMargin, textPos.y(), true);
     } else {
         m_tailText->justifyRightAt(textPos.x() - hMargin, textPos.y(), true);
@@ -287,22 +320,18 @@ void QGIWeldSymbol::removeDecorations()
          QGITile* tile = dynamic_cast<QGITile*>(c);
          QGIPrimPath* prim = dynamic_cast<QGIPrimPath*>(c);         //allAround, fieldFlag
          if (tile) {
-            tile->setParentItem(nullptr);
             scene()->removeItem(tile);
             delete tile;
          } else if (prim) {
-            prim->setParentItem(nullptr);
             scene()->removeItem(prim);
-            delete prim;
+            delete tile;
          }
     }
-    if (m_tailText != nullptr) {
-        m_tailText->setParentItem(nullptr);
-        scene()->removeItem(m_tailText);
-        delete m_tailText;
-    }
-    std::vector<QGITile*> noTiles;
-    m_tiles = noTiles;
+    m_arrowTile = nullptr;
+    m_otherTile = nullptr;
+
+//    std::vector<QGITile*> noTiles;
+//    m_tiles = noTiles;
 }
 
 void QGIWeldSymbol::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -339,10 +368,19 @@ void QGIWeldSymbol::drawBorder()
 
 void QGIWeldSymbol::setPrettyNormal()
 {
-    for (auto t: m_tiles) {
-        t->setColor(m_colNormal);
-        t->draw();
+//    for (auto t: m_tiles) {
+//        t->setColor(m_colNormal);
+//        t->draw();
+//    }
+    if (m_arrowTile != nullptr) {
+        m_arrowTile->setColor(m_colNormal);
+        m_arrowTile->draw();
     }
+    if (m_otherTile != nullptr) {
+        m_otherTile->setColor(m_colNormal);
+        m_otherTile->draw();
+    }
+
     m_colCurrent = m_colNormal;
     m_fieldFlag->setNormalColor(m_colCurrent);
     m_fieldFlag->setFillColor(m_colCurrent);
@@ -356,24 +394,50 @@ void QGIWeldSymbol::setPrettyNormal()
 void QGIWeldSymbol::setPrettyPre()
 {
 //    Base::Console().Message("QGIWS::setPrettyPre()\n");
-    for (auto t: m_tiles) {
-        t->setColor(getPreColor());
-        t->draw();
+//    for (auto t: m_tiles) {
+//        t->setColor(getPreColor());
+//        t->draw();
+//    }
+    if (m_arrowTile != nullptr) {
+        m_arrowTile->setColor(getPreColor());
+        m_arrowTile->draw();
     }
+    if (m_otherTile != nullptr) {
+        m_otherTile->setColor(getPreColor());
+        m_otherTile->draw();
+    }
+    m_colCurrent = getPreColor();
+    m_fieldFlag->setNormalColor(getPreColor());
+    m_fieldFlag->setFillColor(getPreColor());
     m_fieldFlag->setPrettyPre();
+    m_allAround->setNormalColor(getPreColor());
     m_allAround->setPrettyPre();
+    m_tailText->setColor(getPreColor());
     m_tailText->setPrettyPre();
 }
 
 void QGIWeldSymbol::setPrettySel()
 {
 //    Base::Console().Message("QGIWS::setPrettySel()\n");
-    for (auto t: m_tiles) {
-        t->setColor(getSelectColor());
-        t->draw();
+//    for (auto t: m_tiles) {
+//        t->setColor(getSelectColor());
+//        t->draw();
+//    }
+    if (m_arrowTile != nullptr) {
+        m_arrowTile->setColor(getSelectColor());
+        m_arrowTile->draw();
     }
+    if (m_otherTile != nullptr) {
+        m_otherTile->setColor(getSelectColor());
+        m_otherTile->draw();
+    }
+    m_colCurrent = getSelectColor();
+    m_fieldFlag->setNormalColor(getSelectColor());
+    m_fieldFlag->setFillColor(getSelectColor());
     m_fieldFlag->setPrettySel();
+    m_allAround->setNormalColor(getSelectColor());
     m_allAround->setPrettySel();
+    m_tailText->setColor(getSelectColor());
     m_tailText->setPrettySel();
 }
 
@@ -398,16 +462,16 @@ QPointF QGIWeldSymbol::getTailPoint(void)
     return result;
 }
 
-bool QGIWeldSymbol::isTextRightSide()
-{
-    bool result = true;
-    Base::Vector3d tail = m_leadFeat->getTailPoint();
-    Base::Vector3d kink = m_leadFeat->getKinkPoint();
-    if (tail.x < kink.x)  {   //tail is to left
-        result = false;
-    }
-    return result;
-}
+//bool QGIWeldSymbol::isTailRightSide()
+//{
+//    bool result = true;
+//    Base::Vector3d tail = m_leadFeat->getTailPoint();
+//    Base::Vector3d kink = m_leadFeat->getKinkPoint();
+//    if (tail.x < kink.x)  {   //tail is to left
+//        result = false;
+//    }
+//    return result;
+//}
 
 TechDraw::DrawWeldSymbol* QGIWeldSymbol::getFeature(void)
 {

@@ -34,8 +34,16 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/SoFCSelection.h>
+
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Control.h>
+#include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+
+#include "TaskWeldingSymbol.h"
 
 #include "ViewProviderWeld.h"
 
@@ -98,6 +106,42 @@ std::vector<App::DocumentObject*> ViewProviderWeld::claimChildren(void) const
         return tmp;
     }
 }
+
+bool ViewProviderWeld::setEdit(int ModNum)
+{
+//    Base::Console().Message("VPW::setEdit(%d)\n",ModNum);
+    if (ModNum == ViewProvider::Default ) {
+        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
+            return false;
+        }
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+        Gui::Control().showDialog(new TaskDlgWeldingSymbol(getFeature()));
+        return true;
+    } else {
+        return ViewProviderDrawingView::setEdit(ModNum);
+    }
+    return true;
+}
+
+void ViewProviderWeld::unsetEdit(int ModNum)
+{
+    Q_UNUSED(ModNum);
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderDrawingView::unsetEdit(ModNum);
+    }
+}
+
+bool ViewProviderWeld::doubleClicked(void)
+{
+//    Base::Console().Message("VPW::doubleClicked()\n");
+    setEdit(ViewProvider::Default);
+    return true;
+}
+
 
 TechDraw::DrawWeldSymbol* ViewProviderWeld::getViewObject() const
 {

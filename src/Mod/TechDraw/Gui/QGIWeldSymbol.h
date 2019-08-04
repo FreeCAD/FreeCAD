@@ -77,7 +77,6 @@ public:
     QPointF getTileOrigin(void);
     QPointF getKinkPoint(void);
     QPointF getTailPoint(void);
-    bool isTextRightSide(void);
 
     virtual void setPrettyNormal();
     virtual void setPrettySel();
@@ -105,7 +104,8 @@ protected:
     TechDraw::DrawLeaderLine* m_leadFeat;
 
     QGILeaderLine* m_qgLead;
-    std::vector<QGITile*> m_tiles;
+    QGITile* m_arrowTile;
+    QGITile* m_otherTile;
     QGCustomText* m_tailText;
     QGIPrimPath* m_fieldFlag;
     QGIVertex* m_allAround;

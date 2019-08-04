@@ -74,7 +74,7 @@ short DrawTileWeld::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawTileWeld::execute(void)
 { 
-//    Base::Console().Message("DT::execute()\n");
+//    Base::Console().Message("DTW::execute()\n");
     return DrawTile::execute();
 }
 
