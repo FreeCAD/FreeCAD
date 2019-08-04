@@ -57,7 +57,7 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide import QtCore, QtGui
 else:
-    def translate(ctxt, txt):
+    def translate(context, txt):
         return txt
 
 try:
@@ -706,11 +706,11 @@ class svgHandler(xml.sax.ContentHandler):
         # in order to consider some attributes of the SVG file.
         if self.count == 1 and name == 'svg':
             if 'inkscape:version' in data:
-                InksDocName = attrs.getValue('sodipodi:docname')
-                InksFullver = attrs.getValue('inkscape:version')[:4]
-                InksFullverlst = InksFullver.split('.')
-                _maj = int(InksFullverlst[0])
-                _min = int(InksFullverlst[1])
+                inks_doc_name = attrs.getValue('sodipodi:docname')
+                inks_full_ver = attrs.getValue('inkscape:version')[:4]
+                inks_full_ver_list = inks_full_ver.split('.')
+                _maj = int(inks_full_ver_list[0])
+                _min = int(inks_full_ver_list[1])
 
                 # Inkscape before 0.92 used 90 dpi as resolution
                 # Newer versions use 96 dpi
@@ -721,11 +721,17 @@ class svgHandler(xml.sax.ContentHandler):
                 elif _maj > 0:
                     self.svgdpi = 96.0
             if 'inkscape:version' not in data:
+                _msg = ("This SVG file does not appear to have been produced "
+                        "by Inkscape. If it does not contain absolute units "
+                        "then a DPI setting will be used.")
+                _qst = ("Do you wish to use 96 dpi? Choosing 'No' "
+                        "will use the older standard 90 dpi.")
                 if FreeCAD.GuiUp:
                     msgBox = QtGui.QMessageBox()
-                    msgBox.setText(translate("ImportSVG", "This SVG file does not appear to have been produced by Inkscape. If it does not contain absolute units then a DPI setting will be used."))
-                    msgBox.setInformativeText(translate("ImportSVG", "Do you wish to use 96dpi? Choosing 'No' will revert to the older standard 90dpi"))
-                    msgBox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                    msgBox.setText(translate("ImportSVG", _msg))
+                    msgBox.setInformativeText(translate("ImportSVG", _qst))
+                    msgBox.setStandardButtons(QtGui.QMessageBox.Yes
+                                              | QtGui.QMessageBox.No)
                     msgBox.setDefaultButton(QtGui.QMessageBox.No)
                     ret = msgBox.exec_()
                     if ret == QtGui.QMessageBox.Yes:
@@ -733,12 +739,20 @@ class svgHandler(xml.sax.ContentHandler):
                     else:
                         self.svgdpi = 90.0
                     if ret:
-                        FCC.PrintMessage("****** User specified " + str(self.svgdpi) + "dpi ******\n")
+                        FCC.PrintMessage(translate("ImportSVG", _msg) + "\n")
+                        FCC.PrintMessage(translate("ImportSVG", _qst) + "\n")
+                        FCC.PrintMessage("*** User specified "
+                                         + str(self.svgdpi) + " dpi ***\n")
                 else:
                     self.svgdpi = 96.0
-                    FCC.PrintMessage("****** Assuming " + str(self.svgdpi) + "dpi ******\n")
+                    FCC.PrintMessage(_msg + "\n")
+                    FCC.PrintMessage("*** Assuming " + str(self.svgdpi)
+                                     + " dpi ***\n")
             if self.svgdpi == 1.0:
-                FCC.PrintWarning("This SVG file (" + InksDocName + ") has an unrecognised format which means the dpi could not be determined; assuming 96 dpi\n")
+                FCC.PrintWarning("This SVG file (" + inks_doc_name + ") "
+                                 "has an unrecognised format which means "
+                                 "the dpi could not be determined; "
+                                 "assuming 96 dpi\n")
                 self.svgdpi = 96.0
 
         if 'style' in data:
@@ -1204,10 +1218,18 @@ class svgHandler(xml.sax.ContentHandler):
             if ('rx' not in data or data['rx'] < _precision) \
                     and ('ry' not in data or data['ry'] < _precision):
                 # if True:
-                p1 = Vector(data['x'], -data['y'], 0)
-                p2 = Vector(data['x'] + data['width'], -data['y'], 0)
-                p3 = Vector(data['x'] + data['width'], -data['y'] - data['height'], 0)
-                p4 = Vector(data['x'], -data['y'] - data['height'], 0)
+                p1 = Vector(data['x'],
+                            -data['y'],
+                            0)
+                p2 = Vector(data['x'] + data['width'],
+                            -data['y'],
+                            0)
+                p3 = Vector(data['x'] + data['width'],
+                            -data['y'] - data['height'],
+                            0)
+                p4 = Vector(data['x'],
+                            -data['y'] - data['height'],
+                            0)
                 edges.append(Part.LineSegment(p1, p2).toShape())
                 edges.append(Part.LineSegment(p2, p3).toShape())
                 edges.append(Part.LineSegment(p3, p4).toShape())
@@ -1222,10 +1244,18 @@ class svgHandler(xml.sax.ContentHandler):
                 if ry > 2 * data['height']:
                     ry = data['height'] / 2.0
 
-                p1 = Vector(data['x'] + rx, -data['y'] - data['height'] + ry, 0)
-                p2 = Vector(data['x'] + data['width'] - rx, -data['y'] - data['height'] + ry, 0)
-                p3 = Vector(data['x'] + data['width'] - rx, -data['y'] - ry, 0)
-                p4 = Vector(data['x'] + rx, -data['y'] - ry, 0)
+                p1 = Vector(data['x'] + rx,
+                            -data['y'] - data['height'] + ry,
+                            0)
+                p2 = Vector(data['x'] + data['width'] - rx,
+                            -data['y'] - data['height'] + ry,
+                            0)
+                p3 = Vector(data['x'] + data['width'] - rx,
+                            -data['y'] - ry,
+                            0)
+                p4 = Vector(data['x'] + rx,
+                            -data['y'] - ry,
+                            0)
 
                 if rx >= ry:
                     e = Part.Ellipse(Vector(), rx, ry)
@@ -1285,7 +1315,10 @@ class svgHandler(xml.sax.ContentHandler):
         # Process polylines and polygons
         if name == "polyline" or name == "polygon":
             # A simpler implementation would be
-            # sh = Part.makePolygon([Vector(svgx, -svgy, 0) for svgx, svgy in zip(points[0::2], points[1::2])])
+            # _p = zip(points[0::2], points[1::2])
+            # sh = Part.makePolygon([Vector(svgx,
+            #                               -svgy,
+            #                               0) for svgx, svgy in _p])
             #
             # but it would be more difficult to search for duplicate
             # points beforehand.
@@ -1383,7 +1416,8 @@ class svgHandler(xml.sax.ContentHandler):
                     self.text = 1
             else:
                 if self.lastdim:
-                    self.lastdim.ViewObject.FontSize = int(getsize(data['font-size']))
+                    _font_size = int(getsize(data['font-size']))
+                    self.lastdim.ViewObject.FontSize = _font_size
 
         # Process symbols
         if name == "symbol":
@@ -1471,7 +1505,8 @@ class svgHandler(xml.sax.ContentHandler):
         """
         if isinstance(sh, Part.Shape):
             if self.transform:
-                FCC.PrintMessage("applying object transform: %s\n" % self.transform)
+                FCC.PrintMessage("applying object transform: %s\n"
+                                 % self.transform)
                 # sh = transformCopyShape(sh, self.transform)
                 # see issue #2062
                 sh = sh.transformGeometry(self.transform)
@@ -1486,10 +1521,12 @@ class svgHandler(xml.sax.ContentHandler):
             for p in [sh.Start, sh.End, sh.Dimline]:
                 cp = Vector(p)
                 if self.transform:
-                    FCC.PrintMessage("applying object transform: %s\n" % self.transform)
+                    FCC.PrintMessage("applying object transform: %s\n"
+                                     % self.transform)
                     cp = self.transform.multiply(cp)
                 for transform in self.grouptransform[::-1]:
-                    FCC.PrintMessage("applying group transform: %s\n" % transform)
+                    FCC.PrintMessage("applying group transform: %s\n"
+                                     % transform)
                     cp = transform.multiply(cp)
                 pts.append(cp)
             sh.Start = pts[0]
@@ -1497,7 +1534,7 @@ class svgHandler(xml.sax.ContentHandler):
             sh.Dimline = pts[2]
 
     def translateVec(self, vec, mat):
-        """Translate a point or vector by a matrix.
+        """Translate (move) a point or vector by a matrix.
 
         Parameters
         ----------
@@ -1524,12 +1561,15 @@ class svgHandler(xml.sax.ContentHandler):
         Base::Matrix4D
             The translated matrix.
         """
-        transformre = re.compile('(matrix|translate|scale|rotate|skewX|skewY)\s*?\((.*?)\)', re.DOTALL)
+        transformre = re.compile('(matrix|translate|scale|rotate|skewX|skewY)\s*?\((.*?)\)',
+                                 re.DOTALL)
         m = FreeCAD.Matrix()
         for transformation, arguments in transformre.findall(tr):
-            argsplit = [float(arg) for arg in arguments.replace(',', ' ').split()]
+            _args_rep = arguments.replace(',', ' ').split()
+            argsplit = [float(arg) for arg in _args_rep]
             # m.multiply(FreeCAD.Matrix(1, 0, 0, 0, 0, -1))
-            # print('%s:%s %s %d' % (transformation, arguments, argsplit, len(argsplit)))
+            # print('%s:%s %s %d' % (transformation, arguments,
+            #                        argsplit, len(argsplit)))
             if transformation == 'translate':
                 tx = argsplit[0]
                 ty = argsplit[1] if len(argsplit) > 1 else 0.0
@@ -1603,7 +1643,8 @@ def decodeName(name):
         try:
             decodedName = (name.decode("latin1"))
         except UnicodeDecodeError:
-            FCC.PrintError("SVG: error: couldn't determine character encoding\n")
+            FCC.PrintError("SVG error: "
+                           "couldn't determine character encoding\n")
             decodedName = name
     return decodedName
 
@@ -1740,9 +1781,11 @@ def export(exportList, filename):
     None
         If `exportList` doesn't have shapes to export.
     """
-    svg_export_style = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetInt("svg_export_style")
+    _prefs = "User parameter:BaseApp/Preferences/Mod/Draft"
+    svg_export_style = FreeCAD.ParamGet(_prefs).GetInt("svg_export_style")
     if svg_export_style != 0 and svg_export_style != 1:
-        FCC.PrintMessage(translate("Unknown SVG export style, switching to Translated") + "\n")
+        FCC.PrintMessage(translate("Unknown SVG export style, "
+                                   "switching to Translated") + "\n")
         svg_export_style = 0
 
     # Determine the size of the page by adding the bounding boxes
@@ -1805,15 +1848,19 @@ def export(exportList, filename):
         if svg_export_style == 0:
             # translated-style exports have the entire sketch translated
             # to fit in the X>0, Y>0 quadrant
-            # svg.write('<g transform="translate(' + str(-minx) + ',' + str(-miny+(2*margin)) + ') scale(1,-1)">\n')
+            # svg.write('<g transform="translate('
+            #           + str(-minx) + ',' + str(-miny + 2*margin)
+            #           + ') scale(1,-1)">\n')
             svg.write('<g id="%s" transform="translate(%f,%f) '
                       'scale(1,-1)">\n' % (ob.Name, -minx, maxy))
         else:
             # raw-style exports do not translate the sketch
             svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
         svg.write(Draft.getSVG(ob))
-        svg.write('<title>%s</title>\n' % str(ob.Label.encode('utf8')).replace('<', '&lt;').replace('>', '&gt;'))
+        _label_enc = str(ob.Label.encode('utf8'))
+        _label = _label_enc.replace('<', '&lt;').replace('>', '&gt;')
         # replace('"', "&quot;")
+        svg.write('<title>%s</title>\n' % _label)
         svg.write('</g>\n')
 
     # Close the file
