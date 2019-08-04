@@ -50,8 +50,20 @@ if open.__module__ in ['__builtin__','io']:
     
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
+
 def getpoint(data):
-    "turns an OCA point definition into a FreeCAD Vector"
+    """Turn an OCA point definition into a FreeCAD.Vector.
+
+    Parameters
+    ----------
+    data : list
+        Different types of data.
+
+    Returns
+    -------
+    Base::Vector3
+        A vector with the data arranged, depending on the contents of `data`.
+    """
     print("found point ",data)
     if (len(data) == 3):
         return Vector(float(data[0]),float(data[1]),float(data[2]))
@@ -74,9 +86,21 @@ def getpoint(data):
                 if (data[1][0] == "L"):
                     l = objects[data[1]]
                     return p1.add(DraftGeomUtils.vec(l))
-              
+
+
 def getarea(data):
-    "turns an OCA area definition into a FreeCAD Part Wire"
+    """Turn an OCA area definition into a FreeCAD Part.Wire.
+
+    Parameters
+    ----------
+    data : list
+        Different types of data.
+
+    Returns
+    -------
+    Part.Wire
+        A wire object from the points in `data`.
+    """
     print("found area ",data)
     if (data[0] == "S"):
         if (data[1] == "POL"):
@@ -88,8 +112,20 @@ def getarea(data):
             w = Part.makePolygon(verts)
             return w
 
+
 def getarc(data):
-    "turns an OCA arc definition into a FreeCAD Part Edge"
+    """Turn an OCA arc definition into a FreeCAD Part.Edge.
+
+    Parameters
+    ----------
+    data : list
+        Different types of data.
+
+    Returns
+    -------
+    Part.Edge
+        An edge object from the points in `data`.
+    """
     print("found arc ", data)
     c = None
     if (data[0] == "ARC"):
@@ -133,9 +169,21 @@ def getarc(data):
         if circles: c = circles[0]
     if c: return c.toShape()
 
+
 def getline(data):
+    """Turns an OCA line definition into a FreeCAD Part.Edge.
+
+    Parameters
+    ----------
+    data : list
+        Different types of data.
+
+    Returns
+    -------
+    Part.Edge
+        An edge object from the points in `data`.
+    """
     print("found line ", data)
-    "turns an OCA line definition into a FreeCAD Part Edge"
     verts = []
     for p in range(len(data)):
         if (data[p] == "P"):
@@ -145,8 +193,20 @@ def getline(data):
     l = Part.LineSegment(verts[0],verts[1])
     return l.toShape()
 
+
 def gettranslation(data):
-    "retrieves a transformation vector"
+    """Retrieve a translation (move) vector from `data`.
+
+    Parameters
+    ----------
+    data : list
+        Different types of data.
+
+    Returns
+    -------
+    Base::Vector3
+        A vector with X, Y, or Z displacement, or (0, 0, 0).
+    """
     print("found translation ",data)
     if (data[0] == "Z"):
         return Vector(0,0,float(data[1]))
@@ -156,19 +216,57 @@ def gettranslation(data):
         return Vector(float(data[1]),0,0)    
     return Vector(0,0,0)
 
+
 def writepoint(vector):
-    "writes a FreeCAD vector in OCA format"
+    """Write a FreeCAD.Vector in OCA format.
+
+    Parameters
+    ----------
+    vector : Base::Vector3
+        A vector with three components.
+
+    Returns
+    -------
+    str
+        A string "P(X Y Z)" with the information from `vector`.
+    """
     return "P("+str(vector.x)+" "+str(vector.y)+" "+str(vector.z)+")"
 
+
 def createobject(id,doc):
-    "creates an object in the current document"
+    """Create Part::Feature object in the current document.
+
+    Parameters
+    ----------
+    id : str
+        ID number of a particular object in the document.
+
+    doc : App::Document
+        A FreeCAD document to which the object is added.
+    Returns
+    -------
+    None
+    """
     if isinstance(objects[id],Part.Shape):
         ob = doc.addObject("Part::Feature",id)
         ob.Shape = objects[id]
         if gui: ob.ViewObject.ShapeColor = color
 
+
 def parse(filename,doc):
-    "inports an opened OCA file into the given doc"
+    """Import an opened OCA file into the given document.
+
+    Parameters
+    ----------
+    filename : str
+        The path to the OCA file.
+    doc : App::Document
+        A FreeCAD document to which the object is added.
+
+    Returns
+    -------
+    None
+    """
     filebuffer = pythonopen(filename)
     global objects
     objects = {}
@@ -214,8 +312,22 @@ def parse(filename,doc):
 
     del color
 
+
 def decodeName(name):
-    "decodes encoded strings"
+    """Decode encoded name.
+
+    Parameters
+    ----------
+    name : str
+        The string to decode.
+
+    Returns
+    -------
+    tuple
+    (string)
+        A tuple containing the decoded `name` in 'utf8', otherwise in 'latin1'.
+        If it fails it returns the original `name`.
+    """
     try:
         decodedName = (name.decode("utf8"))
     except UnicodeDecodeError:
@@ -226,7 +338,19 @@ def decodeName(name):
             decodedName = name
     return decodedName
     
+
 def open(filename):
+    """Open filename and parse.
+
+    Parameters
+    ----------
+    filename : str
+        The path to the filename to be opened.
+
+    Returns
+    -------
+    None
+    """
     docname=os.path.split(filename)[1]
     doc=FreeCAD.newDocument(docname)
     if (docname[-4:] == "gcad"): doc.Label = docname[:-5]
@@ -234,7 +358,24 @@ def open(filename):
     parse(filename,doc)
     doc.recompute()
 
+
 def insert(filename,docname):
+    """Get an active document and parse.
+
+    If no document exist, it is created.
+
+    Parameters
+    ----------
+    filename : str
+        The path to the filename to be opened.
+    docname : str
+        The name of the active App::Document if one exists, or
+        of the new one created.
+
+    Returns
+    -------
+    None
+    """
     try:
         doc=FreeCAD.getDocument(docname)
     except NameError:
@@ -242,9 +383,26 @@ def insert(filename,docname):
     FreeCAD.ActiveDocument = doc
     parse(filename,doc)
     doc.recompute()
-            
+
+
 def export(exportList,filename):
-    "called when freecad exports a file"
+    """Export the OCA file with a given list of objects.
+
+    The objects must be edges or faces, in order to be processed
+    and exported.
+
+    Parameters
+    ----------
+    exportList : list
+        List of document objects to export.
+    filename : str
+        Path to the new file.
+
+    Returns
+    -------
+    None
+        If `exportList` doesn't have shapes to export.
+    """
     faces = []
     edges = []
     
@@ -301,17 +459,3 @@ def export(exportList,filename):
     # closing
     oca.close()
     FreeCAD.Console.PrintMessage("successfully exported "+filename)
-    
-        
-            
-            
-        
-    
-            
-                
-                
-            
-        
-
-        
-    
