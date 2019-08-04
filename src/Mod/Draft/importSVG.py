@@ -15,6 +15,9 @@ Currently it only reads the following entities:
 Currently unsupported:
 * use, image.
 '''
+# Check code with
+# flake8 --ignore=E226,E266,E401,W503
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
@@ -401,8 +404,12 @@ def getsize(length, mode='discard', base=1):
             'ex': 10,
             '%': 100
         }
+
     # Extract a number from a string like '+56215.14565E+6mm'
-    number, exponent, unit = re.findall('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)(px|pt|pc|mm|cm|in|em|ex|%)?', length)[0]
+    _num = '([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)'
+    _unit = '(px|pt|pc|mm|cm|in|em|ex|%)?'
+    _full_num = _num + _unit
+    number, exponent, unit = re.findall(_full_num, length)[0]
     if mode == 'discard':
         return float(number)
     elif mode == 'tuple':
@@ -883,10 +890,15 @@ class svgHandler(xml.sax.ContentHandler):
                 self.lastdim = obj
                 data['d'] = []
 
-            pathcommandsre = re.compile('\s*?([mMlLhHvVaAcCqQsStTzZ])\s*?([^mMlLhHvVaAcCqQsStTzZ]*)\s*?',
-                                        re.DOTALL)
-            pointsre = re.compile('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)',
-                                  re.DOTALL)
+            _op = '([mMlLhHvVaAcCqQsStTzZ])'
+            _op2 = '([^mMlLhHvVaAcCqQsStTzZ]*)'
+            _command = '\s*?' + _op + '\s*?' + _op2 + '\s*?'
+            pathcommandsre = re.compile(_command, re.DOTALL)
+
+            _num = '[-+]?[0-9]*\.?[0-9]+'
+            _exp = '([eE][-+]?[0-9]+)?'
+            _point = '(' + _num + _exp + ')'
+            pointsre = re.compile(_point, re.DOTALL)
             _commands = pathcommandsre.findall(' '.join(data['d']))
             for d, pointsstr in _commands:
                 relative = d.islower()
@@ -1028,10 +1040,12 @@ class svgHandler(xml.sax.ContentHandler):
                             d90 = math.radians(90)
                             e1a = Part.Arc(e1,
                                            angle1 - swapaxis * d90,
-                                           angle1 + angledelta - swapaxis * d90)
+                                           angle1 + angledelta
+                                                  - swapaxis * d90)
                             # e1a = Part.Arc(e1,
-                            #                angle1 - 0*swapaxis*d90,
-                            #                angle1 + angledelta - 0*swapaxis*d90)
+                            #                angle1 - 0 * swapaxis * d90,
+                            #                angle1 + angledelta
+                            #                       - 0 * swapaxis * d90)
                             _precision = 10**(-1*Draft.precision())
                             if swapaxis or xrotation > _precision:
                                 m3 = FreeCAD.Matrix()
@@ -1561,8 +1575,10 @@ class svgHandler(xml.sax.ContentHandler):
         Base::Matrix4D
             The translated matrix.
         """
-        transformre = re.compile('(matrix|translate|scale|rotate|skewX|skewY)\s*?\((.*?)\)',
-                                 re.DOTALL)
+        _op = '(matrix|translate|scale|rotate|skewX|skewY)'
+        _val = '\((.*?)\)'
+        _transf = _op + '\s*?' + _val
+        transformre = re.compile(_transf, re.DOTALL)
         m = FreeCAD.Matrix()
         for transformation, arguments in transformre.findall(tr):
             _args_rep = arguments.replace(',', ' ').split()
