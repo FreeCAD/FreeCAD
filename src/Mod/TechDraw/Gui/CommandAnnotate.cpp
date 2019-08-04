@@ -1318,15 +1318,23 @@ void CmdTechDrawWeldSymbol::activated(int iMsg)
     
     std::vector<App::DocumentObject*> leaders = getSelection().
                                          getObjectsOfType(TechDraw::DrawLeaderLine::getClassTypeId());
-    if (leaders.size() != 1) {
+    std::vector<App::DocumentObject*> welds = getSelection().
+                                         getObjectsOfType(TechDraw::DrawWeldSymbol::getClassTypeId());
+    TechDraw::DrawLeaderLine* leadFeat = nullptr;
+    TechDraw::DrawWeldSymbol* weldFeat = nullptr;
+    if ( (leaders.size() != 1) &&
+         (welds.size() != 1) ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one Leader line."));
+            QObject::tr("Select exactly one Leader line or one Weld symbol."));
         return;
     }
-    TechDraw::DrawLeaderLine* baseFeat = nullptr;
-    baseFeat = static_cast<TechDraw::DrawLeaderLine*> (leaders.front());
-
-    Gui::Control().showDialog(new TaskDlgWeldingSymbol(baseFeat));
+    if (!leaders.empty()) {
+        leadFeat = static_cast<TechDraw::DrawLeaderLine*> (leaders.front());
+        Gui::Control().showDialog(new TaskDlgWeldingSymbol(leadFeat));
+    } else if (!welds.empty()) {
+        weldFeat = static_cast<TechDraw::DrawWeldSymbol*> (welds.front());
+        Gui::Control().showDialog(new TaskDlgWeldingSymbol(weldFeat));
+    }
 }
 
 bool CmdTechDrawWeldSymbol::isActive(void)

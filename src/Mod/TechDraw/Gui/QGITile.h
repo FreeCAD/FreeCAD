@@ -51,7 +51,7 @@ namespace TechDrawGui
 class TechDrawGuiExport QGITile : public QGIDecoration
 {
 public:
-    explicit QGITile(TechDraw::DrawTile* tileFeat);
+    explicit QGITile(TechDraw::DrawTileWeld* tileFeat);
     ~QGITile(void) {}
 
     enum {Type = QGraphicsItem::UserType + 325};
@@ -65,10 +65,11 @@ public:
     void setTileTextCenter(std::string s);
     void setFont(QFont f, double fsize);
     void setSymbolFile(std::string s);
-    void setTilePosition(QPointF org, int row, int col);
+    void setTilePosition(QPointF org);
     void setTileScale(double s);
-//    double getSymbolScale(void) const;
     virtual void draw(void);
+    bool isTailRight(void);
+
 
 protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -87,8 +88,10 @@ protected:
     void makeSymbol(void);
     void makeText(void);
 
+    bool getAltWeld(void);
+
 private:
-    TechDraw::DrawTile*  m_tileFeat;
+    TechDraw::DrawTileWeld*  m_tileFeat;
     QGCustomText*      m_qgTextL;
     QGCustomText*      m_qgTextR;
     QGCustomText*      m_qgTextC;
@@ -100,9 +103,6 @@ private:
     QString            m_textC;
     QString            m_fontName;
     QFont              m_font;
-    double             m_textSize;
-    int                m_row;
-    int                m_col;
     QPointF            m_origin;
     double             m_wide;
     double             m_high;

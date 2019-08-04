@@ -36,6 +36,7 @@
 
 #include <Mod/TechDraw/App/DrawWeldSymbolPy.h>  // generated from DrawWeldSymbolPy.xml
 
+#include "DrawLeaderLine.h"
 #include "DrawTile.h"
 #include "DrawTileWeld.h"
 #include "DrawWeldSymbol.h"
@@ -55,6 +56,7 @@ DrawWeldSymbol::DrawWeldSymbol(void)
     ADD_PROPERTY_TYPE(Leader,(0),group,(App::PropertyType)(App::Prop_None), "Parent Leader");
     ADD_PROPERTY_TYPE(AllAround, (false), group, App::Prop_None, "All Around Symbol on/off");
     ADD_PROPERTY_TYPE(FieldWeld, (false), group, App::Prop_None, "Field Weld Symbol on/off");
+    ADD_PROPERTY_TYPE(AlternatingWeld, (false), group, App::Prop_None, "Alternating Weld true/false");
     ADD_PROPERTY_TYPE(TailText, (""), group, App::Prop_None, "Text at tail of symbol");
 
     Caption.setStatus(App::Property::Hidden,true);
@@ -87,7 +89,6 @@ App::DocumentObjectExecReturn *DrawWeldSymbol::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-
     return DrawView::execute();
 }
 
@@ -107,9 +108,24 @@ std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles(void) const
             }
         }
     }
-//    Base::Console().Message("DWS::getTiles - returns: %d tiles\n",result.size());
     return result;
 }
+
+bool DrawWeldSymbol::isTailRightSide()
+{
+    bool result = true;
+    App::DocumentObject* obj = Leader.getValue();
+    TechDraw::DrawLeaderLine* realLeader = dynamic_cast<TechDraw::DrawLeaderLine*>(obj);
+    if (realLeader != nullptr) {
+        Base::Vector3d tail = realLeader->getTailPoint();
+        Base::Vector3d kink = realLeader->getKinkPoint();
+        if (tail.x < kink.x)  {   //tail is to left
+            result = false;
+        }
+    }
+    return result;
+}
+
 
 PyObject *DrawWeldSymbol::getPyObject(void)
 {
