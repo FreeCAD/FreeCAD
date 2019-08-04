@@ -44,6 +44,7 @@ __url__ = ["http://www.freecadweb.org"]
 
 import FreeCAD, os, Part, DraftVecUtils, DraftGeomUtils
 from FreeCAD import Vector
+from FreeCAD import Console as FCC
 
 if FreeCAD.GuiUp:
     from DraftTools import translate
@@ -71,7 +72,7 @@ def getpoint(data):
     Base::Vector3
         A vector with the data arranged, depending on the contents of `data`.
     """
-    print("found point ", data)
+    FCC.PrintMessage("found point %s \n" % data)
     if len(data) == 3:
         return Vector(float(data[0]), float(data[1]), float(data[2]))
     elif (data[0] == "P") and (len(data) == 4):
@@ -111,7 +112,7 @@ def getarea(data):
     Part.Wire
         A wire object from the points in `data`.
     """
-    print("found area ", data)
+    FCC.PrintMessage("found area %s \n" % data)
     if data[0] == "S":
         if data[1] == "POL":
             pts = data[2:]
@@ -136,7 +137,7 @@ def getarc(data):
     Part.Edge
         An edge object from the points in `data`.
     """
-    print("found arc ", data)
+    FCC.PrintMessage("found arc %s \n" % data)
     c = None
     if data[0] == "ARC":
         # 3-points arc
@@ -202,7 +203,7 @@ def getline(data):
     Part.Edge
         An edge object from the points in `data`.
     """
-    print("found line ", data)
+    FCC.PrintMessage("found line %s \n" % data)
     verts = []
     for p in range(len(data)):
         if data[p] == "P":
@@ -226,7 +227,7 @@ def gettranslation(data):
     Base::Vector3
         A vector with X, Y, or Z displacement, or (0, 0, 0).
     """
-    print("found translation ", data)
+    FCC.PrintMessage("found translation %s \n" % data)
     if data[0] == "Z":
         return Vector(0, 0, float(data[1]))
     elif data[0] == "Y":
@@ -357,6 +358,10 @@ def decodeName(name):
             decodedName = (name.decode("latin1"))
         except UnicodeDecodeError:
             print("oca: error: couldn't determine character encoding")
+            FCC.PrintError(translate("importOCA",
+                                     "OCA error: "
+                                     "couldn't determine character encoding")
+                           + "\n")
             decodedName = name
     return decodedName
 
@@ -440,6 +445,9 @@ def export(exportList, filename):
                 edges.append(e)
     if not (edges or faces):
         print("oca: found no data to export")
+        FCC.PrintMessage(translate("importOCA",
+                                   "OCA: found no data to export")
+                         + "\n")
         return
 
     # writing file
@@ -482,4 +490,6 @@ def export(exportList, filename):
 
     # closing
     oca.close()
-    FreeCAD.Console.PrintMessage("successfully exported "+filename)
+    FCC.PrintMessage(translate("importOCA",
+                               "successfully exported ")
+                     + filename + "\n")
