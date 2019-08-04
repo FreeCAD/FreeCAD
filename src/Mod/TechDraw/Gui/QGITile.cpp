@@ -23,9 +23,9 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QPainter>
-#include <QPainterPathStroker>
 #include <QStyleOptionGraphicsItem>
 #include <QFile>
+#include <QFileInfo>
 #endif
 
 #include <App/Application.h>
@@ -36,6 +36,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawTile.h>
 #include <Mod/TechDraw/App/DrawTileWeld.h>
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 #include <qmath.h>
 #include "Rez.h"
@@ -45,14 +46,11 @@
 
 using namespace TechDrawGui;
 
-QGITile::QGITile(TechDraw::DrawTile* feat) :
+QGITile::QGITile(TechDraw::DrawTileWeld* feat) :
     m_tileFeat(feat),
     m_textL(QString()),
     m_textR(QString()),
     m_textC(QString()),
-    m_textSize(0.0),
-    m_row(0),
-    m_col(0),
     m_scale(1.0)
 {
     m_qgSvg = new QGCustomSvg();
@@ -67,15 +65,17 @@ QGITile::QGITile(TechDraw::DrawTile* feat) :
 
     m_wide = getSymbolWidth();
     m_high = getFontSize();
-    m_textSize = getFontSize();
     m_textL  = QString();
     m_textR  = QString();
     m_textC  = QString();
     m_fontName = getTextFont();
     m_font = QFont(m_fontName);
 
-//    setHandlesChildEvents(true);    //qt4
+#if PY_MAJOR_VERSION < 3
+    setHandlesChildEvents(true);    //qt4 deprecated in qt5
+#else
     setFiltersChildEvents(true);    //qt5
+#endif
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
@@ -106,31 +106,67 @@ void QGITile::draw(void)
     double textWidthL = m_qgTextL->boundingRect().width();
     double textWidthR = m_qgTextR->boundingRect().width();
     double totalWidth = m_wide + textWidthL + textWidthR;
-
-    double x = m_origin.x() + m_col * totalWidth;   //bit of a hack. sb 0.5 of prev tile + 0.5 of this tile
-    double y = m_origin.y() - (m_row * m_high) - (m_high * 0.5);    //inverted y!!
-    setPos(x,y);
+    int row = m_tileFeat->TileRow.getValue();
+    int col = m_tileFeat->TileColumn.getValue();
+    if (row == 0) {     //arrowSide
+        double x = m_origin.x();
+        double y = m_origin.y() - (m_high * 0.5);    //inverted y!!
+        setPos(x,y);
+    } else if (row == -1) {    //otherSide
+        if (getAltWeld()) {
+            if (isTailRight()) { 
+                double x = m_origin.x() + (0.5 * totalWidth); //move to right 1/2 tile width
+                double y = m_origin.y() +  (m_high * 0.5);    //inverted y!!
+                setPos(x,y);
+            } else {
+                double x = m_origin.x() - (0.5 * totalWidth); //move to left 1/2 tile width
+                double y = m_origin.y() +  (m_high * 0.5);    //inverted y!!
+                setPos(x,y);
+            }
+        } else {
+            double x = m_origin.x();
+            double y = m_origin.y() + (m_high * 0.5);    //inverted y!!
+            setPos(x,y);
+        }
+    } else {
+        double x = m_origin.x() + col * totalWidth;
+        double y = m_origin.y() - (row * m_high) - (m_high * 0.5);    //inverted y!!
+        setPos(x,y);
+    }
 }
 
 void QGITile::makeSymbol(void)
 {
 //    Base::Console().Message("QGIT::makeSymbol()\n");
     m_effect->setColor(m_colCurrent);
-    
+
+    if (m_svgPath.isEmpty()) {
+        Base::Console().Warning("QGIT::makeSymbol - no symbol file set\n");
+        return;
+    }
+
     m_qgSvg->setGraphicsEffect(m_effect);
-    QFile svgFile(m_svgPath);
-    if(svgFile.open(QIODevice::ReadOnly)) {
-        QByteArray qba = svgFile.readAll();
-        if (!m_qgSvg->load(&qba)) {
-            Base::Console().Error("Error - Could not load SVG renderer with %s\n", qPrintable(m_svgPath));
-        }
-        svgFile.close();
-    } else {
-        Base::Console().Error("Error - Could not open file %s\n", qPrintable(m_svgPath));  
-    } 
     
-    m_qgSvg->setScale(scaleToFont());
-    m_qgSvg->centerAt(0.0, 0.0);   //(0,0) is based on symbol size
+    QFileInfo fi(m_svgPath);
+    if (fi.isReadable()) {
+        QFile svgFile(m_svgPath);
+        if(svgFile.open(QIODevice::ReadOnly)) {
+            QByteArray qba = svgFile.readAll();
+            if (!m_qgSvg->load(&qba)) {
+                Base::Console().Error("Error - Could not load SVG renderer with **%s**\n", qPrintable(m_svgPath));
+                return;
+            }
+            svgFile.close();
+            m_qgSvg->setScale(scaleToFont());
+            m_qgSvg->centerAt(0.0, 0.0);   //(0,0) is based on symbol size
+        } else {
+            Base::Console().Error("Error - Could not open file **%s**\n", qPrintable(m_svgPath));  
+        } 
+    } else {
+        Base::Console().Error("QGIT::makeSymbol - file: **%s** is not readable\n",qPrintable(m_svgPath));
+        return;
+    }
+    
 }
 
 void QGITile::makeText(void)
@@ -138,8 +174,11 @@ void QGITile::makeText(void)
 //    Base::Console().Message("QGIT::makeText()\n");
     prepareGeometryChange();
     m_font.setPixelSize(getFontSize());
-    double verticalFudge = 0.10;             //% of textHeight
+    double verticalFudge = 0.10;
 
+    int row = m_tileFeat->TileRow.getValue();
+
+    //(0, 0) is 1/2 up (above line symbol)!
     m_qgTextL->setFont(m_font);
     m_qgTextL->setPlainText(m_textL);
     m_qgTextL->setColor(m_colCurrent);
@@ -148,52 +187,45 @@ void QGITile::makeText(void)
     double hMargin = (m_wide / 2.0) + (charWidth / 2.0);
 
     double textHeightL = m_qgTextL->boundingRect().height();
-    double offsetAdjustL = 0.0;
-    if (m_row < 0) {
-        offsetAdjustL = -textHeightL * verticalFudge;
+    double vOffset = 0.0;
+    if (row < 0) {                      // below line
+        vOffset = textHeightL * verticalFudge;
     } else {
-        offsetAdjustL = textHeightL * verticalFudge;
+        vOffset = 0.0;
     }
-    double offset = (textHeightL * verticalFudge * m_row) + offsetAdjustL;
-    m_qgTextL->justifyRightAt(-hMargin, -offset, true);
+    m_qgTextL->justifyRightAt(-hMargin, vOffset, true);
 
     m_qgTextR->setFont(m_font);
     m_qgTextR->setPlainText(m_textR);
     m_qgTextR->setColor(m_colCurrent);
     textWidth = m_qgTextR->boundingRect().width();
     charWidth = textWidth / m_textR.size();
+    hMargin = (m_wide / 2.0) + (charWidth / 2.0);
     double textHeightR = m_qgTextR->boundingRect().height();
-    double offsetAdjustR = 0.0;
-    if (m_row < 0) {
-        offsetAdjustR = -textHeightR * verticalFudge;
+    if (row < 0) {                      // below line
+        vOffset =  textHeightR * verticalFudge;
     } else {
-        offsetAdjustR = textHeightR * verticalFudge;
+        vOffset = 0.0;
     }
-    offset = (textHeightR * verticalFudge * m_row) + offsetAdjustR;
-    m_qgTextR->justifyLeftAt(hMargin, -offset, true);
+    m_qgTextR->justifyLeftAt(hMargin, vOffset, true);
 
     m_qgTextC->setFont(m_font);
     m_qgTextC->setPlainText(m_textC);
     m_qgTextC->setColor(m_colCurrent);
     double textHeightC = m_qgTextC->boundingRect().height();
     textHeightC = textHeightC;
-    int rowAdjustC = m_row;
-    if (m_row >= 0) {
-        rowAdjustC++;
+    if (row < 0) {                      // below line
+        vOffset = m_high  * (1 + verticalFudge);
+    } else {
+        vOffset = -0.5 * (m_high + textHeightC);
     }
-    double offsetAdjustC = textHeightC * verticalFudge;
-    if (m_row < 0) {
-        offsetAdjustC = - offsetAdjustC;
-    }
-    offset = (textHeightC * rowAdjustC) - offsetAdjustC;
-    m_qgTextC->centerAt(0.0, -offset);
+    m_qgTextC->centerAt(0.0, vOffset);
 }
 
-void QGITile::setTilePosition(QPointF org, int r, int c)
+void QGITile::setTilePosition(QPointF org)
+
 {
     m_origin = org;
-    m_row = r;
-    m_col = c;
 }
 
 void QGITile::setTileScale(double s)
@@ -264,6 +296,29 @@ void QGITile::setPrettySel() {
     draw();
 }
 
+bool QGITile::isTailRight(void) 
+{
+    bool right = false;
+    App::DocumentObject* obj = m_tileFeat->TileParent.getValue();
+    TechDraw::DrawWeldSymbol* realParent = dynamic_cast<TechDraw::DrawWeldSymbol*>(obj);
+    if (realParent != nullptr) {
+        right = realParent->isTailRightSide();
+    }
+    return right;
+}
+
+bool QGITile::getAltWeld(void) 
+{
+    bool alt = false;
+    App::DocumentObject* obj = m_tileFeat->TileParent.getValue();
+    TechDraw::DrawWeldSymbol* realParent = dynamic_cast<TechDraw::DrawWeldSymbol*>(obj);
+    if (realParent != nullptr) {
+        alt = realParent->AlternatingWeld.getValue();
+    } else {
+        Base::Console().Message("QGIT::getAltWeld - real parent not found!\n");
+    }
+    return alt;
+}
 
 //TODO: this is Pen, not Brush. sb Brush to colour background
 QColor QGITile::getTileColor(void) const

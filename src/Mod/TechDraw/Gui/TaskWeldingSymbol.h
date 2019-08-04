@@ -32,7 +32,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
-
 class Ui_TaskWeldingSymbol;
 class Ui_TaskCL2Lines;
 
@@ -46,6 +45,8 @@ class DrawPage;
 class DrawView;
 class DrawLeaderLine;
 class DrawWeldSymbol;
+class DrawTileWeld;
+class DrawTile;
 }
 
 namespace TechDraw
@@ -62,35 +63,55 @@ class QGIWeldSymbol;
 class MDIViewPage;
 //class ViewProviderWeld;
 
-class Tile2Add
+class TileImage
 {
 public:
-    Tile2Add() {};
-    ~Tile2Add() = default;
-    bool arrowSide;  // or is row enough?
+    TileImage() {};
+    ~TileImage() = default;
+    bool toBeSaved;
+    bool arrowSide;
     int row;
     int col;
     std::string leftText;
     std::string centerText;
     std::string rightText;
     std::string symbolPath;
+    std::string tileName;
+    void init(void) {
+        toBeSaved = false;
+        arrowSide = true;
+        row = 0;
+        col = 0;
+        leftText = "";
+        centerText = "";
+        rightText = "";
+        symbolPath= "";
+        tileName = "";
+    }
+
 };
 
-class TaskWeldingSymbol : public QWidget
+class TechDrawGuiExport TaskWeldingSymbol : public QWidget
 {
     Q_OBJECT
 
 public:
     TaskWeldingSymbol(TechDraw::DrawLeaderLine* baseFeat);
+    TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weldFeat);
     ~TaskWeldingSymbol();
 
 public Q_SLOTS:
-    void onArrow0Clicked(bool b);
-    void onArrow1Clicked(bool b);
-    void onOther0Clicked(bool b);
-    void onOther1Clicked(bool b);
+    void onArrowSymbolClicked(bool b);
+
+    void onOtherSymbolClicked(bool b);
+    void onOtherEraseClicked(bool b);
+
+    void onArrowTextChanged(const QString& qs);
+    void onOtherTextChanged(const QString& qs);
+
     void onDirectorySelected(const QString& newDir);
-    
+    void onSymbolSelected(QString symbolPath, QString source);
+
 public:
     virtual bool accept();
     virtual bool reject();
@@ -98,7 +119,6 @@ public:
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
     void enableTaskButtons(bool b);
-    void setFlipped(bool b);
 
 protected Q_SLOTS:
 
@@ -109,34 +129,43 @@ protected:
     void setUiPrimary(void);
     void setUiEdit();
 
-    void turnOnArrow();
-    void turnOnOther();
-    void removePendingTile(int row, int col);
-
-
-    App::DocumentObject* createWeldingSymbol(void);
+    TechDraw::DrawWeldSymbol* createWeldingSymbol(void);
     void updateWeldingSymbol(void);
-    std::vector<App::DocumentObject*> createTiles(void);
 
-    void loadSymbolNames(QString pathToSymbols);
+    std::vector<App::DocumentObject*> createTiles(void);
+    std::vector<App::DocumentObject*> updateTiles(void);
+
+    void collectArrowData(void);
+    void collectOtherData(void);
 
     std::string prefSymbolDir();
+    void saveState(void);
+
     QString m_currDir;
 
-
 private:
-    Ui_TaskWeldingSymbol * ui;
+    Ui_TaskWeldingSymbol* ui;
 
     TechDraw::DrawLeaderLine* m_leadFeat;
     TechDraw::DrawWeldSymbol* m_weldFeat;
+    TechDraw::DrawTileWeld*   m_arrowIn;
+    TechDraw::DrawTileWeld*   m_otherIn;
 
-    std::vector<Tile2Add> m_tiles2Add;
+    TileImage m_arrowOut;
+    TileImage m_otherOut;
+
+    QString m_arrowPath;
+    QString m_otherPath;
+
+    std::vector<std::string> m_toRemove;
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
 
-    int m_arrowCount;
-    int m_otherCount;
+    bool m_createMode;
+
+    bool m_arrowDirty;
+    bool m_otherDirty;
 };
 
 
@@ -146,6 +175,7 @@ class TaskDlgWeldingSymbol : public Gui::TaskView::TaskDialog
 
 public:
     TaskDlgWeldingSymbol(TechDraw::DrawLeaderLine* leader);
+    TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld);
     ~TaskDlgWeldingSymbol();
 
 public:

@@ -48,19 +48,16 @@ QGIArrow::QGIArrow() :
     m_dirMode(false),
     m_dir(Base::Vector3d(1.0,0.0,0.0))
 {
-    isFlipped = false;
+    setFlipped(false);
     setFill(Qt::SolidPattern);
     m_brush.setStyle(m_fill);
+    m_colDefFill = getNormalColor();
+    m_colNormalFill = m_colDefFill;
 
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
-}
-
-
-void QGIArrow::flip(bool state) {
-    isFlipped = state;
 }
 
 void QGIArrow::draw() {
@@ -122,7 +119,7 @@ QPainterPath QGIArrow::makeFilledTriangle(double length, double width, bool flip
     path.lineTo(QPointF(Rez::guiX(length),Rez::guiX(-width)));
     path.lineTo(QPointF(Rez::guiX(length),Rez::guiX(width)));
     path.closeSubpath();
-    m_fill = Qt::SolidPattern;
+    setFill(Qt::SolidPattern);
     return path;
 }
 
@@ -141,7 +138,7 @@ QPainterPath QGIArrow::makeFilledTriangle(Base::Vector3d dir, double length, dou
     path.lineTo(QPointF(Rez::guiX(barb1.x),Rez::guiX(barb1.y)));
     path.lineTo(QPointF(Rez::guiX(barb2.x),Rez::guiX(barb2.y)));
     path.closeSubpath();
-    m_fill = Qt::SolidPattern;
+    setFill(Qt::SolidPattern);
     return path;
 }
 
