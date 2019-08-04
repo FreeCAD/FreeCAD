@@ -60,7 +60,7 @@ def open(filename):
     return
 
 
-def insert(filename,docname):
+def insert(filename, docname):
     """Imports a file using importDXF.insert().
 
     If no document exist, it is created.
@@ -82,13 +82,12 @@ def insert(filename,docname):
     dxf = convertToDxf(filename)
     if dxf:
         import importDXF
-        doc = importDXF.insert(dxf,docname)
+        doc = importDXF.insert(dxf, docname)
         return doc
     return
 
 
-def export(objectslist,filename):
-    "called when freecad exports a file"
+def export(objectslist, filename):
     """Export the DWG file with a given list of objects.
 
     The objects are exported with importDXF.export().
@@ -106,11 +105,11 @@ def export(objectslist,filename):
     str
         The same `filename` input.
     """
-    import importDXF,os,tempfile
+    import importDXF, os, tempfile
     outdir = tempfile.mkdtemp()
     dxf = outdir + os.sep + os.path.splitext(os.path.basename(filename))[0] + ".dxf"
-    importDXF.export(objectslist,dxf)
-    convertToDwg(dxf,filename)
+    importDXF.export(objectslist, dxf)
+    convertToDwg(dxf, filename)
     return filename
 
 
@@ -130,7 +129,7 @@ def getTeighaConverter():
         The full path of the converter executable
         '/usr/bin/TeighaFileConverter'
     """
-    import FreeCAD,os,platform
+    import FreeCAD, os, platform
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     p = p.GetString("TeighaFileConverter")
     if p:
@@ -153,7 +152,8 @@ def getTeighaConverter():
         if os.path.exists(teigha):
             return teigha
     from DraftTools import translate
-    FreeCAD.Console.PrintMessage(translate("draft","ODA (formerly Teigha) File Converter not found, DWG support is disabled")+"\n")
+    FreeCAD.Console.PrintMessage(translate("draft",
+                                           "ODA (formerly Teigha) File Converter not found, DWG support is disabled")+"\n")
     return None
 
 
@@ -172,7 +172,7 @@ def convertToDxf(dwgfilename):
     str
         The new file produced.
     """
-    import os,tempfile,subprocess,sys     #import os,tempfile
+    import os, tempfile, subprocess, sys     #import os,tempfile
     teigha = getTeighaConverter()
     if teigha:
         indir = os.path.dirname(dwgfilename)
@@ -181,10 +181,10 @@ def convertToDxf(dwgfilename):
         cmdline = '"%s" "%s" "%s" "ACAD2000" "DXF" "0" "1" "%s"' % (teigha, indir, outdir, basename)
         print("Converting: " + cmdline)
         if six.PY2:
-            if isinstance(cmdline,six.text_type):
+            if isinstance(cmdline, six.text_type):
                 encoding = sys.getfilesystemencoding()
                 cmdline = cmdline.encode(encoding)
-        subprocess.call(cmdline,  shell=True)     #os.system(cmdline)
+        subprocess.call(cmdline, shell=True)     #os.system(cmdline)
         result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
         if os.path.exists(result):
             print("Conversion successful")
@@ -195,7 +195,7 @@ def convertToDxf(dwgfilename):
     return None
 
 
-def convertToDwg(dxffilename,dwgfilename):
+def convertToDwg(dxffilename, dwgfilename):
     """Convert a DXF file to a DWG file.
 
     If the converter is found it is used, otherwise the convesion fails.
@@ -206,13 +206,13 @@ def convertToDwg(dxffilename,dwgfilename):
         The input DXF file
     dwgfilename : str
         The output DWG file
-    
+
     Returns
     -------
     str
         The same `dwgfilename` file path.
     """
-    import os,subprocess     #import os
+    import os, subprocess     #import os
     teigha = getTeighaConverter()
     if teigha:
         indir = os.path.dirname(dxffilename)
@@ -220,6 +220,6 @@ def convertToDwg(dxffilename,dwgfilename):
         basename = os.path.basename(dxffilename)
         cmdline = '"%s" "%s" "%s" "ACAD2000" "DWG" "0" "1" "%s"' % (teigha, indir, outdir, basename)
         print("converting " + cmdline)
-        subprocess.call(cmdline,  shell=True)     #os.system(cmdline)
+        subprocess.call(cmdline, shell=True)     #os.system(cmdline)
         return dwgfilename
     return None
