@@ -38,8 +38,20 @@ import six
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here
 
+
 def open(filename):
-    "called when freecad opens a file."
+    """Open filename and parse using importDXF.open().
+
+    Parameters
+    ----------
+    filename : str
+        The path to the filename to be opened.
+
+    Returns
+    -------
+    App::Document
+        The new FreeCAD document object created, with the parsed information.
+    """
     dxf = convertToDxf(filename)
     if dxf:
         import importDXF
@@ -47,8 +59,26 @@ def open(filename):
         return doc
     return
 
+
 def insert(filename,docname):
-    "called when freecad imports a file"
+    """Imports a file using importDXF.insert().
+
+    If no document exist, it is created.
+
+    Parameters
+    ----------
+    filename : str
+        The path to the filename to be opened.
+    docname : str
+        The name of the active App::Document if one exists, or
+        of the new one created.
+
+    Returns
+    -------
+    App::Document
+        The active FreeCAD document, or the document created if none exists,
+        with the parsed information.
+    """
     dxf = convertToDxf(filename)
     if dxf:
         import importDXF
@@ -56,8 +86,26 @@ def insert(filename,docname):
         return doc
     return
 
+
 def export(objectslist,filename):
     "called when freecad exports a file"
+    """Export the DWG file with a given list of objects.
+
+    The objects are exported with importDXF.export().
+    Then the result is converted to DWG.
+
+    Parameters
+    ----------
+    exportList : list
+        List of document objects to export.
+    filename : str
+        Path to the new file.
+
+    Returns
+    -------
+    str
+        The same `filename` input.
+    """
     import importDXF,os,tempfile
     outdir = tempfile.mkdtemp()
     dxf = outdir + os.sep + os.path.splitext(os.path.basename(filename))[0] + ".dxf"
@@ -65,9 +113,24 @@ def export(objectslist,filename):
     convertToDwg(dxf,filename)
     return filename
 
+
 def getTeighaConverter():
+    """Find the ODA (formerly Teigha) executable.
+
+    It searches the FreeCAD parameters database, then searches for common
+    paths in Linux and Windows systems.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    str
+        The full path of the converter executable
+        '/usr/bin/TeighaFileConverter'
+    """
     import FreeCAD,os,platform
-    "finds the Teigha Converter executable"
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     p = p.GetString("TeighaFileConverter")
     if p:
@@ -93,8 +156,22 @@ def getTeighaConverter():
     FreeCAD.Console.PrintMessage(translate("draft","ODA (formerly Teigha) File Converter not found, DWG support is disabled")+"\n")
     return None
 
+
 def convertToDxf(dwgfilename):
-    "converts a DWG file to DXF"
+    """Convert a DWG file to a DXF file.
+
+    If the converter is found it is used, otherwise the convesion fails.
+
+    Parameters
+    ----------
+    dwgfilename : str
+        The input filename.
+
+    Returns
+    -------
+    str
+        The new file produced.
+    """
     import os,tempfile,subprocess,sys     #import os,tempfile
     teigha = getTeighaConverter()
     if teigha:
@@ -117,8 +194,24 @@ def convertToDxf(dwgfilename):
             print("without spaces and non-english characters, or try saving to a lower DWG version")
     return None
 
+
 def convertToDwg(dxffilename,dwgfilename):
-    "converts a DXF file to DWG"
+    """Convert a DXF file to a DWG file.
+
+    If the converter is found it is used, otherwise the convesion fails.
+
+    Parameters
+    ----------
+    dxffilename : str
+        The input DXF file
+    dwgfilename : str
+        The output DWG file
+    
+    Returns
+    -------
+    str
+        The same `dwgfilename` file path.
+    """
     import os,subprocess     #import os
     teigha = getTeighaConverter()
     if teigha:
