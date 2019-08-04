@@ -65,6 +65,7 @@ set(TechDrawGui_MOC_HDRS
     mtextedit.h
     TaskBalloon.h
     QGIWeldSymbol.h
+    SymbolChooser.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -94,6 +95,7 @@ set(TechDrawGui_UIC_SRCS
     TaskLineDecor.ui
     TaskRestoreLines.ui
     TaskWeldingSymbol.ui
+    SymbolChooser.ui
 )
 
 if(BUILD_QT5)
@@ -178,6 +180,9 @@ SET(TechDrawGui_SRCS
     DrawGuiUtil.h
     Rez.cpp
     Rez.h
+    SymbolChooser.ui
+    SymbolChooser.cpp
+    SymbolChooser.h
 )
 
 SET(TechDrawGuiView_SRCS
@@ -338,6 +343,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskRestoreLines.ui
     TaskCL2Lines.ui
     TaskWeldingSymbol.ui
+    SymbolChooser.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

@@ -525,6 +525,7 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+//    painter->setPen(Qt::red);
 //    painter->drawRect(boundingRect());          //good for debugging
 
     QGraphicsItemGroup::paint(painter, &myOption, widget);
@@ -541,8 +542,12 @@ QRectF QGIView::customChildrenBoundingRect() const
     int textLeaderItemType = QGraphicsItem::UserType + 233;  // TODO: Magic number warning
     int editablePathItemType = QGraphicsItem::UserType + 301;  // TODO: Magic number warning
     int movableTextItemType = QGraphicsItem::UserType + 300;
+    int weldingSymbolItemType = QGraphicsItem::UserType + 340;
     QRectF result;
     for (QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if (!(*it)->isVisible()) {
+            continue;
+        }
         if ( ((*it)->type() != dimItemType) &&
              ((*it)->type() != leaderItemType) &&
              ((*it)->type() != textLeaderItemType) &&
@@ -550,6 +555,7 @@ QRectF QGIView::customChildrenBoundingRect() const
              ((*it)->type() != movableTextItemType) &&
              ((*it)->type() != borderItemType) &&
              ((*it)->type() != labelItemType)  &&
+             ((*it)->type() != weldingSymbolItemType)  &&
              ((*it)->type() != captionItemType) ) {
             QRectF childRect = mapFromItem(*it,(*it)->boundingRect()).boundingRect();
             result = result.united(childRect);

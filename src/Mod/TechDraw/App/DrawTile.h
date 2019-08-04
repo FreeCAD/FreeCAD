@@ -42,7 +42,7 @@ public:
     App::PropertyLink         TileParent;           //eg DrawWeldSymbol
     App::PropertyInteger      TileRow;
     App::PropertyInteger      TileColumn;
-    App::PropertyVector       TileOrigin;           //sb call to TileParent - WeldingSymbol
+/*    App::PropertyVector       TileOrigin;           //sb call to TileParent - WeldingSymbol*/
 
     virtual short mustExecute() const;
     virtual App::DocumentObjectExecReturn *execute(void);
