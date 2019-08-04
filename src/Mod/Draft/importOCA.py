@@ -10,7 +10,7 @@ This module provides support for importing from and exporting to
 the OCA format or GCAD format from GCAD3D (http://www.gcad3d.org/).
 See: https://groups.google.com/forum/#!forum/open_cad_format
 
-By 2019 this file format is practically obsolete, and this module is not
+As of 2019 this file format is practically obsolete, and this module is not
 maintained.
 '''
 # Check code with
