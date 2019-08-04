@@ -22,7 +22,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Draft Workbench - OCA importer/exporter"
+__title__= "FreeCAD Draft Workbench - OCA importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
@@ -41,13 +41,16 @@ This script imports OCA/gcad files into FreeCAD.
 import FreeCAD, os, Part, math, DraftVecUtils, DraftGeomUtils
 from FreeCAD import Vector
 
-try: import FreeCADGui
-except ValueError: gui = False
-else: gui = True
+try:
+    import FreeCADGui
+except ValueError:
+    gui = False
+else:
+    gui = True
 
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
-    
+
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 
@@ -64,11 +67,11 @@ def getpoint(data):
     Base::Vector3
         A vector with the data arranged, depending on the contents of `data`.
     """
-    print("found point ",data)
+    print("found point ", data)
     if (len(data) == 3):
-        return Vector(float(data[0]),float(data[1]),float(data[2]))
+        return Vector(float(data[0]), float(data[1]), float(data[2]))
     elif (data[0] == "P") and (len(data) == 4):
-        return Vector(float(data[1]),float(data[2]),float(data[3]))
+        return Vector(float(data[1]), float(data[2]), float(data[3]))
     elif (data[0][0] == "P") and (len(data[0]) > 1):
         if (len(data) == 1):
             return objects[data[0]]
@@ -76,7 +79,8 @@ def getpoint(data):
             if (data[1][0] == "R"):
                 return objects[data[0]].add(objects[data[1]])
             elif (data[1][0] == "C"):
-                return DraftGeomUtils.findProjection(objects[data[0]],objects[data[1]])
+                return DraftGeomUtils.findProjection(objects[data[0]],
+                                                     objects[data[1]])
     elif (data[0][0] == "C"):
         if objects[data[0]]:
             p1 = objects[data[0]].Curve.Position
@@ -84,8 +88,8 @@ def getpoint(data):
                 return p1
             else:
                 if (data[1][0] == "L"):
-                    l = objects[data[1]]
-                    return p1.add(DraftGeomUtils.vec(l))
+                    L = objects[data[1]]
+                    return p1.add(DraftGeomUtils.vec(L))
 
 
 def getarea(data):
@@ -101,7 +105,7 @@ def getarea(data):
     Part.Wire
         A wire object from the points in `data`.
     """
-    print("found area ",data)
+    print("found area ", data)
     if (data[0] == "S"):
         if (data[1] == "POL"):
             pts = data[2:]
@@ -138,7 +142,7 @@ def getarc(data):
             elif (pts[p][0] == "P"):
                 verts.append(getpoint([pts[p]]))
         if verts[0] and verts[1] and verts[2]:
-            c = Part.Arc(verts[0],verts[1],verts[2])
+            c = Part.Arc(verts[0], verts[1], verts[2])
     elif (data[0][0] == "P"):
         # 2-point circle
         verts = []
@@ -154,8 +158,10 @@ def getarc(data):
                 lines.append(objects[data[p]])
         c = Part.Circle()
         c.Center = verts[0]
-        if rad: c.Radius = rad
-        else: c.Radius = DraftVecUtils.new(verts[0],verts[1]).Length
+        if rad:
+            c.Radius = rad
+        else:
+            c.Radius = DraftVecUtils.new(verts[0], verts[1]).Length
     elif (data[0][0] == "L"):
         # 2-lines circle
         lines = []
@@ -165,9 +171,13 @@ def getarc(data):
                 rad = float(data[p+1])
             elif (data[p][0] == "L"):
                 lines.append(objects[data[p]])
-        circles = DraftGeomUtils.circleFrom2LinesRadius(lines[0],lines[1],rad)
-        if circles: c = circles[0]
-    if c: return c.toShape()
+        circles = DraftGeomUtils.circleFrom2LinesRadius(lines[0],
+                                                        lines[1],
+                                                        rad)
+        if circles:
+            c = circles[0]
+    if c:
+        return c.toShape()
 
 
 def getline(data):
@@ -190,8 +200,8 @@ def getline(data):
             verts.append(getpoint(data[p:p+4]))
         elif (data[p][0] == "P"):
             verts.append(getpoint([data[p]]))
-    l = Part.LineSegment(verts[0],verts[1])
-    return l.toShape()
+    L = Part.LineSegment(verts[0], verts[1])
+    return L.toShape()
 
 
 def gettranslation(data):
@@ -207,14 +217,14 @@ def gettranslation(data):
     Base::Vector3
         A vector with X, Y, or Z displacement, or (0, 0, 0).
     """
-    print("found translation ",data)
+    print("found translation ", data)
     if (data[0] == "Z"):
-        return Vector(0,0,float(data[1]))
+        return Vector(0, 0, float(data[1]))
     elif (data[0] == "Y"):
-        return Vector(0,float(data[1]),0)
+        return Vector(0, float(data[1]), 0)
     elif (data[0] == "X"):
-        return Vector(float(data[1]),0,0)    
-    return Vector(0,0,0)
+        return Vector(float(data[1]), 0, 0)
+    return Vector(0, 0, 0)
 
 
 def writepoint(vector):
@@ -233,7 +243,7 @@ def writepoint(vector):
     return "P("+str(vector.x)+" "+str(vector.y)+" "+str(vector.z)+")"
 
 
-def createobject(id,doc):
+def createobject(id, doc):
     """Create Part::Feature object in the current document.
 
     Parameters
@@ -247,13 +257,14 @@ def createobject(id,doc):
     -------
     None
     """
-    if isinstance(objects[id],Part.Shape):
-        ob = doc.addObject("Part::Feature",id)
+    if isinstance(objects[id], Part.Shape):
+        ob = doc.addObject("Part::Feature", id)
         ob.Shape = objects[id]
-        if gui: ob.ViewObject.ShapeColor = color
+        if gui:
+            ob.ViewObject.ShapeColor = color
 
 
-def parse(filename,doc):
+def parse(filename, doc):
     """Import an opened OCA file into the given document.
 
     Parameters
@@ -271,17 +282,17 @@ def parse(filename,doc):
     global objects
     objects = {}
     global color
-    color = (0,0,0)
+    color = (0, 0, 0)
     for l in filebuffer:
-        readline = l.replace(","," ").upper()
+        readline = l.replace(",", " ").upper()
         if ("=" in readline):
             # entity definitions
             pair = readline.split("=")
             id = pair[0]
             data = pair[1]
-            data = data.replace(","," ")
-            data = data.replace("("," ")
-            data = data.replace(")"," ")
+            data = data.replace(",", " ")
+            data = data.replace("(", " ")
+            data = data.replace(")", " ")
             data = data.split()
             if id[0] == "P":
                 # point
@@ -289,18 +300,18 @@ def parse(filename,doc):
             elif ((id[0] == "A") and params.GetBool("ocaareas")):
                 # area
                 objects[id] = getarea(data)
-                createobject(id,doc)
+                createobject(id, doc)
 
             elif id[0] == "C":
                 # arc or circle
                 objects[id] = getarc(data)
-                createobject(id,doc)
+                createobject(id, doc)
 
             elif id[0] == "L":
                 # line
                 objects[id] = getline(data)
-                createobject(id,doc)
-                
+                createobject(id, doc)
+
             elif id[0] == "R":
                 # translation
                 objects[id] = gettranslation(data)
@@ -308,7 +319,9 @@ def parse(filename,doc):
         elif (readline[0:6] == "DEFCOL"):
             # color
             c = readline.split()
-            color = (float(c[1])/255,float(c[2])/255,float(c[3])/255)
+            color = (float(c[1])/255,
+                     float(c[2])/255,
+                     float(c[3])/255)
 
     del color
 
@@ -337,7 +350,7 @@ def decodeName(name):
             print("oca: error: couldn't determine character encoding")
             decodedName = name
     return decodedName
-    
+
 
 def open(filename):
     """Open filename and parse.
@@ -351,15 +364,17 @@ def open(filename):
     -------
     None
     """
-    docname=os.path.split(filename)[1]
-    doc=FreeCAD.newDocument(docname)
-    if (docname[-4:] == "gcad"): doc.Label = docname[:-5]
-    else: doc.Label = docname[:-4]
-    parse(filename,doc)
+    docname = os.path.split(filename)[1]
+    doc = FreeCAD.newDocument(docname)
+    if (docname[-4:] == "gcad"):
+        doc.Label = docname[:-5]
+    else:
+        doc.Label = docname[:-4]
+    parse(filename, doc)
     doc.recompute()
 
 
-def insert(filename,docname):
+def insert(filename, docname):
     """Get an active document and parse.
 
     If no document exist, it is created.
@@ -377,15 +392,15 @@ def insert(filename,docname):
     None
     """
     try:
-        doc=FreeCAD.getDocument(docname)
+        doc = FreeCAD.getDocument(docname)
     except NameError:
-        doc=FreeCAD.newDocument(docname)
+        doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
-    parse(filename,doc)
+    parse(filename, doc)
     doc.recompute()
 
 
-def export(exportList,filename):
+def export(exportList, filename):
     """Export the OCA file with a given list of objects.
 
     The objects must be edges or faces, in order to be processed
@@ -405,7 +420,7 @@ def export(exportList,filename):
     """
     faces = []
     edges = []
-    
+
     # getting faces and edges
     for ob in exportList:
         if ob.Shape.Faces:
@@ -417,9 +432,9 @@ def export(exportList,filename):
     if not (edges or faces):
         print("oca: found no data to export")
         return
-    
+
     # writing file
-    oca = pythonopen(filename,'wb')
+    oca = pythonopen(filename, 'wb')
     oca.write("#oca file generated from FreeCAD\r\n")
     oca.write("# edges\r\n")
     count = 1
