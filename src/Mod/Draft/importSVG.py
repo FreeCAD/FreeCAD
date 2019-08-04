@@ -52,13 +52,13 @@ __url__ = ["http://www.freecadweb.org"]
 # implement inherting fill style from group
 # handle relative units
 
-import xml.sax, string, FreeCAD, os, math, re, Draft, DraftVecUtils
+import xml.sax, FreeCAD, os, math, re, Draft, DraftVecUtils
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 
 if FreeCAD.GuiUp:
     from DraftTools import translate
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
 else:
     def translate(context, txt):
         return txt
@@ -873,7 +873,7 @@ class svgHandler(xml.sax.ContentHandler):
             point = []
             lastvec = Vector(0, 0, 0)
             lastpole = None
-            command = None
+            # command = None
             relative = False
             firstvec = None
 
@@ -1105,9 +1105,9 @@ class svgHandler(xml.sax.ContentHandler):
                             pole2 = Vector(p2x, -p2y, 0)
 
                         if not DraftVecUtils.equals(currentvec, lastvec):
-                            mainv = currentvec.sub(lastvec)
-                            pole1v = lastvec.add(pole1)
-                            pole2v = currentvec.add(pole2)
+                            # mainv = currentvec.sub(lastvec)
+                            # pole1v = lastvec.add(pole1)
+                            # pole2v = currentvec.add(pole2)
                             # print("cubic curve data:",
                             #       mainv.normalize(),
                             #       pole1v.normalize(),
@@ -1202,7 +1202,7 @@ class svgHandler(xml.sax.ContentHandler):
                             # Move relative to recent draw command
                             lastvec = firstvec
                         point = []
-                        command = None
+                        # command = None
                         if self.currentsymbol:
                             self.symbols[self.currentsymbol].append(obj)
             if path:
@@ -1800,7 +1800,8 @@ def export(exportList, filename):
     _prefs = "User parameter:BaseApp/Preferences/Mod/Draft"
     svg_export_style = FreeCAD.ParamGet(_prefs).GetInt("svg_export_style")
     if svg_export_style != 0 and svg_export_style != 1:
-        FCC.PrintMessage(translate("Unknown SVG export style, "
+        FCC.PrintMessage(translate("ImportSVG",
+                                   "Unknown SVG export style, "
                                    "switching to Translated") + "\n")
         svg_export_style = 0
 
