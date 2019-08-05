@@ -847,8 +847,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     // update constraint virtual space status
     Gui::Command::openCommand("Update constraint's virtual space");
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setVirtualSpace(%d, %s)",
-                                sketch->getNameInDocument(),
+        FCMD_OBJ_CMD2("setVirtualSpace(%d, %s)",
+                                sketch,
                                 it->ConstraintNbr,
                                 ((item->checkState() == Qt::Checked) != sketchView->getIsShownVirtualSpace())?"False":"True");
         Gui::Command::commitCommand();

@@ -6589,7 +6589,7 @@ public:
                 (subName.size() > 4 && subName.substr(0,4) == "Face")) {
                 try {
                     Gui::Command::openCommand("Add external geometry");
-                    FCMD_OBJ_CMD2("App.ActiveDocument.%s.addExternal(\"%s\",\"%s\")",
+                    FCMD_OBJ_CMD2("addExternal(\"%s\",\"%s\")",
                               sketchgui->getObject(),
                               msg.pObjectName, msg.pSubName);
                     Gui::Command::commitCommand();

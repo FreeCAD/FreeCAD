@@ -1226,9 +1226,8 @@ static const char *cursor_createcopy[]={
                                             (Op == SketcherCopy::Clone?"True":"False"));
                     }
                     else {
-                        Gui::Command::doCommand(
-                            Gui::Command::Doc, "App.ActiveDocument.%s.addMove(%s,App.Vector(%f,%f,0))",
-                            sketchgui->getObject()->getNameInDocument(),
+                        FCMD_OBJ_CMD2("addMove(%s,App.Vector(%f,%f,0))",
+                            sketchgui->getObject(),
                             geoIdList.c_str(), vector.x, vector.y);
                     }
 
@@ -2029,9 +2028,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
 
         try {
             Gui::Command::openCommand("Delete All Constraints");
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.deleteAllConstraints()",
-                                    Obj->getNameInDocument());
+            FCMD_OBJ_CMD2("deleteAllConstraints()", Obj);
 
             Gui::Command::commitCommand();
         }
