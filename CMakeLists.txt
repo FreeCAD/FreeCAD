@@ -46,6 +46,14 @@ endif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 
 # ================================================================================
 
+# Needed for boost1.69
+# Avoid that Python (pyerrors.h) defines snprintf and vsnprintf
+if (MSVC AND NOT MSVC_VERSION VERSION_LESS 1900)
+    add_definitions(-DHAVE_SNPRINTF)
+elseif (MINGW)
+    add_definitions(-DHAVE_SNPRINTF)
+endif()
+
 # Allow developers to use Boost < 1.48
 if (NOT BOOST_MIN_VERSION)
     set(BOOST_MIN_VERSION 1.48)
@@ -1043,7 +1051,12 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
             find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
         endif(DEFINED MACPORTS_PREFIX)
 
+        # Shiboken2Config.cmake may explicitly set CMAKE_BUILD_TYPE to Release which causes
+        # CMake to fail to create Makefiles for a debug build.
+        # So as a workaround we save and restore the value after checking for Shiboken2.
+        set (SAVE_BUILD_TYPE ${CMAKE_BUILD_TYPE})
         find_package(Shiboken2 QUIET)# REQUIRED
+        set (CMAKE_BUILD_TYPE ${SAVE_BUILD_TYPE})
         if (Shiboken2_FOUND)
             # Shiboken2 config file was found but it may use the wrong Python version
             # Try to get the matching config suffix and repeat finding the package
@@ -1210,6 +1223,9 @@ if(MSVC)
         set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG")
     endif(FREECAD_RELEASE_PDB)
     if(FREECAD_RELEASE_SEH)
+        # remove /EHsc or /EHs flags because they are incompatible with /EHa
+        string(REPLACE "/EHsc" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+        string(REPLACE "/EHs" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
         set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
     endif(FREECAD_RELEASE_SEH)
 
@@ -1229,7 +1245,6 @@ if(MSVC)
 else(MSVC)
     set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG")
         #message(STATUS "DEBUG: ${CMAKE_CXX_FLAGS_DEBUG}")
-        message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 endif(MSVC)
 
 if(MINGW)
@@ -1282,6 +1297,9 @@ endif(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
 message(STATUS "\n==============\n"
                "Summary report\n"
                "==============\n")
+if (DEFINED CMAKE_BUILD_TYPE)
+    message(STATUS "Build type:          ${CMAKE_BUILD_TYPE}")
+endif()
 
 # Qt5 needs/sets PYTHON_CONFIG_SUFFIX regarding Shiboken
 message(STATUS "Python:              [${PYTHON_EXECUTABLE}] [${PYTHON_CONFIG_SUFFIX}]")

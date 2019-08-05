@@ -27,101 +27,231 @@
 __title__="FreeCAD File info utility"
 __author__ = "Yorik van Havre"
 __url__ = ["http://www.freecadweb.org"]
-__doc__ = '''This utility prints information about a given FreeCAD file (*.FCStd)
-on screen, including document properties, number of included objects 
-and object sizes. 
+__doc__ = '''
+This utility prints information about a given FreeCAD file (*.FCStd)
+on screen, including document properties, number of included objects,
+object sizes and properties and values. Its main use is to compare
+two files and be able to see the differences in a text-based form.
 
-It can be used as a textconv tool for git diff by configuring your git folder as follows:
- 1) add to .gitattributes: 
-     *.fcstd diff=fcinfo
- 2) add to .git/config (or .gitconfig for user-wide):
-     [diff "fcinfo"]
-         textconv = /path/to/fcinfo
+If no option is used, fcinfo prints the document properties and a list
+of properties of each object found in the given file.
 
-Usage: fcinfo myfile.FCStd'''
+Usage:
+
+    fcinfo [options] myfile.FCStd
+
+Options:
+
+    -h, --help:      Prints this help text
+    -s, --short:     Do not print object properties. Only one line
+                     per object is printed, including its size and SHA1.
+                     This is sufficient to see that an object has
+                     changed, but not what exactly has changed.
+    -vs --veryshort: Only prints the document info, not objects info.
+                     This is sufficient to see if a file has changed, as
+                     its SHA1 code and timestamp will show it. But won't
+                     show details of what has changed.
+    -g  --gui:       Adds visual properties too (if not using -s or -vs)
+
+Git usage:
+
+    This script can be used as a textconv tool for git diff by
+    configuring your git folder as follows:
+
+     1) add to .gitattributes (or ~/.gitattributes for user-wide):
+
+         *.fcstd diff=fcinfo
+
+     2) add to .git/config (or ~/.gitconfig for user-wide):
+
+         [diff "fcinfo"]
+             textconv = /path/to/fcinfo
+
+    With this, when committing a .FCStd file with Git,
+    'git diff' will show you the difference between the two
+    texts obtained by fcinfo
+'''
 
 
-import sys, zipfile, xml.sax, os, hashlib
+import sys
+import zipfile
+import xml.sax
+import os
+import hashlib
+import re
+
 
 
 class FreeCADFileHandler(xml.sax.ContentHandler):
 
-    def __init__(self,zfile):
+
+
+    def __init__(self, zfile, short = 0): # short: 0=normal, 1=short, 2=veryshort
+
         xml.sax.ContentHandler.__init__(self)
         self.zfile = zfile
         self.obj = None
         self.prop = None
         self.count = "0"
         self.contents = {}
+        self.short = short
 
     def startElement(self, tag, attributes):
+
         if tag == "Document":
             self.obj = tag
+            self.contents = {}
             self.contents["ProgramVersion"] = attributes["ProgramVersion"]
             self.contents["FileVersion"] = attributes["FileVersion"]
+
         elif tag == "Object":
-            if not (attributes["name"] in self.contents):
-                self.contents[attributes["name"]] = ""
-            if "type" in attributes:
-                self.contents[attributes["name"]] += attributes["type"]
-            self.obj = attributes["name"]
+            if ("name" in attributes):
+                name = self.clean(attributes["name"])
+                self.obj = name
+                if ("type" in attributes):
+                    self.contents[name] = attributes["type"]
+
+        elif tag == "ViewProvider":
+            if ("name" in attributes):
+                self.obj = self.clean(attributes["name"])
+
         elif tag == "Part":
             if self.obj:
-                s = self.zfile.read(attributes["file"]).__sizeof__()
+                r = self.zfile.read(attributes["file"])
+                s = r.__sizeof__()
                 if s < 1024:
                     s = str(s)+"B"
                 elif s > 1048576:
                     s = str(s/1048576)+"M"
                 else:
                     s = str(s/1024)+"K"
+                s += " " + str(hashlib.sha1(r).hexdigest()[:12])
                 self.contents[self.obj] += " (" + s + ")"
+
         elif tag == "Property":
-            self.prop = attributes["name"]
-        elif tag in ["String","Uuid"]:
-            if (self.obj == "Document") and self.prop:
-                self.contents[self.prop] = attributes["value"]
+            self.prop = None
+            # skip "internal" properties, unuseful for a diff
+            if attributes["name"] not in ["Symbol","AttacherType","MapMode","MapPathParameter","MapReversed",
+                                          "AttachmentOffset","SelectionStyle","TightGrid","GridSize","GridSnap",
+                                          "GridStyle","Lighting","Deviation","AngularDeflection","BoundingBox",
+                                          "Selectable","ShowGrid"]:
+                self.prop = attributes["name"]
+
+        elif tag in ["String","Uuid","Float","Integer","Bool","Link"]:
+            if self.prop and ("value" in attributes):
+                if self.obj == "Document":
+                    self.contents[self.prop] = attributes["value"]
+                elif self.short == 0:
+                    if tag == "Float":
+                        self.contents[self.obj+"00000000::"+self.prop] = str(float(attributes["value"]))
+                    else:
+                        self.contents[self.obj+"00000000::"+self.prop] = attributes["value"]
+
+        elif tag in ["PropertyVector"]:
+            if self.prop and self.obj and (self.short == 0):
+                val = "("+str(float(attributes["valueX"]))+","+str(float(attributes["valueY"]))+","+str(float(attributes["valueZ"]))+")"
+                self.contents[self.obj+"00000000::"+self.prop] = val
+
+        elif tag in ["PropertyPlacement"]:
+            if self.prop and self.obj and (self.short == 0):
+                val = "("+str(float(attributes["Px"]))+","+str(float(attributes["Py"]))+","+str(float(attributes["Pz"]))+")"
+                val += " ("+str(round(float(attributes["Q0"]),4))+","+str(round(float(attributes["Q1"]),4))+","
+                val += str(round(float(attributes["Q2"]),4))+","+str(round(float(attributes["Q3"]),4))+")"
+                self.contents[self.obj+"00000000::"+self.prop] = val
+
+        elif tag in ["PropertyColor"]:
+            if self.prop and self.obj and (self.short == 0):
+                c = int(attributes["value"])
+                r = float((c>>24)&0xFF)/255.0
+                g = float((c>>16)&0xFF)/255.0
+                b = float((c>>8)&0xFF)/255.0
+                val = str((r,g,b))
+                self.contents[self.obj+"00000000::"+self.prop] = val
+
         elif tag == "Objects":
             self.count = attributes["Count"]
             self.obj = None
+
+            # Print all the contents of the document properties
             items = self.contents.items()
             items.sort()
-            for key,val in items:
-                print ("   " + key.encode("utf-8").strip() + " : " + val.encode("utf-8").strip())
+            for key,value in items:
+                key = self.clean(key)
+                value = self.clean(value)
+                print("   " + key + " : " + value)
+            print("   Objects: ("+self.count+")")
             self.contents = {}
-            print ("   Objects: ("+self.count+")")
-            
-    def endElement(self,tag):
-        if tag == "Document":
-            if self.contents:
-                items = self.contents.items()
-                items.sort()
-                for key,val in items:
-                    print ("       " + key + " : " + val)
+
+    def endElement(self, tag):
+
+        if (tag == "Document") and (self.short != 2):
+            items = self.contents.items()
+            items.sort()
+            for key,value in items:
+                key = self.clean(key)
+                if "00000000::" in key:
+                    key = "   "+key.split("00000000::")[1]
+                value = self.clean(value)
+                if value:
+                    print("        " + key + " : " + value)
+
+    def clean(self,value):
+
+        value = value.strip()
+        if sys.version_info.major < 3:
+            value = value.encode("utf8")
+        return value
 
 
 if __name__ == '__main__':
 
-    if len(sys.argv) != 2:
-        print __doc__
-        sys.exit(1)
+    if len(sys.argv) < 2:
+        print(__doc__)
+        sys.exit()
 
-    zfile=zipfile.ZipFile(sys.argv[1])
-    files=zfile.namelist()
+    if ("-h" in sys.argv[1:]) or ("--help" in sys.argv[1:]):
+        print(__doc__)
+        sys.exit()
 
-    if files[0] != "Document.xml":
+    if not sys.argv[-1].lower().endswith(".fcstd"):
+        print(__doc__)
+        sys.exit()
+
+    if ("-vs" in sys.argv[1:]) or ("--veryshort" in sys.argv[1:]):
+        short = 2
+    elif ("-s" in sys.argv[1:]) or ("--short" in sys.argv[1:]):
+        short = 1
+    else:
+        short = 0
+
+    if ("-g" in sys.argv[1:]) or ("--gui" in sys.argv[1:]):
+        gui = True
+    else:
+        gui = False
+
+    zfile = zipfile.ZipFile(sys.argv[-1])
+
+    if not "Document.xml" in zfile.namelist():
         sys.exit(1)
     doc = zfile.read("Document.xml")
-    s = os.path.getsize(sys.argv[1])
+    if gui and "GuiDocument.xml" in zfile.namelist():
+        guidoc = zfile.read("GuiDocument.xml")
+        guidoc = re.sub(r"<\?xml.*?-->"," ",guidoc,flags=re.MULTILINE|re.DOTALL)
+        # a valid xml doc can have only one root element. So we need to insert
+        # all the contents of the GUiDocument <document> tag into the main one
+        doc = re.sub(r"<\/Document>","",doc,flags=re.MULTILINE|re.DOTALL)
+        guidoc = re.sub(r"<Document.*?>"," ",guidoc,flags=re.MULTILINE|re.DOTALL)
+        doc += guidoc
+    s = os.path.getsize(sys.argv[-1])
     if s < 1024:
         s = str(s)+"B"
     elif s > 1048576:
         s = str(s/1048576)+"M"
     else:
         s = str(s/1024)+"K"
-    print("Document: "+sys.argv[1]+" ("+s+")")
-    print ("   SHA1: "+str(hashlib.sha1(open(sys.argv[1],'rb').read()).hexdigest()))
-    xml.sax.parseString(doc,FreeCADFileHandler(zfile))
-
+    print("Document: "+sys.argv[-1]+" ("+s+")")
+    print("   SHA1: "+str(hashlib.sha1(open(sys.argv[-1],'rb').read()).hexdigest()))
+    xml.sax.parseString(doc,FreeCADFileHandler(zfile,short))
 
 
 

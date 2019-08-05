@@ -159,6 +159,7 @@ class CheckWBWorker(QtCore.QThread):
 
     enable = QtCore.Signal(int)
     mark = QtCore.Signal(str)
+    addon_repos = QtCore.Signal(object)
 
     def __init__(self,repos):
 
@@ -208,6 +209,8 @@ class CheckWBWorker(QtCore.QThread):
                         if "git pull" in gitrepo.status():
                             self.mark.emit(repo[0])
                             upds.append(repo[0])
+                self.repos[self.repos.index(repo)][2] = 2 # mark as already installed AND already checked for updates
+        self.addon_repos.emit(self.repos)
         self.enable.emit(len(upds))
         self.stop = True
 
@@ -301,6 +304,8 @@ class ShowWorker(QtCore.QThread):
 
     def __init__(self, repos, idx):
 
+        # repos is a list of [name,url,installbit,descr] lists
+        # installbit: 0 = not installed, 1 = installed, 2 = installed and checked for available updates
         QtCore.QThread.__init__(self)
         self.repos = repos
         self.idx = idx
@@ -386,6 +391,8 @@ class ShowWorker(QtCore.QThread):
                 message = "<strong style=\"background: #B65A00;\">" + translate("AddonsInstaller", "An update is available for this addon.") + "</strong><br>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
             else:
                 message = "<strong style=\"background: #00B629;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+            self.repos[self.idx][2] = 2 # mark as already installed AND already checked for updates
+            self.addon_repos.emit(self.repos)
         else:
             message = desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
 
