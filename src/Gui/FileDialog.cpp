@@ -159,7 +159,7 @@ void FileDialog::accept()
         }
     }
 
-    QString filter = selectedFilter();
+    QString filter = selectedNameFilter();
     bool checkDirectory = filter.contains(QLatin1String("FCStd")) || filter.contains(QLatin1String("*.*"));
     if(checkDirectory) {
         bool accepted = false;
