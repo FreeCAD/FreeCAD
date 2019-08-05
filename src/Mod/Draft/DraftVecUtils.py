@@ -177,10 +177,10 @@ def rotate(u, angle, axis=Vector(0, 0, 1)):
     if angle == 0:
         return u
 
-    l = axis.Length
-    x=axis.x/l
-    y=axis.y/l
-    z=axis.z/l
+    L = axis.Length
+    x = axis.x/L
+    y = axis.y/L
+    z = axis.z/L
     c = math.cos(angle)
     s = math.sin(angle)
     t = 1 - c
