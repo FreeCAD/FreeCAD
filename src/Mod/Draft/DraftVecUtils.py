@@ -219,7 +219,31 @@ def scale(u, scalar):
 
 
 def scaleTo(u, l):
-    "scaleTo(Vector,length) - scales a vector to a given length"
+    """Scale a vector so that its magnitude is equal to a given length.
+
+    The magnitude of a vector is
+    ``L = sqrt(x**2 + y**2 + z**2)``
+
+    This function multiplies each coordinate, x, y, z,
+    by a factor to produce the desired magnitude.
+    This factor is the ratio of the new magnitude to the old magnitude,
+    ``x_scaled = x * (new/old)``
+
+    Parameters
+    ----------
+    u : Base::Vector3
+        The FreeCAD.Vector to scale.
+    l : int or float
+        The new magnitude of the vector in standard units (mm).
+
+    Returns
+    -------
+    Base::Vector3
+        The new vector with each of its elements scaled by a factor.
+        Or the same vector `u` if the vector is (0, 0, 0).
+    """
+    # Python 2 has two integer types, int and long.
+    # In Python 3 there is no 'long' anymore.
     if sys.version_info.major < 3:
         typecheck([(u, Vector), (l, (long, int, float))], "scaleTo")
     else:
@@ -232,7 +256,20 @@ def scaleTo(u, l):
 
 
 def dist(u, v):
-    "dist(Vector,Vector) - returns the distance between both points/vectors"
+    """Return the distance between two points (or vectors).
+
+    Parameters
+    ----------
+    u : Base::Vector3
+        First point, defined by a FreeCAD.Vector.
+    v : Base::Vector3
+        Second point, defined by a FreeCAD.Vector.
+
+    Returns
+    -------
+    float
+        The scalar distance from one point to the other.
+    """
     typecheck([(u, Vector), (v, Vector)], "dist")
     return u.sub(v).Length
 
