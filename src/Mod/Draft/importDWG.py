@@ -32,11 +32,26 @@
 #  This module is only a thin layer that uses the ODA (formerly Teigha) File
 #  Converter application to convert to/from DXF. Then the real work is done by
 #  importDXF
+#
+#  /usr/bin/ODAFileConverter
+#
+# Test files
+# https://knowledge.autodesk.com/support/autocad/downloads/
+#     caas/downloads/content/autocad-sample-files.html
 
 import six
+import FreeCAD
+from FreeCAD import Console as FCC
 
+if FreeCAD.GuiUp:
+    from DraftTools import translate
+else:
+    def translate(context, txt):
+        return txt
+
+# Save the native open function to avoid collisions
 if open.__module__ == '__builtin__':
-    pythonopen = open # to distinguish python built-in open function from the one declared here
+    pythonopen = open
 
 
 def open(filename):
@@ -107,7 +122,8 @@ def export(objectslist, filename):
     """
     import importDXF, os, tempfile
     outdir = tempfile.mkdtemp()
-    dxf = outdir + os.sep + os.path.splitext(os.path.basename(filename))[0] + ".dxf"
+    _basename = os.path.splitext(os.path.basename(filename))[0]
+    dxf = outdir + os.sep + _basename + ".dxf"
     importDXF.export(objectslist, dxf)
     convertToDwg(dxf, filename)
     return filename
@@ -145,15 +161,18 @@ def getTeighaConverter():
             if os.path.exists(odadir):
                 subdirs = os.walk(odadir).next()[1]
                 for sub in subdirs:
-                    t = odadir + os.sep + sub + os.sep + "TeighaFileConverter.exe"
+                    t = (odadir + os.sep + sub + os.sep
+                         + "TeighaFileConverter.exe")
+                    t = os.path.join(odadir, sub, "TeighaFileConverter.exe")
                     if os.path.exists(t):
                         teigha = t
     if teigha:
         if os.path.exists(teigha):
             return teigha
     from DraftTools import translate
-    FreeCAD.Console.PrintMessage(translate("draft",
-                                           "ODA (formerly Teigha) File Converter not found, DWG support is disabled")+"\n")
+    _msg = ("ODA (formerly Teigha) File Converter not found, "
+            "DWG support is disabled")
+    FCC.PrintMessage(translate("draft", _msg) + "\n")
     return None
 
 
@@ -172,26 +191,30 @@ def convertToDxf(dwgfilename):
     str
         The new file produced.
     """
-    import os, tempfile, subprocess, sys     #import os,tempfile
+    import os, tempfile, subprocess, sys
     teigha = getTeighaConverter()
     if teigha:
         indir = os.path.dirname(dwgfilename)
         outdir = tempfile.mkdtemp()
         basename = os.path.basename(dwgfilename)
-        cmdline = '"%s" "%s" "%s" "ACAD2000" "DXF" "0" "1" "%s"' % (teigha, indir, outdir, basename)
+        cmdline = ('"%s" "%s" "%s" "ACAD2000" "DXF" "0" "1" "%s"'
+                   % (teigha, indir, outdir, basename))
         print("Converting: " + cmdline)
         if six.PY2:
             if isinstance(cmdline, six.text_type):
                 encoding = sys.getfilesystemencoding()
                 cmdline = cmdline.encode(encoding)
-        subprocess.call(cmdline, shell=True)     #os.system(cmdline)
+        subprocess.call(cmdline, shell=True)  # os.system(cmdline)
         result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
         if os.path.exists(result):
             print("Conversion successful")
             return result
         else:
-            print("Error during DWG to DXF conversion. Try moving the DWG file to a directory path")
-            print("without spaces and non-english characters, or try saving to a lower DWG version")
+            _msg = ("Error during DWG to DXF conversion. "
+                    "Try moving the DWG file to a directory path\n"
+                    "without spaces and non-english characters, "
+                    "or try saving to a lower DWG version.")
+            FCC.PrintMessage(translate("ImportDWG", _msg) + "\n")
     return None
 
 
@@ -212,14 +235,15 @@ def convertToDwg(dxffilename, dwgfilename):
     str
         The same `dwgfilename` file path.
     """
-    import os, subprocess     #import os
+    import os, subprocess
     teigha = getTeighaConverter()
     if teigha:
         indir = os.path.dirname(dxffilename)
         outdir = os.path.dirname(dwgfilename)
         basename = os.path.basename(dxffilename)
-        cmdline = '"%s" "%s" "%s" "ACAD2000" "DWG" "0" "1" "%s"' % (teigha, indir, outdir, basename)
+        cmdline = ('"%s" "%s" "%s" "ACAD2000" "DWG" "0" "1" "%s"'
+                   % (teigha, indir, outdir, basename))
         print("converting " + cmdline)
-        subprocess.call(cmdline, shell=True)     #os.system(cmdline)
+        subprocess.call(cmdline, shell=True)  # os.system(cmdline)
         return dwgfilename
     return None
