@@ -98,7 +98,7 @@ def open(filename):
     process(doc, filename)
 
 
-def insert(filename,docname):
+def insert(filename, docname):
     """Get an active document and parse.
 
     If no document exists, it is created.
@@ -152,18 +152,17 @@ def process(doc, filename):
         afile = pythonopen(filename, 'r')
         # read the airfoil name which is always at the first line
         airfoilname = afile.readline().strip()
-    
+
         coords = []
         upside = True
         last_x = None
 
-    
+
 
         # Collect the data for the upper and the lower side separately if possible     
         for lin in afile:
                 curdat = regex.match(lin)
                 if curdat is not None:
-                        
                         x = float(curdat.group("xval"))
                         y = float(curdat.group("yval"))
 
@@ -173,27 +172,24 @@ def process(doc, filename):
                 # End of if curdat != None
         # End of for lin in file
         afile.close()
-        
-        
-        
+
         if len(coords) < 3:
                 print('Did not find enough coordinates\n')
-                return 
-                
+                return
+
         # sometimes coords are divided in upper an lower side
         # so that x-coordinate begin new from leading or trailing edge
         # check for start coordinates in the middle of list
 
         if coords[0:-1].count(coords[0]) > 1:
-                flippoint = coords.index(coords[0],1)
+                flippoint = coords.index(coords[0], 1)
                 upper = coords[0:flippoint]
                 lower = coords[flippoint+1:]
                 lower.reverse()
                 for i in lower:
-                        upper.append(i)  
+                        upper.append(i)
                 coords = upper
-                
-      
+
         # do we use the parametric Draft Wire?
         if useDraftWire:
                 obj = makeWire(coords, True)
@@ -207,22 +203,22 @@ def process(doc, filename):
                         if first_v == None:
                                 first_v = v
                         # End of if first_v == None
-    
+
                         # Line between v and last_v if they're not equal
                         if (last_v is not None) and (last_v != v):
-                                lines.append(Part.makeLine(last_v, v))       
+                                lines.append(Part.makeLine(last_v, v))
                         # End of if (last_v != None) and (last_v != v)
                         # The new last_v
-                        last_v = v     
+                        last_v = v
                 # End of for v in upper
                 # close the wire if needed
                 if last_v != first_v:
                         lines.append(Part.makeLine(last_v, first_v))
                 # End of if last_v != first_v
-  
+
                 wire = Part.Wire(lines)
-                face = Part.Face(wire) 
-                obj = FreeCAD.ActiveDocument.addObject('Part::Feature',airfoilname) 
+                face = Part.Face(wire)
+                obj = FreeCAD.ActiveDocument.addObject('Part::Feature',airfoilname)
                 obj.Shape = face
-  
+
         doc.recompute()
