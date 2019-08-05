@@ -1,36 +1,45 @@
 # -*- coding: utf-8 -*-
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2010 Heiko Jakob <heiko.jakob@gediegos.de>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
-
-__title__="FreeCAD Draft Workbench - Airfoil data importer"
-__author__ = "Heiko Jakob <heiko.jakob@gediegos.de>"
-
 ## @package importAirfoilDAT
 #  \ingroup DRAFT
 #  \brief Airfoil (.dat) file importer
 #
 # This module provides support for importing airfoil .dat files
+'''@package importAirfoilDAT
+\ingroup DRAFT
+\brief Airfoil (.dat) file importer
 
-import re, FreeCAD, Draft, Part, cProfile, os
+This module provides support for importing airfoil .dat files.
+Note (2019): this module has been unmaintained for a long time.
+'''
+# Check code with
+# flake8 --ignore=E226,E266,E401,W503
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2010 Heiko Jakob <heiko.jakob@gediegos.de>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+__title__ = "FreeCAD Draft Workbench - Airfoil data importer"
+__author__ = "Heiko Jakob <heiko.jakob@gediegos.de>"
+
+import re, FreeCAD, Draft, Part, os
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
 
@@ -158,8 +167,8 @@ def process(doc, filename):
     airfoilname = afile.readline().strip()
 
     coords = []
-    upside = True
-    last_x = None
+    # upside = True
+    # last_x = None
 
     # Collect the data for the upper and the lower side separately if possible
     for lin in afile:
