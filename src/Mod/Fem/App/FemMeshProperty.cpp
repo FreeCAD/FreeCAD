@@ -134,6 +134,7 @@ unsigned int PropertyFemMesh::getMemSize (void) const
 
 void PropertyFemMesh::Save (Base::Writer &writer) const
 {
+    _FemMesh->setPersistenceFileName(getFileName().c_str());
     _FemMesh->Save(writer);
 }
 

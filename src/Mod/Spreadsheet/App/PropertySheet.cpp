@@ -302,12 +302,16 @@ void PropertySheet::Save(Base::Writer &writer) const
         ++ci;
     }
 
-    writer.Stream() << writer.ind() << "<Cells Count=\"" << count
-        << "\" xlink=\"1\">" << std::endl;
+    writer.Stream() << writer.ind() << "<Cells Count=\"" << count;
 
-    writer.incInd();
-
-    PropertyExpressionContainer::Save(writer);
+    if(PropertyExpressionContainer::_XLinks.empty()) {
+        writer.Stream() << "\">\n";
+        writer.incInd();
+    } else {
+        writer.Stream() << "\" xlink=\"1\">\n";
+        writer.incInd();
+        PropertyExpressionContainer::Save(writer);
+    }
 
     ci = data.begin();
     while (ci != data.end()) {
@@ -316,7 +320,7 @@ void PropertySheet::Save(Base::Writer &writer) const
     }
 
     writer.decInd();
-    writer.Stream() << writer.ind() << "</Cells>" << std::endl;
+    writer.Stream() << writer.ind() << "</Cells>\n";
 }
 
 void PropertySheet::Restore(Base::XMLReader &reader)
@@ -328,13 +332,13 @@ void PropertySheet::Restore(Base::XMLReader &reader)
     reader.readElement("Cells");
     Cnt = reader.getAttributeAsInteger("Count");
 
-    if(reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink"))
+    if(reader.getAttributeAsInteger("xlink",""))
         PropertyExpressionContainer::Restore(reader);
 
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Cell");
 
-        const char* strAddress = reader.hasAttribute("address") ? reader.getAttribute("address") : "";
+        const char* strAddress = reader.getAttribute("address","");
 
         try {
             CellAddress address(strAddress);
@@ -358,8 +362,8 @@ void PropertySheet::Restore(Base::XMLReader &reader)
 }
 
 void PropertySheet::copyCells(Base::Writer &writer, const std::vector<Range> &ranges) const {
-    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << std::endl;
-    writer.Stream() << "<Cells count=\"" << ranges.size() << "\">" << std::endl;
+    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>\n";
+    writer.Stream() << "<Cells count=\"" << ranges.size() << "\">\n";
     writer.incInd();
     for(auto range : ranges) {
         auto r = range;
@@ -369,7 +373,7 @@ void PropertySheet::copyCells(Base::Writer &writer, const std::vector<Range> &ra
                 ++count;
         }while(r.next());
         writer.Stream() << writer.ind() << "<Range from=\"" << range.fromCellString()
-            << "\" to=\"" << range.toCellString() << "\" count=\"" << count << "\">" << std::endl;
+            << "\" to=\"" << range.toCellString() << "\" count=\"" << count << "\">\n";
         writer.incInd();
         do {
             auto cell = getValue(*range);
@@ -377,10 +381,10 @@ void PropertySheet::copyCells(Base::Writer &writer, const std::vector<Range> &ra
                 cell->save(writer);
         }while(range.next());
         writer.decInd();
-        writer.Stream() << writer.ind() << "</Range>" << std::endl;
+        writer.Stream() << writer.ind() << "</Range>\n";
     }
     writer.decInd();
-    writer.Stream() << "</Cells>" << std::endl;
+    writer.Stream() << "</Cells>\n";
 }
 
 void PropertySheet::pasteCells(XMLReader &reader, const CellAddress &addr) {

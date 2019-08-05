@@ -185,6 +185,9 @@ struct DocumentP
     std::multimap<const App::DocumentObject*, 
         std::unique_ptr<App::DocumentObjectExecReturn> > _RecomputeLog;
 
+    // restored files
+    std::set<std::string> files;
+
     DocumentP() {
         static std::random_device _RD;
         static std::mt19937 _RGEN(_RD());
@@ -1455,11 +1458,13 @@ Document::Document(const char *name)
 #ifdef FC_LOGUPDATECHAIN
     Console().Log("+App::Document: %p\n",this);
 #endif
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Document");
+
     std::string CreationDateString = Base::TimeInfo::currentDateTimeString();
-    std::string Author = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
-    std::string AuthorComp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefCompany","");
+    std::string Author = hGrp->GetASCII("prefAuthor","");
+    std::string AuthorComp = hGrp->GetASCII("prefCompany","");
     ADD_PROPERTY_TYPE(Label,("Unnamed"),0,Prop_None,"The name of the document");
     ADD_PROPERTY_TYPE(FileName,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),"The path to the file where the document is saved to");
     ADD_PROPERTY_TYPE(CreatedBy,(Author.c_str()),0,Prop_None,"The creator of the document");
@@ -1480,8 +1485,7 @@ Document::Document(const char *name)
     ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
 
     // license stuff
-    int licenseId = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetInt("prefLicenseType",0);
+    int licenseId = hGrp->GetInt("prefLicenseType",0);
     std::string license;
     std::string licenseUrl;
     switch (licenseId) {
@@ -1526,8 +1530,7 @@ Document::Document(const char *name)
             break;
     }
 
-    licenseUrl = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefLicenseUrl", licenseUrl.c_str());
+    licenseUrl = hGrp->GetASCII("prefLicenseUrl", licenseUrl.c_str());
 
     ADD_PROPERTY_TYPE(License,(license.c_str()),0,Prop_None,"License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
@@ -1547,6 +1550,20 @@ Document::Document(const char *name)
     ADD_PROPERTY_TYPE(TipName,(""),0,PropertyType(Prop_Hidden|Prop_ReadOnly),
         "Link of the tip object of the document");
     Uid.touch();
+
+    ADD_PROPERTY_TYPE(ForceXML,(3),"Format", Prop_None,
+            "Preference of storing data as XML.\n"
+            "Higher number means stronger preference.\n"
+            "Only effective when saving document in directory.");
+    ForceXML.setValue(hGrp->GetInt("ForceXML",3));
+    ADD_PROPERTY_TYPE(SplitXML,(true),"Format",Prop_None,
+            "Save object data in separate XML file.\n"
+            "Only effective when saving document in directory.");
+    SplitXML.setValue(hGrp->GetBool("SplitXML",true));
+    ADD_PROPERTY_TYPE(PreferBinary,(false),"Format",Prop_None,
+            "Prefer binary format when saving object data.\n"
+            "This can result in smaller file but bad for version control.");
+    PreferBinary.setValue(hGrp->GetBool("PreferBinary",false));
 }
 
 Document::~Document()
@@ -1609,27 +1626,35 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
 // Exported functions
 //--------------------------------------------------------------------------
 
+#define FC_DOC_SCHEMA_VER 4
+
 void Document::Save (Base::Writer &writer) const
 {
     d->hashers.clear();
     addStringHasher(Hasher);
 
-    writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
+    writer.Stream() << "<Document SchemaVersion=\"" << FC_DOC_SCHEMA_VER 
+                    << "\" ProgramVersion=\""
                     << App::Application::Config()["BuildVersionMajor"] << "."
                     << App::Application::Config()["BuildVersionMinor"] << "R"
                     << App::Application::Config()["BuildRevision"]
                     << "\" FileVersion=\"" << writer.getFileVersion() 
-                    << "\" StringHasher=\"1\">" << endl;
+                    << "\" StringHasher=\"1\">\n";
     
+    writer.incInd();
+
+    // NOTE: DO NOT save the main string hasher as separate file, because it is
+    // required by many objects, which assume the string hasher is fully
+    // restored.
+    Hasher->setPersistenceFileName(0);
     Hasher->Save(writer);
+
+    writer.decInd();
 
     PropertyContainer::Save(writer);
 
     // writing the features types
     writeObjects(d->objectArray, writer);
-    writer.Stream() << "</Document>" << endl;
-
-    d->hashers.clear();
 }
 
 void Document::Restore(Base::XMLReader &reader)
@@ -1722,7 +1747,6 @@ void Document::Restore(Base::XMLReader &reader)
     }
 
     reader.readEndElement("Document");
-    d->hashers.clear();
 }
 
 std::pair<bool,int> Document::addStringHasher(StringHasherRef hasher) const {
@@ -1794,19 +1818,19 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
 
     Base::ZipWriter writer(out);
     writer.putNextEntry("Document.xml");
-    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl;
-    writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
+    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>\n";
+    writer.Stream() << "<Document SchemaVersion=\"" << FC_DOC_SCHEMA_VER 
+                        << "\" ProgramVersion=\""
                         << App::Application::Config()["BuildVersionMajor"] << "."
                         << App::Application::Config()["BuildVersionMinor"] << "R"
                         << App::Application::Config()["BuildRevision"]
-                        << "\" FileVersion=\"1\">" << endl;
+                        << "\" FileVersion=\"1\">\n";
     // Add this block to have the same layout as for normal documents
-    writer.Stream() << "<Properties Count=\"0\">" << endl;
-    writer.Stream() << "</Properties>" << endl;
+    writer.Stream() << "<Properties Count=\"0\">\n";
+    writer.Stream() << "</Properties>\n";
 
     // writing the object types
     writeObjects(obj, writer);
-    writer.Stream() << "</Document>" << endl;
 
     // Hook for others to add further data.
     signalExportObjects(obj, writer);
@@ -1832,7 +1856,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
     writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size();
     if(!isExporting(0))
         writer.Stream() << "\" " FC_ATTR_DEPENDENCIES "=\"1";
-    writer.Stream() << "\">" << endl;
+    writer.Stream() << "\">\n";
 
     writer.incInd(); // indentation for 'Object type'
 
@@ -1843,21 +1867,21 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
                 << "<" FC_ELEMENT_OBJECT_DEPS " " FC_ATTR_DEP_OBJ_NAME "=\""
                 << o->getNameInDocument() << "\" " FC_ATTR_DEP_COUNT "=\"" << outList.size();
             if(outList.empty()) {
-                writer.Stream() << "\"/>" << endl;
+                writer.Stream() << "\"/>\n";
                 continue;
             }
             int partial = o->canLoadPartial();
             if(partial>0)
                 writer.Stream() << "\" " FC_ATTR_DEP_ALLOW_PARTIAL << "=\"" << partial;
-            writer.Stream() << "\">" << endl;
+            writer.Stream() << "\">\n";
             writer.incInd();
             for(auto dep : outList) {
                 auto name = dep?dep->getNameInDocument():"";
                 writer.Stream() << writer.ind() << "<" FC_ELEMENT_OBJECT_DEP " "
-                    FC_ATTR_DEP_OBJ_NAME "=\"" << (name?name:"") << "\"/>" << endl;
+                    FC_ATTR_DEP_OBJ_NAME "=\"" << (name?name:"") << "\"/>\n";
             }
             writer.decInd();
-            writer.Stream() << writer.ind() << "</" FC_ELEMENT_OBJECT_DEPS ">" << endl;
+            writer.Stream() << writer.ind() << "</" FC_ELEMENT_OBJECT_DEPS ">\n";
         }
     }
 
@@ -1878,29 +1902,109 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
             if(desc) 
                 writer.Stream() << "Error=\"" << Property::encodeAttribute(desc) << "\" ";
         }
-        writer.Stream() << "/>" << endl;
+
+        if(writer.isSplitXML()) {
+            std::string name((*it)->getNameInDocument());
+            if(name == "Document" || name == "GuiDocument")
+                name += "-Obj";
+            writer.Stream() << "file=\"" 
+                << writer.addFile(name+".xml",this) << "\" ";
+        }
+
+        writer.Stream() << "/>\n";
     }
 
     writer.decInd();  // indentation for 'Object type'
-    writer.Stream() << writer.ind() << "</Objects>" << endl;
+    writer.Stream() << writer.ind() << "</Objects>\n";
 
     // writing the features itself
-    writer.Stream() << writer.ind() << "<ObjectData Count=\"" << obj.size() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<ObjectData Count=\"";
+    if(writer.isSplitXML())
+        writer.Stream() << "0\">\n";
+    else {
+        writer.Stream() << obj.size() <<"\">\n";
 
-    writer.incInd(); // indentation for 'Object name'
-    for (it = obj.begin(); it != obj.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getExportName() << "\"";
-        if((*it)->hasExtensions())
-            writer.Stream() << " Extensions=\"True\"";
-
-        writer.Stream() << ">" << endl;
-        (*it)->Save(writer);
-        writer.Stream() << writer.ind() << "</Object>" << endl;
+        writer.incInd(); // indentation for 'Object name'
+        for (it = obj.begin(); it != obj.end(); ++it) 
+            writeObject(writer,*it);
+        writer.decInd(); // indentation for 'Object name'
     }
-
-    writer.decInd(); // indentation for 'Object name'
-    writer.Stream() << writer.ind() << "</ObjectData>" << endl;
+    writer.Stream() << writer.ind() << "</ObjectData>\n";
     writer.decInd();  // indentation for 'Objects count'
+    writer.Stream() << "</Document>\n";
+}
+
+void Document::writeObject(Base::Writer &writer, DocumentObject *obj) const 
+{
+    writer.Stream() << writer.ind() << "<Object name=\"" << obj->getExportName() << "\"";
+    if(obj->hasExtensions())
+        writer.Stream() << " Extensions=\"True\"";
+
+    writer.Stream() << ">\n";
+    obj->Save(writer);
+    writer.Stream() << writer.ind() << "</Object>\n";
+}
+
+void Document::SaveDocFile(Base::Writer &writer) const {
+    Base::FileInfo fi(writer.getCurrentFileName());
+    auto obj = getObject(fi.fileNamePure().c_str());
+    if(!obj) 
+        FC_ERR("Cannot find object " << fi.fileNamePure());
+    else {
+        writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>\n"
+                        << "<!-- FreeCAD DocumentObject -->\n"
+                        << "<Document SchemaVersion=\"" << FC_DOC_SCHEMA_VER
+                        << "\" FileVersion=\"" << writer.getFileVersion()
+                        << "\">\n";
+        writeObject(writer,obj);
+        writer.Stream() << "</Document>\n";
+    }
+}
+
+void Document::RestoreDocFile(Base::Reader &reader) {
+    Base::XMLReader xmlReader(reader);
+    xmlReader.readElement("Document");
+    xmlReader.DocumentSchema = xmlReader.getAttributeAsInteger("SchemaVersion","");
+    if(!xmlReader.DocumentSchema)
+        xmlReader.DocumentSchema = reader.getDocumentSchema();
+    xmlReader.FileVersion = xmlReader.getAttributeAsInteger("FileVersion","");
+    if(!xmlReader.FileVersion)
+        xmlReader.FileVersion = reader.getFileVersion();
+    xmlReader.readElement("Object");
+    readObject(xmlReader);
+}
+
+void Document::readObject(Base::XMLReader &reader) {
+    std::string name = reader.getName(reader.getAttribute("name"));
+    DocumentObject* pObj = getObject(name.c_str());
+    if (pObj && !pObj->testStatus(App::PartialObject)) { // check if this feature has been registered
+        pObj->setStatus(ObjectStatus::Restore, true);
+        try {
+            FC_TRACE("restoring " << pObj->getFullName());
+            pObj->Restore(reader);
+        }
+        // Try to continue only for certain exception types if not handled
+        // by the feature type. For all other exception types abort the process.
+        catch (const Base::UnicodeError &e) {
+            e.ReportException();
+        }
+        catch (const Base::ValueError &e) {
+            e.ReportException();
+        }
+        catch (const Base::IndexError &e) {
+            e.ReportException();
+        }
+        catch (const Base::RuntimeError &e) {
+            e.ReportException();
+        }
+
+        pObj->setStatus(ObjectStatus::Restore, false);
+
+        if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInDocumentObject)) {
+            Base::Console().Error("Object \"%s\" was subject to a partial restore. As a result geometry may have changed or be incomplete.\n",name.c_str());
+            reader.clearPartialRestoreDocumentObject();
+        }
+    }
 }
 
 struct DepInfo {
@@ -1946,7 +2050,6 @@ Document::readObjects(Base::XMLReader& reader)
     bool keepDigits = testStatus(Document::KeepTrailingDigits);
     setStatus(Document::KeepTrailingDigits, !reader.doNameMapping());
     std::vector<App::DocumentObject*> objs;
-
 
     // read the object types
     reader.readElement("Objects");
@@ -2054,6 +2157,10 @@ Document::readObjects(Base::XMLReader& reader)
                         d->addRecomputeLog(reader.getAttribute("Error"),obj);
                 }
             }
+
+            const char *file = reader.getAttribute("file","");
+            if(file && file[0])
+                reader.addFile(file, this);
         }
         catch (const Base::Exception& e) {
             Base::Console().Error("Cannot create object '%s': (%s)\n", name.c_str(), e.what());
@@ -2067,41 +2174,24 @@ Document::readObjects(Base::XMLReader& reader)
 
     // read the features itself
     reader.clearPartialRestoreDocumentObject();
+
     reader.readElement("ObjectData");
     Cnt = reader.getAttributeAsInteger("Count");
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Object");
-        std::string name = reader.getName(reader.getAttribute("name"));
-        DocumentObject* pObj = getObject(name.c_str());
-        if (pObj && !pObj->testStatus(App::PartialObject)) { // check if this feature has been registered
-            pObj->setStatus(ObjectStatus::Restore, true);
-            try {
-                FC_TRACE("restoring " << pObj->getFullName());
-                pObj->Restore(reader);
-            }
-            // Try to continue only for certain exception types if not handled
-            // by the feature type. For all other exception types abort the process.
-            catch (const Base::UnicodeError &e) {
-                e.ReportException();
-            }
-            catch (const Base::ValueError &e) {
-                e.ReportException();
-            }
-            catch (const Base::IndexError &e) {
-                e.ReportException();
-            }
-            catch (const Base::RuntimeError &e) {
-                e.ReportException();
-            }
-
-            pObj->setStatus(ObjectStatus::Restore, false);
-
-            if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInDocumentObject)) {
-                Base::Console().Error("Object \"%s\" was subject to a partial restore. As a result geometry may have changed or be incomplete.\n",name.c_str());
-                reader.clearPartialRestoreDocumentObject();
-            }
+    std::string objName;
+    try {
+        for (int i=0 ;i<Cnt ;i++) {
+            int guard;
+            reader.readElement("Object", &guard);
+            objName = reader.getAttribute("name");
+            readObject(reader);
+            reader.readEndElement("Object",&guard);
         }
-        reader.readEndElement("Object");
+    } catch (Base::XMLParseException &e) {
+        if(!e.getReported()) {
+            FC_ERR(e.what() << " while parsing " << getName() << '.' << objName);
+            e.setReported(true);
+        }
+        throw;
     }
     reader.readEndElement("ObjectData");
 
@@ -2182,6 +2272,10 @@ unsigned int Document::getMemSize (void) const
 }
 
 static std::string checkFileName(const char *file) {
+    Base::FileInfo fi(file);
+    if(fi.isDir())
+        return file;
+
     std::string fn(file);
 
     // Append extension if missing. This option is added for security reason, so
@@ -2202,6 +2296,11 @@ static std::string checkFileName(const char *file) {
 
 bool Document::saveAs(const char* _file)
 {
+    if(testStatus(Document::PartialDoc)) {
+        FC_ERR("Partial loaded document '" << Label.getValue() << "' cannot be saved");
+        return false;
+    }
+
     std::string file = checkFileName(_file);
     Base::FileInfo fi(file.c_str());
     if (this->FileName.getStrValue() != file) {
@@ -2215,6 +2314,11 @@ bool Document::saveAs(const char* _file)
 
 bool Document::saveCopy(const char* _file) const
 {
+    if(testStatus(Document::PartialDoc)) {
+        FC_ERR("Partial loaded document '" << Label.getValue() << "' cannot be saved");
+        return false;
+    }
+
     std::string file = checkFileName(_file);
     if (this->FileName.getStrValue() != file) {
         bool result = saveToFile(file.c_str());
@@ -2265,8 +2369,8 @@ bool Document::saveToFile(const char* filename) const
     int compression = hGrp->GetInt("CompressionLevel",3);
     compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
-    bool policy = App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Document")->GetBool("BackupPolicy",true);
+    bool archive = !Base::FileInfo(filename).isDir();
+    bool policy = archive?hGrp->GetBool("BackupPolicy",true):false;
 
     // make a tmp. file where to save the project data first and then rename to
     // the actual file name. This may be useful if overwriting an existing file
@@ -2279,25 +2383,43 @@ bool Document::saveToFile(const char* filename) const
     }
     Base::FileInfo tmp(fn);
 
+    std::vector<std::string> fileNames;
+
     // open extra scope to close ZipWriter properly
     {
-        Base::ofstream file(tmp, std::ios::out | std::ios::binary);
-        Base::ZipWriter writer(file);
-        if (!file.is_open()) {
-            throw Base::FileException("Failed to open file", tmp);
+        Base::ofstream file;
+        std::unique_ptr<Base::Writer> _writer;
+        if(archive) {
+            file.open(tmp, std::ios::out | std::ios::binary);
+            if (!file.is_open())
+                throw Base::FileException("Failed to open file", tmp);
+            auto zipwriter = new Base::ZipWriter(file);
+            _writer.reset(zipwriter);
+            zipwriter->setComment("FreeCAD Document");
+            zipwriter->setLevel(compression);
+        } else {
+            _writer.reset(new Base::FileWriter(tmp.filePath().c_str()));
         }
 
-        writer.setComment("FreeCAD Document");
-        writer.setLevel(compression);
+        auto &writer = *_writer;
+        if(!archive) {
+            writer.setFileVersion(2);
+            writer.setForceXML(ForceXML.getValue());
+            writer.setSplitXML(SplitXML.getValue());
+        }
+
         writer.putNextEntry("Document.xml");
 
-        if (hGrp->GetBool("SaveBinaryBrep", false))
+        if (PreferBinary.getValue()) {
             writer.setMode("BinaryBrep");
+            writer.setPreferBinary(true);
+        } else if(writer.getFileVersion() > 1)
+            writer.setPreferBinary(false);
 
-        writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
-                        << "<!--" << endl
-                        << " FreeCAD Document, see http://www.freecadweb.org for more information..." << endl
-                        << "-->" << endl;
+        writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>\n"
+                        << "<!--\n"
+                        << " FreeCAD Document, see http://www.freecadweb.org for more information...\n"
+                        << "-->\n";
         Document::Save(writer);
 
         // Special handling for Gui document.
@@ -2311,7 +2433,10 @@ bool Document::saveToFile(const char* filename) const
         }
 
         GetApplication().signalSaveDocument(*this);
+
+        fileNames = writer.getFilenames();
     }
+
 
     if (policy) {
         // if saving the project data succeeded rename to the actual file name
@@ -2364,7 +2489,9 @@ bool Document::saveToFile(const char* filename) const
                 if (fi.renameFile(fn.c_str()) == false)
                     Base::Console().Warning("Cannot rename project file to backup file\n");
             }
-            else {
+            else if (fi.isDir()) {
+                fi.deleteDirectoryRecursive();
+            } else {
                 fi.deleteFile();
             }
         }
@@ -2375,6 +2502,37 @@ bool Document::saveToFile(const char* filename) const
     }
 
     signalFinishSave(*this, filename);
+
+    if(!archive) {
+        std::vector<std::pair<std::string,int> > files;
+        for(const auto &f : fileNames) {
+            auto it = d->files.find(f);
+            if(it == d->files.end()) {
+                FC_LOG("document " << getName() << " add " << f);
+                files.emplace_back(f,1);
+            } else {
+                files.emplace_back(f,0);
+                d->files.erase(it);
+            }
+        }
+        for(const auto &f : d->files) {
+            FC_LOG("document " << getName() << " remove " << f);
+            files.emplace_back(f,-1);
+        }
+        d->files.clear();
+
+        GetApplication().signalDocumentFilesSaved(*this, filename, files);
+
+        bool remove = hGrp->GetBool("AutoRemoveFile",true);
+        std::string path(filename);
+        path += "/";
+        for(auto &v : files) {
+            if(v.second>=0)
+                d->files.insert(std::move(v.first));
+            else if(remove) 
+                Base::FileInfo(path+v.first).deleteFile();
+        }
+    }
 
     return true;
 }
@@ -2389,6 +2547,7 @@ void Document::restore (const char *filename,
 {
     clearUndos();
     d->activeObject = 0;
+    d->files.clear();
 
     if(d->objectArray.size()) {
         GetApplication().signalDeleteDocument(*this);
@@ -2415,18 +2574,37 @@ void Document::restore (const char *filename,
     if(!filename)
         filename = FileName.getValue();
     Base::FileInfo fi(filename);
-    Base::ifstream file(fi, std::ios::in | std::ios::binary);
-    std::streambuf* buf = file.rdbuf();
-    std::streamoff size = buf->pubseekoff(0, std::ios::end, std::ios::in);
-    buf->pubseekoff(0, std::ios::beg, std::ios::in);
-    if (size < 22) // an empty zip archive has 22 bytes
-        throw Base::FileException("Invalid project file",filename);
+    if(fi.isDir()) {
+        fi.setFile(std::string(filename)+'/'+"Document.xml");
+        if(!fi.exists()) 
+            throw Base::FileException("Project file not found",fi.filePath());
+    }
 
-    zipios::ZipInputStream zipstream(file);
-    Base::XMLReader reader(filename, zipstream);
+    std::unique_ptr<Base::Reader> _reader;
+    std::unique_ptr<Base::XMLReader> _xmlReader;
+    std::unique_ptr<zipios::ZipInputStream> zipstream;
+    std::string dirname;
+
+    if(fi.fileNamePure() == "Document" && fi.hasExtension("xml")) {
+        Base::FileInfo di(fi.dirPath());
+        _reader.reset(new Base::FileReader(fi,di.fileName()+"/Document.xml"));
+        _xmlReader.reset(new Base::XMLReader(*_reader));
+    } else {
+        // file.open(fi, std::ios::in | std::ios::binary);
+        // std::streambuf* buf = file.rdbuf();
+        // std::streamoff size = buf->pubseekoff(0, std::ios::end, std::ios::in);
+        // buf->pubseekoff(0, std::ios::beg, std::ios::in);
+        // if (size < 22) // an empty zip archive has 22 bytes
+        //     throw Base::FileException("Invalid project file",filename);
+        zipstream.reset(new zipios::ZipInputStream(filename));
+        _reader.reset(new Base::ZipReader(*zipstream,filename));
+        _xmlReader.reset(new Base::XMLReader(*_reader));
+    }
+
+    auto &reader = *_xmlReader;
 
     if (!reader.isValid())
-        throw Base::FileException("Error reading compression file",filename);
+        throw Base::FileException("Error reading project file", filename);
 
     GetApplication().signalStartRestoreDocument(*this);
     setStatus(Document::Restoring, true);
@@ -2436,8 +2614,9 @@ void Document::restore (const char *filename,
         d->partialLoadObjects.emplace(name,true);
     try {
         Document::Restore(reader);
-    }
-    catch (const Base::Exception& e) {
+    } catch (const Base::XMLParseException &) {
+        throw;
+    } catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
     }
     d->partialLoadObjects.clear();
@@ -2447,7 +2626,13 @@ void Document::restore (const char *filename,
     // Note: This file doesn't need to be available if the document has been created
     // without GUI. But if available then follow after all data files of the App document.
     signalRestoreDocument(reader);
-    reader.readFiles(zipstream);
+
+    reader.readFiles();
+
+    for(auto &f : reader.getFilenames()) {
+        FC_TRACE("document " << getName() << " file: " << f);
+        d->files.insert(f);
+    }
 
     if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
         setStatus(Document::PartialRestore, true);
@@ -2598,6 +2783,10 @@ std::string Document::getFullName(bool python) const {
         return ss.str();
     }
     return myName;
+}
+
+App::Document *Document::getOwnerDocument() const {
+    return const_cast<App::Document*>(this);
 }
 
 /// Remove all modifications. After this call The document becomes valid again.
@@ -2819,7 +3008,7 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
 
             FC_ERR("Dependency cycles: ");
             std::ostringstream ss;
-            ss << std::endl;
+            ss << '\n';
             for(auto &v : components) {
                 if(v.second.size()==1) {
                     // For components with only one member, we still need to
@@ -2830,7 +3019,7 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
                     // Try search the object in its own out list
                     for(auto obj : it->second->getOutList()) {
                         if(obj == it->second) {
-                            ss << std::endl << it->second->getFullName() << std::endl;
+                            ss << '\n' << it->second->getFullName() << '\n';
                             break;
                         }
                     }
@@ -2842,10 +3031,10 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
                     if(it==vertexMap.end())
                         continue;
                     if(i%6==0)
-                        ss << std::endl;
+                        ss << '\n';
                     ss << it->second->getFullName() << ", ";
                 }
-                ss << std::endl;
+                ss << '\n';
             }
             FC_ERR(ss.str());
             FC_THROWM(Base::RuntimeError, e.what());

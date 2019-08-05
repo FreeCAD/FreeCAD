@@ -190,6 +190,7 @@ public:
     }
 };
 
+/// Double precision vector list
 class AppExport PropertyVectorList: public PropertyListsT<Base::Vector3d>
 {
     TYPESYSTEM_HEADER();
@@ -214,20 +215,44 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
 
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+protected:
+    Base::Vector3d getPyValue(PyObject *) const override;
+
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
+    virtual bool canSaveStream(Base::Writer &) const override { return true; }
+    virtual void restoreStream(Base::InputStream &s, unsigned count) override;
+    virtual void saveStream(Base::OutputStream &) const override;
+};
+
+/// Single precision vector list
+class AppExport _PropertyVectorList: public PropertyListsT<Base::Vector3f>
+{
+    typedef PropertyListsT<Base::Vector3f> inherited;
+public:
+    void setValue(float x, float y, float z);
+    using inherited::setValue;
+
+    virtual PyObject *getPyObject(void);
 
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
 
-    virtual unsigned int getMemSize (void) const;
-
 protected:
-    Base::Vector3d getPyValue(PyObject *) const override;
+    virtual Base::Vector3f getPyValue(PyObject *) const override;
+
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
+    virtual bool canSaveStream(Base::Writer &) const override { return true; }
+    virtual void restoreStream(Base::InputStream &s, unsigned count) override;
+    virtual void saveStream(Base::OutputStream &) const override;
+
+    virtual const char *xmlName() const { return "VectorList"; }
 };
+
 
 /// Property representing a 4x4 matrix
 /*!
@@ -389,12 +414,6 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
-
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
 
@@ -402,6 +421,12 @@ public:
 
 protected:
     Base::Placement getPyValue(PyObject *) const override;
+
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
+    virtual bool canSaveStream(Base::Writer &) const override { return true; }
+    virtual void restoreStream(Base::InputStream &s, unsigned count) override;
+    virtual void saveStream(Base::OutputStream &) const override;
 };
 
 

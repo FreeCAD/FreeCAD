@@ -50,20 +50,6 @@ using namespace Spreadsheet;
 
 /////////////////////////////////////////////////////////
 
-// expose the read() function for simpler partial xml reading in setExpression()
-class ReaderPrivate: public Base::XMLReader {
-public:
-    ReaderPrivate(const char* FileName, std::istream &is)
-        :XMLReader(FileName,is)
-    {}
-
-    bool read() {
-        return XMLReader::read();
-    }
-};
-
-///////////////////////////////////////////////////////////
-
 const int Cell::EXPRESSION_SET       = 1;
 const int Cell::ALIGNMENT_SET        = 4;
 const int Cell::STYLE_SET            = 8;
@@ -195,8 +181,8 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
         else {
             try {
                 std::istringstream in(expr->comment);
-                ReaderPrivate reader("<memory>", in);
-                reader.read();
+                XMLReader reader("<memory>", in);
+                reader.readElement("Cell");
                 restore(reader,true);
             }catch(Base::Exception &e) {
                 e.ReportException();
@@ -241,7 +227,7 @@ const App::Expression *Cell::getExpression(bool withFormat) const
                                 | SPANS_SET)))
         {
             std::ostringstream ss;
-            save(ss,"",true);
+            saveStyle(ss);
             expression->comment = ss.str();
         }
     }
@@ -668,7 +654,7 @@ void Cell::restore(Base::XMLReader &reader, bool checkAlias)
 {
     const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : 0;
     const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : 0;
-    const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : "";
+    const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : 0;
     const char* foregroundColor = reader.hasAttribute("foregroundColor") ? reader.getAttribute("foregroundColor") : 0;
     const char* backgroundColor = reader.hasAttribute("backgroundColor") ? reader.getAttribute("backgroundColor") : 0;
     const char* displayUnit = reader.hasAttribute("displayUnit") ? reader.getAttribute("displayUnit") : 0;
@@ -681,9 +667,6 @@ void Cell::restore(Base::XMLReader &reader, bool checkAlias)
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze() below.
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
-    if (content) {
-        setContent(content);
-    }
     if (style) {
         using namespace boost;
         std::set<std::string> styleSet;
@@ -732,6 +715,19 @@ void Cell::restore(Base::XMLReader &reader, bool checkAlias)
     }
 
     editMode = (EditMode)mode;
+
+    std::string _content;
+    if (!content) {
+        if(!reader.getAttributeAsInteger("cdata",""))
+            content = "";
+        else {
+            Base::InputStream s(reader.beginCharStream(false),false);
+            s >> _content;
+            content = _content.c_str();
+            reader.endCharStream();
+        }
+    }
+    setContent(content);
 }
 
 /**
@@ -740,24 +736,34 @@ void Cell::restore(Base::XMLReader &reader, bool checkAlias)
   */
 
 void Cell::save(Base::Writer &writer) const {
-    save(writer.Stream(),writer.ind(),false);
-}
-
-void Cell::save(std::ostream &os, const char *indent, bool noContent) const {
     if (!isUsed())
         return;
 
-    os << indent << "<Cell ";
+    writer.Stream() << writer.ind();
 
-    if (!noContent) {
-        os << "address=\"" << address.toString() << "\" ";
+    saveStyle(writer.Stream(),false);
+        
+    writer.Stream() << "address=\"" << address.toString();
 
-        if(isUsed(EXPRESSION_SET)) {
-            std::string content;
-            getStringContent(content,true);
-            os << "content=\"" << App::Property::encodeAttribute(content) << "\" ";
-        }
+    if(!isUsed(EXPRESSION_SET)) {
+        writer.Stream() << "\"/>\n";
+        return;
     }
+
+    std::string content;
+    getStringContent(content,true);
+    if(writer.getFileVersion()>1 && content.find('\n') < content.size()) {
+        writer.Stream() << "\" cdata=\"1\">";
+        Base::OutputStream s(writer.beginCharStream(false) << '\n', false);
+        s << content;
+        writer.endCharStream() << "\n</Cell>\n";
+    } else {
+        writer.Stream() << "\" content=\"" << App::Property::encodeAttribute(content) << "\"/>\n";
+    }
+}
+
+void Cell::saveStyle(std::ostream &os, bool endTag) const {
+    os << "<Cell ";
 
     if (isUsed(ALIGNMENT_SET))
         os << "alignment=\"" << encodeAlignment(alignment) << "\" ";
@@ -785,9 +791,8 @@ void Cell::save(std::ostream &os, const char *indent, bool noContent) const {
     if(editMode) 
         os << "editMode=\"" << editMode << "\" ";
 
-    os << "/>";
-    if(!noContent)
-        os << std::endl;
+    if (endTag) 
+        os << "/>";
 }
 
 /**

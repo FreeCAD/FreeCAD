@@ -1116,12 +1116,14 @@ void TopoShape::Restore(Base::XMLReader &reader)
     Data::ComplexGeoData::Restore(reader);
 }
 
-void TopoShape::SaveDocFile (Base::Writer &) const
+void TopoShape::SaveDocFile (Base::Writer &writer) const
 {
+    Data::ComplexGeoData::SaveDocFile(writer);
 }
 
-void TopoShape::RestoreDocFile(Base::Reader &)
+void TopoShape::RestoreDocFile(Base::Reader &reader)
 {
+    Data::ComplexGeoData::RestoreDocFile(reader);
 }
 
 unsigned int TopoShape_RefCountShapes(const TopoDS_Shape& aShape)

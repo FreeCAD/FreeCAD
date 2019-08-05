@@ -105,6 +105,9 @@ private:
     void slotStartSaveDocument(const App::Document&, const std::string&);
     /** Called when an document has been saved*/
     void slotFinishSaveDocument(const App::Document&, const std::string&);
+    /** Called to report the files saved/added/removed for a document */
+    void slotDocumentFilesSaved(const App::Document&, const std::string&,
+            const std::vector<std::pair<std::string,int> > &);
 
 private:
     Py::Object inst;
@@ -137,6 +140,7 @@ private:
     FC_PY_ELEMENT(CloseTransaction,_1) \
     FC_PY_ELEMENT(StartSaveDocument,_1,_2) \
     FC_PY_ELEMENT(FinishSaveDocument,_1,_2) \
+    FC_PY_ELEMENT(DocumentFilesSaved,_1,_2,_3) \
     FC_PY_ELEMENT(AppendDynamicProperty,_1) \
     FC_PY_ELEMENT(RemoveDynamicProperty,_1) \
     FC_PY_ELEMENT(ChangePropertyEditor,_1,_2)

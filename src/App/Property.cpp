@@ -27,6 +27,8 @@
 #	include <cassert>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Property.h"
 #include "ObjectIdentifier.h"
@@ -73,6 +75,25 @@ std::string Property::getFullName(bool python) const {
         ss << father->getFullName(python) 
             << '.' << father->getPropertyPrefix();
     ss << myName;
+    return ss.str();
+}
+
+std::string Property::getFileName(const char *postfix, const char *prefix) const {
+    std::ostringstream ss;
+    if(prefix)
+        ss << prefix;
+    if(!myName)
+        ss << "Property";
+    else {
+        std::string name = getFullName();
+        auto pos = name.find('#');
+        if(pos == std::string::npos)
+            ss << name;
+        else
+            ss << (name.c_str()+pos+1);
+    }
+    if(postfix)
+        ss << postfix;
     return ss.str();
 }
 
@@ -213,41 +234,55 @@ void Property::setStatus(Status pos, bool on) {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 void PropertyListsBase::_setPyObject(PyObject *value) {
-    std::vector<PyObject *> vals;
     std::vector<int> indices;
+    std::vector<PyObject *> vals;
+    Py::Object pySeq;
+
     if (PyDict_Check(value)) {
-        PyObject* keyList = PyDict_Keys(value);
-        PyObject* itemList = PyDict_Values(value);
-        Py_ssize_t nSize = PyList_Size(keyList);
-        vals.reserve(nSize);
-        indices.reserve(nSize);
+        Py::Dict dict(value);
+        auto size = dict.size();
+        vals.reserve(size);
+        indices.reserve(size);
         int listSize = getSize();
-        for (Py_ssize_t i=0; i<nSize;++i) {
-            std::string keyStr;
-            PyObject* key = PyList_GetItem(keyList, i);
+        for(auto it=dict.begin();it!=dict.end();++it) {
+            const auto &item = *it;
+            PyObject *key = item.first.ptr();
 #if PY_MAJOR_VERSION < 3
             if(!PyInt_Check(key)) 
 #else
             if(!PyLong_Check(key))
 #endif
                 throw Base::TypeError("expect key type to be interger");
-            auto idx = PyLong_AsLong(key);
+            long idx = PyLong_AsLong(key);
             if(idx<-1 || idx>listSize) 
-                throw Base::RuntimeError("index out of bound");
+                throw Base::ValueError("index out of bound");
             if(idx==-1 || idx==listSize) {
                 idx = listSize;
                 ++listSize;
             }
             indices.push_back(idx);
-            vals.push_back(PyList_GetItem(itemList,i));
+            vals.push_back(item.second.ptr());
         }
-    }else if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
-        vals.reserve(nSize);
-        for (Py_ssize_t i=0; i<nSize;++i)
-            vals.push_back(PySequence_GetItem(value, i));
-    }else
-        vals.push_back(value);
+    } else {
+        if (PySequence_Check(value))
+            pySeq = value;
+        else {
+            PyObject *iter = PyObject_GetIter(value);
+            if(iter) {
+                Py::Object pyIter(iter,true);
+                pySeq = Py::asObject(PySequence_Fast(iter,""));
+            } else {
+                PyErr_Clear();
+                vals.push_back(value);
+            }
+        }
+        if(!pySeq.isNone()) {
+            Py::Sequence seq(pySeq);
+            vals.reserve(seq.size());
+            for(auto it=seq.begin();it!=seq.end();++it)
+                vals.push_back((*it).ptr());
+        }
+    }
     setPyValues(vals,indices);
 }
 
@@ -257,4 +292,68 @@ void PropertyListsBase::_setPyObject(PyObject *value) {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLists , App::Property);
+
+const char *PropertyLists::xmlName() const {
+    const char *name = getTypeId().getName();
+    const char *start = strstr(name,"::");
+    if(!start) {
+        assert(false);
+        return name;
+    }
+    start += 2;
+    if(boost::starts_with(start,"Property"))
+        start += 8;
+    return start;
+}
+
+void PropertyLists::Save (Base::Writer &writer) const
+{
+    const char *element = xmlName();
+
+    if (!getSize()) {
+        // for backward compatibility, we still need to add attribute 'file' if empty
+        writer.Stream() << writer.ind() << '<' << element << " file=\"\"/>\n";
+        return;
+    }
+
+    if (writer.isForceXML() || !canSaveStream(writer)) {
+        writer.Stream() << writer.ind() << '<' << element << " count=\"" <<  getSize() <<"\" ";
+        if(!saveXML(writer))
+            writer.Stream() << writer.ind() << "</" << element << ">\n";
+    } else {
+        writer.Stream() << writer.ind() << '<' << element << " file=\"" 
+            << writer.addFile(getFileName(writer.isPreferBinary()?".bin":".txt"), this) 
+            << "\"/>\n";
+    }
+}
+
+void PropertyLists::Restore(Base::XMLReader &reader)
+{
+    reader.readElement(xmlName());
+    std::string file (reader.getAttribute("file","") );
+    if (!file.empty()) {
+        // initiate a file read
+        reader.addFile(file.c_str(),this);
+    }else if(reader.hasAttribute("count")) {
+        restoreXML(reader);
+    }else if(getSize()) {
+        setSize(0);
+    }
+}
+
+void PropertyLists::SaveDocFile (Base::Writer &writer) const
+{
+    Base::OutputStream str(writer.Stream(),writer.isPreferBinary());
+    uint32_t uCt = (uint32_t)getSize();
+    str << uCt;
+    saveStream(str);
+}
+
+void PropertyLists::RestoreDocFile(Base::Reader &reader)
+{
+    Base::InputStream str(reader, !boost::ends_with(reader.getFileName(),".txt"));
+    uint32_t uCt=0;
+    str >> uCt;
+    restoreStream(str,uCt);
+}
 

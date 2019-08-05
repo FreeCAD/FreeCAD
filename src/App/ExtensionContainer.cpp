@@ -316,14 +316,14 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
      
     //save dynamic extensions
     writer.incInd(); // indentation for 'Extensions'
-    writer.Stream() << writer.ind() << "<Extensions Count=\"" << _extensions.size() << "\">" << std::endl;
+    writer.Stream() << writer.ind() << "<Extensions Count=\"" << _extensions.size() << "\">\n";
     for(auto entry : _extensions) {
         
         auto ext = entry.second;
         writer.incInd(); // indentation for 'Extension name'
         writer.Stream() << writer.ind() << "<Extension"
         << " type=\"" << ext->getExtensionTypeId().getName() <<"\""
-        << " name=\"" << ext->name() << "\">" << std::endl;
+        << " name=\"" << ext->name() << "\">\n";
         writer.incInd(); // indentation for the actual Extension
         try {
             // We must make sure to handle all exceptions accordingly so that
@@ -346,10 +346,10 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
         }
 #endif
         writer.decInd(); // indentation for the actual extension
-        writer.Stream() << writer.ind() << "</Extension>" << std::endl;    
+        writer.Stream() << writer.ind() << "</Extension>\n";    
         writer.decInd(); // indentation for 'Extension name'
     }
-    writer.Stream() << writer.ind() << "</Extensions>" << std::endl;
+    writer.Stream() << writer.ind() << "</Extensions>\n";
     writer.decInd();
 }
 

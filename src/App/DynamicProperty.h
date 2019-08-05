@@ -37,6 +37,8 @@
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/mem_fun.hpp>
 
+#include "StringHasher.h"
+
 namespace Base {
 class Writer;
 class XMLWriter;
@@ -149,26 +151,41 @@ public:
         std::string name;
         const char *pName;
         std::string group;
-        std::string doc;
         short attr;
         bool readonly;
         bool hidden;
 
         PropData(Property *prop=0, std::string &&n=std::string(), const char *pn=0,
-                const char *g=0, const char *d=0, short a=0, bool ro=false, bool h=false)
+                const char *g=0, const char *d=0, StringIDRef docID=StringIDRef(),
+                short a=0, bool ro=false, bool h=false)
             :property(prop),name(std::move(n)),pName(pn)
-            ,group(g?g:""),doc(d?d:""),attr(a),readonly(ro),hidden(h)
-        {}
+            ,group(g?g:""),attr(a),readonly(ro),hidden(h),docID(docID)
+        {
+            if(!docID && d)
+                doc = d;
+        }
 
         const char *getName() const {
             return pName?pName:name.c_str();
         }
+
+        const char *getDoc() const {
+            return docID?docID->data().constData():doc.c_str();
+        }
+
+        friend class DynamicProperty;
+
+    private:
+        StringIDRef docID;
+        std::string doc;
     };
 
     PropData getDynamicPropertyData(const Property* prop) const;
 
 private:
     std::string getUniquePropertyName(PropertyContainer &pc, const char *Name) const;
+    Property* _addDynamicProperty(PropertyContainer &pc, const char* type, const char* name, const char* group,
+                                 const char* doc, StringIDRef docID, short attr, bool ro, bool hidden);
 
 private:
     bmi::multi_index_container<

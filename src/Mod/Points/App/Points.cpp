@@ -27,6 +27,7 @@
 # include <iostream>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <QtConcurrentMap>
 
@@ -166,16 +167,30 @@ std::vector<PointKernel::value_type> PointKernel::getValidPoints() const
 
 void PointKernel::Save (Base::Writer &writer) const
 {
-    if (!writer.isForceXML()) {
+    if(writer.isForceXML()>1) {
         writer.Stream() << writer.ind()
-            << "<Points file=\"" << writer.addFile(writer.ObjectName.c_str(), this) << "\" " 
-            << "mtrx=\"" << _Mtrx.toString() << "\"/>" << std::endl;
+            << "<Points count=\"" << _Points.size() << "\" " 
+            << "mtrx=\"" << _Mtrx.toString() << "\">\n";
+        writer.incInd();
+        for(const auto &v : _Points)
+            writer.Stream() << "<P x=\"" << v.x << "\" y=\"" << v.y
+                << "\" z=\"" << v.z << "\"/>\n";
+        writer.decInd();
+        writer.Stream() << writer.ind() << "</Points>\n";
+    } else {
+        std::string filename = _PersistenceName;
+        if(filename.empty())
+            filename = "Points";
+        filename += writer.isPreferBinary()?".bin":".txt";
+        writer.Stream() << writer.ind()
+            << "<Points file=\"" << writer.addFile(filename.c_str(), this) << "\" " 
+            << "mtrx=\"" << _Mtrx.toString() << "\"/>\n";
     }
 }
 
 void PointKernel::SaveDocFile (Base::Writer &writer) const
 {
-    Base::OutputStream str(writer.Stream());
+    Base::OutputStream str(writer.Stream(),writer.isPreferBinary());
     uint32_t uCt = (uint32_t)size();
     str << uCt;
     // store the data without transforming it
@@ -187,23 +202,33 @@ void PointKernel::SaveDocFile (Base::Writer &writer) const
 void PointKernel::Restore(Base::XMLReader &reader)
 {
     clear();
-
     reader.readElement("Points");
-    std::string file (reader.getAttribute("file") );
-
-    if (!file.empty()) {
-        // initiate a file read
-        reader.addFile(file.c_str(),this);
-    }
-    if (reader.DocumentSchema > 3) {
+    if (reader.hasAttribute("mtrx")) {
         std::string Matrix (reader.getAttribute("mtrx") );
         _Mtrx.fromString(Matrix);
+    }
+    if(reader.hasAttribute("file")) {
+        std::string file (reader.getAttribute("file") );
+
+        if (!file.empty()) {
+            // initiate a file read
+            reader.addFile(file.c_str(),this);
+        }
+    } else if(reader.hasAttribute("count")) {
+        unsigned count = reader.getAttributeAsUnsigned("count");
+        _Points.resize(count);
+        for(auto &v : _Points) {
+            reader.readElement("P");
+            v.x = reader.getAttributeAsFloat("x");
+            v.y = reader.getAttributeAsFloat("y");
+            v.z = reader.getAttributeAsFloat("z");
+        }
     }
 }
 
 void PointKernel::RestoreDocFile(Base::Reader &reader)
 {
-    Base::InputStream str(reader);
+    Base::InputStream str(reader,boost::ends_with(reader.getFileName(),".bin"));
     uint32_t uCt = 0;
     str >> uCt;
     _Points.resize(uCt);
@@ -227,9 +252,9 @@ void PointKernel::load(const char* file)
 
 void PointKernel::save(std::ostream& out) const
 {
-    out << "# ASCII" << std::endl;
+    out << "# ASCII\n";
     for (std::vector<value_type>::const_iterator it = _Points.begin(); it != _Points.end(); ++it) {
-        out << it->x << " " << it->y << " " << it->z << std::endl;
+        out << it->x << ' ' << it->y << ' ' << it->z << '\n';
     }
 }
 

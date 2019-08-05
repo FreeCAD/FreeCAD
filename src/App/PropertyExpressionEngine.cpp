@@ -163,47 +163,79 @@ void PropertyExpressionEngine::Paste(const Property &from)
 
 void PropertyExpressionEngine::Save(Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<ExpressionEngine count=\"" <<  expressions.size();
+    writer.Stream() << writer.ind() << "<ExpressionEngine count=\"";
+
+    if(expressions.empty()) {
+        writer.Stream() << "0\"></ExpressionEngine>\n";
+        return;
+    }
+
+    writer.Stream() << expressions.size();
+
+    if(writer.getFileVersion()>1) 
+        writer.Stream() << "\" cdata=\"1";
+
     if(PropertyExpressionContainer::_XLinks.empty()) {
-        writer.Stream() << "\">" << std::endl;
+        writer.Stream() << "\">\n";
         writer.incInd();
     } else {
-        writer.Stream() << "\" xlink=\"1\">" << std::endl;
+        writer.Stream() << "\" xlink=\"1\">\n";
         writer.incInd();
         PropertyExpressionContainer::Save(writer);
     }
-    for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Expression path=\"" 
-            << Property::encodeAttribute(it->first.toString()) <<"\" expression=\"" 
-            << Property::encodeAttribute(it->second.expression->toString(true)) << "\"";
-        if (it->second.expression->comment.size() > 0)
-            writer.Stream() << " comment=\"" 
-                << Property::encodeAttribute(it->second.expression->comment) << "\"";
-        writer.Stream() << "/>" << std::endl;
+
+    if(writer.getFileVersion()>1) {
+        writer.Stream() << writer.ind() << "<Expressions>";
+        Base::OutputStream s(writer.beginCharStream(false) << '\n', false);
+        for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
+            s << it->first.toString() 
+              << it->second.expression->toString(true) 
+              << it->second.expression->comment
+              << '\n';
+        }
+        writer.endCharStream() << '\n' <<  writer.ind() << "</Expressions>\n";
+    } else {
+        for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
+            writer.Stream() << writer.ind() << "<Expression path=\"" 
+                << Property::encodeAttribute(it->first.toString()) <<"\" expression=\"" 
+                << Property::encodeAttribute(it->second.expression->toString(true)) << "\"";
+            if (it->second.expression->comment.size() > 0)
+                writer.Stream() << " comment=\"" 
+                    << Property::encodeAttribute(it->second.expression->comment) << "\"";
+            writer.Stream() << "/>\n";
+        }
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</ExpressionEngine>" << std::endl;
+    writer.Stream() << writer.ind() << "</ExpressionEngine>\n";
 }
 
 void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
 {
     reader.readElement("ExpressionEngine");
-    int count = reader.getAttributeAsFloat("count");
+    int count = reader.getAttributeAsInteger("count");
+    if(!count)
+        return;
 
     if(reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink"))
         PropertyExpressionContainer::Restore(reader);
 
     restoredExpressions.reset(new std::vector<RestoredExpression>);
-    restoredExpressions->reserve(count);
-    for (int i = 0; i < count; ++i) {
+    restoredExpressions->resize(count);
 
-        reader.readElement("Expression");
-        restoredExpressions->emplace_back();
-        auto &info = restoredExpressions->back();
-        info.path = reader.getAttribute("path");
-        info.expr = reader.getAttribute("expression");
-        if(reader.hasAttribute("comment"))
-            info.comment = reader.getAttribute("comment");
+    if(reader.getAttributeAsInteger("cdata","")) {
+        reader.readElement("Expressions");
+        Base::InputStream s(reader.beginCharStream(false),false);
+        for(auto &info : *restoredExpressions)
+            s >> info.path >> info.expr >> info.comment;
+        reader.readEndElement("Expressions");
+    } else {
+        for(auto &info : *restoredExpressions) {
+            reader.readElement("Expression");
+            restoredExpressions->emplace_back();
+            info.path = reader.getAttribute("path");
+            info.expr = reader.getAttribute("expression");
+            info.comment = reader.getAttribute("comment","");
+        }
     }
 
     reader.readEndElement("ExpressionEngine");
@@ -561,7 +593,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
             prop->setPathValue(*it, value);
         }catch(Base::Exception &e) {
             std::ostringstream ss;
-            ss << e.what() << std::endl << "in property binding '" << prop->getName() << "'";
+            ss << e.what() << "\nin property binding '" << prop->getName() << "'";
             e.setMessage(ss.str());
             throw;
         }

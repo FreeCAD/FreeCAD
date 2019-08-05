@@ -26,8 +26,11 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/iostreams/copy.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 #include "PropertyPythonObject.h"
 #include "DocumentObjectPy.h"
+#include "Application.h"
 #include "DocumentObject.h"
 #include <Base/Base64.h>
 #include <Base/Writer.h>
@@ -38,6 +41,7 @@
 #include <boost/regex.hpp>
 
 using namespace App;
+using namespace Base;
 
 
 TYPESYSTEM_SOURCE(App::PropertyPythonObject , App::Property);
@@ -88,6 +92,12 @@ std::string PropertyPythonObject::toString() const
         Py::Module pickle(PyImport_ImportModule("json"),true);
         if (pickle.isNull())
             throw Py::Exception();
+        int indent = -1;
+        if(indent<0) {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Document");
+            indent = hGrp->GetInt("JsonIndent",2);
+        }
         Py::Callable method(pickle.getAttr(std::string("dumps")));
         Py::Object dump;
         if (this->object.hasAttr("__getstate__")) {
@@ -104,7 +114,9 @@ std::string PropertyPythonObject::toString() const
 
         Py::Tuple args(1);
         args.setItem(0, dump);
-        Py::Object res = method.apply(args);
+        Py::Dict kargs;
+        kargs.setItem("indent",Py::Int(indent));
+        Py::Object res = method.apply(args,kargs);
         Py::String str(res);
         repr = str.as_std_string("ascii");
     }
@@ -265,148 +277,162 @@ void PropertyPythonObject::restoreObject(Base::XMLReader &reader)
 
 void PropertyPythonObject::Save (Base::Writer &writer) const
 {
-    //if (writer.isForceXML()) {
-        std::string repr = this->toString();
-        repr = Base::base64_encode((const unsigned char*)repr.c_str(), repr.size());
-        std::string val = /*encodeValue*/(repr);
-        writer.Stream() << writer.ind() << "<Python value=\"" << val
-                        << "\" encoded=\"yes\"";
-
-        Base::PyGILStateLocker lock;
-        try {
-            if (this->object.hasAttr("__module__") && this->object.hasAttr("__class__")) {
-                Py::String mod(this->object.getAttr("__module__"));
-                Py::Object cls(this->object.getAttr("__class__"));
-                if (cls.hasAttr("__name__")) {
-                    Py::String name(cls.getAttr("__name__"));
-                    writer.Stream() << " module=\"" << (std::string)mod << "\""
-                                    << " class=\"" << (std::string)name << "\"";
-                }
-            }
-            else {
-                writer.Stream() << " json=\"yes\"";
+    writer.Stream() << writer.ind() << "<Python ";
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->object.hasAttr("__module__") && this->object.hasAttr("__class__")) {
+            Py::String mod(this->object.getAttr("__module__"));
+            Py::Object cls(this->object.getAttr("__class__"));
+            if (cls.hasAttr("__name__")) {
+                Py::String name(cls.getAttr("__name__"));
+                writer.Stream() << " module=\"" << (std::string)mod << "\""
+                                << " class=\"" << (std::string)name << "\"";
             }
         }
-        catch (Py::Exception&) {
-            Base::PyException e; // extract the Python error text
-            e.ReportException();
+        else {
+            writer.Stream() << " json=\"yes\"";
         }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    saveObject(writer);
 
-        saveObject(writer);
-        writer.Stream() << "/>" << std::endl;
-    //}
-    //else {
-    //    writer.Stream() << writer.ind() << "<Python file=\"" << 
-    //    writer.addFile("pickle", this) << "\"/>" << std::endl;
-    //}
+    if (writer.getFileVersion() <= 1) {
+        std::string json = this->toString();
+        writer.Stream() << " value=\"" << base64_encode(json.c_str(),json.size())
+                        << "\" encoded=\"yes\"/>\n";
+    } else if(writer.isForceXML()) {
+        std::string json = this->toString();
+        if(json.size() && json != "null") {
+            writer.Stream() << " cdata=\"1\">\n";
+            writer.beginCharStream(false) << '\n' << json << '\n';
+            writer.endCharStream() << '\n' << writer.ind() << "</Python>\n";
+        } else 
+            writer.Stream() << "/>\n";
+    } else {
+       writer.Stream() << " file=\"" 
+           << writer.addFile(getFileName(".json"), this) << "\"/>\n";
+    }
 }
 
 void PropertyPythonObject::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Python");
-    if (reader.hasAttribute("file")) {
-        std::string file(reader.getAttribute("file"));
-        reader.addFile(file.c_str(),this);
-    }
-    else {
-        bool load_json=false;
-        bool load_pickle=false;
-        bool load_failed=false;
-        std::string buffer = reader.getAttribute("value");
+
+    bool load_json=false;
+    bool load_pickle=false;
+    bool load_failed=false;
+
+    std::string buffer;
+    if(reader.hasAttribute("value")) {
+        buffer = reader.getAttribute("value");
         if (reader.hasAttribute("encoded") &&
-            strcmp(reader.getAttribute("encoded"),"yes") == 0) {
+            strcmp(reader.getAttribute("encoded"),"yes") == 0) 
+        {
             buffer = Base::base64_decode(buffer);
         }
         else {
             buffer = decodeValue(buffer);
         }
+    }
 
-        Base::PyGILStateLocker lock;
-        try {
-            boost::regex pickle("^\\(i(\\w+)\\n(\\w+)\\n");
-            boost::match_results<std::string::const_iterator> what;
-            std::string::const_iterator start, end;
-            start = buffer.begin();
-            end = buffer.end();
-            if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
-                Py::Module mod(PyImport_ImportModule(reader.getAttribute("module")),true);
-                if (mod.isNull())
-                    throw Py::Exception();
-                PyObject* cls = mod.getAttr(reader.getAttribute("class")).ptr();
-                if (!cls) {
-                    std::stringstream s;
-                    s << "Module " << reader.getAttribute("module")
-                      << " has no class " << reader.getAttribute("class");
-                    throw Py::AttributeError(s.str());
-                }
+    Base::PyGILStateLocker lock;
+    try {
+        static boost::regex pickle("^\\(i(\\w+)\\n(\\w+)\\n");
+        boost::match_results<std::string::const_iterator> what;
+        std::string::const_iterator start, end;
+        start = buffer.begin();
+        end = buffer.end();
+        if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
+            Py::Module mod(PyImport_ImportModule(reader.getAttribute("module")),true);
+            if (mod.isNull())
+                throw Py::Exception();
+            PyObject* cls = mod.getAttr(reader.getAttribute("class")).ptr();
+            if (!cls) {
+                std::stringstream s;
+                s << "Module " << reader.getAttribute("module")
+                    << " has no class " << reader.getAttribute("class");
+                throw Py::AttributeError(s.str());
+            }
 #if PY_MAJOR_VERSION >= 3
-                if (PyType_Check(cls)) {
+            if (PyType_Check(cls)) 
 #else
-                if (PyClass_Check(cls)) {
-                    this->object = PyInstance_NewRaw(cls, 0);
-                }
-                else if (PyType_Check(cls)) {
-#endif
-                    this->object = PyType_GenericAlloc((PyTypeObject*)cls, 0);
-                }
-                else {
-                    throw Py::TypeError("neither class nor type object");
-                }
-                load_json = true;
+            if (PyClass_Check(cls)) 
+            {
+                this->object = PyInstance_NewRaw(cls, 0);
             }
-            else if (boost::regex_search(start, end, what, pickle)) {
-                std::string nam = std::string(what[1].first, what[1].second);
-                std::string cls = std::string(what[2].first, what[2].second);
-                Py::Module mod(PyImport_ImportModule(nam.c_str()),true);
-                if (mod.isNull())
-                    throw Py::Exception();
+            else if (PyType_Check(cls))
+#endif
+            {
+                this->object = PyType_GenericAlloc((PyTypeObject*)cls, 0);
+            }
+            else {
+                throw Py::TypeError("neither class nor type object");
+            }
+            load_json = true;
+        }
+        else if (boost::regex_search(start, end, what, pickle)) {
+            std::string nam = std::string(what[1].first, what[1].second);
+            std::string cls = std::string(what[2].first, what[2].second);
+            Py::Module mod(PyImport_ImportModule(nam.c_str()),true);
+            if (mod.isNull())
+                throw Py::Exception();
 #if PY_MAJOR_VERSION >= 3
-                this->object = PyObject_CallObject(mod.getAttr(cls).ptr(), NULL);
+            this->object = PyObject_CallObject(mod.getAttr(cls).ptr(), NULL);
 #else
-                this->object = PyInstance_NewRaw(mod.getAttr(cls).ptr(), 0);
+            this->object = PyInstance_NewRaw(mod.getAttr(cls).ptr(), 0);
 #endif
-                load_pickle = true;
-                buffer = std::string(what[2].second, end);
-            }
-            else if (reader.hasAttribute("json")) {
-                load_json = true;
-            }
+            load_pickle = true;
+            buffer = std::string(what[2].second, end);
         }
-        catch (Py::Exception&) {
-            Base::PyException e; // extract the Python error text
-            e.ReportException();
-            this->object = Py::None();
-            load_failed = true;
+        else if (reader.hasAttribute("json")) {
+            load_json = true;
         }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+        this->object = Py::None();
+        load_failed = true;
+    }
 
-        aboutToSetValue();
+    aboutToSetValue();
+
+    restoreObject(reader);
+
+    if(reader.getAttributeAsInteger("cdata","")) {
+        buffer = reader.readCharacters();
+        reader.readEndElement("Python");
+    } else if (reader.hasAttribute("file")) {
+        std::string file(reader.getAttribute("file"));
+        reader.addFile(file.c_str(),this);
+    }
+
+    if (load_failed)
+        Base::Console().Warning("PropertyPythonObject::Restore: unsupported serialisation: %s\n", buffer.c_str());
+    else if(buffer.size()) {
         if (load_json)
             this->fromString(buffer);
         else if (load_pickle)
             this->loadPickle(buffer);
-        else if (!load_failed)
-            Base::Console().Warning("PropertyPythonObject::Restore: unsupported serialisation: %s\n", buffer.c_str());
-        restoreObject(reader);
-        hasSetValue();
     }
+    hasSetValue();
+
 }
 
 void PropertyPythonObject::SaveDocFile (Base::Writer &writer) const
 {
-    std::string buffer = this->toString();
-    for (std::string::iterator it = buffer.begin(); it != buffer.end(); ++it)
-        writer.Stream().put(*it);
+    writer.Stream() << this->toString();
 }
 
 void PropertyPythonObject::RestoreDocFile(Base::Reader &reader)
 {
+    std::stringstream ss;
+    reader >> ss.rdbuf();
     aboutToSetValue();
-    std::string buffer;
-    char c;
-    while (reader.get(c)) {
-        buffer.push_back(c);
-    }
-    this->fromString(buffer);
+    this->fromString(ss.str());
     hasSetValue();
 }
 

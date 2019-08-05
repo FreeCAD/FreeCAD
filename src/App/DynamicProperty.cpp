@@ -26,6 +26,7 @@
 # include <algorithm>
 #endif
 
+#include "Document.h"
 #include "DynamicProperty.h"
 #include "Property.h"
 #include "PropertyContainer.h"
@@ -133,7 +134,7 @@ const char* DynamicProperty::getPropertyDocumentation(const Property* prop) cons
     auto &index = props.get<1>();
     auto it = index.find(const_cast<Property*>(prop));
     if(it!=index.end())
-        return it->doc.c_str();
+        return it->getDoc();
     return 0;
 }
 
@@ -142,12 +143,18 @@ const char* DynamicProperty::getPropertyDocumentation(const char *name) const
     auto &index = props.get<0>();
     auto it = index.find(name);
     if (it != index.end())
-        return it->doc.c_str();
+        return it->getDoc();
     return 0;
 }
 
 Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char* type, 
         const char* name, const char* group, const char* doc, short attr, bool ro, bool hidden)
+{
+    return _addDynamicProperty(pc,type,name,group,doc,StringIDRef(),attr,ro,hidden);
+}
+
+Property* DynamicProperty::_addDynamicProperty(PropertyContainer &pc, const char* type, 
+        const char* name, const char* group, const char* doc, StringIDRef docID, short attr, bool ro, bool hidden)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(type,true));
     if (!base)
@@ -164,8 +171,13 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char*
     if (!name || !name[0])
         name = type;
 
+    if(!docID && doc && doc[0]) {
+        auto document = pc.getOwnerDocument();
+        if(document)
+            docID = document->Hasher->getID(doc);
+    }
     auto res = props.get<0>().emplace(pcProperty,
-            getUniquePropertyName(pc,name), nullptr, group, doc, attr, ro, hidden);
+            getUniquePropertyName(pc,name), nullptr, group, doc, docID, attr, ro, hidden);
 
     pcProperty->setContainer(&pc);
     pcProperty->myName = res.first->name.c_str();
@@ -189,7 +201,8 @@ bool DynamicProperty::addProperty(Property *prop)
     if(index.count(prop->getName()))
         return false;
     index.emplace(prop,std::string(),prop->getName(),
-            prop->getGroup(),prop->getDocumentation(),prop->getType(),false,false);
+            prop->getGroup(),prop->getDocumentation(),
+            StringIDRef(),prop->getType(),false,false);
     return true;
 }
 
@@ -253,9 +266,13 @@ void DynamicProperty::save(const Property *prop, Base::Writer &writer) const
     if(it != index.end()) {
         auto &data = *it;
         writer.Stream() << "\" group=\"" << Base::Persistence::encodeAttribute(data.group)
-                        << "\" doc=\"" << Base::Persistence::encodeAttribute(data.doc)
-                        << "\" attr=\"" << data.attr << "\" ro=\"" << data.readonly
+                        << "\" attr=\"" << data.attr 
+                        << "\" ro=\"" << data.readonly
                         << "\" hide=\"" << data.hidden;
+        if(writer.getFileVersion()>1 && data.docID)
+            writer.Stream() << "\" docID=\"" << data.docID->value();
+        else
+            writer.Stream() << "\" doc=\"" << Base::Persistence::encodeAttribute(data.getDoc());
     }
 }
 
@@ -268,9 +285,15 @@ Property *DynamicProperty::restore(PropertyContainer &pc,
     short attribute = 0;
     bool readonly = false, hidden = false;
     const char *group=0, *doc=0, *attr=0, *ro=0, *hide=0;
+    StringIDRef docID;
     group = reader.getAttribute("group");
     if (reader.hasAttribute("doc"))
         doc = reader.getAttribute("doc");
+    else if(reader.hasAttribute("docID")) {
+        auto document = pc.getOwnerDocument();
+        if(document)
+            docID = document->Hasher->getID(reader.getAttributeAsInteger("docID"));
+    }
     if (reader.hasAttribute("attr")) {
         attr = reader.getAttribute("attr");
         if (attr) attribute = attr[0]-48;
@@ -283,7 +306,7 @@ Property *DynamicProperty::restore(PropertyContainer &pc,
         hide = reader.getAttribute("hide");
         if (hide) hidden = (hide[0]-48) != 0;
     }
-    return addDynamicProperty(pc,TypeName, PropName, group, doc, attribute, readonly, hidden);
+    return _addDynamicProperty(pc,TypeName, PropName, group, doc, docID, attribute, readonly, hidden);
 }
 
 DynamicProperty::PropData DynamicProperty::getDynamicPropertyData(const Property *prop) const

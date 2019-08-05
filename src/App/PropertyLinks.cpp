@@ -605,7 +605,7 @@ void PropertyLink::setPyObject(PyObject *value)
 
 void PropertyLink::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<Link value=\"" <<  (_pcLink?_pcLink->getExportName():"") <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Link value=\"" <<  (_pcLink?_pcLink->getExportName():"") <<"\"/>\n";
 }
 
 void PropertyLink::Restore(Base::XMLReader &reader)
@@ -782,7 +782,7 @@ void PropertyLinkList::set1Value(int idx, DocumentObject* const &value) {
     inherited::set1Value(idx,value);
 }
 
-void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue) {
+void PropertyLinkList::setValues(std::vector<DocumentObject*> &&lValue) {
     if(lValue.size()==1 && !lValue[0]) {
         // one null element means clear, as backward compatibility for old code
         setValues(std::vector<DocumentObject*>());
@@ -815,7 +815,7 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue) {
         }
     }
 #endif
-    inherited::setValues(lValue);
+    inherited::setValues(std::move(lValue));
 }
 
 PyObject *PropertyLinkList::getPyObject(void)
@@ -848,18 +848,18 @@ DocumentObject *PropertyLinkList::getPyValue(PyObject *item) const {
 
 void PropertyLinkList::Save(Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<LinkList count=\"" << getSize() << "\">" << endl;
+    writer.Stream() << writer.ind() << "<LinkList count=\"" << getSize() << "\">\n";
     writer.incInd();
     for (int i = 0; i<getSize(); i++) {
         DocumentObject* obj = _lValueList[i];
         if (obj)
-            writer.Stream() << writer.ind() << "<Link value=\"" << obj->getExportName() << "\"/>" << endl;
+            writer.Stream() << writer.ind() << "<Link value=\"" << obj->getExportName() << "\"/>\n";
         else
-            writer.Stream() << writer.ind() << "<Link value=\"\"/>" << endl;
+            writer.Stream() << writer.ind() << "<Link value=\"\"/>\n";
     }
 
     writer.decInd();
-    writer.Stream() << writer.ind() << "</LinkList>" << endl;
+    writer.Stream() << writer.ind() << "</LinkList>\n";
 }
 
 void PropertyLinkList::Restore(Base::XMLReader &reader)
@@ -1419,7 +1419,7 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
         internal_name = _pcLinkSub->getExportName();
     writer.Stream() << writer.ind() << "<LinkSub value=\"" 
         <<  internal_name <<"\" count=\"" <<  _cSubList.size();
-    writer.Stream() << "\">" << std::endl;
+    writer.Stream() << "\">\n";
     writer.incInd();
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
     bool exporting = owner && owner->isExporting();
@@ -1449,10 +1449,10 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
                 }
             }
         }
-        writer.Stream()<<"\"/>" << endl;
+        writer.Stream()<<"\"/>\n";
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</LinkSub>" << endl ;
+    writer.Stream() << writer.ind() << "</LinkSub>\n" ;
 }
 
 void PropertyLinkSub::Restore(Base::XMLReader &reader)
@@ -2194,7 +2194,7 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
         if(obj && obj->getNameInDocument())
             ++count;
     }
-    writer.Stream() << writer.ind() << "<LinkSubList count=\"" << count <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<LinkSubList count=\"" << count <<"\">\n";
     writer.incInd();
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
     bool exporting = owner && owner->isExporting();
@@ -2228,11 +2228,11 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
                 }
             }
         }
-        writer.Stream() << "\"/>" << endl;
+        writer.Stream() << "\"/>\n";
     }
 
     writer.decInd();
-    writer.Stream() << writer.ind() << "</LinkSubList>" << endl ;
+    writer.Stream() << writer.ind() << "</LinkSubList>\n" ;
 }
 
 void PropertyLinkSubList::Restore(Base::XMLReader &reader)
@@ -3138,10 +3138,10 @@ int PropertyXLink::checkRestore(std::string *msg) const {
             // this condition means linked object not found
             if(msg) {
                 std::ostringstream ss;
-                ss << "Link not restored" << std::endl;
+                ss << "Link not restored\n";
                 ss << "Object: " << objectName;
                 if(filePath.size())
-                    ss << std::endl << "File: " << filePath;
+                    ss << "\nFile: " << filePath;
                 *msg = ss.str();
             }
             return 2;
@@ -3157,12 +3157,12 @@ int PropertyXLink::checkRestore(std::string *msg) const {
         }
         if(msg) {
             std::ostringstream ss;
-            ss << "Link not restored" << std::endl;
+            ss << "Link not restored\n";
             ss << "Linked object: " << objectName;
             if(docInfo->pcDoc)
-                ss << std::endl << "Linked document: " << docInfo->pcDoc->Label.getValue();
+                ss << "\nLinked document: " << docInfo->pcDoc->Label.getValue();
             else if(filePath.size())
-                ss << std::endl << "Linked file: " << filePath;
+                ss << "\nLinked file: " << filePath;
             *msg = ss.str();
         }
         return 2;
@@ -3251,7 +3251,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         writer.Stream() << "\" partial=\"1";
 
     if(_SubList.empty()) {
-        writer.Stream() << "\"/>" << std::endl;
+        writer.Stream() << "\"/>\n";
     } else if(_SubList.size() == 1) {
         const auto &subName = _SubList[0];
         const auto &shadowSub = _ShadowSubList[0];
@@ -3270,9 +3270,9 @@ void PropertyXLink::Save (Base::Writer &writer) const {
                     writer.Stream() << "\" " ATTR_SHADOW "=\"" << shadowSub.first;
             }
         }
-        writer.Stream() << "\"/>" << std::endl;
+        writer.Stream() << "\"/>\n";
     }else {
-        writer.Stream() <<"\" count=\"" << _SubList.size() << "\">" << std::endl;
+        writer.Stream() <<"\" count=\"" << _SubList.size() << "\">\n";
         writer.incInd();
         for(unsigned int i = 0;i<_SubList.size(); i++) {
             const auto &shadow = _ShadowSubList[i];
@@ -3295,10 +3295,10 @@ void PropertyXLink::Save (Base::Writer &writer) const {
                         writer.Stream() << "\" " ATTR_SHADOW "=\"" << shadow.first;
                 }
             }
-            writer.Stream()<<"\"/>" << endl;
+            writer.Stream()<<"\"/>\n";
         }
         writer.decInd();
-        writer.Stream() << writer.ind() << "</XLink>" << endl ;
+        writer.Stream() << writer.ind() << "</XLink>\n" ;
     }
 }
 
@@ -4052,12 +4052,12 @@ void PropertyXLinkSubList::Save (Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<XLinkSubList count=\"" << _Links.size();
     if(testFlag(LinkAllowPartial))
         writer.Stream() << "\" partial=\"1";
-    writer.Stream() <<"\">" << endl;
+    writer.Stream() <<"\">\n";
     writer.incInd();
     for(auto &l : _Links)
         l.Save(writer);
     writer.decInd();
-    writer.Stream() << writer.ind() << "</XLinkSubList>" << endl ;
+    writer.Stream() << writer.ind() << "</XLinkSubList>\n" ;
 }
 
 void PropertyXLinkSubList::Restore(Base::XMLReader &reader)
@@ -4469,21 +4469,21 @@ void PropertyXLinkContainer::Save (Base::Writer &writer) const {
             writer.Stream() << "\" docs=\"" << docSet.size();
     }
 
-    writer.Stream() << "\">" << std::endl;
+    writer.Stream() << "\">\n";
     writer.incInd();
 
     for(auto &v : docSet) {
         writer.Stream() << writer.ind() << "<DocMap "
             << "name=\"" << v.first->getName() 
             << "\" label=\"" << encodeAttribute(v.first->Label.getValue()) 
-            << "\" index=\"" << v.second << "\"/>" << std::endl;
+            << "\" index=\"" << v.second << "\"/>\n";
     }
 
     for(auto &v : _XLinks) 
         v.second->Save(writer);
     writer.decInd();
 
-    writer.Stream() << writer.ind() << "</XLinks>" << std::endl;
+    writer.Stream() << writer.ind() << "</XLinks>\n";
 }
 
 void PropertyXLinkContainer::Restore(Base::XMLReader &reader) {

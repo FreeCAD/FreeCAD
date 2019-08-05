@@ -589,3 +589,7 @@ std::string ViewProviderDocumentObject::getFullName(bool python) const {
         return pcObject->getFullName(python) + ".ViewObject";
     return std::string(python?"None":"?");
 }
+
+App::Document *ViewProviderDocumentObject::getOwnerDocument() const {
+    return pcObject?pcObject->getDocument():0;
+}

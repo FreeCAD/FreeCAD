@@ -324,15 +324,14 @@ public:
 
     virtual PyObject *getPyObject(void);
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-    
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize (void) const;
 
 protected:
     long getPyValue(PyObject *item) const override;
+
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
 };
 
 /** Integer list properties
@@ -580,6 +579,7 @@ public:
 };
 
 
+/// Double precision float list
 class AppExport PropertyFloatList: public PropertyListsT<double>
 {
     TYPESYSTEM_HEADER();
@@ -603,20 +603,43 @@ public:
 
     virtual PyObject *getPyObject(void);
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-    
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
-    
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize (void) const;
 
 protected:
-    double getPyValue(PyObject *item) const override;
+    virtual double getPyValue(PyObject *item) const override;
+
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
+    virtual bool canSaveStream(Base::Writer &) const override { return true; }
+    virtual void restoreStream(Base::InputStream &s, unsigned count) override;
+    virtual void saveStream(Base::OutputStream &) const override;
 };
 
+/** Single precision float list
+ *
+ * This property is not exposed to FreeCAD type system. It is meant to be
+ * derived by other property classes for backward compatibility.
+ */
+class AppExport _PropertyFloatList: public PropertyListsT<float>
+{
+public:
+    virtual PyObject *getPyObject(void);
+
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+
+protected:
+    virtual float getPyValue(PyObject *item) const override;
+
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
+    virtual bool canSaveStream(Base::Writer &) const override { return true; }
+    virtual void restoreStream(Base::InputStream &s, unsigned count) override;
+    virtual void saveStream(Base::OutputStream &) const override;
+
+    virtual const char *xmlName() const override { return "FloatList"; }
+};
 
 /** String properties
  * This is the father of all properties handling Strings.
@@ -748,9 +771,6 @@ public:
     
     virtual PyObject *getPyObject(void);
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-    
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
     
@@ -758,6 +778,9 @@ public:
     
 protected:
     std::string getPyValue(PyObject *item) const override;
+
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
 };
 
 /** Bool properties
@@ -899,18 +922,17 @@ public:
 
     virtual PyObject *getPyObject(void);
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-    
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
-    
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize (void) const;
 
 protected:
     Color getPyValue(PyObject *) const override;
+
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
+    virtual bool canSaveStream(Base::Writer &) const override { return true; }
+    virtual void restoreStream(Base::InputStream &s, unsigned count) override;
+    virtual void saveStream(Base::OutputStream &) const override;
 };
 
 /** Material properties
@@ -987,20 +1009,19 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    virtual void Save(Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-
-    virtual void SaveDocFile(Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
-
     virtual const char* getEditorName(void) const;
 
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize(void) const;
 
 protected:
-    Material getPyValue(PyObject *) const override;
+    virtual Material getPyValue(PyObject *) const override;
+
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
+    virtual bool canSaveStream(Base::Writer &) const override { return true; }
+    virtual void restoreStream(Base::InputStream &s, unsigned count) override;
+    virtual void saveStream(Base::OutputStream &) const override;
 };
 
 

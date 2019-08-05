@@ -121,7 +121,7 @@ void PropertyInteger::setPyObject(PyObject *value)
 
 void PropertyInteger::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<Integer value=\"" <<  _lValue <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Integer value=\"" <<  _lValue <<"\"/>\n";
 }
 
 void PropertyInteger::Restore(Base::XMLReader &reader)
@@ -259,7 +259,7 @@ void PropertyPath::setPyObject(PyObject *value)
 void PropertyPath::Save (Base::Writer &writer) const
 {
     std::string val = encodeAttribute(_cValue.string());
-    writer.Stream() << writer.ind() << "<Path value=\"" <<  val <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Path value=\"" <<  val <<"\"/>\n";
 }
 
 void PropertyPath::Restore(Base::XMLReader &reader)
@@ -393,17 +393,17 @@ void PropertyEnumeration::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Integer value=\"" <<  _enum.getInt() <<"\"";
     if (_enum.isCustom())
         writer.Stream() << " CustomEnum=\"true\"";
-    writer.Stream() << "/>" << std::endl;
+    writer.Stream() << "/>\n";
     if (_enum.isCustom()) {
         std::vector<std::string> items = getEnumVector();
-        writer.Stream() << writer.ind() << "<CustomEnumList count=\"" <<  items.size() <<"\">" << endl;
+        writer.Stream() << writer.ind() << "<CustomEnumList count=\"" <<  items.size() <<"\">\n";
         writer.incInd();
         for(std::vector<std::string>::iterator it = items.begin(); it != items.end(); ++it) {
             std::string val = encodeAttribute(*it);
-            writer.Stream() << writer.ind() << "<Enum value=\"" <<  val <<"\"/>" << endl;
+            writer.Stream() << "<Enum value=\"" <<  val <<"\"/>\n";
         }
         writer.decInd();
-        writer.Stream() << writer.ind() << "</CustomEnumList>" << endl;
+        writer.Stream() << writer.ind() << "</CustomEnumList>\n";
     }
 }
 
@@ -735,33 +735,36 @@ long PropertyIntegerList::getPyValue(PyObject *item) const {
     throw Base::TypeError(error);
 }
 
-void PropertyIntegerList::Save (Base::Writer &writer) const
+bool PropertyIntegerList::saveXML(Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<IntegerList count=\"" <<  getSize() <<"\">" << endl;
-    writer.incInd();
-    for(int i = 0;i<getSize(); i++)
-        writer.Stream() << writer.ind() << "<I v=\"" <<  _lValueList[i] <<"\"/>" << endl; ;
-    writer.decInd();
-    writer.Stream() << writer.ind() << "</IntegerList>" << endl ;
+    writer.Stream() << ">\n";
+    if(writer.getFileVersion()>1) {
+        for(auto &v : _lValueList)
+            writer.Stream() << v << '\n';
+    } else {
+        for(auto &v : _lValueList)
+            writer.Stream() << "<I v=\"" <<  v <<"\"/>\n";
+    }
+    return false;
 }
 
-void PropertyIntegerList::Restore(Base::XMLReader &reader)
+void PropertyIntegerList::restoreXML(Base::XMLReader &reader)
 {
-    // read my Element
-    reader.readElement("IntegerList");
-    // get the value of my Attribute
     int count = reader.getAttributeAsInteger("count");
-    
     std::vector<long> values(count);
-    for(int i = 0; i < count; i++) {
-        reader.readElement("I");
-        values[i] = reader.getAttributeAsInteger("v");
+    if(reader.FileVersion>1) {
+        auto &s = reader.beginCharStream(false);
+        for(int i = 0; i < count; i++)
+            s >> values[i];
+        reader.endCharStream();
+    } else {
+        for(int i = 0; i < count; i++) {
+            reader.readElement("I");
+            values[i] = reader.getAttributeAsInteger("v");
+        }
     }
-    
-    reader.readEndElement("IntegerList");
-
     //assignment
-    setValues(values);
+    setValues(std::move(values));
 }
 
 Property *PropertyIntegerList::Copy(void) const
@@ -776,20 +779,11 @@ void PropertyIntegerList::Paste(const Property &from)
     setValues(dynamic_cast<const PropertyIntegerList&>(from)._lValueList);
 }
 
-unsigned int PropertyIntegerList::getMemSize (void) const
-{
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(long));
-}
-
-
-
-
-//**************************************************************************
 //**************************************************************************
 // PropertyIntegerSet
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyIntegerSet , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyIntegerSet , App::PropertyLists);
 
 //**************************************************************************
 // Construction/Destruction
@@ -881,12 +875,15 @@ void PropertyIntegerSet::setPyObject(PyObject *value)
 
 void PropertyIntegerSet::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<IntegerSet count=\"" <<  _lValueSet.size() <<"\">" << endl;
-    writer.incInd();
-    for(std::set<long>::const_iterator it=_lValueSet.begin();it!=_lValueSet.end();++it)
-        writer.Stream() << writer.ind() << "<I v=\"" <<  *it <<"\"/>" << endl; ;
-    writer.decInd();
-    writer.Stream() << writer.ind() << "</IntegerSet>" << endl ;
+    writer.Stream() << writer.ind() << "<IntegerSet count=\"" <<  _lValueSet.size() <<"\">\n";
+    if(writer.getFileVersion()>1) {
+        for(auto &v : _lValueSet)
+            writer.Stream() << v << '\n';
+    } else {
+        for(std::set<long>::const_iterator it=_lValueSet.begin();it!=_lValueSet.end();++it)
+            writer.Stream() << "<I v=\"" <<  *it <<"\"/>\n";
+    }
+    writer.Stream() << writer.ind() << "</IntegerSet>\n" ;
 }
 
 void PropertyIntegerSet::Restore(Base::XMLReader &reader)
@@ -897,9 +894,19 @@ void PropertyIntegerSet::Restore(Base::XMLReader &reader)
     int count = reader.getAttributeAsInteger("count");
     
     std::set<long> values;
-    for(int i = 0; i < count; i++) {
-        reader.readElement("I");
-        values.insert(reader.getAttributeAsInteger("v"));
+    if(reader.FileVersion > 1) {
+        auto &s = reader.beginCharStream(false);
+        for(int i = 0; i < count; i++) {
+            long v;
+            s >> v;
+            values.insert(v);
+        }
+        reader.endCharStream();
+    } else {
+        for(int i = 0; i < count; i++) {
+            reader.readElement("I");
+            values.insert(reader.getAttributeAsInteger("v"));
+        }
     }
     
     reader.readEndElement("IntegerSet");
@@ -997,7 +1004,7 @@ void PropertyFloat::setPyObject(PyObject *value)
 
 void PropertyFloat::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<Float value=\"" <<  _dValue <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Float value=\"" <<  _dValue <<"\"/>\n";
 }
 
 void PropertyFloat::Restore(Base::XMLReader &reader)
@@ -1225,38 +1232,26 @@ double PropertyFloatList::getPyValue(PyObject *item) const {
     }
 }
 
-void PropertyFloatList::Save (Base::Writer &writer) const
+bool PropertyFloatList::saveXML(Base::Writer &writer) const
 {
-    if (writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<FloatList count=\"" <<  getSize() <<"\">" << endl;
-        writer.incInd();
-        for(int i = 0;i<getSize(); i++)
-            writer.Stream() << writer.ind() << "<F v=\"" <<  _lValueList[i] <<"\"/>" << endl; ;
-        writer.decInd();
-        writer.Stream() << writer.ind() <<"</FloatList>" << endl ;
-    }
-    else {
-        writer.Stream() << writer.ind() << "<FloatList file=\"" << 
-            (getSize()?writer.addFile(getName(), this):"") << "\"/>" << std::endl;
-    }
+    writer.Stream() << ">\n";
+    for(auto &v : _lValueList)
+        writer.Stream() << v << '\n';
+    return false;
 }
 
-void PropertyFloatList::Restore(Base::XMLReader &reader)
+void PropertyFloatList::restoreXML(Base::XMLReader &reader)
 {
-    reader.readElement("FloatList");
-    string file (reader.getAttribute("file") );
-
-    if (!file.empty()) {
-        // initiate a file read
-        reader.addFile(file.c_str(),this);
-    }
+    int count = reader.getAttributeAsInteger("count");
+    std::vector<double> values(count);
+    auto &s = reader.beginCharStream(false);
+    for(int i=0;i<count;++i)
+        s >> values[i];
+    setValues(std::move(values));
 }
 
-void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
+void PropertyFloatList::saveStream(Base::OutputStream &str) const
 {
-    Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
-    str << uCt;
     if (!isSinglePrecision()) {
         for (std::vector<double>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
             str << *it;
@@ -1270,11 +1265,8 @@ void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyFloatList::RestoreDocFile(Base::Reader &reader)
+void PropertyFloatList::restoreStream(Base::InputStream &str, unsigned uCt)
 {
-    Base::InputStream str(reader);
-    uint32_t uCt=0;
-    str >> uCt;
     std::vector<double> values(uCt);
     if (!isSinglePrecision()) {
         for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
@@ -1288,7 +1280,7 @@ void PropertyFloatList::RestoreDocFile(Base::Reader &reader)
             (*it) = val;
         }
     }
-    setValues(values);
+    setValues(std::move(values));
 }
 
 Property *PropertyFloatList::Copy(void) const
@@ -1303,12 +1295,78 @@ void PropertyFloatList::Paste(const Property &from)
     setValues(dynamic_cast<const PropertyFloatList&>(from)._lValueList);
 }
 
-unsigned int PropertyFloatList::getMemSize (void) const
+//**************************************************************************
+// _PropertyFloatList (single precision float list)
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PyObject *_PropertyFloatList::getPyObject(void)
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(double));
+    PyObject* list = PyList_New(getSize());
+    for (int i = 0;i<getSize(); i++)
+         PyList_SetItem( list, i, PyFloat_FromDouble(_lValueList[i]));
+    return list;
 }
 
-//**************************************************************************
+float _PropertyFloatList::getPyValue(PyObject *item) const {
+    if (PyFloat_Check(item)) {
+        return PyFloat_AsDouble(item);
+#if PY_MAJOR_VERSION >= 3
+    } else if (PyLong_Check(item)) {
+        return static_cast<float>(PyLong_AsLong(item));
+#else
+    } else if (PyInt_Check(item)) {
+        return static_cast<float>(PyInt_AsLong(item));
+#endif
+    } else {
+        std::string error = std::string("type in list must be float, not ");
+        error += item->ob_type->tp_name;
+        throw Base::TypeError(error);
+    }
+}
+
+bool _PropertyFloatList::saveXML(Base::Writer &writer) const
+{
+    writer.Stream() << ">\n";
+    for(auto &v : _lValueList)
+        writer.Stream() << v << '\n';
+    return false;
+}
+
+void _PropertyFloatList::restoreXML(Base::XMLReader &reader)
+{
+    int count = reader.getAttributeAsInteger("count");
+    std::vector<float> values(count);
+    auto &s = reader.beginCharStream(false);
+    for(int i=0;i<count;++i)
+        s >> values[i];
+    setValues(std::move(values));
+}
+
+void _PropertyFloatList::saveStream(Base::OutputStream &str) const {
+    for (auto &v : _lValueList)
+        str << v;
+}
+
+void _PropertyFloatList::restoreStream(Base::InputStream &str, unsigned uCt)
+{
+    std::vector<float> values(uCt);
+    for(auto &v : values)
+        str >> v;
+    setValues(std::move(values));
+}
+
+Property *_PropertyFloatList::Copy(void) const
+{
+    _PropertyFloatList *p= new _PropertyFloatList();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void _PropertyFloatList::Paste(const Property &from)
+{
+    setValues(dynamic_cast<const _PropertyFloatList&>(from)._lValueList);
+}
+
 //**************************************************************************
 // PropertyString
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1502,7 +1560,7 @@ void PropertyString::Save (Base::Writer &writer) const
     }
     if(!exported)
         val = encodeAttribute(_cValue);
-    writer.Stream() <<"value=\"" << val <<"\"/>" << std::endl;
+    writer.Stream() <<"value=\"" << val <<"\"/>\n";
 }
 
 void PropertyString::Restore(Base::XMLReader &reader)
@@ -1662,7 +1720,7 @@ void PropertyUUID::setPyObject(PyObject *value)
 
 void PropertyUUID::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<Uuid value=\"" << _uuid.getValue() <<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Uuid value=\"" << _uuid.getValue() <<"\"/>\n";
 }
 
 void PropertyUUID::Restore(Base::XMLReader &reader)
@@ -1733,7 +1791,7 @@ void PropertyStringList::setValues(const std::list<std::string>& lValue)
     vals.reserve(lValue.size());
     for(const auto &v : lValue)
         vals.push_back(v);
-    setValues(vals);
+    setValues(std::move(vals));
 }
 
 PyObject *PropertyStringList::getPyObject(void)
@@ -1784,23 +1842,18 @@ unsigned int PropertyStringList::getMemSize (void) const
     return static_cast<unsigned int>(size);
 }
 
-void PropertyStringList::Save (Base::Writer &writer) const
+bool PropertyStringList::saveXML(Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<StringList count=\"" <<  getSize() <<"\">" << endl;
-    writer.incInd();
+    writer.Stream() << ">\n";
     for(int i = 0;i<getSize(); i++) {
         std::string val = encodeAttribute(_lValueList[i]);
-        writer.Stream() << writer.ind() << "<String value=\"" <<  val <<"\"/>" << endl;
+        writer.Stream() << "<String value=\"" <<  val <<"\"/>\n";
     }
-    writer.decInd();
-    writer.Stream() << writer.ind() << "</StringList>" << endl ;
+    return false;
 }
 
-void PropertyStringList::Restore(Base::XMLReader &reader)
+void PropertyStringList::restoreXML(Base::XMLReader &reader)
 {
-    // read my Element
-    reader.readElement("StringList");
-    // get the value of my Attribute
     int count = reader.getAttributeAsInteger("count");
 
     std::vector<std::string> values(count);
@@ -1808,11 +1861,9 @@ void PropertyStringList::Restore(Base::XMLReader &reader)
         reader.readElement("String");
         values[i] = reader.getAttribute("value");
     }
-    
-    reader.readEndElement("StringList");
 
     // assignment
-    setValues(values);
+    setValues(std::move(values));
 }
 
 Property *PropertyStringList::Copy(void) const
@@ -1971,13 +2022,11 @@ unsigned int PropertyMap::getMemSize (void) const
 
 void PropertyMap::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<Map count=\"" <<  getSize() <<"\">" << endl;
-    writer.incInd();
+    writer.Stream() << writer.ind() << "<Map count=\"" <<  getSize() <<"\">\n";
     for (std::map<std::string,std::string>::const_iterator it = _lValueList.begin();it!= _lValueList.end(); ++it) 
-        writer.Stream() << writer.ind() << "<Item key=\"" <<  it->first <<"\" value=\"" <<  encodeAttribute(it->second) <<"\"/>" << endl;
+        writer.Stream() << "<Item key=\"" <<  it->first <<"\" value=\"" <<  encodeAttribute(it->second) <<"\"/>\n";
 
-    writer.decInd();
-    writer.Stream() << writer.ind() << "</Map>" << endl ;
+    writer.Stream() << writer.ind() << "</Map>\n" ;
 }
 
 void PropertyMap::Restore(Base::XMLReader &reader)
@@ -2081,7 +2130,7 @@ void PropertyBool::Save (Base::Writer &writer) const
         writer.Stream() << "true" <<"\"/>" ;
     else
         writer.Stream() << "false" <<"\"/>" ;
-    writer.Stream() << std::endl;
+    writer.Stream() << '\n';
 }
 
 void PropertyBool::Restore(Base::XMLReader &reader)
@@ -2215,7 +2264,7 @@ void PropertyBoolList::Save (Base::Writer &writer) const
     std::string bitset;
     boost::to_string(_lValueList, bitset);
     writer.Stream() << bitset <<"\"/>" ;
-    writer.Stream() << std::endl;
+    writer.Stream() << '\n';
 }
 
 void PropertyBoolList::Restore(Base::XMLReader &reader)
@@ -2225,7 +2274,7 @@ void PropertyBoolList::Restore(Base::XMLReader &reader)
     // get the value of my Attribute
     string str = reader.getAttribute("value");
     boost::dynamic_bitset<> bitset(str);
-    setValues(bitset);
+    setValues(std::move(bitset));
 }
 
 Property *PropertyBoolList::Copy(void) const
@@ -2369,7 +2418,7 @@ void PropertyColor::setPyObject(PyObject *value)
 void PropertyColor::Save (Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<PropertyColor value=\"" 
-    <<  _cCol.getPackedValue() <<"\"/>" << endl;
+    <<  _cCol.getPackedValue() <<"\"/>\n";
 }
 
 void PropertyColor::Restore(Base::XMLReader &reader)
@@ -2445,49 +2494,46 @@ Color PropertyColorList::getPyValue(PyObject *item) const {
     return col.getValue();
 }
 
-void PropertyColorList::Save (Base::Writer &writer) const
+bool PropertyColorList::saveXML(Base::Writer &writer) const
 {
-    if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<ColorList file=\"" << 
-            (getSize()?writer.addFile(getName(), this):"") << "\"/>" << std::endl;
-    }
+    writer.Stream() << ">\n" << std::hex;
+    for(const auto &c : _lValueList)
+        writer.Stream() << c.getPackedValue() << '\n';
+    writer.Stream() << std::dec;
+    return false;
 }
 
-void PropertyColorList::Restore(Base::XMLReader &reader)
+void PropertyColorList::restoreXML(Base::XMLReader &reader)
 {
-    reader.readElement("ColorList");
-    if (reader.hasAttribute("file")) {
-        std::string file (reader.getAttribute("file"));
-
-        if (!file.empty()) {
-            // initiate a file read
-            reader.addFile(file.c_str(),this);
-        }
+    int count = reader.getAttributeAsInteger("count");
+    std::vector<Color> values(count);
+    auto &s = reader.beginCharStream(false) >> std::hex;
+    for(int i=0;i<count;++i) {
+        uint32_t v;
+        s >> v;
+        values[i].setPackedValue(v);
     }
+    s >> std::dec;
+    setValues(std::move(values));
+    reader.endCharStream();
 }
 
-void PropertyColorList::SaveDocFile (Base::Writer &writer) const
+void PropertyColorList::saveStream(Base::OutputStream &str) const
 {
-    Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
-    str << uCt;
     for (std::vector<App::Color>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         str << it->getPackedValue();
     }
 }
 
-void PropertyColorList::RestoreDocFile(Base::Reader &reader)
+void PropertyColorList::restoreStream(Base::InputStream &str, unsigned uCt)
 {
-    Base::InputStream str(reader);
-    uint32_t uCt=0;
-    str >> uCt;
     std::vector<Color> values(uCt);
     uint32_t value; // must be 32 bit long
     for (std::vector<App::Color>::iterator it = values.begin(); it != values.end(); ++it) {
         str >> value;
         it->setPackedValue(value);
     }
-    setValues(values);
+    setValues(std::move(values));
 }
 
 Property *PropertyColorList::Copy(void) const
@@ -2502,12 +2548,6 @@ void PropertyColorList::Paste(const Property &from)
     setValues(dynamic_cast<const PropertyColorList&>(from)._lValueList);
 }
 
-unsigned int PropertyColorList::getMemSize (void) const
-{
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(Color));
-}
-
-//**************************************************************************
 //**************************************************************************
 // PropertyMaterial
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2603,7 +2643,7 @@ void PropertyMaterial::Save (Base::Writer &writer) const
         << "\" specularColor=\"" <<  _cMat.specularColor.getPackedValue()
         << "\" emissiveColor=\"" <<  _cMat.emissiveColor.getPackedValue()
         << "\" shininess=\"" <<  _cMat.shininess << "\" transparency=\"" 
-        <<  _cMat.transparency << "\"/>" << endl;
+        <<  _cMat.transparency << "\"/>\n";
 }
 
 void PropertyMaterial::Restore(Base::XMLReader &reader)
@@ -2685,32 +2725,42 @@ Material PropertyMaterialList::getPyValue(PyObject *value) const {
     }
 }
 
-void PropertyMaterialList::Save(Base::Writer &writer) const
+bool PropertyMaterialList::saveXML(Base::Writer &writer) const
 {
-    if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<MaterialList file=\"" << 
-            (getSize()?writer.addFile(getName(), this):"") << "\"/>" << std::endl;
+    writer.Stream() << ">\n" << std::hex;
+    for(auto &m : _lValueList) {
+        writer.Stream() << m.ambientColor.getPackedValue()
+                        << ' ' << m.diffuseColor.getPackedValue()
+                        << ' ' << m.specularColor.getPackedValue()
+                        << ' ' << m.emissiveColor.getPackedValue()
+                        << ' ' << m.shininess
+                        << ' ' << m.transparency
+                        << '\n';
     }
+    writer.Stream() << std::dec;
+    return false;
 }
 
-void PropertyMaterialList::Restore(Base::XMLReader &reader)
+void PropertyMaterialList::restoreXML(Base::XMLReader &reader)
 {
-    reader.readElement("MaterialList");
-    if (reader.hasAttribute("file")) {
-        std::string file(reader.getAttribute("file"));
-
-        if (!file.empty()) {
-            // initiate a file read
-            reader.addFile(file.c_str(), this);
-        }
+    uint32_t uCt = reader.getAttributeAsUnsigned("count");
+    auto &s = reader.beginCharStream(false) >> std::hex;
+    std::vector<Material> values(uCt);
+    for(auto &m : values) {
+        uint32_t ambient,diffuse,specular,emissive;
+        s >> ambient >> diffuse >> specular >> emissive >> m.shininess >> m.transparency;
+        m.ambientColor.setPackedValue(ambient);
+        m.diffuseColor.setPackedValue(diffuse);
+        m.specularColor.setPackedValue(specular);
+        m.emissiveColor.setPackedValue(emissive);
     }
+    s >> std::dec;
+    reader.endCharStream();
+    setValues(std::move(values));
 }
 
-void PropertyMaterialList::SaveDocFile(Base::Writer &writer) const
+void PropertyMaterialList::saveStream(Base::OutputStream &str) const
 {
-    Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
-    str << uCt;
     for (std::vector<App::Material>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         str << it->ambientColor.getPackedValue();
         str << it->diffuseColor.getPackedValue();
@@ -2721,11 +2771,8 @@ void PropertyMaterialList::SaveDocFile(Base::Writer &writer) const
     }
 }
 
-void PropertyMaterialList::RestoreDocFile(Base::Reader &reader)
+void PropertyMaterialList::restoreStream(Base::InputStream &str, unsigned uCt)
 {
-    Base::InputStream str(reader);
-    uint32_t uCt = 0;
-    str >> uCt;
     std::vector<Material> values(uCt);
     uint32_t value; // must be 32 bit long
     float valueF;
@@ -2743,7 +2790,7 @@ void PropertyMaterialList::RestoreDocFile(Base::Reader &reader)
         str >> valueF;
         it->transparency = valueF;
     }
-    setValues(values);
+    setValues(std::move(values));
 }
 
 const char* PropertyMaterialList::getEditorName(void) const
@@ -2765,11 +2812,6 @@ void PropertyMaterialList::Paste(const Property &from)
     setValues(dynamic_cast<const PropertyMaterialList&>(from)._lValueList);
 }
 
-unsigned int PropertyMaterialList::getMemSize(void) const
-{
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(Material));
-}
-
 //**************************************************************************
 // PropertyPersistentObject
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2785,13 +2827,13 @@ PyObject *PropertyPersistentObject::getPyObject(void){
 void PropertyPersistentObject::Save(Base::Writer &writer) const{
     inherited::Save(writer);
 #define ELEMENT_PERSISTENT_OBJ "PersistentObject"
-    writer.Stream() << writer.ind() << "<" ELEMENT_PERSISTENT_OBJ ">" << std::endl;
+    writer.Stream() << writer.ind() << "<" ELEMENT_PERSISTENT_OBJ ">\n";
     if(_pObject) {
         writer.incInd();
         _pObject->Save(writer);
         writer.decInd();
     }
-    writer.Stream() << writer.ind() << "</" ELEMENT_PERSISTENT_OBJ ">" << std::endl;
+    writer.Stream() << writer.ind() << "</" ELEMENT_PERSISTENT_OBJ ">\n";
 }
 
 void PropertyPersistentObject::Restore(Base::XMLReader &reader){

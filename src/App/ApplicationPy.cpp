@@ -190,44 +190,47 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
     char *path, *doc="",*mod="";
     if (!PyArg_ParseTuple(args, "s|ss", &path, &doc, &mod))     // convert args: Python->C
         return 0;                             // NULL triggers exception
-    try {
+    PY_TRY {
         Base::FileInfo fi(path);
-        if (!fi.isFile() || !fi.exists()) {
+        if (!fi.exists()) {
             PyErr_Format(PyExc_IOError, "File %s doesn't exist.", path);
             return 0;
         }
 
+        std::stringstream str;
         std::string module = mod;
         if (module.empty()) {
-            std::string ext = fi.extension();
-            std::vector<std::string> modules = GetApplication().getImportModules(ext.c_str());
-            if (modules.empty()) {
-                PyErr_Format(PyExc_IOError, "Filetype %s is not supported.", ext.c_str());
-                return 0;
-            }
-            else {
-                module = modules.front();
+
+            if((fi.isDir() && Base::FileInfo(fi.filePath()+"/Document.xml").exists()) 
+                    || fi.fileName() == "Document.xml") 
+            {
+                if(!fi.isDir()) 
+                    fi.setFile(fi.dirPath());
+                str << "FreeCAD.openDocument('" << fi.filePath() << "')" << std::endl;
+            } else {
+                std::string ext = fi.extension();
+                std::vector<std::string> modules = GetApplication().getImportModules(ext.c_str());
+                if (modules.empty()) {
+                    PyErr_Format(PyExc_IOError, "Filetype %s is not supported.", ext.c_str());
+                    return 0;
+                }
+                else {
+                    module = modules.front();
+                }
             }
         }
 
-        std::stringstream str;
-        str << "import " << module << std::endl;
-        if (fi.hasExtension("FCStd"))
-            str << module << ".openDocument('" << path << "')" << std::endl;
-        else
-            str << module << ".insert('" << path << "','" << doc << "')" << std::endl;
+        if(module.size()) {
+            str << "import " << module << std::endl;
+            if (fi.hasExtension("FCStd"))
+                str << module << ".openDocument('" << path << "')" << std::endl;
+            else
+                str << module << ".insert('" << path << "','" << doc << "')" << std::endl;
+        }
+
         Base::Interpreter().runString(str.str().c_str());
         Py_Return;
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_IOError, e.what());
-        return 0;
-    }
-    catch (const std::exception& e) {
-        // might be subclass from zipios
-        PyErr_Format(PyExc_IOError, "Invalid project file %s: %s", path, e.what());
-        return 0;
-    }
+    } PY_CATCH
 }
 
 PyObject* Application::sIsRestoring(PyObject * /*self*/, PyObject *args) {
@@ -243,19 +246,10 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args)
         return NULL;
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
-    try {
+    PY_TRY {
         // return new document
         return (GetApplication().openDocument(EncodedName.c_str())->getPyObject());
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_IOError, e.what());
-        return 0L;
-    }
-    catch (const std::exception& e) {
-        // might be subclass from zipios
-        PyErr_Format(PyExc_IOError, "Invalid project file %s: %s\n", EncodedName.c_str(), e.what());
-        return 0L;
-    }
+    } PY_CATCH
 }
 
 PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args)
@@ -279,14 +273,9 @@ PyObject* Application::sSetActiveDocument(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-    try {
+    PY_TRY {
         GetApplication().setActiveDocument(pstr);
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
-        return NULL;
-    }
-
+    } PY_CATCH
     Py_Return;
 }
 
@@ -296,22 +285,22 @@ PyObject* Application::sCloseDocument(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-    Document* doc = GetApplication().getDocument(pstr);
-    if (!doc) {
-        PyErr_Format(PyExc_NameError, "Unknown document '%s'", pstr);
-        return NULL;
-    }
-    if (!doc->isClosable()) {
-        PyErr_Format(PyExc_RuntimeError, "The document '%s' is not closable for the moment", pstr);
-        return NULL;
-    }
-
-    if (GetApplication().closeDocument(pstr) == false) {
-        PyErr_Format(PyExc_RuntimeError, "Closing the document '%s' failed", pstr);
-        return NULL;
-    }
-
-    Py_Return;
+    PY_TRY {
+        Document* doc = GetApplication().getDocument(pstr);
+        if (!doc) {
+            PyErr_Format(PyExc_NameError, "Unknown document '%s'", pstr);
+            return NULL;
+        }
+        if (!doc->isClosable()) {
+            PyErr_Format(PyExc_RuntimeError, "The document '%s' is not closable for the moment", pstr);
+            return NULL;
+        }
+        if (GetApplication().closeDocument(pstr) == false) {
+            PyErr_Format(PyExc_RuntimeError, "Closing the document '%s' failed", pstr);
+            return NULL;
+        }
+        Py_Return;
+    } PY_CATCH
 }
 
 PyObject* Application::sSaveDocument(PyObject * /*self*/, PyObject *args)
@@ -320,19 +309,20 @@ PyObject* Application::sSaveDocument(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &pDoc))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-    Document* doc = GetApplication().getDocument(pDoc);
-    if ( doc ) {
-        if ( doc->save() == false ) {
-            PyErr_Format(Base::BaseExceptionFreeCADError, "Cannot save document '%s'", pDoc);
-            return 0L;
+    PY_TRY {
+        Document* doc = GetApplication().getDocument(pDoc);
+        if ( doc ) {
+            if ( doc->save() == false ) {
+                PyErr_Format(Base::BaseExceptionFreeCADError, "Cannot save document '%s'", pDoc);
+                return 0L;
+            }
         }
-    }
-    else {
-        PyErr_Format(PyExc_NameError, "Unknown document '%s'", pDoc);
-        return NULL;
-    }
-
-    Py_Return;
+        else {
+            PyErr_Format(PyExc_NameError, "Unknown document '%s'", pDoc);
+            return NULL;
+        }
+        Py_Return;
+    } PY_CATCH
 }
 #if 0
 PyObject* Application::sSaveDocumentAs(PyObject * /*self*/, PyObject *args)
@@ -358,14 +348,16 @@ PyObject* Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
         return NULL;                       // NULL triggers exception
 
-    Document* doc = GetApplication().getActiveDocument();
-    if (doc) {
-        return doc->getPyObject();
-    }
-    else {
-        Py_INCREF(Py_None);
-        return Py_None;
-    }
+    PY_TRY {
+        Document* doc = GetApplication().getActiveDocument();
+        if (doc) {
+            return doc->getPyObject();
+        }
+        else {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
+    } PY_CATCH
 }
 
 PyObject* Application::sGetDocument(PyObject * /*self*/, PyObject *args)
@@ -516,9 +508,10 @@ PyObject* Application::sAddImportType(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "ss", &psKey,&psMod))
         return NULL;
 
-    GetApplication().addImportType(psKey,psMod);
-
-    Py_Return;
+    PY_TRY {
+        GetApplication().addImportType(psKey,psMod);
+        Py_Return;
+    } PY_CATCH
 }
 
 PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
@@ -568,9 +561,10 @@ PyObject* Application::sAddExportType(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "ss", &psKey,&psMod))
         return NULL;
 
-    GetApplication().addExportType(psKey,psMod);
-
-    Py_Return;
+    PY_TRY {
+        GetApplication().addExportType(psKey,psMod);
+        Py_Return;
+    } PY_CATCH
 }
 
 PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)

@@ -108,7 +108,6 @@ public:
     void afterRestore();
 
     void save(Base::Writer &writer) const;
-    void save(std::ostream &os, const char *indent, bool noContent) const;
 
     bool isUsed() const;
 
@@ -155,6 +154,8 @@ public:
     static App::Color decodeColor(const std::string &color, const App::Color &defaultColor);
 
 private:
+
+    void saveStyle(std::ostream &os, bool endTag=true) const;
 
     void setParseException(const std::string & e);
 

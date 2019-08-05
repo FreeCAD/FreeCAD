@@ -50,52 +50,13 @@ class MeshPy;
  * Note: We need an own class for that to distinguish from the base vector list.
  * @author Werner Mayer
  */
-class MeshExport PropertyNormalList: public App::PropertyLists
+class MeshExport PropertyNormalList: public App::_PropertyVectorList
 {
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyNormalList();
-    ~PropertyNormalList();
-
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
-
-    void setValue(const Base::Vector3f&);
-    void setValue(float x, float y, float z);
-
-    const Base::Vector3f& operator[] (const int idx) const {
-        return _lValueList[idx];
-    }
-
-    void set1Value (const int idx, const Base::Vector3f& value) {
-        _lValueList[idx] = value;
-    }
-
-    void setValues (const std::vector<Base::Vector3f>& values);
-
-    const std::vector<Base::Vector3f> &getValues(void) const {
-        return _lValueList;
-    }
-
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
-
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
-
-    virtual App::Property *Copy(void) const;
-    virtual void Paste(const App::Property &from);
-
-    virtual unsigned int getMemSize (void) const;
-
     void transformGeometry(const Base::Matrix4D &rclMat);
 
-private:
-    std::vector<Base::Vector3f> _lValueList;
 };
 
 /** Curvature information. */
@@ -108,8 +69,10 @@ struct MeshExport CurvatureInfo
 /** The Curvature property class.
  * @author Werner Mayer
  */
-class MeshExport PropertyCurvatureList: public App::PropertyLists
+class MeshExport PropertyCurvatureList: public App::PropertyListsT<CurvatureInfo>
 {
+    typedef PropertyListsT<CurvatureInfo> inherited;
+
     TYPESYSTEM_HEADER();
 
 public:
@@ -125,43 +88,23 @@ public:
     PropertyCurvatureList();
     ~PropertyCurvatureList();
 
-    void setSize(int newSize){_lValueList.resize(newSize);}   
-    int getSize(void) const {return _lValueList.size();}   
     std::vector<float> getCurvature( int tMode) const;
-    void setValue(const CurvatureInfo&);
-    void setValues(const std::vector<CurvatureInfo>&);
 
-    /// index operator
-    const CurvatureInfo& operator[] (const int idx) const {
-        return _lValueList[idx];
-    }
-    void  set1Value (const int idx, const CurvatureInfo& value) {
-        _lValueList[idx] = value;
-    }
-    const std::vector<CurvatureInfo> &getValues(void) const {
-        return _lValueList;
-    }
     void transformGeometry(const Base::Matrix4D &rclMat);
 
-    void Save (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
-
-    void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
-
-    /** @name Python interface */
-    //@{
     PyObject* getPyObject(void);
-    void setPyObject(PyObject *value);
-    //@}
 
     App::Property *Copy(void) const;
     void Paste(const App::Property &from);
 
-    virtual unsigned int getMemSize (void) const{return _lValueList.size() * sizeof(CurvatureInfo);}
+protected:
+    virtual CurvatureInfo getPyValue(PyObject *) const override;
 
-private:
-    std::vector<CurvatureInfo> _lValueList;
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
+    virtual bool canSaveStream(Base::Writer &) const override { return true; }
+    virtual void restoreStream(Base::InputStream &s, unsigned count) override;
+    virtual void saveStream(Base::OutputStream &) const override;
 };
 
 /** The mesh kernel property class.

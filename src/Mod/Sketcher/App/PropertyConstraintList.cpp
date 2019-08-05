@@ -306,12 +306,12 @@ void PropertyConstraintList::setPyObject(PyObject *value)
 
 void PropertyConstraintList::Save(Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<ConstraintList count=\"" << getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<ConstraintList count=\"" << getSize() <<"\">\n";
     writer.incInd();
     for (int i = 0; i < getSize(); i++)
         _lValueList[i]->Save(writer);
     writer.decInd();
-    writer.Stream() << writer.ind() << "</ConstraintList>" << endl ;
+    writer.Stream() << writer.ind() << "</ConstraintList>\n" ;
 }
 
 void PropertyConstraintList::Restore(Base::XMLReader &reader)

@@ -443,6 +443,18 @@ const char *ComplexGeoData::setElementName(const char *element, const char *name
             _ElementMap->right.erase(element);
         return element;
     }
+
+    for(const char *s=name;*s;++s) {
+        char c = *s;
+        if(c == '.' || std::isspace((int)c))
+            FC_THROWM(Base::RuntimeError,"Illegal character in mapped name: " << name);
+    }
+    for(const char *s=element;*s;++s) {
+        char c = *s;
+        if(c == '.' || std::isspace((int)c))
+            FC_THROWM(Base::RuntimeError,"Illegal character in element name: " << element);
+    }
+
     std::vector<App::StringIDRef> _sid;
     const char *mapped = isMappedElement(name);
     if(mapped)
@@ -661,63 +673,155 @@ long ComplexGeoData::getElementHistory(const char *_name,
             return tag;
         tag = tag2;
         if(history)
-            history->push_back(ret);
+            history->push_back(std::move(ret));
     }
+}
+
+void ComplexGeoData::setPersistenceFileName(const char *filename) const {
+    if(!filename)
+        filename = "";
+    _PersistenceName = filename;
 }
 
 void ComplexGeoData::Save(Base::Writer &writer) const {
     writer.Stream() << writer.ind() << "<ElementMap";
-    if(!_ElementMap || _ElementMap->empty())
-        writer.Stream() << "/>" << std::endl;
-    else {
-        writer.Stream() << " count=\"" << _ElementMap->left.size() << "\">" << std::endl;
+    if(!_ElementMap || _ElementMap->empty()) {
+        writer.Stream() << "/>\n";
+        return;
+    }
+    if(_PersistenceName.size()) {
+        writer.Stream() << " file=\"" 
+            << writer.addFile(_PersistenceName+".txt",this) 
+            << "\"/>\n";
+        return;
+    }
+    writer.Stream() << " count=\"" << _ElementMap->left.size() << "\">\n";
+    if(writer.getFileVersion() > 1) {
+        saveStream(writer.beginCharStream(false) << '\n');
+        writer.endCharStream() << '\n';
+    } else {
         for(auto &v : _ElementMap->left) {
             // We are omitting indentation here to save some space in case of long list of elements
-            writer.Stream() << "<Element key=\"" <<  
-                v.first <<"\" value=\"" << v.second;
+            writer.Stream() << "<Element key=\"" << encodeAttribute(v.first) 
+                            << "\" value=\"" << encodeAttribute(v.second);
             if(v.info.size()) {
                 writer.Stream() << "\" sid=\"" << v.info.front()->value();
                 for(size_t i=1;i<v.info.size();++i)
                     writer.Stream() << '.' << v.info[i]->value();
             }
-            writer.Stream() << "\"/>" << std::endl;
+            writer.Stream() << "\"/>\n";
         }
-        writer.Stream() << writer.ind() << "</ElementMap>" << std::endl ;
+    }
+    writer.Stream() << writer.ind() << "</ElementMap>\n" ;
+}
+
+void ComplexGeoData::saveStream(std::ostream &s)  const {
+    for(auto &v : _ElementMap->right) {
+        s << v.first << '\t' << v.second << ' ' << v.info.size();
+        for(auto &sid : v.info)
+            s << ' ' << sid->value();
+        s << '\n';
     }
 }
 
 void ComplexGeoData::Restore(Base::XMLReader &reader) {
     resetElementMap();
+
     reader.readElement("ElementMap");
-    if(reader.hasAttribute("count")) {
-        size_t count = reader.getAttributeAsUnsigned("count");
-        size_t invalid_count = 0;
-        for(size_t i=0;i<count;++i) {
-            reader.readElement("Element");
-            std::vector<App::StringIDRef> sids;
-            if(reader.hasAttribute("sid")) {
-                if(!Hasher) 
+    const char *file = reader.getAttribute("file","");
+    if(*file) {
+        reader.addFile(file,this);
+        return;
+    }
+    
+    std::size_t count = reader.getAttributeAsUnsigned("count","");
+    if(!count)
+        return;
+
+    if(reader.FileVersion>1) {
+        restoreStream(reader.beginCharStream(false), count);
+        reader.endCharStream();
+        return;
+    }
+
+    size_t invalid_count = 0;
+    bool warned = false;
+
+    for(size_t i=0;i<count;++i) {
+        reader.readElement("Element");
+        std::vector<App::StringIDRef> sids;
+        if(reader.hasAttribute("sid")) {
+            if(!Hasher) {
+                if(!warned) {
+                    warned = true;
                     FC_ERR("missing hasher");
-                else {
-                    std::istringstream iss(reader.getAttribute("sid"));
-                    long id;
-                    while((iss >> id)) {
-                        auto sid = Hasher->getID(id);
-                        if(!sid) 
-                            ++invalid_count;
-                        else
-                            sids.push_back(sid);
-                        char sep;
-                        iss >> sep;
-                    }
+                }
+            } else {
+                std::istringstream iss(reader.getAttribute("sid"));
+                long id;
+                while((iss >> id)) {
+                    auto sid = Hasher->getID(id);
+                    if(!sid) 
+                        ++invalid_count;
+                    else
+                        sids.push_back(sid);
+                    char sep;
+                    iss >> sep;
                 }
             }
-            setElementName(reader.getAttribute("value"),"",reader.getAttribute("key"),&sids);
         }
-        if(invalid_count)
-            FC_ERR("Found " << invalid_count << " invalid string id");
-        reader.readEndElement("ElementMap");
+        setElementName(reader.getAttribute("value"),"",reader.getAttribute("key"),&sids);
     }
+    if(invalid_count)
+        FC_ERR("Found " << invalid_count << " invalid string id");
+    reader.readEndElement("ElementMap");
+}
+
+void ComplexGeoData::restoreStream(std::istream &s, std::size_t count) { 
+    resetElementMap();
+
+    std::vector<App::StringIDRef> sids;
+    size_t invalid_count = 0;
+    std::string key,value,sid;
+    bool warned = false;
+
+    for(size_t i=0;i<count;++i) {
+        sids.clear();
+        std::size_t scount;
+        if(!(s >> value >> key >> scount))
+            throw Base::RuntimeError("Failed to restore element map");
+        for(std::size_t j=0;j<scount;++j) {
+            long id;
+            if(!(s >> id))
+                throw Base::RuntimeError("Failed to restore element map");
+            auto sid = Hasher->getID(id);
+            if(!sid) 
+                ++invalid_count;
+            else
+                sids.push_back(sid);
+        }
+        if(sids.size() && !Hasher) {
+            sids.clear();
+            if(!warned) {
+                warned = true;
+                FC_ERR("missing hasher");
+            }
+        }
+        setElementName(value.c_str(),"",key.c_str(),&sids);
+    }
+    if(invalid_count)
+        FC_ERR("Found " << invalid_count << " invalid string id");
+}
+
+void ComplexGeoData::SaveDocFile(Base::Writer &writer) const {
+    writer.Stream() << _ElementMap->left.size() << '\n';
+    saveStream(writer.Stream());
+}
+
+void ComplexGeoData::RestoreDocFile(Base::Reader &reader) {
+    std::size_t count;
+    reader >> count;
+    restoreStream(reader,count);
 }
 
 unsigned int ComplexGeoData::getMemSize(void) const {

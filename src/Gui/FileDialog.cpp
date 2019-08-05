@@ -37,6 +37,7 @@
 # include <QStyle>
 # include <QUrl>
 # include <QResizeEvent>
+# include <QMessageBox>
 #endif
 
 #include <Base/Parameter.h>
@@ -63,6 +64,33 @@ bool dontUseNativeDialog()
     return notNativeDialog;
 }
 }
+
+// Special treatment of a file named 'Document.xml'. Auto convert it to the
+// directory holding this file.
+static inline QString &checkDocumentXML(QString &file) {
+    QFileInfo fi(file);
+    if(fi.fileName() == QLatin1String("Document.xml"))
+        file = fi.dir().path();
+    return file;
+}
+
+static inline void checkFilter(QString &filter) {
+    int index;
+    static const QString pattern = QString::fromLatin1("*.FCStd");
+    static const QString docxml = QString::fromLatin1(" Document.xml");
+    for(int pos=0;(index=filter.indexOf(QLatin1Char(')'),pos))>0;pos=index+1) {
+        int offset = filter.midRef(pos,index-pos).indexOf(pattern);
+        if(offset<0)
+            continue;
+        pos += offset + pattern.size();
+        if(pos!=index && !filter[pos].isSpace())
+            continue;
+        QString mid = filter.mid(pos,index-pos).replace(QLatin1String("*.xml"),QLatin1String(""));
+        filter.replace(pos,index-pos,docxml+mid);
+        index += docxml.size() + (int)mid.size() - (index - pos);
+    }
+}
+
 
 /* TRANSLATOR Gui::FileDialog */
 
@@ -104,25 +132,66 @@ bool FileDialog::hasSuffix(const QString& ext) const
 
 void FileDialog::accept()
 {
+    QStringList files = selectedFiles();
+    if (files.isEmpty()) {
+        QFileDialog::accept();
+        return;
+    }
+
     // When saving to a file make sure that the entered filename ends with the selected
     // file filter
     if (acceptMode() == QFileDialog::AcceptSave) {
-        QStringList files = selectedFiles();
-        if (!files.isEmpty()) {
-            QString ext = this->defaultSuffix();
-            QString file = files.front();
-            QString suffix = QFileInfo(file).suffix();
-            // #0001928: do not add a suffix if a file with suffix is entered
-            // #0002209: make sure that the entered suffix is part of one of the filters
-            if (!ext.isEmpty() && (suffix.isEmpty() || !hasSuffix(suffix))) {
-                file = QString::fromLatin1("%1.%2").arg(file, ext);
-                // That's the built-in line edit
-                QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
-                if (fileNameEdit)
-                    fileNameEdit->setText(file);
-            }
+        QString ext = this->defaultSuffix();
+        QString file = files.front();
+        QFileInfo fi(file);
+        QString suffix = fi.suffix();
+        // #0001928: do not add a suffix if a file with suffix is entered
+        // #0002209: make sure that the entered suffix is part of one of the filters
+        if (fi.fileName()!=QLatin1String("Document.xml")
+                && !ext.isEmpty() 
+                && (suffix.isEmpty() || !hasSuffix(suffix))) 
+        {
+            file = QString::fromLatin1("%1.%2").arg(file, ext);
+            // That's the built-in line edit
+            QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
+            if (fileNameEdit)
+                fileNameEdit->setText(file);
         }
     }
+
+    QString filter = selectedFilter();
+    bool checkDirectory = filter.contains(QLatin1String("FCStd")) || filter.contains(QLatin1String("*.*"));
+    if(checkDirectory) {
+        bool accepted = false;
+        for(auto &file : files) {
+            QFileInfo fi(file);
+            if(!fi.isDir())
+                continue;
+            QFileInfo docFile(QDir(file),QLatin1String("Document.xml"));
+            if (acceptMode() == QFileDialog::AcceptSave) {
+                if(docFile.exists()) {
+                    int res = QMessageBox::warning(this, windowTitle(),
+                                    QObject::tr("There is a FreeCAD document inside %1.\nDo you want to replace it?")
+                                    .arg(fi.fileName()),
+                                    QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+                    if(res == QMessageBox::No)
+                        return;
+                }
+                QDialog::accept();
+                return;
+            } else if(!docFile.exists()) {
+                accepted = false;
+                break;
+            } else
+                accepted = true;
+        }
+
+        if(accepted) {
+            QDialog::accept();
+            return;
+        }
+    }
+
     QFileDialog::accept();
 }
 
@@ -130,8 +199,10 @@ void FileDialog::accept()
  * This is a convenience static function that will return a file name selected by the user. The file does not have to exist.
  */
 QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, const QString & dir, 
-                                     const QString & filter, QString * selectedFilter, Options options)
+                                     QString filter, QString * selectedFilter, Options options)
 {
+    checkFilter(filter);
+
     QString dirName = dir;
     if (dirName.isEmpty()) {
         dirName = getWorkingDirectory();
@@ -216,7 +287,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     }
 
     if (!file.isEmpty()) {
-        setWorkingDirectory(file);
+        setWorkingDirectory(checkDocumentXML(file));
         return file;
     } else {
         return QString::null;
@@ -246,8 +317,10 @@ QString FileDialog::getExistingDirectory( QWidget * parent, const QString & capt
  * If the user pressed Cancel, it returns a null string.
  */
 QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, const QString & dir, 
-                                    const QString & filter, QString * selectedFilter, Options options)
+                                    QString filter, QString * selectedFilter, Options options)
 {
+    checkFilter(filter);
+
     QString dirName = dir;
     if (dirName.isEmpty()) {
         dirName = getWorkingDirectory();
@@ -309,7 +382,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     }
 
     if (!file.isEmpty()) {
-        setWorkingDirectory(file);
+        setWorkingDirectory(checkDocumentXML(file));
         return file;
     } else {
         return QString::null;
@@ -320,8 +393,10 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
  * This is a convenience static function that will return one or more existing files selected by the user.
  */
 QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & caption, const QString & dir,
-                                          const QString & filter, QString * selectedFilter, Options options)
+                                          QString filter, QString * selectedFilter, Options options)
 {
+    checkFilter(filter);
+
     QString dirName = dir;
     if (dirName.isEmpty()) {
         dirName = getWorkingDirectory();
@@ -384,6 +459,9 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
 #endif
     }
 
+    for(auto &f : files)
+        checkDocumentXML(f);
+
     if (!files.isEmpty()) {
         setWorkingDirectory(files.front());
     }
@@ -403,11 +481,6 @@ QString FileDialog::getWorkingDirectory()
     return workingDirectory;
 }
 
-/**
- * Sets the working directory to \a dir for the file dialog.
- * If \a dir is a file then the path only is taken.
- * getWorkingDirectory() returns the working directory.
- */
 void FileDialog::setWorkingDirectory(const QString& dir)
 {
     QString dirName = dir;
@@ -968,13 +1041,29 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
         }
     }
 
+    bool checkDirectory = filter.isEmpty()
+                        || filter.contains(QLatin1String("FCStd")) 
+                        || filter.contains(QLatin1String("*.*"));
+
     // the global filter (or no filter) was selected. We now try to sort filetypes that are
     // handled by more than one module and ask to the user to select one.
     QMap<QString, SelectModule::Dict> filetypeHandler;
     QMap<QString, QStringList > fileExtension;
     for (QStringList::const_iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
-        QFileInfo fi(*it);
-        QString ext = fi.completeSuffix().toLower();
+        QString fileName(*it);
+        QFileInfo fi(fileName);
+
+        QString ext;
+        if(checkDirectory 
+                && (fi.isDir() 
+                    || fi.fileName() == QLatin1String("Document.xml")))
+        {
+            ext = QLatin1String("fcstd");
+            if(!fi.isDir())
+                fileName = fi.dir().path();
+        }else
+            ext = fi.completeSuffix().toLower();
+
         std::map<std::string, std::string> filters = App::GetApplication().getImportFilters(ext.toLatin1());
         
         if (filters.empty()) {
@@ -982,12 +1071,12 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
             filters = App::GetApplication().getImportFilters(ext.toLatin1());
         }
 
-        fileExtension[ext].push_back(*it);
+        fileExtension[ext].push_back(fileName);
         for (std::map<std::string, std::string>::iterator jt = filters.begin(); jt != filters.end(); ++jt)
             filetypeHandler[ext][QString::fromUtf8(jt->first.c_str())] = QString::fromLatin1(jt->second.c_str());
         // set the default module handler
         if (!filters.empty())
-            dict[*it] = QString::fromLatin1(filters.begin()->second.c_str());
+            dict[fileName] = QString::fromLatin1(filters.begin()->second.c_str());
     }
 
     for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin(); 

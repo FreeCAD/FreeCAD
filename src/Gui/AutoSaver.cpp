@@ -329,7 +329,7 @@ public:
         dirName = QString::fromUtf8(dir);
         fileName = QString::fromUtf8(file);
         tmpName = QString::fromLatin1("%1.tmp%2").arg(fileName).arg(rand());
-        writer.putNextEntry(tmpName.toUtf8().constData());
+        writer.putNextEntry(tmpName.toUtf8().constData(), file);
     }
     virtual ~RecoveryRunnable()
     {
@@ -388,8 +388,7 @@ void RecoveryWriter::writeFiles(void)
                 QThreadPool::globalInstance()->start(new RecoveryRunnable(getModes(), DirName.c_str(), entry.FileName.c_str(), prop));
             }
             else {
-                std::string fileName = DirName + "/" + entry.FileName;
-                this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
+                this->putNextEntry(entry.FileName.c_str());
                 entry.Object->SaveDocFile(*this);
                 this->FileStream.close();
             }

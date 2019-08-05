@@ -236,42 +236,62 @@ void PropertyPartShape::getPaths(std::vector<App::ObjectIdentifier> &paths) cons
                     << App::ObjectIdentifier::SimpleComponent(App::ObjectIdentifier::String("Volume")));
 }
 
+static void BRepTools_Write(const TopoDS_Shape& Sh, Standard_OStream& S);
+
 void PropertyPartShape::Save (Base::Writer &writer) const
 {
-    if(!writer.isForceXML()) {
-        //See SaveDocFile(), RestoreDocFile()
-        if (writer.getMode("BinaryBrep")) {
-            writer.Stream() << writer.ind() << "<Part file=\""
-                            << writer.addFile("PartShape.bin", this);
+    //See SaveDocFile(), RestoreDocFile()
+    writer.Stream() << writer.ind() << "<Part";
+    bool saveHasher=false;
+    auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+    if(owner && !_Shape.Hasher.isNull()) {
+        auto ret = owner->getDocument()->addStringHasher(_Shape.Hasher);
+        writer.Stream() << " HasherIndex=\"" << ret.second << '"';
+        if(ret.first) {
+            saveHasher = true;
+            writer.Stream() << " SaveHasher=\"1\"";
         }
-        else {
-            writer.Stream() << writer.ind() << "<Part file=\""
-                            << writer.addFile("PartShape.brp", this);
-        }
-        bool saveHasher=false;
-        auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
-        if(owner && !_Shape.Hasher.isNull()) {
-            auto ret = owner->getDocument()->addStringHasher(_Shape.Hasher);
-            writer.Stream() << "\" HasherIndex=\"" << ret.second;
-            if(ret.first) {
-                saveHasher = true;
-                writer.Stream() << "\" SaveHasher=\"1";
-            }
-        }
-        std::string version;
-        // If exporting, do not export mapped element name, but still make a mark
-        if(owner) {
-            if(!owner->isExporting())
-                version = _Ver.size()?_Ver:owner->getElementMapVersion(this);
-        }else
-            version = _Ver.size()?_Ver:_Shape.getElementMapVersion();
-        writer.Stream() << "\" ElementMap=\"" << version;
-        writer.Stream() << "\"/>" << std::endl;
+    }
+    std::string version;
+    // If exporting, do not export mapped element name, but still make a mark
+    if(owner) {
+        if(!owner->isExporting())
+            version = _Ver.size()?_Ver:owner->getElementMapVersion(this);
+    }else
+        version = _Ver.size()?_Ver:_Shape.getElementMapVersion();
+    writer.Stream() << " ElementMap=\"" << version << '"';
 
-        if(saveHasher)
-            _Shape.Hasher->Save(writer);
-        if(version.size())
-            _Shape.Save(writer);
+    bool binary = writer.getMode("BinaryBrep");
+    bool toXML = writer.isForceXML()>=(binary?3:2);
+    if(!toXML) {
+        writer.Stream() << " file=\""
+            << writer.addFile(getFileName(binary?".bin":".brp"), this)
+            << "\"/>\n";
+    } else if(binary) {
+        writer.Stream() << " binary=\"1\">\n";
+        TopoShape shape;
+        shape.setShape(_Shape.getShape());
+        shape.exportBinary(writer.beginCharStream(true));
+        writer.endCharStream() <<  writer.ind() << "</Part>\n";
+    } else {
+        writer.Stream() << " brep=\"1\">\n";
+        BRepTools_Write(_Shape.getShape(), writer.beginCharStream(false)<<'\n');
+        writer.endCharStream() << '\n' << writer.ind() << "</Part>\n";
+    }
+
+    if(saveHasher) {
+        if(!toXML && writer.getFileVersion()>1)
+            _Shape.Hasher->setPersistenceFileName(getFileName(".Table").c_str());
+        else
+            _Shape.Hasher->setPersistenceFileName(0);
+        _Shape.Hasher->Save(writer);
+    }
+    if(version.size()) {
+        if(!toXML && writer.getFileVersion()>1)
+            _Shape.setPersistenceFileName(getFileName(".Map").c_str());
+        else
+            _Shape.setPersistenceFileName(0);
+        _Shape.Save(writer);
     }
 }
 
@@ -284,23 +304,38 @@ std::string PropertyPartShape::getElementMapVersion(bool restored) const {
 void PropertyPartShape::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Part");
-    std::string file (reader.getAttribute("file") );
 
-    if (!file.empty()) {
-        // initiate a file read
-        reader.addFile(file.c_str(),this);
-    }
-
-    auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     _Ver.clear();
     bool has_ver = reader.hasAttribute("ElementMap");
     if(has_ver)
         _Ver = reader.getAttribute("ElementMap");
 
-    int hasher_idx = reader.hasAttribute("HasherIndex")?reader.getAttributeAsInteger("HasherIndex"):-1;
+    int hasher_idx = reader.getAttributeAsInteger("HasherIndex","-1");
+    int save_hasher = reader.getAttributeAsInteger("SaveHasher","");
+
+    TopoDS_Shape sh;
+
+    if(reader.hasAttribute("file")) {
+        std::string file = reader.getAttribute("file");
+        if (!file.empty()) {
+            // initiate a file read
+            reader.addFile(file.c_str(),this);
+        }
+    } else if(reader.getAttributeAsInteger("binary","")) {
+        TopoShape shape;
+        shape.importBinary(reader.beginCharStream(true));
+        sh = shape.getShape();
+    } else if(reader.getAttributeAsInteger("brep","")) {
+        BRep_Builder builder;
+        BRepTools::Read(sh, reader.beginCharStream(false), builder);
+    }
+
+    reader.readEndElement("Part");
+
     if(owner && hasher_idx>=0) {
         _Shape.Hasher = owner->getDocument()->getStringHasher(hasher_idx);
-        if(reader.hasAttribute("SaveHasher"))
+        if(save_hasher)
             _Shape.Hasher->Restore(reader);
     }
 
@@ -313,7 +348,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
         }else{
             _Shape.Restore(reader);
             auto ver = owner?owner->getElementMapVersion(this):_Shape.getElementMapVersion();
-            if(ver!=_Ver && _Shape.getElementMapSize()) {
+            if(ver!=_Ver) {
                 // version mismatch, signal for regenerating.
                 if(owner && owner->getNameInDocument()) {
                     static const char *warnedDoc=0;
@@ -340,6 +375,10 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             owner->getDocument()->addRecomputeObject(owner);
         }
     }
+
+    aboutToSetValue();
+    _Shape.setShape(sh,false);
+    hasSetValue();
 }
 
 // The following two functions are copied from OCCT BRepTools.cxx and modified
@@ -393,7 +432,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
     if (_Shape.getShape().IsNull())
         return;
     TopoDS_Shape myShape = _Shape.getShape();
-    if (writer.getMode("BinaryBrep")) {
+    if(writer.getMode("BinaryBrep")) {
         TopoShape shape;
         shape.setShape(myShape);
         shape.exportBinary(writer.Stream());
@@ -687,19 +726,7 @@ PropertyFilletEdges::~PropertyFilletEdges()
 
 void PropertyFilletEdges::setValue(int id, double r1, double r2)
 {
-    aboutToSetValue();
-    _lValueList.resize(1);
-    _lValueList[0].edgeid = id;
-    _lValueList[0].radius1 = r1;
-    _lValueList[0].radius2 = r2;
-    hasSetValue();
-}
-
-void PropertyFilletEdges::setValues(const std::vector<FilletElement>& values)
-{
-    aboutToSetValue();
-    _lValueList = values;
-    hasSetValue();
+    setValue(FilletElement(id,r1,r2));
 }
 
 PyObject *PropertyFilletEdges::getPyObject(void)
@@ -722,65 +749,52 @@ PyObject *PropertyFilletEdges::getPyObject(void)
     return Py::new_reference_to(list);
 }
 
-void PropertyFilletEdges::setPyObject(PyObject *value)
+FilletElement PropertyFilletEdges::getPyValue(PyObject *item) const
 {
-    Py::Sequence list(value);
-    std::vector<FilletElement> values;
-    values.reserve(list.size());
-    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-        FilletElement fe;
-        Py::Tuple ent(*it);
+    FilletElement fe;
+    Py::Tuple ent(item);
 #if PY_MAJOR_VERSION >= 3
-        fe.edgeid = (int)Py::Long(ent.getItem(0));
+    fe.edgeid = (int)Py::Long(ent.getItem(0));
 #else
-        fe.edgeid = (int)Py::Int(ent.getItem(0));
+    fe.edgeid = (int)Py::Int(ent.getItem(0));
 #endif
-        fe.radius1 = (double)Py::Float(ent.getItem(1));
-        fe.radius2 = (double)Py::Float(ent.getItem(2));
-        values.push_back(fe);
-    }
-
-    setValues(values);
+    fe.radius1 = (double)Py::Float(ent.getItem(1));
+    fe.radius2 = (double)Py::Float(ent.getItem(2));
+    return fe;
 }
 
-void PropertyFilletEdges::Save (Base::Writer &writer) const
-{
-    if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<FilletEdges file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
-    }
+bool PropertyFilletEdges::saveXML(Base::Writer &writer) const {
+    writer.Stream() << ">\n";
+    for(auto &v : _lValueList)
+        writer.Stream() << v.edgeid << ' ' << v.radius1 << ' ' << v.radius2 << '\n';
+    return false;
 }
 
-void PropertyFilletEdges::Restore(Base::XMLReader &reader)
+void PropertyFilletEdges::restoreXML(Base::XMLReader &reader)
 {
-    reader.readElement("FilletEdges");
-    std::string file (reader.getAttribute("file") );
-
-    if (!file.empty()) {
-        // initiate a file read
-        reader.addFile(file.c_str(),this);
-    }
+    unsigned count = reader.getAttributeAsUnsigned("count");
+    auto &s = reader.beginCharStream(false);
+    std::vector<FilletElement> values(count);
+    for(auto &v : values) 
+        s >> v.edgeid >> v.radius1 >> v.radius2;
+    reader.endCharStream();
+    setValues(std::move(values));
 }
 
-void PropertyFilletEdges::SaveDocFile (Base::Writer &writer) const
+void PropertyFilletEdges::saveStream(Base::OutputStream &str) const
 {
-    Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
-    str << uCt;
     for (std::vector<FilletElement>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         str << it->edgeid << it->radius1 << it->radius2;
     }
 }
 
-void PropertyFilletEdges::RestoreDocFile(Base::Reader &reader)
+void PropertyFilletEdges::restoreStream(Base::InputStream &str, unsigned uCt)
 {
-    Base::InputStream str(reader);
-    uint32_t uCt=0;
-    str >> uCt;
     std::vector<FilletElement> values(uCt);
     for (std::vector<FilletElement>::iterator it = values.begin(); it != values.end(); ++it) {
         str >> it->edgeid >> it->radius1 >> it->radius2;
     }
-    setValues(values);
+    setValues(std::move(values));
 }
 
 App::Property *PropertyFilletEdges::Copy(void) const
@@ -792,9 +806,7 @@ App::Property *PropertyFilletEdges::Copy(void) const
 
 void PropertyFilletEdges::Paste(const Property &from)
 {
-    aboutToSetValue();
-    _lValueList = dynamic_cast<const PropertyFilletEdges&>(from)._lValueList;
-    hasSetValue();
+    setValues(dynamic_cast<const PropertyFilletEdges&>(from)._lValueList);
 }
 
 // -------------------------------------------------------------------------

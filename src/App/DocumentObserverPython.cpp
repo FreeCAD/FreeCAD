@@ -508,3 +508,23 @@ void DocumentObserverPython::slotFinishSaveDocument(const App::Document& doc, co
         e.ReportException();
     }
 }
+
+void DocumentObserverPython::slotDocumentFilesSaved(const App::Document& doc, 
+        const std::string& file, const std::vector<std::pair<std::string,int> > &files)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(3);
+        args.setItem(0, Py::Object(const_cast<App::Document&>(doc).getPyObject(), true));
+        args.setItem(1, Py::String(file));
+        Py::List list;
+        for(const auto &v : files)
+            list.append(Py::TupleN(Py::String(v.first),Py::Int(v.second)));
+        args.setItem(2, list);
+        Base::pyCall(pyFinishSaveDocument.ptr(),args.ptr());
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}

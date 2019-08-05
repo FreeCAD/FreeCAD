@@ -159,6 +159,9 @@ public:
     void exportObjects(const std::vector<App::DocumentObject*>&, Base::Writer&);
     void importObjects(const std::vector<App::DocumentObject*>&, Base::Reader&,
                        const std::map<std::string, std::string>& nameMapping);
+    void readObject(Base::XMLReader &reader);
+    void writeObject(Base::Writer &writer, 
+            const App::DocumentObject *doc, const ViewProvider *obj) const;
     /// Add all root objects of the given array to a group
     void addRootObjectsToGroup(const std::vector<App::DocumentObject*>&, App::DocumentObjectGroup*);
     //@}

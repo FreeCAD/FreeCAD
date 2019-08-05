@@ -24,6 +24,7 @@
 #define APP_STRINGID_H
 
 #include <memory>
+#include <bitset>
 #include <QByteArray>
 #include <CXX/Objects.hxx>
 #include <Base/Handle.h>
@@ -31,20 +32,36 @@
 
 namespace App {
 
+class StringHasher;
 class StringID;
 typedef Base::Reference<StringID> StringIDRef;
 
 class AppExport StringID: public Base::BaseClass, public Base::Handled {
     TYPESYSTEM_HEADER();
 public:
+    enum Flag {
+        Binary,
+        Hashed,
+    };
     StringID(long id, const QByteArray &data, bool binary, bool hashed)
-        :_id(id),_data(data),_binary(binary),_hashed(hashed)
+        :_id(id),_data(data)
+    {
+        if(binary) _flags.set(Binary);
+        if(hashed) _flags.set(Hashed);
+    }
+
+    StringID(long id, const QByteArray &data, uint8_t flags)
+        :_id(id),_data(data),_flags(flags)
     {}
+
     virtual ~StringID(){}
+
     long value() const {return _id;}
     const QByteArray &data() const {return _data;}
-    bool isBinary() const {return _binary;}
-    bool isHashed() const {return _hashed;}
+
+    bool isBinary() const {return _flags.test(Binary);}
+    bool isHashed() const {return _flags.test(Hashed);}
+
     virtual PyObject *getPyObject() override;
     std::string toString() const;
     static long fromString(const char *name, bool eof=true);
@@ -52,13 +69,17 @@ public:
     bool isNull() const;
 
     std::string dataToText() const;
+
+    friend class StringHasher;
+
 private:
     long _id;
     QByteArray _data;
-    bool _binary;
-    bool _hashed;
+    std::string _cache;
+    std::bitset<8> _flags;
 };
 
+/// A String table to map string from/to a unique integer
 class AppExport StringHasher: public Base::Persistence, public Base::Handled {
 
     TYPESYSTEM_HEADER();
@@ -70,27 +91,33 @@ public:
     virtual unsigned int getMemSize (void) const override;
     virtual void Save (Base::Writer &/*writer*/) const override;
     virtual void Restore(Base::XMLReader &/*reader*/) override;
+    virtual void SaveDocFile (Base::Writer &/*writer*/) const override;
+    virtual void RestoreDocFile (Base::Reader &/*reader*/) override;
+    void setPersistenceFileName(const char *name) const;
+    const std::string &getPersistenceFileName() const;
 
     /** Maps an arbitary string to an integer
      *
-     * These function internally hashes the string, and stroes the hash in a
-     * map to integer. The hashes of the strings passed to this function are
-     * persisted, which means the returned ID is an unique identifier of the
-     * string. The function return the interger as a shared pointer to
-     * reference count the ID so that it is possible to prune any unused hash
+     * The function maps an arbitary text string to a unique integer ID, which
+     * is returned as a shared pointer to reference count the ID so that it is
+     * possible to prune any unused strings.
+     *
+     * If the string is longer than the threshold setting of this StringHasher,
+     * it will be sha1 hashed before storing, and the original content of the
+     * string is discarded.
      *
      * The purpose of function is to provide a short form of a stable string
-     * hash.
+     * identification.
      */
-    StringIDRef getID(const char *text, int len=-1);
+    StringIDRef getID(const char *text, int len=-1, bool hashable=false);
 
     /** Map text or binary data to an integer */
-    StringIDRef getID(QByteArray data, bool binary);
+    StringIDRef getID(QByteArray data, bool binary, bool hashable=true);
 
     /** Obtain the reference counted StringID object from numerical id
      *
-     * This function exists because the string hash is a one way function, and
-     * the original text is not persistent. The caller use this function to
+     * This function exists because the stored string may be one way hashed,
+     * and the original text is not persistent. The caller use this function to
      * retieve the reference count ID object after restore
      */
     StringIDRef getID(long id) const;
@@ -118,9 +145,12 @@ public:
 
 private:
     long lastID() const;
+    void saveStream(std::ostream &s) const;
+    void restoreStream(std::istream &s, std::size_t count);
 
 private:
     std::unique_ptr<HashMap> _hashes;
+    mutable std::string _filename;
 };
 
 typedef Base::Reference<StringHasher> StringHasherRef;

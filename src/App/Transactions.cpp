@@ -326,7 +326,7 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
                     // Still not found, re-create the property
                     prop = pcObj->addDynamicProperty(
                             data.property->getTypeId().getName(),
-                            v.second.name.c_str(), data.group.c_str(), data.doc.c_str(),
+                            v.second.name.c_str(), data.group.c_str(), data.getDoc(),
                             data.attr, data.readonly, data.hidden);
                     if(!prop)
                         continue;

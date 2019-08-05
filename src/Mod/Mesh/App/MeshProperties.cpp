@@ -47,151 +47,6 @@ TYPESYSTEM_SOURCE(Mesh::PropertyNormalList, App::PropertyLists);
 TYPESYSTEM_SOURCE(Mesh::PropertyCurvatureList , App::PropertyLists);
 TYPESYSTEM_SOURCE(Mesh::PropertyMeshKernel , App::PropertyComplexGeoData);
 
-PropertyNormalList::PropertyNormalList()
-{
-
-}
-
-PropertyNormalList::~PropertyNormalList()
-{
-
-}
-
-void PropertyNormalList::setSize(int newSize)
-{
-    _lValueList.resize(newSize);
-}
-
-int PropertyNormalList::getSize(void) const
-{
-    return static_cast<int>(_lValueList.size());
-}
-
-void PropertyNormalList::setValue(const Base::Vector3f& lValue)
-{
-    aboutToSetValue();
-    _lValueList.resize(1);
-    _lValueList[0]=lValue;
-    hasSetValue();
-}
-
-void PropertyNormalList::setValue(float x, float y, float z)
-{
-    aboutToSetValue();
-    _lValueList.resize(1);
-    _lValueList[0].Set(x,y,z);
-    hasSetValue();
-}
-
-void PropertyNormalList::setValues(const std::vector<Base::Vector3f>& values)
-{
-    aboutToSetValue();
-    _lValueList = values;
-    hasSetValue();
-}
-
-PyObject *PropertyNormalList::getPyObject(void)
-{
-    PyObject* list = PyList_New(getSize());
-
-    for (int i = 0;i<getSize(); i++)
-        PyList_SetItem(list, i, new Base::VectorPy(_lValueList[i]));
-
-    return list;
-}
-
-void PropertyNormalList::setPyObject(PyObject *value)
-{
-    if (PyList_Check(value)) {
-        Py_ssize_t nSize = PyList_Size(value);
-        std::vector<Base::Vector3f> values;
-        values.resize(nSize);
-
-        for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PyList_GetItem(value, i);
-            App::PropertyVector val;
-            val.setPyObject( item );
-            values[i] = Base::convertTo<Base::Vector3f>(val.getValue());
-        }
-
-        setValues(values);
-    }
-    else if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
-        Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
-        Base::Vector3d* val = pcObject->getVectorPtr();
-        setValue(Base::convertTo<Base::Vector3f>(*val));
-    }
-    else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
-        App::PropertyVector val;
-        val.setPyObject( value );
-        setValue(Base::convertTo<Base::Vector3f>(val.getValue()));
-    }
-    else {
-        std::string error = std::string("type must be 'Vector' or list of 'Vector', not ");
-        error += value->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-void PropertyNormalList::Save (Base::Writer &writer) const
-{
-    if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<VectorList file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
-    }
-}
-
-void PropertyNormalList::Restore(Base::XMLReader &reader)
-{
-    reader.readElement("VectorList");
-    std::string file (reader.getAttribute("file") );
-
-    if (!file.empty()) {
-        // initiate a file read
-        reader.addFile(file.c_str(),this);
-    }
-}
-
-void PropertyNormalList::SaveDocFile (Base::Writer &writer) const
-{
-    Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
-    str << uCt;
-    for (std::vector<Base::Vector3f>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        str << it->x << it->y << it->z;
-    }
-}
-
-void PropertyNormalList::RestoreDocFile(Base::Reader &reader)
-{
-    Base::InputStream str(reader);
-    uint32_t uCt=0;
-    str >> uCt;
-    std::vector<Base::Vector3f> values(uCt);
-    for (std::vector<Base::Vector3f>::iterator it = values.begin(); it != values.end(); ++it) {
-        str >> it->x >> it->y >> it->z;
-    }
-    setValues(values);
-}
-
-App::Property *PropertyNormalList::Copy(void) const
-{
-    PropertyNormalList *p= new PropertyNormalList();
-    p->_lValueList = _lValueList;
-    return p;
-}
-
-void PropertyNormalList::Paste(const App::Property &from)
-{
-    aboutToSetValue();
-    _lValueList = dynamic_cast<const PropertyNormalList&>(from)._lValueList;
-    hasSetValue();
-}
-
-unsigned int PropertyNormalList::getMemSize (void) const
-{
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
-}
-
 void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
 {
     // A normal vector is only a direction with unit length, so we only need to rotate it
@@ -214,14 +69,12 @@ void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
         }
     }
 
-    aboutToSetValue();
-
+    atomic_change guard(*this);
     // Rotate the normal vectors
-    for (int ii=0; ii<getSize(); ii++) {
-        set1Value(ii, rot * operator[](ii));
-    }
-
-    hasSetValue();
+    for(auto &v : _lValueList)
+        v = rot * v;
+    this->_touchList.clear();
+    guard.tryInvoke();
 }
 
 // ----------------------------------------------------------------------------
@@ -234,21 +87,6 @@ PropertyCurvatureList::PropertyCurvatureList()
 PropertyCurvatureList::~PropertyCurvatureList()
 {
 
-}
-
-void PropertyCurvatureList::setValue(const CurvatureInfo& lValue)
-{
-    aboutToSetValue();
-    _lValueList.resize(1);
-    _lValueList[0]=lValue;
-    hasSetValue();
-}
-
-void PropertyCurvatureList::setValues(const std::vector<CurvatureInfo>& lValues)
-{
-    aboutToSetValue();
-    _lValueList=lValues;
-    hasSetValue();
 }
 
 std::vector<float> PropertyCurvatureList::getCurvature( int mode ) const
@@ -321,44 +159,55 @@ void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
         }
     }
 
-    aboutToSetValue();
-
+    atomic_change guard(*this);
     // Rotate the principal directions
-    for (int ii=0; ii<getSize(); ii++)
-    {
-        CurvatureInfo ci = operator[](ii);
+    for(auto &v : _lValueList) {
+        CurvatureInfo ci = v;
         ci.cMaxCurvDir = rot * ci.cMaxCurvDir;
         ci.cMinCurvDir = rot * ci.cMinCurvDir;
-        _lValueList[ii] = ci;
+        v = ci;
     }
-
-    hasSetValue();
+    this->_touchList.clear();
+    guard.tryInvoke();
 }
 
-void PropertyCurvatureList::Save (Base::Writer &writer) const
+bool PropertyCurvatureList::saveXML(Base::Writer &writer) const
 {
-    if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<CurvatureList file=\"" << 
-        writer.addFile(getName(), this) << "\"/>" << std::endl;
-    }
+    writer.Stream() << ">" << std::endl;
+    for(auto &v : _lValueList)
+        writer.Stream() << v.fMaxCurvature << ' '
+                        << v.fMinCurvature << ' '
+                        << v.cMaxCurvDir.x << ' '
+                        << v.cMaxCurvDir.y << ' '
+                        << v.cMaxCurvDir.z << ' '
+                        << v.cMinCurvDir.x << ' '
+                        << v.cMinCurvDir.y << ' '
+                        << v.cMinCurvDir.z << ' '
+                        << std::endl;
+    return false;
 }
 
-void PropertyCurvatureList::Restore(Base::XMLReader &reader)
+void PropertyCurvatureList::restoreXML(Base::XMLReader &reader)
 {
-    reader.readElement("CurvatureList");
-    std::string file (reader.getAttribute("file") );
-    
-    if (!file.empty()) {
-        // initiate a file read
-        reader.addFile(file.c_str(),this);
+    unsigned count = reader.getAttributeAsUnsigned("count");
+    auto &s = reader.beginCharStream(false);
+    std::vector<CurvatureInfo> values(count);
+    for(auto &v : values) {
+        s >> v.fMaxCurvature
+          >> v.fMinCurvature
+          >> v.cMinCurvDir.x
+          >> v.cMinCurvDir.y
+          >> v.cMinCurvDir.z
+          >> v.cMaxCurvDir.x
+          >> v.cMaxCurvDir.y
+          >> v.cMaxCurvDir.z;
     }
+    reader.endCharStream();
+    setValues(std::move(values));
 }
 
-void PropertyCurvatureList::SaveDocFile (Base::Writer &writer) const
+void PropertyCurvatureList::saveStream(Base::OutputStream &str) const
 {
-    Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
-    str << uCt;
     for (std::vector<CurvatureInfo>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         str << it->fMaxCurvature << it->fMinCurvature;
         str << it->cMaxCurvDir.x << it->cMaxCurvDir.y << it->cMaxCurvDir.z;
@@ -366,19 +215,15 @@ void PropertyCurvatureList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyCurvatureList::RestoreDocFile(Base::Reader &reader)
+void PropertyCurvatureList::restoreStream(Base::InputStream &str, unsigned uCt)
 {
-    Base::InputStream str(reader);
-    uint32_t uCt=0;
-    str >> uCt;
     std::vector<CurvatureInfo> values(uCt);
     for (std::vector<CurvatureInfo>::iterator it = values.begin(); it != values.end(); ++it) {
         str >> it->fMaxCurvature >> it->fMinCurvature;
         str >> it->cMaxCurvDir.x >> it->cMaxCurvDir.y >> it->cMaxCurvDir.z;
         str >> it->cMinCurvDir.x >> it->cMinCurvDir.y >> it->cMinCurvDir.z;
     }
-
-    setValues(values);
+    setValues(std::move(values));
 }
 
 PyObject* PropertyCurvatureList::getPyObject(void)
@@ -404,7 +249,7 @@ PyObject* PropertyCurvatureList::getPyObject(void)
     return Py::new_reference_to(list);
 }
 
-void PropertyCurvatureList::setPyObject(PyObject* /*value*/)
+CurvatureInfo PropertyCurvatureList::getPyValue(PyObject* /*value*/) const
 {
     throw Base::AttributeError(std::string("This attribute is read-only"));
 }
@@ -418,9 +263,7 @@ App::Property *PropertyCurvatureList::Copy(void) const
 
 void PropertyCurvatureList::Paste(const App::Property &from)
 {
-    aboutToSetValue();
-    _lValueList = dynamic_cast<const PropertyCurvatureList&>(from)._lValueList;
-    hasSetValue();
+    setValues(dynamic_cast<const PropertyCurvatureList&>(from)._lValueList);
 }
 
 // ----------------------------------------------------------------------------
@@ -574,14 +417,14 @@ void PropertyMeshKernel::setPyObject(PyObject *value)
 
 void PropertyMeshKernel::Save (Base::Writer &writer) const
 {
-    if (writer.isForceXML()) {
+    if (writer.isForceXML()>1) {
         writer.Stream() << writer.ind() << "<Mesh>" << std::endl;
         MeshCore::MeshOutput saver(_meshObject->getKernel());
         saver.SaveXML(writer);
     }
     else {
         writer.Stream() << writer.ind() << "<Mesh file=\"" << 
-        writer.addFile("MeshKernel.bms", this) << "\"/>" << std::endl;
+        writer.addFile(getFileName(".bms"), this) << "\"/>" << std::endl;
     }
 }
 

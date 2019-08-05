@@ -27,6 +27,8 @@
 #	include <assert.h>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 
 #include <Base/Exception.h>
@@ -164,7 +166,7 @@ void PropertyVector::setPyObject(PyObject *value)
 
 void PropertyVector::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<PropertyVector valueX=\"" <<  _cVec.x << "\" valueY=\"" <<  _cVec.y << "\" valueZ=\"" <<  _cVec.z <<"\"/>" << endl;
+    writer.Stream() << writer.ind() << "<PropertyVector valueX=\"" <<  _cVec.x << "\" valueY=\"" <<  _cVec.y << "\" valueZ=\"" <<  _cVec.z <<"\"/>\n";
 }
 
 void PropertyVector::Restore(Base::XMLReader &reader)
@@ -339,29 +341,27 @@ Base::Vector3d PropertyVectorList::getPyValue(PyObject *item) const {
     return val.getValue();
 }
 
-void PropertyVectorList::Save (Base::Writer &writer) const
+bool PropertyVectorList::saveXML(Base::Writer &writer) const
 {
-    if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<VectorList file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
-    }
+    writer.Stream() << ">\n";
+    for(const auto &v : _lValueList)
+        writer.Stream() << v.x << ' ' << v.y << ' ' << v.z << '\n';
+    return false;
 }
 
-void PropertyVectorList::Restore(Base::XMLReader &reader)
+void PropertyVectorList::restoreXML(Base::XMLReader &reader)
 {
-    reader.readElement("VectorList");
-    std::string file (reader.getAttribute("file") );
-
-    if (!file.empty()) {
-        // initiate a file read
-        reader.addFile(file.c_str(),this);
-    }
+    unsigned count = reader.getAttributeAsUnsigned("count");
+    auto &s = reader.beginCharStream(false);
+    std::vector<Base::Vector3d> values(count);
+    for(auto &v : values) 
+        s >> v.x >> v.y >> v.z;
+    reader.endCharStream();
+    setValues(std::move(values));
 }
 
-void PropertyVectorList::SaveDocFile (Base::Writer &writer) const
+void PropertyVectorList::saveStream(Base::OutputStream &str) const
 {
-    Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
-    str << uCt;
     if (!isSinglePrecision()) {
         for (std::vector<Base::Vector3d>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
             str << it->x << it->y << it->z;
@@ -377,11 +377,8 @@ void PropertyVectorList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyVectorList::RestoreDocFile(Base::Reader &reader)
+void PropertyVectorList::restoreStream(Base::InputStream &str, unsigned uCt)
 {
-    Base::InputStream str(reader);
-    uint32_t uCt=0;
-    str >> uCt;
     std::vector<Base::Vector3d> values(uCt);
     if (!isSinglePrecision()) {
         for (std::vector<Base::Vector3d>::iterator it = values.begin(); it != values.end(); ++it) {
@@ -395,7 +392,7 @@ void PropertyVectorList::RestoreDocFile(Base::Reader &reader)
             it->Set(x, y, z);
         }
     }
-    setValues(values);
+    setValues(std::move(values));
 }
 
 Property *PropertyVectorList::Copy(void) const
@@ -410,9 +407,73 @@ void PropertyVectorList::Paste(const Property &from)
     setValues(dynamic_cast<const PropertyVectorList&>(from)._lValueList);
 }
 
-unsigned int PropertyVectorList::getMemSize (void) const
+//**************************************************************************
+// _PropertyVectorList
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+void _PropertyVectorList::setValue(float x, float y, float z)
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3d));
+    setValue(Base::Vector3f(x,y,z));
+}
+
+PyObject *_PropertyVectorList::getPyObject(void)
+{
+    Py::List res;
+    for(const auto &v : _lValueList)
+        res.append(Py::Object(new VectorPy(Vector3d(v.x,v.y,v.z))));
+    return Py::new_reference_to(res);
+}
+
+Base::Vector3f _PropertyVectorList::getPyValue(PyObject *item) const {
+    PropertyVector val;
+    val.setPyObject( item );
+    const auto &v = val.getValue();
+    return Base::Vector3f(v.x,v.y,v.z);
+}
+
+bool _PropertyVectorList::saveXML(Base::Writer &writer) const
+{
+    writer.Stream() << ">\n";
+    for(const auto &v : _lValueList)
+        writer.Stream() << v.x << ' ' << v.y << ' ' << v.z << '\n';
+    return false;
+}
+
+void _PropertyVectorList::restoreXML(Base::XMLReader &reader)
+{
+    unsigned count = reader.getAttributeAsUnsigned("count");
+    auto &s = reader.beginCharStream(false);
+    std::vector<Base::Vector3f> values(count);
+    for(auto &v : values) 
+        s >> v.x >> v.y >> v.z;
+    reader.endCharStream();
+    setValues(std::move(values));
+}
+
+void _PropertyVectorList::saveStream(Base::OutputStream &str) const
+{
+    for(const auto &v : _lValueList)
+        str << v.x << v.y << v.z;
+}
+
+void _PropertyVectorList::restoreStream(Base::InputStream &str, unsigned uCt)
+{
+    std::vector<Base::Vector3f> values(uCt);
+    for(auto &v : _lValueList)
+        str >> v.x >> v.y >> v.z;
+    setValues(std::move(values));
+}
+
+Property *_PropertyVectorList::Copy(void) const
+{
+    _PropertyVectorList *p= new _PropertyVectorList();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void _PropertyVectorList::Paste(const Property &from)
+{
+    setValues(dynamic_cast<const _PropertyVectorList&>(from)._lValueList);
 }
 
 //**************************************************************************
@@ -502,7 +563,7 @@ void PropertyMatrix::Save (Base::Writer &writer) const
     writer.Stream() << " a21=\"" <<  _cMat[1][0] << "\" a22=\"" <<  _cMat[1][1] << "\" a23=\"" <<  _cMat[1][2] << "\" a24=\"" <<  _cMat[1][3] << "\"";
     writer.Stream() << " a31=\"" <<  _cMat[2][0] << "\" a32=\"" <<  _cMat[2][1] << "\" a33=\"" <<  _cMat[2][2] << "\" a34=\"" <<  _cMat[2][3] << "\"";
     writer.Stream() << " a41=\"" <<  _cMat[3][0] << "\" a42=\"" <<  _cMat[3][1] << "\" a43=\"" <<  _cMat[3][2] << "\" a44=\"" <<  _cMat[3][3] << "\"";
-    writer.Stream() <<"/>" << endl;
+    writer.Stream() <<"/>\n";
 }
 
 void PropertyMatrix::Restore(Base::XMLReader &reader)
@@ -712,23 +773,26 @@ void PropertyPlacement::setPyObject(PyObject *value)
 
 void PropertyPlacement::Save (Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<PropertyPlacement";
-    writer.Stream() << " Px=\"" <<  _cPos.getPosition().x 
-                    << "\" Py=\"" <<  _cPos.getPosition().y
-                    << "\" Pz=\"" <<  _cPos.getPosition().z << "\"";
-
-    writer.Stream() << " Q0=\"" <<  _cPos.getRotation()[0]
-                    << "\" Q1=\"" <<  _cPos.getRotation()[1]
-                    << "\" Q2=\"" <<  _cPos.getRotation()[2]
-                    << "\" Q3=\"" <<  _cPos.getRotation()[3] << "\"";
     Vector3d axis;
     double rfAngle;
     _cPos.getRotation().getValue(axis, rfAngle);
-    writer.Stream() << " A=\"" <<  rfAngle
+
+    writer.Stream() << writer.ind() << "<PropertyPlacement"
+                    << " Px=\"" <<  _cPos.getPosition().x 
+                    << "\" Py=\"" <<  _cPos.getPosition().y
+                    << "\" Pz=\"" <<  _cPos.getPosition().z
+
+                    << "\" Q0=\"" <<  _cPos.getRotation()[0]
+                    << "\" Q1=\"" <<  _cPos.getRotation()[1]
+                    << "\" Q2=\"" <<  _cPos.getRotation()[2]
+                    << "\" Q3=\"" <<  _cPos.getRotation()[3]
+
+                    << "\" A=\"" <<  rfAngle
                     << "\" Ox=\"" <<  axis.x
                     << "\" Oy=\"" <<  axis.y
-                    << "\" Oz=\"" <<  axis.z << "\"";
-    writer.Stream() <<"/>" << endl;
+                    << "\" Oz=\"" <<  axis.z 
+
+                    << "\"/>\n";
 }
 
 void PropertyPlacement::Restore(Base::XMLReader &reader)
@@ -814,29 +878,42 @@ Base::Placement PropertyPlacementList::getPyValue(PyObject *item) const {
     return val.getValue();
 }
 
-void PropertyPlacementList::Save (Base::Writer &writer) const
+bool PropertyPlacementList::saveXML(Base::Writer &writer) const
 {
-    if (!writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<PlacementList file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
+    writer.Stream() << ">\n";
+    for(const auto &v : _lValueList) {
+        Vector3d axis;
+        double fAngle;
+        v.getRotation().getValue(axis, fAngle);
+        writer.Stream() << v.getPosition().x  << ' '
+                        << v.getPosition().y << ' '
+                        << v.getPosition().z << ' '
+                        << fAngle << ' '
+                        << axis.x << ' '
+                        << axis.y << ' '
+                        << axis.z << '\n';
     }
+    return false;
 }
 
-void PropertyPlacementList::Restore(Base::XMLReader &reader)
+void PropertyPlacementList::restoreXML(Base::XMLReader &reader)
 {
-    reader.readElement("PlacementList");
-    std::string file (reader.getAttribute("file") );
-
-    if (!file.empty()) {
-        // initiate a file read
-        reader.addFile(file.c_str(),this);
+    unsigned count = reader.getAttributeAsUnsigned("count");
+    auto &s = reader.beginCharStream(false);
+    std::vector<Base::Placement> values(count);
+    for(auto &v : values) {
+        Base::Vector3d pos,axis;
+        double rfAngle;
+        s >> pos.x >> pos.y >> pos.z >> rfAngle >> axis.x >> axis.y >> axis.z;
+        v.setRotation(Base::Rotation(axis,rfAngle));
+        v.setPosition(pos);
     }
+    reader.endCharStream();
+    setValues(std::move(values));
 }
 
-void PropertyPlacementList::SaveDocFile (Base::Writer &writer) const
+void PropertyPlacementList::saveStream(Base::OutputStream &str) const
 {
-    Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
-    str << uCt;
     if (!isSinglePrecision()) {
         for (std::vector<Base::Placement>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
             str << it->getPosition().x << it->getPosition().y << it->getPosition().z
@@ -857,11 +934,8 @@ void PropertyPlacementList::SaveDocFile (Base::Writer &writer) const
     }
 }
 
-void PropertyPlacementList::RestoreDocFile(Base::Reader &reader)
+void PropertyPlacementList::restoreStream(Base::InputStream &str, unsigned uCt)
 {
-    Base::InputStream str(reader);
-    uint32_t uCt=0;
-    str >> uCt;
     std::vector<Base::Placement> values(uCt);
     if (!isSinglePrecision()) {
         for (std::vector<Base::Placement>::iterator it = values.begin(); it != values.end(); ++it) {
@@ -883,7 +957,7 @@ void PropertyPlacementList::RestoreDocFile(Base::Reader &reader)
             it->setRotation(rot);
         }
     }
-    setValues(values);
+    setValues(std::move(values));
 }
 
 Property *PropertyPlacementList::Copy(void) const

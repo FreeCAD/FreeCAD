@@ -308,7 +308,10 @@ public:
     //@{
     void Save (Base::Writer &writer) const;
     void Restore(Base::XMLReader &reader);
+    void SaveDocFile(Base::Writer &writer) const;
+    void RestoreDocFile(Base::Reader &reader);
     unsigned int getMemSize (void) const;
+    void setPersistenceFileName(const char *name) const;
     //@}
 
 public:
@@ -321,6 +324,9 @@ protected:
 
     static size_t findTagInElementName(const std::string &name, 
             long *tag=0, size_t *len=0, std::string *postfix=0, char *type=0);
+
+    void saveStream(std::ostream &s) const;
+    void restoreStream(std::istream &s, std::size_t count);
 
     /// from local to outside
     inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const
@@ -341,6 +347,7 @@ public:
 
 protected:
     ElementMapPtr _ElementMap;
+    mutable std::string _PersistenceName;
 };
 
 struct AppExport ElementNameComp {

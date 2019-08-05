@@ -38,6 +38,8 @@
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
@@ -84,6 +86,7 @@ struct DocumentP
     bool       _isClosing;
     bool       _isModified;
     bool       _isTransacting;
+    bool       _hasExpansion;
     int                         _editMode;
     ViewProvider*               _editViewProvider;
     ViewProviderDocumentObject* _editViewProviderParent;
@@ -146,6 +149,7 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_isClosing = false;
     d->_isModified = false;
     d->_isTransacting = false;
+    d->_hasExpansion = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
     d->_editViewProvider = 0;
@@ -1144,22 +1148,19 @@ unsigned int Document::getMemSize (void) const
  */
 void Document::Save (Base::Writer &writer) const
 {
-    // It's only possible to add extra information if force of XML is disabled
-    if (writer.isForceXML() == false) {
-        writer.addFile("GuiDocument.xml", this);
+    writer.addFile("GuiDocument.xml", this);
 
-        if (App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("SaveThumbnail",false)) {
-            std::list<MDIView*> mdi = getMDIViews();
-            for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
-                if ((*it)->getTypeId().isDerivedFrom(View3DInventor::getClassTypeId())) {
-                    View3DInventorViewer* view = static_cast<View3DInventor*>(*it)->getViewer();
-                    d->thumb.setFileName(d->_pcDocument->FileName.getValue());
-                    d->thumb.setSize(128);
-                    d->thumb.setViewer(view);
-                    d->thumb.Save(writer);
-                    break;
-                }
+    if (App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetBool("SaveThumbnail",false)) {
+        std::list<MDIView*> mdi = getMDIViews();
+        for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
+            if ((*it)->getTypeId().isDerivedFrom(View3DInventor::getClassTypeId())) {
+                View3DInventorViewer* view = static_cast<View3DInventor*>(*it)->getViewer();
+                d->thumb.setFileName(d->_pcDocument->FileName.getValue());
+                d->thumb.setSize(128);
+                d->thumb.setViewer(view);
+                d->thumb.Save(writer);
+                break;
             }
         }
     }
@@ -1180,21 +1181,47 @@ void Document::Restore(Base::XMLReader &reader)
     }
 }
 
+void Document::readObject(Base::XMLReader &xmlReader) {
+    std::string name = xmlReader.getAttribute("name");
+    bool expanded = !d->_hasExpansion && !!xmlReader.getAttributeAsInteger("expanded","0");
+    ViewProvider* pObj = getViewProviderByName(name.c_str());
+    if (pObj) // check if this feature has been registered
+        pObj->Restore(xmlReader);
+    if (pObj && expanded) {
+        Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
+        this->signalExpandObject(*vp, Gui::ExpandItem,0,0);
+    }
+}
+
+#define FC_GUI_SCHEMA_VER 1
+#define FC_XML_GUI_POSTFIX ".Gui.xml"
+#define FC_ATTR_SPLIT_XML "Split"
+#define FC_ATTR_TREE_EXPANSION "HasExpansion"
+
 /**
  * Restores the properties of the view providers.
  */
 void Document::RestoreDocFile(Base::Reader &reader)
 {
-    // We must create an XML parser to read from the input stream
-    Base::XMLReader xmlReader("GuiDocument.xml", reader);
-    xmlReader.FileVersion = reader.getFileVersion();
-
+    Base::XMLReader xmlReader(reader);
     xmlReader.readElement("Document");
-    long scheme = xmlReader.getAttributeAsInteger("SchemaVersion");
-    xmlReader.DocumentSchema = scheme;
+    xmlReader.DocumentSchema = xmlReader.getAttributeAsInteger("SchemaVersion","");
+    if(!xmlReader.DocumentSchema)
+        xmlReader.DocumentSchema = reader.getDocumentSchema();
+    xmlReader.FileVersion = xmlReader.getAttributeAsInteger("FileVersion","");
+    if(!xmlReader.FileVersion)
+        xmlReader.FileVersion = reader.getFileVersion();
 
-    bool hasExpansion = xmlReader.hasAttribute("HasExpansion");
-    if(hasExpansion) {
+    if(boost::ends_with(reader.getFileName(),FC_XML_GUI_POSTFIX)) {
+        xmlReader.readElement("ViewProvider");
+        readObject(xmlReader);
+        return;
+    }
+
+    bool split = !!xmlReader.getAttributeAsInteger(FC_ATTR_SPLIT_XML,"0");
+
+    d->_hasExpansion = !!xmlReader.getAttributeAsInteger(FC_ATTR_TREE_EXPANSION,"0");
+    if(d->_hasExpansion) {
         auto tree = TreeWidget::instance();
         if(tree) {
             auto docItem = tree->getDocumentItem(this);
@@ -1207,37 +1234,32 @@ void Document::RestoreDocFile(Base::Reader &reader)
     // Now we must restore the properties of the view providers only.
     //
     // SchemeVersion "1"
-    if (scheme == 1) {
-        // read the viewproviders itself
-        xmlReader.readElement("ViewProviderData");
-        int Cnt = xmlReader.getAttributeAsInteger("Count");
-        for (int i=0; i<Cnt; i++) {
-            xmlReader.readElement("ViewProvider");
-            std::string name = xmlReader.getAttribute("name");
-            bool expanded = false;
-            if (!hasExpansion && xmlReader.hasAttribute("expanded")) {
-                const char* attr = xmlReader.getAttribute("expanded");
-                if (strcmp(attr,"1") == 0) {
-                    expanded = true;
-                }
+    if (xmlReader.DocumentSchema == 1) {
+
+        if(!split) {
+            // read the viewproviders itself
+            xmlReader.readElement("ViewProviderData");
+            int Cnt = xmlReader.getAttributeAsInteger("Count");
+            for (int i=0; i<Cnt; i++) {
+                int guard;
+                xmlReader.readElement("ViewProvider",&guard);
+                readObject(xmlReader);
+                xmlReader.readEndElement("ViewProvider",&guard);
             }
-            ViewProvider* pObj = getViewProviderByName(name.c_str());
-            if (pObj) // check if this feature has been registered
-                pObj->Restore(xmlReader);
-            if (pObj && expanded) {
-                Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
-                this->signalExpandObject(*vp, Gui::ExpandItem,0,0);
-            }
-            xmlReader.readEndElement("ViewProvider");
+            xmlReader.readEndElement("ViewProviderData");
+        } else {
+            for(const auto &v : d->_ViewProviderMap)
+                xmlReader.addFile(std::string(v.first->getNameInDocument())+FC_XML_GUI_POSTFIX,this);
         }
-        xmlReader.readEndElement("ViewProviderData");
 
         // read camera settings
         xmlReader.readElement("Camera");
-        const char* ppReturn = xmlReader.getAttribute("settings");
         cameraSettings.clear();
-        if(ppReturn && ppReturn[0]) {
-            saveCameraSettings(ppReturn);
+        if(xmlReader.hasAttribute("settings"))
+            saveCameraSettings(xmlReader.getAttribute("settings"));
+        else
+            saveCameraSettings(xmlReader.readCharacters().c_str());
+        if(cameraSettings.size()) {
             try {
                 const char** pReturnIgnore=0;
                 std::list<MDIView*> mdi = getMDIViews();
@@ -1256,7 +1278,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
 
     // In the file GuiDocument.xml new data files might be added
     if (!xmlReader.getFilenames().empty())
-        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader.getStream()));
+        xmlReader.readFiles();
 
     // reset modified flag
     setModified(false);
@@ -1305,19 +1327,54 @@ void Document::slotShowHidden(const App::Document& doc)
     Application::Instance->signalShowHidden(*this);
 }
 
+void Document::writeObject(Base::Writer &writer, 
+        const App::DocumentObject *doc, const ViewProvider *obj) const
+{
+    writer.Stream() << writer.ind() << "<ViewProvider name=\"" 
+        << doc->getNameInDocument() << "\" expanded=\"" 
+        << (doc->testStatus(App::Expand) ? 1:0) << "\"";
+
+    if (obj->hasExtensions())
+        writer.Stream() << " Extensions=\"True\"";
+
+    writer.Stream() << ">\n";
+    obj->Save(writer);
+    writer.Stream() << writer.ind() << "</ViewProvider>\n";
+}
+
 /**
  * Saves the properties of the view providers.
  */
 void Document::SaveDocFile (Base::Writer &writer) const
 {
-    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << std::endl
-                    << "<!--" << std::endl
+    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>\n";
+
+    if(boost::ends_with(writer.getCurrentFileName(),FC_XML_GUI_POSTFIX)) {
+        const std::string &name = writer.getCurrentFileName();
+        static const std::size_t plen = std::strlen(FC_XML_GUI_POSTFIX);
+        std::string objName = name.substr(0,name.size()-plen);
+        auto obj = getDocument()->getObject(objName.c_str());
+        auto it = d->_ViewProviderMap.find(obj);
+        if(it == d->_ViewProviderMap.end())
+            FC_ERR("View object not fount: " << getDocument()->getName() << '#' << objName);
+        else {
+            writer.Stream() << "<!-- FreeCAD ViewProvider -->\n"
+                << "<Document SchemaVersion=\"" << FC_GUI_SCHEMA_VER 
+                << "\" FileVersion=\"" << writer.getFileVersion() 
+                << "\">\n";
+            writeObject(writer,it->first,it->second);
+            writer.Stream() << "</Document>\n";
+        }
+        return;
+    }
+
+    writer.Stream() << "<!--\n"
                     << " FreeCAD Document, see http://www.freecadweb.org for more information..."
-                    << std::endl << "-->" << std::endl;
+                    << "\n-->\n";
 
-    writer.Stream() << "<Document SchemaVersion=\"1\"";
-
-    writer.incInd(); 
+    writer.Stream() << "<Document SchemaVersion=\"" << FC_GUI_SCHEMA_VER 
+        << "\" FileVersion=\"" << writer.getFileVersion() << "\" "
+        << FC_ATTR_SPLIT_XML "=\"" << (writer.isSplitXML()?1:0) << "\"";
 
     auto tree = TreeWidget::instance();
     bool hasExpansion = false;
@@ -1325,43 +1382,36 @@ void Document::SaveDocFile (Base::Writer &writer) const
         auto docItem = tree->getDocumentItem(this);
         if(docItem) {
             hasExpansion = true;
-            writer.Stream() << " HasExpansion=\"1\">" << std::endl;
+            writer.Stream() << " " FC_ATTR_TREE_EXPANSION "=\"1\">\n";
             docItem->Save(writer);
         }
     }
     if(!hasExpansion)
-        writer.Stream() << ">" << std::endl;
+        writer.Stream() << ">\n";
 
-    std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it;
+    if(writer.isSplitXML()) {
+        for(const auto &v : d->_ViewProviderMap)
+            writer.addFile(std::string(v.first->getNameInDocument())+FC_XML_GUI_POSTFIX,this);
+    } else {
+        writer.incInd(); 
 
-    // writing the view provider names itself
-    writer.Stream() << writer.ind() << "<ViewProviderData Count=\"" 
-                    << d->_ViewProviderMap.size() <<"\">" << std::endl;
+        std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator it;
 
-    bool xml = writer.isForceXML();
-    //writer.setForceXML(true);
-    writer.incInd(); // indentation for 'ViewProvider name'
-    for(it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
-        const App::DocumentObject* doc = it->first;
-        ViewProvider* obj = it->second;
-        writer.Stream() << writer.ind() << "<ViewProvider name=\""
-                        << doc->getNameInDocument() << "\" "
-                        << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0) << "\"";
-        if (obj->hasExtensions())
-            writer.Stream() << " Extensions=\"True\"";
-        
-        writer.Stream() << ">" << std::endl;
-        obj->Save(writer);
-        writer.Stream() << writer.ind() << "</ViewProvider>" << std::endl;
+        // writing the view provider names itself
+        writer.Stream() << writer.ind() << "<ViewProviderData Count=\"" 
+                        << d->_ViewProviderMap.size() <<"\">\n";
+
+        writer.incInd(); // indentation for 'ViewProvider name'
+        for(it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it)
+            writeObject(writer,it->first, it->second);
+        writer.decInd(); // indentation for 'ViewProvider name'
+        writer.Stream() << writer.ind() << "</ViewProviderData>\n";
+        writer.decInd();  // indentation for 'ViewProviderData Count'
     }
-    writer.setForceXML(xml);
 
-    writer.decInd(); // indentation for 'ViewProvider name'
-    writer.Stream() << writer.ind() << "</ViewProviderData>" << std::endl;
-    writer.decInd();  // indentation for 'ViewProviderData Count'
+    writer.incInd(); // indentation for camera settings
 
     // set camera settings
-    QString viewPos;
     std::list<MDIView*> mdi = getMDIViews();
     for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
         if ((*it)->onHasMsg("GetCamera")) {
@@ -1371,24 +1421,28 @@ void Document::SaveDocFile (Base::Writer &writer) const
             // remove the first line because it's a comment like '#Inventor V2.1 ascii'
             QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
             if (lines.size() > 1) {
-                lines.pop_front();
-                viewPos = lines.join(QLatin1String(" "));
+                if(writer.getFileVersion() > 1) {
+                    writer.Stream() << writer.ind() << "<Camera>\n";
+                    writer.beginCharStream(false) << '\n' << ppReturn;
+                    writer.endCharStream() << '\n' << writer.ind() << "</Camera>\n";
+                } else {
+                    lines.pop_front();
+                    writer.Stream() << writer.ind() << "<Camera settings=\"" 
+                        << lines.join(QLatin1String(" ")).toLatin1().constData() << "\"/>\n";
+                }
                 break;
             }
         }
     }
 
-    writer.incInd(); // indentation for camera settings
-    writer.Stream() << writer.ind() << "<Camera settings=\"" 
-                    << (const char*)viewPos.toLatin1() <<"\"/>" << std::endl;
     writer.decInd(); // indentation for camera settings
-    writer.Stream() << "</Document>" << std::endl;
+    writer.Stream() << "</Document>\n";
 }
 
 void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base::Writer& writer)
 {
-    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << std::endl;
-    writer.Stream() << "<Document SchemaVersion=\"1\">" << std::endl;
+    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>\n";
+    writer.Stream() << "<Document SchemaVersion=\"" << FC_GUI_SCHEMA_VER << "\">\n";
 
     std::map<const App::DocumentObject*,ViewProvider*> views;
     for (std::vector<App::DocumentObject*>::const_iterator it = obj.begin(); it != obj.end(); ++it) {
@@ -1402,41 +1456,27 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
     // writing the view provider names itself
     writer.incInd(); // indentation for 'ViewProviderData Count'
     writer.Stream() << writer.ind() << "<ViewProviderData Count=\"" 
-                    << views.size() <<"\">" << std::endl;
+                    << views.size() <<"\">\n";
 
-    bool xml = writer.isForceXML();
-    //writer.setForceXML(true);
     writer.incInd(); // indentation for 'ViewProvider name'
     std::map<const App::DocumentObject*,ViewProvider*>::const_iterator jt;
-    for (jt = views.begin(); jt != views.end(); ++jt) {
-        const App::DocumentObject* doc = jt->first;
-        ViewProvider* obj = jt->second;
-        writer.Stream() << writer.ind() << "<ViewProvider name=\""
-                        << doc->getExportName() << "\" "
-                        << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0) << "\"";
-        if (obj->hasExtensions())
-            writer.Stream() << " Extensions=\"True\"";
-
-        writer.Stream() << ">" << std::endl;
-        obj->Save(writer);
-        writer.Stream() << writer.ind() << "</ViewProvider>" << std::endl;
-    }
-    writer.setForceXML(xml);
+    for (jt = views.begin(); jt != views.end(); ++jt)
+        writeObject(writer,jt->first, jt->second);
 
     writer.decInd(); // indentation for 'ViewProvider name'
-    writer.Stream() << writer.ind() << "</ViewProviderData>" << std::endl;
+    writer.Stream() << writer.ind() << "</ViewProviderData>\n";
     writer.decInd();  // indentation for 'ViewProviderData Count'
     writer.incInd(); // indentation for camera settings
-    writer.Stream() << writer.ind() << "<Camera settings=\"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<Camera settings=\"\"/>\n";
     writer.decInd(); // indentation for camera settings
-    writer.Stream() << "</Document>" << std::endl;
+    writer.Stream() << "</Document>\n";
 }
 
 void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base::Reader& reader,
                              const std::map<std::string, std::string>& nameMapping)
 {
     // We must create an XML parser to read from the input stream
-    Base::XMLReader xmlReader("GuiDocument.xml", reader);
+    Base::XMLReader xmlReader(reader);
     xmlReader.readElement("Document");
     long scheme = xmlReader.getAttributeAsInteger("SchemaVersion");
 
@@ -1485,7 +1525,7 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
 
     // In the file GuiDocument.xml new data files might be added
     if (!xmlReader.getFilenames().empty())
-        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader.getStream()));
+        xmlReader.readFiles();
 }
 
 void Document::slotFinishImportObjects(const std::vector<App::DocumentObject*> &objs) {

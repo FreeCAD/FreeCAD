@@ -120,6 +120,12 @@ public:
     PropertyBool ShowHidden;
     /// Whether to use hasher on topological naming
     PropertyBool UseHasher;
+    /// Level of preference to save content inside XML
+    PropertyInteger ForceXML;
+    /// Whether to split object content into separated XML files
+    PropertyBool SplitXML;
+    /// Prefer binary format when saving
+    PropertyBool PreferBinary;
     //@}
 
     StringHasherRef Hasher;
@@ -232,6 +238,8 @@ public:
 
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
+    virtual void SaveDocFile(Base::Writer &writer) const;
+    virtual void RestoreDocFile(Base::Reader &reader);
 
     /// returns the complete document memory consumption, including all managed DocObjects and Undo Redo.
     unsigned int getMemSize (void) const;
@@ -519,6 +527,8 @@ public:
 
     virtual std::string getFullName(bool python=false) const override;
 
+    virtual App::Document *getOwnerDocument() const override;
+
     /// Indicate if there is any document restoring/importing
     static bool isAnyRestoring();
 
@@ -535,6 +545,9 @@ public:
 protected:
     /// Construction
     Document(const char *name = "");
+
+    void readObject(Base::XMLReader &reader);
+    void writeObject(Base::Writer &writer, App::DocumentObject *obj) const;
 
     void _removeObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);

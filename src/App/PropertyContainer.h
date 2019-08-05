@@ -41,6 +41,7 @@ namespace App
 class Property;
 class PropertyContainer;
 class DocumentObject;
+class Document;
 class Extension;
 
 enum PropertyType 
@@ -165,6 +166,10 @@ public:
       (void)python;
       return std::string();
   }
+
+  /// Return owner document of this container
+  virtual App::Document *getOwnerDocument() const 
+    {return nullptr;}
 
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;

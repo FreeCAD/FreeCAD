@@ -215,6 +215,10 @@ std::string DocumentObject::getFullName(bool python) const {
     return ss.str();
 }
 
+App::Document *DocumentObject::getOwnerDocument() const {
+    return _pDoc;
+}
+
 const char *DocumentObject::getNameInDocument() const
 {
     // Note: It can happen that we query the internal name of an object even if it is not
@@ -713,7 +717,7 @@ void DocumentObject::onChanged(const Property* prop)
             && !prop->testStatus(Property::Output)) 
     {
         if(!StatusBits.test(ObjectStatus::Touch)) {
-            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+            FC_TRACE("touch " << prop->getFullName());
             StatusBits.set(ObjectStatus::Touch);
         }
         // must execute on document recompute
@@ -870,8 +874,6 @@ DocumentObject *DocumentObject::getLinkedObject(
 
 void DocumentObject::Save (Base::Writer &writer) const
 {
-    if (this->getNameInDocument())
-        writer.ObjectName = this->getNameInDocument();
     App::ExtensionContainer::Save(writer);
 }
 

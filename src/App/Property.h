@@ -28,6 +28,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
+#include <Base/Stream.h>
 #if 0
 #ifndef BOOST_105400
 #include <boost/any.hpp>
@@ -266,6 +267,9 @@ protected:
     /// Verify a path for the current property
     virtual void verifyPath(const App::ObjectIdentifier & p) const;
 
+    /// Return a file name suitable for saving this property
+    std::string getFileName(const char *postfix=0, const char *prefix=0) const;
+
 private:
     // forbidden
     Property(const Property&);
@@ -384,6 +388,10 @@ protected:
     virtual void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) {
         (void)vals;
         (void)indices;
+        notImplemented();
+    }
+
+    void notImplemented() const {
         throw Base::NotImplementedError("not implemented");
     }
 
@@ -413,6 +421,51 @@ public:
     inline void setOrderRelevant(bool on) { this->setStatus(Status::Ordered,on); };
     inline bool isOrderRelevant() const { return this->testStatus(Status::Ordered);}
 
+    virtual void Save(Base::Writer &writer) const;
+    virtual void Restore(Base::XMLReader &reader);
+    virtual void SaveDocFile (Base::Writer &writer) const;
+    virtual void RestoreDocFile(Base::Reader &reader);
+
+protected:
+    /** Returns the XML element name when saving into document XML
+     *
+     * The default implementation here is the type name stripped with prefix 'Property'
+     */
+    virtual const char *xmlName() const;
+
+    /// Called to retore the content from the document XML
+    virtual void restoreXML(Base::XMLReader &) {
+        notImplemented();
+    }
+    /** Called to save the content from the document XML
+     *
+     * @return Return true if the current tag is closed with '/>'.
+     *
+     * Note that the on input, the current tag for storing this property is not
+     * closed, i.e. without ending '>', so that the implementation can choose
+     * whether to store value as attribute or child elements.
+     */
+    virtual bool saveXML(Base::Writer &) const {
+        notImplemented();
+        return false;
+    }
+
+    /// Return whether allow to save content to a separate (file) stream
+    virtual bool canSaveStream(Base::Writer &) const {
+        return false;
+    }
+
+    /// Called to save the content into a sperate (file) stream
+    virtual void restoreStream(Base::InputStream &s, unsigned count) {
+        (void)s;
+        (void)count;
+        notImplemented();
+    }
+
+    /// Called to retore the content from a sperate (file) stream
+    virtual void saveStream(Base::OutputStream &) const {
+        notImplemented();
+    }
 };
 
 /** Helper class to implement PropertyLists */
@@ -430,11 +483,21 @@ public:
     friend atomic_change;
 
     virtual void setSize(int newSize, const_reference def) {
-        _lValueList.resize(newSize,def);
+        if(newSize != (int)_lValueList.size()) {
+            atomic_change guard(*this);
+            _lValueList.resize(newSize,def);
+            ParentT::clearTouchList();
+            guard.tryInvoke();
+        }
     }
 
     virtual void setSize(int newSize) override {
-        _lValueList.resize(newSize);
+        if(newSize != (int)_lValueList.size()) {
+            atomic_change guard(*this);
+            _lValueList.resize(newSize);
+            ParentT::clearTouchList();
+            guard.tryInvoke();
+        }
     }
 
     virtual int getSize(void) const override {
@@ -447,11 +510,15 @@ public:
         setValues(vals);
     }
 
-    virtual void setValues(const ListT &newValues = ListT()) {
+    virtual void setValues(ListT &&newValues) {
         atomic_change guard(*this);
         this->_touchList.clear();
-        this->_lValueList = newValues;
+        this->_lValueList = std::move(newValues);
         guard.tryInvoke();
+    }
+
+    void setValues(const ListT &newValues = ListT()) {
+        setValues(ListT(newValues));
     }
 
     void setValue(const ListT &newValues = ListT()) {
@@ -488,24 +555,27 @@ public:
         guard.tryInvoke();
     }
 
+    virtual unsigned int getMemSize (void) const override {
+        return static_cast<unsigned int>(_lValueList.size() * sizeof(T));
+    }
+
 protected:
 
     void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) override 
     {
-        ListT values;
-        // old version boost::dynamic_bitset don't have reserve(). What a shame!
-        // values.reserve(vals.size());
-        for(auto item : vals)
-            values.push_back(getPyValue(item));
-        if(indices.empty())
-            setValues(values);
-        else {
-            atomic_change guard(*this);
-            assert(values.size()==indices.size());
-            for(int i=0,count=values.size();i<count;++i)
-                set1Value(indices[i],values[i]);
-            guard.tryInvoke();
+        if(indices.empty()) {
+            ListT values;
+            values.resize(vals.size());
+            for(std::size_t i=0,count=vals.size();i<count;++i)
+                values[i] = getPyValue(vals[i]);
+            setValues(std::move(values));
+            return;
         }
+        assert(vals.size()==indices.size());
+        atomic_change guard(*this);
+        for(int i=0,count=indices.size();i<count;++i)
+            set1Value(indices[i],getPyValue(vals[i]));
+        guard.tryInvoke();
     }
 
     virtual T getPyValue(PyObject *item) const = 0;

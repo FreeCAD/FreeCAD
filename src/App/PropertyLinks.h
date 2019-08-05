@@ -691,25 +691,26 @@ public:
      */
     virtual ~PropertyLinkList();
 
-    virtual void setSize(int newSize);
-    virtual void setSize(int newSize, const_reference def);
+    virtual void setSize(int newSize) override;
+    virtual void setSize(int newSize, const_reference def) override;
 
     /** Sets the property
     */
-    void setValues(const std::vector<DocumentObject*>&) override;
+    virtual void setValues(std::vector<DocumentObject*>&&) override;
+    using inherited::setValues;
 
-    void set1Value(int idx, DocumentObject * const &value) override;
+    virtual void set1Value(int idx, DocumentObject * const &value) override;
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
-    virtual void Save(Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save(Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
-    virtual unsigned int getMemSize(void) const;
-    virtual const char* getEditorName(void) const
+    virtual unsigned int getMemSize(void) const override;
+    virtual const char* getEditorName(void) const override
     { return "Gui::PropertyEditor::PropertyLinkListItem"; }
 
     virtual void getLinks(std::vector<App::DocumentObject *> &objs, 

@@ -375,17 +375,17 @@ class DocumentItem::ExpandInfo:
 {
 public:
     void restore(Base::XMLReader &reader) {
-        int level = reader.level();
         int count = reader.getAttributeAsInteger("count");
         for(int i=0;i<count;++i) {
-            reader.readElement("Expand");
+            int guard;
+            reader.readElement("Expand",&guard);
             auto &entry = (*this)[reader.getAttribute("name")];
-            if(!reader.hasAttribute("count"))
-                continue;
-            entry.reset(new ExpandInfo);
-            entry->restore(reader);
+            if(reader.hasAttribute("count")) {
+                entry.reset(new ExpandInfo);
+                entry->restore(reader);
+            }
+            reader.readEndElement("Expand",&guard);
         }
-        reader.readEndElement("Expand",level-1);
     }
 };
 
@@ -3606,11 +3606,11 @@ static void saveExpandedItem(Base::Writer &writer, const QTreeWidgetItem *item) 
     }
 
     if(!itemCount) {
-        writer.Stream() << "/>" << std::endl;
+        writer.Stream() << "/>\n";
         return;
     }
 
-    writer.Stream() << " count=\"" << itemCount << "\">" <<std::endl;
+    writer.Stream() << " count=\"" << itemCount << "\">\n";
     writer.incInd();
     for(int i=0,count=item->childCount();i<count;++i) {
         auto citem = item->child(i);
@@ -3624,7 +3624,7 @@ static void saveExpandedItem(Base::Writer &writer, const QTreeWidgetItem *item) 
         }
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</Expand>" << std::endl;
+    writer.Stream() << writer.ind() << "</Expand>\n";
 }
 
 void DocumentItem::Save (Base::Writer &writer) const {
@@ -3633,16 +3633,21 @@ void DocumentItem::Save (Base::Writer &writer) const {
 }
 
 void DocumentItem::Restore(Base::XMLReader &reader) {
-    reader.readElement("Expand");
-    if(!reader.hasAttribute("count"))
-        return;
-    _ExpandInfo.reset(new ExpandInfo);
-    _ExpandInfo->restore(reader);
-    for(auto inst : TreeWidget::Instances) {
-        if(inst!=getTree()) {
-            auto docItem = inst->getDocumentItem(document());
-            if(docItem)
-                docItem->_ExpandInfo = _ExpandInfo;
+    int guard;
+    _ExpandInfo.reset();
+    reader.readElement("Expand",&guard);
+    if(reader.hasAttribute("count")) {
+        _ExpandInfo.reset(new ExpandInfo);
+        _ExpandInfo->restore(reader);
+    }
+    reader.readEndElement("Expand",&guard);
+    if(_ExpandInfo) {
+        for(auto inst : TreeWidget::Instances) {
+            if(inst!=getTree()) {
+                auto docItem = inst->getDocumentItem(document());
+                if(docItem)
+                    docItem->_ExpandInfo = _ExpandInfo;
+            }
         }
     }
 }

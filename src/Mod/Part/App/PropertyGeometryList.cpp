@@ -180,7 +180,7 @@ void PropertyGeometryList::setPyObject(PyObject *value)
 
 void PropertyGeometryList::Save(Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<GeometryList count=\"" << getSize() <<"\">" << endl;
+    writer.Stream() << writer.ind() << "<GeometryList count=\"" << getSize() <<"\">\n";
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<Geometry  type=\"" 
@@ -188,14 +188,14 @@ void PropertyGeometryList::Save(Writer &writer) const
                         << "\" id=\"" << _lValueList[i]->Id 
                         << "\" ref=\"" << encodeAttribute(_lValueList[i]->Ref) 
                         << "\" refIndex=\"" << _lValueList[i]->RefIndex 
-                        << "\" flags=\"" << _lValueList[i]->Flags.to_ulong() << "\">" << endl;
+                        << "\" flags=\"" << _lValueList[i]->Flags.to_ulong() << "\">\n";
         writer.incInd();
         _lValueList[i]->Save(writer);
         writer.decInd();
-        writer.Stream() << writer.ind() << "</Geometry>" << endl;
+        writer.Stream() << writer.ind() << "</Geometry>\n";
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</GeometryList>" << endl ;
+    writer.Stream() << writer.ind() << "</GeometryList>\n" ;
 }
 
 void PropertyGeometryList::Restore(Base::XMLReader &reader)

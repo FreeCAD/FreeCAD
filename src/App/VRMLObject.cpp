@@ -141,10 +141,13 @@ void VRMLObject::Save (Base::Writer &writer) const
 {
     App::GeoFeature::Save(writer);
 
+    std::string name(getNameInDocument());
+    name += ".";
+
     // save also the inline files if there
     const std::vector<std::string>& urls = Resources.getValues();
     for (std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it) {
-        writer.addFile(it->c_str(), this);
+        writer.addFile(name + it->c_str(), this);
     }
 
     this->index = 0;

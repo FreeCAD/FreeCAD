@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/bimap.hpp>
 #include <boost/bimap/unordered_set_of.hpp>
 #include <boost/bimap/set_of.hpp>
@@ -39,6 +40,8 @@
 #include <App/StringHasherPy.h>
 #include <App/StringIDPy.h>
 
+FC_LOG_LEVEL_INIT("App",true,true)
+
 using namespace App;
 
 ///////////////////////////////////////////////////////////
@@ -49,7 +52,7 @@ PyObject *StringID::getPyObject() {
     return new StringIDPy(this);
 }
 
-static StringIDRef _StringIDNull(new StringID(0,"(null)",false,false));
+static StringIDRef _StringIDNull(new StringID(0,"(null)",0));
 
 StringIDRef StringID::getNullID() {
     return _StringIDNull;
@@ -139,14 +142,17 @@ long StringHasher::lastID() const {
     return it->first;
 }
 
-StringIDRef StringHasher::getID(const char *text, int len) {
+StringIDRef StringHasher::getID(const char *text, int len, bool hashable) {
     if(len<0) len = strlen(text);
-    return getID(QByteArray::fromRawData(text,len),false);
+    return getID(QByteArray::fromRawData(text,len),false,hashable);
 }
 
-StringIDRef StringHasher::getID(QByteArray data, bool binary) {
+StringIDRef StringHasher::getID(QByteArray data, bool binary, bool hashable) {
     QByteArray hash;
-    bool hashed = _hashes->Threshold>0 && (int)data.size()>_hashes->Threshold;
+
+    bool hashed = hashable && _hashes->Threshold>0 
+                           && (int)data.size()>_hashes->Threshold;
+
     if(hashed) {
         QCryptographicHash hasher(QCryptographicHash::Sha1);
         hasher.addData(data);
@@ -181,26 +187,98 @@ StringIDRef StringHasher::getID(long id) const {
     return it->info;
 }
 
+void StringHasher::setPersistenceFileName(const char *filename) const {
+    if(!filename)
+        filename = "";
+    _filename = filename;
+}
+
+const std::string &StringHasher::getPersistenceFileName() const {
+    return _filename;
+}
+
 void StringHasher::Save(Base::Writer &writer) const {
     size_t count = _hashes->SaveAll?this->size():this->count();
-    writer.incInd();
-    writer.Stream() << writer.ind() << "<StringHasher count=\""<< count 
-        << "\" saveall=\"" << _hashes->SaveAll
-        << "\" threshold=\"" << _hashes->Threshold << "\">" << std::endl;
-    for(auto &v : _hashes->right) {
-        if(_hashes->SaveAll || v.info.getRefCount()>1) {
-            // We are omiting the indentation to save some space in case of long list of hashes
-            if(v.info->isHashed()) 
-                writer.Stream() <<"<Item hash=\""<< v.second.toBase64().constData();
-            else if(v.info->isBinary())
-                writer.Stream() <<"<Item data=\""<< v.second.toBase64().constData();
-            else
-                writer.Stream() <<"<Item text=\""<< encodeAttribute(v.second.constData());
-            writer.Stream() << "\" id=\""<<v.first<<"\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<StringHasher saveall=\"" 
+        << _hashes->SaveAll << "\" threshold=\"" << _hashes->Threshold;
+
+    if(!count) {
+        writer.Stream() << "\" count=\"0\"></StringHasher>\n";
+        return;
+    }
+
+    if(_filename.size()) {
+        writer.Stream() << "\" file=\"" 
+            << writer.addFile(_filename+".txt",this)
+            << "\"/>\n";
+        return;
+    }
+
+    writer.Stream() << "\" count=\"" << count << "\">\n";
+    if(writer.getFileVersion() > 1) {
+        saveStream(writer.beginCharStream(false) << '\n');
+        writer.endCharStream() << '\n';
+    } else {
+        for(auto &v : _hashes->right) {
+            if(_hashes->SaveAll || v.info.getRefCount()>1) {
+                // We are omiting the indentation to save some space in case of long list of hashes
+                if(v.info->isHashed()) 
+                    writer.Stream() <<"<Item hash=\""<< v.second.toBase64().constData();
+                else if(v.info->isBinary())
+                    writer.Stream() <<"<Item data=\""<< v.second.toBase64().constData();
+                else
+                    writer.Stream() <<"<Item text=\""<< encodeAttribute(v.second.constData());
+                writer.Stream() << "\" id=\""<<v.first<<"\"/>\n";
+            }
         }
     }
-    writer.Stream() << writer.ind() << "</StringHasher>" << std::endl;
-    writer.decInd();
+    writer.Stream() << writer.ind() << "</StringHasher>\n";
+}
+
+void StringHasher::SaveDocFile (Base::Writer &writer) const {
+    std::size_t count = _hashes->SaveAll?this->size():this->count();
+    writer.Stream() << count << '\n';
+    saveStream(writer.Stream());
+}
+
+void StringHasher::saveStream(std::ostream &s) const {
+    Base::OutputStream str(s,false);
+    for(auto &v : _hashes->right) {
+        if(_hashes->SaveAll || v.info.getRefCount()>1) {
+            // We do not use OutputStream to save the id and flags because
+            // we don't want to use '\n' as delimiter. It makes no difference
+            // to restoring.
+            s << v.first << ' ' << v.info->_flags.to_ulong() << ' ';
+
+            // We DO rely on OutputStream to save the string which may
+            // contain multiple lines.
+            str << v.info->dataToText();
+        }
+    }
+}
+
+void StringHasher::RestoreDocFile (Base::Reader &reader) {
+    std::size_t count;
+    reader >> count;
+    restoreStream(reader,count);
+}
+
+void StringHasher::restoreStream(std::istream &s, std::size_t count) {
+    Base::InputStream str(s,false);
+    _hashes->clear();
+    std::string content;
+    for(uint32_t i=0;i<count;++i) {
+        int32_t id;
+        uint8_t type;
+        str >> id >> type >> content;
+        StringIDRef sid = new StringID(id,QByteArray(),type);
+        if(sid->isHashed() || sid->isBinary()) {
+            sid->_data = QByteArray::fromBase64(content.c_str());
+        } else
+            sid->_data = QByteArray(content.c_str());
+        _hashes->right.insert(_hashes->right.end(),
+                HashMap::right_map::value_type(sid->value(),sid->_data,sid));
+    }
 }
 
 void StringHasher::clear() {
@@ -222,30 +300,42 @@ size_t StringHasher::count() const {
 void StringHasher::Restore(Base::XMLReader &reader) {
     clear();
     reader.readElement("StringHasher");
-    int count = reader.getAttributeAsInteger("count");
     _hashes->SaveAll = reader.getAttributeAsInteger("saveall")?true:false;
     _hashes->Threshold = reader.getAttributeAsInteger("threshold");
-    for(int i=0;i<count;++i) {
-        reader.readElement("Item");
-        StringIDRef sid;
-        long id = reader.getAttributeAsInteger("id");
-        QByteArray data;
-        bool hashed = reader.hasAttribute("hash");
-        if(hashed || reader.hasAttribute("data")) {
-            const char* value = hashed?reader.getAttribute("hash"):reader.getAttribute("data");
-            data = QByteArray::fromBase64(QByteArray::fromRawData(value,strlen(value)));
-            sid = new StringID(id,data,true,hashed);
-        }else {
-            data = QByteArray(reader.getAttribute("text"));
-            sid = new StringID(id,data,false,false);
+
+    if(reader.hasAttribute("file")) {
+        const char *file = reader.getAttribute("file");
+        if(*file)
+            reader.addFile(file,this);
+        return;
+    }
+
+    std::size_t count = reader.getAttributeAsUnsigned("count");
+    if(reader.FileVersion > 1) {
+        restoreStream(reader.beginCharStream(false),count);
+    } else {
+        for(std::size_t i=0;i<count;++i) {
+            reader.readElement("Item");
+            StringIDRef sid;
+            long id = reader.getAttributeAsInteger("id");
+            QByteArray data;
+            bool hashed = reader.hasAttribute("hash");
+            if(hashed || reader.hasAttribute("data")) {
+                const char* value = hashed?reader.getAttribute("hash"):reader.getAttribute("data");
+                data = QByteArray::fromBase64(value);
+                sid = new StringID(id,data,true,hashed);
+            }else {
+                data = QByteArray(reader.getAttribute("text"));
+                sid = new StringID(id,data,false,false);
+            }
+            _hashes->right.insert(_hashes->right.end(),HashMap::right_map::value_type(sid->value(),data,sid));
         }
-        _hashes->right.insert(_hashes->right.end(),HashMap::right_map::value_type(sid->value(),data,sid));
     }
     reader.readEndElement("StringHasher");
 }
 
 unsigned int StringHasher::getMemSize (void) const {
-    return (_hashes->SaveAll?size():count());
+    return (_hashes->SaveAll?size():count()) * 10;
 }
 
 PyObject *StringHasher::getPyObject() {

@@ -193,6 +193,15 @@ public:
     boost::signals2::signal<void (const Document&, const std::string&)> signalStartSaveDocument;
     /// signal on saved Document
     boost::signals2::signal<void (const Document&, const std::string&)> signalFinishSaveDocument;
+    /** Signal finishing save the document as a directory
+     *
+     * Available arguments are 1) this document, 2) path, 3) a vector of
+     * pair(child_file_name, state), where state can be -1: removed, 0: nothing, 1: added.
+     * The document object keeps a a list of the last saved file in order to provide 
+     * file adding or removing information.
+     */
+    boost::signals2::signal<void (const App::Document&, const std::string&,
+            const std::vector<std::pair<std::string,int> >&)> signalDocumentFilesSaved;
     /// signal on undo in document
     boost::signals2::signal<void (const Document&)> signalUndoDocument;
     /// signal on application wide undo

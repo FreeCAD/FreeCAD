@@ -188,49 +188,34 @@ struct PartExport FilletElement {
     }
 };
 
-class PartExport PropertyFilletEdges : public App::PropertyLists
+class PartExport PropertyFilletEdges : public App::PropertyListsT<FilletElement>
 {
     TYPESYSTEM_HEADER();
+
+    typedef PropertyListsT<FilletElement> inherited;
 
 public:
     PropertyFilletEdges();
     ~PropertyFilletEdges();
 
-    virtual void setSize(int newSize) {
-        _lValueList.resize(newSize);
-    }
-    virtual int getSize(void) const {
-        return _lValueList.size();
-    }
-
     /** Sets the property
      */
     void setValue(int id, double r1, double r2);
-
-    void setValues (const std::vector<FilletElement>& values);
-
-    const std::vector<FilletElement> &getValues(void) const {
-        return _lValueList;
-    }
+    using inherited::setValue;
 
     virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
-
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
 
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
 
-    virtual unsigned int getMemSize (void) const {
-        return _lValueList.size() * sizeof(FilletElement);
-    }
+protected:
+    virtual FilletElement getPyValue(PyObject *item) const override;
 
-private:
-    std::vector<FilletElement> _lValueList;
+    virtual void restoreXML(Base::XMLReader &) override;
+    virtual bool saveXML(Base::Writer &) const override;
+    virtual bool canSaveStream(Base::Writer &) const override { return true; }
+    virtual void restoreStream(Base::InputStream &s, unsigned count) override;
+    virtual void saveStream(Base::OutputStream &) const override;
 };
 
 

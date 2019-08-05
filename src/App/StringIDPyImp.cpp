@@ -50,10 +50,7 @@ Py::Int StringIDPy::getValue(void) const {
 }
 
 Py::String StringIDPy::getData(void) const {
-    auto sid = getStringIDPtr();
-    if(sid->isBinary()) 
-        return Py::String(sid->data().toBase64().constData());
-    return Py::String(sid->data().constData());
+    return Py::String(getStringIDPtr()->dataToText());
 }
 
 Py::Boolean StringIDPy::getIsBinary(void) const {
