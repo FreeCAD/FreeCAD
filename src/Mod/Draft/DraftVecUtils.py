@@ -86,41 +86,45 @@ def tup(u, array=False):
 
 def neg(u):
     "neg(Vector) - returns an opposite (negative) vector"
-    typecheck ([(u,Vector)],"neg")
+    typecheck([(u, Vector)], "neg")
     return Vector(-u.x, -u.y, -u.z)
 
-def equals(u,v):
-    "returns True if vectors differ by less than precision (from ParamGet), elementwise "
-    typecheck ([(u,Vector), (v,Vector)], "equals")
-    return isNull (u.sub(v))
 
-def scale(u,scalar):
+def equals(u, v):
+    "returns True if vectors differ by less than precision (from ParamGet), elementwise "
+    typecheck([(u, Vector), (v, Vector)], "equals")
+    return isNull(u.sub(v))
+
+
+def scale(u, scalar):
     "scale(Vector,Float) - scales (multiplies) a vector by a factor"
     if sys.version_info.major < 3:
-        typecheck ([(u,Vector), (scalar,(long,int,float))], "scale")
+        typecheck([(u, Vector), (scalar, (long, int, float))], "scale")
     else:
-        typecheck ([(u,Vector), (scalar,(int,int,float))], "scale")
+        typecheck([(u, Vector), (scalar, (int, int, float))], "scale")
     return Vector(u.x*scalar, u.y*scalar, u.z*scalar)
 
-def scaleTo(u,l):
+
+def scaleTo(u, l):
     "scaleTo(Vector,length) - scales a vector to a given length"
     if sys.version_info.major < 3:
-        typecheck ([(u,Vector),(l,(long,int,float))], "scaleTo")
+        typecheck([(u, Vector), (l, (long, int, float))], "scaleTo")
     else:
-        typecheck ([(u,Vector),(l,(int,int,float))], "scaleTo")
+        typecheck([(u, Vector), (l, (int, int, float))], "scaleTo")
     if u.Length == 0:
         return Vector(u)
     else:
         a = l/u.Length
         return Vector(u.x*a, u.y*a, u.z*a)
 
+
 def dist(u, v):
     "dist(Vector,Vector) - returns the distance between both points/vectors"
-    typecheck ([(u,Vector), (v,Vector)], "dist")
-    x=u.sub(v).Length
+    typecheck([(u, Vector), (v, Vector)], "dist")
     return u.sub(v).Length
 
-def angle(u,v=Vector(1,0,0),normal=Vector(0,0,1)):
+
+def angle(u, v=Vector(1, 0, 0), normal=Vector(0, 0, 1)):
     '''
         angle(Vector,[Vector],[Vector]) - returns the angle
         in radians between the two vectors. If only one is given,
@@ -128,15 +132,15 @@ def angle(u,v=Vector(1,0,0),normal=Vector(0,0,1)):
     If a third vector is given, it is the normal used to determine
         the sign of the angle.
     '''
-    typecheck ([(u,Vector), (v,Vector)], "angle")
+    typecheck([(u, Vector), (v, Vector)], "angle")
     ll = u.Length*v.Length
-    if ll==0: 
+    if ll == 0:
         return 0
-    dp=u.dot(v)/ll
-    if (dp < -1): 
-        dp = -1 # roundoff errors can push dp out of the ...
-    elif (dp > 1): 
-        dp = 1 # ...geometrically meaningful interval [-1,1]
+    dp = u.dot(v)/ll
+    if (dp < -1):
+        dp = -1  # roundoff errors can push dp out of the ...
+    elif (dp > 1):
+        dp = 1  # ...geometrically meaningful interval [-1,1]
     ang = math.acos(dp)
     normal1 = u.cross(v)
     coeff = normal.dot(normal1)
@@ -145,15 +149,17 @@ def angle(u,v=Vector(1,0,0),normal=Vector(0,0,1)):
     else:
         return -ang
 
-def project(u,v):
+
+def project(u, v):
     "project(Vector,Vector): projects the first vector onto the second one"
-    typecheck([(u,Vector), (v,Vector)], "project")
+    typecheck([(u, Vector), (v, Vector)], "project")
     dp = v.dot(v)
-    if dp == 0: 
-        return Vector(0,0,0) # to avoid division by zero
-    if dp != 15: 
+    if dp == 0:
+        return Vector(0, 0, 0)  # to avoid division by zero
+    if dp != 15:
         return scale(v, u.dot(v)/dp)
-    return Vector(0,0,0)
+    return Vector(0, 0, 0)
+
 
 def rotate2D(u,angle):
     "rotate2D(Vector,angle): rotates the given vector around the Z axis"
