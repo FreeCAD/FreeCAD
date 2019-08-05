@@ -30,12 +30,19 @@ __author__ = "Heiko Jakob <heiko.jakob@gediegos.de>"
 #
 # This module provides support for importing airfoil .dat files
 
-import re, FreeCAD, FreeCADGui, Part, cProfile, os, string
+import re, FreeCAD, Part, cProfile, os
 from FreeCAD import Vector, Base
+from FreeCAD import Console as FCC
 from Draft import makeWire
 
-if open.__module__ in ['__builtin__','io']:
-        pythonopen = open
+if FreeCAD.GuiUp:
+    from DraftTools import translate
+else:
+    def translate(context, txt):
+        return txt
+
+if open.__module__ in ['__builtin__', 'io']:
+    pythonopen = open
 
 useDraftWire = True
 
@@ -65,7 +72,9 @@ def decodeName(name):
             try:
                 decodedName = (name.decode("utf8"))
             except UnicodeDecodeError:
-                print("AirfoilDAT: error: couldn't determine character encoding")
+                _msg = ("AirfoilDAT error: "
+                        "couldn't determine character encoding.")
+                FCC.PrintError(translate("ImportAirfoilDAT", _msg) + "\n")
                 decodedName = name
     return decodedName
 
@@ -86,7 +95,7 @@ def open(filename):
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     doc.Label = decodeName(docname[:-4])
-    process(doc,filename)
+    process(doc, filename)
 
 
 def insert(filename,docname):
@@ -110,15 +119,15 @@ def insert(filename,docname):
     """
     groupname = os.path.splitext(os.path.basename(filename))[0]
     try:
-        doc=FreeCAD.getDocument(docname)
+        doc = FreeCAD.getDocument(docname)
     except NameError:
-        doc=FreeCAD.newDocument(docname)
-    importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
+        doc = FreeCAD.newDocument(docname)
+    importgroup = doc.addObject("App::DocumentObjectGroup", groupname)
     importgroup.Label = decodeName(groupname)
-    process(doc,filename)
+    process(doc, filename)
 
 
-def process(doc,filename):
+def process(doc, filename):
         """Process the filename and provide the document with the information.
 
         The common airfoil dat format has many flavors.
@@ -140,26 +149,26 @@ def process(doc,filename):
         """
         # Regex to identify data rows and throw away unused metadata
         regex = re.compile(r'^\s*(?P<xval>(\-|\d*)\.\d+(E\-?\d+)?)\,?\s*(?P<yval>\-?\s*\d*\.\d+(E\-?\d+)?)\s*$')
-        afile = pythonopen(filename,'r')
+        afile = pythonopen(filename, 'r')
         # read the airfoil name which is always at the first line
         airfoilname = afile.readline().strip()
     
-        coords=[]
-        upside=True
-        last_x=None
+        coords = []
+        upside = True
+        last_x = None
 
     
 
         # Collect the data for the upper and the lower side separately if possible     
         for lin in afile:
                 curdat = regex.match(lin)
-                if curdat != None:   
+                if curdat is not None:
                         
                         x = float(curdat.group("xval"))
                         y = float(curdat.group("yval"))
 
                         # the normal processing
-                        coords.append(Vector(x,y,0))               
+                        coords.append(Vector(x, y, 0))
 
                 # End of if curdat != None
         # End of for lin in file
@@ -173,7 +182,7 @@ def process(doc,filename):
                 
         # sometimes coords are divided in upper an lower side
         # so that x-coordinate begin new from leading or trailing edge
-        # check for start coordinates in the middle of list                
+        # check for start coordinates in the middle of list
 
         if coords[0:-1].count(coords[0]) > 1:
                 flippoint = coords.index(coords[0],1)
@@ -187,7 +196,7 @@ def process(doc,filename):
       
         # do we use the parametric Draft Wire?
         if useDraftWire:
-                obj = makeWire ( coords, True )
+                obj = makeWire(coords, True)
                 #obj.label = airfoilname
         else:
                 # alternate solution, uses common Part Faces
@@ -200,7 +209,7 @@ def process(doc,filename):
                         # End of if first_v == None
     
                         # Line between v and last_v if they're not equal
-                        if (last_v != None) and (last_v != v):
+                        if (last_v is not None) and (last_v != v):
                                 lines.append(Part.makeLine(last_v, v))       
                         # End of if (last_v != None) and (last_v != v)
                         # The new last_v
