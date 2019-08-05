@@ -161,21 +161,23 @@ def project(u, v):
     return Vector(0, 0, 0)
 
 
-def rotate2D(u,angle):
+def rotate2D(u, angle):
     "rotate2D(Vector,angle): rotates the given vector around the Z axis"
     return Vector(math.cos(-angle)*u.x-math.sin(-angle)*u.y,
-                    math.sin(-angle)*u.x+math.cos(-angle)*u.y,u.z)
+                  math.sin(-angle)*u.x+math.cos(-angle)*u.y,
+                  u.z)
 
-def rotate(u,angle,axis=Vector(0,0,1)):
+
+def rotate(u, angle, axis=Vector(0, 0, 1)):
     '''rotate(Vector,Float,axis=Vector): rotates the first Vector
     around the given axis, at the given angle.
     If axis is omitted, the rotation is made on the xy plane.'''
-    typecheck ([(u,Vector), (angle,(int,float)), (axis,Vector)], "rotate")
+    typecheck([(u, Vector), (angle, (int, float)), (axis, Vector)], "rotate")
 
-    if angle == 0: 
+    if angle == 0:
         return u
 
-    l=axis.Length
+    l = axis.Length
     x=axis.x/l
     y=axis.y/l
     z=axis.z/l
@@ -195,83 +197,91 @@ def rotate(u,angle,axis=Vector(0,0,1)):
                xzt - ys,    yzt + xs,   c + z*z*t,  0)
 
     return m.multiply(u)
-    
-def getRotation(vector,reference=Vector(1,0,0)):
+
+
+def getRotation(vector, reference=Vector(1, 0, 0)):
     '''getRotation(vector,[reference]): returns a tuple
     representing a quaternion rotation between the reference
     (or X axis if omitted) and the vector'''
     c = vector.cross(reference)
     if isNull(c):
-        return (0,0,0,1.0)
+        return (0, 0, 0, 1.0)
     c.normalize()
-    return (c.x,c.y,c.z,math.sqrt((vector.Length ** 2) * (reference.Length ** 2)) + vector.dot(reference))
-    
+    return (c.x, c.y, c.z, math.sqrt((vector.Length ** 2) * (reference.Length ** 2)) + vector.dot(reference))
+
+
 def isNull(vector):
     '''isNull(vector): Tests if a vector is nul vector'''
     p = precision()
-    return (round(vector.x,p)==0 and round(vector.y,p)==0 and round(vector.z,p)==0)
+    return (round(vector.x, p) == 0 and round(vector.y, p) == 0 and round(vector.z, p) == 0)
 
-def find(vector,vlist):
+
+def find(vector, vlist):
     '''find(vector,vlist): finds a vector in a list of vectors. returns
     the index of the matching vector, or None if none is found.
     '''
-    typecheck ([(vector,Vector), (vlist,list)], "find")
-    for i,v in enumerate(vlist):
-        if equals(vector,v):
+    typecheck([(vector, Vector), (vlist, list)], "find")
+    for i, v in enumerate(vlist):
+        if equals(vector, v):
             return i
     return None
-    
-def closest(vector,vlist):
+
+
+def closest(vector, vlist):
     '''closest(vector,vlist): finds the closest vector to the given vector
     in a list of vectors'''
-    typecheck ([(vector,Vector), (vlist,list)], "closest")
+    typecheck([(vector, Vector), (vlist, list)], "closest")
     dist = 9999999999999999
     index = None
-    for i,v in enumerate(vlist):
+    for i, v in enumerate(vlist):
         d = vector.sub(v).Length
         if d < dist:
             dist = d
             index = i
     return index
 
+
 def isColinear(vlist):
     '''isColinear(list_of_vectors): checks if vectors in given list are colinear'''
-    typecheck ([(vlist,list)], "isColinear");
-    if len(vlist) < 3: 
+    typecheck([(vlist, list)], "isColinear")
+    if len(vlist) < 3:
         return True
     p = precision()
     first = vlist[1].sub(vlist[0])
-    for i in range(2,len(vlist)):
-        if round(angle(vlist[i].sub(vlist[0]),first),p) != 0:
+    for i in range(2, len(vlist)):
+        if round(angle(vlist[i].sub(vlist[0]), first), p) != 0:
             return False
     return True
+
 
 def rounded(v):
     "returns a rounded vector"
     p = precision()
-    return Vector(round(v.x,p),round(v.y,p),round(v.z,p))
+    return Vector(round(v.x, p), round(v.y, p), round(v.z, p))
 
-def getPlaneRotation(u,v,w=None):
+
+def getPlaneRotation(u, v, w=None):
     "returns a rotation matrix defining the (u,v,w) coordinates system"
-    if (not u) or (not v): 
+    if (not u) or (not v):
         return None
-    if not w: 
+    if not w:
         w = u.cross(v)
-    typecheck([(u,Vector), (v,Vector), (w,Vector)], "getPlaneRotation")
-    m = FreeCAD.Matrix(u.x,v.x,w.x,0,
-                       u.y,v.y,w.y,0,
-                       u.z,v.z,w.z,0,
-                       0.0,0.0,0.0,1.0)
+    typecheck([(u, Vector), (v, Vector), (w, Vector)], "getPlaneRotation")
+    m = FreeCAD.Matrix(u.x, v.x, w.x, 0,
+                       u.y, v.y, w.y, 0,
+                       u.z, v.z, w.z, 0,
+                       0.0, 0.0, 0.0, 1.0)
     return m
+
 
 def removeDoubles(vlist):
     "removes consecutive doubles from a list of vectors"
-    typecheck ([(vlist,list)], "removeDoubles");
+    typecheck([(vlist, list)], "removeDoubles")
     nlist = []
-    if len(vlist) < 2: 
+    if len(vlist) < 2:
         return vlist
-    for i in range(len(vlist)-1):
-        if not equals(vlist[i],vlist[i+1]):
+    for i in range(len(vlist) - 1):
+        if not equals(vlist[i], vlist[i+1]):
             nlist.append(vlist[i])
     nlist.append(vlist[-1])
     return nlist
