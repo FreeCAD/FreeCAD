@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>290</width>
+    <height>362</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="toolcontroller_label">
+       <property name="text">
+        <string>Tool Controller</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="toolcontroller"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="line1"/>
+      </item>
+      <item row="7" column="1">
+       <widget class="QCheckBox" name="checkbox2">
+        <property name="text">
+         <string>Checkbox 2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="combo1_label">
+        <property name="text">
+         <string>Combo 1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QDoubleSpinBox" name="spin2"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="line1_label">
+        <property name="text">
+         <string>Line 1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="line2"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="line2_label">
+        <property name="text">
+         <string>Line 2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QCheckBox" name="checkbox3">
+        <property name="text">
+         <string>Checkbox 3</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="combo2_label">
+        <property name="text">
+         <string>Combo 2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QCheckBox" name="checkbox1">
+        <property name="text">
+         <string>Checkbox 1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QDoubleSpinBox" name="spin1"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="spin2_label">
+        <property name="text">
+         <string>Spin 2</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="spin1_label">
+        <property name="text">
+         <string>Spin 1</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="combo1">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>c1A</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>c1B</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>c1C</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>c1D</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="combo2">
+        <item>
+         <property name="text">
+          <string>c2A</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>c2B</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>c2C</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>c2D</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
