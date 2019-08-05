@@ -57,17 +57,20 @@ def typecheck(args_and_types, name="?"):
 
     Parameters
     ----------
-    args_and_types : iterable
-        An iterable of two elements, for example a list,
-        from which the first element is tested as being an instance
-        of the second element.
-    name : str
-        The name of the object.
+    args_and_types : list
+    [(a, b), (c, d), ...] : list
+        A list of tuples. The first element of the tuple is tested as being
+        an instance of the second element.
+        `isinstance(a, b)`
+        `isinstance(c, d)`
+    name : str, optional
+        Defaults to '?'. The name of the object.
 
     Raises
     -------
     TypeError
-        If the first argument is not an instance of the second argument.
+        If the first element in the tuple is not an instance of the second
+        element.
     """
     for v, t in args_and_types:
         if not isinstance(v, t):
@@ -103,7 +106,7 @@ def toString(u):
                 s += ", "
                 first = True
         # Remove the last comma
-        s = s.rstrip(",")
+        s = s.rstrip(", ")
         s += "]"
         return s
     else:
@@ -138,7 +141,19 @@ def tup(u, array=False):
 
 
 def neg(u):
-    "neg(Vector) - returns an opposite (negative) vector"
+    """Return the negative of a given FreeCAD.Vector.
+
+    Parameters
+    ----------
+    u : Base::Vector3
+        A FreeCAD.Vector.
+
+    Returns
+    -------
+    Base::Vector3
+        A vector in which each element has the opposite sign as
+        the original element.
+    """
     typecheck([(u, Vector)], "neg")
     return Vector(-u.x, -u.y, -u.z)
 
