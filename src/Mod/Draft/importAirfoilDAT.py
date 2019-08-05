@@ -39,8 +39,23 @@ if open.__module__ in ['__builtin__','io']:
 
 useDraftWire = True
 
+
 def decodeName(name):
-	"decodes encoded strings"
+    """Decode encoded name.
+
+    Parameters
+    ----------
+    name : str
+        The string to decode.
+
+    Returns
+    -------
+    tuple
+    (string)
+        A tuple containing the decoded `name` in 'latin1',
+        otherwise in 'utf8'.
+        If it fails it returns the original `name`.
+    """
 	try:
 		decodedName = name
 	except UnicodeDecodeError:
@@ -54,15 +69,45 @@ def decodeName(name):
 				decodedName = name
 	return decodedName
 
+
 def open(filename):
-	"called when freecad opens a file"
+    """Open filename and parse.
+
+    Parameters
+    ----------
+    filename : str
+        The path to the filename to be opened.
+
+    Returns
+    -------
+    App::Document
+        The new FreeCAD document object created, with the parsed information.
+    """
 	docname = os.path.splitext(os.path.basename(filename))[0]
 	doc = FreeCAD.newDocument(docname)
 	doc.Label = decodeName(docname[:-4])
 	process(doc,filename)
 
+
 def insert(filename,docname):
-	"called when freecad imports a file"
+    """Get an active document and parse.
+
+    If no document exists, it is created.
+
+    Parameters
+    ----------
+    filename : str
+        The path to the filename to be opened.
+    docname : str
+        The name of the active App::Document if one exists, or
+        of the new one created.
+
+    Returns
+    -------
+    App::Document
+        The active FreeCAD document, or the document created if none exists,
+        with the parsed information.
+    """
 	groupname = os.path.splitext(os.path.basename(filename))[0]
 	try:
 		doc=FreeCAD.getDocument(docname)
@@ -72,10 +117,27 @@ def insert(filename,docname):
 	importgroup.Label = decodeName(groupname)
 	process(doc,filename)
 
-def process(doc,filename):    
-        # The common airfoil dat format has many flavors
-        # This code should work with almost every dialect
-    
+
+def process(doc,filename):
+        """Process the filename and provide the document with the information.
+
+        The common airfoil dat format has many flavors.
+        This code should work with almost every dialect.
+
+        Parameters
+        ----------
+        filename : str
+            The path to the filename to be opened.
+        docname : str
+            The name of the active App::Document if one exists, or
+            of the new one created.
+
+        Returns
+        -------
+        App::Document
+            The active FreeCAD document, or the document created if none exists,
+            with the parsed information.
+        """
         # Regex to identify data rows and throw away unused metadata
         regex = re.compile(r'^\s*(?P<xval>(\-|\d*)\.\d+(E\-?\d+)?)\,?\s*(?P<yval>\-?\s*\d*\.\d+(E\-?\d+)?)\s*$')
         afile = pythonopen(filename,'r')
