@@ -1,27 +1,27 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2009, 2010                                              *
-#*   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *  
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2009, 2010                                              *
+# *   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
-__title__="FreeCAD Draft Workbench - Vector library"
+__title__ = "FreeCAD Draft Workbench - Vector library"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline"
 __url__ = ["http://www.freecadweb.org"]
 
@@ -31,7 +31,8 @@ __url__ = ["http://www.freecadweb.org"]
 #  \ingroup UTILITIES
 #  \brief Vector math utilities used in Draft workbench
 #
-# Vector math utilities
+# Vector math utilities used primarily in the Draft workbench
+# but which can also be used in other workbenches and macros.
 
 ## \addtogroup DRAFTVECUTILS
 #  @{
@@ -39,6 +40,7 @@ __url__ = ["http://www.freecadweb.org"]
 import sys
 import math, FreeCAD
 from FreeCAD import Vector, Matrix
+from FreeCAD import Console as FCC
 
 try:
     long
@@ -53,9 +55,26 @@ def precision():
 
 
 def typecheck(args_and_types, name="?"):
+    """Check that the argument is an instance of a certain type.
+
+    Parameters
+    ----------
+    args_and_types : iterable
+        An iterable of two elements, for example a list,
+        from which the first element is an instance of the second element.
+    name : str
+        The name of the object.
+
+    Raises
+    -------
+    TypeError
+        If the first argument is not an instance of the second argument.
+    """
     for v, t in args_and_types:
         if not isinstance(v, t):
-            FreeCAD.Console.PrintWarning("typecheck[" + str(name) + "]: " + str(v) + " is not " + str(t) + "\n")
+            _msg = ("typecheck[" + str(name) + "]: "
+                    + str(v) + " is not " + str(t) + "\n")
+            FCC.PrintWarning(_msg)
             raise TypeError("fcvec." + str(name))
 
 
