@@ -98,10 +98,12 @@ def toString(u):
             s += "FreeCAD.Vector("
             s += str(v.x) + ", " + str(v.y) + ", " + str(v.z)
             s += ")"
-            # This if test isn't needed, because first never changes value?
+            # This test isn't needed, because `first` never changes value?
             if first:
-                s += ","
+                s += ", "
                 first = True
+        # Remove the last comma
+        s = s.rstrip(",")
         s += "]"
         return s
     else:
@@ -112,7 +114,22 @@ def toString(u):
 
 
 def tup(u, array=False):
-    "returns a tuple (x,y,z) with the vector coords, or an array if array=true"
+    """Return a tuple or a list with the coordinates of a vector.
+
+    Parameters
+    ----------
+    u : Base::Vector3
+        A FreeCAD.Vector.
+    array : bool
+        Defaults to `False`, and the output is a tuple.
+        If `True` the output is an array.
+
+    Returns
+    -------
+    tuple or list
+    (x, y, z) or [x, y, z]
+        The coordinates of the vector in a tuple or a list, if `array=True`.
+    """
     typecheck([(u, Vector)], "tup")
     if array:
         return [u.x, u.y, u.z]
