@@ -56,18 +56,18 @@ def decodeName(name):
         otherwise in 'utf8'.
         If it fails it returns the original `name`.
     """
-	try:
-		decodedName = name
-	except UnicodeDecodeError:
-		try:
-			decodedName = (name.decode("latin1"))
-		except UnicodeDecodeError:
-			try:
-				decodedName = (name.decode("utf8"))
-			except UnicodeDecodeError:
-				print("AirfoilDAT: error: couldn't determine character encoding")
-				decodedName = name
-	return decodedName
+    try:
+        decodedName = name
+    except UnicodeDecodeError:
+        try:
+            decodedName = (name.decode("latin1"))
+        except UnicodeDecodeError:
+            try:
+                decodedName = (name.decode("utf8"))
+            except UnicodeDecodeError:
+                print("AirfoilDAT: error: couldn't determine character encoding")
+                decodedName = name
+    return decodedName
 
 
 def open(filename):
@@ -83,10 +83,10 @@ def open(filename):
     App::Document
         The new FreeCAD document object created, with the parsed information.
     """
-	docname = os.path.splitext(os.path.basename(filename))[0]
-	doc = FreeCAD.newDocument(docname)
-	doc.Label = decodeName(docname[:-4])
-	process(doc,filename)
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    doc = FreeCAD.newDocument(docname)
+    doc.Label = decodeName(docname[:-4])
+    process(doc,filename)
 
 
 def insert(filename,docname):
@@ -108,14 +108,14 @@ def insert(filename,docname):
         The active FreeCAD document, or the document created if none exists,
         with the parsed information.
     """
-	groupname = os.path.splitext(os.path.basename(filename))[0]
-	try:
-		doc=FreeCAD.getDocument(docname)
-	except NameError:
-		doc=FreeCAD.newDocument(docname)
-	importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
-	importgroup.Label = decodeName(groupname)
-	process(doc,filename)
+    groupname = os.path.splitext(os.path.basename(filename))[0]
+    try:
+        doc=FreeCAD.getDocument(docname)
+    except NameError:
+        doc=FreeCAD.newDocument(docname)
+    importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
+    importgroup.Label = decodeName(groupname)
+    process(doc,filename)
 
 
 def process(doc,filename):
