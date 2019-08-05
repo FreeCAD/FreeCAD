@@ -37,7 +37,7 @@ __url__ = ["http://www.freecadweb.org"]
 #  @{
 
 import sys
-import math,FreeCAD
+import math, FreeCAD
 from FreeCAD import Vector, Matrix
 
 try:
@@ -46,18 +46,22 @@ except NameError:
     long = int
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-def precision():
-    return params.GetInt("precision",6)
 
-def typecheck (args_and_types, name="?"):
-    for v,t in args_and_types:
-        if not isinstance (v,t):
+
+def precision():
+    return params.GetInt("precision", 6)
+
+
+def typecheck(args_and_types, name="?"):
+    for v, t in args_and_types:
+        if not isinstance(v, t):
             FreeCAD.Console.PrintWarning("typecheck[" + str(name) + "]: " + str(v) + " is not " + str(t) + "\n")
             raise TypeError("fcvec." + str(name))
 
+
 def toString(u):
     "returns a string containing a python command to recreate this vector"
-    if isinstance(u,list):
+    if isinstance(u, list):
         s = "["
         first = True
         for v in u:
@@ -70,13 +74,15 @@ def toString(u):
     else:
         return "FreeCAD.Vector("+str(u.x)+","+str(u.y)+","+str(u.z)+")"
 
-def tup(u,array=False):
+
+def tup(u, array=False):
     "returns a tuple (x,y,z) with the vector coords, or an array if array=true"
-    typecheck ([(u,Vector)], "tup");
+    typecheck([(u, Vector)], "tup")
     if array:
-        return [u.x,u.y,u.z]
+        return [u.x, u.y, u.z]
     else:
-        return (u.x,u.y,u.z)
+        return (u.x, u.y, u.z)
+
 
 def neg(u):
     "neg(Vector) - returns an opposite (negative) vector"
