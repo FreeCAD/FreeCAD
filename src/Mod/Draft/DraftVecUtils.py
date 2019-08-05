@@ -25,8 +25,6 @@ __title__ = "FreeCAD Draft Workbench - Vector library"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline"
 __url__ = ["http://www.freecadweb.org"]
 
-"a vector math library for FreeCAD"
-
 ## \defgroup DRAFTVECUTILS DraftVecUtils
 #  \ingroup UTILITIES
 #  \brief Vector math utilities used in Draft workbench
@@ -61,7 +59,8 @@ def typecheck(args_and_types, name="?"):
     ----------
     args_and_types : iterable
         An iterable of two elements, for example a list,
-        from which the first element is an instance of the second element.
+        from which the first element is tested as being an instance
+        of the second element.
     name : str
         The name of the object.
 
@@ -79,19 +78,37 @@ def typecheck(args_and_types, name="?"):
 
 
 def toString(u):
-    "returns a string containing a python command to recreate this vector"
+    """Return a string with the Python command to recreate this Vector.
+
+    Parameters
+    ----------
+    u : list, or Base::Vector3
+        A list of FreeCAD.Vectors, or a single vector.
+
+    Returns
+    -------
+    str
+        The string with the code that can be input in the Python console
+        to create the same list of FreeCAD.Vectors, or single vector.
+    """
     if isinstance(u, list):
         s = "["
         first = True
         for v in u:
-            s += "FreeCAD.Vector("+str(v.x)+","+str(v.y)+","+str(v.z)+")"
+            s += "FreeCAD.Vector("
+            s += str(v.x) + ", " + str(v.y) + ", " + str(v.z)
+            s += ")"
+            # This if test isn't needed, because first never changes value?
             if first:
                 s += ","
                 first = True
         s += "]"
         return s
     else:
-        return "FreeCAD.Vector("+str(u.x)+","+str(u.y)+","+str(u.z)+")"
+        s = "FreeCAD.Vector("
+        s += str(u.x) + ", " + str(u.y) + ", " + str(u.z)
+        s += ")"
+        return s
 
 
 def tup(u, array=False):
