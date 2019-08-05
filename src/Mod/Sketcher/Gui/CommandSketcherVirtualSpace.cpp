@@ -169,9 +169,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
                 int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
                 Gui::Command::openCommand("Update constraint's virtual space");
                 try {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleVirtualSpace(%d)",
-                                            Obj->getNameInDocument(),
-                                            ConstrId);
+                    FCMD_OBJ_CMD2("toggleVirtualSpace(%d)", Obj, ConstrId);
                 }
                 catch(const Base::Exception&) {
                     successful--;
