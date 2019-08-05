@@ -1,43 +1,49 @@
 # -*- coding: utf8 -*-
-
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
-
-"FreeCAD Draft Workbench - DWG importer/exporter"
-
 ## @package importDWG
 #  \ingroup DRAFT
 #  \brief DWG file importer & exporter
-#
-#  This module provides support for importing and exporting Autodesk DWG files.
-#  This module is only a thin layer that uses the ODA (formerly Teigha) File
-#  Converter application to convert to/from DXF. Then the real work is done by
-#  importDXF
-#
-#  /usr/bin/ODAFileConverter
-#
-# Test files
-# https://knowledge.autodesk.com/support/autocad/downloads/
-#     caas/downloads/content/autocad-sample-files.html
+'''
+@package importDWG
+ingroup DRAFT
+\brief DWG file importer & exporter
+
+This module provides support for importing and exporting Autodesk DWG files.
+This module is only a thin layer that uses the ODA (formerly Teigha) File
+Converter application to convert to/from DXF. Then the real work is done by
+importDXF
+
+The converter may be called
+/usr/bin/TeighaFileConverter
+/usr/bin/ODAFileConverter
+
+Test files
+https://knowledge.autodesk.com/support/autocad/downloads/
+    caas/downloads/content/autocad-sample-files.html
+'''
+# Check code quality with
+# flake8 --ignore=E226,E266,E401,W503
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 import six
 import FreeCAD
@@ -97,6 +103,7 @@ def insert(filename, docname):
     dxf = convertToDxf(filename)
     if dxf:
         import importDXF
+        # Warning: function doesn't return?
         doc = importDXF.insert(dxf, docname)
         return doc
     return
@@ -156,6 +163,8 @@ def getTeighaConverter():
         teigha = None
         if platform.system() == "Linux":
             teigha = "/usr/bin/TeighaFileConverter"
+            if not os.path.exists(teigha):
+                teigha = "/usr/bin/ODAFileConverter"
         elif platform.system() == "Windows":
             odadir = os.path.expandvars("%ProgramFiles%\ODA")
             if os.path.exists(odadir):
