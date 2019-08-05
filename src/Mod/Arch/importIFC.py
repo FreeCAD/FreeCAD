@@ -924,6 +924,12 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj.Country = product.SiteAddress.Country
                     if product.SiteAddress.PostalCode:
                         obj.PostalCode = product.SiteAddress.PostalCode
+                project = product.Decomposes[0].RelatingObject
+                modelRC = next((rc for rc in project.RepresentationContexts if rc.ContextType == "Model"), None)
+                if modelRC and modelRC.TrueNorth:
+                    obj.Declination = -math.degrees(math.atan(modelRC.TrueNorth.DirectionRatios[0] / modelRC.TrueNorth.DirectionRatios[1]))
+                    if(FreeCAD.GuiUp):
+                        obj.ViewObject.CompassRotation.Value = obj.Declination
 
         try:
             progressbar.next(True)
@@ -1006,8 +1012,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
             else:
                 if DEBUG: print("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
-                if six.PY2:
-                    grp_name = grp_name.encode("utf8")
+            if six.PY2:
+                grp_name = grp_name.encode("utf8")
             grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name)
             grp.Label = grp_name
             objects[host] = grp
@@ -1540,6 +1546,9 @@ def export(exportList,filename,colors=None):
     ifcfile = ifcopenshell.open(templatefile)
     history = ifcfile.by_type("IfcOwnerHistory")[0]
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    if(Draft.getObjectsOfType(objectslist, "Site")):  # we assume one site and one representation context only
+        trueNorthX = math.tan(-Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian))
+        context.TrueNorth.DirectionRatios = (trueNorthX, 1., 1.)
     annotations = []
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):

@@ -876,8 +876,8 @@ class _ViewProviderSite:
         if not hasattr(vobj, 'UpdateDeclination') or not vobj.UpdateDeclination:
             return
         compassRotation = vobj.CompassRotation.Value
-        siteRotation = math.degrees(obj.Placement.Rotation.Angle)
-        obj.Declination = compassRotation + siteRotation
+        siteRotation = math.degrees(vobj.Object.Placement.Rotation.Angle) # This assumes Rotation.axis = (0,0,1)
+        vobj.Object.Declination = compassRotation + siteRotation
 
     def addTrueNorthRotation(self):
 

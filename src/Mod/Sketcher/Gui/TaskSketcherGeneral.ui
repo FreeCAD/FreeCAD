@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>275</width>
-    <height>256</height>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -121,6 +121,18 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
    </item>
    <item>
     <widget class="QListWidget" name="renderingOrder">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>12</width>
+       <height>12</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string>To change, drag and drop a geometry type to top or bottom</string>
      </property>

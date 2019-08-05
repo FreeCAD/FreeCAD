@@ -51,6 +51,7 @@ from FreeCAD import Vector
 
 if FreeCAD.GuiUp:
     from DraftTools import translate
+    from PySide import QtCore, QtGui
 else:
     def translate(ctxt,txt):
         return txt
@@ -264,34 +265,66 @@ def getsize(length,mode='discard',base=1):
         """parses length values containing number and unit
         with mode 'discard': extracts a number from the given string (removes unit suffixes)
         with mode 'tuple': return number and unit as a tuple
-        with mode 'css': convert the unit to px assuming 90dpi
-        with mode 'mm': convert the unit to millimeter assuming 90dpi"""
-        tomm={
-                '' : 25.4/90, #default
-                'px' : 25.4/90,
-                'pt' : 1.25*25.4/90,
-                'pc' : 15*25.4/90,
-                'mm' : 1.0,
-                'cm' : 10.0,
-                'in' : 25.4,
-                'em':  15*2.54/90, #arbitrarily chosen; has to depend on font size
-                'ex': 10*2.54/90, #arbitrarily chosen; has to depend on font size
+        with mode 'css90.0': convert the unit to px assuming 90dpi
+        with mode 'css96.0': convert the unit to px assuming 96dpi
+        with mode 'mm90.0': convert the unit to millimeter assuming 90dpi
+        with mode 'mm96.0': convert the unit to millimeter assuming 96dpi"""
+        if mode == 'mm90.0':
+            tomm={
+                    '' : 25.4/90, #default
+                    'px' : 25.4/90,
+                    'pt' : 1.25*25.4/90,
+                    'pc' : 15*25.4/90,
+                    'mm' : 1.0,
+                    'cm' : 10.0,
+                    'in' : 25.4,
+                    'em':  15*2.54/90, #arbitrarily chosen; has to depend on font size
+                    'ex': 10*2.54/90, #arbitrarily chosen; has to depend on font size
 
-                '%': 100 #arbitrarily chosen; has to depend on vieport size or (for filling patterns) on bounding box
-                }
-        topx={
-                '' : 1.0, #default
-                'px' : 1.0,
-                'pt' : 1.25,
-                'pc' : 15,
-                'mm' : 90.0/25.4,
-                'cm' : 90.0/254.0,
-                'in' : 90,
-                'em':  15, #arbitrarily chosen; has to depend on font size
-                'ex':  10, #arbitrarily chosen; has to depend on font size
+                    '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+                    }
+        if mode == 'mm96.0':
+            tomm={
+                    '' : 25.4/96, #default
+                    'px' : 25.4/96,
+                    'pt' : 1.25*25.4/96,
+                    'pc' : 15*25.4/96,
+                    'mm' : 1.0,
+                    'cm' : 10.0,
+                    'in' : 25.4,
+                    'em':  15*2.54/96, #arbitrarily chosen; has to depend on font size
+                    'ex': 10*2.54/96, #arbitrarily chosen; has to depend on font size
 
-                '%': 100 #arbitrarily chosen; has to depend on vieport size or (for filling patterns) on bounding box
-                }
+                    '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+                    }
+        if mode == 'css90.0':
+            topx={
+                    '' : 1.0, #default
+                    'px' : 1.0,
+                    'pt' : 1.25,
+                    'pc' : 15,
+                    'mm' : 90.0/25.4,
+                    'cm' : 90.0/254.0,
+                    'in' : 90,
+                    'em':  15, #arbitrarily chosen; has to depend on font size
+                    'ex':  10, #arbitrarily chosen; has to depend on font size
+
+                    '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+                    }
+        if mode == 'css96.0':
+            topx={
+                    '' : 1.0, #default
+                    'px' : 1.0,
+                    'pt' : 1.25,
+                    'pc' : 15,
+                    'mm' : 96.0/25.4,
+                    'cm' : 96.0/254.0,
+                    'in' : 96,
+                    'em':  15, #arbitrarily chosen; has to depend on font size
+                    'ex':  10, #arbitrarily chosen; has to depend on font size
+
+                    '%': 100 #arbitrarily chosen; has to depend on viewport size or (for filling patterns) on bounding box
+                    }
         number, exponent, unit=re.findall('([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)(px|pt|pc|mm|cm|in|em|ex|%)?',length)[0]
         if mode =='discard':
                 return float(number)
@@ -299,9 +332,9 @@ def getsize(length,mode='discard',base=1):
                 return float(number),unit
         elif mode == 'isabsolute':
                 return unit in ('mm','cm','in','px','pt')
-        elif mode == 'mm':
+        elif mode == 'mm96.0' or mode == 'mm90.0':
                 return float(number)*tomm[unit]
-        elif mode == 'css':
+        elif mode == 'css96.0' or mode == 'css90.0':
                 if unit != '%':
                         return float(number)*topx[unit]
                 else:
@@ -414,6 +447,7 @@ class svgHandler(xml.sax.ContentHandler):
                 self.viewbox = None
                 self.symbols = {}
                 self.currentsymbol = None
+                self.svgdpi = 1.0
 
                 global Part
                 import Part
@@ -457,6 +491,41 @@ class svgHandler(xml.sax.ContentHandler):
                         #print keyword,content
                         data[keyword]=content
 
+                if self.count == 1 and name == 'svg':
+                    if 'inkscape:version' in data:
+                        InksDocName = attrs.getValue('sodipodi:docname')
+                        InksFullver = attrs.getValue('inkscape:version')[:4]
+                        InksFullverlst = InksFullver.split('.')
+                        if (
+                            int(InksFullverlst[0]) == 0 and
+                            int(InksFullverlst[1]) > 91
+                            ):
+                            self.svgdpi = 96.0
+                        if (
+                            int(InksFullverlst[0]) == 0 and
+                            int(InksFullverlst[1]) < 92
+                            ):
+                            self.svgdpi = 90.0
+                        if (
+                            int(InksFullverlst[0]) > 0
+                            ):
+                            self.svgdpi = 96.0
+                    if not 'inkscape:version' in data:
+                        msgBox = QtGui.QMessageBox()
+                        msgBox.setText(translate("ImportSVG","This SVG file does not appear to have been produced by Inkscape. If it does not contain absolute units then a DPI setting will be used."))
+                        msgBox.setInformativeText(translate("ImportSVG","Do you wish to use 96dpi? Choosing 'No' will revert to the older standard 90dpi"))
+                        msgBox.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+                        msgBox.setDefaultButton(QtGui.QMessageBox.No)
+                        ret = msgBox.exec_()
+                        if ret == QtGui.QMessageBox.Yes:
+                            self.svgdpi = 96.0
+                        else:
+                            self.svgdpi = 90.0
+                        if ret:
+                            FreeCAD.Console.PrintMessage("****** User specified "+str(self.svgdpi)+"dpi ******\n")
+                    if self.svgdpi == 1.0:
+                        FreeCAD.Console.PrintWarning("This SVG file ("+InksDocName+") has an unrecognised format which means the dpi could not be determined; therefore importing with 96dpi\n")
+                        self.svgdpi = 96.0
                 if 'style' in data:
                         if not data['style']:
                                 pass#empty style attribute stops inhertig from parent
@@ -469,7 +538,7 @@ class svgHandler(xml.sax.ContentHandler):
 
                 for k in ['x','y','x1','y1','x2','y2','r','rx','ry','cx','cy','width','height']:
                         if k in data:
-                                data[k] = getsize(data[k][0],'css')
+                                data[k] = getsize(data[k][0],'css'+str(self.svgdpi))
 
                 for k in ['fill','stroke','stroke-width','font-size']:
                         if k in data:
@@ -497,9 +566,9 @@ class svgHandler(xml.sax.ContentHandler):
                                     h=attrs.getValue('height')
                                     self.viewbox=(vbw,vbh)
                                     if len(self.grouptransform)==0:
-                                        unitmode='mm'
+                                        unitmode='mm'+str(self.svgdpi)
                                     else: #nested svg element
-                                        unitmode='css'
+                                        unitmode='css'+str(self.svgdpi)
                                     abw = getsize(w,unitmode)
                                     abh = getsize(h,unitmode)
                                     sx=abw/vbw
@@ -519,8 +588,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                 sxy=min(sx,sy)
                                             m.scale(Vector(sxy,sxy,1))
                             elif len(self.grouptransform)==0:
-                                #fallback to 90 dpi
-                                m.scale(Vector(25.4/90.0,25.4/90.0,1))
+                                #fallback to current dpi
+                                m.scale(Vector(25.4/self.svgdpi,25.4/self.svgdpi,1))
                         self.grouptransform.append(m) 
                 if 'fill' in data:
                         if data['fill'][0] != 'none':
@@ -530,7 +599,7 @@ class svgHandler(xml.sax.ContentHandler):
                                 self.color = getcolor(data['stroke'])
                 if 'stroke-width' in data:
                         if data['stroke-width'] != 'none':
-                                self.width = getsize(data['stroke-width'],'css')
+                                self.width = getsize(data['stroke-width'],'css'+str(self.svgdpi))
                 if 'transform' in data:
                         m = self.getMatrix(attrs.getValue('transform'))
                         if name == "g":
@@ -1002,7 +1071,7 @@ class svgHandler(xml.sax.ContentHandler):
                                         self.y = 0
                                 if 'font-size' in data:
                                         if data['font-size'] != 'none':
-                                                self.text = getsize(data['font-size'],'css')
+                                                self.text = getsize(data['font-size'],'css'+str(self.svgdpi))
                                 else:
                                         self.text = 1
                         else:
