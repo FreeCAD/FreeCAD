@@ -2019,9 +2019,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
 
         try {
 
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Block',%d)) ",
-                selection[0].getFeatName(),(*itg));
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Block',%d)) ", Obj,(*itg));
 
         } catch (const Base::Exception& e) {
             Base::Console().Error("%s\n", e.what());
@@ -2065,9 +2063,8 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair> &selSeq, 
 
             try {
 
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Block',%d)) ",
-                                        sketchgui->getObject()->getNameInDocument(),selSeq.front().GeoId);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Block',%d)) ",
+                                        sketchgui->getObject(),selSeq.front().GeoId);
 
             } catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -2335,12 +2332,10 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
 
                 if(constraintExists) {
                     // try to remove any pre-existing direct coincident constraints
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i,%i)",
-                                            selection[0].getFeatName(), GeoId1, PosId1);
+                    FCMD_OBJ_CMD2("delConstraintOnPoint(%i,%i)", Obj, GeoId1, PosId1);
                 }
 
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.delConstraint(%i)"
-                                        ,selection[0].getFeatName(), j);
+                FCMD_OBJ_CMD2("delConstraint(%i)", Obj, j);
 
                 doEndpointTangency(Obj, selection[0], GeoId1, GeoId2, PosId1, PosId2);
 
@@ -4529,8 +4524,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
                     doEndpointTangency(Obj, selection[0], (*it)->First, (*it)->Second, (*it)->FirstPos, (*it)->SecondPos);
 
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.delConstraintOnPoint(%i,%i)",
-                                            selection[0].getFeatName(), first, firstpos);
+                    FCMD_OBJ_CMD2("delConstraintOnPoint(%i,%i)", Obj, first, firstpos);
 
                     commitCommand();
                     tryAutoRecomputeIfNotSolve(Obj);
@@ -5533,16 +5527,13 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
         unsigned int constrSize = 0;
 
         for (std::vector< std::pair<int, double> >::iterator it = externalGeoIdDiameterMap.begin(); it != externalGeoIdDiameterMap.end(); ++it) {
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
-                                    selection[0].getFeatName(),it->first,it->second);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", Obj,it->first,it->second);
 
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
             constrSize=ConStr.size();
 
-            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                                    selection[0].getFeatName(),constrSize-1,"False");
+            FCMD_OBJ_CMD2("setDriving(%i,%s)",Obj,constrSize-1,"False");
         }
 
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
@@ -5592,15 +5583,11 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             if(!commandopened)
                 openCommand("Add diameter constraint");
 
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
-                                    selection[0].getFeatName(),refGeoId,diameter);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ", Obj,refGeoId,diameter);
 
             // Add the equality constraints
             for (std::vector< std::pair<int, double> >::iterator it = geoIdDiameterMap.begin()+1; it != geoIdDiameterMap.end(); ++it) {
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
-                                        selection[0].getFeatName(),refGeoId,it->first);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Equal',%d,%d)) ", Obj,refGeoId,it->first);
             }
         }
         else {
@@ -5608,16 +5595,14 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
             if(!commandopened)
                 openCommand("Add diameter constraint");
             for (std::vector< std::pair<int, double> >::iterator it = geoIdDiameterMap.begin(); it != geoIdDiameterMap.end(); ++it) {
-                Gui::Command::doCommand(
-                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
-                                        selection[0].getFeatName(),it->first,it->second);
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
+                                        Obj,it->first,it->second);
 
                 if(constraintCreationMode==Reference) {
 
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
-                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                                            selection[0].getFeatName(),ConStr.size()-1,"False");
+                    FCMD_OBJ_CMD2("setDriving(%i,%s)", Obj,ConStr.size()-1,"False");
 
                 }
 
@@ -5667,22 +5652,18 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
 
                 try {
                     if (constrainEqual || geoIdDiameterMap.size() == 1) {
-                        doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
-                                  Obj->getNameInDocument(),
+                        FCMD_OBJ_CMD2("setDatum(%i,App.Units.Quantity('%f %s'))", Obj,
                                   indexConstr, newDiameter, (const char*)newQuant.getUnit().getString().toUtf8());
 
                         QString constraintName = ui_Datum.name->text().trimmed();
                         if (Base::Tools::toStdString(constraintName) != Obj->Constraints[indexConstr]->Name) {
                             std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                                                    Obj->getNameInDocument(),
-                                                    indexConstr, escapedstr.c_str());
+                            FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')", Obj, indexConstr, escapedstr.c_str());
                         }
                     }
                     else {
                         for (std::size_t i=0; i<geoIdDiameterMap.size();i++) {
-                            doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
-                                      Obj->getNameInDocument(),
+                            FCMD_OBJ_CMD2("setDatum(%i,App.Units.Quantity('%f %s'))", Obj,
                                       indexConstr+i, newDiameter, (const char*)newQuant.getUnit().getString().toUtf8());
                         }
                     }
@@ -5762,16 +5743,15 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
 
             // Create the diameter constraint now
             openCommand("Add diameter constraint");
-            Gui::Command::doCommand(Doc, "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
-                                    Obj->getNameInDocument(), GeoId, diameter);
+            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Diameter',%d,%f)) ",
+                                    Obj, GeoId, diameter);
 
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
 
             int indexConstr = ConStr.size() - 1;
             bool fixed = isPointOrSegmentFixed(Obj,GeoId);
             if(fixed || constraintCreationMode==Reference) {
-                Gui::Command::doCommand(Doc, "App.ActiveDocument.%s.setDriving(%i,%s)",
-                                        Obj->getNameInDocument(), ConStr.size()-1, "False");
+                FCMD_OBJ_CMD2("setDriving(%i,%s)", Obj, ConStr.size()-1, "False");
             }
 
             // Guess some reasonable distance for placing the datum text
@@ -5808,16 +5788,13 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
                     double newDiameter = newQuant.getValue();
 
                     try {
-                        doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
-                                  Obj->getNameInDocument(),
+                        FCMD_OBJ_CMD2("setDatum(%i,App.Units.Quantity('%f %s'))", Obj,
                                   indexConstr, newDiameter, (const char*)newQuant.getUnit().getString().toUtf8());
 
                         QString constraintName = ui_Datum.name->text().trimmed();
                         if (Base::Tools::toStdString(constraintName) != Obj->Constraints[indexConstr]->Name) {
                             std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                                                    Obj->getNameInDocument(),
-                                                    indexConstr, escapedstr.c_str());
+                            FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')", Obj, indexConstr, escapedstr.c_str());
                         }
 
                         commitCommand();
