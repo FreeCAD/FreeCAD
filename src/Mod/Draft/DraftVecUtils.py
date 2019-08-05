@@ -58,13 +58,23 @@ def typecheck(args_and_types, name="?"):
     Parameters
     ----------
     args_and_types : list
-    [(a, b), (c, d), ...] : list
         A list of tuples. The first element of the tuple is tested as being
         an instance of the second element.
-        `isinstance(a, b)`
-        `isinstance(c, d)`
+        ``args_and_types = [(a, Type), (b, Type2), ...]``
+
+        Then
+        ``isinstance(a, Type)``,
+        ``isinstance(b, Type2)``
+
+        A `Type` can also be a tuple of many types, in which case
+        the check is done for any of them.
+
+        ``args_and_types = [(a, (Type3, int, float)), ...]``
+
+        ``isinstance(a, (Type3, int, float))``
+
     name : str, optional
-        Defaults to '?'. The name of the object.
+        Defaults to '?'. The name of the check.
 
     Raises
     -------
@@ -123,7 +133,7 @@ def tup(u, array=False):
     ----------
     u : Base::Vector3
         A FreeCAD.Vector.
-    array : bool
+    array : bool, optional
         Defaults to `False`, and the output is a tuple.
         If `True` the output is an array.
 
@@ -151,7 +161,7 @@ def neg(u):
     Returns
     -------
     Base::Vector3
-        A vector in which each element has the opposite sign as
+        A vector in which each element has the opposite sign of
         the original element.
     """
     typecheck([(u, Vector)], "neg")
@@ -159,13 +169,48 @@ def neg(u):
 
 
 def equals(u, v):
-    "returns True if vectors differ by less than precision (from ParamGet), elementwise "
+    """Check for equality between two FreeCAD.Vectors.
+
+    Due to rounding errors, two vectors will rarely be 'equal'.
+    Therefore, this fucntion checks that the corresponding elements
+    of the two vectors differ by less than the precision established
+    in the parameter database, accessed through `FreeCAD.ParamGet()`.
+    x1 - x2 < precision
+    y1 - y2 < precision
+    z1 - z2 < precision
+
+    Parameters
+    ----------
+    u : Base::Vector3
+    v : Base::Vector3
+        The FreeCAD.Vectors to compare.
+
+    Returns
+    ------
+    bool
+        `True` if the vectors are within the precision, `False` otherwise.
+    """
     typecheck([(u, Vector), (v, Vector)], "equals")
     return isNull(u.sub(v))
 
 
 def scale(u, scalar):
-    "scale(Vector,Float) - scales (multiplies) a vector by a factor"
+    """Scales (multiplies) a vector by a factor.
+
+    Parameters
+    ----------
+    u : Base::Vector3
+        The FreeCAD.Vector to scale.
+    scalar : float
+        The scaling factor.
+
+    Returns
+    -------
+    Base::Vector3
+        The new vector with each of its elements multiplied by `scalar`.
+    """
+    # Python 2 has two integer types, int and long.
+    # In Python 3 there is no 'long' anymore.
     if sys.version_info.major < 3:
         typecheck([(u, Vector), (scalar, (long, int, float))], "scale")
     else:
