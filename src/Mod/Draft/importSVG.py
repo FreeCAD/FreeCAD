@@ -31,7 +31,7 @@ __url__ = ["http://www.freecadweb.org"]
 #
 #  This module provides support for importing and exporting SVG files. It
 #  enables importing/exporting objects directly to/from the 3D document, but
-#  doesn't handle the SVG output from the Drawng and TechDraw modules.
+#  doesn't handle the SVG output from the Drawing and TechDraw modules.
 
 '''
 This script imports SVG files in FreeCAD. Currently only reads the following entities:
@@ -43,7 +43,7 @@ currently unsupported: use, image
 # handle image element (external references and inline base64)
 # debug Problem with 'Sans' font from Inkscape
 # debug Problem with fill color
-# implement inherting fill style from group
+# implement inheriting fill style from group
 # handle relative units
 
 import xml.sax, string, FreeCAD, os, math, re, Draft, DraftVecUtils
@@ -528,7 +528,7 @@ class svgHandler(xml.sax.ContentHandler):
                         self.svgdpi = 96.0
                 if 'style' in data:
                         if not data['style']:
-                                pass#empty style attribute stops inhertig from parent
+                                pass#empty style attribute stops inheriting from parent
                         else:
                                 content = data['style'].replace(' ','')
                                 content = content.split(';')
