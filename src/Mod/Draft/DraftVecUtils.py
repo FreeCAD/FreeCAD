@@ -565,9 +565,24 @@ def isNull(vector):
 
 
 def find(vector, vlist):
-    '''find(vector,vlist): finds a vector in a list of vectors. returns
-    the index of the matching vector, or None if none is found.
-    '''
+    """Find a vector in a list of vectors, and return the index.
+
+    Finding a vector tests for `equality` which depends on the `precision`
+    parameter in the parameter database.
+
+    Parameters
+    ----------
+    vector : Base::Vector3
+        The tested vector.
+    vlist : list
+        A list of Base::Vector3 vectors.
+
+    Returns
+    -------
+    int
+        The index of the list where the vector is found,
+        or `None` if the vector is not found.
+    """
     typecheck([(vector, Vector), (vlist, list)], "find")
     for i, v in enumerate(vlist):
         if equals(vector, v):
@@ -576,9 +591,28 @@ def find(vector, vlist):
 
 
 def closest(vector, vlist):
-    '''closest(vector,vlist): finds the closest vector to the given vector
-    in a list of vectors'''
+    """Find the closest point to one point in a list of points (vectors).
+
+    The scalar distance between the original point and one point in the list
+    is calculated. If the distance is smaller than a previously calculated
+    value, its index is saved, otherwise the next point in the list is tested.
+
+    Parameters
+    ----------
+    vector : Base::Vector3
+        The tested point (or vector).
+    vlist : list
+        A list of points (or vectors).
+
+    Returns
+    -------
+    int
+        The index of the list where the closest point is found.
+    """
     typecheck([(vector, Vector), (vlist, list)], "closest")
+
+    # Initially test against a very large distance, then test the next point
+    # in the list which will probably be much smaller.
     dist = 9999999999999999
     index = None
     for i, v in enumerate(vlist):
@@ -590,20 +624,63 @@ def closest(vector, vlist):
 
 
 def isColinear(vlist):
-    '''isColinear(list_of_vectors): checks if vectors in given list are colinear'''
+    """Check if the vectors in the list are colinear.
+
+    Colinear vectors don't necessarily have the same magnitude,
+    but the angle between them should be zero.
+
+    Due to rounding errors, the angle may not be exactly zero;
+    therefore, it rounds the angle by the number
+    of decimals specified in the `precision` parameter
+    in the parameter database, and then compares the value to zero.
+
+    Parameters
+    ----------
+    vlist : list
+        List of Base::Vector3 vectors.
+        At least three elements must be present.
+
+    Returns
+    -------
+    bool
+        `True` if each of the vectors is colinear.
+        `False` otherwise.
+    """
     typecheck([(vlist, list)], "isColinear")
+
+    # Return True if the list only has two vectors, why?
+    # This doesn't test for colinearity between the first two vectors.
     if len(vlist) < 3:
         return True
+
     p = precision()
+
+    # Difference between the second vector and the first one
     first = vlist[1].sub(vlist[0])
+
+    # Start testing from the third vector and onward
     for i in range(2, len(vlist)):
-        if round(angle(vlist[i].sub(vlist[0]), first), p) != 0:
+        _angle = round(angle(vlist[i].sub(vlist[0]), first), p)
+        if _angle != 0:
             return False
     return True
 
 
 def rounded(v):
-    "returns a rounded vector"
+    """Return a rounded vector to the precision in the parameter database.
+
+    Parameters
+    ----------
+    v : Base::Vector3
+        The input vector.
+
+    Returns
+    -------
+    Base::Vector3
+        The new vector where each element has been rounded
+        to the number of decimals specified in the `precision` parameter
+        in the parameter database.
+    """
     p = precision()
     return Vector(round(v.x, p), round(v.y, p), round(v.z, p))
 
