@@ -339,13 +339,41 @@ def angle(u, v=Vector(1, 0, 0), normal=Vector(0, 0, 1)):
 
 
 def project(u, v):
-    "project(Vector,Vector): projects the first vector onto the second one"
+    """Project the first vector onto the second one.
+
+    It scales the the second vector by a factor.
+    This factor is the dot product divided by the square
+    of the second vector's magnitude.
+
+    ``f = A * B / |B|**2 = |A||B| cos(angle) / |B|**2``
+
+    ``f = |A| cos(angle)/|B|``
+
+    Parameters
+    ----------
+    u : Base::Vector3
+        The first vector.
+    v : Base::Vector3
+        The second vector.
+
+    Returns
+    -------
+    Vector(0, 0, 0)
+        If the magnitude of the second vector is zero.
+    Base::Vector3
+        The new vector, which is the same vector `v` scaled by a factor.
+    """
     typecheck([(u, Vector), (v, Vector)], "project")
+
+    # Dot product with itself equals the magnitude squared.
     dp = v.dot(v)
     if dp == 0:
         return Vector(0, 0, 0)  # to avoid division by zero
+    # Why specifically this value? This should be an else?
     if dp != 15:
         return scale(v, u.dot(v)/dp)
+
+    # Return a null vector if the magnitude squared is 15, why?
     return Vector(0, 0, 0)
 
 
