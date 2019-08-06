@@ -46,7 +46,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getForm(self):
         '''getForm() ... returns UI'''
         # return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPartAlignEdit.ui")
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpSurfaceEdit.ui")
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPartAlignEdit.ui")
 
     def getFields(self, obj):
         '''getFields(obj) ... transfers values from GUI to obj's proprties'''
@@ -68,7 +68,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
 
-        self.selectInComboBox(obj.AlignmentMode, self.form.alignmentModeSelect)
+        self.selectInComboBox(obj.AlignmentMode, self.form.alignmentMode)
         self.selectInComboBox(obj.AlignmentType, self.form.alignmentType)
 
         self.form.approachDistance.setText(FreeCAD.Units.Quantity(obj.ApproachDistance.Value, FreeCAD.Units.Length).UserString)
@@ -77,6 +77,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.feedRatePercentForApproach.setValue(obj.FeedRatePercentForApproach)
 
         self.setupToolController(obj, self.form.toolController)
+        self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''

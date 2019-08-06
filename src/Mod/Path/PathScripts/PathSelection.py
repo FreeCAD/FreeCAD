@@ -188,15 +188,45 @@ class PARTALIGNGate(PathBaseGate):
 
         allow = False
         try:
-            obj = obj.Shape
+            shape = obj.Shape
         except Exception:  # pylint: disable=broad-except
             return False
 
-        if obj.ShapeType == 'Edge':
+        if shape.ShapeType == 'Edge':
             allow = True
 
-        elif obj.ShapeType == 'Solid':
+        elif shape.ShapeType == 'Solid':
             if sub and sub[0:4] == 'Edge':
+                allow = True
+
+        return allow
+
+
+class NEW1Gate(PathBaseGate):
+    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+
+        allow = False
+        try:
+            shape = obj.Shape
+        except Exception:  # pylint: disable=broad-except
+            return False
+
+        if shape.ShapeType == 'Edge':
+            allow = True
+
+        elif shape.ShapeType == 'Solid':
+            if sub and sub[0:4] == 'Edge':
+                allow = True
+
+        elif shape.ShapeType == 'Face':
+            allow = True
+
+        elif shape.ShapeType == 'Solid':
+            if sub and sub[0:4] == 'Face':
+                allow = True
+
+        elif shape.ShapeType == 'Compound':
+            if sub and sub[0:4] == 'Face':
                 allow = True
 
         return allow
@@ -252,6 +282,11 @@ def partalignselect():
     FreeCAD.Console.PrintWarning("PartAlign Select Mode\n")
 
 
+def new1select():
+    FreeCADGui.Selection.addSelectionGate(NEW1Gate())
+    FreeCAD.Console.PrintWarning("New1 Select Mode\n")
+
+
 def select(op):
     opsel = {}
     opsel['Adaptive'] = adaptiveselect
@@ -261,6 +296,7 @@ def select(op):
     opsel['Engrave'] = engraveselect
     opsel['Helix'] = drillselect
     opsel['MillFace'] = pocketselect
+    opsel['New1'] = new1select
     opsel['PartAlign'] = partalignselect
     opsel['Pocket'] = pocketselect
     opsel['Pocket 3D'] = pocketselect

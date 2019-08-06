@@ -85,7 +85,7 @@ class PathWorkbench (Workbench):
         engravecmdlist = ["Path_Engrave", "Path_Deburr"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy"]
         dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
-        extracmdlist = ["Path_PartAlign", "Path_New1"]
+        extracmdlist = ["Path_PartAlign"]
         # modcmdmore = ["Path_Hop",]
         # remotecmdlist = ["Path_Remote"]
 
@@ -96,7 +96,7 @@ class PathWorkbench (Workbench):
         if PathPreferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
-            extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
+            extracmdlist.extend(["Path_Area", "Path_Area_Workplane", "Path_New1"])
 
             try:
                 import ocl  # pylint: disable=unused-variable

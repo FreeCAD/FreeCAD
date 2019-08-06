@@ -26,6 +26,8 @@
 # https://github.com/sliptonic/FreeCAD/wiki/Developing-for-Path
 # for additional information regarding developing for the Path Workbench.
 
+from __future__ import print_function  # Must be at the beginning of the file per Python protocol
+
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
@@ -33,7 +35,6 @@ import PathScripts.PathUtils as PathUtils
 import PathScripts.PathOp as PathOp
 
 from PySide import QtCore
-from __future__ import print_function
 
 __title__ = "Path New 1 Operation"
 __author__ = "username (Iamthe Author)"
@@ -71,8 +72,8 @@ class ObjectNew1(PathOp.ObjectOp):
         '''opFeatures(obj)
         Return all standard features necessary for this operation
         A list of standard features available is found in the PathOp.py module'''
-        # EXAMPLE: return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown
-        return 0
+        # Edit PathSelection.py module to change feture geometry accepted for PathOp.FeatureBaseGeometry 
+        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureBaseGeometry 
 
     def initOperation(self, obj):
         '''initPocketOp(obj) ... create facing specific properties

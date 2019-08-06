@@ -36,8 +36,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Part Alignment Tool based on edges."
 __contributors__ = ""
 __createdDate__ = "2019"
-__scriptVersion__ = "1b testing"
-__lastModified__ = "2019-08-04 02:32 CST"
+__scriptVersion__ = "1c testing"
+__lastModified__ = "2019-08-06 16:59 CST"
 
 LOGLEVEL = False
 
@@ -125,7 +125,7 @@ class ObjectPartAlign(PathOp.ObjectOp):
         # Check for previous Part_Align operations in Job.Operations group
         Ops = Job.Operations.Group
         for op in Ops:
-            if 'Part_Align' in op.Name:
+            if 'PartAlign' in op.Name:
                 apCnt += 1
                 if obj.AlignmentMode == 'Auto':
                     try:
@@ -218,34 +218,6 @@ class ObjectPartAlign(PathOp.ObjectOp):
                     z = edg1.Vertexes[cvi].Z
                     t0 = FreeCAD.Vector(edg0.Vertexes[evt].X - x, edg0.Vertexes[evt].Y - y, 0.0)  # also is directional vector
                     t1 = FreeCAD.Vector(edg1.Vertexes[cvt].X - x, edg1.Vertexes[cvt].Y - y, 0.0)
-
-                    '''
-                    radiansBetweenEdges = t0.getAngle(t1)
-                    degreesBetweenEdges = math.degrees(radiansBetweenEdges)
-                    PathLog.warning("degreesBetweenEdges {} and {} is {}.".format(sub0, sub1, degreesBetweenEdges))
-                    halfDegrees = degreesBetweenEdges / 2.0
-                    PathLog.warning("halfDegrees is {}.".format(halfDegrees))
-                    tanDist = self.radius / math.atan(radiansBetweenEdges)
-                    distToBitCenter = self.radius / math.sin(radiansBetweenEdges / 2.0)
-                    PathLog.warning("dist is {}.".format(tanDist))
-                    dY0 = (edg0.Vertexes[1].Y - edg0.Vertexes[0].Y)
-                    dX0 = (edg0.Vertexes[1].X - edg0.Vertexes[0].X)
-                    dY1 = (edg1.Vertexes[1].Y - edg1.Vertexes[0].Y)
-                    dX1 = (edg1.Vertexes[1].X - edg1.Vertexes[0].X)
-                    slope0 = None
-                    slope1 = None
-                    if dX0 != 0.0:
-                        slope0 = dY0 / dX0
-                        theta = math.atan(slope0)
-                        distY = tanDist * math.sin(theta)
-                        distX = tanDist * math.cos(theta)
-                    else:
-                        PathLog.warning("slope0 is VERTICAL (undefined).".format(slope0))
-                    if dX1 != 0.0:
-                        slope1 = dY1 / dX1
-                    else:
-                        PathLog.warning("slope1 is VERTICAL (undefined).".format(slope1))
-                    '''
 
                     ls0vi = FreeCAD.Vector(edg0.Vertexes[evi].X, edg0.Vertexes[evi].Y, z)
                     ls0vt = FreeCAD.Vector(edg0.Vertexes[evt].X, edg0.Vertexes[evt].Y, z)
@@ -348,7 +320,7 @@ class ObjectPartAlign(PathOp.ObjectOp):
         apTxt = "<{0:.3f}".format(ap.x) + ", {0:.3f}".format(ap.y)
         apTxt += ", {0:.3f}>".format(ap.z)
         cmds.append(Path.Command('N ({} alignment point {} at {} mm)'.format(obj.AlignmentType, apCnt, apTxt), {}))
-        cmds.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+        cmds.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
         cmds.append(Path.Command('G0', {'X': ap.x, 'Y': ap.y, 'F': self.horizRapid}))
         cmds.append(Path.Command('G1', {'Z': ap.z, 'F': self.vertFeed}))
         cmds.append(Path.Command('G1', {'Z': ap.z - (obj.StopBelowVertex.Value), 'F': self.vertFeed}))
@@ -362,11 +334,11 @@ class ObjectPartAlign(PathOp.ObjectOp):
         apTxt = "<{0:.3f}".format(ap.x) + ", {0:.3f}".format(ap.y)
         apTxt += ", {0:.3f}>".format(ap.z)
         cmds.append(Path.Command('N ({} alignment point {} at {} mm)'.format(obj.AlignmentType, apCnt, apTxt), {}))
-        cmds.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+        cmds.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
         cmds.append(Path.Command('G0', {'X': ap.x, 'Y': ap.y, 'F': self.horizRapid}))
         cmds.append(Path.Command('G1', {'Z': ap.z, 'F': (self.vertFeed / 2)}))
         cmds.append(Path.Command('M0', {}))  # Pause machine
-        cmds.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+        cmds.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
         cmds.append(Path.Command('G0', {'X': aprchVect.x, 'Y': aprchVect.y, 'F': self.horizRapid}))
         cmds.append(Path.Command('G1', {'Z': (ap.z - obj.StopBelowVertex.Value), 'F': (vertApproachRate)}))
         cmds.append(Path.Command('G1', {'X': ap.x, 'Y': ap.y, 'F': (horizApproachRate)}))
