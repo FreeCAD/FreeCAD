@@ -185,7 +185,7 @@ def equals(u, v):
 
     Due to rounding errors, two vectors will rarely be `equal`.
     Therefore, this function checks that the corresponding elements
-    of the two vectors differ by less than the `precision` established
+    of the two vectors differ by less than the decimal `precision` established
     in the parameter database, accessed through `FreeCAD.ParamGet()`.
     ::
         x1 - x2 < precision
@@ -583,6 +583,10 @@ def find(vector, vlist):
     int
         The index of the list where the vector is found,
         or `None` if the vector is not found.
+
+    See Also
+    --------
+    equals : test for equality between two vectors
     """
     typecheck([(vector, Vector), (vlist, list)], "find")
     for i, v in enumerate(vlist):
@@ -693,7 +697,10 @@ def isColinear(vlist):
 
 
 def rounded(v):
-    """Return a rounded vector to the precision in the parameter database.
+    """Return a vector rounded to the `precision` in the parameter database.
+
+    Each of the components of the vector is rounded to the decimal
+    precision set in the parameter database.
 
     Parameters
     ----------
@@ -712,12 +719,40 @@ def rounded(v):
 
 
 def getPlaneRotation(u, v, w=None):
-    "returns a rotation matrix defining the (u,v,w) coordinates system"
+    """Return a rotation matrix defining the (u,v,w) coordinate system.
+
+    The rotation matrix uses the elements from each vector.
+    ::
+            (u.x  v.x  w.x  0  )
+        R = (u.y  v.y  w.y  0  )
+            (u.z  v.z  w.z  0  )
+            (0    0    0    1.0)
+
+    Parameters
+    ----------
+    u : Base::Vector3
+        The first vector.
+    v : Base::Vector3
+        The second vector.
+    w : Base::Vector3, optional
+        The third vector. It defaults to `None`, in which case
+        it is calculated as the cross product of `u` and `v`.
+        ::
+            w = u.cross(v)
+
+    Returns
+    -------
+    Base::Matrix4D
+        The new rotation matrix defining a new coordinate system,
+        or `None` if `u`, or `v`, is `None`.
+    """
     if (not u) or (not v):
         return None
+
     if not w:
         w = u.cross(v)
     typecheck([(u, Vector), (v, Vector), (w, Vector)], "getPlaneRotation")
+
     m = FreeCAD.Matrix(u.x, v.x, w.x, 0,
                        u.y, v.y, w.y, 0,
                        u.z, v.z, w.z, 0,
@@ -726,14 +761,47 @@ def getPlaneRotation(u, v, w=None):
 
 
 def removeDoubles(vlist):
-    "removes consecutive doubles from a list of vectors"
+    """Remove duplicated vectors from a list of vectors.
+
+    It removes only the duplicates that are next to each other in the list.
+
+    It tests the `i` element, and compares it to the `i+1` element.
+    If the former one is different from the latter,
+    the former is added to the new list, otherwise it is skipped.
+    The last element is always included.
+    ::
+        [a, b, b, c, c] -> [a, b, c]
+        [a, a, b, a, a, b] -> [a, b, a, b]
+
+    Finding duplicated vectors tests for `equality` which depends
+    on the `precision` parameter in the parameter database.
+
+    Paramaters
+    ----------
+    vlist : list of Base::Vector3
+        List with vectors.
+
+    Returns
+    -------
+    list of Base::Vector3
+        New list with sequential duplicates removed,
+        or the original `vlist` if there is only one element in the list.
+
+    See Also
+    --------
+    equals : test for equality between two vectors
+    """
     typecheck([(vlist, list)], "removeDoubles")
     nlist = []
     if len(vlist) < 2:
         return vlist
+
+    # Iterate until the penultimate element, and test for equality
+    # with the element in front
     for i in range(len(vlist) - 1):
         if not equals(vlist[i], vlist[i+1]):
             nlist.append(vlist[i])
+    # Add the last element
     nlist.append(vlist[-1])
     return nlist
 
