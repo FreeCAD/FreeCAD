@@ -414,28 +414,65 @@ def rotate2D(u, angle):
 
 
 def rotate(u, angle, axis=Vector(0, 0, 1)):
-    '''rotate(Vector,Float,axis=Vector): rotates the first Vector
-    around the given axis, at the given angle.
-    If axis is omitted, the rotation is made on the xy plane.'''
+    """Rotate the vector by the specified angle, around the given axis.
+
+    If the axis is omitted, the rotation is made around the Z axis
+    (on the XY plane).
+
+    It uses a 3x3 rotation matrix.
+    ::
+        u_rot = R u
+
+                (c + x*x*t    xyt - zs     xzt + ys )
+        u_rot = (xyt + zs     c + y*y*t    yzt - xs ) * u
+                (xzt - ys     yzt + xs     c + z*z*t)
+
+    Where `x`, `y`, `z` indicate unit components of the axis;
+    `c` denotes a cosine of the angle; `t` indicates a complement
+    of that cosine; `xs`, `ys`, `zs` indicate products of the unit
+    components and the sine of the angle; and `xyt`, `xzt`, `yzt`
+    indicate products of two unit components and the complement
+    of the cosine.
+
+    Parameters
+    ----------
+    u : Base::Vector3
+        The vector.
+    angle : float
+        The angle of rotation given in radians.
+    axis : Base::Vector3, optional
+        The vector specifying the axis of rotation.
+        It defaults to `(0, 0, 1)`, the +Z axis.
+
+    Returns
+    -------
+    u
+        If the `angle` is zero, return the original vector.
+    Base::Vector3
+        The new rotated vector.
+    """
     typecheck([(u, Vector), (angle, (int, float)), (axis, Vector)], "rotate")
 
     if angle == 0:
         return u
 
+    # Unit components, so that x**2 + y**2 + z**2 = 1
     L = axis.Length
     x = axis.x/L
     y = axis.y/L
     z = axis.z/L
+
     c = math.cos(angle)
     s = math.sin(angle)
     t = 1 - c
 
-    xyt = x*y*t
-    xzt = x*z*t
-    yzt = y*z*t
-    xs = x*s
-    ys = y*s
-    zs = z*s
+    # Common products
+    xyt = x * y * t
+    xzt = x * z * t
+    yzt = y * z * t
+    xs = x * s
+    ys = y * s
+    zs = z * s
 
     m = Matrix(c + x*x*t,   xyt - zs,   xzt + ys,   0,
                xyt + zs,    c + y*y*t,  yzt - xs,   0,
