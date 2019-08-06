@@ -1,3 +1,19 @@
+## \defgroup DRAFTVECUTILS DraftVecUtils
+#  \ingroup UTILITIES
+#  \brief Vector math utilities used in Draft workbench
+#
+# Vector math utilities used primarily in the Draft workbench
+# but which can also be used in other workbenches and in macros.
+"""\defgroup DRAFTVECUTILS DraftVecUtils
+\ingroup UTILITIES
+\brief Vector math utilities used in Draft workbench
+
+Vector math utilities used primarily in the Draft workbench
+but which can also be used in other workbenches and in macros.
+"""
+# Check code with
+# flake8 --ignore=E226,E266,E401,W503
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2009, 2010                                              *
@@ -24,13 +40,6 @@
 __title__ = "FreeCAD Draft Workbench - Vector library"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline"
 __url__ = ["http://www.freecadweb.org"]
-
-## \defgroup DRAFTVECUTILS DraftVecUtils
-#  \ingroup UTILITIES
-#  \brief Vector math utilities used in Draft workbench
-#
-# Vector math utilities used primarily in the Draft workbench
-# but which can also be used in other workbenches and macros.
 
 ## \addtogroup DRAFTVECUTILS
 #  @{
