@@ -36,8 +36,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Part Alignment Tool based on edges."
 __contributors__ = ""
 __createdDate__ = "2019"
-__scriptVersion__ = "1c testing"
-__lastModified__ = "2019-08-06 16:59 CST"
+__scriptVersion__ = "1b usable"
+__lastModified__ = "2019-08-06 17:35 CST"
 
 LOGLEVEL = False
 

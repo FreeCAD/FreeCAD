@@ -40,8 +40,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of New 1 operation GUI characteristics."
 __contributors__ = ""  # additional contributors may put handles, usernames, or names here
 __created__ = "2019"
-__scriptVersion__ = "1a"
-__lastModified__ = "2019-08-05 12:00 CST"
+__scriptVersion__ = "1a"  # Update script version with each iteration of the file
+__lastModified__ = "2019-08-06 17:37 CST"  # Update with date and time of last modification
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):

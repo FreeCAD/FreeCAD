@@ -2,7 +2,7 @@
 
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2019 Russell Johnson [russ4262] <russ4262@gmail.com>    *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -36,8 +36,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Part Alignment operation GUI controller and command implementation."
 __contributors__ = ""
 __createdDate__ = "2019"
-__scriptVersion__ = "1b testing"
-__lastModified__ = "2019-08-04 02:32 CST"
+__scriptVersion__ = "1b usable"
+__lastModified__ = "2019-08-06 17:35 CST"
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -66,7 +66,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        '''setFields(obj) ... transfers obj's property values to GUI'''
 
         self.selectInComboBox(obj.AlignmentMode, self.form.alignmentMode)
         self.selectInComboBox(obj.AlignmentType, self.form.alignmentType)
@@ -91,6 +91,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return signals
 
     def updateVisibility(self):
+        '''updateVisibility() ... 
+        updates visibility of property(settings) inputs in the GUI editor window'''
         if self.form.alignmentMode.currentText() == "Auto":
             self.form.alignmentType.setEnabled(False)
         else:
