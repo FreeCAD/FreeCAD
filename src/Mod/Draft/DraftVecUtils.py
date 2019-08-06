@@ -302,10 +302,11 @@ def angle(u, v=Vector(1, 0, 0), normal=Vector(0, 0, 1)):
 
     If a third vector is given, it is the normal used to determine
     the sign of the angle.
-    This normal is compared with the cross product of the first two vectors.
+    This normal is used to calculate a `factor` as the dot product
+    with the cross product of the first two vectors.
     ::
         C = A x B
-        factor = C * normal
+        factor = normal * C
 
     If the `factor` is positive the angle is positive, otherwise
     it is the opposite sign.
@@ -626,13 +627,24 @@ def closest(vector, vlist):
 def isColinear(vlist):
     """Check if the vectors in the list are colinear.
 
-    Colinear vectors don't necessarily have the same magnitude,
-    but the angle between them should be zero.
+    Colinear vectors are those whose angle between them is zero.
 
-    Due to rounding errors, the angle may not be exactly zero;
-    therefore, it rounds the angle by the number
-    of decimals specified in the `precision` parameter
-    in the parameter database, and then compares the value to zero.
+    This function tests for colinearity between the difference
+    of the first two vectors, and the difference of the nth vector with
+    the first vector.
+    ::
+        vlist = [a, b, c, d, ..., n]
+
+        k = b - a
+        k2 = c - a
+        k3 = d - a
+        kn = n - a
+
+    Then test
+    ::
+        angle(k2, k) == 0
+        angle(k3, k) == 0
+        angle(kn, k) == 0
 
     Parameters
     ----------
@@ -643,8 +655,16 @@ def isColinear(vlist):
     Returns
     -------
     bool
-        `True` if each of the vectors is colinear.
+        `True` if the vector differences are colinear,
+        or if the list only has two vectors.
         `False` otherwise.
+
+    Notes
+    -----
+    Due to rounding errors, the angle may not be exactly zero;
+    therefore, it rounds the angle by the number
+    of decimals specified in the `precision` parameter
+    in the parameter database, and then compares the value to zero.
     """
     typecheck([(vlist, list)], "isColinear")
 
@@ -660,8 +680,14 @@ def isColinear(vlist):
 
     # Start testing from the third vector and onward
     for i in range(2, len(vlist)):
-        _angle = round(angle(vlist[i].sub(vlist[0]), first), p)
-        if _angle != 0:
+
+        # Difference between the 3rd vector and onward, and the first one.
+        diff = vlist[i].sub(vlist[0])
+
+        # The angle between the difference and the first difference.
+        _angle = angle(diff, first)
+
+        if round(_angle, p) != 0:
             return False
     return True
 
@@ -677,7 +703,7 @@ def rounded(v):
     Returns
     -------
     Base::Vector3
-        The new vector where each element has been rounded
+        The new vector where each element `x`, `y`, `z` has been rounded
         to the number of decimals specified in the `precision` parameter
         in the parameter database.
     """
