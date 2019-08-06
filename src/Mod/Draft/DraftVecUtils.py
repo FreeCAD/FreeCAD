@@ -482,14 +482,40 @@ def rotate(u, angle, axis=Vector(0, 0, 1)):
 
 
 def getRotation(vector, reference=Vector(1, 0, 0)):
-    '''getRotation(vector,[reference]): returns a tuple
-    representing a quaternion rotation between the reference
-    (or X axis if omitted) and the vector'''
+    """Return a quaternion rotation between a vector and a reference.
+
+    If the reference is omitted, the +X axis is used.
+
+    Parameters
+    ----------
+    vector : Base::Vector3
+        The original vector.
+    reference : Base::Vector3, optional
+        The reference vector. It defaults to `(1, 0, 0)`, the +X axis.
+
+    Returns
+    -------
+    (0, 0, 0, 1.0)
+        If the cross product between the `vector` and the `reference` is null.
+    (x, y, z, Q)
+        A tuple with the unit elements (normalized) of the cross product
+        between the `vector` and the `reference`, and a `Q` value,
+        which is the sum of the products of the magnitudes,
+        and of the dot product of those vectors.
+        ::
+            Q = |A||B| + |A||B| cos(angle)
+
+    """
     c = vector.cross(reference)
     if isNull(c):
         return (0, 0, 0, 1.0)
     c.normalize()
-    return (c.x, c.y, c.z, math.sqrt((vector.Length ** 2) * (reference.Length ** 2)) + vector.dot(reference))
+
+    q1 = math.sqrt((vector.Length**2) * (reference.Length**2))
+    q2 = vector.dot(reference)
+    Q = q1 + q2
+
+    return (c.x, c.y, c.z, Q)
 
 
 def isNull(vector):
