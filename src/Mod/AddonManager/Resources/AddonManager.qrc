@@ -24,6 +24,7 @@
         <file>icons/InventorLoader_workbench_icon.svg</file>
         <file>icons/kicadStepUpMod_workbench_icon.svg</file>
         <file>icons/lattice2_workbench_icon.svg</file>
+	    <file>icons/LCInterlocking_workbench_icon.svg</file>
         <file>icons/Lithophane_workbench_icon.svg</file>
         <file>icons/Manipulator_workbench_icon.svg</file>
         <file>icons/mooc_workbench_icon.svg</file>
