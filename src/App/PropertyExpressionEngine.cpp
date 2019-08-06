@@ -231,7 +231,6 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
     } else {
         for(auto &info : *restoredExpressions) {
             reader.readElement("Expression");
-            restoredExpressions->emplace_back();
             info.path = reader.getAttribute("path");
             info.expr = reader.getAttribute("expression");
             info.comment = reader.getAttribute("comment","");
