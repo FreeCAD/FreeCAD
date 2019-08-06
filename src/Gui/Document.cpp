@@ -374,7 +374,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
     // if the currently active view is not the 3d view search for it and activate it
     if (!activeView) {
-        activeView = dynamic_cast<View3DInventor *>(getViewOfViewProvider(vp));
+        activeView = dynamic_cast<View3DInventor *>(setActiveView(vp));
         if(!activeView){
             FC_ERR("cannot edit without active view");
             return false;
