@@ -63,28 +63,30 @@ def precision():
 
 
 def typecheck(args_and_types, name="?"):
-    """Check that the argument is an instance of a certain type.
+    """Check that the arguments are instances of certain types.
 
     Parameters
     ----------
     args_and_types : list
-        A list of tuples. The first element of the tuple is tested as being
+        A list of tuples. The first element of a tuple is tested as being
         an instance of the second element.
-        ``args_and_types = [(a, Type), (b, Type2), ...]``
+        ::
+            args_and_types = [(a, Type), (b, Type2), ...]
 
         Then
-        ``isinstance(a, Type)``,
-        ``isinstance(b, Type2)``
+        ::
+            isinstance(a, Type)
+            isinstance(b, Type2)
 
         A `Type` can also be a tuple of many types, in which case
         the check is done for any of them.
+        ::
+            args_and_types = [(a, (Type3, int, float)), ...]
 
-        ``args_and_types = [(a, (Type3, int, float)), ...]``
-
-        ``isinstance(a, (Type3, int, float))``
+            isinstance(a, (Type3, int, float))
 
     name : str, optional
-        Defaults to '?'. The name of the check.
+        Defaults to `'?'`. The name of the check.
 
     Raises
     -------
@@ -101,7 +103,7 @@ def typecheck(args_and_types, name="?"):
 
 
 def toString(u):
-    """Return a string with the Python command to recreate this Vector.
+    """Return a string with the Python command to recreate this vector.
 
     Parameters
     ----------
@@ -111,8 +113,8 @@ def toString(u):
     Returns
     -------
     str
-        The string with the code that can be input in the Python console
-        to create the same list of FreeCAD.Vectors, or single vector.
+        The string with the code that can be used in the Python console
+        to create the same list of vectors, or single vector.
     """
     if isinstance(u, list):
         s = "["
@@ -145,13 +147,13 @@ def tup(u, array=False):
         A FreeCAD.Vector.
     array : bool, optional
         Defaults to `False`, and the output is a tuple.
-        If `True` the output is an array.
+        If `True` the output is a list.
 
     Returns
     -------
     tuple or list
-    (x, y, z) or [x, y, z]
-        The coordinates of the vector in a tuple or a list, if `array=True`.
+        The coordinates of the vector in a tuple `(x, y, z)`
+        or in a list `[x, y, z]`, if `array=True`.
     """
     typecheck([(u, Vector)], "tup")
     if array:
@@ -161,7 +163,7 @@ def tup(u, array=False):
 
 
 def neg(u):
-    """Return the negative of a given FreeCAD.Vector.
+    """Return the negative of a given vector.
 
     Parameters
     ----------
@@ -179,21 +181,23 @@ def neg(u):
 
 
 def equals(u, v):
-    """Check for equality between two FreeCAD.Vectors.
+    """Check for equality between two vectors.
 
-    Due to rounding errors, two vectors will rarely be 'equal'.
-    Therefore, this fucntion checks that the corresponding elements
-    of the two vectors differ by less than the precision established
+    Due to rounding errors, two vectors will rarely be `equal`.
+    Therefore, this function checks that the corresponding elements
+    of the two vectors differ by less than the `precision` established
     in the parameter database, accessed through `FreeCAD.ParamGet()`.
-    x1 - x2 < precision
-    y1 - y2 < precision
-    z1 - z2 < precision
+    ::
+        x1 - x2 < precision
+        y1 - y2 < precision
+        z1 - z2 < precision
 
     Parameters
     ----------
     u : Base::Vector3
+        The first vector.
     v : Base::Vector3
-        The FreeCAD.Vectors to compare.
+        The second vector.
 
     Returns
     ------
@@ -205,7 +209,7 @@ def equals(u, v):
 
 
 def scale(u, scalar):
-    """Scales (multiplies) a vector by a factor.
+    """Scales (multiplies) a vector by a scalar factor.
 
     Parameters
     ----------
@@ -232,17 +236,19 @@ def scaleTo(u, l):
     """Scale a vector so that its magnitude is equal to a given length.
 
     The magnitude of a vector is
-    ``L = sqrt(x**2 + y**2 + z**2)``
+    ::
+        L = sqrt(x**2 + y**2 + z**2)
 
     This function multiplies each coordinate, `x`, `y`, `z`,
     by a factor to produce the desired magnitude `L`.
     This factor is the ratio of the new magnitude to the old magnitude,
-    ``x_scaled = x * (L_new/L_old)``
+    ::
+        x_scaled = x * (L_new/L_old)
 
     Parameters
     ----------
     u : Base::Vector3
-        The FreeCAD.Vector to scale.
+        The vector to scale.
     l : int or float
         The new magnitude of the vector in standard units (mm).
 
@@ -250,7 +256,7 @@ def scaleTo(u, l):
     -------
     Base::Vector3
         The new vector with each of its elements scaled by a factor.
-        Or the same vector `u` if the vector is `(0, 0, 0)`.
+        Or the same input vector `u`, if it is `(0, 0, 0)`.
     """
     # Python 2 has two integer types, int and long.
     # In Python 3 there is no 'long' anymore.
@@ -271,9 +277,9 @@ def dist(u, v):
     Parameters
     ----------
     u : Base::Vector3
-        First point, defined by a FreeCAD.Vector.
+        First point, defined by a vector.
     v : Base::Vector3
-        Second point, defined by a FreeCAD.Vector.
+        Second point, defined by a vector.
 
     Returns
     -------
@@ -287,7 +293,9 @@ def dist(u, v):
 def angle(u, v=Vector(1, 0, 0), normal=Vector(0, 0, 1)):
     """Return the angle in radians between the two vectors.
 
-    It uses the definition of the dot product, ``A * B = |A||B| cos(angle)``
+    It uses the definition of the dot product
+    ::
+        A * B = |A||B| cos(angle)
 
     If only one vector is given, the angle is between that one and the
     horizontal (+X).
@@ -295,10 +303,9 @@ def angle(u, v=Vector(1, 0, 0), normal=Vector(0, 0, 1)):
     If a third vector is given, it is the normal used to determine
     the sign of the angle.
     This normal is compared with the cross product of the first two vectors.
-
-    ``C = A x B``
-
-    ``factor = C * normal``
+    ::
+        C = A x B
+        factor = C * normal
 
     If the `factor` is positive the angle is positive, otherwise
     it is the opposite sign.
@@ -316,11 +323,10 @@ def angle(u, v=Vector(1, 0, 0), normal=Vector(0, 0, 1)):
 
     Returns
     -------
-    0
-        If the magnitude of one of the vectors is zero,
-        or if they are colinear.
     float
         The angle in radians between the vectors.
+        It is zero if the magnitude of one of the vectors is zero,
+        or if they are colinear.
     """
     typecheck([(u, Vector), (v, Vector)], "angle")
     ll = u.Length * v.Length
@@ -351,13 +357,12 @@ def angle(u, v=Vector(1, 0, 0), normal=Vector(0, 0, 1)):
 def project(u, v):
     """Project the first vector onto the second one.
 
-    It scales the the second vector by a factor.
+    The projection is just the second vector scaled by a factor.
     This factor is the dot product divided by the square
     of the second vector's magnitude.
-
-    ``f = A * B / |B|**2 = |A||B| cos(angle) / |B|**2``
-
-    ``f = |A| cos(angle)/|B|``
+    ::
+        f = A * B / |B|**2 = |A||B| cos(angle) / |B|**2
+        f = |A| cos(angle)/|B|
 
     Parameters
     ----------
@@ -368,10 +373,10 @@ def project(u, v):
 
     Returns
     -------
-    Vector(0, 0, 0)
-        If the magnitude of the second vector is zero.
     Base::Vector3
         The new vector, which is the same vector `v` scaled by a factor.
+        Return `Vector(0, 0, 0)`, if the magnitude of the second vector
+        is zero.
     """
     typecheck([(u, Vector), (v, Vector)], "project")
 
@@ -475,7 +480,7 @@ def rotate(u, angle, axis=Vector(0, 0, 1)):
     s = math.sin(angle)
     t = 1 - c
 
-    # Common products
+    # Various products
     xyt = x * y * t
     xzt = x * z * t
     yzt = y * z * t
@@ -504,8 +509,6 @@ def getRotation(vector, reference=Vector(1, 0, 0)):
 
     Returns
     -------
-    (0, 0, 0, 1.0)
-        If the cross product between the `vector` and the `reference` is null.
     (x, y, z, Q)
         A tuple with the unit elements (normalized) of the cross product
         between the `vector` and the `reference`, and a `Q` value,
@@ -514,6 +517,13 @@ def getRotation(vector, reference=Vector(1, 0, 0)):
         ::
             Q = |A||B| + |A||B| cos(angle)
 
+        It returns `(0, 0, 0, 1.0)`
+        if the cross product between the `vector` and the `reference`
+        is null.
+
+    See Also
+    --------
+    rotate2D, rotate
     """
     c = vector.cross(reference)
     if isNull(c):
@@ -532,8 +542,9 @@ def isNull(vector):
 
     Due to rounding errors, an element is probably never going to be
     exactly zero. Therefore, it rounds the element by the number
-    of decimals specified in the precision parameter.
-    It then compares the rounded number against zero.
+    of decimals specified in the `precision` parameter
+    in the parameter database, accessed through `FreeCAD.ParamGet()`.
+    It then compares the rounded numbers against zero.
 
     Parameters
     ----------
