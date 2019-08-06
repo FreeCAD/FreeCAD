@@ -378,10 +378,39 @@ def project(u, v):
 
 
 def rotate2D(u, angle):
-    "rotate2D(Vector,angle): rotates the given vector around the Z axis"
-    return Vector(math.cos(-angle)*u.x-math.sin(-angle)*u.y,
-                  math.sin(-angle)*u.x+math.cos(-angle)*u.y,
-                  u.z)
+    """Rotate the given vector around the Z axis by the specified angle.
+
+    The rotation occurs in two dimensions only by means of
+    a rotation matrix.
+    ::
+         u_rot                R                 u
+        (x_rot) = (cos(-angle) -sin(-angle)) * (x)
+        (y_rot)   (sin(-angle)  cos(-angle))   (y)
+
+    Normally the angle is positive, but in this case it is negative.
+
+    `"Such non-standard orientations are rarely used in mathematics
+    but are common in 2D computer graphics, which often have the origin
+    in the top left corner and the y-axis pointing down."`
+    W3C Recommendations (2003), Scalable Vector Graphics: the initial
+    coordinate system.
+
+    Parameters
+    ----------
+    u : Base::Vector3
+        The vector.
+    angle : float
+        The angle of rotation given in radians.
+
+    Returns
+    -------
+    Base::Vector3
+        The new rotated vector.
+    """
+    x_rot = math.cos(-angle) * u.x - math.sin(-angle) * u.y
+    y_rot = math.sin(-angle) * u.x + math.cos(-angle) * u.y
+
+    return Vector(x_rot, y_rot, u.z)
 
 
 def rotate(u, angle, axis=Vector(0, 0, 1)):
