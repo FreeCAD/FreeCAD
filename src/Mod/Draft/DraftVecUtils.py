@@ -40,6 +40,8 @@ import math, FreeCAD
 from FreeCAD import Vector, Matrix
 from FreeCAD import Console as FCC
 
+# Python 2 has two integer types, int and long.
+# In Python 3 there is no 'long' anymore, so make it 'int'.
 try:
     long
 except NameError:
@@ -49,6 +51,14 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 
 def precision():
+    """Get the number of decimal numbers used for precision.
+
+    Returns
+    -------
+    int
+        Return the number of decimal places set up in the preferences,
+        or a standard value (6), if the parameter is missing.
+    """
     return params.GetInt("precision", 6)
 
 
@@ -446,10 +456,9 @@ def rotate(u, angle, axis=Vector(0, 0, 1)):
 
     Returns
     -------
-    u
-        If the `angle` is zero, return the original vector.
     Base::Vector3
         The new rotated vector.
+        If the `angle` is zero, return the original vector `u`.
     """
     typecheck([(u, Vector), (angle, (int, float)), (axis, Vector)], "rotate")
 
@@ -519,9 +528,29 @@ def getRotation(vector, reference=Vector(1, 0, 0)):
 
 
 def isNull(vector):
-    '''isNull(vector): Tests if a vector is nul vector'''
+    """Returns `False` if each of the components of the vector is zero.
+
+    Due to rounding errors, an element is probably never going to be
+    exactly zero. Therefore, it rounds the element by the number
+    of decimals specified in the precision parameter.
+    It then compares the rounded number against zero.
+
+    Parameters
+    ----------
+    vector : Base::Vector3
+        The tested vector.
+
+    Returns
+    -------
+    bool
+        `True` if each of the elements is zero within the precision.
+        `False` otherwise.
+    """
     p = precision()
-    return (round(vector.x, p) == 0 and round(vector.y, p) == 0 and round(vector.z, p) == 0)
+    x = round(vector.x, p)
+    y = round(vector.y, p)
+    z = round(vector.z, p)
+    return (x == 0 and y == 0 and z == 0)
 
 
 def find(vector, vlist):
