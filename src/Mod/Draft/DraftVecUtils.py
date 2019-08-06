@@ -224,10 +224,10 @@ def scaleTo(u, l):
     The magnitude of a vector is
     ``L = sqrt(x**2 + y**2 + z**2)``
 
-    This function multiplies each coordinate, x, y, z,
-    by a factor to produce the desired magnitude.
+    This function multiplies each coordinate, `x`, `y`, `z`,
+    by a factor to produce the desired magnitude `L`.
     This factor is the ratio of the new magnitude to the old magnitude,
-    ``x_scaled = x * (new/old)``
+    ``x_scaled = x * (L_new/L_old)``
 
     Parameters
     ----------
@@ -240,7 +240,7 @@ def scaleTo(u, l):
     -------
     Base::Vector3
         The new vector with each of its elements scaled by a factor.
-        Or the same vector `u` if the vector is (0, 0, 0).
+        Or the same vector `u` if the vector is `(0, 0, 0)`.
     """
     # Python 2 has two integer types, int and long.
     # In Python 3 there is no 'long' anymore.
@@ -275,23 +275,61 @@ def dist(u, v):
 
 
 def angle(u, v=Vector(1, 0, 0), normal=Vector(0, 0, 1)):
-    '''
-        angle(Vector,[Vector],[Vector]) - returns the angle
-        in radians between the two vectors. If only one is given,
-        angle is between the vector and the horizontal East direction.
+    """Return the angle in radians between the two vectors.
+
+    It uses the definition of the dot product, ``A * B = |A||B| cos(angle)``
+
+    If only one vector is given, the angle is between that one and the
+    horizontal (+X).
+
     If a third vector is given, it is the normal used to determine
-        the sign of the angle.
-    '''
+    the sign of the angle.
+    This normal is compared with the cross product of the first two vectors.
+
+    ``C = A x B``
+
+    ``factor = C * normal``
+
+    If the `factor` is positive the angle is positive, otherwise
+    it is the opposite sign.
+
+    Parameters
+    ----------
+    u : Base::Vector3
+        The first vector.
+    v : Base::Vector3, optional
+        The second vector to test against the first one.
+        It defaults to `(1, 0, 0)`, or +X.
+    normal : Base::Vector3, optional
+        The vector indicating the normal.
+        It defaults to `(0, 0, 1)`, or +Z.
+
+    Returns
+    -------
+    0
+        If the magnitude of one of the vectors is zero,
+        or if they are colinear.
+    float
+        The angle in radians between the vectors.
+    """
     typecheck([(u, Vector), (v, Vector)], "angle")
-    ll = u.Length*v.Length
+    ll = u.Length * v.Length
     if ll == 0:
         return 0
+
+    # The dot product indicates the projection of one vector over the other
     dp = u.dot(v)/ll
-    if (dp < -1):
-        dp = -1  # roundoff errors can push dp out of the ...
-    elif (dp > 1):
-        dp = 1  # ...geometrically meaningful interval [-1,1]
+
+    # Due to rounding errors, the dot product could be outside
+    # the range [-1, 1], so let's force it to be withing this range.
+    if dp < -1:
+        dp = -1
+    elif dp > 1:
+        dp = 1
+
     ang = math.acos(dp)
+
+    # The cross product compared with the provided normal
     normal1 = u.cross(v)
     coeff = normal.dot(normal1)
     if coeff >= 0:
