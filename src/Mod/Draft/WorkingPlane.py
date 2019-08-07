@@ -202,7 +202,24 @@ class plane:
         return direction.dot(self.position.sub(p))
 
     def projectPoint(self, p, direction=None):
-        '''project point onto plane, default direction is orthogonal'''
+        """Project a point onto the plane, by default orthogonally.
+
+        Parameters
+        ----------
+        p : Base::Vector3
+            The point to project.
+        direction : Base::Vector3, optional
+            The unit vector that indicates the direction of projection.
+
+            It defaults to `None`, which then uses the `plane.axis` (normal)
+            value, meaning that the point is projected perpendicularly
+            to the plane.
+
+        Returns
+        -------
+        Base::Vector3
+            The projected vector, scaled to the appropriate distance.
+        """
         if not direction:
             direction = self.axis
         lp = self.getLocalCoords(p)
@@ -217,7 +234,26 @@ class plane:
         return gp.add(DraftVecUtils.scaleTo(gd, hyp))
 
     def projectPointOld(self, p, direction=None):
-        '''project point onto plane, default direction is orthogonal. Obsolete'''
+        """Project a point onto the plane. OBSOLETE.
+
+        Parameters
+        ----------
+        p : Base::Vector3
+            The point to project.
+        direction : Base::Vector3, optional
+            The unit vector that indicates the direction of projection.
+
+            It defaults to `None`, which then uses the `plane.axis` (normal)
+            value, meaning that the point is projected perpendicularly
+            to the plane.
+
+        Returns
+        -------
+        Base::Vector3
+            The projected point,
+            or the original point if the angle between the `direction`
+            and the `plane.axis` is 90 degrees.
+        """
         if not direction:
             direction = self.axis
         t = Vector(direction)
