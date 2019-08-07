@@ -353,9 +353,9 @@ class plane:
     def setFromPlacement(self, pl, rebase=False):
         "sets the working plane from a placement (rotaton ONLY, unless rebase=True)"
         rot = FreeCAD.Placement(pl).Rotation
-        self.u = rot.multVec(FreeCAD.Vector(1,0,0))
-        self.v = rot.multVec(FreeCAD.Vector(0,1,0))
-        self.axis = rot.multVec(FreeCAD.Vector(0,0,1))
+        self.u = rot.multVec(FreeCAD.Vector(1, 0, 0))
+        self.v = rot.multVec(FreeCAD.Vector(0, 1, 0))
+        self.axis = rot.multVec(FreeCAD.Vector(0, 0, 1))
         if rebase:
             self.position = pl.Base
         
@@ -366,7 +366,7 @@ class plane:
 
     def save(self):
         "stores the current plane state"
-        self.stored = [self.u,self.v,self.axis,self.position,self.weak]
+        self.stored = [self.u, self.v, self.axis, self.position, self.weak]
 
     def restore(self):
         "restores a previously saved plane state, if exists"
@@ -378,24 +378,24 @@ class plane:
             self.weak = self.stored[4]
             self.stored = None
 
-    def getLocalCoords(self,point):
+    def getLocalCoords(self, point):
         "returns the coordinates of a given point on the working plane"
         pt = point.sub(self.position)
-        xv = DraftVecUtils.project(pt,self.u)
+        xv = DraftVecUtils.project(pt, self.u)
         x = xv.Length
         if xv.getAngle(self.u) > 1:
             x = -x
-        yv = DraftVecUtils.project(pt,self.v)
+        yv = DraftVecUtils.project(pt, self.v)
         y = yv.Length
         if yv.getAngle(self.v) > 1:
             y = -y
-        zv = DraftVecUtils.project(pt,self.axis)
+        zv = DraftVecUtils.project(pt, self.axis)
         z = zv.Length
         if zv.getAngle(self.axis) > 1:
             z = -z
-        return Vector(x,y,z)
+        return Vector(x, y, z)
 
-    def getGlobalCoords(self,point):
+    def getGlobalCoords(self, point):
         "returns the global coordinates of the given point, taken relatively to this working plane"
         vx = Vector(self.u).multiply(point.x)
         vy = Vector(self.v).multiply(point.y)
@@ -403,23 +403,23 @@ class plane:
         pt = (vx.add(vy)).add(vz)
         return pt.add(self.position)
 
-    def getLocalRot(self,point):
+    def getLocalRot(self, point):
         "Same as getLocalCoords, but discards the WP position"
-        xv = DraftVecUtils.project(point,self.u)
+        xv = DraftVecUtils.project(point, self.u)
         x = xv.Length
         if xv.getAngle(self.u) > 1:
             x = -x
-        yv = DraftVecUtils.project(point,self.v)
+        yv = DraftVecUtils.project(point, self.v)
         y = yv.Length
         if yv.getAngle(self.v) > 1:
             y = -y
-        zv = DraftVecUtils.project(point,self.axis)
+        zv = DraftVecUtils.project(point, self.axis)
         z = zv.Length
         if zv.getAngle(self.axis) > 1:
             z = -z
-        return Vector(x,y,z)
+        return Vector(x, y, z)
 
-    def getGlobalRot(self,point):
+    def getGlobalRot(self, point):
         "Same as getGlobalCoords, but discards the WP position"
         vx = Vector(self.u).multiply(point.x)
         vy = Vector(self.v).multiply(point.y)
@@ -427,7 +427,7 @@ class plane:
         pt = (vx.add(vy)).add(vz)
         return pt
         
-    def getClosestAxis(self,point):
+    def getClosestAxis(self, point):
         "returns which of the workingplane axes is closest from the given vector"
         ax = point.getAngle(self.u)
         ay = point.getAngle(self.v)
@@ -435,42 +435,42 @@ class plane:
         bx = point.getAngle(self.u.negative())
         by = point.getAngle(self.v.negative())
         bz = point.getAngle(self.axis.negative())
-        b = min(ax,ay,az,bx,by,bz)
-        if b in [ax,bx]:
+        b = min(ax, ay, az, bx, by, bz)
+        if b in [ax, bx]:
             return "x"
-        elif b in [ay,by]:
+        elif b in [ay, by]:
             return "y"
-        elif b in [az,bz]:
+        elif b in [az, bz]:
             return "z"
         else:
             return None
             
     def isGlobal(self):
         "returns True if the plane axes are equal to the global axes"
-        if self.u != Vector(1,0,0):
+        if self.u != Vector(1, 0, 0):
             return False
-        if self.v != Vector(0,1,0):
+        if self.v != Vector(0, 1, 0):
             return False
-        if self.axis != Vector(0,0,1):
+        if self.axis != Vector(0, 0, 1):
             return False
         return True
         
     def isOrtho(self):
         "returns True if the plane axes are following the global axes"
-        if round(self.u.getAngle(Vector(0,1,0)),6) in [0,-1.570796,1.570796,-3.141593,3.141593,-4.712389,4.712389,6.283185]:
-            if round(self.v.getAngle(Vector(0,1,0)),6) in [0,-1.570796,1.570796,-3.141593,3.141593,-4.712389,4.712389,6.283185]:
-                if round(self.axis.getAngle(Vector(0,1,0)),6) in [0,-1.570796,1.570796,-3.141593,3.141593,-4.712389,4.712389,6.283185]:
+        if round(self.u.getAngle(Vector(0, 1, 0)), 6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
+            if round(self.v.getAngle(Vector(0,1,0)),6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
+                if round(self.axis.getAngle(Vector(0,1,0)),6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
                     return True
         return False
         
     def getDeviation(self):
         "returns the deviation angle between the u axis and the horizontal plane"
-        proj = Vector(self.u.x,self.u.y,0)
+        proj = Vector(self.u.x, self.u.y, 0)
         if self.u.getAngle(proj) == 0:
             return 0
         else:
             norm = proj.cross(self.u)
-            return DraftVecUtils.angle(self.u,proj,norm)
+            return DraftVecUtils.angle(self.u, proj, norm)
                 
 def getPlacementFromPoints(points):
     "returns a placement from a list of 3 or 4 vectors"
@@ -489,7 +489,7 @@ def getPlacementFromPoints(points):
     del pl
     return p
     
-def getPlacementFromFace(face,rotated=False):
+def getPlacementFromFace(face, rotated=False):
     "returns a placement from a face"
     pl = plane()
     try:
