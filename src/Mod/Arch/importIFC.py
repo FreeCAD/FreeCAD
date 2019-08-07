@@ -1203,26 +1203,37 @@ def insert(filename,docname,skip=[],only=[],root=None):
     #print("materials:",materials)
     fcmats = {}
     for material in materials:
+        # get and set material name
         name = "Material"
         if material.Name:
             name = material.Name
             if six.PY2:
                 name = name.encode("utf8")
-        if MERGE_MATERIALS and (name in fcmats.keys()):
-            mat = fcmats[name]
+        # get material color
+        mdict = {}
+        if material.id() in colors:
+            mdict["DiffuseColor"] = str(colors[material.id()])
         else:
+            for o,m in mattable.items():
+                if m == material.id():
+                    if o in colors:
+                        mdict["DiffuseColor"] = str(colors[o])
+        # merge materials with same name and color if setting in prefs is True
+        add_material = True
+        if MERGE_MATERIALS:
+            for key in list(fcmats.keys()):
+                if key.startswith(name) \
+                        and "DiffuseColor" in mdict and "DiffuseColor" in fcmats[key].Material \
+                        and  mdict["DiffuseColor"] == fcmats[key].Material["DiffuseColor"]:
+                    mat = fcmats[key]
+                    add_material = False
+        # add a new material object
+        if add_material is True:
             mat = Arch.makeMaterial(name=name)
-            mdict = {}
-            if material.id() in colors:
-                mdict["DiffuseColor"] = str(colors[material.id()])
-            else:
-                for o,m in mattable.items():
-                    if m == material.id():
-                        if o in colors:
-                            mdict["DiffuseColor"] = str(colors[o])
             if mdict:
                 mat.Material = mdict
-            fcmats[name] = mat
+            fcmats[mat.Name] = mat
+        # fill material attribut of the objects 
         for o,m in mattable.items():
             if m == material.id():
                 if o in objects:
