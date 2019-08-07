@@ -180,6 +180,8 @@ void EditDatumDialog::exec(bool atCursor)
                     Gui::Command::abortCommand();
                 }
             }
+        } else {
+            Gui::Command::abortCommand();
         }
     }
 }
