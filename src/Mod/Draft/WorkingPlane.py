@@ -54,9 +54,9 @@ class plane:
         It is `True` if the plane has been defined by `setup()`
         or has been reset.
     u : Base::Vector3
-        A vector that helps define the working plane.
+        An axis (vector) that helps define the working plane.
     v : Base::Vector3
-        A vector that helps define the working plane.
+        An axis (vector) that helps define the working plane.
     axis : Base::Vector3
         A vector that is supposed to be perpendicular to `u` and `v`;
         it is helpful although redundant.
@@ -69,9 +69,7 @@ class plane:
     def __init__(self, u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1), pos=Vector(0, 0, 0)):
         # keep track of active document.  Reset view when doc changes.
         self.doc = None
-        # self.weak is true if the plane has been defined by self.setup or has been reset
         self.weak = True
-        # u, v axes and position define plane, perpendicular axis is handy, though redundant.
         self.u = u
         self.v = v
         self.axis = w
