@@ -132,12 +132,10 @@ void DlgPropertyLink::setSelectionMode(QAbstractItemView::SelectionMode mode)
 
 void DlgPropertyLink::accept()
 {
-    if (ui->treeWidget->selectionMode() == QAbstractItemView::SingleSelection) {
-        QList<QTreeWidgetItem*> items = ui->treeWidget->selectedItems();
-        if (items.isEmpty()) {
-            QMessageBox::warning(this, tr("No selection"), tr("Please select an object from the list"));
-            return;
-        }
+    QList<QTreeWidgetItem*> items = ui->treeWidget->selectedItems();
+    if (items.isEmpty()) {
+        QMessageBox::warning(this, tr("No selection"), tr("Please select an object from the list"));
+        return;
     }
 
     QDialog::accept();
@@ -190,8 +188,15 @@ QVariantList DlgPropertyLink::propertyLinkList() const
 {
     QVariantList varList;
     QList<QTreeWidgetItem*> items = ui->treeWidget->selectedItems();
-    for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it)
-        varList << getLinkFromItem(link,*it);
+    if (items.isEmpty()) {
+        QStringList l = link;
+        l[1] = QString();
+        l[2] = QString();
+        varList << l;
+    } else {
+        for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it)
+            varList << getLinkFromItem(link,*it);
+    }
     return varList;
 }
 
@@ -210,12 +215,13 @@ void DlgPropertyLink::findObjects()
         std::set<std::string> selectedNames;
 
         // Add a "None" entry on top
-        if (isSingleSelection) {
-            auto* item = new QTreeWidgetItem(ui->treeWidget);
-            item->setText(0,tr("None (Remove link)"));
-            QByteArray ba("");
-            item->setData(0,Qt::UserRole, ba);
-        }else {
+        auto* item = new QTreeWidgetItem(ui->treeWidget);
+        item->setText(0,tr("None (Remove link)"));
+        QByteArray ba("");
+        item->setData(0,Qt::UserRole, ba);
+
+        if (!isSingleSelection) {
+
             QString ownerName = link[3];
             QString proName = link[4];
             auto owner = doc->getObject(ownerName.toLatin1());
