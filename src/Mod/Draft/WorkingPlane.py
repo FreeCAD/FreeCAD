@@ -115,8 +115,8 @@ class plane:
             direction = self.axis
         t = Vector(direction)
         #t.normalize()
-        a = round(t.getAngle(self.axis),DraftVecUtils.precision())
-        pp = round((math.pi)/2,DraftVecUtils.precision())
+        a = round(t.getAngle(self.axis), DraftVecUtils.precision())
+        pp = round((math.pi)/2, DraftVecUtils.precision())
         if a == pp:
             return p
         t.multiply(self.offsetToPoint(p, direction))
@@ -126,20 +126,20 @@ class plane:
         self.doc = FreeCAD.ActiveDocument
         self.axis = axis
         self.axis.normalize()
-        if axis.getAngle(Vector(1,0,0)) < 0.00001:
-            self.axis = Vector(1,0,0)
-            self.u = Vector(0,1,0)
-            self.v = Vector(0,0,1)
-        elif axis.getAngle(Vector(-1,0,0)) < 0.00001:
-            self.axis = Vector(-1,0,0)
-            self.u = Vector(0,-1,0)
-            self.v = Vector(0,0,1)
+        if axis.getAngle(Vector(1, 0, 0)) < 0.00001:
+            self.axis = Vector(1, 0, 0)
+            self.u = Vector(0, 1, 0)
+            self.v = Vector(0, 0, 1)
+        elif axis.getAngle(Vector(-1, 0, 0)) < 0.00001:
+            self.axis = Vector(-1, 0, 0)
+            self.u = Vector(0, -1, 0)
+            self.v = Vector(0, 0, 1)
         elif upvec:
             self.v = upvec
             self.v.normalize()
             self.u = self.v.cross(self.axis)
         else:
-            self.v = axis.cross(Vector(1,0,0))
+            self.v = axis.cross(Vector(1, 0, 0))
             self.v.normalize()
             self.u = DraftVecUtils.rotate(self.v, -math.pi/2, self.axis)
         offsetVector = Vector(axis); offsetVector.multiply(offset)
@@ -218,7 +218,7 @@ class plane:
         else:
             return False
 
-    def alignToEdges(self,edges):
+    def alignToEdges(self, edges):
         # use a list of edges to find a plane position
         if len(edges) > 2:
             return False
