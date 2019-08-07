@@ -44,7 +44,27 @@ __url__ = "http://www.freecadweb.org"
 
 
 class plane:
-    '''A WorkPlane object'''
+    """A WorkPlane object.
+
+    Attributes
+    ----------
+    doc : App::Document
+        The active document. Reset view when `doc` changes.
+    weak : bool
+        It is `True` if the plane has been defined by `setup()`
+        or has been reset.
+    u : Base::Vector3
+        A vector that helps define the working plane.
+    v : Base::Vector3
+        A vector that helps define the working plane.
+    axis : Base::Vector3
+        A vector that is supposed to be perpendicular to `u` and `v`;
+        it is helpful although redundant.
+    position : Base::Vector3
+        A vector that helps define the working plane.
+    stored : bool
+        A placeholder for a stored state.
+    """
 
     def __init__(self, u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1), pos=Vector(0, 0, 0)):
         # keep track of active document.  Reset view when doc changes.
