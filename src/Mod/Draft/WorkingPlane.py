@@ -145,7 +145,8 @@ class plane:
             self.v = axis.cross(Vector(1, 0, 0))
             self.v.normalize()
             self.u = DraftVecUtils.rotate(self.v, -math.pi/2, self.axis)
-        offsetVector = Vector(axis); offsetVector.multiply(offset)
+        offsetVector = Vector(axis)
+        offsetVector.multiply(offset)
         self.position = point.add(offsetVector)
         self.weak = False
         # FreeCAD.Console.PrintMessage("(position = " + str(self.position) + ")\n")
@@ -475,6 +476,7 @@ class plane:
             norm = proj.cross(self.u)
             return DraftVecUtils.angle(self.u, proj, norm)
 
+
 def getPlacementFromPoints(points):
     "returns a placement from a list of 3 or 4 vectors"
     pl = plane()
@@ -491,6 +493,7 @@ def getPlacementFromPoints(points):
     p = pl.getPlacement()
     del pl
     return p
+
 
 def getPlacementFromFace(face, rotated=False):
     "returns a placement from a face"
