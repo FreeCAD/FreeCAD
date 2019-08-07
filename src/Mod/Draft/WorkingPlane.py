@@ -67,6 +67,24 @@ class plane:
     """
 
     def __init__(self, u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1), pos=Vector(0, 0, 0)):
+        """Initialize the working plane.
+
+        Parameters
+        ----------
+        u : Base::Vector3, optional
+            An axis (vector) that helps define the working plane.
+            It defaults to `(1, 0, 0)`, or the +X axis.
+        v : Base::Vector3, optional
+            An axis (vector) that helps define the working plane.
+            It defaults to `(0, 1, 0)`, or the +Y axis.
+        w : Base::Vector3, optional
+            An axis that is supposed to be perpendicular to `u` and `v`;
+            it is redundant.
+            It defaults to `(0, 0, 1)`, or the +Z axis.
+        pos : Base::Vector3, optional
+            The position of the working plane.
+            It defaults to the origin `(0, 0, 0)`.
+        """
         # keep track of active document.  Reset view when doc changes.
         self.doc = None
         self.weak = True
