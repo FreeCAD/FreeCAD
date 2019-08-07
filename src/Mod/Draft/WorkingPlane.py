@@ -61,7 +61,8 @@ class plane:
         A vector that is supposed to be perpendicular to `u` and `v`;
         it is helpful although redundant.
     position : Base::Vector3
-        A vector that helps define the working plane.
+        A point throught which the plane goes through,
+        that helps define the working plane.
     stored : bool
         A placeholder for a stored state.
     """
@@ -82,7 +83,7 @@ class plane:
             it is redundant.
             It defaults to `(0, 0, 1)`, or the +Z axis.
         pos : Base::Vector3, optional
-            The position of the working plane.
+            A point through which the plane goes through.
             It defaults to the origin `(0, 0, 0)`.
         """
         # keep track of active document.  Reset view when doc changes.
@@ -96,40 +97,107 @@ class plane:
         self.stored = None
 
     def __repr__(self):
+        """Show the string representation of the object."""
         return "Workplane x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))
 
     def copy(self):
+        """Return a new plane that is a copy of the present object."""
         return plane(u=self.u, v=self.v, w=self.axis, pos=self.position)
 
     def offsetToPoint(self, p, direction=None):
-        '''
-        Return the signed distance from p to the plane, such
-        that p + offsetToPoint(p)*direction lies on the plane.
-        direction defaults to -plane.axis
-        '''
+        """Return the signed distance from a point to the plane.
 
-        '''
-        A picture will help explain the computation:
+        Parameters
+        ----------
+        p : Base::Vector3
+            The external point to consider.
+        direction : Base::Vector3, optional
+            The unit vector that indicates the direction of the distance.
 
-                                                            p
-                                                          //|
-                                                        / / |
-                                              /  /  |
-                            /   /   |
-                          /    /    |
-        -------------------- plane -----c-----x-----a--------
+            It defaults to `None`, which then uses the `plane.axis` (normal)
+            value, meaning that the measured distance is perpendicular
+            to the plane.
 
-                Here p is the specified point,
-                     c is a point (in this case plane.position) on the plane
-                     x is the intercept on the plane from p in the specified direction, and
-                     a is the perpendicular intercept on the plane (i.e. along plane.axis)
+        Returns
+        -------
+        float
+            The distance from the point to the plane.
 
-            Using vertival bars to denote the length operator,
-                     |ap| = |cp| * cos(apc) = |xp| * cos(apx)
-                so
-                     |xp| = |cp| * cos(apc) / cos(apx)
-                          = (cp . axis) / (direction . axis)
-        '''
+        Notes
+        -----
+        The signed distance `d`, from `p` to the plane, is such that
+        ::
+            x = p + d*direction,
+
+        where `x` is a point that lies on the plane.
+
+        The `direction` is a unit vector that specifies the direction
+        in which the distance is measured.
+        It defaults to `plane.axis`,
+        meaning that it is the perpendicular distance.
+
+        A picture will help explain the computation
+        ::
+                                            p
+                                          //|
+                                        / / |
+                                    d /  /  | axis
+                                    /   /   |
+                                  /    /    |
+            -------- plane -----x-----c-----a--------
+
+        The points are as follows
+
+         * `p` is an arbitraty point outside the plane.
+         * `c` is a known point on the plane,
+           for example, `plane.position`.
+         * `x` is the intercept on the plane from `p` in
+           the desired `direction`.
+         * `a` is the perpendicular intercept on the plane,
+           i.e. along `plane.axis`.
+
+        The distance is calculated through the dot product
+        of the vector `pc` (going from point `p` to point `c`,
+        both of which are known) with the unit vector `direction`
+        (which is provided or defaults to `plane.axis`).
+        ::
+            d = pc . direction
+            d = (c - p) . direction
+
+        **Warning:** this implementation doesn't calculate the entire
+        distance `|xp|`, only the distance `|pc|` projected onto `|xp|`.
+
+        Trigonometric relationships
+        ---------------------------
+        In 2D the distances can be calculated by trigonometric relationships
+        ::
+            |ap| = |cp| cos(apc) = |xp| cos(apx)
+
+        Then the desired distance is `d = |xp|`
+        ::
+            |xp| = |cp| cos(apc) / cos(apx)
+
+        The cosines can be obtained from the definition of the dot product
+        ::
+            A . B = |A||B| cos(angleAB)
+
+        If one vector is a unit vector
+        ::
+            A . uB = |A| cos(angleAB)
+            cp . axis = |cp| cos(apc)
+
+        and if both vectors are unit vectors
+        ::
+            uA . uB = cos(angleAB).
+            direction . axis = cos(apx)
+
+        Then
+        ::
+            d = (cp . axis) / (direction . axis)
+
+        **Note:** for 2D these trigonometric operations
+        produce the full `|xp|` distance.
+        """
         if direction == None: direction = self.axis
         return direction.dot(self.position.sub(p))
 
