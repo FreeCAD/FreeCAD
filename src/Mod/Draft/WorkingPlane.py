@@ -25,7 +25,7 @@
 import FreeCAD, math, DraftVecUtils
 from FreeCAD import Vector
 
-__title__="FreeCAD Working Plane utility"
+__title__ = "FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
 __url__ = "http://www.freecadweb.org"
 
@@ -43,7 +43,7 @@ This module provides a class called plane to assist in selecting and maintaining
 class plane:
     '''A WorkPlane object'''
 
-    def __init__(self,u=Vector(1,0,0),v=Vector(0,1,0),w=Vector(0,0,1),pos=Vector(0,0,0)):
+    def __init__(self, u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1), pos=Vector(0, 0, 0)):
         # keep track of active document.  Reset view when doc changes.
         self.doc = None
         # self.weak is true if the plane has been defined by self.setup or has been reset
@@ -60,7 +60,7 @@ class plane:
         return "Workplane x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))
 
     def copy(self):
-        return plane(u=self.u,v=self.v,w=self.axis,pos=self.position)
+        return plane(u=self.u, v=self.v, w=self.axis, pos=self.position)
 
     def offsetToPoint(self, p, direction=None):
         '''
@@ -99,15 +99,15 @@ class plane:
         if not direction:
             direction = self.axis
         lp = self.getLocalCoords(p)
-        gp = self.getGlobalCoords(Vector(lp.x,lp.y,0))
+        gp = self.getGlobalCoords(Vector(lp.x, lp.y, 0))
         a = direction.getAngle(gp.sub(p))
         if a > math.pi/2:
             direction = direction.negative()
             a = math.pi - a
         ld = self.getLocalRot(direction)
-        gd = self.getGlobalRot(Vector(ld.x,ld.y,0))
+        gd = self.getGlobalRot(Vector(ld.x, ld.y, 0))
         hyp = abs(math.tan(a) * lp.z)
-        return gp.add(DraftVecUtils.scaleTo(gd,hyp))
+        return gp.add(DraftVecUtils.scaleTo(gd, hyp))
                 
     def projectPointOld(self, p, direction=None):
         '''project point onto plane, default direction is orthogonal. Obsolete'''
