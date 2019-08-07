@@ -238,31 +238,31 @@ class plane:
     def alignToFace(self, shape, offset=0):
         # Set face to the unique selected face, if found
         if shape.ShapeType == 'Face':
-            self.alignToPointAndAxis(shape.Faces[0].CenterOfMass, shape.Faces[0].normalAt(0,0), offset)
+            self.alignToPointAndAxis(shape.Faces[0].CenterOfMass, shape.Faces[0].normalAt(0, 0), offset)
             import DraftGeomUtils
             q = DraftGeomUtils.getQuad(shape)
             if q:
                 self.u = q[1]
                 self.v = q[2]
-                if not DraftVecUtils.equals(self.u.cross(self.v),self.axis):
+                if not DraftVecUtils.equals(self.u.cross(self.v), self.axis):
                     self.u = q[2]
                     self.v = q[1]
-                if DraftVecUtils.equals(self.u,Vector(0,0,1)):
+                if DraftVecUtils.equals(self.u, Vector(0, 0, 1)):
                     # the X axis is vertical: rotate 90 degrees
-                    self.u,self.v = self.v.negative(),self.u
-                elif DraftVecUtils.equals(self.u,Vector(0,0,-1)):
-                    self.u,self.v = self.v,self.u.negative()
+                    self.u, self.v = self.v.negative(), self.u
+                elif DraftVecUtils.equals(self.u, Vector(0, 0, -1)):
+                    self.u, self.v = self.v, self.u.negative()
                     
             self.weak = False
             return True
         else:
             return False
 
-    def alignTo3Points(self,p1,p2,p3,offset=0):
+    def alignTo3Points(self, p1, p2, p3, offset=0):
         import Part
-        w = Part.makePolygon([p1,p2,p3,p1])
+        w = Part.makePolygon([p1, p2, p3, p1])
         f = Part.Face(w)
-        return self.alignToFace(f,offset)
+        return self.alignToFace(f, offset)
 
     def alignToSelection(self, offset):
         '''If selection uniquely defines a plane, align working plane to it.  Return success (bool)'''
@@ -291,11 +291,11 @@ class plane:
                     import FreeCADGui
                     from pivy import coin
                     rot = FreeCADGui.ActiveDocument.ActiveView.getCameraNode().getField("orientation").getValue()
-                    upvec = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
+                    upvec = Vector(rot.multVec(coin.SbVec3f(0, 1, 0)).getValue())
                     vdir = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
                     if (vdir.getAngle(self.axis) > 0.001) and (vdir.getAngle(self.axis) < 3.14159):
                         # don't change the WP if it is already perpendicular to the current view
-                        self.alignToPointAndAxis(Vector(0,0,0), vdir.negative(), 0, upvec)
+                        self.alignToPointAndAxis(Vector(0, 0, 0), vdir.negative(), 0, upvec)
                 except:
                     pass
             self.weak = True
@@ -306,7 +306,7 @@ class plane:
 
     def getRotation(self):
         "returns a placement describing the working plane orientation ONLY"
-        m = DraftVecUtils.getPlaneRotation(self.u,self.v,self.axis)
+        m = DraftVecUtils.getPlaneRotation(self.u, self.v, self.axis)
         p = FreeCAD.Placement(m)
         # Arch active container
         if FreeCAD.GuiUp:
@@ -317,20 +317,20 @@ class plane:
                     p = a.Placement.inverse().multiply(p)
         return p
 
-    def getPlacement(self,rotated=False):
+    def getPlacement(self, rotated=False):
         "returns the placement of the working plane"
         if rotated:
             m = FreeCAD.Matrix(
-                self.u.x,self.axis.x,-self.v.x,self.position.x,
-                self.u.y,self.axis.y,-self.v.y,self.position.y,
-                self.u.z,self.axis.z,-self.v.z,self.position.z,
-                0.0,0.0,0.0,1.0)
+                self.u.x, self.axis.x, -self.v.x, self.position.x,
+                self.u.y, self.axis.y, -self.v.y, self.position.y,
+                self.u.z, self.axis.z, -self.v.z, self.position.z,
+                0.0, 0.0, 0.0, 1.0)
         else:
             m = FreeCAD.Matrix(
-                self.u.x,self.v.x,self.axis.x,self.position.x,
-                self.u.y,self.v.y,self.axis.y,self.position.y,
-                self.u.z,self.v.z,self.axis.z,self.position.z,
-                0.0,0.0,0.0,1.0)
+                self.u.x, self.v.x, self.axis.x, self.position.x,
+                self.u.y, self.v.y, self.axis.y, self.position.y,
+                self.u.z, self.v.z, self.axis.z, self.position.z,
+                0.0, 0.0, 0.0, 1.0)
         p = FreeCAD.Placement(m)
         # Arch active container if based on App Part
         #if FreeCAD.GuiUp:
@@ -350,7 +350,7 @@ class plane:
         #        n = a.Placement.inverse().Rotation.multVec(n)
         return n
 
-    def setFromPlacement(self,pl,rebase=False):
+    def setFromPlacement(self, pl, rebase=False):
         "sets the working plane from a placement (rotaton ONLY, unless rebase=True)"
         rot = FreeCAD.Placement(pl).Rotation
         self.u = rot.multVec(FreeCAD.Vector(1,0,0))
