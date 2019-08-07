@@ -124,7 +124,7 @@ class plane:
 
     def alignToPointAndAxis(self, point, axis, offset=0, upvec=None):
         self.doc = FreeCAD.ActiveDocument
-        self.axis = axis;
+        self.axis = axis
         self.axis.normalize()
         if axis.getAngle(Vector(1,0,0)) < 0.00001:
             self.axis = Vector(1,0,0)
@@ -151,7 +151,7 @@ class plane:
     def alignToPointAndAxis_SVG(self, point, axis, offset):
         # based on cases table
         self.doc = FreeCAD.ActiveDocument
-        self.axis = axis;
+        self.axis = axis
         self.axis.normalize()
         ref_vec = Vector(0.0, 1.0, 0.0)
 
@@ -384,15 +384,15 @@ class plane:
         xv = DraftVecUtils.project(pt,self.u)
         x = xv.Length
         if xv.getAngle(self.u) > 1:
-                x = -x
+            x = -x
         yv = DraftVecUtils.project(pt,self.v)
         y = yv.Length
         if yv.getAngle(self.v) > 1:
-                y = -y
+            y = -y
         zv = DraftVecUtils.project(pt,self.axis)
         z = zv.Length
         if zv.getAngle(self.axis) > 1:
-                z = -z
+            z = -z
         return Vector(x,y,z)
 
     def getGlobalCoords(self,point):
@@ -408,15 +408,15 @@ class plane:
         xv = DraftVecUtils.project(point,self.u)
         x = xv.Length
         if xv.getAngle(self.u) > 1:
-                x = -x
+            x = -x
         yv = DraftVecUtils.project(point,self.v)
         y = yv.Length
         if yv.getAngle(self.v) > 1:
-                y = -y
+            y = -y
         zv = DraftVecUtils.project(point,self.axis)
         z = zv.Length
         if zv.getAngle(self.axis) > 1:
-                z = -z
+            z = -z
         return Vector(x,y,z)
 
     def getGlobalRot(self,point):
@@ -480,9 +480,9 @@ def getPlacementFromPoints(points):
             pl.u = (points[1].sub(points[0]).normalize())
             pl.v = (points[2].sub(points[0]).normalize())
             if len(points) == 4:
-                    pl.axis = (points[3].sub(points[0]).normalize())
+                pl.axis = (points[3].sub(points[0]).normalize())
             else:
-                    pl.axis = ((pl.u).cross(pl.v)).normalize()
+                pl.axis = ((pl.u).cross(pl.v)).normalize()
     except:
             return None
     p = pl.getPlacement()
