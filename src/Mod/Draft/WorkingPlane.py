@@ -108,7 +108,7 @@ class plane:
         gd = self.getGlobalRot(Vector(ld.x, ld.y, 0))
         hyp = abs(math.tan(a) * lp.z)
         return gp.add(DraftVecUtils.scaleTo(gd, hyp))
-                
+
     def projectPointOld(self, p, direction=None):
         '''project point onto plane, default direction is orthogonal. Obsolete'''
         if not direction:
@@ -161,7 +161,7 @@ class plane:
             self.u.normalize()
             self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
             #projcase = "Case new"
-        
+
         elif ((abs(axis.y) > abs(axis.z)) and (abs(axis.z) >= abs(axis.x))):
             ref_vec = Vector(1.0, 0.0, 0.0)
             self.u = axis.negative().cross(ref_vec)
@@ -198,7 +198,7 @@ class plane:
         #spat_vec = self.u.cross(self.v)
         #spat_res = spat_vec.dot(axis)
         #FreeCAD.Console.PrintMessage(projcase + " spat Prod = " + str(spat_res) + "\n")
-        
+
         offsetVector = Vector(axis); offsetVector.multiply(offset)
         self.position = point.add(offsetVector)
         self.weak = False
@@ -252,7 +252,7 @@ class plane:
                     self.u, self.v = self.v.negative(), self.u
                 elif DraftVecUtils.equals(self.u, Vector(0, 0, -1)):
                     self.u, self.v = self.v, self.u.negative()
-                    
+
             self.weak = False
             return True
         else:
@@ -358,7 +358,7 @@ class plane:
         self.axis = rot.multVec(FreeCAD.Vector(0, 0, 1))
         if rebase:
             self.position = pl.Base
-        
+
     def inverse(self):
         "inverts the direction of the working plane"
         self.u = self.u.negative()
@@ -426,7 +426,7 @@ class plane:
         vz = Vector(self.axis).multiply(point.z)
         pt = (vx.add(vy)).add(vz)
         return pt
-        
+
     def getClosestAxis(self, point):
         "returns which of the workingplane axes is closest from the given vector"
         ax = point.getAngle(self.u)
@@ -444,7 +444,7 @@ class plane:
             return "z"
         else:
             return None
-            
+
     def isGlobal(self):
         "returns True if the plane axes are equal to the global axes"
         if self.u != Vector(1, 0, 0):
@@ -454,15 +454,15 @@ class plane:
         if self.axis != Vector(0, 0, 1):
             return False
         return True
-        
+
     def isOrtho(self):
         "returns True if the plane axes are following the global axes"
         if round(self.u.getAngle(Vector(0, 1, 0)), 6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
-            if round(self.v.getAngle(Vector(0,1,0)),6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
-                if round(self.axis.getAngle(Vector(0,1,0)),6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
+            if round(self.v.getAngle(Vector(0, 1, 0)), 6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
+                if round(self.axis.getAngle(Vector(0, 1, 0)), 6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
                     return True
         return False
-        
+
     def getDeviation(self):
         "returns the deviation angle between the u axis and the horizontal plane"
         proj = Vector(self.u.x, self.u.y, 0)
@@ -471,7 +471,7 @@ class plane:
         else:
             norm = proj.cross(self.u)
             return DraftVecUtils.angle(self.u, proj, norm)
-                
+
 def getPlacementFromPoints(points):
     "returns a placement from a list of 3 or 4 vectors"
     pl = plane()
@@ -488,7 +488,7 @@ def getPlacementFromPoints(points):
     p = pl.getPlacement()
     del pl
     return p
-    
+
 def getPlacementFromFace(face, rotated=False):
     "returns a placement from a face"
     pl = plane()
