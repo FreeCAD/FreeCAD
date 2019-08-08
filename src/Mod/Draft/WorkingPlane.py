@@ -432,8 +432,24 @@ class plane:
         # FreeCAD.Console.PrintMessage("(position = " + str(self.position) + ")\n")
         # FreeCAD.Console.PrintMessage("Current workplane: x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))+"\n")
 
+    def alignToCurve(self, shape, offset=0):
+        """Align plane to curve. NOT YET IMPLEMENTED.
 
-    def alignToCurve(self, shape, offset):
+        Parameters
+        ----------
+        shape : Part.Shape
+            A curve that will serve to align the plane.
+            It can be an `Edge` or `Wire`.
+        offset : float
+            Defaults to zero. A value which will be used to offset
+            the plane in the direction of its `axis`.
+
+        Returns
+        -------
+        False
+            Returns `False` if the shape is null.
+            Currently it always returns `False`.
+        """
         if shape.isNull():
             return False
         elif shape.ShapeType == 'Edge':
