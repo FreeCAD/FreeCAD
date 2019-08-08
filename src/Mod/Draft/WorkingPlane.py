@@ -585,6 +585,9 @@ class plane:
         It extracts the shape of the object or subobject
         and then calls `alignToFace(shape, offset)`.
 
+        This method only works when the `FreeCADGui.Selection`
+        class is available, that is, when the graphical interface is loaded.
+
         Parameter
         ---------
         offset : float
