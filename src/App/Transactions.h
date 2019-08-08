@@ -128,7 +128,12 @@ public:
 
 protected:
     enum Status {New,Del,Chn} status;
-    std::unordered_map<const Property*, DynamicProperty::PropData> _PropChangeMap;
+
+    struct PropData : DynamicProperty::PropData {
+        Base::Type propertyType;
+    };
+    std::unordered_map<const Property*, PropData> _PropChangeMap;
+
     std::string _NameInDocument;
 };
 
