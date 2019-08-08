@@ -828,10 +828,28 @@ class plane:
             self.stored = None
 
     def getLocalCoords(self, point):
-        "returns the coordinates of a given point on the working plane"
+        """Return the coordinates of a given point projected on the plane.
+
+        A vector is calculated from the plane's `position`
+        to the external `point`, and this vector is projected into
+        each of the `u`, `v` and `axis` of the plane.
+
+        Parameters
+        ----------
+        point : Base::Vector3
+            The point external to the plane.
+
+        Returns
+        -------
+        Base::Vector3
+            The point projected on the plane.
+        """
         pt = point.sub(self.position)
         xv = DraftVecUtils.project(pt, self.u)
         x = xv.Length
+        # If the angle between the projection xv and u
+        # is larger than 1 radian (57.29 degrees), use the negative
+        # of the magnitude. Why exactly 1 radian?
         if xv.getAngle(self.u) > 1:
             x = -x
         yv = DraftVecUtils.project(pt, self.v)
