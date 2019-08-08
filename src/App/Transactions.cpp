@@ -335,11 +335,11 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
             }
             // Because we now allow undo/redo dynamic property adding/removing,
             // we have to enforce property type checking before calling Copy/Paste.
-            if(data.property->getTypeId() != prop->getTypeId()) {
+            if(data.propertyType != prop->getTypeId()) {
                 FC_WARN("Cannot " << (Forward?"redo":"undo") 
                         << " change of property " << prop->getName()
                         << " because of type change: "
-                        << data.property->getTypeId().getName()
+                        << data.propertyType.getName()
                         << " -> " << prop->getTypeId().getName());
                 continue;
             }
@@ -352,8 +352,10 @@ void TransactionObject::setProperty(const Property* pcProp)
 {
     auto &data = _PropChangeMap[pcProp];
     if(!data.property && data.name.empty()) {
-        data = pcProp->getContainer()->getDynamicPropertyData(pcProp);
+        static_cast<DynamicProperty::PropData&>(data) = 
+            pcProp->getContainer()->getDynamicPropertyData(pcProp);
         data.property = pcProp->Copy();
+        data.propertyType = pcProp->getTypeId();
         data.property->setStatusValue(pcProp->getStatus());
     }
 }
@@ -377,11 +379,14 @@ void TransactionObject::addOrRemoveProperty(const Property* pcProp, bool add)
         delete data.property;
         data.property = 0;
     }
-    data = pcProp->getContainer()->getDynamicPropertyData(pcProp);
+
+    static_cast<DynamicProperty::PropData&>(data) = 
+        pcProp->getContainer()->getDynamicPropertyData(pcProp);
     if(add) 
         data.property = 0;
     else {
         data.property = pcProp->Copy();
+        data.propertyType = pcProp->getTypeId();
         data.property->setStatusValue(pcProp->getStatus());
     }
 }
