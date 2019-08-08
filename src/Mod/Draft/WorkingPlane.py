@@ -692,7 +692,18 @@ class plane:
         self.weak = True
 
     def getRotation(self):
-        "returns a placement describing the working plane orientation ONLY"
+        """Return a placement describing the plane orientation only.
+
+        If `FreeCAD.GuiUp` is `True`, that is, if the graphical interface
+        is loaded, it will test if the active object is an `Arch` container
+        and will calculate the placement accordingly.
+
+        Returns
+        -------
+        Base::Placement
+            A placement, comprised of a basepoint `Base::Vector3`,
+            and a rotation `Base::Rotation`.
+        """
         m = DraftVecUtils.getPlaneRotation(self.u, self.v, self.axis)
         p = FreeCAD.Placement(m)
         # Arch active container
@@ -705,7 +716,14 @@ class plane:
         return p
 
     def getPlacement(self, rotated=False):
-        "returns the placement of the working plane"
+        """Return the placement of the plane.
+
+        Parameters
+        ----------
+        rotated : bool, optional
+            It defaults to `False`. If it is `True`, it switches `axis`
+            with `-v` to produce a rotated placement.
+        """
         if rotated:
             m = FreeCAD.Matrix(
                 self.u.x, self.axis.x, -self.v.x, self.position.x,
