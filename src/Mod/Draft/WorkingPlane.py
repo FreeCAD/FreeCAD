@@ -813,6 +813,11 @@ class plane:
         self.stored = [self.u, self.v, self.axis, self.position, self.weak]
 
     def restore(self):
+        """Restore the plane attributes that were saved.
+
+        Restores the attributes `u`, `v`, `axis`, `position` and `weak`
+        from `stored`, and set `stored` to `None`.
+        """
         "restores a previously saved plane state, if exists"
         if self.stored:
             self.u = self.stored[0]
