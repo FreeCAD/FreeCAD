@@ -1411,28 +1411,24 @@ void Document::SaveDocFile (Base::Writer &writer) const
 
     writer.incInd(); // indentation for camera settings
 
-    // set camera settings
+    // save camera settings
     std::list<MDIView*> mdi = getMDIViews();
     for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
         if ((*it)->onHasMsg("GetCamera")) {
             const char* ppReturn=0;
             (*it)->onMsg("GetCamera",&ppReturn);
-
-            // remove the first line because it's a comment like '#Inventor V2.1 ascii'
-            QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
-            if (lines.size() > 1) {
-                if(writer.getFileVersion() > 1) {
-                    writer.Stream() << writer.ind() << "<Camera>\n";
-                    writer.beginCharStream(false) << '\n' << ppReturn;
-                    writer.endCharStream() << '\n' << writer.ind() << "</Camera>\n";
-                } else {
-                    lines.pop_front();
-                    writer.Stream() << writer.ind() << "<Camera settings=\"" 
-                        << lines.join(QLatin1String(" ")).toLatin1().constData() << "\"/>\n";
-                }
+            if(saveCameraSettings(ppReturn))
                 break;
-            }
         }
+    }
+
+    if(writer.getFileVersion() > 1) {
+        writer.Stream() << writer.ind() << "<Camera>\n";
+        writer.beginCharStream(false) << '\n' << getCameraSettings();
+        writer.endCharStream() << '\n' << writer.ind() << "</Camera>\n";
+    } else {
+        writer.Stream() << writer.ind() << "<Camera settings=\"" 
+            << encodeAttribute(getCameraSettings()) << "\"/>\n";
     }
 
     writer.decInd(); // indentation for camera settings
@@ -1661,13 +1657,32 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
     return 0;
 }
 
-const std::string &Document::getCameraSettings() const {
-    return cameraSettings;
+const char *Document::getCameraSettings() const {
+    return cameraSettings.size()>10?cameraSettings.c_str()+10:cameraSettings.c_str();
 }
 
-void Document::saveCameraSettings(const char *settings) {
-    if(settings && settings[0])
-        cameraSettings = std::string("SetCamera ") + settings;
+bool Document::saveCameraSettings(const char *settings) const {
+    if(!settings)
+        return false;
+
+    // skip starting comment lines
+    bool skipping = false;
+    char c = *settings;
+    for(;c;c=*(++settings)) {
+        if(skipping) {
+            if(c == '\n')
+                skipping = false;
+        } else if(c == '#')
+            skipping = true;
+        else if(!std::isspace(c))
+            break;
+    }
+
+    if(!c)
+        return false;
+
+    cameraSettings = std::string("SetCamera ") + settings;
+    return true;
 }
 
 void Document::attachView(Gui::BaseView* pcView, bool bPassiv)

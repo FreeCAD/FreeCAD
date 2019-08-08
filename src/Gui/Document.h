@@ -296,8 +296,8 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    const std::string &getCameraSettings() const;
-    void saveCameraSettings(const char *);
+    const char *getCameraSettings() const;
+    bool saveCameraSettings(const char *) const;
 
 protected:
     // pointer to the python class
@@ -313,7 +313,7 @@ private:
     struct DocumentP* d;
     static int _iDocCount;
 
-    std::string cameraSettings;
+    mutable std::string cameraSettings;
 
     /** @name attributes for the UNDO REDO facility
      */
