@@ -354,6 +354,7 @@ class TaskPanelPage(object):
         controllers = PathUtils.getToolControllers(self.obj)
         labels = [c.Label for c in controllers]
         combo.blockSignals(True)
+        combo.clear()
         combo.addItems(labels)
         combo.blockSignals(False)
 
