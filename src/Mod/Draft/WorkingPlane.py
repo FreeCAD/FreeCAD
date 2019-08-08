@@ -266,6 +266,31 @@ class plane:
         return p.add(t)
 
     def alignToPointAndAxis(self, point, axis, offset=0, upvec=None):
+        """Align the working plane to a point and an axis (vector).
+
+        Set `v` as the cross product of `axis` with `(1, 0, 0)` or `+X`,
+        and `u` as `v` rotated -90 degrees around the `axis`.
+        Also set `weak` to `False`.
+
+        Parameters
+        ----------
+        point : Base::Vector3
+            The new `position` of the plane, adjusted by
+            the `offset`.
+        axis : Base::Vector3
+            A vector whose unit vector will be used as the new `axis`
+            of the plane.
+            If it is very close to the `X` or `-X` axes,
+            it will use this axis exactly, and will adjust `u` and `v`
+            to `+Y` and `+Z`, or `-Y` and `+Z`, respectively.
+        offset : float, optional
+            Defaults to zero. A value which will be used to offset
+            the plane in the direction of its `axis`.
+        upvec : Base::Vector3, optional
+            Defaults to `None`.
+            If it exists, its unit vector will be used as `v`,
+            and will set `u` as the cross product of `v` with `axis`.
+        """
         self.doc = FreeCAD.ActiveDocument
         self.axis = axis
         self.axis.normalize()
