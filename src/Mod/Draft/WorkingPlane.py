@@ -549,13 +549,71 @@ class plane:
             return False
 
     def alignTo3Points(self, p1, p2, p3, offset=0):
+        """Align the plane to three points.
+
+        It makes a closed quadrilateral face with the three points,
+        and then calls `alignToFace(shape, offset)`.
+
+        Parameter
+        ---------
+        p1 : Base::Vector3
+            The first point.
+        p2 : Base::Vector3
+            The second point.
+        p3 : Base::Vector3
+            The third point.
+
+        offset : float
+            Defaults to zero. A value which will be used to offset
+            the plane in the direction of its `axis`.
+
+        Returns
+        -------
+        bool
+            `True` if the operation was succesful, and `False` otherwise.
+        """
         import Part
         w = Part.makePolygon([p1, p2, p3, p1])
         f = Part.Face(w)
         return self.alignToFace(f, offset)
 
-    def alignToSelection(self, offset):
-        '''If selection uniquely defines a plane, align working plane to it.  Return success (bool)'''
+    def alignToSelection(self, offset=0):
+        """Align the plane to a selection if it defines a plane.
+
+        If the selection uniquely defines a plane it will be used.
+        Currently it only works with one object selected, a `'Face'`.
+        It extracts the shape of the object or subobject
+        and then calls `alignToFace(shape, offset)`.
+
+        Parameter
+        ---------
+        offset : float
+            Defaults to zero. A value which will be used to offset
+            the plane in the direction of its `axis`.
+
+        Returns
+        -------
+        bool
+            `True` if the operation was succesful, and `False` otherwise.
+            It returns `False` if the selection has no elements,
+            or if it has more than one element,
+            or if the object is not derived from `'Part::Feature'`
+            or if the object doesn't have a `Shape`.
+
+        To do
+        -----
+        The method returns `False` if the selection list has more than
+        one element.
+        The method should search the list for objects like faces, points,
+        edges, wires, etc., and call the appropriate aligning submethod.
+
+        The method could work for curves (`'Edge'`  or `'Wire'`) but
+        `alignToCurve()` isn't fully implemented.
+
+        See also
+        --------
+        alignToFace, alignToCurve
+        """
         import FreeCADGui
         sex = FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name)
         if len(sex) == 0:
