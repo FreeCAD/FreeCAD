@@ -684,6 +684,10 @@ class plane:
             self.weak = True
 
     def reset(self):
+        """Reset the plane.
+
+        Set the `doc` attribute to `None`, and `weak` to `True`.
+        """
         self.doc = None
         self.weak = True
 
