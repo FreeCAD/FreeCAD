@@ -598,8 +598,11 @@ void TreeWidget::checkTopParent(App::DocumentObject *&obj, std::string &subname)
         auto tree = *Instances.begin();
         auto it = tree->DocumentMap.find(Application::Instance->getDocument(obj->getDocument()));
         if(it != tree->DocumentMap.end()) {
-            if(tree->statusTimer->isActive())
+            if(tree->statusTimer->isActive()) {
+                bool locked = tree->blockConnection(true);
                 tree->_updateStatus(false);
+                tree->blockConnection(locked);
+            }
             auto parent = it->second->getTopParent(obj,subname);
             if(parent)
                 obj = parent;
@@ -2357,7 +2360,7 @@ void TreeWidget::onUpdateStatus(void)
         docItem->_ExpandInfo.reset();
     }
 
-    if(Selection().hasSelection() && !selectTimer->isActive()) {
+    if(Selection().hasSelection() && !selectTimer->isActive() && !this->isConnectionBlocked()) {
         this->blockConnection(true);
         currentDocItem = 0;
         for(auto &v : DocumentMap) {
@@ -2481,7 +2484,7 @@ void TreeWidget::scrollItemToTop()
 {
     auto doc = Application::Instance->activeDocument();
     for(auto tree : Instances) {
-        if(!tree->isConnectionAttached()) 
+        if(!tree->isConnectionAttached() || tree->isConnectionBlocked()) 
             continue;
 
         tree->_updateStatus(false);
@@ -2713,7 +2716,7 @@ void TreeWidget::onSelectTimer() {
     _updateStatus(false);
 
     bool syncSelect = FC_TREEPARAM(SyncSelection);
-    this->blockConnection(true);
+    bool locked = this->blockConnection(true);
     if(Selection().hasSelection()) {
         for(auto &v : DocumentMap) {
             v.second->setSelected(false);
@@ -2725,7 +2728,7 @@ void TreeWidget::onSelectTimer() {
         for(auto &v : DocumentMap)
             v.second->clearSelection();
     }
-    this->blockConnection(false);
+    this->blockConnection(locked);
     selectTimer->stop();
     return;
 }
@@ -2861,7 +2864,7 @@ TreeDockWidget::~TreeDockWidget()
 }
 
 void TreeWidget::selectLinkedObject(App::DocumentObject *linked) { 
-    if(!isConnectionAttached()) 
+    if(!isConnectionAttached() || isConnectionBlocked()) 
         return;
 
     auto linkedVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
