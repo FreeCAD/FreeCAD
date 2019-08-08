@@ -3155,11 +3155,13 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         if(obj->getDocument() == doc)
             docItem->_ParentMap.erase(obj);
 
+        bool lock = blockConnection(true);
         for(auto cit=items.begin(),citNext=cit;cit!=items.end();cit=citNext) {
             ++citNext;
             (*cit)->myOwner = 0;
             delete *cit;
         }
+        blockConnection(lock);
 
         // Check for any child of the deleted object that is not in the tree, and put it
         // under document item.
