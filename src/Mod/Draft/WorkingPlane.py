@@ -633,7 +633,36 @@ class plane:
             return False
 
     def setup(self, direction=None, point=None, upvec=None):
-        '''If working plane is undefined, define it!'''
+        """Setup the working plane if it exists but is undefined.
+
+        If `direction` and `point` are present,
+        it calls `alignToPointAndAxis(point, direction, 0, upvec)`.
+
+        Otherwise, it gets the camera orientation to define
+        a working plane that is perpendicular to the current view,
+        centered at the origin, and with `v` pointing up on the screen.
+
+        This method only works when the `weak` attribute is `True`.
+        This method also sets `weak` to `True`.
+
+        This method only works when `FreeCAD.GuiUp` is `True`,
+        that is, when the graphical interface is loaded.
+        Otherwise it fails silently.
+
+        Parameters
+        ----------
+        direction : Base::Vector3, optional
+            It defaults to `None`. It is the new `axis` of the plane.
+        point : Base::Vector3, optional
+            It defaults to `None`. It is the new `position` of the plane.
+        upvec : Base::Vector3, optional
+            It defaults to `None`. It is the new `v` orientation of the plane.
+
+        To do
+        -----
+        It should fail loudly, with a message at least
+        `FreeCAD.Console.PrintError()`.
+        """
         if self.weak:
             if direction and point:
                 self.alignToPointAndAxis(point, direction, 0, upvec)
