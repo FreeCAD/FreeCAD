@@ -862,8 +862,9 @@ PropertyShapeCache *PropertyShapeCache::get(const App::DocumentObject *obj, bool
                 App::Prop_NoPersist|App::Prop_Output|App::Prop_Hidden));
     if(!prop) 
         FC_ERR("Failed to add shape cache for " << obj->getFullName());
-    prop->connChanged = const_cast<App::DocumentObject*>(obj)->signalChanged.connect(
-            boost::bind(&PropertyShapeCache::slotChanged,prop,_1,_2));
+    else
+        prop->connChanged = const_cast<App::DocumentObject*>(obj)->signalEarlyChanged.connect(
+                boost::bind(&PropertyShapeCache::slotChanged,prop,_1,_2));
     return prop;
 }
 
@@ -893,8 +894,11 @@ void PropertyShapeCache::setShape(
 void PropertyShapeCache::slotChanged(const App::DocumentObject &, const App::Property &prop) {
     auto propName = prop.getName();
     if(!propName) return;
-    if(strcmp(propName,"Group")==0
-            || strstr(propName,"Touched")!=0)
+    if(strcmp(propName,"Group")==0 || 
+            strcmp(propName,"Shape")==0 ||
+            strstr(propName,"Touched")!=0)
+    {
         cache.clear();
+    }
 }
 
