@@ -75,7 +75,7 @@ static ParameterGrp::handle _GetParam() {
  * in two tabs.
  */
 PropertyView::PropertyView(QWidget *parent)
-  : QWidget(parent),SelectionObserver(false) 
+  : QWidget(parent),SelectionObserver(false,0) 
 {
     QGridLayout* pLayout = new QGridLayout( this ); 
     pLayout->setSpacing(0);
