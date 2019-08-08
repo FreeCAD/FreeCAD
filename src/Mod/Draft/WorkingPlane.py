@@ -585,8 +585,8 @@ class plane:
         It extracts the shape of the object or subobject
         and then calls `alignToFace(shape, offset)`.
 
-        This method only works when the `FreeCADGui.Selection`
-        class is available, that is, when the graphical interface is loaded.
+        This method only works when `FreeCAD.GuiUp` is `True`,
+        that is, when the graphical interface is loaded.
 
         Parameter
         ---------
@@ -612,6 +612,9 @@ class plane:
 
         The method could work for curves (`'Edge'`  or `'Wire'`) but
         `alignToCurve()` isn't fully implemented.
+
+        When the interface is not loaded it should fail and print
+        a message, `FreeCAD.Console.PrintError()`.
 
         See also
         --------
@@ -660,8 +663,8 @@ class plane:
 
         To do
         -----
-        It should fail loudly, with a message at least
-        `FreeCAD.Console.PrintError()`.
+        When the interface is not loaded it should fail and print
+        a message, `FreeCAD.Console.PrintError()`.
         """
         if self.weak:
             if direction and point:
