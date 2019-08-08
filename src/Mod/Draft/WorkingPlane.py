@@ -752,6 +752,13 @@ class plane:
         return p
 
     def getNormal(self):
+        """Return the normal vector of the plane (axis).
+
+        Returns
+        -------
+        Base::Vector3
+            The `axis` attribute of the plane.
+        """
         n = self.axis
         # Arch active container if based on App Part
         #if FreeCAD.GuiUp:
