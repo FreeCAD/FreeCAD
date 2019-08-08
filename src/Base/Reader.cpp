@@ -701,14 +701,20 @@ void Base::ZipReader::readFiles(XMLReader &xmlReader)
             try {
                 Base::ZipReader zipreader(_stream, FileList[jt].FileName, &xmlReader);
                 FileList[jt].Object->RestoreDocFile(zipreader);
-            }
-            catch(...) {
+            } catch(Base::AbortException &e) {
+                e.ReportException();
+                FC_ERR("User abort when reading embedded file: " << FileList[jt].FileName);
+                throw;
+            } catch(Base::Exception &e) {
+                e.ReportException();
+                FC_ERR("Reading failed from embedded file: " << FileList[jt].FileName);
+            } catch(...) {
                 // For any exception we just continue with the next file.
                 // It doesn't matter if the last reader has read more or
                 // less data than the file size would allow.
                 // All what we need to do is to notify the user about the
                 // failure.
-                Base::Console().Error("Reading failed from embedded file: %s\n", entry->toString().c_str());
+                FC_ERR("Reading failed from embedded file: " << FileList[jt].FileName);
             }
             // Go to the next registered file name
             it = jt + 1;
@@ -748,11 +754,17 @@ void Base::FileReader::readFiles(Base::XMLReader &xmlReader) {
         Base::FileInfo fi(_dir+'/'+entry.FileName);
         try {
             Base::FileReader freader(fi, dirname+'/'+entry.FileName, &xmlReader);
-            if(!freader._stream.is_open()) {
-                FC_ERR("Cannot open file: " << entry.FileName);
-                continue;
-            }
-            entry.Object->RestoreDocFile(freader);
+            if(!freader._stream.is_open())
+                FC_ERR("Failed to open embeded file: " << entry.FileName);
+            else
+                entry.Object->RestoreDocFile(freader);
+        } catch(Base::AbortException &e) {
+            e.ReportException();
+            FC_ERR("User abort when reading embedded file: " << entry.FileName);
+            throw;
+        } catch(Base::Exception &e) {
+            e.ReportException();
+            FC_ERR("Reading failed from embedded file: " << entry.FileName);
         }
         catch(...) {
             // For any exception we just continue with the next file.
@@ -762,6 +774,7 @@ void Base::FileReader::readFiles(Base::XMLReader &xmlReader) {
             // failure.
             FC_ERR("Reading failed from embedded file: " << entry.FileName);
         }
+        seq.next();
     }
 }
 
