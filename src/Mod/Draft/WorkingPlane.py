@@ -439,7 +439,7 @@ class plane:
         ----------
         shape : Part.Shape
             A curve that will serve to align the plane.
-            It can be an `Edge` or `Wire`.
+            It can be an `'Edge'` or `'Wire'`.
         offset : float
             Defaults to zero. A value which will be used to offset
             the plane in the direction of its `axis`.
@@ -462,6 +462,23 @@ class plane:
             return False
 
     def alignToEdges(self, edges):
+        """Align plane to two edges.
+
+        Uses the two points of the first edge to define the direction
+        of the unit vector `u`, the other two points of the other edge
+        to define the other unit vector `v`, and then the cross product
+        of `u` with `v` to define the `axis`.
+
+        Parameters
+        ----------
+        edges : list
+            A list of two edges.
+
+        Returns
+        -------
+        False
+            Return `False` if `edges` is a list of more than 2 elements.
+        """
         # use a list of edges to find a plane position
         if len(edges) > 2:
             return False
@@ -479,6 +496,36 @@ class plane:
         self.axis = v3
 
     def alignToFace(self, shape, offset=0):
+        """Align the plane to a face.
+
+        It uses the center of mass of the face as `position`,
+        and its normal in the center of the face as `axis`,
+        then calls `alignToPointAndAxis(position, axis, offset)`.
+
+        If the face is a quadrilateral, then it adjusts the position
+        of the plane according to its reported X direction and Y direction.
+
+        Also set `weak` to `False`.
+
+        Parameter
+        --------
+        shape : Part.Shape
+            A shape of type `'Face'`.
+
+        offset : float
+            Defaults to zero. A value which will be used to offset
+            the plane in the direction of its `axis`.
+
+        Returns
+        -------
+        bool
+            `True` if the operation was succesful, and `False` if the shape
+            is not a `'Face'`.
+
+        See Also
+        --------
+        alignToPointAndAxis, DraftGeomUtils.getQuad
+        """
         # Set face to the unique selected face, if found
         if shape.ShapeType == 'Face':
             self.alignToPointAndAxis(shape.Faces[0].CenterOfMass, shape.Faces[0].normalAt(0, 0), offset)
