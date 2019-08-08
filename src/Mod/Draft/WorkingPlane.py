@@ -701,8 +701,8 @@ class plane:
         Returns
         -------
         Base::Placement
-            A placement, comprised of a basepoint `Base::Vector3`,
-            and a rotation `Base::Rotation`.
+            A placement, comprised of a `Base` (`Base::Vector3`),
+            and a `Rotation` (`Base::Rotation`).
         """
         m = DraftVecUtils.getPlaneRotation(self.u, self.v, self.axis)
         p = FreeCAD.Placement(m)
@@ -723,6 +723,12 @@ class plane:
         rotated : bool, optional
             It defaults to `False`. If it is `True`, it switches `axis`
             with `-v` to produce a rotated placement.
+
+        Returns
+        -------
+        Base::Placement
+            A placement, comprised of a `Base` (`Base::Vector3`),
+            and a `Rotation` (`Base::Rotation`).
         """
         if rotated:
             m = FreeCAD.Matrix(
