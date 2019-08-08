@@ -703,6 +703,8 @@ void DocumentObject::onChanged(const Property* prop)
         }
     }
 
+    signalEarlyChanged(*this,*prop);
+
     // Delay signaling view provider until the document object has handled the
     // change
     // if (_pDoc)
