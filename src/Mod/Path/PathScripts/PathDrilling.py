@@ -114,15 +114,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         holes = PathUtils.sort_jobs(holes, ['x', 'y'])
         self.commandlist.append(Path.Command('G90'))
         self.commandlist.append(Path.Command(obj.ReturnLevel))
-
+ 
         for p in holes:
             cmd = "G81"
             cmdParams = {}
             cmdParams['Z'] = p['trgtDep'] - tiplength
             cmdParams['F'] = self.vertFeed
-            cmdParams['R'] = obj.SafeHeight.Value
+            cmdParams['R'] = obj.RetractHeight.Value
             if obj.PeckEnabled and obj.PeckDepth.Value > 0:
-                cmdParams['R'] = obj.RetractHeight.Value
                 cmd = "G83"
                 cmdParams['Q'] = obj.PeckDepth.Value
             elif obj.DwellEnabled and obj.DwellTime > 0:
@@ -168,7 +167,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             
             # Perform and cancel canned drilling cycle
             self.commandlist.append(Path.Command(cmd, params))
-            self.commandlist.append(Path.Command('G80'))
+            self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value}))
             
 
 
@@ -176,8 +175,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             if obj.EnableRotation != 'Off':
                 lastAxis = axisOfRot
                 lastAngle = angle
-            elif obj.PeckEnabled and obj.PeckDepth.Value > 0 and obj.RetractHeight.Value != obj.SafeHeight.Value:
-                self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value}))
 
         if obj.EnableRotation != 'Off':
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))

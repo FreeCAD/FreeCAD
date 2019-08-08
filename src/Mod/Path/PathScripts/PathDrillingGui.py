@@ -57,21 +57,19 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             
     def registerSignalHandlers(self, obj):
         self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
-        self.form.peckEnabled.toggled.connect(self.form.peckRetractHeight.setEnabled)
-        self.form.peckEnabled.toggled.connect(self.form.peckDepthLabel.setEnabled)
-        self.form.peckEnabled.toggled.connect(self.form.retractLabel.setEnabled)
         self.form.peckEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
         
         self.form.dwellEnabled.toggled.connect(self.form.dwellTime.setEnabled)
         self.form.dwellEnabled.toggled.connect(self.form.dwellTimelabel.setEnabled)
         self.form.dwellEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
         
+        self.form.peckRetractHeight.setEnabled(True)
+        self.form.retractLabel.setEnabled(True)
+        
         if self.form.peckEnabled.isChecked():
             self.form.dwellEnabled.setEnabled(False)
             self.form.peckDepth.setEnabled(True)
-            self.form.peckRetractHeight.setEnabled(True)
             self.form.peckDepthLabel.setEnabled(True)
-            self.form.retractLabel.setEnabled(True)
         elif self.form.dwellEnabled.isChecked():
             self.form.peckEnabled.setEnabled(False)
             self.form.dwellTime.setEnabled(True)
