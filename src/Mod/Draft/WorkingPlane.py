@@ -769,14 +769,33 @@ class plane:
         return n
 
     def setFromPlacement(self, pl, rebase=False):
-        "sets the working plane from a placement (rotaton ONLY, unless rebase=True)"
+        """Set the plane from a placement.
+
+        It normally uses only the rotation, unless `rebase` is `True`.
+
+        Parameters
+        ----------
+        pl : Base::Placement or Base::Matrix4D
+            A placement, comprised of a `Base` (`Base::Vector3`),
+            and a `Rotation` (`Base::Rotation`),
+            or a `Base::Matrix4D` that defines a placement.
+        rebase : bool, optional
+            It defaults to `False`.
+            If `True`, it will use `pl.Base` as the new `position`
+            of the plane. Otherwise it will only consider `pl.Rotation`.
+
+        To do
+        -----
+        If `pl` is a `Base::Matrix4D`, it shouldn't try to use `pl.Base`
+        because a matrix has no `Base`.
+        """
         rot = FreeCAD.Placement(pl).Rotation
         self.u = rot.multVec(FreeCAD.Vector(1, 0, 0))
         self.v = rot.multVec(FreeCAD.Vector(0, 1, 0))
         self.axis = rot.multVec(FreeCAD.Vector(0, 0, 1))
         if rebase:
             self.position = pl.Base
-
+            
     def inverse(self):
         "inverts the direction of the working plane"
         self.u = self.u.negative()
