@@ -317,8 +317,66 @@ class plane:
         # FreeCAD.Console.PrintMessage("(position = " + str(self.position) + ")\n")
         # FreeCAD.Console.PrintMessage("Current workplane: x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))+"\n")
 
-    def alignToPointAndAxis_SVG(self, point, axis, offset):
-        # based on cases table
+    def alignToPointAndAxis_SVG(self, point, axis, offset=0):
+        """Align the working plane to a point and an axis (vector).
+
+        It aligns `u` and `v` based on the magnitude of the components
+        of `axis`.
+        Also set `weak` to `False`.
+
+        Parameters
+        ----------
+        point : Base::Vector3
+            The new `position` of the plane, adjusted by
+            the `offset`.
+        axis : Base::Vector3
+            A vector whose unit vector will be used as the new `axis`
+            of the plane.
+            The magnitudes of the `x`, `y`, `z` components of the axis
+            determine the orientation of `u` and `v` of the plane.
+        offset : float, optional
+            Defaults to zero. A value which will be used to offset
+            the plane in the direction of its `axis`.
+
+        Cases
+        -----
+        The `u` and `v` are always calculated the same
+
+            * `u` is the cross product of the positive or negative of `axis`
+              with a `reference vector`.
+              ::
+                  u = [+1|-1] axis.cross(ref_vec)
+            * `v` is `u` rotated 90 degrees around `axis`.
+
+        Whether the `axis` is positive or negative, and which reference
+        vector is used, depends on the absolute values of the `x`, `y`, `z`
+        components of the `axis` unit vector.
+
+         #. If `x > y`, and `y > z`
+             The reference vector is +Z
+             ::
+                 u = -1 axis.cross(+Z)
+         #. If `y > z`, and `z >= x`
+             The reference vector is +X.
+             ::
+                 u = -1 axis.cross(+X)
+         #. If `y >= x`, and `x > z`
+             The reference vector is +Z.
+             ::
+                 u = +1 axis.cross(+Z)
+         #. If `x > z`, and `z >= y`
+             The reference vector is +Y.
+             ::
+                 u = +1 axis.cross(+Y)
+         #. If `z >= y`, and `y > x`
+             The reference vector is +X.
+             ::
+                 u = +1 axis.cross(+X)
+         #. otherwise
+             The reference vector is +Y.
+             ::
+                 u = -1 axis.cross(+Y)
+        """
         self.doc = FreeCAD.ActiveDocument
         self.axis = axis
         self.axis.normalize()
