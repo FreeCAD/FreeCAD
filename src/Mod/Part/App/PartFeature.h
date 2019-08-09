@@ -46,7 +46,7 @@ class PartFeaturePy;
  */
 class PartExport Feature : public App::GeoFeature
 {
-    PROPERTY_HEADER(Part::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Feature);
 
 public:
     /// Constructor
@@ -57,14 +57,14 @@ public:
 
     /** @name methods override feature */
     //@{
-    virtual short mustExecute(void) const;
+    virtual short mustExecute() const override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const;
-    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const;
+    virtual const char* getViewProviderName() const override;
+    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const override;
 
-    virtual PyObject* getPyObject(void);
+    virtual PyObject* getPyObject() override;
 
     TopLoc_Location getLocation() const;
 
@@ -111,10 +111,10 @@ public:
 
 protected:
     /// recompute only this object
-    virtual App::DocumentObjectExecReturn *recompute(void);
+    virtual App::DocumentObjectExecReturn *recompute() override;
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onChanged(const App::Property* prop);
+    virtual App::DocumentObjectExecReturn *execute() override;
+    virtual void onChanged(const App::Property* prop) override;
     /**
      * Build a history of changes
      * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
