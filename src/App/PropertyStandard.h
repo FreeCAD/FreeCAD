@@ -303,7 +303,7 @@ public:
  */
 class AppExport PropertyIntegerList: public PropertyListsT<long>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -319,17 +319,17 @@ public:
      */
     virtual ~PropertyIntegerList();
 
-    virtual const char* getEditorName(void) const
+    virtual const char* getEditorName(void) const override
     { return "Gui::PropertyEditor::PropertyIntegerListItem"; }
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
     
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize (void) const;
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
+    virtual unsigned int getMemSize (void) const override;
 
 protected:
     long getPyValue(PyObject *item) const override;
@@ -582,7 +582,7 @@ public:
 
 class AppExport PropertyFloatList: public PropertyListsT<double>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
@@ -598,20 +598,20 @@ public:
      */
     virtual ~PropertyFloatList();
     
-    virtual const char* getEditorName(void) const
+    virtual const char* getEditorName(void) const override
     { return "Gui::PropertyEditor::PropertyFloatListItem"; }
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
     
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    virtual void SaveDocFile (Base::Writer &writer) const override;
+    virtual void RestoreDocFile(Base::Reader &reader) override;
     
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize (void) const;
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
+    virtual unsigned int getMemSize (void) const override;
 
 protected:
     double getPyValue(PyObject *item) const override;
@@ -723,7 +723,7 @@ public:
 
 class AppExport PropertyStringList: public PropertyListsT<std::string>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
     typedef PropertyListsT<std::string> inherited;
 
 public:
@@ -743,18 +743,18 @@ public:
     void setValues(const std::list<std::string>&);
     using inherited::setValues;
     
-    virtual const char* getEditorName(void) const
+    virtual const char* getEditorName(void) const override
     { return "Gui::PropertyEditor::PropertyStringListItem"; }
     
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
     
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
     
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize (void) const override;
     
 protected:
     std::string getPyValue(PyObject *item) const override;
@@ -809,22 +809,22 @@ private:
  */
 class AppExport PropertyBoolList : public PropertyListsT<bool,boost::dynamic_bitset<> >
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
     typedef PropertyListsT<bool,boost::dynamic_bitset<> > inherited;
 
 public:
     PropertyBoolList();
     virtual ~PropertyBoolList();
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
     
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize (void) const;
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
+    virtual unsigned int getMemSize (void) const override;
 
 protected:
     bool getPyValue(PyObject *) const override;
@@ -881,7 +881,7 @@ private:
 
 class AppExport PropertyColorList: public PropertyListsT<Color>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
        
@@ -897,17 +897,17 @@ public:
      */
     virtual ~PropertyColorList();
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
     
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
     
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    virtual void SaveDocFile (Base::Writer &writer) const override;
+    virtual void RestoreDocFile(Base::Reader &reader) override;
     
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize (void) const;
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
+    virtual unsigned int getMemSize (void) const override;
 
 protected:
     Color getPyValue(PyObject *) const override;
@@ -969,7 +969,7 @@ private:
 */
 class AppExport PropertyMaterialList : public PropertyListsT<Material>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
 
@@ -985,19 +985,19 @@ public:
     */
     virtual ~PropertyMaterialList();
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
-    virtual void Save(Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save(Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual void SaveDocFile(Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    virtual void SaveDocFile(Base::Writer &writer) const override;
+    virtual void RestoreDocFile(Base::Reader &reader) override;
 
-    virtual const char* getEditorName(void) const;
+    virtual const char* getEditorName(void) const override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize(void) const;
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
+    virtual unsigned int getMemSize(void) const override;
 
 protected:
     Material getPyValue(PyObject *) const override;
@@ -1010,7 +1010,7 @@ protected:
  * object, and then read back as the Python binding of the newly created object.
  */
 class AppExport PropertyPersistentObject: public PropertyString {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
     typedef PropertyString inherited;
 public:
     virtual PyObject *getPyObject(void) override;

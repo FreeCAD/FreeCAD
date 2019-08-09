@@ -423,8 +423,8 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
         return Py::Long(cast<int>(value));
 #endif
     else if (is_type(value,typeid(long))) {
-        long l = cast<long>(value);
 #if PY_MAJOR_VERSION < 3
+        long l = cast<long>(value);
         if(std::abs(l)<=INT_MAX)
             return Py::Int(int(l));
 #endif
@@ -505,7 +505,7 @@ bool pyToQuantity(Quantity &q, const Py::Object &pyobj) {
     return true;
 }
 
-static inline Quantity pyToQuantity(const Py::Object &pyobj, 
+/*static inline Quantity pyToQuantity(const Py::Object &pyobj, 
         const Expression *e, const char *msg=0) 
 {
     Quantity q;
@@ -515,7 +515,7 @@ static inline Quantity pyToQuantity(const Py::Object &pyobj,
         __EXPR_THROW(TypeError,msg,e);
     }
     return q;
-}
+}*/
 
 Py::Object pyFromQuantity(const Quantity &quantity) {
     if(!quantity.getUnit().isEmpty())

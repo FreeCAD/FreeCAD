@@ -193,7 +193,7 @@ private:
 };
 
 #define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) \
-  PROPERTY_HEADER(_class)
+  PROPERTY_HEADER_WITH_OVERRIDE(_class)
 
 /// We make sur that the PropertyData of the container is not connected to the one of the extension
 #define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_) \

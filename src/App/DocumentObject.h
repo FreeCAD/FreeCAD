@@ -90,7 +90,7 @@ public:
  */
 class AppExport DocumentObject: public App::TransactionalObject
 {
-    PROPERTY_HEADER(App::DocumentObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::DocumentObject);
 
 public:
 
@@ -126,8 +126,8 @@ public:
     std::string getExportName(bool forced=false) const;
     /// Return the object full name of the form DocName#ObjName
     virtual std::string getFullName() const override;
-    virtual bool isAttachedToDocument() const;
-    virtual const char* detachFromDocument();
+    virtual bool isAttachedToDocument() const override;
+    virtual const char* detachFromDocument() override;
     /// gets the document in which this Object is handled
     App::Document *getDocument(void) const;
 
@@ -303,7 +303,7 @@ public:
      * additional or different behavior.
      */
     virtual void onLostLinkToObject(DocumentObject*);
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     /** Get the sub element/object by name
      *
@@ -405,7 +405,7 @@ public:
 
     static DocumentObjectExecReturn *StdReturn;
 
-    virtual void Save (Base::Writer &writer) const;
+    virtual void Save (Base::Writer &writer) const override;
 
     /* Expression support */
 
@@ -576,9 +576,9 @@ protected:
     void setDocument(App::Document* doc);
 
     /// get called before the value is changed
-    virtual void onBeforeChange(const Property* prop);
+    virtual void onBeforeChange(const Property* prop) override;
     /// get called by the container when a property was changed
-    virtual void onChanged(const Property* prop);
+    virtual void onChanged(const Property* prop) override;
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
     /// get called after setting the document
