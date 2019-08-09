@@ -31,7 +31,7 @@ namespace Sketcher
 
 class SketcherExport SketchGeometryExtension : public Part::GeometryExtension
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     SketchGeometryExtension();
     SketchGeometryExtension(long cid);
