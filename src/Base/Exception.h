@@ -253,15 +253,15 @@ public:
   /// Assignment operator
   FileException &operator=(const FileException &inst);
   /// Description of the exception
-  virtual const char* what() const throw();
+  virtual const char* what() const throw() override;
   /// Report generation
-  virtual void ReportException (void) const;
+  virtual void ReportException (void) const override;
   /// Get file name for use with tranlatable message
   std::string getFileName() const;
   /// returns a Python dictionary containing the exception data
-  virtual PyObject * getPyObject(void);
+  virtual PyObject * getPyObject(void) override;
   /// returns sets the exception data from a Python dictionary
-  virtual void setPyObject( PyObject * pydict);
+  virtual void setPyObject( PyObject * pydict) override;
 
   virtual PyObject * getPyExceptionType() const override;
 protected:
@@ -326,7 +326,7 @@ public:
   virtual ~MemoryException() throw() {}
 #if defined (__GNUC__)
   /// Description of the exception
-  virtual const char* what() const throw();
+  virtual const char* what() const throw() override;
 #endif
 };
 
