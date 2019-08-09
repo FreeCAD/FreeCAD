@@ -172,9 +172,9 @@ protected:
     std::vector<std::string> Errors;
     std::set<std::string> Modes;
 
-    short indent;
+    int indent;
     short indent_size;
-    char indBuf[1024];
+    char indBuf[65];
 
     int forceXML;
     bool splitXML;

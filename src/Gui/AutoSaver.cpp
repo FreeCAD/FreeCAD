@@ -389,6 +389,8 @@ void RecoveryWriter::writeFiles(void)
             }
             else {
                 this->putNextEntry(entry.FileName.c_str());
+                indent = 0;
+                indBuf[0] = 0;
                 entry.Object->SaveDocFile(*this);
                 this->FileStream.close();
             }

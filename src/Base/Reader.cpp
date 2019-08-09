@@ -755,16 +755,16 @@ void Base::FileReader::readFiles(Base::XMLReader &xmlReader) {
         try {
             Base::FileReader freader(fi, dirname+'/'+entry.FileName, &xmlReader);
             if(!freader._stream.is_open())
-                FC_ERR("Failed to open embeded file: " << entry.FileName);
+                FC_ERR("Failed to open: " << fi.filePath());
             else
                 entry.Object->RestoreDocFile(freader);
         } catch(Base::AbortException &e) {
             e.ReportException();
-            FC_ERR("User abort when reading embedded file: " << entry.FileName);
+            FC_ERR("User abort when reading: " << fi.filePath());
             throw;
         } catch(Base::Exception &e) {
             e.ReportException();
-            FC_ERR("Reading failed from embedded file: " << entry.FileName);
+            FC_ERR("Reading failed: " << fi.filePath());
         }
         catch(...) {
             // For any exception we just continue with the next file.
@@ -772,7 +772,7 @@ void Base::FileReader::readFiles(Base::XMLReader &xmlReader) {
             // less data than the file size would allow.
             // All what we need to do is to notify the user about the
             // failure.
-            FC_ERR("Reading failed from embedded file: " << entry.FileName);
+            FC_ERR("Reading failed: " << fi.filePath());
         }
         seq.next();
     }

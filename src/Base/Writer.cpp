@@ -288,10 +288,13 @@ const std::vector<std::string>& Writer::getFilenames() const
 
 void Writer::incInd(void)
 {
-    short i=0;
-    for(i=0;i<indent_size && indent-1<(int)sizeof(indBuf);++i)
-        indBuf[indent++] = ' ';
-    indBuf[indent] = 0;
+    int pos = sizeof(indBuf)-1;
+    if(indent < pos)
+        pos = indent;
+    for(int i=0;i<indent_size && pos-1<(int)sizeof(indBuf);++i)
+        indBuf[pos++] = ' ';
+    indBuf[pos] = 0;
+    indent += indent_size;
 }
 
 void Writer::decInd(void)
@@ -302,7 +305,8 @@ void Writer::decInd(void)
     else {
         indent = 0;
     }
-    indBuf[indent] = '\0';
+    if(indent < (int)sizeof(indBuf))
+        indBuf[indent] = '\0';
 }
 
 void Writer::putNextEntry(const char *file, const char *obj) {
