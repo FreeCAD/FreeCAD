@@ -262,7 +262,7 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     writer.Stream() << " ElementMap=\"" << version << '"';
 
     bool binary = writer.getMode("BinaryBrep");
-    bool toXML = writer.isForceXML()>=(binary?3:2);
+    bool toXML = writer.getFileVersion()>1 && writer.isForceXML()>=(binary?3:2);
     if(!toXML) {
         writer.Stream() << " file=\""
             << writer.addFile(getFileName(binary?".bin":".brp"), this)
@@ -427,10 +427,13 @@ static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh,
 
 void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
 {
-    // If the shape is empty we simply store nothing. The file size will be 0 which
-    // can be checked when reading in the data.
-    if (_Shape.getShape().IsNull())
-        return;
+    // Even if the shape is null, we shall still save it, so that there is
+    // some content inside the file, or else, we'll get some annoying error
+    // message when restoring.
+    //
+    // if (_Shape.getShape().IsNull())
+    //     return;
+
     TopoDS_Shape myShape = _Shape.getShape();
     if(writer.getMode("BinaryBrep")) {
         TopoShape shape;
