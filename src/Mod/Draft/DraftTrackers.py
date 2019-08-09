@@ -1076,7 +1076,7 @@ class archDimTracker(Tracker):
         else:
             self.Distance = (p2.sub(p1)).Length
         text = FreeCAD.Units.Quantity(self.Distance,FreeCAD.Units.Length).UserString
-        self.dimnode.string.setValue(text)
+        self.dimnode.string.setValue(text.encode('utf8'))
         
     def setMode(self,mode=1):
         """sets the mode: 0 = without lines (a simple mark), 1 =
