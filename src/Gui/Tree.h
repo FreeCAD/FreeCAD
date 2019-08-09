@@ -83,7 +83,7 @@ public:
     void selectAllLinks(App::DocumentObject *obj); 
     void expandSelectedItems(TreeItemMode mode);
 
-    bool eventFilter(QObject *, QEvent *ev);
+    bool eventFilter(QObject *, QEvent *ev) override;
 
     struct SelInfo {
         App::DocumentObject *topParent;
@@ -127,24 +127,24 @@ public:
 
 protected:
     /// Observer message from the Selection
-    void onSelectionChanged(const SelectionChanges& msg);
-    void contextMenuEvent (QContextMenuEvent * e);
-    void drawRow(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const;
+    void onSelectionChanged(const SelectionChanges& msg) override;
+    void contextMenuEvent (QContextMenuEvent * e) override;
+    void drawRow(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     /** @name Drag and drop */
     //@{
-    void startDrag(Qt::DropActions supportedActions);
+    void startDrag(Qt::DropActions supportedActions) override;
     bool dropMimeData(QTreeWidgetItem *parent, int index, const QMimeData *data,
-                      Qt::DropAction action);
-    Qt::DropActions supportedDropActions () const;
-    QMimeData * mimeData (const QList<QTreeWidgetItem *> items) const;
-    void dragEnterEvent(QDragEnterEvent * event);
-    void dragLeaveEvent(QDragLeaveEvent * event);
-    void dragMoveEvent(QDragMoveEvent *event);
-    void dropEvent(QDropEvent *event);
+                      Qt::DropAction action) override;
+    Qt::DropActions supportedDropActions () const override;
+    QMimeData * mimeData (const QList<QTreeWidgetItem *> items) const override;
+    void dragEnterEvent(QDragEnterEvent * event) override;
+    void dragLeaveEvent(QDragLeaveEvent * event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
     //@}
-    bool event(QEvent *e);
-    void keyPressEvent(QKeyEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent * event);
+    bool event(QEvent *e) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent * event) override;
 
 protected:
     void showEvent(QShowEvent *) override;
@@ -195,7 +195,7 @@ private:
     void slotChangeObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
     void slotTouchedObject(const App::DocumentObject&);
 
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void setupText();
 
     void updateChildren(App::DocumentObject *obj, 
@@ -274,7 +274,7 @@ public:
     void updateItemSelection(DocumentObjectItem *);
     void selectItems(bool sync);
     void testStatus(void);
-    void setData(int column, int role, const QVariant & value);
+    void setData(int column, int role, const QVariant & value) override;
     void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
     bool populateObject(App::DocumentObject *obj);
     void selectAllInstances(const ViewProviderDocumentObject &vpd);

@@ -1279,9 +1279,10 @@ void MainWindow::appendRecentFile(const QString& filename)
     }
 }
 
-void MainWindow::updateActions(bool delay) {
+void MainWindow::updateActions(bool delay)
+{
     //make it safe to call before the main window is actually created
-    if(!this)
+    if (!instance)
         return;
     if(!d->activityTimer->isActive())
         d->activityTimer->start(150);

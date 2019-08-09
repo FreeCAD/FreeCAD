@@ -43,28 +43,28 @@ namespace Gui
 
 class GuiExport ViewProviderPlacement : public ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderPlacement);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPlacement);
 
 public:
     /// Constructor
     ViewProviderPlacement(void);
     virtual ~ViewProviderPlacement();
 
-    void attach(App::DocumentObject *);
-    void updateData(const App::Property*);
-    std::vector<std::string> getDisplayModes(void) const;
-    void setDisplayMode(const char* ModeName);
+    void attach(App::DocumentObject *) override;
+    void updateData(const App::Property*) override;
+    std::vector<std::string> getDisplayModes(void) const override;
+    void setDisplayMode(const char* ModeName) override;
 
     /// indicates if the ViewProvider use the new Selection model
-    virtual bool useNewSelectionModel(void) const {return true;}
+    virtual bool useNewSelectionModel(void) const override {return true;}
     /// indicates if the ViewProvider can be selected
-    virtual bool isSelectable(void) const ;
+    virtual bool isSelectable(void) const override;
 
     virtual bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const override;
     virtual bool getDetailPath(const char *, SoFullPath *, bool, SoDetail *&) const override;
 
 protected:
-    void onChanged(const App::Property* prop);
+    void onChanged(const App::Property* prop) override;
 
 };
 
