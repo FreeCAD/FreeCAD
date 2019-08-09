@@ -1119,7 +1119,32 @@ class plane:
 
 
 def getPlacementFromPoints(points):
-    "returns a placement from a list of 3 or 4 vectors"
+    """Return a placement from a list of 3 or 4 points.
+
+    With these points a temporary plane is defined.
+    The first point is the plane's `position`.
+    The other two points are used to define the `u` and `v` axes,
+    as originating from the first point.
+
+    If the fourth point exists, it is used to define the plane's `axis`
+    as originating from the first point.
+    If no fourth point is provided, the cross product bewtween the previously
+    defined `u` and `v` is used as `axis`.
+
+    Then it returns the `Base::Placement` returned from `getPlacement()`.
+
+    Parameters
+    ----------
+    points : list of Base::Vector3
+        A list with 3 or 4 points to create a temporary plane
+        from which to extract the placement.
+
+    Return
+    ------
+    Base::Placement
+        A placement obtained from the temporary plane
+        defined by the points.
+    """
     pl = plane()
     try:
         pl.position = points[0]
