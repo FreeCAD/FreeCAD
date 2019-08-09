@@ -1071,7 +1071,7 @@ class plane:
     def isOrtho(self):
         """Return True if the plane axes are orthogonal with the global axes.
 
-        Orthogonal means that the angle between `u` with the global `+X`
+        Orthogonal means that the angle between `u` and the global axis `+X`
         is a multiple of 90 degrees, meaning 0, -90, 90, -180, 180,
         -270, 270, or 360 degrees.
         And similarly for `v` and `axis` with `+Y` and `+Z`, respectively.
@@ -1080,8 +1080,8 @@ class plane:
         -------
         bool
             Returns `True` if all three `u`, `v`, and `axis`
-            are orthogonal with their respective
-            global axis `+X`, `+Y`, and `+Z`.
+            are orthogonal with their respective global axes `+X`, `+Y`,
+            and `+Z`.
             Otherwise it returns `False`.
         """
         if round(self.u.getAngle(Vector(0, 1, 0)), 6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
@@ -1091,7 +1091,25 @@ class plane:
         return False
 
     def getDeviation(self):
-        "returns the deviation angle between the u axis and the horizontal plane"
+        """Return the angle between the u axis and the horizontal plane.
+
+        It defines a projection of `u` on the horizontal plane
+        (without a Z component), and then measures the angle between
+        this projection and `u`.
+
+        It also considers the cross product of the projection
+        and `u` to determine the sign of the angle.
+
+        Returns
+        -------
+        float
+            Angle between the `u` vector, and a projected vector
+            on the global horizontal plane.
+
+        See also
+        --------
+        DraftVecUtils.angle
+        """
         proj = Vector(self.u.x, self.u.y, 0)
         if self.u.getAngle(proj) == 0:
             return 0
