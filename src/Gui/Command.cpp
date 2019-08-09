@@ -661,7 +661,7 @@ void Command::printCaller(const char *file, int line) {
 #else
     const char *_f = std::strstr(file, "/src/");
 #endif
-    str << "# " << (_f?_f+5:file)<<'('<<line<<')';
+    str << "## " << (_f?_f+5:file)<<'('<<line<<')';
     Gui::Application::Instance->macroManager()->addLine(MacroManager::Cmt,str.str().c_str());
 }
 
