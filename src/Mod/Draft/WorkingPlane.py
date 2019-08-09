@@ -509,7 +509,7 @@ class plane:
 
         Parameter
         --------
-        shape : Part.Shape
+        shape : Part.Face
             A shape of type `'Face'`.
 
         offset : float
