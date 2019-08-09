@@ -1069,7 +1069,21 @@ class plane:
         return True
 
     def isOrtho(self):
-        "returns True if the plane axes are following the global axes"
+        """Return True if the plane axes are orthogonal with the global axes.
+
+        Orthogonal means that the angle between `u` with the global `+X`
+        is a multiple of 90 degrees, meaning 0, -90, 90, -180, 180,
+        -270, 270, or 360 degrees.
+        And similarly for `v` and `axis` with `+Y` and `+Z`, respectively.
+
+        Returns
+        -------
+        bool
+            Returns `True` if all three `u`, `v`, and `axis`
+            are orthogonal with their respective
+            global axis `+X`, `+Y`, and `+Z`.
+            Otherwise it returns `False`.
+        """
         if round(self.u.getAngle(Vector(0, 1, 0)), 6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
             if round(self.v.getAngle(Vector(0, 1, 0)), 6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
                 if round(self.axis.getAngle(Vector(0, 1, 0)), 6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
