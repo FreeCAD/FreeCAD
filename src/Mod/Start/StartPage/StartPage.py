@@ -113,6 +113,7 @@ def saveIcon(key,data,ext):
     if isinstance(data,QtCore.QByteArray):
         sha = QtCore.QCryptographicHash.hash(
                 content,QtCore.QCryptographicHash.Sha1).toHex()
+        sha = sha.data().decode('latin1')
     else:
         sha = hashlib.sha1()
         sha.update(data)
