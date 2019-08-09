@@ -198,7 +198,7 @@ struct Stats {
     DEFINE_STATS
 };
 
-static Stats _Stats;
+//static Stats _Stats;
 
 struct TimingInfo {
     bool timed = false;
@@ -2054,7 +2054,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         if(copied.size())
                             res = copied.back();
                     }else
-                        res =  thisDoc->moveObject({obj},true);
+                        res =  thisDoc->moveObject(obj,true);
                     if(res) {
                         propPlacement = dynamic_cast<App::PropertyPlacement*>(
                                 res->getPropertyByName("Placement"));

@@ -71,7 +71,7 @@ protected:
 };
 
 class GuiExport LinkView : public Base::BaseClass, public LinkOwner {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
     LinkView();
@@ -79,7 +79,7 @@ public:
     LinkView &operator=(const LinkView&) = delete;
     LinkView(const LinkView&) = delete;
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     virtual void unlink(LinkInfoPtr) override;
     virtual void onLinkedIconChange(LinkInfoPtr) override;
@@ -181,7 +181,7 @@ protected:
 
 class GuiExport ViewProviderLink : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderLink);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLink);
     typedef ViewProviderDocumentObject inherited;
 
 public:
