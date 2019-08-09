@@ -272,6 +272,7 @@ void PropertyContainer::Save (Base::Writer &writer) const
         if(it->second->testStatus(Property::Transient) 
                 || it->second->getType() & Prop_Transient) 
         {
+            writer.decInd();
             writer.Stream() << "</Property>" << std::endl;
             continue;
         }
