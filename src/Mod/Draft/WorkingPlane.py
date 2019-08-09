@@ -828,11 +828,15 @@ class plane:
             self.stored = None
 
     def getLocalCoords(self, point):
-        """Return the coordinates of a given point projected on the plane.
+        """Return the coordinates of the given point, from the plane.
+
+        If the `point` was constructed using the plane as origin,
+        return the relative coordinates from the `point` to the plane.
 
         A vector is calculated from the plane's `position`
-        to the external `point`, and this vector is projected into
-        each of the `u`, `v` and `axis` of the plane.
+        to the external `point`, and this vector is projected onto
+        each of the `u`, `v` and `axis` of the plane to determine
+        the local, relative vector.
 
         Parameters
         ----------
@@ -842,7 +846,35 @@ class plane:
         Returns
         -------
         Base::Vector3
-            The point projected on the plane.
+            The relative coordinates of the point from the plane.
+
+        See also
+        --------
+        getGlobalCoords
+
+        Notes
+        -----
+        The following graphic explains the coordinates.
+        ::
+                                  g GlobalCoords (1, 11)
+                                  |
+                                  |
+                                  |
+                              (n) p point (1, 6)
+                                  | LocalCoords (1, 1)
+                                  |
+            ----plane--------c-------- position (0, 5)
+
+        In the graphic
+
+            * `p` is an arbitrary point, external to the plane
+            * `c` is the plane's `position`
+            * `g` is the global coordinates of `p` when added to the plane
+            * `n` is the relative coordinates of `p` when referred to the plane
+
+        To do
+        -----
+        Maybe a better name would be getRelativeCoords?
         """
         pt = point.sub(self.position)
         xv = DraftVecUtils.project(pt, self.u)
@@ -863,7 +895,50 @@ class plane:
         return Vector(x, y, z)
 
     def getGlobalCoords(self, point):
-        "returns the global coordinates of the given point, taken relatively to this working plane"
+        """Return the coordinates of the given point, added to the plane.
+
+        If the `point` was constructed using the plane as origin,
+        return the absolute coordinates from the `point`
+        to the global origin.
+
+        The `u`, `v`, and `axis` vectors scale the components of `point`,
+        and the result is added to the planes `position`.
+
+        Parameters
+        ----------
+        point : Base::Vector3
+            The external point.
+
+        Returns
+        -------
+        Base::Vector3
+            The coordinates of the point from the absolute origin.
+
+        See also
+        --------
+        getLocalCoords
+
+        Notes
+        -----
+        The following graphic explains the coordinates.
+        ::
+                                  g GlobalCoords (1, 11)
+                                  |
+                                  |
+                                  |
+                              (n) p point (1, 6)
+                                  | LocalCoords (1, 1)
+                                  |
+            ----plane--------c-------- position (0, 5)
+
+        In the graphic
+
+            * `p` is an arbitrary point, external to the plane
+            * `c` is the plane's `position`
+            * `g` is the global coordinates of `p` when added to the plane
+            * `n` is the relative coordinates of `p` when referred to the plane
+
+        """
         vx = Vector(self.u).multiply(point.x)
         vy = Vector(self.v).multiply(point.y)
         vz = Vector(self.axis).multiply(point.z)
