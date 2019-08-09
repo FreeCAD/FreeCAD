@@ -279,7 +279,8 @@ void DocumentRecovery::accept()
                     item->setToolTip(1, errorInfo);
                     item->setForeground(1, QColor(170,0,0));
                 }
-                d->writeRecoveryInfo(info);
+                // Do not mark failure so that user can retry on next run
+                // d->writeRecoveryInfo(info);
             }
         }
 
@@ -291,14 +292,14 @@ void DocumentRecovery::accept()
             if(!docs[i] || errs[i].size()) {
                 if(docs[i])
                     App::GetApplication().closeDocument(docs[i]->getName());
-                info.status = DocumentRecoveryPrivate::Failure;
+                // info.status = DocumentRecoveryPrivate::Failure;
                 if (item) {
                     item->setText(1, tr("Failed to recover"));
                     item->setToolTip(1, QString::fromUtf8(errs[index].c_str()));
                     item->setForeground(1, QColor(170,0,0));
                 }
-                // write back current status
-                d->writeRecoveryInfo(info);
+                // Do not mark failure so that user can retry on next run
+                // d->writeRecoveryInfo(info);
             }else{
                 auto gdoc = Application::Instance->getDocument(docs[i]);
                 if(gdoc)
