@@ -1240,7 +1240,30 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if m == material.id():
                 if o in objects:
                     if hasattr(objects[o],"Material"):
+                        # the reason behind ...
+                        # there are files around in which the material color is different from the shape color
+                        # all viewers use the shape color wheras in  FreeCAD the shape color will be
+                        # overwritten by the material coloer (if there is a material with a color)
+                        # in such a case FreeCAD shows different color than all common ifc viewers
+                        # https://forum.freecadweb.org/viewtopic.php?f=39&t=38440
+                        col = objects[o].ViewObject.ShapeColor[:3]
+                        dig = 5
+                        ma_color = sh_color = round(col[0], dig), round(col[1], dig), round(col[2], dig)
                         objects[o].Material = mat
+                        if "DiffuseColor" in objects[o].Material.Material:
+                            sting_col_ = objects[o].Material.Material["DiffuseColor"]
+                            col = tuple([float(f) for f in sting_col_.strip("()").split(",")])
+                            ma_color = round(col[0], dig), round(col[1], dig), round(col[2], dig)
+                        if ma_color != sh_color:
+                            print("\nobject color != material color for object: ", o)
+                            print("    material color is used (most software uses shape color)")
+                            print("    obj: ", o, "label: ", objects[o].Label, " col: ", sh_color)
+                            print("    mat: ", m, "label: ", mat.Label, " col: ", ma_color)
+                            # print("    ", ifcfile[o])
+                            # print("    ", ifcfile[m])
+                            # print("    colors:")
+                            # print("    ", o, ": ", colors[o])
+                            # print("    ", m, ": ", colors[m])
 
     if DEBUG and materials: print("done")
 
