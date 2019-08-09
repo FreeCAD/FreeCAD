@@ -286,6 +286,9 @@ void ViewProviderBody::slotChangedObjectGui (
 }
 
 void ViewProviderBody::updateOriginDatumSize () {
+    if(App::GetApplication().isRestoring())
+        return;
+
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
 
     // Use different bounding boxes for datums and for origins:
@@ -339,8 +342,7 @@ void ViewProviderBody::updateOriginDatumSize () {
         assert ( vp->isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) );
         vpOrigin = static_cast <Gui::ViewProviderOrigin *> ( vp );
     } catch (const Base::Exception &ex) {
-        if(!getExtendedViewProvider()->getDocument()->getDocument()->testStatus(App::Document::Restoring))
-            Base::Console().Error ("%s\n", ex.what() );
+        Base::Console().Error ("%s\n", ex.what() );
         return;
     }
 
