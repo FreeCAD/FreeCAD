@@ -946,7 +946,7 @@ class plane:
         return pt.add(self.position)
 
     def getLocalRot(self, point):
-        """Like getLocalCoords, but doesn't use the plane's `position`.
+        """Like getLocalCoords, but doesn't use the plane's position.
 
         If the `point` was constructed using the plane as origin,
         return the relative coordinates from the `point` to the plane.
@@ -1020,7 +1020,24 @@ class plane:
         return pt
 
     def getClosestAxis(self, point):
-        "returns which of the workingplane axes is closest from the given vector"
+        """Return the closest axis of the plane to the given point (vector).
+
+        It tests the angle that the `point` vector makes with the unit vectors
+        `u`, `v`, and `axis`, as well their negatives.
+        The smallest angle indicates the closest axis.
+
+        Parameters
+        ----------
+        point : Base::Vector3
+            The external point to test.
+
+        Returns
+        -------
+        str
+            * It is `'x'` if the closest axis is `u` or `-u`.
+            * It is `'y'` if the closest axis is `v` or `-v`.
+            * It is `'z'` if the closest axis is `axis` or `-axis`.
+        """
         ax = point.getAngle(self.u)
         ay = point.getAngle(self.v)
         az = point.getAngle(self.axis)
@@ -1038,7 +1055,11 @@ class plane:
             return None
 
     def isGlobal(self):
-        "returns True if the plane axes are equal to the global axes"
+        """Return True if the plane axes are equal to the global axes.
+
+        Return `False` if any of `u`, `v`, or `axis` does not correspond
+        to `+X`, `+Y`, or `+Z`, respectively.
+        """
         if self.u != Vector(1, 0, 0):
             return False
         if self.v != Vector(0, 1, 0):
