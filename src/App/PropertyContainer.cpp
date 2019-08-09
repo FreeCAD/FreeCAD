@@ -273,6 +273,7 @@ void PropertyContainer::Save (Base::Writer &writer) const
                 || it->second->getType() & Prop_Transient) 
         {
             writer.Stream() << "</Property>\n";
+            writer.decInd();
             continue;
         }
 
