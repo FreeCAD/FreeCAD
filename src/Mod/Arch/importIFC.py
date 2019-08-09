@@ -1235,7 +1235,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if mdict:
                 mat.Material = mdict
             fcmats[mat.Name] = mat
-        # fill material attribut of the objects 
+        # fill material attribute of the objects 
         for o,m in mattable.items():
             if m == material.id():
                 if o in objects:
