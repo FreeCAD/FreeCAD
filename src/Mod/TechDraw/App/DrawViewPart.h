@@ -85,7 +85,7 @@ class DrawViewSection;
 
 class TechDrawExport DrawViewPart : public DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawViewPart);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewPart);
 
 public:
     DrawViewPart(void);
@@ -114,13 +114,13 @@ public:
     TechDraw::PropertyCenterLineList  CenterLines;
     TechDraw::PropertyGeomFormatList  GeomFormats;
 
-    virtual short mustExecute() const;
+    virtual short mustExecute() const override;
     virtual void onDocumentRestored() override;
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual const char* getViewProviderName(void) const {
+    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderViewPart";
     }
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
@@ -142,7 +142,7 @@ public:
     virtual Base::BoundBox3d getBoundingBox() const;
     double getBoxX(void) const;
     double getBoxY(void) const;
-    virtual QRectF getRect() const;
+    virtual QRectF getRect() const override;
     virtual std::vector<DrawViewSection*> getSectionRefs() const;                    //are there ViewSections based on this ViewPart?
     virtual std::vector<DrawViewDetail*> getDetailRefs() const;
     const Base::Vector3d& getUDir(void) const {return uDir;}                       //paperspace X
@@ -210,8 +210,8 @@ protected:
     TechDraw::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
-    void onChanged(const App::Property* prop);
-    virtual void unsetupObject();
+    void onChanged(const App::Property* prop) override;
+    virtual void unsetupObject() override;
 
     virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis);
     void extractFaces();
