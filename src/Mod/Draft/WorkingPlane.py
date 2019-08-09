@@ -850,7 +850,7 @@ class plane:
 
         See also
         --------
-        getGlobalCoords
+        getGlobalCoords, getLocalRot, getGlobalRot
 
         Notes
         -----
@@ -916,7 +916,7 @@ class plane:
 
         See also
         --------
-        getLocalCoords
+        getLocalCoords, getLocalRot, getGlobalRot
 
         Notes
         -----
@@ -946,7 +946,33 @@ class plane:
         return pt.add(self.position)
 
     def getLocalRot(self, point):
-        "Same as getLocalCoords, but discards the WP position"
+        """Like getLocalCoords, but doesn't use the plane's `position`.
+
+        If the `point` was constructed using the plane as origin,
+        return the relative coordinates from the `point` to the plane.
+        However, in this case, the plane is assumed to have its `position`
+        at the global origin, therefore, the returned coordinates
+        will only consider the orientation of the plane.
+
+        The external `point` is a vector, which is projected onto
+        each of the `u`, `v` and `axis` of the plane to determine
+        the local, relative vector.
+
+        Parameters
+        ----------
+        point : Base::Vector3
+            The point external to the plane.
+
+        Returns
+        -------
+        Base::Vector3
+            The relative coordinates of the point from the plane,
+            if the plane had its `position` at the global origin.
+
+        See also
+        --------
+        getLocalCoords, getGlobalCoords, getGlobalRot
+        """
         xv = DraftVecUtils.project(point, self.u)
         x = xv.Length
         if xv.getAngle(self.u) > 1:
@@ -962,7 +988,31 @@ class plane:
         return Vector(x, y, z)
 
     def getGlobalRot(self, point):
-        "Same as getGlobalCoords, but discards the WP position"
+        """Like getGlobalCoords, but doesn't use the plane's position.
+
+        If the `point` was constructed using the plane as origin,
+        return the absolute coordinates from the `point`
+        to the global origin.
+        However, in this case, the plane is assumed to have its `position`
+        at the global origin, therefore, the returned coordinates
+        will only consider the orientation of the plane.
+
+        The `u`, `v`, and `axis` vectors scale the components of `point`.
+
+        Parameters
+        ----------
+        point : Base::Vector3
+            The external point.
+
+        Returns
+        -------
+        Base::Vector3
+            The coordinates of the point from the absolute origin.
+
+        See also
+        --------
+        getGlobalCoords, getLocalCoords, getLocalRot
+        """
         vx = Vector(self.u).multiply(point.x)
         vy = Vector(self.v).multiply(point.y)
         vz = Vector(self.axis).multiply(point.z)
