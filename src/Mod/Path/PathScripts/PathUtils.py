@@ -420,6 +420,8 @@ def addToJob(obj, jobname=None):
     obj = obj
     jobname = None'''
     PathLog.track(jobname)
+
+    job = None
     if jobname is not None:
         jobs = GetJobs(jobname)
         if len(jobs) == 1:

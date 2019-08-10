@@ -159,25 +159,16 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
             return out
 
-        assert(r_out > 0.0)
-        assert(r_in >= 0.0)
-
         msg = None
         if r_out < 0.0:
             msg = "r_out < 0"
         elif r_in > 0 and r_out - r_in < 2 * self.radius:
             msg = "r_out - r_in = {0} is < tool diameter of {1}".format(r_out - r_in, 2 * self.radius)
         elif r_in == 0.0 and not r_out > self.radius / 2.:
-            msg = "Cannot drill a hole of diameter {0} with a tool of diameter {1}".format(2 * r_out, 2 * self.radius)
+            msg = "Cannot helix a hole of diameter {0} with a tool of diameter {1}".format(2 * r_out, 2 * self.radius)
         elif obj.StartSide not in ["Inside", "Outside"]:
             msg = "Invalid value for parameter 'obj.StartSide'"
-
-        if msg:
-            out += "(ERROR: Hole at {0}:".format((x0, y0, obj.StartDepth.Value)) + msg + ")\n"
-            PathLog.error("PathHelix: Hole at {0}:".format((x0, y0, obj.StartDepth.Value)) + msg + "\n")
-            return out
-
-        if r_in > 0:
+        elif r_in > 0:
             out += "(annulus mode)\n"
             r_out = r_out - self.radius
             r_in = r_in + self.radius
@@ -189,15 +180,22 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         elif r_out <= 2 * dr:
             out += "(single helix mode)\n"
             radii = [r_out - self.radius]
-            assert(radii[0] > 0)
+            if radii[0] <= 0:
+                msg = "Cannot helix a hole of diameter {0} with a tool of diameter {1}".format(2 * r_out, 2 * self.radius)
         else:
             out += "(full hole mode)\n"
             r_out = r_out - self.radius
             r_in = dr / 2
 
             nr = max(1 + int(ceil((r_out - r_in) / dr)), 2)
-            radii = linspace(r_out, r_in, nr)
-            assert(all(radii > 0))
+            radii = [r for r in linspace(r_out, r_in, nr) if r > 0]
+            if not radii:
+                msg = "Cannot helix a hole of diameter {0} with a tool of diameter {1}".format(2 * r_out, 2 * self.radius)
+
+        if msg:
+            out += "(ERROR: Hole at {0}: ".format((x0, y0, obj.StartDepth.Value)) + msg + ")\n"
+            PathLog.error("{0} - ".format((x0, y0, obj.StartDepth.Value)) + msg)
+            return out
 
         if obj.StartSide == "Inside":
             radii = radii[::-1]

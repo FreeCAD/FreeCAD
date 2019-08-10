@@ -363,7 +363,7 @@ class ObjectOp(object):
 
     def getJob(self, obj):
         '''getJob(obj) ... return the job this operation is part of.'''
-        if not hasattr(self, 'job'):
+        if not hasattr(self, 'job') or self.job is None:
             if not self._setBaseAndStock(obj):
                 return None
         return self.job
