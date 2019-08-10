@@ -168,8 +168,12 @@ protected:
     Base::Vector3d computeLineOriginPoint(Base::Vector3d lineTarget, double projectedLabelDistance,
                                           double lineAngle, double labelWidth, double direction) const;
 
-    void drawRadius(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void draw() override;
+    void drawRadiusAligned(TechDraw::DrawViewDimension *dimension,
+                           ViewProviderDimension *viewProvider) const;
+    void drawRadiusUniform(TechDraw::DrawViewDimension *dimension,
+                           ViewProviderDimension *viewProvider) const;
+    
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     virtual void setSvgPens(void);
@@ -177,6 +181,8 @@ protected:
     Base::Vector3d findIsoDir(Base::Vector3d ortho);
     Base::Vector3d findIsoExt(Base::Vector3d isoDir);
     QString getPrecision(void);
+    
+    int prefRadiusAligned(void);
 
 protected:
     bool hasHover;

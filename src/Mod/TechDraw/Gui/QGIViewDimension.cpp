@@ -36,7 +36,7 @@
   # include <QPaintDevice>
   # include <QSvgGenerator>
 
-  # include <math.h>
+  # include <cmath>
 #endif
 
 #include <App/Application.h>
@@ -70,7 +70,8 @@
 #include "DrawGuiUtil.h"
 
 #ifndef M_2PI
-    #define M_2PI 6.283185307179586476925287
+//    #define M_2PI 6.283185307179586476925287
+    #define M_2PI (M_PI * 2.0)
 #endif
 
 //TODO: hide the Qt coord system (+y down).  
@@ -1174,7 +1175,13 @@ void QGIViewDimension::draw()
 //            dim->getViewPart()->addVertex(curveCenter,true);
 //        }
     } else if(strcmp(dimType, "Radius") == 0) {
-        drawRadius(dim, vp);
+        if (prefRadiusAligned() == 0) {         //ISO
+            drawRadiusAligned(dim, vp);
+        } else if (prefRadiusAligned() == 1) {    //ASME
+            drawRadiusUniform(dim, vp);
+        } else {
+            Base::Console().Error("QGIVD::draw - bad radiusAligned pref: %d\n", prefRadiusAligned());
+        }
     } else if( (strcmp(dimType, "Angle") == 0) ||
                (strcmp(dimType, "Angle3Pt") == 0)) {
         anglePoints pts = dim->getAnglePoints();
@@ -1423,7 +1430,9 @@ Base::Vector3d QGIViewDimension::computeLineOriginPoint(Base::Vector3d lineTarge
                         *Base::Vector3d(cos(lineAngle), sin(lineAngle), 0.0);
 }
 
-void QGIViewDimension::drawRadius(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const
+//draw a Radius dimension using "aligned" convention (ISO)
+void QGIViewDimension::drawRadiusAligned(TechDraw::DrawViewDimension *dimension,
+                                         ViewProviderDimension *viewProvider) const
 {
     // Preferred terminology according to ISO 129-1 for Radius:
     // Dimensional Value, Leader Line, Reference Line, Terminator
@@ -1461,6 +1470,7 @@ void QGIViewDimension::drawRadius(TechDraw::DrawViewDimension *dimension, ViewPr
     Base::Vector3d arcPoint;
     double lineAngle;
 
+    //TODO: does this violate "Aligned" convention? 
     if (viewProvider->TiltText.getValue()) { // We may rotate the label so no reference line is needed
         double devAngle = computeLineAndLabelAngles(curveCenter, labelCenter,
                               getDefaultTextVerticalOffset(), lineAngle, labelAngle);
@@ -1634,6 +1644,7 @@ void QGIViewDimension::drawRadius(TechDraw::DrawViewDimension *dimension, ViewPr
     dimLines->setPath(radiusPath);
 
     aHead1->setPos(arcPoint.x, arcPoint.y);
+    aHead1->setRotation(0.0);
     aHead1->setDirMode(true);
     aHead1->setDirection(lineAngle);
     if (viewProvider->FlipArrowheads.getValue()) {
@@ -1645,6 +1656,141 @@ void QGIViewDimension::drawRadius(TechDraw::DrawViewDimension *dimension, ViewPr
     aHead1->show();
 
     aHead2->hide();
+}
+
+//Draw a Radius dimension using "uniform" alignment convention (Ansi/Asme)
+void QGIViewDimension::drawRadiusUniform(TechDraw::DrawViewDimension* dim, 
+                                      TechDrawGui::ViewProviderDimension* viewProvider) const
+{
+    // preferred terminology: Dimension Text, Dimension Line(s), Extension Lines, Arrowheads
+    // radius gets 1 dimension line from the dimension text to a point on the curve
+    aHead1->setFlipped(false);
+
+    Base::Vector3d pointOnCurve,curveCenter;
+    double radius;
+    arcPoints pts = dim->getArcPoints();
+    bool isArc = pts.isArc;
+    radius = Rez::guiX(pts.radius);
+    curveCenter = Rez::guiX(pts.center);
+    pointOnCurve = Rez::guiX(pts.onCurve.first);
+    QRectF  mappedRect = mapRectFromItem(datumLabel, datumLabel->boundingRect());
+    Base::Vector3d lblCenter = Base::Vector3d(mappedRect.center().x(), mappedRect.center().y(), 0.0); 
+
+    // Note Bounding Box size is not the same width or height as text (only used for finding center)
+    float bbX  = datumLabel->boundingRect().width();
+    float bbY = datumLabel->boundingRect().height();
+    datumLabel->setTransformOriginPoint(bbX / 2, bbY /2);
+    datumLabel->setRotation(0.0);                //label is always right side up & horizontal
+
+    //if inside the arc (len(DimLine < radius)) arrow goes from center to edge away from label
+    //if outside the arc arrow kinks, then goes to edge nearest label
+    bool outerPlacement = false;
+    if ((lblCenter - curveCenter).Length() > radius) {                     //label is outside circle
+        outerPlacement = true;
+    }
+
+    Base::Vector3d dirDimLine = (lblCenter - curveCenter).Normalize();
+    if (fabs(dirDimLine.Length()) < (Precision::Confusion())) {
+        dirDimLine = Base::Vector3d(-1.0,0.0,0.0);
+    }
+//        Base::Vector3d adjustDir = dirDimLine;          //adjust line lengths for arrowheads
+    double dimLineAdjust = Rez::guiX(QGIArrow::getOverlapAdjust(QGIArrow::getPrefArrowStyle(),
+                                                               QGIArrow::getPrefArrowSize()));
+
+    Base::Vector3d dLineStart;
+    Base::Vector3d dLineEnd;        //?? radius draws line from text to curve?? (diam is curve to text!)
+    Base::Vector3d kinkPoint;
+    double margin = Rez::guiX(5.f);                      //space around label
+    double kinkLength = Rez::guiX(5.0);                  //sb % of horizontal dist(lblCenter,curveCenter)???
+    if (outerPlacement) {
+        double offset = getDefaultTextHorizontalOffset(lblCenter.x > curveCenter.x);
+        dLineStart.y = lblCenter.y;
+        dLineStart.x = lblCenter.x + offset;                          //start at right or left of label
+        kinkLength = (lblCenter.x < curveCenter.x) ? kinkLength : -kinkLength;
+        kinkPoint.y = dLineStart.y;
+        kinkPoint.x = dLineStart.x + kinkLength;
+        pointOnCurve = curveCenter + (kinkPoint - curveCenter).Normalize() * radius;
+        dLineEnd = pointOnCurve + (kinkPoint - curveCenter).Normalize() * dimLineAdjust;
+        if ((kinkPoint - curveCenter).Length() < radius) {
+            dirDimLine = (curveCenter - kinkPoint).Normalize();
+        } else {
+            dirDimLine = (kinkPoint - curveCenter).Normalize();
+        }
+    } else {  
+        dLineStart = curveCenter - dirDimLine * margin;      //just beyond centerpoint
+        pointOnCurve = curveCenter - dirDimLine * radius;
+        dLineEnd = pointOnCurve + dirDimLine * dimLineAdjust;
+        kinkPoint = dLineStart;                              //no kink
+    }
+
+    //handle partial arc weird cases
+    if (isArc) {
+        Base::Vector3d midPt = Rez::guiX(pts.midArc);
+        Base::Vector3d startPt = Rez::guiX(pts.arcEnds.first);
+        Base::Vector3d endPt = Rez::guiX(pts.arcEnds.second);
+        if (outerPlacement &&
+            !dim->leaderIntersectsArc(Rez::appX(curveCenter),Rez::appX(kinkPoint))) {   //keep pathological case within arc
+            pointOnCurve = midPt;
+        } else if (!outerPlacement) {
+            if ((midPt - lblCenter).Length() > (midPt - curveCenter).Length()) {     //label is farther than center
+                dirDimLine = dirDimLine * -1;
+            }
+            dLineStart = curveCenter + dirDimLine * margin;
+            pointOnCurve = curveCenter + dirDimLine * radius;
+            dLineEnd = pointOnCurve - dirDimLine * dimLineAdjust;
+            kinkPoint = dLineStart;
+            if (!dim->leaderIntersectsArc(Rez::appX(dLineStart),Rez::appX(pointOnCurve))) {   //keep pathological case within arc
+                if ((pointOnCurve - endPt).Length() < (pointOnCurve - startPt).Length()) {
+                    if (!pts.arcCW ) {
+                        pointOnCurve = endPt;
+                    } else {
+                        pointOnCurve = startPt;
+                    }
+                } else {
+                    if (!pts.arcCW ) {
+                        pointOnCurve = startPt;
+                    } else {
+                        pointOnCurve = endPt;
+                    }
+                }
+                dLineStart = curveCenter + (pointOnCurve - curveCenter).Normalize() * margin;
+                dLineEnd = pointOnCurve - dirDimLine * dimLineAdjust;
+                kinkPoint = dLineStart;
+            }
+        }
+    }
+
+    QPainterPath dLinePath;                                                 //radius dimension line path
+    dLinePath.moveTo(dLineStart.x, dLineStart.y);
+    dLinePath.lineTo(kinkPoint.x, kinkPoint.y);
+    dLinePath.lineTo(dLineEnd.x, dLineEnd.y);
+
+    dimLines->setPath(dLinePath);
+
+    Base::Vector3d ar1Pos = pointOnCurve;
+    Base::Vector3d dirArrowLine = (pointOnCurve - kinkPoint).Normalize();
+    float arAngle = atan2(dirArrowLine.y, dirArrowLine.x) * 180 / M_PI;
+
+    //NOTE: in this case aHead1->dirMode is false and Qt rotation is used to point arrowhead
+    aHead1->setPos(ar1Pos.x, ar1Pos.y);
+    aHead1->setDirMode(false);
+    aHead1->setRotation(arAngle);
+    if (viewProvider->FlipArrowheads.getValue()) {
+        aHead1->flip();
+    }
+    aHead1->setStyle(QGIArrow::getPrefArrowStyle());
+    aHead1->setSize(QGIArrow::getPrefArrowSize());
+    aHead1->draw();
+    aHead1->show();
+
+    aHead2->hide();
+
+// code for showCenterMark as attribute of Dimension instead of View
+//        if (dim->CentreLines.getValue()) {
+//            curveCenterMark->setPos(curveCenter.x,curveCenter.y);
+//            centerMark->show();
+//            dim->getViewPart()->addVertex(curveCenter,true);
+//        }
 }
 
 QColor QGIViewDimension::getNormalColor()
@@ -1864,5 +2010,13 @@ void QGIViewDimension::setPens(void)
     aHead2->setWidth(m_lineWidth);
 }
 
+int QGIViewDimension::prefRadiusAligned(void)
+{
+    int result = 0;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Standards");
+    result = hGrp->GetInt("RadiusAligned", 0);   //default to ISO
+    return result;
+}
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>
