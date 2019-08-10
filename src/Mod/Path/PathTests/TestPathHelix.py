@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import Draft
 import FreeCAD
 import PathScripts.PathHelix as PathHelix
 import PathScripts.PathJob as PathJob
@@ -56,7 +57,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             model = base[0]
             for sub in base[1]:
                 pos = proxy.holePosition(op, model, sub)
-                self.assertRoughly(pos.Length / 10, proxy.holeDiameter(op, model, sub))
+                self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub))
 
     def test02(self):
         '''Verify Helix generates proper holes for rotated model'''
@@ -74,7 +75,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 for sub in base[1]:
                     pos = proxy.holePosition(op, model, sub)
                     #PathLog.track(deg, pos, pos.Length)
-                    self.assertRoughly(pos.Length / 10, proxy.holeDiameter(op, model, sub))
+                    self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub))
 
 
     def test03(self):
@@ -97,5 +98,26 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 for sub in base[1]:
                     pos = proxy.holePosition(op, model, sub)
                     #PathLog.track(deg, pos, pos.Length)
-                    self.assertRoughly(pos.Length / 10, proxy.holeDiameter(op, model, sub))
+                    self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub))
 
+    def test04(self):
+        '''Verify Helix generates proper holes for rotated clone base model'''
+        for deg in range(5, 360, 5):
+            self.tearDown()
+            self.doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_holes00.fcstd')
+            self.clone = Draft.clone(self.doc.Body)
+            self.clone.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
+
+            self.job = PathJob.Create('Job', [self.clone])
+            self.job.ToolController[0].Tool.Diameter = 0.5
+
+            op = PathHelix.Create('Helix')
+            proxy = op.Proxy
+            model = self.job.Model.Group[0]
+
+            for base in op.Base:
+                model = base[0]
+                for sub in base[1]:
+                    pos = proxy.holePosition(op, model, sub)
+                    #PathLog.track(deg, pos, pos.Length)
+                    self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub))
