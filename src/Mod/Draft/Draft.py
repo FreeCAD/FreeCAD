@@ -2650,7 +2650,7 @@ def clone(obj,delta=None,forcedraft=False):
             cl = Arch.makeComponent()
         else:
             try:
-                clonfunc = getattr(Arch,"make"+obj[0].Proxy.Type)
+                clonefunc = getattr(Arch,"make"+obj[0].Proxy.Type)
             except:
                 pass # not a standard Arch object... Fall back to Draft mode
             else:
