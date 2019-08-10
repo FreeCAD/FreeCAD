@@ -840,7 +840,7 @@ bool MeshEvalNeighbourhood::Evaluate ()
         }
         else {
             // we handle only the cases for 1 and 2, for all higher
-            // values we have a non-manifold that is ignorned here
+            // values we have a non-manifold that is ignored here
             if (count == 2) {
                 const MeshFacet& rFace0 = rclFAry[f0];
                 const MeshFacet& rFace1 = rclFAry[f1];
@@ -906,7 +906,7 @@ std::vector<unsigned long> MeshEvalNeighbourhood::GetIndices() const
         }
         else {
             // we handle only the cases for 1 and 2, for all higher
-            // values we have a non-manifold that is ignorned here
+            // values we have a non-manifold that is ignored here
             if (count == 2) {
                 const MeshFacet& rFace0 = rclFAry[f0];
                 const MeshFacet& rFace1 = rclFAry[f1];
@@ -982,7 +982,7 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
         }
         else {
             // we handle only the cases for 1 and 2, for all higher
-            // values we have a non-manifold that is ignorned here
+            // values we have a non-manifold that is ignored here
             if (count == 2) {
                 MeshFacet& rFace0 = this->_aclFacetArray[f0];
                 MeshFacet& rFace1 = this->_aclFacetArray[f1];
@@ -1005,7 +1005,7 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
     }
 
     // we handle only the cases for 1 and 2, for all higher
-    // values we have a non-manifold that is ignorned here
+    // values we have a non-manifold that is ignored here
     if (count == 2) {
         MeshFacet& rFace0 = this->_aclFacetArray[f0];
         MeshFacet& rFace1 = this->_aclFacetArray[f1];
