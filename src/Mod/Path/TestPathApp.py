@@ -39,6 +39,7 @@ from PathTests.TestPathTooltable import TestPathTooltable
 from PathTests.TestPathToolController import TestPathToolController
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
 from PathTests.TestPathDeburr  import TestPathDeburr
+from PathTests.TestPathHelix  import TestPathHelix
 
 # dummy usage to get flake8 and lgtm quiet
 False if TestApp.__name__ else True
@@ -56,4 +57,5 @@ False if TestPathTooltable.__name__ else True
 False if TestPathToolController.__name__ else True
 False if TestPathSetupSheet.__name__ else True
 False if TestPathDeburr.__name__ else True
+False if TestPathHelix.__name__ else True
 
