@@ -45,5 +45,57 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         '''Verify Helix does not throw an exception.'''
 
         op = PathHelix.Create('Helix')
-        op.Proxy.findAllHoles(op)  # add all holes to the operation
         op.Proxy.execute(op)
+
+    def test01(self):
+        '''Verify Helix generates proper holes from model'''
+
+        op = PathHelix.Create('Helix')
+        proxy = op.Proxy
+        for base in op.Base:
+            model = base[0]
+            for sub in base[1]:
+                pos = proxy.holePosition(op, model, sub)
+                self.assertRoughly(pos.Length / 10, proxy.holeDiameter(op, model, sub))
+
+    def test02(self):
+        '''Verify Helix generates proper holes for rotated model'''
+
+        self.job.ToolController[0].Tool.Diameter = 0.5
+
+        op = PathHelix.Create('Helix')
+        proxy = op.Proxy
+        model = self.job.Model.Group[0]
+
+        for deg in range(5, 360, 5):
+            model.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
+            for base in op.Base:
+                model = base[0]
+                for sub in base[1]:
+                    pos = proxy.holePosition(op, model, sub)
+                    #PathLog.track(deg, pos, pos.Length)
+                    self.assertRoughly(pos.Length / 10, proxy.holeDiameter(op, model, sub))
+
+
+    def test03(self):
+        '''Verify Helix generates proper holes for rotated base model'''
+
+        for deg in range(5, 360, 5):
+            self.tearDown()
+            self.doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_holes00.fcstd')
+            self.doc.Body.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
+
+            self.job = PathJob.Create('Job', [self.doc.Body])
+            self.job.ToolController[0].Tool.Diameter = 0.5
+
+            op = PathHelix.Create('Helix')
+            proxy = op.Proxy
+            model = self.job.Model.Group[0]
+
+            for base in op.Base:
+                model = base[0]
+                for sub in base[1]:
+                    pos = proxy.holePosition(op, model, sub)
+                    #PathLog.track(deg, pos, pos.Length)
+                    self.assertRoughly(pos.Length / 10, proxy.holeDiameter(op, model, sub))
+
