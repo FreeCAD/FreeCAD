@@ -171,6 +171,9 @@ def dms2dd(degrees, minutes, seconds, milliseconds=0):
     return dd
 
 
+# ************************************************************************************************
+# ********** duplicate methods ****************
+# TODO red rid of this duplicate
 def getPreferences():
 
     """retrieves IFC preferences"""
