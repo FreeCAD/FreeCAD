@@ -68,6 +68,8 @@ void DlgPrefsTechDrawImp::saveSettings()
     pfc_DefDir->onSave();
     pfc_HatchFile->onSave();
     pfc_LineGroup->onSave();
+    pfc_Welding->onSave();
+
     pfc_FilePattern->onSave();
     le_NamePattern->onSave();
 }
@@ -97,6 +99,7 @@ void DlgPrefsTechDrawImp::loadSettings()
     pfc_DefDir->onRestore();
     pfc_HatchFile->onRestore();
     pfc_LineGroup->onRestore();
+    pfc_Welding->onRestore();
 
     pfc_FilePattern->onRestore();
     le_NamePattern->onRestore();
