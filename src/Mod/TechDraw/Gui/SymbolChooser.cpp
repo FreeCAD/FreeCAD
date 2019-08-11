@@ -69,6 +69,8 @@ void SymbolChooser::setUiPrimary()
         loadSymbolNames(m_symbolDir);
     } else {
         std::string resourceDir = App::Application::getResourceDir();
+        std::string defPath = "Mod/TechDraw/Symbols/Welding/AWS/";
+        resourceDir = resourceDir + defPath; 
         QString defDir = QString::fromUtf8(resourceDir.c_str());
         ui->fcSymbolDir->setFileName(defDir);
         loadSymbolNames(defDir);
