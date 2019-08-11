@@ -144,7 +144,9 @@ class ObjectOp(PathOp.ObjectOp):
             
             if shape.ShapeType == 'Face':
                  for i in range(len(shape.Edges)):
-                    if type(shape.Edges[i].Curve) == Part.Circle:
+                    if (type(shape.Edges[i].Curve) == Part.Circle and 
+                        shape.Edges[i].Curve.Radius * 2 < shape.BoundBox.XLength*1.1 and 
+                        shape.Edges[i].Curve.Radius * 2 > shape.BoundBox.XLength*0.9):
                         return shape.Edges[i].Curve.Radius * 2
                         
             
