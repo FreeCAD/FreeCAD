@@ -394,6 +394,7 @@ void Command::invoke(int i, TriggerSource trigger)
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {
             auto manager = getGuiApplication()->macroManager();
+            auto editDoc = getGuiApplication()->editDocument();
             if(!disabler)
                 activated( i );
             else {
@@ -426,6 +427,10 @@ void Command::invoke(int i, TriggerSource trigger)
                 }
             }
             getMainWindow()->updateActions();
+
+            // If this command starts an editing, let the transaction persist
+            if(!editDoc && getGuiApplication()->editDocument())
+                committer.setEnable(false);
         }
     }
     catch (const Base::SystemExitException&) {
