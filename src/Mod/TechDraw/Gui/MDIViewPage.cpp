@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
     #include <QAction>
+    #include <QTimer>
     #include <QApplication>
     #include <QContextMenuEvent>
     #include <QFileDialog>
@@ -137,6 +138,10 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     tabText += QString::fromUtf8("[*]");
     setWindowTitle(tabText);
     setCentralWidget(m_view);            //this makes m_view a Qt child of MDIViewPage
+
+    m_timer = new QTimer(this);
+    m_timer->setSingleShot(true);
+    QObject::connect(m_timer,SIGNAL(timeout()),this,SLOT(onTimer()));
 
     // Connect Signals and Slots
     QObject::connect(
@@ -383,6 +388,10 @@ void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
     }
 }
 
+void MDIViewPage::onTimer() {
+    updateDrawing(true);
+}
+
 void MDIViewPage::updateTemplate(bool forceUpdate)
 {
     App::DocumentObject *templObj = m_vpPage->getDrawPage()->Template.getValue();
@@ -412,11 +421,21 @@ void MDIViewPage::updateTemplate(bool forceUpdate)
 //this is time consuming. should only be used when there is a problem.
 //should have been called MDIViewPage::fixWidowAndOrphans()
 //void MDIViewPage::updateDrawing(bool forceUpdate)
-void MDIViewPage::updateDrawing(void)
+void MDIViewPage::updateDrawing(bool force)
 {
+    if(!force) {
+        m_timer->start(100);
+        return;
+    }
+    m_timer->stop();
+
     // get all the DrawViews for this page, including the second level ones
     // if we ever have collections of collections, we'll need to revisit this
     DrawPage* thisPage = m_vpPage->getDrawPage();
+
+    if(!thisPage->getNameInDocument())
+        return;
+
     std::vector<App::DocumentObject*> pChildren  = thisPage->getAllViews();
 
     // if dv doesn't have a graphic, make one
