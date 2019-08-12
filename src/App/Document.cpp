@@ -1007,7 +1007,7 @@ void Document::addOrRemovePropertyOfObject(TransactionalObject* obj, Property *p
                 _openTransaction(name,tid);
         }
     }
-    if (d->activeUndoTransaction)
+    if (d->activeUndoTransaction && !d->rollback)
         d->activeUndoTransaction->addOrRemoveProperty(obj, prop, add);
 }
 
