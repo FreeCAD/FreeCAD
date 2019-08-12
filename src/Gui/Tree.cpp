@@ -2633,13 +2633,13 @@ void TreeWidget::onItemSelectionChanged ()
 
     _LastSelectedTreeWidget = this;
 
+    // block tmp. the connection to avoid to notify us ourself
+    bool lock = this->blockConnection(true);
+
     if(selectTimer->isActive())
         onSelectTimer();
     else
         _updateStatus(false);
-
-    // block tmp. the connection to avoid to notify us ourself
-    bool lock = this->blockConnection(true);
 
     auto selItems = selectedItems();
 
@@ -4125,6 +4125,7 @@ void DocumentItem::selectItems(bool sync) {
             item->setSelected(false);
         }else if(item->selected) {
             if(item->selected == 2) {
+                // This means newly selected
                 if(!first)
                     first = item;
                 if(sync)
@@ -4139,10 +4140,10 @@ void DocumentItem::selectItems(bool sync) {
     if(sync) {
         if(!first)
             first = last;
-        if(first) {
-            getTree()->scrollToItem(first);
+        else
             getTree()->syncView(first->object());
-        }
+        if(first) 
+            getTree()->scrollToItem(first);
     }
 }
 
