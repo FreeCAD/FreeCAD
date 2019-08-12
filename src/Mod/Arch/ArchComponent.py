@@ -741,7 +741,7 @@ class ViewProviderComponent:
 
         vobj.Proxy = self
         self.Object = vobj.Object
-        self.setProperties(self,vobj)
+        self.setProperties(vobj)
         
     def setProperties(self,vobj):
 
