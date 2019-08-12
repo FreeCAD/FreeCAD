@@ -192,6 +192,7 @@ private:
     void _slotDeleteObject(const Gui::ViewProviderDocumentObject&, DocumentItem *deletingDoc);
     void slotDeleteObject(const Gui::ViewProviderDocumentObject&);
     void slotChangeObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
+    void slotTouchedObject(const App::DocumentObject&);
 
     void changeEvent(QEvent *e);
     void setupText();
@@ -345,6 +346,7 @@ private:
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectChgObject;
+    Connection connectTouchedObject;
     Connection connectEdtObject;
     Connection connectResObject;
     Connection connectHltObject;
