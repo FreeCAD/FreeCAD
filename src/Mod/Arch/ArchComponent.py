@@ -741,12 +741,19 @@ class ViewProviderComponent:
 
         vobj.Proxy = self
         self.Object = vobj.Object
+        self.setProperties(self,vobj)
+        
+    def setProperties(self,vobj):
+
+        if not "UseMaterialColor" in vobj.PropertiesList:
+            vobj.addProperty("App::PropertyBool","UseMaterialColor","Component",QT_TRANSLATE_NOOP("App::Property","Use the material color as this object's shape color, if available"))
+            vobj.UseMaterialColor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("UseMaterialColor",True)
 
     def updateData(self,obj,prop):
 
         #print(obj.Name," : updating ",prop)
         if prop == "Material":
-            if obj.Material:
+            if obj.Material and ( (not hasattr(obj.ViewObject,"UseMaterialColor")) or obj.ViewObject.UseMaterialColor):
                 if hasattr(obj.Material,"Material"):
                     if 'DiffuseColor' in obj.Material.Material:
                         if "(" in obj.Material.Material['DiffuseColor']:
