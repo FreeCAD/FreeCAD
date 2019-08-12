@@ -1559,7 +1559,7 @@ class svgHandler(xml.sax.ContentHandler):
                     obj.ViewObject.TextColor = (0.0, 0.0, 0.0, 0.0)
 
     def endElement(self, name):
-        """Finish procesing the element indicated by the name.
+        """Finish processing the element indicated by the name.
 
         Parameters
         ----------

@@ -173,7 +173,7 @@ def dms2dd(degrees, minutes, seconds, milliseconds=0):
 
 # ************************************************************************************************
 # ********** duplicate methods ****************
-# TODO red rid of this duplicate
+# TODO get rid of this duplicate
 def getPreferences():
 
     """retrieves IFC preferences"""
@@ -1195,9 +1195,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if hasattr(objects[o],"Material"):
                         # the reason behind ...
                         # there are files around in which the material color is different from the shape color
-                        # all viewers use the shape color wheras in  FreeCAD the shape color will be
-                        # overwritten by the material coloer (if there is a material with a color)
-                        # in such a case FreeCAD shows different color than all common ifc viewers
+                        # all viewers use the shape color whereas in FreeCAD the shape color will be
+                        # overwritten by the material color (if there is a material with a color).
+                        # In such a case FreeCAD shows different a color than all common ifc viewers
                         # https://forum.freecadweb.org/viewtopic.php?f=39&t=38440
                         col = objects[o].ViewObject.ShapeColor[:3]
                         dig = 5
