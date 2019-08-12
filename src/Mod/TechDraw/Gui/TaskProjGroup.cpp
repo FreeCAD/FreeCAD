@@ -170,6 +170,8 @@ void TaskProjGroup::rotateButtonClicked(void)
             multiView->spinCCW();
         }
         setUiPrimary();
+
+        multiView->recomputeFeature(true);
     }
 }
 
@@ -210,6 +212,8 @@ void TaskProjGroup::projectionTypeChanged(int index)
 
     // Update checkboxes so checked state matches the drawing
     setupViewCheckboxes();
+
+    multiView->recomputeFeature(true);
 
 }
 
@@ -255,7 +259,7 @@ void TaskProjGroup::scaleTypeChanged(int index)
         return;
     }
 
-    multiView->recomputeFeature();
+    multiView->recomputeFeature(true);
 }
 
 std::pair<int, int> TaskProjGroup::nearestFraction(const double val, const long int maxDenom) const
@@ -462,7 +466,8 @@ bool TaskProjGroup::accept()
     Gui::Document* doc = Gui::Application::Instance->getDocument(multiView->getDocument());
     if (!doc) return false;
 
-    if (!getCreateMode())  {    //this is an edit session, end the transaction
+    // if (!getCreateMode())      //this is an edit session, end the transaction
+    {
         Gui::Command::commitCommand();
     }
     //Gui::Command::updateActive();     //no chain of updates here
@@ -476,6 +481,7 @@ bool TaskProjGroup::reject()
     Gui::Document* doc = Gui::Application::Instance->getDocument(multiView->getDocument());
     if (!doc) return false;
 
+#if 0
     if (getCreateMode()) {
         std::string multiViewName = multiView->getNameInDocument();
         std::string PageName = multiView->findParentPage()->getNameInDocument();
@@ -499,6 +505,10 @@ bool TaskProjGroup::reject()
 
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     }
+#endif
+
+    Gui::Command::abortCommand();
+    Gui::Command::runCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     return false;
 }
 
@@ -534,9 +544,10 @@ void TaskDlgProjGroup::setCreateMode(bool b)
 //==== calls from the TaskView ===============================================================
 void TaskDlgProjGroup::open()
 {
-    if (!widget->getCreateMode())  {    //this is an edit session, start a transaction
-        Gui::Command::openCommand("Edit Projection Group");
-    }
+    // if (!widget->getCreateMode())  {    //this is an edit session, start a transaction
+    //     Gui::Command::openCommand("Edit Projection Group");
+    // }
+    App::GetApplication().setActiveTransaction("Edit Projection Group", true);
 }
 
 void TaskDlgProjGroup::clicked(int)
