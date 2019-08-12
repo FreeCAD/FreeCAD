@@ -158,7 +158,12 @@ void ViewProviderPage::removeMDIView(void)
 
 void ViewProviderPage::updateData(const App::Property* prop)
 {
-    if (prop == &(getDrawPage()->KeepUpdated)) {
+    auto page = getDrawPage();
+    if(!page) {
+        Gui::ViewProviderDocumentObject::updateData(prop);
+        return;
+    }
+    if (prop == &(page->KeepUpdated)) {
        if (getDrawPage()->KeepUpdated.getValue()) {
            sPixmap = "TechDraw_Tree_Page";
        } else {
@@ -166,18 +171,22 @@ void ViewProviderPage::updateData(const App::Property* prop)
        }
        signalChangeIcon();
     //if the template is changed, rebuild the visual
-    } else if (prop == &(getDrawPage()->Template)) {
+    } else if (prop == &(page->Template)) {
        if(m_mdiView && 
-          !getDrawPage()->isUnsetting()) {
+          !page->isUnsetting()) {
             m_mdiView->matchSceneRectToTemplate();
             m_mdiView->updateTemplate();
         }
-    } else if (prop == &(getDrawPage()->Label)) {
+    } else if (prop == &(page->Label)) {
        if(m_mdiView && 
-          !getDrawPage()->isUnsetting()) {
-           m_mdiView->setTabText(getDrawPage()->Label.getValue());
+          !page->isUnsetting()) {
+           m_mdiView->setTabText(page->Label.getValue());
        }
+    } else if (prop == &page->Views) {
+        if(m_mdiView && !page->isUnsetting()) 
+            m_mdiView->updateDrawing();
     }
+
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
@@ -245,14 +254,14 @@ bool ViewProviderPage::showMDIViewPage()
 
         m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
         m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
-        m_mdiView->updateDrawing();
+        m_mdiView->updateDrawing(true);
         Gui::getMainWindow()->addWindow(m_mdiView);
         m_mdiView->viewAll();  //this is empty function
         m_mdiView->showMaximized();
         if(!getDrawPage()->KeepUpdated.getValue())
             getDrawPage()->KeepUpdated.setValue(true);
     } else {
-        m_mdiView->updateDrawing();
+        m_mdiView->updateDrawing(true);
         m_mdiView->redrawAllViews();
         m_mdiView->updateTemplate(true);
     }
