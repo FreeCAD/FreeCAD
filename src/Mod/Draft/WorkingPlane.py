@@ -66,7 +66,7 @@ class plane:
         A vector that is supposed to be perpendicular to `u` and `v`;
         it is helpful although redundant.
     position : Base::Vector3
-        A point throught which the plane goes through,
+        A point, which the plane goes through,
         that helps define the working plane.
     stored : bool
         A placeholder for a stored state.
@@ -159,7 +159,7 @@ class plane:
 
         The points are as follows
 
-         * `p` is an arbitraty point outside the plane.
+         * `p` is an arbitrary point outside the plane.
          * `c` is a known point on the plane,
            for example, `plane.position`.
          * `x` is the intercept on the plane from `p` in
@@ -532,7 +532,7 @@ class plane:
         Returns
         -------
         bool
-            `True` if the operation was succesful, and `False` if the shape
+            `True` if the operation was successful, and `False` if the shape
             is not a `'Face'`.
 
         See Also
@@ -585,7 +585,7 @@ class plane:
         Returns
         -------
         bool
-            `True` if the operation was succesful, and `False` otherwise.
+            `True` if the operation was successful, and `False` otherwise.
         """
         import Part
         w = Part.makePolygon([p1, p2, p3, p1])
@@ -612,7 +612,7 @@ class plane:
         Returns
         -------
         bool
-            `True` if the operation was succesful, and `False` otherwise.
+            `True` if the operation was successful, and `False` otherwise.
             It returns `False` if the selection has no elements,
             or if it has more than one element,
             or if the object is not derived from `'Part::Feature'`
