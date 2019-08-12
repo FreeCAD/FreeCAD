@@ -2155,9 +2155,16 @@ void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::P
             && vp.isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))  
     {
         const auto &vpd = static_cast<const ViewProviderDocumentObject&>(vp);
-        if(&prop == &vpd.ShowInTree)
+        if(&prop == &vpd.ShowInTree) {
             ChangedObjects.emplace(vpd.getObject(),0);
+            _updateStatus();
+        }
     }
+}
+
+void TreeWidget::slotTouchedObject(const App::DocumentObject &obj) {
+    ChangedObjects.emplace(const_cast<App::DocumentObject*>(&obj),0);
+    _updateStatus();
 }
 
 void TreeWidget::slotShowHidden(const Gui::Document& Doc)
@@ -2331,10 +2338,14 @@ void TreeWidget::onUpdateStatus(void)
 
         if(docItem->connectChgObject.connected())
             continue;
-        docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
-                boost::bind(&TreeWidget::slotChangeObject, this, _1, _2));
 
         auto doc = v.first->getDocument();
+
+        docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
+                boost::bind(&TreeWidget::slotChangeObject, this, _1, _2));
+        docItem->connectTouchedObject = doc->signalTouchedObject.connect(
+                boost::bind(&TreeWidget::slotTouchedObject, this, _1));
+
         if(doc->testStatus(App::Document::PartialDoc))
             docItem->setIcon(0, *documentPartialPixmap);
         else if(docItem->_ExpandInfo) {
@@ -2909,9 +2920,12 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, _1));
     connectDelObject = doc->signalDeletedObject.connect(
             boost::bind(&TreeWidget::slotDeleteObject, getTree(), _1));
-    if(!App::GetApplication().isRestoring())
+    if(!App::GetApplication().isRestoring()) {
         connectChgObject = doc->signalChangedObject.connect(
                 boost::bind(&TreeWidget::slotChangeObject, getTree(), _1, _2));
+        connectTouchedObject = doc->getDocument()->signalTouchedObject.connect(
+                boost::bind(&TreeWidget::slotTouchedObject, getTree(), _1));
+    }
     connectEdtObject = doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
     connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
     connectHltObject = doc->signalHighlightObject.connect(
@@ -2934,6 +2948,7 @@ DocumentItem::~DocumentItem()
     connectNewObject.disconnect();
     connectDelObject.disconnect();
     connectChgObject.disconnect();
+    connectTouchedObject.disconnect();
     connectEdtObject.disconnect();
     connectResObject.disconnect();
     connectHltObject.disconnect();
