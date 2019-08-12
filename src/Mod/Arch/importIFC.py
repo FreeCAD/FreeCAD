@@ -1197,7 +1197,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         # there are files around in which the material color is different from the shape color
                         # all viewers use the shape color whereas in FreeCAD the shape color will be
                         # overwritten by the material color (if there is a material with a color).
-                        # In such a case FreeCAD shows different a color than all common ifc viewers
+                        # In such a case FreeCAD shows a different color than all common ifc viewers
                         # https://forum.freecadweb.org/viewtopic.php?f=39&t=38440
                         col = objects[o].ViewObject.ShapeColor[:3]
                         dig = 5
