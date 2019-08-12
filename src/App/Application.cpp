@@ -938,8 +938,11 @@ int Application::setActiveTransaction(const char *name, bool persist) {
             FC_LOG("transaction rename to '" << name << "'");
             for(auto &v : DocMap)
                 v.second->renameTransaction(name,_activeTransactionID);
-        }else
+        } else {
+            if(persist)
+                AutoTransaction::setEnable(false);
             return 0;
+        }
     }else{
         FC_LOG("set active transaction '" << name << "'");
         _activeTransactionID = 0;
