@@ -191,19 +191,13 @@ void TaskProjGroup::projectionTypeChanged(int index)
 
     if(index == 0) {
         //layout per Page (Document)
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.activeDocument().%s.ProjectionType = '%s'",
-                                multiView->getNameInDocument(), "Default");
+        FCMD_OBJ_CMD2("ProjectionType = '%s'",multiView, "Default");
     } else if(index == 1) {
         // First Angle layout
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.activeDocument().%s.ProjectionType = '%s'",
-                                multiView->getNameInDocument(), "First Angle");
+        FCMD_OBJ_CMD2("ProjectionType = '%s'",multiView, "First Angle");
     } else if(index == 2) {
         // Third Angle layout
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.activeDocument().%s.ProjectionType = '%s'",
-                                multiView->getNameInDocument(), "Third Angle");
+        FCMD_OBJ_CMD2("ProjectionType = '%s'",multiView, "Third Angle");
     } else {
         Base::Console().Log("Error - TaskProjGroup::projectionTypeChanged - unknown projection layout: %d\n",
                             index);
@@ -228,8 +222,7 @@ void TaskProjGroup::scaleTypeChanged(int index)
 
     if(index == 0) {
         // Document Scale Type
-        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
-                                                                                             , "Page");
+        FCMD_OBJ_CMD2("ScaleType = '%s'", multiView, "Page");
     } else if(index == 1) {
         // Automatic Scale Type
 //        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
@@ -243,16 +236,14 @@ void TaskProjGroup::scaleTypeChanged(int index)
     } else if(index == 2) {
         // Custom Scale Type
         //block recompute
-        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
-                                                                                             , "Custom");
+        FCMD_OBJ_CMD2("ScaleType = '%s'", multiView, "Custom");
         ui->sbScaleNum->setEnabled(true);
         ui->sbScaleDen->setEnabled(true);
 
         int a = ui->sbScaleNum->value();
         int b = ui->sbScaleDen->value();
         double scale = (double) a / (double) b;
-        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
-                                                                                     , scale);
+        FCMD_OBJ_CMD2("Scale = %f", multiView, scale);
         //unblock recompute
     } else {
         Base::Console().Log("Error - TaskProjGroup::scaleTypeChanged - unknown scale type: %d\n",index);
@@ -374,9 +365,8 @@ void TaskProjGroup::scaleManuallyChanged(int i)
     int b = ui->sbScaleDen->value();
 
     double scale = (double) a / (double) b;
-    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
-                                                                                     , scale);
-    multiView->recomputeFeature();  //just a repaint.  multiView is already marked for recompute by changed to Scale
+    FCMD_OBJ_CMD2("Scale = %f", multiView, scale);
+    multiView->recomputeFeature(true);  //just a repaint.  multiView is already marked for recompute by changed to Scale
 }
 
 void TaskProjGroup::changeEvent(QEvent *e)

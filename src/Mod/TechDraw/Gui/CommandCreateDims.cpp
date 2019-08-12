@@ -144,10 +144,9 @@ void CmdTechDrawNewDimension::activated(int iMsg)
         }
     }
     TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
-    std::string FeatName = getUniqueObjectName("Dimension");
+    std::string FeatName = getUniqueObjectName("Dimension",page);
     std::string dimType;
 
     std::vector<App::DocumentObject *> objs;
@@ -205,23 +204,16 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     }
 
     openCommand("Create Dimension");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
-                                                       ,dimType.c_str());
-
+    FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
         throw Base::TypeError("CmdTechDrawNewDimension - dim not found\n");
     }
+    FCMD_OBJ_CMD2("Type = '%s'",dim,dimType.c_str()); 
     dim->References2D.setValues(objs, subs);
-
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-    commitCommand();
+    FCMD_OBJ_CMD(page,"addView(" << getObjectCmd(dim) << ")");
+    objFeat->touch(true);
     dim->recomputeFeature();
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
 }
 
 bool CmdTechDrawNewDimension::isActive(void)
@@ -271,10 +263,9 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
         }
     }
     TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
-    std::string FeatName = getUniqueObjectName("Dimension");
+    std::string FeatName = getUniqueObjectName("Dimension",page);
 
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
@@ -325,25 +316,20 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     }
 
     openCommand("Create Dimension");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
-                                                       ,"Radius");
+    FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
         throw Base::TypeError("CmdTechDrawNewRadiusDimension - dim not found\n");
     }
+    FCMD_OBJ_CMD(dim,"Type = 'Radius'");
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    FCMD_OBJ_CMD(page,"addView(" << getObjectCmd(dim) << ")");
 
-    commitCommand();
+    objFeat->touch(true);
 
     dim->recomputeFeature();
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
 }
 
 bool CmdTechDrawNewRadiusDimension::isActive(void)
@@ -393,10 +379,9 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
         }
     }
     TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
-    std::string FeatName = getUniqueObjectName("Dimension");
+    std::string FeatName = getUniqueObjectName("Dimension",page);
 
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
@@ -447,24 +432,19 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     }
 
     openCommand("Create Dimension");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
-                                                       ,"Diameter");
+    FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
         throw Base::TypeError("CmdTechDrawNewDiameterDimension - dim not found\n");
     }
+    FCMD_OBJ_CMD(dim,"Type = 'Diameter'");
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    FCMD_OBJ_CMD(page,"addView(" << getObjectCmd(dim) << ")");
 
-    commitCommand();
+    objFeat->touch(true);
     dim->recomputeFeature();
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
 }
 
 bool CmdTechDrawNewDiameterDimension::isActive(void)
@@ -514,11 +494,9 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
         }
     }
     TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
-    std::string FeatName = getUniqueObjectName("Dimension");
-    std::string dimType;
+    std::string FeatName = getUniqueObjectName("Dimension",page);
 
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
@@ -557,27 +535,23 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     }
 
     openCommand("Create Dimension");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')", FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'", FeatName.c_str()
-                                                       , "Distance");
+
+    FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
         throw Base::TypeError("CmdTechDrawNewLengthDimension - dim not found\n");
     }
+    FCMD_OBJ_CMD(dim,"Type = 'Distance'");
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    FCMD_OBJ_CMD(page,"addView(" << getObjectCmd(dim) << ")");
 
-    commitCommand();
+    objFeat->touch(true);
     dim->recomputeFeature();
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
     dim->Y.setValue(-mid.y);
-
-    //Horrible hack to force Tree update (claimChildren)
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
 }
 
 bool CmdTechDrawNewLengthDimension::isActive(void)
@@ -627,11 +601,9 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
         }
     }
     TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
-    std::string FeatName = getUniqueObjectName("Dimension");
-    std::string dimType;
+    std::string FeatName = getUniqueObjectName("Dimension",page);
 
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
@@ -669,28 +641,24 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
     }
 
     openCommand("Create Dimension");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
-                                                       ,"DistanceX");
-
+    FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
         throw Base::TypeError("CmdTechDrawNewDistanceXDimension - dim not found\n");
     }
+    FCMD_OBJ_CMD(dim,"Type = 'DistanceX'");
+
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    FCMD_OBJ_CMD(page,"addView(" << getObjectCmd(dim) << ")");
 
-    commitCommand();
+    objFeat->touch(true);
+
     dim->recomputeFeature();
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
     dim->Y.setValue(-mid.y);
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
 }
 
 bool CmdTechDrawNewDistanceXDimension::isActive(void)
@@ -740,11 +708,9 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
         }
     }
     TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
-    std::string FeatName = getUniqueObjectName("Dimension");
-    std::string dimType;
+    std::string FeatName = getUniqueObjectName("Dimension",page);
 
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
@@ -782,27 +748,23 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     }
 
     openCommand("Create Dimension");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
-                                                       ,"DistanceY");
+    FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
         throw Base::TypeError("CmdTechDrawNewDistanceYDimension - dim not found\n");
     }
+    FCMD_OBJ_CMD(dim,"Type = 'DistanceY'");
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    FCMD_OBJ_CMD(page,"addView(" << getObjectCmd(dim) << ")");
 
-    commitCommand();
+    objFeat->touch(true);
+
     dim->recomputeFeature();
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
     dim->Y.setValue(-mid.y);
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
 }
 
 bool CmdTechDrawNewDistanceYDimension::isActive(void)
@@ -852,10 +814,9 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
         }
     }
     TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
-    std::string FeatName = getUniqueObjectName("Dimension");
+    std::string FeatName = getUniqueObjectName("Dimension",page);
 
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
@@ -873,24 +834,19 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     }
 
     openCommand("Create Dimension");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
-                                                       ,"Angle");
-
+    FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
         throw Base::TypeError("CmdTechDrawNewAngleDimension - dim not found\n");
     }
+    FCMD_OBJ_CMD(dim,"Type = 'Angle'");
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    FCMD_OBJ_CMD(page,"addView(" << getObjectCmd(dim) << ")");
 
-    commitCommand();
+    objFeat->touch(true);
+
     dim->recomputeFeature();
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
 }
 
 bool CmdTechDrawNewAngleDimension::isActive(void)
@@ -940,10 +896,9 @@ void CmdTechDrawNewAngle3PtDimension::activated(int iMsg)
         }
     }
     TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewDimension *dim = 0;
-    std::string FeatName = getUniqueObjectName("Dimension");
+    std::string FeatName = getUniqueObjectName("Dimension",page);
 
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
@@ -962,24 +917,19 @@ void CmdTechDrawNewAngle3PtDimension::activated(int iMsg)
     }
 
     openCommand("Create Dimension");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
-                                                       ,"Angle3Pt");
-
+    FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
         throw Base::TypeError("CmdTechDrawNewAngle3PtDimension - dim not found\n");
     }
+    FCMD_OBJ_CMD(dim,"Type = 'Angle3Pt'");
     dim->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    FCMD_OBJ_CMD(page,"addView(" << getObjectCmd(dim) << ")");
 
-    commitCommand();
+    objFeat->touch(true);
+
     dim->recomputeFeature();
-
-    //Horrible hack to force Tree update
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
 }
 
 bool CmdTechDrawNewAngle3PtDimension::isActive(void)

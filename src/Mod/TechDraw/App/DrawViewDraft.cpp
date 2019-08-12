@@ -33,6 +33,7 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
+#include <App/Document.h>
 
 #include "DrawViewDraft.h"
 
@@ -95,36 +96,30 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
 
     App::DocumentObject* sourceObj = Source.getValue();
     if (sourceObj) {
-        std::string svgFrag;
-        std::string svgHead = getSVGHead();
-        std::string svgTail = getSVGTail();
-        std::string FeatName = getNameInDocument();
-        std::string SourceName = sourceObj->getNameInDocument();
-        // Draft.getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False)
-
-        std::stringstream paramStr;
-        App::Color col = Color.getValue();
-        paramStr << ",scale=" << getScale() 
+        std::stringstream cmd;
+        cmd << "import Draft\n"
+            << "App.getDocument('" << getDocument()->getName() << "').getObject('"
+            << getNameInDocument() << "').Symbol = '" << getSVGHead() << "' + "
+                << "Draft.getSVG(App.getDocument('"
+                    << sourceObj->getDocument()->getName() << "').getObject('" 
+                    << sourceObj->getNameInDocument() << "'),"
+                 << ",scale=" << getScale() 
                  << ",linewidth=" << LineWidth.getValue() 
                  << ",fontsize=" << FontSize.getValue()
                  // TODO treat fillstyle here
                  << ",direction=FreeCAD.Vector(" << Direction.getValue().x << "," << Direction.getValue().y << "," << Direction.getValue().z << ")"
                  << ",linestyle=\"" << LineStyle.getValue() << "\""
-                 << ",color=\"" << col.asCSSString() << "\""
+                 << ",color=\"" << Color.getValue().asCSSString() << "\""
                  << ",linespacing=" << LineSpacing.getValue()
                  // We must set techdraw to "true" becausea couple of things behave differently than in Drawing
-                 << ",techdraw=True";
+                 << ",techdraw=True)"
+            << " + '" << getSVGTail() << "'";
 
 // this is ok for a starting point, but should eventually make dedicated Draft functions that build the svg for all the special cases
 // (Arch section, etc)
 // like Draft.makeDrawingView, but we don't need to create the actual document objects in Draft, just the svg.
-        Base::Interpreter().runString("import Draft");
-        Base::Interpreter().runStringArg("svgBody = Draft.getSVG(App.activeDocument().%s %s)",
-                                         SourceName.c_str(),paramStr.str().c_str());
-//        Base::Interpreter().runString("print svgBody");
-        Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
-                                          FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
-        }
+            Base::Interpreter().runString(cmd.str().c_str());
+    }
 //    requestPaint();
     return DrawView::execute();
 }

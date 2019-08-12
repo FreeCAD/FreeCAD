@@ -33,6 +33,7 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
+#include <App/Document.h>
 
 #include "DrawViewArch.h"
 
@@ -98,30 +99,27 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
 
     App::DocumentObject* sourceObj = Source.getValue();
     if (sourceObj) {
-        std::string svgFrag;
-        std::string svgHead = getSVGHead();
-        std::string svgTail = getSVGTail();
-        std::string FeatName = getNameInDocument();
-        std::string SourceName = sourceObj->getNameInDocument();
-        // ArchSectionPlane.getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=False,scale=1,linewidth=1,fontsize=1):
+        std::stringstream cmd;
+        cmd << "import ArchSectionPlane\n"
+            << "App.getDocument('" << getDocument()->getName() << "').getObject('"
+            << getNameInDocument() << "').Symbol = '" << getSVGHead() << "' + "
+                << "ArchSelectionPlane.getSVG(App.getDocument('"
+                    << sourceObj->getDocument()->getName() << "').getObject('" 
+                    << sourceObj->getNameInDocument() << "'),"
+                    << ",allOn=" << (AllOn.getValue() ? "True" : "False")
+                    << ",renderMode=" << RenderMode.getValue()
+                    << ",showHidden=" << (ShowHidden.getValue() ? "True" : "False")
+                    << ",showFill=" << (ShowFill.getValue() ? "True" : "False")
+                    << ",scale=" << getScale()
+                    << ",linewidth=" << LineWidth.getValue()
+                    << ",fontsize=" << FontSize.getValue()
+                    << ",techdraw=True"
+                    << ",rotation=" << Rotation.getValue()
+                    << ",fillSpaces=" << (FillSpaces.getValue() ? "True" : "False")
+                    << ")"
+                << " + '" << getSVGTail() << "'";
 
-        std::stringstream paramStr;
-        paramStr << ",allOn=" << (AllOn.getValue() ? "True" : "False")
-                 << ",renderMode=" << RenderMode.getValue()
-                 << ",showHidden=" << (ShowHidden.getValue() ? "True" : "False")
-                 << ",showFill=" << (ShowFill.getValue() ? "True" : "False")
-                 << ",scale=" << getScale()
-                 << ",linewidth=" << LineWidth.getValue()
-                 << ",fontsize=" << FontSize.getValue()
-                 << ",techdraw=True"
-                 << ",rotation=" << Rotation.getValue()
-                 << ",fillSpaces=" << (FillSpaces.getValue() ? "True" : "False");
-
-        Base::Interpreter().runString("import ArchSectionPlane");
-        Base::Interpreter().runStringArg("svgBody = ArchSectionPlane.getSVG(App.activeDocument().%s %s)",
-                                         SourceName.c_str(),paramStr.str().c_str());
-        Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",
-                                          FeatName.c_str(),svgHead.c_str(),svgTail.c_str());
+        Base::Interpreter().runString(cmd.str().c_str());
     }
 //    requestPaint();
     return DrawView::execute();

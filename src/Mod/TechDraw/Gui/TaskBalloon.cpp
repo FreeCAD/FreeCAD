@@ -126,6 +126,7 @@ void TaskDlgBalloon::update()
 //==== calls from the TaskView ===============================================================
 void TaskDlgBalloon::open()
 {
+    App::GetApplication().setActiveTransaction("Edit balloon",true);
 }
 
 void TaskDlgBalloon::clicked(int i)
@@ -136,12 +137,14 @@ void TaskDlgBalloon::clicked(int i)
 bool TaskDlgBalloon::accept()
 {
     widget->accept();
+    App::GetApplication().closeActiveTransaction();
     return true;
 }
 
 bool TaskDlgBalloon::reject()
 {
     widget->reject();
+    App::GetApplication().closeActiveTransaction(true);
     return true;
 }
 

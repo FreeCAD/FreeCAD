@@ -220,27 +220,26 @@ void CmdTechDrawNewHatch::activated(int iMsg)
     }
     const std::vector<std::string> &subNames = selection[0].getSubNames();
     TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
 
-    std::string FeatName = getUniqueObjectName("Hatch");
+    std::string FeatName = getUniqueObjectName("Hatch",page);
     std::stringstream featLabel;
     featLabel << FeatName << "F" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
     openCommand("Create Hatch");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawHatch','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
-
+    FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawHatch','" << FeatName << "')");
     auto hatch( static_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str())) );
+    FCMD_OBJ_CMD2("Label = '%s'",hatch,featLabel.str().c_str());
+
     hatch->Source.setValue(objFeat, subNames);
     //should this be: doCommand(Doc,"App..Feat..Source = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
     //seems very unwieldy
 
-    commitCommand();
+    // Signal tree view update
+    objFeat->touch(true);
 
-    //Horrible hack to force Tree update  ??still required??
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
-    getDocument()->recompute();
+    updateActive();
+
+    commitCommand();
 }
 
 bool CmdTechDrawNewHatch::isActive(void)
@@ -282,17 +281,17 @@ void CmdTechDrawNewGeomHatch::activated(int iMsg)
     }
     const std::vector<std::string> &subNames = selection[0].getSubNames();
     TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
 
-    std::string FeatName = getUniqueObjectName("GeomHatch");
+    std::string FeatName = getUniqueObjectName("GeomHatch",page);
     std::stringstream featLabel;
     featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
     openCommand("Create GeomHatch");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawGeomHatch','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
+    FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawGeomHatch','" << FeatName << "')");
 
     auto geomhatch( static_cast<TechDraw::DrawGeomHatch *>(getDocument()->getObject(FeatName.c_str())) );
+    FCMD_OBJ_CMD2("Label = '%s'",geomhatch,featLabel.str().c_str());
+
     geomhatch->Source.setValue(objFeat, subNames);
     Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(geomhatch);
     TechDrawGui::ViewProviderGeomHatch* hvp = dynamic_cast<TechDrawGui::ViewProviderGeomHatch*>(vp);
@@ -300,17 +299,11 @@ void CmdTechDrawNewGeomHatch::activated(int iMsg)
         Base::Console().Log("ERROR - CommandDecorate - GeomHatch has no ViewProvider\n");
         return;
     }
+    objFeat->touch(true);
+    getDocument()->recompute();
 
     // dialog to fill in hatch values
     Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch,hvp,true));
-
-
-    commitCommand();
-
-    //Horrible hack to force Tree update  ??still required??
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
-    getDocument()->recompute();
 }
 
 bool CmdTechDrawNewGeomHatch::isActive(void)
@@ -345,7 +338,6 @@ void CmdTechDrawImage::activated(int iMsg)
     if (!page) {
         return;
     }
-    std::string PageName = page->getNameInDocument();
 
     // Reading an image
     std::string defaultDir = App::Application::getResourceDir();
@@ -357,11 +349,12 @@ void CmdTechDrawImage::activated(int iMsg)
 
     if (!fileName.isEmpty())
     {
-        std::string FeatName = getUniqueObjectName("Image");
+        std::string FeatName = getUniqueObjectName("Image",page);
         openCommand("Create Image");
-        doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewImage','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),fileName.toUtf8().constData());
-        doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+        FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewImage','" << FeatName << "')");
+        auto feat = page->getDocument()->getObject(FeatName.c_str());
+        FCMD_OBJ_CMD2("ImageFile = '%s'",feat,fileName.toUtf8().constData());
+        FCMD_OBJ_CMD(page,"addView(" << getObjectCmd(feat) << ")");
         updateActive();
         commitCommand();
     }
@@ -397,7 +390,6 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
     if (!page) {
         return;
     }
-    std::string PageName = page->getNameInDocument();
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
@@ -444,11 +436,10 @@ void CmdTechDrawRedrawPage::activated(int iMsg)
     if (!page) {
         return;
     }
-    std::string PageName = page->getNameInDocument();
     bool keepUpdated = page->KeepUpdated.getValue();
     if (!keepUpdated) {
-        doCommand(Doc,"App.activeDocument().%s.KeepUpdated = True",PageName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.KeepUpdated = False",PageName.c_str());
+        FCMD_OBJ_CMD(page,"KeepUpdated = True");
+        FCMD_OBJ_CMD(page,"KeepUpdated = False");
     } else {
         page->requestPaint();
     }

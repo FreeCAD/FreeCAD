@@ -278,19 +278,16 @@ void TaskRichAnno::createAnnoFeature()
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand("Create Leader");
-    Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                       annoType.c_str(),annoName.c_str());
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
-                       PageName.c_str(),annoName.c_str());
-
-    if (m_baseFeat != nullptr) {
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.AnnoParent = App.activeDocument().%s",
-                               annoName.c_str(),m_baseFeat->getNameInDocument());
-    }
+    Gui::Command::openCommand("Create Annotation");
+    FCMD_OBJ_DOC_CMD(m_basePage,"addObject('TechDraw::DrawRichAnno','" << annoName << "')");
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(annoName.c_str());
     if (obj == nullptr) {
         throw Base::RuntimeError("TaskRichAnno - new RichAnno object not found");
+    }
+    FCMD_OBJ_CMD(m_basePage,"addView(" << Gui::Command::getObjectCmd(obj) << ")");
+
+    if (m_baseFeat != nullptr) {
+        FCMD_OBJ_CMD(obj,"AnnoParent = " << Gui::Command::getObjectCmd(m_baseFeat));
     }
     if (obj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
         m_annoFeat = static_cast<TechDraw::DrawRichAnno*>(obj);
@@ -332,11 +329,8 @@ void TaskRichAnno::removeFeature(void)
         if (m_createMode) {
             try {
                 // this doesn't remove the QGMText item??
-                std::string PageName = m_basePage->getNameInDocument();
-                Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
-                                        PageName.c_str(),m_annoFeat->getNameInDocument());
-                Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",
-                                         m_annoFeat->getNameInDocument());
+                FCMD_OBJ_CMD(m_basePage,"removeView(" << Gui::Command::getObjectCmd(m_annoFeat) << ")");
+                FCMD_OBJ_DOC_CMD(m_annoFeat,"removeObject('" << m_annoFeat->getNameInDocument() << "')");
             }
             catch (...) {
                 Base::Console().Warning("TRA::removeFeature - failed to delete feature\n");

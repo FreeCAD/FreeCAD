@@ -516,8 +516,8 @@ void QGIViewDimension::datumLabelDragFinished()
     double x = Rez::appX(datumLabel->X()),
            y = Rez::appX(datumLabel->Y());
     Gui::Command::openCommand("Drag Dimension");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
+    FCMD_OBJ_CMD(dim,"X = " << x);
+    FCMD_OBJ_CMD(dim,"Y = " << -y);
     Gui::Command::commitCommand();
 }
 

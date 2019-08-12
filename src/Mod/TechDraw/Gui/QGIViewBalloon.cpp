@@ -299,8 +299,8 @@ void QGIViewBalloon::balloonLabelDragFinished()
     double x = Rez::appX(balloonLabel->X()),
            y = Rez::appX(balloonLabel->Y());
     Gui::Command::openCommand("Drag Balloon");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
+    FCMD_OBJ_CMD(dim,"X = " <<  x);
+    FCMD_OBJ_CMD(dim,"Y = " <<  -y);
     Gui::Command::commitCommand();
 }
 

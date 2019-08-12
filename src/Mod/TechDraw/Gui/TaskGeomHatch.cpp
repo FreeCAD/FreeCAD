@@ -127,7 +127,6 @@ void TaskGeomHatch::onFileChanged(void)
 bool TaskGeomHatch::accept()
 {
     updateValues();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     m_source->touch();
     m_source->getDocument()->recompute();          //TODO: this is only here to get graphics to update.
                                                    //      sb "redraw graphics" since m_source geom has not changed.
@@ -136,13 +135,7 @@ bool TaskGeomHatch::accept()
 
 bool TaskGeomHatch::reject()
 {
-    if (getCreateMode()) {
-        std::string HatchName = m_hatch->getNameInDocument();
-        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",HatchName.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-        m_source->touch();
-        m_source->getDocument()->recompute();
-    } else {
+    if (!getCreateMode()) {
         m_hatch->FilePattern.setValue(m_origFile);
         m_hatch->NamePattern.setValue(m_origName);
         m_hatch->ScalePattern.setValue(m_origScale);
@@ -205,6 +198,7 @@ void TaskDlgGeomHatch::update()
 //==== calls from the TaskView ===============================================================
 void TaskDlgGeomHatch::open()
 {
+    App::GetApplication().setActiveTransaction("Edit hatch",true);
 }
 
 void TaskDlgGeomHatch::clicked(int i)
@@ -215,12 +209,14 @@ void TaskDlgGeomHatch::clicked(int i)
 bool TaskDlgGeomHatch::accept()
 {
     widget->accept();
+    App::GetApplication().closeActiveTransaction();
     return true;
 }
 
 bool TaskDlgGeomHatch::reject()
 {
     widget->reject();
+    App::GetApplication().closeActiveTransaction(true);
     return true;
 }
 

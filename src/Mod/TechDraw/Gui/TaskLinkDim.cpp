@@ -198,10 +198,7 @@ void TaskLinkDim::updateDims()
 //            parts.push_back(m_part);
 //        }
         dim->References3D.setValues(m_parts,m_subs);
-        std::string DimName = dim->getNameInDocument();
-        std::string measureType = "True";
-        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.MeasureType = \'%s\'",
-                            DimName.c_str(),measureType.c_str());
+        FCMD_OBJ_CMD(dim,"MeasureType = 'True'");
         //dim->MeasureType.setValue("True");
     }
     count = ui->selector->availableTreeWidget()->topLevelItemCount();
@@ -211,10 +208,7 @@ void TaskLinkDim::updateDims()
         App::DocumentObject* obj = m_page->getDocument()->getObject(name.toStdString().c_str());
         TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(obj);
         if (dim && dimReferencesSelection(dim))  {
-           std::string measureType = "Projected";
-           std::string DimName = dim->getNameInDocument();
-           Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.MeasureType = \'%s\'",
-                            DimName.c_str(),measureType.c_str());
+           FCMD_OBJ_CMD(dim,"MeasureType = 'Projected'");
            dim->References3D.setValue(0,"");            //DVD.References3D
            dim->clear3DMeasurements();                  //DVD.measurement.References3D
         }

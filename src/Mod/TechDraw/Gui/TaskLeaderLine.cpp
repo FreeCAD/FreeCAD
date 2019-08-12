@@ -259,20 +259,15 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
     m_leaderName = m_basePage->getDocument()->getUniqueObjectName("DrawLeaderLine");
     m_leaderType = "TechDraw::DrawLeaderLine";
 
-    std::string PageName = m_basePage->getNameInDocument();
-
     Gui::Command::openCommand("Create Leader");
-    Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                       m_leaderType.c_str(),m_leaderName.c_str());
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
-                       PageName.c_str(),m_leaderName.c_str());
-    Command::doCommand(Command::Doc,"App.activeDocument().%s.LeaderParent = App.activeDocument().%s",
-                           m_leaderName.c_str(),m_baseFeat->getNameInDocument());
-
+    FCMD_OBJ_DOC_CMD(m_basePage,"addObject('" << m_leaderType << "','" << m_leaderName << "')");
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(m_leaderName.c_str());
     if (obj == nullptr) {
         throw Base::RuntimeError("TaskLeaderLine - new markup object not found");
     }
+    FCMD_OBJ_CMD(m_basePage,"addView(" << Gui::Command::getObjectCmd(obj) << ")");
+    FCMD_OBJ_CMD(obj,"LeaderParent = " << Gui::Command::getObjectCmd(m_basePage));
+
     if (obj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
         m_lineFeat = static_cast<TechDraw::DrawLeaderLine*>(obj);
         m_lineFeat->setPosition(Rez::appX(m_attachPoint.x),Rez::appX(- m_attachPoint.y), true);
@@ -320,11 +315,9 @@ void TaskLeaderLine::removeFeature(void)
     if (m_lineFeat != nullptr) {
         if (m_createMode) {
             try {
-                std::string PageName = m_basePage->getNameInDocument();
-                Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
-                                        PageName.c_str(),m_lineFeat->getNameInDocument());
-                Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",
-                                         m_lineFeat->getNameInDocument());
+                FCMD_OBJ_CMD(m_basePage,"removeView(" 
+                        << Gui::Command::getObjectCmd(m_lineFeat) << ")");
+                FCMD_OBJ_DOC_CMD(m_lineFeat,"removeObject('" << m_lineFeat->getNameInDocument() << "')");
             }
             catch (...) {
                 Base::Console().Message("TTL::removeFeature - failed to delete feature\n");

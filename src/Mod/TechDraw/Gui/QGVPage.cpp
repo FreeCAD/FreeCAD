@@ -1086,25 +1086,25 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
         QApplication::restoreOverrideCursor();
         balloonCursor->hide();
 
-        std::string FeatName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
-        std::string PageName = getDrawPage()->getNameInDocument();
+        auto page = getDrawPage();
+        std::string FeatName = page->getDocument()->getUniqueObjectName("Balloon");
         Gui::Command::openCommand("Create Balloon");
         TechDraw::DrawViewBalloon *balloon = 0;
 
         Gui::Command::openCommand("Create Balloon");
-        Command::doCommand(Command::Doc,"App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",FeatName.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-
-        balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDrawPage()->getDocument()->getObject(FeatName.c_str()));
+        FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewBalloon','" << FeatName << "')");
+        balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(
+                getDrawPage()->getDocument()->getObject(FeatName.c_str()));
         if (!balloon) {
             throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
         }
+        FCMD_OBJ_CMD(page,"addView(" << Gui::Command::getObjectCmd(balloon) << ")");
 
         balloon->sourceView.setValue(getDrawPage()->balloonParent);
         balloon->origin = mapToScene(event->pos());
 
-        Gui::Command::commitCommand();
         balloon->recomputeFeature();
+        Gui::Command::commitCommand();
 
         //Horrible hack to force Tree update
         double x = getDrawPage()->balloonParent->X.getValue();
