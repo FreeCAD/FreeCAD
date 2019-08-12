@@ -248,7 +248,7 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::Do
     projDir = d3Dirs.first;
     rotVec = d3Dirs.second;
 
-    auto ts = Part::Feature::getShape(obj,faceName.c_str());
+    auto ts = Part::Feature::getShape(obj,faceName.c_str(),true);
     if(ts.IsNull() || ts.ShapeType()!=TopAbs_FACE) {
         Base::Console().Warning("getProjDirFromFace(%s) is not a Face\n",faceName.c_str());
         return dirs;
