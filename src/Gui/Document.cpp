@@ -371,16 +371,12 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         }
     }
 
-    View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
+    View3DInventor *view3d = dynamic_cast<View3DInventor *>(getActiveView());
     // if the currently active view is not the 3d view search for it and activate it
-    if (!activeView) {
-        activeView = dynamic_cast<View3DInventor *>(setActiveView(vp));
-        if(!activeView){
-            FC_ERR("cannot edit without active view");
-            return false;
-        }
-    }
-    getMainWindow()->setActiveWindow(activeView);
+    if (view3d) 
+        getMainWindow()->setActiveWindow(view3d);
+    else
+        view3d = dynamic_cast<View3DInventor *>(setActiveView(vp));
     Application::Instance->setEditDocument(this);
 
     d->_editViewProviderParent = vp;
@@ -402,7 +398,8 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         FC_LOG("object '" << sobj->getFullName() << "' refuse to edit");
         return false;
     }
-    activeView->getViewer()->setEditingViewProvider(d->_editViewProvider,ModNum);
+    if(view3d)
+        view3d->getViewer()->setEditingViewProvider(d->_editViewProvider,ModNum);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg)
         dlg->setDocumentName(this->getDocument()->getName());
@@ -871,7 +868,6 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
 void Document::slotTouchedObject(const App::DocumentObject &Obj)
 {
     getMainWindow()->updateActions(true);
-    TreeWidget::updateStatus(true);
     if(!isModified()) {
         FC_LOG(Obj.getFullName() << " touched");
         setModified(true);
