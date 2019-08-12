@@ -3282,6 +3282,11 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
 int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force, bool *hasError, int options) 
 {
+    if (d->undoing || d->rollback) {
+        FC_LOG("Ignore document recompute on undo/redo");
+        return 0;
+    }
+
     ExpressionParser::clearWarning();
 
     int objectCount = 0;
@@ -3645,6 +3650,11 @@ int Document::_recomputeFeature(DocumentObject* Feat)
 
 bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
 {
+    if (d->undoing && d->rollback) {
+        FC_LOG("Ignore object recompute on undo/redo");
+        return false;
+    }
+
     // delete recompute log
     d->clearRecomputeLog(Feat);
 
