@@ -417,7 +417,6 @@ void TaskWeldingSymbol::collectOtherData(void)
 TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol(void)
 {
 //    Base::Console().Message("TWS::createWeldingSymbol()\n");
-    Gui::Command::openCommand("Create WeldSymbol");
     
     std::string symbolName = m_leadFeat->getDocument()->getUniqueObjectName("DrawWeldSymbol");
     std::string symbolType = "TechDraw::DrawWeldSymbol";
@@ -458,8 +457,6 @@ TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol(void)
         throw Base::RuntimeError("TaskWeldingSymbol - new symbol object not found");
     }
 
-    Gui::Command::updateActive();
-    Gui::Command::commitCommand();
     return newSym;
 }
 
@@ -556,7 +553,7 @@ std::vector<App::DocumentObject*> TaskWeldingSymbol::createTiles(void)
 
 std::vector<App::DocumentObject*> TaskWeldingSymbol::updateTiles(void)
 {
-//    Base::Console().Message("TWS::updateTiles()\n");
+    Base::Console().Message("TWS::updateTiles()\n");
     std::vector<App::DocumentObject*> tileFeats;
     std::string tileType("TechDraw::DrawTileWeld");
     std::string tileName;
@@ -566,7 +563,7 @@ std::vector<App::DocumentObject*> TaskWeldingSymbol::updateTiles(void)
     if (m_arrowIn != nullptr) {
         tileName = m_arrowIn->getNameInDocument();
     }
-    if (m_arrowIn == nullptr) {
+    if (m_arrowIn == nullptr) {   // this should never happen on an update!
         tileName = m_leadFeat->getDocument()->getUniqueObjectName("DrawTileWeld");
         Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
                    tileType.c_str(),tileName.c_str());
@@ -606,7 +603,7 @@ std::vector<App::DocumentObject*> TaskWeldingSymbol::updateTiles(void)
             tileName = m_otherIn->getNameInDocument();
         }
 
-        if ( (m_otherIn == nullptr) && 
+        if ( (m_otherIn == nullptr) &&    //m_otherIn can be nullptr if otherside added in edit session.
              (m_otherOut.toBeSaved) ) {
             tileName = m_leadFeat->getDocument()->getUniqueObjectName("DrawTileWeld");
             Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
@@ -675,15 +672,19 @@ bool TaskWeldingSymbol::accept()
 {
 //    Base::Console().Message("TWS::accept()\n");
     if (m_createMode) {
+        Gui::Command::openCommand("Create WeldSymbol");
         m_weldFeat = createWeldingSymbol();
         std::vector<App::DocumentObject*> tileFeats = createTiles();
         for (auto& obj: tileFeats) {
             TechDraw::DrawTileWeld* tile = dynamic_cast<TechDraw::DrawTileWeld*>(obj);
             tile->TileParent.setValue(m_weldFeat);
         }
+        Gui::Command::updateActive();
+        Gui::Command::commitCommand();
         m_weldFeat->recomputeFeature();
     //    m_weldFeat->requestPaint();    //not a dv!
     } else {
+        Gui::Command::openCommand("Edit WeldSymbol");
         try {
             updateWeldingSymbol();
             std::vector<App::DocumentObject*> tileFeats = updateTiles();
@@ -691,7 +692,9 @@ bool TaskWeldingSymbol::accept()
                 TechDraw::DrawTileWeld* tile = dynamic_cast<TechDraw::DrawTileWeld*>(obj);
                 tile->TileParent.setValue(m_weldFeat);
             }
+
             for (auto name: m_toRemove) {
+                //QGIV is removed from scene by MDIVP/QGVP on objectDelete
                 Command::doCommand(Command::Doc,
                      "App.activeDocument().removeObject('%s')", name.c_str());
             }
@@ -701,6 +704,8 @@ bool TaskWeldingSymbol::accept()
             Base::Console().Error("TWS::accept - failed to update symbol\n");
         }
 
+        Gui::Command::updateActive();
+        Gui::Command::commitCommand();
         m_weldFeat->recomputeFeature();
     //    m_weldFeat->requestPaint();    //not a dv!
     }

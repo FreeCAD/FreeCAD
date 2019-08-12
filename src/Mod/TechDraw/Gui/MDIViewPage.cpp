@@ -85,6 +85,8 @@
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
+#include <Mod/TechDraw/App/DrawTile.h>
+#include <Mod/TechDraw/App/DrawTileWeld.h>
 
 #include "Rez.h"
 #include "QGIDrawingTemplate.h"
@@ -101,6 +103,8 @@
 #include "QGILeaderLine.h"
 #include "QGIRichAnno.h"
 #include "QGMText.h"
+#include "QGIWeldSymbol.h"
+#include "QGITile.h"
 
 
 using namespace TechDrawGui;

@@ -95,7 +95,7 @@ App::DocumentObjectExecReturn *DrawWeldSymbol::execute(void)
 std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles(void) const
 {
 //    Base::Console().Message("DWS::getTiles()\n");
-    std::vector<App::DocumentObject*> temp;
+//    std::vector<App::DocumentObject*> temp;
     std::vector<DrawTileWeld*> result;
 
     std::vector<App::DocumentObject*> tiles = getInList();
