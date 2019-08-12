@@ -42,33 +42,41 @@
 #include "Rez.h"
 #include "DrawGuiUtil.h"
 #include "QGIView.h"
+#include "QGIWeldSymbol.h"
 #include "QGITile.h"
 
 using namespace TechDrawGui;
 
-QGITile::QGITile(TechDraw::DrawTileWeld* feat) :
-    m_tileFeat(feat),
+QGITile::QGITile() :
     m_textL(QString()),
     m_textR(QString()),
     m_textC(QString()),
-    m_scale(1.0)
+    m_scale(1.0),
+    m_row(0),
+    m_col(0),
+    m_tailRight(true),
+    m_altWeld(false)
 {
     m_qgSvg = new QGCustomSvg();
-    m_qgSvg->setParentItem(this);
-    m_effect = new QGraphicsColorizeEffect();
+    addToGroup(m_qgSvg);
+
+//    m_effect = new QGraphicsColorizeEffect();
+
     m_qgTextL = new QGCustomText();
-    m_qgTextL->setParentItem(this);
+    addToGroup(m_qgTextL);
+    
     m_qgTextR = new QGCustomText();
-    m_qgTextR->setParentItem(this);
+    addToGroup(m_qgTextR);
+
     m_qgTextC = new QGCustomText();
-    m_qgTextC->setParentItem(this);
+    addToGroup(m_qgTextC);
 
     m_wide = getSymbolWidth();
-    m_high = getFontSize();
+    m_high = prefFontSize();
     m_textL  = QString();
     m_textR  = QString();
     m_textC  = QString();
-    m_fontName = getTextFont();
+    m_fontName = prefTextFont();
     m_font = QFont(m_fontName);
 
 #if PY_MAJOR_VERSION < 3
@@ -85,6 +93,11 @@ QGITile::QGITile(TechDraw::DrawTileWeld* feat) :
     
     m_colNormal = prefNormalColor();
     m_colCurrent = m_colNormal;
+}
+
+QGITile::~QGITile(void)
+{
+
 }
 
 QVariant QGITile::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -106,13 +119,11 @@ void QGITile::draw(void)
     double textWidthL = m_qgTextL->boundingRect().width();
     double textWidthR = m_qgTextR->boundingRect().width();
     double totalWidth = m_wide + textWidthL + textWidthR;
-    int row = m_tileFeat->TileRow.getValue();
-    int col = m_tileFeat->TileColumn.getValue();
-    if (row == 0) {     //arrowSide
+    if (m_row == 0) {     //arrowSide
         double x = m_origin.x();
         double y = m_origin.y() - (m_high * 0.5);    //inverted y!!
         setPos(x,y);
-    } else if (row == -1) {    //otherSide
+    } else if (m_row == -1) {    //otherSide
         if (getAltWeld()) {
             if (isTailRight()) { 
                 double x = m_origin.x() + (0.5 * totalWidth); //move to right 1/2 tile width
@@ -129,8 +140,8 @@ void QGITile::draw(void)
             setPos(x,y);
         }
     } else {
-        double x = m_origin.x() + col * totalWidth;
-        double y = m_origin.y() - (row * m_high) - (m_high * 0.5);    //inverted y!!
+        double x = m_origin.x() + m_col * totalWidth;
+        double y = m_origin.y() - (m_row * m_high) - (m_high * 0.5);    //inverted y!!
         setPos(x,y);
     }
 }
@@ -138,14 +149,14 @@ void QGITile::draw(void)
 void QGITile::makeSymbol(void)
 {
 //    Base::Console().Message("QGIT::makeSymbol()\n");
-    m_effect->setColor(m_colCurrent);
+//    m_effect->setColor(m_colCurrent);
 
     if (m_svgPath.isEmpty()) {
         Base::Console().Warning("QGIT::makeSymbol - no symbol file set\n");
         return;
     }
 
-    m_qgSvg->setGraphicsEffect(m_effect);
+//    m_qgSvg->setGraphicsEffect(m_effect);
     
     QFileInfo fi(m_svgPath);
     if (fi.isReadable()) {
@@ -166,17 +177,14 @@ void QGITile::makeSymbol(void)
         Base::Console().Error("QGIT::makeSymbol - file: **%s** is not readable\n",qPrintable(m_svgPath));
         return;
     }
-    
 }
 
 void QGITile::makeText(void)
 {
 //    Base::Console().Message("QGIT::makeText()\n");
     prepareGeometryChange();
-    m_font.setPixelSize(getFontSize());
+    m_font.setPixelSize(prefFontSize());
     double verticalFudge = 0.10;
-
-    int row = m_tileFeat->TileRow.getValue();
 
     //(0, 0) is 1/2 up (above line symbol)!
     m_qgTextL->setFont(m_font);
@@ -188,7 +196,7 @@ void QGITile::makeText(void)
 
     double textHeightL = m_qgTextL->boundingRect().height();
     double vOffset = 0.0;
-    if (row < 0) {                      // below line
+    if (m_row < 0) {                      // below line
         vOffset = textHeightL * verticalFudge;
     } else {
         vOffset = 0.0;
@@ -202,7 +210,7 @@ void QGITile::makeText(void)
     charWidth = textWidth / m_textR.size();
     hMargin = (m_wide / 2.0) + (charWidth / 2.0);
     double textHeightR = m_qgTextR->boundingRect().height();
-    if (row < 0) {                      // below line
+    if (m_row < 0) {                      // below line
         vOffset =  textHeightR * verticalFudge;
     } else {
         vOffset = 0.0;
@@ -214,7 +222,7 @@ void QGITile::makeText(void)
     m_qgTextC->setColor(m_colCurrent);
     double textHeightC = m_qgTextC->boundingRect().height();
     textHeightC = textHeightC;
-    if (row < 0) {                      // below line
+    if (m_row < 0) {                      // below line
         vOffset = m_high  * (1 + verticalFudge);
     } else {
         vOffset = -0.5 * (m_high + textHeightC);
@@ -222,10 +230,11 @@ void QGITile::makeText(void)
     m_qgTextC->centerAt(0.0, vOffset);
 }
 
-void QGITile::setTilePosition(QPointF org)
-
+void QGITile::setTilePosition(QPointF org, int r, int c)
 {
     m_origin = org;
+    m_row = r;
+    m_col = c;
 }
 
 void QGITile::setTileScale(double s)
@@ -266,7 +275,7 @@ void QGITile::setSymbolFile(std::string s)
 void QGITile::setPrettyNormal() {
     m_colCurrent = m_colNormal;
 
-    m_effect->setColor(m_colNormal);
+//    m_effect->setColor(m_colNormal);
     m_qgTextL->setColor(m_colNormal);
     m_qgTextR->setColor(m_colNormal);
     m_qgTextC->setColor(m_colNormal);
@@ -277,7 +286,7 @@ void QGITile::setPrettyNormal() {
 void QGITile::setPrettyPre() {
     m_colCurrent = prefPreColor();
 
-    m_effect->setColor(m_colCurrent);
+//    m_effect->setColor(m_colCurrent);
     m_qgTextL->setColor(m_colCurrent);
     m_qgTextR->setColor(m_colCurrent);
     m_qgTextC->setColor(m_colCurrent);
@@ -288,7 +297,7 @@ void QGITile::setPrettyPre() {
 void QGITile::setPrettySel() {
     m_colCurrent = prefSelectColor();
 
-    m_effect->setColor(m_colCurrent);
+//    m_effect->setColor(m_colCurrent);
     m_qgTextL->setColor(m_colCurrent);
     m_qgTextR->setColor(m_colCurrent);
     m_qgTextC->setColor(m_colCurrent);
@@ -298,26 +307,12 @@ void QGITile::setPrettySel() {
 
 bool QGITile::isTailRight(void) 
 {
-    bool right = false;
-    App::DocumentObject* obj = m_tileFeat->TileParent.getValue();
-    TechDraw::DrawWeldSymbol* realParent = dynamic_cast<TechDraw::DrawWeldSymbol*>(obj);
-    if (realParent != nullptr) {
-        right = realParent->isTailRightSide();
-    }
-    return right;
+    return m_tailRight;
 }
 
 bool QGITile::getAltWeld(void) 
 {
-    bool alt = false;
-    App::DocumentObject* obj = m_tileFeat->TileParent.getValue();
-    TechDraw::DrawWeldSymbol* realParent = dynamic_cast<TechDraw::DrawWeldSymbol*>(obj);
-    if (realParent != nullptr) {
-        alt = realParent->AlternatingWeld.getValue();
-    } else {
-        Base::Console().Message("QGIT::getAltWeld - real parent not found!\n");
-    }
-    return alt;
+    return m_altWeld;
 }
 
 //TODO: this is Pen, not Brush. sb Brush to colour background
@@ -362,7 +357,7 @@ double QGITile::getSymbolFactor(void) const
     return s;
 }
 
-double QGITile::getFontSize(void) const
+double QGITile::prefFontSize(void) const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
@@ -374,14 +369,14 @@ double QGITile::getFontSize(void) const
 //factor to scale symbol to match font size
 double QGITile::scaleToFont(void) const
 {
-    double fpx = getFontSize();
+    double fpx = prefFontSize();
     double spx = getSymbolHeight();
     double factor = getSymbolFactor();
     double sf = (fpx / spx) * factor;
     return sf;
 }
 
-QString QGITile::getTextFont(void) const
+QString QGITile::prefTextFont(void) const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");

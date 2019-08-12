@@ -36,9 +36,13 @@
 #include <Base/Vector3D.h>
 #include "QGIView.h"
 
+namespace App {
+class Document;
+}
+
 namespace TechDraw {
 class DrawWeldSymbol;
-class DrawWeldSymbol;
+class DrawTileWeld;
 class DrawView;
 }
 
@@ -48,6 +52,7 @@ class QGIPrimPath;
 class QGITile;
 class QGIVertex;
 class QGCustomText;
+class QGILeaderLine;
 
 //*******************************************************************
 
@@ -58,8 +63,7 @@ class TechDrawGuiExport QGIWeldSymbol : public QGIView
 public:
     enum {Type = QGraphicsItem::UserType + 340};
 
-    explicit QGIWeldSymbol(QGILeaderLine* myParent = nullptr,
-                           TechDraw::DrawWeldSymbol* lead = nullptr);
+    explicit QGIWeldSymbol(QGILeaderLine* myParent = nullptr);
     ~QGIWeldSymbol() = default;
 
     int type() const override { return Type;}
@@ -74,6 +78,8 @@ public:
     virtual void updateView(bool update = false) override;
 
     virtual TechDraw::DrawWeldSymbol* getFeature(void);
+    virtual void setFeature(TechDraw::DrawWeldSymbol* feat);
+
     QPointF getTileOrigin(void);
     QPointF getKinkPoint(void);
     QPointF getTailPoint(void);
@@ -82,6 +88,8 @@ public:
     virtual void setPrettySel();
     virtual void setPrettyPre();
 
+    void getTileFeats(void);
+
 protected:
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
@@ -89,23 +97,26 @@ protected:
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
     virtual void draw() override;
-    void drawTile(TechDraw::DrawTileWeld* dtw,
-                  QGITile* tile);
+    void drawTile(TechDraw::DrawTileWeld* tileFeat);
     void drawAllAround(void);
     void drawTailText(void);
     void drawFieldFlag();
-    void removeDecorations();
 
 protected:
-    virtual QColor getNormalColor() override;
-    double getPrefArrowSize();
+    void removeQGITiles(void);
+    std::vector<QGITile*> getQGITiles(void);
+
+    virtual QColor prefNormalColor();
+    double prefArrowSize();
     
     TechDraw::DrawWeldSymbol* m_weldFeat;
     TechDraw::DrawLeaderLine* m_leadFeat;
+    TechDraw::DrawTileWeld*   m_arrowFeat;
+    TechDraw::DrawTileWeld*   m_otherFeat;
+    std::string               m_arrowName;
+    std::string               m_otherName;
 
     QGILeaderLine* m_qgLead;
-    QGITile* m_arrowTile;
-    QGITile* m_otherTile;
     QGCustomText* m_tailText;
     QGIPrimPath* m_fieldFlag;
     QGIVertex* m_allAround;
@@ -113,6 +124,8 @@ protected:
     QFont m_font;
 
     bool m_blockDraw;    //prevent redraws while updating.
+
+    std::string m_weldFeatName;
 };
 
 }

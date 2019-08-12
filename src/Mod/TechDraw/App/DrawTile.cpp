@@ -47,12 +47,10 @@ DrawTile::DrawTile(void)
 {
     static const char *group = "Tile";
 
-//    Base::Vector3d defOrg(0.0, 0.0, 0.0);
     ADD_PROPERTY_TYPE(TileParent,(0),group,(App::PropertyType)(App::Prop_None),
                       "Object to which this tile is attached");
     ADD_PROPERTY_TYPE(TileRow, (0), group, App::Prop_None, "Row in parent");
     ADD_PROPERTY_TYPE(TileColumn, (0), group, App::Prop_None, "Column in parent");
-//    ADD_PROPERTY_TYPE(TileOrigin, (defOrg), group, App::Prop_None, "Width limit before auto wrap");
 }
 
 DrawTile::~DrawTile()
