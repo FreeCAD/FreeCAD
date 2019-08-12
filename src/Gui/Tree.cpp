@@ -1304,6 +1304,7 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
         objitem->getOwnerDocument()->document()->setActiveView(objitem->object());
         auto manager = Application::Instance->macroManager();
         auto lines = manager->getLines();
+        auto editDoc = Application::Instance->editDocument();
         App::AutoTransaction committer("Double click", true);
         std::ostringstream ss;
         ss << Command::getObjectCmd(objitem->object()->getObject())
@@ -1312,6 +1313,10 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
             QTreeWidget::mouseDoubleClickEvent(event);
         else if(lines == manager->getLines())
             manager->addLine(MacroManager::Gui,ss.str().c_str());
+
+        // If the double click starts an editing, let the transaction persist
+        if(!editDoc && Application::Instance->editDocument())
+            committer.setEnable(false);
     }
 }
 
