@@ -76,6 +76,8 @@
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
+#include <Mod/TechDraw/App/DrawTile.h>
+#include <Mod/TechDraw/App/DrawTileWeld.h>
 #include <Mod/TechDraw/App/QDomNodeModel.h>
 
 #include "Rez.h"
@@ -98,6 +100,7 @@
 #include "QGILeaderLine.h"
 #include "QGIRichAnno.h"
 #include "QGIWeldSymbol.h"
+#include "QGITile.h"
 
 #include "ZVALUE.h"
 #include "ViewProviderPage.h"
@@ -114,8 +117,6 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
       m_renderer(Native),
       drawBkg(true),
       m_vpPage(0)
-//      ,
-//      m_borderState(true)
 {
     assert(vp);
     m_vpPage = vp;
@@ -557,19 +558,21 @@ QGIView * QGVPage::addWeldSymbol(TechDraw::DrawWeldSymbol* weld)
     if (parentObj != nullptr) {
         parentDV  = dynamic_cast<TechDraw::DrawView*>(parentObj);
     } else {
-        Base::Console().Message("QGVP::addWeldSymbol - no parent doc obj\n");
+//        Base::Console().Message("QGVP::addWeldSymbol - no parent doc obj\n");
     }
     if (parentDV != nullptr) {
         QGIView* parentQV = findQViewForDocObj(parentObj);
         QGILeaderLine* leadParent = dynamic_cast<QGILeaderLine*>(parentQV);
         if (leadParent != nullptr) {
-            weldGroup = new QGIWeldSymbol(leadParent, weld);
+            weldGroup = new QGIWeldSymbol(leadParent);
+            weldGroup->setFeature(weld);       //for QGIWS
+            weldGroup->setViewFeature(weld);   //for QGIV
             weldGroup->updateView(true);
         } else {
-            Base::Console().Message("QGVP::addWeldSymbol - no parent QGILL\n");
+            Base::Console().Error("QGVP::addWeldSymbol - no parent QGILL\n");
         }
     } else {
-        Base::Console().Message("QGVP::addWeldSymbol - parent is not DV!\n");
+        Base::Console().Error("QGVP::addWeldSymbol - parent is not DV!\n");
     }
     return weldGroup;
 }
@@ -735,8 +738,16 @@ void QGVPage::refreshViews(void)
 {
 //    Base::Console().Message("QGVP::refreshViews()\n");
     QList<QGraphicsItem*> list = scene()->items();
-    for (QList<QGraphicsItem*>::iterator it = list.begin(); it != list.end(); ++it) {
-        QGIView *itemView = dynamic_cast<QGIView *>(*it);
+    QList<QGraphicsItem*> qgiv;
+    //find only QGIV's 
+    for (auto q: list) {
+        QString tileFamily = QString::fromUtf8("QGIV");
+        if (tileFamily == q->data(0).toString()) {
+            qgiv.push_back(q);
+        }
+    }
+    for (auto q: qgiv) {
+        QGIView *itemView = dynamic_cast<QGIView *>(q);
         if(itemView) {
             itemView->updateView(true);
         }
