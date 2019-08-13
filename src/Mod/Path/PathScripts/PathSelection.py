@@ -98,19 +98,16 @@ class ENGRAVEGate(PathBaseGate):
 
 
 class CHAMFERGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub): # pylint: disable=unused-argument
         try:
             shape = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception: # pylint: disable=broad-except
             return False
 
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
             return True
 
-        if shape.ShapeType == 'Edge':
-            return True
-
-        if (shape.ShapeType == 'Face' and shape.normalAt(0, 0) == FreeCAD.Vector(0, 0, 1)):
+        if 'Edge' == shape.ShapeType or 'Face' == shape.ShapeType:
             return True
 
         if sub:
@@ -385,6 +382,7 @@ def select(op):
     opsel['Vcarve'] = vcarveselect
     opsel['Probe'] = probeselect
     opsel['Custom'] = customselect
+    opsel['Thread Milling'] = drillselect
     opsel['TurnFace'] = turnselect
     opsel['TurnProfile'] = turnselect
     opsel['TurnPartoff'] = turnselect
