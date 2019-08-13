@@ -25,6 +25,7 @@
 #define PARTDESIGN_FEATUREDRAFT_H
 
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include "FeatureDressUp.h"
 
@@ -38,7 +39,7 @@ class PartDesignExport Draft : public DressUp
 public:
     Draft();
 
-    App::PropertyFloatConstraint Angle;
+    App::PropertyAngle Angle;
     App::PropertyLinkSub NeutralPlane;
     App::PropertyLinkSub PullDirection;
     App::PropertyBool Reversed;
