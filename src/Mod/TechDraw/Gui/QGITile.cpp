@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QPainter>
+#include <QGraphicsItem>
 #include <QStyleOptionGraphicsItem>
 #include <QFile>
 #include <QFileInfo>
@@ -48,9 +49,9 @@
 using namespace TechDrawGui;
 
 QGITile::QGITile() :
-    m_textL(QString()),
-    m_textR(QString()),
-    m_textC(QString()),
+    m_textL(QString::fromUtf8(" ")),
+    m_textR(QString::fromUtf8(" ")),
+    m_textC(QString::fromUtf8(" ")),
     m_scale(1.0),
     m_row(0),
     m_col(0),
@@ -109,6 +110,7 @@ QVariant QGITile::itemChange(GraphicsItemChange change, const QVariant &value)
 void QGITile::draw(void)
 {
 //    Base::Console().Message("QGIT::draw()\n");
+
     prepareGeometryChange();
     m_wide = getSymbolWidth();
     m_high = getSymbolHeight() * scaleToFont();
@@ -192,7 +194,10 @@ void QGITile::makeText(void)
     m_qgTextL->setColor(m_colCurrent);
     double textWidth = m_qgTextL->boundingRect().width();
     double charWidth = textWidth / m_textL.size();   //not good for non-ASCII chars
-    double hMargin = (m_wide / 2.0) + (charWidth / 2.0);
+    double hMargin = 1;
+    if (!m_textL.isEmpty()) {
+        hMargin = (m_wide / 2.0) + (charWidth / 2.0);
+    }
 
     double textHeightL = m_qgTextL->boundingRect().height();
     double vOffset = 0.0;
@@ -208,7 +213,10 @@ void QGITile::makeText(void)
     m_qgTextR->setColor(m_colCurrent);
     textWidth = m_qgTextR->boundingRect().width();
     charWidth = textWidth / m_textR.size();
-    hMargin = (m_wide / 2.0) + (charWidth / 2.0);
+    hMargin = 1;
+    if (!m_textR.isEmpty()) {
+        hMargin = (m_wide / 2.0) + (charWidth / 2.0);
+    }
     double textHeightR = m_qgTextR->boundingRect().height();
     if (m_row < 0) {                      // below line
         vOffset =  textHeightR * verticalFudge;
