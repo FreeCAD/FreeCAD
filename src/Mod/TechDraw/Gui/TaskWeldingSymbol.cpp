@@ -553,7 +553,7 @@ std::vector<App::DocumentObject*> TaskWeldingSymbol::createTiles(void)
 
 std::vector<App::DocumentObject*> TaskWeldingSymbol::updateTiles(void)
 {
-    Base::Console().Message("TWS::updateTiles()\n");
+//    Base::Console().Message("TWS::updateTiles()\n");
     std::vector<App::DocumentObject*> tileFeats;
     std::string tileType("TechDraw::DrawTileWeld");
     std::string tileName;
