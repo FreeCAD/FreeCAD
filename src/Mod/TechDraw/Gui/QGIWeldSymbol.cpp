@@ -96,12 +96,15 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     setZValue(ZVALUE::DIMENSION);
 
     m_tailText = new QGCustomText();
+    m_tailText->setPlainText(
+                QString::fromUtf8(" "));
     addToGroup(m_tailText);
     m_tailText->hide();
     m_tailText->setPos(0.0, 0.0);         //avoid bRect issues
 
     m_allAround = new QGIVertex(-1);
     addToGroup(m_allAround);
+    m_allAround->setPos(0.0, 0.0);
     m_allAround->setAcceptHoverEvents(false);
     m_allAround->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_allAround->setFlag(QGraphicsItem::ItemIsMovable, false);
@@ -111,6 +114,7 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
 
     m_fieldFlag = new QGIPrimPath();
     addToGroup(m_fieldFlag);
+    m_fieldFlag->setPos(0.0, 0.0);
     m_fieldFlag->setAcceptHoverEvents(false);
     m_fieldFlag->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_fieldFlag->setFlag(QGraphicsItem::ItemIsMovable, false);
@@ -157,6 +161,7 @@ void QGIWeldSymbol::updateView(bool update)
 void QGIWeldSymbol::draw()
 {
 //    Base::Console().Message("QGIWS::draw()- %s\n", getFeature()->getNameInDocument());
+
     if (!isVisible()) {
         return;
     }
@@ -500,7 +505,7 @@ double QGIWeldSymbol::prefArrowSize()
 
 QRectF QGIWeldSymbol::boundingRect() const
 {
-    return customChildrenBoundingRect();
+    return childrenBoundingRect();
 }
 
 QPainterPath QGIWeldSymbol::shape() const
