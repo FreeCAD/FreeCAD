@@ -765,6 +765,23 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.debug(translate("Path", "Rotated to inverse angle."))
         return (clnBase, clnStock, angle)
 
+    def calculateStartFinalDepths(self, obj, shape, stock):
+        '''calculateStartFinalDepths(obj, shape, stock)
+            Calculate correct start and final depths for the shape(face) object provided.'''
+        finDep = max(obj.FinalDepth.Value, shape.BoundBox.ZMin)
+        stockTop = stock.Shape.BoundBox.ZMax
+        if obj.EnableRotation == 'Off':
+            strDep = obj.StartDepth.Value
+            if strDep <= finDep:
+                strDep = stockTop
+        else:
+            strDep = min(obj.StartDepth.Value, stockTop)
+            if strDep <= finDep:
+                strDep = stockTop
+                msg = translate('Path', "Start depth <= face depth.\nIncreased to stock top.")
+                PathLog.error(msg)
+        return (strDep, finDep)
+
     def sortTuplesByIndex(self, TupleList, tagIdx):
         '''sortTuplesByIndex(TupleList, tagIdx)
             sort list of tuples based on tag index provided
