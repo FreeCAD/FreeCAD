@@ -73,6 +73,7 @@ def Startup():
         from PathScripts import PathSlotGui
         from PathScripts import PathStop
         # from PathScripts import PathSurfaceGui  # Added in initGui.py due to OCL dependency
+        from PathScripts import PathThreadMillingGui
         from PathScripts import PathToolController
         from PathScripts import PathToolControllerGui
         from PathScripts import PathToolLibraryManager
