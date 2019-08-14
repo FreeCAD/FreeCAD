@@ -743,15 +743,6 @@ class svgHandler(xml.sax.ContentHandler):
                     ret = msgBox.exec_()
                     if ret == QtGui.QMessageBox.Yes:
                         self.svgdpi = 96.0
-<<<<<<< HEAD
-                    else:
-                        self.svgdpi = 90.0
-                    if ret:
-                        FCC.PrintMessage(translate("ImportSVG", _msg) + "\n")
-                        FCC.PrintMessage(translate("ImportSVG", _qst) + "\n")
-                        FCC.PrintMessage("*** User specified "
-                                         + str(self.svgdpi) + " dpi ***\n")
-=======
                 if 'style' in data:
                         if not data['style']:
                                 pass#empty style attribute stops inheriting from parent
@@ -832,7 +823,6 @@ class svgHandler(xml.sax.ContentHandler):
                                 self.grouptransform.append(m)
                         else:
                                 self.transform = m
->>>>>>> 6d64c2b2c6bc64ce21e7c2f4ed7e1ab2c8991f8e
                 else:
                     self.svgdpi = 96.0
                     FCC.PrintMessage(_msg + "\n")
