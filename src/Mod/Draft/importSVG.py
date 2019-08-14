@@ -743,86 +743,13 @@ class svgHandler(xml.sax.ContentHandler):
                     ret = msgBox.exec_()
                     if ret == QtGui.QMessageBox.Yes:
                         self.svgdpi = 96.0
-                if 'style' in data:
-                        if not data['style']:
-                                pass#empty style attribute stops inheriting from parent
-                        else:
-                                content = data['style'].replace(' ','')
-                                content = content.split(';')
-                                for i in content:
-                                        pair = i.split(':')
-                                        if len(pair)>1: data[pair[0]]=pair[1]
-
-                for k in ['x','y','x1','y1','x2','y2','r','rx','ry','cx','cy','width','height']:
-                        if k in data:
-                                data[k] = getsize(data[k][0],'css'+str(self.svgdpi))
-
-                for k in ['fill','stroke','stroke-width','font-size']:
-                        if k in data:
-                                if isinstance(data[k],list):
-                                    if data[k][0].lower().startswith("rgb("):
-                                        data[k] = ",".join(data[k])
-                                    else:
-                                        data[k]=data[k][0]
-
-                # extracting style info
-
-                self.fill = None
-                self.color = None
-                self.width = None
-                self.text = None
-
-                if name == 'svg':
-                        m=FreeCAD.Matrix()
-                        if not self.disableUnitScaling:
-                            if 'width' in data and 'height' in data and \
-                                'viewBox' in data:
-                                    vbw=float(data['viewBox'][2])
-                                    vbh=float(data['viewBox'][3])
-                                    w=attrs.getValue('width')
-                                    h=attrs.getValue('height')
-                                    self.viewbox=(vbw,vbh)
-                                    if len(self.grouptransform)==0:
-                                        unitmode='mm'+str(self.svgdpi)
-                                    else: #nested svg element
-                                        unitmode='css'+str(self.svgdpi)
-                                    abw = getsize(w,unitmode)
-                                    abh = getsize(h,unitmode)
-                                    sx=abw/vbw
-                                    sy=abh/vbh
-                                    preservearstr=' '.join(data.get('preserveAspectRatio',[])).lower()
-                                    uniformscaling = round(sx/sy,5) == 1
-                                    if uniformscaling:
-                                        m.scale(Vector(sx,sy,1))
-                                    else:
-                                        FreeCAD.Console.PrintWarning('Scaling Factors do not match!!!\n')
-                                        if preservearstr.startswith('none'):
-                                            m.scale(Vector(sx,sy,1))
-                                        else: #preserve the aspect ratio
-                                            if preservearstr.endswith('slice'):
-                                                sxy=max(sx,sy)
-                                            else:
-                                                sxy=min(sx,sy)
-                                            m.scale(Vector(sxy,sxy,1))
-                            elif len(self.grouptransform)==0:
-                                #fallback to current dpi
-                                m.scale(Vector(25.4/self.svgdpi,25.4/self.svgdpi,1))
-                        self.grouptransform.append(m) 
-                if 'fill' in data:
-                        if data['fill'][0] != 'none':
-                                self.fill = getcolor(data['fill'])
-                if 'stroke' in data:
-                        if data['stroke'][0] != 'none':
-                                self.color = getcolor(data['stroke'])
-                if 'stroke-width' in data:
-                        if data['stroke-width'] != 'none':
-                                self.width = getsize(data['stroke-width'],'css'+str(self.svgdpi))
-                if 'transform' in data:
-                        m = self.getMatrix(attrs.getValue('transform'))
-                        if name == "g":
-                                self.grouptransform.append(m)
-                        else:
-                                self.transform = m
+                    else:
+                        self.svgdpi = 90.0
+                    if ret:
+                        FCC.PrintMessage(translate("ImportSVG", _msg) + "\n")
+                        FCC.PrintMessage(translate("ImportSVG", _qst) + "\n")
+                        FCC.PrintMessage("*** User specified "
+                                         + str(self.svgdpi) + " dpi ***\n")
                 else:
                     self.svgdpi = 96.0
                     FCC.PrintMessage(_msg + "\n")
@@ -1559,7 +1486,7 @@ class svgHandler(xml.sax.ContentHandler):
                     obj.ViewObject.TextColor = (0.0, 0.0, 0.0, 0.0)
 
     def endElement(self, name):
-        """Finish procesing the element indicated by the name.
+        """Finish processing the element indicated by the name.
 
         Parameters
         ----------

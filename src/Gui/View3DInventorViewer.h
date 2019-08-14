@@ -379,7 +379,7 @@ protected:
 
     enum eWinGestureTuneState{
         ewgtsDisabled, //suppress tuning/re-tuning after errors
-        ewgtsNeedTuning, //gestures are to be retuned upon next event
+        ewgtsNeedTuning, //gestures are to be re-tuned upon next event
         ewgtsTuned
     };
     eWinGestureTuneState winGestureTuneState;//See ViewerEventFilter::eventFilter function for explanation
@@ -458,4 +458,3 @@ private:
 } // namespace Gui
 
 #endif  // GUI_VIEW3DINVENTORVIEWER_H
-

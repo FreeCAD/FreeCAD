@@ -111,7 +111,7 @@ END-ISO-10303-21;
 
 # ************************************************************************************************
 # ********** duplicate methods ****************
-# TODO red rid of this duplicate
+# TODO get rid of this duplicate
 
 def getPreferences():
 
