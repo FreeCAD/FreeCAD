@@ -45,10 +45,10 @@ QGIArrow::QGIArrow() :
     m_fill(Qt::SolidPattern),
     m_size(5.0),
     m_style(0),
+    m_flipped(false),
     m_dirMode(false),
     m_dir(Base::Vector3d(1.0,0.0,0.0))
 {
-    isFlipped = false;
     m_brush.setStyle(m_fill);
 
     setCacheMode(QGraphicsItem::NoCache);
@@ -57,43 +57,38 @@ QGIArrow::QGIArrow() :
     setFlag(QGraphicsItem::ItemIsMovable, false);
 }
 
-
-void QGIArrow::flip(bool state) {
-    isFlipped = state;
-}
-
 void QGIArrow::draw() {
     QPainterPath path;
     if (m_style == 0) {
         if (m_dirMode) {
             path = makeFilledTriangle(getDirection(), m_size,m_size/6.0);
         } else {
-            path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);     //"arrow l/w sb 3/1" ??
+            path = makeFilledTriangle(m_size,m_size/6.0,isFlipped());     //"arrow l/w sb 3/1" ??
         }
     } else if (m_style == 1) {
         if (m_dirMode) {
             path = makeOpenArrow(getDirection(), m_size,m_size/3.0);          //broad arrow?
         } else {
-            path = makeOpenArrow(m_size,m_size/3.0,isFlipped);
+            path = makeOpenArrow(m_size,m_size/3.0,isFlipped());
         }
     } else if (m_style == 2) {
         if (m_dirMode) {
             path = makeHashMark(getDirection(), m_size/2.0,m_size/2.0);       //big enough?
         } else {
-            path = makeHashMark(m_size/2.0,m_size/2.0,isFlipped);       //big enough?
+            path = makeHashMark(m_size/2.0,m_size/2.0,isFlipped());       //big enough?
         }
     } else if (m_style == 3) {
-        path = makeDot(m_size/2.0,m_size/2.0,isFlipped);
+        path = makeDot(m_size/2.0,m_size/2.0,isFlipped());
     } else if (m_style == 4) {
-        path = makeOpenDot(m_size/2.0,m_size/2.0,isFlipped);
+        path = makeOpenDot(m_size/2.0,m_size/2.0,isFlipped());
     } else if (m_style == 5) {
         if (m_dirMode) {
             path = makeForkArrow(getDirection(), m_size/2.0,m_size/2.0);       //big enough?
         } else {
-            path = makeForkArrow(m_size/2.0,m_size/2.0,isFlipped);       //big enough?
+            path = makeForkArrow(m_size/2.0,m_size/2.0,isFlipped());       //big enough?
         }
     } else {
-        path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);     //sb a question mark or ???
+        path = makeFilledTriangle(m_size,m_size/6.0,isFlipped());     //sb a question mark or ???
     }
     setPath(path);
 }
