@@ -68,35 +68,9 @@ def translate(ctx,txt):
 arrowtypes = ["Dot","Circle","Arrow","Tick","Tick-2"]
 
 #---------------------------------------------------------------------------
-# Backwards compatibility
+# The auxiliary functions need to be before the imported tool functions
+# and classes
 #---------------------------------------------------------------------------
-
-import DraftLayer
-_VisGroup = DraftLayer.Layer
-_ViewProviderVisGroup = DraftLayer.ViewProviderLayer
-makeLayer = DraftLayer.makeLayer
-
-import DraftWire
-_Wire = DraftWire._Wire
-_ViewProviderWire = DraftWire._ViewProviderWire
-makeWire = DraftWire.makeWire
-
-#---------------------------------------------------------------------------
-# General functions
-#---------------------------------------------------------------------------
-
-def stringencodecoin(ustr):
-    """stringencodecoin(str): Encodes a unicode object to be used as a string in coin"""
-    try:
-        from pivy import coin
-        coin4 = coin.COIN_MAJOR_VERSION >= 4
-    except (ImportError, AttributeError):
-        coin4 = False
-    if coin4:
-        return ustr.encode('utf-8')
-    else:
-        return ustr.encode('latin1')
-
 def typecheck (args_and_types, name="?"):
     "typecheck([arg1,type),(arg2,type),...]): checks arguments types"
     for v,t in args_and_types:
@@ -105,6 +79,7 @@ def typecheck (args_and_types, name="?"):
             w += str(v) + " is not " + str(t) + "\n"
             FreeCAD.Console.PrintWarning(w)
             raise TypeError("Draft." + str(name))
+
 
 def getParamType(param):
     if param in ["dimsymbol","dimPrecision","dimorientation","precision","defaultWP",
@@ -128,6 +103,7 @@ def getParamType(param):
         return "unsigned"
     else:
         return None
+
 
 def getParam(param,default=None):
     "getParam(parameterName): returns a Draft parameter value from the current config"
@@ -160,6 +136,344 @@ def getParam(param,default=None):
         return p.GetUnsigned(param,default)
     else:
         return None
+
+
+def dimSymbol(symbol=None,invert=False):
+    "returns the current dim symbol from the preferences as a pivy SoMarkerSet"
+    if symbol == None:
+        symbol = getParam("dimsymbol",0)
+    from pivy import coin
+    if symbol == 0:
+        return coin.SoSphere()
+    elif symbol == 1:
+        marker = coin.SoMarkerSet()
+        marker.markerIndex = FreeCADGui.getMarkerIndex("circle", 9)
+        return marker
+    elif symbol == 2:
+        marker = coin.SoSeparator()
+        t = coin.SoTransform()
+        t.translation.setValue((0,-2,0))
+        t.center.setValue((0,2,0))
+        if invert:
+            t.rotation.setValue(coin.SbVec3f((0,0,1)),-math.pi/2)
+        else:
+            t.rotation.setValue(coin.SbVec3f((0,0,1)),math.pi/2)
+        c = coin.SoCone()
+        c.height.setValue(4)
+        marker.addChild(t)
+        marker.addChild(c)
+        return marker
+    elif symbol == 3:
+        marker = coin.SoSeparator()
+        c = coin.SoCoordinate3()
+        c.point.setValues([(-1,-2,0),(0,2,0),(1,2,0),(0,-2,0)])
+        f = coin.SoFaceSet()
+        marker.addChild(c)
+        marker.addChild(f)
+        return marker
+    elif symbol == 4:
+        return dimDash((-1.5,-1.5,0),(1.5,1.5,0))
+    else:
+        print("Draft.dimsymbol: Not implemented")
+        return coin.SoSphere()
+
+
+def formatObject(target,origin=None):
+    '''
+    formatObject(targetObject,[originObject]): This function applies
+    to the given target object the current properties
+    set on the toolbar (line color and line width),
+    or copies the properties of another object if given as origin.
+    It also places the object in construction group if needed.
+    '''
+    if not target:
+        return
+    obrep = target.ViewObject
+    if not obrep:
+        return
+    ui = None
+    if gui:
+        if hasattr(FreeCADGui,"draftToolBar"):
+            ui = FreeCADGui.draftToolBar
+    if ui:
+        doc = FreeCAD.ActiveDocument
+        if ui.isConstructionMode():
+            col = fcol = ui.getDefaultColor("constr")
+            gname = getParam("constructiongroupname","Construction")
+            grp = doc.getObject(gname)
+            if not grp:
+                grp = doc.addObject("App::DocumentObjectGroup",gname)
+            grp.addObject(target)
+            if hasattr(obrep,"Transparency"):
+                obrep.Transparency = 80
+        else:
+            col = ui.getDefaultColor("ui")
+            fcol = ui.getDefaultColor("face")
+        col = (float(col[0]),float(col[1]),float(col[2]),0.0)
+        fcol = (float(fcol[0]),float(fcol[1]),float(fcol[2]),0.0)
+        lw = ui.linewidth
+        fs = ui.fontsize
+        if not origin or not hasattr(origin,'ViewObject'):
+            if "FontSize" in obrep.PropertiesList: obrep.FontSize = fs
+            if "TextColor" in obrep.PropertiesList: obrep.TextColor = col
+            if "LineWidth" in obrep.PropertiesList: obrep.LineWidth = lw
+            if "PointColor" in obrep.PropertiesList: obrep.PointColor = col
+            if "LineColor" in obrep.PropertiesList: obrep.LineColor = col
+            if "ShapeColor" in obrep.PropertiesList: obrep.ShapeColor = fcol
+        else:
+            matchrep = origin.ViewObject
+            for p in matchrep.PropertiesList:
+                if not p in ["DisplayMode","BoundingBox","Proxy","RootNode","Visibility"]:
+                    if p in obrep.PropertiesList:
+                        if not obrep.getEditorMode(p):
+                            if hasattr(getattr(matchrep,p),"Value"):
+                                val = getattr(matchrep,p).Value
+                            else:
+                                val = getattr(matchrep,p)
+                            setattr(obrep,p,val)
+            if matchrep.DisplayMode in obrep.listDisplayModes():
+                obrep.DisplayMode = matchrep.DisplayMode
+            if hasattr(matchrep,"DiffuseColor") and hasattr(obrep,"DiffuseColor"):
+                obrep.DiffuseColor = matchrep.DiffuseColor
+
+
+def select(objs=None):
+    "select(object): deselects everything and selects only the passed object or list"
+    if gui:
+        FreeCADGui.Selection.clearSelection()
+        if objs:
+            if not isinstance(objs,list):
+                objs = [objs]
+            for obj in objs:
+                if obj:
+                    FreeCADGui.Selection.addSelection(obj)
+
+
+def getType(obj):
+    "getType(object): returns the Draft type of the given object"
+    import Part
+    if not obj:
+        return None
+    if isinstance(obj,Part.Shape):
+        return "Shape"
+    if "Proxy" in obj.PropertiesList:
+        if hasattr(obj.Proxy,"Type"):
+            return obj.Proxy.Type
+    if obj.isDerivedFrom("Sketcher::SketchObject"):
+        return "Sketch"
+    if (obj.TypeId == "Part::Line"):
+        return "Part::Line"
+    if (obj.TypeId == "Part::Offset2D"):
+        return "Offset2D"
+    if obj.isDerivedFrom("Part::Feature"):
+        return "Part"
+    if (obj.TypeId == "App::Annotation"):
+        return "Annotation"
+    if obj.isDerivedFrom("Mesh::Feature"):
+        return "Mesh"
+    if obj.isDerivedFrom("Points::Feature"):
+        return "Points"
+    if (obj.TypeId == "App::DocumentObjectGroup"):
+        return "Group"
+    if (obj.TypeId == "App::Part"):
+        return "App::Part"
+    return "Unknown"
+
+
+class _DraftObject:
+    "The base class for Draft objects"
+    def __init__(self,obj,tp="Unknown"):
+        obj.Proxy = self
+        self.Type = tp
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
+
+    def execute(self,obj):
+        pass
+
+    def onChanged(self, obj, prop):
+        pass
+
+class _ViewProviderDraft:
+    "The base class for Draft Viewproviders"
+
+    def __init__(self, vobj):
+        vobj.Proxy = self
+        self.Object = vobj.Object
+        vobj.addProperty("App::PropertyEnumeration","Pattern","Draft",QT_TRANSLATE_NOOP("App::Property","Defines a hatch pattern"))
+        vobj.addProperty("App::PropertyFloat","PatternSize","Draft",QT_TRANSLATE_NOOP("App::Property","Sets the size of the pattern"))
+        vobj.Pattern = ["None"]+list(svgpatterns().keys())
+        vobj.PatternSize = 1
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
+
+    def attach(self,vobj):
+        self.texture = None
+        self.texcoords = None
+        self.Object = vobj.Object
+        self.onChanged(vobj,"Pattern")
+        return
+
+    def updateData(self, obj, prop):
+        return
+
+    def getDisplayModes(self, vobj):
+        modes=[]
+        return modes
+
+    def setDisplayMode(self, mode):
+        return mode
+
+    def onChanged(self, vobj, prop):
+        # treatment of patterns and image textures
+        if prop in ["TextureImage","Pattern","DiffuseColor"]:
+            if hasattr(self.Object,"Shape"):
+                if self.Object.Shape.Faces:
+                    from pivy import coin
+                    from PySide import QtCore
+                    path = None
+                    if hasattr(vobj,"TextureImage"):
+                        if vobj.TextureImage:
+                            path = vobj.TextureImage
+                    if not path:
+                        if hasattr(vobj,"Pattern"):
+                            if str(vobj.Pattern) in list(svgpatterns().keys()):
+                                path = svgpatterns()[vobj.Pattern][1]
+                            else:
+                                path = "None"
+                    if path and vobj.RootNode:
+                        if vobj.RootNode.getChildren().getLength() > 2:
+                            if vobj.RootNode.getChild(2).getChildren().getLength() > 0:
+                                if vobj.RootNode.getChild(2).getChild(0).getChildren().getLength() > 2:
+                                    r = vobj.RootNode.getChild(2).getChild(0).getChild(2)
+                                    i = QtCore.QFileInfo(path)
+                                    if self.texture:
+                                        r.removeChild(self.texture)
+                                        self.texture = None
+                                    if self.texcoords:
+                                        r.removeChild(self.texcoords)
+                                        self.texcoords = None
+                                    if i.exists():
+                                        size = None
+                                        if ".SVG" in path.upper():
+                                            size = getParam("HatchPatternResolution",128)
+                                            if not size:
+                                                size = 128
+                                        im = loadTexture(path, size)
+                                        if im:
+                                            self.texture = coin.SoTexture2()
+                                            self.texture.image = im
+                                            r.insertChild(self.texture,1)
+                                            if size:
+                                                s =1
+                                                if hasattr(vobj,"PatternSize"):
+                                                    if vobj.PatternSize:
+                                                        s = vobj.PatternSize
+                                                self.texcoords = coin.SoTextureCoordinatePlane()
+                                                self.texcoords.directionS.setValue(s,0,0)
+                                                self.texcoords.directionT.setValue(0,s,0)
+                                                r.insertChild(self.texcoords,2)
+        elif prop == "PatternSize":
+            if hasattr(self,"texcoords"):
+                if self.texcoords:
+                    s = 1
+                    if vobj.PatternSize:
+                        s = vobj.PatternSize
+                    vS = FreeCAD.Vector(self.texcoords.directionS.getValue().getValue())
+                    vT = FreeCAD.Vector(self.texcoords.directionT.getValue().getValue())
+                    vS.Length = s
+                    vT.Length = s
+                    self.texcoords.directionS.setValue(vS.x,vS.y,vS.z)
+                    self.texcoords.directionT.setValue(vT.x,vT.y,vT.z)
+        return
+
+    def execute(self,vobj):
+        return
+
+    def setEdit(self,vobj,mode=0):
+        if mode == 0:
+            FreeCADGui.runCommand("Draft_Edit")
+            return True
+        return False
+
+    def unsetEdit(self,vobj,mode=0):
+        if FreeCAD.activeDraftCommand:
+            FreeCAD.activeDraftCommand.finish()
+        FreeCADGui.Control.closeDialog()
+        return False
+
+    def getIcon(self):
+        return(":/icons/Draft_Draft.svg")
+
+    def claimChildren(self):
+        objs = []
+        if hasattr(self.Object,"Base"):
+            objs.append(self.Object.Base)
+        if hasattr(self.Object,"Objects"):
+            objs.extend(self.Object.Objects)
+        if hasattr(self.Object,"Components"):
+            objs.extend(self.Object.Components)
+        if hasattr(self.Object,"Group"):
+            objs.extend(self.Object.Group)
+        return objs
+
+class _ViewProviderDraftAlt(_ViewProviderDraft):
+    "a view provider that doesn't swallow its base object"
+
+    def __init__(self,vobj):
+        _ViewProviderDraft.__init__(self,vobj)
+
+    def claimChildren(self):
+        return []
+
+class _ViewProviderDraftPart(_ViewProviderDraftAlt):
+    "a view provider that displays a Part icon instead of a Draft icon"
+
+    def __init__(self,vobj):
+        _ViewProviderDraftAlt.__init__(self,vobj)
+
+    def getIcon(self):
+        return ":/icons/Tree_Part.svg"
+
+
+#---------------------------------------------------------------------------
+# Backwards compatibility
+#---------------------------------------------------------------------------
+
+import DraftLayer
+_VisGroup = DraftLayer.Layer
+_ViewProviderVisGroup = DraftLayer.ViewProviderLayer
+makeLayer = DraftLayer.makeLayer
+
+import DraftWire
+_Wire = DraftWire._Wire
+_ViewProviderWire = DraftWire._ViewProviderWire
+makeWire = DraftWire.makeWire
+
+#---------------------------------------------------------------------------
+# General functions
+#---------------------------------------------------------------------------
+
+def stringencodecoin(ustr):
+    """stringencodecoin(str): Encodes a unicode object to be used as a string in coin"""
+    try:
+        from pivy import coin
+        coin4 = coin.COIN_MAJOR_VERSION >= 4
+    except (ImportError, AttributeError):
+        coin4 = False
+    if coin4:
+        return ustr.encode('utf-8')
+    else:
+        return ustr.encode('latin1')
 
 def setParam(param,value):
     "setParam(parameterName,value): sets a Draft parameter with the given value"
@@ -202,35 +516,6 @@ def getRealName(name):
             return name[:len(name)-(i-1)]
     return name
 
-def getType(obj):
-    "getType(object): returns the Draft type of the given object"
-    import Part
-    if not obj:
-        return None
-    if isinstance(obj,Part.Shape):
-        return "Shape"
-    if "Proxy" in obj.PropertiesList:
-        if hasattr(obj.Proxy,"Type"):
-            return obj.Proxy.Type
-    if obj.isDerivedFrom("Sketcher::SketchObject"):
-        return "Sketch"
-    if (obj.TypeId == "Part::Line"):
-        return "Part::Line"
-    if (obj.TypeId == "Part::Offset2D"):
-        return "Offset2D"
-    if obj.isDerivedFrom("Part::Feature"):
-        return "Part"
-    if (obj.TypeId == "App::Annotation"):
-        return "Annotation"
-    if obj.isDerivedFrom("Mesh::Feature"):
-        return "Mesh"
-    if obj.isDerivedFrom("Points::Feature"):
-        return "Points"
-    if (obj.TypeId == "App::DocumentObjectGroup"):
-        return "Group"
-    if (obj.TypeId == "App::Part"):
-        return "App::Part"
-    return "Unknown"
 
 def getObjectsOfType(objectslist,typ):
     """getObjectsOfType(objectslist,typ): returns a list of objects of type "typ" found
@@ -311,44 +596,6 @@ def autogroup(obj):
                     if a:
                         a.addObject(obj)
 
-def dimSymbol(symbol=None,invert=False):
-    "returns the current dim symbol from the preferences as a pivy SoMarkerSet"
-    if symbol == None:
-        symbol = getParam("dimsymbol",0)
-    from pivy import coin
-    if symbol == 0:
-        return coin.SoSphere()
-    elif symbol == 1:
-        marker = coin.SoMarkerSet()
-        marker.markerIndex = FreeCADGui.getMarkerIndex("circle", 9)
-        return marker
-    elif symbol == 2:
-        marker = coin.SoSeparator()
-        t = coin.SoTransform()
-        t.translation.setValue((0,-2,0))
-        t.center.setValue((0,2,0))
-        if invert:
-            t.rotation.setValue(coin.SbVec3f((0,0,1)),-math.pi/2)
-        else:
-            t.rotation.setValue(coin.SbVec3f((0,0,1)),math.pi/2)
-        c = coin.SoCone()
-        c.height.setValue(4)
-        marker.addChild(t)
-        marker.addChild(c)
-        return marker
-    elif symbol == 3:
-        marker = coin.SoSeparator()
-        c = coin.SoCoordinate3()
-        c.point.setValues([(-1,-2,0),(0,2,0),(1,2,0),(0,-2,0)])
-        f = coin.SoFaceSet()
-        marker.addChild(c)
-        marker.addChild(f)
-        return marker
-    elif symbol == 4:
-        return dimDash((-1.5,-1.5,0),(1.5,1.5,0))
-    else:
-        print("Draft.dimsymbol: Not implemented")
-        return coin.SoSphere()
 
 def dimDash(p1, p2):
     '''dimDash(p1, p2): returns pivy SoSeparator.
@@ -500,63 +747,6 @@ def compareObjects(obj1,obj2):
             else:
                 print("Property " + p + " doesn't exist in one of the objects")
 
-def formatObject(target,origin=None):
-    '''
-    formatObject(targetObject,[originObject]): This function applies
-    to the given target object the current properties
-    set on the toolbar (line color and line width),
-    or copies the properties of another object if given as origin.
-    It also places the object in construction group if needed.
-    '''
-    if not target:
-        return
-    obrep = target.ViewObject
-    if not obrep:
-        return
-    ui = None
-    if gui:
-        if hasattr(FreeCADGui,"draftToolBar"):
-            ui = FreeCADGui.draftToolBar
-    if ui:
-        doc = FreeCAD.ActiveDocument
-        if ui.isConstructionMode():
-            col = fcol = ui.getDefaultColor("constr")
-            gname = getParam("constructiongroupname","Construction")
-            grp = doc.getObject(gname)
-            if not grp:
-                grp = doc.addObject("App::DocumentObjectGroup",gname)
-            grp.addObject(target)
-            if hasattr(obrep,"Transparency"):
-                obrep.Transparency = 80
-        else:
-            col = ui.getDefaultColor("ui")
-            fcol = ui.getDefaultColor("face")
-        col = (float(col[0]),float(col[1]),float(col[2]),0.0)
-        fcol = (float(fcol[0]),float(fcol[1]),float(fcol[2]),0.0)
-        lw = ui.linewidth
-        fs = ui.fontsize
-        if not origin or not hasattr(origin,'ViewObject'):
-            if "FontSize" in obrep.PropertiesList: obrep.FontSize = fs
-            if "TextColor" in obrep.PropertiesList: obrep.TextColor = col
-            if "LineWidth" in obrep.PropertiesList: obrep.LineWidth = lw
-            if "PointColor" in obrep.PropertiesList: obrep.PointColor = col
-            if "LineColor" in obrep.PropertiesList: obrep.LineColor = col
-            if "ShapeColor" in obrep.PropertiesList: obrep.ShapeColor = fcol
-        else:
-            matchrep = origin.ViewObject
-            for p in matchrep.PropertiesList:
-                if not p in ["DisplayMode","BoundingBox","Proxy","RootNode","Visibility"]:
-                    if p in obrep.PropertiesList:
-                        if not obrep.getEditorMode(p):
-                            if hasattr(getattr(matchrep,p),"Value"):
-                                val = getattr(matchrep,p).Value
-                            else:
-                                val = getattr(matchrep,p)
-                            setattr(obrep,p,val)
-            if matchrep.DisplayMode in obrep.listDisplayModes():
-                obrep.DisplayMode = matchrep.DisplayMode
-            if hasattr(matchrep,"DiffuseColor") and hasattr(obrep,"DiffuseColor"):
-                obrep.DiffuseColor = matchrep.DiffuseColor
 
 def getSelection():
     "getSelection(): returns the current FreeCAD selection"
@@ -570,16 +760,6 @@ def getSelectionEx():
         return FreeCADGui.Selection.getSelectionEx()
     return None
 
-def select(objs=None):
-    "select(object): deselects everything and selects only the passed object or list"
-    if gui:
-        FreeCADGui.Selection.clearSelection()
-        if objs:
-            if not isinstance(objs,list):
-                objs = [objs]
-            for obj in objs:
-                if obj:
-                    FreeCADGui.Selection.addSelection(obj)
 
 def loadSvgPatterns():
     "loads the default Draft SVG patterns and custom patters if available"
@@ -3603,169 +3783,6 @@ def calculatePlacementsOnPath(shapeRotation, pathwire, count, xlate, align):
 # Python Features definitions
 #---------------------------------------------------------------------------
 
-class _DraftObject:
-    "The base class for Draft objects"
-    def __init__(self,obj,tp="Unknown"):
-        obj.Proxy = self
-        self.Type = tp
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self,state):
-        if state:
-            self.Type = state
-
-    def execute(self,obj):
-        pass
-
-    def onChanged(self, obj, prop):
-        pass
-
-class _ViewProviderDraft:
-    "The base class for Draft Viewproviders"
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
-        self.Object = vobj.Object
-        vobj.addProperty("App::PropertyEnumeration","Pattern","Draft",QT_TRANSLATE_NOOP("App::Property","Defines a hatch pattern"))
-        vobj.addProperty("App::PropertyFloat","PatternSize","Draft",QT_TRANSLATE_NOOP("App::Property","Sets the size of the pattern"))
-        vobj.Pattern = ["None"]+list(svgpatterns().keys())
-        vobj.PatternSize = 1
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
-
-    def attach(self,vobj):
-        self.texture = None
-        self.texcoords = None
-        self.Object = vobj.Object
-        self.onChanged(vobj,"Pattern")
-        return
-
-    def updateData(self, obj, prop):
-        return
-
-    def getDisplayModes(self, vobj):
-        modes=[]
-        return modes
-
-    def setDisplayMode(self, mode):
-        return mode
-
-    def onChanged(self, vobj, prop):
-        # treatment of patterns and image textures
-        if prop in ["TextureImage","Pattern","DiffuseColor"]:
-            if hasattr(self.Object,"Shape"):
-                if self.Object.Shape.Faces:
-                    from pivy import coin
-                    from PySide import QtCore
-                    path = None
-                    if hasattr(vobj,"TextureImage"):
-                        if vobj.TextureImage:
-                            path = vobj.TextureImage
-                    if not path:
-                        if hasattr(vobj,"Pattern"):
-                            if str(vobj.Pattern) in list(svgpatterns().keys()):
-                                path = svgpatterns()[vobj.Pattern][1]
-                            else:
-                                path = "None"
-                    if path and vobj.RootNode:
-                        if vobj.RootNode.getChildren().getLength() > 2:
-                            if vobj.RootNode.getChild(2).getChildren().getLength() > 0:
-                                if vobj.RootNode.getChild(2).getChild(0).getChildren().getLength() > 2:
-                                    r = vobj.RootNode.getChild(2).getChild(0).getChild(2)
-                                    i = QtCore.QFileInfo(path)
-                                    if self.texture:
-                                        r.removeChild(self.texture)
-                                        self.texture = None
-                                    if self.texcoords:
-                                        r.removeChild(self.texcoords)
-                                        self.texcoords = None
-                                    if i.exists():
-                                        size = None
-                                        if ".SVG" in path.upper():
-                                            size = getParam("HatchPatternResolution",128)
-                                            if not size:
-                                                size = 128
-                                        im = loadTexture(path, size)
-                                        if im:
-                                            self.texture = coin.SoTexture2()
-                                            self.texture.image = im
-                                            r.insertChild(self.texture,1)
-                                            if size:
-                                                s =1
-                                                if hasattr(vobj,"PatternSize"):
-                                                    if vobj.PatternSize:
-                                                        s = vobj.PatternSize
-                                                self.texcoords = coin.SoTextureCoordinatePlane()
-                                                self.texcoords.directionS.setValue(s,0,0)
-                                                self.texcoords.directionT.setValue(0,s,0)
-                                                r.insertChild(self.texcoords,2)
-        elif prop == "PatternSize":
-            if hasattr(self,"texcoords"):
-                if self.texcoords:
-                    s = 1
-                    if vobj.PatternSize:
-                        s = vobj.PatternSize
-                    vS = FreeCAD.Vector(self.texcoords.directionS.getValue().getValue())
-                    vT = FreeCAD.Vector(self.texcoords.directionT.getValue().getValue())
-                    vS.Length = s
-                    vT.Length = s
-                    self.texcoords.directionS.setValue(vS.x,vS.y,vS.z)
-                    self.texcoords.directionT.setValue(vT.x,vT.y,vT.z)
-        return
-
-    def execute(self,vobj):
-        return
-
-    def setEdit(self,vobj,mode=0):
-        if mode == 0:
-            FreeCADGui.runCommand("Draft_Edit")
-            return True
-        return False
-
-    def unsetEdit(self,vobj,mode=0):
-        if FreeCAD.activeDraftCommand:
-            FreeCAD.activeDraftCommand.finish()
-        FreeCADGui.Control.closeDialog()
-        return False
-
-    def getIcon(self):
-        return(":/icons/Draft_Draft.svg")
-
-    def claimChildren(self):
-        objs = []
-        if hasattr(self.Object,"Base"):
-            objs.append(self.Object.Base)
-        if hasattr(self.Object,"Objects"):
-            objs.extend(self.Object.Objects)
-        if hasattr(self.Object,"Components"):
-            objs.extend(self.Object.Components)
-        if hasattr(self.Object,"Group"):
-            objs.extend(self.Object.Group)
-        return objs
-
-class _ViewProviderDraftAlt(_ViewProviderDraft):
-    "a view provider that doesn't swallow its base object"
-
-    def __init__(self,vobj):
-        _ViewProviderDraft.__init__(self,vobj)
-
-    def claimChildren(self):
-        return []
-
-class _ViewProviderDraftPart(_ViewProviderDraftAlt):
-    "a view provider that displays a Part icon instead of a Draft icon"
-
-    def __init__(self,vobj):
-        _ViewProviderDraftAlt.__init__(self,vobj)
-
-    def getIcon(self):
-        return ":/icons/Tree_Part.svg"
 
 
 class _Dimension(_DraftObject):
