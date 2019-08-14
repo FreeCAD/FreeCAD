@@ -298,7 +298,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
                 svgcache += render.getHiddenSVG(linewidth="SVGLINEWIDTH")
             svgcache += '</g>\n'
             # print(render.info())
-            section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill]
+            section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces]
     else:
 
         if not svgcache:
