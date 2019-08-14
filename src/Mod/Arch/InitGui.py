@@ -64,9 +64,6 @@ class ArchWorkbench(Workbench):
             FreeCADGui.addCommand('Arch_RebarTools', RebarGroupCommand())
             self.archtools[2] = "Arch_RebarTools"
 
-        # setup Draft_Edit command
-        import DraftEdit
-        FreeCADGui.addCommand('Draft_Edit',DraftEdit.Edit())
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
