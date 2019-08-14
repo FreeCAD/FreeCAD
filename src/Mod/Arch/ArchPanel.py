@@ -825,6 +825,11 @@ class PanelView:
     def __init__(self, obj):
 
         obj.Proxy = self
+
+        # setProperties of ArchComponent will be overwritten
+        # thus setProperties from ArchComponent will be explicit called to get the properties
+        ArchComponent.ViewProviderComponent.setProperties(self, vobj)
+
         self.setProperties(obj)
         obj.X = 10
         obj.Y = 10
@@ -924,6 +929,11 @@ class PanelCut(Draft._DraftObject):
     def __init__(self, obj):
         Draft._DraftObject.__init__(self,obj)
         obj.Proxy = self
+
+        # setProperties of ArchComponent will be overwritten
+        # thus setProperties from ArchComponent will be explicit called to get the properties
+        ArchComponent.ViewProviderComponent.setProperties(self, vobj)
+
         self.setProperties(obj)
 
     def setProperties(self,obj):
