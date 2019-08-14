@@ -41,11 +41,25 @@ __doc__ = "Path thread milling operation."
 PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 PathLog.trackModule(PathLog.thisModule())
 
-
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
+def radiiMetricInternal(majorDia, minorDia, toolDia, toolCrest = None):
+    '''internlThreadRadius(majorDia, minorDia, toolDia, toolCrest) ... returns the maximum radius for thread.'''
+    if toolCrest is None:
+        toolCrest = 0.0
+    # see https://www.amesweb.info/Screws/Internal-Metric-Thread-Dimensions-Chart.aspx
+    H = ((majorDia - minorDia) / 2.0 ) * 1.6             # (D - d)/2 = 5/8 * H
+    outerTip = majorDia / 2.0 + H / 8.0
+    toolTip = outerTip - toolCrest * 0.8660254037844386  # math.sqrt(3)/2 ... 60deg triangle height
+    return ((minorDia - toolDia) / 2, toolTip - toolDia / 2)
+
+def threadPasses(count, radii, majorDia, minorDia, toolDia, toolCrest = None):
+    minor, major = radii(majorDia, minorDia, toolDia, toolCrest)
+    dr  = (major - minor) / count
+    return [major - dr * (count - (i + 1)) for i in range(count)]
 
 class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
     '''Proxy object for thread milling operation.'''
@@ -77,13 +91,70 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyEnumeration", "Direction", "Mill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Direction of thread cutting operation"))
         obj.Direction = self.Directions
 
+    def threadStartDepth(self, obj):
+        if self.ThreadDirection == self.RightHand:
+            if self.Direction == self.DirectionClimb:
+                return self.FinalDepth
+            return self.StartDepth
+        if self.Direction == self.DirectionClimb:
+            return self.StartDepth
+        return self.FinalDepth
+
+    def threadFinalDepth(self, obj):
+        if self.ThreadDirection == self.RightHand:
+            if self.Direction == self.DirectionClimb:
+                return self.StartDepth
+            return self.FinalDepth
+        if self.Direction == self.DirectionClimb:
+            return self.FinalDepth
+        return self.StartDepth
+
+    def threadDirectionCmd(self, obj):
+        if self.ThreadDirection == self.RightHand:
+            if self.Direction == self.DirectionClimb:
+                return 'G2'
+            return 'G3'
+        if self.Direction == self.DirectionClimb:
+            return 'G3'
+        return 'G2'
+
+    def threadPassRadii(self, obj):
+        rMajor = (obj.MajorDiameter.Value - self.tool.Diameter) / 2.0
+        rMinor = (obj.MinorDiameter.Value - self.tool.Diameter) / 2.0
+        if obj.Passes < 1:
+            obj.Passes = 1
+        rPass  = (rMajor - rMinor) / obj.Passes
+        passes = [rMajor]
+        for i in range(1, obj.Passes):
+            passes.append(rMajor - rPass * i)
+        return list(reversed(passes))
+
+    def executeThreadMill(self, obj, loc, cmd, zStart, zFinal, pitch):
+        hPitch = obj.Pitch.Value / 2.0
+        if zStart > zFinal:
+            hPitch = -hPitch
+
+        self.commandlist.append(Path.Command('G0', {'Z': zStart, 'F': self.vertRapid}))
+        for r in threadPasses(obj.Passes, radiiMetricInternal, obj.MajorDiameter, obj.MinorDiameter, self.tool.Diameter, 0):
+            pass
 
     def circularHoleExecute(self, obj, holes):
         PathLog.track()
 
         self.commandlist.append(Path.Command("(Begin Thread Milling)"))
 
+        cmd = self.threadDirectionCmd(obj)
+        zStart = self.threadStartDepth(obj).Value
+        zFinal = self.threadFinalDepth(obj).Value
+        pitch = obj.Pitch.Value
+        if pitch <= 0:
+            PathLog.error("Cannot create thread with pitch {}".format(pitch))
+            return
+
         # rapid to clearance height
+        for loc in holes:
+            self.executeThreadMill(obj, loc, cmd, zStart, zFinal, pitch)
+
         self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
 
