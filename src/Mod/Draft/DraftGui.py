@@ -41,7 +41,7 @@ Report to Draft.py for info
 
 import six
 
-import FreeCAD, FreeCADGui, os, Draft, sys, DraftVecUtils, math
+import FreeCAD, FreeCADGui, os, Draft, sys, traceback, DraftVecUtils, math
 
 try:
     from PySide import QtCore, QtGui, QtSvg
@@ -150,6 +150,7 @@ class todo:
                     else:
                         f()
                 except:
+                    FreeCAD.Console.PrintLog (traceback.format_exc())
                     wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
                     FreeCAD.Console.PrintWarning (wrn)
         except ReferenceError:
@@ -171,6 +172,7 @@ class todo:
                         func()
                     FreeCAD.ActiveDocument.commitTransaction()
                 except:
+                    FreeCAD.Console.PrintLog (traceback.format_exc())
                     wrn = "[Draft.todo.commit] Unexpected error:", sys.exc_info()[0], "in ", func
                     FreeCAD.Console.PrintWarning (wrn)
             # restack Draft screen widgets after creation
@@ -185,6 +187,7 @@ class todo:
                 else:
                     f()
             except:
+                FreeCAD.Console.PrintLog (traceback.format_exc())
                 wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
                 FreeCAD.Console.PrintWarning (wrn)
         todo.afteritinerary = []

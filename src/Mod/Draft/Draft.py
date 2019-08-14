@@ -1288,9 +1288,6 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
             if len(obj.Base.ViewObject.DiffuseColor) > 1:
                 obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         baseobject.ViewObject.hide()
-        formatObject(obj,obj.Base)
-        if len(obj.Base.ViewObject.DiffuseColor) > 1:
-            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
 
@@ -1329,9 +1326,6 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
             if len(obj.Base.ViewObject.DiffuseColor) > 1:
                 obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         baseobject.ViewObject.hide()
-        formatObject(obj,obj.Base)
-        if len(obj.Base.ViewObject.DiffuseColor) > 1:
-            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
         select(obj)
     return obj
 
@@ -5928,8 +5922,9 @@ class _PathArray(_DraftLink):
             else:
                 FreeCAD.Console.PrintLog ("_PathArray.createGeometry: path " + obj.PathObj.Name + " has no edges\n")
                 return
-            base = self.pathArray(obj.Base.Placement,w,obj.Count,obj.Xlate,obj.Align)
-            return _DraftLink.buildShape(self,obj,pl,base)
+            base = calculatePlacementsOnPath(
+                    obj.Base.Shape.Placement.Rotation,w,obj.Count,obj.Xlate,obj.Align)
+            obj.Shape = _DraftLink.buildShape(self,obj,pl,base)
 
     def getWireFromSubs(self,obj):
         '''Make a wire from PathObj subelements'''
