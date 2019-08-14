@@ -7,10 +7,14 @@ SET(Arch_SRCS
     InitGui.py
     ArchComponent.py
     ArchIFC.py
+    ArchIFCView.py
     ArchIFCSchema.py
+    ArchProject.py
     ArchWall.py
     importIFC.py
     importIFClegacy.py
+    importIFCHelper.py
+    exportIFCHelper.py
     Arch.py
     ArchBuilding.py
     ArchFloor.py
@@ -62,6 +66,7 @@ SET(Arch_presets
     Presets/ifc_products_IFC4.json
     Presets/ifc_types_IFC2X3.json
     Presets/ifc_types_IFC4.json
+    Presets/ifc_contexts_IFC4.json
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})

@@ -521,13 +521,13 @@ class _Wall(ArchComponent.Component):
 
     "The Wall object"
 
-    def __init__(self,obj):
+    def __init__(self, obj):
 
-        ArchComponent.Component.__init__(self,obj)
+        ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
         obj.IfcType = "Wall"
 
-    def setProperties(self,obj):
+    def setProperties(self, obj):
 
         lp = obj.PropertiesList
         if not "Length" in lp:
@@ -750,12 +750,10 @@ class _Wall(ArchComponent.Component):
         obj.Area = obj.Length.Value * obj.Height.Value
 
     def onBeforeChange(self,obj,prop):
-
         if prop == "Length":
             self.oldLength = obj.Length.Value
 
-    def onChanged(self,obj,prop):
-
+    def onChanged(self, obj, prop):
         if prop == "Length":
             if obj.Base and obj.Length.Value and hasattr(self,"oldLength") and (self.oldLength != None) and (self.oldLength != obj.Length.Value):
                 if obj.Base.isDerivedFrom("Part::Feature"):
