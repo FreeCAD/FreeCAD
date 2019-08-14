@@ -3,8 +3,9 @@ import FreeCAD, Draft, json, ifcopenshell, math
 def getObjectsOfIfcType(objects, ifcType):
     results = []
     for object in objects:
-        if object.IfcType == ifcType:
-            results.append(object)
+        if hasattr(object,"IfcType"):
+            if object.IfcType == ifcType:
+                results.append(object)
     return results
 
 class SIUnitCreator:
