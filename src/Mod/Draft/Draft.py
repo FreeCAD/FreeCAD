@@ -76,6 +76,11 @@ _VisGroup = DraftLayer.Layer
 _ViewProviderVisGroup = DraftLayer.ViewProviderLayer
 makeLayer = DraftLayer.makeLayer
 
+import DraftWire
+_Wire = DraftWire._Wire
+_ViewProviderWire = DraftWire._ViewProviderWire
+makeWire = DraftWire.makeWire
+
 #---------------------------------------------------------------------------
 # General functions
 #---------------------------------------------------------------------------
