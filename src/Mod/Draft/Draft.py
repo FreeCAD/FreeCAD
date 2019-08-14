@@ -5912,7 +5912,8 @@ class _PathArray(_DraftLink):
             else:
                 FreeCAD.Console.PrintLog ("_PathArray.createGeometry: path " + obj.PathObj.Name + " has no edges\n")
                 return
-            base = self.pathArray(obj.Base.Placement,w,obj.Count,obj.Xlate,obj.Align)
+            base = calculatePlacementsOnPath(
+                        obj.Base.Shape.Placement.Rotation,w,obj.Count,obj.Xlate,obj.Align)
             return _DraftLink.buildShape(self,obj,pl,base)
 
     def getWireFromSubs(self,obj):
