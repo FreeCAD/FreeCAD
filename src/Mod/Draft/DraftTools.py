@@ -5573,7 +5573,7 @@ class Draft_Snap_WorkingPlane():
 
 # drawing commands
 FreeCADGui.addCommand('Draft_SelectPlane',SelectPlane())
-FreeCADGui.addCommand('Draft_Line',Line())
+
 
 FreeCADGui.addCommand('Draft_Circle',Circle())
 class CommandArcGroup:
