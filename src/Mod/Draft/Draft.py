@@ -459,6 +459,8 @@ _Wire = DraftWire._Wire
 _ViewProviderWire = DraftWire._ViewProviderWire
 makeWire = DraftWire.makeWire
 
+makeLine = DraftWire.makeLine
+
 #---------------------------------------------------------------------------
 # General functions
 #---------------------------------------------------------------------------
