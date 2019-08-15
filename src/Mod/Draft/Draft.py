@@ -81,6 +81,11 @@ def typecheck (args_and_types, name="?"):
             raise TypeError("Draft." + str(name))
 
 
+def tolerance():
+    "tolerance(): returns the tolerance value from Draft user settings"
+    return getParam("tolerance",0.05)
+
+
 def getParamType(param):
     if param in ["dimsymbol","dimPrecision","dimorientation","precision","defaultWP",
                  "snapRange","gridEvery","linewidth","UiMode","modconstrain","modsnap",
@@ -501,10 +506,6 @@ def setParam(param,value):
 def precision():
     "precision(): returns the precision value from Draft user settings"
     return getParam("precision",6)
-
-def tolerance():
-    "tolerance(): returns the tolerance value from Draft user settings"
-    return getParam("tolerance",0.05)
 
 def epsilon():
     ''' epsilon(): returns a small number based on Draft.tolerance() for use in
