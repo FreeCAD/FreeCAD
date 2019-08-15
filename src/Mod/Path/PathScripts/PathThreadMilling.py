@@ -27,6 +27,7 @@ from __future__ import print_function
 import FreeCAD
 import Path
 import PathScripts.PathCircularHoleBase as PathCircularHoleBase
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
@@ -48,6 +49,7 @@ def translate(context, text, disambig=None):
 
 def radiiMetricInternal(majorDia, minorDia, toolDia, toolCrest = None):
     '''internlThreadRadius(majorDia, minorDia, toolDia, toolCrest) ... returns the maximum radius for thread.'''
+    PathLog.track(majorDia, minorDia, toolDia, toolCrest)
     if toolCrest is None:
         toolCrest = 0.0
     # see https://www.amesweb.info/Screws/Internal-Metric-Thread-Dimensions-Chart.aspx
@@ -57,22 +59,114 @@ def radiiMetricInternal(majorDia, minorDia, toolDia, toolCrest = None):
     return ((minorDia - toolDia) / 2, toolTip - toolDia / 2)
 
 def threadPasses(count, radii, majorDia, minorDia, toolDia, toolCrest = None):
+    PathLog.track(count, radii, majorDia, minorDia, toolDia, toolCrest)
     minor, major = radii(majorDia, minorDia, toolDia, toolCrest)
     dr  = (major - minor) / count
     return [major - dr * (count - (i + 1)) for i in range(count)]
 
+class _InternalThread(object):
+    '''Helper class for dealing with different thread types'''
+    def __init__(self, cmd, zStart, zFinal, pitch):
+        self.cmd = cmd
+        if zStart < zFinal:
+            self.pitch = pitch
+        else:
+            self.pitch = -pitch
+        self.hPitch = self.pitch / 2
+        self.zStart = zStart
+        self.zFinal = zFinal
+
+    def overshoots(self, z):
+        '''overshoots(z) ... returns true if adding another half helix goes beyond the thread bounds'''
+        if self.pitch < 0:
+            return z + self.hPitch < self.zFinal
+        return z + self.hPitch > self.zFinal
+
+    def adjustX(self, x, dx):
+        '''adjustX(x, dx) ... move x by dx, the direction depends on the thread settings'''
+        if self.isG3() == (self.pitch > 0):
+            return x + dx
+        return x - dx
+
+    def adjustY(self, y, dy):
+        '''adjustY(y, dy) ... move y by dy, the direction depends on the thread settings'''
+        if self.isG3():
+            return y - dy
+        return y - dy
+
+    def isG3(self):
+        '''isG3() ... returns True if this is a G3 command'''
+        return self.cmd in ['G3', 'G03', 'g3', 'g03']
+
+    def isUp(self):
+        '''isUp() ... returns True if the thread goes from the bottom up'''
+        return self.pitch > 0
+
+def internalThreadCommands(loc, cmd, zStart, zFinal, pitch, radius, leadInOut):
+    '''internalThreadCommands(loc, cmd, zStart, zFinal, pitch, radius) ... returns the g-code to mill the given internal thread'''
+    thread = _InternalThread(cmd, zStart, zFinal, pitch)
+
+    yMin = loc.y - radius
+    yMax = loc.y + radius
+
+    path = []
+    # at this point the tool is at a safe height (depending on the previous thread), so we can move
+    # into position first, and then drop to the start height. If there is any material in the way this
+    # op hasn't been setup properly.
+    path.append(Path.Command('G0', {'X': loc.x, 'Y': loc.y}))
+    path.append(Path.Command('G0', {'Z': thread.zStart}))
+    if leadInOut:
+        path.append(Path.Command(thread.cmd, {'Y': yMax, 'J': (yMax - loc.y) / 2}))
+    else:
+        path.append(Path.Command('G1', {'Y': yMax}))
+
+    z = thread.zStart
+    r = -radius
+    i = 0
+    while True:
+        z = thread.zStart + i*thread.hPitch
+        if thread.overshoots(z):
+            break
+        if 0 == (i & 0x01):
+            y = yMin
+        else:
+            y = yMax
+        path.append(Path.Command(thread.cmd, {'Y': y, 'Z': z + thread.hPitch, 'J': r}))
+        r = -r
+        i = i + 1
+
+
+    z = thread.zStart + i*thread.hPitch
+    if PathGeom.isRoughly(z, thread.zFinal):
+        x = loc.x
+    else:
+        n = math.fabs(thread.zFinal - thread.zStart) / thread.hPitch
+        k = n - int(n)
+        dy = math.cos(k * math.pi)
+        dx = math.sin(k * math.pi)
+        y = thread.adjustY(loc.y, r * dy)
+        x = thread.adjustX(loc.x, r * dx)
+        path.append(Path.Command(thread.cmd, {'X': x, 'Y': y, 'Z': thread.zFinal, 'J': r}))
+
+    if leadInOut:
+        path.append(Path.Command(thread.cmd, {'X': loc.x, 'Y': loc.y, 'I': (loc.x - x) / 2, 'J': (loc.y - y) / 2})) 
+    else:
+        path.append(Path.Command('G1', {'X': loc.x, 'Y': loc.y}))
+    return path
+
 class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
     '''Proxy object for thread milling operation.'''
 
-    LeftHand = 'LeftHand'
-    RightHand = 'RightHand'
-    ThreadTypeCustom = 'Custom'
-    ThreadTypeMetricInternal = 'Metric - internal'
-    DirectionClimb = 'Climb'
+    LeftHand                    = 'LeftHand'
+    RightHand                   = 'RightHand'
+    ThreadTypeCustom            = 'Custom'
+    ThreadTypeMetricInternal    = 'Metric - internal'
+    DirectionClimb              = 'Climb'
+    DirectionConventional       = 'Conventional'
 
     ThreadOrientations = [LeftHand, RightHand]
     ThreadTypes = [ThreadTypeCustom, ThreadTypeMetricInternal]
-    Directions =  [DirectionClimb]
+    Directions =  [DirectionClimb, DirectionConventional]
 
     def circularHoleFeatures(self, obj):
         return PathOp.FeatureBaseGeometry
@@ -87,38 +181,64 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyLength", "MinorDiameter", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread's minor diameter"))
         obj.addProperty("App::PropertyLength", "Pitch", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread's pitch"))
         obj.addProperty("App::PropertyInteger", "ThreadFit", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set how many passes are used to cut the thread"))
-        obj.addProperty("App::PropertyInteger", "Passes", "Mill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set how many passes are used to cut the thread"))
-        obj.addProperty("App::PropertyEnumeration", "Direction", "Mill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Direction of thread cutting operation"))
+        obj.addProperty("App::PropertyInteger", "Passes", "Operation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set how many passes are used to cut the thread"))
+        obj.addProperty("App::PropertyEnumeration", "Direction", "Operation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Direction of thread cutting operation"))
+        obj.addProperty("App::PropertyBool", "LeadInOut", "Operation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set to True to get lead in and lead out arcs at the start and end of the thread cut"))
         obj.Direction = self.Directions
 
     def threadStartDepth(self, obj):
-        if self.ThreadDirection == self.RightHand:
-            if self.Direction == self.DirectionClimb:
-                return self.FinalDepth
-            return self.StartDepth
-        if self.Direction == self.DirectionClimb:
-            return self.StartDepth
-        return self.FinalDepth
+        if obj.ThreadOrientation == self.RightHand:
+            if obj.Direction == self.DirectionClimb:
+                PathLog.track(obj.Label, obj.FinalDepth)
+                return obj.FinalDepth
+            PathLog.track(obj.Label, obj.StartDepth)
+            return obj.StartDepth
+        if obj.Direction == self.DirectionClimb:
+            PathLog.track(obj.Label, obj.StartDepth)
+            return obj.StartDepth
+        PathLog.track(obj.Label, obj.FinalDepth)
+        return obj.FinalDepth
 
     def threadFinalDepth(self, obj):
-        if self.ThreadDirection == self.RightHand:
-            if self.Direction == self.DirectionClimb:
-                return self.StartDepth
-            return self.FinalDepth
-        if self.Direction == self.DirectionClimb:
-            return self.FinalDepth
-        return self.StartDepth
+        PathLog.track(obj.Label)
+        if obj.ThreadOrientation == self.RightHand:
+            if obj.Direction == self.DirectionClimb:
+                PathLog.track(obj.Label, obj.StartDepth)
+                return obj.StartDepth
+            PathLog.track(obj.Label, obj.FinalDepth)
+            return obj.FinalDepth
+        if obj.Direction == self.DirectionClimb:
+            PathLog.track(obj.Label, obj.FinalDepth)
+            return obj.FinalDepth
+        PathLog.track(obj.Label, obj.StartDepth)
+        return obj.StartDepth
 
     def threadDirectionCmd(self, obj):
-        if self.ThreadDirection == self.RightHand:
-            if self.Direction == self.DirectionClimb:
+        PathLog.track(obj.Label)
+        if obj.ThreadOrientation == self.RightHand:
+            if obj.Direction == self.DirectionClimb:
+                PathLog.track(obj.Label, 'G2')
                 return 'G2'
+            PathLog.track(obj.Label, 'G3')
             return 'G3'
-        if self.Direction == self.DirectionClimb:
+        if obj.Direction == self.DirectionClimb:
+            PathLog.track(obj.Label, 'G3')
             return 'G3'
+        PathLog.track(obj.Label, 'G2')
         return 'G2'
 
+    def threadSetup(self, obj):
+        # the thing to remember is that Climb, for an internal thread must always be G3
+        if obj.Direction == self.DirectionClimb:
+            if obj.ThreadOrientation == self.RightHand:
+                return ('G3', obj.FinalDepth.Value, obj.StartDepth.Value)
+            return ('G3', obj.StartDepth.Value, obj.FinalDepth.Value)
+        if obj.ThreadOrientation == self.RightHand:
+            return ('G2', obj.StartDepth.Value, obj.FinalDepth.Value)
+        return ('G2', obj.FinalDepth.Value, obj.StartDepth.Value)
+
     def threadPassRadii(self, obj):
+        PathLog.track(obj.Label)
         rMajor = (obj.MajorDiameter.Value - self.tool.Diameter) / 2.0
         rMinor = (obj.MinorDiameter.Value - self.tool.Diameter) / 2.0
         if obj.Passes < 1:
@@ -129,23 +249,30 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
             passes.append(rMajor - rPass * i)
         return list(reversed(passes))
 
-    def executeThreadMill(self, obj, loc, cmd, zStart, zFinal, pitch):
-        hPitch = obj.Pitch.Value / 2.0
-        if zStart > zFinal:
-            hPitch = -hPitch
+    def executeThreadMill(self, obj, loc, gcode, zStart, zFinal, pitch):
+        PathLog.track(obj.Label, loc, gcode, zStart, zFinal, pitch)
 
-        self.commandlist.append(Path.Command('G0', {'Z': zStart, 'F': self.vertRapid}))
-        for r in threadPasses(obj.Passes, radiiMetricInternal, obj.MajorDiameter, obj.MinorDiameter, self.tool.Diameter, 0):
-            pass
+        self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
+
+        for radius in threadPasses(obj.Passes, radiiMetricInternal, obj.MajorDiameter.Value, obj.MinorDiameter.Value, self.tool.Diameter, 0):
+            commands = internalThreadCommands(loc, gcode, zStart, zFinal, pitch, radius, obj.LeadInOut)
+            for cmd in commands:
+                p = cmd.Parameters
+                if cmd.Name in ['G0']:
+                    p.update({'F': self.vertRapid})
+                if cmd.Name in ['G1', 'G2', 'G3']:
+                    p.update({'F': self.horizFeed})
+                cmd.Parameters = p
+            self.commandlist.extend(commands)
+
+        self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
     def circularHoleExecute(self, obj, holes):
         PathLog.track()
 
         self.commandlist.append(Path.Command("(Begin Thread Milling)"))
 
-        cmd = self.threadDirectionCmd(obj)
-        zStart = self.threadStartDepth(obj).Value
-        zFinal = self.threadFinalDepth(obj).Value
+        (cmd, zStart, zFinal) = self.threadSetup(obj)
         pitch = obj.Pitch.Value
         if pitch <= 0:
             PathLog.error("Cannot create thread with pitch {}".format(pitch))
@@ -153,9 +280,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
         # rapid to clearance height
         for loc in holes:
-            self.executeThreadMill(obj, loc, cmd, zStart, zFinal, pitch)
-
-        self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
+            self.executeThreadMill(obj, FreeCAD.Vector(loc['x'], loc['y'], 0), cmd, zStart, zFinal, pitch)
 
 
     def opSetDefaultValues(self, obj, job):
@@ -165,6 +290,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         obj.Pitch = 1
         obj.Passes = 1
         obj.Direction = self.DirectionClimb
+        obj.LeadInOut = True
 
 
 def SetupProperties():
@@ -178,6 +304,7 @@ def SetupProperties():
     setup.append("Pitch")
     setup.append("Passes")
     setup.append("Direction")
+    setup.append("LeadInOut")
     return setup
 
 
