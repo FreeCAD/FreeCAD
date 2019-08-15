@@ -1129,22 +1129,6 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=
 
     return obj
 
-def makeLine(p1,p2=None):
-    '''makeLine(p1,p2): Creates a line between p1 and p2.
-    makeLine(LineSegment): Creates a line from a Part.LineSegment
-    makeLine(Shape): Creates a line from first vertex to last vertex of the given shape'''
-    if not p2:
-        if hasattr(p1,"StartPoint") and hasattr(p1,"EndPoint"):
-            p2 = p1.EndPoint
-            p1 = p1.StartPoint
-        elif hasattr(p1,"Vertexes"):
-            p2 = p1.Vertexes[-1].Point
-            p1 = p1.Vertexes[0].Point
-        else:
-            FreeCAD.Console.PrintError("Unable to create a line from the given data\n")
-            return
-    obj = makeWire([p1,p2])
-    return obj
 
 def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
     '''makeBSpline(pointslist,[closed],[placement]): Creates a B-Spline object
