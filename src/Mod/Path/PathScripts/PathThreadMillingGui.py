@@ -85,6 +85,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         obj.ThreadName = self.form.threadName.currentText()
         obj.Direction = self.form.opDirection.currentText()
         obj.Passes = self.form.opPasses.value()
+        obj.LeadInOut = self.form.leadInOut.checkState() == QtCore.Qt.Checked
 
         self.updateToolController(obj, self.form.toolController)
 
@@ -104,6 +105,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         self.form.opPasses.setValue(obj.Passes)
         self.form.opDirection.setCurrentText(obj.Direction)
+        self.form.leadInOut.setCheckState(QtCore.Qt.Checked if obj.LeadInOut else QtCore.Qt.Unchecked)
 
         self.majorDia.updateSpinBox()
         self.minorDia.updateSpinBox()
@@ -146,6 +148,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.threadMajor.editingFinished)
         signals.append(self.form.threadMinor.editingFinished)
         signals.append(self.form.threadPitch.editingFinished)
+        signals.append(self.form.threadOrientation.currentIndexChanged)
+        signals.append(self.form.opDirection.currentIndexChanged)
+        signals.append(self.form.opPasses.editingFinished)
+        signals.append(self.form.leadInOut.stateChanged)
 
         signals.append(self.form.toolController.currentIndexChanged)
 
