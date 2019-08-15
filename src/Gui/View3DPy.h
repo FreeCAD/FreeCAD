@@ -129,6 +129,7 @@ public:
     Py::Object getActiveObject(const Py::Tuple&);
     Py::Object getViewProvidersOfType(const Py::Tuple&);
     Py::Object redraw(const Py::Tuple&);
+    Py::Object setName(const Py::Tuple&);
 
 private:
     static void eventCallback(void * ud, SoEventCallback * n);
