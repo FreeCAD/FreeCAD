@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>482</width>
-    <height>736</height>
+    <height>756</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -167,7 +167,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Flat</string>
+         <string>Crest</string>
         </property>
        </widget>
       </item>
@@ -229,6 +229,13 @@
           <string>Conventional</string>
          </property>
         </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="leadInOut">
+        <property name="text">
+         <string>Lead In/Out</string>
+        </property>
        </widget>
       </item>
      </layout>
