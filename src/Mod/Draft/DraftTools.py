@@ -559,6 +559,8 @@ class Creator(DraftTool):
         if not noplanesetup:
             self.support = getSupport()
 
+from DraftWire import Line
+
 
 class BSpline(Line):
     "a FreeCAD command for creating a B-spline"
