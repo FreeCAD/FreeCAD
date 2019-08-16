@@ -141,8 +141,17 @@ class ObjectOp(PathOp.ObjectOp):
 
             if shape.ShapeType == 'Edge' and type(shape.Curve) == Part.Circle:
                 return shape.Curve.Radius * 2
-
-            # for all other shapes the diameter is just the dimension in X
+            
+            if shape.ShapeType == 'Face':
+                 for i in range(len(shape.Edges)):
+                    if (type(shape.Edges[i].Curve) == Part.Circle and 
+                        shape.Edges[i].Curve.Radius * 2 < shape.BoundBox.XLength*1.1 and 
+                        shape.Edges[i].Curve.Radius * 2 > shape.BoundBox.XLength*0.9):
+                        return shape.Edges[i].Curve.Radius * 2
+                        
+            
+            # for all other shapes the diameter is just the dimension in X. This may be inaccurate as the BoundBox is calculated on the tesselated geometry
+            PathLog.warning(translate("Path", "Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge."))
             return shape.BoundBox.XLength
         except Part.OCCError as e:
             PathLog.error(e)

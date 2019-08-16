@@ -313,7 +313,7 @@ class CommandBuildingPart:
 
 
 
-class BuildingPart:
+class BuildingPart(ArchIFC.IfcProduct):
 
 
     "The BuildingPart object"
@@ -326,7 +326,7 @@ class BuildingPart:
         self.setProperties(obj)
 
     def setProperties(self,obj):
-        ArchIFC.setProperties(obj)
+        ArchIFC.IfcProduct.setProperties(self, obj)
 
         pl = obj.PropertiesList
         if not "Height" in pl:
@@ -366,7 +366,7 @@ class BuildingPart:
 
     def onChanged(self,obj,prop):
 
-        ArchIFC.onChanged(obj, prop)
+        ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
         if prop == "Height":
             for child in obj.Group:
@@ -483,13 +483,10 @@ class ViewProviderBuildingPart:
             vobj.ShowLevel = True
         if not "ShowUnit" in pl:
             vobj.addProperty("App::PropertyBool","ShowUnit","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, show the unit on the level tag"))
-        if not "SetWorkingPlane" in pl:
-            vobj.addProperty("App::PropertyBool","SetWorkingPlane","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the working plane will automatically adapt to this level"))
-            vobj.SetWorkingPlane = True
         if not "OriginOffset" in pl:
-            vobj.addProperty("App::PropertyBool","OriginOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, when activated, Display offset will affect the origin mark too"))
+            vobj.addProperty("App::PropertyBool","OriginOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, display offset will affect the origin mark too"))
         if not "ShowLabel" in pl:
-            vobj.addProperty("App::PropertyBool","ShowLabel","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the object's label is displayed"))
+            vobj.addProperty("App::PropertyBool","ShowLabel","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, the object's label is displayed"))
             vobj.ShowLabel = True
         if not "FontName" in pl:
             vobj.addProperty("App::PropertyFont","FontName","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font to be used for texts"))
@@ -497,14 +494,31 @@ class ViewProviderBuildingPart:
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength","FontSize","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font size of texts"))
             vobj.FontSize = Draft.getParam("textheight",2.0)
-        if not "ViewData" in pl:
-            vobj.addProperty("App::PropertyFloatList","ViewData","BuildingPart",QT_TRANSLATE_NOOP("App::Property","Camera position data associated with this object"))
-        if not "RestoreView" in pl:
-            vobj.addProperty("App::PropertyBool","RestoreView","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"))
         if not "DiffuseColor" in pl:
             vobj.addProperty("App::PropertyColorList","DiffuseColor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The individual face colors"))
+
+        # Interaction properties
+        if not "SetWorkingPlane" in pl:
+            vobj.addProperty("App::PropertyBool","SetWorkingPlane","Interaction",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the working plane will automatically adapt to this level"))
+            vobj.SetWorkingPlane = True
         if not "AutoWorkingPlane" in pl:
-            vobj.addProperty("App::PropertyBool","AutoWorkingPlane","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If set to True, the working plane will be kept on Auto mode"))
+            vobj.addProperty("App::PropertyBool","AutoWorkingPlane","Interaction",QT_TRANSLATE_NOOP("App::Property","If set to True, the working plane will be kept on Auto mode"))
+        if not "ViewData" in pl:
+            vobj.addProperty("App::PropertyFloatList","ViewData","Interaction",QT_TRANSLATE_NOOP("App::Property","Camera position data associated with this object"))
+            vobj.setEditorMode("ViewData",2)
+        if not "RestoreView" in pl:
+            vobj.addProperty("App::PropertyBool","RestoreView","Interaction",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"))
+        if not "DoubleClickActivates" in pl:
+            vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree turns it active"))
+
+        # inventor saving
+        if not "SaveInventor" in pl:
+            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other file sin lightweight mode."))
+        if not "SavedInventor" in pl:
+            vobj.addProperty("App::PropertyFileIncluded","SavedInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","A slot to save the inventor representation of this object, if enabled"))
+            vobj.setEditorMode("SavedInventor",2)
+
+        # children properties
         if not "ChildrenOverride" in pl:
             vobj.addProperty("App::PropertyBool","ChildrenOverride","Children",QT_TRANSLATE_NOOP("App::Property","If true, show the objects contained in this Building Part will adopt these line, color and transparency settings"))
         if not "ChildrenLineWidth" in pl:
@@ -520,6 +534,8 @@ class ViewProviderBuildingPart:
             vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
         if not "ChildrenTransparency" in pl:
             vobj.addProperty("App::PropertyPercent","ChildrenTransparency","Children",QT_TRANSLATE_NOOP("App::Property","The transparency of child objects"))
+
+        # clip properties
         if not "CutView" in pl:
             vobj.addProperty("App::PropertyBool","CutView","Clip",QT_TRANSLATE_NOOP("App::Property","Cut the view above this level"))
         if not "CutMargin" in pl:
@@ -527,8 +543,6 @@ class ViewProviderBuildingPart:
             vobj.CutMargin = 1600
         if not "AutoCutView" in pl:
             vobj.addProperty("App::PropertyBool","AutoCutView","Clip",QT_TRANSLATE_NOOP("App::Property","Turn cutting on when activating this level"))
-        if not "SaveInventor" in pl:
-            vobj.addProperty("App::PropertyBool","SaveInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other file sin lightweight mode."))
 
     def onDocumentRestored(self,vobj):
 

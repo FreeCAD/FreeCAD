@@ -43,6 +43,7 @@ if FreeCAD.GuiUp:
 from ArchWall import *
 from ArchFloor import *
 from ArchFence import *
+from ArchProject import *
 from ArchSite import *
 from ArchBuilding import *
 from ArchStructure import *
