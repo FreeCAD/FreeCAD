@@ -31,6 +31,7 @@ import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import PathScripts.PathUtil as PathUtil
 import json
+import os
 
 from PySide import QtCore, QtGui
 
@@ -133,14 +134,11 @@ class CommandJobTemplateExport:
                 "Path - Job Template",
                 PathPreferences.filePath(),
                 "job_*.json")[0]
-        if foo:
-            s = '/'
-            splitList = foo.split(s)
-            li = len(splitList) - 1
-            if splitList[li][-5:] == '.json':
-                if splitList[li][:4] != 'job_' and splitList[li][:4] != 'Job_':
-                    splitList[li] = 'Job_' + splitList[li]
-                    foo = s.join(splitList)
+        if foo: 
+            if not os.path.basename(foo).startswith('job_'):
+                foo = os.path.join(os.path.dirname(foo), 'job_' + os.path.basename(foo))
+            if not foo.endswith('.json'):
+                foo = foo + '.json'
             cls.Execute(job, foo, dialog)
 
     @classmethod
