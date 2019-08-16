@@ -27,16 +27,24 @@ __title__="FreeCAD Draft Edit Tool"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin"
 __url__ = "http://www.freecadweb.org"
 
-import FreeCAD, FreeCADGui, Draft, DraftTools, math
+import FreeCAD
+import Draft
+import math
 
 from FreeCAD import Vector
-from DraftTrackers import *
 
-from PySide import QtCore
-from PySide.QtCore import QT_TRANSLATE_NOOP
-from DraftTools import translate
+# Do not import GUI-related modules if GUI is not there
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    import DraftTools
+    from DraftTrackers import *
+    from PySide import QtCore
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    from DraftTools import translate
+
 
 class Edit():
+
     "The Draft_Edit FreeCAD command definition"
 
     def __init__(self):
@@ -1125,3 +1133,9 @@ class Edit():
             self.obj.TagPosition = self.invpl.multVec(v)
         else:
             self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
+
+
+
+if FreeCAD.GuiUp:
+    # setup command
+    FreeCADGui.addCommand('Draft_Edit', Edit())

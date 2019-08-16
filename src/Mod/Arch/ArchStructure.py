@@ -896,6 +896,11 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     def __init__(self,vobj):
 
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
+
+        # setProperties of ArchComponent will be overwritten
+        # thus setProperties from ArchComponent will be explicit called to get the properties
+        ArchComponent.ViewProviderComponent.setProperties(self, vobj)
+
         self.setProperties(vobj)
         vobj.ShapeColor = ArchCommands.getDefaultColor("Structure")
 

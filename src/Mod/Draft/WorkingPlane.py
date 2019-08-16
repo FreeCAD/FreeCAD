@@ -4,11 +4,15 @@
 #
 #  This module provides the plane class which provides a virtual working plane
 #  in FreeCAD and a couple of utility functions.
-"""
+"""@package WorkingPlane
+\ingroup DRAFT
+\brief This module handles the working plane and grid of the Draft Workbench.
+
 This module provides the plane class which provides a virtual working plane
 in FreeCAD and a couple of utility functions.
-The Working Plane is mostly intended to be used in the Draft Workbench
-to draw 2D objects.
+The working plane is mostly intended to be used in the Draft Workbench
+to draw 2D objects in various orientations, not only in the standard XY,
+YZ, and XZ planes.
 """
 
 # ***************************************************************************
@@ -37,6 +41,7 @@ to draw 2D objects.
 
 import FreeCAD, math, DraftVecUtils
 from FreeCAD import Vector
+from FreeCAD import Console as FCC
 
 __title__ = "FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
@@ -61,13 +66,15 @@ class plane:
         A vector that is supposed to be perpendicular to `u` and `v`;
         it is helpful although redundant.
     position : Base::Vector3
-        A point throught which the plane goes through,
+        A point, which the plane goes through,
         that helps define the working plane.
     stored : bool
         A placeholder for a stored state.
     """
 
-    def __init__(self, u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1), pos=Vector(0, 0, 0)):
+    def __init__(self,
+                 u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1),
+                 pos=Vector(0, 0, 0)):
         """Initialize the working plane.
 
         Parameters
@@ -98,7 +105,11 @@ class plane:
 
     def __repr__(self):
         """Show the string representation of the object."""
-        return "Workplane x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))
+        text = "Workplane"
+        text += " x=" + str(DraftVecUtils.rounded(self.u))
+        text += " y=" + str(DraftVecUtils.rounded(self.v))
+        text += " z=" + str(DraftVecUtils.rounded(self.axis))
+        return text
 
     def copy(self):
         """Return a new plane that is a copy of the present object."""
@@ -148,7 +159,7 @@ class plane:
 
         The points are as follows
 
-         * `p` is an arbitraty point outside the plane.
+         * `p` is an arbitrary point outside the plane.
          * `c` is a known point on the plane,
            for example, `plane.position`.
          * `x` is the intercept on the plane from `p` in
@@ -198,7 +209,8 @@ class plane:
         **Note:** for 2D these trigonometric operations
         produce the full `|xp|` distance.
         """
-        if direction == None: direction = self.axis
+        if direction is None:
+            direction = self.axis
         return direction.dot(self.position.sub(p))
 
     def projectPoint(self, p, direction=None):
@@ -257,7 +269,7 @@ class plane:
         if not direction:
             direction = self.axis
         t = Vector(direction)
-        #t.normalize()
+        # t.normalize()
         a = round(t.getAngle(self.axis), DraftVecUtils.precision())
         pp = round((math.pi)/2, DraftVecUtils.precision())
         if a == pp:
@@ -314,8 +326,8 @@ class plane:
         offsetVector.multiply(offset)
         self.position = point.add(offsetVector)
         self.weak = False
-        # FreeCAD.Console.PrintMessage("(position = " + str(self.position) + ")\n")
-        # FreeCAD.Console.PrintMessage("Current workplane: x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))+"\n")
+        # FCC.PrintMessage("(position = " + str(self.position) + ")\n")
+        # FCC.PrintMessage(self.__repr__() + "\n")
 
     def alignToPointAndAxis_SVG(self, point, axis, offset=0):
         """Align the working plane to a point and an axis (vector).
@@ -387,50 +399,51 @@ class plane:
             self.u = axis.negative().cross(ref_vec)
             self.u.normalize()
             self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
-            #projcase = "Case new"
+            # projcase = "Case new"
 
         elif ((abs(axis.y) > abs(axis.z)) and (abs(axis.z) >= abs(axis.x))):
             ref_vec = Vector(1.0, 0.0, 0.0)
             self.u = axis.negative().cross(ref_vec)
             self.u.normalize()
             self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
-            #projcase = "Y>Z, View Y"
+            # projcase = "Y>Z, View Y"
 
         elif ((abs(axis.y) >= abs(axis.x)) and (abs(axis.x) > abs(axis.z))):
             ref_vec = Vector(0.0, 0., 1.0)
             self.u = axis.cross(ref_vec)
             self.u.normalize()
             self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
-            #projcase = "ehem. XY, Case XY"
+            # projcase = "ehem. XY, Case XY"
 
         elif ((abs(axis.x) > abs(axis.z)) and (abs(axis.z) >= abs(axis.y))):
             self.u = axis.cross(ref_vec)
             self.u.normalize()
             self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
-            #projcase = "X>Z, View X"
+            # projcase = "X>Z, View X"
 
         elif ((abs(axis.z) >= abs(axis.y)) and (abs(axis.y) > abs(axis.x))):
             ref_vec = Vector(1.0, 0., 0.0)
             self.u = axis.cross(ref_vec)
             self.u.normalize()
             self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
-            #projcase = "Y>X, Case YZ"
+            # projcase = "Y>X, Case YZ"
 
         else:
             self.u = axis.negative().cross(ref_vec)
             self.u.normalize()
             self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
-            #projcase = "else"
+            # projcase = "else"
 
-        #spat_vec = self.u.cross(self.v)
-        #spat_res = spat_vec.dot(axis)
-        #FreeCAD.Console.PrintMessage(projcase + " spat Prod = " + str(spat_res) + "\n")
+        # spat_vec = self.u.cross(self.v)
+        # spat_res = spat_vec.dot(axis)
+        # FCC.PrintMessage(projcase + " spat Prod = " + str(spat_res) + "\n")
 
-        offsetVector = Vector(axis); offsetVector.multiply(offset)
+        offsetVector = Vector(axis)
+        offsetVector.multiply(offset)
         self.position = point.add(offsetVector)
         self.weak = False
-        # FreeCAD.Console.PrintMessage("(position = " + str(self.position) + ")\n")
-        # FreeCAD.Console.PrintMessage("Current workplane: x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))+"\n")
+        # FCC.PrintMessage("(position = " + str(self.position) + ")\n")
+        # FCC.PrintMessage(self.__repr__() + "\n")
 
     def alignToCurve(self, shape, offset=0):
         """Align plane to curve. NOT YET IMPLEMENTED.
@@ -453,10 +466,10 @@ class plane:
         if shape.isNull():
             return False
         elif shape.ShapeType == 'Edge':
-            #??? TODO: process curve here.  look at shape.edges[0].Curve
+            # ??? TODO: process curve here.  look at shape.edges[0].Curve
             return False
         elif shape.ShapeType == 'Wire':
-            #??? TODO: determine if edges define a plane
+            # ??? TODO: determine if edges define a plane
             return False
         else:
             return False
@@ -490,7 +503,7 @@ class plane:
         v1.normalize()
         v2.normalize()
         v3.normalize()
-        #print v1,v2,v3
+        # print(v1,v2,v3)
         self.u = v1
         self.v = v2
         self.axis = v3
@@ -519,7 +532,7 @@ class plane:
         Returns
         -------
         bool
-            `True` if the operation was succesful, and `False` if the shape
+            `True` if the operation was successful, and `False` if the shape
             is not a `'Face'`.
 
         See Also
@@ -528,7 +541,9 @@ class plane:
         """
         # Set face to the unique selected face, if found
         if shape.ShapeType == 'Face':
-            self.alignToPointAndAxis(shape.Faces[0].CenterOfMass, shape.Faces[0].normalAt(0, 0), offset)
+            self.alignToPointAndAxis(shape.Faces[0].CenterOfMass,
+                                     shape.Faces[0].normalAt(0, 0),
+                                     offset)
             import DraftGeomUtils
             q = DraftGeomUtils.getQuad(shape)
             if q:
@@ -570,7 +585,7 @@ class plane:
         Returns
         -------
         bool
-            `True` if the operation was succesful, and `False` otherwise.
+            `True` if the operation was successful, and `False` otherwise.
         """
         import Part
         w = Part.makePolygon([p1, p2, p3, p1])
@@ -597,7 +612,7 @@ class plane:
         Returns
         -------
         bool
-            `True` if the operation was succesful, and `False` otherwise.
+            `True` if the operation was successful, and `False` otherwise.
             It returns `False` if the selection has no elements,
             or if it has more than one element,
             or if the object is not derived from `'Part::Feature'`
@@ -625,12 +640,13 @@ class plane:
         if len(sex) == 0:
             return False
         elif len(sex) == 1:
-            if not sex[0].Object.isDerivedFrom("Part::Feature") \
-                or not sex[0].Object.Shape:
+            if (not sex[0].Object.isDerivedFrom("Part::Feature")
+                    or not sex[0].Object.Shape):
                 return False
-            return self.alignToCurve(sex[0].Object.Shape, offset) \
-                or self.alignToFace(sex[0].Object.Shape, offset) \
-                or (len(sex[0].SubObjects) == 1 and self.alignToFace(sex[0].SubObjects[0], offset))
+            return (self.alignToFace(sex[0].Object.Shape, offset)
+                    or (len(sex[0].SubObjects) == 1
+                        and self.alignToFace(sex[0].SubObjects[0], offset))
+                    or self.alignToCurve(sex[0].Object.Shape, offset))
         else:
             # len(sex) > 2, look for point and line, three points, etc.
             return False
@@ -673,12 +689,19 @@ class plane:
                 try:
                     import FreeCADGui
                     from pivy import coin
-                    rot = FreeCADGui.ActiveDocument.ActiveView.getCameraNode().getField("orientation").getValue()
-                    upvec = Vector(rot.multVec(coin.SbVec3f(0, 1, 0)).getValue())
-                    vdir = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
-                    if (vdir.getAngle(self.axis) > 0.001) and (vdir.getAngle(self.axis) < 3.14159):
-                        # don't change the WP if it is already perpendicular to the current view
-                        self.alignToPointAndAxis(Vector(0, 0, 0), vdir.negative(), 0, upvec)
+                    view = FreeCADGui.ActiveDocument.ActiveView
+                    camera = view.getCameraNode()
+                    rot = camera.getField("orientation").getValue()
+                    coin_up = coin.SbVec3f(0, 1, 0)
+                    upvec = Vector(rot.multVec(coin_up).getValue())
+                    vdir = view.getViewDirection()
+                    # The angle is between 0 and 180 degrees.
+                    angle = vdir.getAngle(self.axis)
+                    if (angle > 0.001) and (angle < 3.14159):
+                        # don't change the plane if it is already
+                        # perpendicular to the current view
+                        self.alignToPointAndAxis(Vector(0, 0, 0),
+                                                 vdir.negative(), 0, upvec)
                 except:
                     pass
             self.weak = True
@@ -709,8 +732,9 @@ class plane:
         # Arch active container
         if FreeCAD.GuiUp:
             import FreeCADGui
-            if FreeCADGui.ActiveDocument.ActiveView:
-                a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+            view = FreeCADGui.ActiveDocument.ActiveView
+            if view:
+                a = view.getActiveObject("Arch")
                 if a:
                     p = a.Placement.inverse().multiply(p)
         return p
@@ -744,9 +768,10 @@ class plane:
                 0.0, 0.0, 0.0, 1.0)
         p = FreeCAD.Placement(m)
         # Arch active container if based on App Part
-        #if FreeCAD.GuiUp:
+        # if FreeCAD.GuiUp:
         #    import FreeCADGui
-        #    a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+        #    view = FreeCADGui.ActiveDocument.ActiveView
+        #    a = view.getActiveObject("Arch")
         #    if a:
         #        p = a.Placement.inverse().multiply(p)
         return p
@@ -761,9 +786,10 @@ class plane:
         """
         n = self.axis
         # Arch active container if based on App Part
-        #if FreeCAD.GuiUp:
+        # if FreeCAD.GuiUp:
         #    import FreeCADGui
-        #    a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+        #    view = FreeCADGui.ActiveDocument.ActiveView
+        #    a = view.getActiveObject("Arch")
         #    if a:
         #        n = a.Placement.inverse().Rotation.multVec(n)
         return n
@@ -818,7 +844,6 @@ class plane:
         Restores the attributes `u`, `v`, `axis`, `position` and `weak`
         from `stored`, and set `stored` to `None`.
         """
-        "restores a previously saved plane state, if exists"
         if self.stored:
             self.u = self.stored[0]
             self.v = self.stored[1]
@@ -1071,22 +1096,30 @@ class plane:
     def isOrtho(self):
         """Return True if the plane axes are orthogonal with the global axes.
 
-        Orthogonal means that the angle between `u` and the global axis `+X`
+        Orthogonal means that the angle between `u` and the global axis `+Y`
         is a multiple of 90 degrees, meaning 0, -90, 90, -180, 180,
         -270, 270, or 360 degrees.
-        And similarly for `v` and `axis` with `+Y` and `+Z`, respectively.
+        And similarly for `v` and `axis`.
+        All three axes should be orthogonal to the `+Y` axis.
+
+        Due to rounding errors, the angle difference is rounded
+        to 6 decimal digits to do the test.
 
         Returns
         -------
         bool
             Returns `True` if all three `u`, `v`, and `axis`
-            are orthogonal with their respective global axes `+X`, `+Y`,
-            and `+Z`.
+            are orthogonal with the global axis `+Y`.
             Otherwise it returns `False`.
         """
-        if round(self.u.getAngle(Vector(0, 1, 0)), 6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
-            if round(self.v.getAngle(Vector(0, 1, 0)), 6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
-                if round(self.axis.getAngle(Vector(0, 1, 0)), 6) in [0, -1.570796, 1.570796, -3.141593, 3.141593, -4.712389, 4.712389, 6.283185]:
+        ortho = [0, -1.570796, 1.570796,
+                 -3.141593, 3.141593,
+                 -4.712389, 4.712389, 6.283185]
+        # Shouldn't the angle difference be calculated with
+        # the other global axes `+X` and `+Z` as well?
+        if round(self.u.getAngle(Vector(0, 1, 0)), 6) in ortho:
+            if round(self.v.getAngle(Vector(0, 1, 0)), 6) in ortho:
+                if round(self.axis.getAngle(Vector(0, 1, 0)), 6) in ortho:
                     return True
         return False
 

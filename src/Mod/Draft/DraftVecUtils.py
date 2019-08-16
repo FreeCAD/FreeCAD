@@ -347,7 +347,7 @@ def angle(u, v=Vector(1, 0, 0), normal=Vector(0, 0, 1)):
     dp = u.dot(v)/ll
 
     # Due to rounding errors, the dot product could be outside
-    # the range [-1, 1], so let's force it to be withing this range.
+    # the range [-1, 1], so let's force it to be within this range.
     if dp < -1:
         dp = -1
     elif dp > 1:
@@ -785,7 +785,7 @@ def removeDoubles(vlist):
     Finding duplicated vectors tests for `equality` which depends
     on the `precision` parameter in the parameter database.
 
-    Paramaters
+    Parameters
     ----------
     vlist : list of Base::Vector3
         List with vectors.
