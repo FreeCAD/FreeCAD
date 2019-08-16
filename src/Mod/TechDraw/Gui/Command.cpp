@@ -79,16 +79,6 @@
 using namespace TechDrawGui;
 using namespace std;
 
-bool isArchSection(App::DocumentObject* obj)
-{
-    bool result = true;
-    App::Property* prop1 = obj->getPropertyByName("Objects");
-    App::Property* prop2 = obj->getPropertyByName("OnlySolids");
-    if ( (!prop1) || (!prop2) ) {
-        result = false;
-    }
-    return result;
-}
 
 //===========================================================================
 // TechDraw_NewPageDef (default template)
@@ -1057,34 +1047,17 @@ void CmdTechDrawArchView::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> objects = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    if (objects.empty()) {
+    const std::vector<App::DocumentObject*> objects = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    if (objects.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select at least one object."));
-        return;
-    }
-    int ifound = 0;
-    bool found = false;
-    for (auto& obj: objects) {
-        if (isArchSection(obj)) {
-            found = true;
-            break;
-        }
-        ifound++;
-    }
-    App::DocumentObject* archObj;
-    if (found) {
-        archObj = objects[ifound];
-    } else {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("There is no Section Plane in selection."));
+            QObject::tr("Select exactly one object."));
         return;
     }
 
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("ArchView");
-    std::string SourceName = archObj->getNameInDocument();
+    std::string SourceName = objects.front()->getNameInDocument();
     openCommand("Create ArchView");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewArch','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SourceName.c_str());
