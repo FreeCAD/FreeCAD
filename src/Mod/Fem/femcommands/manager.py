@@ -30,6 +30,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import femtools.femutils as femutils
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     import FemGui
@@ -37,6 +38,7 @@ if FreeCAD.GuiUp:
 
 
 class CommandManager(object):
+
         def __init__(self):
             self.resources = {
                 "Pixmap": "FemWorkbench",

@@ -30,8 +30,10 @@ from PySide import QtCore
 # Python command definitions
 # for C++ command definitions see src/Mod/Fem/Command.cpp
 
+
 class _Analysis(CommandManager):
     "The FEM_Analysis command definition"
+
     def __init__(self):
         super(_Analysis, self).__init__()
         self.resources = {
@@ -65,6 +67,7 @@ class _Analysis(CommandManager):
 
 class _ClippingPlaneAdd(CommandManager):
     "The FEM_ClippingPlaneAdd command definition"
+
     def __init__(self):
         super(_ClippingPlaneAdd, self).__init__()
         self.resources = {
@@ -117,6 +120,7 @@ class _ClippingPlaneAdd(CommandManager):
 
 class _ClippingPlaneRemoveAll(CommandManager):
     "The FEM_ClippingPlaneemoveAll command definition"
+
     def __init__(self):
         super(_ClippingPlaneRemoveAll, self).__init__()
         self.resources = {
@@ -145,6 +149,7 @@ class _ClippingPlaneRemoveAll(CommandManager):
 
 class _ConstraintBodyHeatSource(CommandManager):
     "The FEM_ConstraintBodyHeatSource command definition"
+
     def __init__(self):
         super(_ConstraintBodyHeatSource, self).__init__()
         self.resources = {
@@ -163,6 +168,7 @@ class _ConstraintBodyHeatSource(CommandManager):
 
 class _ConstraintElectrostaticPotential(CommandManager):
     "The FEM_ConstraintElectrostaticPotential command definition"
+
     def __init__(self):
         super(_ConstraintElectrostaticPotential, self).__init__()
         self.resources = {
@@ -181,6 +187,7 @@ class _ConstraintElectrostaticPotential(CommandManager):
 
 class _ConstraintFlowVelocity(CommandManager):
     "The FEM_ConstraintFlowVelocity command definition"
+
     def __init__(self):
         super(_ConstraintFlowVelocity, self).__init__()
         self.resources = {
@@ -199,6 +206,7 @@ class _ConstraintFlowVelocity(CommandManager):
 
 class _ConstraintInitialFlowVelocity(CommandManager):
     "The FEM_ConstraintInitialFlowVelocity command definition"
+
     def __init__(self):
         super(_ConstraintInitialFlowVelocity, self).__init__()
         self.resources = {
@@ -217,6 +225,7 @@ class _ConstraintInitialFlowVelocity(CommandManager):
 
 class _ConstraintSelfWeight(CommandManager):
     "The FEM_ConstraintSelfWeight command definition"
+
     def __init__(self):
         super(_ConstraintSelfWeight, self).__init__()
         self.resources = {
@@ -239,6 +248,7 @@ class _ConstraintSelfWeight(CommandManager):
 
 class _ElementFluid1D(CommandManager):
     "The FEM_ElementFluid1D command definition"
+
     def __init__(self):
         super(_ElementFluid1D, self).__init__()
         self.resources = {
@@ -261,6 +271,7 @@ class _ElementFluid1D(CommandManager):
 
 class _ElementGeometry1D(CommandManager):
     "The Fem_ElementGeometry1D command definition"
+
     def __init__(self):
         super(_ElementGeometry1D, self).__init__()
         self.resources = {
@@ -283,6 +294,7 @@ class _ElementGeometry1D(CommandManager):
 
 class _ElementGeometry2D(CommandManager):
     "The FEM_ElementGeometry2D command definition"
+
     def __init__(self):
         super(_ElementGeometry2D, self).__init__()
         self.resources = {
@@ -305,6 +317,7 @@ class _ElementGeometry2D(CommandManager):
 
 class _ElementRotation1D(CommandManager):
     "The Fem_ElementRotation1D command definition"
+
     def __init__(self):
         super(_ElementRotation1D, self).__init__()
         self.resources = {
@@ -327,6 +340,7 @@ class _ElementRotation1D(CommandManager):
 
 class _EquationElectrostatic(CommandManager):
     "The FEM_EquationElectrostatic command definition"
+
     def __init__(self):
         super(_EquationElectrostatic, self).__init__()
         self.resources = {
@@ -348,6 +362,7 @@ class _EquationElectrostatic(CommandManager):
 
 class _EquationElasticity(CommandManager):
     "The FEM_EquationElasticity command definition"
+
     def __init__(self):
         super(_EquationElasticity, self).__init__()
         self.resources = {
@@ -368,6 +383,7 @@ class _EquationElasticity(CommandManager):
 
 class _EquationFlow(CommandManager):
     "The FEM_EquationFlow command definition"
+
     def __init__(self):
         super(_EquationFlow, self).__init__()
         self.resources = {
@@ -389,6 +405,7 @@ class _EquationFlow(CommandManager):
 
 class _EquationFluxsolver(CommandManager):
     "The FEM_EquationFluxsolver command definition"
+
     def __init__(self):
         super(_EquationFluxsolver, self).__init__()
         self.resources = {
@@ -410,6 +427,7 @@ class _EquationFluxsolver(CommandManager):
 
 class _EquationHeat(CommandManager):
     "The FEM_EquationHeat command definition"
+
     def __init__(self):
         super(_EquationHeat, self).__init__()
         self.resources = {
@@ -431,6 +449,7 @@ class _EquationHeat(CommandManager):
 
 class _MaterialEditor(CommandManager):
     "The FEM_MaterialEditor command definition"
+
     def __init__(self):
         super(_MaterialEditor, self).__init__()
         self.resources = {
@@ -454,6 +473,7 @@ class _MaterialEditor(CommandManager):
 
 class _MaterialFluid(CommandManager):
     "The FEM_MaterialFluid command definition"
+
     def __init__(self):
         super(_MaterialFluid, self).__init__()
         self.resources = {
@@ -476,6 +496,7 @@ class _MaterialFluid(CommandManager):
 
 class _MaterialMechanicalNonlinear(CommandManager):
     "The FEM_MaterialMechanicalNonlinear command definition"
+
     def __init__(self):
         super(_MaterialMechanicalNonlinear, self).__init__()
         self.resources = {
@@ -537,6 +558,7 @@ class _MaterialMechanicalNonlinear(CommandManager):
 
 class _MaterialReinforced(CommandManager):
     "The FEM_MaterialReinforced command definition"
+
     def __init__(self):
         super(_MaterialReinforced, self).__init__()
         self.resources = {
@@ -559,6 +581,7 @@ class _MaterialReinforced(CommandManager):
 
 class _MaterialSolid(CommandManager):
     "The FEM_MaterialSolid command definition"
+
     def __init__(self):
         super(_MaterialSolid, self).__init__()
         self.resources = {
@@ -581,6 +604,7 @@ class _MaterialSolid(CommandManager):
 
 class _Mesh2Mesh(CommandManager):
     "The FEM_FemMesh2Mesh command definition"
+
     def __init__(self):
         super(_Mesh2Mesh, self).__init__()
         self.resources = {
@@ -630,6 +654,7 @@ class _Mesh2Mesh(CommandManager):
 
 class _MeshBoundaryLayer(CommandManager):
     "The FEM_MeshBoundaryLayer command definition"
+
     def __init__(self):
         super(_MeshBoundaryLayer, self).__init__()
         self.resources = {
@@ -652,6 +677,7 @@ class _MeshBoundaryLayer(CommandManager):
 
 class _MeshClear(CommandManager):
     "The FEM_MeshClear command definition"
+
     def __init__(self):
         super(_MeshClear, self).__init__()
         self.resources = {
@@ -679,6 +705,7 @@ class _MeshClear(CommandManager):
 
 class _MeshDisplayInfo(CommandManager):
     "The FEM_MeshDisplayInfo command definition"
+
     def __init__(self):
         super(_MeshDisplayInfo, self).__init__()
         self.resources = {
@@ -711,6 +738,7 @@ class _MeshDisplayInfo(CommandManager):
 
 class _MeshGmshFromShape(CommandManager):
     "The FEM_MeshGmshFromShape command definition"
+
     def __init__(self):
         super(_MeshGmshFromShape, self).__init__()
         self.resources = {
@@ -758,6 +786,7 @@ class _MeshGmshFromShape(CommandManager):
 
 class _MeshGroup(CommandManager):
     "The FEM_MeshGroup command definition"
+
     def __init__(self):
         super(_MeshGroup, self).__init__()
         self.resources = {
@@ -780,6 +809,7 @@ class _MeshGroup(CommandManager):
 
 class _MeshNetgenFromShape(CommandManager):
     "The FEM_MeshNetgenFromShape command definition"
+
     def __init__(self):
         super(_MeshNetgenFromShape, self).__init__()
         self.resources = {
@@ -827,6 +857,7 @@ class _MeshNetgenFromShape(CommandManager):
 
 class _MeshRegion(CommandManager):
     "The FEM_MeshRegion command definition"
+
     def __init__(self):
         super(_MeshRegion, self).__init__()
         self.resources = {
@@ -849,6 +880,7 @@ class _MeshRegion(CommandManager):
 
 class _ResultShow(CommandManager):
     "The FEM_ResultShow command definition"
+
     def __init__(self):
         super(_ResultShow, self).__init__()
         self.resources = {
@@ -871,6 +903,7 @@ class _ResultShow(CommandManager):
 
 class _ResultsPurge(CommandManager):
     "The FEM_ResultsPurge command definition"
+
     def __init__(self):
         super(_ResultsPurge, self).__init__()
         self.resources = {
@@ -894,6 +927,7 @@ class _ResultsPurge(CommandManager):
 
 class _SolverCxxtools(CommandManager):
     "The FEM_SolverCalculix ccx tools command definition"
+
     def __init__(self):
         super(_SolverCxxtools, self).__init__()
         self.resources = {
@@ -936,6 +970,7 @@ class _SolverCxxtools(CommandManager):
 
 class _SolverCalculix(CommandManager):
     "The FEM_SolverCalculix command definition"
+
     def __init__(self):
         super(_SolverCalculix, self).__init__()
         self.resources = {
@@ -957,6 +992,7 @@ class _SolverCalculix(CommandManager):
 
 class _SolverControl(CommandManager):
     "The FEM_SolverControl command definition"
+
     def __init__(self):
         super(_SolverControl, self).__init__()
         self.resources = {
@@ -979,6 +1015,7 @@ class _SolverControl(CommandManager):
 
 class _SolverElmer(CommandManager):
     "The FEM_SolverElmer command definition"
+
     def __init__(self):
         super(_SolverElmer, self).__init__()
         self.resources = {
@@ -1001,6 +1038,7 @@ class _SolverElmer(CommandManager):
 
 class _SolverRun(CommandManager):
     "The FEM_SolverRun command definition"
+
     def __init__(self):
         super(_SolverRun, self).__init__()
         self.resources = {
@@ -1026,6 +1064,7 @@ class _SolverRun(CommandManager):
 
 class _SolverZ88(CommandManager):
     "The FEM_SolverZ88 command definition"
+
     def __init__(self):
         super(_SolverZ88, self).__init__()
         self.resources = {
