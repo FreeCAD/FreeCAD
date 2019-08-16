@@ -291,7 +291,7 @@ class CommandPathPost:
                 # create an object to serve as the fixture path
                 fobj = _TempObject()
                 c1 = Path.Command(f)
-                c2 = Path.Command("G0 Z" + str(job.Stock.Shape.BoundBox.ZMax))
+                c2 = Path.Command("G0 Z" + str(job.Stock.Shape.BoundBox.ZMax + job.SetupSheet.ClearanceHeightOffset.Value))
                 fobj.Path = Path.Path([c1, c2])
                 fobj.InList.append(job)
                 sublist = [fobj]
@@ -319,7 +319,7 @@ class CommandPathPost:
                 # create an object to serve as the fixture path
                 fobj = _TempObject()
                 c1 = Path.Command(f)
-                c2 = Path.Command("G0 Z" + str(job.Stock.Shape.BoundBox.ZMax))
+                c2 = Path.Command("G0 Z" + str(job.Stock.Shape.BoundBox.ZMax + job.SetupSheet.ClearanceHeightOffset.Value))
                 fobj.Path = Path.Path([c1, c2])
                 fobj.InList.append(job)
                 fixturelist.append(fobj)
@@ -361,7 +361,7 @@ class CommandPathPost:
                 # create an object to serve as the fixture path
                 fobj = _TempObject()
                 c1 = Path.Command(f)
-                c2 = Path.Command("G0 Z" + str(job.Stock.Shape.BoundBox.ZMax))
+                c2 = Path.Command("G0 Z" + str(job.Stock.Shape.BoundBox.ZMax + job.SetupSheet.ClearanceHeightOffset.Value))
                 fobj.Path = Path.Path([c1, c2])
                 fobj.InList.append(job)
                 fixturelist.append(fobj)
