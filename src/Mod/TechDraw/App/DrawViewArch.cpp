@@ -54,7 +54,7 @@ DrawViewArch::DrawViewArch(void)
 {
     static const char *group = "Arch view";
 
-    ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Section Plane object for this view");
+    ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"SectionPlane or BuildingPart object for this view");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(AllOn ,(false),group,App::Prop_None,"If hidden objects must be shown or not");
     RenderMode.setEnums(RenderModeEnums);
@@ -62,8 +62,10 @@ DrawViewArch::DrawViewArch(void)
     ADD_PROPERTY_TYPE(FillSpaces ,(false),group,App::Prop_None,"If True, Arch Spaces are shown as a colored area");
     ADD_PROPERTY_TYPE(ShowHidden ,(false),group,App::Prop_None,"If the hidden geometry behind the section plane is shown or not");
     ADD_PROPERTY_TYPE(ShowFill ,(false),group,App::Prop_None,"If cut areas must be filled with a hatch pattern or not");
-    ADD_PROPERTY_TYPE(LineWidth,(0.35),group,App::Prop_None,"Line width of this view");
+    ADD_PROPERTY_TYPE(LineWidth,(0.25),group,App::Prop_None,"Line width of this view");
     ADD_PROPERTY_TYPE(FontSize,(12.0),group,App::Prop_None,"Text size for this view");
+    ADD_PROPERTY_TYPE(CutLineWidth,(0.50),group,App::Prop_None,"Width of cut lines of this view");
+    ADD_PROPERTY_TYPE(JoinArch ,(false),group,App::Prop_None,"If True, walls and structure will be fused by material");
     ScaleType.setValue("Custom");
 }
 
@@ -81,7 +83,9 @@ short DrawViewArch::mustExecute() const
                 ShowHidden.isTouched() ||
                 ShowFill.isTouched() ||
                 LineWidth.isTouched() ||
-                FontSize.isTouched());
+                FontSize.isTouched() ||
+                CutLineWidth.isTouched() ||
+                JoinArch.isTouched());
     }
     if ((bool) result) {
         return result;
@@ -115,7 +119,9 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
                  << ",fontsize=" << FontSize.getValue()
                  << ",techdraw=True"
                  << ",rotation=" << Rotation.getValue()
-                 << ",fillSpaces=" << (FillSpaces.getValue() ? "True" : "False");
+                 << ",fillSpaces=" << (FillSpaces.getValue() ? "True" : "False")
+                 << ",cutlinewidth=" << CutLineWidth.getValue()
+                 << ",joinArch=" << (JoinArch.getValue() ? "True" : "False");
 
         Base::Interpreter().runString("import ArchSectionPlane");
         Base::Interpreter().runStringArg("svgBody = ArchSectionPlane.getSVG(App.activeDocument().%s %s)",
@@ -145,7 +151,7 @@ std::string DrawViewArch::getSVGTail(void)
 void DrawViewArch::Restore(Base::XMLReader &reader)
 {
 // this is temporary code for backwards compat (within v0.17).  can probably be deleted once there are no development
-// fcstd files with old property types in use. 
+// fcstd files with old property types in use.
     reader.readElement("Properties");
     int Cnt = reader.getAttributeAsInteger("Count");
 
@@ -175,9 +181,9 @@ void DrawViewArch::Restore(Base::XMLReader &reader)
                             static_cast<App::PropertyLink*>(schemaProp)->setScope(App::LinkScope::Global);
                             static_cast<App::PropertyLink*>(schemaProp)->setValue(link.getValue());
                         }
-                    
+
                     } else {
-                        // has Source prop isn't PropertyLink or PropertyLinkGlobal! 
+                        // has Source prop isn't PropertyLink or PropertyLinkGlobal!
                         Base::Console().Log("DrawViewArch::Restore - old Document Source is weird: %s\n", TypeName);
                         // no idea
                     }

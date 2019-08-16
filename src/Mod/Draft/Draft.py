@@ -5503,7 +5503,7 @@ class _Shape2DView(_DraftObject):
                 else:
                     objs = obj.Base.Group
                     cutplane = Part.makePlane(1000,1000,FreeCAD.Vector(-500,-500,0))
-                    m = 1500
+                    m = 1
                     if obj.Base.ViewObject and hasattr(obj.Base.ViewObject,"CutMargin"):
                         m = obj.Base.ViewObject.CutMargin.Value
                     cutplane.translate(FreeCAD.Vector(0,0,m))
