@@ -759,7 +759,8 @@ class ViewProviderBuildingPart:
     def doubleClicked(self,vobj):
 
         self.activate(vobj)
-        FreeCADGui.Selection.clearSelection()
+        if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+            FreeCADGui.Selection.clearSelection()
         return True
 
     def activate(self,vobj):
@@ -769,7 +770,8 @@ class ViewProviderBuildingPart:
             if vobj.SetWorkingPlane:
                 self.setWorkingPlane(restore=True)
         else:
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch",vobj.Object)
+            if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch",vobj.Object)
             if vobj.SetWorkingPlane:
                 self.setWorkingPlane()
 
@@ -797,11 +799,18 @@ class ViewProviderBuildingPart:
 
         if hasattr(self,"Object") and hasattr(FreeCAD,"DraftWorkingPlane"):
             import FreeCADGui
+            autoclip = False
+            if hasattr(self.Object.ViewObject,"AutoCutView"):
+                autoclip = self.Object.ViewObject.AutoCutView
             if restore:
                 FreeCAD.DraftWorkingPlane.restore()
+                if autoclip:
+                    self.Object.ViewObject.CutView = False
             else:
                 FreeCAD.DraftWorkingPlane.save()
                 FreeCADGui.runCommand("Draft_SelectPlane")
+                if autoclip:
+                    self.Object.ViewObject.CutView = True
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.setGrid()
             if hasattr(FreeCADGui,"draftToolBar"):
