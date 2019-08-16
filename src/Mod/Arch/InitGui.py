@@ -34,7 +34,7 @@ class ArchWorkbench(Workbench):
 
         # arch tools
         self.archtools = ["Arch_Wall","Arch_Structure","Arch_Rebar","Arch_BuildingPart",
-                     "Arch_Floor","Arch_Building","Arch_Site","Arch_Reference",
+                     "Arch_Project", "Arch_Site", "Arch_Building", "Arch_Floor", "Arch_Reference",
                      "Arch_Window","Arch_Roof","Arch_AxisTools",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
                      "Arch_PanelTools","Arch_Equipment",
@@ -63,6 +63,7 @@ class ArchWorkbench(Workbench):
                     return not FreeCAD.ActiveDocument is None
             FreeCADGui.addCommand('Arch_RebarTools', RebarGroupCommand())
             self.archtools[2] = "Arch_RebarTools"
+
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",

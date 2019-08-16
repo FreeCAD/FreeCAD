@@ -116,7 +116,7 @@ def addComponents(objectsList,host):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
-    if hostType in ["Floor","Building","Site","BuildingPart"]:
+    if hostType in ["Floor","Building","Site","Project","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
     elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
@@ -744,7 +744,7 @@ def pruneIncluded(objectslist,strict=False):
         if obj.isDerivedFrom("Part::Feature"):
             if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Space","Facebinder","Window","Roof","Clone","Site"]):
+                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Space","Facebinder","Window","Roof","Clone","Site","Project"]):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
                             if hasattr(parent,"Host") and (parent.Host == obj):

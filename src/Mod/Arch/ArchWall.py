@@ -521,13 +521,13 @@ class _Wall(ArchComponent.Component):
 
     "The Wall object"
 
-    def __init__(self,obj):
+    def __init__(self, obj):
 
-        ArchComponent.Component.__init__(self,obj)
+        ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
         obj.IfcType = "Wall"
 
-    def setProperties(self,obj):
+    def setProperties(self, obj):
 
         lp = obj.PropertiesList
         if not "Length" in lp:
@@ -750,12 +750,10 @@ class _Wall(ArchComponent.Component):
         obj.Area = obj.Length.Value * obj.Height.Value
 
     def onBeforeChange(self,obj,prop):
-
         if prop == "Length":
             self.oldLength = obj.Length.Value
 
-    def onChanged(self,obj,prop):
-
+    def onChanged(self, obj, prop):
         if prop == "Length":
             if obj.Base and obj.Length.Value and hasattr(self,"oldLength") and (self.oldLength != None) and (self.oldLength != obj.Length.Value):
                 if obj.Base.isDerivedFrom("Part::Feature"):
@@ -804,6 +802,8 @@ class _Wall(ArchComponent.Component):
 
         # TODO currently layers were not supported when len(basewires) > 0
         width = 0
+        widths = obj.OverrideWidth
+
         if obj.OverrideWidth:
             if obj.OverrideWidth[0]:
                 width = obj.OverrideWidth[0]
@@ -811,7 +811,7 @@ class _Wall(ArchComponent.Component):
             if obj.Width:
                 width = obj.Width.Value
             else:
-                print("Width or Widths Of Wall [0] should not be 0")
+                print("Width or OverrideWidth[0] should not be 0")
                 return
 
         height = obj.Height.Value
@@ -888,9 +888,12 @@ class _Wall(ArchComponent.Component):
 
                         if (len(self.basewires) == 1) and layers:
                             self.basewires = [self.basewires[0] for l in layers]
+
                         layeroffset = 0
                         baseface = None
                         for i,wire in enumerate(self.basewires):
+
+                            edgeNum = len(wire.Edges)
                             e = wire.Edges[0]
                             if isinstance(e.Curve,Part.Circle):
                                 dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
@@ -911,7 +914,7 @@ class _Wall(ArchComponent.Component):
                                     dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                     wire = DraftGeomUtils.offsetWire(wire,dvec2)
 
-                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False, False, obj.OverrideWidth)
+                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False, False, widths)
 
                                 w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
                                 sh = DraftGeomUtils.bind(w1,w2)
@@ -928,7 +931,7 @@ class _Wall(ArchComponent.Component):
                                     dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                     wire = DraftGeomUtils.offsetWire(wire,dvec2)
 
-                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False, False, obj.OverrideWidth)
+                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False, False, widths)
 
                                 w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
                                 sh = DraftGeomUtils.bind(w1,w2)
@@ -944,12 +947,16 @@ class _Wall(ArchComponent.Component):
                                 else:
                                     dvec.multiply(width/2)			## TODO width Value should be of no use (width/2), width Direction remains 'in use'
 
-                                    overrideWidthHalfen = [i/2 for i in obj.OverrideWidth]
+                                    overrideWidthHalfen = [i/2 for i in widths]
+
                                     w1 = DraftGeomUtils.offsetWire(wire,dvec,False, False, overrideWidthHalfen)
                                     dvec = dvec.negative()
                                     w2 = DraftGeomUtils.offsetWire(wire,dvec,False, False, overrideWidthHalfen)
 
                                 sh = DraftGeomUtils.bind(w1,w2)
+
+                            del widths[0:edgeNum]
+
                             if sh:
                                 sh.fix(0.1,0,1) # fixes self-intersecting wires
                                 f = Part.Face(sh)

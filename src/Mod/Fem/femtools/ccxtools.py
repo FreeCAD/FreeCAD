@@ -803,9 +803,13 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ccx_stdout = None
         ccx_stderr = None
         try:
-            p = subprocess.Popen([self.ccx_binary], stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE, shell=False,
-                                 startupinfo=startup_info)
+            p = subprocess.Popen(
+                [self.ccx_binary],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                shell=False,
+                startupinfo=startup_info
+            )
             ccx_stdout, ccx_stderr = p.communicate()
             if ccx_binary_sig in str(ccx_stdout):
                 self.ccx_binary_present = True
@@ -861,9 +865,13 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         cwd = QtCore.QDir.currentPath()
         f = QtCore.QFileInfo(self.inp_file_name)
         QtCore.QDir.setCurrent(f.path())
-        p = subprocess.Popen([self.ccx_binary, "-i ", f.baseName()],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                             shell=False, env=_env)
+        p = subprocess.Popen(
+            [self.ccx_binary, "-i ", f.baseName()],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=False,
+            env=_env
+        )
         self.ccx_stdout, self.ccx_stderr = p.communicate()
         if sys.version_info.major >= 3:
             self.ccx_stdout = self.ccx_stdout.decode()
@@ -884,9 +892,13 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ccx_stdout = None
         ccx_stderr = None
         # Now extract the version number
-        p = subprocess.Popen([self.ccx_binary, '-v'], stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE, shell=False,
-                             startupinfo=startup_info)
+        p = subprocess.Popen(
+            [self.ccx_binary, '-v'],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=False,
+            startupinfo=startup_info
+        )
         ccx_stdout, ccx_stderr = p.communicate()
         if sys.version_info.major >= 3:
             ccx_stdout = ccx_stdout.decode()

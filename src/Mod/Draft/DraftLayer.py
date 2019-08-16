@@ -31,14 +31,13 @@ def translate(ctx,txt):
 def QT_TRANSLATE_NOOP(ctx,txt):
     return txt
 
-"This module contains everything related to Draft Layers"
+"""This module contains everything related to Draft Layers"""
 
 
 def makeLayer(name=None,linecolor=None,drawstyle=None,shapecolor=None,transparency=None):
-
-    '''makeLayer([name,linecolor,drawstyle,shapecolor,transparency]):
-       creates a Layer object in the active document'''
-
+    """makeLayer([name,linecolor,drawstyle,shapecolor,transparency]):
+       creates a Layer object in the active document
+    """
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError(translate("draft","No active document. Aborting")+"\n")
         return
@@ -63,9 +62,7 @@ def makeLayer(name=None,linecolor=None,drawstyle=None,shapecolor=None,transparen
 
 
 def getLayerContainer():
-
-    '''getLayerContainer(): returns a group object to put layers in'''
-
+    """getLayerContainer(): returns a group object to put layers in"""
     for obj in FreeCAD.ActiveDocument.Objects:
         if obj.Name == "LayerContainer":
             return obj
@@ -78,17 +75,14 @@ def getLayerContainer():
 
 
 class CommandLayer():
-
-    "The Draft_Layer FreeCAD command"
+    """The Draft_Layer FreeCAD command"""
 
     def GetResources(self):
-
         return {'Pixmap'  : 'Draft_VisGroup',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Layer", "Layer"),
                 'ToolTip' : QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer")}
 
     def Activated(self):
-
         import FreeCADGui
         FreeCAD.ActiveDocument.openTransaction("Create Layer")
         FreeCADGui.addModule("Draft")
@@ -99,31 +93,25 @@ class CommandLayer():
 
 
 class Layer:
-
-    "The Draft Layer object"
+    """The Draft Layer object"""
 
     def __init__(self,obj):
-
         self.Type = "Layer"
         obj.Proxy = self
         self.Object = obj
         self.setProperties(obj)
 
     def onDocumentRestored(self,obj):
-
         self.setProperties(obj)
 
     def setProperties(self,obj):
-
         if not "Group" in obj.PropertiesList:
             obj.addProperty("App::PropertyLinkList","Group","Layer",QT_TRANSLATE_NOOP("App::Property","The objects that are part of this layer"))
 
     def __getstate__(self):
-
         return self.Type
 
     def __setstate__(self,state):
-
         if state:
             self.Type = state
 
@@ -131,7 +119,6 @@ class Layer:
         pass
 
     def addObject(self,obj,child):
-
         g = obj.Group
         if not child in g:
             g.append(child)
@@ -139,11 +126,9 @@ class Layer:
 
 
 class ViewProviderLayer:
-
-    "A View Provider for the Layer object"
+    """A View Provider for the Layer object"""
 
     def __init__(self,vobj):
-
         vobj.addProperty("App::PropertyBool","OverrideChildren","Layer",QT_TRANSLATE_NOOP("App::Property","If on, the child objects of this layer will match its visual aspects"))
         vobj.addProperty("App::PropertyColor","LineColor","Layer",QT_TRANSLATE_NOOP("App::Property","The line color of the children of this layer"))
         vobj.addProperty("App::PropertyColor","ShapeColor","Layer",QT_TRANSLATE_NOOP("App::Property","The shape color of the children of this layer"))
@@ -164,14 +149,12 @@ class ViewProviderLayer:
         vobj.Proxy = self
 
     def getIcon(self):
-
         if hasattr(self,"icondata"):
             return self.icondata
         import Draft_rc
         return ":/icons/Draft_VisGroup.svg"
 
     def attach(self,vobj):
-
         self.Object = vobj.Object
         from pivy import coin
         sep = coin.SoGroup()
@@ -179,37 +162,29 @@ class ViewProviderLayer:
         return
 
     def claimChildren(self):
-
         if hasattr(self,"Object") and hasattr(self.Object,"Group"):
             return self.Object.Group
 
     def getDisplayModes(self, vobj):
-
         return ["Default"]
 
     def getDefaultDisplayMode(self):
-
         return "Default"
 
     def setDisplayMode(self, mode):
-
         return mode
 
     def __getstate__(self):
-
         return None
 
     def __setstate__(self,state):
-
         return None
 
     def updateData(self,obj,prop):
-
         if prop == "Group":
             self.onChanged(obj.ViewObject,"LineColor")
 
     def onChanged(self,vobj,prop):
-
         if hasattr(vobj,"OverrideChildren") and vobj.OverrideChildren:
             if hasattr(vobj,"Object")and hasattr(vobj.Object,"Group"):
                 for o in vobj.Object.Group:
@@ -249,15 +224,12 @@ class ViewProviderLayer:
             self.icondata = ba.data().decode("latin1")
 
     def canDragObject(self,obj):
-
         return True
 
     def canDragObjects(self):
-
         return True
 
     def dragObject(self,vobj,otherobj):
-
         if hasattr(vobj.Object,"Group"):
             if otherobj in vobj.Object.Group:
                 g = vobj.Object.Group
@@ -309,8 +281,7 @@ class ViewProviderLayer:
 
 
 class LayerContainer:
-
-    "The Layer Container"
+    """The Layer Container"""
 
     def __init__(self,obj):
 
@@ -335,8 +306,7 @@ class LayerContainer:
 
 
 class ViewProviderLayerContainer:
-
-    "A View Provider for the Layer Container"
+    """A View Provider for the Layer Container"""
 
     def __init__(self,vobj):
 

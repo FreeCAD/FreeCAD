@@ -130,7 +130,7 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
 
         elif tag == "Property":
             self.prop = None
-            # skip "internal" properties, unuseful for a diff
+            # skip "internal" properties, useless for a diff
             if attributes["name"] not in ["Symbol","AttacherType","MapMode","MapPathParameter","MapReversed",
                                           "AttachmentOffset","SelectionStyle","TightGrid","GridSize","GridSnap",
                                           "GridStyle","Lighting","Deviation","AngularDeflection","BoundingBox",
@@ -252,6 +252,3 @@ if __name__ == '__main__':
     print("Document: "+sys.argv[-1]+" ("+s+")")
     print("   SHA1: "+str(hashlib.sha1(open(sys.argv[-1],'rb').read()).hexdigest()))
     xml.sax.parseString(doc,FreeCADFileHandler(zfile,short))
-
-
-
