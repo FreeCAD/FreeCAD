@@ -58,7 +58,7 @@ False if TestSolverFrameWork.__name__ else True
 # in tearDown method to not close the document
 
 
-'''
+"""
 # examples from within FreeCAD:
 # all FEM tests
 import Test, TestFem
@@ -277,4 +277,4 @@ doc = FreeCAD.open(app_home + 'data/examples/FemCalculixCantilever3D_newSolver.F
 doc = FreeCAD.open(app_home + 'data/examples/Fem.FCStd')
 doc = FreeCAD.open(app_home + 'data/examples/Fem2.FCStd')
 
-'''
+"""
