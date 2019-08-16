@@ -5491,17 +5491,29 @@ class _Shape2DView(_DraftObject):
                 if obj.ViewObject:
                     if obj.ViewObject.Visibility == False:
                         return False
-        import DraftGeomUtils
+        import Part, DraftGeomUtils
         obj.positionBySupport()
         pl = obj.Placement
         if obj.Base:
-            if getType(obj.Base) == "SectionPlane":
-                if obj.Base.Objects:
+            if getType(obj.Base) in ["BuildingPart","SectionPlane"]:
+                objs = []
+                if getType(obj.Base) == "SectionPlane":
+                    objs = obj.Base.Objects
+                    cutplane = obj.Base.Shape
+                else:
+                    objs = obj.Base.Group
+                    cutplane = Part.makePlane(1000,1000,FreeCAD.Vector(-500,-500,0))
+                    m = 1500
+                    if obj.Base.ViewObject and hasattr(obj.Base.ViewObject,"CutMargin"):
+                        m = obj.Base.ViewObject.CutMargin.Value
+                    cutplane.translate(FreeCAD.Vector(0,0,m))
+                    cutplane.Placement = cutplane.Placement.multiply(obj.Base.Placement)
+                if objs:
                     onlysolids = True
                     if hasattr(obj.Base,"OnlySolids"):
                         onlysolids = obj.Base.OnlySolids
                     import Arch, Part, Drawing
-                    objs = getGroupContents(obj.Base.Objects,walls=True)
+                    objs = getGroupContents(objs,walls=True)
                     objs = removeHidden(objs)
                     shapes = []
                     if hasattr(obj,"FuseArch") and obj.FuseArch:
@@ -5537,7 +5549,7 @@ class _Shape2DView(_DraftObject):
                     clip = False
                     if hasattr(obj.Base,"Clip"):
                         clip = obj.Base.Clip
-                    cutp,cutv,iv = Arch.getCutVolume(obj.Base.Shape,shapes,clip)
+                    cutp,cutv,iv = Arch.getCutVolume(cutplane,shapes,clip)
                     cuts = []
                     opl = FreeCAD.Placement(obj.Base.Placement)
                     proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
