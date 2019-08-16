@@ -182,6 +182,7 @@ void View3DInventorPy::init_type()
     add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name)\nreturns the active object for the given type");
     add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
     add_varargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
+    add_varargs_method("setName",&View3DInventorPy::setName,"setName(str): sets a name to this viewer\nThe name sets the widget's windowTitle and appears on the viewer tab");
 
 }
 
@@ -2450,4 +2451,25 @@ Py::Object View3DInventorPy::redraw(const Py::Tuple& args)
         throw Py::Exception();
     _view->getViewer()->redraw();
     return Py::None();
+}
+
+Py::Object View3DInventorPy::setName(const Py::Tuple& args)
+{
+    char* buffer;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &buffer))
+        throw Py::Exception();
+
+    try {
+        _view->setWindowTitle(QString::fromUtf8(buffer));
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch(...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
 }

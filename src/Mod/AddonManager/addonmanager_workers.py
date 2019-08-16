@@ -91,10 +91,11 @@ class UpdateWorker(QtCore.QThread):
             if url:
                 addondir = moddir + os.sep + name
                 #print ("found:",name," at ",url)
-                if not os.path.exists(addondir):
-                    state = 0
-                else:
+                if os.path.exists(addondir) and os.listdir(addondir):
+                    # make sure the folder exists and it contains files!
                     state = 1
+                else:
+                    state = 0
                 repos.append([name,url,state])
         # querying custom addons
         customaddons = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons").GetString("CustomRepositories","").split("\n")

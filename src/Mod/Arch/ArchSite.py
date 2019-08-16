@@ -521,7 +521,7 @@ Site creation aborted.") + "\n"
 
 
 
-class _Site:
+class _Site(ArchIFC.IfcProduct):
 
     "The Site object"
 
@@ -533,8 +533,7 @@ class _Site:
 
     def setProperties(self,obj):
 
-        import ArchIFC
-        ArchIFC.setProperties(obj)
+        ArchIFC.IfcProduct.setProperties(self, obj)
 
         pl = obj.PropertiesList
         if not "Terrain" in pl:
@@ -638,7 +637,7 @@ class _Site:
 
     def onChanged(self,obj,prop):
 
-        ArchIFC.onChanged(obj, prop)
+        ArchIFC.IfcProduct.onChanged(self, obj, prop)
         if prop == "Terrain":
             if obj.Terrain:
                 if FreeCAD.GuiUp:

@@ -49,7 +49,8 @@ public:
     App::PropertyFloat    LineWidth;
     App::PropertyColor    Color;
     App::PropertyBool     FlipArrowheads;
-
+    App::PropertyBool     TiltText;
+    App::PropertyBool     ExtendToCenter;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);

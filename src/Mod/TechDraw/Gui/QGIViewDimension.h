@@ -48,6 +48,7 @@ namespace TechDrawGui
 class QGIArrow;
 class QGIDimLines;
 class QGIViewDimension;
+class ViewProviderDimension;
 
 class QGIDatumLabel : public QGraphicsObject
 {
@@ -154,7 +155,25 @@ public Q_SLOTS:
     void updateDim(bool obtuse = false);
 
 protected:
+
+    static const int INNER_SECTOR      = 3;
+    static const int OUTER_SECTOR      = 2;
+    static const int OPPOSITE_SECTOR   = 1;
+    static const int COMPLEMENT_SECTOR = 0;
+
+    int classifyPointToArcPosition(double pointDistance, double pointAngle,
+                                   double radius, double startAngle, double endAngle, bool clockwise) const;
+    double computeLineAndLabelAngles(Base::Vector3d lineTarget, Base::Vector3d labelCenter,
+                                     double lineLabelDistance, double &lineAngle, double &labelAngle) const;
+    Base::Vector3d computeLineOriginPoint(Base::Vector3d lineTarget, double projectedLabelDistance,
+                                          double lineAngle, double labelWidth, double direction) const;
+
     void draw() override;
+    void drawRadiusAligned(TechDraw::DrawViewDimension *dimension,
+                           ViewProviderDimension *viewProvider) const;
+    void drawRadiusUniform(TechDraw::DrawViewDimension *dimension,
+                           ViewProviderDimension *viewProvider) const;
+    
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     virtual void setSvgPens(void);
@@ -162,6 +181,8 @@ protected:
     Base::Vector3d findIsoDir(Base::Vector3d ortho);
     Base::Vector3d findIsoExt(Base::Vector3d isoDir);
     QString getPrecision(void);
+    
+    int prefRadiusAligned(void);
 
 protected:
     bool hasHover;
@@ -178,6 +199,11 @@ private:
 
     double getDefaultTextHorizontalOffset(bool toLeft) const;
     double getDefaultTextVerticalOffset() const;
+    double getDefaultReferenceLineOverhang() const;
+
+    static double getStandardLinePlacement(double labelAngle);
+    static bool angleWithinSector(double testAngle, double startAngle, double endAngle, bool clockwise);
+    static double addAngles(double angle1, double angle2);
 };
 
 } // namespace MDIViewPageGui
