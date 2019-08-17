@@ -5924,7 +5924,7 @@ class _PathArray(_DraftLink):
                 return
             base = calculatePlacementsOnPath(
                     obj.Base.Shape.Placement.Rotation,w,obj.Count,obj.Xlate,obj.Align)
-            obj.Shape = _DraftLink.buildShape(self,obj,pl,base)
+            return _DraftLink.buildShape(self,obj,pl,base)
 
     def getWireFromSubs(self,obj):
         '''Make a wire from PathObj subelements'''
