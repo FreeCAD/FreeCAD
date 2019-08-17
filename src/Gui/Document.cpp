@@ -38,6 +38,8 @@
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
+#include <cctype>
+
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
