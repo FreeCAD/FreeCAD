@@ -714,32 +714,37 @@ bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::processSoEvent(const SoEvent* eve
 */
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::paintEvent(QPaintEvent* event)
 {
+    double start = SbTime::getTimeOfDay().getValue();
     QuarterWidget::paintEvent(event);
-
-    this->framesPerSecond = addFrametime(SbTime::getTimeOfDay().getValue());
+    this->framesPerSecond = addFrametime(start);
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetFrameCounter(void)
 {
     this->framecount = 0;
-    this->frames.assign(100, 0.0f);
-    this->totaldraw = 0.0f;
+    this->frametime = 0.0f;
+    this->drawtime = 0.0f;
     this->starttime = SbTime::getTimeOfDay().getValue();
     this->framesPerSecond = SbVec2f(0, 0);
 }
 
-SbVec2f SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addFrametime(double timeofday)
+SbVec2f SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addFrametime(double starttime)
 {
-    int framearray_size = 100;
     this->framecount++;
 
-    int arrayptr = (this->framecount - 1) % framearray_size;
+    double timeofday = SbTime::getTimeOfDay().getValue();
 
-    double renderTime = timeofday - this->starttime;
-    this->totaldraw += (float(renderTime) - this->frames[arrayptr]);
-    float drawfps = this->totaldraw / std::min<int>(this->framecount, framearray_size);
+    // draw time is the actual time spent on rendering
+    double drawtime = timeofday - starttime;
+#define FPS_FACTOR 0.7
+    this->drawtime = (drawtime*FPS_FACTOR) + this->drawtime*(1.0-FPS_FACTOR);
 
-    this->frames[arrayptr] = static_cast<float>(renderTime);
+    // frame time is the time spent since the last frame. There could an
+    // indefinite pause between the last frame because the scene is not
+    // changing. So we limit the skew to 5 second.
+    double frametime = std::min(timeofday-this->starttime, std::max(drawtime,5000.0));
+    this->frametime = (frametime*FPS_FACTOR) + this->frametime*(1.0-FPS_FACTOR);
+
     this->starttime = timeofday;
-    return SbVec2f(1000 * drawfps, 1.0f / drawfps);
+    return SbVec2f(1000 * this->drawtime, 1.0f / this->frametime);
 }

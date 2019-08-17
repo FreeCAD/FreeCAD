@@ -85,6 +85,8 @@ public:
     bool showMDIViewPage();
     void removeMDIView(void);
 
+    virtual Gui::MDIView *getMDIView() override;
+
     bool getFrameState(void);
     void setFrameState(bool state);
     void toggleFrameState(void);

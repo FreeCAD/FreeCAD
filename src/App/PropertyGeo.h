@@ -30,6 +30,7 @@
 #include <Base/Matrix.h>
 #include <Base/BoundBox.h>
 #include <Base/Placement.h>
+#include <Base/Unit.h>
 
 #include "Property.h"
 #include "PropertyLinks.h"
@@ -98,6 +99,14 @@ public:
         return sizeof(Base::Vector3d);
     }
 
+    virtual const boost::any getPathValue(const ObjectIdentifier &path) const override;
+
+    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const override;
+
+    virtual Base::Unit getUnit() const {
+        return Base::Unit();
+    }
+
 private:
     Base::Vector3d _cVec;
 };
@@ -120,7 +129,9 @@ public:
      */
     virtual ~PropertyVectorDistance();
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    virtual Base::Unit getUnit() const {
+        return Base::Unit::Length;
+    }
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyVectorDistanceItem";
@@ -144,7 +155,9 @@ public:
      */
     virtual ~PropertyPosition();
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    virtual Base::Unit getUnit() const {
+        return Base::Unit::Length;
+    }
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPositionItem";
@@ -168,16 +181,20 @@ public:
      */
     virtual ~PropertyDirection();
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    virtual Base::Unit getUnit() const {
+        return Base::Unit::Length;
+    }
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyDirectionItem";
     }
 };
 
-class AppExport PropertyVectorList: public PropertyLists
+class AppExport PropertyVectorList: public PropertyListsT<Base::Vector3d>
 {
     TYPESYSTEM_HEADER();
+
+    typedef PropertyListsT<Base::Vector3d> inherited;
 
 public:
     /**
@@ -192,33 +209,10 @@ public:
      */
     virtual ~PropertyVectorList();
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
-
-    /** Sets the property
-     */
-    void setValue(const Base::Vector3d&);
     void setValue(double x, double y, double z);
-
-    /// index operator
-    const Base::Vector3d& operator[] (const int idx) const {
-        return _lValueList.operator[] (idx);
-    }
-
-    void set1Value (const int idx, const Base::Vector3d& value) {
-        _lValueList.operator[] (idx) = value;
-    }
-
-    void setValues (const std::vector<Base::Vector3d>& values);
-
-    void setValue (void){}
-
-    const std::vector<Base::Vector3d> &getValues(void) const {
-        return _lValueList;
-    }
+    using inherited::setValue;
 
     virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
 
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
@@ -231,8 +225,8 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
-private:
-    std::vector<Base::Vector3d> _lValueList;
+protected:
+    Base::Vector3d getPyValue(PyObject *) const override;
 };
 
 /// Property representing a 4x4 matrix
@@ -308,6 +302,14 @@ public:
      */
     void setValue(const Base::Placement &pos);
 
+    /** Sets property only if changed
+     * @param pos: input placement
+     * @param tol: position tolerance
+     * @param atol: angular tolerance
+     */
+    bool setValueIfChanged(const Base::Placement &pos, 
+            double tol=1e-7, double atol=1e-12);
+
     /** This method returns a string representation of the property
      */
     const Base::Placement &getValue(void) const;
@@ -317,7 +319,9 @@ public:
 
     void setPathValue(const ObjectIdentifier &path, const boost::any &value);
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    virtual const boost::any getPathValue(const ObjectIdentifier &path) const override;
+
+    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const override;
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPlacementItem";
@@ -371,7 +375,7 @@ public:
 };
 
 
-class AppExport PropertyPlacementList: public PropertyLists
+class AppExport PropertyPlacementList: public PropertyListsT<Base::Placement>
 {
     TYPESYSTEM_HEADER();
 
@@ -383,32 +387,7 @@ public:
 
     virtual ~PropertyPlacementList();
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
-
-    /** Sets the property
-     */
-    void setValue(const Base::Placement&);
-
-    /// index operator
-    const Base::Placement& operator[] (const int idx) const {
-        return _lValueList.operator[] (idx);
-    }
-
-    void set1Value (const int idx, const Base::Placement& value) {
-        _lValueList.operator[] (idx) = value;
-    }
-
-    void setValues (const std::vector<Base::Placement>& values);
-
-    void setValue (void){}
-
-    const std::vector<Base::Placement> &getValues(void) const {
-        return _lValueList;
-    }
-
     virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
 
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
@@ -421,8 +400,8 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
-private:
-    std::vector<Base::Placement> _lValueList;
+protected:
+    Base::Placement getPyValue(PyObject *) const override;
 };
 
 

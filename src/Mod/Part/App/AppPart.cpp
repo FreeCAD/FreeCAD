@@ -452,6 +452,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Fillet                ::init();
     Part::Chamfer               ::init();
     Part::Compound              ::init();
+    Part::Compound2             ::init();
     Part::Extrusion             ::init();
     Part::Revolution            ::init();
     Part::Mirroring             ::init();

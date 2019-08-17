@@ -603,14 +603,14 @@ void ConstraintView::swapNamedOfSelectedItems()
     std::string tmpname = ss.str();
 
     Gui::Command::openCommand("Swap constraint names");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                            item1->sketch->getNameInDocument(),
+    FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
+                            item1->sketch,
                             item1->ConstraintNbr, tmpname.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                            item2->sketch->getNameInDocument(),
+    FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
+                            item2->sketch,
                             item2->ConstraintNbr, escapedstr1.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                            item1->sketch->getNameInDocument(),
+    FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
+                            item1->sketch,
                             item1->ConstraintNbr, escapedstr2.c_str());
     Gui::Command::commitCommand();
 }
@@ -831,8 +831,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
 
         Gui::Command::openCommand("Rename sketch constraint");
         try {
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, u'%s')",
-                                    sketch->getNameInDocument(),
+            FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
+                                    sketch,
                                     it->ConstraintNbr, escapedstr.c_str());
             Gui::Command::commitCommand();
         }
@@ -847,8 +847,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     // update constraint virtual space status
     Gui::Command::openCommand("Update constraint's virtual space");
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setVirtualSpace(%d, %s)",
-                                sketch->getNameInDocument(),
+        FCMD_OBJ_CMD2("setVirtualSpace(%d, %s)",
+                                sketch,
                                 it->ConstraintNbr,
                                 ((item->checkState() == Qt::Checked) != sketchView->getIsShownVirtualSpace())?"False":"True");
         Gui::Command::commitCommand();

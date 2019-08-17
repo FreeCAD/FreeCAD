@@ -98,7 +98,7 @@ add_library(
 
 add_library(
     area
-    MODULE
+    SHARED
     ${PYAREA_SRC}
 )
 
@@ -151,7 +151,7 @@ else(MSVC)
 endif(MSVC)
 
 target_link_libraries(area-native ${area_native_LIBS})
-SET_BIN_DIR(area-native area-native)
+SET_BIN_DIR(area-native area-native /Mod/Path)
 
 target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})
 
@@ -161,7 +161,7 @@ if(NOT BUILD_DYNAMIC_LINK_PYTHON AND CMAKE_COMPILER_IS_CLANGXX)
     target_link_libraries(area "-Wl,-undefined,dynamic_lookup")
 endif()
 
-SET_BIN_DIR(area area)
+SET_BIN_DIR(area area /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(area)
 
 # this figures out where to install the Python modules
@@ -176,12 +176,11 @@ message(STATUS "area module (for Path Workbench) will be installed to: " ${CMAKE
 if(WIN32)
     set_target_properties(area-native PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
     INSTALL(TARGETS area-native
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else(WIN32)
     INSTALL(TARGETS area-native
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 endif(WIN32)
 

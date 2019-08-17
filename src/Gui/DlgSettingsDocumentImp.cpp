@@ -73,6 +73,7 @@ void DlgSettingsDocumentImp::saveSettings()
     prefSaveBackupFiles->onSave();
     prefCountBackupFiles->onSave();
     prefDuplicateLabel->onSave();
+    prefPartialLoading->onSave();
     prefLicenseType->onSave();
     prefLicenseUrl->onSave();
     prefAuthor->onSave();
@@ -102,6 +103,7 @@ void DlgSettingsDocumentImp::loadSettings()
     prefSaveBackupFiles->onRestore();
     prefCountBackupFiles->onRestore();
     prefDuplicateLabel->onRestore();
+    prefPartialLoading->onRestore();
     prefLicenseType->onRestore();
     prefLicenseUrl->onRestore();
     prefAuthor->onRestore();

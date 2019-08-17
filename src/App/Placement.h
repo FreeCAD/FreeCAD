@@ -28,6 +28,7 @@
 
 #include <Base/Placement.h>
 
+#include "FeaturePython.h"
 #include "GeoFeature.h"
 #include "PropertyGeo.h"
 
@@ -66,6 +67,7 @@ public:
 
 
 };
+typedef App::FeaturePythonT<App::Placement> PlacementPython;
 
 
 

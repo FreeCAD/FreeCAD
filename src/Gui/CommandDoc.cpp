@@ -37,11 +37,15 @@
 #endif
 #include <algorithm>
 
+#include <boost/regex.hpp>
+#include <boost/algorithm/string/replace.hpp>
+
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
@@ -69,6 +73,9 @@
 #include "MergeDocuments.h"
 #include "NavigationStyle.h"
 #include "GraphvizView.h"
+#include "DlgObjectSelection.h"
+
+FC_LOG_LEVEL_INIT("Command", false);
 
 using namespace Gui;
 
@@ -90,6 +97,7 @@ StdCmdOpen::StdCmdOpen()
     sStatusTip    = QT_TR_NOOP("Open a document or import files");
     sPixmap       = "document-open";
     sAccel        = keySequenceToAccel(QKeySequence::Open);
+    eType         = NoTransaction;
 }
 
 void StdCmdOpen::activated(int iMsg)
@@ -539,6 +547,33 @@ bool StdCmdSaveCopy::isActive(void)
 }
 
 //===========================================================================
+// Std_SaveAll
+//===========================================================================
+DEF_STD_CMD_A(StdCmdSaveAll);
+
+StdCmdSaveAll::StdCmdSaveAll()
+  :Command("Std_SaveAll")
+{
+  sGroup        = QT_TR_NOOP("File");
+  sMenuText     = QT_TR_NOOP("Save All");
+  sToolTipText  = QT_TR_NOOP("Save all opened document");
+  sWhatsThis    = "Std_SaveAll";
+  sStatusTip    = QT_TR_NOOP("Save all opened document");
+}
+
+void StdCmdSaveAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    Gui::Document::saveAll();
+}
+
+bool StdCmdSaveAll::isActive(void)
+{
+  return ( getActiveGuiDocument() ? true : false );
+}
+
+
+//===========================================================================
 // Std_Revert
 //===========================================================================
 DEF_STD_CMD_A(StdCmdRevert);
@@ -552,6 +587,7 @@ StdCmdRevert::StdCmdRevert()
     sWhatsThis    = "Std_Revert";
     sStatusTip    = QT_TR_NOOP("Reverts to the saved version of this file");
   //sPixmap       = "document-revert";
+    eType         = NoTransaction;
 }
 
 void StdCmdRevert::activated(int iMsg)
@@ -742,6 +778,7 @@ StdCmdQuit::StdCmdQuit()
   sPixmap       = "application-exit";
 #endif
   sAccel        = "Alt+F4";
+  eType         = NoTransaction;
 }
 
 void StdCmdQuit::activated(int iMsg)
@@ -767,7 +804,7 @@ StdCmdUndo::StdCmdUndo()
   sStatusTip    = QT_TR_NOOP("Undo exactly one action");
   sPixmap       = "edit-undo";
   sAccel        = keySequenceToAccel(QKeySequence::Undo);
-  eType         = ForEdit;
+  eType         = ForEdit|NoTransaction;
 }
 
 void StdCmdUndo::activated(int iMsg)
@@ -811,7 +848,7 @@ StdCmdRedo::StdCmdRedo()
   sStatusTip    = QT_TR_NOOP("Redoes a previously undone action");
   sPixmap       = "edit-redo";
   sAccel        = keySequenceToAccel(QKeySequence::Redo);
-  eType         = ForEdit;
+  eType         = ForEdit|NoTransaction;
 }
 
 void StdCmdRedo::activated(int iMsg)
@@ -887,7 +924,7 @@ StdCmdCopy::StdCmdCopy()
 void StdCmdCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool done = getGuiApplication()->sendMsgToActiveView("Copy");
+    bool done = getGuiApplication()->sendMsgToFocusView("Copy");
     if (!done) {
         QMimeData * mimeData = getMainWindow()->createMimeDataFromSelection();
         QClipboard* cb = QApplication::clipboard();
@@ -897,7 +934,7 @@ void StdCmdCopy::activated(int iMsg)
 
 bool StdCmdCopy::isActive(void)
 {
-    if (getGuiApplication()->sendHasMsgToActiveView("Copy"))
+    if (getGuiApplication()->sendHasMsgToFocusView("Copy"))
         return true;
     return Selection().hasSelection();
 }
@@ -922,7 +959,7 @@ StdCmdPaste::StdCmdPaste()
 void StdCmdPaste::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool done = getGuiApplication()->sendMsgToActiveView("Paste");
+    bool done = getGuiApplication()->sendMsgToFocusView("Paste");
     if (!done) {
         QClipboard* cb = QApplication::clipboard();
         const QMimeData* mimeData = cb->mimeData();
@@ -935,7 +972,7 @@ void StdCmdPaste::activated(int iMsg)
 
 bool StdCmdPaste::isActive(void)
 {
-    if (getGuiApplication()->sendHasMsgToActiveView("Paste"))
+    if (getGuiApplication()->sendHasMsgToFocusView("Paste"))
         return true;
     QClipboard* cb = QApplication::clipboard();
     const QMimeData* mime = cb->mimeData();
@@ -959,38 +996,34 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
 void StdCmdDuplicateSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
-    std::set<App::DocumentObject*> unique_objs;
-    std::map< App::Document*, std::vector<App::DocumentObject*> > objs;
-    for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
-        if (it->pObject && it->pObject->getDocument()) {
-            if (unique_objs.insert(it->pObject).second)
-                objs[it->pObject->getDocument()].push_back(it->pObject);
-        }
+    std::vector<App::DocumentObject*> sel;
+    std::set<App::DocumentObject*> objSet;
+    for(auto &s : Selection().getCompleteSelection()) {
+        if(s.pObject && s.pObject->getNameInDocument() && objSet.insert(s.pObject).second)
+            sel.push_back(s.pObject);
     }
-
-    if (objs.empty())
+    if(sel.empty())
         return;
 
+    bool hasXLink = false;
     Base::FileInfo fi(App::Application::getTempFileName());
     {
-        std::vector<App::DocumentObject*> sel; // selected
-        std::vector<App::DocumentObject*> all; // object sub-graph
-        for (std::map< App::Document*, std::vector<App::DocumentObject*> >::iterator it = objs.begin(); it != objs.end(); ++it) {
-            std::vector<App::DocumentObject*> dep = it->first->getDependencyList(it->second);
-            sel.insert(sel.end(), it->second.begin(), it->second.end());
-            all.insert(all.end(), dep.begin(), dep.end());
-        }
-
+        auto all = App::Document::getDependencyList(sel);
         if (all.size() > sel.size()) {
-            int ret = QMessageBox::question(getMainWindow(),
-                qApp->translate("Std_DuplicateSelection","Object dependencies"),
-                qApp->translate("Std_DuplicateSelection","The selected objects have a dependency to unselected objects.\n"
-                                                         "Do you want to duplicate them, too?"),
-                QMessageBox::Yes,QMessageBox::No);
-            if (ret == QMessageBox::Yes) {
-                sel = all;
-            }
+            DlgObjectSelection dlg(sel,getMainWindow());
+            if(dlg.exec()!=QDialog::Accepted)
+                return;
+            sel = dlg.getSelections();
+            if(sel.empty())
+                return;
+        }
+        std::vector<App::Document*> unsaved;
+        hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
+        if(unsaved.size()) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Unsaved document"),
+                QObject::tr("The exported object contains external link. Please save the document"
+                   "at least once before exporting."));
+            return;
         }
 
         // save stuff to file
@@ -1002,13 +1035,26 @@ void StdCmdDuplicateSelection::activated(int iMsg)
     }
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (doc) {
-        doc->openTransaction("Duplicate");
-        // restore objects from file and add to active document
-        Base::ifstream str(fi, std::ios::in | std::ios::binary);
-        MergeDocuments mimeView(doc);
-        mimeView.importObjects(str);
-        str.close();
-        doc->commitTransaction();
+        bool proceed = true;
+        if(hasXLink && !doc->isSaved()) {
+            int ret = QMessageBox::question(getMainWindow(),
+                qApp->translate("Std_DuplicateSelection","Object dependencies"),
+                qApp->translate("Std_DuplicateSelection",
+                "To link to external objects, the document must be saved at least once.\n"
+                "Do you want to save the document now?"),
+                QMessageBox::Yes,QMessageBox::No);
+            if(ret == QMessageBox::Yes) 
+                proceed = Application::Instance->getDocument(doc)->saveAs();
+        }
+        if(proceed) {
+            doc->openTransaction("Duplicate");
+            // restore objects from file and add to active document
+            Base::ifstream str(fi, std::ios::in | std::ios::binary);
+            MergeDocuments mimeView(doc);
+            mimeView.importObjects(str);
+            str.close();
+            doc->commitTransaction();
+        }
     }
     fi.deleteFile();
 }
@@ -1076,137 +1122,147 @@ void StdCmdDelete::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    // go through all documents
-    const SelectionSingleton& rSel = Selection();
-    const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for (std::vector<App::Document*>::const_iterator it = docs.begin(); it != docs.end(); ++it) {
-        Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(*it);
-        std::vector<Gui::SelectionObject> sel = rSel.getSelectionEx((*it)->getName());
-        if (!sel.empty()) {
-            bool autoDeletion = true;
-
-            // if an object is in edit mode handle only this object even if unselected (#0001838)
-            Gui::ViewProvider* vpedit = pGuiDoc->getInEdit();
-            if (vpedit) {
-                // check if the edited view provider is selected
-                for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                    Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
-                    if (vp == vpedit) {
-                        if (!ft->getSubNames().empty()) {
-                            // handle the view provider
-                            Gui::getMainWindow()->setUpdatesEnabled(false);
-
-                            try {
-                                (*it)->openTransaction("Delete");
-                                vpedit->onDelete(ft->getSubNames());
-                                (*it)->commitTransaction();
-                            }
-                            catch (const Base::Exception& e) {
-                                (*it)->abortTransaction();
-                                e.ReportException();
-                            }
-
-                            Gui::getMainWindow()->setUpdatesEnabled(true);
-                            Gui::getMainWindow()->update();
-                        }
-                        break;
+    std::set<App::Document*> docs;
+    try {
+        openCommand("Delete");
+        if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
+            commitCommand();
+            return;
+        }
+        Gui::getMainWindow()->setUpdatesEnabled(false);
+        auto editDoc = Application::Instance->editDocument();
+        ViewProviderDocumentObject *vpedit = 0;
+        if(editDoc)
+            vpedit = dynamic_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+        if(vpedit) {
+            for(auto &sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
+                if(sel.getObject() == vpedit->getObject()) {
+                    if (!sel.getSubNames().empty()) {
+                        vpedit->onDelete(sel.getSubNames());
+                        docs.insert(editDoc->getDocument());
                     }
+                    break;
                 }
             }
-            else {
-                // check if we can delete the object - linked objects
-                std::set<QString> affectedLabels;
-                for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                    App::DocumentObject* obj = ft->getObject();
-                    std::vector<App::DocumentObject*> links = obj->getInList();
-                    if (!links.empty()) {
-                        // check if the referenced objects are groups or are selected too
-                        for (std::vector<App::DocumentObject*>::iterator lt = links.begin(); lt != links.end(); ++lt) {
-                            if (!rSel.isSelected(*lt)) {
-                                ViewProvider* vp = pGuiDoc->getViewProvider(*lt);
-                                if (!vp->canDelete(obj)) {
-                                    autoDeletion = false;
-                                    affectedLabels.insert(QString::fromUtf8((*lt)->Label.getValue()));
-                                }
+        } else {
+            std::set<QString> affectedLabels;
+            bool more = false;
+            auto sels = Selection().getSelectionEx();
+            bool autoDeletion = true;
+            for(auto &sel : sels) {
+                auto obj = sel.getObject();
+                for(auto parent : obj->getInList()) {
+                    if(!Selection().isSelected(parent)) {
+                        ViewProvider* vp = Application::Instance->getViewProvider(parent);
+                        if (vp && !vp->canDelete(obj)) {
+                            autoDeletion = false;
+                            QString label;
+                            if(parent->getDocument() != obj->getDocument())
+                                label = QLatin1String(parent->getFullName().c_str());
+                            else
+                                label = QLatin1String(parent->getNameInDocument());
+                            if(parent->Label.getStrValue() != parent->getNameInDocument())
+                                label += QString::fromLatin1(" (%1)").arg(
+                                        QString::fromUtf8(parent->Label.getValue()));
+                            affectedLabels.insert(label);
+                            if(affectedLabels.size()>=10) {
+                                more = true;
+                                break;
                             }
                         }
                     }
                 }
+                if(more)
+                    break;
+            }
 
-                //check for inactive objects in selection (Mantis #3477)
-                std::set<QString> inactiveLabels;
-                App::Application& app = App::GetApplication();
-                App::Document* actDoc = app.getActiveDocument();
-                for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                    App::DocumentObject* obj = ft->getObject();
-                    App::Document* objDoc = obj->getDocument();
-                    if (actDoc != objDoc) {
-                        inactiveLabels.insert(QString::fromUtf8(obj->Label.getValue()));
-                        autoDeletion = false;
-                    }
+            // The check below is not needed because we now only get selection
+            // from the active document
+#if 0
+            //check for inactive objects in selection  Mantis #3477
+            std::set<QString> inactiveLabels;
+            App::Application& app = App::GetApplication();
+            App::Document* actDoc = app.getActiveDocument();
+            for (std::vector<Gui::SelectionObject>::iterator ft = sels.begin(); ft != sels.end(); ++ft) {
+                App::DocumentObject* obj = ft->getObject();
+                App::Document* objDoc = obj->getDocument();
+                if (actDoc != objDoc) {
+                    inactiveLabels.insert(QString::fromUtf8(obj->Label.getValue()));
+                    autoDeletion = false;
                 }
+            }
+#endif
 
-                if (!autoDeletion) {   //can't just delete, need to ask
-                    QString bodyMessage;
-                    QTextStream bodyMessageStream(&bodyMessage);
-
-                    //message for linked items
+            if (!autoDeletion) {
+                QString bodyMessage;
+                QTextStream bodyMessageStream(&bodyMessage);
+                bodyMessageStream << qApp->translate("Std_Delete",
+                                                     "The following referencing objects might break.\n\n"
+                                                     "Are you sure you want to continue?\n");
+                for (const auto &currentLabel : affectedLabels)
+                    bodyMessageStream << '\n' << currentLabel;
+                if(more)
+                    bodyMessageStream << "\n...";
+#if 0
+                //message for inactive items
+                if (!inactiveLabels.empty()) {
                     if (!affectedLabels.empty()) {
-                        bodyMessageStream << qApp->translate("Std_Delete",
-                                                             "These items are linked to items selected for deletion and might break.") << "\n\n";
-                        for (const auto &currentLabel : affectedLabels)
-                          bodyMessageStream << currentLabel << '\n';
+                        bodyMessageStream << "\n";
                     }
-
-                    //message for inactive items
-                    if (!inactiveLabels.empty()) {
-                        if (!affectedLabels.empty()) {
-                            bodyMessageStream << "\n";
-                        }
-                        std::string thisDoc = pGuiDoc->getDocument()->getName();
-                        bodyMessageStream << qApp->translate("Std_Delete",
-                                             "These items are selected for deletion, but are not in the active document.") << "\n\n";
-                        for (const auto &currentLabel : inactiveLabels)
-                          bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
-                    }
-                    bodyMessageStream << "\n\n" << qApp->translate("Std_Delete",
-                                                         "Are you sure you want to continue?");
-
-                    int ret = QMessageBox::question(Gui::getMainWindow(),
-                        qApp->translate("Std_Delete", "Delete Selection Issues"), bodyMessage,
-                        QMessageBox::Yes, QMessageBox::No);
-                    if (ret == QMessageBox::Yes)
-                        autoDeletion = true;
+                    std::string thisDoc = pGuiDoc->getDocument()->getName();
+                    bodyMessageStream << qApp->translate("Std_Delete", 
+                                            "These items are selected for deletion, but are not in the active document. \n\n"); 
+                    for (const auto &currentLabel : inactiveLabels)
+                        bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
                 }
+#endif
 
-                if (autoDeletion) {
-                    Gui::getMainWindow()->setUpdatesEnabled(false);
-                    try {
-                        (*it)->openTransaction("Delete");
-                        for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                            Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
-                            if (vp) {
-                                // ask the ViewProvider if it wants to do some clean up
-                                if (vp->onDelete(ft->getSubNames())) {
-                                    doCommand(Doc,"App.getDocument(\"%s\").removeObject(\"%s\")"
-                                             ,(*it)->getName(), ft->getFeatName());
-                                }
-                            }
+                int ret = QMessageBox::warning(Gui::getMainWindow(),
+                    qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+                    QMessageBox::Yes, QMessageBox::No);
+                if (ret == QMessageBox::Yes)
+                    autoDeletion = true;
+            }
+            if (autoDeletion) {
+                for(auto &sel : sels) {
+                    auto obj = sel.getObject();
+                    Gui::ViewProvider* vp = Application::Instance->getViewProvider(obj);
+                    if (vp) {
+                        // ask the ViewProvider if it wants to do some clean up
+                        if (vp->onDelete(sel.getSubNames())) {
+                            FCMD_OBJ_DOC_CMD(obj,"removeObject('" << obj->getNameInDocument() << "')");
+                            docs.insert(obj->getDocument());
                         }
-                        (*it)->commitTransaction();
                     }
-                    catch (const Base::Exception& e) {
-                        (*it)->abortTransaction();
-                        e.ReportException();
-                    }
-
-                    Gui::getMainWindow()->setUpdatesEnabled(true);
-                    Gui::getMainWindow()->update();
                 }
             }
         }
-        doCommand(Doc,"App.getDocument(\"%s\").recompute()", (*it)->getName());
+        if(docs.size()) {
+            const auto &outList = App::PropertyXLink::getDocumentOutList();
+            for(auto it=docs.begin();it!=docs.end();++it) {
+                auto itd = outList.find(*it);
+                if(itd!=outList.end()) {
+                    for(auto doc : itd->second) {
+                        if(doc != *it)
+                            docs.erase(doc);
+                    }
+                }
+            }
+            for(auto doc : docs) {
+                FCMD_DOC_CMD(doc,"recompute()");
+            }
+        }
+    } catch (const Base::Exception& e) {
+        QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
+                QString::fromLatin1(e.what()));
+        e.ReportException();
+    } catch (...) {
+        QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
+                QString::fromLatin1("Unknown error"));
     }
+    commitCommand();
+    Gui::getMainWindow()->setUpdatesEnabled(true);
+    Gui::getMainWindow()->update();
 }
 
 bool StdCmdDelete::isActive(void)
@@ -1230,24 +1286,33 @@ StdCmdRefresh::StdCmdRefresh()
     sPixmap       = "view-refresh";
     sAccel        = keySequenceToAccel(QKeySequence::Refresh);
     eType         = AlterDoc | Alter3DView | AlterSelection | ForEdit;
+    bCanLog        = false;
 }
 
 void StdCmdRefresh::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     if (getActiveGuiDocument()) {
-        //Note: Don't add the recompute to undo/redo because it complicates
-        //testing the changes of properties.
-        //openCommand("Refresh active document");
-        this->getDocument()->setStatus(App::Document::SkipRecompute, false);
-        doCommand(Doc,"App.activeDocument().recompute()");
-        //commitCommand();
+        App::AutoTransaction trans("Recompute");
+        try {
+            doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
+        }
+        catch (Base::Exception& /*e*/) {
+            int ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
+                qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
+                            "Please check the Report View for more details.\n\n"
+                            "Do you still want to proceed?"),
+                    QMessageBox::Yes, QMessageBox::No);
+            if(ret == QMessageBox::No)
+                return;
+            doCommand(Doc,"App.activeDocument().recompute(None,True)");
+        }
     }
 }
 
 bool StdCmdRefresh::isActive(void)
 {
-    return this->getDocument() && this->getDocument()->isTouched();
+    return this->getDocument() && this->getDocument()->mustExecute();
 }
 
 //===========================================================================
@@ -1453,6 +1518,220 @@ bool StdCmdEdit::isActive(void)
     return (Selection().getCompleteSelection().size() > 0) || (Gui::Control().activeDialog() != 0);
 }
 
+//======================================================================
+// StdCmdExpression
+//===========================================================================
+class StdCmdExpression : public Gui::Command
+{
+public:
+    StdCmdExpression() : Command("Std_Expressions")
+    {
+        sGroup        = QT_TR_NOOP("Edit");
+        sMenuText     = QT_TR_NOOP("Expression actions");
+        sToolTipText  = QT_TR_NOOP("Expression actions");
+        sWhatsThis    = "Std_Expressions";
+        sStatusTip    = QT_TR_NOOP("Expression actions");
+        eType         = ForEdit;
+    }
+
+    virtual const char* className() const {return "StdCmdExpression";}
+protected:
+
+    virtual void activated(int iMsg) {
+        std::map<App::Document*, std::set<App::DocumentObject*> > objs;
+        switch(iMsg) {
+        case 0:
+            for(auto &sel : Selection().getCompleteSelection())
+                objs[sel.pObject->getDocument()].insert(sel.pObject);
+            break;
+        case 1:
+            if(App::GetApplication().getActiveDocument()) {
+                auto doc = App::GetApplication().getActiveDocument();
+                auto array = doc->getObjects();
+                auto &set = objs[doc];
+                set.insert(array.begin(),array.end());
+            }
+            break;
+        case 2:
+            for(auto doc : App::GetApplication().getDocuments()) {
+                auto &set = objs[doc];
+                auto array = doc->getObjects();
+                set.insert(array.begin(),array.end());
+            }
+            break;
+        case 3:
+            pasteExpressions();
+            break;
+        }
+        copyExpressions(objs);
+    }
+
+    virtual Gui::Action * createAction(void) {
+        ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+        pcAction->setDropDownMenu(true);
+        applyCommandData(this->className(), pcAction);
+
+        pcActionCopySel = pcAction->addAction(QObject::tr("Copy selected"));
+        pcActionCopyActive = pcAction->addAction(QObject::tr("Copy active document"));
+        pcActionCopyAll = pcAction->addAction(QObject::tr("Copy all documents"));
+        pcActionPaste = pcAction->addAction(QObject::tr("Paste"));
+
+        return pcAction;
+    }
+
+    void copyExpressions(const std::map<App::Document*, std::set<App::DocumentObject*> > &objs) {
+        std::ostringstream ss;
+        std::vector<App::Property*> props;
+        for(auto &v : objs) {
+            for(auto obj : v.second) {
+                props.clear();
+                obj->getPropertyList(props);
+                for(auto prop : props) {
+                    auto p = dynamic_cast<App::PropertyExpressionContainer*>(prop);
+                    if(!p) continue;
+                    for(auto &v : p->getExpressions()) {
+                        ss << "##@@ " << v.first.toString() << ' '
+                           << obj->getFullName() << '.' << p->getName()
+                           << " (" << obj->Label.getValue() << ')' << std::endl;
+                        ss << "##@@";
+                        if(v.second->comment.size()) {
+                            if(v.second->comment[0] == '&' 
+                                    || v.second->comment.find('\n') != std::string::npos
+                                    || v.second->comment.find('\r') != std::string::npos)
+                            {
+                                std::string comment = v.second->comment;
+                                boost::replace_all(comment,"&","&amp;");
+                                boost::replace_all(comment,"\n","&#10;");
+                                boost::replace_all(comment,"\r","&#13;");
+                                ss << '&' << comment;
+                            }else
+                                ss << v.second->comment;
+                        }
+                        ss << std::endl << v.second->toString(true) << std::endl << std::endl;
+                    }
+                }
+            }
+        }
+        QApplication::clipboard()->setText(QString::fromUtf8(ss.str().c_str()));
+    }
+
+    void pasteExpressions() {
+        std::map<App::Document*, std::map<App::PropertyExpressionContainer*, 
+            std::map<App::ObjectIdentifier, App::ExpressionPtr> > > exprs;
+
+        bool failed = false;
+        std::string txt = QApplication::clipboard()->text().toUtf8().constData();
+        const char *tstart = txt.c_str();
+        const char *tend = tstart + txt.size();
+
+        static boost::regex rule("^##@@ ([^ ]+) (\\w+)#(\\w+)\\.(\\w+) [^\n]+\n##@@([^\n]*)\n");
+        boost::cmatch m;
+        if(!boost::regex_search(tstart,m,rule)) {
+            FC_WARN("No expression header found");
+            return;
+        }
+        boost::cmatch m2;
+        bool found = true;
+        for(;found;m=m2) {
+            found = boost::regex_search(m[0].second,tend,m2,rule);
+
+            auto pathName = m.str(1);
+            auto docName = m.str(2);
+            auto objName = m.str(3);
+            auto propName = m.str(4);
+            auto comment = m.str(5);
+
+            App::Document *doc = App::GetApplication().getDocument(docName.c_str());
+            if(!doc) {
+                FC_WARN("Cannot find document '" << docName << "'");
+                continue;
+            }
+
+            auto obj = doc->getObject(objName.c_str());
+            if(!obj) {
+                FC_WARN("Cannot find object '" << docName << '#' << objName << "'");
+                continue;
+            }
+
+            auto prop = dynamic_cast<App::PropertyExpressionContainer*>(
+                    obj->getPropertyByName(propName.c_str()));
+            if(!prop) {
+                FC_WARN("Invalid property '" << docName << '#' << objName << '.' << propName << "'");
+                continue;
+            }
+
+            size_t len = (found?m2[0].first:tend) - m[0].second;
+            try {
+                App::ExpressionPtr expr(App::Expression::parse(obj,std::string(m[0].second,len)));
+                if(expr && comment.size()) {
+                    if(comment[0] == '&') {
+                        expr->comment = comment.c_str()+1;
+                        boost::replace_all(expr->comment,"&amp;","&");
+                        boost::replace_all(expr->comment,"&#10;","\n");
+                        boost::replace_all(expr->comment,"&#13;","\r");
+                    } else
+                        expr->comment = comment;
+                }
+                exprs[doc][prop][App::ObjectIdentifier::parse(obj,pathName)] = std::move(expr);
+            } catch(Base::Exception &e) {
+                FC_ERR(e.what() << std::endl << m[0].str());
+                failed = true;
+            }
+        }
+        if(failed) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Expression error"),
+                QObject::tr("Failed to parse some of the expressions.\n"
+                            "Please check the Report View for more details."));
+            return;
+        }
+
+        openCommand("Paste expressions");
+        try {
+            for(auto &v : exprs) {
+                for(auto &v2 : v.second) {
+                    auto &expressions = v2.second;
+                    auto old = v2.first->getExpressions();
+                    for(auto it=expressions.begin(),itNext=it;it!=expressions.end();it=itNext) {
+                        ++itNext;
+                        auto iter = old.find(it->first);
+                        if(iter != old.end() && it->second->isSame(*iter->second))
+                            expressions.erase(it);
+                    }
+                    if(expressions.size())
+                        v2.first->setExpressions(std::move(expressions));
+                }
+            }
+            commitCommand();
+        } catch (const Base::Exception& e) {
+            abortCommand();
+            QMessageBox::critical(getMainWindow(), QObject::tr("Failed to paste expressions"),
+                QString::fromLatin1(e.what()));
+            e.ReportException();
+        }
+    }
+
+    bool isActive() {
+        if(!App::GetApplication().getActiveDocument()) {
+            pcActionCopyAll->setEnabled(false);
+            pcActionCopySel->setEnabled(false);
+            pcActionCopyActive->setEnabled(false);
+            pcActionPaste->setEnabled(false);
+            return true;
+        }
+        pcActionCopyActive->setEnabled(true);
+        pcActionCopyAll->setEnabled(true);
+        pcActionCopySel->setEnabled(Selection().hasSelection());
+
+        pcActionPaste->setEnabled(
+                QApplication::clipboard()->text().startsWith(QLatin1String("##@@ ")));
+        return true;
+    }
+
+    QAction *pcActionCopyAll;
+    QAction *pcActionCopySel;
+    QAction *pcActionCopyActive;
+    QAction *pcActionPaste;
+};
 
 namespace Gui {
 
@@ -1470,6 +1749,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());
     rcCmdMgr.addCommand(new StdCmdSaveCopy());
+    rcCmdMgr.addCommand(new StdCmdSaveAll());
     rcCmdMgr.addCommand(new StdCmdRevert());
     rcCmdMgr.addCommand(new StdCmdProjectInfo());
     rcCmdMgr.addCommand(new StdCmdProjectUtil());
@@ -1491,6 +1771,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdTransformManip());
     rcCmdMgr.addCommand(new StdCmdAlignment());
     rcCmdMgr.addCommand(new StdCmdEdit());
+    rcCmdMgr.addCommand(new StdCmdExpression());
 }
 
 } // namespace Gui

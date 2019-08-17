@@ -143,19 +143,16 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 bool ViewProviderBody::doubleClicked(void)
 {
     //first, check if the body is already active.
-    App::DocumentObject* activeBody = nullptr;
-    Gui::MDIView* activeView = this->getActiveView();
-    if ( activeView ) {
-        activeBody = activeView->getActiveObject<App::DocumentObject*> (PDBODYKEY);
-    }
+    auto activeDoc = Gui::Application::Instance->activeDocument();
+    if(!activeDoc)
+        activeDoc = getDocument();
+    auto activeView = activeDoc->getActiveView();
+    if(!activeView) return false;
 
-    if (activeBody == this->getObject()){
+    if (activeView->isActiveObject(getObject(),PDBODYKEY)) {
         //active body double-clicked. Deactivate.
         Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.activateView('Gui::View3DInventor', True)\n"
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', None)",
-                this->getObject()->getDocument()->getName(),
-                PDBODYKEY);
+                "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)", PDBODYKEY);
     } else {
 
         // assure the PartDesign workbench
@@ -165,21 +162,13 @@ bool ViewProviderBody::doubleClicked(void)
         auto* part = App::Part::getPartOfObject ( getObject() );
         if ( part && part != getActiveView()->getActiveObject<App::Part*> ( PARTKEY ) ) {
             Gui::Command::doCommand(Gui::Command::Gui,
-                    "Gui.activateView('Gui::View3DInventor', True)\n"
-                    "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                    part->getDocument()->getName(),
-                    PARTKEY,
-                    part->getDocument()->getName(),
-                    part->getNameInDocument());
+                    "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
+                    PARTKEY, Gui::Command::getObjectCmd(part).c_str());
         }
 
         Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.activateView('Gui::View3DInventor', True)\n"
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                this->getObject()->getDocument()->getName(),
-                PDBODYKEY,
-                this->getObject()->getDocument()->getName(),
-                this->getObject()->getNameInDocument());
+                "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
+                PDBODYKEY, Gui::Command::getObjectCmd(getObject()).c_str());
     }
 
     return true;
@@ -212,9 +201,7 @@ bool ViewProviderBody::doubleClicked(void)
 
 bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
     // TODO May be do it conditionally? (2015-09-05, Fat-Zer)
-    Gui::Command::doCommand(Gui::Command::Doc,
-            "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-            ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+    FCMD_OBJ_CMD(getObject(),"removeObjectsFromDocument()");
     return true;
 }
 
@@ -250,6 +237,9 @@ void ViewProviderBody::updateData(const App::Property* prop)
 
 void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop ) {
 
+    if(App::GetApplication().isRestoring())
+        return;
+    
     if (!obj.isDerivedFrom ( Part::Feature::getClassTypeId () ) ||
         obj.isDerivedFrom ( Part::BodyBase::getClassTypeId () )    ) { // we are interested only in Part::Features, not in bodies
         return;
@@ -364,7 +354,8 @@ void ViewProviderBody::updateOriginDatumSize () {
 void ViewProviderBody::onChanged(const App::Property* prop) {
 
     if(prop == &DisplayModeBody) {
-
+        auto body = dynamic_cast<PartDesign::Body*>(getObject());
+    
         if ( DisplayModeBody.getValue() == 0 )  {
             //if we are in an override mode we need to make sure to come out, because
             //otherwise the maskmode is blocked and won't go into "through"
@@ -374,8 +365,12 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
                 overrideMode = mode;
             }
             setDisplayMaskMode("Group");
+            if(body)
+                body->setShowTip(false);
         }
         else {
+            if(body)
+                body->setShowTip(true);
             if(getOverrideMode() == "As Is")
                 setDisplayMaskMode(DisplayMode.getValueAsString());
             else {
@@ -396,9 +391,15 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
 
 void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
 
+    if(!pcObject || isRestoring())
+        return;
+
     if(prop == &Visibility ||
        prop == &Selectable ||
-       prop == &DisplayModeBody)
+       prop == &DisplayModeBody ||
+       prop == &DiffuseColor ||
+       prop == &PointColorArray ||
+       prop == &LineColorArray)
         return;
 
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;

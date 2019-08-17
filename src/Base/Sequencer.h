@@ -150,6 +150,9 @@ public:
      */
     bool wasCanceled() const;
 
+    /// Check if the  operation is aborted by user
+    virtual void checkAbort() {}
+
 protected:
     /**
      * Starts a new operation, returns false if there is already a pending operation,

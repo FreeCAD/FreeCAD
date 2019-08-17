@@ -35,6 +35,7 @@
 #include "Document.h"
 #include "DocumentPy.h"
 #include "DocumentObserverPython.h"
+#include "DocumentObjectPy.h"
 
 // FreeCAD Base header
 #include <Base/Interpreter.h>
@@ -44,6 +45,7 @@
 #include <Base/Factory.h>
 #include <Base/FileInfo.h>
 #include <Base/UnitsApi.h>
+#include <Base/Sequencer.h>
 
 //using Base::GetConsole;
 using namespace Base;
@@ -131,8 +133,8 @@ PyMethodDef Application::Methods[] = {
      "Get a document by its name or raise an exception\n"
      "if there is no document with the given name."},
     {"listDocuments",  (PyCFunction) Application::sListDocuments, METH_VARARGS,
-     "listDocuments() -> list\n\n"
-     "Return a list of names of all documents."},
+     "listDocuments(sort=False) -> list\n\n"
+     "Return a list of names of all documents, optionally sort in dependency order."},
     {"addDocumentObserver",  (PyCFunction) Application::sAddDocObserver, METH_VARARGS,
      "addDocumentObserver() -> None\n\n"
      "Add an observer to get notified about changes on documents."},
@@ -144,7 +146,39 @@ PyMethodDef Application::Methods[] = {
      "'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value"},
     {"getLogLevel",          (PyCFunction) Application::sGetLogLevel, METH_VARARGS,
      "getLogLevel(tag) -- Get the log level of a string tag"},
-
+    {"checkLinkDepth",       (PyCFunction) Application::sCheckLinkDepth, METH_VARARGS,
+     "checkLinkDepth(depth) -- check link recursion depth"},
+    {"getLinksTo",       (PyCFunction) Application::sGetLinksTo, METH_VARARGS,
+     "getLinksTo(obj,options=0,maxCount=0) -- return the objects linked to 'obj'\n\n"
+     "options: 1: recursive, 2: check link array. Options can combine.\n"
+     "maxCount: to limit the number of links returned\n"},
+    {"getDependentObjects", (PyCFunction) Application::sGetDependentObjects, METH_VARARGS,
+     "getDependentObjects(obj|[obj,...], options=0)\n"
+     "Return a list of dependent objects including the given objects.\n\n"
+     "options: can have the following bit flags,\n"
+     "         1: to sort the list in topological order.\n"
+     "         2: to exclude dependency of Link type object."},
+    {"setActiveTransaction", (PyCFunction) Application::sSetActiveTransaction, METH_VARARGS,
+     "setActiveTransaction(name, persist=False) -- setup active transaction with the given name\n\n"
+     "name: the transaction name\n"
+     "persist(False): by default, if the calling code is inside any invocation of a command, it\n"
+     "                will be auto closed once all commands within the current stack exists. To\n"
+     "                disable auto closing, set persist=True\n"
+     "Returns the transaction ID for the active transaction. An application-wide\n"
+     "active transaction causes any document changes to open a transaction with\n"
+     "the given name and ID."},
+    {"getActiveTransaction", (PyCFunction) Application::sGetActiveTransaction, METH_VARARGS,
+     "getActiveTransaction() -> (name,id) return the current active transaction name and ID"},     
+    {"closeActiveTransaction", (PyCFunction) Application::sCloseActiveTransaction, METH_VARARGS,
+     "closeActiveTransaction(abort=False) -- commit or abort current active transaction"},     
+    {"isRestoring", (PyCFunction) Application::sIsRestoring, METH_VARARGS,
+     "isRestoring() -> Bool -- Test if the application is opening some document"},
+    {"checkAbort", (PyCFunction) Application::sCheckAbort, METH_VARARGS,
+     "checkAbort() -- check for user abort in length operation.\n\n"
+     "This only works if there is an active sequencer (or ProgressIndicator in Python).\n"
+     "There is an active sequencer during document restore and recomputation. User may\n"
+     "abort the operation by pressing the ESC key. Once detected, this function will\n"
+     "trigger a BaseExceptionFreeCADAbort exception."},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -192,6 +226,12 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
         PyErr_Format(PyExc_IOError, "Invalid project file %s: %s", path, e.what());
         return 0;
     }
+}
+
+PyObject* Application::sIsRestoring(PyObject * /*self*/, PyObject *args) {
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    return Py::new_reference_to(Py::Boolean(GetApplication().isRestoring()));
 }
 
 PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args)
@@ -626,22 +666,26 @@ PyObject* Application::sGetHomePath(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sListDocuments(PyObject * /*self*/, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+    PyObject *sort = Py_False;
+    if (!PyArg_ParseTuple(args, "|O",&sort))     // convert args: Python->C
         return NULL;                       // NULL triggers exception
     PY_TRY {
         PyObject *pDict = PyDict_New();
         PyObject *pKey;
         Base::PyObjectBase* pValue;
 
-        for (std::map<std::string,Document*>::const_iterator It = GetApplication().DocMap.begin();
-             It != GetApplication().DocMap.end();++It) {
+        std::vector<Document*> docs = GetApplication().getDocuments();;
+        if(PyObject_IsTrue(sort))
+            docs = Document::getDependentDocuments(docs,true);
+
+        for (auto doc : docs) {
 #if PY_MAJOR_VERSION >= 3
-            pKey   = PyUnicode_FromString(It->first.c_str());
+            pKey   = PyUnicode_FromString(doc->getName());
 #else
-            pKey   = PyString_FromString(It->first.c_str());
+            pKey   = PyString_FromString(doc->getName());
 #endif
             // GetPyObject() increments
-            pValue = static_cast<Base::PyObjectBase*>(It->second->getPyObject());
+            pValue = static_cast<Base::PyObjectBase*>(doc->getPyObject());
             PyDict_SetItem(pDict, pKey, pValue);
             // now we can decrement again as PyDict_SetItem also has incremented
             pValue->DecRef();
@@ -763,4 +807,128 @@ PyObject *Application::sGetLogLevel(PyObject * /*self*/, PyObject *args)
     } PY_CATCH;
 }
 
+PyObject *Application::sCheckLinkDepth(PyObject * /*self*/, PyObject *args)
+{
+    short depth = 0;
+    if (!PyArg_ParseTuple(args, "h", &depth))
+        return NULL;
 
+    PY_TRY {
+        return Py::new_reference_to(Py::Int(GetApplication().checkLinkDepth(depth,false)));
+    }PY_CATCH;
+}
+
+PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
+{
+    PyObject *pyobj = Py_None;
+    int options = 0;
+    short count = 0;
+    if (!PyArg_ParseTuple(args, "|Oih",&pyobj,&options, &count))
+        return NULL;
+
+    PY_TRY {
+        DocumentObject *obj = 0;
+        if(pyobj!=Py_None) {
+            if(!PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "Expect the first argument of type document object");
+                return 0;
+            }
+            obj = static_cast<DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+        }
+        auto links = GetApplication().getLinksTo(obj,options,count);
+        Py::Tuple ret(links.size());
+        int i=0;
+        for(auto o : links) 
+            ret.setItem(i++,Py::Object(o->getPyObject(),true));
+        return Py::new_reference_to(ret);
+    }PY_CATCH;
+}
+
+PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
+{
+    PyObject *obj;
+    int options = 0;
+    if (!PyArg_ParseTuple(args, "O|i", &obj,&options))
+        return 0;
+
+    std::vector<App::DocumentObject*> objs;
+    if(PySequence_Check(obj)) {
+        Py::Sequence seq(obj);
+        for(size_t i=0;i<seq.size();++i) {
+            if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
+                return 0;
+            }
+            objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
+        }
+    }else if(!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
+        PyErr_SetString(PyExc_TypeError, 
+            "Expect first argument to be either a document object or sequence of document objects");
+        return 0;
+    }else
+        objs.push_back(static_cast<DocumentObjectPy*>(obj)->getDocumentObjectPtr());
+
+    PY_TRY {
+        auto ret = App::Document::getDependencyList(objs,options);
+
+        Py::Tuple tuple(ret.size());
+        for(size_t i=0;i<ret.size();++i) 
+            tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
+        return Py::new_reference_to(tuple);
+    } PY_CATCH;
+}
+
+
+PyObject *Application::sSetActiveTransaction(PyObject * /*self*/, PyObject *args)
+{
+    char *name;
+    PyObject *persist = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &name,&persist))
+        return 0;
+    
+    PY_TRY {
+        Py::Int ret(GetApplication().setActiveTransaction(name,PyObject_IsTrue(persist)));
+        return Py::new_reference_to(ret);
+    }PY_CATCH;
+}
+
+PyObject *Application::sGetActiveTransaction(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    
+    PY_TRY {
+        int id = 0;
+        const char *name = GetApplication().getActiveTransaction(&id);
+        if(!name || id<=0)
+            Py_Return;
+        Py::Tuple ret(2);
+        ret.setItem(0,Py::String(name));
+        ret.setItem(1,Py::Int(id));
+        return Py::new_reference_to(ret);
+    }PY_CATCH;
+}
+
+PyObject *Application::sCloseActiveTransaction(PyObject * /*self*/, PyObject *args)
+{
+    PyObject *abort = Py_False;
+    int id = 0;
+    if (!PyArg_ParseTuple(args, "|Oi", &abort,&id))
+        return 0;
+    
+    PY_TRY {
+        GetApplication().closeActiveTransaction(PyObject_IsTrue(abort),id);
+        Py_Return;
+    } PY_CATCH;
+}
+
+PyObject *Application::sCheckAbort(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    PY_TRY {
+        Base::Sequencer().checkAbort();
+        Py_Return;
+    }PY_CATCH
+}

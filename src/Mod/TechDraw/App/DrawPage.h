@@ -57,7 +57,8 @@ public:
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
     //@}
-    void Restore(Base::XMLReader &reader);
+    virtual void handleChangedPropertyType(
+            Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     int addView(App::DocumentObject *docObj);
     int removeView(App::DocumentObject* docObj);

@@ -54,12 +54,13 @@ public:
     virtual void setVisible(bool);
 
     void setCheckable(bool);
-    void setChecked (bool);
+    void setChecked (bool, bool no_signal=false);
     bool isChecked() const;
 
     void setShortcut (const QString &);
     QKeySequence shortcut() const;
     void setIcon (const QIcon &);
+    QIcon icon() const;
     void setStatusTip (const QString &);
     QString statusTip() const;
     void setText (const QString &);
@@ -69,6 +70,7 @@ public:
     void setWhatsThis (const QString &);
     QString whatsThis() const;
     void setMenuRole(QAction::MenuRole menuRole);
+    QAction *action() {return _action;};
 
 public Q_SLOTS:
     virtual void onActivated ();
@@ -112,13 +114,15 @@ public:
 
 public Q_SLOTS:
     void onActivated ();
-    void onActivated (int);
+    void onToggled(bool);
     void onActivated (QAction*);
     void onHovered   (QAction*);
 
 protected:
     QActionGroup* _group;
     bool _dropDown;
+    bool _external;
+    bool _toggle;
 };
 
 // --------------------------------------------------------------------

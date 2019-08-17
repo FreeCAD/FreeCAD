@@ -89,7 +89,7 @@ public:
   inline BoundBox2d (double fX1, double fY1, double fX2, double fY2);
   inline bool IsValid (void);
   inline bool IsEqual(const BoundBox2d&, double tolerance) const;
-  
+
   // operators
   inline BoundBox2d& operator= (const BoundBox2d& rclBB);
   inline bool operator== (const BoundBox2d& rclBB) const;
@@ -102,6 +102,11 @@ public:
 
   // misc
   bool Contains (const Vector2d &rclV) const;
+
+  inline Vector2d GetCenter() const {
+      return Vector2d((MinX+MaxX)/2,(MinY+MaxY)/2);
+  }
+  
 };
 
 /** Line2d ********************************************/
@@ -160,6 +165,7 @@ public:
   BoundBox2d CalcBoundBox (void) const;
   bool Contains (const Vector2d &rclV) const;
   void Intersect (const Polygon2d &rclPolygon, std::list<Polygon2d> &rclResultPolygonList) const;
+  bool Intersect (const Polygon2d &rclPolygon) const;
   bool Intersect (const Vector2d &rclV, double eps) const;
 
 private:
@@ -307,7 +313,6 @@ inline Vector2d& Polygon2d::At (size_t ulNdx) const
 {
   return (Vector2d&) _aclVct[ulNdx];
 }
-
 
 inline Line2d::Line2d (const Line2d &rclLine)
     : clV1 (rclLine.clV1),

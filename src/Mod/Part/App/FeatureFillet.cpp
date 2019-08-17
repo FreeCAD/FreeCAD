@@ -50,17 +50,16 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     App::DocumentObject* link = Base.getValue();
     if (!link)
         return new App::DocumentObjectExecReturn("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
+
+    auto baseShape = Feature::getShape(link);
 
     try {
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
 #endif
-        BRepFilletAPI_MakeFillet mkFillet(base->Shape.getValue());
+        BRepFilletAPI_MakeFillet mkFillet(baseShape);
         TopTools_IndexedMapOfShape mapOfShape;
-        TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, mapOfShape);
+        TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfShape);
 
         std::vector<FilletElement> values = Edges.getValues();
         for (std::vector<FilletElement>::iterator it = values.begin(); it != values.end(); ++it) {
@@ -74,7 +73,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         TopoDS_Shape shape = mkFillet.Shape();
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
-        ShapeHistory history = buildHistory(mkFillet, TopAbs_FACE, shape, base->Shape.getValue());
+        ShapeHistory history = buildHistory(mkFillet, TopAbs_FACE, shape, baseShape);
         this->Shape.setValue(shape);
 
         // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)

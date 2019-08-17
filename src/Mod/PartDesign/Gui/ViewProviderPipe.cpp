@@ -30,6 +30,7 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include "Utils.h"
 #include "ViewProviderPipe.h"
 //#include "TaskPipeParameters.h"
 #include "TaskPipeParameters.h"
@@ -64,6 +65,11 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
     if (sketch != NULL)
         temp.push_back(sketch);
 
+    for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
+        if (obj != NULL && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+            temp.push_back(obj);
+    }
+
     App::DocumentObject* spine = pcPipe->Spine.getValue();
     if (spine != NULL && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(spine);
@@ -85,8 +91,7 @@ void ViewProviderPipe::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 bool ViewProviderPipe::doubleClicked(void)
 {
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
-    return true;
+    return PartDesignGui::setEdit(pcObject);
 }
 
 bool ViewProviderPipe::setEdit(int ModNum) {

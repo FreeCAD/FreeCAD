@@ -127,7 +127,7 @@ void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
         int idx = 0;
 #else
         // Redraw all arrows
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {

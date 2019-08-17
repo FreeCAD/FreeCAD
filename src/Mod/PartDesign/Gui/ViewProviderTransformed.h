@@ -52,6 +52,8 @@ public:
     // The feature name of the subclass
     std::string featureName;
 
+    virtual Gui::ViewProvider *startEditing(int ModNum=0) override;
+
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
@@ -61,8 +63,11 @@ protected:
     // node for the representation of rejected repetitions
     SoGroup           * pcRejectedRoot;
 
+    QString diagMessage;
+
 public:
-    void recomputeFeature();
+    void recomputeFeature(bool recompute=true);
+    QString getMessage() const {return diagMessage;}
 };
 
 
