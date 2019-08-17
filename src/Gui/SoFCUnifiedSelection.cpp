@@ -426,7 +426,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
         this->colorHighlight = colaction->highlightColor;
     }
 
-    if (highlightMode.getValue() != OFF && action->getTypeId() == SoFCHighlightAction::getClassTypeId()) {
+    if (action->getTypeId() == SoFCHighlightAction::getClassTypeId()) {
         SoFCHighlightAction *hilaction = static_cast<SoFCHighlightAction*>(action);
         // Do not clear currently highlighted object when setting new pre-selection
         if (!setPreSelection && hilaction->SelChange.Type == SelectionChanges::RmvPreselect) {
@@ -436,7 +436,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 currenthighlight->unref();
                 currenthighlight = 0;
             }
-        } else if (hilaction->SelChange.Type == SelectionChanges::SetPreselect) {
+        } else if (highlightMode.getValue() != OFF 
+                    && hilaction->SelChange.Type == SelectionChanges::SetPreselect) {
             if (currenthighlight) {
                 SoHighlightElementAction action;
                 action.apply(currenthighlight);
@@ -463,10 +464,12 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             return;
     }
 
-    if (selectionMode.getValue() == ON && action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
+    if (action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
         SoFCSelectionAction *selaction = static_cast<SoFCSelectionAction*>(action);
-        if (selaction->SelChange.Type == SelectionChanges::AddSelection || 
-            selaction->SelChange.Type == SelectionChanges::RmvSelection) {
+        if(selectionMode.getValue() == ON 
+            && (selaction->SelChange.Type == SelectionChanges::AddSelection 
+                || selaction->SelChange.Type == SelectionChanges::RmvSelection))
+        {
             // selection changes inside the 3d view are handled in handleEvent()
             App::Document* doc = App::GetApplication().getDocument(selaction->SelChange.pDocName);
             App::DocumentObject* obj = doc->getObject(selaction->SelChange.pObjectName);
@@ -508,7 +511,8 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
             SoSelectionElementAction action(SoSelectionElementAction::None);
             for(int i=0;i<this->getNumChildren();++i)
                 action.apply(this->getChild(i));
-        }else if(selaction->SelChange.Type == SelectionChanges::SetSelection) {
+        }else if(selectionMode.getValue() == ON 
+                    && selaction->SelChange.Type == SelectionChanges::SetSelection) {
             std::vector<ViewProvider*> vps;
             if (this->pcDocument)
                 vps = this->pcDocument->getViewProvidersOfType(ViewProviderDocumentObject::getClassTypeId());
