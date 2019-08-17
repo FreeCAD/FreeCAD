@@ -3892,7 +3892,8 @@ void PropertyXLinkSubList::setPyObject(PyObject *value)
             s.reserve(s.size()+subs.size());
             s.insert(s.end(),subs.begin(),subs.end());
         }
-    }catch(Base::Exception &e){
+    }
+    catch(Base::Exception&){
         throw Base::TypeError("Invalid type inside sequence. Must be type of (DocumentObject, (subname...))");
     }
     setValues(std::move(values));
