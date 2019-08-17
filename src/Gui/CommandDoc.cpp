@@ -1296,9 +1296,10 @@ void StdCmdRefresh::activated(int iMsg)
         App::AutoTransaction trans("Recompute");
         try {
             doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
-        } catch(Base::Exception &e) {
+        }
+        catch (Base::Exception& /*e*/) {
             int ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
-                QObject::tr("The document contains dependency cycles.\n"
+                qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
                             "Please check the Report View for more details.\n\n"
                             "Do you still want to proceed?"),
                     QMessageBox::Yes, QMessageBox::No);

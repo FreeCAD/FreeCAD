@@ -768,7 +768,8 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
         _doCommand(file,line,Gui,
                 "%s.ViewObject.%s=getattr(%s.getLinkedObject(True).ViewObject,'%s',%s.ViewObject.%s)",
                 objCmd.c_str(),attr_to,getObjectCmd(from).c_str(),attr_from,objCmd.c_str(),attr_to);
-    }catch(Base::Exception &e) {
+    }
+    catch(Base::Exception& /*e*/) {
         // e.ReportException();
     }
 }
