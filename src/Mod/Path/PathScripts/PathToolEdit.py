@@ -207,6 +207,7 @@ class ToolEditor:
         self.setupToolType(self.tool.ToolType)
 
     def accept(self):
+        self.refresh()
         self.Tool = self.tool
 
     def reject(self):
@@ -241,9 +242,6 @@ class ToolEditor:
 
         self.editor.updateUI()
 
-    def updateToolName(self):
-        self.tool.Name = str(self.form.toolName.text())
-
     def updateToolType(self):
         PathLog.track()
         self.form.blockSignals(True)
@@ -265,6 +263,7 @@ class ToolEditor:
 
     def updateTool(self):
         PathLog.track()
+        self.tool.Name = str(self.form.toolName.text())
         self.tool.Material = self.getMaterial(self.form.toolMaterial.currentIndex())
         self.tool.LengthOffset = FreeCAD.Units.parseQuantity(self.form.toolLengthOffset.text())
         self.editor.updateTool()
@@ -280,8 +279,5 @@ class ToolEditor:
         PathLog.track()
         self.updateUI()
 
-        self.form.toolName.editingFinished.connect(self.updateToolName)
+        self.form.toolName.editingFinished.connect(self.refresh)
         self.form.toolType.currentIndexChanged.connect(self.updateToolType)
-        self.form.toolMaterial.currentIndexChanged.connect(self.refresh)
-        self.form.toolLengthOffset.valueChanged.connect(self.refresh)
-
