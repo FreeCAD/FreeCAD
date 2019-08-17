@@ -3035,7 +3035,6 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force, bool *hasError, int options) 
 {
     int objectCount = 0;
-
     if (testStatus(Document::PartialDoc)) {
         if(mustExecute()) 
             FC_WARN("Please reload partial document '" << Label.getValue() << "' for recomputation.");
@@ -3043,7 +3042,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     }
     if (testStatus(Document::Recomputing)) {
         // this is clearly a bug in the calling instance
-        throw Base::RuntimeError("Nested recomputes of a document are not allowed");
+        FC_ERR("Recusrive calling of recomput for dcument " << getName());
+        return 0;
     }
     // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
     // time expensive recomputes
