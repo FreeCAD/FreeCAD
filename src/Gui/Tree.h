@@ -241,6 +241,7 @@ private:
     static std::set<TreeWidget*> Instances;
 
     std::string myName; // for debugging purpose
+    int updateBlocked = 0;
 
     friend class DocumentItem;
     friend class DocumentObjectItem;
