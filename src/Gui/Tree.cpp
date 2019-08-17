@@ -2207,19 +2207,18 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     }
 }
 
-static int _UpdateBlocked;
-
 struct UpdateDisabler {
     QWidget &widget;
+    int &blocked;
     bool visible;
     bool focus;
 
     // Note! DO NOT block signal here, or else
     // QTreeWidgetItem::setChildIndicatorPolicy() does not work
-    UpdateDisabler(QWidget &w)
-        :widget(w)
+    UpdateDisabler(QWidget &w, int &blocked)
+        :widget(w),blocked(blocked)
     {
-        if(++_UpdateBlocked > 1)
+        if(++blocked > 1)
             return;
         focus = widget.hasFocus();
         visible = widget.isVisible();
@@ -2234,7 +2233,7 @@ struct UpdateDisabler {
         }
     }
     ~UpdateDisabler() {
-        if(_UpdateBlocked<=0 || --_UpdateBlocked!=0)
+        if(blocked<=0 || --blocked!=0)
             return;
 
         if(visible) {
@@ -2267,7 +2266,7 @@ void TreeWidget::onUpdateStatus(void)
 
     FC_LOG("begin update status");
 
-    UpdateDisabler disabler(*this);
+    UpdateDisabler disabler(*this,updateBlocked);
 
     std::vector<App::DocumentObject*> errors;
 
@@ -2450,7 +2449,7 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
 }
 
 void TreeWidget::leaveEvent(QEvent *) {
-    if(!_UpdateBlocked && FC_TREEPARAM(PreSelection)) {
+    if(!updateBlocked && FC_TREEPARAM(PreSelection)) {
         preselectTimer->stop();
         Selection().rmvPreselect();
     }
@@ -2608,8 +2607,10 @@ void TreeWidget::setupText() {
 
 void TreeWidget::syncView(ViewProviderDocumentObject *vp) {
     if(currentDocItem && FC_TREEPARAM(SyncView)) {
+        bool focus = hasFocus();
         currentDocItem->document()->setActiveView(vp);
-        setFocus();
+        if(focus)
+            setFocus();
     }
 }
 
@@ -2644,7 +2645,7 @@ void TreeWidget::onItemSelectionChanged ()
 {
     if (!this->isConnectionAttached() 
             || this->isConnectionBlocked()
-            || _UpdateBlocked)
+            || updateBlocked)
         return;
 
     _LastSelectedTreeWidget = this;
@@ -3123,7 +3124,7 @@ void TreeWidget::slotDeleteDocument(const Gui::Document& Doc)
     NewObjects.erase(Doc.getDocument()->getName());
     auto it = DocumentMap.find(&Doc);
     if (it != DocumentMap.end()) {
-        UpdateDisabler disabler(*this);
+        UpdateDisabler disabler(*this,updateBlocked);
         auto docItem = it->second;
         for(auto &v : docItem->ObjectMap) {
             for(auto item : v.second->items)
