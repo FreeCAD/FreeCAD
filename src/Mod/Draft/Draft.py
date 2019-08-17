@@ -6000,14 +6000,14 @@ class _PointArray(_DraftObject):
             for pts in pls:
                 #print pts # inspect the objects
                 if hasattr(pts, 'X') and hasattr(pts, 'Y') and hasattr(pts, 'Z'):
-        	        nshape = obj.Base.Shape.copy()
-        	        if hasattr(pts, 'Placement'):
-        	            place = pts.Placement
-        	            nshape.translate(place.Base)
-        	            nshape.rotate(place.Base, place.Rotation.Axis, place.Rotation.Angle * 180 /  math.pi )
-        	        nshape.translate(Base.Vector(pts.X,pts.Y,pts.Z))
-        	        i += 1
-        	        base.append(nshape)
+                    nshape = obj.Base.Shape.copy()
+                    if hasattr(pts, 'Placement'):
+                        place = pts.Placement
+                        nshape.translate(place.Base)
+                        nshape.rotate(place.Base, place.Rotation.Axis, place.Rotation.Angle * 180 /  math.pi )
+                    nshape.translate(Base.Vector(pts.X,pts.Y,pts.Z))
+                    i += 1
+                    base.append(nshape)
         obj.Count = i
         if i > 0:
             obj.Shape = Part.makeCompound(base)
