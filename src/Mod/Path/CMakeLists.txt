@@ -224,8 +224,8 @@ SET(Path_Images
 )
 
 SET(PathData_Threads
-    Data/Threads/metric-external.csv
     Data/Threads/metric-internal.csv
+    Data/Threads/imperial-internal.csv
 )
 
 SET(Path_Data

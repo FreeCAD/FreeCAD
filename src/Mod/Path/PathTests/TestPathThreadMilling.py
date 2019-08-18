@@ -45,13 +45,13 @@ class TestPathThreadMilling(PathTestBase):
             self.assertRoughly(have[i], want[i])
 
     def test00(self):
-        '''Verify metric internal radii.'''
-        self.assertRadii(PathThreadMilling.radiiMetricInternal(20, 18, 2, 0), (8, 9.2))
-        self.assertRadii(PathThreadMilling.radiiMetricInternal(20, 19, 2, 0), (8.5, 9.1))
+        '''Verify internal radii.'''
+        self.assertRadii(PathThreadMilling.radiiInternal(20, 18, 2, 0), (8, 9.2))
+        self.assertRadii(PathThreadMilling.radiiInternal(20, 19, 2, 0), (8.5, 9.1))
 
     def test01(self):
-        '''Verify metric internal radii with tool crest.'''
-        self.assertRadii(PathThreadMilling.radiiMetricInternal(20, 18, 2, 0.1), (8, 9.113397))
+        '''Verify internal radii with tool crest.'''
+        self.assertRadii(PathThreadMilling.radiiInternal(20, 18, 2, 0.1), (8, 9.113397))
 
     def test10(self):
         '''Verify thread passes.'''
