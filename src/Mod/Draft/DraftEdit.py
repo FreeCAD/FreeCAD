@@ -71,8 +71,8 @@ class Edit():
         #list of supported objects type
         self.supportedObjs = ["BezCurve","Wire","BSpline","Circle","Rectangle",
                             "Polygon","Dimension","Space","Structure","PanelCut",
-                            "PanelSheet","Wall", "Window", "Part"]
-        self.supportedPartObjs = ["Part::Box"]
+                            "PanelSheet","Wall", "Window"]
+        self.supportedPartObjs = ["Part", "Part::Line", "Part::Box"]
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Edit',
@@ -322,7 +322,7 @@ class Edit():
                 return selection[0]
         else:
             try:
-                if Draft.getType(selection[0]) == "Part" and selection[0].TypeId in self.supportedPartObjs:
+                if Draft.getType(selection[0]) in self.supportedPartObjs and selection[0].TypeId in self.supportedPartObjs:
                     return selection[0]
             except:
                 pass
@@ -664,6 +664,8 @@ class Edit():
             self.setPanelSheetPts()
         elif objectType == "Part" and obj.TypeId == "Part::Box":
             self.setPartBoxPts()
+        elif objectType == "Part::Line" and obj.TypeId == "Part::Line":
+            self.setPartLinePts()
 
     def update(self,v):
         "apply the vector to the modified point and update self.obj"
@@ -684,6 +686,7 @@ class Edit():
         elif Draft.getType(self.obj) == "Structure": self.updateStructure(v)
         elif Draft.getType(self.obj) == "PanelCut": self.updatePanelCut(v)
         elif Draft.getType(self.obj) == "PanelSheet": self.updatePanelSheet(v)
+        elif Draft.getType(self.obj) == "Part::Line" and self.obj.TypeId == "Part::Line": self.updatePartLine(v)
         elif Draft.getType(self.obj) == "Part" and self.obj.TypeId == "Part::Box": self.updatePartBox(v)
 
         FreeCAD.ActiveDocument.commitTransaction()
@@ -1226,6 +1229,23 @@ class Edit():
         else:
             self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
     
+    # PART::LINE----------------------------------------------------------------
+
+    def setPartLinePts(self):
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(self.obj.X1,self.obj.Y1,self.obj.Z1)))
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(self.obj.X2,self.obj.Y2,self.obj.Z2)))
+    
+    def updatePartLine(self,v):
+        pt=self.invpl.multVec(v)
+        if self.editing == 0:
+            self.obj.X1 = pt.x
+            self.obj.Y1 = pt.y
+            self.obj.Z1 = pt.z
+        elif self.editing == 1:
+            self.obj.X2 = pt.x
+            self.obj.Y2 = pt.y
+            self.obj.Z2 = pt.z
+
     # PART::BOX-----------------------------------------------------------------
 
     def setPartBoxPts(self):
