@@ -186,7 +186,7 @@ void ViewProviderFemConstraintDisplacement::updateData(const App::Property* prop
         int idrotz = 0;
 #else
         // Note: Points and Normals are always updated together
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {

@@ -303,7 +303,7 @@ PyObject* GeometryPy::getExtensionOfName(PyObject *args)
         try {
             std::shared_ptr<GeometryExtension> ext(this->getGeometryPtr()->getExtension(std::string(o)));
 
-            // we create a copy and trasnfer this copy's memory management responsibility to Python
+            // we create a copy and transfer this copy's memory management responsibility to Python
             PyObject* cpy = static_cast<GeometryExtensionPy *>(ext->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
 
             return cpy;

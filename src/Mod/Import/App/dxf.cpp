@@ -11,7 +11,7 @@
 
 #include <iomanip>
 
-#include <src/Build/Version.h>
+#include <Build/Version.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>

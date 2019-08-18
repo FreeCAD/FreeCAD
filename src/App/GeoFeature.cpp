@@ -79,3 +79,62 @@ PyObject* GeoFeature::getPyObject(void)
     }
     return Py::new_reference_to(PythonObject);
 }
+
+
+std::pair<std::string,std::string> GeoFeature::getElementName(
+        const char *name, ElementNameType type) const
+{
+    (void)type;
+
+    std::pair<std::string,std::string> ret;
+    if(!name) return ret;
+
+    ret.second = name;
+    return ret;
+}
+
+DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subname, 
+        std::pair<std::string,std::string> &elementName, bool append, 
+        ElementNameType type, const DocumentObject *filter, 
+        const char **_element, GeoFeature **geoFeature)
+{
+    if(!obj || !obj->getNameInDocument())
+        return 0;
+    if(!subname)
+        subname = "";
+    const char *element = Data::ComplexGeoData::findElementName(subname);
+    if(_element) *_element = element;
+    auto sobj = obj->getSubObject(subname);
+    if(!sobj)
+        return 0;
+    obj = sobj->getLinkedObject(true);
+    auto geo = dynamic_cast<GeoFeature*>(obj);
+    if(geoFeature) 
+        *geoFeature = geo;
+    if(!obj || (filter && obj!=filter))
+        return 0;
+    if(!element || !element[0]) {
+        if(append) 
+            elementName.second = Data::ComplexGeoData::oldElementName(subname);
+        return sobj;
+    }
+
+    if(!geo || hasHiddenMarker(element)) {
+        if(!append) 
+            elementName.second = element;
+        else
+            elementName.second = Data::ComplexGeoData::oldElementName(subname);
+        return sobj;
+    }
+    if(!append) 
+        elementName = geo->getElementName(element,type);
+    else{
+        const auto &names = geo->getElementName(element,type);
+        std::string prefix(subname,element-subname);
+        if(names.first.size())
+            elementName.first = prefix + names.first;
+        elementName.second = prefix + names.second;
+    }
+    return sobj;
+}
+

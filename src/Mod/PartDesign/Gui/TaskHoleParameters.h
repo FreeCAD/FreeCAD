@@ -114,7 +114,7 @@ private:
 
 protected:
     void changeEvent(QEvent *e) override;
-    void changedObject(const App::Property& Prop);
+    void changedObject(const App::Document&, const App::Property& Prop);
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges &msg) override;

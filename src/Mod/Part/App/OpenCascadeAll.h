@@ -234,6 +234,7 @@
 #include <BRepExtrema_ShapeProximity.hxx>
 #endif
 #include <BRepFeat_SplitShape.hxx>
+#include <BRepFeat_MakePrism.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRepFill.hxx>
@@ -252,6 +253,7 @@
 #include <BRepOffsetAPI_MakeThickSolid.hxx>
 #include <BRepOffsetAPI_ThruSections.hxx>
 #include <BRepBuilderAPI_NurbsConvert.hxx>
+#include <BRepOffsetAPI_DraftAngle.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepPrimAPI_MakeCone.hxx>
 #include <BRepPrimAPI_MakeCylinder.hxx>
@@ -419,6 +421,7 @@
 #include <gp_Trsf.hxx>
 #include <gp_Vec.hxx>
 #include <gp_Vec2d.hxx>
+#include <gp_Quaternion.hxx>
 
 // Adaptors
 #include <Adaptor3d_HCurve.hxx>

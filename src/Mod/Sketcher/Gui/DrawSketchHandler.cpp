@@ -407,8 +407,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 if (posId1 == Sketcher::none)
                     continue;
                 // If the auto constraint has a point create a coincident otherwise it is an edge on a point
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) "
-                                        ,sketchgui->getObject()->getNameInDocument()
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) "
+                                        ,sketchgui->getObject()
                                         ,geoId1, posId1, it->GeoId, it->PosId
                                         );
                 } break;
@@ -421,23 +421,23 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                     std::swap(posId1,posId2);
                 }
 
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%i,%i,%i)) "
-                                        ,sketchgui->getObject()->getNameInDocument()
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('PointOnObject',%i,%i,%i)) "
+                                        ,sketchgui->getObject()
                                         ,geoId1, posId1, geoId2
                                        );
                 } break;
             case Sketcher::Horizontal: {
 
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
-                ,sketchgui->getObject()->getNameInDocument()
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Horizontal',%i)) "
+                ,sketchgui->getObject()
                 ,geoId1
                 );
 
                 } break;
             case Sketcher::Vertical: {
 
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
-                ,sketchgui->getObject()->getNameInDocument()
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Vertical',%i)) "
+                ,sketchgui->getObject()
                 ,geoId1
                 );
 
@@ -496,8 +496,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                     }
                 }
 
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i, %i)) "
-                                        ,sketchgui->getObject()->getNameInDocument()
+                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Tangent',%i, %i)) "
+                                        ,sketchgui->getObject()
                                         ,geoId1, it->GeoId
                                        );
                 } break;

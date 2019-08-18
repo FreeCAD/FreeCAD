@@ -171,6 +171,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"ShowNaviCube");
     OnChange(*hGrp,"CornerNaviCube");
     OnChange(*hGrp,"UseVBO");
+    OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
     OnChange(*hGrp,"HeadlightColor");
     OnChange(*hGrp,"HeadlightDirection");
@@ -194,6 +195,11 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
 
 View3DInventor::~View3DInventor()
 {
+    if(_pcDocument) {
+        SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
+        if (Cam) 
+            _pcDocument->saveCameraSettings(SoFCDB::writeNodesToString(Cam).c_str());
+    }
     hGrp->Detach(this);
 
     //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined
@@ -375,6 +381,9 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"UseVBO") == 0) {
         _viewer->setEnabledVBO(rGrp.GetBool("UseVBO",false));
+    }
+    else if (strcmp(Reason,"RenderCache") == 0) {
+        _viewer->setRenderCache(rGrp.GetInt("RenderCache",0));
     }
     else if (strcmp(Reason,"Orthographic") == 0) {
         // check whether a perspective or orthogrphic camera should be set

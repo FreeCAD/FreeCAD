@@ -225,22 +225,17 @@ bool ThicknessWidget::accept()
     if (d->loop.isRunning())
         return false;
 
-    std::string name = d->thickness->getNameInDocument();
     try {
         if (!d->selection.empty()) {
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Faces = %s",
-                name.c_str(),d->selection.c_str());
+            FCMD_OBJ_CMD2("Faces = %s", d->thickness,d->selection.c_str());
         }
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",
-            name.c_str(),d->ui.spinOffset->value().getValue());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Mode = %i",
-            name.c_str(),d->ui.modeType->currentIndex());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %i",
-            name.c_str(),d->ui.joinType->currentIndex());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Intersection = %s",
-            name.c_str(),d->ui.intersection->isChecked() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.SelfIntersection = %s",
-            name.c_str(),d->ui.selfIntersection->isChecked() ? "True" : "False");
+        FCMD_OBJ_CMD2("Value = %f", d->thickness,d->ui.spinOffset->value().getValue());
+        FCMD_OBJ_CMD2("Mode = %i", d->thickness,d->ui.modeType->currentIndex());
+        FCMD_OBJ_CMD2("Join = %i", d->thickness,d->ui.joinType->currentIndex());
+        FCMD_OBJ_CMD2("Intersection = %s", 
+            d->thickness,d->ui.intersection->isChecked() ? "True" : "False");
+        FCMD_OBJ_CMD2("SelfIntersection = %s", 
+            d->thickness,d->ui.selfIntersection->isChecked() ? "True" : "False");
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!d->thickness->isValid())

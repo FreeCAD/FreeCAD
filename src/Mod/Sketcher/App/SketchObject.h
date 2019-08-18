@@ -414,7 +414,7 @@ protected:
     virtual void onDocumentRestored();
     virtual void restoreFinished();
 
-    virtual void setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr, const char * comment = 0);
+    virtual void setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr);
 
     std::string validateExpression(const App::ObjectIdentifier &path, boost::shared_ptr<const App::Expression> expr);
 

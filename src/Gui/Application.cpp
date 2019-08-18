@@ -119,6 +119,9 @@
 #include "ViewProviderMaterialObject.h"
 #include "ViewProviderTextDocument.h"
 #include "ViewProviderGroupExtension.h"
+#include "ViewProviderLink.h"
+#include "LinkViewPy.h"
+#include "AxisOriginPy.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskView.h"
@@ -142,6 +145,7 @@ struct ApplicationP
 {
     ApplicationP() :
     activeDocument(0L),
+    editDocument(0L),
     isClosing(false),
     startingUp(true)
     {
@@ -158,6 +162,7 @@ struct ApplicationP
     std::map<const App::Document*, Gui::Document*> documents;
     /// Active document
     Gui::Document*   activeDocument;
+    Gui::Document*  editDocument;
     MacroManager*  macroMngr;
     /// List of all registered views
     std::list<Gui::BaseView*> passive;
@@ -286,11 +291,12 @@ Application::Application(bool GUIenabled)
 {
     //App::GetApplication().Attach(this);
     if (GUIenabled) {
-        App::GetApplication().signalNewDocument.connect(boost::bind(&Gui::Application::slotNewDocument, this, _1));
+        App::GetApplication().signalNewDocument.connect(boost::bind(&Gui::Application::slotNewDocument, this, _1, _2));
         App::GetApplication().signalDeleteDocument.connect(boost::bind(&Gui::Application::slotDeleteDocument, this, _1));
         App::GetApplication().signalRenameDocument.connect(boost::bind(&Gui::Application::slotRenameDocument, this, _1));
         App::GetApplication().signalActiveDocument.connect(boost::bind(&Gui::Application::slotActiveDocument, this, _1));
         App::GetApplication().signalRelabelDocument.connect(boost::bind(&Gui::Application::slotRelabelDocument, this, _1));
+        App::GetApplication().signalShowHidden.connect(boost::bind(&Gui::Application::slotShowHidden, this, _1));
 
 
         // install the last active language
@@ -398,6 +404,9 @@ Application::Application(bool GUIenabled)
         Gui::TaskView::ControlPy::init_type();
         Py::Module(module).setAttr(std::string("Control"),
             Py::Object(Gui::TaskView::ControlPy::getInstance(), true));
+
+        Base::Interpreter().addType(&LinkViewPy::Type,module,"LinkView");
+        Base::Interpreter().addType(&AxisOriginPy::Type,module,"AxisOrigin");
     }
 
     Base::PyGILStateLocker lock;
@@ -665,9 +674,10 @@ void Application::createStandardOperations()
     Gui::CreateWindowStdCommands();
     Gui::CreateStructureCommands();
     Gui::CreateTestCommands();
+    Gui::CreateLinkCommands();
 }
 
-void Application::slotNewDocument(const App::Document& Doc)
+void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
 {
 #ifdef FC_DEBUG
     std::map<const App::Document*, Gui::Document*>::const_iterator it = d->documents.find(&Doc);
@@ -685,12 +695,13 @@ void Application::slotNewDocument(const App::Document& Doc)
     pDoc->signalInEdit.connect(boost::bind(&Gui::Application::slotInEdit, this, _1));
     pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, _1));
 
-    signalNewDocument(*pDoc);
-    pDoc->createView(View3DInventor::getClassTypeId());
+    signalNewDocument(*pDoc, isMainDoc);
+    if(isMainDoc)
+        pDoc->createView(View3DInventor::getClassTypeId());
     // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
     // unpredicatable way. At least it seems that with Qt5 we don't need this any more.
 #if QT_VERSION < 0x050000
-    qApp->processEvents(); // make sure to show the window stuff on the right place
+    // qApp->processEvents(); // make sure to show the window stuff on the right place
 #endif
 }
 
@@ -702,10 +713,14 @@ void Application::slotDeleteDocument(const App::Document& Doc)
         return;
     }
 
-    // We must clear the selection here to notify all observers
-    Gui::Selection().clearSelection(doc->second->getDocument()->getName());
+    // We must clear the selection here to notify all observers.
+    // And because of possible cross document link, better clear all selection
+    // to be safe
+    Gui::Selection().clearCompleteSelection();
     doc->second->signalDeleteDocument(*doc->second);
     signalDeleteDocument(*doc->second);
+
+    doc->second->beforeDelete();
 
     // If the active document gets destructed we must set it to 0. If there are further existing documents then the
     // view that becomes active sets the active document again. So, we needn't worry about this.
@@ -738,6 +753,16 @@ void Application::slotRenameDocument(const App::Document& Doc)
     signalRenameDocument(*doc->second);
 }
 
+void Application::slotShowHidden(const App::Document& Doc)
+{
+    std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
+#ifdef FC_DEBUG
+    assert(doc!=d->documents.end());
+#endif
+
+    signalShowHidden(*doc->second);
+}
+
 void Application::slotActiveDocument(const App::Document& Doc)
 {
     std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
@@ -751,6 +776,12 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Base::PyGILStateLocker lock;
                 Py::Object active(d->activeDocument->getPyObject(), true);
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"),active);
+
+                auto view = getMainWindow()->activeWindow();
+                if(!view || view->getAppDocument()!=&Doc) {
+                    Gui::MDIView* view = d->activeDocument->getActiveView();
+                    getMainWindow()->setActiveWindow(view);
+                }
             }
             else {
                 Base::PyGILStateLocker lock;
@@ -758,6 +789,7 @@ void Application::slotActiveDocument(const App::Document& Doc)
             }
         }
         signalActiveDocument(*doc->second);
+        getMainWindow()->updateActions();
     }
 }
 
@@ -774,6 +806,7 @@ void Application::slotDeletedObject(const ViewProvider& vp)
 void Application::slotChangedObject(const ViewProvider& vp, const App::Property& prop)
 {
     this->signalChangedObject(vp,prop);
+    getMainWindow()->updateActions(true);
 }
 
 void Application::slotRelabelObject(const ViewProvider& vp)
@@ -784,6 +817,7 @@ void Application::slotRelabelObject(const ViewProvider& vp)
 void Application::slotActivatedObject(const ViewProvider& vp)
 {
     this->signalActivatedObject(vp);
+    getMainWindow()->updateActions();
 }
 
 void Application::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
@@ -802,6 +836,19 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
         try {
             // Call the closing mechanism from Python. This also checks whether pcDoc is the last open document.
             Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", pcDoc->getDocument()->getName());
+            if (!d->activeDocument && d->documents.size()) {
+                for(auto &v : d->documents) {
+                    Gui::MDIView* view = v.second->getActiveView();
+                    if(view) {
+                        setActiveDocument(v.second);
+                        getMainWindow()->setActiveWindow(view);
+                        return;
+                    }
+                }
+                auto gdoc = d->documents.begin()->second;
+                setActiveDocument(gdoc);
+                activateView(View3DInventor::getClassTypeId(),true);
+            }
         }
         catch (const Base::Exception& e) {
             e.ReportException();
@@ -824,6 +871,31 @@ bool Application::sendHasMsgToActiveView(const char* pMsg)
 {
     MDIView* pView = getMainWindow()->activeWindow();
     return pView ? pView->onHasMsg(pMsg) : false;
+}
+
+/// send Messages to the active view
+bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
+{
+    MDIView* pView = getMainWindow()->activeWindow();
+    if(!pView)
+        return false;
+    for(auto focus=qApp->focusWidget();focus;focus=focus->parentWidget()) {
+        if(focus == pView)
+            return pView->onMsg(pMsg,ppReturn);
+    }
+    return false;
+}
+
+bool Application::sendHasMsgToFocusView(const char* pMsg)
+{
+    MDIView* pView = getMainWindow()->activeWindow();
+    if(!pView)
+        return false;
+    for(auto focus=qApp->focusWidget();focus;focus=focus->parentWidget()) {
+        if(focus == pView)
+            return pView->onHasMsg(pMsg);
+    }
+    return false;
 }
 
 Gui::MDIView* Application::activeView(void) const
@@ -861,6 +933,25 @@ void Application::activateView(const Base::Type& type, bool create)
 Gui::Document* Application::activeDocument(void) const
 {
     return d->activeDocument;
+}
+
+Gui::Document* Application::editDocument(void) const
+{
+    return d->editDocument;
+}
+
+Gui::MDIView* Application::editViewOfNode(SoNode *node) const
+{
+    return d->editDocument?d->editDocument->getViewOfNode(node):0;
+}
+
+void Application::setEditDocument(Gui::Document *doc) {
+    if(!doc) 
+        d->editDocument = 0;
+    for(auto &v : d->documents)
+        v.second->_resetEdit();
+    d->editDocument = doc;
+    getMainWindow()->updateActions();
 }
 
 void Application::setActiveDocument(Gui::Document* pcDocument)
@@ -1019,24 +1110,9 @@ void Application::updateActive(void)
 
 void Application::tryClose(QCloseEvent * e)
 {
-    if (d->documents.size() == 0) {
-        e->accept();
-    }
-    else {
-        // ask all documents if closable
-        std::map<const App::Document*, Gui::Document*>::iterator It;
-        for (It = d->documents.begin();It!=d->documents.end();++It) {
-            // a document may have several views attached, so ask it directly
-#if 0
-            MDIView* active = It->second->getActiveView();
-            e->setAccepted(active->canClose());
-#else
-            e->setAccepted(It->second->canClose());
-#endif
-            if (!e->isAccepted())
-                return;
-        }
-    }
+    e->setAccepted(getMainWindow()->closeAllDocuments(false));
+    if(!e->isAccepted())
+        return;
 
     // ask all passive views if closable
     for (std::list<Gui::BaseView*>::iterator It = d->passive.begin();It!=d->passive.end();++It) {
@@ -1058,14 +1134,7 @@ void Application::tryClose(QCloseEvent * e)
             itp = d->passive.begin();
         }
 
-        // remove all documents
-        size_t cnt = d->documents.size();
-        while (d->documents.size() > 0 && cnt > 0) {
-            // destroys also the Gui document
-            It = d->documents.begin();
-            App::GetApplication().closeDocument(It->second->getDocument()->getName());
-            --cnt; // avoid infinite loop
-        }
+        App::GetApplication().closeAllDocuments();
     }
 }
 
@@ -1608,6 +1677,7 @@ void Application::initTypes(void)
     Gui::ViewProviderPythonFeature              ::init();
     Gui::ViewProviderPythonGeometry             ::init();
     Gui::ViewProviderPlacement                  ::init();
+    Gui::ViewProviderPlacementPython            ::init();
     Gui::ViewProviderOriginFeature              ::init();
     Gui::ViewProviderPlane                      ::init();
     Gui::ViewProviderLine                       ::init();
@@ -1619,6 +1689,11 @@ void Application::initTypes(void)
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
     Gui::ViewProviderTextDocument               ::init();
+    Gui::ViewProviderLinkObserver               ::init();
+    Gui::LinkView                               ::init();
+    Gui::ViewProviderLink                       ::init();
+    Gui::ViewProviderLinkPython                 ::init();
+    Gui::AxisOrigin                             ::init();
 
     // Workbench
     Gui::Workbench                              ::init();
@@ -1659,6 +1734,14 @@ void Application::runApplication(void)
 
     // A new QApplication
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
+
+#if defined(QTWEBENGINE) && defined(Q_OS_LINUX)
+    // Avoid warning of 'Qt WebEngine seems to be initialized from a plugin...'
+    // QTWEBENGINE is defined in src/Gui/CMakeLists.txt, currently only enabled
+    // when build with Conda.
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+#endif
+
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
@@ -2122,4 +2205,62 @@ void Application::checkForPreviousCrashes()
         if (dlg.foundDocuments())
             dlg.exec();
     }
+}
+
+App::Document *Application::reopen(App::Document *doc) {
+    if(!doc) return 0;
+    std::string name = doc->FileName.getValue();
+    std::set<const Gui::Document*> untouchedDocs;
+    for(auto &v : d->documents) {
+        if(!v.second->isModified() && !v.second->getDocument()->isTouched())
+            untouchedDocs.insert(v.second);
+    }
+
+    WaitCursor wc;
+    wc.setIgnoreEvents(WaitCursor::NoEvents);
+
+    if(doc->testStatus(App::Document::PartialDoc) 
+            || doc->testStatus(App::Document::PartialRestore))
+    {
+        App::GetApplication().openDocument(name.c_str());
+    } else {
+        std::vector<std::string> docs;
+        for(auto d : doc->getDependentDocuments(true)) {
+            if(d->testStatus(App::Document::PartialDoc)
+                    || d->testStatus(App::Document::PartialRestore) )
+                docs.push_back(d->FileName.getValue());
+        }
+        for(auto &file : docs)
+            App::GetApplication().openDocument(file.c_str(),false);
+    }
+
+    doc = 0;
+    for(auto &v : d->documents) {
+        if(name == v.first->FileName.getValue())
+            doc = const_cast<App::Document*>(v.first);
+        if(untouchedDocs.count(v.second)) {
+            if(!v.second->isModified()) continue;
+            bool reset = true;
+            for(auto obj : v.second->getDocument()->getObjects()) {
+                if(!obj->isTouched())
+                    continue;
+                std::vector<App::Property*> props;
+                obj->getPropertyList(props);
+                for(auto prop : props){
+                    auto link = dynamic_cast<App::PropertyLinkBase*>(prop);
+                    if(link && link->checkRestore()) {
+                        reset = false;
+                        break;
+                    }
+                }
+                if(!reset)
+                    break;
+            }
+            if(reset) {
+                v.second->getDocument()->purgeTouched();
+                v.second->setModified(false);
+            }
+        }
+    }
+    return doc;
 }

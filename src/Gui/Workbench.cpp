@@ -340,6 +340,35 @@ void Workbench::createMainWindowPopupMenu(MenuItem*) const
 {
 }
 
+void Workbench::createLinkMenu(MenuItem *item) {
+    if(!item || !App::GetApplication().getActiveDocument())
+        return;
+    MenuItem* linkMenu = new MenuItem;
+    linkMenu->setCommand("Link actions");
+    *linkMenu << "Std_LinkMakeGroup" << "Std_LinkMake";
+
+    auto &rMgr = Application::Instance->commandManager();
+    const char *cmds[] = {"Std_LinkMakeRelative",0,"Std_LinkUnlink","Std_LinkReplace",
+        "Std_LinkImport","Std_LinkImportAll",0,"Std_LinkSelectLinked",
+        "Std_LinkSelectLinkedFinal","Std_LinkSelectAllLinks"};
+    bool separator = true;
+    for(size_t i=0;i<sizeof(cmds)/sizeof(cmds[0]);++i) {
+        if(!cmds[i]) {
+            if(separator) {
+                separator = false;
+                *linkMenu << "Separator";
+            }
+            continue;
+        }
+        auto cmd = rMgr.getCommandByName(cmds[i]);
+        if(cmd->isActive()) {
+            separator = true;
+            *linkMenu << cmds[i];
+        }
+    }
+    *item << linkMenu;
+}
+
 void Workbench::activated()
 {
 }
@@ -446,6 +475,9 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 {
     if (strcmp(recipient,"View") == 0)
     {
+        createLinkMenu(item);
+        *item << "Separator";
+
         MenuItem* StdViews = new MenuItem;
         StdViews->setCommand( "Standard views" );
 
@@ -470,9 +502,9 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
     {
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
             *item << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
-                  << "Std_ToggleSelectability" << "Separator" << "Std_SetAppearance"
-                  << "Std_RandomColor" << "Std_Cut" << "Std_Copy" << "Std_Paste"
-                  << "Separator" << "Std_Delete";
+                  << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator" 
+                  << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
+                  << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete" << "Separator";
         }
     }
 }
@@ -492,8 +524,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     file->setCommand("&File");
     *file << "Std_New" << "Std_Open" << "Separator" << "Std_CloseActiveWindow"
           << "Std_CloseAllWindows" << "Separator" << "Std_Save" << "Std_SaveAs"
-          << "Std_SaveCopy" << "Std_Revert" << "Separator" << "Std_Import"
-          << "Std_Export" << "Std_MergeProjects" << "Std_ProjectInfo"
+          << "Std_SaveCopy" << "Std_SaveAll" << "Std_Revert" << "Separator" << "Std_Import" 
+          << "Std_Export" << "Std_MergeProjects" << "Std_ProjectInfo" 
           << "Separator" << "Std_Print" << "Std_PrintPreview" << "Std_PrintPdf"
           << "Separator" << "Std_RecentFiles" << "Separator" << "Std_Quit";
 
@@ -502,7 +534,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     edit->setCommand("&Edit");
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
-          << "Std_Refresh" << "Std_BoxSelection" << "Std_SelectAll" << "Std_Delete"
+          << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection" << "Std_SelectAll" << "Std_Delete"
           << "Separator" << "Std_Placement" /*<< "Std_TransformManip"*/ << "Std_Alignment"
           << "Std_Edit" << "Separator" << "Std_DlgPreferences";
 
@@ -547,15 +579,16 @@ MenuItem* StdWorkbench::setupMenuBar() const
     view->setCommand("&View");
     *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Std_MainFullscreen" << "Separator"
           << stdviews << "Std_FreezeViews" << "Std_DrawStyle" << "Separator" << view3d << zoom
-          << "Std_ViewDockUndockFullscreen" << "Std_TreeViewDocument" << "Std_AxisCross" << "Std_ToggleClipPlane"
+          << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
           << "Std_TextureMapping" 
 #ifdef BUILD_VR
           << "Std_ViewVR"
 #endif 
           << "Separator" << visu
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
-          << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
-          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator"
+          << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
+          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator" 
+          << "Std_TreeViewActions"
           << "Std_ViewStatusBar";
 
     // Tools
@@ -625,7 +658,8 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // View
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << "Separator" << "Std_ViewIsometric" << "Separator" << "Std_ViewFront"
+    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" 
+          << "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric" << "Separator" << "Std_ViewFront"
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
           << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
     
@@ -671,6 +705,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     //Dagview through parameter.
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
           GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
+
     bool enabled = group->GetBool("Enabled", false);
     if (enabled)
       root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, false, false);

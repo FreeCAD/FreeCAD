@@ -37,6 +37,7 @@
 # include <QToolButton>
 #endif
 
+#include <Base/Tools.h>
 #include "Action.h"
 #include "Application.h"
 #include "Command.h"
@@ -92,7 +93,7 @@ void Action::addTo(QWidget *w)
  */
 void Action::onActivated () 
 {
-    _pcCmd->invoke(0);
+    _pcCmd->invoke(0,Command::TriggerAction);
 }
 
 /**
@@ -100,11 +101,13 @@ void Action::onActivated ()
  */
 void Action::onToggled(bool b)
 {
-    _pcCmd->invoke( b ? 1 : 0 );
+    _pcCmd->invoke( b ? 1 : 0 , Command::TriggerAction);
 } 
 
 void Action::setCheckable(bool b)
 {
+    if(b == _action->isCheckable())
+        return;
     _action->setCheckable(b);
     if (b) {
         disconnect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
@@ -116,9 +119,14 @@ void Action::setCheckable(bool b)
     }
 }
 
-void Action::setChecked(bool b)
+void Action::setChecked(bool b, bool no_signal)
 {
+    bool blocked;
+    if(no_signal) 
+        blocked = _action->blockSignals(true);
     _action->setChecked(b);
+    if(no_signal)
+        _action->blockSignals(blocked);
 }
 
 bool Action::isChecked() const
@@ -152,6 +160,11 @@ QKeySequence Action::shortcut() const
 void Action::setIcon (const QIcon & icon)
 {
     _action->setIcon(icon);
+}
+
+QIcon Action::icon () const
+{
+    return _action->icon();
 }
 
 void Action::setStatusTip(const QString & s)
@@ -206,7 +219,7 @@ void Action::setMenuRole(QAction::MenuRole menuRole)
  * to the command object.
  */
 ActionGroup::ActionGroup ( Command* pcCmd,QObject * parent)
-  : Action(pcCmd, parent), _group(0), _dropDown(false)
+  : Action(pcCmd, parent), _group(0), _dropDown(false),_external(false),_toggle(false)
 {
     _group = new QActionGroup(this);
     connect(_group, SIGNAL(triggered(QAction*)), this, SLOT(onActivated (QAction*)));
@@ -319,16 +332,13 @@ void ActionGroup::setCheckedAction(int i)
  */
 void ActionGroup::onActivated () 
 {
-    _pcCmd->invoke(this->property("defaultAction").toInt());
+    _pcCmd->invoke(this->property("defaultAction").toInt(), Command::TriggerAction);
 }
 
-/**
- * Activates the command.
- */
-void ActionGroup::onActivated (int index)
+void ActionGroup::onToggled(bool)
 {
-    _pcCmd->invoke(index);
-}
+    onActivated();
+} 
 
 /**
  * Activates the command.
@@ -337,6 +347,9 @@ void ActionGroup::onActivated (QAction* a)
 {
     int index = _group->actions().indexOf(a);
 
+    // Calling QToolButton::setIcon() etc. has no effect if it has QAction set.
+    // We have to change the QAction icon instead
+#if 0
     QList<QWidget*> widgets = a->associatedWidgets();
     for (QList<QWidget*>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
         QMenu* menu = qobject_cast<QMenu*>(*it);
@@ -344,12 +357,17 @@ void ActionGroup::onActivated (QAction* a)
             QToolButton* button = qobject_cast<QToolButton*>(menu->parent());
             if (button) {
                 button->setIcon(a->icon());
+                button->setText(a->text());
+                button->setToolTip(a->toolTip());
                 this->setProperty("defaultAction", QVariant(index));
             }
         }
     }
-
-    _pcCmd->invoke(index);
+#endif
+    this->setIcon(a->icon());
+    this->setToolTip(a->toolTip());
+    this->setProperty("defaultAction", QVariant(index));
+    _pcCmd->invoke(index, Command::TriggerChildAction);
 }
 
 void ActionGroup::onHovered (QAction *a) 

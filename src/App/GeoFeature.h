@@ -66,7 +66,48 @@ public:
      * @return the Python binding object
      */
     virtual PyObject* getPyObject(void);
-       
+
+    /// Specify the type of element name to return when calling getElementName() 
+    enum ElementNameType {
+        /// Normal usage
+        Normal=0,
+        /// For importing
+        Import=1,
+        /// For exporting
+        Export=2,
+    };
+    /** Return the new and old style sub-element name
+     *
+     * @param name: input name
+     * @param type: desired element name type to return
+     *
+     * @return a pair(newName,oldName). New element name may be empty.
+     *
+     * This function currently is does nothing. The new style element name
+     * generation will be added in the next batch of patches.
+     */
+    virtual std::pair<std::string,std::string> getElementName(
+            const char *name, ElementNameType type=Normal) const;
+
+    /** Resolve both the new and old style element name
+     *
+     * @param obj: top parent object
+     * @param subname: subname reference 
+     * @param elementName: output of a pair(newElementName,oldElementName)
+     * @param append: Whether to include subname prefix into the returned
+     *                element name
+     * @param type: the type of element name to request
+     * @param filter: If none zero, then only perform lookup when the element
+     *                owner object is the same as this filter
+     * @param element: return the start of element name in subname
+     *
+     * @return Return the owner object of the element
+     */
+    static DocumentObject *resolveElement(App::DocumentObject *obj, 
+            const char *subname, std::pair<std::string,std::string> &elementName, 
+            bool append=false, ElementNameType type=Normal,
+            const DocumentObject *filter=0,const char **element=0, GeoFeature **geo=0);
+
     /**
      * @brief Calculates the placement in the global reference coordinate system
      * 

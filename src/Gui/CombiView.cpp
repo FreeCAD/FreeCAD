@@ -63,8 +63,7 @@ CombiView::CombiView(Gui::Document* pcDocument, QWidget *parent)
     QSplitter *splitter = new QSplitter();
     splitter->setOrientation(Qt::Vertical);
 
-    // tree widget
-    tree =  new TreePanel(this);
+    tree =  new TreePanel("ComboView", this);
     splitter->addWidget(tree);
 
     // property view

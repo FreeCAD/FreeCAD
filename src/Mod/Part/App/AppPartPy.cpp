@@ -126,17 +126,15 @@
 #include "ImportStep.h"
 #include "edgecluster.h"
 #include "FaceMaker.h"
+#include "PartFeature.h"
 #include "PartPyCXX.h"
+#include "modelRefine.h"
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"
 #endif
 
 extern const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError fe);
-
-namespace Part {
-extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
-}
 
 #ifndef M_PI
 #define M_PI    3.14159265358979323846 /* pi */
@@ -147,6 +145,35 @@ extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
 #endif
 
 namespace Part {
+
+PartExport void getPyShapes(PyObject *obj, std::vector<TopoShape> &shapes) {
+    if(!obj)
+        return;
+    if(PyObject_TypeCheck(obj,&Part::TopoShapePy::Type))
+        shapes.push_back(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
+    else if (PyObject_TypeCheck(obj, &GeometryPy::Type)) 
+        shapes.push_back(TopoShape(static_cast<GeometryPy*>(obj)->getGeometryPtr()->toShape()));
+    else if(PySequence_Check(obj)) {
+        Py::Sequence list(obj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type)))
+                shapes.push_back(*static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr());
+            else if (PyObject_TypeCheck((*it).ptr(), &GeometryPy::Type)) 
+                shapes.push_back(TopoShape(static_cast<GeometryPy*>(
+                                (*it).ptr())->getGeometryPtr()->toShape()));
+            else
+                throw Py::TypeError("expect shape in sequence");
+        }
+    }else
+        throw Py::TypeError("expect shape or sequence of shapes");
+}
+
+PartExport std::vector<TopoShape> getPyShapes(PyObject *obj) {
+    std::vector<TopoShape> ret;
+    getPyShapes(obj,ret);
+    return ret;
+}
+
 struct EdgePoints {
     gp_Pnt v1, v2;
     std::list<TopoDS_Edge>::iterator it;
@@ -425,13 +452,75 @@ public:
         add_varargs_method("__fromPythonOCC__",&Module::fromPythonOCC,
             "__fromPythonOCC__(occ) -- Helper method to convert a pythonocc shape to an internal shape"
         );
+        add_varargs_method("clearShapeCache",&Module::clearShapeCache,
+            "clearShapeCache() -- Clears internal shape cache"
+        );
+        add_keyword_method("getShape",&Module::getShape,
+            "getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):\n"
+            "Obtain the the TopoShape of a given object with SubName reference\n\n"
+            "* obj: the input object\n"
+            "* subname: dot separated sub-object reference\n"
+            "* mat: the current transformation matrix\n"
+            "* needSubElement: if False, ignore the sub-element (e.g. Face1, Edge1) reference in 'subname'\n"
+            "* transform: if False, then skip obj's transformation. Use this if mat already include obj's\n"
+            "             transformation matrix\n"
+            "* retType: 0: return TopoShape,\n"
+            "           1: return (shape,subObj,mat), where subObj is the object referenced in 'subname',\n"
+            "              and 'mat' is the accumulated transformation matrix of that sub-object.\n" 
+            "           2: same as 1, but make sure 'subObj' is resolved if it is a link.\n"
+            "* refine: refine the returned shape"
+        );
+        add_varargs_method("splitSubname",&Module::splitSubname,
+            "splitSubname(subname) -> list(sub,mapped,subElement)\n"
+            "Split the given subname into a list\n\n"
+            "sub: subname without any sub-element reference\n"
+            "mapped: mapped element name, or '' if none\n"
+            "subElement: old style element name, or '' if none"
+        );
+        add_varargs_method("joinSubname",&Module::joinSubname,
+            "joinSubname(sub,mapped,subElement) -> subname\n"
+        );
         initialize("This is a module working with shapes."); // register with Python
     }
 
     virtual ~Module() {}
 
 private:
-    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args)
+    virtual Py::Object invoke_method_keyword( void *method_def, 
+            const Py::Tuple &args, const Py::Dict &keywords ) override
+    {
+        try {
+            return Py::ExtensionModule<Module>::invoke_method_keyword(method_def, args, keywords);
+        }
+        catch (const Standard_Failure &e) {
+            std::string str;
+            Standard_CString msg = e.GetMessageString();
+            str += typeid(e).name();
+            str += " ";
+            if (msg) {str += msg;}
+            else     {str += "No OCCT Exception Message";}
+            Base::Console().Error("%s\n", str.c_str());
+            throw Py::Exception(Part::PartExceptionOCCError, str);
+        }
+        catch (const Base::Exception &e) {
+            std::string str;
+            str += "FreeCAD exception thrown (";
+            str += e.what();
+            str += ")";
+            e.ReportException();
+            throw Py::RuntimeError(str);
+        }
+        catch (const std::exception &e) {
+            std::string str;
+            str += "C++ exception thrown (";
+            str += e.what();
+            str += ")";
+            Base::Console().Error("%s\n", str.c_str());
+            throw Py::RuntimeError(str);
+        }
+    }
+
+    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
@@ -638,21 +727,13 @@ private:
         TopoDS_Compound Comp;
         builder.MakeCompound(Comp);
 
-        try {
-            Py::Sequence list(pcObj);
-            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
-                    const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
-                        getTopoShapePtr()->getShape();
-                    if (!sh.IsNull())
-                        builder.Add(Comp, sh);
-                }
+        PY_TRY {
+            for(auto &s : getPyShapes(pcObj)) {
+                const auto &sh = s.getShape();
+                if (!sh.IsNull())
+                    builder.Add(Comp, sh);
             }
-        }
-        catch (Standard_Failure& e) {
-            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
-        }
-
+        } _PY_CATCH_OCC(throw Py::Exception())
         return Py::asObject(new TopoShapeCompoundPy(new TopoShape(Comp)));
     }
     Py::Object makeShell(const Py::Tuple& args)
@@ -1979,6 +2060,95 @@ private:
         catch (const Base::Exception& e) {
             throw Py::Exception(PartExceptionOCCError, e.what());
         }
+    }
+
+    Py::Object getShape(const Py::Tuple& args, const Py::Dict &kwds) {
+        PyObject *pObj;
+        const char *subname = 0;
+        PyObject *pyMat = 0;
+        PyObject *needSubElement = Py_False;
+        PyObject *transform = Py_True;
+        PyObject *noElementMap = Py_False;
+        PyObject *refine = Py_False;
+        short retType = 0;
+        static char* kwd_list[] = {"obj", "subname", "mat", 
+            "needSubElement","transform","retType","noElementMap","refine",0};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!OOhOO", kwd_list,
+                &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type, &pyMat, 
+                &needSubElement,&transform,&retType,&noElementMap,&refine))
+            throw Py::Exception();
+
+        App::DocumentObject *obj = 
+            static_cast<App::DocumentObjectPy*>(pObj)->getDocumentObjectPtr();
+        App::DocumentObject *subObj = 0;
+        Base::Matrix4D mat;
+        if(pyMat)
+            mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
+        auto shape = Feature::getTopoShape(obj,subname,PyObject_IsTrue(needSubElement),
+                &mat,&subObj,retType==2,PyObject_IsTrue(transform),PyObject_IsTrue(noElementMap));
+        if(PyObject_IsTrue(refine)) {
+            // shape = TopoShape(0,shape.Hasher).makERefine(shape);
+            BRepBuilderAPI_RefineModel mkRefine(shape.getShape());
+            shape.setShape(mkRefine.Shape());
+        }
+        Py::Object sret(shape2pyshape(shape));
+        if(retType==0)
+            return sret;
+
+        return Py::TupleN(sret,Py::Object(new Base::MatrixPy(new Base::Matrix4D(mat))),
+                subObj?Py::Object(subObj->getPyObject(),true):Py::Object());
+    }
+
+    Py::Object clearShapeCache(const Py::Tuple &args) {
+        if (!PyArg_ParseTuple(args.ptr(),""))
+            throw Py::Exception();
+        Part::Feature::clearShapeCache();
+        return Py::Object();
+    }
+
+    Py::Object splitSubname(const Py::Tuple& args) {
+        const char *subname;
+        if (!PyArg_ParseTuple(args.ptr(), "s",&subname))
+            throw Py::Exception();
+        auto element = Data::ComplexGeoData::findElementName(subname);
+        std::string sub(subname,element-subname);
+        Py::List list;
+        list.append(Py::String(sub));
+        const char *dot = strchr(element,'.');
+        if(!dot)
+            dot = element+strlen(element);
+        const char *mapped = Data::ComplexGeoData::isMappedElement(element);
+        if(mapped)
+            list.append(Py::String(std::string(mapped,dot-mapped)));
+        else
+            list.append(Py::String());
+        if(*dot=='.')
+            list.append(Py::String(dot+1));
+        else if(!mapped)
+            list.append(Py::String(element));
+        else
+            list.append(Py::String());
+        return list;
+    }
+
+    Py::Object joinSubname(const Py::Tuple& args) {
+        const char *sub;
+        const char *mapped;
+        const char *element;
+        if (!PyArg_ParseTuple(args.ptr(), "sss",&sub,&mapped,&element))
+            throw Py::Exception();
+        std::string subname(sub);
+        if(subname.size() && subname[subname.size()-1]!='.')
+            subname += '.';
+        if(mapped && mapped[0]) {
+            if(!Data::ComplexGeoData::isMappedElement(mapped))
+                subname += Data::ComplexGeoData::elementMapPrefix();
+            subname += mapped;
+            if(element && element[0] && subname[subname.size()-1]!='.')
+                subname += '.';
+        }
+        subname += element;
+        return Py::String(subname);
     }
 };
 

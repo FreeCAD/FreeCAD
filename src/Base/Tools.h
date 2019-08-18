@@ -187,6 +187,33 @@ private:
 
 // ----------------------------------------------------------------------------
 
+template<typename Flag=bool>
+struct FlagToggler {
+
+    Flag &flag;
+    bool toggled;
+
+    FlagToggler(Flag &_flag)
+        :flag(_flag),toggled(true)
+    {
+        flag = !flag;
+    }
+
+    FlagToggler(Flag &_flag, Flag check)
+        :flag(_flag),toggled(check==_flag)
+    {
+        if(toggled)
+            flag = !flag;
+    }
+
+    ~FlagToggler() {
+        if(toggled)
+            flag = !flag;
+    }
+};
+
+// ----------------------------------------------------------------------------
+
 template<typename Status, class Object>
 class ObjectStatusLocker
 {
@@ -213,6 +240,23 @@ public:
 private:
     bool& lock;
     bool old_value;
+};
+
+// ----------------------------------------------------------------------------
+
+template<typename T>
+class BitsetLocker
+{
+public:
+    BitsetLocker(T& flags, std::size_t flag, bool value = true) 
+        : flags(flags), flag(flag)
+    { oldValue = flags.test(flag); flags.set(flag,value); }
+    ~BitsetLocker()
+    { flags.set(flag,oldValue); }
+private:
+    T &flags;
+    std::size_t flag;
+    bool oldValue;
 };
 
 // ----------------------------------------------------------------------------

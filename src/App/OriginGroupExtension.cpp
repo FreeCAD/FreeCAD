@@ -53,17 +53,40 @@ App::Origin *OriginGroupExtension::getOrigin () const {
 
     if ( !originObj ) {
         std::stringstream err;
-        err << "Can't find Origin for \"" << getExtendedObject()->getNameInDocument () << "\"";
+        err << "Can't find Origin for \"" << getExtendedObject()->getFullName () << "\"";
         throw Base::RuntimeError ( err.str().c_str () );
 
     } else if (! originObj->isDerivedFrom ( App::Origin::getClassTypeId() ) ) {
         std::stringstream err;
-        err << "Bad object \"" << originObj->getNameInDocument () << "\"(" << originObj->getTypeId().getName()
-            << ") linked to the Origin of \"" << getExtendedObject()->getNameInDocument () << "\"";
+        err << "Bad object \"" << originObj->getFullName () << "\"(" << originObj->getTypeId().getName()
+            << ") linked to the Origin of \"" << getExtendedObject()->getFullName () << "\"";
         throw Base::RuntimeError ( err.str().c_str () );
     } else {
             return static_cast<App::Origin *> ( originObj );
     }
+}
+
+bool OriginGroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
+        PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
+{
+    App::DocumentObject *originObj = Origin.getValue ();
+    const char *dot;
+    if(originObj && originObj->getNameInDocument() && 
+       subname && (dot=strchr(subname,'.'))) 
+    {
+        bool found;
+        if(subname[0] == '$')
+            found = std::string(subname+1,dot)==originObj->Label.getValue();
+        else
+            found = std::string(subname,dot)==originObj->getNameInDocument();
+        if(found) {
+            if(mat && transform) 
+                *mat *= const_cast<OriginGroupExtension*>(this)->placement().getValue().toMatrix();
+            ret = originObj->getSubObject(dot+1,pyObj,mat,true,depth+1);
+            return true;
+        }
+    }
+    return GeoFeatureGroupExtension::extensionGetSubObject(ret,subname,pyObj,mat,transform,depth);
 }
 
 App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObject* obj) {

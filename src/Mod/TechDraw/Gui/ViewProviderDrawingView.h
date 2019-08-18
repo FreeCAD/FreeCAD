@@ -43,7 +43,7 @@ class MDIViewPage;
 
 class TechDrawGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderDrawingView);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderDrawingView);
 
 public:
     /// constructor
@@ -53,28 +53,29 @@ public:
 
     App::PropertyBool  KeepLabel;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual void attach(App::DocumentObject *) override;
+    virtual void setDisplayMode(const char* ModeName) override;
+    virtual bool useNewSelectionModel(void) const override {return false;}
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes(void) const override;
     /// Hide the object in the view
-    virtual void hide(void);
+    virtual void hide(void) override;
     /// Show the object in the view
-    virtual void show(void);
-    virtual bool isShow(void) const;
+    virtual void show(void) override;
+    virtual bool isShow(void) const override;
 
-    virtual void onChanged(const App::Property *prop);
-    virtual void updateData(const App::Property*);
-    virtual void unsetEdit(int ModNum);
+    virtual void onChanged(const App::Property *prop) override;
+    virtual void updateData(const App::Property*) override;
+    virtual void unsetEdit(int ModNum) override;
 
     QGIView* getQView(void);
     MDIViewPage* getMDIViewPage() const;
+    virtual Gui::MDIView *getMDIView() override;
 
     /** @name Restoring view provider from document load */
     //@{
-    virtual void startRestoring();
-    virtual void finishRestoring();
+    virtual void startRestoring() override;
+    virtual void finishRestoring() override;
     //@}
 
     virtual TechDraw::DrawView* getViewObject() const;

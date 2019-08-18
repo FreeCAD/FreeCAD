@@ -179,8 +179,13 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
     } else {
         std::vector<TopoDS_Shape> sourceShapes;
         for (auto& l:links) {
-            std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
-            sourceShapes.insert(sourceShapes.end(),shapeList.begin(),shapeList.end());
+            auto shape = Part::Feature::getShape(l);
+            if(!shape.IsNull())
+                sourceShapes.push_back(shape);
+            else {
+                std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
+                sourceShapes.insert(sourceShapes.end(),shapeList.begin(),shapeList.end());
+            }
         }
 
         BRep_Builder builder;
@@ -330,7 +335,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES
-    auto start = chrono::high_resolution_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     if (handleFaces() && !geometryObject->usePolygonHLR()) {
         try {
             extractFaces();
@@ -348,9 +353,9 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     //add centerlines to geometry edges list
     addCenterLinesToGeom();
 
-    auto end   = chrono::high_resolution_clock::now();
+    auto end   = std::chrono::high_resolution_clock::now();
     auto diff  = end - start;
-    double diffOut = chrono::duration <double, milli> (diff).count();
+    double diffOut = std::chrono::duration <double, std::milli> (diff).count();
     Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs handling Faces\n",
                         getNameInDocument(),diffOut);
 
@@ -415,7 +420,7 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
             viewAxis);
     }
 
-    auto start = chrono::high_resolution_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
 
     go->extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
                         true);
@@ -451,9 +456,9 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
         go->extractGeometry(TechDraw::ecUVISO,
                             false);
     }
-    auto end   = chrono::high_resolution_clock::now();
+    auto end   = std::chrono::high_resolution_clock::now();
     auto diff  = end - start;
-    double diffOut = chrono::duration <double, milli> (diff).count();
+    double diffOut = std::chrono::duration <double, std::milli> (diff).count();
     Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs in GO::extractGeometry\n",getNameInDocument(),diffOut);
 
     const std::vector<TechDraw::BaseGeom  *> & edges = go->getEdgeGeometry();

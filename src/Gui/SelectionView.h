@@ -30,6 +30,8 @@
 #include "Selection.h"
 
 class QListWidget;
+class QListWidgetItem;
+class QCheckBox;
 class QLabel;
 
 namespace App {
@@ -42,7 +44,7 @@ namespace DockWnd {
 /** A test class. A more elaborate class description.
  */
 class SelectionView : public Gui::DockWindow, 
-                      public Gui::SelectionSingleton::ObserverType
+                      public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -60,19 +62,22 @@ public:
     virtual ~SelectionView();
 
     /// Observer message from the Selection
-    virtual void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                          Gui::SelectionSingleton::MessageType Reason);
+    virtual void onSelectionChanged(const SelectionChanges& msg) override;
 
+    virtual void leaveEvent(QEvent*) override;
 
-    bool onMsg(const char* pMsg,const char** ppReturn);
+    bool onMsg(const char* pMsg,const char** ppReturn) override;
 
-    virtual const char *getName(void) const {return "SelectionView";}
+    virtual const char *getName(void) const override {return "SelectionView";}
 
     /// get called when the document is changed or updated
-    virtual void onUpdate(void);
+    virtual void onUpdate(void) override;
 
     QListWidget* selectionView;
     QLabel*      countLabel;
+
+    QCheckBox *enablePickList;
+    QListWidget *pickList;
 
 public Q_SLOTS:
     /// get called when text is entered in the search box
@@ -89,11 +94,21 @@ public Q_SLOTS:
     void toPython(void);
     void touch(void);
     void showPart(void);
+    void onEnablePickList();
+    void toggleSelect(QListWidgetItem* item=0);
+    void preselect(QListWidgetItem* item=0);
+
+protected:
+    void showEvent(QShowEvent *) override;
+    void hideEvent(QHideEvent *) override;
 
 private:
     QString getModule(const char* type) const;
     QString getProperty(App::DocumentObject* obj) const;
     bool supportPart(App::DocumentObject* obj, const QString& part) const;
+
+private:
+    float x,y,z;
     std::vector<App::DocumentObject*> searchList;
 };
 

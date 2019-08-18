@@ -146,6 +146,39 @@ will be shown at the lower left in opened files</string>
        </widget>
       </item>
       <item>
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="QLabel" name="renderCacheLabel">
+          <property name="text">
+           <string>Render cache</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="renderCache">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Auto</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Distributed</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Centralized</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_UseAutoRotation">
         <property name="enabled">
          <bool>true</bool>

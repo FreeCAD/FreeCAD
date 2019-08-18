@@ -27,6 +27,7 @@
 #include <set>
 #include <App/Material.h>
 #include <App/Range.h>
+#include <App/Expression.h>
 #include "DisplayUnit.h"
 #include "Utils.h"
 
@@ -34,11 +35,6 @@ namespace Base {
 class Unit;
 class XMLReader;
 class Writer;
-}
-
-namespace App {
-class Expression;
-class ExpressionVisitor;
 }
 
 namespace Spreadsheet {
@@ -59,9 +55,9 @@ public:
 
     ~Cell();
 
-    const App::Expression * getExpression() const;
+    const App::Expression * getExpression(bool withFormat=false) const;
 
-    bool getStringContent(std::string & s) const;
+    bool getStringContent(std::string & s, bool persistent=false) const;
 
     void setContent(const char * value);
 
@@ -95,6 +91,8 @@ public:
 
     void clearDirty();
 
+    void setDirty();
+
     void setResolveException(const std::string &e);
 
     void clearResolveException();
@@ -105,9 +103,12 @@ public:
 
     void moveAbsolute(App::CellAddress newAddress);
 
-    void restore(Base::XMLReader &reader);
+    void restore(Base::XMLReader &reader, bool checkAlias=false);
+
+    void afterRestore();
 
     void save(Base::Writer &writer) const;
+    void save(std::ostream &os, const char *indent, bool noContent) const;
 
     bool isUsed() const;
 
@@ -146,9 +147,7 @@ private:
 
     void setParseException(const std::string & e);
 
-    //void setExpression(const Expression * expr);
-
-    void setExpression(App::Expression *expr);
+    void setExpression(App::ExpressionPtr &&expr);
 
     void setUsed(int mask, bool state = true);
 
@@ -178,7 +177,7 @@ private:
     PropertySheet * owner;
 
     int used;
-    App::Expression * expression;
+    mutable App::ExpressionPtr expression;
     int alignment;
     std::set<std::string> style;
     App::Color foregroundColor;
@@ -190,6 +189,7 @@ private:
     int colSpan;
     std::string exceptionStr;
     App::CellAddress anchor;
+    friend class PropertySheet;
 };
 
 }

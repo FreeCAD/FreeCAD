@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 
+#include <Inventor/elements/SoOverrideElement.h>
 #include "SoFCInteractiveElement.h"
 
 using namespace Gui;
@@ -248,6 +249,16 @@ void SoGLVBOActivatedElement::get(SoState * state, SbBool& active)
     const SoGLVBOActivatedElement* self =  static_cast<const SoGLVBOActivatedElement *>
         (SoElement::getConstElement(state, classStackIndex));
     active = self->active;
+    if(active) {
+        uint32_t flags = SoOverrideElement::getFlags(state);
+        if(flags & (SoOverrideElement::COLOR_INDEX|
+                    SoOverrideElement::DIFFUSE_COLOR|
+                    SoOverrideElement::MATERIAL_BINDING|
+                    SoOverrideElement::TRANSPARENCY|
+                    SoOverrideElement::NORMAL_VECTOR|
+                    SoOverrideElement::NORMAL_BINDING))
+            active = false;
+    }
 }
 
 void SoGLVBOActivatedElement::push(SoState * state)
