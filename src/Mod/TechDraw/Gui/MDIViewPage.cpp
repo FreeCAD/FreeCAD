@@ -557,7 +557,7 @@ bool MDIViewPage::orphanExists(const char *viewName, const std::vector<App::Docu
 }
 
 
-bool MDIViewPage::onMsg(const char *pMsg, const char **)
+bool MDIViewPage::onMsg(const char *pMsg, const char **ppReturn)
 {
     Gui::Document *doc(getGuiDocument());
 
@@ -582,7 +582,7 @@ bool MDIViewPage::onMsg(const char *pMsg, const char **)
         return true;
     }
 
-    return false;
+    return MDIView::onMsg(pMsg,ppReturn);
 }
 
 
@@ -604,7 +604,7 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
         return true;
     else if (strcmp("PrintPdf",pMsg) == 0)
         return true;
-    return false;
+    return MDIView::onHasMsg(pMsg);
 }
 
 //called by ViewProvider when Page feature Label changes
@@ -617,13 +617,27 @@ void MDIViewPage::setTabText(std::string t)
     }
 }
 
+static inline QString _getDefaultName(const Gui::ViewProviderDocumentObject *vpd) {
+    if(!vpd || !vpd->getObject())
+        return QString();
+    auto obj = vpd->getObject();
+    if(obj->getDocument() 
+           && obj->getDocument()->FileName.getStrValue().size())
+    {
+        QDir dir = QFileInfo(QString::fromUtf8(
+                    obj->getDocument()->FileName.getValue())).dir();
+        return QFileInfo(dir,QString::fromUtf8(obj->Label.getValue())).filePath();
+    } else
+        return QString::fromUtf8(obj->Label.getValue());
+}
+
 void MDIViewPage::printPdf()
 {
     QStringList filter;
     filter << QObject::tr("PDF (*.pdf)");
     filter << QObject::tr("All Files (*.*)");
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page As PDF"),
-                                                  QString(), filter.join(QLatin1String(";;")));
+                                                  _getDefaultName(m_vpPage), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
       return;
     }
@@ -876,7 +890,7 @@ void MDIViewPage::saveSVG()
     filter << QObject::tr("SVG (*.svg)");
     filter << QObject::tr("All Files (*.*)");
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
-                                                  QString(), filter.join(QLatin1String(";;")));
+                                                  _getDefaultName(m_vpPage), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
       return;
     }
@@ -897,10 +911,9 @@ void MDIViewPage::saveSVG(std::string file)
 
 void MDIViewPage::saveDXF()
 {
-    QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                                    QString::fromUtf8(QT_TR_NOOP("Save Dxf File ")),
-                                                   defaultDir,
+                                                   _getDefaultName(m_vpPage),
                                                    QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
     if (fileName.isEmpty()) {
         return;

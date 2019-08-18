@@ -1186,6 +1186,19 @@ CmdTechDrawExportPageDxf::CmdTechDrawExportPageDxf()
     sPixmap       = "actions/techdraw-saveDXF";
 }
 
+static inline QString _getDefaultName(const App::DocumentObject *obj) {
+    if(!obj)
+        return QString();
+    if(obj->getDocument() 
+           && obj->getDocument()->FileName.getStrValue().size())
+    {
+        QDir dir = QFileInfo(QString::fromUtf8(
+                    obj->getDocument()->FileName.getValue())).dir();
+        return QFileInfo(dir,QString::fromUtf8(obj->Label.getValue())).filePath();
+    } else
+        return QString::fromUtf8(obj->Label.getValue());
+}
+
 void CmdTechDrawExportPageDxf::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -1195,10 +1208,9 @@ void CmdTechDrawExportPageDxf::activated(int iMsg)
     }
 
 //WF? allow more than one TD Page per Dxf file??  1 TD page = 1 DXF file = 1 drawing?
-    QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                                    QString::fromUtf8(QT_TR_NOOP("Save Dxf File ")),
-                                                   defaultDir,
+                                                   _getDefaultName(page),
                                                    QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
 
     if (fileName.isEmpty()) {
