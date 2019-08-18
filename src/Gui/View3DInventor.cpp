@@ -625,47 +625,12 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         _viewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
         return true;
     }
-    else  if(strcmp("Undo",pMsg) == 0 ) {
-        getGuiDocument()->undo(1);
-        return true;
-    }
-    else  if(strcmp("Redo",pMsg) == 0 ) {
-        getGuiDocument()->redo(1);
-        return true;
-    }
-    else if (strcmp("Save",pMsg) == 0) {
-        getGuiDocument()->save();
-        return true;
-    }
-    else if (strcmp("SaveAs",pMsg) == 0) {
-        getGuiDocument()->saveAs();
-        return true;
-    }
-    else if (strcmp("SaveCopy",pMsg) == 0) {
-        getGuiDocument()->saveCopy();
-        return true;
-    }
-    else
-        return false;
+    return MDIView::onMsg(pMsg,ppReturn);
 }
 
 bool View3DInventor::onHasMsg(const char* pMsg) const
 {
-    if  (strcmp("Save",pMsg) == 0)
-        return true;
-    else if (strcmp("SaveAs",pMsg) == 0)
-        return true;
-    else if (strcmp("SaveCopy",pMsg) == 0)
-        return true;
-    else if (strcmp("Undo",pMsg) == 0) {
-        App::Document* doc = getAppDocument();
-        return doc && doc->getAvailableUndos() > 0;
-    }
-    else if (strcmp("Redo",pMsg) == 0) {
-        App::Document* doc = getAppDocument();
-        return doc && doc->getAvailableRedos() > 0;
-    }
-    else if (strcmp("Print",pMsg) == 0)
+    if (strcmp("Print",pMsg) == 0)
         return true;
     else if (strcmp("PrintPreview",pMsg) == 0)
         return true;
@@ -717,7 +682,7 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
     else if(strncmp("Dump",pMsg,4) == 0)
         return true;
-    return false;
+    return MDIView::onHasMsg(pMsg);
 }
 
 bool View3DInventor::setCamera(const char* pCamera)

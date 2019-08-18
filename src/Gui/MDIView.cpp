@@ -153,14 +153,50 @@ void MDIView::viewAll()
 /// receive a message
 bool MDIView::onMsg(const char* pMsg,const char** ppReturn)
 {
-    Q_UNUSED(pMsg);
     Q_UNUSED(ppReturn);
+
+    if(!getGuiDocument())
+        return false;
+
+    if(strcmp("Undo",pMsg) == 0 ) {
+        getGuiDocument()->undo(1);
+        return true;
+    }
+    else  if(strcmp("Redo",pMsg) == 0 ) {
+        getGuiDocument()->redo(1);
+        return true;
+    }
+    else if (strcmp("Save",pMsg) == 0) {
+        getGuiDocument()->save();
+        return true;
+    }
+    else if (strcmp("SaveAs",pMsg) == 0) {
+        getGuiDocument()->saveAs();
+        return true;
+    }
+    else if (strcmp("SaveCopy",pMsg) == 0) {
+        getGuiDocument()->saveCopy();
+        return true;
+    }
     return false;
 }
 
 bool MDIView::onHasMsg(const char* pMsg) const
 {
-    Q_UNUSED(pMsg);
+    if (strcmp("Save",pMsg) == 0)
+        return true;
+    else if (strcmp("SaveAs",pMsg) == 0)
+        return true;
+    else if (strcmp("SaveCopy",pMsg) == 0)
+        return true;
+    else if (strcmp("Undo",pMsg) == 0) {
+        App::Document* doc = getAppDocument();
+        return doc && doc->getAvailableUndos() > 0;
+    }
+    else if (strcmp("Redo",pMsg) == 0) {
+        App::Document* doc = getAppDocument();
+        return doc && doc->getAvailableRedos() > 0;
+    }
     return false;
 }
 
