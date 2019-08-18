@@ -160,7 +160,7 @@ void FileDialog::accept()
     }
 
     QString filter = selectedNameFilter();
-    bool checkDirectory = filter.contains(QLatin1String("FCStd")) || filter.contains(QLatin1String("*.*"));
+    bool checkDirectory = filter.contains(QLatin1String("FCStd"));
     if(checkDirectory) {
         bool accepted = false;
         for(auto &file : files) {
@@ -201,9 +201,16 @@ void FileDialog::accept()
 QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, const QString & dir, 
                                      QString filter, QString * selectedFilter, Options options)
 {
+#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
+    options |= QFileDialog::DontUseNativeDialog;
+#endif
+    bool noNativeDialog = (options&QFileDialog::DontUseNativeDialog)
+                          || dontUseNativeDialog();
+
     checkFilter(filter);
 
     QString dirName = dir;
+    QString fileName;
     if (dirName.isEmpty()) {
         dirName = getWorkingDirectory();
     } else {
@@ -211,18 +218,20 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         if (fi.isRelative()) {
             dirName = getWorkingDirectory();
             dirName += QLatin1String("/");
-            dirName += fi.fileName();
+            dirName += fi.dir().path();
         }
-    
-        // get the suffix for the filter
-        QRegExp rx;
-        rx.setPattern(QLatin1String("\\s(\\(\\*\\.\\w{1,})\\W"));
-        int index = rx.indexIn(filter);
-        if (index != -1) {
-            // get the suffix with the leading dot
-            QString suffix = filter.mid(index+3, rx.matchedLength()-4);
-            if (fi.suffix().isEmpty())
-                dirName += suffix;
+        fileName = fi.fileName();
+        if(fileName.size() && !noNativeDialog && fileName.indexOf(QLatin1Char('.'))<0) {
+            // get the suffix for the filter
+            QRegExp rx;
+            rx.setPattern(QLatin1String("\\s(\\(\\*\\.\\w{1,})\\W"));
+            int index = rx.indexIn(filter);
+            if (index != -1) {
+                // get the suffix with the leading dot
+                QString suffix = filter.mid(index+3, rx.matchedLength()-4);
+                if (fi.suffix().isEmpty())
+                    fileName += suffix;
+            }
         }
     }
 
@@ -230,15 +239,11 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Save as");
 
-#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
-    options |= QFileDialog::DontUseNativeDialog;
-#endif
-
     // NOTE: We must not change the specified file name afterwards as we may return the name of an already
     // existing file. Hence we must extract the first matching suffix from the filter list and append it 
     // before showing the file dialog.
     QString file;
-    if (dontUseNativeDialog()) {
+    if (noNativeDialog) {
         QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
@@ -273,6 +278,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         dlg.onSelectedFilter(dlg.selectedNameFilter());
         dlg.setNameFilterDetailsVisible(true);
         dlg.setConfirmOverwrite(true);
+        dlg.selectFile(fileName);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();
