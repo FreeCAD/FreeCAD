@@ -71,7 +71,8 @@ class Edit():
         #list of supported objects type
         self.supportedObjs = ["BezCurve","Wire","BSpline","Circle","Rectangle",
                             "Polygon","Dimension","Space","Structure","PanelCut",
-                            "PanelSheet","Wall", "Window"]
+                            "PanelSheet","Wall", "Window", "Part"]
+        self.supportedPartObjs = ["Part::Box"]
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Edit',
@@ -220,7 +221,7 @@ class Edit():
         event = event_callback.getEvent()
         if event.getState() == coin.SoKeyboardEvent.DOWN:
             key = event.getKey()
-            FreeCAD.Console.PrintMessage("pressed key : "+str(key)+"\n")
+            #FreeCAD.Console.PrintMessage("pressed key : "+str(key)+"\n")
             if key == 65307: # ESC
                 if self.editing == None: self.finish()
                 else:
@@ -319,6 +320,12 @@ class Edit():
         if "Proxy" in selection[0].PropertiesList and hasattr(selection[0].Proxy,"Type"):
             if Draft.getType(selection[0]) in self.supportedObjs:
                 return selection[0]
+        else:
+            try:
+                if Draft.getType(selection[0]) == "Part" and selection[0].TypeId in self.supportedPartObjs:
+                    return selection[0]
+            except:
+                pass
         FreeCAD.Console.PrintWarning(translate("draft", "This object is not editable")+"\n")
         return None
 
@@ -655,6 +662,8 @@ class Edit():
             self.setPanelCutPts()
         elif objectType == "PanelSheet":
             self.setPanelSheetPts()
+        elif objectType == "Part" and obj.TypeId == "Part::Box":
+            self.setPartBoxPts()
 
     def update(self,v):
         "apply the vector to the modified point and update self.obj"
@@ -675,6 +684,7 @@ class Edit():
         elif Draft.getType(self.obj) == "Structure": self.updateStructure(v)
         elif Draft.getType(self.obj) == "PanelCut": self.updatePanelCut(v)
         elif Draft.getType(self.obj) == "PanelSheet": self.updatePanelSheet(v)
+        elif Draft.getType(self.obj) == "Part" and self.obj.TypeId == "Part::Box": self.updatePartBox(v)
 
         FreeCAD.ActiveDocument.commitTransaction()
 
@@ -1215,6 +1225,34 @@ class Edit():
             self.obj.TagPosition = self.invpl.multVec(v)
         else:
             self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
+    
+    # PART::BOX-----------------------------------------------------------------
+
+    def setPartBoxPts(self):
+        self.editpoints.append(self.obj.Placement.Base)
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(self.obj.Length,0,0)))
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(0,self.obj.Width,0)))
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(0,0,self.obj.Height)))
+
+    def updatePartBox(self,v):
+        import DraftVecUtils
+        delta = self.invpl.multVec(v)
+        if self.editing == 0:
+            self.obj.Placement.Base = v
+            self.setPlacement(self.obj)
+        elif self.editing == 1:
+            xVector = DraftVecUtils.project(delta,FreeCAD.Vector(1,0,0))
+            self.obj.Length = xVector.Length            
+        elif self.editing == 2:
+            xVector = DraftVecUtils.project(delta,FreeCAD.Vector(0,1,0))
+            self.obj.Width = xVector.Length            
+        elif self.editing == 3:
+            xVector = DraftVecUtils.project(delta,FreeCAD.Vector(0,0,1))
+            self.obj.Height = xVector.Length            
+        self.trackers[0].set(self.obj.Placement.Base)
+        self.trackers[1].set(self.pl.multVec(FreeCAD.Vector(self.obj.Length,0,0)))
+        self.trackers[2].set(self.pl.multVec(FreeCAD.Vector(0,self.obj.Width,0)))
+        self.trackers[3].set(self.pl.multVec(FreeCAD.Vector(0,0,self.obj.Height)))
 
 
 
