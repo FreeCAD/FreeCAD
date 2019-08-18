@@ -140,7 +140,7 @@ class Edgestofaces:
         FreeCAD.ActiveDocument.recompute()
 
     def GetResources(self):
-        return {'Pixmap'  : 'python', 'MenuText': QtCore.QT_TRANSLATE_NOOP(\
+        return {'Pixmap'  : 'Python', 'MenuText': QtCore.QT_TRANSLATE_NOOP(\
                 'OpenSCAD_Edgestofaces','Convert Edges To Faces'),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP('OpenSCAD',\
                 'Convert Edges to Faces')}
@@ -201,7 +201,7 @@ class ExpandPlacements:
             expandplacements.expandplacements(selobj.Object,FreeCAD.Placement())
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
-        return {'Pixmap'  : 'python', 'MenuText': QtCore.QT_TRANSLATE_NOOP(\
+        return {'Pixmap'  : 'Python', 'MenuText': QtCore.QT_TRANSLATE_NOOP(\
                 'OpenSCAD_ExpandPlacements','Expand Placements'), 'ToolTip': \
                 QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements',\
                 'Expand all placements downwards the FeatureTree')}
