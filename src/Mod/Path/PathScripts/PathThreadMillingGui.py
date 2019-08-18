@@ -86,6 +86,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         obj.Direction = self.form.opDirection.currentText()
         obj.Passes = self.form.opPasses.value()
         obj.LeadInOut = self.form.leadInOut.checkState() == QtCore.Qt.Checked
+        obj.TPI = self.form.threadTPI.value()
 
         self.updateToolController(obj, self.form.toolController)
 
@@ -102,6 +103,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.threadName.setCurrentText(obj.ThreadName)
         self.form.threadType.blockSignals(False)
         self.form.threadName.blockSignals(False)
+        self.form.threadTPI.setValue(obj.TPI)
 
         self.form.opPasses.setValue(obj.Passes)
         self.form.opDirection.setCurrentText(obj.Direction)
@@ -114,30 +116,65 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.setupToolController(obj, self.form.toolController)
 
 
+    def _isThreadMetric(self):
+        return self.form.threadType.currentText() == PathThreadMilling.ObjectThreadMilling.ThreadTypeMetricInternal
+
+    def _isThreadImperial(self):
+        return self.form.threadType.currentText() == PathThreadMilling.ObjectThreadMilling.ThreadTypeImperialInternal
 
     def _updateFromThreadType(self):
-        if self.form.threadType.currentIndex() == 0:
-            PathLog.track(self.form.threadType.currentIndex())
+
+        if self.form.threadType.currentText() == PathThreadMilling.ObjectThreadMilling.ThreadTypeCustom:
             self.form.threadName.setEnabled(False)
             self.form.threadFit.setEnabled(False)
             self.form.threadFitLabel.setEnabled(False)
-        else:
-            PathLog.track(self.form.threadType.currentIndex())
+            self.form.threadPitch.setEnabled(True)
+            self.form.threadPitchLabel.setEnabled(True)
+            self.form.threadTPI.setEnabled(True)
+            self.form.threadTPILabel.setEnabled(True)
+
+        if self._isThreadMetric():
             self.form.threadFit.setEnabled(True)
             self.form.threadFitLabel.setEnabled(True)
+            self.form.threadPitch.setEnabled(True)
+            self.form.threadPitchLabel.setEnabled(True)
+            self.form.threadTPI.setEnabled(False)
+            self.form.threadTPILabel.setEnabled(False)
+            self.form.threadTPI.setValue(0)
             fillThreads(self.form.threadName, 'metric-internal')
+
+        if self._isThreadImperial():
+            self.form.threadFit.setEnabled(True)
+            self.form.threadFitLabel.setEnabled(True)
+            self.form.threadPitch.setEnabled(False)
+            self.form.threadPitchLabel.setEnabled(False)
+            self.form.threadTPI.setEnabled(True)
+            self.form.threadTPILabel.setEnabled(True)
+            self.pitch.updateSpinBox(0)
+            fillThreads(self.form.threadName, 'imperial-internal')
 
     def _updateFromThreadName(self):
         thread = self.form.threadName.currentData()
+        fit = float(self.form.threadFit.value()) / 100
         mamin = float(thread['dMajorMin'])
         mamax = float(thread['dMajorMax'])
+        major = mamin + (mamax - mamin) * fit
         mimin = float(thread['dMinorMin'])
         mimax = float(thread['dMinorMax'])
-        pitch = float(thread['pitch'])
+        minor = mimin + (mimax - mimin) * fit
 
-        self.pitch.updateSpinBox(pitch)
-        self.majorDia.updateSpinBox((mamin + mamax) / 2)
-        self.minorDia.updateSpinBox((mimin + mimax) / 2)
+        if self._isThreadMetric():
+            pitch = float(thread['pitch'])
+            self.pitch.updateSpinBox(pitch)
+
+        if self._isThreadImperial():
+            tpi = int(thread['tpi'])
+            self.form.threadTPI.setValue(tpi)
+            minor = minor * 25.4
+            major = major * 25.4
+
+        self.majorDia.updateSpinBox(major)
+        self.minorDia.updateSpinBox(minor)
 
         self.setDirty()
 
@@ -149,6 +186,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.threadMinor.editingFinished)
         signals.append(self.form.threadPitch.editingFinished)
         signals.append(self.form.threadOrientation.currentIndexChanged)
+        signals.append(self.form.threadTPI.editingFinished)
         signals.append(self.form.opDirection.currentIndexChanged)
         signals.append(self.form.opPasses.editingFinished)
         signals.append(self.form.leadInOut.stateChanged)
@@ -160,6 +198,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def registerSignalHandlers(self, obj):
         self.form.threadType.currentIndexChanged.connect(self._updateFromThreadType)
         self.form.threadName.currentIndexChanged.connect(self._updateFromThreadName)
+        self.form.threadFit.valueChanged.connect(self._updateFromThreadName)
 
 
 Command = PathOpGui.SetupOperation('Thread Milling',

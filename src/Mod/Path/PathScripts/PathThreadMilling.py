@@ -31,6 +31,7 @@ import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
+import math
 
 from PySide import QtCore
 
@@ -47,14 +48,20 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-def radiiMetricInternal(majorDia, minorDia, toolDia, toolCrest = None):
+def radiiInternal(majorDia, minorDia, toolDia, toolCrest = None):
     '''internlThreadRadius(majorDia, minorDia, toolDia, toolCrest) ... returns the maximum radius for thread.'''
     PathLog.track(majorDia, minorDia, toolDia, toolCrest)
     if toolCrest is None:
         toolCrest = 0.0
-    # see https://www.amesweb.info/Screws/Internal-Metric-Thread-Dimensions-Chart.aspx
+    # As it turns out metric and imperial standard threads follow the same rules.
+    # The determining factor is the height of the full 60 degree triangle H.
+    # - The minor diameter is 1/4 * H smaller than the pitch diameter.
+    # - The major diameter is 3/8 * H bigger than the pitch diameter
+    # Since we already have the outer diameter it's simpler to just add 1/8 * H
+    # to get the outer tip of the thread.
     H = ((majorDia - minorDia) / 2.0 ) * 1.6             # (D - d)/2 = 5/8 * H
     outerTip = majorDia / 2.0 + H / 8.0
+    # Compensate for the crest of the tool
     toolTip = outerTip - toolCrest * 0.8660254037844386  # math.sqrt(3)/2 ... 60deg triangle height
     return ((minorDia - toolDia) / 2, toolTip - toolDia / 2)
 
@@ -161,11 +168,12 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
     RightHand                   = 'RightHand'
     ThreadTypeCustom            = 'Custom'
     ThreadTypeMetricInternal    = 'Metric - internal'
+    ThreadTypeImperialInternal  = 'Imperial - internal'
     DirectionClimb              = 'Climb'
     DirectionConventional       = 'Conventional'
 
     ThreadOrientations = [LeftHand, RightHand]
-    ThreadTypes = [ThreadTypeCustom, ThreadTypeMetricInternal]
+    ThreadTypes = [ThreadTypeCustom, ThreadTypeMetricInternal, ThreadTypeImperialInternal]
     Directions =  [DirectionClimb, DirectionConventional]
 
     def circularHoleFeatures(self, obj):
@@ -179,7 +187,8 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyString", "ThreadName", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Devfines which standard thread was chosen"))
         obj.addProperty("App::PropertyLength", "MajorDiameter", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread's major diameter"))
         obj.addProperty("App::PropertyLength", "MinorDiameter", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread's minor diameter"))
-        obj.addProperty("App::PropertyLength", "Pitch", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread's pitch"))
+        obj.addProperty("App::PropertyLength", "Pitch", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread's pitch - used for metric threads"))
+        obj.addProperty("App::PropertyInteger", "TPI", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread's tpi - used for imperial threads"))
         obj.addProperty("App::PropertyInteger", "ThreadFit", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set how many passes are used to cut the thread"))
         obj.addProperty("App::PropertyInteger", "Passes", "Operation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set how many passes are used to cut the thread"))
         obj.addProperty("App::PropertyEnumeration", "Direction", "Operation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Direction of thread cutting operation"))
@@ -254,7 +263,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
         self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
-        for radius in threadPasses(obj.Passes, radiiMetricInternal, obj.MajorDiameter.Value, obj.MinorDiameter.Value, self.tool.Diameter, 0):
+        for radius in threadPasses(obj.Passes, radiiInternal, obj.MajorDiameter.Value, obj.MinorDiameter.Value, self.tool.Diameter, 0):
             commands = internalThreadCommands(loc, gcode, zStart, zFinal, pitch, radius, obj.LeadInOut)
             for cmd in commands:
                 p = cmd.Parameters
@@ -274,6 +283,8 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
 
         (cmd, zStart, zFinal) = self.threadSetup(obj)
         pitch = obj.Pitch.Value
+        if obj.TPI > 0:
+            pitch = 25.4 / obj.TPI
         if pitch <= 0:
             PathLog.error("Cannot create thread with pitch {}".format(pitch))
             return
@@ -288,6 +299,7 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         obj.ThreadType = self.ThreadTypeMetricInternal
         obj.ThreadFit = 50
         obj.Pitch = 1
+        obj.TPI = 0
         obj.Passes = 1
         obj.Direction = self.DirectionClimb
         obj.LeadInOut = True
@@ -302,6 +314,7 @@ def SetupProperties():
     setup.append("MajorDiameter")
     setup.append("MinorDiameter")
     setup.append("Pitch")
+    setup.append("TPI")
     setup.append("Passes")
     setup.append("Direction")
     setup.append("LeadInOut")

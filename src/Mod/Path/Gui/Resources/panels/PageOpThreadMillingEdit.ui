@@ -82,6 +82,9 @@
       </item>
       <item row="3" column="1">
        <widget class="QSlider" name="threadFit">
+        <property name="maximum">
+         <number>100</number>
+        </property>
         <property name="value">
          <number>50</number>
         </property>
@@ -119,7 +122,7 @@
        </widget>
       </item>
       <item row="6" column="0">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="threadPitchLabel">
         <property name="text">
          <string>Pitch</string>
         </property>
@@ -129,6 +132,20 @@
        <widget class="Gui::QuantitySpinBox" name="threadPitch">
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QSpinBox" name="threadTPI">
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="threadTPILabel">
+        <property name="text">
+         <string>TPI</string>
         </property>
        </widget>
       </item>
