@@ -66,8 +66,6 @@ class Edit():
         self.ghost = None
 
         # soraypick action things
-        view = FreeCADGui.ActiveDocument.ActiveView.getViewer()
-        self.render_manager = view.getSoRenderManager()
         self.pick_radius = 30 # TODO: set pick radius according to user preferences
 
         #list of supported objects type
@@ -185,6 +183,8 @@ class Edit():
 
     def register_editing_callbacks(self):
         "register callbacks to use during editing (former action function)"
+        viewer = FreeCADGui.ActiveDocument.ActiveView.getViewer()
+        self.render_manager = viewer.getSoRenderManager()
         view = FreeCADGui.ActiveDocument.ActiveView
         self._keyPressedCB = view.addEventCallbackPivy(
             coin.SoKeyboardEvent.getClassTypeId(), self.keyPressed)
@@ -220,7 +220,7 @@ class Edit():
         event = event_callback.getEvent()
         if event.getState() == coin.SoKeyboardEvent.DOWN:
             key = event.getKey()
-            #FreeCAD.Console.PrintMessage("pressed key : "+str(key)+"\n")
+            FreeCAD.Console.PrintMessage("pressed key : "+str(key)+"\n")
             if key == 65307: # ESC
                 if self.editing == None: self.finish()
                 else:
