@@ -216,6 +216,7 @@ class Edit():
 
     def keyPressed(self, event_callback):
         "keyboard event handler"
+        #TODO: Get the keys from preferences
         event = event_callback.getEvent()
         if event.getState() == coin.SoKeyboardEvent.DOWN:
             key = event.getKey()
@@ -227,12 +228,12 @@ class Edit():
                     self.editpoints = []
                     self.setEditPoints(self.obj)
                     self.resetTrackers()
-            '''elif arg["Key"] == "a":
+            if key == 97: # "a"
                 self.finish()
-            elif arg["Key"] == "o":
+            if key == 111: # "o"
                 self.finish(closed=True)
-            elif arg["Key"] == "i":
-                if Draft.getType(self.obj) == "Circle": self.arcInvert()'''
+            if key == 105: # "i"
+                if Draft.getType(self.obj) == "Circle": self.arcInvert()
 
     def mousePressed(self, event_callback):
         "mouse button event handler, calls: startEditing, endEditing, addPoint, delPoint"
@@ -304,10 +305,6 @@ class Edit():
         FreeCADGui.Snapper.setSelectMode(True)
         self.numericInput(self.trackers[self.editing].get())
         DraftTools.redraw3DView()
-
-    def getContextMenuEntries(self, event):
-        "return subcommands to add to context menu while draft Edit is active"
-        pass #TODO implement right click menu to add/delete nodes and change Bezcurve nodes
 
     #---------------------------------------------------------------------------
     # UTILS
