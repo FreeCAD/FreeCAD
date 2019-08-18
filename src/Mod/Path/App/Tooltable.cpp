@@ -116,7 +116,7 @@ void Tool::Restore(XMLReader &reader)
 
 const std::vector<std::string> Tool::ToolTypes(void)
 {
-    std::vector<std::string> toolTypes(13);
+    std::vector<std::string> toolTypes(14);
     toolTypes[0] ="EndMill";
     toolTypes[1] ="Drill";
     toolTypes[2] ="CenterDrill";
@@ -130,6 +130,7 @@ const std::vector<std::string> Tool::ToolTypes(void)
     toolTypes[10] ="ChamferMill";
     toolTypes[11] ="CornerRound";
     toolTypes[12] ="Engraver";
+    toolTypes[13] ="ThreadMill";
     return toolTypes;
 
 }
@@ -177,6 +178,8 @@ Tool::ToolType Tool::getToolType(std::string type)
         Type = Tool::CORNERROUND;
     else if(type=="Engraver")
         Type = Tool::ENGRAVER;
+    else if(type=="ThreadMill")
+        Type = Tool::THREADMILL;
     else
         Type = Tool::UNDEFINED;
 
@@ -234,6 +237,8 @@ const char* Tool::TypeName(Tool::ToolType typ) {
         return "CornerRound";
       case Tool::ENGRAVER:
         return "Engraver";
+      case Tool::THREADMILL:
+        return "ThreadMill";
       case Tool::UNDEFINED:
         return "Undefined";
     }

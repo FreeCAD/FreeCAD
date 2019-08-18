@@ -52,7 +52,9 @@ namespace Path
             BALLENDMILL,
             CHAMFERMILL,
             CORNERROUND,
-            ENGRAVER };
+            ENGRAVER,
+            THREADMILL 
+            };
 
         enum ToolMaterial {
             MATUNDEFINED,

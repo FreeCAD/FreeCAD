@@ -172,6 +172,11 @@ class ToolEditorEngrave(ToolEditorImage):
         da = self.quantityCuttingEdgeAngle(False).Value
         return dr / math.tan(math.radians(da) / 2)
 
+class ToolEditorThreadmill(ToolEditorImage):
+    '''Tool parameter editor for endmills.'''
+    def __init__(self, editor):
+        super(ToolEditorThreadmill, self).__init__(editor, 'threadmill.svg', 'dHS', 'a')
+
 class ToolEditor:
     '''UI and controller for editing a Tool.
     The controller embeds the UI to the parentWidget which has to have a layout attached to it.
@@ -188,7 +193,9 @@ class ToolEditor:
     ToolTypeImage = {
             'EndMill':  ToolEditorEndmill,
             'Drill':    ToolEditorDrill,
-            'Engraver': ToolEditorEngrave }
+            'Engraver': ToolEditorEngrave,
+            'ThreadMill': ToolEditorThreadmill 
+            }
 
     def __init__(self, tool, parentWidget, parent=None):
         self.Parent = parent

@@ -163,6 +163,7 @@ SET(PathImages_Tools
     Images/Tools/drill.svg
     Images/Tools/endmill.svg
     Images/Tools/v-bit.svg
+    Images/Tools/threadmill.svg
 )
 
 SET(Path_Images
