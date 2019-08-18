@@ -800,9 +800,10 @@ class Edit():
                 index,self.obj.ViewObject.LineColor,\
                 marker=marker))
 
-    def smoothBezPoint(self,point, style='Symmetric'):
+    def smoothBezPoint(self, point, style='Symmetric'):
         "called when changing the continuity of a knot"
         style2cont = {'Sharp':0,'Tangent':1,'Symmetric':2}
+        if point == None: return
         if not (Draft.getType(self.obj) == "BezCurve"):return
         pts = self.obj.Points
         deg = self.obj.Degree
