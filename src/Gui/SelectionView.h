@@ -62,16 +62,16 @@ public:
     virtual ~SelectionView();
 
     /// Observer message from the Selection
-    virtual void onSelectionChanged(const SelectionChanges& msg);
+    virtual void onSelectionChanged(const SelectionChanges& msg) override;
 
     virtual void leaveEvent(QEvent*) override;
 
-    bool onMsg(const char* pMsg,const char** ppReturn);
+    bool onMsg(const char* pMsg,const char** ppReturn) override;
 
-    virtual const char *getName(void) const {return "SelectionView";}
+    virtual const char *getName(void) const override {return "SelectionView";}
 
     /// get called when the document is changed or updated
-    virtual void onUpdate(void);
+    virtual void onUpdate(void) override;
 
     QListWidget* selectionView;
     QLabel*      countLabel;

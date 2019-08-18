@@ -57,7 +57,7 @@ class ObjectIdentifier;
  */
 class AppExport Property : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum Status
@@ -110,7 +110,7 @@ public:
      * This method is defined in Base::Persistence
      * @see Base::Persistence
      */
-    virtual unsigned int getMemSize (void) const {
+    virtual unsigned int getMemSize (void) const override {
         // you have to implement this method in all property classes!
         return sizeof(father) + sizeof(StatusBits);
     }
@@ -424,7 +424,7 @@ protected:
 class AppExport PropertyLists : public Property, public PropertyListsBase
 
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     virtual void setPyObject(PyObject *obj) override {
         _setPyObject(obj);

@@ -60,7 +60,7 @@ namespace App
 /// The document class
 class AppExport Document : public App::PropertyContainer
 {
-    PROPERTY_HEADER(App::Document);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::Document);
 
 public:
     enum Status {
@@ -222,11 +222,11 @@ public:
     const char* getName() const;
     //@}
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
     /// returns the complete document memory consumption, including all managed DocObjects and Undo Redo.
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize (void) const override;
 
     /** @name Object handling  */
     //@{
@@ -478,7 +478,7 @@ public:
     /// Function called to signal that an object identifier has been renamed
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths, const std::function<bool(const App::DocumentObject*)> &selector = [](const App::DocumentObject *) { return true; });
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     virtual std::string getFullName() const override;
 
@@ -508,8 +508,8 @@ protected:
     void writeObjects(const std::vector<App::DocumentObject*>&, Base::Writer &writer) const;
     bool saveToFile(const char* filename) const;
 
-    void onBeforeChange(const Property* prop);
-    void onChanged(const Property* prop);
+    void onBeforeChange(const Property* prop) override;
+    void onChanged(const Property* prop) override;
     /// callback from the Document objects before property will be changed
     void onBeforeChangeProperty(const TransactionalObject *Who, const Property *What);
     /// callback from the Document objects after property was changed

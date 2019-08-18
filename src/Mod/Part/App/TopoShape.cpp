@@ -143,6 +143,7 @@
 # include <StlAPI_Writer.hxx>
 # include <Standard_Failure.hxx>
 # include <gp_GTrsf.hxx>
+# include <gp_Pln.hxx>
 # include <ShapeAnalysis_Shell.hxx>
 # include <ShapeBuild_ReShape.hxx>
 # include <ShapeExtend_Explorer.hxx>

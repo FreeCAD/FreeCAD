@@ -162,7 +162,6 @@ protected:
 
 private:
     Ui_TaskCL2Lines* ui;
-    TechDraw::DrawViewPart* m_partFeat;
     TechDrawGui::TaskCenterLine* m_tcl;
 };
 

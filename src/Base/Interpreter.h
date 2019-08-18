@@ -113,7 +113,7 @@ public:
     const std::string &getStackTrace(void) const {return _stackTrace;}
     const std::string &getErrorType(void) const {return _errorType;}
     virtual PyObject *getPyExceptionType(void) const override {return _exceptionType;}
-    void ReportException (void) const;
+    void ReportException (void) const override;
 
 protected:
     std::string _stackTrace;

@@ -33,6 +33,7 @@
 
 class gp_Ax1;
 class gp_Ax2;
+class gp_Pln;
 class gp_Vec;
 
 namespace App {
