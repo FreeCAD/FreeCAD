@@ -31,7 +31,7 @@ namespace Sketcher
 
 class SketcherExport ExternalGeometryExtension : public Part::GeometryExtension
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
     enum Flag {

@@ -35,6 +35,12 @@
 #include <deque>
 #include <App/Range.h>
 
+//FIXME: PyObjectExpression hides overloaded virtual functions
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
+
 namespace App  {
 
 class DocumentObject;
@@ -654,4 +660,9 @@ public:
 }
 
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
+
 #endif // EXPRESSION_H

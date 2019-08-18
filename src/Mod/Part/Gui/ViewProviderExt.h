@@ -64,7 +64,7 @@ class SoBrepPointSet;
 
 class PartGuiExport ViewProviderPartExt : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPartExt);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPartExt);
 
 public:
     /// constructor
@@ -91,14 +91,14 @@ public:
     // Faces (Gui::ViewProviderGeometryObject::ShapeColor and Gui::ViewProviderGeometryObject::ShapeMaterial apply)
     App::PropertyColorList DiffuseColor;    
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
+    virtual void attach(App::DocumentObject *) override;
+    virtual void setDisplayMode(const char* ModeName) override;
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes(void) const override;
     /// Update the view representation
     void reload();
 
-    virtual void updateData(const App::Property*);
+    virtual void updateData(const App::Property*) override;
 
     /** @name Selection handling
      * This group of methods do the selection handling.
@@ -107,13 +107,13 @@ public:
      */
     //@{
     /// indicates if the ViewProvider use the new Selection model
-    virtual bool useNewSelectionModel(void) const {return true;}
+    virtual bool useNewSelectionModel(void) const override {return true;}
     /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail*) const;
-    virtual SoDetail* getDetail(const char*) const;
-    virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const;
+    virtual std::string getElement(const SoDetail*) const override;
+    virtual SoDetail* getDetail(const char*) const override;
+    virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const override;
     /// return the highlight lines for a given element or the whole shape
-    virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
+    virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const override;
     //@}
 
     /** @name Highlight handling
@@ -136,16 +136,16 @@ public:
 
     /** @name Edit methods */
     //@{
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
 protected:
-    bool setEdit(int ModNum);
-    void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
     //@}
 
 protected:
     /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
     bool loadParameter();
     void updateVisual();
     void getNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,

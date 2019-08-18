@@ -32,7 +32,7 @@ namespace Part {
     template <typename T>
     class PartExport GeometryDefaultExtension: public Part::GeometryExtension
     {
-        TYPESYSTEM_HEADER();
+        TYPESYSTEM_HEADER_WITH_OVERRIDE();
     public:
         inline GeometryDefaultExtension();
         GeometryDefaultExtension(const T& val, std::string name = std::string());
