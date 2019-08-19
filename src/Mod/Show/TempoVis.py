@@ -116,13 +116,14 @@ class TempoVis(FrozenClass):
         objs = []
         bodies = set()
         for obj in doc_obj_or_list:
-            body = getattr(obj,'Body',None)
+            body = getattr(obj,'_Body',None)
             if not body or body in bodies:
                 continue
             bodies.add(body)
             feature = getattr(body,'VisibleFeature',None)
             if feature:
                 objs.append(feature)
+        print([o.Name for o in objs])
         self.modifyVPProperty(objs, 'Visibility',None)
 
     def show(self, doc_obj_or_list):
