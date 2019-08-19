@@ -58,6 +58,7 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 Body::Body() {
     ADD_PROPERTY_TYPE(SingleSolid,(true),"Base",(App::PropertyType)(App::Prop_None),
             "Enforce single solid on each feature");
+    _GroupTouched.setStatus(App::Property::Output,true);
 }
 
 /*
@@ -543,5 +544,6 @@ void Body::onDocumentRestored()
         if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
             static_cast<PartDesign::Feature*>(obj)->_Body.setValue(this);
     }
+    _GroupTouched.setStatus(App::Property::Output,true);
     DocumentObject::onDocumentRestored();
 }
