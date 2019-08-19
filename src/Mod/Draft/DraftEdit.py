@@ -299,6 +299,7 @@ class Edit():
         else: return selobjs
 
     def lookForClickedNode(self,selobjs,tolerance=20):
+        ep = None
         for info in selobjs:
             #if info["Object"] == self.obj.Name:
             #    return
