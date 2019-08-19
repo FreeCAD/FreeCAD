@@ -177,6 +177,14 @@ class ToolEditorThreadmill(ToolEditorImage):
     def __init__(self, editor):
         super(ToolEditorThreadmill, self).__init__(editor, 'threadmill.svg', 'dHS', 'a')
 
+    def quantityCuttingEdgeAngle(self, propertyToDisplay):
+        if propertyToDisplay:
+            if self.editor.tool.CuttingEdgeAngle == 180:
+                self.editor.tool.CuttingEdgeAngle = 60
+
+            return FreeCAD.Units.Quantity(self.editor.tool.CuttingEdgeAngle, FreeCAD.Units.Angle)
+        return FreeCAD.Units.parseQuantity(self.form.value_a.text())
+
 class ToolEditor:
     '''UI and controller for editing a Tool.
     The controller embeds the UI to the parentWidget which has to have a layout attached to it.
