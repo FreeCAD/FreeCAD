@@ -756,7 +756,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             SoSelectionElementAction action(node->getDetail()?
                     SoSelectionElementAction::Remove:SoSelectionElementAction::None,true);
             auto path = node->getPath();
-            SoTempPath tmpPath(2+path?path->getLength():0);
+            SoTempPath tmpPath(2 + (path ? path->getLength() : 0));
             tmpPath.ref();
             tmpPath.append(pcGroup);
             tmpPath.append(node);

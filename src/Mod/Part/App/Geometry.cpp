@@ -375,7 +375,7 @@ Geometry *Geometry::clone(void) const
     cpy->tag = this->tag;
 
     for(auto & ext: extensions)
-        cpy->extensions.push_back(std::move(ext->copy()));
+        cpy->extensions.push_back(ext->copy());
 
     return cpy;
 }

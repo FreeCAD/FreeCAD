@@ -44,14 +44,14 @@ public:
     App::PropertyEnumeration Display;
     
     /// grouping handling
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    virtual bool onDelete(const std::vector<std::string> &);
-    virtual void attach(App::DocumentObject*);
-    virtual void onChanged(const App::Property* prop);
+    virtual bool onDelete(const std::vector<std::string> &) override;
+    virtual void attach(App::DocumentObject*) override;
+    virtual void onChanged(const App::Property* prop) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
+    virtual bool setEdit(int ModNum) override;
     
     static const char* DisplayEnum[];
 

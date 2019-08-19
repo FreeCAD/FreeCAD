@@ -159,7 +159,7 @@ public:
 template <class FeatureT>
 class FeaturePythonT : public FeatureT
 {
-    PROPERTY_HEADER(App::FeaturePythonT<FeatureT>);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::FeaturePythonT<FeatureT>);
 
 public:
     FeaturePythonT() {
@@ -173,7 +173,7 @@ public:
 
     /** @name methods override DocumentObject */
     //@{
-    short mustExecute() const {
+    short mustExecute() const override {
         if (this->isTouched())
             return 1;
         auto ret = FeatureT::mustExecute();
@@ -181,7 +181,7 @@ public:
         return imp->mustExecute()?1:0;
     }
     /// recalculate the Feature
-    virtual DocumentObjectExecReturn *execute(void) {
+    virtual DocumentObjectExecReturn *execute(void) override {
         try {
             bool handled = imp->execute();
             if (!handled)
@@ -199,7 +199,7 @@ public:
         return FeatureT::getViewProviderNameOverride();
     }
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return FeatureT::getViewProviderName();
         //return "Gui::ViewProviderPythonFeature";
     }
@@ -279,14 +279,14 @@ public:
         return FeatureT::canLoadPartial();
     }
 
-    PyObject *getPyObject(void) {
+    PyObject *getPyObject(void) override {
         if (FeatureT::PythonObject.is(Py::_None())) {
             // ref counter is set to 1
             FeatureT::PythonObject = Py::Object(imp->getPyObject(),true);
         }
         return Py::new_reference_to(FeatureT::PythonObject);
     }
-    void setPyObject(PyObject *obj) {
+    void setPyObject(PyObject *obj) override {
         if (obj)
             FeatureT::PythonObject = obj;
         else
@@ -294,7 +294,7 @@ public:
     }
 
 protected:
-    virtual void onBeforeChange(const Property* prop) {
+    virtual void onBeforeChange(const Property* prop) override {
         FeatureT::onBeforeChange(prop);
         imp->onBeforeChange(prop);
     }
@@ -302,13 +302,13 @@ protected:
         if(!imp->onBeforeChangeLabel(newLabel))
             FeatureT::onBeforeChangeLabel(newLabel);
     }
-    virtual void onChanged(const Property* prop) {
+    virtual void onChanged(const Property* prop) override {
         if(prop == &Proxy)
             imp->init(Proxy.getValue().ptr());
         imp->onChanged(prop);
         FeatureT::onChanged(prop);
     }
-    virtual void onDocumentRestored() {
+    virtual void onDocumentRestored() override {
         imp->onDocumentRestored();
         FeatureT::onDocumentRestored();
     }

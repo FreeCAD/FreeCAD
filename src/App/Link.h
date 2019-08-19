@@ -50,7 +50,7 @@ namespace App
 
 class AppExport LinkBaseExtension : public App::DocumentObjectExtension 
 {
-    EXTENSION_PROPERTY_HEADER(App::LinkExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
     typedef App::DocumentObjectExtension inherited;
 
 public:
@@ -318,7 +318,7 @@ typedef ExtensionPythonT<LinkBaseExtension> LinkBaseExtensionPython;
 
 class AppExport LinkExtension : public LinkBaseExtension
 {
-    EXTENSION_PROPERTY_HEADER(App::LinkExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
     typedef LinkBaseExtension inherited;
 
 public:

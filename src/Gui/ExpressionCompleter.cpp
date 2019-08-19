@@ -259,7 +259,6 @@ public:
     }
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const {
-        const auto &docs = App::GetApplication().getDocuments();
         Info info;
         int row = 0;
         if(!parent.isValid()) {
