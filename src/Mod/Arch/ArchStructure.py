@@ -118,7 +118,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
                 obj.Length = h
             
     if not height and not length:
-        obj.IfcType = "Building Element Proxy"
+        obj.IfcType = "Undefined"
     elif obj.Length > obj.Height:
         obj.IfcType = "Beam"
         obj.Label = translate("Arch","Beam")
