@@ -243,7 +243,7 @@ def get3DView():
         v = FreeCADGui.ActiveDocument.ActiveView
         if "View3DInventor" in str(type(v)):
             return v
-        print("Debug: Draft: Warning, not working in active view")
+        #print("Debug: Draft: Warning, not working in active view")
         v = FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
         if v:
             return v[0]
