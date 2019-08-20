@@ -279,10 +279,10 @@ static void BRepTools_Write(const TopoDS_Shape& Sh, Standard_OStream& S) {
   SS.Write(S);
   SS.Write(Sh,S);
 }
-static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh,
-                                   const Standard_CString File)
+
+static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh, const Standard_CString File)
 {
-  ofstream os;
+  std::ofstream os;
 #if OCC_VERSION_HEX >= 0x060800
   OSD_OpenStream(os, File, ios::out);
 #else
