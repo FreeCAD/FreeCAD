@@ -561,7 +561,7 @@ QVariant PropertyItem::data(int column, int role) const
             return toolTip(propertyItems[0]);
         else if( role == Qt::TextColorRole) {
             if(hasExpression())
-                return QVariant::fromValue(QColor(0,0,255.0));
+                return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
             return QVariant();
         } else
             return QVariant();
