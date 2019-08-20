@@ -40,7 +40,6 @@ import Arch
 import DraftVecUtils
 import ArchIFCSchema
 from DraftGeomUtils import vec
-from importIFC import recycler
 from importIFC import dd2dms
 from importIFC import decode
 import exportIFCHelper
@@ -250,7 +249,7 @@ def export(exportList,filename,colors=None):
     # reusable entity system
 
     global ifcbin
-    ifcbin = recycler(ifcfile)
+    ifcbin = exportIFCHelper.recycler(ifcfile)
 
     # build clones table
 
