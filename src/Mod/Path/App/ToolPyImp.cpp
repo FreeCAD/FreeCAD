@@ -29,8 +29,6 @@
 // inclusion of the generated files (generated out of ToolPy.xml and TooltablePy.xml)
 #include "ToolPy.h"
 #include "ToolPy.cpp"
-//#include "TooltablePy.h"
-//#include "TooltablePy.cpp"
 
 using namespace Path;
 

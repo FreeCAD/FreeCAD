@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -33,10 +32,6 @@
 
 using namespace Base;
 using namespace Path;
-
-
-// TOOL
-
 
 TYPESYSTEM_SOURCE(Path::Tool , Base::Persistence);
 
@@ -74,7 +69,6 @@ Tool::~Tool()
 }
 
 // Reimplemented from base class
-
 unsigned int Tool::getMemSize (void) const
 {
     return 0;

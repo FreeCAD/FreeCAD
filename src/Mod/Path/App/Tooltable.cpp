@@ -31,7 +31,6 @@
 #include <Base/Exception.h>
 #include "Tooltable.h"
 
-
 using namespace Base;
 using namespace Path;
 
