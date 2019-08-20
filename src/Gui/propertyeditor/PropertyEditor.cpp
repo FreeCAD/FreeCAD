@@ -153,7 +153,6 @@ void PropertyEditor::commitData (QWidget * editor)
 
 void PropertyEditor::editorDestroyed (QObject * editor)
 {
-    delegate->editorClosed(0,QAbstractItemDelegate::NoHint);
     QTreeView::editorDestroyed(editor);
 }
 
