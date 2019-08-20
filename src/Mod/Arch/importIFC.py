@@ -284,102 +284,15 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if SPLIT_LAYERS and hasattr(settings,"APPLY_LAYERSETS"):
         settings.set(settings.APPLY_LAYERSETS,True)
 
-    # gather easy entity types
-    sites = ifcfile.by_type("IfcSite")
-    buildings = ifcfile.by_type("IfcBuilding")
-    floors = ifcfile.by_type("IfcBuildingStorey")
-    products = ifcfile.by_type(ROOT_ELEMENT)
-    openings = ifcfile.by_type("IfcOpeningElement")
-    annotations = ifcfile.by_type("IfcAnnotation")
-    materials = ifcfile.by_type("IfcMaterial")
-
     if DEBUG: print("Building relationships table...",end="")
 
-    # building relations tables
-    # TODO use inverse attributes, see https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
-    # done for properties
+    # build all needed tables
+    objects,prodrepr,additions,groups,subtractions,colors,shapes, \
+    structshapes,mattable,sharedobjects,parametrics,profiles, \
+    sites,buildings,floors,products,openings,annotations,materials, \
+    style_material_id = importIFCHelper.buildRelationships(ifcfile,ROOT_ELEMENT)
 
-    objects = {} # { id:object, ... }
-    prodrepr = {} # product/representations table
-    additions = {} # { host:[child,...], ... }
-    groups = {} # { host:[child,...], ... }     # used in structural IFC
-    subtractions = [] # [ [opening,host], ... ]
-    colors = {} # { id:(r,g,b) }
-    shapes = {} # { id:shaoe } only used for merge mode
-    structshapes = {} # { id:shaoe } only used for merge mode
-    mattable = {} # { objid:matid }
-    sharedobjects = {} # { representationmapid:object }
-    parametrics = [] # a list of imported objects whose parametric relationships need processing after all objects have been created
-    profiles = {} # to store reused extrusion profiles {ifcid:fcobj,...}
-
-    for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
-        additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
-    for r in ifcfile.by_type("IfcRelAggregates"):
-        additions.setdefault(r.RelatingObject.id(),[]).extend([e.id() for e in r.RelatedObjects])
-    for r in ifcfile.by_type("IfcRelAssignsToGroup"):
-        groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
-    for r in ifcfile.by_type("IfcRelVoidsElement"):
-        subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
-    for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
-        for o in r.RelatedObjects:
-            if r.RelatingMaterial.is_a("IfcMaterial"):
-                mattable[o.id()] = r.RelatingMaterial.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
-                mattable[o.id()] = r.RelatingMaterial.Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
-                mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
-                mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
-    for p in ifcfile.by_type("IfcProduct"):
-        if hasattr(p,"Representation"):
-            if p.Representation:
-                for it in p.Representation.Representations:
-                    for it1 in it.Items:
-                        prodrepr.setdefault(p.id(),[]).append(it1.id())
-                        if it1.is_a("IfcBooleanResult"):
-                            prodrepr.setdefault(p.id(),[]).append(it1.FirstOperand.id())
-                        elif it.Items[0].is_a("IfcMappedItem"):
-                            prodrepr.setdefault(p.id(),[]).append(it1.MappingSource.MappedRepresentation.id())
-                            if it1.MappingSource.MappedRepresentation.is_a("IfcShapeRepresentation"):
-                                for it2 in it1.MappingSource.MappedRepresentation.Items:
-                                    prodrepr.setdefault(p.id(),[]).append(it2.id())
-    # colors
-    style_color_rgb = {}  # { style_entity_id: (r,g,b) }
-    for r in ifcfile.by_type("IfcStyledItem"):
-        if r.Styles:
-            if r.Styles[0].is_a("IfcPresentationStyleAssignment"):
-                for style1 in r.Styles[0].Styles:
-                    if style1.is_a("IfcSurfaceStyle"):
-                        for style2 in style1.Styles:
-                            if style2.is_a("IfcSurfaceStyleRendering"):
-                                if style2.SurfaceColour:
-                                    c = style2.SurfaceColour
-                                    style_color_rgb[r.id()] = (c.Red,c.Green,c.Blue)
-    style_material_id = {}  # { style_entity_id: material_id) }
-    # Allplan, ArchiCAD
-    for m in ifcfile.by_type("IfcMaterialDefinitionRepresentation"):
-        for it in m.Representations:
-            if it.Items:
-                style_material_id[it.Items[0].id()] = m.RepresentedMaterial.id()
-    # Nova
-    for r in ifcfile.by_type("IfcStyledItem"):
-        if r.Item:
-            for p in prodrepr.keys():
-                if r.Item.id() in prodrepr[p]:
-                    style_material_id[r.id()] = p
-    # create colors out of style_color_rgb and style_material_id
-    for k in style_material_id:
-        if k in style_color_rgb:
-            colors[style_material_id[k]] = style_color_rgb[k]
-
-    # remove any leftover annotations from products
-    tp = []
-    for product in products:
-        if product.is_a("IfcGrid") and not (product in annotations):
-            annotations.append(product)
-        elif not (product in annotations):
-            tp.append(product)
-    products = sorted(tp,key=lambda prod: prod.id())
+    if DEBUG: print("done.")
 
     # only import a list of IDs and their children
     if only:
@@ -391,13 +304,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 only.extend(additions[currentid])
         products = [ifcfile[currentid] for currentid in ids]
 
-    if DEBUG: print("done.")
-
     count = 0
     from FreeCAD import Base
     progressbar = Base.ProgressIndicator()
     progressbar.start("Importing IFC objects...",len(products))
-    if DEBUG: print("Processing",len(products),"BIM objects...")
+    if DEBUG: print("Prsing",len(products),"BIM objects...")
 
     if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
         overallboundbox = None
@@ -1198,7 +1109,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if mdict:
                 mat.Material = mdict
             fcmats[mat.Name] = mat
-        # fill material attribute of the objects 
+        # fill material attribute of the objects
         for o,m in mattable.items():
             if m == material.id():
                 if o in objects:
