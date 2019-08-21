@@ -291,10 +291,21 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     # build all needed tables
     if DEBUG: print("Building relationships table...",end="")
-    objects,prodrepr,additions,groups,subtractions,colors,shapes, \
-    structshapes,mattable,sharedobjects,parametrics,profiles, \
-    sites,buildings,floors,products,openings,annotations,materials, \
-    style_material_id = importIFCHelper.buildRelationships(ifcfile,ROOT_ELEMENT)
+    objects, shapes, structshapes, sharedobjects, parametrics, profiles = {}, {}, {}, {}, {}, {}
+    sites = ifcfile.by_type("IfcSite")
+    buildings = ifcfile.by_type("IfcBuilding")
+    floors = ifcfile.by_type("IfcBuildingStorey")
+    openings = ifcfile.by_type("IfcOpeningElement")
+    materials = ifcfile.by_type("IfcMaterial")
+    products, annotations = importIFCHelper.buildRelProductsAnnotations(ifcfile, ROOT_ELEMENT)
+    # TODO for the following tables might be better use inverse attributes, done for properties
+    # see https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
+    prodrepr = importIFCHelper.buildRelProductRepresentation(ifcfile)
+    additions = importIFCHelper.buildRelAdditions(ifcfile)
+    groups = importIFCHelper.buildRelGroups(ifcfile)
+    subtractions = importIFCHelper.buildRelSubtractions(ifcfile)
+    mattable = importIFCHelper.buildRelMattable(ifcfile)
+    colors, style_material_id = importIFCHelper.buildRelColors(ifcfile, prodrepr)
     if DEBUG: print("done.")
 
     # only import a list of IDs and their children, if defined

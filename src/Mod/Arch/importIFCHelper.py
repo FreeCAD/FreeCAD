@@ -77,55 +77,33 @@ class ProjectImporter:
         return round(math.degrees(math.atan2(y, x)) - 90, 6)
 
 
+# relation tables
+def buildRelProductsAnnotations(ifcfile, root_element):
+    """build the products and annotations relation table and"""
 
-def buildRelationships(ifcfile,root_element):
-    """Builds different tables from an IFC file"""
-
-    # building relations tables
-    # TODO use inverse attributes, see https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
-    # done for properties
-
-    objects = {} # { id:object, ... }
-    prodrepr = {} # product/representations table
-    additions = {} # { host:[child,...], ... }
-    groups = {} # { host:[child,...], ... }     # used in structural IFC
-    subtractions = [] # [ [opening,host], ... ]
-    colors = {} # { id:(r,g,b) }
-    shapes = {} # { id:shaoe } only used for merge mode
-    structshapes = {} # { id:shaoe } only used for merge mode
-    mattable = {} # { objid:matid }
-    sharedobjects = {} # { representationmapid:object }
-    parametrics = [] # a list of imported objects whose parametric relationships need processing after all objects have been created
-    profiles = {} # to store reused extrusion profiles {ifcid:fcobj,...}
-    style_material_id = {}  # { style_entity_id: material_id) }
-
-    # gather easy entity types
-    sites = ifcfile.by_type("IfcSite")
-    buildings = ifcfile.by_type("IfcBuilding")
-    floors = ifcfile.by_type("IfcBuildingStorey")
+    # products
     products = ifcfile.by_type(root_element)
-    openings = ifcfile.by_type("IfcOpeningElement")
-    annotations = ifcfile.by_type("IfcAnnotation")
-    materials = ifcfile.by_type("IfcMaterial")
 
-    for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
-        additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
-    for r in ifcfile.by_type("IfcRelAggregates"):
-        additions.setdefault(r.RelatingObject.id(),[]).extend([e.id() for e in r.RelatedObjects])
-    for r in ifcfile.by_type("IfcRelAssignsToGroup"):
-        groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
-    for r in ifcfile.by_type("IfcRelVoidsElement"):
-        subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
-    for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
-        for o in r.RelatedObjects:
-            if r.RelatingMaterial.is_a("IfcMaterial"):
-                mattable[o.id()] = r.RelatingMaterial.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
-                mattable[o.id()] = r.RelatingMaterial.Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
-                mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
-                mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
+    # annotations
+    annotations = ifcfile.by_type("IfcAnnotation")
+    tp = []
+    for product in products:
+        if product.is_a("IfcGrid") and not (product in annotations):
+            annotations.append(product)
+        elif not (product in annotations):
+            tp.append(product)
+
+    # remove any leftover annotations from products
+    products = sorted(tp,key=lambda prod: prod.id())
+
+    return products, annotations
+
+
+def buildRelProductRepresentation(ifcfile):
+    """build the product/representations relation table"""
+
+    prodrepr = {} # product/representations table
+
     for p in ifcfile.by_type("IfcProduct"):
         if hasattr(p,"Representation"):
             if p.Representation:
@@ -139,7 +117,70 @@ def buildRelationships(ifcfile,root_element):
                             if it1.MappingSource.MappedRepresentation.is_a("IfcShapeRepresentation"):
                                 for it2 in it1.MappingSource.MappedRepresentation.Items:
                                     prodrepr.setdefault(p.id(),[]).append(it2.id())
-    # colors
+
+    return prodrepr
+
+
+def buildRelAdditions(ifcfile):
+    """build the additions relation table"""
+
+    additions = {} # { host:[child,...], ... }
+
+    for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
+        additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
+    for r in ifcfile.by_type("IfcRelAggregates"):
+        additions.setdefault(r.RelatingObject.id(),[]).extend([e.id() for e in r.RelatedObjects])
+
+    return additions
+
+
+def buildRelGroups(ifcfile):
+    """build the groups relation table"""
+
+    groups = {} # { host:[child,...], ... }     # used in structural IFC
+
+    for r in ifcfile.by_type("IfcRelAssignsToGroup"):
+        groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
+
+    return groups
+
+
+def buildRelSubtractions(ifcfile):
+    """build the subtractions relation table"""
+
+    subtractions = [] # [ [opening,host], ... ]
+
+    for r in ifcfile.by_type("IfcRelVoidsElement"):
+        subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
+
+    return subtractions
+
+
+def buildRelMattable(ifcfile):
+    """build the mattable relation table"""
+
+    mattable = {} # { objid:matid }
+
+    for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
+        for o in r.RelatedObjects:
+            if r.RelatingMaterial.is_a("IfcMaterial"):
+                mattable[o.id()] = r.RelatingMaterial.id()
+            elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
+                mattable[o.id()] = r.RelatingMaterial.Material.id()
+            elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
+                mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
+            elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
+                mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
+
+    return mattable
+
+
+def buildRelColors(ifcfile, prodrepr):
+    """build the colors relation table and"""
+
+    colors = {} # { id:(r,g,b) }
+    style_material_id = {}  # { style_entity_id: material_id) }
+
     style_color_rgb = {}  # { style_entity_id: (r,g,b) }
     for r in ifcfile.by_type("IfcStyledItem"):
         if r.Styles:
@@ -168,19 +209,7 @@ def buildRelationships(ifcfile,root_element):
         if k in style_color_rgb:
             colors[style_material_id[k]] = style_color_rgb[k]
 
-    # remove any leftover annotations from products
-    tp = []
-    for product in products:
-        if product.is_a("IfcGrid") and not (product in annotations):
-            annotations.append(product)
-        elif not (product in annotations):
-            tp.append(product)
-    products = sorted(tp,key=lambda prod: prod.id())
-
-    return objects,prodrepr,additions,groups,subtractions,colors,shapes, \
-           structshapes,mattable,sharedobjects,parametrics,profiles, \
-           sites,buildings,floors,products,openings,annotations,materials, \
-           style_material_id
+    return colors, style_material_id
 
 
 def getRelProperties(ifcfile):
