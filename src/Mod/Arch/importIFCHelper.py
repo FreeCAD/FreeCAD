@@ -1,10 +1,50 @@
+import six
+import sys
+import math
+
 import FreeCAD
 import Arch
 import ArchIFC
-import math
-import six
 
 
+# ************************************************************************************************
+# ********** some helper, used in import and export, or should stay together
+
+def decode(filename,utf=False):
+
+    "turns unicodes into strings"
+
+    if six.PY2 and isinstance(filename,six.text_type):
+        # workaround since ifcopenshell currently can't handle unicode filenames
+        encoding = "utf8" if utf else sys.getfilesystemencoding()
+        filename = filename.encode(encoding)
+    return filename
+
+
+# used in export
+def dd2dms(dd):
+
+    "converts decimal degrees to degrees,minutes,seconds"
+
+    dd = abs(dd)
+    minutes,seconds = divmod(dd*3600,60)
+    degrees,minutes = divmod(minutes,60)
+    if dd < 0:
+        degrees = -degrees
+    return (int(degrees),int(minutes),int(seconds))
+
+
+# used in import
+def dms2dd(degrees, minutes, seconds, milliseconds=0):
+
+    "converts degrees,minutes,seconds to decimal degrees"
+
+    dd = float(degrees) + float(minutes)/60 + float(seconds)/(3600)
+    return dd
+
+
+# ************************************************************************************************
+# ********** some helper, mainly used in import
 class ProjectImporter:
     """A helper class to create a FreeCAD Arch Project object"""
 
