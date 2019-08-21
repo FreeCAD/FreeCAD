@@ -2,7 +2,7 @@
 ABOUT
 ============================================================================================================
 version 2.20
-Qt theme (stylesheet) specially developed for FreeCAD (http://www.freecadweb.org/).
+Qt theme (stylesheet) specially developed for FreeCAD (https://www.freecadweb.org/).
 It might work with other software that uses Qt styling.
 
 
@@ -25,7 +25,7 @@ INSTALLATION
 CUSTOMIZATION
 ============================================================================================================
 If you would like to change the overall look/style of the theme, just find and replace following colors in the whole file:
-    BACKGROUND (darker to ligher)
+    BACKGROUND (darker to lighter)
         black
         #505050
         #6e6e6e
@@ -57,7 +57,7 @@ If you would like to change the overall look/style of the theme, just find and r
 
 KNOWN BUGS and TO DO
 ============================================================================================================
-    - please, follow the link to get updated information: http://forum.freecadweb.org/viewtopic.php?f=10&t=12417
+- please, follow the link to get updated information: https://forum.freecadweb.org/viewtopic.php?f=10&t=12417
 */
 
 
@@ -93,7 +93,7 @@ QToolBar  {
 }
 
 QMdiArea {
-        background-image: url(qss:images_dark-light/background_freecad_dark.svg);
+    background-image: url(qss:images_dark-light/background_freecad_dark.svg);
     background-position: center center;
     background-repeat: no-repeat;
 }
