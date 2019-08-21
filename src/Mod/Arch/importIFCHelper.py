@@ -324,7 +324,9 @@ def getVector(entity,scaling=1000):
 def get2DShape(representation,scaling=1000):
     """Returns a shape from a 2D IfcShapeRepresentation"""
 
-    import Part,DraftVecUtils
+    import Part
+    import DraftVecUtils
+    import Draft
 
     def getPolyline(ent):
         pts = []
