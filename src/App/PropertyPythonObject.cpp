@@ -323,7 +323,6 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
 
     bool load_json=false;
     bool load_pickle=false;
-    bool load_failed=false;
 
     std::string buffer;
     if(reader.hasAttribute("value")) {
@@ -395,7 +394,6 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         Base::PyException e; // extract the Python error text
         e.ReportException();
         this->object = Py::None();
-        load_failed = true;
     }
 
     aboutToSetValue();
@@ -410,8 +408,6 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
         reader.addFile(file.c_str(),this);
     }
 
-    if (load_failed)
-        Base::Console().Warning("PropertyPythonObject::Restore: unsupported serialisation: %s\n", buffer.c_str());
     else if(buffer.size()) {
         if (load_json)
             this->fromString(buffer);
