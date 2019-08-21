@@ -523,7 +523,7 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     auto obj = getContainer();
     if(!subname || !subname[0]) {
         ret = const_cast<DocumentObject*>(obj);
-        if(!_getElementListProperty() && !_getElementCountValue() && pyObj) {
+        if(pyObj && !_getElementCountValue() && _getElementListValue().empty()) {
             Base::Matrix4D matNext;
             if(mat) matNext = *mat;
             auto linked = getTrueLinkedObject(false,mat?&matNext:0,depth);
