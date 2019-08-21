@@ -1,13 +1,76 @@
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2019                                                    *
+# *   Yorik van Havre <yorik@uncreated.net>                                 *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+import six
+import sys
+import math
+
 import FreeCAD
 import Arch
 import ArchIFC
-import math
-import six
 
 
+# ************************************************************************************************
+# ********** some helper, used in import and export, or should stay together
+
+def decode(filename,utf=False):
+
+    "turns unicodes into strings"
+
+    if six.PY2 and isinstance(filename,six.text_type):
+        # workaround since ifcopenshell currently can't handle unicode filenames
+        encoding = "utf8" if utf else sys.getfilesystemencoding()
+        filename = filename.encode(encoding)
+    return filename
+
+
+# used in export
+def dd2dms(dd):
+
+    "converts decimal degrees to degrees,minutes,seconds"
+
+    dd = abs(dd)
+    minutes,seconds = divmod(dd*3600,60)
+    degrees,minutes = divmod(minutes,60)
+    if dd < 0:
+        degrees = -degrees
+    return (int(degrees),int(minutes),int(seconds))
+
+
+# used in import
+def dms2dd(degrees, minutes, seconds, milliseconds=0):
+
+    "converts degrees,minutes,seconds to decimal degrees"
+
+    dd = float(degrees) + float(minutes)/60 + float(seconds)/(3600)
+    return dd
+
+
+# ************************************************************************************************
+# ********** some helper, mainly used in import
 class ProjectImporter:
     """A helper class to create a FreeCAD Arch Project object"""
-    
+
     def __init__(self, file, objects):
         self.file = file
         self.objects = objects
@@ -27,7 +90,7 @@ class ProjectImporter:
     def setComplexAttributes(self):
         try:
             mapConversion = self.project.RepresentationContexts[0].HasCoordinateOperation[0]
-            
+
             data = self.extractTargetCRSData(mapConversion.TargetCRS)
             data.update(self.extractMapConversionData(mapConversion))
             ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(self, self.object, "RepresentationContexts", data)
@@ -77,55 +140,34 @@ class ProjectImporter:
         return round(math.degrees(math.atan2(y, x)) - 90, 6)
 
 
+# type tables
+def buildRelProductsAnnotations(ifcfile, root_element):
+    """build the products and annotations relation table and"""
 
-def buildRelationships(ifcfile,root_element):
-    """Builds different tables from an IFC file"""
-
-    # building relations tables
-    # TODO use inverse attributes, see https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
-    # done for properties
-
-    objects = {} # { id:object, ... }
-    prodrepr = {} # product/representations table
-    additions = {} # { host:[child,...], ... }
-    groups = {} # { host:[child,...], ... }     # used in structural IFC
-    subtractions = [] # [ [opening,host], ... ]
-    colors = {} # { id:(r,g,b) }
-    shapes = {} # { id:shaoe } only used for merge mode
-    structshapes = {} # { id:shaoe } only used for merge mode
-    mattable = {} # { objid:matid }
-    sharedobjects = {} # { representationmapid:object }
-    parametrics = [] # a list of imported objects whose parametric relationships need processing after all objects have been created
-    profiles = {} # to store reused extrusion profiles {ifcid:fcobj,...}
-    style_material_id = {}  # { style_entity_id: material_id) }
-
-    # gather easy entity types
-    sites = ifcfile.by_type("IfcSite")
-    buildings = ifcfile.by_type("IfcBuilding")
-    floors = ifcfile.by_type("IfcBuildingStorey")
+    # products
     products = ifcfile.by_type(root_element)
-    openings = ifcfile.by_type("IfcOpeningElement")
-    annotations = ifcfile.by_type("IfcAnnotation")
-    materials = ifcfile.by_type("IfcMaterial")
 
-    for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
-        additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
-    for r in ifcfile.by_type("IfcRelAggregates"):
-        additions.setdefault(r.RelatingObject.id(),[]).extend([e.id() for e in r.RelatedObjects])
-    for r in ifcfile.by_type("IfcRelAssignsToGroup"):
-        groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
-    for r in ifcfile.by_type("IfcRelVoidsElement"):
-        subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
-    for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
-        for o in r.RelatedObjects:
-            if r.RelatingMaterial.is_a("IfcMaterial"):
-                mattable[o.id()] = r.RelatingMaterial.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
-                mattable[o.id()] = r.RelatingMaterial.Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
-                mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
-            elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
-                mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
+    # annotations
+    annotations = ifcfile.by_type("IfcAnnotation")
+    tp = []
+    for product in products:
+        if product.is_a("IfcGrid") and not (product in annotations):
+            annotations.append(product)
+        elif not (product in annotations):
+            tp.append(product)
+
+    # remove any leftover annotations from products
+    products = sorted(tp,key=lambda prod: prod.id())
+
+    return products, annotations
+
+
+# relation tables
+def buildRelProductRepresentation(ifcfile):
+    """build the product/representations relation table"""
+
+    prodrepr = {} # product/representations table
+
     for p in ifcfile.by_type("IfcProduct"):
         if hasattr(p,"Representation"):
             if p.Representation:
@@ -139,7 +181,70 @@ def buildRelationships(ifcfile,root_element):
                             if it1.MappingSource.MappedRepresentation.is_a("IfcShapeRepresentation"):
                                 for it2 in it1.MappingSource.MappedRepresentation.Items:
                                     prodrepr.setdefault(p.id(),[]).append(it2.id())
-    # colors
+
+    return prodrepr
+
+
+def buildRelAdditions(ifcfile):
+    """build the additions relation table"""
+
+    additions = {} # { host:[child,...], ... }
+
+    for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
+        additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
+    for r in ifcfile.by_type("IfcRelAggregates"):
+        additions.setdefault(r.RelatingObject.id(),[]).extend([e.id() for e in r.RelatedObjects])
+
+    return additions
+
+
+def buildRelGroups(ifcfile):
+    """build the groups relation table"""
+
+    groups = {} # { host:[child,...], ... }     # used in structural IFC
+
+    for r in ifcfile.by_type("IfcRelAssignsToGroup"):
+        groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
+
+    return groups
+
+
+def buildRelSubtractions(ifcfile):
+    """build the subtractions relation table"""
+
+    subtractions = [] # [ [opening,host], ... ]
+
+    for r in ifcfile.by_type("IfcRelVoidsElement"):
+        subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
+
+    return subtractions
+
+
+def buildRelMattable(ifcfile):
+    """build the mattable relation table"""
+
+    mattable = {} # { objid:matid }
+
+    for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
+        for o in r.RelatedObjects:
+            if r.RelatingMaterial.is_a("IfcMaterial"):
+                mattable[o.id()] = r.RelatingMaterial.id()
+            elif r.RelatingMaterial.is_a("IfcMaterialLayer"):
+                mattable[o.id()] = r.RelatingMaterial.Material.id()
+            elif r.RelatingMaterial.is_a("IfcMaterialLayerSet"):
+                mattable[o.id()] = r.RelatingMaterial.MaterialLayers[0].Material.id()
+            elif r.RelatingMaterial.is_a("IfcMaterialLayerSetUsage"):
+                mattable[o.id()] = r.RelatingMaterial.ForLayerSet.MaterialLayers[0].Material.id()
+
+    return mattable
+
+
+def buildRelColors(ifcfile, prodrepr):
+    """build the colors relation table and"""
+
+    colors = {} # { id:(r,g,b) }
+    style_material_id = {}  # { style_entity_id: material_id) }
+
     style_color_rgb = {}  # { style_entity_id: (r,g,b) }
     for r in ifcfile.by_type("IfcStyledItem"):
         if r.Styles:
@@ -168,19 +273,7 @@ def buildRelationships(ifcfile,root_element):
         if k in style_color_rgb:
             colors[style_material_id[k]] = style_color_rgb[k]
 
-    # remove any leftover annotations from products
-    tp = []
-    for product in products:
-        if product.is_a("IfcGrid") and not (product in annotations):
-            annotations.append(product)
-        elif not (product in annotations):
-            tp.append(product)
-    products = sorted(tp,key=lambda prod: prod.id())
-
-    return objects,prodrepr,additions,groups,subtractions,colors,shapes, \
-           structshapes,mattable,sharedobjects,parametrics,profiles, \
-           sites,buildings,floors,products,openings,annotations,materials, \
-           style_material_id
+    return colors, style_material_id
 
 
 def getRelProperties(ifcfile):
@@ -251,6 +344,7 @@ def getScaling(ifcfile):
                 return getUnit(u)
     return 1.0
 
+
 def getRotation(entity):
     """returns a FreeCAD rotation from an IfcProduct with a IfcMappedItem representation"""
     try:
@@ -320,11 +414,12 @@ def getVector(entity,scaling=1000):
     return v
 
 
-
 def get2DShape(representation,scaling=1000):
     """Returns a shape from a 2D IfcShapeRepresentation"""
 
-    import Part,DraftVecUtils
+    import Part
+    import DraftVecUtils
+    import Draft
 
     def getPolyline(ent):
         pts = []
@@ -405,7 +500,7 @@ def get2DShape(representation,scaling=1000):
             if item.is_a() in ["IfcGeometricCurveSet","IfcGeometricSet"]:
                 result = getCurveSet(item)
             elif item.is_a("IfcMappedItem"):
-                preresult = setRepresentation(item.MappingSource.MappedRepresentation,scaling)
+                preresult = get2DShape(item.MappingSource.MappedRepresentation,scaling)
                 pla = getPlacement(item.MappingSource.MappingOrigin,scaling)
                 rot = getRotation(item.MappingTarget)
                 if pla:
