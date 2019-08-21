@@ -1179,6 +1179,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
 
 
+# ************************************************************************************************
+# ********** helper ****************
 def createFromProperties(propsets,ifcfile):
 
     "creates a FreeCAD parametric object from a set of properties"
