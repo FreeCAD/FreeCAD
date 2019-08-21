@@ -21,7 +21,14 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD, Draft, json, ifcopenshell, math
+import json
+import ifcopenshell
+import math
+
+
+import FreeCAD
+import Draft
+
 
 def getObjectsOfIfcType(objects, ifcType):
     results = []
