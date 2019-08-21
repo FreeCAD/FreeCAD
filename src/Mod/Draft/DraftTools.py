@@ -51,7 +51,7 @@ from pivy import coin
 #---------------------------------------------------------------------------
 
 import DraftEdit
-#import DraftFillet
+# import DraftFillet
 
 #---------------------------------------------------------------------------
 # Preflight stuff
