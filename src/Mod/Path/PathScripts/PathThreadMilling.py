@@ -180,19 +180,20 @@ class ObjectThreadMilling(PathCircularHoleBase.ObjectOp):
         return PathOp.FeatureBaseGeometry
 
     def initCircularHoleOperation(self, obj):
-        obj.addProperty("App::PropertyEnumeration", "ThreadOrientation", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread orientation"))
+        obj.addProperty("App::PropertyEnumeration", "ThreadOrientation", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread orientation"))
         obj.ThreadOrientation = self.ThreadOrientations
-        obj.addProperty("App::PropertyEnumeration", "ThreadType", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Currently only internal"))
+        obj.addProperty("App::PropertyEnumeration", "ThreadType", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Currently only internal"))
         obj.ThreadType = self.ThreadTypes
-        obj.addProperty("App::PropertyString", "ThreadName", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Devfines which standard thread was chosen"))
-        obj.addProperty("App::PropertyLength", "MajorDiameter", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread's major diameter"))
-        obj.addProperty("App::PropertyLength", "MinorDiameter", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread's minor diameter"))
-        obj.addProperty("App::PropertyLength", "Pitch", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread's pitch - used for metric threads"))
-        obj.addProperty("App::PropertyInteger", "TPI", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set thread's tpi - used for imperial threads"))
-        obj.addProperty("App::PropertyInteger", "ThreadFit", "Thread", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set how many passes are used to cut the thread"))
-        obj.addProperty("App::PropertyInteger", "Passes", "Operation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set how many passes are used to cut the thread"))
-        obj.addProperty("App::PropertyEnumeration", "Direction", "Operation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Direction of thread cutting operation"))
-        obj.addProperty("App::PropertyBool", "LeadInOut", "Operation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Set to True to get lead in and lead out arcs at the start and end of the thread cut"))
+        obj.addProperty("App::PropertyString", "ThreadName", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Devfines which standard thread was chosen"))
+        obj.addProperty("App::PropertyLength", "MajorDiameter", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's major diameter"))
+        obj.addProperty("App::PropertyLength", "MinorDiameter", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's minor diameter"))
+        obj.addProperty("App::PropertyLength", "Pitch", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's pitch - used for metric threads"))
+        obj.addProperty("App::PropertyInteger", "TPI", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set thread's tpi - used for imperial threads"))
+        obj.addProperty("App::PropertyInteger", "ThreadFit", "Thread", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set how many passes are used to cut the thread"))
+        obj.addProperty("App::PropertyInteger", "Passes", "Operation", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set how many passes are used to cut the thread"))
+        obj.addProperty("App::PropertyEnumeration", "Direction", "Operation", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Direction of thread cutting operation"))
+        obj.addProperty("App::PropertyBool", "LeadInOut", "Operation", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Set to True to get lead in and lead out arcs at the start and end of the thread cut"))
+        obj.addProperty("App::PropertyLink", "ClearanceOp", "Operation", QtCore.QT_TRANSLATE_NOOP("PathThreadMilling", "Operation to clear the inside of the thread"))
         obj.Direction = self.Directions
 
     def threadStartDepth(self, obj):
