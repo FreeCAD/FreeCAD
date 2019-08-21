@@ -62,6 +62,7 @@ void DlgPrefsTechDraw2Imp::saveSettings()
     leLineGroup->onSave();
     pdsb_VertexScale->onSave();
     pcb_VertexColor->onSave();
+    pcbStandardAndStyle->onSave();
 }
 
 void DlgPrefsTechDraw2Imp::loadSettings()
@@ -83,6 +84,7 @@ void DlgPrefsTechDraw2Imp::loadSettings()
     leLineGroup->onRestore();
     pdsb_VertexScale->onRestore();
     pcb_VertexColor->onRestore();
+    pcbStandardAndStyle->onRestore();
 }
 
 /**
