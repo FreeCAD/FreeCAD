@@ -290,14 +290,22 @@ def insert(filename,docname,skip=[],only=[],root=None):
         settings.set(settings.APPLY_LAYERSETS,True)
 
     # build all needed tables
-    if DEBUG: print("Building relationships table...",end="")
-    objects, shapes, structshapes, sharedobjects, parametrics, profiles = {}, {}, {}, {}, {}, {}
+    if DEBUG: print("Building types and relationships table...",end="")
+    # type tables
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
     floors = ifcfile.by_type("IfcBuildingStorey")
     openings = ifcfile.by_type("IfcOpeningElement")
     materials = ifcfile.by_type("IfcMaterial")
     products, annotations = importIFCHelper.buildRelProductsAnnotations(ifcfile, ROOT_ELEMENT)
+    # empty relation tables
+    objects = {} # { id:object, ... }
+    shapes = {} # { id:shaoe } only used for merge mode
+    structshapes = {} # { id:shaoe } only used for merge mode
+    sharedobjects = {} # { representationmapid:object }
+    parametrics = [] # a list of imported objects whose parametric relationships need processing after all objects have been created
+    profiles = {} # to store reused extrusion profiles {ifcid:fcobj,...}
+    # filled relation tables
     # TODO for the following tables might be better use inverse attributes, done for properties
     # see https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
     prodrepr = importIFCHelper.buildRelProductRepresentation(ifcfile)

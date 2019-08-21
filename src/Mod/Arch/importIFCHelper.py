@@ -77,7 +77,7 @@ class ProjectImporter:
         return round(math.degrees(math.atan2(y, x)) - 90, 6)
 
 
-# relation tables
+# type tables
 def buildRelProductsAnnotations(ifcfile, root_element):
     """build the products and annotations relation table and"""
 
@@ -99,6 +99,7 @@ def buildRelProductsAnnotations(ifcfile, root_element):
     return products, annotations
 
 
+# relation tables
 def buildRelProductRepresentation(ifcfile):
     """build the product/representations relation table"""
 
