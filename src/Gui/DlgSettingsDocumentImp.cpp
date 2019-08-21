@@ -82,6 +82,7 @@ void DlgSettingsDocumentImp::saveSettings()
     prefRecovery->onSave();
     prefAutoSaveEnabled->onSave();
     prefAutoSaveTimeout->onSave();
+    prefCanAbortRecompute->onSave();
 
     int timeout = prefAutoSaveTimeout->value();
     if (!prefAutoSaveEnabled->isChecked())
@@ -112,6 +113,7 @@ void DlgSettingsDocumentImp::loadSettings()
     prefRecovery->onRestore();
     prefAutoSaveEnabled->onRestore();
     prefAutoSaveTimeout->onRestore();
+    prefCanAbortRecompute->onRestore();
 }
 
 /**

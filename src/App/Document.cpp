@@ -3319,9 +3319,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     // delete recompute log
     d->clearRecomputeLog();
 
-    //do we have anything to do?
-    if(d->objectMap.empty())
-        return 0;
+    FC_TIME_INIT(t);
 
     Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
     signalBeforeRecompute(*this);
@@ -3350,14 +3348,23 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     for(auto obj : topoSortedObjects)
         obj->setStatus(ObjectStatus::PendingRecompute,true);
 
+    ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Document");
+    bool canAbort = hGrp->GetBool("CanAbortRecompute",true);
+
     std::set<App::DocumentObject *> filter;
     size_t idx = 0;
+
+    FC_TIME_INIT(t2);
+
     try {
         // maximum two passes to allow some form of dependency inversion
         for(int passes=0; passes<2 && idx<topoSortedObjects.size(); ++passes) {
-            Base::SequencerLauncher seq("Recompute...", topoSortedObjects.size());
+            std::unique_ptr<Base::SequencerLauncher> seq;
+            if(canAbort)
+                seq.reset(new Base::SequencerLauncher("Recompute...", topoSortedObjects.size()));
             FC_LOG("Recompute pass " << passes);
-            for (;idx<topoSortedObjects.size();seq.next(true),++idx) {
+            for (;idx<topoSortedObjects.size();(seq?seq->next(true):true),++idx) {
                 auto obj = topoSortedObjects[idx];
                 if(!obj->getNameInDocument() || filter.find(obj)!=filter.end())
                     continue;
@@ -3411,6 +3418,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         e.ReportException();
     }
 
+    FC_TIME_LOG(t2, "Recompute");
+
     for(auto obj : topoSortedObjects) {
         if(!obj->getNameInDocument())
             continue;
@@ -3421,6 +3430,11 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     }
 
     signalRecomputed(*this,topoSortedObjects);
+
+    FC_TIME_LOG(t,"Recompute total");
+
+    if(d->_RecomputeLog.size())
+        Base::Console().Error("Recompute failed! Please check report view.\n");
 
     return objectCount;
 }
