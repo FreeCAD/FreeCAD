@@ -552,13 +552,13 @@ public:
     /** Check if there is any sub-element selection
      *
      * @param doc: optional document to check for selection
-     * @param resolve: whether to resolve selected sub-object
+     * @param subElement: whether to count sub-element only selection
      *
      * Example sub selections are face, edge or vertex. If \c resolve is false,
      * then sub-object (i.e. a group child object) selection is also counted
      * even if it selects the whole sub-object.
      */
-    bool hasSubSelection(const char *doc=0) const;
+    bool hasSubSelection(const char *doc=0, bool subElement=false) const;
 
     /// Check if there is any pre-selection
     bool hasPreselection() const;
