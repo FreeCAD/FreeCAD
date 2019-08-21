@@ -61,6 +61,12 @@ Base::Vector3d Rez::guiX(Base::Vector3d v)
     return result;
 }
 
+Base::Vector2d Rez::guiX(Base::Vector3d v, bool planar)
+{
+    Q_UNUSED(planar);
+    return Base::Vector2d(guiX(v.x), guiX(v.y));
+}
+
 //turn Gui side value to App side value
 double Rez::appX(double x)
 {

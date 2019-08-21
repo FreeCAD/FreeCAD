@@ -1,25 +1,25 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2014                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2014                                                    *
+# *   Yorik van Havre <yorik@uncreated.net>                                 *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 from __future__ import print_function
 
@@ -30,7 +30,6 @@ __url__ = "http://www.freecadweb.org"
 import six
 import os
 import math
-import sys
 
 import FreeCAD
 import Part
@@ -139,41 +138,7 @@ structuralifcobjects = (
 
 
 # ************************************************************************************************
-# ********** some helper, used in import and export
-
-def decode(filename,utf=False):
-
-    "turns unicodes into strings"
-
-    if six.PY2 and isinstance(filename,six.text_type):
-        # workaround since ifcopenshell currently can't handle unicode filenames
-        encoding = "utf8" if utf else sys.getfilesystemencoding()
-        filename = filename.encode(encoding)
-    return filename
-
-
-def dd2dms(dd):
-
-    "converts decimal degrees to degrees,minutes,seconds"
-
-    dd = abs(dd)
-    minutes,seconds = divmod(dd*3600,60)
-    degrees,minutes = divmod(minutes,60)
-    if dd < 0:
-        degrees = -degrees
-    return (int(degrees),int(minutes),int(seconds))
-
-
-def dms2dd(degrees, minutes, seconds, milliseconds=0):
-
-    "converts degrees,minutes,seconds to decimal degrees"
-
-    dd = float(degrees) + float(minutes)/60 + float(seconds)/(3600)
-    return dd
-
-
-# ************************************************************************************************
-# ********** duplicate methods ****************
+# ********** duplicate methods, they are in importIFC and exportIFC ****************
 # TODO get rid of this duplicate
 def getPreferences():
 
@@ -225,7 +190,7 @@ def open(filename,skip=[],only=[],root=None):
     "opens an IFC file in a new document"
 
     docname = os.path.splitext(os.path.basename(filename))[0]
-    docname = decode(docname,utf=True)
+    docname = importIFCHelper.decode(docname,utf=True)
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     doc = insert(filename,doc.Name,skip,only,root)
@@ -265,7 +230,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     # keeping global variable for debugging purposes
     # global ifcfile
 
-    filename = decode(filename,utf=True)
+    filename = importIFCHelper.decode(filename,utf=True)
     ifcfile = ifcopenshell.open(filename)
 
     # get file scale
@@ -290,11 +255,30 @@ def insert(filename,docname,skip=[],only=[],root=None):
         settings.set(settings.APPLY_LAYERSETS,True)
 
     # build all needed tables
-    if DEBUG: print("Building relationships table...",end="")
-    objects,prodrepr,additions,groups,subtractions,colors,shapes, \
-    structshapes,mattable,sharedobjects,parametrics,profiles, \
-    sites,buildings,floors,products,openings,annotations,materials, \
-    style_material_id = importIFCHelper.buildRelationships(ifcfile,ROOT_ELEMENT)
+    if DEBUG: print("Building types and relationships table...",end="")
+    # type tables
+    sites = ifcfile.by_type("IfcSite")
+    buildings = ifcfile.by_type("IfcBuilding")
+    floors = ifcfile.by_type("IfcBuildingStorey")
+    openings = ifcfile.by_type("IfcOpeningElement")
+    materials = ifcfile.by_type("IfcMaterial")
+    products, annotations = importIFCHelper.buildRelProductsAnnotations(ifcfile, ROOT_ELEMENT)
+    # empty relation tables
+    objects = {} # { id:object, ... }
+    shapes = {} # { id:shaoe } only used for merge mode
+    structshapes = {} # { id:shaoe } only used for merge mode
+    sharedobjects = {} # { representationmapid:object }
+    parametrics = [] # a list of imported objects whose parametric relationships need processing after all objects have been created
+    profiles = {} # to store reused extrusion profiles {ifcid:fcobj,...}
+    # filled relation tables
+    # TODO for the following tables might be better use inverse attributes, done for properties
+    # see https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
+    prodrepr = importIFCHelper.buildRelProductRepresentation(ifcfile)
+    additions = importIFCHelper.buildRelAdditions(ifcfile)
+    groups = importIFCHelper.buildRelGroups(ifcfile)
+    subtractions = importIFCHelper.buildRelSubtractions(ifcfile)
+    mattable = importIFCHelper.buildRelMattable(ifcfile)
+    colors, style_material_id = importIFCHelper.buildRelColors(ifcfile, prodrepr)
     if DEBUG: print("done.")
 
     # only import a list of IDs and their children, if defined
@@ -804,9 +788,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 if product.RefElevation:
                     obj.Elevation = product.RefElevation * ifcscale
                 if product.RefLatitude:
-                    obj.Latitude = dms2dd(*product.RefLatitude)
+                    obj.Latitude = importIFCHelper.dms2dd(*product.RefLatitude)
                 if product.RefLongitude:
-                    obj.Longitude = dms2dd(*product.RefLongitude)
+                    obj.Longitude = importIFCHelper.dms2dd(*product.RefLongitude)
                 if product.SiteAddress:
                     if product.SiteAddress.AddressLines:
                         obj.Address = product.SiteAddress.AddressLines[0]
@@ -973,8 +957,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
             cobs = []
             for child in children:
                 if child in objects.keys() \
-                    and child not in swallowed: # don't add objects already in groups
-                        cobs.append(objects[child])
+                        and child not in swallowed: # don't add objects already in groups
+                    cobs.append(objects[child])
             if not cobs:
                 continue
             if DEBUG and first:

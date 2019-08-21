@@ -83,6 +83,7 @@
 #include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
 
 using namespace Part;
+using namespace std;
 
 extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
