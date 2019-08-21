@@ -973,8 +973,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
             cobs = []
             for child in children:
                 if child in objects.keys() \
-                    and child not in swallowed: # don't add objects already in groups
-                        cobs.append(objects[child])
+                        and child not in swallowed: # don't add objects already in groups
+                    cobs.append(objects[child])
             if not cobs:
                 continue
             if DEBUG and first:
