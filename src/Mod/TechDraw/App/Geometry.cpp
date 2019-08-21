@@ -80,6 +80,7 @@
 #include "Geometry.h"
 
 using namespace TechDraw;
+using namespace std;
 
 // Collection of Geometric Features
 Wire::Wire()

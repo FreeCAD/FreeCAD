@@ -61,6 +61,7 @@
 #include "Cosmetic.h"
 
 using namespace TechDraw;
+using namespace std;
 
 LineFormat::LineFormat()
 {
