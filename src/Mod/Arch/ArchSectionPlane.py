@@ -380,22 +380,6 @@ def getSVG(source,
                 svgcache = None
                 source.Proxy.shapecache = None
 
-        if hasattr(source.Proxy,"shapecache") and source.Proxy.shapecache:
-            vshapes = source.Proxy.shapecache[0]
-            hshapes = source.Proxy.shapecache[1]
-            sshapes = source.Proxy.shapecache[2]
-            cutface = source.Proxy.shapecache[3]
-            cutvolume = source.Proxy.shapecache[4]
-            invcutvolume = source.Proxy.shapecache[5]
-            objectSshapes = source.Proxy.shapecache[6]
-        else:
-            if showFill:
-                vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes = getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,True)
-            else:
-                vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden)
-                objectSshapes = []
-            source.Proxy.shapecache = [vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes]
-
     # generating SVG
     if renderMode in ["Coin",2]:
         # render using a coin viewer
@@ -440,6 +424,23 @@ def getSVG(source,
                 source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch]
     else:
         # Wireframe (0) mode
+
+        if hasattr(source,"Proxy") and hasattr(source.Proxy,"shapecache") and source.Proxy.shapecache:
+            vshapes = source.Proxy.shapecache[0]
+            hshapes = source.Proxy.shapecache[1]
+            sshapes = source.Proxy.shapecache[2]
+            cutface = source.Proxy.shapecache[3]
+            cutvolume = source.Proxy.shapecache[4]
+            invcutvolume = source.Proxy.shapecache[5]
+            objectSshapes = source.Proxy.shapecache[6]
+        else:
+            if showFill:
+                vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes = getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,True)
+            else:
+                vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden)
+                objectSshapes = []
+            source.Proxy.shapecache = [vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume,objectSshapes]
+
         if not svgcache:
             svgcache = ""
             # render using the Drawing module
@@ -500,6 +501,10 @@ def getSVG(source,
                                 techdraw=techdraw, rotation=rotation)
         if not techdraw:
             svg += '</g>'
+
+    if not cutface:
+        # if we didn't calculate anything better, use the cutplane...
+        cutface = cutplane
 
     # filter out spaces not cut by the source plane
     if cutface and spaces:
