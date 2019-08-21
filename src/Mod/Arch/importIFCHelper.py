@@ -500,7 +500,7 @@ def get2DShape(representation,scaling=1000):
             if item.is_a() in ["IfcGeometricCurveSet","IfcGeometricSet"]:
                 result = getCurveSet(item)
             elif item.is_a("IfcMappedItem"):
-                preresult = setRepresentation(item.MappingSource.MappedRepresentation,scaling)
+                preresult = get2DShape(item.MappingSource.MappedRepresentation,scaling)
                 pla = getPlacement(item.MappingSource.MappingOrigin,scaling)
                 rot = getRotation(item.MappingTarget)
                 if pla:
