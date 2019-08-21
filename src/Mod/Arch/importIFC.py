@@ -263,11 +263,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
         ROOT_ELEMENT = root
 
     # keeping global variable for debugging purposes
-    # global ifcfile 
+    # global ifcfile
 
     filename = decode(filename,utf=True)
     ifcfile = ifcopenshell.open(filename)
-    
+
     # get file scale
     ifcscale = importIFCHelper.getScaling(ifcfile)
 
@@ -356,7 +356,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             name = product.Name
             if six.PY2:
                 name = name.encode("utf8")
-        if PREFIX_NUMBERS: 
+        if PREFIX_NUMBERS:
             name = "ID" + str(pid) + " " + name
         obj = None
         baseobj = None
@@ -430,7 +430,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             elif not shape.isValid():
                 if DEBUG: print("invalid shape ",end="")
             else:
-                
+
                 # add to the global boundbox if applicable
                 if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
                     try:
@@ -467,7 +467,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if DEBUG: print("clone ",end="")
                     else:
                         if GET_EXTRUSIONS and (MERGE_MODE_ARCH != 1):
-                            
+
                             # recompose extrusions from a shape
                             if ptype in ["IfcWall","IfcWallStandardCase","IfcSpace"]:
                                 sortmethod = "z"
@@ -487,11 +487,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                                 if product.Representation.Representations[0].Items[0].is_a("IfcExtrudedAreaSolid"):
                                                     profileid = product.Representation.Representations[0].Items[0].SweptArea.id()
                                 if profileid and (profileid in profiles):
-                                    
+
                                     # reuse existing profile if existing
                                     print("shared extrusion ",end="")
                                     baseface = profiles[profileid]
-                                    
+
                                     # calculate delta placement between stored profile and this one
                                     addplacement = FreeCAD.Placement()
                                     r = FreeCAD.Rotation(baseface.Shape.Faces[0].normalAt(0,0),ex[0].Faces[0].normalAt(0,0))
@@ -503,7 +503,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                     d = ex[0].CenterOfMass.sub(baseface.Shape.CenterOfMass)
                                     if d.Length > 0.000001:
                                         addplacement.move(d)
-                                        
+
                                 if not baseface:
                                     # this is an extrusion but we haven't built the profile yet
                                     print("extrusion ",end="")
@@ -559,7 +559,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 if clone:
                     obj = getattr(Arch,"make"+freecadtype)(name=name)
                     obj.CloneOf = clone
-                    
+
                     # calculate the correct distance from the cloned object
                     if shape:
                         if shape.Solids:
@@ -654,7 +654,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             if obj:
                 # print number of solids
-                if DEBUG: 
+                if DEBUG:
                     s = ""
                     if hasattr(obj,"Shape"):
                         if obj.Shape.Solids:
@@ -1176,7 +1176,6 @@ def insert(filename,docname,skip=[],only=[],root=None):
         FreeCADGui.SendMsgToActiveView("ViewFit")
     print("Finished importing.")
     return doc
-
 
 
 # ************************************************************************************************
