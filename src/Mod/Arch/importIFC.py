@@ -30,7 +30,6 @@ __url__ = "http://www.freecadweb.org"
 import six
 import os
 import math
-import sys
 
 import FreeCAD
 import Part
@@ -139,41 +138,7 @@ structuralifcobjects = (
 
 
 # ************************************************************************************************
-# ********** some helper, used in import and export
-
-def decode(filename,utf=False):
-
-    "turns unicodes into strings"
-
-    if six.PY2 and isinstance(filename,six.text_type):
-        # workaround since ifcopenshell currently can't handle unicode filenames
-        encoding = "utf8" if utf else sys.getfilesystemencoding()
-        filename = filename.encode(encoding)
-    return filename
-
-
-def dd2dms(dd):
-
-    "converts decimal degrees to degrees,minutes,seconds"
-
-    dd = abs(dd)
-    minutes,seconds = divmod(dd*3600,60)
-    degrees,minutes = divmod(minutes,60)
-    if dd < 0:
-        degrees = -degrees
-    return (int(degrees),int(minutes),int(seconds))
-
-
-def dms2dd(degrees, minutes, seconds, milliseconds=0):
-
-    "converts degrees,minutes,seconds to decimal degrees"
-
-    dd = float(degrees) + float(minutes)/60 + float(seconds)/(3600)
-    return dd
-
-
-# ************************************************************************************************
-# ********** duplicate methods ****************
+# ********** duplicate methods, they are in importIFC and exportIFC ****************
 # TODO get rid of this duplicate
 def getPreferences():
 
@@ -225,7 +190,7 @@ def open(filename,skip=[],only=[],root=None):
     "opens an IFC file in a new document"
 
     docname = os.path.splitext(os.path.basename(filename))[0]
-    docname = decode(docname,utf=True)
+    docname = importIFCHelper.decode(docname,utf=True)
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
     doc = insert(filename,doc.Name,skip,only,root)
@@ -265,7 +230,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     # keeping global variable for debugging purposes
     # global ifcfile
 
-    filename = decode(filename,utf=True)
+    filename = importIFCHelper.decode(filename,utf=True)
     ifcfile = ifcopenshell.open(filename)
 
     # get file scale
@@ -823,9 +788,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 if product.RefElevation:
                     obj.Elevation = product.RefElevation * ifcscale
                 if product.RefLatitude:
-                    obj.Latitude = dms2dd(*product.RefLatitude)
+                    obj.Latitude = importIFCHelper.dms2dd(*product.RefLatitude)
                 if product.RefLongitude:
-                    obj.Longitude = dms2dd(*product.RefLongitude)
+                    obj.Longitude = importIFCHelper.dms2dd(*product.RefLongitude)
                 if product.SiteAddress:
                     if product.SiteAddress.AddressLines:
                         obj.Address = product.SiteAddress.AddressLines[0]
