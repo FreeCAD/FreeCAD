@@ -23,9 +23,9 @@
 
 from __future__ import print_function
 
-__title__ =  "FreeCAD IFC importer - Enhanced ifcopenshell-only version"
+__title__ = "FreeCAD IFC importer - Enhanced ifcopenshell-only version"
 __author__ = "Yorik van Havre","Jonathan Wiedemann","Bernd Hahnebach"
-__url__ =    "http://www.freecadweb.org"
+__url__ = "http://www.freecadweb.org"
 
 import six
 import os
@@ -728,7 +728,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj.addProperty("App::PropertyLink","IfcProperties","Component","Stores IFC properties as a spreadsheet")
 
                     ifc_spreadsheet = Arch.makeIfcSpreadsheet()
-                    n=2
+                    n = 2
                     for c in psets.keys():
                         o = ifcfile[c]
                         if DEBUG: print("propertyset Name",o.Name,type(o.Name))
@@ -868,7 +868,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         for host,children in groups.items():
             if ifcfile[host].is_a("IfcStructuralAnalysisModel"):
                 # print(host, ' --> ', children)
-                obj =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","AnalysisModel")
+                obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","AnalysisModel")
                 objects[host] = obj
                 if host in objects.keys():
                     cobs = []
@@ -908,7 +908,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
             if six.PY2:
                 grp_name = grp_name.encode("utf8")
-            grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name)
+            grp = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name)
             grp.Label = grp_name
             objects[host] = grp
             for child in children:
@@ -1122,7 +1122,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             for key in list(fcmats.keys()):
                 if key.startswith(name) \
                         and "DiffuseColor" in mdict and "DiffuseColor" in fcmats[key].Material \
-                        and  mdict["DiffuseColor"] == fcmats[key].Material["DiffuseColor"]:
+                        and mdict["DiffuseColor"] == fcmats[key].Material["DiffuseColor"]:
                     mat = fcmats[key]
                     add_material = False
         # add a new material object
