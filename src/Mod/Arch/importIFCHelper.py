@@ -7,7 +7,7 @@ import six
 
 class ProjectImporter:
     """A helper class to create a FreeCAD Arch Project object"""
-    
+
     def __init__(self, file, objects):
         self.file = file
         self.objects = objects
@@ -27,7 +27,7 @@ class ProjectImporter:
     def setComplexAttributes(self):
         try:
             mapConversion = self.project.RepresentationContexts[0].HasCoordinateOperation[0]
-            
+
             data = self.extractTargetCRSData(mapConversion.TargetCRS)
             data.update(self.extractMapConversionData(mapConversion))
             ArchIFC.IfcRoot.setObjIfcComplexAttributeValue(self, self.object, "RepresentationContexts", data)
@@ -251,6 +251,7 @@ def getScaling(ifcfile):
                 return getUnit(u)
     return 1.0
 
+
 def getRotation(entity):
     """returns a FreeCAD rotation from an IfcProduct with a IfcMappedItem representation"""
     try:
@@ -318,7 +319,6 @@ def getVector(entity,scaling=1000):
     #if v:
     #    v.multiply(scaling)
     return v
-
 
 
 def get2DShape(representation,scaling=1000):
