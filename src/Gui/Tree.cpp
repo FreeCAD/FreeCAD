@@ -4590,9 +4590,11 @@ void DocumentObjectItem::displayStatusInfo()
     QString status = TreeWidget::tr("%1, Internal name: %2")
             .arg(info,
                  QString::fromLatin1(Obj->getNameInDocument()));
-    getMainWindow()->showMessage(status);
 
-    if (Obj->isError()) {
+    if (!Obj->isError())
+        getMainWindow()->showMessage(status);
+    else {
+        getMainWindow()->showStatus(MainWindow::Err,status);
         QTreeWidget* tree = this->treeWidget();
         QPoint pos = tree->visualItemRect(this).topRight();
         QToolTip::showText(tree->mapToGlobal(pos), info);

@@ -145,20 +145,19 @@ namespace Gui {
 class CustomMessageEvent : public QEvent
 {
 public:
-    enum Type {None, Err, Wrn, Pane, Msg, Log, Tmp};
-    CustomMessageEvent(Type t, const QString& s, int timeout=0)
+    CustomMessageEvent(int t, const QString& s, int timeout=0)
       : QEvent(QEvent::User), _type(t), msg(s), _timeout(timeout)
     { }
     ~CustomMessageEvent()
     { }
-    Type type() const
+    int type() const
     { return _type; }
     const QString& message() const
     { return msg; }
     int timeout() const
     { return _timeout; }
 private:
-    Type _type;
+    int _type;
     QString msg;
     int _timeout;
 };
@@ -785,7 +784,7 @@ bool MainWindow::event(QEvent *e)
         return true;
     }else if(e->type() == QEvent::StatusTip) {
         // make sure warning and error message don't get blocked by tooltips
-        if(std::abs(d->currentStatusType) <= CustomMessageEvent::Wrn)
+        if(std::abs(d->currentStatusType) <= MainWindow::Wrn)
             return true;
     }
     return QMainWindow::event(e);
@@ -1832,7 +1831,7 @@ void MainWindow::statusMessageChanged() {
 
 void MainWindow::showMessage(const QString& message, int timeout) {
     if(QApplication::instance()->thread() != QThread::currentThread()) {
-        QApplication::postEvent(this, new CustomMessageEvent(CustomMessageEvent::Tmp,message,timeout));
+        QApplication::postEvent(this, new CustomMessageEvent(MainWindow::Tmp,message,timeout));
         return;
     }
     d->actionLabel->setText(message.simplified());
@@ -1847,7 +1846,7 @@ void MainWindow::showStatus(int type, const QString& message)
 {
     if(QApplication::instance()->thread() != QThread::currentThread()) {
         QApplication::postEvent(this, 
-                new CustomMessageEvent((CustomMessageEvent::Type)type,message));
+                new CustomMessageEvent(type,message));
         return;
     }
 
@@ -1862,13 +1861,13 @@ void MainWindow::showStatus(int type, const QString& message)
     QFontMetrics fm(statusBar()->font());
     QString msg = fm.elidedText(message, Qt::ElideMiddle, this->d->actionLabel->width());
     switch(type) {
-    case CustomMessageEvent::Err:
+    case MainWindow::Err:
         statusBar()->setStyleSheet(d->status->err);
         break;
-    case CustomMessageEvent::Wrn:
+    case MainWindow::Wrn:
         statusBar()->setStyleSheet(d->status->wrn);
         break;
-    case CustomMessageEvent::Pane:
+    case MainWindow::Pane:
         statusBar()->setStyleSheet(QString::fromLatin1("#statusBar{}"));
         break;
     default:
@@ -1884,7 +1883,7 @@ void MainWindow::showStatus(int type, const QString& message)
 void MainWindow::setPaneText(int i, QString text)
 {
     if (i==1) {
-        showStatus(CustomMessageEvent::Pane, text);
+        showStatus(MainWindow::Pane, text);
     }
     else if (i==2) {
         d->sizeLabel->setText(text);
@@ -1897,7 +1896,7 @@ void MainWindow::customEvent(QEvent* e)
         Gui::CustomMessageEvent* ce = static_cast<Gui::CustomMessageEvent*>(e);
         QString msg = ce->message();
         switch(ce->type()) {
-        case CustomMessageEvent::Log: {
+        case MainWindow::Log: {
             if (msg.startsWith(QLatin1String("#Inventor V2.1 ascii "))) {
                 Gui::Document *d = Application::Instance->activeDocument();
                 if (d) {
@@ -1912,7 +1911,7 @@ void MainWindow::customEvent(QEvent* e)
                 }
             }
             break;
-        } case CustomMessageEvent::Tmp: {
+        } case MainWindow::Tmp: {
             showMessage(msg, ce->timeout());
             break;
         } default:
@@ -1977,7 +1976,7 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
 void StatusBarObserver::Message(const char * m)
 {
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Msg, QString::fromUtf8(m));
+    CustomMessageEvent* ev = new CustomMessageEvent(MainWindow::Msg, QString::fromUtf8(m));
     QApplication::postEvent(getMainWindow(), ev);
 }
 
@@ -1987,7 +1986,7 @@ void StatusBarObserver::Message(const char * m)
 void StatusBarObserver::Warning(const char *m)
 {
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Wrn, QString::fromUtf8(m));
+    CustomMessageEvent* ev = new CustomMessageEvent(MainWindow::Wrn, QString::fromUtf8(m));
     QApplication::postEvent(getMainWindow(), ev);
 }
 
@@ -1997,7 +1996,7 @@ void StatusBarObserver::Warning(const char *m)
 void StatusBarObserver::Error  (const char *m)
 {
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Err, QString::fromUtf8(m));
+    CustomMessageEvent* ev = new CustomMessageEvent(MainWindow::Err, QString::fromUtf8(m));
     QApplication::postEvent(getMainWindow(), ev);
 }
 
@@ -2007,7 +2006,7 @@ void StatusBarObserver::Error  (const char *m)
 void StatusBarObserver::Log(const char *m)
 {
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Log, QString::fromUtf8(m));
+    CustomMessageEvent* ev = new CustomMessageEvent(MainWindow::Log, QString::fromUtf8(m));
     QApplication::postEvent(getMainWindow(), ev);
 }
 
