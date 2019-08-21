@@ -89,7 +89,7 @@ class CommandFillet(Line):
         Line.__init__(self, wiremode=True)
 
     def GetResources(self):
-        return {'Pixmap': 'Draft_Wire',
+        return {'Pixmap': 'Draft_Fillet.svg',
                 'MenuText': QT_TRANSLATE_NOOP("draft", "Fillet"),
                 'ToolTip': QT_TRANSLATE_NOOP("draft", "Creates a fillet between two wires or edges.")
         }
