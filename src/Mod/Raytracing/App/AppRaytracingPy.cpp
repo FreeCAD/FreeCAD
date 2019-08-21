@@ -40,6 +40,8 @@
 #include <Mod/Part/App/TopoShapePy.h>
 #include <App/Application.h>
 
+using namespace std;
+
 
 namespace Raytracing {
 class Module : public Py::ExtensionModule<Module>
