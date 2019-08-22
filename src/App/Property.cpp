@@ -310,7 +310,7 @@ void PropertyLists::Save (Base::Writer &writer) const
 {
     const char *element = xmlName();
 
-    if (!getSize()) {
+    if (!getSize() && canSaveStream(writer)) {
         // for backward compatibility, we still need to add attribute 'file' if empty
         writer.Stream() << writer.ind() << '<' << element << " file=\"\"/>\n";
         return;
