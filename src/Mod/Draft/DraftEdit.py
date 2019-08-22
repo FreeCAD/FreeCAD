@@ -23,8 +23,8 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Draft Edit Tool"
-__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin"
+__title__= "FreeCAD Draft Edit Tool"
+__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin, Carlo Pavan"
 __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
@@ -42,7 +42,6 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
     from DraftTools import translate
 
-
 class Edit():
 
     "The Draft_Edit FreeCAD command definition"
@@ -51,25 +50,43 @@ class Edit():
         self.running = False
         self.trackers = []
         self.obj = None
+
+        # event callbacks
         self.call = None
+        self._keyPressedCB = None
+        self._mouseMovedCB = None
+        self._mousePressedCB = None
+
         self.selectstate = None
         self.originalDisplayMode = None
         self.originalPoints = None
         self.originalNodes = None
+
+        # preview
         self.ghost = None
+
+        # soraypick action things
+        self.pick_radius = 30 # TODO: set pick radius according to user preferences
+
+        #list of supported objects type
         self.supportedObjs = ["BezCurve","Wire","BSpline","Circle","Rectangle",
                             "Polygon","Dimension","Space","Structure","PanelCut",
                             "PanelSheet","Wall", "Window"]
+        self.supportedPartObjs = ["Part", "Part::Line", "Part::Box"]
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Edit',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edit"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object")}
 
+    #---------------------------------------------------------------------------
+    # MAIN FUNCTIONS
+    #---------------------------------------------------------------------------
+
     def Activated(self):
-        if self.running:
-            self.finish()
+        if self.running: self.finish()
         DraftTools.Modifier.Activated(self,"Edit")
+        if not FreeCAD.ActiveDocument: self.finish()
 
         self.ui = FreeCADGui.draftToolBar
         self.view = Draft.get3DView()
@@ -79,83 +96,299 @@ class Edit():
         else:
             self.ui.selectUi()
             FreeCAD.Console.PrintMessage(translate("draft", "Select a Draft object to edit")+"\n")
-            if self.call:
-                self.view.removeEventCallback("SoEvent",self.call)
-            self.call = self.view.addEventCallback("SoEvent",DraftTools.selectObject)
+            self.register_selection_callback()
 
     def proceed(self):
         "this method defines editpoints and set the editTrackers"
+        self.unregister_selection_callback()
+        self.obj = self.getObjFromSelection()
+        if not self.obj: return self.finish()          
 
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-            self.call = None
-
-        if not FreeCAD.ActiveDocument:
-            self.finish()
-            return
-
-        self.parseSelection()
-
-        if not self.obj:
-            self.finish()
-            return
-
-        # store selectable state of the object
+        # store selectable state of the object TODO: Separate function
         if hasattr(self.obj.ViewObject,"Selectable"):
             self.selectstate = self.obj.ViewObject.Selectable
             self.obj.ViewObject.Selectable = False
 
         # start object editing
-
         FreeCADGui.Selection.clearSelection()
         self.editing = None
         self.editpoints = []
-        self.pl = None
-        self.arc3Pt = True
+        self.arc3Pt = True # TODO: Find a more elegant way
         FreeCADGui.Snapper.setSelectMode(True)
 
         self.ui.editUi()
 
-        self.getPlacement(self.obj)
+        self.setPlacement(self.obj)
 
         self.setEditPoints(self.obj)
 
         if self.editpoints: # set trackers and align plane
-            self.call = self.view.addEventCallback("SoEvent",self.action)
             self.setTrackers()
             # set plane tracker to match edited object
             FreeCAD.DraftWorkingPlane.save()
             self.alignWorkingPlane()
             self.editpoints = []
+            self.register_editing_callbacks()#register action callback
         else:
             FreeCAD.Console.PrintWarning(translate("draft", "No edit point found for selected object")+"\n")
             self.finish()
             return
 
-    def parseSelection(self):
+    def finish(self,closed=False):
+        "terminates Edit Tool"
+        self.unregister_selection_callback()
+        self.unregister_editing_callbacks()
+        FreeCADGui.Snapper.setSelectMode(False)
+        self.finalizeGhost()
+        if self.obj and closed:
+            if "Closed" in self.obj.PropertiesList:
+                if not self.obj.Closed:
+                    self.obj.Closed = True
+        if self.ui: self.removeTrackers()
+        if self.obj:
+            if hasattr(self.obj.ViewObject,"Selectable") and (self.selectstate != None):
+                self.obj.ViewObject.Selectable = self.selectstate
+        if Draft.getType(self.obj) == "Structure":
+            if self.originalDisplayMode != None:
+                self.obj.ViewObject.DisplayMode = self.originalDisplayMode
+            if self.originalPoints != None:
+                self.obj.ViewObject.NodeSize = self.originalPoints
+            if self.originalNodes != None:
+                self.obj.ViewObject.ShowNodes = self.originalNodes
+        self.selectstate = None
+        self.originalDisplayMode = None
+        self.originalPoints = None
+        self.originalNodes = None
+        DraftTools.Modifier.finish(self)
+        FreeCAD.DraftWorkingPlane.restore()
+        if FreeCADGui.Snapper.grid: FreeCADGui.Snapper.grid.set()
+        self.running = False
+        # delay resetting edit mode otherwise it doesn't happen
+        from PySide import QtCore
+        QtCore.QTimer.singleShot(0,FreeCADGui.ActiveDocument.resetEdit)
+
+    #---------------------------------------------------------------------------
+    # SCENE EVENTS CALLBACKS
+    #---------------------------------------------------------------------------
+
+    def register_selection_callback(self):
+        "register callback for selection when command is launched"
+        self.unregister_selection_callback()
+        self.call = self.view.addEventCallback("SoEvent",DraftTools.selectObject)
+
+    def unregister_selection_callback(self):
+        "remove callback for selection if it exhists"
+        if self.call:
+            self.view.removeEventCallback("SoEvent",self.call)
+        self.call = None
+
+    def register_editing_callbacks(self):
+        "register callbacks to use during editing (former action function)"
+        viewer = FreeCADGui.ActiveDocument.ActiveView.getViewer()
+        self.render_manager = viewer.getSoRenderManager()
+        view = FreeCADGui.ActiveDocument.ActiveView
+        self._keyPressedCB = view.addEventCallbackPivy(
+            coin.SoKeyboardEvent.getClassTypeId(), self.keyPressed)
+        self._mouseMovedCB = view.addEventCallbackPivy(
+            coin.SoLocation2Event.getClassTypeId(), self.mouseMoved)
+        self._mousePressedCB = view.addEventCallbackPivy(
+            coin.SoMouseButtonEvent.getClassTypeId(), self.mousePressed)
+        #FreeCAD.Console.PrintMessage("Draft edit callbacks registered \n")
+
+    def unregister_editing_callbacks(self):
+        "remove callbacks used during editing if they exhist"
+        view = FreeCADGui.ActiveDocument.ActiveView
+        if self._keyPressedCB: 
+            view.removeEventCallbackSWIG(coin.SoKeyboardEvent.getClassTypeId(), self._keyPressedCB)
+            self._keyPressedCB = None
+            #FreeCAD.Console.PrintMessage("Draft edit keyboard callback unregistered \n")
+        if self._mouseMovedCB: 
+            view.removeEventCallbackSWIG(coin.SoLocation2Event.getClassTypeId(), self._mouseMovedCB)
+            self._mouseMovedCB = None
+            #FreeCAD.Console.PrintMessage("Draft edit location callback unregistered \n")
+        if self._mousePressedCB: 
+            view.removeEventCallbackSWIG(coin.SoMouseButtonEvent.getClassTypeId(), self._mousePressedCB)
+            self._mousePressedCB = None
+            #FreeCAD.Console.PrintMessage("Draft edit mouse button callback unregistered \n")
+
+    #---------------------------------------------------------------------------
+    # SCENE EVENT HANDLERS
+    #---------------------------------------------------------------------------
+
+    def keyPressed(self, event_callback):
+        "keyboard event handler"
+        #TODO: Get the keys from preferences
+        event = event_callback.getEvent()
+        if event.getState() == coin.SoKeyboardEvent.DOWN:
+            key = event.getKey()
+            #FreeCAD.Console.PrintMessage("pressed key : "+str(key)+"\n")
+            if key == 65307: # ESC
+                if self.editing == None: self.finish()
+                else:
+                    self.finalizeGhost()
+                    self.editpoints = []
+                    self.setEditPoints(self.obj)
+                    self.resetTrackers()
+            if key == 97: # "a"
+                self.finish()
+            if key == 111: # "o"
+                self.finish(closed=True)
+            if key == 105: # "i"
+                if Draft.getType(self.obj) == "Circle": self.arcInvert()
+
+    def mousePressed(self, event_callback):
+        "mouse button event handler, calls: startEditing, endEditing, addPoint, delPoint"
+        event = event_callback.getEvent()
+        if event.getTypeId().getName() != "SoMouseButtonEvent": return        
+        if (event.getState() == coin.SoMouseButtonEvent.DOWN and 
+            event.getButton() == event.BUTTON1):#left click
+            if self.ui.addButton.isChecked():
+                self.addPoint(event)
+                return
+            if self.ui.delButton.isChecked():
+                self.delPoint(self.obj, event)
+                return
+            if Draft.getType(self.obj) == "BezCurve":
+                pos = event.getPosition()      
+                if self.ui.sharpButton.isChecked():
+                    return self.smoothBezPoint(self.getEditNodeIndex(pos), 'Sharp')
+                elif self.ui.tangentButton.isChecked():
+                    return self.smoothBezPoint(self.getEditNodeIndex(pos), 'Tangent')
+                elif self.ui.symmetricButton.isChecked():
+                    return self.smoothBezPoint(self.getEditNodeIndex(pos), 'Symmetric')
+            if self.editing == None:
+                self.startEditing(event)
+            else:
+                self.endEditing()
+    
+    def mouseMoved(self, event_callback):
+        "mouse moved event handler, update tracker position and update preview ghost"
+        event = event_callback.getEvent()
+        if self.editing != None:
+            self.updateTrackerAndGhost(event)
+        else:
+            # TODO add preselection color change for trackers
+            pass
+
+    def startEditing(self, event):
+        "start editing selected EditNode"
+        pos = event.getPosition()
+        ep = self.getEditNodeIndex(pos)
+        if ep == None: 
+            #FreeCAD.Console.PrintMessage("Node not found\n")
+            return
+        FreeCAD.Console.PrintMessage(str("Editing node: n° ")+str(ep)+"\n")
+        self.ui.pointUi()
+        self.ui.isRelative.show()
+        self.editing = ep
+        self.trackers[self.editing].off()
+        self.finalizeGhost()
+        self.ghost = self.initGhost(self.obj)
+        self.node.append(self.trackers[self.editing].get())
+        FreeCADGui.Snapper.setSelectMode(False)
+
+    def updateTrackerAndGhost(self, event):
+        "updates tracker position when editing and update ghost"
+        pos = event.getPosition().getValue()
+        orthoConstrain = False
+        if event.wasShiftDown() == 1: orthoConstrain = True
+        snappedPos = FreeCADGui.Snapper.snap((pos[0],pos[1]),self.node[-1], constrain=orthoConstrain)
+        self.trackers[self.editing].set(snappedPos)
+        self.ui.displayPoint(snappedPos,self.node[-1])
+        if self.ghost: self.updateGhost(obj=self.obj,idx=self.editing,pt=snappedPos)
+
+    def endEditing(self):
+        "terminate editing and start object updating process"
+        self.finalizeGhost()
+        self.trackers[self.editing].on()
+        #if hasattr(self.obj.ViewObject,"Selectable"):
+        #    self.obj.ViewObject.Selectable = True
+        FreeCADGui.Snapper.setSelectMode(True)
+        self.numericInput(self.trackers[self.editing].get())
+        DraftTools.redraw3DView()
+
+    #---------------------------------------------------------------------------
+    # UTILS
+    #---------------------------------------------------------------------------
+
+    def getObjFromSelection(self):
+        "evaluate selection and returns a valid object to edit"
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintMessage(translate("draft", "Please select exactly one object")+"\n")
-            self.finish()
-            return
+            return None
         if "Proxy" in selection[0].PropertiesList and hasattr(selection[0].Proxy,"Type"):
             if Draft.getType(selection[0]) in self.supportedObjs:
-                self.obj = selection[0]
-                return
+                return selection[0]
+        else:
+            try:
+                if Draft.getType(selection[0]) in self.supportedPartObjs and selection[0].TypeId in self.supportedPartObjs:
+                    return selection[0]
+            except:
+                pass
         FreeCAD.Console.PrintWarning(translate("draft", "This object is not editable")+"\n")
-        return
+        return None
 
-    def getPlacement(self,obj):
+    def numericInput(self,v,numy=None,numz=None):
+        '''this function gets called by the toolbar
+        or by the mouse click and activate the update function'''
+        if (numy != None):
+            v = Vector(v,numy,numz)
+        self.update(v)
+        FreeCAD.ActiveDocument.recompute()
+        self.editing = None
+        self.ui.editUi(self.ui.lastMode)
+        self.node = []
+
+    def setPlacement(self,obj):
+        "set self.pl and self.invpl to self.obj placement and inverse placement"
         if "Placement" in obj.PropertiesList:
             self.pl = obj.Placement
             self.invpl = self.pl.inverse()
 
     def alignWorkingPlane(self):
+        "align working plane to self.obj"
         if "Shape" in self.obj.PropertiesList:
             if DraftTools.plane.weak:
                 DraftTools.plane.alignToFace(self.obj.Shape)
         if self.planetrack:
             self.planetrack.set(self.editpoints[0])
+
+    def getEditNodeIndex(self, pos):
+        "get edit node index from given screen position"
+        ep = self.sendRay(pos)
+        return ep
+    
+    def sendRay(self, mouse_pos):
+        "sends a ray trough the scene and return the nearest entity"
+        ray_pick = coin.SoRayPickAction(self.render_manager.getViewportRegion())
+        ray_pick.setPoint(coin.SbVec2s(*mouse_pos))
+        ray_pick.setRadius(self.pick_radius)
+        ray_pick.setPickAll(True)
+        ray_pick.apply(self.render_manager.getSceneGraph())
+        picked_point = ray_pick.getPickedPointList()
+        return self.searchEditNode(picked_point)
+
+    def searchEditNode(self, picked_point):
+        "search edit node inside picked point list and retrurn node number"
+        for point in picked_point:
+            path = point.getPath()
+            length = path.getLength()
+            point = path.getNode(length - 2)
+            import DraftTrackers
+            if hasattr(point,"subElementName"):
+                subElement = str(point.subElementName.getValue())
+                if 'EditNode' in subElement:
+                    ep = int(subElement[8:])
+                    #doc = FreeCAD.getDocument(str(point.documentName.getValue()))
+                    #self.obj = doc.getObject(str(point.objectName.getValue()))
+                    return ep
+                #FreeCAD.Console.PrintMessage(str(self.obj)+str(ep)+"\n")
+        return None
+
+    #---------------------------------------------------------------------------
+    # EDIT TRACKERS functions
+    #---------------------------------------------------------------------------
 
     def setTrackers(self):
         "set Edit Trackers for editpoints collected from self.obj"
@@ -164,7 +397,7 @@ class Edit():
             self.resetTrackersBezier()
         else:
             for ep in range(len(self.editpoints)):
-                self.trackers.append(editTracker(self.editpoints[ep],self.obj.Name,ep))
+                self.trackers.append(editTracker(pos=self.editpoints[ep],name=self.obj.Name,idx=ep))
 
     def resetTrackers(self):
         "reset Edit Trackers and set them again"
@@ -188,191 +421,12 @@ class Edit():
         for t in self.trackers:
             t.on()
 
-    def action(self,arg):
-        "scene event handler"
-
-        if arg["Type"] == "SoKeyboardEvent" and arg["State"] == "DOWN":
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-            elif arg["Key"] == "a":
-                self.finish()
-            elif arg["Key"] == "o":
-                self.finish(closed=True)
-            elif arg["Key"] == "i":
-                if Draft.getType(self.obj) == "Circle": self.arcInvert()
-
-        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            self.point,ctrlPoint,info = DraftTools.getPoint(self,arg)# causes problems when mouseover bezcurves
-            if self.editing != None:
-                self.trackers[self.editing].set(self.point)
-                #FreeCAD.Console.PrintMessage(self.ghost)
-                self.updateGhost(obj=self.obj,idx=self.editing,pt=self.point)
-
-            if hasattr(self.obj.ViewObject,"Selectable"):
-                if self.ui.addButton.isChecked():
-                    self.obj.ViewObject.Selectable = True
-                else:
-                    self.obj.ViewObject.Selectable = False
-            DraftTools.redraw3DView()
-
-        elif arg["Type"] == "SoMouseButtonEvent" and arg["State"] == "DOWN":
-
-            if arg["Button"] == "BUTTON1":
-                self.ui.redraw()
-
-                if self.editing == None:
-                    # USECASE: User click on one of the editpoints or another object
-                    ep = None
-                    selobjs = self.getSelection()
-                    if selobjs == None: return
-
-                    if self.ui.addButton.isChecked():# still quite raw
-                        # USECASE: User add a new point to the object
-                        for info in selobjs:
-                            if Draft.getType(self.obj) == "Wire" and 'Edge' in info["Component"]:
-                                pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
-                                self.addPointToWire(pt, int(info["Component"][4:]))
-                            elif self.point:
-                                pt = self.point
-                                if "x" in info:# prefer "real" 3D location over working-plane-driven one if possible
-                                    pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
-                                self.addPointToCurve(pt,info)
-                        self.removeTrackers()
-                        self.editpoints = []
-                        self.setEditPoints(self.obj)
-                        self.resetTrackers()
-                        return
-
-                    ep = self.lookForClickedNode(selobjs,tolerance=20)
-                    if ep == None: return
-
-                    if self.ui.delButton.isChecked(): # still quite raw
-                        # USECASE: User delete a point of the object
-                        self.delPoint(ep)
-                        # don't do tan/sym on DWire/BSpline!
-                        self.removeTrackers()
-                        self.editpoints = []
-                        self.setEditPoints(self.obj)
-                        self.resetTrackers()
-                        return
-
-                    if Draft.getType(self.obj) == "BezCurve":
-                        # USECASE: User change the continuity of a Bezcurve point
-                        if self.ui.sharpButton.isChecked():
-                            return self.smoothBezPoint(ep, 'Sharp')
-                        elif self.ui.tangentButton.isChecked():
-                            return self.smoothBezPoint(ep, 'Tangent')
-                        elif self.ui.symmetricButton.isChecked():
-                            return self.smoothBezPoint(ep, 'Symmetric')
-
-                    if self.ui.arc3PtButton.isChecked():
-                        self.arc3Pt = False
-                    else:
-                        self.arc3Pt = True
-                    self.ui.pointUi()
-                    self.ui.isRelative.show()
-                    self.editing = ep
-                    self.trackers[self.editing].off()
-                    self.finalizeGhost()
-                    self.ghost = self.initGhost(self.obj)
-                    '''if hasattr(self.obj.ViewObject,"Selectable"):
-                        self.obj.ViewObject.Selectable = False'''
-                    self.node.append(self.trackers[self.editing].get())
-                    FreeCADGui.Snapper.setSelectMode(False)
-
-                else: #if self.editing != None:
-                    # USECASE: Destination point of editing is clicked
-                    self.finalizeGhost()
-                    self.trackers[self.editing].on()
-                    #if hasattr(self.obj.ViewObject,"Selectable"):
-                    #    self.obj.ViewObject.Selectable = True
-                    FreeCADGui.Snapper.setSelectMode(True)
-                    self.numericInput(self.trackers[self.editing].get())
-
-    def getSelection(self):
-        p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
-        selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)
-        if not selobjs:
-            selobjs = [FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)]
-        if not selobjs or selobjs == [None]:
-            return None
-        else: return selobjs
-
-    def lookForClickedNode(self,selobjs,tolerance=20):
-        for info in selobjs:
-            #if info["Object"] == self.obj.Name:
-            #    return
-            if ('EditNode' in info["Component"]):#True as a result of getObjectInfo
-                ep = int(info["Component"][8:])
-            elif ('Vertex' in info["Component"]):# if vertex is clicked, the edit point is selected only if (distance < tolerance)
-                p = FreeCAD.Vector(info["x"],info["y"],info["z"])
-                for i,t in enumerate(self.trackers):
-                    if (t.get().sub(p)).Length <= 0.01:
-                        ep = i
-                        break
-            elif ('Edge' in info["Component"]) or ('Face' in info["Component"]) : # if edge is clicked, the nearest edit point is selected, then tolerance is verified
-                p = FreeCAD.Vector(info["x"],info["y"],info["z"])
-                d = 1000000.0
-                for i,t in enumerate(self.trackers):
-                    if (t.get().sub(p)).Length < d:
-                        d = (t.get().sub(p)).Length
-                        ep = i
-                if d > tolerance:# should find a way to link the tolerance to zoom
-                    return
-        return ep
-
-
-    def numericInput(self,v,numy=None,numz=None):
-        '''this function gets called by the toolbar
-        or by the mouse click and activate the update function'''
-        if (numy != None):
-            v = Vector(v,numy,numz)
-        self.update(v)
-        FreeCAD.ActiveDocument.recompute()
-        self.editing = None
-        self.ui.editUi(self.ui.lastMode)
-        self.node = []
-
-    def finish(self,closed=False):
-        "terminates Edit Tool"
-        FreeCADGui.Snapper.setSelectMode(False)
-        if self.obj and closed:
-            if "Closed" in self.obj.PropertiesList:
-                if not self.obj.Closed:
-                    self.obj.Closed = True
-        if self.ui:
-            if self.trackers:
-                for t in self.trackers:
-                    t.finalize()
-        self.finalizeGhost()
-        if self.obj:
-            if hasattr(self.obj.ViewObject,"Selectable") and (self.selectstate != None):
-                self.obj.ViewObject.Selectable = self.selectstate
-        if Draft.getType(self.obj) == "Structure":
-            if self.originalDisplayMode != None:
-                self.obj.ViewObject.DisplayMode = self.originalDisplayMode
-            if self.originalPoints != None:
-                self.obj.ViewObject.NodeSize = self.originalPoints
-            if self.originalNodes != None:
-                self.obj.ViewObject.ShowNodes = self.originalNodes
-        self.selectstate = None
-        self.originalDisplayMode = None
-        self.originalPoints = None
-        self.originalNodes = None
-        DraftTools.Modifier.finish(self)
-        FreeCAD.DraftWorkingPlane.restore()
-        if FreeCADGui.Snapper.grid:
-            FreeCADGui.Snapper.grid.set()
-        self.running = False
-        # delay resetting edit mode otherwise it doesn't happen
-        from PySide import QtCore
-        QtCore.QTimer.singleShot(0,FreeCADGui.ActiveDocument.resetEdit)
-
     #---------------------------------------------------------------------------
     # PREVIEW
     #---------------------------------------------------------------------------
 
     def initGhost(self,obj):
+        "initialize preview ghost"
         if Draft.getType(obj) == "Wire":
             return wireTracker(obj.Shape)
         elif Draft.getType(obj) == "BSpline":
@@ -402,40 +456,46 @@ class Edit():
             self.ghost.update(pointList,obj.Degree)
         elif Draft.getType(obj) == "Circle":
             self.ghost.on()
-            if self.arc3Pt == False:
-                self.ghost.setCenter(obj.Placement.Base)
-                self.ghost.setRadius(obj.Radius)
-                self.ghost.setStartAngle(math.radians(obj.FirstAngle))
-                self.ghost.setEndAngle(math.radians(obj.LastAngle))
-                if self.editing == 0:
-                    self.ghost.setCenter(pt)
-                elif self.editing == 1:
-                    self.ghost.setStartPoint(pt)
-                elif self.editing == 2:
-                    self.ghost.setEndPoint(pt)
-                elif self.editing == 3:
-                    self.ghost.setRadius(self.invpl.multVec(pt).Length)
-            elif self.arc3Pt == True:
-                if self.editing == 0:#center point
-                    import DraftVecUtils
-                    p1 = self.invpl.multVec(self.obj.Shape.Vertexes[0].Point)
-                    p2 = self.invpl.multVec(self.obj.Shape.Vertexes[1].Point)
-                    p0 = DraftVecUtils.project(self.invpl.multVec(pt),self.invpl.multVec(self.getArcMid()))
-                    self.ghost.autoinvert=False
-                    self.ghost.setRadius(p1.sub(p0).Length)
-                    self.ghost.setStartPoint(self.obj.Shape.Vertexes[1].Point)
-                    self.ghost.setEndPoint(self.obj.Shape.Vertexes[0].Point)
-                    self.ghost.setCenter(self.pl.multVec(p0))
-                    return
-                else:
-                    p1=self.obj.Shape.Vertexes[0].Point
-                    p2=self.getArcMid()
-                    p3=self.obj.Shape.Vertexes[1].Point
-                    if self.editing == 1: p1=pt
-                    elif self.editing == 3: p2=pt
-                    elif self.editing == 2: p3=pt
-                    self.ghost.setBy3Points(p1,p2,p3)
-
+            self.ghost.setCenter(obj.Placement.Base)
+            self.ghost.setRadius(obj.Radius)
+            if self.obj.FirstAngle == self.obj.LastAngle:#self.obj is a circle
+                self.ghost.circle = True
+                if self.editing == 0: self.ghost.setCenter(pt)
+                elif self.editing == 1: 
+                    radius = pt.sub(obj.Placement.Base).Length
+                    self.ghost.setRadius(radius)
+            else:
+                if self.arc3Pt == False:
+                    self.ghost.setStartAngle(math.radians(obj.FirstAngle))
+                    self.ghost.setEndAngle(math.radians(obj.LastAngle))
+                    if self.editing == 0:
+                        self.ghost.setCenter(pt)
+                    elif self.editing == 1:
+                        self.ghost.setStartPoint(pt)
+                    elif self.editing == 2:
+                        self.ghost.setEndPoint(pt)
+                    elif self.editing == 3:
+                        self.ghost.setRadius(self.invpl.multVec(pt).Length)
+                elif self.arc3Pt == True:
+                    if self.editing == 0:#center point
+                        import DraftVecUtils
+                        p1 = self.invpl.multVec(self.obj.Shape.Vertexes[0].Point)
+                        p2 = self.invpl.multVec(self.obj.Shape.Vertexes[1].Point)
+                        p0 = DraftVecUtils.project(self.invpl.multVec(pt),self.invpl.multVec(self.getArcMid()))
+                        self.ghost.autoinvert=False
+                        self.ghost.setRadius(p1.sub(p0).Length)
+                        self.ghost.setStartPoint(self.obj.Shape.Vertexes[1].Point)
+                        self.ghost.setEndPoint(self.obj.Shape.Vertexes[0].Point)
+                        self.ghost.setCenter(self.pl.multVec(p0))
+                        return
+                    else:
+                        p1=self.obj.Shape.Vertexes[0].Point
+                        p2=self.getArcMid()
+                        p3=self.obj.Shape.Vertexes[1].Point
+                        if self.editing == 1: p1=pt
+                        elif self.editing == 3: p2=pt
+                        elif self.editing == 2: p3=pt
+                        self.ghost.setBy3Points(p1,p2,p3)
         DraftTools.redraw3DView()
 
     def applyPlacement(self,pointList):
@@ -457,6 +517,31 @@ class Edit():
     # EDIT OBJECT TOOLS : Add/Delete Vertexes
     #---------------------------------------------------------------------------
 
+    def addPoint(self,event):
+        "called by action, add point to obj and reset trackers"
+        if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
+        pos = event.getPosition()
+        selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        if not selobjs: return
+        for info in selobjs:
+            if not info: return
+            if self.obj.Name != info["Object"]: continue
+            if Draft.getType(self.obj) == "Wire" and 'Edge' in info["Component"]:
+                pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
+                self.addPointToWire(pt, int(info["Component"][4:]))
+            elif Draft.getType(self.obj) in ["BSpline","BezCurve"]: #to fix double vertex created
+                #pt = self.point
+                if "x" in info:# prefer "real" 3D location over working-plane-driven one if possible
+                    pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
+                else: continue
+                self.addPointToCurve(pt,info)
+        self.obj.recompute()
+        self.editpoints = []
+        self.setEditPoints(self.obj)
+        self.resetTrackers()
+        return
+
+
     def addPointToWire(self, newPoint, edgeIndex):
         newPoints = []
         hasAddedPoint = False
@@ -468,8 +553,6 @@ class Edit():
         if not hasAddedPoint:
             newPoints.append(point)
         self.obj.Points = newPoints
-        FreeCAD.ActiveDocument.recompute()
-        self.resetTrackers()
 
     def addPointToCurve(self,point,info=None):
         import Part
@@ -521,21 +604,26 @@ class Edit():
             if ( self.obj.Closed ) and ( uNewPoint > uPoints[-1] ) :
                 pts.append(self.invpl.multVec(point))
         self.obj.Points = pts
-        FreeCAD.ActiveDocument.recompute()
-        self.resetTrackers()
 
-    def delPoint(self,point):
-        if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
-        if len(self.obj.Points) <= 2:
-            FreeCAD.Console.PrintWarning(translate("draft", "Active object must have more than two points/nodes")+"\n")
-        else:
-            pts = self.obj.Points
-            pts.pop(point)
-            self.obj.Points = pts
-            if Draft.getType(self.obj) =="BezCurve":
-                self.obj.Proxy.resetcontinuity(self.obj)
-            FreeCAD.ActiveDocument.recompute()
-            self.resetTrackers()
+    def delPoint(self,obj,event):
+        if not (Draft.getType(obj) in ["Wire","BSpline","BezCurve"]): return
+        if len(obj.Points) <= 2: return FreeCAD.Console.PrintWarning(
+            translate("draft", "Active object must have more than two points/nodes")+"\n")
+        pos = event.getPosition()
+        ep = self.getEditNodeIndex(pos)
+        if ep == None: return FreeCAD.Console.PrintWarning(
+            translate("draft", "Node not found\n"))
+        pts = obj.Points
+        pts.pop(ep)
+        self.obj.Points = pts
+        if Draft.getType(obj) =="BezCurve":
+            self.obj.Proxy.resetcontinuity(obj)
+        obj.recompute()
+        
+        # don't do tan/sym on DWire/BSpline!
+        self.editpoints = []
+        self.setEditPoints(self.obj)
+        self.resetTrackers()
 
     #---------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : GENERAL
@@ -574,6 +662,10 @@ class Edit():
             self.setPanelCutPts()
         elif objectType == "PanelSheet":
             self.setPanelSheetPts()
+        elif objectType == "Part" and obj.TypeId == "Part::Box":
+            self.setPartBoxPts()
+        elif objectType == "Part::Line" and obj.TypeId == "Part::Line":
+            self.setPartLinePts()
 
     def update(self,v):
         "apply the vector to the modified point and update self.obj"
@@ -594,6 +686,8 @@ class Edit():
         elif Draft.getType(self.obj) == "Structure": self.updateStructure(v)
         elif Draft.getType(self.obj) == "PanelCut": self.updatePanelCut(v)
         elif Draft.getType(self.obj) == "PanelSheet": self.updatePanelSheet(v)
+        elif Draft.getType(self.obj) == "Part::Line" and self.obj.TypeId == "Part::Line": self.updatePartLine(v)
+        elif Draft.getType(self.obj) == "Part" and self.obj.TypeId == "Part::Box": self.updatePartBox(v)
 
         FreeCAD.ActiveDocument.commitTransaction()
 
@@ -719,9 +813,10 @@ class Edit():
                 index,self.obj.ViewObject.LineColor,\
                 marker=marker))
 
-    def smoothBezPoint(self,point, style='Symmetric'):
+    def smoothBezPoint(self, point, style='Symmetric'):
         "called when changing the continuity of a knot"
         style2cont = {'Sharp':0,'Tangent':1,'Symmetric':2}
+        if point == None: return
         if not (Draft.getType(self.obj) == "BezCurve"):return
         pts = self.obj.Points
         deg = self.obj.Degree
@@ -881,7 +976,7 @@ class Edit():
                 p = self.obj.Placement
                 p.move(delta)
                 self.obj.Placement = p
-                self.getPlacement(self.obj)
+                self.setPlacement(self.obj)
                 self.updateCirclePts(0,1,0,0)
             if self.editing == 1:
                 self.obj.Radius = delta.Length
@@ -897,7 +992,7 @@ class Edit():
                     p = self.obj.Placement
                     p.move(delta)
                     self.obj.Placement = p
-                    self.getPlacement(self.obj)
+                    self.setPlacement(self.obj)
                     self.updateCirclePts(0,1,1,1)
                 elif self.editing == 1:
                     self.obj.FirstAngle=dangle
@@ -923,7 +1018,7 @@ class Edit():
                     self.obj.FirstAngle = -math.degrees(DraftVecUtils.angle(p1.sub(p0)))
                     self.obj.LastAngle = -math.degrees(DraftVecUtils.angle(p2.sub(p0)))
                     self.obj.Placement.Base = self.pl.multVec(p0)
-                    self.getPlacement(self.obj)
+                    self.setPlacement(self.obj)
                     self.updateCirclePts(1,0,0,1)
                     return
                 else:
@@ -942,7 +1037,7 @@ class Edit():
                     arc=Part.ArcOfCircle(p1,p2,p3)
                     e = arc.toShape()
                     self.obj.Placement.Base=arc.Center
-                    self.getPlacement(self.obj)
+                    self.setPlacement(self.obj)
                     self.obj.Radius = arc.Radius
                     delta = self.invpl.multVec(p1)
                     dangleF = math.degrees(math.atan2(delta[1],delta[0]))
@@ -1029,12 +1124,12 @@ class Edit():
         if Draft.getType(self.obj.Base) in ["Wire","Circle","Rectangle",
                                         "Polygon"]:
             self.obj=self.obj.Base
-            self.getPlacement(self.obj.Base)
+            self.setPlacement(self.obj.Base)
         elif Draft.getType(self.obj.Base) == "Sketch":
             if self.obj.Base.GeometryCount == 1:
                 self.editpoints.append(self.obj.Base.getPoint(0,1))
                 self.editpoints.append(self.obj.Base.getPoint(0,2))
-            self.getPlacement(self.obj.Base)
+            self.setPlacement(self.obj.Base)
         else:
             FreeCAD.Console.PrintWarning(translate("draft","Wall base sketch is too complex to edit: it's suggested to edit directly the sketch")+"\n")
 
@@ -1133,6 +1228,51 @@ class Edit():
             self.obj.TagPosition = self.invpl.multVec(v)
         else:
             self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
+    
+    # PART::LINE----------------------------------------------------------------
+
+    def setPartLinePts(self):
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(self.obj.X1,self.obj.Y1,self.obj.Z1)))
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(self.obj.X2,self.obj.Y2,self.obj.Z2)))
+    
+    def updatePartLine(self,v):
+        pt=self.invpl.multVec(v)
+        if self.editing == 0:
+            self.obj.X1 = pt.x
+            self.obj.Y1 = pt.y
+            self.obj.Z1 = pt.z
+        elif self.editing == 1:
+            self.obj.X2 = pt.x
+            self.obj.Y2 = pt.y
+            self.obj.Z2 = pt.z
+
+    # PART::BOX-----------------------------------------------------------------
+
+    def setPartBoxPts(self):
+        self.editpoints.append(self.obj.Placement.Base)
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(self.obj.Length,0,0)))
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(0,self.obj.Width,0)))
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(0,0,self.obj.Height)))
+
+    def updatePartBox(self,v):
+        import DraftVecUtils
+        delta = self.invpl.multVec(v)
+        if self.editing == 0:
+            self.obj.Placement.Base = v
+            self.setPlacement(self.obj)
+        elif self.editing == 1:
+            xVector = DraftVecUtils.project(delta,FreeCAD.Vector(1,0,0))
+            self.obj.Length = xVector.Length            
+        elif self.editing == 2:
+            xVector = DraftVecUtils.project(delta,FreeCAD.Vector(0,1,0))
+            self.obj.Width = xVector.Length            
+        elif self.editing == 3:
+            xVector = DraftVecUtils.project(delta,FreeCAD.Vector(0,0,1))
+            self.obj.Height = xVector.Length            
+        self.trackers[0].set(self.obj.Placement.Base)
+        self.trackers[1].set(self.pl.multVec(FreeCAD.Vector(self.obj.Length,0,0)))
+        self.trackers[2].set(self.pl.multVec(FreeCAD.Vector(0,self.obj.Width,0)))
+        self.trackers[3].set(self.pl.multVec(FreeCAD.Vector(0,0,self.obj.Height)))
 
 
 

@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -44,13 +44,19 @@ public:
     /// destructor
     virtual ~ViewProviderDimension();
 
-    App::PropertyFont     Font;
-    App::PropertyLength   Fontsize;
-    App::PropertyFloat    LineWidth;
-    App::PropertyColor    Color;
-    App::PropertyBool     FlipArrowheads;
-    App::PropertyBool     TiltText;
-    App::PropertyBool     ExtendToCenter;
+    App::PropertyFont        Font;
+    App::PropertyLength      Fontsize;
+    App::PropertyFloat       LineWidth;
+    App::PropertyColor       Color;
+
+    static const int STD_STYLE_ISO_ORIENTED   = 0;
+    static const int STD_STYLE_ISO_LEVELLED   = 1;
+    static const int STD_STYLE_ASME_REGULAR   = 2;
+    static const int STD_STYLE_ASME_INLINED   = 3;
+
+    App::PropertyEnumeration StandardAndStyle;
+    App::PropertyBool        ExtendToCenter;
+    App::PropertyBool        FlipArrowheads;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
@@ -61,6 +67,11 @@ public:
     virtual void onChanged(const App::Property* p);
 
     virtual TechDraw::DrawViewDimension* getViewObject() const;
+
+private:
+
+    static const char *StandardAndStyleEnums[];
+
 };
 
 } // namespace TechDrawGui

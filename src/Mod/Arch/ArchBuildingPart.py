@@ -368,11 +368,16 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
-        if prop == "Height":
+        # clean svg cache if needed
+        if prop in ["Placement","Group"]:
+            self.svgcache = None
+            self.shapecache = None
+
+        if (prop == "Height") and prop.Height.Value:
             for child in obj.Group:
                 if Draft.getType(child) in ["Wall","Structure"]:
                     if not child.Height.Value:
-                        #print("Executing ",child.Label)
+                        print("Executing ",child.Label)
                         child.Proxy.execute(child)
 
         elif prop == "Placement":
@@ -398,9 +403,10 @@ class BuildingPart(ArchIFC.IfcProduct):
                                 #print("angle before rotation:",shape.Placement.Rotation.Angle)
                                 #print("rotation angle:",math.degrees(deltar.Angle))
                                 shape.rotate(DraftVecUtils.tup(obj.Placement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
-                                #print("angle after rotation:",shape.Placement.Rotation.Angle)
+                                print("angle after rotation:",shape.Placement.Rotation.Angle)
                                 child.Placement = shape.Placement
                             if deltap:
+                                print("moving child")
                                 child.Placement.move(deltap)
 
     def execute(self,obj):
