@@ -140,6 +140,7 @@ SET(PathTests_SRCS
     PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathGeom.py
+    PathTests/TestPathHelix.py
     PathTests/TestPathLog.py
     PathTests/TestPathOpTools.py
     PathTests/TestPathPost.py
