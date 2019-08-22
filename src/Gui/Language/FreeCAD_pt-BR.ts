@@ -1244,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Mostrar a tela de splash ao iniciar</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Alternar para a guia da janela de relatório:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Auto-carregar módulo ao iniciar:</translation>
     </message>
@@ -1266,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Size of recent file list</source>
       <translation>Tamanho da lista de arquivos recentes</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Estilo de janela:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1624,6 +1616,53 @@ Por favor especifique outro diretório.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Fechar</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Procurar...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Procurar</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>O que encontrar:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Procurar em</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Grupos</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Nomes</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Values</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Encontrar toda a string somente</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Localizar seguinte</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>Não encontrado</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>Não foi possível encontrar o texto: %1</translation>
     </message>
   </context>
   <context>
@@ -2719,10 +2758,6 @@ Por favor especifique outro diretório.</translation>
       <translation>Comandos da interface gráfica </translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Gravar os comandos da interface gráfica</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Gravar como comentário</translation>
     </message>
@@ -2737,6 +2772,10 @@ Por favor especifique outro diretório.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Executar macros no ambiente local</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Gravar comandos na GUI</translation>
     </message>
   </context>
   <context>
@@ -2764,10 +2803,6 @@ Por favor especifique outro diretório.</translation>
     <message>
       <source>Unit</source>
       <translation>Unidade</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Sistema do usuário:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2832,6 +2867,10 @@ Por favor especifique outro diretório.</translation>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Sistema de unidades:</translation>
     </message>
   </context>
   <context>
@@ -2990,7 +3029,7 @@ Por favor especifique outro diretório.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt; Nota:&lt;/span&gt; &lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; As alterações tornam-se ativas na próxima vez qeu você iniciar o FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;&lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt; Nota:&lt;/span&gt; &lt;span style="font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; As alterações tornam-se ativas na próxima vez que você iniciar o FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
@@ -3875,12 +3914,12 @@ Deseja salvar as alterações?</translation>
       <translation>Arraste com dois dedos no monitor, ou pressione o botão direito do rato.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arraste a tela com um dedo ou pressione o botão esquerdo do rato. Em outros modos de edição ou no Sketcher, pressione também Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Pinça (Coloque dois dedos na tela e arraste-os afastando/aproximando um do outro). Ou o botão de rolagem do meio do mouse. Ou PgUp/PgDown no teclado.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4528,12 +4567,12 @@ Do you want to specify another directory?</source>
       <translation>Incrementos</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Incremento de deslocamento: </translation>
+      <source>Translation Increment:</source>
+      <translation>Incremento de translação:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Incremento de rotação: </translation>
+      <source>Rotation Increment:</source>
+      <translation>Incremento de rotação:</translation>
     </message>
   </context>
   <context>

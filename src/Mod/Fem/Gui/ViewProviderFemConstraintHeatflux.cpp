@@ -28,6 +28,8 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
@@ -38,7 +40,6 @@
 # include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoMaterialBinding.h>
-# include <Precision.hxx>
 #endif
 
 #include "Mod/Fem/App/FemConstraintHeatflux.h"
@@ -119,7 +120,7 @@ void ViewProviderFemConstraintHeatflux::updateData(const App::Property* prop)
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
         // Note: Points and Normals are always updated together
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             //Define base and normal directions

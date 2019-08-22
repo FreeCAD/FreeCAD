@@ -36,7 +36,7 @@ class MDIViewPage;
 
 class TechDrawGuiExport ViewProviderTemplate : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderTemplate);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderTemplate);
 
 public:
     /// constructor
@@ -44,20 +44,22 @@ public:
     /// destructor
     virtual ~ViewProviderTemplate();
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual void attach(App::DocumentObject *) override;
+    virtual void setDisplayMode(const char* ModeName) override;
+    virtual bool useNewSelectionModel(void) const override {return false;}
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property *prop);
-    virtual void hide(void);
-    virtual void show(void);
-    virtual bool isShow(void) const;
+    virtual std::vector<std::string> getDisplayModes(void) const override;
+    virtual void updateData(const App::Property*) override;
+    virtual void onChanged(const App::Property *prop) override;
+    virtual void hide(void) override;
+    virtual void show(void) override;
+    virtual bool isShow(void) const override;
     QGITemplate* getQTemplate(void);
     TechDraw::DrawTemplate* getTemplate() const;
     MDIViewPage* getMDIViewPage(void);
+    virtual Gui::MDIView *getMDIView() override;
 
+    void setMarkers(bool state);
 };
 
 } // namespace TechDrawGui

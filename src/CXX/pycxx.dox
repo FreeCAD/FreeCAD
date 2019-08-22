@@ -1,5 +1,35 @@
 /**
    \defgroup PYCXX PyCXX
    \ingroup EMBEDDED
+   \brief C++ facilities to make it easier to write Python extensions
+
+   CXX/Objects is a set of C++ facilities to make it easier to write 
+   Python extensions. The chief way in which PyCXX makes it easier to 
+   write Python extensions is that it greatly increases the probability 
+   that your program will not make a reference-counting error and will 
+   not have to continually check error returns from the Python C API. 
+   CXX/Objects integrates Python with C++ in these ways:
+
+   C++ exception handling is relied on to detect errors and clean up. 
+   In a complicated function this is often a tremendous problem when 
+   writing in C. With PyCXX, we let the compiler keep track of what 
+   objects need to be dereferenced when an error occurs.
+   The Standard Template Library (STL) and its many algorithms plug and 
+   play with Python containers such as lists and tuples.
+   The optional CXX/Extensions facility allows you to replace the 
+   clumsy C tables with objects and method calls that define your 
+   modules and extension objects.
+
+   PyCXX documentation is split into <a 
+   HREF="http://cxx.sourceforge.net/PyCXX-Python3.html">Python 3</A> and 
+   <A HREF="http://cxx.sourceforge.net/PyCXX-Python2.html">Python 2</A> 
+   versions. The Python 3 documentation is the most accurate.
+
+   Latest <A HREF="http://cxx.sourceforge.net/README.html">PyCXX 
+   README</A> file
+
+   The source code is released under the <A
+   HREF="https://sourceforge.net/p/cxx/code/HEAD/tree/trunk/CXX/COPYRIGHT">BSD
+   License</A>.
 
  */

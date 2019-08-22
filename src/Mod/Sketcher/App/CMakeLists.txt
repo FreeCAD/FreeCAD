@@ -36,6 +36,8 @@ set(Sketcher_LIBS
 
 generate_from_xml(SketchObjectSFPy)
 generate_from_xml(SketchObjectPy)
+generate_from_xml(SketchGeometryExtensionPy)
+generate_from_xml(ExternalGeometryExtensionPy)
 generate_from_xml(ConstraintPy)
 generate_from_xml(SketchPy)
 
@@ -50,6 +52,10 @@ SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 SET(Features_SRCS
     SketchObjectSF.cpp
     SketchObjectSF.h
+    SketchGeometryExtension.cpp
+    SketchGeometryExtension.h
+    ExternalGeometryExtension.cpp
+    ExternalGeometryExtension.h
     SketchObject.cpp
     SketchObject.h
     SketchAnalysis.h
@@ -71,6 +77,10 @@ SET(Python_SRCS
     SketchObjectSFPyImp.cpp
     SketchObjectPy.xml
     SketchObjectPyImp.cpp
+    SketchGeometryExtensionPy.xml
+    SketchGeometryExtensionPyImp.cpp
+    ExternalGeometryExtensionPy.xml
+    ExternalGeometryExtensionPyImp.cpp
     ConstraintPyImp.cpp
     ConstraintPy.xml
     SketchPy.xml

@@ -133,22 +133,20 @@ def removeFromComponent(compobject,subobject):
 
 
 
-class Component:
-
+class Component(ArchIFC.IfcProduct):
 
     "The default Arch Component object"
 
-    def __init__(self,obj):
-
+    def __init__(self, obj):
         obj.Proxy = self
-        Component.setProperties(self,obj)
+        Component.setProperties(self, obj)
         self.Type = "Component"
 
-    def setProperties(self,obj):
+    def setProperties(self, obj):
         
         "Sets the needed properties of this object"
 
-        ArchIFC.setProperties(obj)
+        ArchIFC.IfcProduct.setProperties(self, obj)
 
         pl = obj.PropertiesList
         if not "Base" in pl:
@@ -195,9 +193,8 @@ class Component:
         #self.MoveWithHost = False
         self.Type = "Component"
 
-    def onDocumentRestored(self,obj):
-
-        Component.setProperties(self,obj)
+    def onDocumentRestored(self, obj):
+        Component.setProperties(self, obj)
 
     def execute(self,obj):
 
@@ -210,24 +207,20 @@ class Component:
             obj.Shape = shape
 
     def __getstate__(self):
-
         # for compatibility with 0.17
         if hasattr(self,"Type"):
             return self.Type
         return "Component"
 
     def __setstate__(self,state):
-
         return None
 
     def onBeforeChange(self,obj,prop):
-
         if prop == "Placement":
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
-    def onChanged(self,obj,prop):
-
-        ArchIFC.onChanged(obj, prop)
+    def onChanged(self, obj, prop):
+        ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
         if prop == "Placement":
             if hasattr(self,"oldPlacement"):
@@ -620,17 +613,18 @@ class Component:
     def computeAreas(self,obj):
 
         "computes the area properties"
-        if not obj.Shape:
-            return
-        if obj.Shape.isNull():
-            return
-        if not obj.Shape.isValid():
-            return
-        if not obj.Shape.Faces:
+
+        if (not obj.Shape) or obj.Shape.isNull() or (not obj.Shape.isValid()) or (not obj.Shape.Faces):
+            obj.VerticalArea = 0
+            obj.HorizontalArea = 0
+            obj.PerimeterLength = 0
             return
         import Drawing,Part
         fmax = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("MaxComputeAreas",20)
         if len(obj.Shape.Faces) > fmax:
+            obj.VerticalArea = 0
+            obj.HorizontalArea = 0
+            obj.PerimeterLength = 0
             return
         a = 0
         fset = []
@@ -639,6 +633,9 @@ class Component:
                 ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
             except Part.OCCError:
                 print("Debug: Error computing areas for ",obj.Label,": normalAt() Face ",i)
+                obj.VerticalArea = 0
+                obj.HorizontalArea = 0
+                obj.PerimeterLength = 0
                 return
             else:
                 if (ang > 1.57) and (ang < 1.571):
@@ -678,6 +675,56 @@ class Component:
                     if obj.PerimeterLength.Value != self.flatarea.Faces[0].OuterWire.Length:
                         obj.PerimeterLength = self.flatarea.Faces[0].OuterWire.Length
 
+    def isStandardCase(self,obj):
+
+        # Standard Case has been set manually by the user
+        if obj.IfcType.endswith("Standard Case"):
+            return True
+        # Try to guess
+        import ArchIFC
+        if obj.IfcType + " Standard Case" in ArchIFC.IfcTypes:
+            # this type has a standard case
+            if obj.Additions or obj.Subtractions:
+                return False
+            if obj.Placement.Rotation.Axis.getAngle(FreeCAD.Vector(0,0,1)) > 0.01:
+                # reject rotated objects
+                return False
+            if obj.CloneOf:
+                return obj.CloneOf.Proxy.isStandardCase(obj.CloneOf)
+            if obj.IfcType == "Wall":
+                # rules:
+                # - vertically extruded
+                # - single baseline or no baseline
+                if (not obj.Base) or (len(obj.Base.Shape.Edges) == 1):
+                    if hasattr(obj,"Normal"):
+                        if obj.Normal in [FreeCAD.Vector(0,0,0),FreeCAD.Vector(0,0,1)]:
+                            return True
+            elif obj.IfcType in ["Beam","Column","Slab"]:
+                # rules:
+                # - have a single-wire profile or no profile
+                # - extrusion direction is perpendicular to the profile
+                if obj.Base and (len(obj.Base.Shape.Wires) != 1):
+                    return False
+                if not hasattr(obj,"Normal"):
+                    return False
+                if hasattr(obj,"Tool") and obj.Tool:
+                    return False
+                if obj.Normal == FreeCAD.Vector(0,0,0):
+                    return True
+                elif len(obj.Base.Shape.Wires) == 1:
+                    import DraftGeomUtils
+                    n = DraftGeomUtils.getNormal(obj.Base.Shape)
+                    if n:
+                        if (n.getAngle(obj.Normal) < 0.01) or (abs(n.getAngle(obj.Normal)-3.14159) < 0.01):
+                            return True
+            # TODO: Support windows and doors
+            # rules:
+            # - must have a rectangular shape
+            # - must have a host
+            # - must be parallel to the host plane
+            # - must have an IfcWindowType and IfcRelFillsElement (to be implemented in IFC exporter)
+            return False
+
 
 class ViewProviderComponent:
 
@@ -687,12 +734,19 @@ class ViewProviderComponent:
 
         vobj.Proxy = self
         self.Object = vobj.Object
+        self.setProperties(vobj)
+        
+    def setProperties(self,vobj):
+
+        if not "UseMaterialColor" in vobj.PropertiesList:
+            vobj.addProperty("App::PropertyBool","UseMaterialColor","Component",QT_TRANSLATE_NOOP("App::Property","Use the material color as this object's shape color, if available"))
+            vobj.UseMaterialColor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("UseMaterialColor",True)
 
     def updateData(self,obj,prop):
 
         #print(obj.Name," : updating ",prop)
         if prop == "Material":
-            if obj.Material:
+            if obj.Material and ( (not hasattr(obj.ViewObject,"UseMaterialColor")) or obj.ViewObject.UseMaterialColor):
                 if hasattr(obj.Material,"Material"):
                     if 'DiffuseColor' in obj.Material.Material:
                         if "(" in obj.Material.Material['DiffuseColor']:

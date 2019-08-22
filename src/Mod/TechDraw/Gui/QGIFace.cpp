@@ -285,7 +285,7 @@ QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d
     return fillItem;
 }
 
-QGraphicsPathItem*  QGIFace::geomToLine(TechDrawGeometry::BaseGeom* base, LineSet& ls)
+QGraphicsPathItem*  QGIFace::geomToLine(TechDraw::BaseGeom* base, LineSet& ls)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
     Base::Vector3d start(base->getStartPoint().x,
@@ -302,7 +302,7 @@ QGraphicsPathItem*  QGIFace::geomToLine(TechDrawGeometry::BaseGeom* base, LineSe
 
 
 //! make a fragment (length = remain) of a dashed line, with pattern starting at +offset
-QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDrawGeometry::BaseGeom* base, double remain, LineSet& ls)
+QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDraw::BaseGeom* base, double remain, LineSet& ls)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
     Base::Vector3d start(base->getStartPoint().x,
@@ -517,6 +517,7 @@ void QGIFace::buildSvgHatch()
     before.append(QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT));
     after.append(QString::fromStdString(SVGCOLPREFIX + m_svgCol));
     QByteArray colorXML = m_svgXML.replace(before,after);
+    long int tileCount = 0;
     for (int iw = 0; iw < int(nw); iw++) {
         for (int ih = 0; ih < int(nh); ih++) {
             QGCustomSvg* tile = new QGCustomSvg();
@@ -525,6 +526,14 @@ void QGIFace::buildSvgHatch()
                 tile->setParentItem(m_rect);
                 tile->setPos(iw*wTile,-h + ih*hTile);
             }
+            tileCount++;
+            if (tileCount > m_maxTile) {
+                Base::Console().Warning("SVG tile count exceeded: %ld\n",tileCount);
+                break;
+            }
+        }
+        if (tileCount > m_maxTile) {
+            break;
         }
     }
 }
@@ -611,6 +620,10 @@ void QGIFace::getParameters(void)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
 
     m_maxSeg = hGrp->GetInt("MaxSeg",10000l);
+
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    m_maxTile = hGrp->GetInt("MaxSVGTile",10000l);
 }
 
 
@@ -627,6 +640,7 @@ QPainterPath QGIFace::shape() const
 void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
+//    painter->drawRect(boundingRect());          //good for debugging
 
     m_brush.setStyle(m_fillStyle);
     m_brush.setColor(m_fillColor);

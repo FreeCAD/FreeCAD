@@ -237,7 +237,7 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawGuiUtil::get3DDirAndRot()
     return result;
 }
 
-std::pair<Base::Vector3d,Base::Vector3d> DrawGuiUtil::getProjDirFromFace(Part::Feature* obj, std::string faceName)
+std::pair<Base::Vector3d,Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::DocumentObject* obj, std::string faceName)
 {
     std::pair<Base::Vector3d,Base::Vector3d> d3Dirs = get3DDirAndRot();
     Base::Vector3d d3Up = (d3Dirs.first).Cross(d3Dirs.second);
@@ -248,15 +248,13 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawGuiUtil::getProjDirFromFace(Part::F
     projDir = d3Dirs.first;
     rotVec = d3Dirs.second;
 
-    if (DrawUtil::getGeomTypeFromName(faceName) != "Face") {
+    auto ts = Part::Feature::getShape(obj,faceName.c_str(),true);
+    if(ts.IsNull() || ts.ShapeType()!=TopAbs_FACE) {
         Base::Console().Warning("getProjDirFromFace(%s) is not a Face\n",faceName.c_str());
         return dirs;
     }
-    Part::TopoShape ts = obj->Shape.getShape();
-    ts.setPlacement(obj->globalPlacement());
-    TopoDS_Shape subShape = ts.getSubShape(faceName.c_str());
 
-    const TopoDS_Face& face = TopoDS::Face(subShape);
+    const TopoDS_Face& face = TopoDS::Face(ts);
     TopAbs_Orientation orient = face.Orientation();
     BRepAdaptor_Surface adapt(face);
     

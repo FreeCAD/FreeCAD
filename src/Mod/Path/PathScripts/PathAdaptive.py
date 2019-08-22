@@ -55,8 +55,6 @@ scenePathNodes = [] #for scene cleanup aftewards
 topZ = 10
 
 def sceneDrawPath(path, color=(0, 0, 1)):
-    global sceneGraph
-    global scenePathNodes
     coPoint = coin.SoCoordinate3()
 
     pts = []
@@ -76,8 +74,6 @@ def sceneDrawPath(path, color=(0, 0, 1)):
     scenePathNodes.append(pathNode) #for scene cleanup afterwards
 
 def sceneClean():
-    global scenePathNodes
-
     for n in scenePathNodes:
         sceneGraph.removeChild(n)
 
@@ -91,10 +87,11 @@ def discretize(edge, flipDirection = False):
     return pts
 
 def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
+    # pylint: disable=unused-argument
     if len(adaptiveResults) == 0 or len(adaptiveResults[0]["AdaptivePaths"]) == 0:
         return
 
-    minLiftDistance = op.tool.Diameter
+    # minLiftDistance = op.tool.Diameter
     helixRadius = 0
     for region in adaptiveResults:
         p1 =  region["HelixCenterPoint"]
@@ -126,7 +123,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
     if finish_step > stepDown:
         finish_step = stepDown
-        
+
     depth_params = PathUtils.depth_params(
             clearance_height=obj.ClearanceHeight.Value,
             safe_height=obj.SafeHeight.Value,
@@ -138,6 +135,9 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
 
 
+    # ml: this is dangerous because it'll hide all unused variables hence forward
+    #     however, I don't know wht lx and ly signify so I leave them for now
+    # pylint: disable=unused-variable
     lx = adaptiveResults[0]["HelixCenterPoint"][0]
     ly = adaptiveResults[0]["HelixCenterPoint"][1]
     lz = passStartDepth
@@ -213,13 +213,13 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
                     x = region["HelixCenterPoint"][0] + r
                     y = region["HelixCenterPoint"][1]
-                    
+
                     curDep = passStartDepth
                     while curDep > (passEndDepth + depthPerOneCircle):
                         op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": curDep - (depthPerOneCircle/2), "I": -r, "F": op.horizFeed}))
                         op.commandlist.append(Path.Command("G2", { "X": x, "Y": y, "Z": curDep - depthPerOneCircle, "I": r, "F": op.horizFeed}))
                         curDep = curDep - depthPerOneCircle
-                    
+
                     lastStep = curDep - passEndDepth
                     if lastStep > (depthPerOneCircle/2):
                         op.commandlist.append(Path.Command("G2", { "X": x - (2*r), "Y": y, "Z": curDep - (lastStep/2), "I": -r, "F": op.horizFeed}))
@@ -252,7 +252,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     x = pt[0]
                     y = pt[1]
 
-                    dist = math.sqrt((x-lx)*(x-lx) + (y-ly)*(y-ly))
+                    # dist = math.sqrt((x-lx)*(x-lx) + (y-ly)*(y-ly))
 
                     if motionType == area.AdaptiveMotionType.Cutting:
                         z = passEndDepth
@@ -307,6 +307,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     lz = z
 
 def Execute(op,obj):
+    # pylint: disable=global-statement
     global sceneGraph
     global topZ
 
@@ -400,11 +401,11 @@ def Execute(op,obj):
         adaptiveResults = None
 
         if obj.AdaptiveOutputState != None and obj.AdaptiveOutputState != "":
-             adaptiveResults = obj.AdaptiveOutputState
+            adaptiveResults = obj.AdaptiveOutputState
 
         if json.dumps(obj.AdaptiveInputState) != json.dumps(inputStateObject):
-             inputStateChanged = True
-             adaptiveResults = None
+            inputStateChanged = True
+            adaptiveResults = None
 
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
@@ -536,5 +537,5 @@ def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Adaptive operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = PathAdaptive(obj,name)
+    obj.Proxy = PathAdaptive(obj,name)
     return obj

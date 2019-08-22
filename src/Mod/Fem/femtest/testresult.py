@@ -34,20 +34,31 @@ from os.path import join
 class TestResult(unittest.TestCase):
     fcc_print('import TestResult')
 
-    def setUp(self):
-        # init, is executed before every test
-        self.doc_name = "TestResult"
-        try:
-            FreeCAD.setActiveDocument(self.doc_name)
-        except:
+    # ********************************************************************************************
+    def setUp(
+        self
+    ):
+        # setUp is executed before every test
+        # setting up a document to hold the tests
+        self.doc_name = self.__class__.__name__
+        if FreeCAD.ActiveDocument:
+            if FreeCAD.ActiveDocument.Name != self.doc_name:
+                FreeCAD.newDocument(self.doc_name)
+        else:
             FreeCAD.newDocument(self.doc_name)
-        finally:
-            FreeCAD.setActiveDocument(self.doc_name)
+        FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
-    def test_read_frd_massflow_networkpressure(self):
+    # ********************************************************************************************
+    def test_read_frd_massflow_networkpressure(
+        self
+    ):
         # read data from frd file
-        frd_file = join(testtools.get_fem_test_home_dir(), 'ccx', 'Flow1D_thermomech.frd')
+        frd_file = join(
+            testtools.get_fem_test_home_dir(),
+            'ccx',
+            'Flow1D_thermomech.frd'
+        )
         from feminout.importCcxFrdResults import read_frd_result as read_frd
         frd_content = read_frd(frd_file)
 
@@ -119,8 +130,14 @@ class TestResult(unittest.TestCase):
             12: (12, 26, 13)
         }
         '''
-        efc['Tria3Elem'] = efc['Tria6Elem'] = efc['Quad4Elem'] = efc['Quad8Elem'] = {}  # faces
-        efc['Tetra4Elem'] = efc['Tetra10Elem'] = efc['Hexa8Elem'] = efc['Hexa20Elem'] = efc['Penta6Elem'] = efc['Penta15Elem'] = {}  # volumes
+        # faces
+        efc['Tria3Elem'] = efc['Tria6Elem'] = {}
+        efc['Quad4Elem'] = efc['Quad8Elem'] = {}
+        # volumes
+        efc['Tetra4Elem'] = efc['Tetra10Elem'] = {}
+        efc['Hexa8Elem'] = efc['Hexa20Elem'] = {}
+        efc['Penta6Elem'] = efc['Penta15Elem'] = {}
+
         efc['Results'] = [
             {'time': 0.00390625},
             {'time': 0.0078125},
@@ -217,21 +234,61 @@ class TestResult(unittest.TestCase):
         print(expected_npressure)
 
         # tests
-        self.assertEqual(frd_content_len, expected_frd_content_len, "Length's of read frd data values are unexpected")
-        self.assertEqual(frd_content['Nodes'], expected_frd_content['Nodes'], "Values of read node data are unexpected")
-        self.assertEqual(frd_content['Seg2Elem'], expected_frd_content['Seg2Elem'], "Values of read Seg2 data are unexpected")
-        self.assertEqual(frd_content['Seg3Elem'], expected_frd_content['Seg3Elem'], "Values of read Seg3 data are unexpected")
-        self.assertEqual(res_len, expected_res_len, "Length's of read result data values are unexpected")
-        self.assertEqual(read_mflow, expected_mflow, "Values of read mflow result data are unexpected")
-        self.assertEqual(read_npressure, expected_npressure, "Values of read npressure result data are unexpected")
+        self.assertEqual(
+            frd_content_len,
+            expected_frd_content_len,
+            "Length's of read frd data values are unexpected"
+        )
+        self.assertEqual(
+            frd_content['Nodes'],
+            expected_frd_content['Nodes'],
+            "Values of read node data are unexpected"
+        )
+        self.assertEqual(
+            frd_content['Seg2Elem'],
+            expected_frd_content['Seg2Elem'],
+            "Values of read Seg2 data are unexpected"
+        )
+        self.assertEqual(
+            frd_content['Seg3Elem'],
+            expected_frd_content['Seg3Elem'],
+            "Values of read Seg3 data are unexpected"
+        )
+        self.assertEqual(
+            res_len,
+            expected_res_len,
+            "Length's of read result data values are unexpected"
+        )
+        self.assertEqual(
+            read_mflow,
+            expected_mflow,
+            "Values of read mflow result data are unexpected"
+        )
+        self.assertEqual(
+            read_npressure,
+            expected_npressure,
+            "Values of read npressure result data are unexpected"
+        )
 
-    def get_stress_values(self):
+    # ********************************************************************************************
+    def get_stress_values(
+        self
+    ):
         # node 5 von calculix cantilver 3D example
-        # doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'data/examples/FemCalculixCantilever3D.FCStd')
+        # doc = FreeCAD.open(
+        #     FreeCAD.ConfigGet("AppHomePath") + 'data/examples/FemCalculixCantilever3D.FCStd'
+        # )
         # doc.Box_Mesh.FemMesh.Nodes[5]
         # Vector (0.0, 1000.0, 0.0)
         # res = doc.CalculiX_static_results
-        # stress = (res.NodeStressXX[4], res.NodeStressYY[4], res.NodeStressZZ[4], res.NodeStressXY[4], res.NodeStressXZ[4],res.NodeStressYZ[4])
+        # stress = (
+        #     res.NodeStressXX[4],
+        #     res.NodeStressYY[4],
+        #     res.NodeStressZZ[4],
+        #     res.NodeStressXY[4],
+        #     res.NodeStressXZ[4],
+        #     res.NodeStressYZ[4]
+        # )
         stress = (
             -4.52840E+02,  # Sxx
             -1.94075E+02,  # Syy
@@ -242,30 +299,155 @@ class TestResult(unittest.TestCase):
         )
         return stress
 
-    def test_stress_von_mises(self):
+    # ********************************************************************************************
+    def test_stress_von_mises(
+        self
+    ):
         expected_mises = 283.2082
         from femresult.resulttools import calculate_von_mises as vm
         mises = vm(self.get_stress_values())
         # fcc_print(round(mises, 4))
-        self.assertEqual(round(mises, 4), expected_mises, "Calculated von Mises stress is not the expected value.")
+        self.assertEqual(
+            round(mises, 4),
+            expected_mises,
+            "Calculated von Mises stress is not the expected value."
+        )
 
-    def test_stress_principal(self):
+    # ********************************************************************************************
+    def test_stress_principal_std(
+        self
+    ):
         expected_principal = (-178.0076, -194.0749, -468.9075, 145.4499)
-        from femresult.resulttools import calculate_principal_stress as pr
+        from femresult.resulttools import calculate_principal_stress_std as pr
         prin = pr(self.get_stress_values())
-        rounded_prin = (round(prin[0], 4), round(prin[1], 4), round(prin[2], 4), round(prin[3], 4))
+        rounded_prin = (
+            round(prin[0], 4),
+            round(prin[1], 4),
+            round(prin[2], 4),
+            round(prin[3], 4)
+        )
         # fcc_print(rounded_prin)
-        self.assertEqual(rounded_prin, expected_principal, "Calculated principal stresses are not the expected values.")
+        self.assertEqual(
+            rounded_prin,
+            expected_principal,
+            "Calculated principal stresses are not the expected values."
+        )
 
-    def test_disp_abs(self):
+    # ********************************************************************************************
+    def test_stress_principal_reinforced(
+        self
+    ):
+        expected_principal = (-178.0076, -194.0749, -468.9075, 145.4499)
+        from femresult.resulttools import calculate_principal_stress_reinforced as prrc
+        prin = prrc(self.get_stress_values())
+        rounded_prin = (
+            round(prin[0], 4),
+            round(prin[1], 4),
+            round(prin[2], 4),
+            round(prin[3], 4))
+        # fcc_print(rounded_prin)
+        self.assertEqual(
+            rounded_prin,
+            expected_principal,
+            "Calculated principal reinforced stresses are not the expected values."
+        )
+
+    # ********************************************************************************************
+    def test_rho(
+        self
+    ):
+        data = (
+            (
+                # Case1: Governing Eq.14
+                (2.000, -2.000, 5.000, 6.000, -4.000, 2.000),
+                (0.02400, 0.00400, 0.01400)
+            ),
+            (
+                # Case2: Governing Eq.10+
+                (-3.000, -7.000, 0.000, 6.000, -4.000, 2.000),
+                (0.00886, 0.00000, 0.00571),
+            ),
+            (
+                # Case3: Governing Eq.5
+                (-1.000, -7.000, 10.000, 0.000, 0.000, 5.000),
+                (0.00000, 0.00000, 0.02714)
+            ),
+            (
+                # Case4: Governing Eq.13
+                (3.000, 0.000, 10.000, 0.000, 5.000, 0.000),
+                (0.01600, 0.00000, 0.03000)
+            ),
+            (
+                # Case5: Governing Eq.11-
+                (10.000, 7.000, -3.000, 3.000, 1.000, -2.000),
+                (0.02533, 0.02133, 0.00000)
+            ),
+            (
+                # Case6: Governing Eq.14
+                (4.000, -7.000, 3.000, 7.000, 0.000, -5.000),
+                (0.02200, 0.01000, 0.01600)
+            ),
+            (
+                # Case7: Governing Eq.14
+                (8.000, -14.000, 6.000, 14.000, 0.000, -10.000),
+                (0.04400, 0.02000, 0.03200)
+            ),
+            (
+                # Case8: Governing Eq.17
+                (1.000, 0.000, 3.000, 10.000, -8.000, 7.000),
+                (0.02486, 0.01750, 0.01720)
+            ),
+            (
+                # Case9: Governing Eq.13
+                (0.000, 0.000, 0.000, 10.000, 8.000, 7.000),
+                (0.03600, 0.03400, 0.03000)
+            ),
+            (
+                # Case10: Governing Eq.13
+                (15.000, 0.000, 0.000, 0.000, 0.000, 0.000),
+                (0.03000, 0.00000, 0.00000)
+            ),
+            (
+                # Case11: Governing Eq.13
+                (0.000, 0.000, 0.000, 5.000, 0.000, 0.000),
+                (0.01000, 0.01000, 0.00000)
+            )
+        )
+
+        from femresult.resulttools import calculate_rho as calrho
+        for i, case in enumerate(data):
+            res = calrho(case[0], 500)
+            rhores = (
+                round(res[0], 5),
+                round(res[1], 5),
+                round(res[2], 5)
+            )
+            # fcc_print('Case{}: {}'.format(i + 1 , rhores))
+            self.assertEqual(
+                rhores, case[1],
+                "Calculated rho are not the expected Case{}."
+                .format(i + 1)
+            )
+
+    # ********************************************************************************************
+    def test_disp_abs(
+        self
+    ):
         expected_dispabs = 87.302986
-        disp_xyz = [FreeCAD.Vector(8.12900E+00, 3.38889E-02, -8.69237E+01)]  # x, y, z in node 4 of CalculiX cantilver face load
+        # x, y, z in node 4 of CalculiX cantilver face load
+        disp_xyz = [FreeCAD.Vector(8.12900E+00, 3.38889E-02, -8.69237E+01)]
         from femresult.resulttools import calculate_disp_abs as dp
         disp_abs = round(dp(disp_xyz)[0], 6)
         # fcc_print(disp_abs)
-        self.assertEqual(disp_abs, expected_dispabs, "Calculated displacement abs are not the expected values.")
+        self.assertEqual(
+            disp_abs,
+            expected_dispabs,
+            "Calculated displacement abs are not the expected values."
+        )
 
-    def tearDown(self):
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
         # clearance, is executed after every test
         FreeCAD.closeDocument(self.doc_name)
-        pass

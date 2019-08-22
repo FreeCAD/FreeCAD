@@ -6,14 +6,28 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>287</width>
-    <height>415</height>
+    <width>448</width>
+    <height>364</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Schedule definition</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Schedule name:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="lineEditName"/>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="QTableWidget" name="list">
      <property name="cornerButtonEnabled">
@@ -28,8 +42,14 @@
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>120</number>
      </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderStretchLastSection">
+      <bool>false</bool>
      </attribute>
      <column>
       <property name="text">
@@ -41,10 +61,10 @@
      </column>
      <column>
       <property name="text">
-       <string>Value</string>
+       <string>Property</string>
       </property>
       <property name="toolTip">
-       <string>The value to retrieve for each object. Can be &quot;count&quot; to count the objects, or object.Shape.Volume to retrieve a certain property.</string>
+       <string>The property to retrieve from each object. Can be &quot;count&quot; to count the objects, or property names like &quot;Length&quot; or &quot;Shape.Volume&quot; to retrieve a certain property.</string>
       </property>
      </column>
      <column>
@@ -52,7 +72,7 @@
        <string>Unit</string>
       </property>
       <property name="toolTip">
-       <string>An optional unit to express the resulting value. Ex: m^3</string>
+       <string>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</string>
       </property>
      </column>
      <column>
@@ -60,7 +80,7 @@
        <string>Objects</string>
       </property>
       <property name="toolTip">
-       <string>An optional semicolon (;) separated list of object names to be considered by this operation. If the list contains groups, children will be added</string>
+       <string>An optional semicolon (;) separated list of object names internal names, not labels) to be considered by this operation. If the list contains groups, children will be added. Leave blank to use all objects from the document</string>
       </property>
      </column>
      <column>
@@ -68,10 +88,34 @@
        <string>Filter</string>
       </property>
       <property name="toolTip">
-       <string>A semicolon (;) separated list of type:value filters (see documentation for filters syntax)</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter. Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Descriptionl:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DON't have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </column>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="Gui::PrefCheckBox" name="checkSpreadsheet">
+       <property name="toolTip">
+        <string>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</string>
+       </property>
+       <property name="text">
+        <string>Associate spreadsheet</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefCheckBox" name="checkDetailed">
+       <property name="toolTip">
+        <string>If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</string>
+       </property>
+       <property name="text">
+        <string>Detailed results</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -81,7 +125,7 @@
         <string>Adds a line below the selected line/cell</string>
        </property>
        <property name="text">
-        <string>Add</string>
+        <string>Add row</string>
        </property>
        <property name="icon">
         <iconset theme="add">
@@ -96,7 +140,7 @@
         <string>Deletes the selected line</string>
        </property>
        <property name="text">
-        <string>Del</string>
+        <string>Del row</string>
        </property>
        <property name="icon">
         <iconset theme="remove">
@@ -130,7 +174,7 @@
         <string>Put selected objects into the &quot;Objects&quot; column of the selected row</string>
        </property>
        <property name="text">
-        <string>Selection</string>
+        <string>Add selection</string>
        </property>
       </widget>
      </item>
@@ -152,8 +196,7 @@
      <item>
       <widget class="QPushButton" name="buttonExport">
        <property name="toolTip">
-        <string>This exports the contents of the &quot;Result&quot; spreadsheet to a CSV file. In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&gt; New sheet -&gt; From file -&gt; Link
-        Note: as of LibreOffice v5.4.5.1 the correct path now is: Sheets tab bar -&gt; Insert Sheet... -&gt; From file -&gt; Browse...</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v5.4.5.1 the correct path now is: Sheets tab bar -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
         <string>Export</string>
@@ -167,8 +210,27 @@
      </item>
     </layout>
    </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

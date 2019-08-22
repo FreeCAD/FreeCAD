@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 
 import subprocess
 import os.path
+import sys
 
 import FreeCAD
 import femtools.femutils as femutils
@@ -114,7 +115,10 @@ class Solve(run.Solve):
     def _updateOutput(self, output):
         if self.solver.ElmerOutput is None:
             self._createOutput()
-        self.solver.ElmerOutput.Text = output.decode("utf-8")
+        if sys.version_info.major >= 3:
+            self.solver.ElmerOutput.Text = output
+        else:
+            self.solver.ElmerOutput.Text = output.decode("utf-8")
 
     def _createOutput(self):
         self.solver.ElmerOutput = self.analysis.Document.addObject(

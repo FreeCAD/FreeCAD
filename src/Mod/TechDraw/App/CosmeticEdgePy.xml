@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="CosmeticEdgePy"
+      Twin="CosmeticEdge"
+      TwinPointer="CosmeticEdge"
+      Include="Mod/TechDraw/App/Cosmetic.h"
+      Namespace="TechDraw"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>CosmeticEdge specifies an extra (cosmetic) edge in Views</UserDocu>
+    </Documentation>
+    <Methode Name="clone" Const="true">
+        <Documentation>
+            <UserDocu>Create a clone of this CosmeticEdge</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="copy" Const="true">
+        <Documentation>
+            <UserDocu>Create a copy of this CosmeticEdge</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setFormat">
+        <Documentation>
+            <UserDocu>Change the appearance of this CometicEdge. edge.setFormat(style, color, weight, visible)</UserDocu>
+        </Documentation>
+    </Methode>
+
+    <Methode Name="getFormat">
+        <Documentation>
+            <UserDocu>returns the appearance attributes of this CometicEdge.  returns tuple(style, color, weight, visible).</UserDocu>
+        </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

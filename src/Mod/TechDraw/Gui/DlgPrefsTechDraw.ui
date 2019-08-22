@@ -707,7 +707,7 @@
            <string>View Label size in units</string>
           </property>
           <property name="value">
-           <double>6.000000000000000</double>
+           <double>8.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LabelSize</cstring>

@@ -1,4 +1,0 @@
-
-!define VERSIONMAJOR 0
-!define VERSIONMINOR 14
-!define VERSIONBUILD $WCREV$

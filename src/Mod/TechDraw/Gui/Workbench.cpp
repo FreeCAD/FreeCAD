@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -61,7 +60,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_NewViewSection";
     *draw << "TechDraw_NewViewDetail";
     *draw << "Separator";
-    *draw << "TechDraw_Annotation";
     *draw << "TechDraw_DraftView";
     *draw << "TechDraw_ArchView";
     *draw << "TechDraw_Spreadsheet";
@@ -89,6 +87,18 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_Image";
     *draw << "TechDraw_ToggleFrame";
 //    *decor << "TechDraw_RedrawPage";
+    *draw << "TechDraw_Annotation";
+    *draw << "TechDraw_LeaderLine";
+    *draw << "TechDraw_RichAnno";
+    *draw << "TechDraw_CosmeticVertex";
+    *draw << "TechDraw_Midpoints";
+    *draw << "TechDraw_Quadrant";
+    *draw << "TechDraw_FaceCenterLine";
+    *draw << "TechDraw_2LineCenterLine";
+    *draw << "TechDraw_2PointCenterLine";
+    *draw << "TechDraw_CosmeticEraser";
+    *draw << "TechDraw_DecorateLine";
+    *draw << "TechDraw_ShowAll";
 
     return root;
 }
@@ -108,7 +118,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
     *views << "TechDraw_NewViewDetail";
-    *views << "TechDraw_Annotation";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ArchView";
     *views << "TechDraw_Spreadsheet";
@@ -145,6 +154,20 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
 //    *decor << "TechDraw_RedrawPage";
+
+    Gui::ToolBarItem *anno = new Gui::ToolBarItem(root);
+    anno->setCommand("TechDraw Annotation");
+    *anno << "TechDraw_Annotation";
+    *anno << "TechDraw_LeaderLine";
+    *anno << "TechDraw_RichAnno";
+    *anno << "TechDraw_CosmeticVertexGrp";
+    *anno << "TechDraw_CenterLineGrp";
+//    *anno << "TechDraw_FaceCenterLine";
+//    *anno << "TechDraw_2LineCenterLine";
+//    *anno << "TechDraw_2PointCenterLine";
+    *anno << "TechDraw_CosmeticEraser";
+    *anno << "TechDraw_DecorateLine";
+    *anno << "TechDraw_ShowAll";
     return root;
 }
 
@@ -163,7 +186,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
     *views << "TechDraw_NewViewDetail";
-    *views << "TechDraw_Annotation";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_Spreadsheet";
 
@@ -198,7 +220,20 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
-//    *decor << "TechDraw_RedrawPage";
+
+    Gui::ToolBarItem *anno = new Gui::ToolBarItem(root);
+    anno->setCommand("TechDraw Annotation");
+    *anno << "TechDraw_Annotation";
+    *anno << "TechDraw_LeaderLine";
+    *anno << "TechDraw_RichAnno";
+    *anno << "TechDraw_CosmeticVertexGrp";
+    *anno << "TechDraw_CenterLineGrp";
+//    *anno << "TechDraw_FaceCenterLine";
+//    *anno << "TechDraw_2LineCenterLine";
+//    *anno << "TechDraw_2PointCenterLine";
+    *anno << "TechDraw_CosmeticEraser";
+    *anno << "TechDraw_DecorateLine";
+    *anno << "TechDraw_ShowAll";
 
     return root;
 }

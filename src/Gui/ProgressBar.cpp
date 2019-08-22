@@ -48,6 +48,7 @@ struct SequencerPrivate
     WaitCursor* waitCursor;
     QTime measureTime;
     QTime progressTime;
+    QTime checkAbortTime;
     QString text;
     bool guiThread;
 };
@@ -133,6 +134,7 @@ void Sequencer::startStep()
         d->guiThread = false;
         d->bar->setRange(0, (int)nTotalSteps);
         d->progressTime.start();
+        d->checkAbortTime.start();
         d->measureTime.start();
         QMetaObject::invokeMethod(d->bar, "aboutToShow", Qt::QueuedConnection);
     }
@@ -140,10 +142,35 @@ void Sequencer::startStep()
         d->guiThread = true;
         d->bar->setRange(0, (int)nTotalSteps);
         d->progressTime.start();
+        d->checkAbortTime.start();
         d->measureTime.start();
         d->waitCursor = new Gui::WaitCursor;
         d->bar->enterControlEvents();
         d->bar->aboutToShow();
+    }
+}
+
+void Sequencer::checkAbort() {
+    if(d->bar->thread() != QThread::currentThread())
+        return;
+    if (!wasCanceled()) {
+        if(d->checkAbortTime.elapsed() < 500)
+            return;
+        d->checkAbortTime.restart();
+        qApp->processEvents();
+        return;
+    }
+    // restore cursor
+    pause();
+    bool ok = d->bar->canAbort();
+    // continue and show up wait cursor if needed
+    resume();
+
+    // force to abort the operation
+    if ( ok ) {
+        abort();
+    } else {
+        rejectCancel();
     }
 }
 
@@ -246,7 +273,7 @@ void Sequencer::showRemainingTime()
             QString status = QString::fromLatin1("%1\t[%2]").arg(txt, remain);
 
             if (thr != currentThread) {
-                QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
+                QMetaObject::invokeMethod(getMainWindow(), "showMessage",
                     Qt::/*Blocking*/QueuedConnection,
                     QGenericReturnArgument(),
                     Q_ARG(QString,status));
@@ -264,8 +291,8 @@ void Sequencer::resetData()
     QThread *thr = d->bar->thread(); // this is the main thread
     if (thr != currentThread) {
         QMetaObject::invokeMethod(d->bar, "reset", Qt::QueuedConnection);
-        QMetaObject::invokeMethod(d->bar, "hide", Qt::QueuedConnection);
-        QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
+        QMetaObject::invokeMethod(d->bar, "aboutToHide", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(getMainWindow(), "showMessage",
             Qt::/*Blocking*/QueuedConnection,
             QGenericReturnArgument(),
             Q_ARG(QString,QString()));
@@ -280,7 +307,7 @@ void Sequencer::resetData()
         // Note: Under Qt 4.1.4 this forces to run QWindowsStyle::eventFilter() twice
         // handling the same event thus a warning is printed. Possibly, this is a bug
         // in Qt. The message is QEventDispatcherUNIX::unregisterTimer: invalid argument.
-        d->bar->hide();
+        d->bar->aboutToHide();
         delete d->waitCursor;
         d->waitCursor = 0;
         d->bar->leaveControlEvents();
@@ -295,7 +322,7 @@ void Sequencer::abort()
 {
     //resets
     resetData();
-    Base::AbortException exc("Aborting...");
+    Base::AbortException exc("User aborted");
     throw exc;
 }
 
@@ -307,7 +334,7 @@ void Sequencer::setText (const char* pszTxt)
     // print message to the statusbar
     d->text = pszTxt ? QString::fromUtf8(pszTxt) : QLatin1String("");
     if (thr != currentThread) {
-        QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
+        QMetaObject::invokeMethod(getMainWindow(), "showMessage",
             Qt::/*Blocking*/QueuedConnection,
             QGenericReturnArgument(),
             Q_ARG(QString,d->text));
@@ -336,6 +363,10 @@ QProgressBar* Sequencer::getProgressBar(QWidget* parent)
 ProgressBar::ProgressBar (Sequencer* s, QWidget * parent)
     : QProgressBar(parent), sequencer(s)
 {
+#ifdef QT_WINEXTRAS_LIB
+  m_taskbarButton = nullptr;
+  m_taskbarButton = nullptr;
+#endif
     d = new Gui::ProgressBarPrivate;
     d->minimumDuration = 2000; // 2 seconds
     d->delayShowTimer = new QTimer(this);
@@ -362,6 +393,51 @@ int ProgressBar::minimumDuration() const
     return d->minimumDuration;
 }
 
+void Gui::ProgressBar::reset()
+{
+  QProgressBar::reset();
+#ifdef QT_WINEXTRAS_LIB
+  setupTaskBarProgress();
+  m_taskbarProgress->reset();
+#endif
+}
+
+void Gui::ProgressBar::setRange(int minimum, int maximum)
+{
+  QProgressBar::setRange(minimum, maximum);
+#ifdef QT_WINEXTRAS_LIB
+  setupTaskBarProgress();
+  m_taskbarProgress->setRange(minimum, maximum);
+#endif
+}
+
+void Gui::ProgressBar::setMinimum(int minimum)
+{
+  QProgressBar::setMinimum(minimum);
+#ifdef QT_WINEXTRAS_LIB
+  setupTaskBarProgress();
+  m_taskbarProgress->setMinimum(minimum);
+#endif
+}
+
+void Gui::ProgressBar::setMaximum(int maximum)
+{
+  QProgressBar::setMaximum(maximum);
+#ifdef QT_WINEXTRAS_LIB
+  setupTaskBarProgress();
+  m_taskbarProgress->setMaximum(maximum);
+#endif
+}
+
+void Gui::ProgressBar::setValue(int value)
+{
+  QProgressBar::setValue(value);
+#ifdef QT_WINEXTRAS_LIB
+  setupTaskBarProgress();
+  m_taskbarProgress->setValue(value);
+#endif
+}
+
 void ProgressBar::setMinimumDuration (int ms)
 {
     if (value() == 0)
@@ -377,12 +453,26 @@ void ProgressBar::aboutToShow()
 {
     // delay showing the bar
     d->delayShowTimer->start(d->minimumDuration);
+#ifdef QT_WINEXTRAS_LIB
+    setupTaskBarProgress();
+    m_taskbarProgress->show();
+#endif
 }
 
 void ProgressBar::delayedShow()
 {
-    if (!isVisible() && !sequencer->wasCanceled() && sequencer->isRunning())
+    if (!isVisible() && !sequencer->wasCanceled() && sequencer->isRunning()) {
         show();
+    }
+}
+
+void ProgressBar::aboutToHide()
+{
+    hide();
+#ifdef QT_WINEXTRAS_LIB
+    setupTaskBarProgress();
+    m_taskbarProgress->hide();
+#endif
 }
 
 bool ProgressBar::canAbort() const
@@ -427,6 +517,20 @@ void ProgressBar::leaveControlEvents()
     // release the keyboard again
     releaseKeyboard();
 }
+
+#ifdef QT_WINEXTRAS_LIB
+void ProgressBar::setupTaskBarProgress()
+{
+  if (!m_taskbarButton || !m_taskbarProgress)
+  {
+    m_taskbarButton = new QWinTaskbarButton(this);
+    m_taskbarButton->setWindow(MainWindow::getInstance()->windowHandle());
+    //m_myButton->setOverlayIcon(QIcon(""));
+
+    m_taskbarProgress = m_taskbarButton->progress();
+  }
+}
+#endif
 
 bool ProgressBar::eventFilter(QObject* o, QEvent* e)
 {

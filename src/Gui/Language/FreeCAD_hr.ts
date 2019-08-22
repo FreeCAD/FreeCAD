@@ -1244,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Omogući štrcanje zaslon na start up</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Prebacite se na karticu prozora izvješća:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Automatski učitati modul nakon pokretanja:</translation>
     </message>
@@ -1266,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Size of recent file list</source>
       <translation>Veličina popisa nedavno korištenih datoteka</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Stil prozora:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1623,6 +1615,53 @@ Specify another directory, please.</source>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Zatvori</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Pronađi...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Pronađi</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Pronađi što:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Pogledaj na</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Grupe</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Imena</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Vrijednosti</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Uskladi samo čitav red znakova</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Pronađi sljedeće</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>Nije pronađeno</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>Ne mogu pronaći tekst: %1</translation>
     </message>
   </context>
   <context>
@@ -2718,10 +2757,6 @@ Specify another directory, please.</source>
       <translation>GUI naredbe</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Snimanje GUI naredbi</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Snimiti kao komentar</translation>
     </message>
@@ -2736,6 +2771,10 @@ Specify another directory, please.</source>
     <message>
       <source>Run macros in local environment</source>
       <translation>Izvrti Macro u lokalnom okruženju</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Snimi GUI naredbe</translation>
     </message>
   </context>
   <context>
@@ -2763,10 +2802,6 @@ Specify another directory, please.</source>
     <message>
       <source>Unit</source>
       <translation>Jedinica</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Sustav korisnika:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2831,6 +2866,10 @@ Specify another directory, please.</source>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Sustav jedinica:</translation>
     </message>
   </context>
   <context>
@@ -3875,12 +3914,12 @@ Do you want to save your changes?</source>
       <translation>Povucite zaslon s dva prsta. Ili pritisnite desnu tipku miša.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Povucite zaslon s jednim prstom. Ili pritisnite lijevu tipku miša. U crtaču i drugim načinima uređivanja, držite tipku Alt za dodavanje.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Prstohvat (Stavite dva prsta na zaslon i povucite ih zasebno/skupa) Ili pomaknite srednji miš gumb. Ili PgUp/PgDown na tipkovnici.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4533,12 +4572,12 @@ Do you want to specify another directory?</source>
       <translation>Koracima</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Pomijeranje korak: </translation>
+      <source>Translation Increment:</source>
+      <translation>Korak pomjeranja:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Rotacija korak: </translation>
+      <source>Rotation Increment:</source>
+      <translation>Korak rotacije:</translation>
     </message>
   </context>
   <context>

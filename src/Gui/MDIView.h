@@ -113,17 +113,21 @@ public:
 
     /// access getter for the active object list
     template<typename _T>
-    inline _T getActiveObject(const char* name) const
+    inline _T getActiveObject(const char* name, App::DocumentObject **parent=0, std::string *subname=0) const
     {
-        return ActiveObjects.getObject<_T>(name);
+        return ActiveObjects.getObject<_T>(name,parent,subname);
     }
-    void setActiveObject(App::DocumentObject*o, const char*n)
+    void setActiveObject(App::DocumentObject*o, const char*n, const char *subname=0)
     {
-        ActiveObjects.setObject(o, n);
+        ActiveObjects.setObject(o, n, subname);
     }
     bool hasActiveObject(const char*n) const
     {
         return ActiveObjects.hasObject(n);
+    }
+    bool isActiveObject(App::DocumentObject*o, const char*n, const char *subname=0) const
+    {
+        return ActiveObjects.hasObject(o,n,subname);
     }
 
 public Q_SLOTS:

@@ -147,8 +147,8 @@
       <translation>Spajanje ćelija</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Spoji odabrane ćelije u proračunskoj tablici</translation>
+      <source>Merge selected cells</source>
+      <translation>Spajanja odabranih ćelija</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Podijeli ćeliju</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Podjela prethodno spojenih ćelija u proračunskoj tablici</translation>
+      <source>Split previously merged cells</source>
+      <translation>Razdjeli prije spojene ćelije</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Podebljani tekst</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Postavljanje podebljanoga teksta u odabranim ćelijama</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Postavi tekst u odabranim ćelijama podebljano</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Ukošeni tekst</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Postavite ukošeni teksta u odabranim ćelijama</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Postavi tekst u odabranim ćelijama ukošeno</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Svjetlo siva</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Prilagođeno</translation>
+      <source>Custom Color</source>
+      <translation>Prilagođena boja</translation>
     </message>
   </context>
   <context>

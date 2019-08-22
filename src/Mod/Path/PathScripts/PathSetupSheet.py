@@ -23,13 +23,11 @@
 # ***************************************************************************
 
 import FreeCAD
-import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathUtil as PathUtil
 import PySide
-import traceback
 
 __title__ = "Setup Sheet for a Job."
 __author__ = "sliptonic (Brad Collette)"
@@ -38,7 +36,9 @@ __doc__ = "A container for all default values and job specific configuration val
 
 _RegisteredOps = {}
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule()
 else:
@@ -48,6 +48,8 @@ def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
 class Template:
+    # pylint: disable=no-init
+
     HorizRapid = 'HorizRapid'
     VertRapid = 'VertRapid'
     SafeHeightOffset = 'SafeHeightOffset'
@@ -259,13 +261,13 @@ class SetupSheet:
                 propName = OpPropertyName(opName, prop)
                 if hasattr(self.obj, propName):
                     setattr(obj, prop, getattr(self.obj, propName))
-        except Exception as exc:
+        except Exception: # pylint: disable=broad-except
             PathLog.info("SetupSheet has no support for {}".format(opName))
-            #traceback.print_exc(exc)
+            #traceback.print_exc()
 
 def Create(name = 'SetupSheet'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)
-    proxy = SetupSheet(obj)
+    obj.Proxy = SetupSheet(obj)
     return obj
 
 class _RegisteredOp(object):
@@ -283,7 +285,7 @@ class _RegisteredOp(object):
         return ptt
 
 def RegisterOperation(name, objFactory, setupProperties):
-    global _RegisteredOps
+    global _RegisteredOps # pylint: disable=global-statement
     _RegisteredOps[name] = _RegisteredOp(objFactory, setupProperties)
 
 def OpNamePrefix(name):

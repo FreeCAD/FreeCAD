@@ -33,6 +33,7 @@
 #include "FeaturePythonPyImp.h"
 #include "GeoFeatureGroupExtension.h"
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 using namespace App;
 
@@ -42,7 +43,10 @@ GroupExtension::GroupExtension()
 {
     initExtensionType(GroupExtension::getExtensionClassTypeId());
     
-    EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_Output),"List of referenced objects");
+    EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_None),"List of referenced objects");
+
+    EXTENSION_ADD_PROPERTY_TYPE(_GroupTouched, (false), "Base", 
+            PropertyType(Prop_Hidden|Prop_Transient),0);
 }
 
 GroupExtension::~GroupExtension()
@@ -251,15 +255,12 @@ bool GroupExtension::recursiveHasObject(const DocumentObject* obj, const GroupEx
     return false;
 }
 
-
 bool GroupExtension::isChildOf(const GroupExtension* group, bool recursive) const
 {
     return group->hasObject(getExtendedObject(), recursive);
 }
 
-
-
-std::vector<DocumentObject*> GroupExtension::getObjects() const
+const std::vector<DocumentObject*> &GroupExtension::getObjects() const
 {
     return Group.getValues();
 }
@@ -293,10 +294,9 @@ DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
     //note that we return here only Groups, but nothing derived from it, e.g. no GeoFeatureGroups. 
     //That is important as there are clear differences between groups/geofeature groups (e.g. an object
     //can be in only one group, and only one geofeaturegroup, however, it can be in both at the same time)
-    auto list = obj->getInList();
-    for (auto obj : list) {
-        if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false))
-            return obj;
+    for (auto o : obj->getInList()) {
+        if(o->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false))
+            return o;
     }
 
     return nullptr;
@@ -316,10 +316,11 @@ void GroupExtension::extensionOnChanged(const Property* p) {
 
     //objects are only allowed in a single group. Note that this check must only be done for normal
     //groups, not any derived classes
-    if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId()) &&
-       (strcmp(p->getName(), "Group")==0)) {
-
-        if(!getExtendedObject()->getDocument()->isPerformingTransaction()) {
+    if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId())
+        && p == &Group && !Group.testStatus(Property::User3)) 
+    {
+        if(!getExtendedObject()->isRestoring() &&
+           !getExtendedObject()->getDocument()->isPerformingTransaction()) {
             
             bool error = false;
             auto corrected = Group.getValues();
@@ -339,8 +340,19 @@ void GroupExtension::extensionOnChanged(const Property* p) {
 
             //if an error was found we need to correct the values and inform the user
             if(error) {
+                Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
                 Group.setValues(corrected);
                 throw Base::RuntimeError("Object can only be in a single Group");
+            }
+        }
+    }
+
+    if(p == &Group) {
+        _Conns.clear();
+        for(auto obj : Group.getValue()) {
+            if(obj && obj->getNameInDocument()) {
+                _Conns[obj] = obj->signalChanged.connect(boost::bind(
+                            &GroupExtension::slotChildChanged,this,_1,_2));
             }
         }
     }
@@ -348,6 +360,74 @@ void GroupExtension::extensionOnChanged(const Property* p) {
     App::Extension::extensionOnChanged(p);
 }
 
+void GroupExtension::slotChildChanged(const DocumentObject &obj, const Property &prop) {
+    if(&prop == &obj.Visibility)
+        _GroupTouched.touch();
+}
+
+bool GroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
+        PyObject **pyObj, Base::Matrix4D *mat, bool /*transform*/, int depth) const 
+{
+    const char *dot;
+    if(!subname || *subname==0) {
+        auto obj = Base::freecad_dynamic_cast<const DocumentObject>(getExtendedContainer());
+        ret = const_cast<DocumentObject*>(obj);
+        return true;
+    }
+    dot=strchr(subname,'.');
+    if(!dot)
+        return false;
+    if(subname[0]!='$')
+        ret = Group.find(std::string(subname,dot));
+    else{
+        std::string name = std::string(subname+1,dot);
+        for(auto child : Group.getValues()) {
+            if(name == child->Label.getStrValue()){
+                ret = child;
+                break;
+            }
+        }
+    }
+    if(!ret) 
+        return false;
+    return ret->getSubObject(dot+1,pyObj,mat,true,depth+1);
+}
+
+bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) const {
+    for(auto obj : Group.getValues()) {
+        if(obj && obj->getNameInDocument())
+            ret.push_back(std::string(obj->getNameInDocument())+'.');
+    }
+    return true;
+}
+
+App::DocumentObjectExecReturn *GroupExtension::extensionExecute(void) {
+    // This touch property is for propagating changes to upper group
+    _GroupTouched.touch();
+    return inherited::extensionExecute();
+}
+
+std::vector<App::DocumentObject*> GroupExtension::getAllChildren() const {
+    std::vector<DocumentObject*> res;
+    std::set<DocumentObject*> rset;
+    getAllChildren(res,rset);
+    return res;
+}
+
+void GroupExtension::getAllChildren(std::vector<App::DocumentObject*> &res,
+        std::set<App::DocumentObject*> &rset) const
+{
+    for(auto obj : Group.getValues()) {
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        if(!rset.insert(obj).second)
+            continue;
+        res.push_back(obj);
+        auto ext = obj->getExtensionByType<GroupExtension>(true,false);
+        if(ext) 
+            ext->getAllChildren(res,rset);
+    }
+}
 
 namespace App {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)

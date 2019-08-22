@@ -22,8 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-import Path
 import PathScripts.PathLog as PathLog
 
 __title__ = "Setup Sheet for a Job."
@@ -32,7 +30,9 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Prototype objects to allow extraction of setup sheet values and editing."
 
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -90,9 +90,9 @@ class PropertyEnumeration(Property):
 
     def setValue(self, value):
         if list == type(value):
-            self.enums = value
+            self.enums = value # pylint: disable=attribute-defined-outside-init
         else:
-            super(self.__class__, self).setValue(value)
+            super(PropertyEnumeration, self).setValue(value)
 
     def getEnumValues(self):
         return self.enums
@@ -167,7 +167,7 @@ class OpPrototype(object):
         if name in ['Label', 'DoNotSetDefaultValues', 'properties', 'Proxy']:
             if name == 'Proxy':
                 val = None # make sure the proxy is never set
-            return super(self.__class__, self).__setattr__(name, val)
+            return super(OpPrototype, self).__setattr__(name, val)
         self.properties[name].setValue(val)
 
     def addProperty(self, typeString, name, category, info = None):

@@ -1258,12 +1258,12 @@
     <message>
       <location filename="../../TaskDraftParameters.ui" line="96"/>
       <source>Pull direction</source>
-      <translation>Direzione di estrazione</translation>
+      <translation>Direzione di trazione</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="111"/>
       <source>Reverse pull direction</source>
-      <translation>Inverti la direzione di estrazione</translation>
+      <translation>Inverti la direzione di trazione</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="100"/>

@@ -10,8 +10,8 @@
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
-      <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <source>Distance [mm]</source>
+      <translation type="unfinished">Distance [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>

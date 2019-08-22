@@ -94,6 +94,12 @@ SET(PathGui_SRCS
     ${PathGui_SRCS_ViewProvider}
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PathGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PathGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
 SET(PathGuiIcon_SVG
     Resources/icons/PathWorkbench.svg
 )

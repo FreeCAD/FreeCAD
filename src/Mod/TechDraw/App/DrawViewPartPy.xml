@@ -13,6 +13,96 @@
       <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
       <UserDocu>Feature for creating and manipulating Technical Drawing Part Views</UserDocu>
     </Documentation>
+    <Methode Name="makeCosmeticVertex">
+      <Documentation>
+        <UserDocu>makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns index of created vertex.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getCosmeticVertexByIndex">
+      <Documentation>
+        <UserDocu>getCosmeticVertexByIndex(idx) - returns CosmeticVertx[idx].</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeCosmeticVertex">
+      <Documentation>
+        <UserDocu>removeCosmeticVertex(idx) - remove CosmeticVertex[idx] from View. Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearCosmeticVertices">
+      <Documentation>
+        <UserDocu>clearCosmeticVertices() - remove all CosmeticVertices from the View. Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeCosmeticLine">
+      <Documentation>
+        <UserDocu>makeCosmeticLine(p1, p2) - add a CosmeticEdge from p1 to p2(View coordinates). Returns index of created edge.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeCosmeticCircle">
+      <Documentation>
+        <UserDocu>makeCosmeticCircle(center, radius) - add a CosmeticEdge at center with radius radius(View coordinates). Returns index of created edge.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeCosmeticCircleArc">
+      <Documentation>
+        <UserDocu>makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns index of created edge.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getCosmeticEdgeByIndex">
+      <Documentation>
+        <UserDocu>getCosmeticEdgeByIndex(idx) - returns CosmeticEdge[idx].</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getCosmeticEdgeByGeom">
+      <Documentation>
+        <UserDocu>getCosmeticEdgeByGeom(idx) - returns CosmeticEdge using geometry index.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="replaceCosmeticEdge">
+      <Documentation>
+        <UserDocu>replaceCosmeticEdge(idx, ce) - replaces CosmeticEdge[idx] with ce.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeCosmeticEdge">
+      <Documentation>
+        <UserDocu>removeCosmeticEdge(idx) - remove CosmeticEdge[idx] from View. Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeCenterLine">
+      <Documentation>
+        <UserDocu>makeCenterLine(subNames, mode) - draw a center line on this viewPart. SubNames is a list of n Faces, 2 Edges or 2 Vertices (ex [Face1,Face2,Face3]. Returns index of added CenterLine.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearCosmeticEdges">
+      <Documentation>
+        <UserDocu>clearCosmeticEdges() - remove all CosmeticLines from the View. Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearCenterLines">
+      <Documentation>
+        <UserDocu>clearCenterLines() - remove all CenterLines from the View. Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearGeomFormats">
+      <Documentation>
+        <UserDocu>clearGeomFormats() - remove all GeomFormats from the View. Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="adjustCenterLine">
+      <Documentation>
+        <UserDocu>adjustCenterLine(index, hShift, vShift, rotate, extend [,flip]). Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="formatCenterLine">
+      <Documentation>
+        <UserDocu>formatCenterLine(index, style, weight, color, visible). Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="formatGeometricEdge">
+      <Documentation>
+        <UserDocu>formatGeometricEdge(index, style, weight, color, visible). Returns None.</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

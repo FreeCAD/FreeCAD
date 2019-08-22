@@ -362,13 +362,18 @@ void MeshObject::save(const char* file, MeshCore::MeshIO::Format f,
 
     aWriter.Transform(this->_Mtrx);
     if (aWriter.SaveAny(file, f)) {
-        if (mat && mat->binding == MeshCore::MeshIO::PER_FACE && f == MeshCore::MeshIO::OBJ) {
-            Base::FileInfo fi(file);
-            std::string fn = fi.dirPath() + "/" + mat->library;
-            fi.setFile(fn);
-            Base::ofstream str(fi, std::ios::out | std::ios::binary);
-            aWriter.SaveMTL(str);
-            str.close();
+        if (mat && mat->binding == MeshCore::MeshIO::PER_FACE) {
+            if (f == MeshCore::MeshIO::Undefined)
+                f = MeshCore::MeshOutput::GetFormat(file);
+
+            if (f == MeshCore::MeshIO::OBJ) {
+                Base::FileInfo fi(file);
+                std::string fn = fi.dirPath() + "/" + mat->library;
+                fi.setFile(fn);
+                Base::ofstream str(fi, std::ios::out | std::ios::binary);
+                aWriter.SaveMTL(str);
+                str.close();
+            }
         }
     }
 }
@@ -986,8 +991,11 @@ std::vector<Base::Vector3d> MeshObject::getPointNormals() const
 void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes, std::vector<MeshObject::TPolylines> &sections,
                                float fMinEps, bool bConnectPolygons) const
 {
-    MeshCore::MeshFacetGrid grid(_kernel);
-    MeshCore::MeshAlgorithm algo(_kernel);
+    MeshCore::MeshKernel kernel(this->_kernel);
+    kernel.Transform(this->_Mtrx);
+
+    MeshCore::MeshFacetGrid grid(kernel);
+    MeshCore::MeshAlgorithm algo(kernel);
     for (std::vector<MeshObject::TPlane>::const_iterator it = planes.begin(); it != planes.end(); ++it) {
         MeshObject::TPolylines polylines;
         algo.CutWithPlane(it->first, it->second, grid, polylines, fMinEps, bConnectPolygons);
@@ -1501,6 +1509,8 @@ MeshObject* MeshObject::createSphere(float radius, int sampling)
     Base::PyGILStateLocker lock;
     try {
         Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
+        if (module.isNull())
+            return 0;
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Sphere"));
         Py::Tuple args(2);
@@ -1526,6 +1536,8 @@ MeshObject* MeshObject::createEllipsoid(float radius1, float radius2, int sampli
     Base::PyGILStateLocker lock;
     try {
         Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
+        if (module.isNull())
+            return 0;
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Ellipsoid"));
         Py::Tuple args(3);
@@ -1552,6 +1564,8 @@ MeshObject* MeshObject::createCylinder(float radius, float length, int closed, f
     Base::PyGILStateLocker lock;
     try {
         Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
+        if (module.isNull())
+            return 0;
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Cylinder"));
         Py::Tuple args(5);
@@ -1582,6 +1596,8 @@ MeshObject* MeshObject::createCone(float radius1, float radius2, float len, int 
     Base::PyGILStateLocker lock;
     try {
         Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
+        if (module.isNull())
+            return 0;
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Cone"));
         Py::Tuple args(6);
@@ -1613,6 +1629,8 @@ MeshObject* MeshObject::createTorus(float radius1, float radius2, int sampling)
     Base::PyGILStateLocker lock;
     try {
         Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
+        if (module.isNull())
+            return 0;
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Toroid"));
         Py::Tuple args(3);
@@ -1639,6 +1657,8 @@ MeshObject* MeshObject::createCube(float length, float width, float height)
     Base::PyGILStateLocker lock;
     try {
         Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
+        if (module.isNull())
+            return 0;
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("Cube"));
         Py::Tuple args(3);
@@ -1661,6 +1681,8 @@ MeshObject* MeshObject::createCube(float length, float width, float height, floa
     Base::PyGILStateLocker lock;
     try {
         Py::Module module(PyImport_ImportModule("BuildRegularGeoms"),true);
+        if (module.isNull())
+            return 0;
         Py::Dict dict = module.getDict();
         Py::Callable call(dict.getItem("FineCube"));
         Py::Tuple args(4);
@@ -1682,6 +1704,7 @@ void MeshObject::addSegment(const Segment& s)
 {
     addSegment(s.getIndices());
     this->_segments.back().setName(s.getName());
+    this->_segments.back().setColor(s.getColor());
     this->_segments.back().save(s.isSaved());
     this->_segments.back()._modifykernel = s._modifykernel;
 }

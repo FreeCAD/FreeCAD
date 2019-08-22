@@ -1159,6 +1159,13 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
       <source>Export AMF files using compression</source>
       <translation>Izvozi dadoteke AMF z uporabo kompresije</translation>
     </message>
+    <message>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation>Ta parameter prikazuje ali je pri zapisovanju datoteke
+ v zapis AMF uporabljeno ZIP stiskanje</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
@@ -1294,22 +1301,22 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="368"/>
+      <location filename="../../MeshEditor.cpp" line="376"/>
       <source>Add triangle</source>
       <translation>Dodaj trikotnik</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="369"/>
+      <location filename="../../MeshEditor.cpp" line="377"/>
       <source>Flip normal</source>
       <translation>Obrni normalo</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="370"/>
+      <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Clear</source>
       <translation>Počisti</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="385"/>
+      <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Finish</source>
       <translation>Končaj</translation>
     </message>
@@ -1317,7 +1324,7 @@ Najprej zaženite ukaz za odpravljaje pregibov</translation>
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="711"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Končaj</translation>
     </message>

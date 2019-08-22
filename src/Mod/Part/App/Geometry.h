@@ -62,6 +62,8 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 
+#include "GeometryExtension.h"
+
 namespace Part {
 
 class PartExport Geometry: public Base::Persistence
@@ -93,6 +95,17 @@ public:
     bool Construction;
     /// returns the tag of the geometry object
     boost::uuids::uuid getTag() const;
+
+    const std::vector<std::weak_ptr<GeometryExtension>> getExtensions() const;
+
+    bool hasExtension(Base::Type type) const;
+    bool hasExtension(std::string name) const;
+    const std::weak_ptr<GeometryExtension> getExtension(Base::Type type) const;
+    const std::weak_ptr<GeometryExtension> getExtension(std::string name) const;
+    void setExtension(std::unique_ptr<GeometryExtension> &&geo);
+    void deleteExtension(Base::Type type);
+    void deleteExtension(std::string name);
+
 protected:
     /// create a new tag for the geometry object
     void createNewTag();
@@ -104,6 +117,7 @@ protected:
 
 protected:
     boost::uuids::uuid tag;
+    std::vector<std::shared_ptr<GeometryExtension>> extensions;
 
 private:
     Geometry(const Geometry&);

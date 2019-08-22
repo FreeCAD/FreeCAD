@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>487</width>
-    <height>491</height>
+    <width>486</width>
+    <height>808</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,6 +22,12 @@
    </property>
    <item>
     <widget class="QGroupBox" name="groupBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="title">
       <string>General Draft Settings</string>
      </property>
@@ -80,25 +86,6 @@
        </layout>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="checkBox_2">
-        <property name="toolTip">
-         <string>If this is checked, step-by-step instructions will be displayed in the Output Window when running Draft commands</string>
-        </property>
-        <property name="text">
-         <string>Verbose command line mode</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>Verbose</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
         <property name="toolTip">
          <string>If this is checked, copy mode will be kept across command, otherwise commands will always start in no-copy mode</string>
@@ -107,7 +94,7 @@
          <string>Global copy mode</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>copymode</cstring>
@@ -338,6 +325,22 @@ Values with differences below this value will be treated as same. This value wil
        </widget>
       </item>
       <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_2">
+        <property name="toolTip">
+         <string>If this option is set, when creating Draft objects on top of an existing face of another object, the &quot;Support&quot; property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</string>
+        </property>
+        <property name="text">
+         <string>Set the Support property when possible</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>useSupport</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QLabel" name="label">
@@ -361,15 +364,40 @@ Values with differences below this value will be treated as same. This value wil
         </item>
        </layout>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_3">
+        <property name="toolTip">
+         <string>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</string>
+        </property>
+        <property name="text">
+         <string>Show groups in layers list drop-down button</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AutogroupAddGroups</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_3">
-     <property name="title">
-      <string>Construction geometry</string>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <property name="title">
+      <string>Construction Geometry</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
@@ -441,21 +469,980 @@ Values with differences below this value will be treated as same. This value wil
         </item>
        </layout>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>In-Command Shortcuts</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0">
       <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_26">
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Relative</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_2">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>R</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutRelative</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_28">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Continue</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Gui::PrefLineEdit" name="lineEdit_3">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>25</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>T</string>
+              </property>
+              <property name="maxLength">
+               <number>1</number>
+              </property>
+              <property name="placeholderText">
+               <string/>
+              </property>
+              <property name="prefEntry" stdset="0">
+               <cstring>inCommandShortcutContinue</cstring>
+              </property>
+              <property name="prefPath" stdset="0">
+               <cstring>Mod/Draft</cstring>
+              </property>
+              <property name="clearButtonEnabled" stdset="0">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_27">
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Close</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_4">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>O</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutClose</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_31">
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Copy</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_5">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>P</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutCopy</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_33">
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Subelement Mode</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_11">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>D</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutSubelementMode</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_32">
+          <item>
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Fill</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_12">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>L</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutFill</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_34">
+          <item>
+           <widget class="QLabel" name="label_13">
+            <property name="text">
+             <string>Exit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_6">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>A</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutExit</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_36">
+          <item>
+           <widget class="QLabel" name="label_17">
+            <property name="text">
+             <string>Select Edge</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_13">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>E</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutSelectEdge</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_35">
+          <item>
+           <widget class="QLabel" name="label_18">
+            <property name="text">
+             <string>Add Hold</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_15">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Q</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutAddHold</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_37">
+          <item>
+           <widget class="QLabel" name="label_20">
+            <property name="text">
+             <string>Length</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_7">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>H</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutLength</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_38">
+          <item>
+           <widget class="QLabel" name="label_21">
+            <property name="text">
+             <string>Wipe</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_14">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>W</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutWipe</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_39">
+          <item>
+           <widget class="QLabel" name="label_22">
+            <property name="text">
+             <string>Set WP</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_16">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>U</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutSetWP</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_41">
+          <item>
+           <widget class="QLabel" name="label_24">
+            <property name="text">
+             <string>Cycle Snap</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_8">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>`</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutCycleSnap</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_40"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_42"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_14">
+          <item>
+           <widget class="QLabel" name="label_14">
+            <property name="text">
+             <string>Snap</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_9">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>S</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutSnap</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_16">
+          <item>
+           <widget class="QLabel" name="label_15">
+            <property name="text">
+             <string>Increase Radius</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_19">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>[</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutIncreaseRadius</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_17">
+          <item>
+           <widget class="QLabel" name="label_16">
+            <property name="text">
+             <string>Decrease Radius</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_17">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>]</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutDecreaseRadius</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_18">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_19">
+          <item>
+           <widget class="QLabel" name="label_23">
+            <property name="text">
+             <string>Restrict X</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_10">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>X</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutRestrictX</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_22">
+          <item>
+           <widget class="QLabel" name="label_25">
+            <property name="text">
+             <string>Restrict Y</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_20">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Y</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>inCommandShortcutRestrictY</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_23">
+          <item>
+           <widget class="QLabel" name="label_26">
+            <property name="text">
+             <string>Restrict Z</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefLineEdit" name="lineEdit_18">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>25</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Z</string>
+            </property>
+            <property name="maxLength">
+             <number>1</number>
+            </property>
+            <property name="placeholderText">
+             <string/>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>RestrictZ</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Draft</cstring>
+            </property>
+            <property name="clearButtonEnabled" stdset="0">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

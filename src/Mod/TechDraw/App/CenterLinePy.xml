@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="CenterLinePy"
+      Twin="CenterLine"
+      TwinPointer="CenterLine"
+      Include="Mod/TechDraw/App/Cosmetic.h"
+      Namespace="TechDraw"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>CenterLine specifies appearance parameters for TechDraw Geometry objects</UserDocu>
+    </Documentation>
+    <Methode Name="clone" Const="true">
+        <Documentation>
+            <UserDocu>Create a clone of this centerline</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="copy" Const="true">
+        <Documentation>
+            <UserDocu>Create a copy of this centerline</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setFormat">
+        <Documentation>
+            <UserDocu>Change the appearance of this CenterLine. cl.setFormat(style, color, weight, visible)</UserDocu>
+        </Documentation>
+    </Methode>
+
+    <Methode Name="getFormat">
+        <Documentation>
+            <UserDocu>returns the appearance attributes of this CenterLine.  returns tuple(style, color, weight, visible).</UserDocu>
+        </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

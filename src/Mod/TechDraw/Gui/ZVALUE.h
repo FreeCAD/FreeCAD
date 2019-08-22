@@ -17,6 +17,7 @@ namespace ZVALUE {
     const int SECTIONLINE = 80;    //TODO: change to "DECORATION"? section lines, symmetry lines, etc?
     const int HIGHLIGHT = 80;
     const int MATTING = 100;
+    const int TRACKER = 125;
     const int LOCK = 200;
 }
 #endif

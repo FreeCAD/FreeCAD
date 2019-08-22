@@ -1244,12 +1244,8 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Gaitu abioko ongietorri-pantaila</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Txosten-leiho fitxara aldatu:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
-      <translation>Modulua automatikoki kargatu abiarazi ondoren:</translation>
+      <translation>Automatikoki kargatu modulua abiarazi ondoren:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -1266,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Size of recent file list</source>
       <translation>Azken fitxategien zerrendaren luzera</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Leiho-estiloa:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1479,7 +1471,7 @@ Fitxategi-baimenen arazo bat ote da?</translation>
     <name>Gui::Dialog::DlgMacroRecord</name>
     <message>
       <source>Macro recording</source>
-      <translation>Makro-grabaketa</translation>
+      <translation>Makroen grabazioa</translation>
     </message>
     <message>
       <source>Macro name:</source>
@@ -1626,6 +1618,53 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Itxi</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Bilatu...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Aurkitu</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Aurkitu:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Bilatu hemen:</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Taldeak</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Izenak</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Balioak</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Kate osoko bat etortzeak soilik</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Bilatu hurrengoa</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>Ez da aurkitu</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>Ezin da testua aurkitu: %1</translation>
     </message>
   </context>
   <context>
@@ -2273,7 +2312,7 @@ Zehaztu beste direktorio, mesedez.</translation>
     </message>
     <message>
       <source>The maximum value must be higher than the minimum value.</source>
-      <translation>Balio maximoa balio minimoa baino handiagoa izan behar du.</translation>
+      <translation>Balio maximoak balio minimoak baino handiagoa izan behar du.</translation>
     </message>
   </context>
   <context>
@@ -2722,10 +2761,6 @@ Zehaztu beste direktorio, mesedez.</translation>
       <translation>GUI komandoak</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>GUI komandoen grabazioa</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Grabatu iruzkin gisa</translation>
     </message>
@@ -2740,6 +2775,10 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Exekutatu makroak ingurune lokalean</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Grabatu EI komandoak</translation>
     </message>
   </context>
   <context>
@@ -2767,10 +2806,6 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>Unit</source>
       <translation>Unitatea</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Erabiltzaile-sistema:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2835,6 +2870,10 @@ Zehaztu beste direktorio, mesedez.</translation>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Unitate-sistema:</translation>
     </message>
   </context>
   <context>
@@ -3272,7 +3311,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Add sub-group</source>
-      <translation>Gehitu azpi-taldea</translation>
+      <translation>Gehitu azpitaldea</translation>
     </message>
     <message>
       <source>Remove group</source>
@@ -3284,11 +3323,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Export parameter</source>
-      <translation>Esportazio-parametroa</translation>
+      <translation>Esportatu parametroa</translation>
     </message>
     <message>
       <source>Import parameter</source>
-      <translation>Inportazio-parametroa</translation>
+      <translation>Inportatu parametroa</translation>
     </message>
     <message>
       <source>Collapse</source>
@@ -3300,7 +3339,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Existing sub-group</source>
-      <translation>Badago azpi-taldea</translation>
+      <translation>Lehendik dagoen azpitaldea</translation>
     </message>
     <message>
       <source>The sub-group '%1' already exists.</source>
@@ -3320,7 +3359,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Reading from '%1' failed.</source>
-      <translation>Huts egin du '%1' irakurtzen.</translation>
+      <translation>'%1' irakurtzeak huts egin du.</translation>
     </message>
   </context>
   <context>
@@ -3418,11 +3457,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Roll:</source>
-      <translation>Kulunkatzea:</translation>
+      <translation>Kulunka:</translation>
     </message>
     <message>
       <source>Yaw:</source>
-      <translation>Keinadatzea:</translation>
+      <translation>Keinada:</translation>
     </message>
     <message>
       <source>Rotation axis with angle</source>
@@ -3881,12 +3920,12 @@ Aldaketak gorde nahi dituzu?</translation>
       <translation>Arrastatu pantaila bi hatzekin EDO sakatu saguaren eskuineko botoia.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastatu pantaila hatz batekin EDO sakatu saguaren ezkerreko botoia. Krokisgilean eta beste edizio modu batzuetan, mantendu Alt sakatuta.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Atximurkatu (ipini bi hatz pantailan eta arrastatu kanporantz edo barrurantz) EDO korritu saguaren erdiko botoia EDO PgUp/PgDown teklatuan.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4540,12 +4579,12 @@ Beste direktorio bat aukeratu nahi al duzu?</translation>
       <translation>Gehikuntzak</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Translazioaren gehikuntza: </translation>
+      <source>Translation Increment:</source>
+      <translation>Translazioaren gehikuntza:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Biraketaren gehikuntza: </translation>
+      <source>Rotation Increment:</source>
+      <translation>Biraketaren gehikuntza:</translation>
     </message>
   </context>
   <context>

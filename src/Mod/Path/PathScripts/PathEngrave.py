@@ -35,20 +35,26 @@ from PySide import QtCore
 
 __doc__ = "Class and implementation of Path Engrave operation"
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
 class ObjectEngrave(PathEngraveBase.ObjectOp):
     '''Proxy class for Engrave operation.'''
+
+    def __init__(self, obj, name):
+        super(ObjectEngrave, self).__init__(obj, name)
+        self.wires = []
 
     def opFeatures(self, obj):
         '''opFeatures(obj) ... return all standard features and edges based geomtries'''
@@ -128,7 +134,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         if self.commandlist:
             self.commandlist.pop()
 
-    def opUpdateDepths(self, obj, ignoreErrors=False):
+    def opUpdateDepths(self, obj):
         '''updateDepths(obj) ... engraving is always done at the top most z-value'''
         job = PathUtils.findParentJob(obj)
         self.opSetDefaultValues(obj, job)
@@ -142,5 +148,5 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns an Engrave operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectEngrave(obj, name)
+    obj.Proxy = ObjectEngrave(obj, name)
     return obj

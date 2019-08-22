@@ -87,6 +87,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
     def testRefuseToMoveSingleFeature(self):
         FreeCAD.Console.PrintMessage('Testing refuse to move the feature with dependencies from one body to another\n')
         self.BodySource = self.Doc.addObject('PartDesign::Body','Body')
+        Gui.activateView('Gui::View3DInventor', True)
         Gui.activeView().setActiveObject('pdbody', self.BodySource)
 
         self.BoxObj = self.Doc.addObject('PartDesign::AdditiveBox','Box')
@@ -147,6 +148,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
     def testMoveSingleFeature(self):
         FreeCAD.Console.PrintMessage('Testing moving one feature from one body to another\n')
         self.BodySource = self.Doc.addObject('PartDesign::Body','Body')
+        Gui.activateView('Gui::View3DInventor', True)
         Gui.activeView().setActiveObject('pdbody', self.BodySource)
 
         self.Sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')

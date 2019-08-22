@@ -843,6 +843,57 @@ PyObject* SketchObjectPy::toggleVirtualSpace(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::setActive(PyObject *args)
+{
+    PyObject* isactive;
+    int constrid;
+
+    if (!PyArg_ParseTuple(args, "iO!", &constrid, &PyBool_Type, &isactive))
+        return 0;
+
+    if (this->getSketchObjectPtr()->setActive(constrid, PyObject_IsTrue(isactive) ? true : false)) {
+        std::stringstream str;
+        str << "Not able set active/disabled status for constraint with the given index: " << constrid;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::getActive(PyObject *args)
+{
+    int constrid;
+    bool isactive;
+
+    if (!PyArg_ParseTuple(args, "i", &constrid))
+        return 0;
+
+    if (this->getSketchObjectPtr()->getActive(constrid, isactive)) {
+        PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
+        return 0;
+    }
+
+    return Py::new_reference_to(Py::Boolean(isactive));
+}
+
+PyObject* SketchObjectPy::toggleActive(PyObject *args)
+{
+    int constrid;
+
+    if (!PyArg_ParseTuple(args, "i", &constrid))
+        return 0;
+
+    if (this->getSketchObjectPtr()->toggleActive(constrid)) {
+        std::stringstream str;
+        str << "Not able toggle on/off constraint with the given index: " << constrid;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::movePoint(PyObject *args)
 {
     PyObject *pcObj;

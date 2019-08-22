@@ -34,6 +34,8 @@
 #include <QBasicTimer>
 #include <QTime>
 #include <QToolButton>
+#include <QModelIndex>
+#include "ExpressionBinding.h"
 
 namespace Gui {
 class PrefCheckBox;
@@ -447,6 +449,33 @@ private:
     QString plainText;
     QLineEdit *lineEdit;
     QPushButton *button;
+};
+
+/**
+ * The ExpLineEdit class provides a lineedit that support expressing binding.
+ * \author realthunder
+ */
+class GuiExport ExpLineEdit : public QLineEdit, public ExpressionBinding
+{
+    Q_OBJECT
+
+public:
+    ExpLineEdit ( QWidget * parent=0, bool expressionOnly=false );
+
+    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void bind(const App::ObjectIdentifier &_path);
+    bool apply(const std::string &propName);
+
+    void keyPressEvent(QKeyEvent *event);
+    void resizeEvent(QResizeEvent *event);
+
+private Q_SLOTS:
+    void finishFormulaDialog();
+    void openFormulaDialog();
+    virtual void onChange();
+
+private:
+    bool autoClose;
 };
 
 } // namespace Gui

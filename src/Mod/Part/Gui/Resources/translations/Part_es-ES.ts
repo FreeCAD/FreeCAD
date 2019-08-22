@@ -1359,7 +1359,7 @@ Posición. Funciona en objetos con ubicaciones y bordes de elipse / parábola / 
       <location filename="../../AttacherTexts.cpp" line="188"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Alinear O-Y-X</translation>
+      <translation>Alinear O-Y-N</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="189"/>

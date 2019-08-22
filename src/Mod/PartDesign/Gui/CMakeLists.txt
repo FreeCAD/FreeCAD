@@ -274,6 +274,13 @@ SET(PartDesignGui_SRCS
     ${Python_SRCS}
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PartDesignGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PartDesignGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
+
 SET(PartDesignGuiIcon_SVG
     Resources/icons/PartDesignWorkbench.svg
 )

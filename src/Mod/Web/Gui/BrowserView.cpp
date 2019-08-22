@@ -379,6 +379,11 @@ BrowserView::BrowserView(QWidget* parent)
       WindowParameter( "Browser" ),
       isLoading(false)
 {
+#if defined(QTWEBENGINE)
+    // Otherwise cause crash on exit, probably due to double deletion
+    setAttribute(Qt::WA_DeleteOnClose,false);
+#endif
+
     view = new WebView(this);
     setCentralWidget(view);
     view->setAttribute(Qt::WA_OpaquePaintEvent, true);
@@ -424,6 +429,10 @@ BrowserView::BrowserView(QWidget* parent)
     profile->setRequestInterceptor(interceptLinks);
 
     view->settings()->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
+
+#if QT_VERSION >= 0x050800
+    view->settings()->setAttribute(QWebEngineSettings::FocusOnNavigationEnabled,false);
+#endif
 
     connect(view->page()->profile(), SIGNAL(downloadRequested(QWebEngineDownloadItem*)),
             this, SLOT(onDownloadRequested(QWebEngineDownloadItem*)));

@@ -22,16 +22,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 import Part
 import Path
-import PathScripts
 import PathScripts.PathGeom as PathGeom
 import math
-import unittest
 
 from FreeCAD import Vector
-#from PathScripts.PathDressupHoldingTags import *
 from PathTests.PathTestUtils import PathTestBase
 
 class TestPathGeom(PathTestBase):
@@ -239,10 +235,6 @@ class TestPathGeom(PathTestBase):
         self.assertLine(PathGeom.edgeForCmd(Path.Command('G1',  {'X': 7, 'Y': 2, 'Z': 3}), spt), spt, Vector(7, 2, 3))
         self.assertLine(PathGeom.edgeForCmd(Path.Command('G01', {'X': 1, 'Y': 3, 'Z': 5}), spt), spt, Vector(1, 3, 5))
 
-    def test15(self):
-        """Verify proper feed rate for G1 commands is assigned."""
-        pass
-
     def test20(self):
         """Verify proper geometry for arcs in the XY-plane are created."""
         p1 = Vector(0, -1, 2)
@@ -370,7 +362,6 @@ class TestPathGeom(PathTestBase):
         e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p11, p12, p13)), 2, -2)
         self.assertCurve(e, p1 + Vector(0,0,2), p2, p3 + Vector(0,0,-2))
 
-        o = 10*math.sin(math.pi/4)
         p1 = Vector(10, -10, 1)
         p2 = Vector(10 - 10*math.sin(math.pi/4), -10*math.cos(math.pi/4), 1)
         p3 = Vector(0, 0, 1)
@@ -432,8 +423,6 @@ class TestPathGeom(PathTestBase):
         o = 10*math.sin(math.pi/4)
         p12 = Vector(10 - o, -o, 2.5)
         p23 = Vector(10 - o, +o, 7.5)
-        pf = e[0].valueAt((e[0].FirstParameter + e[0].LastParameter)/2)
-        pl = e[1].valueAt((e[1].FirstParameter + e[1].LastParameter)/2)
         self.assertCurve(e[0], p1, p12, p2)
         self.assertCurve(e[1], p2, p23, p3)
 

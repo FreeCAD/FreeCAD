@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <math.h> //OvG: Required for log10
 # include <TopoDS.hxx>
 # include <BRepGProp_Face.hxx>
 # include <gp_Vec.hxx>
@@ -60,7 +61,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <math.h> //OvG: Required for log10
+
 
 using namespace Fem;
 

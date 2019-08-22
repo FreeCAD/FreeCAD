@@ -112,7 +112,9 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Utilities.h>
 #include <Gui/Control.h>
+#include <Gui/ViewProviderLink.h>
 
+#include <Gui/ViewParams.h>
 #include "ViewProviderExt.h"
 #include "SoBrepPointSet.h"
 #include "SoBrepEdgeSet.h"
@@ -122,6 +124,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
+FC_LOG_LEVEL_INIT("Part", true, true);
 
 using namespace PartGui;
 
@@ -228,14 +231,13 @@ const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","D
 ViewProviderPartExt::ViewProviderPartExt() 
 {
     VisualTouched = true;
+    forceUpdateCount = 0;
     NormalsFromUV = true;
 
-    ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-
-    unsigned long lcol = hView->GetUnsigned("DefaultShapeLineColor",421075455UL); // dark grey (25,25,25)
+    unsigned long lcol = Gui::ViewParams::instance()->getDefaultShapeLineColor(); // dark grey (25,25,25)
     float r,g,b;
     r = ((lcol >> 24) & 0xff) / 255.0; g = ((lcol >> 16) & 0xff) / 255.0; b = ((lcol >> 8) & 0xff) / 255.0;
-    int lwidth = hView->GetInt("DefaultShapeLineWidth",2);
+    int lwidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
 
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Part");
@@ -346,16 +348,15 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     // The lower limit of the deviation has been increased to avoid
     // to freeze the GUI
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=24912&p=195613
-    Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
     if (prop == &Deviation) {
-        if(Visibility.getValue() && feature && !feature->Shape.getValue().IsNull()) 
-            updateVisual(feature->Shape.getValue());
+        if(isUpdateForced()||Visibility.getValue()) 
+            updateVisual();
         else
             VisualTouched = true;
     }
     if (prop == &AngularDeflection) {
-        if(Visibility.getValue() && feature && !feature->Shape.getValue().IsNull()) 
-            updateVisual(feature->Shape.getValue());
+        if(isUpdateForced()||Visibility.getValue()) 
+            updateVisual();
         else
             VisualTouched = true;
     }
@@ -456,8 +457,8 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else {
         // if the object was invisible and has been changed, recreate the visual
-        if (prop == &Visibility && Visibility.getValue() && VisualTouched) {
-            updateVisual(feature->Shape.getValue());
+        if (prop == &Visibility && (isUpdateForced() || Visibility.getValue()) && VisualTouched) {
+            updateVisual();
             // The material has to be checked again (#0001736)
             onChanged(&DiffuseColor);
         }
@@ -472,10 +473,19 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     ViewProviderGeometryObject::attach(pcFeat);
 
     // Workaround for #0000433, i.e. use SoSeparator instead of SoGroup
-    SoGroup* pcNormalRoot = new SoSeparator();
-    SoGroup* pcFlatRoot = new SoSeparator();
-    SoGroup* pcWireframeRoot = new SoSeparator();
-    SoGroup* pcPointsRoot = new SoSeparator();
+    auto* pcNormalRoot = new SoSeparator();
+    auto* pcFlatRoot = new SoSeparator();
+    auto* pcWireframeRoot = new SoSeparator();
+    auto* pcPointsRoot = new SoSeparator();
+    auto* wireframe = new SoSeparator();
+
+    // Must turn off all intermediate render caching, and let pcRoot to handle
+    // cache without interference.
+    pcNormalRoot->renderCaching =
+        pcFlatRoot->renderCaching =
+        pcWireframeRoot->renderCaching =
+        pcPointsRoot->renderCaching =
+        wireframe->renderCaching = SoSeparator::OFF;
 
     // enable two-side rendering
     pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
@@ -486,7 +496,6 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     SoPolygonOffset* offset = new SoPolygonOffset();
 
     // wireframe node
-    SoSeparator* wireframe = new SoSeparator();
     wireframe->setName("Edge");
     wireframe->addChild(pcLineBind);
     wireframe->addChild(pcLineMaterial);
@@ -494,10 +503,10 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     wireframe->addChild(lineset);
 
     // normal viewing with edges and points
+    pcNormalRoot->addChild(pcPointsRoot);
     pcNormalRoot->addChild(wireframe);
     pcNormalRoot->addChild(offset);
     pcNormalRoot->addChild(pcFlatRoot);
-    pcNormalRoot->addChild(pcPointsRoot);
 
     // just faces with no edges or points
     pcFlatRoot->addChild(pShapeHints);
@@ -616,7 +625,7 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPo
     try {
         std::vector<Base::Vector3d> pts;
         std::string element = this->getElement(pp->getDetail());
-        const Part::TopoShape& shape = static_cast<Part::Feature*>(getObject())->Shape.getShape();
+        const auto &shape = Part::Feature::getTopoShape(getObject());
 
         TopoDS_Shape subShape = shape.getSubShape(element.c_str());
 
@@ -663,6 +672,9 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* /
 
 void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& colors)
 {
+    Gui::SoUpdateVBOAction action;
+    action.apply(this->faceset);
+
     int size = static_cast<int>(colors.size());
     if (size > 1 && size == this->faceset->partIndex.getNum()) {
         pcFaceBind->value = SoMaterialBinding::PER_PART;
@@ -766,7 +778,7 @@ void ViewProviderPartExt::setHighlightedPoints(const std::vector<App::Color>& co
 {
     int size = static_cast<int>(colors.size());
     if (size > 1) {
-#ifdef FC_DEBUG
+#if 0
         int numPoints = coords->point.getNum() - nodeset->startIndex.getValue();
         if (numPoints != size) {
             SoDebugError::postWarning("ViewProviderPartExt::setHighlightedPoints",
@@ -813,22 +825,19 @@ bool ViewProviderPartExt::loadParameter()
 
 void ViewProviderPartExt::reload()
 {
-    if (loadParameter()) {
-        App::Property* shape     = pcObject->getPropertyByName("Shape");
-        if (shape) update(shape);
-    }
+    if (loadParameter()) 
+        updateVisual();
 }
 
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
-        // get the shape to show
-        const TopoDS_Shape &cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
-
+    const char *propName = prop?prop->getName():"";
+    if(propName  && (strcmp(propName,"Shape")==0 || strstr(propName,"Touched")!=0))
+    {
         // calculate the visual only if visible
-        if (Visibility.getValue())
-            updateVisual(cShape);
-        else
+        if (isUpdateForced()||Visibility.getValue())
+            updateVisual();
+        else 
             VisualTouched = true;
 
         if (!VisualTouched) {
@@ -878,7 +887,7 @@ void ViewProviderPartExt::unsetEdit(int ModNum)
     }
 }
 
-void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
+void ViewProviderPartExt::updateVisual()
 {
     Gui::SoUpdateVBOAction action;
     action.apply(this->faceset);
@@ -895,7 +904,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
     haction.apply(this->lineset);
     haction.apply(this->nodeset);
 
-    TopoDS_Shape cShape(inputShape);
+    TopoDS_Shape cShape = Part::Feature::getShape(getObject());
     if (cShape.IsNull()) {
         coords  ->point      .setNum(0);
         norm    ->vector     .setNum(0);
@@ -1214,7 +1223,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         lineset ->coordIndex  .finishEditing();
     }
     catch (...) {
-        Base::Console().Error("Cannot compute Inventor representation for the shape of %s.\n",pcObject->getNameInDocument());
+        FC_ERR("Cannot compute Inventor representation for the shape of " << pcObject->getFullName());
     }
 
 #   ifdef FC_DEBUG
@@ -1224,3 +1233,13 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
 #   endif
     VisualTouched = false;
 }
+void ViewProviderPartExt::forceUpdate(bool enable) {
+    if(enable) {
+        if(++forceUpdateCount == 1) {
+            if(!isShow())
+                Visibility.touch();
+        }
+    }else if(forceUpdateCount)
+        --forceUpdateCount;
+}
+

@@ -147,8 +147,8 @@
       <translation>Συγχώνευση κελιών</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Συγχώνευση επιλεγμένων κελιών στο υπολογιστικό φύλλο</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Διαχωρισμός κελιού</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Διαχωρισμός των κελιών που είχαν προηγουμένως συγχωνευτεί στο υπολογιστικό φύλλο</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Έντονη γραφή</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Ορισμός έντονης γραφής στα επιλεγμένα κελιά</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Πλάγια γραφή</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Ορισμός πλάγιας γραφής στα επιλεγμένα κελιά</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Ανοιχτό γκρι</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Επιλογή</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

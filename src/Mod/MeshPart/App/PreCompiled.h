@@ -129,11 +129,14 @@
 #include <TColStd_SequenceOfExtendedString.hxx>
 
 #include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakePolygon.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepTools.hxx>
 #include <BRepTools_ShapeSet.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -145,6 +148,8 @@
 #include <Standard_DefineHandle.hxx> 
 #include <GCE2d_MakeSegment.hxx>
 #include <GCPnts_TangentialDeflection.hxx>
+#include <GCPnts_UniformDeflection.hxx>
+#include <GCPnts_UniformAbscissa.hxx>
 #include <Geom_Axis2Placement.hxx>
 #include <Geom_CartesianPoint.hxx>
 #include <Geom_Line.hxx>
@@ -171,6 +176,7 @@
 #include <Geom_Parabola.hxx>
 #include <Geom_Plane.hxx>
 #include <Geom_ToroidalSurface.hxx>
+#include <GeomAPI_IntCS.hxx>
 #include <GeomTools_Curve2dSet.hxx>
 #include <gp_Ax2d.hxx>
 #include <gp_Circ.hxx>
@@ -228,6 +234,8 @@
 #include <TopTools_HSequenceOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
 #include <UnitsAPI.hxx>
+#include <Bnd_Box.hxx>
+#include <BndLib_Add3dCurve.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepPrimAPI_MakeCylinder.hxx>
 

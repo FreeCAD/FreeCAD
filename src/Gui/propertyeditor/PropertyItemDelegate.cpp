@@ -29,14 +29,23 @@
 # include <QPainter>
 #endif
 
+#include <Base/Console.h>
+#include <Base/Tools.h>
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include "PropertyItemDelegate.h"
 #include "PropertyItem.h"
+#include "PropertyEditor.h"
+
+FC_LOG_LEVEL_INIT("PropertyView",true,true);
 
 using namespace Gui::PropertyEditor;
 
 
 PropertyItemDelegate::PropertyItemDelegate(QObject* parent)
-    : QItemDelegate(parent), pressed(false)
+    : QItemDelegate(parent), expressionEditor(0)
+    , pressed(false), changed(false)
 {
     connect(this, SIGNAL(closeEditor(QWidget*, QAbstractItemDelegate::EndEditHint)),
             this, SLOT(editorClosed(QWidget*, QAbstractItemDelegate::EndEditHint)));
@@ -116,9 +125,21 @@ bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* mode
 
 void PropertyItemDelegate::editorClosed(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)
 {
+#if 0
+    int id = 0;
+    auto &app = App::GetApplication();
+    const char *name = app.getActiveTransaction(&id);
+    if(id && id==activeTransactionID) {
+        FC_LOG("editor close transaction " << name);
+        app.closeActiveTransaction(false,id);
+        activeTransactionID = 0;
+    }
+    FC_LOG("editor close " << editor);
+#endif
+
     // don't close the editor when pressing Tab or Shift+Tab
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=34627#p290957
-    if (hint != EditNextItem && hint != EditPreviousItem)
+    if (editor && hint != EditNextItem && hint != EditPreviousItem)
         editor->close();
 }
 
@@ -131,7 +152,16 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
     if (!childItem)
         return 0;
-    QWidget* editor = childItem->createEditor(parent, this, SLOT(valueChanged()));
+
+    FC_LOG("create editor " << index.row() << "," << index.column());
+
+    PropertyEditor *parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+    QWidget* editor;
+    expressionEditor = 0;
+    if(parentEditor && parentEditor->isBinding())
+        expressionEditor = editor = childItem->createExpressionEditor(parent, this, SLOT(valueChanged()));
+    else
+        editor = childItem->createEditor(parent, this, SLOT(valueChanged()));
     if (editor) // Make sure the editor background is painted so the cell content doesn't show through
         editor->setAutoFillBackground(true);
     if (editor && childItem->isReadOnly())
@@ -144,14 +174,17 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
         editor->setFocus();
     }
     this->pressed = false;
+
     return editor;
 }
 
 void PropertyItemDelegate::valueChanged()
 {
     QWidget* editor = qobject_cast<QWidget*>(sender());
-    if (editor)
+    if (editor) {
+        Base::FlagToggler<> flag(changed);
         commitData(editor);
+    }
 }
 
 void PropertyItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
@@ -161,17 +194,24 @@ void PropertyItemDelegate::setEditorData(QWidget *editor, const QModelIndex &ind
     QVariant data = index.data(Qt::EditRole);
     PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
     editor->blockSignals(true);
-    childItem->setEditorData(editor, data);
+    if(expressionEditor == editor)
+        childItem->setExpressionEditorData(editor, data);
+    else
+        childItem->setEditorData(editor, data);
     editor->blockSignals(false);
     return;
 }
 
 void PropertyItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
-    if (!index.isValid())
+    if (!index.isValid() || !changed)
         return;
     PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
-    QVariant data = childItem->editorData(editor);
+    QVariant data;
+    if(expressionEditor == editor)
+        data = childItem->expressionEditorData(editor);
+    else
+        data = childItem->editorData(editor);
     model->setData(index, data, Qt::EditRole);
 }
 

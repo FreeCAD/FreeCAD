@@ -33,7 +33,7 @@ namespace Base {
 
 
 /*  Metric units schema intended for design of small parts and for CNC
- *  Lengths are alwais in mm.
+ *  Lengths are always in mm.
  *  Angles in degrees (use degree symbol)
  *  Velocities in mm/min (as used in g-code).
  */

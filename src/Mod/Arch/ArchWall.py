@@ -95,6 +95,7 @@ def joinWalls(walls,delete=False):
     """joins the given list of walls into one sketch-based wall. If delete
     is True, merged wall objects are deleted"""
 
+    import Part
     if not walls:
         return None
     if not isinstance(walls,list):
@@ -116,7 +117,10 @@ def joinWalls(walls,delete=False):
         if w.Base:
             if not w.Base.Shape.Faces:
                 for e in w.Base.Shape.Edges:
-                    sk.addGeometry(e.Curve)
+                    l = e.Curve
+                    if isinstance(l,Part.Line):
+                        l = Part.LineSegment(e.Vertexes[0].Point,e.Vertexes[-1].Point)
+                    sk.addGeometry(l)
                     deleteList.append(w.Name)
     if delete:
         for n in deleteList:
@@ -235,7 +239,7 @@ class _CommandWall:
             self.tracker = DraftTrackers.boxTracker()
             if hasattr(FreeCAD,"DraftWorkingPlane"):
                 FreeCAD.DraftWorkingPlane.setup()
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=self.taskbox())
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint,extradlg=self.taskbox(),title=translate("Arch","First point of wall")+":")
 
     def getPoint(self,point=None,obj=None):
 
@@ -253,7 +257,7 @@ class _CommandWall:
             self.tracker.width(self.Width)
             self.tracker.height(self.Height)
             self.tracker.on()
-            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
+            FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox(),title=translate("Arch","Next point")+":",mode="line")
         elif len(self.points) == 2:
             import Part
             l = Part.LineSegment(FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[0]),FreeCAD.DraftWorkingPlane.getLocalCoords(self.points[1]))
@@ -298,6 +302,7 @@ class _CommandWall:
             FreeCADGui.doCommand('base.addGeometry(trace)')
         else:
             FreeCADGui.doCommand('base=Draft.makeLine(trace)')
+            FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
         FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
         FreeCADGui.doCommand('wall.Normal = FreeCAD.DraftWorkingPlane.getNormal()')
         if self.MultiMat:
@@ -330,11 +335,12 @@ class _CommandWall:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Wall options", utf8_decode=True))
+        w.setWindowTitle(translate("Arch","Wall options"))
         grid = QtGui.QGridLayout(w)
 
         matCombo = QtGui.QComboBox()
         matCombo.addItem(translate("Arch","Wall Presets..."))
+        matCombo.setToolTip(translate("Arch","This list shows all the MultiMaterials objects of this document. Create some to define wall types."))
         self.multimats = []
         self.MultiMat = None
         for o in FreeCAD.ActiveDocument.Objects:
@@ -348,33 +354,33 @@ class _CommandWall:
                     self.MultiMat = o
         grid.addWidget(matCombo,0,0,1,2)
 
-        label5 = QtGui.QLabel(translate("Arch","Length", utf8_decode=True))
+        label5 = QtGui.QLabel(translate("Arch","Length"))
         self.Length = ui.createWidget("Gui::InputField")
         self.Length.setText("0.00 mm")
         grid.addWidget(label5,1,0,1,1)
         grid.addWidget(self.Length,1,1,1,1)
 
-        label1 = QtGui.QLabel(translate("Arch","Width", utf8_decode=True))
+        label1 = QtGui.QLabel(translate("Arch","Width"))
         value1 = ui.createWidget("Gui::InputField")
         value1.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
         grid.addWidget(label1,2,0,1,1)
         grid.addWidget(value1,2,1,1,1)
 
-        label2 = QtGui.QLabel(translate("Arch","Height", utf8_decode=True))
+        label2 = QtGui.QLabel(translate("Arch","Height"))
         value2 = ui.createWidget("Gui::InputField")
         value2.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
         grid.addWidget(label2,3,0,1,1)
         grid.addWidget(value2,3,1,1,1)
 
-        label3 = QtGui.QLabel(translate("Arch","Alignment", utf8_decode=True))
+        label3 = QtGui.QLabel(translate("Arch","Alignment"))
         value3 = QtGui.QComboBox()
-        items = ["Center","Left","Right"]
+        items = [translate("Arch","Center"),translate("Arch","Left"),translate("Arch","Right")]
         value3.addItems(items)
-        value3.setCurrentIndex(items.index(self.Align))
+        value3.setCurrentIndex(["Center","Left","Right"].index(self.Align))
         grid.addWidget(label3,4,0,1,1)
         grid.addWidget(value3,4,1,1,1)
 
-        label4 = QtGui.QLabel(translate("Arch","Con&tinue", utf8_decode=True))
+        label4 = QtGui.QLabel(translate("Arch","Con&tinue"))
         value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
@@ -385,7 +391,7 @@ class _CommandWall:
         grid.addWidget(label4,5,0,1,1)
         grid.addWidget(value4,5,1,1,1)
 
-        label5 = QtGui.QLabel(translate("Arch","Use sketches", utf8_decode=True))
+        label5 = QtGui.QLabel(translate("Arch","Use sketches"))
         value5 = QtGui.QCheckBox()
         value5.setObjectName("UseSketches")
         value5.setLayoutDirection(QtCore.Qt.RightToLeft)
@@ -426,7 +432,7 @@ class _CommandWall:
         self.Width = d
         self.tracker.width(d)
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("WallWidth",d)
-        
+
 
     def setHeight(self,d):
 
@@ -515,21 +521,29 @@ class _Wall(ArchComponent.Component):
 
     "The Wall object"
 
-    def __init__(self,obj):
+    def __init__(self, obj):
 
-        ArchComponent.Component.__init__(self,obj)
+        ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
         obj.IfcType = "Wall"
 
-    def setProperties(self,obj):
+    def setProperties(self, obj):
 
         lp = obj.PropertiesList
         if not "Length" in lp:
             obj.addProperty("App::PropertyLength","Length","Wall",QT_TRANSLATE_NOOP("App::Property","The length of this wall. Not used if this wall is based on an underlying object"))
         if not "Width" in lp:
             obj.addProperty("App::PropertyLength","Width","Wall",QT_TRANSLATE_NOOP("App::Property","The width of this wall. Not used if this wall is based on a face"))
+
+        # To be combined into Width when PropertyLengthList is available
+        if not "OverrideWidth" in lp:
+            obj.addProperty("App::PropertyFloatList","OverrideWidth","Wall",QT_TRANSLATE_NOOP("App::Property","This override Width attribute to set width of each segment of wall (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)"))			# see DraftGeomUtils.offsetwire()
+
         if not "Height" in lp:
             obj.addProperty("App::PropertyLength","Height","Wall",QT_TRANSLATE_NOOP("App::Property","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid"))
+        if not "Area" in lp:
+            obj.addProperty("App::PropertyArea","Area","Wall",QT_TRANSLATE_NOOP("App::Property","The area of this wall as a simple Height * Length calculation"))
+            obj.setEditorMode("Area",1)
         if not "Align" in lp:
             obj.addProperty("App::PropertyEnumeration","Align","Wall",QT_TRANSLATE_NOOP("App::Property","The alignment of this wall on its base object, if applicable"))
             obj.Align = ['Left','Right','Center']
@@ -730,11 +744,18 @@ class _Wall(ArchComponent.Component):
                             l = obj.Base.Shape.Length
                             if obj.Length.Value != l:
                                 obj.Length = l
+                                self.oldLength = None # delete the stored value to prevent triggering base change below
 
-    def onChanged(self,obj,prop):
+        # set the Area property
+        obj.Area = obj.Length.Value * obj.Height.Value
 
+    def onBeforeChange(self,obj,prop):
         if prop == "Length":
-            if obj.Base and obj.Length.Value:
+            self.oldLength = obj.Length.Value
+
+    def onChanged(self, obj, prop):
+        if prop == "Length":
+            if obj.Base and obj.Length.Value and hasattr(self,"oldLength") and (self.oldLength != None) and (self.oldLength != obj.Length.Value):
                 if obj.Base.isDerivedFrom("Part::Feature"):
                     if len(obj.Base.Shape.Edges) == 1:
                         import DraftGeomUtils
@@ -749,7 +770,10 @@ class _Wall(ArchComponent.Component):
                                     #print "modifying p2"
                                     obj.Base.End = p2
                                 elif Draft.getType(obj.Base) == "Sketch":
-                                    obj.Base.movePoint(0,2,p2,0)
+                                    try:
+                                        obj.Base.movePoint(0,2,p2,0)
+                                    except:
+                                        print("Debug: The base sketch of this wall could not be changed, because the sketch has not been edited yet in this session (this is a bug in FreeCAD). Try entering and exiting edit mode in this sketch first, and then changing the wall length should work.")
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
         self.hideSubobjects(obj,prop)
@@ -775,7 +799,21 @@ class _Wall(ArchComponent.Component):
                 # multifuses not considered here
                 return data
         length  = obj.Length.Value
-        width = obj.Width.Value
+
+        # TODO currently layers were not supported when len(basewires) > 0
+        width = 0
+        widths = obj.OverrideWidth
+
+        if obj.OverrideWidth:
+            if obj.OverrideWidth[0]:
+                width = obj.OverrideWidth[0]
+        if not width:
+            if obj.Width:
+                width = obj.Width.Value
+            else:
+                print("Width or OverrideWidth[0] should not be 0")
+                return
+
         height = obj.Height.Value
         if not height:
             for p in obj.InList:
@@ -796,10 +834,12 @@ class _Wall(ArchComponent.Component):
         if hasattr(obj,"Material"):
             if obj.Material:
                 if hasattr(obj.Material,"Materials"):
+                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
+                    # multimaterials
                     varwidth = 0
-                    restwidth = width - sum(obj.Material.Thicknesses)
+                    restwidth = width - sum(thicknesses)
                     if restwidth > 0:
-                        varwidth = [t for t in obj.Material.Thicknesses if t == 0]
+                        varwidth = [t for t in thicknesses if t == 0]
                         if varwidth:
                             varwidth = restwidth/len(varwidth)
                     for t in obj.Material.Thicknesses:
@@ -844,12 +884,16 @@ class _Wall(ArchComponent.Component):
                             for c in Part.sortEdges(cluster):
                                 self.basewires.append(Part.Wire(c))
 
-                    if self.basewires and width:
+                    if self.basewires: # and width:				# width already tested earlier...
+
                         if (len(self.basewires) == 1) and layers:
                             self.basewires = [self.basewires[0] for l in layers]
+
                         layeroffset = 0
                         baseface = None
                         for i,wire in enumerate(self.basewires):
+
+                            edgeNum = len(wire.Edges)
                             e = wire.Edges[0]
                             if isinstance(e.Curve,Part.Circle):
                                 dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
@@ -862,14 +906,16 @@ class _Wall(ArchComponent.Component):
                                 off = obj.Offset.Value
                                 if layers:
                                     off = off+layeroffset
-                                    dvec.multiply(layers[i])
-                                    layeroffset += layers[i]
+                                    dvec.multiply(abs(layers[i]))
+                                    layeroffset += abs(layers[i])
                                 else:
                                     dvec.multiply(width)
                                 if off:
                                     dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                     wire = DraftGeomUtils.offsetWire(wire,dvec2)
-                                w2 = DraftGeomUtils.offsetWire(wire,dvec)
+
+                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False, False, widths)
+
                                 w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
                                 sh = DraftGeomUtils.bind(w1,w2)
                             elif obj.Align == "Right":
@@ -877,14 +923,16 @@ class _Wall(ArchComponent.Component):
                                 off = obj.Offset.Value
                                 if layers:
                                     off = off+layeroffset
-                                    dvec.multiply(layers[i])
-                                    layeroffset += layers[i]
+                                    dvec.multiply(abs(layers[i]))
+                                    layeroffset += abs(layers[i])
                                 else:
                                     dvec.multiply(width)
                                 if off:
                                     dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                     wire = DraftGeomUtils.offsetWire(wire,dvec2)
-                                w2 = DraftGeomUtils.offsetWire(wire,dvec)
+
+                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False, False, widths)
+
                                 w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
                                 sh = DraftGeomUtils.bind(w1,w2)
                             elif obj.Align == "Center":
@@ -892,22 +940,30 @@ class _Wall(ArchComponent.Component):
                                     off = width/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
                                     w1 = DraftGeomUtils.offsetWire(wire,d1)
-                                    layeroffset += layers[i]
+                                    layeroffset += abs(layers[i])
                                     off = width/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
                                     w2 = DraftGeomUtils.offsetWire(wire,d1)
                                 else:
-                                    dvec.multiply(width/2)
-                                    w1 = DraftGeomUtils.offsetWire(wire,dvec)
+                                    dvec.multiply(width/2)			## TODO width Value should be of no use (width/2), width Direction remains 'in use'
+
+                                    overrideWidthHalfen = [i/2 for i in widths]
+
+                                    w1 = DraftGeomUtils.offsetWire(wire,dvec,False, False, overrideWidthHalfen)
                                     dvec = dvec.negative()
-                                    w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                                    w2 = DraftGeomUtils.offsetWire(wire,dvec,False, False, overrideWidthHalfen)
+
                                 sh = DraftGeomUtils.bind(w1,w2)
+
+                            del widths[0:edgeNum]
+
                             if sh:
                                 sh.fix(0.1,0,1) # fixes self-intersecting wires
                                 f = Part.Face(sh)
                                 if baseface:
                                     if layers:
-                                        baseface.append(f)
+                                        if layers[i] >= 0:
+                                            baseface.append(f)
                                     else:
                                         baseface = baseface.fuse(f)
                                         # baseface = baseface.removeSplitter()
@@ -916,26 +972,28 @@ class _Wall(ArchComponent.Component):
                                             baseface = s
                                 else:
                                     if layers:
-                                        baseface = [f]
+                                        if layers[i] >= 0:
+                                            baseface = [f]
                                     else:
                                         baseface = f
                         if baseface:
                             base,placement = self.rebase(baseface)
         else:
             if layers:
-                totalwidth = sum(layers)
+                totalwidth = sum([abs(l) for l in layers])
                 offset = 0
                 base = []
                 for l in layers:
-                    l2 = length/2 or 0.5
-                    w1 = -totalwidth/2 + offset
-                    w2 = w1 + l
-                    v1 = Vector(-l2,w1,0)
-                    v2 = Vector(l2,w1,0)
-                    v3 = Vector(l2,w2,0)
-                    v4 = Vector(-l2,w2,0)
-                    base.append(Part.Face(Part.makePolygon([v1,v2,v3,v4,v1])))
-                    offset += l
+                    if l > 0:
+                        l2 = length/2 or 0.5
+                        w1 = -totalwidth/2 + offset
+                        w2 = w1 + l
+                        v1 = Vector(-l2,w1,0)
+                        v2 = Vector(l2,w1,0)
+                        v3 = Vector(l2,w2,0)
+                        v4 = Vector(-l2,w2,0)
+                        base.append(Part.Face(Part.makePolygon([v1,v2,v3,v4,v1])))
+                    offset += abs(l)
             else:
                 l2 = length/2 or 0.5
                 w2 = width/2 or 0.5
@@ -999,9 +1057,10 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             if hasattr(obj,"Material"):
                 if obj.Material and obj.Shape:
                     if hasattr(obj.Material,"Materials"):
-                        if len(obj.Material.Materials) == len(obj.Shape.Solids):
+                        activematerials = [obj.Material.Materials[i] for i in range(len(obj.Material.Materials)) if obj.Material.Thicknesses[i] >= 0]
+                        if len(activematerials) == len(obj.Shape.Solids):
                             cols = []
-                            for i,mat in enumerate(obj.Material.Materials):
+                            for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
                                 c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
                                 if 'DiffuseColor' in mat.Material:

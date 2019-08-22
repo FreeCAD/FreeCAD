@@ -5265,7 +5265,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Join</source>
-      <translation type="unfinished">Join</translation>
+      <translation>Förena</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>

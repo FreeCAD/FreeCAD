@@ -58,6 +58,8 @@ class Container(object):
             return container.OriginFeatures
         elif container.hasExtension('App::GroupExtension'):
             return []
+        elif container.hasChildElement():
+            return []
         raise RuntimeError("getStaticChildren: unexpected container type!")
 
     def getDynamicChildren(self):
@@ -81,6 +83,14 @@ class Container(object):
             return result
         elif container.isDerivedFrom('App::Origin'):
             return []
+        elif container.hasChildElement():
+            result = []
+            for sub in container.getSubObjects(1):
+                sobj = container.getSubObject(sub,retType=1)
+                if sobj:
+                    result.append(sobj)
+            return result
+
         raise RuntimeError("getDynamicChildren: unexpected container type!")
     
     def isACS(self):
@@ -91,6 +101,8 @@ class Container(object):
         if container.isDerivedFrom('App::Document'):
             return True #Document is a special thing... is it a CS or not is a matter of coding convenience. 
         elif container.hasExtension('App::GeoFeatureGroupExtension'):
+            return True
+        elif container.hasElement():
             return True
         else:
             return False
@@ -106,6 +118,8 @@ class Container(object):
             return True
         elif container.isDerivedFrom('App::Origin'):
             return True
+        elif container.hasChildElement():
+            return True
         else:
             return False
         
@@ -120,7 +134,17 @@ class Container(object):
             raise TypeError("Container is not a visibility group")
         container = self.Object
         return _getMetacontainerChildren(self, Container.isAVisGroup)
-        
+
+    def isChildVisible(self,obj):
+        container = self.Object
+        isElementVisible = getattr(container,'isElementVisible',None)
+        if not isElementVisible:
+            return obj.Visibility
+        vis = isElementVisible(obj.Name)
+        if vis < 0:
+            return obj.Visibility
+        return vis>0
+
     def hasObject(self, obj):
         """Returns True if the container contains specified object directly."""
         return obj in self.getAllChildren()
@@ -167,6 +191,8 @@ def isAContainer(obj):
     if obj.hasExtension('App::GroupExtension'):
         return True
     if obj.isDerivedFrom('App::Origin'):
+        return True
+    if obj.hasChildElement():
         return True
     return False
 

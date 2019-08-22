@@ -88,7 +88,7 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         obj.Diameter = p.GetFloat("RebarDiameter",6)
     obj.Amount = amount
     obj.Document.recompute()
-    if offset:
+    if offset != None:
         obj.OffsetStart = offset
         obj.OffsetEnd = offset
     else:
@@ -273,7 +273,10 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
             else:
                 baseoffset = None
-            interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
+            if obj.ViewObject.RebarShape == "Stirrup":
+                interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
+            else:
+                interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             interval = interval / (obj.Amount - 1)
             vinterval = DraftVecUtils.scaleTo(axis,interval)
             for i in range(obj.Amount):
@@ -375,7 +378,7 @@ class _Rebar(ArchComponent.Component):
         self.wires = []
         rot = FreeCAD.Rotation()
         if obj.Amount == 1:
-            barplacement = CalculatePlacement(obj.Amount, 1, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
+            barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
             placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = 0
@@ -384,17 +387,23 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
             else:
                 baseoffset = None
-            interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
+            if obj.ViewObject.RebarShape == "Stirrup":
+                interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
+            else:
+                interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             interval = interval / (obj.Amount - 1)
             for i in range(obj.Amount):
-                barplacement = CalculatePlacement(obj.Amount, i+1, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
+                barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
                 placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = interval
         # Calculate placement of bars from custom spacing.
         if spacinglist:
             placementlist[:] = []
-            reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
+            if obj.ViewObject.RebarShape == "Stirrup":
+                reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
+            else:
+                reqInfluenceArea = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             # Avoid unnecessary checks to pass like. For eg.: when we have values
             # like influenceArea is 100.00001 and reqInflueneArea is 100
             if round(influenceArea) > round(reqInfluenceArea):
@@ -528,14 +537,17 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
         modes=["Centerline"]
         return modes+ArchComponent.ViewProviderComponent.getDisplayModes(self,vobj)
 
-def CalculatePlacement(baramount, barnumber, size, axis, rotation, offsetstart, offsetend):
+def CalculatePlacement(baramount, barnumber, bardiameter, size, axis, rotation, offsetstart, offsetend, RebarShape = ""):
 
-    """ CalculatePlacement([baramount, barnumber, size, axis, rotation, offsetstart, offsetend]):
+    """ CalculatePlacement([baramount, barnumber, bardiameter, size, axis, rotation, offsetstart, offsetend, RebarShape]):
     Calculate the placement of the bar from given values."""
     if baramount == 1:
         interval = offsetstart
     else:
-        interval = size - (offsetstart + offsetend)
+        if RebarShape == "Stirrup":
+            interval = size - (offsetstart + offsetend + bardiameter)
+        else:
+            interval = size - (offsetstart + offsetend)
         interval = interval / (baramount - 1)
     bardistance = (interval * (barnumber - 1)) + offsetstart
     barplacement = DraftVecUtils.scaleTo(axis, bardistance)

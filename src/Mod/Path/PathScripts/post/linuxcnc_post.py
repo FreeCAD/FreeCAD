@@ -102,6 +102,7 @@ if open.__module__ in ['__builtin__','io']:
 
 
 def processArguments(argstring):
+    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -142,13 +143,14 @@ def processArguments(argstring):
             print ('here')
             OUTPUT_DOUBLES = False
 
-    except:
+    except Exception: # pylint: disable=broad-except
         return False
 
     return True
 
 
 def export(objectslist, filename, argstring):
+    # pylint: disable=global-statement
     if not processArguments(argstring):
         return None
     global UNITS
@@ -239,6 +241,7 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
+    # pylint: disable=global-statement
     global LINENR
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10
@@ -247,6 +250,7 @@ def linenumber():
 
 
 def parse(pathobj):
+    # pylint: disable=global-statement
     global PRECISION
     global MODAL
     global OUTPUT_DOUBLES

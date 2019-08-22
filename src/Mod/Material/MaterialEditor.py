@@ -119,8 +119,8 @@ class MaterialEditor:
             index = self.widget.ComboMaterial.findData(self.card_path)
             self.chooseMaterial(index)
 
-        # TODO what if material and card_name was given.
-        # In such case ATM mateial is chosen, give some feedback for all those corner cases.
+        # TODO: What if material and card_name was given?
+        # In such case ATM material is chosen, give some feedback for all those corner cases.
 
     def implementModel(self):
 
@@ -670,18 +670,19 @@ def openEditor(obj=None, prop=None):
 def editMaterial(material=None, card_path=None):
     """editMaterial(material): opens the editor to edit the contents
     of the given material dictionary. Returns the modified material dictionary."""
-    # if the material editor is opened with this def the combo box with the card name is empty
-    # this makes sense ...
-    # because the editor was not opened with a card but with material dictionary instead
+    # if the material editor is opened with this def and the card_path is None
+    # the combo box with the card name is empty
+    # this makes sense, because the editor was not opened with a card_path,
+    # but with material dictionary instead
     # TODO: add some text in combo box, may be "custom material data" or "user material data"
-    # TODO: all card could be checked if one fits exact ALL provided data
-    # than this card name could be displayed
+    # TODO: if card_path is None, all known cards could be checked,
+    # if one fits exact ALL provided data, this card name could be displayed
     editor = MaterialEditor(material=material, card_path=card_path)
     result = editor.exec_()
     if result:
         return editor.getDict()
     else:
-        # on chancel button an empty dict is returned
+        # on cancel button an empty dict is returned
         return {}
 
 

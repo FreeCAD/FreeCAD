@@ -25,11 +25,13 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoMultipleCopy.h>
-# include <Precision.hxx>
+
 # include <QMessageBox>
 #endif
 
@@ -137,7 +139,7 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
         int idx = 0;
 #else
         // Redraw all arrows
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 #endif
         // This should always point outside of the solid
         Base::Vector3d normal = pcConstraint->NormalDirection.getValue();

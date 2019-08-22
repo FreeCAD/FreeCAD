@@ -395,7 +395,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>License</source>
-      <translation>License</translation>
+      <translation>Licence</translation>
     </message>
   </context>
   <context>
@@ -410,7 +410,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>License</source>
-      <translation>License</translation>
+      <translation>Licence</translation>
     </message>
   </context>
   <context>
@@ -1244,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Activer la page de garde au démarrage</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Basculer vers l'onglet de la fenêtre de rapport :</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Charger automatiquement le module après le démarrage :</translation>
     </message>
@@ -1266,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Size of recent file list</source>
       <translation>Taille de la liste des fichiers récents</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Style de fenêtre :</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1624,6 +1616,53 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Fermer</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Rechercher…</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Rechercher</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Ce qu’il faut rechercher :</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Rechercher</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Groupes</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Noms</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Valeurs</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Ne faire correspondre que la chaîne complète</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Rechercher le suivant</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>Introuvable</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>Impossible de trouver le texte : %1</translation>
     </message>
   </context>
   <context>
@@ -2720,10 +2759,6 @@ Veuillez spécifier un autre répertoire.</translation>
       <translation>Commandes d'interface graphique Gui</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Enregistrement des commandes de l'interface graphique</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Enregistrer comme un commentaire</translation>
     </message>
@@ -2738,6 +2773,10 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Exécuter les macros dans l'environnement local</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Enregistrer les commande de l’interface graphique</translation>
     </message>
   </context>
   <context>
@@ -2765,10 +2804,6 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <source>Unit</source>
       <translation>Unité</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Système de l'utilisateur :</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2800,7 +2835,7 @@ Veuillez spécifier un autre répertoire.</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation>Fraction minimale en pouce:</translation>
+      <translation>Fraction minimale de pouce :</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2833,6 +2868,10 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Système d’unités :</translation>
     </message>
   </context>
   <context>
@@ -3472,7 +3511,7 @@ La colonne « État » indique si le document peut être récupéré.</translati
     </message>
     <message>
       <source>Apply incremental changes</source>
-      <translation>Appliquer les modifications incrémentales</translation>
+      <translation>Appliquer les modifications incrémentielles</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
@@ -3879,12 +3918,12 @@ Voulez enregistrer les modifications ?</translation>
       <translation>Faire glisser l'écran avec deux doigts. Ou cliquer le bouton droit de la souris.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Faire glisser l'écran avec un doigt. Ou cliquer le bouton gauche de la souris. Dans l'atelier Sketcher et les autres modes d'édition, maintenez en plus la touche Alt enfoncée.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Pincer (mettre deux doigts sur l'écran, les rapprocher ou les écarter). Ou faire tourner la molette de la souris. Ou presser PgUp/PgDown sur le clavier.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4532,12 +4571,12 @@ Do you want to specify another directory?</source>
       <translation>Incréments</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Incrément de translation:</translation>
+      <source>Translation Increment:</source>
+      <translation>Incrément de translation :</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Incrément de rotation:</translation>
+      <source>Rotation Increment:</source>
+      <translation>Incrément de rotation :</translation>
     </message>
   </context>
   <context>

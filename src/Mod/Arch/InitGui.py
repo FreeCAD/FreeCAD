@@ -34,16 +34,16 @@ class ArchWorkbench(Workbench):
 
         # arch tools
         self.archtools = ["Arch_Wall","Arch_Structure","Arch_Rebar","Arch_BuildingPart",
-                     "Arch_Floor","Arch_Building","Arch_Site","Arch_Reference",
+                     "Arch_Project", "Arch_Site", "Arch_Building", "Arch_Floor", "Arch_Reference",
                      "Arch_Window","Arch_Roof","Arch_AxisTools",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
                      "Arch_PanelTools","Arch_Equipment",
-                     "Arch_Frame","Arch_MaterialTools","Arch_Schedule","Arch_PipeTools",
+                     "Arch_Frame", "Arch_Fence", "Arch_MaterialTools","Arch_Schedule","Arch_PipeTools",
                      "Arch_CutPlane","Arch_Add","Arch_Remove","Arch_Survey"]
         self.utilities = ["Arch_Component","Arch_CloneComponent","Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
-                     "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views",
+                     "Arch_ToggleIfcBrepFlag","Arch_3Views",
                      "Arch_IfcSpreadsheet","Arch_ToggleSubs"]
                      
         # try to locate the Rebar addon
@@ -64,6 +64,7 @@ class ArchWorkbench(Workbench):
             FreeCADGui.addCommand('Arch_RebarTools', RebarGroupCommand())
             self.archtools[2] = "Arch_RebarTools"
 
+
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
@@ -79,7 +80,7 @@ class ArchWorkbench(Workbench):
                             "Draft_SelectGroup","Draft_SelectPlane",
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
                             "Draft_FinishLine","Draft_CloseLine"]
-        self.draftutils = ["Draft_VisGroup","Draft_Heal","Draft_FlipDimension",
+        self.draftutils = ["Draft_Layer","Draft_Heal","Draft_FlipDimension",
                            "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit",
                            "Draft_Slope","Draft_SetWorkingPlaneProxy","Draft_AddConstruction"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',

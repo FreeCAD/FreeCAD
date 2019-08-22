@@ -90,17 +90,19 @@ class PathWorkbench (Workbench):
         engravecmdgroup = ['Path_EngraveTools']
         FreeCADGui.addCommand('Path_EngraveTools', PathCommandGroup(engravecmdlist, QtCore.QT_TRANSLATE_NOOP("Path", 'Engraving Operations')))
 
+        threedcmdgroup = threedopcmdlist
         if PathPreferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
 
-            threedopcmdlist.append("Path_Surface")
-            threedcmdgroup = ['Path_3dTools']
-            FreeCADGui.addCommand('Path_3dTools', PathCommandGroup(threedopcmdlist, QtCore.QT_TRANSLATE_NOOP("Path",'3D Operations')))
-
-        else:
-            threedcmdgroup = threedopcmdlist
+            try:
+                import ocl # pylint: disable=unused-variable
+                threedopcmdlist.append("Path_Surface")
+                threedcmdgroup = ['Path_3dTools']
+                FreeCADGui.addCommand('Path_3dTools', PathCommandGroup(threedopcmdlist, QtCore.QT_TRANSLATE_NOOP("Path",'3D Operations')))
+            except ImportError:
+                FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist)

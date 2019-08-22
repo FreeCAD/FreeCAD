@@ -181,6 +181,8 @@ SET(PartGui_SRCS
     SoBrepPointSet.h
     ViewProvider.cpp
     ViewProvider.h
+    ViewProviderAttachExtension.h
+    ViewProviderAttachExtension.cpp
     ViewProviderExt.cpp
     ViewProviderExt.h
     ViewProviderReference.cpp
@@ -257,6 +259,12 @@ SET(PartGui_SRCS
     TaskAttacher.h 
     TaskAttacher.cpp 
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PartGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(PartGuiIcon_SVG
     Resources/icons/PartWorkbench.svg

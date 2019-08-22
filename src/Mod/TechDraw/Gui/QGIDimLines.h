@@ -40,7 +40,9 @@ public:
     ~QGIDimLines() {}
 
     enum {Type = QGraphicsItem::UserType + 175};
-    int type() const { return Type;}
+    int type() const override { return Type;}
+    virtual QRectF boundingRect() const override;
+    virtual QPainterPath shape() const override;
 
 public:
     void draw();
@@ -48,10 +50,11 @@ public:
     //double getLineWidth() { return m_lineWidth; }
     //void setLineWidth(double w);
     //QPainterPath shape() const;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0) override;
 
 protected:
     //QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    double getEdgeFuzz(void) const;
 
 
 private:

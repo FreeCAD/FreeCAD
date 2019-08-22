@@ -674,8 +674,12 @@ class _Roof(ArchComponent.Component):
                 if obj.Base.Shape.Solids:
                     return obj.Shape
                 else :
-                    if self.sub:
-                        return self.sub
+                    if hasattr(self,"sub"):
+                        if self.sub:
+                            return self.sub
+                        else :
+                            self.execute(obj)
+                            return self.sub
                     else :
                         self.execute(obj)
                         return self.sub

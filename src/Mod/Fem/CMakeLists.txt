@@ -36,11 +36,13 @@ SET(FemExamples_SRCS
     femexamples/__init__.py
     femexamples/ccx_cantilever_std.py
     femexamples/manager.py
+    femexamples/rc_wall_2d.py
 )
 
 SET(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
     femexamples/meshes/mesh_canticcx_tetra10.py
+    femexamples/meshes/mesh_rc_wall_2d_tria6.py
 )
 
 SET(FemInOut_SRCS
@@ -52,6 +54,7 @@ SET(FemInOut_SRCS
     feminout/importInpMesh.py
     feminout/importToolsFem.py
     feminout/importVTKResults.py
+    feminout/importYamlJsonMesh.py
     feminout/importZ88Mesh.py
     feminout/importZ88O2Results.py
     feminout/readFenicsXDMF.py
@@ -128,6 +131,7 @@ SET(FemTests_SRCS
     femtest/__init__.py
     femtest/testccxtools.py
     femtest/testcommon.py
+    femtest/testmaterial.py
     femtest/testmesh.py
     femtest/testobject.py
     femtest/testresult.py
@@ -182,6 +186,7 @@ SET(FemTestsMesh_SRCS
     femtest/testfiles/mesh/tetra10_mesh.inp
     femtest/testfiles/mesh/tetra10_mesh.unv
     femtest/testfiles/mesh/tetra10_mesh.vtk
+    femtest/testfiles/mesh/tetra10_mesh.yml
     femtest/testfiles/mesh/tetra10_mesh.z88
 )
 
@@ -203,6 +208,7 @@ SET(FemObjectsScripts_SRCS
     femobjects/_FemElementGeometry2D.py
     femobjects/_FemElementRotation1D.py
     femobjects/_FemMaterial.py
+    femobjects/_FemMaterialReinforced.py
     femobjects/_FemMaterialMechanicalNonlinear.py
     femobjects/_FemMeshBoundaryLayer.py
     femobjects/_FemMeshGmsh.py
@@ -283,6 +289,7 @@ SET(FemGuiScripts_SRCS
     femguiobjects/_ViewProviderFemElementGeometry2D.py
     femguiobjects/_ViewProviderFemElementRotation1D.py
     femguiobjects/_ViewProviderFemMaterial.py
+    femguiobjects/_ViewProviderFemMaterialReinforced.py
     femguiobjects/_ViewProviderFemMaterialMechanicalNonlinear.py
     femguiobjects/_ViewProviderFemMeshBoundaryLayer.py
     femguiobjects/_ViewProviderFemMeshGmsh.py

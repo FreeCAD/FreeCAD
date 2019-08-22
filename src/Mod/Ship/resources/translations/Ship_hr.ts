@@ -134,7 +134,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>
       <source>Areas curve tool draft selected [m]</source>
-      <translation type="unfinished">Areas curve tool draft selected [m]</translation>
+      <translation>Alat krivulje područja, odabran nacrt [m]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="220"/>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="359"/>
       <source>Areas curve tool trim selected [deg]</source>
-      <translation type="unfinished">Areas curve tool trim selected [deg]</translation>
+      <translation>Alat krivulje područja, odabrao skraćivanje [deg]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="229"/>
@@ -159,7 +159,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="374"/>
       <source>Areas curve tool number of points</source>
-      <translation type="unfinished">Areas curve tool number of points</translation>
+      <translation>Alat krivulje područja, broj točaka</translation>
     </message>
   </context>
   <context>
@@ -350,7 +350,7 @@
     <message>
       <location filename="../../shipCapacityCurve/Tools.py" line="49"/>
       <source>Computing capacity curves</source>
-      <translation type="unfinished">Computing capacity curves</translation>
+      <translation>Izračunavanje krivulje kapaciteta</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="122"/>
@@ -514,22 +514,22 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="410"/>
       <source>Hydrostatics tool trim selected</source>
-      <translation type="unfinished">Hydrostatics tool trim selected</translation>
+      <translation>Alat hidrostatike, odabrano skraćivanje</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="423"/>
       <source>Hydrostatics tool minimum draft selected [m]</source>
-      <translation type="unfinished">Hydrostatics tool minimum draft selected [m]</translation>
+      <translation>Alat hidrostatike, odabran minimalni gaz [m]</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="436"/>
       <source>Hydrostatics tool maximum draft selected [m]</source>
-      <translation type="unfinished">Hydrostatics tool maximum draft selected [m]</translation>
+      <translation>Alat hidrostatike, odabran maksimalni gaz [m]</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="449"/>
       <source>Hydrostatics tool number of points selected</source>
-      <translation type="unfinished">Hydrostatics tool number of points selected</translation>
+      <translation>Alat hidrostatike, broj odabranih točaka</translation>
     </message>
   </context>
   <context>
@@ -550,12 +550,12 @@
     <message>
       <location filename="../../ShipGui.py" line="179"/>
       <source>Create a new loading condition</source>
-      <translation type="unfinished">Create a new loading condition</translation>
+      <translation>Stvori novo stanje tereta</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="182"/>
       <source>Create a new load condition spreadsheet</source>
-      <translation type="unfinished">Create a new load condition spreadsheet</translation>
+      <translation>Stvori novu proračunsku tablicu stanja tereta</translation>
     </message>
   </context>
   <context>
@@ -631,12 +631,12 @@
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="122"/>
       <source>No solids found in the selected objects</source>
-      <translation type="unfinished">No solids found in the selected objects</translation>
+      <translation>Nijedno volumensko tijelo nije pronađeno u odabiru</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="139"/>
       <source>There are not ship objects to create weights into them</source>
-      <translation type="unfinished">There are not ship objects to create weights into them</translation>
+      <translation>Ovdje nema objekata broda gdje bi se mogli napraviti tereti u njima</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="164"/>
@@ -684,7 +684,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="179"/>
       <source>There are not ship objects to create weights into them</source>
-      <translation type="unfinished">There are not ship objects to create weights into them</translation>
+      <translation>Ovdje nema objekata broda gdje bi se mogli napraviti tereti u njima</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="213"/>

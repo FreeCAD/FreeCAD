@@ -38,6 +38,7 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Base/Matrix.h>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -61,7 +62,7 @@ namespace PartGui
    * @param sub sub-object name to search.
    * @return signal if the search was successful.
    */
-  bool getShapeFromStrings(TopoDS_Shape &shapeOut, const std::string &doc, const std::string &object, const std::string &sub);
+  bool getShapeFromStrings(TopoDS_Shape &shapeOut, const std::string &doc, const std::string &object, const std::string &sub, Base::Matrix4D *mat=0);
   /*!examine pre selection
    * @param shape1 first shape in current selection
    * @param shape2 second shape in current selection
@@ -95,6 +96,8 @@ namespace PartGui
   SoNode* createLinearDimension(const gp_Pnt &point1, const gp_Pnt &point2, const SbColor &color);
   /*!erases all the dimensions in the viewer.*/
   void eraseAllDimensions();
+  /*!refresh all the dimensions in the viewer.*/
+  void refreshDimensions();
   /*!toggles the display status of the 3d dimensions*/
   void toggle3d();
   /*!toggles the display status of the delta dimensions*/
@@ -259,6 +262,9 @@ protected Q_SLOTS:
   void clearAllSlot(bool);
   void selectionClearDelayedSlot();
 
+public:
+  static void buildDimension(const DimSelections &sel1, const DimSelections &sel2);
+
 private:
   void setUpGui();
   void buildDimension();
@@ -335,15 +341,18 @@ protected Q_SLOTS:
   void clearAllSlot(bool);
   void selectionClearDelayedSlot();
 
+public:
+  static void buildDimension(const DimSelections &sel1, const DimSelections &sel2);
+
 private:
-  void setUpGui();
   void buildDimension();
+  void setUpGui();
   void clearSelection();
   DimSelections selections1;
   DimSelections selections2;
   uint buttonSelectedIndex;
   SteppedSelection *stepped;
-  VectorAdapter buildAdapter(const DimSelections &selection) const;
+  static VectorAdapter buildAdapter(const DimSelections &selection);
 };
 
 /*!start of the measure angular command*/

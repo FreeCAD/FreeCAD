@@ -162,7 +162,7 @@
       <translation>Vyberte prosím jedno umístění objektu pro lokální orientaci.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Vzorků na uzel</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>

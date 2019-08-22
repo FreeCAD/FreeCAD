@@ -31,21 +31,28 @@ import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
+import numpy
 
 __title__ = "Path Mill Face Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of Mill Facing operation."
+__contributors__ = "russ4262 (Russell Johnson)"
+__created__ = "2014"
+__scriptVersion__ = "1d usable"
+__lastModified__ = "2019-07-22 23:49 CST"
 
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -57,6 +64,9 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         '''initPocketOp(obj) ... create facing specific properties'''
         obj.addProperty("App::PropertyEnumeration", "BoundaryShape", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"))
         obj.BoundaryShape = ['Perimeter', 'Boundbox', 'Stock']
+
+        if not hasattr(obj, 'ExcludeRaisedAreas'):
+            obj.addProperty("App::PropertyBool", "ExcludeRaisedAreas", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Exclude milling raised areas inside the face."))
 
     def pocketInvertExtraOffset(self):
         return True
@@ -91,19 +101,46 @@ class ObjectFace(PathPocketBase.ObjectPocket):
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... return top face'''
         # Facing is done either against base objects
+        holeShape = None
+
         if obj.Base:
             PathLog.debug("obj.Base: {}".format(obj.Base))
             faces = []
+            holes = []
+            holeEnvs = []
+            oneBase = [obj.Base[0][0], True]
+            sub0 = getattr(obj.Base[0][0].Shape, obj.Base[0][1][0])
+            minHeight = sub0.BoundBox.ZMax
+
             for b in obj.Base:
                 for sub in b[1]:
                     shape = getattr(b[0].Shape, sub)
                     if isinstance(shape, Part.Face):
                         faces.append(shape)
+                        if shape.BoundBox.ZMin < minHeight:
+                            minHeight = shape.BoundBox.ZMin
+                        if oneBase[0] is not b[0]:
+                            oneBase[1] = False
+                        if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
+                            for wire in shape.Wires[1:]:
+                                if obj.ExcludeRaisedAreas is True:
+                                    ip = self.isPocket(b[0], shape, wire)
+                                    if ip is False:
+                                        holes.append((b[0].Shape, wire))
+                                else:
+                                    holes.append((b[0].Shape, wire))
                     else:
-                        PathLog.debug('The base subobject is not a face')
-                        return
-            planeshape = Part.makeCompound(faces)
+                        PathLog.error('The base subobject, "{}," is not a face. Ignoring "{}."'.format(sub, sub))
+
+            if obj.ExcludeRaisedAreas is True and len(holes) > 0:
+                for shape, wire in holes:
+                    f = Part.makeFace(wire, 'Part::FaceMakerSimple')
+                    env = PathUtils.getEnvelope(shape, subshape=f, depthparams=self.depthparams)
+                    holeEnvs.append(env)
+                    holeShape = Part.makeCompound(holeEnvs)
+
             PathLog.debug("Working on a collection of faces {}".format(faces))
+            planeshape = Part.makeCompound(faces)
 
         # If no base object, do planing of top surface of entire model
         else:
@@ -116,18 +153,38 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         if obj.BoundaryShape == 'Boundbox':
             bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, FreeCAD.Vector(bb.XMin, bb.YMin, bb.ZMin), FreeCAD.Vector(0, 0, 1))
             env = PathUtils.getEnvelope(partshape=bbperim, depthparams=self.depthparams)
+            if obj.ExcludeRaisedAreas is True and oneBase[1] is True:
+                includedFaces = self.getAllIncludedFaces(oneBase[0], env, faceZ=minHeight)
+                if len(includedFaces) > 0:
+                    includedShape = Part.makeCompound(includedFaces)
+                    includedEnv = PathUtils.getEnvelope(oneBase[0].Shape, subshape=includedShape, depthparams=self.depthparams)
+                    env = env.cut(includedEnv)
         elif obj.BoundaryShape == 'Stock':
             stock = PathUtils.findParentJob(obj).Stock.Shape
             env = stock
+            if obj.ExcludeRaisedAreas is True and oneBase[1] is True:
+                includedFaces = self.getAllIncludedFaces(oneBase[0], stock, faceZ=minHeight)
+                if len(includedFaces) > 0:
+                    stockEnv = PathUtils.getEnvelope(partshape=stock, depthparams=self.depthparams)
+                    includedShape = Part.makeCompound(includedFaces)
+                    includedEnv = PathUtils.getEnvelope(oneBase[0].Shape, subshape=includedShape, depthparams=self.depthparams)
+                    env = stockEnv.cut(includedEnv)
         else:
             env = PathUtils.getEnvelope(partshape=planeshape, depthparams=self.depthparams)
 
-        return [(env, False)]
+        if holeShape is not None:
+            PathLog.info("Processing holes...")
+            holeEnv = PathUtils.getEnvelope(partshape=holeShape, depthparams=self.depthparams)
+            newEnv = env.cut(holeEnv)
+            return [(newEnv, False)]
+        else:
+            return [(env, False)]
 
     def areaOpSetDefaultValues(self, obj, job):
         '''areaOpSetDefaultValues(obj, job) ... initialize mill facing properties'''
         obj.StepOver = 50
         obj.ZigZagAngle = 45.0
+        obj.ExcludeRaisedAreas = False
 
         # need to overwrite the default depth calculations for facing
         if job and len(job.Model.Group) > 0:
@@ -139,12 +196,72 @@ class ObjectFace(PathPocketBase.ObjectPocket):
             if len(obj.Base) >= 1:
                 obj.OpFinalDepth = Part.makeCompound(obj.Base).BoundBox.ZMax
 
-def SetupProperties():
-    return PathPocketBase.SetupProperties() + [ "BoundaryShape" ]
+    def isPocket(self, b, f, w):
+        e = w.Edges[0]
+        for fi in range(0, len(b.Shape.Faces)):
+            face = b.Shape.Faces[fi]
+            for ei in range(0, len(face.Edges)):
+                edge = face.Edges[ei]
+                if e.isSame(edge) is True:
+                    if f is face:
+                        # Alternative: run loop to see if all edges are same
+                        pass  # same source face, look for another
+                    else:
+                        if face.CenterOfMass.z < f.CenterOfMass.z:
+                            return True
+        return False
 
-def Create(name, obj = None):
+    def getAllIncludedFaces(self, base, env, faceZ):
+        included = []
+        eXMin = env.BoundBox.XMin
+        eXMax = env.BoundBox.XMax
+        eYMin = env.BoundBox.YMin
+        eYMax = env.BoundBox.YMax
+        # eZMin = env.BoundBox.ZMin
+        eZMin = faceZ
+        # eZMax = env.BoundBox.ZMax
+
+        def isOverlap(fMn, fMx, eMn, eMx):
+            if fMx > eMn:
+                if fMx <= eMx:
+                    return True
+                elif fMx >= eMx and fMn <= eMx:
+                    return True
+            if fMn < eMx:
+                if fMn >= eMn:
+                    return True
+                elif fMn <= eMn and fMx >= eMn:
+                    return True
+            return False
+
+        for fi in range(0, len(base.Shape.Faces)):
+            incl = False
+            face = base.Shape.Faces[fi]
+            fXMin = face.BoundBox.XMin
+            fXMax = face.BoundBox.XMax
+            fYMin = face.BoundBox.YMin
+            fYMax = face.BoundBox.YMax
+            # fZMin = face.BoundBox.ZMin
+            fZMax = face.BoundBox.ZMax
+            if fZMax > eZMin:
+                if isOverlap(fXMin, fXMax, eXMin, eXMax) is True:
+                    if isOverlap(fYMin, fYMax, eYMin, eYMax) is True:
+                        incl = True
+            if incl is True:
+                included.append(face)
+        return included
+
+
+def SetupProperties():
+    setup = PathPocketBase.SetupProperties()
+    setup.append("BoundaryShape")
+    setup.append("ExcludeRaisedAreas")
+    return setup
+
+
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Mill Facing operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectFace(obj, name)
+    obj.Proxy = ObjectFace(obj, name)
     return obj

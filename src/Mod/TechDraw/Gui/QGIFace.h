@@ -110,9 +110,9 @@ public:
     void clearFillItems(void);
 
     void lineSetToFillItems(LineSet& ls);
-    QGraphicsPathItem* geomToLine(TechDrawGeometry::BaseGeom* base,LineSet& ls);
-//    QGraphicsPathItem* geomToOffsetLine(TechDrawGeometry::BaseGeom* base, double offset, const LineSet& ls);
-    QGraphicsPathItem* geomToStubbyLine(TechDrawGeometry::BaseGeom* base, double offset, LineSet& ls);
+    QGraphicsPathItem* geomToLine(TechDraw::BaseGeom* base,LineSet& ls);
+//    QGraphicsPathItem* geomToOffsetLine(TechDraw::BaseGeom* base, double offset, const LineSet& ls);
+    QGraphicsPathItem* geomToStubbyLine(TechDraw::BaseGeom* base, double offset, LineSet& ls);
     QGraphicsPathItem* lineFromPoints(Base::Vector3d start, Base::Vector3d end, DashSpec ds);
 
     //bitmap texture fill parms method
@@ -127,7 +127,7 @@ protected:
     std::vector<double> offsetDash(const std::vector<double> dv, const double offset);
     QPainterPath dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end);
     double dashRemain(const std::vector<double> dv, const double offset);
-    double calcOffset(TechDrawGeometry::BaseGeom* g,LineSet ls);
+    double calcOffset(TechDraw::BaseGeom* g,LineSet ls);
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
     QGCustomRect *m_rect;
 
@@ -147,6 +147,7 @@ protected:
     std::vector<DashSpec> m_dashSpecs;
     long int m_segCount;
     long int m_maxSeg;
+    long int m_maxTile;
 
 
 private:

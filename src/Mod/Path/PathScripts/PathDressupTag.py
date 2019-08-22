@@ -29,7 +29,6 @@ import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
-import sys
 
 from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
 from PySide import QtCore
@@ -38,10 +37,11 @@ PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 PathLog.trackModule()
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+MaxInt = 99999999999999
 
 class TagSolid:
     def __init__(self, proxy, z, R):
@@ -127,6 +127,14 @@ class ObjectDressup:
         self.obj = obj
         self.solids = []
 
+        # initialized later
+        self.edges = None
+        self.masterSolid = None
+        self.ptMax = None
+        self.ptMin = None
+        self.tagSolid = None
+        self.wire = None
+
     def __getstate__(self):
         return None
 
@@ -156,11 +164,11 @@ class ObjectDressup:
 
         self.obj = obj
 
-        minZ = +sys.maxint
+        minZ = +MaxInt
         minX = minZ
         minY = minZ
 
-        maxZ = -sys.maxint
+        maxZ = -MaxInt
         maxX = maxZ
         maxY = maxZ
 
@@ -187,7 +195,7 @@ class ObjectDressup:
         self.solids = [self.masterSolid.cloneAt(pos) for pos in self.obj.Positions]
         self.tagSolid = Part.Compound(self.solids)
 
-        self.wire, rapid = PathGeom.wireForPath(obj.Base.Path)
+        self.wire, rapid = PathGeom.wireForPath(obj.Base.Path) # pylint: disable=unused-variable
         self.edges = self.wire.Edges
 
         maxTagZ = minZ + obj.Height.Value
@@ -220,9 +228,11 @@ class ObjectDressup:
             obj.Shape = solid
 
     def supportsTagGeneration(self, obj):
+        # pylint: disable=unused-argument
         return False
 
     def pointIsOnPath(self, obj, p):
+        # pylint: disable=unused-argument
         for e in self.edges:
             if DraftGeomUtils.isPtOnEdge(p, e):
                 return True
@@ -241,7 +251,7 @@ def Create(baseObject, name='DressupTag'):
         PathLog.error(translate('Path_DressupTag', 'Please select a Profile object'))
         return None
 
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TagDressup")
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     dbo = ObjectDressup(obj, baseObject)
     job = PathUtils.findParentJob(baseObject)
     job.adddOperation(obj)

@@ -23,26 +23,25 @@
 # ***************************************************************************
 
 import DraftGeomUtils
-import FreeCAD
-import Part
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
-import PathScripts.PathUtils as PathUtils
 import copy
 
 from PySide import QtCore
 
 __doc__ = "Base class for all ops in the engrave family."
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -58,7 +57,6 @@ class ObjectOp(PathOp.ObjectOp):
                 zValues.append(z)
                 z -= obj.StepDown.Value
         zValues.append(obj.FinalDepth.Value)
-        self.zValues = zValues
         return zValues
 
     def buildpathocc(self, obj, wires, zValues, rel=False):

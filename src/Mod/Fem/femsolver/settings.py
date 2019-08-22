@@ -65,7 +65,8 @@ class _SolverDlg(object):
 
     def get_binary(self):
 
-        # set the binary path to the FreeCAD defaults, ATM pure unix shell commands without path names are used
+        # set the binary path to the FreeCAD defaults
+        # ATM pure unix shell commands without path names are used
         # TODO see todo on use_default later in this module
         binary = self.default
         FreeCAD.Console.PrintLog('Solver binary path: {} \n'.format(binary))
@@ -86,12 +87,14 @@ class _SolverDlg(object):
 
 '''
 default:
-    default command to run the binary, this one is taken if the UseStandardXXXLocation is not given or set to True
+    default command to run the binary
+    this one is taken if the UseStandardXXXLocationis not given or set to True
 param:
     path where these settings are saved, in FEM normally one path in one Tab in Preferences GUI
 use_default:
     the UseStandardXXXLocation parameter identifier
-    if this parameter is set to True FreeCAD standards for the binary are used, or FreeCAD tries to find the binary
+    if this parameter is set to True FreeCAD standards
+    for the binary are usedor FreeCAD tries to find the binary
     TODO: see method setup_ccx in ccx tools module, which sets up ccx binary for various os
 custom_path:
     the xxxBinaryPath parameter identifier
@@ -128,7 +131,9 @@ def get_binary(name):
         return binary
     else:
         FreeCAD.Console.PrintError(
-            'Settings solver name: {} not found in solver settings modules _SOLVER_PARAM dirctionary.\n'.format(name)
+            'Settings solver name: {} not found in '
+            'solver settings modules _SOLVER_PARAM dirctionary.\n'
+            .format(name)
         )
         return None
 
@@ -138,7 +143,9 @@ def get_write_comments(name):
         return _SOLVER_PARAM[name].get_write_comments()
     else:
         FreeCAD.Console.PrintError(
-            'Settings solver name: {} not found in solver settings modules _SOLVER_PARAM dirctionary.\n'.format(name)
+            'Settings solver name: {} not found in '
+            'solver settings modules _SOLVER_PARAM dirctionary.\n'
+            .format(name)
         )
         return None
 

@@ -131,12 +131,21 @@ Py::Object Vector2dPy::repr()
 
 Py::Object Vector2dPy::getattro(const Py::String &name_)
 {
+    // For Py3 either handle __dict__ or implement __dir__ as shown here:
+    // https://stackoverflow.com/questions/48609111/how-is-dir-implemented-exactly-and-how-should-i-know-it
+    //
     std::string name( name_.as_std_string( "utf-8" ) );
 
-    if (name == "__members__") {
+    if (name == "__members__") { // Py2
         Py::List attr;
         attr.append(Py::String("x"));
         attr.append(Py::String("y"));
+        return attr;
+    }
+    else if (name == "__dict__") { // Py3
+        Py::Dict attr;
+        attr.setItem(Py::String("x"), Py::Float(v.x));
+        attr.setItem(Py::String("y"), Py::Float(v.y));
         return attr;
     }
     else if (name == "x") {

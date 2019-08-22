@@ -33,6 +33,35 @@
 # include <TopoDS_Vertex.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <gp_Pnt.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Shape.hxx>
+# include <ShapeAnalysis_ShapeTolerance.hxx>
+
+# include <boost/assign/list_of.hpp>
+# include <boost/tokenizer.hpp> //to simplify parsing input files we use the boost lib
+
+# include <SMESH_Gen.hxx>
+# include <SMESH_Mesh.hxx>
+# include <SMESH_MeshEditor.hxx>
+# include <SMESH_Group.hxx>
+# include <SMDS_MeshGroup.hxx>
+# include <SMESHDS_GroupBase.hxx>
+# include <SMESHDS_Group.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMDS_PolyhedralVolumeOfNodes.hxx>
+# include <SMDS_VolumeTool.hxx>
+# include <StdMeshers_MaxLength.hxx>
+# include <StdMeshers_LocalLength.hxx>
+# include <StdMeshers_MaxElementArea.hxx>
+# include <StdMeshers_NumberOfSegments.hxx>
+# include <StdMeshers_Deflection1D.hxx>
+# include <StdMeshers_Regular_1D.hxx>
+# include <StdMeshers_StartEndLength.hxx>
+# include <StdMeshers_QuadranglePreference.hxx>
+# include <StdMeshers_Quadrangle_2D.hxx>
+# include <StdMeshers_QuadraticMesh.hxx>
+
 #endif
 
 #include <Base/Writer.h>
@@ -54,37 +83,9 @@
 #include "FemVTKTools.h"
 #endif
 
-#include <boost/assign/list_of.hpp>
-#include <SMESH_Gen.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMESH_MeshEditor.hxx>
-#include <SMESH_Group.hxx>
-#include <SMDS_MeshGroup.hxx>
-#include <SMESHDS_GroupBase.hxx>
-#include <SMESHDS_Group.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDS_PolyhedralVolumeOfNodes.hxx>
-#include <SMDS_VolumeTool.hxx>
-#include <StdMeshers_MaxLength.hxx>
-#include <StdMeshers_LocalLength.hxx>
-#include <StdMeshers_MaxElementArea.hxx>
-#include <StdMeshers_NumberOfSegments.hxx>
-#include <StdMeshers_Deflection1D.hxx>
-#include <StdMeshers_Regular_1D.hxx>
-#include <StdMeshers_StartEndLength.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
-#include <StdMeshers_Quadrangle_2D.hxx>
-#include <StdMeshers_QuadraticMesh.hxx>
-
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Shape.hxx>
-
-# include <ShapeAnalysis_ShapeTolerance.hxx>
 # include <FemMeshPy.h>
 
-//to simplify parsing input files we use the boost lib
-#include <boost/tokenizer.hpp>
+
 
 
 using namespace Fem;
@@ -945,10 +946,10 @@ std::set<int> FemMesh::getFacesOnly(void) const
     //         get the volume nodes
     //         if the face nodes are a subset of the volume nodes
     //             add the face to the volume faces and break
-    //     if face not belongs to a volume
+    //     if face doesn't belong to a volume
     //         add it to faces only
     //
-    // This means it is iterated over a lot of volumes many times, this is quite expensive !
+    // This means it is iterated over a lot of volumes many times, this is quite expensive!
     //
     // TODO make this faster
     // Idea:
@@ -958,7 +959,7 @@ std::set<int> FemMesh::getFacesOnly(void) const
     //     if not in volume faces
     //     add it to the faces only
     //
-    // but the volume faces does not seam know their global mesh ID, I could not found any method in SMESH
+    // but the volume faces do not seem to know their global mesh ID, I could not find any method in SMESH
 
     std::set<int> resultIDs;
 
@@ -1523,8 +1524,9 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     }
 
     // write all data to file
-    std::ofstream anABAQUS_Output;
-    anABAQUS_Output.open(Filename.c_str());
+    // take also care of special characters in path https://forum.freecadweb.org/viewtopic.php?f=10&t=37436
+    Base::FileInfo fi(Filename);
+    Base::ofstream anABAQUS_Output(fi);
     anABAQUS_Output.precision(13);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
 
     // add some text and make sure one of the known elemParam values is used
@@ -2049,4 +2051,3 @@ Base::Quantity FemMesh::getVolume(void)const
 
 
 }
-

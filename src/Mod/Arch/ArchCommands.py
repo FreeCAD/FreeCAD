@@ -116,7 +116,7 @@ def addComponents(objectsList,host):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
-    if hostType in ["Floor","Building","Site","BuildingPart"]:
+    if hostType in ["Floor","Building","Site","Project","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
     elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
@@ -744,7 +744,7 @@ def pruneIncluded(objectslist,strict=False):
         if obj.isDerivedFrom("Part::Feature"):
             if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder","Window","Roof","Clone","Site"]):
+                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Space","Facebinder","Window","Roof","Clone","Site","Project"]):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
                             if hasattr(parent,"Host") and (parent.Host == obj):
@@ -764,6 +764,8 @@ def pruneIncluded(objectslist,strict=False):
                             toplevel = True
         if toplevel:
             newlist.append(obj)
+        else:
+            FreeCAD.Console.PrintLog("pruning "+obj.Label+"\n")
     return newlist
 
 def getAllChildren(objectlist):
@@ -1514,20 +1516,6 @@ class _CommandCheck:
                 FreeCADGui.Selection.addSelection(i[0])
 
 
-class _CommandIfcExplorer:
-    "the Arch Ifc Explorer command definition"
-    def GetResources(self):
-        return {'Pixmap'  : 'IFC',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_IfcExplorer","Ifc Explorer"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Explore the contents of an IFC file")}
-
-    def Activated(self):
-        if hasattr(self,"dialog"):
-            del self.dialog
-        import importIFC
-        self.dialog = importIFC.explore()
-
-
 class _CommandSurvey:
     "the Arch Survey command definition"
     def GetResources(self):
@@ -1693,7 +1681,6 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_RemoveShape',_CommandRemoveShape())
     FreeCADGui.addCommand('Arch_CloseHoles',_CommandCloseHoles())
     FreeCADGui.addCommand('Arch_Check',_CommandCheck())
-    FreeCADGui.addCommand('Arch_IfcExplorer',_CommandIfcExplorer())
     FreeCADGui.addCommand('Arch_Survey',_CommandSurvey())
     FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())
     FreeCADGui.addCommand('Arch_Component',_CommandComponent())

@@ -58,17 +58,17 @@
   <context>
     <name>CmdRobotEdge2Trac</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="321"/>
+      <location filename="../../CommandTrajectory.cpp" line="320"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="322"/>
+      <location filename="../../CommandTrajectory.cpp" line="321"/>
       <source>Edge to Trajectory...</source>
       <translation>Borde de trayectoria...</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="323"/>
+      <location filename="../../CommandTrajectory.cpp" line="322"/>
       <source>Generate a Trajectory from a set of edges</source>
       <translation>Generar una trayectoria de un conjunto de aristas</translation>
     </message>
@@ -252,17 +252,17 @@
   <context>
     <name>CmdRobotSetDefaultValues</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="255"/>
+      <location filename="../../CommandTrajectory.cpp" line="254"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="256"/>
+      <location filename="../../CommandTrajectory.cpp" line="255"/>
       <source>Set default values</source>
       <translation>Establecer valores por defecto</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="257"/>
+      <location filename="../../CommandTrajectory.cpp" line="256"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>Establezca los valores predeterminados de velocidad, aceleración y continuidad para los comandos subsiguientes de creación de puntos de ruta</translation>
     </message>
@@ -302,17 +302,17 @@
   <context>
     <name>CmdRobotTrajectoryCompound</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="432"/>
+      <location filename="../../CommandTrajectory.cpp" line="431"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="433"/>
+      <location filename="../../CommandTrajectory.cpp" line="432"/>
       <source>Trajectory compound...</source>
       <translation>Componer trayectoria...</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="434"/>
+      <location filename="../../CommandTrajectory.cpp" line="433"/>
       <source>Group and connect some trajectories to one</source>
       <translation>Agrupar y conectar algunas trayectorias en una</translation>
     </message>
@@ -320,17 +320,17 @@
   <context>
     <name>CmdRobotTrajectoryDressUp</name>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="385"/>
+      <location filename="../../CommandTrajectory.cpp" line="384"/>
       <source>Robot</source>
       <translation>Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="386"/>
+      <location filename="../../CommandTrajectory.cpp" line="385"/>
       <source>Dress-up trajectory...</source>
       <translation>Trayectoria dress-up...</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="387"/>
+      <location filename="../../CommandTrajectory.cpp" line="386"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
       <translation>Crear un objeto dress-up que reemplaza a algunos aspectos de una trayectoria</translation>
     </message>
@@ -366,7 +366,7 @@
       <location filename="../../CommandTrajectory.cpp" line="111"/>
       <location filename="../../CommandTrajectory.cpp" line="167"/>
       <location filename="../../CommandTrajectory.cpp" line="184"/>
-      <location filename="../../CommandTrajectory.cpp" line="413"/>
+      <location filename="../../CommandTrajectory.cpp" line="412"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -439,37 +439,37 @@
       <translation>Usted tiene que pasar el ratón por encima de una geometría (preselección) para utilizar este comando. Consulte la documentación para obtener más detalles.</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="269"/>
+      <location filename="../../CommandTrajectory.cpp" line="268"/>
       <source>Set default speed</source>
       <translation>Establecer la velocidad predeterminada</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="270"/>
+      <location filename="../../CommandTrajectory.cpp" line="269"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>velocidad: (p.e. 1 m/s o 3 cm/s)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="279"/>
+      <location filename="../../CommandTrajectory.cpp" line="278"/>
       <source>Set default continuity</source>
       <translation>Establecer la continuidad predeterminada</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="280"/>
+      <location filename="../../CommandTrajectory.cpp" line="279"/>
       <source>continuous ?</source>
       <translation>¿continuo?</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="286"/>
+      <location filename="../../CommandTrajectory.cpp" line="285"/>
       <source>Set default acceleration</source>
       <translation>Establecer aceleración predeterminada</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="287"/>
+      <location filename="../../CommandTrajectory.cpp" line="286"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>aceleración: (p.e., 1 m/s ^ 2 o 3 cm/s ^ 2)</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="414"/>
+      <location filename="../../CommandTrajectory.cpp" line="413"/>
       <source>Select the Trajectory which you want to dress up.</source>
       <translation>Seleccione la Trayectoria que desea cubrir.</translation>
     </message>

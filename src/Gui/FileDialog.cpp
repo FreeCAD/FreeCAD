@@ -199,6 +199,8 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         dlg.setDirectory(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
+        if (selectedFilter && !selectedFilter->isEmpty())
+            dlg.selectNameFilter(*selectedFilter);
         dlg.onSelectedFilter(dlg.selectedNameFilter());
         dlg.setNameFilterDetailsVisible(true);
         dlg.setConfirmOverwrite(true);
@@ -295,6 +297,8 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         dlg.setNameFilterDetailsVisible(true);
+        if (selectedFilter && !selectedFilter->isEmpty())
+            dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();
@@ -369,6 +373,8 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         dlg.setNameFilterDetailsVisible(true);
+        if (selectedFilter && !selectedFilter->isEmpty())
+            dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();

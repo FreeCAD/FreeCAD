@@ -44,11 +44,11 @@ public:
     virtual ~DocumentObjectGroup();
     
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override{
         return "Gui::ViewProviderDocumentObjectGroup";
     }
     
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 };
 
 typedef App::FeaturePythonT<DocumentObjectGroup> DocumentObjectGroupPython;

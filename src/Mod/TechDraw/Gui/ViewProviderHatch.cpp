@@ -38,6 +38,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Application.h>
 //#include <Gui/SoFCSelection.h>
 //#include <Gui/Selection.h>
 
@@ -47,8 +48,13 @@
 
 using namespace TechDrawGui;
 
-App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {Precision::Confusion(),
-                                                                  std::numeric_limits<double>::max(),
+//scaleRange = {lowerLimit, upperLimit, stepSize}
+//original range is far too broad for drawing.  causes massive loop counts.
+//App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {Precision::Confusion(),
+//                                                                  std::numeric_limits<double>::max(),
+//                                                                  pow(10,- Base::UnitsApi::getDecimals())};
+App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {pow(10,- Base::UnitsApi::getDecimals()),
+                                                                  1000.0,
                                                                   pow(10,- Base::UnitsApi::getDecimals())};
 
 
@@ -99,9 +105,11 @@ void ViewProviderHatch::onChanged(const App::Property* prop)
 {
     if ((prop == &HatchScale) ||
         (prop == &HatchColor)) {
-        TechDraw::DrawViewPart* parent = getViewObject()->getSourceView();
-        if (parent) {
-            parent->requestPaint();
+        if (HatchScale.getValue() > 0.0) {
+            TechDraw::DrawViewPart* parent = getViewObject()->getSourceView();
+            if (parent) {
+                parent->requestPaint();
+            }
         }
     }
 }
@@ -114,3 +122,12 @@ TechDraw::DrawHatch* ViewProviderHatch::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawHatch*>(pcObject);
 }
+
+Gui::MDIView *ViewProviderHatch::getMDIView() {
+    auto obj = getViewObject();
+    if(!obj) return 0;
+    auto vp = Gui::Application::Instance->getViewProvider(obj->getSourceView());
+    if(!vp) return 0;
+    return vp->getMDIView();
+}
+

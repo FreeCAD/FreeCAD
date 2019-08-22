@@ -1245,10 +1245,6 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Aktivera splashfönster vid uppstart</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Växla till rapportfönstrets tabb:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Autoladda modul efter uppstart:</translation>
     </message>
@@ -1267,10 +1263,6 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Size of recent file list</source>
       <translation>Storlek på listan för senast öppnade filer</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Fönsterstil:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1628,6 +1620,53 @@ Ange en annan katalog.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>S&amp;täng</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation type="unfinished">Find...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Hitta</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation type="unfinished">Find what:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation type="unfinished">Look at</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation type="unfinished">Groups</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation type="unfinished">Names</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation type="unfinished">Values</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation type="unfinished">Match whole string only</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation type="unfinished">Find Next</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation type="unfinished">Not found</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation type="unfinished">Can't find the text: %1</translation>
     </message>
   </context>
   <context>
@@ -2724,10 +2763,6 @@ Ange en annan katalog.</translation>
       <translation>Gui kommandon</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Spelar in GUI kommandon</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Spela in som kommentar</translation>
     </message>
@@ -2742,6 +2777,10 @@ Ange en annan katalog.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Kör makron i lokala miljön</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation type="unfinished">Record GUI commands</translation>
     </message>
   </context>
   <context>
@@ -2769,10 +2808,6 @@ Ange en annan katalog.</translation>
     <message>
       <source>Unit</source>
       <translation>Enhet</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Användarsystem:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2837,6 +2872,10 @@ Ange en annan katalog.</translation>
     <message>
       <source>1/128"</source>
       <translation type="unfinished">1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation type="unfinished">Unit system:</translation>
     </message>
   </context>
   <context>
@@ -3883,12 +3922,12 @@ Vill du spara ändringarna?</translation>
       <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4541,12 +4580,12 @@ Vill du ange en annan katalog?</translation>
       <translation>Steglängd</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Steglängd vid förflyttning: </translation>
+      <source>Translation Increment:</source>
+      <translation type="unfinished">Translation Increment:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Steglängd vid rotation: </translation>
+      <source>Rotation Increment:</source>
+      <translation type="unfinished">Rotation Increment:</translation>
     </message>
   </context>
   <context>

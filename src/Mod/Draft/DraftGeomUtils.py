@@ -26,7 +26,7 @@ __author__ = "Yorik van Havre, Jacques-Antoine Gaudin, Ken Cline"
 __url__ = ["http://www.freecadweb.org"]
 
 ## \defgroup DRAFTGEOMUTILS DraftGeomUtils
-#  \ingroup DRAFT
+#  \ingroup UTILITIES
 #  \brief Shape manipulation utilities for the Draft workbench
 #
 # Shapes manipulation utilities
@@ -47,9 +47,11 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 def precision():
     "precision(): returns the Draft precision setting"
-    # Set precision level with a cap to avoid overspecification that:-
-    #  1 - whilst it is precise enough (e.g. that OCC would consider 2 points are conincident) (not sure what it should be 10 or otherwise);
-    #  2 - but FreeCAD / OCC can handle 'internally' (e.g. otherwise user may set something like 15 that the code would never consider 2 points are coincident as internal float is not that precise);
+    # Set precision level with a cap to avoid overspecification that:
+    #  1 - whilst it is precise enough (e.g. that OCC would consider 2 points are coincident)
+    #      (not sure what it should be 10 or otherwise);
+    #  2 - but FreeCAD/OCC can handle 'internally' (e.g. otherwise user may set something like
+    #      15 that the code would never consider 2 points are coincident as internal float is not that precise);
 
     precisionMax = 10
     precisionInt = params.GetInt("precision",6)
@@ -1169,13 +1171,24 @@ def calculatePlacement(shape):
         pla.Rotation = r
     return pla
 
-def offsetWire(wire,dvec,bind=False,occ=False):
+def offsetWire(wire,dvec,bind=False,occ=False,widthList=None):
     '''
     offsetWire(wire,vector,[bind]): offsets the given wire along the
     given vector. The vector will be applied at the first vertex of
     the wire. If bind is True (and the shape is open), the original
     wire and the offsetted one are bound by 2 edges, forming a face.
+
+        If widthList is provided (values only, not lengths - i.e. no unit),
+        each value will be used to offset each corresponding edge in the wire
+
+        (The 1st value override 'dvec' for 1st segment of wire;
+         if a value is zero, value of 'widthList[0]' will follow;
+         if widthList[0]' == 0, but dvec still provided, dvec will be followed)
     '''
+
+    ## TODO  In future, 'vector' direction to offset could be 'calculated' in this function - if 'direction' in dvec is not / need not be provided 'outside' the function
+    ##                   'dvec' to be obsolete in future ?
+
     edges = wire.Edges								# Seems has repeatedly sortEdges, remark out here - edges = Part.__sortEdges__(wire.Edges)
     norm = getNormal(wire)
     closed = isReallyClosed(wire)
@@ -1203,20 +1216,50 @@ def offsetWire(wire,dvec,bind=False,occ=False):
 
     for i in range(len(edges)):
         curredge = edges[i]
-        delta = dvec
+
+        if widthList:
+            try:
+                if widthList[i] > 0:
+                    delta = DraftVecUtils.scaleTo(dvec, widthList[i])
+                elif widthList[0] > 0:
+                    delta = DraftVecUtils.scaleTo(dvec, widthList[0])	 	# to follow widthList[0]
+
+                # i.e. if widthList[0] == 0, though widthList is not False
+                # but if dev is provided still, fallback to dvec
+                elif dvec:
+                    delta = dvec
+
+                else:  
+                    return None
+            except:
+                if widthList[0] > 0:
+                    delta = DraftVecUtils.scaleTo(dvec, widthList[0])	 	# to follow widthList[0]
+                delta = dvec
+        else:
+              delta = dvec
+
         if i != 0:
             if isinstance(curredge.Curve,Part.Circle):
                 v = curredge.tangentAt(curredge.FirstParameter)
             else:
                 v = vec(curredge)
+
+            ## TODO - 2019.6.16 - 'calculate' 'offset' direction (in vector) edge by edge instead of rotating previous vector based on dvec in future
+
             angle = DraftVecUtils.angle(firstVec,v,norm)			# use vec deduced depending on geometry instead of - angle = DraftVecUtils.angle(vec(edges[0]),v,norm)
             delta = DraftVecUtils.rotate(delta,angle,norm)
+
         #print("edge ",i,": ",curredge.Curve," ",curredge.Orientation," parameters:",curredge.ParameterRange," vector:",delta)
         nedge = offset(curredge,delta,trim=True)
         if not nedge:
             return None
         nedges.append(nedge)
-    nedges = connect(nedges,closed)
+
+    if len(edges) >1:
+        nedges = connect(nedges,closed)
+    else:
+        nedges = Part.Wire(nedges[0])
+
     if bind and not closed:
         e1 = Part.LineSegment(edges[0].Vertexes[0].Point,nedges[0].Vertexes[0].Point).toShape()
         e2 = Part.LineSegment(edges[-1].Vertexes[-1].Point,nedges[-1].Vertexes[-1].Point).toShape()
@@ -1251,16 +1294,23 @@ def connect(edges,closed=False):
             if prev:
               #print("debug: DraftGeomUtils.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point)
 
-              # If prev v2 had been calculated, do not calculate again, just use it as current v1 - avoid chance of slight difference in result
-              if v2:
-                v1 = v2
+              # If the edge pairs has intersection 
+              # ... and if there is prev v2 (prev v2 was calculated intersection), do not calculate again, just use it as current v1 - avoid chance of slight difference in result
+              # Otherwise, if edge pairs has no intersection (parallel edges, line - arc do no intersect, etc.), so just just current edge endpoints as v1
+              # ... and connect these 2 non-intersecting edges
 
-              else:
-                i = findIntersection(curr,prev,True,True)
-                if i:
+              # seem have chance that 2 parallel edges offset same width, result in 2 colinear edges - Wall / DraftGeomUtils seem make them 1 edge and thus 1 vertical plane
+              i = findIntersection(curr,prev,True,True)
+              if i:
+                  if v2:
+                    v1 = v2
+                  else:
                     v1 = i[DraftVecUtils.closest(curr.Vertexes[0].Point,i)]
-                else:
+              else:
                     v1 = curr.Vertexes[0].Point
+
+                    nedges.append(Part.LineSegment(v2,v1).toShape())
+
             else:
                 v1 = curr.Vertexes[0].Point
             if next:

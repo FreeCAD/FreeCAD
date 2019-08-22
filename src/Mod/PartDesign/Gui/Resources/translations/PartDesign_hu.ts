@@ -479,12 +479,12 @@
     <message>
       <location filename="../../Command.cpp" line="1176"/>
       <source>Revolution</source>
-      <translation>Kiforgatás</translation>
+      <translation>Forgatás</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1177"/>
       <source>Revolve a selected sketch</source>
-      <translation>Esztergáld a kiválasztott vázlatot</translation>
+      <translation>Forgasd a kiválasztott vázlatot</translation>
     </message>
   </context>
   <context>

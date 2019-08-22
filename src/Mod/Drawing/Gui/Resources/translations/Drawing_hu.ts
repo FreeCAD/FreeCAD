@@ -574,7 +574,7 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="54"/>
       <source>Visible outline edges</source>
-      <translation>Élek látható körvonala</translation>
+      <translation>Látható körvonal élek</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="55"/>
@@ -599,7 +599,7 @@ Szeretné folytatni?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="59"/>
       <source>Hidden outline edges</source>
-      <translation>Rejtett szerkezeti élek</translation>
+      <translation>Rejtett vázlat élek</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="60"/>
@@ -742,19 +742,19 @@ Szeretné folytatni?</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="51"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="979"/>
       <source>Make axonometric...</source>
       <translation>Axonometrikus létrehozás...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="52"/>
-      <location filename="../../TaskOrthoViews.cpp" line="982"/>
+      <location filename="../../TaskOrthoViews.cpp" line="980"/>
       <source>Edit axonometric settings...</source>
       <translation>Axonometrikus beállítások szerkesztése...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="983"/>
+      <location filename="../../TaskOrthoViews.cpp" line="981"/>
       <source>Make orthographic</source>
       <translation>Ortografikus létrehozás</translation>
     </message>

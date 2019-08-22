@@ -24,10 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QString>
+# include <QSlider>
 #endif
 
-#include <QString>
-#include <QSlider>
+
 #include "ui_TaskObjectName.h"
 #include "TaskObjectName.h"
 #include <Gui/Application.h>

@@ -147,8 +147,8 @@
       <translation>Sloučit buňky</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Sloučit vybrané buňky v tabulce</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Rozdělit buňku</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Rozdělení dříve sloučených buněk v tabulce</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Tučný text</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Nastavit tučný text ve vybraných buňkách</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Kurzíva</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Nastavit kurzívu ve vybraných buňkách</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Světle šedá</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Vlastní</translation>
+      <source>Custom Color</source>
+      <translation>Vlastní barva</translation>
     </message>
   </context>
   <context>

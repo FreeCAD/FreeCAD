@@ -54,7 +54,9 @@
 # include <XCAFDoc_ShapeTool.hxx>
 # include <XCAFDoc_ColorTool.hxx>
 # include <XCAFDoc_Location.hxx>
+# include <XCAFDoc_GraphNode.hxx>
 # include <TDF_Label.hxx>
+# include <TDF_Tool.hxx>
 # include <TDF_LabelSequence.hxx>
 # include <TDF_ChildIterator.hxx>
 # include <TDataStd_Name.hxx>
@@ -81,11 +83,14 @@
 # endif
 #endif
 
+#include <boost/algorithm/string.hpp>
+#include <Base/Parameter.h>
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <App/Part.h>
+#include <App/Link.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FeatureCompound.h>
 #include "ImportOCAF.h"
@@ -102,10 +107,7 @@
 #include <tbb/task_group.h>
 #endif
 
-
-
 using namespace Import;
-
 
 #define OCAF_KEEP_PLACEMENT
 

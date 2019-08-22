@@ -147,8 +147,8 @@
       <translation>Об'єднати клітинки</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Об'єднати виділені клітинки в таблиці</translation>
+      <source>Merge selected cells</source>
+      <translation>Об'єднати обрані комірки</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Розділити клітинку</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Розділити раніше об'єднані клітинки в таблиці</translation>
+      <source>Split previously merged cells</source>
+      <translation>Розділити раніше обʼєднані комірки</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Жирний текст</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Зробити у виділених клітинках текст жирним</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>У виділених комірках відобразити текст жирним шрифтом</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Текст курсивом</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Зробити у виділених клітинках текст курсивом</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>У виділених комірках відобразити текст курсивом</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,14 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation type="unfinished">Underline text in selected cells</translation>
+      <translation>У виділених комірках зробити текст підкресленим</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>Колір, який встановлюється користувачем</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Світло-сірий</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Підлаштувати</translation>
+      <source>Custom Color</source>
+      <translation>Колір, який встановлюється користувачем</translation>
     </message>
   </context>
   <context>

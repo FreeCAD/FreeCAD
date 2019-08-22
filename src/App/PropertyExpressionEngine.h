@@ -28,7 +28,7 @@
 #include <boost/signals2.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
-#include <App/Property.h>
+#include <App/PropertyLinks.h>
 #include <App/Expression.h>
 #include <set>
 
@@ -44,11 +44,38 @@ class DocumentObjectExecReturn;
 class ObjectIdentifier;
 class Expression;
 
-
-class AppExport PropertyExpressionEngine : public App::Property, private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
+class AppExport PropertyExpressionContainer : public App::PropertyXLinkContainer
 {
     TYPESYSTEM_HEADER();
 public:
+    PropertyExpressionContainer();
+    virtual ~PropertyExpressionContainer();
+
+    virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const = 0;
+    virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) = 0;
+
+protected:
+    virtual void onRelabeledDocument(const App::Document &doc) = 0;
+
+private:
+    static void slotRelabelDocument(const App::Document &doc);
+};
+
+class AppExport PropertyExpressionEngine : public App::PropertyExpressionContainer, 
+                                           private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+public:
+
+    virtual void updateElementReference(
+            App::DocumentObject *feature, bool reverse=false, bool notify=false) override;
+    virtual bool referenceChanged() const override;
+    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
+    virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+                        const std::string &ref, const char *newLabel) const override;
+    virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
+                        App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
     typedef boost::function<std::string (const App::ObjectIdentifier & path, boost::shared_ptr<const App::Expression> expr)> ValidatorFunc;
 
@@ -58,22 +85,17 @@ public:
 
     struct ExpressionInfo {
         boost::shared_ptr<App::Expression> expression; /**< The actual expression tree */
-        std::string comment; /**< Optional comment for this expression */
 
-        ExpressionInfo(boost::shared_ptr<App::Expression> expression = boost::shared_ptr<App::Expression>(), const char * comment = 0) {
+        ExpressionInfo(boost::shared_ptr<App::Expression> expression = boost::shared_ptr<App::Expression>()) {
             this->expression = expression;
-            if (comment)
-                this->comment = comment;
         }
 
         ExpressionInfo(const ExpressionInfo & other) {
             expression = other.expression;
-            comment = other.comment;
         }
 
         ExpressionInfo & operator=(const ExpressionInfo & other) {
             expression = other.expression;
-            comment = other.comment;
             return *this;
         }
     };
@@ -81,31 +103,46 @@ public:
     PropertyExpressionEngine();
     ~PropertyExpressionEngine();
 
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize (void) const override;
+
+    virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
+    virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
+    virtual void onRelabeledDocument(const App::Document &doc) override;
 
     void setValue() { } // Dummy
 
-    Property *Copy(void) const;
+    Property *Copy(void) const override;
 
-    void Paste(const Property &from);
+    void Paste(const Property &from) override;
 
-    void Save (Base::Writer & writer) const;
+    void Save (Base::Writer & writer) const override;
 
-    void Restore(Base::XMLReader &reader);
+    void Restore(Base::XMLReader &reader) override;
 
-    void setValue(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr, const char * comment = 0);
+    void setValue(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr);
 
-    const boost::any getPathValue(const App::ObjectIdentifier & path) const;
+    const boost::any getPathValue(const App::ObjectIdentifier & path) const override;
 
-    DocumentObjectExecReturn * execute();
-
-    void getDocumentObjectDeps(std::vector<DocumentObject*> & docObjs) const;
+    /// Execute options
+    enum ExecuteOption {
+        /// Execute all expression
+        ExecuteAll,
+        /// Execute only output property bindings
+        ExecuteOutput,
+        /// Execute only non-output property bindings
+        ExecuteNonOutput,
+        /// Execute on document restore
+        ExecuteOnRestore,
+    };
+    /** Evaluate the expressions
+     * 
+     * @param option: execution option, see ExecuteOption.
+     */
+    DocumentObjectExecReturn * execute(ExecuteOption option=ExecuteAll, bool *touched=0);
 
     void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier> & paths) const;
 
     bool depsAreTouched() const;
-
-    boost::unordered_map<const App::ObjectIdentifier, const ExpressionInfo> getExpressions() const;
 
     /* Expression validator */
     void setValidator(ValidatorFunc f) { validator = f; }
@@ -116,22 +153,22 @@ public:
 
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
-    const App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier &p) const;
+    App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier &p) const override;
 
     size_t numExpressions() const;
-
-    void slotObjectRenamed(const App::DocumentObject & obj);
-
-    void slotObjectDeleted(const DocumentObject &obj);
 
     ///signal called when an expression was changed 
     boost::signals2::signal<void (const App::ObjectIdentifier &)> expressionChanged;
 
-    void onDocumentRestored();
+    virtual void afterRestore() override;
+    virtual void onContainerRestored() override;
 
     /* Python interface */
-    PyObject *getPyObject(void);
-    void setPyObject(PyObject *);
+    PyObject *getPyObject(void) override;
+    void setPyObject(PyObject *) override;
+
+protected:
+    virtual void hasSetValue() override;
 
 private:
 
@@ -139,22 +176,30 @@ private:
     typedef std::pair<int, int> Edge;
     typedef boost::unordered_map<const App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
 
-    std::vector<App::ObjectIdentifier> computeEvaluationOrder();
+    std::vector<App::ObjectIdentifier> computeEvaluationOrder(ExecuteOption option);
 
     void buildGraphStructures(const App::ObjectIdentifier &path,
                               const boost::shared_ptr<Expression> expression, boost::unordered_map<App::ObjectIdentifier, int> &nodes,
                               boost::unordered_map<int, App::ObjectIdentifier> &revNodes, std::vector<Edge> &edges) const;
 
     void buildGraph(const ExpressionMap &exprs,
-                    boost::unordered_map<int, App::ObjectIdentifier> &revNodes, DiGraph &g) const;
+                boost::unordered_map<int, App::ObjectIdentifier> &revNodes, 
+                DiGraph &g, ExecuteOption option=ExecuteAll) const;
 
     bool running; /**< Boolean used to avoid loops */
+    bool restoring = false;
 
     ExpressionMap expressions; /**< Stored expressions */
 
     ValidatorFunc validator; /**< Valdiator functor */
 
-    ExpressionMap restoredExpressions; /**< Expressions are read from file to this map first before they are validated and inserted into the actual map */
+    struct RestoredExpression {
+        std::string path;
+        std::string expr;
+        std::string comment;
+    };
+    /**< Expressions are read from file to this map first before they are validated and inserted into the actual map */
+    std::unique_ptr<std::vector<RestoredExpression> > restoredExpressions;
 
     friend class AtomicPropertyChange;
 

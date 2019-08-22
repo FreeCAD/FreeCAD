@@ -68,10 +68,10 @@ import sys, os, shutil, tempfile, zipfile, getopt, StringIO, re
 
 crowdinpath = "http://crowdin.net/download/project/freecad.zip"
 
-# locations list contains Module name, relative path to translation folder, relative path to qrc file, and optionally
-# a python rc file
+# locations list contains Module name, relative path to translation folder and relative path to qrc file
 
-locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources/Arch.qrc"],
+locations = [["AddonManager","../Mod/AddonManager/Resources/translations","../Mod/AddonManager/Resources/AddonManager.qrc"],
+             ["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources/Arch.qrc"],
              ["Assembly","../Mod/Assembly/Gui/Resources/translations","../Mod/Assembly/Gui/Resources/Assembly.qrc"],
              ["draft","../Mod/Draft/Resources/translations","../Mod/Draft/Resources/Draft.qrc"],
              ["Drawing","../Mod/Drawing/Gui/Resources/translations","../Mod/Drawing/Gui/Resources/Drawing.qrc"],
@@ -234,12 +234,12 @@ if __name__ == "__main__":
     elif inputzip:
         tempfolder = tempfile.mkdtemp()
         print("creating temp folder " + tempfolder)
-        os.chdir(tempfolder)
         inputzip=os.path.realpath(inputzip)
         if not os.path.exists(inputzip):
             print("ERROR: " + inputzip + " not found")
             sys.exit()
         shutil.copy(inputzip,tempfolder)
+        os.chdir(tempfolder)
         zfile=zipfile.ZipFile("freecad.zip")
         print("extracting freecad.zip...")
         zfile.extractall()

@@ -35,15 +35,18 @@ class WorkbenchTestCase(unittest.TestCase):
         
     def testActivate(self):
         wbs=FreeCADGui.listWorkbenches()
+        # this gives workbenches a possibility to detect that we're under test environment
+        FreeCAD.TestEnvironment = True
         try:
             for i in wbs:
-                FreeCADGui.activateWorkbench(i)
-                FreeCADGui.updateGui()
+                success = FreeCADGui.activateWorkbench(i)
                 FreeCAD.Console.PrintLog("Active: "+FreeCADGui.activeWorkbench().name()+ " Expected: "+i+"\n")
-                FreeCADGui.updateGui()
-                self.assertEqual(FreeCADGui.activeWorkbench().name(), i, "Test on activating workbench {0} failed".format(i))
+                self.assertTrue(success, "Test on activating workbench {0} failed".format(i))
         except Exception as e:
+            del FreeCAD.TestEnvironment
             self.fail("Loading of workbench '{0}' failed: {1}".format(i, e))
+        else:
+            del FreeCAD.TestEnvironment
         
     def testHandler(self):
         import __main__

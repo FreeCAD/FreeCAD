@@ -208,7 +208,7 @@ gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
     catch (Standard_Failure& e4) {
         Base::Console().Message("PROBLEM - DPGI (%s) failed to create viewAxis: %s **\n",
                                 getNameInDocument(),e4.GetMessageString());
-        return TechDrawGeometry::getViewAxis(pt,axis,false);
+        return TechDraw::getViewAxis(pt,axis,false);
     }
 
     return viewAxis;
@@ -225,7 +225,7 @@ double DrawProjGroupItem::getRotateAngle()
     na.Normalize();
     Base::Vector3d org(0.0,0.0,0.0);
 
-    viewAxis = TechDrawGeometry::getViewAxis(org,na,true);        //default orientation
+    viewAxis = TechDraw::getViewAxis(org,na,true);        //default orientation
 
     gp_Dir gxDir = viewAxis.XDirection();
     Base::Vector3d origX(gxDir.X(),gxDir.Y(),gxDir.Z());

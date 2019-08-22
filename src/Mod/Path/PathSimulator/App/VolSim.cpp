@@ -506,7 +506,7 @@ void cStock::CreatePocket(float cxf, float cyf, float radf, float height)
 
 void cStock::ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool & tool)
 {
-	// tanslate coordinates
+	// translate coordinates
 	Point3D pi1 = ToInner(p1);
 	Point3D pi2 = ToInner(p2);
 	float rad = tool.radius;
@@ -575,7 +575,7 @@ void cStock::ApplyLinearTool(Point3D & p1, Point3D & p2, cSimTool & tool)
 
 void cStock::ApplyCircularTool(Point3D & p1, Point3D & p2, Point3D & cent, cSimTool & tool, bool isCCW)
 {
-	// tanslate coordinates
+	// translate coordinates
 	Point3D pi1 = ToInner(p1);
 	Point3D pi2 = ToInner(p2);
 	Point3D centi(cent.x / m_res, cent.y / m_res, cent.z);

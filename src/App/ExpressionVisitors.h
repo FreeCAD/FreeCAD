@@ -43,18 +43,8 @@ public:
     {
     }
 
-    void visit(Expression *node) {
-        VariableExpression *expr = Base::freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr) {
-            const App::ObjectIdentifier & oldPath = expr->getPath().canonicalPath();
-            const std::map<ObjectIdentifier, ObjectIdentifier>::const_iterator it = paths.find(oldPath);
-
-            if (it != paths.end()) {
-                ExpressionModifier<P>::setExpressionChanged();
-                expr->setPath(it->second.relativeTo(owner));
-            }
-        }
+    void visit(Expression &node) {
+        this->renameObjectIdentifier(node,paths,owner);
     }
 
 
@@ -63,64 +53,72 @@ private:
    const ObjectIdentifier owner;                              /**< Owner of expression */
 };
 
-/**
- * @brief The RelabelDocumentObjectExpressionVisitor class is a functor class used to rename variables in an expression.
- */
-
-template<class P> class RelabelDocumentObjectExpressionVisitor : public ExpressionModifier<P> {
+template<class P> class UpdateElementReferenceExpressionVisitor : public ExpressionModifier<P> {
 public:
 
-    RelabelDocumentObjectExpressionVisitor(P & _prop, const std::string & _oldName, const std::string & _newName)
-        : ExpressionModifier<P>(_prop)
-        , oldName(_oldName)
-        , newName(_newName)
+    UpdateElementReferenceExpressionVisitor(P & _prop, App::DocumentObject *feature=0, bool reverse=false)
+        : ExpressionModifier<P>(_prop),feature(feature),reverse(reverse)
     {
     }
 
-    ~RelabelDocumentObjectExpressionVisitor() {
-    }
-
-    /**
-     * @brief Visit each node in the expression, and if it is a VariableExpression object, incoke renameDocumentObject in it.
-     * @param node Node to visit
-     */
-
-    void visit(Expression * node) {
-        VariableExpression *expr = Base::freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr && expr->validDocumentObjectRename(oldName, newName)) {
-            ExpressionModifier<P>::setExpressionChanged();
-            expr->renameDocumentObject(oldName, newName);
-        }
+    void visit(Expression &node) {
+        this->updateElementReference(node,feature,reverse);
     }
 
 private:
-    std::string oldName; /**< Document object name to replace  */
-    std::string newName; /**< New document object name */
+    App::DocumentObject *feature;
+    bool reverse;
 };
 
-template<class P> class RelabelDocumentExpressionVisitor : public ExpressionModifier<P> {
+// Document relabel is not undoable, so we don't derive from
+// ExpressionModifier, hence not calling aboutToSetValue/hasSetValue().
+// By right, modification of document label should not change evaluation result
+// of any expression.
+class RelabelDocumentExpressionVisitor : public ExpressionVisitor {
 public:
 
-    RelabelDocumentExpressionVisitor(P & prop, const std::string & _oldName, const std::string & _newName)
-         : ExpressionModifier<P>(prop)
-         , oldName(_oldName)
-         , newName(_newName)
+    RelabelDocumentExpressionVisitor(const App::Document &doc)
+         : doc(doc)
     {
     }
 
-    void visit(Expression * node) {
-        VariableExpression *expr = Base::freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr && expr->validDocumentRename(oldName, newName)) {
-            ExpressionModifier<P>::setExpressionChanged();
-            expr->renameDocument(oldName, newName);
-        }
+    void visit(Expression &node) {
+        this->relabeledDocument(node,doc.getOldLabel(),doc.Label.getStrValue());
     }
 
 private:
-    std::string oldName;
-    std::string newName;
+    const App::Document &doc;
+};
+
+template<class P> class MoveCellsExpressionVisitor : public ExpressionModifier<P> {
+public:
+    MoveCellsExpressionVisitor(P &prop, const CellAddress &address, int rowCount, int colCount)
+        : ExpressionModifier<P>(prop),address(address),rowCount(rowCount),colCount(colCount)
+    {}
+
+    void visit(Expression &node) {
+        this->moveCells(node,address,rowCount,colCount);
+    }
+
+private:
+    CellAddress address;
+    int rowCount;
+    int colCount;
+};
+
+template<class P> class OffsetCellsExpressionVisitor : public ExpressionModifier<P> {
+public:
+    OffsetCellsExpressionVisitor(P &prop, int rowOffset, int colOffset)
+        : ExpressionModifier<P>(prop),rowOffset(rowOffset),colOffset(colOffset)
+    {}
+
+    void visit(Expression &node) {
+        this->offsetCells(node,rowOffset,colOffset);
+    }
+
+private:
+    int rowOffset;
+    int colOffset;
 };
 
 }

@@ -2774,7 +2774,7 @@ To može dovesti do neočekivanih rezultata.</translation>
       <location filename="../../CommandBody.cpp" line="878"/>
       <location filename="../../CommandBody.cpp" line="885"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Greška odabira</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="581"/>

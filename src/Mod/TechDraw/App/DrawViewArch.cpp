@@ -47,14 +47,15 @@ using namespace std;
 PROPERTY_SOURCE(TechDraw::DrawViewArch, TechDraw::DrawViewSymbol)
 
 const char* DrawViewArch::RenderModeEnums[]= {"Wireframe",
-                                      "Solid",
-                                      NULL};
+                                              "Solid",
+                                              "Coin",
+                                              NULL};
 
 DrawViewArch::DrawViewArch(void)
 {
     static const char *group = "Arch view";
 
-    ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Section Plane object for this view");
+    ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"SectionPlane or BuildingPart object for this view");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(AllOn ,(false),group,App::Prop_None,"If hidden objects must be shown or not");
     RenderMode.setEnums(RenderModeEnums);
@@ -62,8 +63,10 @@ DrawViewArch::DrawViewArch(void)
     ADD_PROPERTY_TYPE(FillSpaces ,(false),group,App::Prop_None,"If True, Arch Spaces are shown as a colored area");
     ADD_PROPERTY_TYPE(ShowHidden ,(false),group,App::Prop_None,"If the hidden geometry behind the section plane is shown or not");
     ADD_PROPERTY_TYPE(ShowFill ,(false),group,App::Prop_None,"If cut areas must be filled with a hatch pattern or not");
-    ADD_PROPERTY_TYPE(LineWidth,(0.35),group,App::Prop_None,"Line width of this view");
+    ADD_PROPERTY_TYPE(LineWidth,(0.25),group,App::Prop_None,"Line width of this view");
     ADD_PROPERTY_TYPE(FontSize,(12.0),group,App::Prop_None,"Text size for this view");
+    ADD_PROPERTY_TYPE(CutLineWidth,(0.50),group,App::Prop_None,"Width of cut lines of this view");
+    ADD_PROPERTY_TYPE(JoinArch ,(false),group,App::Prop_None,"If True, walls and structure will be fused by material");
     ScaleType.setValue("Custom");
 }
 
@@ -81,7 +84,9 @@ short DrawViewArch::mustExecute() const
                 ShowHidden.isTouched() ||
                 ShowFill.isTouched() ||
                 LineWidth.isTouched() ||
-                FontSize.isTouched());
+                FontSize.isTouched() ||
+                CutLineWidth.isTouched() ||
+                JoinArch.isTouched());
     }
     if ((bool) result) {
         return result;
@@ -115,7 +120,9 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
                  << ",fontsize=" << FontSize.getValue()
                  << ",techdraw=True"
                  << ",rotation=" << Rotation.getValue()
-                 << ",fillSpaces=" << (FillSpaces.getValue() ? "True" : "False");
+                 << ",fillSpaces=" << (FillSpaces.getValue() ? "True" : "False")
+                 << ",cutlinewidth=" << CutLineWidth.getValue()
+                 << ",joinArch=" << (JoinArch.getValue() ? "True" : "False");
 
         Base::Interpreter().runString("import ArchSectionPlane");
         Base::Interpreter().runStringArg("svgBody = ArchSectionPlane.getSVG(App.activeDocument().%s %s)",
@@ -139,73 +146,4 @@ std::string DrawViewArch::getSVGTail(void)
 {
     std::string tail = "\\n</svg>";
     return tail;
-}
-
-//DVA is still Source PropertyLink so needs different logic vs DV::Restore
-void DrawViewArch::Restore(Base::XMLReader &reader)
-{
-// this is temporary code for backwards compat (within v0.17).  can probably be deleted once there are no development
-// fcstd files with old property types in use. 
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
-
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* schemaProp = getPropertyByName(PropName);
-        try {
-            if(schemaProp){
-                if (strcmp(schemaProp->getTypeId().getName(), TypeName) == 0){        //if the property type in obj == type in schema
-                    schemaProp->Restore(reader);                                      //nothing special to do
-                } else if (strcmp(PropName, "Source") == 0) {
-                    App::PropertyLinkGlobal glink;
-                    App::PropertyLink link;
-                    if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
-                        glink.setContainer(this);
-                        glink.Restore(reader);
-                        if (glink.getValue() != nullptr) {
-                            static_cast<App::PropertyLink*>(schemaProp)->setScope(App::LinkScope::Global);
-                            static_cast<App::PropertyLink*>(schemaProp)->setValue(glink.getValue());
-                        }
-                    } else if (strcmp(link.getTypeId().getName(),TypeName) == 0) {            //property in file is pl
-                        link.setContainer(this);
-                        link.Restore(reader);
-                        if (link.getValue() != nullptr) {
-                            static_cast<App::PropertyLink*>(schemaProp)->setScope(App::LinkScope::Global);
-                            static_cast<App::PropertyLink*>(schemaProp)->setValue(link.getValue());
-                        }
-                    
-                    } else {
-                        // has Source prop isn't PropertyLink or PropertyLinkGlobal! 
-                        Base::Console().Log("DrawViewArch::Restore - old Document Source is weird: %s\n", TypeName);
-                        // no idea
-                    }
-                } else {
-                    Base::Console().Log("DrawViewArch::Restore - old Document has unknown Property\n");
-                }
-            }
-        }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
-        }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const char* e) {
-            Base::Console().Error("%s\n", e);
-        }
-#ifndef FC_DEBUG
-        catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
-        }
-#endif
-
-        reader.readEndElement("Property");
-    }
-    reader.readEndElement("Properties");
-
 }

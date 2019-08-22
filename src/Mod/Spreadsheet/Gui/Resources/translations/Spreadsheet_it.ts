@@ -147,8 +147,8 @@
       <translation>Unisci le celle</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Unisce le celle selezionate nel foglio di calcolo</translation>
+      <source>Merge selected cells</source>
+      <translation>Unisci le celle selezionate</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Dividi cella</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Dividi le celle precedentemente Unite nel foglio di calcolo</translation>
+      <source>Split previously merged cells</source>
+      <translation>Dividi le celle precedentemente unite</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Grassetto</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Imposta il testo in grassetto nelle celle selezionate</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Imposta testo in grassetto nelle celle selezionate</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Corsivo</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Imposta il testo in corsivo nelle celle selezionate</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Imposta testo in corsivo nelle celle selezionate</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Grigio chiaro</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personalizza</translation>
+      <source>Custom Color</source>
+      <translation>Colore personalizzato</translation>
     </message>
   </context>
   <context>

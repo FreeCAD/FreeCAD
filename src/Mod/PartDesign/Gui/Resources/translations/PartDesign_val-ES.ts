@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation type="unfinished">Create a local coordinate system</translation>
+      <translation>Crea un sistema de coordenades local</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>Crea un sistema nou de coordenades local</translation>
     </message>
   </context>
   <context>
@@ -795,11 +795,10 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>La funció sol·licitada no es pot crear. Pot ser perquè:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â¢ El cos actiu no conté una forma base, per això no hi ha cap material per a ser eliminat;
+  â¢ L'esbós seleccionat no pertany al cos actiu.</translation>
     </message>
   </context>
   <context>
@@ -811,11 +810,10 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>La funció sol·licitada no es pot crear. Pot ser perquè:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â¢ El cos actiu no conté una forma base, per això no hi ha cap material per a ser eliminat;
+  â¢ L'esbós seleccionat no pertany al cos actiu.</translation>
     </message>
   </context>
   <context>
@@ -827,11 +825,10 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>La funció sol·licitada no es pot crear. Pot ser perquè:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â¢ El cos actiu no conté una forma base, per això no hi ha cap material per a ser eliminat;
+  â¢ L'esbós seleccionat no pertany al cos actiu.</translation>
     </message>
   </context>
   <context>
@@ -1291,7 +1288,7 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation type="unfinished">From other bodies of the same part</translation>
+      <translation>Des d'altres cossos de la mateixa peça</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
@@ -1883,7 +1880,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation type="unfinished">Path to sweep along</translation>
+      <translation>Trajectòria de l'escombratge</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2523,32 +2520,32 @@
     <message>
       <location filename="../../Command.cpp" line="475"/>
       <source>Several sub-elements selected</source>
-      <translation type="unfinished">Several sub-elements selected</translation>
+      <translation>S'han seleccionat diversos sub-elements</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="476"/>
       <source>You have to select a single face as support for a sketch!</source>
-      <translation type="unfinished">You have to select a single face as support for a sketch!</translation>
+      <translation>Heu de seleccionar una única cara com a suport de l'esbós.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>No support face selected</source>
-      <translation type="unfinished">No support face selected</translation>
+      <translation>No s'ha seleccionat una cara de suport</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>You have to select a face as support for a sketch!</source>
-      <translation type="unfinished">You have to select a face as support for a sketch!</translation>
+      <translation>Heu seleccionat una cara de suport per a un esbós.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="496"/>
       <source>No planar support</source>
-      <translation type="unfinished">No planar support</translation>
+      <translation>No hi ha suport planari</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="497"/>
       <source>You need a planar face as support for a sketch!</source>
-      <translation type="unfinished">You need a planar face as support for a sketch!</translation>
+      <translation>Necessiteu una cara d'un pla com a suport per a un esbós.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="679"/>
@@ -2753,7 +2750,7 @@ Això pot portar a resultats inesperats.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
       <source>No PartDesign features found that don't belong to a body.Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body.Nothing to migrate.</translation>
+      <translation>No s'ha trobat cap funció de PartDesign que no pertanga a un cos. No hi ha res per migrar.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="517"/>
@@ -2878,9 +2875,9 @@ Això pot portar a resultats inesperats.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>Per a utilitzar PartDesign necessiteu un objecte cos actiu en el document. Feu actiu un cos (doble clic) o crear-ne un. 
 
-If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</translation>
+Si teniu un document antic amb objectes PartDesign sense cos, utilitzeu la funció de migrar a PartDesign per a posar-los en un cos.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="104"/>
@@ -3052,9 +3049,8 @@ This feature is broken and can't be edited.</source>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Nota: Si trieu migrar no podreu editar el fitxer amb una versió més antiga del FreeCAD. 
+Si rebutgeu migrar no podreu utilitzar les funcions noves de Disseny de peces com ara Cossos i Peces. Per tant, no podreu tampoc utilitzar les vostres peces en el banc de muntatge. De totes maneres sempre podreu migrar en qualsevol moment amb «Disseny de peces-&gt;Migra...».</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="165"/>

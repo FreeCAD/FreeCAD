@@ -354,7 +354,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="313"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Viršūnė</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="314"/>
@@ -456,7 +456,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="333"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
-      <translation>Pilnaviduris kūnas</translation>
+      <translation>Pilnaviduris daiktas</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="334"/>
@@ -471,7 +471,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Neveikiamas</translation>
+      <translation>Nepriskirta niekam</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="270"/>
@@ -567,7 +567,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="293"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Viršūnė</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="294"/>
@@ -606,7 +606,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Neveikiamas</translation>
+      <translation>Nepriskirta niekam</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="201"/>
@@ -794,7 +794,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="249"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Arčiausiai geometrinių kūnų esanti tiesė.</translation>
+      <translation>Trumpiausia daiktus jungianti atkarpa.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="251"/>
@@ -851,7 +851,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="125"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Neveikiamas</translation>
+      <translation>Nepriskirta niekam</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="126"/>
@@ -1048,7 +1048,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="50"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Neveikiamas</translation>
+      <translation>Nepriskirta niekam</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="51"/>
@@ -2458,7 +2458,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Prijungimo būdas:</translation>
+      <translation>Atskaitos sistemos pradžia:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="121"/>
@@ -3686,7 +3686,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="628"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Viršūnė</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="856"/>
@@ -3745,7 +3745,7 @@ Please check one or more edge entities first.</translation>
       <location filename="../../DlgRevolution.ui" line="201"/>
       <location filename="../../DlgRevolution.ui" line="242"/>
       <source>Click to set this as axis</source>
-      <translation type="unfinished">Click to set this as axis</translation>
+      <translation>Paspauskite, jei norite tai nustatyti kaip ašį</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
@@ -3795,14 +3795,14 @@ Please check one or more edge entities first.</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Revolution axis link is invalid.
+      <translation>Blogas sukimosi ašies saitas.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Revolution axis direction is zero-length. It must be non-zero.</translation>
+      <translation>Sukimo ašis neturi ilgio. Ašis turi turėti ilgį.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
@@ -4342,7 +4342,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Prijungimo būdas:</translation>
+      <translation>Atskaitos sistemos pradžia:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="121"/>
@@ -4433,7 +4433,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="628"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Viršūnė</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="690"/>
@@ -4711,7 +4711,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../TaskThickness.cpp" line="268"/>
       <location filename="../../TaskThickness.cpp" line="278"/>
       <source>Thickness</source>
-      <translation type="unfinished">Thickness</translation>
+      <translation>Storis</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="159"/>
@@ -4885,7 +4885,7 @@ Ar vistiek norite tęsti?</translation>
       <location filename="../../TaskAttacher.cpp" line="86"/>
       <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Viršūnė</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
@@ -4900,7 +4900,7 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Solid</source>
-      <translation>Pilnaviduris kūnas</translation>
+      <translation>Pilnaviduris daiktas</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
@@ -5266,7 +5266,7 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Primitives</source>
-      <translation>Paprasčiausi kūnai</translation>
+      <translation>Paprastieji daiktai</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>

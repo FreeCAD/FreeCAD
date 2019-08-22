@@ -44,13 +44,13 @@
       <Documentation>
         <UserDocu>Position of second geometry index the Constraint refers to</UserDocu>
       </Documentation>
-      <Parameter Name="SeondPos" Type="Long"/>
+      <Parameter Name="SecondPos" Type="Long"/>
     </Attribute>
     <Attribute Name="Third" ReadOnly="false">
       <Documentation>
         <UserDocu>Third geometry index the Constraint refers to</UserDocu>
       </Documentation>
-      <Parameter Name="Second" Type="Long"/>
+      <Parameter Name="Third" Type="Long"/>
     </Attribute>
     <Attribute Name="ThirdPos" ReadOnly="false">
       <Documentation>
@@ -81,6 +81,12 @@
         <UserDocu>Constraint in virtual space</UserDocu>
       </Documentation>
       <Parameter Name="InVirtualSpace" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="IsActive" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Returns whether the constraint active (enforced) or not</UserDocu>
+        </Documentation>
+        <Parameter Name="IsActive" Type="Boolean"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

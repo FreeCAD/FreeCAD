@@ -106,27 +106,27 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation type="unfinished">If this is checked, Features will claim their children in the tree view</translation>
+      <translation>Якщо встановити, то властивості будуть застосовані до дочірніх обʼєктів у дереві перегляду</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="73"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>Вивести налагоджувальну інформацію в консолі</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="47"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation type="unfinished">The path to the OpenSCAD executable</translation>
+      <translation>Шлях до виконуваного файлу OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Мінімальний кут для фрагменту</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Мінімальний розмір фрагменту</translation>
     </message>
   </context>
   <context>
@@ -184,7 +184,7 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="585"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation type="unfinished">Error all shapes must be either 2D or both must be 3D</translation>
+      <translation>Помилка: усі обʼєкти повинні бути або дво-, або тривимірними</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="95"/>
@@ -249,7 +249,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="106"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
+      <translation>Видалити злиття та випадково застосувати розташування та колір до дочірніх обʼєктів</translation>
     </message>
   </context>
   <context>
@@ -288,7 +288,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="402"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
+      <translation>Експортувати об'єкти у вигляді сітки та задіяти OpenSCAD для виконання логічних операцій</translation>
     </message>
   </context>
   <context>
@@ -314,7 +314,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="166"/>
       <source>Create Refine Shape Feature</source>
-      <translation type="unfinished">Create Refine Shape Feature</translation>
+      <translation>Створити елемент, що уточнює форму</translation>
     </message>
   </context>
   <context>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="245"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced from other objects</translation>
+      <translation>Видалити обраний та всі дочірні об'єкти, на які відсутні посилання з інших об'єктів</translation>
     </message>
   </context>
   <context>
@@ -340,7 +340,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="230"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation type="unfinished">Replace an object in the Feature Tree. Please select old, new, and parent object</translation>
+      <translation>Замінити об'єкт у дереві властивостей. Оберіть, будь ласка, старий, новий та породжуючий об'єкт</translation>
     </message>
   </context>
   <context>

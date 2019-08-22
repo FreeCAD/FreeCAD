@@ -93,9 +93,8 @@ void ViewProviderDragger::updateData(const App::Property* prop)
         Base::Placement p = static_cast<const App::PropertyPlacement*>(prop)->getValue();
         updateTransform(p, pcTransform);
     }
-    else {
-        ViewProviderDocumentObject::updateData(prop);
-    }
+
+    ViewProviderDocumentObject::updateData(prop);
 }
 
 bool ViewProviderDragger::doubleClicked(void)
@@ -110,9 +109,45 @@ void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const
     act->setData(QVariant((int)ViewProvider::Transform));
 }
 
+ViewProvider *ViewProviderDragger::startEditing(int mode) {
+    _linkDragger = 0;
+    auto ret = ViewProviderDocumentObject::startEditing(mode);
+    if(!ret)
+        return ret;
+    return _linkDragger?_linkDragger:ret;
+}
+
+bool ViewProviderDragger::checkLink() {
+    // Trying to detect if the editing request is forwarded by a link object,
+    // usually by doubleClicked(). If so, we route the request back. There shall
+    // be no risk of infinite recursion, as ViewProviderLink handles
+    // ViewProvider::Transform request by itself.
+    ViewProviderDocumentObject *vpParent = 0;
+    std::string subname;
+    auto doc = Application::Instance->editDocument();
+    if(!doc) 
+        return false;
+    doc->getInEdit(&vpParent,&subname);
+    if(!vpParent)
+        return false;
+    auto sobj = vpParent->getObject()->getSubObject(subname.c_str());
+    if(!sobj || sobj==getObject() || sobj->getLinkedObject(true)!=getObject())
+        return false;
+    auto vp = Application::Instance->getViewProvider(sobj);
+    if(!vp)
+        return false;
+    _linkDragger = vp->startEditing(ViewProvider::Transform);
+    if(_linkDragger)
+        return true;
+    return false;
+}
+
 bool ViewProviderDragger::setEdit(int ModNum)
 {
   Q_UNUSED(ModNum);
+
+  if(checkLink())
+      return true;
 
   App::DocumentObject *genericObject = this->getObject();
   if (genericObject->isDerivedFrom(App::GeoFeature::getClassTypeId()))
@@ -137,7 +172,9 @@ bool ViewProviderDragger::setEdit(int ModNum)
     csysDragger->addStartCallback(dragStartCallback, this);
     csysDragger->addFinishCallback(dragFinishCallback, this);
     
-    pcRoot->insertChild(csysDragger, 0);
+    // dragger node is added to viewer's editing root in setEditViewer
+    // pcRoot->insertChild(csysDragger, 0);
+    csysDragger->ref();
     
     TaskCSysDragger *task = new TaskCSysDragger(this, csysDragger);
     Gui::Control().showDialog(task);
@@ -155,7 +192,9 @@ void ViewProviderDragger::unsetEdit(int ModNum)
     pcTransform->translation.disconnect(&csysDragger->translation);
     pcTransform->rotation.disconnect(&csysDragger->rotation);
     
-    pcRoot->removeChild(csysDragger); //should delete csysDragger
+    // dragger node is added to viewer's editing root in setEditViewer
+    // pcRoot->removeChild(csysDragger); //should delete csysDragger
+    csysDragger->unref();
     csysDragger = nullptr;
   }
   Gui::Control().closeDialog();
@@ -173,6 +212,15 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
       selection->insertChild(rootPickStyle, 0);
       selection->selectionRole.setValue(false);
       csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+
+      auto mat = viewer->getDocument()->getEditingTransform();
+      auto feat = dynamic_cast<App::GeoFeature *>(getObject());
+      if(feat) {
+          auto matInverse = feat->Placement.getValue().toMatrix();
+          matInverse.inverse();
+          mat *= matInverse;
+      }
+      viewer->setupEditingRoot(csysDragger,&mat);
     }
 }
 

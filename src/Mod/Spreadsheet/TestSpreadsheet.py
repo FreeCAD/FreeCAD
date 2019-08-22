@@ -492,10 +492,17 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('A52', '=+(-1 + -1)')
 
         self.doc.addObject("Part::Cylinder", "Cylinder")
-        self.doc.addObject("Part::Thickness", "Pipe")
+        # We cannot use Thickness, as this feature requires a source shape,
+        # otherwise it will cause recomputation failure. The new logic of
+        # App::Document will not continue recompute any dependent objects
+
+        #  self.doc.addObject("Part::Thickness", "Pipe")
+        self.doc.addObject("Part::Box", "Box")
+        self.doc.Box.Length = 1
+
         sheet.set('B1', '101')
         sheet.set('A53', '=-(-(B1-1)/2)')
-        sheet.set('A54', '=-(Cylinder.Radius + Pipe.Value - 1"/2)')
+        sheet.set('A54', '=-(Cylinder.Radius + Box.Length - 1"/2)')
 
         self.doc.recompute()
         self.assertEqual(sheet.getContents("A1"), "=1 < 2 ? 3 : 4")
@@ -700,8 +707,11 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.setAlias('B1', 'alias1')
         box = self.doc.addObject('Part::Box', 'Box')
         box.setExpression('Length', 'Spreadsheet.alias1')
+        box2 = self.doc.addObject('Part::Box', 'Box')
+        box2.setExpression('Length', '<<Spreadsheet>>.alias1')
         sheet.Label = "Params"
-        self.assertEqual(box.ExpressionEngine[0][1], "Params.alias1");
+        self.assertEqual(box.ExpressionEngine[0][1], "Spreadsheet.alias1");
+        self.assertEqual(box2.ExpressionEngine[0][1], "<<Params>>.alias1");
 
     def testAlias(self):
         """ Playing with aliases """
@@ -787,11 +797,11 @@ class SpreadsheetCases(unittest.TestCase):
         index=sketch.addGeometry(Part.LineSegment(v(0,0,0),v(10,10,0)),False)
         sketch.addConstraint(Sketcher.Constraint('Distance',index,14.0)) 
         self.doc.recompute()
-        sketch.setExpression('Constraints[0]', u'Spreadsheet.Length')
+        sketch.setExpression('Constraints[0]', u'<<Spreadsheet>>.Length')
         self.doc.recompute()
         sheet.Label="Calc"
         self.doc.recompute()
-        self.assertEqual(sketch.ExpressionEngine[0][1],'Calc.Length')
+        self.assertEqual(sketch.ExpressionEngine[0][1],'<<Calc>>.Length')
         self.assertIn('Up-to-date',sketch.State)
 
     def testCrossDocumentLinks(self):

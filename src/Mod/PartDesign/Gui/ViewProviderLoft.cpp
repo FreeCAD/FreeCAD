@@ -30,6 +30,7 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include "Utils.h"
 #include "ViewProviderLoft.h"
 //#include "TaskLoftParameters.h"
 #include "TaskLoftParameters.h"
@@ -82,8 +83,7 @@ void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
 bool ViewProviderLoft::doubleClicked(void)
 {
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
-    return true;
+    return PartDesignGui::setEdit(pcObject);
 }
 
 bool ViewProviderLoft::setEdit(int ModNum)
@@ -174,6 +174,6 @@ QIcon ViewProviderLoft::getIcon(void) const {
         str += QString::fromLatin1("Subtractive_");
 
     str += QString::fromLatin1("Loft.svg");
-    return mergeTip(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

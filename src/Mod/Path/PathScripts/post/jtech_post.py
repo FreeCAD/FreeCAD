@@ -28,7 +28,6 @@ import argparse
 import datetime
 import shlex
 from PathScripts import PostUtils
-from PathScripts import PathUtils
 
 TOOLTIP = '''
 This is a postprocessor file for the Path workbench. It is used to
@@ -54,7 +53,6 @@ parser.add_argument('--postamble', help='set commands to be issued after the las
 parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
 parser.add_argument('--modal', action='store_true', help='Output the Same G-command Name USE NonModal Mode')
 parser.add_argument('--axis-modal', action='store_true', help='Output the Same Axis Value Mode')
-#parser.add_argument('--power-max', help='set the max value for laser power default=255')
 parser.add_argument('--power-on-delay', default='255', help='milliseconds - Add a delay after laser on before moving to pre-heat material. Default=0')
 
 
@@ -104,7 +102,6 @@ POST_OPERATION = ''''''
 # Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = ''''''
 
-#POWER_MAX = 255
 POWER_ON_DELAY = 0
 
 # to distinguish python built-in open function from the one declared below
@@ -113,6 +110,7 @@ if open.__module__ == '__builtin__':
 
 
 def processArguments(argstring):
+    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -152,9 +150,9 @@ def processArguments(argstring):
             MODAL = True
         if args.axis_modal:
             OUTPUT_DOUBLES = False
-        POWER_ON_DELAY = float(args.power_on_delay) / 1000 #milliseconds
+        POWER_ON_DELAY = float(args.power_on_delay) / 1000  # milliseconds
 
-    except:
+    except Exception: # pylint: disable=broad-except
         return False
 
     return True
@@ -163,9 +161,6 @@ def processArguments(argstring):
 def export(objectslist, filename, argstring):
     if not processArguments(argstring):
         return None
-    global UNITS
-    global UNIT_FORMAT
-    global UNIT_SPEED_FORMAT
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -232,7 +227,7 @@ def export(objectslist, filename, argstring):
 
 
 def linenumber():
-    global LINENR
+    global LINENR # pylint: disable=global-statement
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10
         return "N" + str(LINENR) + " "
@@ -240,15 +235,6 @@ def linenumber():
 
 
 def parse(pathobj):
-    global PRECISION
-    global MODAL
-    global OUTPUT_DOUBLES
-    global UNIT_FORMAT
-    global UNIT_SPEED_FORMAT
-    global POWER_ON_DELAY
-    global PRE_FEED
-    global POST_FEED
-
     out = ""
     lastcommand = None
     precision_string = '.' + str(PRECISION) + 'f'
@@ -290,7 +276,7 @@ def parse(pathobj):
                 if command == lastcommand:
                     outstring.pop(0)
 
-            if c.Name[0] == '(' and not OUTPUT_COMMENTS: # command is a comment
+            if c.Name[0] == '(' and not OUTPUT_COMMENTS:  # command is a comment
                 continue
 
             # Now add the remaining parameters in order
@@ -326,10 +312,6 @@ def parse(pathobj):
             # Check for Tool Change:
             if command == 'M6':
                 continue
-                # if OUTPUT_COMMENTS:
-                #     out += linenumber() + "(begin toolchange)\n"
-                for line in TOOL_CHANGE.splitlines(True):
-                    out += linenumber() + line
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:
@@ -348,5 +330,6 @@ def parse(pathobj):
                 out = out.strip() + "\n"
 
         return out
+
 
 print(__name__ + " gcode postprocessor loaded.")

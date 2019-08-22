@@ -769,7 +769,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="735"/>
       <source>Folds on surface</source>
-      <translation>Tolesturak azaleran</translation>
+      <translation>Tolesturak gainazalean</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="806"/>
@@ -825,7 +825,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
       <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-      <translation>Egiaztapenak huts egin du azaleran tolesturak daudelako.
+      <translation>Egiaztapenak huts egin du gainazalean tolesturak daudelako.
 Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
     <message>
@@ -944,12 +944,12 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1021"/>
       <source>No folds on surface</source>
-      <translation>Tolesturarik ez azaleran</translation>
+      <translation>Tolesturarik ez gainazalean</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1037"/>
       <source>%1 folds on surface</source>
-      <translation>%1 tolestura azaleran</translation>
+      <translation>%1 tolestura gainazalean</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1063"/>
@@ -983,7 +983,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="33"/>
       <source>Enable check for folds on surface</source>
-      <translation>Gaitu azalerako tolesturen egiaztapena</translation>
+      <translation>Gaitu gainazaleko tolesturen egiaztapena</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="40"/>
@@ -1142,12 +1142,12 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="47"/>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Uneko azaleraren teselazio-desbideratzea definitzen du</translation>
+      <translation>Uneko gainazalaren teselazio-desbideratzea definitzen du</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="50"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Teselazioa&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Teselatutako sareak azalerarekiko duen gehienezko desbideratzea definitzen du. Balioa txikiagoa bada, errendatze-abiadura motelagoa izango da eta xehetasunak/bereizmena hobea izango da.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Teselazioa&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Teselatutako sareak gainazalarekiko duen gehienezko desbideratzea definitzen du. Balioa txikiagoa bada, errendatze-abiadura motelagoa izango da eta xehetasunak/bereizmena hobea izango da.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="53"/>
@@ -1158,6 +1158,13 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
       <location filename="../../DlgSettingsImportExport.ui" line="60"/>
       <source>Export AMF files using compression</source>
       <translation>Esportatu AMF fitxategiak konpresioa erabiliz</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation>Parametro honek adierazten du ZIP konpresioa
+erabiliko den fitxategi bat AMF formatuan idaztean</translation>
     </message>
   </context>
   <context>
@@ -1225,7 +1232,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="281"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Itzaleztadura laua/Phong itzaleztadura&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Azaleren itxura definitzen du.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Itzaleztadura lauarekin, azaleraren normalak ez dira definitzen erpinen arabera, eta horrek azalera kurbatuei itxura irreala ematen die; Phong itzaleztadura erabilita, itxura leunagoa sortzen da. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Aukera hau ezarrita badago, Phong itzaleztadura erabiliko da; ezarrita ez badago, itzaleztadura laua erabiliko da.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Itzaleztadura laua/Phong itzaleztadura&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Azaleren itxura definitzen du.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Itzaleztadura lauarekin, gainazalaren normalak ez dira definitzen erpinen arabera, eta horrek gainazal kurbatuei itxura irreala ematen die; Phong itzaleztadura erabilita, itxura leunagoa sortzen da. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Aukera hau ezarrita badago, Phong itzaleztadura erabiliko da; ezarrita ez badago, itzaleztadura laua erabiliko da.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="284"/>
@@ -1294,22 +1301,22 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="368"/>
+      <location filename="../../MeshEditor.cpp" line="376"/>
       <source>Add triangle</source>
       <translation>Gehitu triangelua</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="369"/>
+      <location filename="../../MeshEditor.cpp" line="377"/>
       <source>Flip normal</source>
       <translation>Alderantzikatu normala</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="370"/>
+      <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Clear</source>
       <translation>Garbitu</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="385"/>
+      <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Finish</source>
       <translation>Amaitu</translation>
     </message>
@@ -1317,7 +1324,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="711"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Amaitu</translation>
     </message>
@@ -1327,7 +1334,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="128"/>
       <source>Surface fit</source>
-      <translation>Azalera doitzea</translation>
+      <translation>Gainazala doitzea</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="135"/>
@@ -1367,7 +1374,7 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="250"/>
       <source>Before fitting the surface select an area.</source>
-      <translation>Azalera doitu baino lehen, hautatu area bat.</translation>
+      <translation>Gainazala doitu baino lehen, hautatu area bat.</translation>
     </message>
   </context>
   <context>

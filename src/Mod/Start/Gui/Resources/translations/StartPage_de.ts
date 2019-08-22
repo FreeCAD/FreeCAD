@@ -155,9 +155,9 @@ Wie Sie FreeCAD selbst kompilieren können, der FreeCAD-Quellcode strukturiert i
       <translation>Sehen Sie alle Commits auf Github</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>See all commits on github</source>
-      <translation>Sehen Sie alle Commits auf Github</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
+      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
+      <translation>Sie können einen benutzerdefinierten Ordner zur Anzeige konfigurieren. Menü Bearbeiten -&gt; Einstellungen -&gt; Start -&gt; Zusätzlichen Ordner anzeigen</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -209,22 +209,12 @@ Wie Sie FreeCAD selbst kompilieren können, der FreeCAD-Quellcode strukturiert i
       <source>Notes</source>
       <translation>Notizen</translation>
     </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>Notes</source>
-      <translation>Notizen</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <location filename="../../Workbench.cpp" line="65"/>
-      <source>Start page</source>
-      <translation>Startseite</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Startseite</translation>
     </message>
@@ -282,7 +272,7 @@ Wie Sie FreeCAD selbst kompilieren können, der FreeCAD-Quellcode strukturiert i
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
       <source>Show additional folder</source>
-      <translation>Zusätzliche Ordner anzeigen</translation>
+      <translation>Zusätzlichen Ordner anzeigen</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>

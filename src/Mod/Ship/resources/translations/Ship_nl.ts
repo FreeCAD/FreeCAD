@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Instance.py" line="44"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid ship instance, False otherwise</translation>
+      <translation>True als het een geldige scheepsinstantie is, anders False</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="53"/>
@@ -36,17 +36,17 @@
     <message>
       <location filename="../../Instance.py" line="79"/>
       <source>Set of external faces of the ship hull</source>
-      <translation type="unfinished">Set of external faces of the ship hull</translation>
+      <translation>Set van buitenkanten van de scheepsromp</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="87"/>
       <source>Set of weight instances</source>
-      <translation type="unfinished">Set of weight instances</translation>
+      <translation>Set van gewichten</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="95"/>
       <source>Set of tank instances</source>
-      <translation type="unfinished">Set of tank instances</translation>
+      <translation>Set van tanks</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="103"/>
@@ -77,7 +77,7 @@
     <message>
       <location filename="../../ShipGui.py" line="63"/>
       <source>Create a new ship instance on top of the hull geometry</source>
-      <translation type="unfinished">Create a new ship instance on top of the hull geometry</translation>
+      <translation>Maak een nieuwe scheepsinstantie bovenop de geometrie van de romp</translation>
     </message>
   </context>
   <context>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../ShipGui.py" line="114"/>
       <source>Plot the ship hydrostatics</source>
-      <translation type="unfinished">Plot the ship hydrostatics</translation>
+      <translation>Teken de hydrostatica van het schip uit</translation>
     </message>
   </context>
   <context>
@@ -103,7 +103,7 @@
     <message>
       <location filename="../../ShipGui.py" line="46"/>
       <source>Load an example ship hull geometry.</source>
-      <translation type="unfinished">Load an example ship hull geometry.</translation>
+      <translation>Laad een voorbeeld van een scheepsrompgeometrie.</translation>
     </message>
   </context>
   <context>
@@ -190,12 +190,12 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="157"/>
       <source>Please create or load a ship hull geometry before using this tool</source>
-      <translation type="unfinished">Please create or load a ship hull geometry before using this tool</translation>
+      <translation>Gelieve een scheepsrompgeometrie aan te maken of te laden alvorens dit gereedschap te gebruiken</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="151"/>
       <source>Ship objects can only be created on top of hull geometry (no solid found at selected objects)</source>
-      <translation type="unfinished">Ship objects can only be created on top of hull geometry (no solid found at selected objects)</translation>
+      <translation>Scheepsobjecten kunnen alleen boven op de rompgeometrie aangemaakt worden (geen vaste vorm gevonden op geselecteerde objecten)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="94"/>

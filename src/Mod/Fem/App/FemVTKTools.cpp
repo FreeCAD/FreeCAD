@@ -37,6 +37,43 @@
 # include <TopoDS_Vertex.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <gp_Pnt.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Shape.hxx>
+
+# include <SMESH_Gen.hxx>
+# include <SMESH_Mesh.hxx>
+# include <SMDS_PolyhedralVolumeOfNodes.hxx>
+# include <SMDS_VolumeTool.hxx>
+# include <SMESHDS_Mesh.hxx>
+
+# include <vtkDataSetReader.h>
+# include <vtkDataSetWriter.h>
+# include <vtkStructuredGrid.h>
+# include <vtkImageData.h>
+# include <vtkRectilinearGrid.h>
+# include <vtkUnstructuredGrid.h>
+# include <vtkXMLUnstructuredGridReader.h>
+# include <vtkXMLUnstructuredGridWriter.h>
+# include <vtkPointData.h>
+# include <vtkCellData.h>
+# include <vtkCellArray.h>
+# include <vtkDataArray.h>
+# include <vtkDoubleArray.h>
+# include <vtkIdList.h>
+# include <vtkCellTypes.h>
+# include <vtkTriangle.h>
+# include <vtkQuad.h>
+# include <vtkQuadraticTriangle.h>
+# include <vtkQuadraticQuad.h>
+# include <vtkTetra.h>
+# include <vtkPyramid.h>
+# include <vtkWedge.h>
+# include <vtkHexahedron.h>
+# include <vtkQuadraticTetra.h>
+# include <vtkQuadraticPyramid.h>
+# include <vtkQuadraticWedge.h>
+# include <vtkQuadraticHexahedron.h>
 #endif
 
 #include <Base/FileInfo.h>
@@ -48,46 +85,6 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <SMESH_Gen.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMDS_PolyhedralVolumeOfNodes.hxx>
-#include <SMDS_VolumeTool.hxx>
-#include <SMESHDS_Mesh.hxx>
-
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Shape.hxx>
-
-#include <vtkDataSetReader.h>
-#include <vtkDataSetWriter.h>
-#include <vtkStructuredGrid.h>
-#include <vtkImageData.h>
-#include <vtkRectilinearGrid.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkXMLUnstructuredGridReader.h>
-#include <vtkXMLUnstructuredGridWriter.h>
-
-#include <vtkPointData.h>
-#include <vtkCellData.h>
-#include <vtkCellArray.h>
-#include <vtkDataArray.h>
-#include <vtkDoubleArray.h>
-#include <vtkIdList.h>
-#include <vtkCellTypes.h>
-
-#include <vtkTriangle.h>
-#include <vtkQuad.h>
-#include <vtkQuadraticTriangle.h>
-#include <vtkQuadraticQuad.h>
-#include <vtkTetra.h>
-#include <vtkPyramid.h>
-#include <vtkWedge.h>
-#include <vtkHexahedron.h>
-#include <vtkQuadraticTetra.h>
-#include <vtkQuadraticPyramid.h>
-#include <vtkQuadraticWedge.h>
-#include <vtkQuadraticHexahedron.h>
 
 #include "FemVTKTools.h"
 #include "FemMeshProperty.h"
@@ -663,6 +660,10 @@ std::map<std::string, std::string> _getFreeCADMechResultVectorProperties() {
     // App::PropertyVectorList will be a list of vectors in vtk
     std::map<std::string, std::string> resFCVecProp;
     resFCVecProp["DisplacementVectors"] = "Displacement";
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
+    resFCVecProp["PS1Vector"] = "Major Principal Stress";
+    resFCVecProp["PS2Vector"] = "Intermediate Principal Stress";
+    resFCVecProp["PS3Vector"] = "Minor Principal Stress";
 
     return resFCVecProp;
 }
@@ -689,11 +690,16 @@ std::map<std::string, std::string> _getFreeCADMechResultScalarProperties() {
     resFCScalProp["NodeStrainXZ"] = "Strain xz component";
     resFCScalProp["NodeStrainYZ"] = "Strain yz component";
     resFCScalProp["Peeq"] = "Equivalent Plastic Strain";
-    resFCScalProp["PrincipalMax"] = "Major Principal Stress";  // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
-    resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";  // can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
-    resFCScalProp["PrincipalMin"] = "Minor Principal Stress";  // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
+    // https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=70#p296317
+    // resFCScalProp["PrincipalMax"] = "Major Principal Stress";  // can be plotted in Paraview as THE MAJOR PRINCIPAL STRESS MAGNITUDE
+    // resFCScalProp["PrincipalMed"] = "Intermediate Principal Stress";  // can be plotted in Paraview as THE INTERMEDIATE PRINCIPAL STRESS MAGNITUDE
+    // resFCScalProp["PrincipalMin"] = "Minor Principal Stress";  // can be plotted in Paraview as THE MINOR PRINCIPAL STRESS MAGNITUDE
     resFCScalProp["StressValues"] = "von Mises Stress";
     resFCScalProp["Temperature"] = "Temperature";
+    resFCScalProp["MohrCoulomb"] = "MohrCoulomb";
+    resFCScalProp["ReinforcementRatio_x"] = "ReinforcementRatio_x";
+    resFCScalProp["ReinforcementRatio_y"] = "ReinforcementRatio_y";
+    resFCScalProp["ReinforcementRatio_z"] = "ReinforcementRatio_z";
 
     resFCScalProp["UserDefined"] = "UserDefinedMyName";  // this is empty or am I wrong ?!
     resFCScalProp["MassFlowRate"] = "Mass Flow Rate";
@@ -841,7 +847,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             Base::Console().Log("    The PropertyVectorList %s was exported to VTK vector list: %s\n", it->first.c_str(), it->second.c_str());
         }
         else
-            Base::Console().Message("    PropertyVectorList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
+            Base::Console().Log("    PropertyVectorList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
     }
 
     // scalars
@@ -877,7 +883,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             Base::Console().Log("    The PropertyFloatList %s was exported to VTK scalar list: %s\n", it->first.c_str(), it->second.c_str());
        }
         else
-            Base::Console().Message("    PropertyFloatList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
+            Base::Console().Log("    PropertyFloatList NOT exported to vtk: %s size is: %i\n", it->first.c_str(), field->getSize());
     }
 
     Base::Console().Log("End: Create VTK result data from FreeCAD result data.\n");

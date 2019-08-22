@@ -25,9 +25,10 @@
 #ifndef _PreComp_
 # include <QString>
 # include <QSlider>
+
+# include <Standard_math.hxx>
 #endif
 
-#include <Standard_math.hxx>
 #include "ui_TaskTetParameter.h"
 #include "TaskTetParameter.h"
 #include <Gui/Application.h>

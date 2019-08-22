@@ -423,8 +423,8 @@ void CmdSketcherReorientSketch::activated(int iMsg)
     }
 
     openCommand("Reorient Sketch");
-    doCommand(Doc,"App.ActiveDocument.%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
-                 ,sketch->getNameInDocument(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+    FCMD_OBJ_CMD2("Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
+                 ,sketch,p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",sketch->getNameInDocument());
 }
 
@@ -564,20 +564,19 @@ void CmdSketcherMapSketch::activated(int iMsg)
         }
 
         // * action
-        std::string featName = sketch.getNameInDocument();
         if (bAttach) {
             App::PropertyLinkSubList support;
             Gui::Selection().getAsPropertyLinkSubList(support);
             std::string supportString = support.getPyReprString();
 
             openCommand("Attach Sketch");
-            doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",featName.c_str(),AttachEngine::getModeName(suggMapMode).c_str());
-            doCommand(Gui,"App.activeDocument().%s.Support = %s",featName.c_str(),supportString.c_str());
+            FCMD_OBJ_CMD2("MapMode = \"%s\"",&sketch,AttachEngine::getModeName(suggMapMode).c_str());
+            FCMD_OBJ_CMD2("Support = %s",&sketch,supportString.c_str());
             commitCommand();
         } else {
             openCommand("Detach Sketch");
-            doCommand(Gui,"App.activeDocument().%s.MapMode = \"%s\"",featName.c_str(),AttachEngine::getModeName(suggMapMode).c_str());
-            doCommand(Gui,"App.activeDocument().%s.Support = None",featName.c_str());
+            FCMD_OBJ_CMD2("MapMode = \"%s\"",&sketch,AttachEngine::getModeName(suggMapMode).c_str());
+            FCMD_OBJ_CMD2("Support = None",&sketch);
             commitCommand();
         }
     } catch (ExceptionWrongInput &e) {
@@ -614,8 +613,8 @@ void CmdSketcherViewSketch::activated(int iMsg)
     Gui::Document *doc = getActiveGuiDocument();
     SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     if (vp) {
-        doCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.%s.getGlobalPlacement().Rotation.Q)"
-                     ,vp->getObject()->getNameInDocument());
+        runCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation("
+                "App.Placement(Gui.editDocument().EditingTransform).Rotation.Q)");
     }
 }
 

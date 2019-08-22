@@ -283,7 +283,7 @@
     <message>
       <location filename="../../Command.cpp" line="434"/>
       <source>Import mesh...</source>
-      <translation>Kafes içeri aktar...</translation>
+      <translation>Kafesi içeri aktar...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="435"/>
@@ -1152,12 +1152,18 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="53"/>
       <source>Maximum mesh deviation</source>
-      <translation>Maksimum örgü sapması</translation>
+      <translation>Maksimum kafes sapması</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="60"/>
       <source>Export AMF files using compression</source>
       <translation>Sıkıştırmayı kullanarak AMF dosyalarını dışa aktarma</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation>Bu parametre, AMF formatında bir dosya yazarken ZIP sıkıştırmasının kullanılıp kullanılmayacağını gösterir</translation>
     </message>
   </context>
   <context>
@@ -1195,7 +1201,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="192"/>
       <source>Two-side rendering</source>
-      <translation>İki taraflı kaplama</translation>
+      <translation>İki taraflı işle (render)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="208"/>
@@ -1294,22 +1300,22 @@ Please run the command to repair folds first</source>
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="368"/>
+      <location filename="../../MeshEditor.cpp" line="376"/>
       <source>Add triangle</source>
       <translation>Üçgen Ekle</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="369"/>
+      <location filename="../../MeshEditor.cpp" line="377"/>
       <source>Flip normal</source>
       <translation>Normal çevir</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="370"/>
+      <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Clear</source>
       <translation>Temizle</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="385"/>
+      <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Finish</source>
       <translation>Bitir</translation>
     </message>
@@ -1317,7 +1323,7 @@ Please run the command to repair folds first</source>
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="711"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Bitir</translation>
     </message>
@@ -1756,7 +1762,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     <message>
       <location filename="../../Command.cpp" line="458"/>
       <source>Import mesh</source>
-      <translation>Örgü içe aktar</translation>
+      <translation>Kafesi içe aktar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="510"/>

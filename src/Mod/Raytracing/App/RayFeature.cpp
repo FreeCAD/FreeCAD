@@ -36,6 +36,7 @@
 
 
 using namespace Raytracing;
+using namespace std;
 
 PROPERTY_SOURCE(Raytracing::RayFeature, Raytracing::RaySegment)
 

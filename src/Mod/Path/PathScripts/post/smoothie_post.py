@@ -22,7 +22,14 @@
 # ***************************************************************************/
 from __future__ import print_function
 
-TOOLTIP='''
+import argparse
+import datetime
+from PathScripts import PostUtils
+import FreeCAD
+from FreeCAD import Units
+import shlex
+
+TOOLTIP = '''
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for a smoothieboard. This postprocessor, once placed
@@ -32,13 +39,6 @@ FreeCAD, via the GUI importer or via python scripts with:
 import smoothie_post
 smoothie_post.export(object,"/path/to/file.ncc","")
 '''
-
-import argparse
-import datetime
-from PathScripts import PostUtils
-import FreeCAD
-from FreeCAD import Units
-import shlex
 
 now = datetime.datetime.now()
 
@@ -58,7 +58,7 @@ parser.add_argument('--IP_ADDR', help='IP Address for machine target machine')
 parser.add_argument('--verbose', action='store_true', help='verbose output for debugging, default="False"')
 parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
 
-TOOLTIP_ARGS=parser.format_help()
+TOOLTIP_ARGS = parser.format_help()
 
 # These globals set common customization preferences
 OUTPUT_COMMENTS = True
@@ -106,12 +106,16 @@ POST_OPERATION = ''''''
 # Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = ''''''
 
+# Number of digits after the decimal point
+PRECISION = 5
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
+
 def processArguments(argstring):
+    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -124,7 +128,6 @@ def processArguments(argstring):
     global UNITS
     global UNIT_SPEED_FORMAT
     global UNIT_FORMAT
-
 
     try:
         args = parser.parse_args(shlex.split(argstring))
@@ -159,15 +162,15 @@ def processArguments(argstring):
         IP_ADDR = args.IP_ADDR
         VERBOSE = args.verbose
 
-    except:
+    except Exception: # pylint: disable=broad-except
         return False
 
     return True
 
+
 def export(objectslist, filename, argstring):
     processArguments(argstring)
-    global UNITS
-    global IP_ADDR
+    global UNITS # pylint: disable=global-statement
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             FreeCAD.Console.PrintError("the object " + obj.Name + " is not a path. Please select only path and Compounds.\n")
@@ -181,13 +184,13 @@ def export(objectslist, filename, argstring):
     # sure we're using the current values in the Machine Def.
     myMachine = None
     for pathobj in objectslist:
-        if hasattr(pathobj,"MachineName"):
+        if hasattr(pathobj, "MachineName"):
             myMachine = pathobj.MachineName
         if hasattr(pathobj, "MachineUnits"):
             if pathobj.MachineUnits == "Metric":
-               UNITS = "G21"
+                UNITS = "G21"
             else:
-               UNITS = "G20"
+                UNITS = "G20"
     if myMachine is None:
         FreeCAD.Console.PrintWarning("No machine found in this selection\n")
 
@@ -251,93 +254,96 @@ def export(objectslist, filename, argstring):
     return final
 
 
-def sendToSmoothie(IP_ADDR, GCODE, fname):
+def sendToSmoothie(ip, GCODE, fname):
     import sys
     import socket
     import os
-    global VERBOSE
 
     fname = os.path.basename(fname)
-    FreeCAD.Console.PrintMessage ('sending to smoothie: {}\n'.format(fname))
+    FreeCAD.Console.PrintMessage('sending to smoothie: {}\n'.format(fname))
 
     f = GCODE.rstrip()
-    filesize= len(f)
+    filesize = len(f)
     # make connection to sftp server
-    s =  socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(4.0)
-    s.connect((IP_ADDR, 115))
-    tn= s.makefile(mode='rw')
+    s.connect((ip, 115))
+    tn = s.makefile(mode='rw')
 
 # read startup prompt
-    ln= tn.readline()
-    if not ln.startswith("+") :
+    ln = tn.readline()
+    if not ln.startswith("+"):
         FreeCAD.Console.PrintMessage("Failed to connect with sftp: {}\n".format(ln))
-        sys.exit();
+        sys.exit()
 
-    if VERBOSE: print("RSP: " + ln.strip())
+    if VERBOSE:
+        print("RSP: " + ln.strip())
 
 # Issue initial store command
     tn.write("STOR OLD /sd/" + fname + "\n")
     tn.flush()
 
-    ln= tn.readline()
-    if not ln.startswith("+") :
+    ln = tn.readline()
+    if not ln.startswith("+"):
         FreeCAD.Console.PrintError("Failed to create file: {}\n".format(ln))
-        sys.exit();
+        sys.exit()
 
-    if VERBOSE: print("RSP: " + ln.strip())
+    if VERBOSE:
+        print("RSP: " + ln.strip())
 
 # send size of file
     tn.write("SIZE " + str(filesize) + "\n")
     tn.flush()
 
-    ln= tn.readline()
-    if not ln.startswith("+") :
+    ln = tn.readline()
+    if not ln.startswith("+"):
         FreeCAD.Console.PrintError("Failed: {}\n".format(ln))
-        sys.exit();
+        sys.exit()
 
-    if VERBOSE: print("RSP: " + ln.strip())
+    if VERBOSE:
+        print("RSP: " + ln.strip())
 
-    cnt= 0
+    cnt = 0
 # now send file
     for line in f.splitlines(1):
         tn.write(line)
-        if VERBOSE :
+        if VERBOSE:
             cnt += len(line)
             print("SND: " + line.strip())
             print(str(cnt) + "/" + str(filesize) + "\r", end='')
 
     tn.flush()
 
-    ln= tn.readline()
-    if not ln.startswith("+") :
+    ln = tn.readline()
+    if not ln.startswith("+"):
         FreeCAD.Console.PrintError("Failed to save file: {}\n".format(ln))
-        sys.exit();
+        sys.exit()
 
-    if VERBOSE: print("RSP: " + ln.strip())
+    if VERBOSE:
+        print("RSP: " + ln.strip())
 
 # exit
     tn.write("DONE\n")
     tn.flush()
-    ln= tn.readline()
     tn.close()
 
     FreeCAD.Console.PrintMessage("Upload complete\n")
 
 
 def linenumber():
-    global LINENR
+    global LINENR # pylint: disable=global-statement
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10
         return "N" + str(LINENR) + " "
     return ""
 
+
 def parse(pathobj):
-    global PRECISION
+    global SPINDLE_SPEED # pylint: disable=global-statement
+
     out = ""
     lastcommand = None
-    global SPINDLE_SPEED
-    precision_string = '.' + str(PRECISION) +'f'
+    precision_string = '.' + str(PRECISION) + 'f'
 
     # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control
     # the order of parameters
@@ -373,10 +379,10 @@ def parse(pathobj):
             for param in params:
                 if param in c.Parameters:
                     if param == 'F':
-                        if c.Name not in ["G0", "G00"]: #linuxcnc doesn't use rapid speeds
+                        if c.Name not in ["G0", "G00"]:  # linuxcnc doesn't use rapid speeds
                             speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
                             outstring.append(
-                                param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string ) )
+                                param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string))
                     elif param == 'T':
                         outstring.append(param + str(c.Parameters['T']))
                     elif param == 'S':
@@ -385,8 +391,7 @@ def parse(pathobj):
                     else:
                         pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                         outstring.append(
-                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string) )
-                            #param + format(c.Parameters[param], precision_string))
+                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string))
             if command in ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']:
                 outstring.append('S' + str(SPINDLE_SPEED))
 
@@ -413,7 +418,7 @@ def parse(pathobj):
 
                 # append the line to the final output
                 for w in outstring:
-                    out += w + COMMAND_SPACE 
+                    out += w + COMMAND_SPACE
                 out = out.strip() + "\n"
 
         return out

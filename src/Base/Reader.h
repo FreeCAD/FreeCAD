@@ -134,10 +134,26 @@ public:
     //@{
     /// get the local name of the current Element
     const char* localName(void) const;
+    /// get the current element level
+    int level() const;
     /// read until a start element is found (\<name\>) or start-end element (\<name/\>) (with special name if given)
     void readElement   (const char* ElementName=0);
-    /// read until an end element is found (with special name if given)
-    void readEndElement(const char* ElementName=0);
+
+    /** read until an end element is found
+     *
+     * @param ElementName: optional end element name to look for. If given, then
+     * the parser will read until this name is found.
+     *
+     * @param level: optional level to look for. If given, then the parser will
+     * read until this level. Note that the parse only increase the level when
+     * finding a start element, not start-end element, and decrease the level
+     * after finding an end element. So, if you obtain the parser level after
+     * calling readElement(), you should specify a level minus one when calling
+     * this function. This \c level parameter is only useful if you know the
+     * child element may have the same name as its parent, otherwise, using \c
+     * ElementName is enough.
+     */
+    void readEndElement(const char* ElementName=0, int level=-1);
     /// read until characters are found
     void readCharacters(void);
     /// read binary file

@@ -35,11 +35,13 @@ class DrawViewSection;
 class DrawHatch;
 class DrawGeomHatch;
 class DrawViewDetail;
+class DrawView;
 }
 
 namespace TechDrawGui
 {
 class QGIFace;
+class QGIEdge;
 
 class TechDrawGuiExport QGIViewPart : public QGIView
 {
@@ -50,11 +52,13 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 102};
     int type() const override { return Type;}
+    virtual void paint( QPainter * painter,
+                        const QStyleOptionGraphicsItem * option,
+                        QWidget * widget = 0 ) override;
 
 
     void toggleCache(bool state) override;
     void toggleCosmeticLines(bool state);
-    void toggleVertices(bool state);
     void setViewPartFeature(TechDraw::DrawViewPart *obj);
     virtual void updateView(bool update = false) override;
     void tidy();
@@ -70,7 +74,7 @@ public:
     virtual void rotateView(void) override;
 
 
-    static QPainterPath geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom, double rotation = 0.0);
+    static QPainterPath geomToPainterPath(TechDraw::BaseGeom *baseGeom, double rotation = 0.0);
     /// Helper for pathArc()
     /*!
      * x_axis_rotation is in radian
@@ -88,9 +92,9 @@ public:
                                      double curx, double cury);
 
 protected:
-    QPainterPath drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const;
+    QPainterPath drawPainterPath(TechDraw::BaseGeom *baseGeom) const;
     void drawViewPart();
-    QGIFace* drawFace(TechDrawGeometry::Face* f, int idx);
+    QGIFace* drawFace(TechDraw::Face* f, int idx);
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
@@ -99,7 +103,13 @@ protected:
     void dumpPath(const char* text,QPainterPath path);
     void removePrimitives(void);
     void removeDecorations(void);
-    bool getFaceEdgesPref(void);
+    bool prefFaceEdges(void);
+    bool prefPrintCenters(void);
+
+
+    bool formatGeomFromCosmetic(int sourceIndex, QGIEdge* item);
+    bool formatGeomFromCenterLine(int sourceIndex, QGIEdge* item);
+
 
 private:
     QList<QGraphicsItem*> deleteItems;

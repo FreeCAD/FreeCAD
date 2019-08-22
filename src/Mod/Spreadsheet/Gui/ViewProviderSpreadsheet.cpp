@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QFile>
 # include <QFileInfo>
 # include <QImage>
@@ -43,6 +44,8 @@
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
+#include <Gui/View3DInventor.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/Console.h>
@@ -143,32 +146,14 @@ Sheet *ViewProviderSheet::getSpreadsheetObject() const
     return freecad_dynamic_cast<Sheet>(pcObject);
 }
 
-bool ViewProviderSheet::onDelete(const std::vector<std::string> &)
+void ViewProviderSheet::beforeDelete()
 {
-    // If view is closed, delete the object
-    if (view.isNull())
-        return true;
-
-    // View is not closed, delete cell contents instead if it is active
-    if (Gui::Application::Instance->activeDocument()) {
-        Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        SpreadsheetGui::SheetView * sheetView = freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
-
-        if (sheetView) {
-            sheetView->deleteSelection();
-            return false;
-        }
-    }
-
-    // If the view is open but not active, try to close it.
-    // This may ask the user for permission in case it's the
-    // last view of the document. (#0003496)
-    QWidget* window = view;
-    QWidget* parent = view->parentWidget();
-    if (qobject_cast<QMdiSubWindow*>(parent)) {
-        window = parent;
-    }
-    return window->close();
+    ViewProviderDocumentObject::beforeDelete();
+    if(!view)
+        return;
+    if(view==Gui::getMainWindow()->activeWindow())
+        getDocument()->setActiveView(0,Gui::View3DInventor::getClassTypeId());
+    Gui::getMainWindow()->removeWindow(view);
 }
 
 SheetView *ViewProviderSheet::showSpreadsheetView()
@@ -184,6 +169,10 @@ SheetView *ViewProviderSheet::showSpreadsheetView()
     }
 
     return view;
+} 
+
+Gui::MDIView *ViewProviderSheet::getMDIView() {
+    return showSpreadsheetView();
 }
 
 void ViewProviderSheet::updateData(const App::Property* prop)

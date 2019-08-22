@@ -162,6 +162,7 @@ protected:
     void updateChildrenSource(void);
     void updateChildrenLock(void);
     int getViewIndex(const char *viewTypeCStr) const;
+    int getDefProjConv(void) const;
 
 };
 

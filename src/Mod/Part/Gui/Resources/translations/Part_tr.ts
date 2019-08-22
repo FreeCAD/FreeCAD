@@ -1950,7 +1950,7 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
     <message>
       <location filename="../../Command.cpp" line="1049"/>
       <source>Exports to a CAD file</source>
-      <translation>Bir CAD dosyasına aktar</translation>
+      <translation>Bir CAD dosyasına aktarır</translation>
     </message>
   </context>
   <context>
@@ -2488,22 +2488,22 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="210"/>
       <source>Yaw:</source>
-      <translation>rotadan çıkma: </translation>
+      <translation>Sapma Açısı (Z ekseninde):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="223"/>
       <source>Pitch:</source>
-      <translation>Saha:</translation>
+      <translation>Hatve (Aralık):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="236"/>
       <source>Roll:</source>
-      <translation>yuvarla(sar)</translation>
+      <translation>Yuvarla (X ekseninde):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Yana çevir</translation>
+      <translation>Yönlerini çevirin</translation>
     </message>
   </context>
   <context>
@@ -2948,7 +2948,7 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
     <message>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
       <source>Radius:</source>
-      <translation>Yarıçapı:</translation>
+      <translation>Yarıçap:</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="265"/>
@@ -3292,7 +3292,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../DlgPartCylinder.ui" line="128"/>
       <source>Radius:</source>
-      <translation>Yarıçapı:</translation>
+      <translation>Yarıçap:</translation>
     </message>
   </context>
   <context>
@@ -3499,7 +3499,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
       <location filename="../../DlgPrimitives.ui" line="1429"/>
       <location filename="../../DlgPrimitives.ui" line="1494"/>
       <source>Radius:</source>
-      <translation>Yarıçapı:</translation>
+      <translation>Yarıçap:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="554"/>
@@ -3582,7 +3582,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../DlgPrimitives.ui" line="1314"/>
       <source>Pitch:</source>
-      <translation>Saha:</translation>
+      <translation>Hatve (Aralık):</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1335"/>
@@ -3672,7 +3672,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
       <location filename="../../DlgPrimitives.cpp" line="668"/>
       <location filename="../../DlgPrimitives.cpp" line="676"/>
       <source>Create %1</source>
-      <translation>%1 Oluşturmak</translation>
+      <translation>%1 Oluştur</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="370"/>
@@ -3687,7 +3687,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../DlgPrimitives.cpp" line="856"/>
       <source>&amp;Create</source>
-      <translation>&amp; Oluşturma</translation>
+      <translation>&amp;Oluştur</translation>
     </message>
   </context>
   <context>
@@ -4365,22 +4365,22 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../TaskAttacher.ui" line="210"/>
       <source>Yaw:</source>
-      <translation>rotadan çıkma: </translation>
+      <translation>Sapma Açısı (Z ekseninde):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="223"/>
       <source>Pitch:</source>
-      <translation>Saha:</translation>
+      <translation>Hatve (Aralık):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="236"/>
       <source>Roll:</source>
-      <translation>yuvarla(sar)</translation>
+      <translation>Yuvarla (X ekseninde):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Yana çevir</translation>
+      <translation>Yönlerini çevirin</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="302"/>
@@ -4405,7 +4405,7 @@ Lütfen önce bir veya daha fazla kenarlı varlıkları kontrol edin.</translati
     <message>
       <location filename="../../TaskAttacher.cpp" line="315"/>
       <source>Attached with mode %1</source>
-      <translation>% 1 modu ile eklendi</translation>
+      <translation>%1 modu ile ekli</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="319"/>

@@ -238,6 +238,14 @@ PyObject* MatrixPy::scale(PyObject * args)
     Py_Return;
 }
 
+PyObject* MatrixPy::hasScale(PyObject * args)
+{
+    double tol=0;
+    if(!PyArg_ParseTuple(args, "|d", &tol))
+        return 0;
+    return Py::new_reference_to(Py::Int(getMatrixPtr()->hasScale(tol)));
+}
+
 PyObject* MatrixPy::unity(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C

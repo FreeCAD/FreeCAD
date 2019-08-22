@@ -25,10 +25,12 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
-# include <Precision.hxx>
+
 # include <QMessageBox>
 #endif
 
@@ -112,7 +114,7 @@ void ViewProviderFemConstraintPulley::updateData(const App::Property* prop)
     if (strcmp(prop->getName(),"BasePoint") == 0) {
         if (pcConstraint->Height.getValue() > Precision::Confusion()) {
             // Remove and recreate the symbol
-            pShapeSep->removeAllChildren();
+            Gui::coinRemoveAllChildren(pShapeSep);
 
             // This should always point outside of the cylinder
             Base::Vector3d base = pcConstraint->BasePoint.getValue();

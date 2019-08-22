@@ -62,6 +62,53 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout1">
+     <item>
+      <widget class="QLabel" name="label1">
+       <property name="text">
+        <string>Mode:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBoxModeFilter">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="locale">
+        <locale language="English" country="UnitedStates"/>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>All</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Normal</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Construction</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>External</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="ElementView" name="listWidgetElements">
      <property name="modelColumn">
       <number>0</number>
@@ -70,8 +117,11 @@
    </item>
    <item>
     <widget class="QCheckBox" name="namingBox">
+     <property name="toolTip">
+      <string>Extended naming containing info about element mode</string>
+     </property>
      <property name="text">
-      <string>Extended Naming</string>
+      <string>Extended naming</string>
      </property>
      <property name="checked">
       <bool>false</bool>
@@ -80,6 +130,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="autoSwitchBox">
+     <property name="toolTip">
+      <string>Only the type 'Edge' will be available for the list</string>
+     </property>
      <property name="text">
       <string>Auto-switch to Edge</string>
      </property>

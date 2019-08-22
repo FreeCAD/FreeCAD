@@ -108,107 +108,107 @@
   <context>
     <name>plot_axes</name>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="175"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="177"/>
       <source>Configure axes</source>
       <translation>Διαμόρφωση αξόνων</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="179"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="181"/>
       <source>Active axes</source>
       <translation>Ενεργοί άξονες</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="211"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="213"/>
       <source>Apply to all axes</source>
       <translation>Εφαρμογή σε όλους τους άξονες</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="215"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="217"/>
       <source>Dimensions</source>
       <translation>Διαστάσεις</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="219"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="221"/>
       <source>X axis position</source>
       <translation>Θέση του άξονα X</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="223"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="225"/>
       <source>Y axis position</source>
       <translation>Θέση του άξονα Y</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="199"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="201"/>
       <source>Scales</source>
       <translation>Κλίμακες</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="203"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="205"/>
       <source>X auto</source>
       <translation>Αυτόματη επιλογή X</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="207"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="209"/>
       <source>Y auto</source>
       <translation>Αυτόματη επιλογή Y</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="227"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="229"/>
       <source>Index of the active axes</source>
       <translation>Δείκτης των ενεργών αξόνων</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="231"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="233"/>
       <source>Add new axes to the plot</source>
       <translation>Προσθήκη νέων αξόνων στο γράφημα</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="236"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="238"/>
       <source>Remove selected axes</source>
       <translation>Αφαίρεση επιλεγμένων αξόνων</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="241"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="243"/>
       <source>Check it to apply transformations to all axes</source>
       <translation>Επιλέξτε το ώστε να εφαρμόσετε μετασχηματισμούς σε όλους τους άξονες</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="246"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="248"/>
       <source>Left bound of axes</source>
       <translation>Αριστερό όριο των αξόνων</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="251"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="253"/>
       <source>Right bound of axes</source>
       <translation>Δεξί όριο των αξόνων</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="256"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="258"/>
       <source>Bottom bound of axes</source>
       <translation>Κάτω όριο των αξόνων</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="261"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="263"/>
       <source>Top bound of axes</source>
       <translation>Άνω όριο των αξόνων</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="266"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="268"/>
       <source>Outward offset of X axis</source>
       <translation>Εξωτερική μετατόπιση του άξονα X</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="271"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="273"/>
       <source>Outward offset of Y axis</source>
       <translation>Εξωτερική μετατόπιση του άξονα Y</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="276"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="278"/>
       <source>X axis scale autoselection</source>
       <translation>Αυτόματη επιλογή κλίμακας του άξονα X</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="281"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="283"/>
       <source>Y axis scale autoselection</source>
       <translation>Αυτόματη επιλογή κλίμακας του άξονα Y</translation>
     </message>
@@ -226,12 +226,12 @@
       <translation>δεν βρέθηκε η βιβλιοθήκη matplotlib, η λειτουργική μονάδα Γραφήματος θα απενεργοποιηθεί</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="42"/>
+      <location filename="../../plotSave/TaskPanel.py" line="44"/>
       <source>Plot document must be selected in order to save it</source>
       <translation>Πρέπει να επιλέξετε ένα έγγραφο γραφήματος προκειμένου να το αποθηκεύσετε</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="340"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="342"/>
       <source>Axes 0 can not be deleted</source>
       <translation>Ο άξονας 0 δεν μπορεί να διαγραφεί</translation>
     </message>
@@ -249,62 +249,62 @@
   <context>
     <name>plot_labels</name>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="133"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="135"/>
       <source>Set labels</source>
       <translation>Ορισμός ετικετών</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="137"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="139"/>
       <source>Active axes</source>
       <translation>Ενεργοί άξονες</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="141"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="143"/>
       <source>Title</source>
       <translation>Τίτλος</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="145"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="147"/>
       <source>X label</source>
       <translation>Ετικέτα X</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="149"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="151"/>
       <source>Y label</source>
       <translation>Ετικέτα Υ</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="153"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="155"/>
       <source>Index of the active axes</source>
       <translation>Δείκτης των ενεργών αξόνων</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="157"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="159"/>
       <source>Title (associated to active axes)</source>
       <translation>Τίτλος (που σχετίζεται με τους ενεργούς άξονες)</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="162"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="164"/>
       <source>Title font size</source>
       <translation>Μέγεθος γραμματοσειράς τίτλου</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="167"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="169"/>
       <source>X axis title</source>
       <translation>Τίτλος του άξονα X</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="172"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="174"/>
       <source>X axis title font size</source>
       <translation>Μέγεθος γραμματοσειράς τίτλου του άξονα X</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="177"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="179"/>
       <source>Y axis title</source>
       <translation>Τίτλος του άξονα Υ</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="182"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="184"/>
       <source>Y axis title font size</source>
       <translation>Μέγεθος γραμματοσειράς τίτλου του άξονα Y</translation>
     </message>
@@ -350,42 +350,42 @@
   <context>
     <name>plot_save</name>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="127"/>
+      <location filename="../../plotSave/TaskPanel.py" line="129"/>
       <source>Save figure</source>
       <translation>Αποθήκευση σχήματος</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="131"/>
+      <location filename="../../plotSave/TaskPanel.py" line="133"/>
       <source>Inches</source>
       <translation>Ίντσες</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="136"/>
+      <location filename="../../plotSave/TaskPanel.py" line="138"/>
       <source>Dots per Inch</source>
       <translation>Κουκκίδες ανά Ίντσα</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="141"/>
+      <location filename="../../plotSave/TaskPanel.py" line="143"/>
       <source>Output image file path</source>
       <translation>Διαδρομή αρχείου εικόνας εξόδου</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="146"/>
+      <location filename="../../plotSave/TaskPanel.py" line="148"/>
       <source>Show a file selection dialog</source>
       <translation>Εμφάνιση ενός διαλόγου επιλογής αρχείου</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="151"/>
+      <location filename="../../plotSave/TaskPanel.py" line="153"/>
       <source>X image size</source>
       <translation>Μέγεθος εικόνας στον άξονα X</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="156"/>
+      <location filename="../../plotSave/TaskPanel.py" line="158"/>
       <source>Y image size</source>
       <translation>Μέγεθος εικόνας στον άξονα Y</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="161"/>
+      <location filename="../../plotSave/TaskPanel.py" line="163"/>
       <source>Dots per point, with size will define output image resolution</source>
       <translation>Κουκκίδες ανά σημείο, καθορίζουν την ανάλυση της εικόνας εξόδου σε συνδυασμό με το μέγεθος</translation>
     </message>

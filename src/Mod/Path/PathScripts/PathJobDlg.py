@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 import FreeCADGui
 import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
@@ -35,11 +34,13 @@ import os
 from PySide import QtCore, QtGui
 from collections import Counter
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -52,6 +53,7 @@ class _ItemDelegate(QtGui.QStyledItemDelegate):
         QtGui.QStyledItemDelegate.__init__(self, parent)
 
     def createEditor(self, parent, option, index):
+        # pylint: disable=unused-argument
         editor = QtGui.QSpinBox(parent)
         self.controller.setupColumnEditor(index, editor)
         return editor
@@ -60,12 +62,18 @@ class JobCreate:
     DataObject = QtCore.Qt.ItemDataRole.UserRole
 
     def __init__(self, parent=None, sel=None):
+        # pylint: disable=unused-argument
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
         self.itemsSolid = QtGui.QStandardItem(translate('PathJob', 'Solids'))
         self.items2D    = QtGui.QStandardItem(translate('PathJob', '2D'))
         self.itemsJob   = QtGui.QStandardItem(translate('PathJob', 'Jobs'))
         self.dialog.templateGroup.hide()
         self.dialog.modelGroup.hide()
+        # debugging support
+        self.candidates = None
+        self.delegate = None
+        self.index = None
+        self.model = None
 
     def setupTitle(self, title):
         self.dialog.setWindowTitle(title)
@@ -89,7 +97,7 @@ class JobCreate:
         expand2Ds    = False
         expandJobs   = False
 
-        for i, base in enumerate(self.candidates):
+        for base in self.candidates:
             if not base in jobResources and not PathJob.isResourceClone(job, base, None) and not hasattr(base, 'StockType'):
                 item0 = QtGui.QStandardItem()
                 item1 = QtGui.QStandardItem()
@@ -243,7 +251,7 @@ class JobCreate:
         models = []
 
         for i in range(self.itemsSolid.rowCount()):
-            for j in range(self.itemsSolid.child(i, 1).data(QtCore.Qt.EditRole)):
+            for j in range(self.itemsSolid.child(i, 1).data(QtCore.Qt.EditRole)): # pylint: disable=unused-variable
                 models.append(self.itemsSolid.child(i).data(self.DataObject))
 
         for i in range(self.items2D.rowCount()):

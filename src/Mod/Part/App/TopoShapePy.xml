@@ -335,7 +335,19 @@ transformGeometry(Matrix) -> Shape
       <Documentation>
         <UserDocu>Apply transformation on a shape without changing
 the underlying geometry.
-transformShape(Matrix,[boolean copy=False]) -> None</UserDocu>
+transformShape(Matrix,[boolean copy=False, checkScale=False]) -> None
+
+If checkScale is True, it will use transformGeometry if non-uniform
+scaling is detected.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="transformed" Const="true"  Keyword="true">
+      <Documentation>
+          <UserDocu>
+transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
+
+Create a new transformed shape
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="translate">
@@ -343,17 +355,44 @@ transformShape(Matrix,[boolean copy=False]) -> None</UserDocu>
         <UserDocu>Apply the translation to the current location of this shape.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="translated">
+      <Documentation>
+          <UserDocu>
+translated(vector) -> shape
+
+Create a new shape with translation
+         </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="rotate">
       <Documentation>
         <UserDocu>
-          Apply the rotation (degree) to the current location of this shape
-          Shp.rotate(Vector(0,0,0),Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
+Apply the rotation (base,dir,degree) to the current location of this shape
+Shp.rotate(Vector(0,0,0),Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="rotated">
+      <Documentation>
+        <UserDocu>
+rotated(base,dir,degree) -> shape
+
+Create a new shape with rotation.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="scale">
       <Documentation>
         <UserDocu>Apply scaling with point and factor to this shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="scaled">
+      <Documentation>
+          <UserDocu>
+scaled(factor,base=Vector(0,0,0)) -> shape
+
+Create a new shape with scale.
+          </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeFillet" Const="true">
@@ -428,6 +467,23 @@ Returns: result of offsetting (wire or face or compound of those). Compounding
 structure follows that of source shape.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="makeWires">
+      <Documentation>
+        <UserDocu>
+makeWires(op=None): make wire(s) using the edges of this shape
+
+The function will sort any edges inside the current shape, and connect them
+into wire. If more than one wire is found, then it will make a compound out of
+all found wires.
+
+This function is element mapping aware. If the input shape has non-zero Tag,
+it will map any edge and vertex element name inside the input shape into the
+itself.
+
+op: an optional string to be appended when auto generates element mapping.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="reverse">
       <Documentation>
         <UserDocu>Reverses the orientation of this shape.</UserDocu>
@@ -484,6 +540,16 @@ If the shape is an edge it returns True if its vertices are the same.
     <Methode Name="isValid" Const="true">
       <Documentation>
         <UserDocu>Checks if the shape is valid, i.e. neither null, nor empty nor corrupted.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isCoplanar" Const="true">
+      <Documentation>
+        <UserDocu>isCoplanar(shape,tol=None) -- Checks if this shape is coplanar with the given shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="findPlane" Const="true">
+      <Documentation>
+          <UserDocu>findPlane(tol=None) -- return a plane if the shape is planar</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="fix">
@@ -633,6 +699,11 @@ infos contains additional info on the solutions. It is a list of tuples:
     <Methode Name="getElement" Const="true">
       <Documentation>
         <UserDocu>Returns a SubElement</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="countElement" Const="true">
+      <Documentation>
+        <UserDocu>Returns the count of a type of element</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getTolerance" Const="true">
@@ -795,6 +866,12 @@ infos contains additional info on the solutions. It is a list of tuples:
         <UserDocu>List of compounds in this shape.</UserDocu>
       </Documentation>
       <Parameter Name="Compounds" Type="List"/>
+    </Attribute>
+    <Attribute Name="SubShapes" ReadOnly="true">
+      <Documentation>
+        <UserDocu>List of sub-shapes in this shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="SubShapes" Type="List"/>
     </Attribute>
     <Attribute Name="Length" ReadOnly="true">
       <Documentation>
