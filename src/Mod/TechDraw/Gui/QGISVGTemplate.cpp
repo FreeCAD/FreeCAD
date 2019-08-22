@@ -31,6 +31,8 @@
 #include <boost/regex.hpp>
 #endif // #ifndef _PreComp_
 
+#include <QFile>
+
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>

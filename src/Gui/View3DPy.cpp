@@ -64,6 +64,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
+#include <App/GeoFeature.h>
 #include <CXX/Objects.hxx>
 
 using namespace Gui;
@@ -178,11 +179,18 @@ void View3DInventorPy::init_type()
         "Remove the DraggerCalback function from the coin node\n"
         "Possibles types :\n"
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
-    add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object)\nadd or set a new active object");
-    add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name)\nreturns the active object for the given type");
+    add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object,subname=None)\nadd or set a new active object");
+    add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
     add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
     add_varargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
-
+    add_varargs_method("setName",&View3DInventorPy::setName,"setName(str): sets a name to this viewer\nThe name sets the widget's windowTitle and appears on the viewer tab");
+    add_keyword_method("toggleClippingPlane", &View3DInventorPy::toggleClippingPlane,
+        "toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()\n"
+        "Toggle a global clipping plane\n\n"
+        "toggle: -1 toggle, 1 show, 0 hide\n"
+        "beforeEditing: whether to insert the clipping node before or after editing root node\n"
+        "noManip: whether to create a manipulator\n"
+        "pla: clipping plane placement");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -1365,19 +1373,41 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
             dict.setItem("z", Py::Float(pt[2]));
 
             Gui::Document* doc = _view->getViewer()->getDocument();
-            ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(Point->getPath())
-                    : _view->getViewer()->getViewProviderByPathFromTail(Point->getPath());
-            if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            ViewProvider *vp = doc ? doc->getViewProviderByPathFromHead(Point->getPath())
+                    : _view->getViewer()->getViewProviderByPath(Point->getPath());
+            if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                if(!vp->isSelectable())
+                    return ret;
                 ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
-                dict.setItem("Document",
-                    Py::String(vpd->getObject()->getDocument()->getName()));
-                dict.setItem("Object",
-                    Py::String(vpd->getObject()->getNameInDocument()));
-                if (vp->useNewSelectionModel()) {
-                    dict.setItem("Component",
-                        Py::String(vpd->getElement(Point->getDetail())));
-                }
-                else {
+                if(vp->useNewSelectionModel()) {
+                    std::string subname;
+                    if(!vp->getElementPicked(Point,subname))
+                        return ret;
+                    auto obj = vpd->getObject();
+                    if(!obj)
+                        return ret;
+                    if(subname.size()) {
+                        std::pair<std::string,std::string> elementName;
+                        auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
+                        if(!sobj)
+                            return ret;
+                        if(sobj!=obj) {
+                            dict.setItem("ParentObject",Py::Object(obj->getPyObject(),true));
+                            dict.setItem("SubName",Py::String(subname));
+                            obj = sobj;
+                        }
+                        subname = elementName.second.size()?elementName.second:elementName.first;
+                    }
+                    dict.setItem("Document",
+                        Py::String(obj->getDocument()->getName()));
+                    dict.setItem("Object",
+                        Py::String(obj->getNameInDocument()));
+                    dict.setItem("Component",Py::String(subname));
+                } else {
+                    dict.setItem("Document",
+                        Py::String(vpd->getObject()->getDocument()->getName()));
+                    dict.setItem("Object",
+                        Py::String(vpd->getObject()->getNameInDocument()));
                     // search for a SoFCSelection node
                     SoFCDocumentObjectAction objaction;
                     objaction.apply(Point->getPath());
@@ -1454,19 +1484,41 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
                 dict.setItem("y", Py::Float(pt[1]));
                 dict.setItem("z", Py::Float(pt[2]));
 
-                ViewProvider *vp = doc ? doc->getViewProviderByPathFromTail(point->getPath())
-                        : _view->getViewer()->getViewProviderByPathFromTail(point->getPath());
-                if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                ViewProvider *vp = doc ? doc->getViewProviderByPathFromHead(point->getPath())
+                        : _view->getViewer()->getViewProviderByPath(point->getPath());
+                if(vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+                    if(!vp->isSelectable())
+                        continue;
                     ViewProviderDocumentObject* vpd = static_cast<ViewProviderDocumentObject*>(vp);
-                    dict.setItem("Document",
-                        Py::String(vpd->getObject()->getDocument()->getName()));
-                    dict.setItem("Object",
-                        Py::String(vpd->getObject()->getNameInDocument()));
-                    if (vp->useNewSelectionModel()) {
-                        dict.setItem("Component",
-                            Py::String(vpd->getElement(point->getDetail())));
-                    }
-                    else {
+                    if(vp->useNewSelectionModel()) {
+                        std::string subname;
+                        if(!vp->getElementPicked(point,subname))
+                            continue;
+                        auto obj = vpd->getObject();
+                        if(!obj)
+                            continue;
+                        if(subname.size()) {
+                            std::pair<std::string,std::string> elementName;
+                            auto sobj = App::GeoFeature::resolveElement(obj,subname.c_str(),elementName);
+                            if(!sobj)
+                                continue;
+                            if(sobj!=obj) {
+                                dict.setItem("ParentObject",Py::Object(obj->getPyObject(),true));
+                                dict.setItem("SubName",Py::String(subname));
+                                obj = sobj;
+                            }
+                            subname = elementName.second.size()?elementName.second:elementName.first;
+                        }
+                        dict.setItem("Document",
+                            Py::String(obj->getDocument()->getName()));
+                        dict.setItem("Object",
+                            Py::String(obj->getNameInDocument()));
+                        dict.setItem("Component",Py::String(subname));
+                    } else {
+                        dict.setItem("Document",
+                            Py::String(vpd->getObject()->getDocument()->getName()));
+                        dict.setItem("Object",
+                            Py::String(vpd->getObject()->getNameInDocument()));
                         // search for a SoFCSelection node
                         SoFCDocumentObjectAction objaction;
                         objaction.apply(point->getPath());
@@ -2396,37 +2448,43 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
 
 Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
 {
-    PyObject* docObject = 0;
-    char* name;
+	PyObject* docObject = Py_None;
+	char* name;
+    char *subname = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname))
+		throw Py::Exception();
 
-    //allow reset of active object by setting "None"
-    if (args.length() == 2 && args.back() == Py::None()) {
-        PyArg_Parse(args.front().ptr(), "s", &name);
-        _view->setActiveObject(NULL, name);
-        return Py::None();
-    }
-
-    if (!PyArg_ParseTuple(args.ptr(), "sO!", &name, &App::DocumentObjectPy::Type, &docObject))
-        throw Py::Exception();
-
-    if (docObject){
-        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
-        _view->setActiveObject(obj, name);
-    }
-    return Py::None();
+	if (docObject == Py_None)
+		_view->setActiveObject(0, name);
+    else{
+        if(!PyObject_TypeCheck(docObject, &App::DocumentObjectPy::Type))
+            throw Py::TypeError("Expect the second argument to be a document object or None");
+		App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+		_view->setActiveObject(obj, name, subname);
+	}
+	return Py::None();
 }
 
 Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
 {
     char* name;
-    if (!PyArg_ParseTuple(args.ptr(), "s", &name))
-        throw Py::Exception();
-
-    App::DocumentObject* obj = _view->getActiveObject<App::DocumentObject*>(name);
+    PyObject *resolve = Py_True;
+    if (!PyArg_ParseTuple(args.ptr(), "s|O", &name,&resolve))
+                throw Py::Exception();
+    
+    App::DocumentObject *parent = 0;
+    std::string subname;
+    App::DocumentObject* obj = _view->getActiveObject<App::DocumentObject*>(name,&parent,&subname);
     if(!obj)
         return Py::None();
 
-    return Py::Object(obj->getPyObject());
+    if(PyObject_IsTrue(resolve))
+        return Py::asObject(obj->getPyObject());
+
+    return Py::TupleN(
+            Py::asObject(obj->getPyObject()), 
+            Py::asObject(parent->getPyObject()), 
+            Py::String(subname.c_str()));
 }
 
 Py::Object View3DInventorPy::getViewProvidersOfType(const Py::Tuple& args)
@@ -2449,5 +2507,45 @@ Py::Object View3DInventorPy::redraw(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     _view->getViewer()->redraw();
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::setName(const Py::Tuple& args)
+{
+    char* buffer;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &buffer))
+        throw Py::Exception();
+
+    try {
+        _view->setWindowTitle(QString::fromUtf8(buffer));
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch(...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+}
+
+Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py::Dict& kwds)
+{
+    static char* keywords[] = {"toggle", "beforeEditing", "noManip", "pla", NULL};
+    int toggle = -1;
+    PyObject *beforeEditing = Py_False;
+    PyObject *noManip = Py_True;
+    PyObject *pyPla = Py_None;
+    if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "|iOOO!", keywords,
+                    &toggle, &beforeEditing, &noManip, &Base::PlacementPy::Type,&pyPla))
+        throw Py::Exception();
+
+    Base::Placement pla;
+    if(pyPla!=Py_None)
+        pla = *static_cast<Base::PlacementPy*>(pyPla)->getPlacementPtr();
+    _view->getViewer()->toggleClippingPlane(toggle,PyObject_IsTrue(beforeEditing),
+            PyObject_IsTrue(noManip),pla);
     return Py::None();
 }

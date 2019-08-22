@@ -29,6 +29,8 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
@@ -41,8 +43,10 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoScale.h>
-# include <Precision.hxx>
+
+# include <math.h>
 #endif
+
 #include <Gui/Command.h>
 
 #include "Mod/Fem/App/FemConstraintTransform.h"
@@ -51,7 +55,7 @@
 #include <Base/Console.h>
 #include <Gui/Control.h>
 
-#include <math.h>
+
 #define PI (3.141592653589793238462643383279502884L)
 
 using namespace FemGui;
@@ -131,7 +135,7 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
         // Points and Normals are always updated together
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             SbVec3f base(p->x, p->y, p->z);
@@ -265,7 +269,7 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
     } else if (transform_type == "Cylindrical") {
 
         // Points and Normals are always updated together
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();

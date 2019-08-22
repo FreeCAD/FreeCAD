@@ -23,7 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
 import PathScripts.PathMillFace as PathMillFace
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathPocketBaseGui as PathPocketBaseGui

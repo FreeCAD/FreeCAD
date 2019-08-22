@@ -2033,25 +2033,25 @@ namespace Py
         }
 
         String()
-        : SeqBase<Char>( PyUnicode_FromString( "" ) )
+        : SeqBase<Char>( PyUnicode_FromString( "" ), true )
         {
             validate();
         }
 
         String( const char *latin1 )
-        : SeqBase<Char>( PyUnicode_FromString( latin1 ) )
+        : SeqBase<Char>( PyUnicode_FromString( latin1 ), true )
         {
             validate();
         }
 
         String( const std::string &latin1 )
-        : SeqBase<Char>( PyUnicode_FromStringAndSize( latin1.c_str(), latin1.size() ) )
+        : SeqBase<Char>( PyUnicode_FromStringAndSize( latin1.c_str(), latin1.size() ), true )
         {
             validate();
         }
 
         String( const char *latin1, Py_ssize_t size )
-        : SeqBase<Char>( PyUnicode_FromStringAndSize( latin1, size ) )
+        : SeqBase<Char>( PyUnicode_FromStringAndSize( latin1, size ), true )
         {
             validate();
         }

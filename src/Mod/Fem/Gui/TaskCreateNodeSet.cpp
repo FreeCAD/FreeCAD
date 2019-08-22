@@ -25,9 +25,18 @@
 #ifndef _PreComp_
 # include <QString>
 # include <QSlider>
+
+# include <Standard_math.hxx>
+
+# include <Inventor/nodes/SoEventCallback.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
+
+# include <SMESH_Mesh.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMDSAbs_ElementType.hxx>
 #endif
 
-#include <Standard_math.hxx>
 #include "ui_TaskCreateNodeSet.h"
 #include "TaskCreateNodeSet.h"
 #include <Gui/Application.h>
@@ -39,14 +48,6 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Utilities.h>
-
-#include <Inventor/nodes/SoEventCallback.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-
-#include <SMESH_Mesh.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDSAbs_ElementType.hxx>
 
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSetNodesObject.h>

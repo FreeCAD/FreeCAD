@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation type="unfinished">Global Sensitivity:</translation>
+      <translation>全局敏感度:</translation>
     </message>
   </context>
   <context>
@@ -295,13 +295,12 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation type="unfinished">Press middle+left or middle+right button</translation>
+      <translation>按中键+左键或中键+右键</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>滚动鼠标中键或在点击鼠标左键或右键时按住鼠标中键并移动鼠标</translation>
     </message>
   </context>
   <context>
@@ -403,11 +402,11 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>库</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>该软件使用开放源码组件, 其版权和其他专有权利属于各自的所有者:</translation>
     </message>
     <message>
       <source>License</source>
@@ -429,7 +428,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
       <source>Camera settings</source>
-      <translation type="unfinished">Camera settings</translation>
+      <translation>相机设置</translation>
     </message>
     <message>
       <source>Orientation</source>
@@ -437,23 +436,23 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Q0</source>
-      <translation type="unfinished">Q0</translation>
+      <translation>Q0</translation>
     </message>
     <message>
       <source>Q1</source>
-      <translation type="unfinished">Q1</translation>
+      <translation>Q1</translation>
     </message>
     <message>
       <source>Q2</source>
-      <translation type="unfinished">Q2</translation>
+      <translation>Q2</translation>
     </message>
     <message>
       <source>Q3</source>
-      <translation type="unfinished">Q3</translation>
+      <translation>Q3</translation>
     </message>
     <message>
       <source>Current view</source>
-      <translation type="unfinished">Current view</translation>
+      <translation>当前视图</translation>
     </message>
   </context>
   <context>
@@ -855,15 +854,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+      <translation>快捷方式'%1'不唯一. 这将导致不可预料的结果.</translation>
     </message>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+      <translation>快捷方式 '%1''已经分配给 '%2'.</translation>
     </message>
     <message>
       <source>Do you want to override it?</source>
-      <translation type="unfinished">Do you want to override it?</translation>
+      <translation>您想要覆盖吗？</translation>
     </message>
   </context>
   <context>
@@ -1245,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>打开软件启动界面</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>切换到报告窗口标签:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>启动后自动加载模块:</translation>
     </message>
@@ -1267,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Size of recent file list</source>
       <translation>最近文件列表大小</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>窗口风格:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1386,11 +1377,11 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Duplicate</source>
-      <translation type="unfinished">Duplicate</translation>
+      <translation>复制</translation>
     </message>
     <message>
       <source>Addons...</source>
-      <translation type="unfinished">Addons...</translation>
+      <translation>插件...</translation>
     </message>
   </context>
   <context>
@@ -1462,17 +1453,17 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Duplicate Macro</source>
-      <translation type="unfinished">Duplicate Macro</translation>
+      <translation>复制宏</translation>
     </message>
     <message>
       <source>Duplicate Failed</source>
-      <translation type="unfinished">Duplicate Failed</translation>
+      <translation>复制失败</translation>
     </message>
     <message>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to duplicate to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>无法复制到"%1"。
+可能是文件权限错误？</translation>
     </message>
   </context>
   <context>
@@ -1625,6 +1616,53 @@ Specify another directory, please.</source>
     <message>
       <source>&amp;Close</source>
       <translation>闭合(&amp;C)</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>查找...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>查找</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>查找：</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation type="unfinished">Look at</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation type="unfinished">Groups</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>名称</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>值</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>只匹配整个字符串</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>查找下一个</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>未找到</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>找不到文本: %1</translation>
     </message>
   </context>
   <context>
@@ -2047,11 +2085,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Show navigation cube</source>
-      <translation type="unfinished">Show navigation cube</translation>
+      <translation>显示导航立方体</translation>
     </message>
     <message>
       <source>Corner</source>
-      <translation type="unfinished">Corner</translation>
+      <translation>边角</translation>
     </message>
     <message>
       <source>Top left</source>
@@ -2071,11 +2109,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+      <translation>使用 OpenGL 顶点缓存对象</translation>
     </message>
     <message>
       <source>New Document Camera Orientation</source>
-      <translation type="unfinished">New Document Camera Orientation</translation>
+      <translation>新建文档相机方向</translation>
     </message>
     <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
@@ -2083,15 +2121,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
-      <translation type="unfinished">Disable touchscreen tilt gesture</translation>
+      <translation>禁用触摸屏倾斜手势</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation type="unfinished">Drag at cursor</translation>
+      <translation>在光标处拖动</translation>
     </message>
     <message>
       <source>Marker size:</source>
-      <translation type="unfinished">Marker size:</translation>
+      <translation>标记大小：</translation>
     </message>
   </context>
   <context>
@@ -2106,27 +2144,27 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>5px</source>
-      <translation type="unfinished">5px</translation>
+      <translation>5px</translation>
     </message>
     <message>
       <source>7px</source>
-      <translation type="unfinished">7px</translation>
+      <translation>7px</translation>
     </message>
     <message>
       <source>9px</source>
-      <translation type="unfinished">9px</translation>
+      <translation>9px</translation>
     </message>
     <message>
       <source>11px</source>
-      <translation type="unfinished">11px</translation>
+      <translation>11px</translation>
     </message>
     <message>
       <source>13px</source>
-      <translation type="unfinished">13px</translation>
+      <translation>13px</translation>
     </message>
     <message>
       <source>15px</source>
-      <translation type="unfinished">15px</translation>
+      <translation>15px</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -2720,10 +2758,6 @@ Specify another directory, please.</source>
       <translation>图形用户界面命令</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>录制图形用户界面命令</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>录制为注释</translation>
     </message>
@@ -2738,6 +2772,10 @@ Specify another directory, please.</source>
     <message>
       <source>Run macros in local environment</source>
       <translation>在本地环境中运行宏</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>录制图形用户界面命令</translation>
     </message>
   </context>
   <context>
@@ -2767,10 +2805,6 @@ Specify another directory, please.</source>
       <translation>单位</translation>
     </message>
     <message>
-      <source>User system:</source>
-      <translation>用户系统:</translation>
-    </message>
-    <message>
       <source>US customary (in/lb)</source>
       <translation>美制(吋/磅)</translation>
     </message>
@@ -2796,7 +2830,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Imperial Civil (ft/ft^2/ft^3)</source>
-      <translation type="unfinished">Imperial Civil (ft/ft^2/ft^3)</translation>
+      <translation>英制(ft/ft^2/ft^3)</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
@@ -2808,15 +2842,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>1/2"</source>
-      <translation type="unfinished">1/2"</translation>
+      <translation>1/2"</translation>
     </message>
     <message>
       <source>1/4"</source>
-      <translation type="unfinished">1/4"</translation>
+      <translation>1/4"</translation>
     </message>
     <message>
       <source>1/8"</source>
-      <translation type="unfinished">1/8"</translation>
+      <translation>1/8"</translation>
     </message>
     <message>
       <source>1/16"</source>
@@ -2833,6 +2867,10 @@ Specify another directory, please.</source>
     <message>
       <source>1/128"</source>
       <translation type="unfinished">1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation type="unfinished">Unit system:</translation>
     </message>
   </context>
   <context>
@@ -3877,12 +3915,12 @@ Do you want to save your changes?</source>
       <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4530,12 +4568,12 @@ Do you want to specify another directory?</source>
       <translation>增加量</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>平移变化量：</translation>
+      <source>Translation Increment:</source>
+      <translation type="unfinished">Translation Increment:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>旋转变化量：</translation>
+      <source>Rotation Increment:</source>
+      <translation type="unfinished">Rotation Increment:</translation>
     </message>
   </context>
   <context>
@@ -7236,7 +7274,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set visibility of inactive documents in tree view</source>
-      <translation type="unfinished">Set visibility of inactive documents in tree view</translation>
+      <translation>设定树状视图中的非活动文档的可见性</translation>
     </message>
   </context>
   <context>
@@ -7351,7 +7389,7 @@ Be aware the point where you click matters.</source>
     <name>Std_Delete</name>
     <message>
       <source>These items are linked to items selected for deletion and might break.</source>
-      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
+      <translation>这些项目与选择要删除的项目链接，并可能中断。</translation>
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
@@ -7359,7 +7397,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>确定要继续吗?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
@@ -7474,40 +7512,40 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation type="unfinished">Set NaviCube to Isometric mode</translation>
+      <translation>将导航立方体设置为等距模式</translation>
     </message>
   </context>
   <context>
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation type="unfinished">Orthographic</translation>
+      <translation>正交投影</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation type="unfinished">Set View to Orthographic mode</translation>
+      <translation>将视图设置为正交模式</translation>
     </message>
   </context>
   <context>
     <name>ViewPerspectiveCmd</name>
     <message>
       <source>Perspective</source>
-      <translation type="unfinished">Perspective</translation>
+      <translation>透视</translation>
     </message>
     <message>
       <source>Set View to Perspective mode</source>
-      <translation type="unfinished">Set View to Perspective mode</translation>
+      <translation>将视图设置为透视模式</translation>
     </message>
   </context>
   <context>
     <name>ViewZoomToFitCmd</name>
     <message>
       <source>Zoom to fit</source>
-      <translation type="unfinished">Zoom to fit</translation>
+      <translation>缩放到适合窗口大小</translation>
     </message>
     <message>
       <source>Zoom so that model fills the view</source>
-      <translation type="unfinished">Zoom so that model fills the view</translation>
+      <translation>缩放以使模型填充视图</translation>
     </message>
   </context>
   <context>

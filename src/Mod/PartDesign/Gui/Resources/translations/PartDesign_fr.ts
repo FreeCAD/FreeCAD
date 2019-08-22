@@ -1188,7 +1188,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="339"/>
       <source>Boolean: Accept: Input error</source>
-      <translation>Boolean: Accepter: erreur d'entrée</translation>
+      <translation>Booléen : Accepter : erreur d'entrée</translation>
     </message>
   </context>
   <context>
@@ -3145,7 +3145,7 @@ Il vous sera néanmoins possible de migrer à tout moment, plus tard, via « Pa
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="280"/>
       <source>Bolt/Washer</source>
-      <translation>Vis/Rondelle</translation>
+      <translation>Boulon/Rondelle</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="329"/>

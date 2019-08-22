@@ -70,11 +70,6 @@
       <translation>Contenitore analisi</translation>
     </message>
     <message>
-      <location filename="_CommandFemAnalysis.py" line="43"/>
-      <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation>Crea un contenitore di analisi con risolutore standard CalculiX</translation>
-    </message>
-    <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
       <translation>Crea un contenitore di analisi con il risolutore standard CalculiX</translation>
@@ -147,6 +142,11 @@
       <source>Constraint initial flow velocity</source>
       <translation>Vincolo Velocità di flusso iniziale</translation>
     </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="185"/>
+      <source>Creates a FEM constraint initial flow velocity</source>
+      <translation>Crea un vincolo FEM Velocità di flusso iniziale</translation>
+    </message>
   </context>
   <context>
     <name>FEM_ConstraintSelfWeight</name>
@@ -196,16 +196,6 @@
     </message>
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
-      <source>Creates a FEM shell plate thickness</source>
-      <translation>Crea lo spessore di una shell (lastra-piastra) FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="259"/>
-      <source>Shell plate thickness</source>
-      <translation>Spessore della lastra</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="261"/>
       <source>Creates a FEM shell plate thickness</source>
       <translation>Crea lo spessore di una shell (lastra-piastra) FEM</translation>
     </message>
@@ -276,6 +266,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_EquationHeat</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="365"/>
+      <source>Fluxsolver heat</source>
+      <translation>Risolutore del flusso di calore</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="530"/>
+      <source>Fluxsolver heat</source>
+      <translation>Risolutore del flusso di calore</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
@@ -287,15 +290,28 @@
       <source>Convert the surface of a FEM mesh to a mesh</source>
       <translation>Converte la superficie di una mesh FEM in una mesh</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="470"/>
-      <source>FEM mesh to mesh</source>
-      <translation>Converti mesh FEM in mesh</translation>
+      <location filename="../../../femcommands/commands.py" line="397"/>
+      <source>Material for fluid</source>
+      <translation>Materiale per fluido</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="471"/>
-      <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Converte la superficie di una mesh FEM in una mesh</translation>
+      <location filename="../../../femcommands/commands.py" line="582"/>
+      <source>Material for fluid</source>
+      <translation>Materiale per fluido</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="42"/>
+      <source>FEM material for Fluid</source>
+      <translation>Materiale FEM per il fluido</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="44"/>
+      <source>Creates a FEM material for Fluid</source>
+      <translation>Crea un materiale FEM per il fluido</translation>
     </message>
   </context>
   <context>
@@ -311,17 +327,30 @@
       <translation>Crea un materiale meccanico non lineare</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="415"/>
-      <source>Nonlinear mechanical material</source>
-      <translation>Materiale non lineare</translation>
+      <location filename="../../../femcommands/commands.py" line="618"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>Crea un materiale meccanico non lineare</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialReinforced</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="674"/>
+      <source>Reinforced material (concrete)</source>
+      <translation type="unfinished">Reinforced material (concrete)</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="_CommandFemMaterialSolid.py" line="44"/>
-      <source>Creates a FEM material for solid</source>
-      <translation>Crea un materiale FEM per il solido</translation>
+      <location filename="../../../femcommands/commands.py" line="452"/>
+      <source>Material for solid</source>
+      <translation>Materiale per solido</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
+      <source>Material for solid</source>
+      <translation>Materiale per solido</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -354,16 +383,6 @@
       <source>Clear the Mesh of a FEM mesh object</source>
       <translation>Cancellare il Mesh di un oggetto mesh FEM</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="518"/>
-      <source>Clear FEM mesh</source>
-      <translation>Elimina le mesh FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="520"/>
-      <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Cancellare il Mesh di un oggetto mesh FEM</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MeshDisplayInfo</name>
@@ -371,6 +390,29 @@
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
       <translation>Visualizza le informazioni di mesh FEM</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGmshFromShape</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="556"/>
+      <source>FEM mesh from shape by Gmsh</source>
+      <translation>Mesh FEM da forma con Gmsh</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="557"/>
+      <source>Create a FEM mesh from a shape by Gmsh mesher</source>
+      <translation>Crea una mesh FEM da una forma con il mesher Gmsh</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation>Mesh FEM da forma con GMSH</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation>Crea una mesh FEM da una forma con il mesher GMSH</translation>
     </message>
   </context>
   <context>
@@ -385,15 +427,18 @@
       <source>Creates a FEM mesh group</source>
       <translation>Crea un gruppo di mesh FEM</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="584"/>
-      <source>FEM mesh group</source>
-      <translation>Gruppo di mesh FEM</translation>
+      <location filename="../../../femcommands/commands.py" line="603"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Mesh FEM da forma con Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="586"/>
-      <source>Creates a FEM mesh group</source>
-      <translation>Crea un gruppo di mesh FEM</translation>
+      <location filename="../../../femcommands/commands.py" line="957"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Mesh FEM da forma con Netgen</translation>
     </message>
   </context>
   <context>
@@ -414,7 +459,7 @@
     <message>
       <location filename="_CommandFemResultShow.py" line="41"/>
       <source>Show result</source>
-      <translation>Mostra risultato</translation>
+      <translation>Mostra i risultati</translation>
     </message>
     <message>
       <location filename="_CommandFemResultShow.py" line="43"/>
@@ -427,20 +472,10 @@
     <message>
       <location filename="_CommandFemResultsPurge.py" line="41"/>
       <source>Purge results</source>
-      <translation>Azzera risultati</translation>
+      <translation>Azzera i risultati</translation>
     </message>
     <message>
       <location filename="_CommandFemResultsPurge.py" line="43"/>
-      <source>Purges all results from active analysis</source>
-      <translation>Elimina tutti i risultati dall'analisi attiva</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="664"/>
-      <source>Purge results</source>
-      <translation>Azzera risultati</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="666"/>
       <source>Purges all results from active analysis</source>
       <translation>Elimina tutti i risultati dall'analisi attiva</translation>
     </message>
@@ -459,6 +494,29 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCalculix</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="679"/>
+      <source>Solver CalculiX Standard</source>
+      <translation>Risolutore CalculiX Standard</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="681"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation>Crea un solutore standard CalculiX per FEM con strumenti ccx</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation>Risolutore CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation>Crea un solutore FEM basato su CalculiX</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="_CommandFemSolverControl.py" line="40"/>
@@ -470,15 +528,18 @@
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Cambia gli attributi di solutore ed esegue i calcoli per il solutore selezionato</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="726"/>
-      <source>Solver job control</source>
-      <translation>Imposta il risolutore</translation>
+      <location filename="../../../femcommands/commands.py" line="740"/>
+      <source>Solver Elmer</source>
+      <translation>Risolutore Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="728"/>
-      <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Cambia gli attributi di solutore ed esegue i calcoli per il solutore selezionato</translation>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
+      <source>Solver Elmer</source>
+      <translation>Risolutore Elmer</translation>
     </message>
   </context>
   <context>
@@ -516,16 +577,6 @@
     </message>
     <message>
       <location filename="FemCommands.py" line="41"/>
-      <source>Default Fem Command ToolTip</source>
-      <translation>Suggerimento di comando Fem iniziale</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/manager.py" line="41"/>
-      <source>Default Fem Command MenuText</source>
-      <translation>Menu di default dei comandi FEM</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/manager.py" line="43"/>
       <source>Default Fem Command ToolTip</source>
       <translation>Suggerimento di comando Fem iniziale</translation>
     </message>
@@ -596,18 +647,10 @@
       <source>Remove</source>
       <translation>Rimuovi</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="_CommandFemMaterialFluid.py" line="42"/>
-      <source>FEM material for Fluid</source>
-      <translation>Materiale FEM per il fluido</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemMaterialFluid.py" line="44"/>
-      <source>Creates a FEM material for Fluid</source>
-      <translation>Crea un materiale FEM per il fluido</translation>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Rimuovi</translation>
     </message>
   </context>
   <context>
@@ -624,37 +667,11 @@
     </message>
   </context>
   <context>
-    <name>FEM_MeshGmshFromShape</name>
-    <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
-      <source>FEM mesh from shape by GMSH</source>
-      <translation>Mesh FEM da forma con GMSH</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
-      <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>Crea una mesh FEM da una forma con il mesher GMSH</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_MeshPrintInfo</name>
     <message>
       <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
       <source>Print FEM mesh info</source>
       <translation>Stampa le informazioni sulle mesh FEM</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="42"/>
-      <source>Solver CalculiX</source>
-      <translation>Risolutore CalculiX</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="44"/>
-      <source>Creates a FEM solver CalculiX</source>
-      <translation>Crea un solutore FEM basato su CalculiX</translation>
     </message>
   </context>
   <context>
@@ -882,7 +899,7 @@
     <message>
       <location filename="_CommandPurgeFemResults.py" line="40"/>
       <source>Purge results</source>
-      <translation>Azzera risultati</translation>
+      <translation>Azzera i risultati</translation>
     </message>
     <message>
       <location filename="_CommandPurgeFemResults.py" line="42"/>
@@ -936,7 +953,7 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="40"/>
       <source>Show result</source>
-      <translation>Mostra risultato</translation>
+      <translation>Mostra i risultati</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
@@ -1068,7 +1085,7 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="40"/>
       <source>Show result</source>
-      <translation>Mostra risultato</translation>
+      <translation>Mostra i risultati</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
@@ -1915,7 +1932,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="96"/>
       <source>Properties</source>
-      <translation>Propietà</translation>
+      <translation>Proprietà</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="107"/>
@@ -2049,7 +2066,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="14"/>
       <source>Show result</source>
-      <translation>Mostra risultato</translation>
+      <translation>Mostra i risultati</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="22"/>

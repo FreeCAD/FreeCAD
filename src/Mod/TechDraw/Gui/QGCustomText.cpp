@@ -131,32 +131,6 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    //svg text is much larger than screen text.  scene units(mm or 0.1mm in hirez) vs points.
-    //need to scale text if going to svg.
-    //TODO: magic translation happens. why? approx: right ~8mm  down: 12mm + (3mm per mm of text height)
-    //SVG transform matrix translation values are different for same font size + different fonts (Sans vs Ubuntu vs Arial)???
-    //                     scale values are same for same font size + different fonts.
-    //calculate dots/mm 
-    //in hirez - say factor = 10, we have 10 dpmm in scene space. 
-    //  so 254dpi / 72pts/in  => 3.53 dppt 
-    double dpmm = 3.53;         //dots/pt
-    double svgMagicX = Rez::guiX(8.0);                      //8mm -> 80 gui dots
-    double svgMagicY = Rez::guiX(12.0);
-    double svgMagicYoffset = Rez::guiX(3.0);                // 3mm per mm of font size => 30gunits / mm of font size
-    double fontSize = Rez::appX(font().pointSizeF());       //gui pts 4mm text * 10 scunits/mm = size 40 text but still only 4mm
-    double ty = svgMagicY + (svgMagicYoffset*fontSize)/dpmm;
-                    // 12mm (in gunits) + [3mm (in gunits) * (# of mm)]/ [dots per mm]  works out to dots?
-    QPointF svgMove(-svgMagicX/dpmm,ty);
-
-    QPaintDevice* hw = painter->device();
-    QSvgGenerator* svg = dynamic_cast<QSvgGenerator*>(hw);
-    if (svg) {
-        painter->scale(Rez::appX(dpmm),Rez::appX(dpmm));
-        painter->translate(svgMove);
-    } else {
-        painter->scale(1.0,1.0);
-    }
-
 //    painter->drawRect(boundingRect());          //good for debugging
 
     setDefaultTextColor(m_colCurrent);

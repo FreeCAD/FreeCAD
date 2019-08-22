@@ -162,7 +162,7 @@
       <translation>请选择单个放置对象以获取本地方向。</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>每个节点的示例</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>

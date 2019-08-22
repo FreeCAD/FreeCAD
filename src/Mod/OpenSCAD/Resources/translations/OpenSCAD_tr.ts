@@ -149,7 +149,7 @@
     <message>
       <location filename="../../importCSG.py" line="1204"/>
       <source>Press OK</source>
-      <translation>OK(okey) tuşuna bas</translation>
+      <translation>OK (Tamam) tuşuna basın</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="268"/>

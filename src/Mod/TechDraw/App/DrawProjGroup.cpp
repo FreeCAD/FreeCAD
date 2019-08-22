@@ -71,13 +71,16 @@ DrawProjGroup::DrawProjGroup(void)
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
     Anchor.setScope(App::LinkScope::Global);
+    
+    
     ProjectionType.setEnums(ProjectionTypeEnums);
-    ADD_PROPERTY(ProjectionType, ((long)0));
+    ADD_PROPERTY(ProjectionType, ((long)getDefProjConv()));
 
     ADD_PROPERTY_TYPE(AutoDistribute ,(autoDist),agroup,App::Prop_None,"Distribute Views Automatically or Manually");
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
     Rotation.setStatus(App::Property::Hidden,true);   //DPG does not rotate
+    Caption.setStatus(App::Property::Hidden,true);
 
 }
 
@@ -171,7 +174,10 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 //    }
 
     for (auto& item: getViewsAsDPGI()) {
+        bool touched = item->isTouched();
         item->autoPosition();
+        if(!touched)
+            item->purgeTouched();
     }
 
     return DrawViewCollection::execute();
@@ -390,6 +396,10 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
     DrawProjGroupItem *view( nullptr );
     std::pair<Base::Vector3d,Base::Vector3d> vecs;
 
+    DrawPage* dp = findParentPage();
+    if (dp == nullptr) {
+        Base::Console().Error("DPG:addProjection - %s - DPG is not on a page!\n",getNameInDocument());
+    }
 
     if ( checkViewProjType(viewProjType) && !hasProjection(viewProjType) ) {
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
@@ -420,7 +430,6 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
                 Anchor.purgeTouched();
                 view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
                 view->LockPosition.setStatus(App::Property::ReadOnly,true); //Front should stay locked.
-                App::GetApplication().signalChangePropertyEditor(view->LockPosition);
                 view->LockPosition.purgeTouched();
                 requestPaint();   //make sure the group object is on the Gui page
             }
@@ -690,8 +699,16 @@ int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
     int result = 4;                                        //default to front view's position
     // Determine layout - should be either "First Angle" or "Third Angle"
     const char* projType;
+    DrawPage* dp = findParentPage();
     if (ProjectionType.isValue("Default")) {
-        projType = findParentPage()->ProjectionType.getValueAsString();
+        if (dp != nullptr) {
+            projType = dp->ProjectionType.getValueAsString();
+        } else {
+            Base::Console().Warning("DPG: %s - can not find parent page. Using default Projection Type. (1)\n",
+                                    getNameInDocument());
+            int projConv = getDefProjConv();
+            projType = ProjectionTypeEnums[projConv + 1];
+        }
     } else {
         projType = ProjectionType.getValueAsString();
     }
@@ -745,7 +762,17 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
     // Determine layout - should be either "First Angle" or "Third Angle"
     const char* projType;
     if (ProjectionType.isValue("Default")) {
-        projType = findParentPage()->ProjectionType.getValueAsString();
+        DrawPage* dp = findParentPage();
+        if (dp != nullptr) {
+            projType = dp->ProjectionType.getValueAsString();
+        } else {
+            Base::Console().Error("DPG:arrangeViewPointers - %s - DPG is not on a page!\n",
+                                    getNameInDocument());
+            Base::Console().Warning("DPG:arrangeViewPointers - using system default Projection Type\n",
+                                    getNameInDocument());
+            int projConv = getDefProjConv();
+            projType = ProjectionTypeEnums[projConv + 1];
+        }
     } else {
         projType = ProjectionType.getValueAsString();
     }
@@ -793,12 +820,15 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
                 } else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
                     viewPtrs[thirdAngle ? 9 : 0] = oView;
                 } else {
-                    throw Base::TypeError("Unknown view type in DrawProjGroup::arrangeViewPointers()");
+                    Base::Console().Warning("DPG: %s - unknown view type: %s. \n",
+                                            getNameInDocument(),viewTypeCStr);
+                    throw Base::TypeError("Unknown view type in DrawProjGroup::arrangeViewPointers.");
                 }
             }
         }
     } else {
-        throw Base::ValueError("Unknown view type in DrawProjGroup::arrangeViewPointers()");
+        Base::Console().Warning("DPG: %s - unknown Projection convention: %s\n",getNameInDocument(),projType);
+        throw Base::ValueError("Unknown Projection convention in DrawProjGroup::arrangeViewPointers");
     }
 }
 
@@ -1144,7 +1174,6 @@ void DrawProjGroup::spinCCW()
     updateSecondaryDirs();
 }
 
-
 std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
 {
     std::vector<DrawProjGroupItem*> result;
@@ -1154,6 +1183,14 @@ std::vector<DrawProjGroupItem*> DrawProjGroup::getViewsAsDPGI()
         result.push_back(item);
     }
     return result;
+}
+
+int DrawProjGroup::getDefProjConv(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                               GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    int defProjConv = hGrp->GetInt("ProjectionAngle",0);
+    return defProjConv;
 }
 
 /*!

@@ -31,15 +31,17 @@
 # include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
 # include <Precision.hxx>
-# include <QMessageBox>
-# include <QAction>
-# include <QRegExp>
-# include <QTextStream>
 # include <TopoDS.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
+
 # include <sstream>
+
+# include <QMessageBox>
+# include <QAction>
+# include <QRegExp>
+# include <QTextStream>
 #endif
 
 #include "Mod/Fem/App/FemConstraintTemperature.h"

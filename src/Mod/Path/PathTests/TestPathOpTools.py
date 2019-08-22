@@ -24,7 +24,6 @@
 
 import FreeCAD
 import Part
-import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathOpTools as PathOpTools
 import PathScripts.PathLog as PathLog
@@ -78,7 +77,7 @@ class TestPathOpTools(PathTestUtils.PathTestBase):
 
     @classmethod
     def setUpClass(cls):
-        global doc
+        global doc # pylint: disable=global-statement
         doc = FreeCAD.openDocument(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_geomop.fcstd')
 
     @classmethod

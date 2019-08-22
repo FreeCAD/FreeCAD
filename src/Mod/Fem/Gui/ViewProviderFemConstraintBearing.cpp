@@ -25,10 +25,12 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
-# include <Precision.hxx>
+
 # include <QMessageBox>
 #endif
 
@@ -116,7 +118,7 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
 
     if (strcmp(prop->getName(),"BasePoint") == 0) {
         // Remove and recreate the symbol
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 
         // This should always point outside of the cylinder
         Base::Vector3d normal = pcConstraint->NormalDirection.getValue();

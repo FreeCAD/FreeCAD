@@ -31,24 +31,49 @@ namespace PartDesignGui {
 // TODO may be derive from something else e.g. ViewProviderGeometryObject (2015-09-11, Fat-Zer)
 class PartDesignGuiExport ViewProviderShapeBinder : public PartGui::ViewProviderPart
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderShapeBinder);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderShapeBinder);
 
 public:
     /// Constructor
     ViewProviderShapeBinder();
     virtual ~ViewProviderShapeBinder();
 
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
     void highlightReferences(const bool on, bool auxiliary);
     
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    virtual bool setEdit(int ModNum) override;
+    virtual void unsetEdit(int ModNum) override;
     
 private:
     std::vector<App::Color> originalLineColors;
     std::vector<App::Color> originalFaceColors;
 
+};
+
+class PartDesignGuiExport ViewProviderSubShapeBinder : public PartGui::ViewProviderPart
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderShapeBinder);
+
+public:
+
+    /// Constructor
+    ViewProviderSubShapeBinder();
+
+    bool canDropObjects() const override {return true;}
+    bool canDragAndDropObject(App::DocumentObject*) const override {return false;}
+    bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
+            const char *subname, const std::vector<std::string> &elements) const override;
+    std::string dropObjectEx(App::DocumentObject*, App::DocumentObject*, const char *, 
+            const std::vector<std::string> &) override;
+    std::vector<App::DocumentObject*> claimChildren(void) const override;
+
+    virtual bool doubleClicked() override;
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    virtual bool setEdit(int ModNum) override;
+
+private:
+    void updatePlacement(bool transaction);
 };
 
 } // namespace PartDesignGui

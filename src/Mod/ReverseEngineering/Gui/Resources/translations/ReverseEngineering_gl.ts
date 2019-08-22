@@ -162,7 +162,7 @@
       <translation>Por favor escolme un único obxecto de posición para coller a orientación local.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Mostras por nó</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>

@@ -39,18 +39,21 @@
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
 
-#include "DrawView.h"
 #include "DrawPage.h"
 #include "DrawViewCollection.h"
 #include "DrawViewClip.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
+#include "DrawLeaderLine.h"
 #include "DrawUtil.h"
+#include "Geometry.h"
+#include "Cosmetic.h"
 
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
-using namespace TechDraw;
+#include "DrawView.h"
 
+using namespace TechDraw;
 
 //===========================================================================
 // DrawView
@@ -91,7 +94,7 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
-//    Base::Console().Message("DV::execute() - %s\n",getNameInDocument());
+//    Base::Console().Message("DV::execute() - %s\n", getNameInDocument());
     handleXYLock();
     requestPaint();
     return App::DocumentObject::execute();
@@ -118,7 +121,6 @@ void DrawView::onChanged(const App::Property* prop)
             auto page = findParentPage();
             if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
-                App::GetApplication().signalChangePropertyEditor(Scale);
                 if (page != nullptr) {
                     if(std::abs(page->Scale.getValue() - getScale()) > FLT_EPSILON) {
                        Scale.setValue(page->Scale.getValue());
@@ -128,10 +130,8 @@ void DrawView::onChanged(const App::Property* prop)
             } else if ( ScaleType.isValue("Custom") ) {
                 //don't change Scale
                 Scale.setStatus(App::Property::ReadOnly,false);
-                App::GetApplication().signalChangePropertyEditor(Scale);
             } else if ( ScaleType.isValue("Automatic") ) {
                 Scale.setStatus(App::Property::ReadOnly,true);
-                App::GetApplication().signalChangePropertyEditor(Scale);
                 if (!checkFit(page)) {
                     double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
                     if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
@@ -159,23 +159,19 @@ void DrawView::handleXYLock(void)
     if (isLocked()) {
         if (!X.testStatus(App::Property::ReadOnly)) {
             X.setStatus(App::Property::ReadOnly,true);
-            App::GetApplication().signalChangePropertyEditor(X);
             X.purgeTouched();
         }
         if (!Y.testStatus(App::Property::ReadOnly)) {
             Y.setStatus(App::Property::ReadOnly,true);
-            App::GetApplication().signalChangePropertyEditor(Y);
             Y.purgeTouched();
         }
     } else {
         if (X.testStatus(App::Property::ReadOnly)) {
             X.setStatus(App::Property::ReadOnly,false);
-            App::GetApplication().signalChangePropertyEditor(X);
             X.purgeTouched();
         }
         if (Y.testStatus(App::Property::ReadOnly)) {
             Y.setStatus(App::Property::ReadOnly,false);
-            App::GetApplication().signalChangePropertyEditor(Y);
             Y.purgeTouched();
         }
     }
@@ -187,8 +183,10 @@ short DrawView::mustExecute() const
     if (!isRestoring()) {
         result  =  (Scale.isTouched()  ||
                     ScaleType.isTouched() ||
+                    Caption.isTouched() ||
                     X.isTouched() ||
-                    Y.isTouched() );
+                    Y.isTouched() ||
+                    LockPosition.isTouched());
     }
     if ((bool) result) {
         return result;
@@ -287,10 +285,11 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
     return result;
 }
 
-void DrawView::setPosition(double x, double y)
+void DrawView::setPosition(double x, double y, bool force)
 {
 //    Base::Console().Message("DV::setPosition(%.3f,%.3f) - \n",x,y,getNameInDocument());
-    if (!isLocked()) {
+    if ( (!isLocked()) ||
+         (force) ) {
         X.setValue(x);
         Y.setValue(y);
     }
@@ -307,93 +306,60 @@ double DrawView::getScale(void) const
     return result;
 }
 
-void DrawView::Restore(Base::XMLReader &reader)
+//return list of Leaders which reference this DV
+std::vector<TechDraw::DrawLeaderLine*> DrawView::getLeaders() const
 {
-// this is temporary code for backwards compat (within v0.17).  can probably be deleted once there are no development
-// fcstd files with old property types in use. 
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
+    std::vector<TechDraw::DrawLeaderLine*> result;
+    std::vector<App::DocumentObject*> children = getInList();
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawLeaderLine::getClassTypeId())) {
+            TechDraw::DrawLeaderLine* lead = dynamic_cast<TechDraw::DrawLeaderLine*>(*it);
+            result.push_back(lead);
+        }
+    }
+    return result;
+}
 
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* schemaProp = getPropertyByName(PropName);
-        try {
-            if(schemaProp){
-                if (strcmp(schemaProp->getTypeId().getName(), TypeName) == 0){        //if the property type in obj == type in schema
-                    schemaProp->Restore(reader);                                      //nothing special to do
-                } else  {
-                    if (strcmp(PropName, "Scale") == 0) {
-                        if (schemaProp->isDerivedFrom(App::PropertyFloatConstraint::getClassTypeId())){  //right property type
-                            schemaProp->Restore(reader);                                                  //nothing special to do (redundant)
-                        } else {                                                                //Scale, but not PropertyFloatConstraint
-                            App::PropertyFloat tmp;
-                            if (strcmp(tmp.getTypeId().getName(),TypeName)) {                   //property in file is Float
-                                tmp.setContainer(this);
-                                tmp.Restore(reader);
-                                double tmpValue = tmp.getValue();
-                                if (tmpValue > 0.0) {
-                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(tmpValue);
-                                } else {
-                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(1.0);
-                                }
-                            } else {
-                                // has Scale prop that isn't Float! 
-                                Base::Console().Log("DrawView::Restore - old Document Scale is Not Float!\n");
-                                // no idea
-                            }
-                        }
-                    } else if (strcmp(PropName, "Source") == 0) {
-                        App::PropertyLinkGlobal glink;
-                        App::PropertyLink link;
-                        if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
-                            glink.setContainer(this);
-                            glink.Restore(reader);
-                            if (glink.getValue() != nullptr) {
-                                static_cast<App::PropertyLinkList*>(schemaProp)->setScope(App::LinkScope::Global);
-                                static_cast<App::PropertyLinkList*>(schemaProp)->setValue(glink.getValue());
-                            }
-                        } else if (strcmp(link.getTypeId().getName(),TypeName) == 0) {            //property in file is pl
-                            link.setContainer(this);
-                            link.Restore(reader);
-                            if (link.getValue() != nullptr) {
-                                static_cast<App::PropertyLinkList*>(schemaProp)->setScope(App::LinkScope::Global);
-                                static_cast<App::PropertyLinkList*>(schemaProp)->setValue(link.getValue());
-                            }
-                        
-                        } else {
-                            // has Source prop isn't PropertyLink or PropertyLinkGlobal! 
-                            Base::Console().Log("DrawView::Restore - old Document Source is weird: %s\n", TypeName);
-                            // no idea
-                        }
-                    } else {
-                        Base::Console().Log("DrawView::Restore - old Document has unknown Property\n");
-                    }
-                }
+void DrawView::handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
+{
+    if (prop == &Scale) {
+        App::PropertyFloat tmp;
+        if (strcmp(tmp.getTypeId().getName(),TypeName)==0) {                   //property in file is Float
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            double tmpValue = tmp.getValue();
+            if (tmpValue > 0.0) {
+                Scale.setValue(tmpValue);
+            } else {
+                Scale.setValue(1.0);
+            }
+        } else {
+            // has Scale prop that isn't Float! 
+            Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
+            // no idea
+        }
+    } else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId()) 
+            && strcmp(prop->getName(),"Source")==0) 
+    {
+        App::PropertyLinkGlobal glink;
+        App::PropertyLink link;
+        if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
+            glink.setContainer(this);
+            glink.Restore(reader);
+            if (glink.getValue() != nullptr) {
+                static_cast<App::PropertyLinkList*>(prop)->setScope(App::LinkScope::Global);
+                static_cast<App::PropertyLinkList*>(prop)->setValue(glink.getValue());
+            }
+        } else if (strcmp(link.getTypeId().getName(),TypeName) == 0) {            //property in file is pl
+            link.setContainer(this);
+            link.Restore(reader);
+            if (link.getValue() != nullptr) {
+                static_cast<App::PropertyLinkList*>(prop)->setScope(App::LinkScope::Global);
+                static_cast<App::PropertyLinkList*>(prop)->setValue(link.getValue());
             }
         }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
-        }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const char* e) {
-            Base::Console().Error("%s\n", e);
-        }
-#ifndef FC_DEBUG
-        catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
-        }
-#endif
-
-        reader.readEndElement("Property");
     }
-    reader.readEndElement("Properties");
 }
 
 bool DrawView::keepUpdated(void)
@@ -408,6 +374,7 @@ bool DrawView::keepUpdated(void)
 
 void DrawView::requestPaint(void)
 {
+//    Base::Console().Message("DV::requestPaint() - %s\n", getNameInDocument());
     signalGuiPaint(this);
 }
 

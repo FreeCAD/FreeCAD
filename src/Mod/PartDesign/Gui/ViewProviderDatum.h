@@ -27,15 +27,17 @@
 #include "Gui/ViewProviderGeometryObject.h"
 #include <Base/BoundBox.h>
 
+#include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+
 class SoPickStyle;
 class SbBox3f;
 class SoGetBoundingBoxAction;
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderDatum : public Gui::ViewProviderGeometryObject
+class PartDesignGuiExport ViewProviderDatum : public Gui::ViewProviderGeometryObject, PartGui::ViewProviderAttachExtension
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderDatum);
+    PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderDatum);
 
 public:
     /// constructor
@@ -44,30 +46,30 @@ public:
     virtual ~ViewProviderDatum();
 
     /// grouping handling
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    virtual void attach(App::DocumentObject *);
-    virtual bool onDelete(const std::vector<std::string> &);
-    virtual bool doubleClicked(void);
-    std::vector<std::string> getDisplayModes(void) const;
-    void setDisplayMode(const char* ModeName);
+    virtual void attach(App::DocumentObject *) override;
+    virtual bool onDelete(const std::vector<std::string> &) override;
+    virtual bool doubleClicked(void) override;
+    std::vector<std::string> getDisplayModes(void) const override;
+    void setDisplayMode(const char* ModeName) override;
 
     /// indicates if the ViewProvider use the new Selection model
-    virtual bool useNewSelectionModel(void) const { return true; }
+    virtual bool useNewSelectionModel(void) const override { return true; }
     /// indicates if the ViewProvider can be selected
-    virtual bool isSelectable(void) const ;
+    virtual bool isSelectable(void) const override;
     /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail *) const;
-    virtual SoDetail* getDetail(const char*) const;
+    virtual std::string getElement(const SoDetail *) const override;
+    virtual SoDetail* getDetail(const char*) const override;
 
-    /** 
+    /**
      * Enable/Disable the selectability of the datum
-     * This differs from the normal ViewProvider selectability in that, that with this enabled one 
+     * This differs from the normal ViewProvider selectability in that, that with this enabled one
      * can pick through the datum and select stuff behind it.
      */
     bool isPickable();
     void setPickable(bool val);
-    
+
     /**
      * Update the visual size to match the given extents
      * @note should be reimplemented in the offspings
@@ -107,8 +109,8 @@ public:
     static double marginFactor () { return 0.1; };
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    virtual bool setEdit(int ModNum) override;
+    virtual void unsetEdit(int ModNum) override;
 
     /**
      * Guesses the context this datum belongs to and returns appropriate bounding box of all

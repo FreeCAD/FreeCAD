@@ -48,9 +48,9 @@ public:
     int type() const { return Type;}
 
     void setHighlighted(bool state);
-    void setPrettyNormal();
-    void setPrettyPre();
-    void setPrettySel();
+    virtual void setPrettyNormal();
+    virtual void setPrettyPre();
+    virtual void setPrettySel();
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
     virtual void centerAt(QPointF centerPos);

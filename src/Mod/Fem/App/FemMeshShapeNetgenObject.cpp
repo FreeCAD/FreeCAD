@@ -24,6 +24,21 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <SMESH_Gen.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMESH_Mesh.hxx>
+# include <SMDS_PolyhedralVolumeOfNodes.hxx>
+# include <SMDS_VolumeTool.hxx>
+
+# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepTools.hxx>
+
+# ifdef FCWithNetgen
+#  include <NETGENPlugin_SimpleHypothesis_3D.hxx>
+#  include <NETGENPlugin_Hypothesis.hxx>
+#  include <NETGENPlugin_Mesher.hxx>
+# endif
+
 #endif
 
 #include "FemMeshShapeNetgenObject.h"
@@ -32,22 +47,6 @@
 #include <Base/Placement.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
-
-#include <SMESH_Gen.hxx>
-#include <SMESHDS_Mesh.hxx>
-
-#include <SMESH_Mesh.hxx>
-#include <SMDS_PolyhedralVolumeOfNodes.hxx>
-#include <SMDS_VolumeTool.hxx>
-
-#ifdef FCWithNetgen
-    #include <NETGENPlugin_SimpleHypothesis_3D.hxx>
-    #include <NETGENPlugin_Hypothesis.hxx>
-    #include <NETGENPlugin_Mesher.hxx>
-#endif
-
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepTools.hxx>
 
 using namespace Fem;
 using namespace App;

@@ -84,7 +84,7 @@ void QGIHighlight::makeHighlight()
 void QGIHighlight::makeReference()
 {
     prepareGeometryChange();
-    m_refFont.setPointSize(m_refSize);
+    m_refFont.setPixelSize(QGIView::calculateFontPixelSize(m_refSize));
     m_reference->setFont(m_refFont);
     m_reference->setPlainText(QString::fromUtf8(m_refText));
     double fudge = Rez::guiX(1.0);

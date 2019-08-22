@@ -61,7 +61,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="292"/>
       <source>Orbit style</source>
-      <translation>Stile Orbita</translation>
+      <translation>Stile orbita</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="293"/>

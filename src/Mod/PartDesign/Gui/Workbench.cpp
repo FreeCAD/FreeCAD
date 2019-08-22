@@ -236,6 +236,12 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
             }
         }
     }
+
+    if (strcmp(recipient, "View") == 0) {
+        if (item->hasItems())
+            *item << "Separator";
+        Gui::StdWorkbench::setupContextMenu(recipient, item);
+    }
 }
 
 void Workbench::activated()
@@ -424,7 +430,8 @@ void Workbench::activated()
     _switchToDocument(App::GetApplication().getActiveDocument());
 
     addTaskWatcher(Watcher);
-    Gui::Control().showTaskView();
+    if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign")->GetBool("SwitchToTask", true))
+        Gui::Control().showTaskView();
 
     // Let us be notified when a document is activated, so that we can update the ActivePartObject
     Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, _1));
@@ -473,6 +480,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Plane"
           << "PartDesign_CoordinateSystem"
           << "PartDesign_ShapeBinder"
+          << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
           << "Separator"
           << "PartDesign_Pad"
@@ -539,6 +547,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Plane"
           << "PartDesign_CoordinateSystem"
           << "PartDesign_ShapeBinder"
+          << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone";
 
     part = new Gui::ToolBarItem(root);

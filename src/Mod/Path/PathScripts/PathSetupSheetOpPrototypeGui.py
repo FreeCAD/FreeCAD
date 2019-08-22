@@ -23,13 +23,8 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
-import PathScripts.PathGui as PathGui
-import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
-import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
-import PathScripts.PathUtil as PathUtil
 
 from PySide import QtCore, QtGui
 
@@ -38,11 +33,13 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Task panel editor for a SetupSheet"
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -56,23 +53,23 @@ class _PropertyEditor(object):
     def widget(self, parent):
         '''widget(parent) ... called by the delegate to get a new editor widget.
         Must be implemented by subclasses and return the widget.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
     def setEditorData(self, widget):
         '''setEditorData(widget) ... called by the delegate to initialize the editor.
         The widget is the object returned by widget().
         Must be implemented by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
     def setModelData(self, widget):
         '''setModelData(widget) ... called by the delegate to store new values.
         Must be implemented by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
 class _PropertyEnumEditor(_PropertyEditor):
     '''Editor for enumeration values - uses a combo box.'''
 
     def widget(self, parent):
         PathLog.track(self.prop.name, self.prop.getEnumValues())
-        return QtGui.QComboBox(parent);
+        return QtGui.QComboBox(parent)
 
     def setEditorData(self, widget):
         widget.clear()

@@ -77,32 +77,32 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="353"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Create</source>
       <translation>Crea</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="355"/>
+      <location filename="../../CurveOnMesh.cpp" line="365"/>
       <source>Close wire</source>
       <translation>Tanca el filferro</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="357"/>
+      <location filename="../../CurveOnMesh.cpp" line="367"/>
       <source>Clear</source>
       <translation>Neteja</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="358"/>
+      <location filename="../../CurveOnMesh.cpp" line="368"/>
       <source>Cancel</source>
       <translation>Cancel·la</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="566"/>
+      <location filename="../../CurveOnMesh.cpp" line="614"/>
       <source>Wrong mesh picked</source>
       <translation>S'ha seleccionat una malla incorrecta</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="606"/>
+      <location filename="../../CurveOnMesh.cpp" line="654"/>
       <source>No point was picked</source>
       <translation>No s'ha seleccionat cap punt.</translation>
     </message>
@@ -140,22 +140,22 @@
       <translation>Aproximació d'spline</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="75"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
       <source>Tolerance to mesh</source>
       <translation>Tolerància de malla</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="101"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
       <source>Continuity</source>
       <translation>Continuïtat</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="108"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
       <source>Maximum curve degree</source>
       <translation>Grau màxim de la corba</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="132"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
       <source>Start</source>
       <translation>Inicia</translation>
     </message>

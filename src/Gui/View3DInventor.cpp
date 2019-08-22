@@ -171,6 +171,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"ShowNaviCube");
     OnChange(*hGrp,"CornerNaviCube");
     OnChange(*hGrp,"UseVBO");
+    OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
     OnChange(*hGrp,"HeadlightColor");
     OnChange(*hGrp,"HeadlightDirection");
@@ -194,6 +195,11 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
 
 View3DInventor::~View3DInventor()
 {
+    if(_pcDocument) {
+        SoCamera * Cam = _viewer->getSoRenderManager()->getCamera();
+        if (Cam) 
+            _pcDocument->saveCameraSettings(SoFCDB::writeNodesToString(Cam).c_str());
+    }
     hGrp->Detach(this);
 
     //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined
@@ -376,6 +382,9 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason,"UseVBO") == 0) {
         _viewer->setEnabledVBO(rGrp.GetBool("UseVBO",false));
     }
+    else if (strcmp(Reason,"RenderCache") == 0) {
+        _viewer->setRenderCache(rGrp.GetInt("RenderCache",0));
+    }
     else if (strcmp(Reason,"Orthographic") == 0) {
         // check whether a perspective or orthogrphic camera should be set
         if (rGrp.GetBool("Orthographic", true))
@@ -477,7 +486,9 @@ void View3DInventor::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
-    //printer.setPageSize(QPrinter::A3);
+#if (QT_VERSION > QT_VERSION_CHECK(5, 9, 0))
+    printer.setPageSize(QPrinter::A4);
+#endif
     printer.setOrientation(QPrinter::Landscape);
 
     QPrintPreviewDialog dlg(&printer, this);
@@ -964,6 +975,12 @@ bool View3DInventor::eventFilter(QObject* watched, QEvent* e)
 
 void View3DInventor::keyPressEvent (QKeyEvent* e)
 {
+    // See StdViewDockUndockFullscreen::activated()
+    // With Qt5 one cannot directly use 'setCurrentViewMode'
+    // of an MDI view because it causes rendering problems.
+    // The only reliable solution is to clone the MDI view,
+    // set its view mode and close the original MDI view.
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
     ViewMode mode = MDIView::currentViewMode();
     if (mode != Child) {
         // If the widget is in fullscreen mode then we can return to normal mode either
@@ -972,6 +989,7 @@ void View3DInventor::keyPressEvent (QKeyEvent* e)
             setCurrentViewMode(Child);
         }
     }
+#endif
 
     QMainWindow::keyPressEvent(e);
 }

@@ -1,5 +1,5 @@
 /** \addtogroup WORKBENCHES
-    Additional functionality and GUI tools
+    Most of FreeCAD's functionality is defined in dedicated Workbenches
 
     Those plugins, also called \b modules or \b worbenches, provide
     functionality for specialized facets of FreeCAD. The word \b module
@@ -12,18 +12,16 @@
     Some of these modules are programmed in C++, others in Python, and some
     in a mix of C++ and Python.
 
-    \b Warning: Some are really work-in-progress and are not yet included in
-    the official builds
  */
  
- /** \defgroup PYTHONWORKBENCHES Python workbenches
- * \ingroup WORKBENCHES
- * \brief Those are workbenches programmed fully in Python
-*/
-
  /** \defgroup CWORKBENCHES C++ workbenches
  * \ingroup WORKBENCHES
- * \brief Those are workbenches programmed primarily in C++. They usually provide a Python API as well.
+ * \brief These workbenches are programmed primarily in C++, but most provide a Python API as well.
+*/
+
+ /** \defgroup PYTHONWORKBENCHES Python workbenches
+ * \ingroup WORKBENCHES
+ * \brief Those are workbenches programmed primarily in Python
 */
 
  /** \defgroup UTILITIES Utility modules

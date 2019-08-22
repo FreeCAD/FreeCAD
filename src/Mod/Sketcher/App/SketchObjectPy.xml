@@ -133,6 +133,21 @@
             <UserDocu>toggle the VirtualSpace status of a constraint</UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="setActive">
+        <Documentation>
+            <UserDocu>sets the constraint on/off (enforced or not)</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="getActive">
+        <Documentation>
+            <UserDocu>Get the constraint status (enforced or not)</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="toggleActive">
+        <Documentation>
+            <UserDocu>toggle the active status of constraint (enforced or not)</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="movePoint">
       <Documentation>
         <UserDocu>

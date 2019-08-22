@@ -106,7 +106,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Paràmetres</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="160"/>
@@ -162,7 +162,7 @@
       <translation>Seleccioneu un sol objecte de posició per a obtindre l'orientació local.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Mostres per node</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>

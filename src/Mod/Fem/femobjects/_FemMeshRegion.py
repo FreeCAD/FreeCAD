@@ -32,8 +32,18 @@ __url__ = "http://www.freecadweb.org"
 class _FemMeshRegion:
     "The FemMeshRegion object"
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLength", "CharacteristicLength", "MeshRegionProperties", "set characteristic length of FEM elements for this region")
-        obj.addProperty("App::PropertyLinkSubList", "References", "MeshRegionShapes", "List of FEM mesh region shapes")
+        obj.addProperty(
+            "App::PropertyLength",
+            "CharacteristicLength",
+            "MeshRegionProperties",
+            "set characteristic length of FEM elements for this region"
+        )
+        obj.addProperty(
+            "App::PropertyLinkSubList",
+            "References",
+            "MeshRegionShapes",
+            "List of FEM mesh region shapes"
+        )
         obj.Proxy = self
         self.Type = "Fem::FemMeshRegion"
 

@@ -81,23 +81,39 @@
 
 #include <BRepMesh.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
+#include <Poly_Connect.hxx>
 #include <Poly_Polygon3D.hxx>
 #include <Poly_PolygonOnTriangulation.hxx>
 #include <Poly_Triangulation.hxx>
 
+#include <gp_Ax1.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Sphere.hxx>
 #include <gp_Trsf.hxx>
+
+#include <gce_ErrorType.hxx>
+#include <GC_MakeArcOfCircle.hxx>
 
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BezierSurface.hxx>
 #include <Geom_BSplineSurface.hxx>
+#include <Geom_Circle.hxx>
+#include <Geom_Line.hxx>
+#include <Geom_CylindricalSurface.hxx>
 #include <Geom_SphericalSurface.hxx>
+#include <Geom_ElementarySurface.hxx>
+#include <Geom_TrimmedCurve.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
+#include <GeomAPI_ExtremaCurveCurve.hxx>
 #include <GeomLProp_SLProps.hxx>
+#include <GeomLib.hxx>
+#include <GeomProjLib.hxx>
 
 #include <TopoDS.hxx>
+#include <TopoDS_Builder.hxx>
+#include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
@@ -112,53 +128,45 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepPrimAPI_MakeSphere.hxx>
-
-#include <Bnd_Box.hxx>
-#include <GCPnts_UniformDeflection.hxx>
-#include <TColStd_Array1OfInteger.hxx>
-
-#include <Interface_Static.hxx>
-
-# include <BRepProj_Projection.hxx>
-# include <TopoDS_Builder.hxx>
-# include <ShapeAnalysis.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <Geom_TrimmedCurve.hxx>
-# include <GeomProjLib.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
-# include "ShapeFix_Edge.hxx"
-# include <ShapeFix_Face.hxx>
-# include <BRepCheck_Analyzer.hxx>
-# include <ShapeFix_Wireframe.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepBuilderAPI_Transform.hxx>
-
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_Result.hxx>
 #include <BRepCheck_ListIteratorOfListOfStatus.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepLProp_SLProps.hxx>
+#include <BRepGProp_Face.hxx>
+#include <BRepPrimAPI_MakeSphere.hxx>
+#include <BRepPrimAPI_MakePrism.hxx>
+#include <BRepProj_Projection.hxx>
 #include <BRepTools_ShapeSet.hxx>
+
+#include <Bnd_Box.hxx>
+#include <GCPnts_UniformDeflection.hxx>
+#include <Precision.hxx>
+#include <TColStd_Array1OfInteger.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
+
+#include <Interface_Static.hxx>
+
+#include <ShapeAnalysis.hxx>
+#include <ShapeAnalysis_FreeBounds.hxx>
+#include <ShapeFix_Wire.hxx>
+#include <ShapeExtend_Explorer.hxx>
+#include <ShapeFix_Edge.hxx>
+#include <ShapeFix_Face.hxx>
+#include <ShapeFix_Wireframe.hxx>
 
 #if OCC_VERSION_HEX >= 0x060600
 # include <BOPAlgo_ArgumentAnalyzer.hxx>
 # include <BOPAlgo_ListOfCheckResult.hxx>
 #endif
 
-#include <TopoDS_Compound.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <Geom_ElementarySurface.hxx>
-#include <Geom_CylindricalSurface.hxx>
-#include <Geom_SphericalSurface.hxx>
-#include <Geom_Line.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <GeomAPI_ExtremaCurveCurve.hxx>
 
 // Python
 
@@ -190,13 +198,15 @@
 // Should come after glext.h to avoid warnings
 # include <Inventor/C/glue/gl.h>
 
+#include <Inventor/misc/SoContextHandler.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoNurbsCurve.h>
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/nodes/SoResetTransform.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoPointSizeElement.h>
 #include <Inventor/engines/SoConcatenate.h>
-#include <Inventor/engines/SoComposeRotationFromTo.h>
-#include <Inventor/engines/SoComposeRotation.h>
 
 // Inventor includes OpenGL
 #ifndef __InventorAll__

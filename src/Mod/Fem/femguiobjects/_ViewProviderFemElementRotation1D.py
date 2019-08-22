@@ -31,11 +31,12 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 import FemGui  # needed to display the icons in TreeView
-False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
 
 # for the panel
 from PySide import QtCore
 from . import FemSelectionWidgets
+
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
 class _ViewProviderFemElementRotation1D:
@@ -84,12 +85,14 @@ class _ViewProviderFemElementRotation1D:
     '''
 
     def setEdit(self, vobj, mode=0):
-        # avoid edit mode by return False, https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
+        # avoid edit mode by return False
+        # https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
         return False
 
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        # check if another VP is in edit mode
+        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
             guidoc.setEdit(vobj.Object.Name)
         else:
@@ -113,13 +116,22 @@ class _TaskPanelFemElementRotation1D:
         self.obj = obj
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementRotation1D.ui")
-        QtCore.QObject.connect(self.parameterWidget.if_rotation, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rotation_changed)
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementRotation1D.ui"
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_rotation,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.rotation_changed
+        )
         self.rotation = self.obj.Rotation
         self.parameterWidget.if_rotation.setText(self.rotation.UserString)
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Edge'])
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+            obj.References,
+            ['Edge']
+        )
 
         # form made from param and selection widget
         self.form = [self.parameterWidget, self.selectionWidget]

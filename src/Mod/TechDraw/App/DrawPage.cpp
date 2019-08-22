@@ -80,7 +80,7 @@ DrawPage::DrawPage(void)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
 
-    ADD_PROPERTY_TYPE(KeepUpdated, (autoUpdate), group, (App::PropertyType)(App::Prop_None), "Keep page in sync with model");
+    ADD_PROPERTY_TYPE(KeepUpdated, (autoUpdate), group, (App::PropertyType)(App::Prop_Output), "Keep page in sync with model");
     ADD_PROPERTY_TYPE(Template, (0), group, (App::PropertyType)(App::Prop_None), "Attached Template");
     Template.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Views, (0), group, (App::PropertyType)(App::Prop_None), "Attached Views");
@@ -101,9 +101,13 @@ DrawPage::DrawPage(void)
     }
 
     ADD_PROPERTY_TYPE(Scale, (1.0), group, (App::PropertyType)(App::Prop_None), "Scale factor for this Page");
+    ADD_PROPERTY_TYPE(NextBalloonIndex, (1), group, (App::PropertyType)(App::Prop_None),
+                     "Auto-numbering for Balloons");
+
     Scale.setConstraints(&scaleRange);
     double defScale = hGrp->GetFloat("DefaultScale",1.0);
     Scale.setValue(defScale);
+    balloonPlacing = false;
 }
 
 DrawPage::~DrawPage()
@@ -405,68 +409,46 @@ void DrawPage::unsetupObject()
     Template.setValue(nullptr);
 }
 
-void DrawPage::Restore(Base::XMLReader &reader)
+int DrawPage::getNextBalloonIndex(void)
 {
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
-
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* schemaProp = getPropertyByName(PropName);
-        try {
-            if(schemaProp){
-                if (strcmp(schemaProp->getTypeId().getName(), TypeName) == 0){        //if the property type in obj == type in schema
-                    schemaProp->Restore(reader);                                      //nothing special to do
-                } else  {
-                    if (strcmp(PropName, "Scale") == 0) {
-                        if (schemaProp->isDerivedFrom(App::PropertyFloatConstraint::getClassTypeId())){  //right property type
-                            schemaProp->Restore(reader);                                                  //nothing special to do
-                        } else {                                                                //Scale, but not PropertyFloatConstraint
-                            App::PropertyFloat tmp;
-                            if (strcmp(tmp.getTypeId().getName(),TypeName)) {                   //property in file is Float
-                                tmp.setContainer(this);
-                                tmp.Restore(reader);
-                                double tmpValue = tmp.getValue();
-                                if (tmpValue > 0.0) {
-                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(tmpValue);
-                                } else {
-                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(1.0);
-                                }
-                            } else {
-                                // has Scale prop that isn't Float! 
-                                Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
-                                // no idea
-                            }
-                        }
-                    } else {
-                        Base::Console().Log("DrawPage::Restore - old Document has unknown Property\n");
-                    }
-                }
-            }
-        }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
-        }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const char* e) {
-            Base::Console().Error("%s\n", e);
-        }
-#ifndef FC_DEBUG
-        catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
-        }
-#endif
-
-        reader.readEndElement("Property");
-    }
-    reader.readEndElement("Properties");
+    int result = NextBalloonIndex.getValue();
+    int newValue = result + 1;
+    NextBalloonIndex.setValue(newValue);
+    return result;
 }
 
+void DrawPage::handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
+{
+    if (prop == &Scale) {
+        App::PropertyFloat tmp;
+        if (strcmp(tmp.getTypeId().getName(),TypeName)==0) {                   //property in file is Float
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            double tmpValue = tmp.getValue();
+            if (tmpValue > 0.0) {
+                Scale.setValue(tmpValue);
+            } else {
+                Scale.setValue(1.0);
+            }
+        } else {
+            // has Scale prop that isn't Float! 
+            Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
+            // no idea
+        }
+    }
+}
 
+// Python Drawing feature ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawPagePython, TechDraw::DrawPage)
+template<> const char* TechDraw::DrawPagePython::getViewProviderName(void) const {
+    return "TechDrawGui::ViewProviderPage";
+}
+/// @endcond
+
+// explicit template instantiation
+template class TechDrawExport FeaturePythonT<TechDraw::DrawPage>;
+}

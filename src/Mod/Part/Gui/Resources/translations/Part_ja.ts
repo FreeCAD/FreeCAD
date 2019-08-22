@@ -46,22 +46,22 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{obj1} depends on object being attached, can't use it for attachment</translation>
+      <translation>{obj1} はアタッチされているオブジェクトに依存しているので、アタッチ対象として使用することはできません。</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="497"/>
       <source>{mode} (add {morerefs})</source>
-      <translation type="unfinished">{mode} (add {morerefs})</translation>
+      <translation>{mode} (追加 {morerefs})</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="500"/>
       <source>{mode} (add more references)</source>
-      <translation type="unfinished">{mode} (add more references)</translation>
+      <translation>{mode} (さらに参照を追加)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>参照の組み合わせ:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="575"/>
       <source>Failed to resolve links. {err}</source>
-      <translation type="unfinished">Failed to resolve links. {err}</translation>
+      <translation>リンクの解決に失敗しました。{err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="583"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="585"/>
       <source>Attached with mode {mode}</source>
-      <translation type="unfinished">Attached with mode {mode}</translation>
+      <translation>モード {mode} でアタッチしました。</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
       <source>Edit attachment of selected object.</source>
-      <translation type="unfinished">Edit attachment of selected object.</translation>
+      <translation>選択したオブジェクトのアタッチ対象を編集</translation>
     </message>
   </context>
   <context>
@@ -119,22 +119,22 @@
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="58"/>
       <source>Compound Filter</source>
-      <translation type="unfinished">Compound Filter</translation>
+      <translation>コンパウンド・フィルター</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
-      <translation type="unfinished">Compound Filter: remove some childs from a compound</translation>
+      <translation>コンパウンド・フィルター: コンパウンドから特定の子要素を除去</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
       <source>Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</source>
-      <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
+      <translation>まず最初にコンパウンドであるシェイプを選択してください！2番めに選択したアイテム（オプション）がステンシルとして扱われます。</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>不適切な選択</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -143,11 +143,11 @@
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>エラーによって結果計算が失敗しました: 
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+とにかくフィーチャー作成を行うには「続行」を、キャンセルするには「破棄」をクリックしてください。</translation>
     </message>
   </context>
   <context>
@@ -170,7 +170,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>不適切な選択</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
       <source>Cutout for object</source>
-      <translation type="unfinished">Cutout for object</translation>
+      <translation>オブジェクトを切り抜き</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation type="unfinished">Makes a cutout in one object to fit another object.</translation>
+      <translation>オブジェクトが別のオブジェクトと合うように切り抜き</translation>
     </message>
   </context>
   <context>
@@ -204,12 +204,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>プロジェクトを埋め込み</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>中空が維持されるようにオブジェクトを別のオブジェクトと融合</translation>
     </message>
   </context>
   <context>
@@ -221,16 +221,16 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 {err}
 
  Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>エラーによって結果計算が失敗しました: 
 
 {err}
 
- Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+とにかくフィーチャー作成を行うには「続行」を、キャンセルするには「破棄」をクリックしてください。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>不適切な選択</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
@@ -240,17 +240,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
       <source>Select at least two objects, or one or more compounds, first!</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds, first!</translation>
+      <translation>まず最初に2つ以上のオブジェクト、または1つ以上のコンパウンドを選択してください！</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
       <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and invoke this tool.</translation>
+      <translation>ベースとなるオブジェクト、埋め込むオブジェクトの順に選択してこのツールを起動</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</translation>
+      <translation>切り抜きを行うオブジェクトを選択し、さらに切り抜きに一致すべきオブジェクトを選択してこのツールを呼び出してください。</translation>
     </message>
   </context>
   <context>
@@ -275,16 +275,16 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>エラーによって結果計算が失敗しました: 
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+とにかくフィーチャー作成を行うには「続行」を、キャンセルするには「破棄」をクリックしてください。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>不適切な選択</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -309,17 +309,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>コンパウンドへスライス</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
       <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
-      <translation type="unfinished">Split object by intersections with other objects, and pack the pieces into a compound.</translation>
+      <translation>オブジェクトを交差する別のオブジェクトで分割し、切片をコンパウンドへまとめる</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
       <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>最初に少なくとも 2 つのオブジェクトを選択してください！1つ目のオブジェクトがスライス対象となり、残りのオブジェクトでスライスされます。</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
@@ -1761,12 +1761,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Counpound tools</source>
-      <translation type="unfinished">Counpound tools</translation>
+      <translation>コンパウンド・ツール</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="784"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
+      <translation>コンパウンド・ツール:シェイプのリストを使って作業</translation>
     </message>
   </context>
   <context>
@@ -1833,12 +1833,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="890"/>
       <source>Make compound</source>
-      <translation>複合体を作成</translation>
+      <translation>コンパウンドを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="891"/>
       <source>Make a compound of several shapes</source>
-      <translation>複数の図形から複合体を作成</translation>
+      <translation>複数のシェイプからコンパウンドを作成</translation>
     </message>
   </context>
   <context>
@@ -1927,12 +1927,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
       <source>Defeaturing</source>
-      <translation type="unfinished">Defeaturing</translation>
+      <translation>デフィーチャリング</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
       <source>Remove feature from a shape</source>
-      <translation type="unfinished">Remove feature from a shape</translation>
+      <translation>シェイプからフィーチャーを取り除く</translation>
     </message>
   </context>
   <context>
@@ -2076,7 +2076,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation type="unfinished">Make face from set of wires (e.g. from a sketch)</translation>
+      <translation>ワイヤーの組みから面を作成（例：スケッチから）</translation>
     </message>
   </context>
   <context>
@@ -2094,7 +2094,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1144"/>
       <source>Create solid from a shell or compound</source>
-      <translation>シェルまたは複合体からソリッドを作成</translation>
+      <translation>シェルまたはコンパウンドからソリッドを作成</translation>
     </message>
   </context>
   <context>
@@ -2130,7 +2130,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Utility to offset in 3D</source>
-      <translation type="unfinished">Utility to offset in 3D</translation>
+      <translation>3次元用オフセットユーティリティ</translation>
     </message>
   </context>
   <context>
@@ -2148,7 +2148,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>平面形状用オフセットユーティリティ</translation>
     </message>
   </context>
   <context>
@@ -2612,7 +2612,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../DlgBooleanOperation.ui" line="91"/>
       <location filename="../../DlgBooleanOperation.ui" line="129"/>
       <source>Compounds</source>
-      <translation>複合体</translation>
+      <translation>コンパウンド</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="96"/>
@@ -2676,7 +2676,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1038"/>
       <source>Chamfer Edges</source>
-      <translation type="unfinished">Chamfer Edges</translation>
+      <translation>エッジを面取り</translation>
     </message>
   </context>
   <context>
@@ -2853,7 +2853,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation type="unfinished">Extrusion direction link is invalid.
+      <translation>押し出し方向リンクが無効です。
 
 %1</translation>
     </message>
@@ -2972,7 +2972,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Edges to chamfer</source>
-      <translation type="unfinished">Edges to chamfer</translation>
+      <translation>面取りするエッジ</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
@@ -3987,7 +3987,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
       <source>Random shape color</source>
-      <translation type="unfinished">Random shape color</translation>
+      <translation>ランダムなシェイプ色</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
@@ -4206,7 +4206,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="522"/>
       <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
+      <translation>隣接エッジを選択</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="529"/>
@@ -4451,7 +4451,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="804"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>参照の組み合わせ:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="821"/>
@@ -4482,7 +4482,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="421"/>
       <source>Check geometry</source>
-      <translation type="unfinished">Check geometry</translation>
+      <translation>ジオメトリーをチェック</translation>
     </message>
   </context>
   <context>
@@ -4777,7 +4777,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../AppPartGui.cpp" line="210"/>
       <location filename="../../AppPartGui.cpp" line="211"/>
       <source>Part design</source>
-      <translation>部品設計</translation>
+      <translation>パートデザイン</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="212"/>
@@ -4888,12 +4888,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound</source>
-      <translation>複合体</translation>
+      <translation>コンパウンド</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Compound Solid</source>
-      <translation>複合体ソリッド</translation>
+      <translation>コンパウンド・ソリッド</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
@@ -5235,7 +5235,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>&amp;Part</source>
-      <translation>部品(&amp;p)</translation>
+      <translation>パート(&amp;P)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
@@ -5270,7 +5270,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Join</source>
-      <translation type="unfinished">Join</translation>
+      <translation>接合</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -5280,7 +5280,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Compound</source>
-      <translation>複合体</translation>
+      <translation>コンパウンド</translation>
     </message>
   </context>
 </TS>

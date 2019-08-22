@@ -100,10 +100,12 @@ SET(PathScripts_SRCS
     PathScripts/PathSurface.py
     PathScripts/PathSurfaceGui.py
     PathScripts/PathToolController.py
+    PathScripts/PathToolControllerGui.py
     PathScripts/PathToolEdit.py
     PathScripts/PathToolLibraryManager.py
     PathScripts/PathUtil.py
     PathScripts/PathUtils.py
+    PathScripts/PathUtilsGui.py
     PathScripts/PathSimulatorGui.py
     PathScripts/PostUtils.py
     PathScripts/PathAdaptiveGui.py
@@ -118,7 +120,6 @@ SET(PathScripts_post_SRCS
     PathScripts/post/dynapath_post.py
     PathScripts/post/example_pre.py
     PathScripts/post/grbl_post.py
-    PathScripts/post/grbl_G81_post.py
     PathScripts/post/jtech_post.py
     PathScripts/post/linuxcnc_post.py
     PathScripts/post/opensbp_post.py
@@ -139,6 +140,7 @@ SET(PathTests_SRCS
     PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathGeom.py
+    PathTests/TestPathHelix.py
     PathTests/TestPathLog.py
     PathTests/TestPathOpTools.py
     PathTests/TestPathPost.py

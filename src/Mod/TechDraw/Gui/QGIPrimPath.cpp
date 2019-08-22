@@ -41,7 +41,8 @@
 using namespace TechDrawGui;
 
 QGIPrimPath::QGIPrimPath():
-    m_width(0)
+    m_width(0),
+    m_capStyle(Qt::RoundCap)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -57,7 +58,9 @@ QGIPrimPath::QGIPrimPath():
     m_colCurrent = getNormalColor();
     m_styleCurrent = Qt::SolidLine;
     m_pen.setStyle(m_styleCurrent);
-    m_pen.setCapStyle(Qt::RoundCap);
+    m_capStyle = prefCapStyle();
+    m_pen.setCapStyle(m_capStyle);
+//    m_pen.setCapStyle(Qt::FlatCap);
     m_pen.setWidthF(m_width);
 
     setPrettyNormal();
@@ -65,6 +68,7 @@ QGIPrimPath::QGIPrimPath():
 
 QVariant QGIPrimPath::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+//    Base::Console().Message("QGIPP::itemChange(%d) - type: %d\n", change,type() - QGraphicsItem::UserType);
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             setPrettySel();
@@ -85,15 +89,13 @@ void QGIPrimPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGIPrimPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-//    QGIView *view = dynamic_cast<QGIView *> (parentItem());    //this is temp for debug??
-//    assert(view != 0);
-//    Q_UNUSED(view);
-    if(!isSelected() && !isHighlighted) {
+    if(!isSelected()) {
         setPrettyNormal();
     }
     QGraphicsPathItem::hoverLeaveEvent(event);
 }
 
+//set highlighted is obsolete
 void QGIPrimPath::setHighlighted(bool b)
 {
     isHighlighted = b;
@@ -205,14 +207,23 @@ QColor QGIPrimPath::getSelectColor()
 
 void QGIPrimPath::setWidth(double w)
 {
+//    Base::Console().Message("QGIPP::setWidth(%.3f)\n", w);
     m_width = w;
     m_pen.setWidthF(m_width);
 }
 
 void QGIPrimPath::setStyle(Qt::PenStyle s)
 {
+//    Base::Console().Message("QGIPP::setStyle(QTPS: %d)\n", s);
     m_styleCurrent = s;
 }
+
+void QGIPrimPath::setStyle(int s)
+{
+//    Base::Console().Message("QGIPP::setStyle(int: %d)\n", s);
+    m_styleCurrent = (Qt::PenStyle) s;
+}
+
 
 void QGIPrimPath::setNormalColor(QColor c)
 {
@@ -220,12 +231,27 @@ void QGIPrimPath::setNormalColor(QColor c)
     m_colOverride = true;
 }
 
+void QGIPrimPath::setCapStyle(Qt::PenCapStyle c)
+{
+    m_capStyle = c;
+    m_pen.setCapStyle(c);
+}
 
 Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     return hGrp;
+}
+
+Qt::PenCapStyle QGIPrimPath::prefCapStyle()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    Qt::PenCapStyle result;
+    unsigned int cap = hGrp->GetUnsigned("EdgeCapStyle", 0x20);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+    result = (Qt::PenCapStyle) cap;
+    return result;
 }
 
 void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)

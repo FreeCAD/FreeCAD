@@ -28,7 +28,7 @@ import Path
 import PathScripts.PathUtils as PathUtils
 from PySide import QtCore#, QtGui
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -82,11 +82,8 @@ class _ViewProviderFixture:
     def getIcon(self):  # optional
         return ":/icons/Path-Datums.svg"
 
-#    def attach(self): #optional
-#        # this is executed on object creation and object load from file
-#        pass
-
     def onChanged(self, vobj, prop):  # optional
+        # pylint: disable=unused-argument
         mode = 2
         vobj.setEditorMode('LineWidth', mode)
         vobj.setEditorMode('MarkerColor', mode)
@@ -122,7 +119,7 @@ class CommandPathFixture:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):

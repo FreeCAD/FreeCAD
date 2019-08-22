@@ -21,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWBALLOON_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWBALLOON_H
+#ifndef TECHDRAWGUI_QGIVBALLOON_H
+#define TECHDRAWGUI_QGIVBALLOON_H
 
 #include <QObject>
 #include <QGraphicsView>
@@ -41,7 +41,7 @@ namespace TechDraw {
 class DrawViewBalloon;
 }
 
-namespace TechDrawGeometry {
+namespace TechDraw {
 class BaseGeom;
 class AOC;
 }
@@ -51,6 +51,20 @@ namespace TechDrawGui
 class QGIArrow;
 class QGIDimLines;
 class QGIViewBalloon;
+
+class QGIBalloonLabel : public QGIDatumLabel
+{
+Q_OBJECT
+
+public:
+    enum {Type = QGraphicsItem::UserType + 141};
+    int type() const override { return Type;}
+
+    QGIViewBalloon *parent;
+
+protected:
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+};
 
 //*******************************************************************
 
@@ -74,9 +88,9 @@ public:
                         QWidget * widget = 0 ) override;
     virtual QColor getNormalColor(void) override;
     QString getLabelText(void);
-    void connect(QGIView *parent);
-    void disconnect(void);
     void draw_modifier(bool modifier);
+    void placeBalloon(QPointF pos);
+    TechDraw::DrawViewBalloon *dvBalloon;
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
@@ -89,14 +103,13 @@ protected:
     void draw() override;
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
-    void onAttachPointPicked(QGIView *view, QPointF pos);
     virtual void setSvgPens(void);
     virtual void setPens(void);
     QString getPrecision(void);
 
 protected:
     bool hasHover;
-    QGIDatumLabel* balloonLabel;
+    QGIBalloonLabel* balloonLabel;
     QGIDimLines* balloonLines;
     QGIDimLines* balloonShape;
     QGIArrow* arrow;
@@ -104,10 +117,10 @@ protected:
     bool m_obtuse;
     void parentViewMousePressed(QGIView *view, QPointF pos);
     QPointF *oldLabelCenter;
-    QGIView *m_parent;
+    QGIView *parent;
 
 };
 
-} // namespace MDIViewPageGui
+} // namespace
 
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWBALLOON_H
+#endif // TECHDRAWGUI_QGIVBALLOON_H

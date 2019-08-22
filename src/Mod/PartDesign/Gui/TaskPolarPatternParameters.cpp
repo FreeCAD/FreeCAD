@@ -213,6 +213,7 @@ void TaskPolarPatternParameters::updateUI()
 
 void TaskPolarPatternParameters::onUpdateViewTimer()
 {
+    setupTransaction();
     recomputeFeature();
 }
 
@@ -223,25 +224,9 @@ void TaskPolarPatternParameters::kickUpdateViewTimer() const
 
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+    if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {
         
         if (originalSelected(msg)) {
-            Gui::SelectionObject selObj(msg);
-            App::DocumentObject* obj = selObj.getObject();
-            Q_ASSERT(obj);
-
-            QString label = QString::fromUtf8(obj->Label.getValue());
-            QString objectName = QString::fromLatin1(msg.pObjectName);
-
-            if (selectionMode == addFeature) {
-                QListWidgetItem* item = new QListWidgetItem();
-                item->setText(label);
-                item->setData(Qt::UserRole, objectName);
-                ui->listWidgetFeatures->addItem(item);
-            }
-            else {
-                removeItemFromListWidget(ui->listWidgetFeatures, label);
-            }
             exitSelectionMode();
         }
         else {
@@ -253,6 +238,7 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
                     return;
             
             if (selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
+                setupTransaction();
                 pcPolarPattern->Axis.setValue(selObj, axes);
                 recomputeFeature();
                 updateUI();
@@ -332,6 +318,7 @@ void TaskPolarPatternParameters::onUpdateView(bool on)
         std::vector<std::string> axes;
         App::DocumentObject* obj;
 
+        setupTransaction();
         getAxis(obj, axes);
         pcPolarPattern->Axis.setValue(obj,axes);
         pcPolarPattern->Reversed.setValue(getReverse());
@@ -347,6 +334,7 @@ void TaskPolarPatternParameters::onFeatureDeleted(void)
     PartDesign::Transformed* pcTransformed = getObject();
     std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
     originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
+    setupTransaction();
     pcTransformed->Originals.setValues(originals);
     ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
     recomputeFeature();
@@ -405,14 +393,14 @@ void TaskPolarPatternParameters::changeEvent(QEvent *e)
 
 void TaskPolarPatternParameters::apply()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
+    auto tobj = TransformedView->getObject();
     std::vector<std::string> axes;
     App::DocumentObject* obj;
     getAxis(obj, axes);
     std::string axis = buildLinkSingleSubPythonStr(obj, axes);
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Axis = %s", name.c_str(), axis.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),getReverse());
+    FCMD_OBJ_CMD(tobj,"Axis = " << axis.c_str());
+    FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
     ui->polarAngle->apply();
     ui->spinOccurrences->apply();
 }

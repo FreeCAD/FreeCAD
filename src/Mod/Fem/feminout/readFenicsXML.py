@@ -86,7 +86,9 @@ def read_fenics_mesh_xml(xmlfilename):
                 ind = int(vertex.get("index"))
 
                 if vertex.tag.lower() == 'vertex':
-                    [node_x, node_y, node_z] = [float(vertex.get(coord, 0.)) for coord in ["x", "y", "z"]]
+                    [node_x, node_y, node_z] = [
+                        float(vertex.get(coord, 0.)) for coord in ["x", "y", "z"]
+                    ]
 
                     nodes_dict[ind + 1] = FreeCAD.Vector(node_x, node_y, node_z)
                     # increase node index by one, since fenics starts at 0, FreeCAD at 1
@@ -102,10 +104,15 @@ def read_fenics_mesh_xml(xmlfilename):
                 ind = int(cell.get("index"))
 
                 if cell.tag.lower() != cell_type.lower():
-                    print("Strange mismatch between cell type %s and cell tag %s" % (cell_type, cell.tag.lower()))
+                    print(
+                        "Strange mismatch between cell type {} and cell tag {}"
+                        .format(cell_type, cell.tag.lower())
+                    )
                 num_vertices = cells_parts_dim[cell_type][0]
 
-                vtupel = tuple([int(cell.get("v" + str(vnum))) + 1 for vnum in range(num_vertices)])
+                vtupel = tuple([
+                    int(cell.get("v" + str(vnum))) + 1 for vnum in range(num_vertices)
+                ])
                 # generate "v0", "v1", ... from dimension lookup table
                 # increase numbers by one to match FC numbering convention
 

@@ -115,9 +115,9 @@
       URL: 'https://en.wikipedia.org/wiki/Density'
       Description: "Density in [FreeCAD Density unit]"
     FractureToughness:
-      Type: 'Quantity'
+      Type: 'Float'
       URL: 'https://en.wikipedia.org/wiki/Fracture_toughness'
-      Description: " "
+      Description: "Unit MPa * m^0.5 is not possible ATM in FreeCAD nicht moeglich thus String. Keep in mind the unit is fixed MPa * m^0.5. https://github.com/FreeCAD/FreeCAD/pull/2156"
     PoissonRatio:
       Type: 'Float'
       URL: 'https://en.wikipedia.org/wiki/Poisson%27s_ratio'

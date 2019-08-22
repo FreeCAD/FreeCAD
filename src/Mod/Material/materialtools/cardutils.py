@@ -109,7 +109,7 @@ def get_material_resources(category='Solid'):
 
 
 def output_resources(resources):
-    FreeCAD.Console.PrintMessage('Directories we gone look for material cards:\n')
+    FreeCAD.Console.PrintMessage('Directories in which we will look for material cards:\n')
     for path in resources.keys():
         FreeCAD.Console.PrintMessage('  {}\n'.format(path))
 
@@ -117,7 +117,7 @@ def output_resources(resources):
 # ***** card handling ****************************************************************************
 # used in material editor and FEM material task panels
 
-def import_materials(category='Solid'):
+def import_materials(category='Solid', template=False):
 
     resources = get_material_resources(category)
 
@@ -136,7 +136,7 @@ def import_materials(category='Solid'):
     return (materials, cards, icons)
 
 
-def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon):
+def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon, template=False):
     # fill materials and icons
     import glob
     from importFCMat import read
@@ -146,8 +146,17 @@ def add_cards_from_a_dir(materials, cards, icons, mat_dir, icon):
     # duplicates are indicated on equality of mat dict
     # TODO if the unit is different two cards would be different too
     for a_path in dir_path_list:
-        mat_dict = read(a_path)
+        try:
+            mat_dict = read(a_path)
+        except:
+            FreeCAD.Console.PrintError(
+                'Error on reading card data. The card data will be empty for card:\n{}\n'
+                .format(a_path)
+            )
+            mat_dict = {}
         card_name = os.path.splitext(os.path.basename(a_path))[0]
+        if (card_name == 'TEMPLATE') and (template is False):
+            continue
         if delete_duplicates is False:
             materials[a_path] = mat_dict
             cards[a_path] = card_name
@@ -316,6 +325,20 @@ def get_source_path():
     return source_dir
 
 
+def get_known_material_quantity_parameter():
+    # get the material quantity parameter from material card template
+    template_data = get_material_template()
+    known_quantities = []
+    for group in template_data:
+        gname = list(group.keys())[0]  # group dict has only one key
+        for prop_name in group[gname]:
+            prop_type = group[gname][prop_name]['Type']
+            if prop_type == 'Quantity':
+                # print('{} --> {}'.format(prop_name, prop_type))
+                known_quantities.append(prop_name)
+    return known_quantities
+
+
 # ***** debug known and not known material parameter *********************************************
 def get_and_output_all_carddata(cards):
     print('\n\n\nSTART--get_and_output_all_carddata\n--------------------')
@@ -410,6 +433,196 @@ def write_cards_to_path(cards_path, cards_data, write_group_section=True, write_
                 write(card_path, card_data, False)
 
 
+# ***** material parameter units *********************************************
+def check_parm_unit(param):
+    # check if this parameter is known to FreeCAD unit system
+    from FreeCAD import Units
+    # FreeCAD.Console.PrintMessage('{}\n'.format(param))
+    if hasattr(Units, param):
+        return True
+    else:
+        return False
+
+
+def check_value_unit(param, value):
+    # check unit
+    from FreeCAD import Units
+    # FreeCAD.Console.PrintMessage('{} --> {}\n'.format(param, value))
+    if hasattr(Units, param):
+        # get unit and other information known by FreeCAD for this parameter
+        unit = getattr(Units, param)
+        quantity = Units.Quantity(1, unit)
+        user_prefered_unit = quantity.getUserPreferred()[2]
+        # test unit from mat dict value
+        some_text = "Parameter: {} --> value: {} -->".format(param, value)
+        try:
+            param_value = Units.Quantity(value)
+            try:
+                user_unit = param_value.getValueAs(user_prefered_unit)
+                if user_unit:
+                    return True
+                elif user_unit == 0:
+                    FreeCAD.Console.PrintMessage(
+                        '{} Value {} = 0 for {}\n'
+                        .format(some_text, value, param)
+                    )
+                    return True
+                else:
+                    FreeCAD.Console.PrintError(
+                        '{} Not known problem in unit conversion.\n'
+                        .format(some_text)
+                    )
+            except ValueError:
+                unitproblem = value.split()[-1]
+                FreeCAD.Console.PrintError(
+                    '{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n'
+                    .format(some_text, unitproblem, param)
+                )
+            except:
+                FreeCAD.Console.PrintError(
+                    '{} Not known problem.\n'
+                    .format(some_text)
+                )
+        except ValueError:
+            unitproblem = value.split()[-1]
+            FreeCAD.Console.PrintError(
+                '{} Unit {} is not known by FreeCAD.\n'
+                .format(some_text, unitproblem)
+            )
+        except:
+            FreeCAD.Console.PrintError(
+                '{} Not known problem.\n'
+                .format(some_text)
+            )
+    else:
+        FreeCAD.Console.PrintError(
+            'Parameter {} is not known to FreeCAD unit system.\n'
+            .format(param)
+        )
+    return False
+
+
+def output_parm_unit_info(param):
+    # check unit
+    from FreeCAD import Units
+    FreeCAD.Console.PrintMessage('{}\n'.format(param))
+    if hasattr(Units, param):
+        FreeCAD.Console.PrintMessage(
+            '\nParameter {} is known to FreeCAD unit system.'
+            .format(param)
+        )
+
+        # get unit and other information known by FreeCAD for this parameter
+        unit = getattr(Units, param)
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(unit)
+        )
+
+        quantity = Units.Quantity(1, unit)
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(quantity)
+        )
+
+        user_prefered_unit = quantity.getUserPreferred()[2]
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(user_prefered_unit)
+        )
+
+    else:
+        FreeCAD.Console.PrintMessage(
+            'Parameter {} is NOT known to FreeCAD unit system.'
+            .format(param)
+        )
+
+
+def output_value_unit_info(param, value):
+    # check unit
+    from FreeCAD import Units
+    some_text = "Parameter: {} --> value: {} -->".format(param, value)
+    FreeCAD.Console.PrintMessage('{} unit information:'.format(some_text))
+    if hasattr(Units, param):
+
+        # get unit and other information known by FreeCAD for this parameter
+        unit = getattr(Units, param)
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(unit)
+        )
+
+        quantity = Units.Quantity(1, unit)
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(quantity)
+        )
+
+        user_prefered_unit = quantity.getUserPreferred()[2]
+        FreeCAD.Console.PrintMessage(
+            '{}\n'
+            .format(user_prefered_unit)
+        )
+
+        # test unit from mat dict value
+        try:
+            param_value = Units.Quantity(value)
+            try:
+                user_unit = param_value.getValueAs(user_prefered_unit)
+                FreeCAD.Console.PrintMessage(
+                    '{} Value in preferred unit: {}\n'
+                    .format(some_text, user_unit)
+                )
+            except ValueError:
+                unitproblem = value.split()[-1]
+                FreeCAD.Console.PrintError(
+                    '{} Unit {} is known by FreeCAD, but wrong for parameter {}.\n'
+                    .format(some_text, unitproblem, param)
+                )
+            except:
+                FreeCAD.Console.PrintError(
+                    '{} Not known problem.\n'
+                    .format(some_text)
+                )
+
+        except ValueError:
+            unitproblem = value.split()[-1]
+            FreeCAD.Console.PrintError(
+                '{} Unit {} is not known by FreeCAD.\n'
+                .format(some_text, unitproblem)
+            )
+
+        except:
+            FreeCAD.Console.PrintError(
+                '{} Not known problem.\n'
+                .format(some_text)
+            )
+
+    else:
+        FreeCAD.Console.PrintMessage(
+            'Parameter {} is not known to FreeCAD unit system.'
+            .format(param)
+        )
+
+
+def check_mat_units(mat):
+    known_quantities = get_known_material_quantity_parameter()
+    # check if the param is a Quantity according to the card template
+    # then check unit
+    # print(known_quantities)
+    units_ok = True
+    for param, value in mat.items():
+        if param in known_quantities:
+            if check_value_unit(param, value) is False:
+                if units_ok is True:
+                    units_ok = False
+        else:
+            pass
+            # print('{} is not a known FreeCAD quantity.'.format(param))
+    # print('')
+    return units_ok
+
+
 # ***** some code examples ***********************************************************************
 '''
 # cards, params, icons and resources **********
@@ -426,12 +639,17 @@ outmats(getmats()[0])
 
 outtrio(getmats())
 
-a,b,c=getmats()
+a,b,c = getmats()
+materials, cards, icons = getmats()
 
 
 # param template, header, template card **********
 from materialtools.cardutils import get_material_template as gettemplate
 gettemplate()
+
+gettemplate()[1]['General']['Description']
+gettemplate()[2]['Mechanical']['FractureToughness']
+
 
 from materialtools.cardutils import get_material_template as gettemplate
 template_data=gettemplate()
@@ -459,8 +677,8 @@ getsrc()
 
 # generate all cards **********
 # run tools in source dir
-./make_ods.sh 
-./make_FCMats.sh 
+./make_ods.sh
+./make_FCMats.sh
 
 # read cards
 from materialtools.cardutils import read_cards_from_path as readcards
@@ -482,5 +700,100 @@ writecards(getsrc() + '/src/Mod/Material/StandardMaterial/', cards_data, False)
 
 # last True writes the TEMPLATE card which has no mat params because they have no values
 writecards(getsrc() + '/src/Mod/Material/StandardMaterial/', cards_data, True, True)
+
+
+# material quantity parameter unit checks **********
+from materialtools.cardutils import output_parm_unit_info as unitinfo
+unitinfo('YoungsModulus')
+unitinfo('FractureToughness')
+unitinfo('PoissonRatio')
+
+from materialtools.cardutils import check_parm_unit as checkparamunit
+checkparamunit('YoungsModulus')
+checkparamunit('FractureToughness')
+
+from materialtools.cardutils import output_value_unit_info as valueunitinfo
+valueunitinfo('YoungsModulus', '1 MPa')
+valueunitinfo('FractureToughness', '25')
+valueunitinfo('Density', '1 kg/m^3')
+valueunitinfo('Density', '0 kg/m^3')
+
+from materialtools.cardutils import check_value_unit as checkvalueunit
+checkvalueunit('YoungsModulus', '1 MPa')
+checkvalueunit('FractureToughness', '25')
+checkvalueunit('Density', '1 kg/m^3')
+checkvalueunit('Density', '0 kg/m^3')
+
+# test mat unit properties
+mat = {
+    'Name': 'Concrete',
+    'AngleOfFriction' : '1 deg',
+    'CompressiveStrength': '1 MPa',
+    'Density': '1 kg/m^3',
+    'ShearModulus' : '1 MPa',
+    'UltimateTensileStrength' : '1 MPa',
+    'YieldStrength' : '1 MPa',
+    'YoungsModulus': '1 MPa',
+    'SpecificHeat' : '1 J/kg/K',
+    'ThermalConductivity' : '1 W/m/K',
+    'ThermalExpansionCoefficient' : '1 mm/mm/K'
+}
+from materialtools.cardutils import check_mat_units as checkunits
+checkunits(mat)
+
+# not known quantities, returns True too
+mat = {
+    'Name': 'Concrete',
+    'FractureToughness' : '1',
+    'PoissonRatio': '0.17'  # no unit but important too, proof somehow too
+}
+from materialtools.cardutils import check_mat_units as checkunits
+checkunits(mat)
+
+# wrong units
+mat = {
+    'Name': 'Concrete',
+    'CompressiveStrength': '12356 MBa',  # type on unit, means unit not knwn
+    'YoungsModulus': '654321 m',  # unit known, but wrong unit for this property
+}
+from materialtools.cardutils import check_mat_units as checkunits
+checkunits(mat)
+
+# missing unit, returns False
+mat = {
+    'Name': 'Concrete',
+    'YoungsModulus' : '1'
+}
+from materialtools.cardutils import check_mat_units as checkunits
+checkunits(mat)
+
+# empty dict, returns True
+from materialtools.cardutils import check_mat_units as checkunits
+checkunits({})
+
+
+# some unit code **********
+from FreeCAD import Units
+getattr(Units, 'Pressure')
+Units.Pressure
+Units.Quantity('25 MPa')
+Units.Quantity('25 MPa').getValueAs('Pa')
+Units.Quantity('25 MPa').getUserPreferred()[2]
+Units.Quantity(25000, Units.Pressure)
+Units.Quantity(25000, Units.Pressure).getValueAs('MPa')
+Units.Unit('25 MPa')
+Units.Unit(-1,1,-2,0,0,0,0,0)
+
+# base units
+from FreeCAD import Units
+Units.Length
+Units.Mass
+Units.TimeSpan
+Units.ElectricCurrent
+Units.Temperature
+Units.AmountOfSubstance
+Units.LuminousIntensity
+Units.Angle
+
 
 '''

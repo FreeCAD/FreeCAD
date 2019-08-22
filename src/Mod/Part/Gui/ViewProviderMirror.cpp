@@ -167,7 +167,7 @@ void ViewProviderMirror::unsetEdit(int ModNum)
         mf->Normal.setValue(norm[0],norm[1],norm[2]);
 
         pcRoot->removeChild(pcEditNode);
-        pcEditNode->removeAllChildren();
+        Gui::coinRemoveAllChildren(pcEditNode);
     }
     else {
         ViewProviderPart::unsetEdit(ModNum);
@@ -242,7 +242,8 @@ void ViewProviderFillet::updateData(const App::Property* prop)
         Part::Fillet* objFill = dynamic_cast<Part::Fillet*>(getObject());
         if (!objFill)
             return;
-        Part::Feature* objBase = dynamic_cast<Part::Feature*>(objFill->Base.getValue());
+        Part::Feature* objBase = dynamic_cast<Part::Feature*>(
+                Part::Feature::getShapeOwner(objFill->Base.getValue()));
         if (objBase) {
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
             const TopoDS_Shape& fillShape = objFill->Shape.getValue();
@@ -345,7 +346,8 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
         Part::Chamfer* objCham = dynamic_cast<Part::Chamfer*>(getObject());
         if (!objCham)
             return;
-        Part::Feature* objBase = dynamic_cast<Part::Feature*>(objCham->Base.getValue());
+        Part::Feature* objBase = dynamic_cast<Part::Feature*>(
+                Part::Feature::getShapeOwner(objCham->Base.getValue()));
         if (objBase) {
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
             const TopoDS_Shape& chamShape = objCham->Shape.getValue();
@@ -493,7 +495,11 @@ ViewProviderSweep::~ViewProviderSweep()
 
 std::vector<App::DocumentObject*> ViewProviderSweep::claimChildren() const
 {
-    return static_cast<Part::Sweep*>(getObject())->Sections.getValues();
+    auto obj = static_cast<Part::Sweep*>(getObject());
+    auto children = obj->Sections.getValues();
+    if(obj->Spine.getValue())
+        children.push_back(obj->Spine.getValue());
+    return children;
 }
 
 bool ViewProviderSweep::onDelete(const std::vector<std::string> &)
@@ -666,4 +672,17 @@ bool ViewProviderThickness::onDelete(const std::vector<std::string> &)
     }
 
     return true;
+}
+
+// ---------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderRefine, PartGui::ViewProviderPart)
+
+ViewProviderRefine::ViewProviderRefine()
+{
+    sPixmap = "Part_Refine_Shape";
+}
+
+ViewProviderRefine::~ViewProviderRefine()
+{
 }

@@ -197,6 +197,11 @@ FemConstraintTemperature,11,11,310.93
 U, NT
 *EL FILE
 S, E
+** outputs --> dat file
+** reaction forces for Constraint fixed
+*NODE PRINT, NSET=FemConstraintFixed, TOTALS=ONLY
+RF
+
 
 ***********************************************************
 ** written by write_step_end function

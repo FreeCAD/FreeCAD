@@ -67,6 +67,9 @@
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
           <widget class="QRadioButton" name="radioButtonBRepOff">
+           <property name="toolTip">
+            <string>Solids and shells will be exported as trimmed surface</string>
+           </property>
            <property name="text">
             <string>Groups of Trimmed Surfaces (type 144)</string>
            </property>
@@ -77,6 +80,9 @@
          </item>
          <item row="1" column="0">
           <widget class="QRadioButton" name="radioButtonBRepOn">
+           <property name="toolTip">
+            <string>Solids will be exported as manifold solid B-Rep object, shells as shell</string>
+           </property>
            <property name="text">
             <string>Solids (type 186) and Shells (type 514) / B-REP mode</string>
            </property>
@@ -96,6 +102,9 @@
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
        <widget class="QCheckBox" name="checkSkipBlank">
+        <property name="toolTip">
+         <string>Blank entities will not be imported</string>
+        </property>
         <property name="text">
          <string>Skip blank entities</string>
         </property>
@@ -106,6 +115,9 @@
    </item>
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBoxHeader">
+     <property name="toolTip">
+      <string>If not empty, field contents will be used in the IGES file header</string>
+     </property>
      <property name="title">
       <string>Header</string>
      </property>

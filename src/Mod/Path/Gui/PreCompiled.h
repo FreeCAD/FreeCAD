@@ -77,6 +77,11 @@
 # include <Gui/Qt4All.h>
 #endif
 
+// all of Inventor
+#ifndef __InventorAll__
+# include <Gui/InventorAll.h>
+#endif
+
 #endif //_PreComp_
 
 #endif // PATHGUI_PRECOMPILED_H

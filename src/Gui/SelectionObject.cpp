@@ -33,6 +33,7 @@
 #include "SelectionObject.h"
 #include "Selection.h"
 #include "Application.h"
+#include "Command.h"
 #include <Gui/SelectionObjectPy.h>
 
 using namespace Gui;
@@ -94,22 +95,12 @@ bool SelectionObject::isObjectTypeOf(const Base::Type& typeId) const
 
 std::string SelectionObject::getAsPropertyLinkSubString(void)const
 {
-    std::string buf;
-    buf += "(App.";
-    buf += "ActiveDocument";//getObject()->getDocument()->getName(); 
-    buf += ".";
-    buf += getObject()->getNameInDocument(); 
-    buf += ",[";
-    for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
-        buf += "\""; 
-        buf += *it; 
-        buf += "\"";
-        if(it != --SubNames.end())
-            buf += ",";
-    }
-    buf += "])";
-   
-    return buf;
+    std::ostringstream str;
+    str << "(" << Gui::Command::getObjectCmd(getObject()) << ",[";
+    for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it)
+        str << "'" << *it << "',";
+    str << "])";
+    return str.str();
 }
 
 PyObject* SelectionObject::getPyObject()

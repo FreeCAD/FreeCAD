@@ -507,7 +507,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         //end of dragging/panning/whatever
                         setViewingMode(NavigationStyle::SELECTION);
                         processed = true;
-                    } //else of if (some bottons down)
+                    } //end of else (some buttons down)
                 break;
             } //switch(button)
         } //if(evIsButton)

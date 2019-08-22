@@ -50,6 +50,7 @@ namespace App
  */
 class AppExport GeoFeatureGroupExtension : public App::GroupExtension
 {
+    typedef App::GroupExtension inherited;
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::GeoFeatureGroupExtension);
 
 public:
@@ -95,6 +96,11 @@ public:
         return obj->hasExtension(GroupExtension::getExtensionClassTypeId()) && 
                !obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     }
+
+    virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj,
+            Base::Matrix4D *mat, bool transform, int depth) const override;
+
+    virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
     
     virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
     virtual std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;

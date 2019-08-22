@@ -31,11 +31,12 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 import FemGui  # needed to display the icons in TreeView
-False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
 
 # for the panel
 from PySide import QtCore
 from . import FemSelectionWidgets
+
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
 class _ViewProviderFemElementGeometry2D:
@@ -83,7 +84,8 @@ class _ViewProviderFemElementGeometry2D:
 
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        # check if another VP is in edit mode
+        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
             guidoc.setEdit(vobj.Object.Name)
         else:
@@ -108,12 +110,21 @@ class _TaskPanelFemElementGeometry2D:
         self.obj = obj
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementGeometry2D.ui")
-        QtCore.QObject.connect(self.parameterWidget.if_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.thickness_changed)
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementGeometry2D.ui"
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_thickness,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.thickness_changed
+        )
         self.init_parameter_widget()
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Face'])
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+            obj.References,
+            ['Face']
+        )
 
         # form made from param and selection widget
         self.form = [self.parameterWidget, self.selectionWidget]

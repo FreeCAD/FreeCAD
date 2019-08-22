@@ -32,9 +32,10 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 import FemGui  # needed to display the icons in TreeView
-False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
 
 from pivy import coin
+
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
 class ViewProxy(object):
@@ -60,12 +61,14 @@ class ViewProxy(object):
 
     def setEdit(self, vobj, mode=0):
         # needs to be overwritten if task panel exists
-        # avoid edit mode by return False, https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
+        # avoid edit mode by return False
+        # https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
         return False
 
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        # check if another VP is in edit mode
+        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
             guidoc.setEdit(vobj.Object.Name)
         else:

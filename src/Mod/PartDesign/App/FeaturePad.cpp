@@ -218,6 +218,8 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 TopExp_Explorer Ex(supportface,TopAbs_WIRE);
                 if (!Ex.More())
                     supportface = TopoDS_Face();
+
+#if 0
                 BRepFeat_MakePrism PrismMaker;
                 PrismMaker.Init(base, sketchshape, supportface, dir, 2, 1);
                 PrismMaker.Perform(upToFace);
@@ -225,6 +227,9 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 if (!PrismMaker.IsDone())
                     return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
                 prism = PrismMaker.Shape();
+#else
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, 2, 1);
+#endif
                 base.Nullify();
             } else {
                 // A support object is always required and we need to use BRepFeat_MakePrism
@@ -239,6 +244,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 TopExp_Explorer Ex(supportface,TopAbs_WIRE);
                 if (!Ex.More())
                     supportface = TopoDS_Face();
+#if 0
                 BRepFeat_MakePrism PrismMaker;
                 PrismMaker.Init(base, sketchshape, supportface, dir, 2, 1);
                 PrismMaker.Perform(upToFace);
@@ -246,6 +252,9 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 if (!PrismMaker.IsDone())
                     return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
                 prism = PrismMaker.Shape();
+#else
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, 2, 1);
+#endif
             }
         } else {
             generatePrism(prism, sketchshape, method, dir, L, L2,

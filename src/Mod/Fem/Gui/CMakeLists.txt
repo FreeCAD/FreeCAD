@@ -1,3 +1,9 @@
+
+# Many warnings caused by vtk
+if(CMAKE_COMPILER_IS_CLANGXX)
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
+endif()
+
 if(MSVC)
     add_definitions(-DFCGuiFem -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
 else(MSVC)
@@ -370,6 +376,11 @@ SET(FemGui_SRCS
     ${FemGui_SRCS_Post}
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${FemGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(FemGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(FemGuiIcon_SVG
     Resources/icons/FemWorkbench.svg
@@ -396,6 +407,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/FlowVelocity.ui
     Resources/ui/InitialFlowVelocity.ui
     Resources/ui/Material.ui
+    Resources/ui/MaterialReinforcement.ui
     Resources/ui/MeshBoundaryLayer.ui
     Resources/ui/MeshGmsh.ui
     Resources/ui/MeshGroup.ui

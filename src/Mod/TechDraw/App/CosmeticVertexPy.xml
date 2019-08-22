@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="CosmeticVertexPy"
+      Twin="CosmeticVertex"
+      TwinPointer="CosmeticVertex"
+      Include="Mod/TechDraw/App/Cosmetic.h"
+      Namespace="TechDraw"
+      FatherInclude="Base/PyObjectBase.h"
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>CosmeticVertex specifies an extra (cosmetic) vertex in Views</UserDocu>
+    </Documentation>
+    <Methode Name="clone" Const="true">
+        <Documentation>
+            <UserDocu>Create a clone of this CosmeticVertex</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="copy" Const="true">
+        <Documentation>
+            <UserDocu>Create a copy of this CosmeticVertex</UserDocu>
+        </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

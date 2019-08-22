@@ -122,22 +122,32 @@ unit_exp: UNIT                                  { $$ = new UnitExpression(Docume
 identifier: path                                { /* Path to property within document object */
                                                   $$ = ObjectIdentifier(DocumentObject);
                                                   $$.addComponents($1);
+                                                  $$.resolveAmbiguity();
+                                                }
+          | '.' path                            { /* Path to property of the current document object */
+                                                  $$ = ObjectIdentifier(DocumentObject,true);
+                                                  $$.setDocumentObjectName(DocumentObject);
+                                                  $$.addComponents($2);
                                                 }
           | object '.' path                     { /* Path to property within document object */
                                                   $$ = ObjectIdentifier(DocumentObject);
-                                                  $$.setDocumentObjectName($1, true);
+                                                  $1.checkImport(DocumentObject);
+                                                  $$.addComponent(ObjectIdentifier::SimpleComponent($1));
                                                   $$.addComponents($3);
+                                                  $$.resolveAmbiguity();
                                                 }
           | document '#' path                   { /* Path to property from an external document, within a named document object */
                                                   $$ = ObjectIdentifier(DocumentObject);
-                                                  $$.setDocumentName($1, true);
+                                                  $$.setDocumentName(std::move($1), true);
                                                   $$.addComponents($3);
+                                                  $$.resolveAmbiguity();
                                                 }
           | document '#' object '.' path        { /* Path to property from an external document, within a named document object */
                                                   $$ = ObjectIdentifier(DocumentObject);
-                                                  $$.setDocumentName($1, true);
-                                                  $$.setDocumentObjectName($3, true);
+                                                  $$.setDocumentName(std::move($1), true);
+                                                  $$.setDocumentObjectName(std::move($3), true);
                                                   $$.addComponents($5);
+                                                  $$.resolveAmbiguity();
                                                 }
      ;
 
@@ -146,27 +156,27 @@ integer: INTEGER { $$ = $1; }
        ;
 
 
-path: IDENTIFIER                                       { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
-    | CELLADDRESS                                      { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
-    | IDENTIFIER '[' integer ']'                       { $$.push_front(ObjectIdentifier::Component::ArrayComponent($1, $3));                      }
-    | IDENTIFIER '[' integer ']' '.' subpath              { $6.push_front(ObjectIdentifier::Component::ArrayComponent($1, $3)); $$ = $6;             }
-    | IDENTIFIER '[' STRING ']'                        { $$.push_front(ObjectIdentifier::Component::MapComponent($1, ObjectIdentifier::String($3, true)));          }
-    | IDENTIFIER '[' IDENTIFIER ']'                    { $$.push_front(ObjectIdentifier::Component::MapComponent($1, $3));                        }
-    | IDENTIFIER '[' STRING ']' '.' subpath               { $6.push_front(ObjectIdentifier::Component::MapComponent($1, ObjectIdentifier::String($3, true))); $$ = $6; }
-    | IDENTIFIER '[' IDENTIFIER ']' '.' subpath           { $6.push_front(ObjectIdentifier::Component::MapComponent($1, $3)); $$ = $6;               }
-    | IDENTIFIER '.' subpath                              { $3.push_front(ObjectIdentifier::Component::SimpleComponent($1)); $$ = $3;                }
+path: IDENTIFIER                                       { $$.push_front(ObjectIdentifier::SimpleComponent($1));                         }
+    | CELLADDRESS                                      { $$.push_front(ObjectIdentifier::SimpleComponent($1));                         }
+    | IDENTIFIER '[' integer ']'                       { $$.push_front(ObjectIdentifier::ArrayComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1);                     }
+    | IDENTIFIER '[' integer ']' '.' subpath              { $6.push_front(ObjectIdentifier::ArrayComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1); $$ = $6;             }
+    | IDENTIFIER '[' STRING ']'                        { $$.push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String($3, true)));          }
+    | IDENTIFIER '[' IDENTIFIER ']'                    { $$.push_front(ObjectIdentifier::MapComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1);                       }
+    | IDENTIFIER '[' STRING ']' '.' subpath               { $6.push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String($3, true))); $$.push_front(ObjectIdentifier::SimpleComponent($1); $$ = $6; }
+    | IDENTIFIER '[' IDENTIFIER ']' '.' subpath           { $6.push_front(ObjectIdentifier::MapComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1); $$ = $6;               }
+    | IDENTIFIER '.' subpath                              { $3.push_front(ObjectIdentifier::SimpleComponent($1)); $$ = $3;                }
     ;
 
-subpath: IDENTIFIER                                       { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
-    | STRING                                              { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
-    | CELLADDRESS                                      { $$.push_front(ObjectIdentifier::Component::SimpleComponent($1));                         }
-    | IDENTIFIER '[' integer ']'                       { $$.push_front(ObjectIdentifier::Component::ArrayComponent($1, $3));                      }
-    | IDENTIFIER '[' integer ']' '.' subpath              { $6.push_front(ObjectIdentifier::Component::ArrayComponent($1, $3)); $$ = $6;             }
-    | IDENTIFIER '[' STRING ']'                        { $$.push_front(ObjectIdentifier::Component::MapComponent($1, ObjectIdentifier::String($3, true)));          }
-    | IDENTIFIER '[' IDENTIFIER ']'                    { $$.push_front(ObjectIdentifier::Component::MapComponent($1, $3));                        }
-    | IDENTIFIER '[' STRING ']' '.' subpath               { $6.push_front(ObjectIdentifier::Component::MapComponent($1, ObjectIdentifier::String($3, true))); $$ = $6; }
-    | IDENTIFIER '[' IDENTIFIER ']' '.' subpath           { $6.push_front(ObjectIdentifier::Component::MapComponent($1, $3)); $$ = $6;               }
-    | IDENTIFIER '.' subpath                              { $3.push_front(ObjectIdentifier::Component::SimpleComponent($1)); $$ = $3;                }
+subpath: IDENTIFIER                                       { $$.push_front(ObjectIdentifier::SimpleComponent($1));                         }
+    | STRING                                              { $$.push_front(ObjectIdentifier::SimpleComponent($1));                         }
+    | CELLADDRESS                                      { $$.push_front(ObjectIdentifier::SimpleComponent($1));                         }
+    | IDENTIFIER '[' integer ']'                       { $$.push_front(ObjectIdentifier::ArrayComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1));                     }
+    | IDENTIFIER '[' integer ']' '.' subpath              { $6.push_front(ObjectIdentifier::ArrayComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1));$$ = $6;             }
+    | IDENTIFIER '[' STRING ']'                        { $$.push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String($3, true))); $$.push_front(ObjectIdentifier::SimpleComponent($1));         }
+    | IDENTIFIER '[' IDENTIFIER ']'                    { $$.push_front(ObjectIdentifier::MapComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1));                       }
+    | IDENTIFIER '[' STRING ']' '.' subpath               { $6.push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String($3, true))); $$.push_front(ObjectIdentifier::SimpleComponent($1));$$ = $6; }
+    | IDENTIFIER '[' IDENTIFIER ']' '.' subpath           { $6.push_front(ObjectIdentifier::MapComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1));$$ = $6;               }
+    | IDENTIFIER '.' subpath                              { $3.push_front(ObjectIdentifier::SimpleComponent($1)); $$ = $3;                }
     ;
 
 document: STRING                                       { $$ = ObjectIdentifier::String($1, true); }

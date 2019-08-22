@@ -162,7 +162,7 @@
       <translation>Si prega di selezionare un solo oggetto di posizionamento per ottenere l'orientamento locale.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>Errore di input</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Campioni per nodo</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>Errore di input</translation>
     </message>

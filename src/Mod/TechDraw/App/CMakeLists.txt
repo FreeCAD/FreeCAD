@@ -18,6 +18,19 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
     ${QT_QTCORE_INCLUDE_DIR}
 )
+
+if(BUILD_QT5)
+    include_directories(
+        ${Qt5XmlPatterns_INCLUDE_DIRS}
+    )
+    set(QtXmlPatternsLib ${Qt5XmlPatterns_LIBRARIES})
+else(BUILD_QT5)
+    include_directories(
+        ${QT_QTXMLPATTERNS_INCLUDE_DIR}
+    )
+    set(QtXmlPatternsLib ${QT_QTXMLPATTERNS_LIBRARY})
+endif(BUILD_QT5)
+
 link_directories(${OCC_LIBRARY_DIR})
 
 set(TechDrawLIBS
@@ -44,6 +57,12 @@ generate_from_xml(DrawViewCollectionPy)
 generate_from_xml(DrawProjGroupPy)
 generate_from_xml(DrawProjGroupItemPy)
 generate_from_xml(DrawViewAnnotationPy)
+generate_from_xml(DrawLeaderLinePy)
+generate_from_xml(DrawRichAnnoPy)
+generate_from_xml(GeomFormatPy)
+generate_from_xml(CenterLinePy)
+generate_from_xml(CosmeticEdgePy)
+generate_from_xml(CosmeticVertexPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -91,7 +110,14 @@ SET(Draw_SRCS
     DrawViewImage.cpp
     DrawViewImage.h
     DrawViewDetail.cpp
-    DrawViewDetail.h)
+    DrawViewDetail.h
+    DrawLeaderLine.cpp
+    DrawLeaderLine.h
+    DrawRichAnno.cpp
+    DrawRichAnno.h
+    QDomNodeModel.cpp
+    QDomNodeModel.h
+    )
 
 SET(TechDraw_SRCS
     AppTechDraw.cpp
@@ -115,6 +141,16 @@ SET(Geometry_SRCS
     Geometry.h
     GeometryObject.cpp
     GeometryObject.h
+    Cosmetic.cpp
+    Cosmetic.h
+    PropertyGeomFormatList.cpp
+    PropertyGeomFormatList.h
+    PropertyCenterLineList.cpp
+    PropertyCenterLineList.h
+    PropertyCosmeticEdgeList.cpp
+    PropertyCosmeticEdgeList.h
+    PropertyCosmeticVertexList.cpp
+    PropertyCosmeticVertexList.h
 )
 
 SET(Python_SRCS
@@ -147,7 +183,20 @@ SET(Python_SRCS
     DrawProjGroupItemPy.xml
     DrawProjGroupItemPyImp.cpp
     DrawViewAnnotationPy.xml
-    DrawViewAnnotationPyImp.cpp)
+    DrawViewAnnotationPyImp.cpp
+    DrawLeaderLinePy.xml
+    DrawLeaderLinePyImp.cpp
+    DrawRichAnnoPy.xml
+    DrawRichAnnoPyImp.cpp
+    GeomFormatPy.xml
+    GeomFormatPyImp.cpp
+    CenterLinePy.xml
+    CenterLinePyImp.cpp
+    CosmeticEdgePy.xml
+    CosmeticEdgePyImp.cpp
+    CosmeticVertexPy.xml
+    CosmeticVertexPyImp.cpp
+    )
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})
 SOURCE_GROUP("Features" FILES ${Draw_SRCS})
@@ -162,7 +211,7 @@ endif(FREECAD_USE_PCH)
 
 add_library(TechDraw SHARED ${TechDraw_SRCS} ${Draw_SRCS} ${TechDrawAlgos_SRCS}
                            ${Geometry_SRCS} ${Python_SRCS})
-target_link_libraries(TechDraw ${TechDrawLIBS};${QT_QTXML_LIBRARY};${TechDraw})
+target_link_libraries(TechDraw ${TechDrawLIBS};${QtXmlPatternsLib};${TechDraw})
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD

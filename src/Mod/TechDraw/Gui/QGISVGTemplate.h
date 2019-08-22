@@ -27,6 +27,8 @@ QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QGraphicsSvgItem;
 class QSvgRenderer;
+class QFile;
+class QString;
 QT_END_NAMESPACE
 
 namespace TechDraw {
@@ -52,6 +54,8 @@ public:
     void draw();
     virtual void updateView(bool update = false);
 
+    TechDraw::DrawSVGTemplate *getSVGTemplate();
+
 protected:
     void openFile(const QFile &file);
     void load (const QString & fileName);
@@ -59,7 +63,6 @@ protected:
 
 protected:
     bool firstTime;
-    TechDraw::DrawSVGTemplate * getSVGTemplate();
     QGraphicsSvgItem *m_svgItem;
     QSvgRenderer *m_svgRender;
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);

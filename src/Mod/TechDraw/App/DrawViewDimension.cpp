@@ -118,6 +118,7 @@ DrawViewDimension::DrawViewDimension(void)
     Scale.setStatus(App::Property::Hidden,true);
     Rotation.setStatus(App::Property::ReadOnly,true);
     Rotation.setStatus(App::Property::Hidden,true);
+    Caption.setStatus(App::Property::Hidden,true);
 
     measurement = new Measure::Measurement();
     //TODO: should have better initial datumLabel position than (0,0) in the DVP?? something closer to the object being measured? 
@@ -238,6 +239,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
 
     //now we can check if Reference2ds have valid targets.
     if (!checkReferences2D()) {
+        Base::Console().Warning("%s has invalid 2D References\n", getNameInDocument());
         return App::DocumentObject::StdReturn;
     }
 
@@ -259,18 +261,18 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         m_hasGeometry = true;
     } else if(Type.isValue("Radius")){
         int idx = DrawUtil::getIndexFromName(subElements[0]);
-        TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
-        TechDrawGeometry::Circle* circle;
+        TechDraw::BaseGeom* base = getViewPart()->getGeomByIndex(idx);
+        TechDraw::Circle* circle;
         arcPoints pts;
         pts.center = Base::Vector3d(0.0,0.0,0.0);
         pts.radius = 0.0;
-        if( (base && base->geomType == TechDrawGeometry::GeomType::CIRCLE) || 
-           (base && base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE))  {
-            circle = static_cast<TechDrawGeometry::Circle*> (base);
+        if( (base && base->geomType == TechDraw::GeomType::CIRCLE) || 
+           (base && base->geomType == TechDraw::GeomType::ARCOFCIRCLE))  {
+            circle = static_cast<TechDraw::Circle*> (base);
             pts.center = Base::Vector3d(circle->center.x,circle->center.y,0.0);
             pts.radius = circle->radius;
-            if (base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE) {
-                TechDrawGeometry::AOC* aoc = static_cast<TechDrawGeometry::AOC*> (circle);
+            if (base->geomType == TechDraw::GeomType::ARCOFCIRCLE) {
+                TechDraw::AOC* aoc = static_cast<TechDraw::AOC*> (circle);
                 pts.isArc = true;
                 pts.onCurve.first  = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
                 pts.midArc         = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
@@ -282,8 +284,39 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                 pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * circle->radius;   //arbitrary point on edge
                 pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * circle->radius;  //arbitrary point on edge
             }
-        } else if (base && base->geomType == TechDrawGeometry::GeomType::BSPLINE) {
-            TechDrawGeometry::BSpline* spline = static_cast<TechDrawGeometry::BSpline*> (base);
+        } else if ((base && base->geomType == TechDraw::GeomType::ELLIPSE)  ||
+                   (base && base->geomType == TechDraw::GeomType::ARCOFELLIPSE))  {
+            TechDraw::Ellipse* ellipse = static_cast<TechDraw::Ellipse*> (base);
+            if (ellipse->closed()) {
+                double r1 = ellipse->minor;
+                double r2 = ellipse->major;
+                double rAvg = (r1 + r2) / 2.0;
+                pts.center = Base::Vector3d(ellipse->center.x,
+                                      ellipse->center.y,
+                                      0.0);
+                pts.radius = rAvg;
+                pts.isArc = false;
+                pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * rAvg;   //arbitrary point on edge
+                pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rAvg;  //arbitrary point on edge
+            } else {    
+                TechDraw::AOE* aoe = static_cast<TechDraw::AOE*> (base);
+                double r1 = aoe->minor;
+                double r2 = aoe->major;
+                double rAvg = (r1 + r2) / 2.0;
+                pts.isArc = true;
+                pts.center = Base::Vector3d(aoe->center.x,
+                                      aoe->center.y,
+                                      0.0);
+                pts.radius = rAvg;
+                pts.arcEnds.first  = Base::Vector3d(aoe->startPnt.x,aoe->startPnt.y,0.0);
+                pts.arcEnds.second = Base::Vector3d(aoe->endPnt.x,aoe->endPnt.y,0.0);
+                pts.midArc         = Base::Vector3d(aoe->midPnt.x,aoe->midPnt.y,0.0);
+                pts.arcCW          = aoe->cw;
+                pts.onCurve.first  = Base::Vector3d(aoe->midPnt.x,aoe->midPnt.y,0.0);
+                pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rAvg;  //arbitrary point on edge
+            }
+        } else if (base && base->geomType == TechDraw::GeomType::BSPLINE) {
+            TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*> (base);
             if (spline->isCircle()) {
                 bool circ,arc;
                 double rad;
@@ -303,7 +336,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                     pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rad;  //arbitrary point on edge
                 }
             } else {
-                //fubar - can't have non-circular spline as target of Diameter dimension
+                //fubar - can't have non-circular spline as target of Radius dimension
                 Base::Console().Error("Dimension %s refers to invalid BSpline\n",getNameInDocument());
                 return App::DocumentObject::StdReturn;
             }
@@ -315,18 +348,18 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         m_hasGeometry = true;
     } else if(Type.isValue("Diameter")){
         int idx = DrawUtil::getIndexFromName(subElements[0]);
-        TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
-        TechDrawGeometry::Circle* circle;
+        TechDraw::BaseGeom* base = getViewPart()->getGeomByIndex(idx);
+        TechDraw::Circle* circle;
         arcPoints pts;
         pts.center = Base::Vector3d(0.0,0.0,0.0);
         pts.radius = 0.0;
-        if ((base && base->geomType == TechDrawGeometry::GeomType::CIRCLE) || 
-           (base && base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE)) {
-            circle = static_cast<TechDrawGeometry::Circle*> (base);
+        if ((base && base->geomType == TechDraw::GeomType::CIRCLE) || 
+           (base && base->geomType == TechDraw::GeomType::ARCOFCIRCLE)) {
+            circle = static_cast<TechDraw::Circle*> (base);
             pts.center = Base::Vector3d(circle->center.x,circle->center.y,0.0);
             pts.radius = circle->radius;
-            if (base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE) {
-                TechDrawGeometry::AOC* aoc = static_cast<TechDrawGeometry::AOC*> (circle);
+            if (base->geomType == TechDraw::GeomType::ARCOFCIRCLE) {
+                TechDraw::AOC* aoc = static_cast<TechDraw::AOC*> (circle);
                 pts.isArc = true;
                 pts.onCurve.first  = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
                 pts.midArc         = Base::Vector3d(aoc->midPnt.x,aoc->midPnt.y,0.0);
@@ -338,8 +371,39 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                 pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * circle->radius;   //arbitrary point on edge
                 pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * circle->radius;  //arbitrary point on edge
             }
-        } else if (base && base->geomType == TechDrawGeometry::GeomType::BSPLINE) {
-            TechDrawGeometry::BSpline* spline = static_cast<TechDrawGeometry::BSpline*> (base);
+        } else if ( (base && base->geomType == TechDraw::GeomType::ELLIPSE) ||
+                    (base && base->geomType == TechDraw::GeomType::ARCOFELLIPSE) )  {
+            TechDraw::Ellipse* ellipse = static_cast<TechDraw::Ellipse*> (base);
+            if (ellipse->closed()) {
+                double r1 = ellipse->minor;
+                double r2 = ellipse->major;
+                double rAvg = (r1 + r2) / 2.0;
+                pts.center = Base::Vector3d(ellipse->center.x,
+                                      ellipse->center.y,
+                                      0.0);
+                pts.radius = rAvg;
+                pts.isArc = false;
+                pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * rAvg;   //arbitrary point on edge
+                pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rAvg;  //arbitrary point on edge
+           } else {
+                TechDraw::AOE* aoe = static_cast<TechDraw::AOE*> (base);
+                double r1 = aoe->minor;
+                double r2 = aoe->major;
+                double rAvg = (r1 + r2) / 2.0;
+                pts.isArc = true;
+                pts.center = Base::Vector3d(aoe->center.x,
+                                      aoe->center.y,
+                                      0.0);
+                pts.radius = rAvg;
+                pts.arcEnds.first  = Base::Vector3d(aoe->startPnt.x,aoe->startPnt.y,0.0);
+                pts.arcEnds.second = Base::Vector3d(aoe->endPnt.x,aoe->endPnt.y,0.0);
+                pts.midArc         = Base::Vector3d(aoe->midPnt.x,aoe->midPnt.y,0.0);
+                pts.arcCW          = aoe->cw;
+                pts.onCurve.first  = Base::Vector3d(aoe->midPnt.x,aoe->midPnt.y,0.0);
+                pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rAvg;  //arbitrary point on edge
+           }
+        } else if (base && base->geomType == TechDraw::GeomType::BSPLINE) {
+            TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*> (base);
             if (spline->isCircle()) {
                 bool circ,arc;
                 double rad;
@@ -360,7 +424,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                 }
             } else {
                 //fubar - can't have non-circular spline as target of Diameter dimension
-                Base::Console().Error("Dimension %s refers to invalid BSpline\n",getNameInDocument());
+                Base::Console().Error("%s: can not make a Circle from this BSpline edge\n",getNameInDocument());
                 return App::DocumentObject::StdReturn;
             }
         } else {
@@ -376,37 +440,37 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         }
         int idx0 = DrawUtil::getIndexFromName(subElements[0]);
         int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-        TechDrawGeometry::BaseGeom* edge0 = getViewPart()->getProjEdgeByIndex(idx0);
-        TechDrawGeometry::BaseGeom* edge1 = getViewPart()->getProjEdgeByIndex(idx1);
-        TechDrawGeometry::Generic *gen0;
-        TechDrawGeometry::Generic *gen1;
-        if (edge0 && edge0->geomType == TechDrawGeometry::GeomType::GENERIC) {
-             gen0 = static_cast<TechDrawGeometry::Generic*>(edge0);
+        TechDraw::BaseGeom* edge0 = getViewPart()->getGeomByIndex(idx0);
+        TechDraw::BaseGeom* edge1 = getViewPart()->getGeomByIndex(idx1);
+        TechDraw::Generic *gen0;
+        TechDraw::Generic *gen1;
+        if (edge0 && edge0->geomType == TechDraw::GeomType::GENERIC) {
+             gen0 = static_cast<TechDraw::Generic*>(edge0);
         } else {
              Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
              return App::DocumentObject::StdReturn;
         }
-        if (edge1 && edge1->geomType == TechDrawGeometry::GeomType::GENERIC) {
-             gen1 = static_cast<TechDrawGeometry::Generic*>(edge1);
+        if (edge1 && edge1->geomType == TechDraw::GeomType::GENERIC) {
+             gen1 = static_cast<TechDraw::Generic*>(edge1);
         } else {
              Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
              return App::DocumentObject::StdReturn;
         }
 
         anglePoints pts;
-        Base::Vector3d apex = DrawUtil::vector23(gen0->apparentInter(gen1));
+        Base::Vector3d apex = gen0->apparentInter(gen1);
         Base::Vector3d extPoint0,extPoint1;
-        if ((DrawUtil::vector23(gen0->getStartPoint()) - apex).Length() >
-            (DrawUtil::vector23(gen0->getEndPoint()) - apex).Length()) {
-            extPoint0 = DrawUtil::vector23(gen0->getStartPoint());
+        if ((gen0->getStartPoint() - apex).Length() >
+            (gen0->getEndPoint() - apex).Length()) {
+            extPoint0 = gen0->getStartPoint();
         } else {
-            extPoint0 = DrawUtil::vector23(gen0->getEndPoint());
+            extPoint0 = gen0->getEndPoint();
         }
-        if ((DrawUtil::vector23(gen1->getStartPoint()) - apex).Length() >
-            (DrawUtil::vector23(gen1->getEndPoint()) - apex).Length()) {
-            extPoint1 = DrawUtil::vector23(gen1->getStartPoint());
+        if ((gen1->getStartPoint() - apex).Length() >
+            (gen1->getEndPoint() - apex).Length()) {
+            extPoint1 = gen1->getStartPoint();
         } else {
-            extPoint1 = DrawUtil::vector23(gen1->getEndPoint());
+            extPoint1 = gen1->getEndPoint();
         }
         pts.ends.first  = extPoint0;
         pts.ends.second = extPoint1;
@@ -422,18 +486,18 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         int idx1 = DrawUtil::getIndexFromName(subElements[1]);
         int idx2 = DrawUtil::getIndexFromName(subElements[2]);
                                
-        TechDrawGeometry::Vertex* vert0 = getViewPart()->getProjVertexByIndex(idx0);
-        TechDrawGeometry::Vertex* vert1 = getViewPart()->getProjVertexByIndex(idx1);
-        TechDrawGeometry::Vertex* vert2 = getViewPart()->getProjVertexByIndex(idx2);
+        TechDraw::Vertex* vert0 = getViewPart()->getProjVertexByIndex(idx0);
+        TechDraw::Vertex* vert1 = getViewPart()->getProjVertexByIndex(idx1);
+        TechDraw::Vertex* vert2 = getViewPart()->getProjVertexByIndex(idx2);
         if (!vert0 || !vert1 || !vert2) {
              Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
              return App::DocumentObject::StdReturn;
         }
 
         anglePoints pts;
-        Base::Vector3d apex =  vert1->getAs3D();
-        Base::Vector3d extPoint0 = vert0->getAs3D();
-        Base::Vector3d extPoint2 = vert2->getAs3D();
+        Base::Vector3d apex =  vert1->point();
+        Base::Vector3d extPoint0 = vert0->point();
+        Base::Vector3d extPoint2 = vert2->point();
         pts.ends.first  = extPoint0;
         pts.ends.second = extPoint2;
         pts.vertex = apex;
@@ -442,7 +506,6 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     }
 
     //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
-
     return DrawView::execute();
 }
 
@@ -627,7 +690,6 @@ double DrawViewDimension::getDimValue()
         } else if(Type.isValue("Radius")){
             arcPoints pts = m_arcPoints;
             result = pts.radius / getViewPart()->getScale();            //Projected BaseGeom is scaled for drawing
-
             
         } else if(Type.isValue("Diameter")){
             arcPoints pts = m_arcPoints;
@@ -661,16 +723,16 @@ pointPair DrawViewDimension::getPointsOneEdge()
 
     //TODO: Check for straight line Edge?
     int idx = DrawUtil::getIndexFromName(subElements[0]);
-    TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
-    TechDrawGeometry::Generic* gen;
-    if (geom && geom->geomType == TechDrawGeometry::GeomType::GENERIC) {
-        gen = static_cast<TechDrawGeometry::Generic*>(geom);
+    TechDraw::BaseGeom* geom = getViewPart()->getGeomByIndex(idx);
+    TechDraw::Generic* gen;
+    if (geom && geom->geomType == TechDraw::GeomType::GENERIC) {
+        gen = static_cast<TechDraw::Generic*>(geom);
     } else {
         Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
         return result;
     }
-    result.first = DrawUtil::vector23(gen->points[0]);
-    result.second = DrawUtil::vector23(gen->points[1]);
+    result.first = gen->points[0];
+    result.second = gen->points[1];
     return result;
 }
 
@@ -682,8 +744,8 @@ pointPair DrawViewDimension::getPointsTwoEdges()
 
     int idx0 = DrawUtil::getIndexFromName(subElements[0]);
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-    TechDrawGeometry::BaseGeom* geom0 = getViewPart()->getProjEdgeByIndex(idx0);
-    TechDrawGeometry::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
+    TechDraw::BaseGeom* geom0 = getViewPart()->getGeomByIndex(idx0);
+    TechDraw::BaseGeom* geom1 = getViewPart()->getGeomByIndex(idx1);
     if ((geom0 == nullptr) ||
         (geom1 == nullptr) ) {
         Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
@@ -701,15 +763,15 @@ pointPair DrawViewDimension::getPointsTwoVerts()
 
     int idx0 = DrawUtil::getIndexFromName(subElements[0]);
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-    TechDrawGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
-    TechDrawGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
+    TechDraw::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
+    TechDraw::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
     if ((v0 == nullptr) ||
         (v1 == nullptr) ) {
         Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
         return result;
     }
-    result.first  = DrawUtil::vector23(v0->pnt);
-    result.second = DrawUtil::vector23(v1->pnt);
+    result.first  = v0->pnt;
+    result.second = v1->pnt;
     return result;
 }    
 
@@ -721,13 +783,13 @@ pointPair DrawViewDimension::getPointsEdgeVert()
 
     int idx0 = DrawUtil::getIndexFromName(subElements[0]);
     int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-    TechDrawGeometry::BaseGeom* e;
-    TechDrawGeometry::Vertex* v;
+    TechDraw::BaseGeom* e;
+    TechDraw::Vertex* v;
     if (DrawUtil::getGeomTypeFromName(subElements[0]) == "Edge") {
-        e = getViewPart()->getProjEdgeByIndex(idx0);
+        e = getViewPart()->getGeomByIndex(idx0);
         v = getViewPart()->getProjVertexByIndex(idx1);
     } else {
-        e = getViewPart()->getProjEdgeByIndex(idx1);
+        e = getViewPart()->getGeomByIndex(idx1);
         v = getViewPart()->getProjVertexByIndex(idx0);
     }
     if ((v == nullptr) ||
@@ -820,13 +882,13 @@ bool DrawViewDimension::checkReferences2D() const
                 if (!s.empty()) { 
                     int idx = DrawUtil::getIndexFromName(s);
                     if (DrawUtil::getGeomTypeFromName(s) == "Edge") {
-                        TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
+                        TechDraw::BaseGeom* geom = getViewPart()->getGeomByIndex(idx);
                         if (geom == nullptr) {
                             result = false;
                             break;
                         }
                     } else if (DrawUtil::getGeomTypeFromName(s) == "Vertex") {
-                        TechDrawGeometry::Vertex* v = getViewPart()->getProjVertexByIndex(idx);
+                        TechDraw::Vertex* v = getViewPart()->getProjVertexByIndex(idx);
                         if (v == nullptr) {
                             result = false;
                             break;
@@ -899,10 +961,10 @@ void DrawViewDimension::dumpRefs2D(char* text) const
     }
 }
 
-double DrawViewDimension::dist2Segs(Base::Vector2d s1,
-                                       Base::Vector2d e1,
-                                       Base::Vector2d s2,
-                                       Base::Vector2d e2) const
+double DrawViewDimension::dist2Segs(Base::Vector3d s1,
+                                       Base::Vector3d e1,
+                                       Base::Vector3d s2,
+                                       Base::Vector3d e2) const
 {
     gp_Pnt start(s1.x,s1.y,0.0);
     gp_Pnt end(e1.x,e1.y,0.0);
@@ -935,14 +997,14 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
     bool result = false;
     const std::vector<std::string> &subElements      = References2D.getSubValues();
     int idx = DrawUtil::getIndexFromName(subElements[0]);
-    TechDrawGeometry::BaseGeom* base = getViewPart()->getProjEdgeByIndex(idx);
-    if( base && base->geomType == TechDrawGeometry::GeomType::ARCOFCIRCLE )  {
-        TechDrawGeometry::AOC* aoc = static_cast<TechDrawGeometry::AOC*> (base);
+    TechDraw::BaseGeom* base = getViewPart()->getGeomByIndex(idx);
+    if( base && base->geomType == TechDraw::GeomType::ARCOFCIRCLE )  {
+        TechDraw::AOC* aoc = static_cast<TechDraw::AOC*> (base);
         if (aoc->intersectsArc(s,pointOnCircle)) {
             result = true;
         }
-    } else if( base && base->geomType == TechDrawGeometry::GeomType::BSPLINE )  {
-        TechDrawGeometry::BSpline* spline = static_cast<TechDrawGeometry::BSpline*> (base);
+    } else if( base && base->geomType == TechDraw::GeomType::BSPLINE )  {
+        TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*> (base);
         if (spline->isCircle()) {
             if (spline->intersectsArc(s,pointOnCircle)) {
                 result = true;
@@ -1071,6 +1133,28 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
     }
     
     return Base::Tools::toStdString(formatSpec);
+}
+
+//! is refName a target of this Dim (2D references)
+bool DrawViewDimension::references(std::string refName) const
+{
+    Base::Console().Message("DVD::references(%s) - %s\n",refName.c_str(),getNameInDocument());
+    bool result = false;
+    const std::vector<App::DocumentObject*> &objects = References2D.getValues();
+    if (!objects.empty()) {
+        const std::vector<std::string> &subElements = References2D.getSubValues();
+        if (!subElements.empty()) {
+            for (auto& s: subElements) {
+                if (!s.empty()) { 
+                    if (s == refName) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return result;
 }
 
 PyObject *DrawViewDimension::getPyObject(void)

@@ -129,7 +129,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="319"/>
       <source>Displacement</source>
-      <translation>Tonelaxe</translation>
+      <translation>Desprazamento</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>

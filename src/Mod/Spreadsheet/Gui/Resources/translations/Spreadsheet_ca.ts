@@ -147,8 +147,8 @@
       <translation>Fusiona les cel·les</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Fusiona les cel·les seleccionades en el full de càlcul</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Divideix la cel·la</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Divideix les cel·les fusionades anteriorment en el full de càlcul</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Text en negreta</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Estableix el text en negreta en les cel·les seleccionades</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Text en cursiva</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Estableix el text en cursiva en les cel·les seleccionades</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Gris clar</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personalitzat</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

@@ -38,7 +38,7 @@ namespace TechDraw {
 class DrawViewDimension;
 }
 
-namespace TechDrawGeometry {
+namespace TechDraw {
 class BaseGeom;
 class AOC;
 }
@@ -48,6 +48,7 @@ namespace TechDrawGui
 class QGIArrow;
 class QGIDimLines;
 class QGIViewDimension;
+class ViewProviderDimension;
 
 class QGIDatumLabel : public QGraphicsObject
 {
@@ -88,6 +89,10 @@ public:
     QGCustomText* getTolText(void) { return m_tolText; }
     void setTolText(QGCustomText* newTol) { m_tolText = newTol; }
 
+    double getTolAdjust(void);
+    bool hasHover;
+
+
 Q_SIGNALS:
     void dragging(bool);
     void hover(bool state);
@@ -105,13 +110,12 @@ protected:
     QGCustomText* m_dimText;
     QGCustomText* m_tolText;
     int getPrecision(void);
-    double getTolAdjust(void);
     QColor m_colNormal;
     bool m_ctrl;
 
     double posX;
     double posY;
-
+    
 private:
 };
 
@@ -129,14 +133,19 @@ public:
 
     void setViewPartFeature(TechDraw::DrawViewDimension *obj);
     int type() const override { return Type;}
-
-    virtual void drawBorder() override;
-    virtual void updateView(bool update = false) override;
+    virtual QRectF boundingRect() const override;
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = 0 ) override;
+
+    virtual void drawBorder() override;
+    virtual void updateView(bool update = false) override;
     virtual QColor getNormalColor(void) override;
     QString getLabelText(void);
+    void setPrettyPre(void);
+    void setPrettySel(void);
+    void setPrettyNormal(void);
+
 
 public Q_SLOTS:
     void datumLabelDragged(bool ctrl);
@@ -146,7 +155,21 @@ public Q_SLOTS:
     void updateDim(bool obtuse = false);
 
 protected:
+
+    static double getIsoStandardLinePlacement(double labelAngle);
+    static double computeLineAndLabelAngles(Base::Vector2d lineTarget, Base::Vector2d labelCenter,
+                                            double lineLabelDistance, double &lineAngle, double &labelAngle);
+    static bool computeLineRectangleExitPoint(const QRectF &rectangle, Base::Vector2d targetPoint,
+                                              Base::Vector2d &exitPoint);
+
+    Base::Vector2d computeLineOriginPoint(Base::Vector2d lineTarget, double projectedLabelDistance,
+                                          double lineAngle, double labelWidth, double direction) const;
+    Base::Vector2d getIsoJointPoint(Base::Vector2d labelCenter, double width, double dir) const;
+    Base::Vector2d getAsmeJointPoint(Base::Vector2d labelCenter, double width, double dir) const;
+
     void draw() override;
+    void drawRadius(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
+    
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     virtual void setSvgPens(void);
@@ -154,7 +177,7 @@ protected:
     Base::Vector3d findIsoDir(Base::Vector3d ortho);
     Base::Vector3d findIsoExt(Base::Vector3d isoDir);
     QString getPrecision(void);
-
+    
 protected:
     bool hasHover;
     QGIDatumLabel* datumLabel;                                         //dimension text
@@ -164,6 +187,25 @@ protected:
     //QGICMark* centerMark
     double m_lineWidth;
     bool m_obtuse;
+
+private:
+    static const double TextOffsetFudge;
+
+    double getDefaultTextHorizontalOffset(double direction) const;
+    double getDefaultTextVerticalOffset() const;
+    double getDefaultReferenceLineOverhang() const;
+    double getDefaultHorizontalLeaderLength() const;
+
+    static bool angleWithinSector(double testAngle, double startAngle, double endAngle, bool clockwise);
+    static double addAngles(double angle1, double angle2);
+
+    static const int INNER_SECTOR      = 0;
+    static const int OUTER_SECTOR      = 1;
+    static const int OPPOSITE_SECTOR   = 2;
+    static const int COMPLEMENT_SECTOR = 3;
+
+    static int classifyPointToArcPosition(double pointDistance, double pointAngle,
+                   double radius, double startAngle, double endAngle, bool clockwise);
 };
 
 } // namespace MDIViewPageGui

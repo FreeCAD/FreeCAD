@@ -1158,6 +1158,13 @@ Please run the command to repair folds first</source>
       <source>Export AMF files using compression</source>
       <translation>Експорт AMF файлів із стисненням</translation>
     </message>
+    <message>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation type="unfinished">This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
@@ -1294,22 +1301,22 @@ Please run the command to repair folds first</source>
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="368"/>
+      <location filename="../../MeshEditor.cpp" line="376"/>
       <source>Add triangle</source>
       <translation>Додати трикутник</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="369"/>
+      <location filename="../../MeshEditor.cpp" line="377"/>
       <source>Flip normal</source>
       <translation>Відображення по нормалі</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="370"/>
+      <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Clear</source>
       <translation>Очистити</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="385"/>
+      <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Finish</source>
       <translation>Завершити</translation>
     </message>
@@ -1317,7 +1324,7 @@ Please run the command to repair folds first</source>
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="711"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Завершити</translation>
     </message>

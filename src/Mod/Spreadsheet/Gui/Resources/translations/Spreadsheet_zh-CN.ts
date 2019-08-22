@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
+      <translation>竖直居中对齐所选单元格的内容</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>合并单元格</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>在电子表格中所选单元格合并</translation>
+      <source>Merge selected cells</source>
+      <translation>合并所选单元格</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>拆分单元格</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>将电子表格中的以前合并单元格拆分</translation>
+      <source>Split previously merged cells</source>
+      <translation>分割以前合并的单元格</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>粗体文本</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>在选定的单元格设置粗体文本</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>加粗所选单元格内的文本</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>斜体文本</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>在选定的单元格设置斜体文本</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>设置所选单元格内的文本为斜体</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,14 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation type="unfinished">Underline text in selected cells</translation>
+      <translation>所选单元格内的文本设置下划线</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>自定义颜色</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>浅灰色</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>自定义</translation>
+      <source>Custom Color</source>
+      <translation>自定义颜色</translation>
     </message>
   </context>
   <context>

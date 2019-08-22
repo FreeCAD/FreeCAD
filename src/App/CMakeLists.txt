@@ -90,6 +90,7 @@ generate_from_xml(ExtensionPy)
 generate_from_xml(ExtensionContainerPy)
 generate_from_xml(DocumentObjectExtensionPy)
 generate_from_xml(GroupExtensionPy)
+generate_from_xml(LinkBaseExtensionPy)
 generate_from_xml(DocumentObjectGroupPy)
 generate_from_xml(GeoFeaturePy)
 generate_from_xml(GeoFeatureGroupExtensionPy)
@@ -108,6 +109,7 @@ SET(FreeCADApp_XML_SRCS
     ExtensionContainerPy.xml
     DocumentObjectExtensionPy.xml
     GroupExtensionPy.xml
+    LinkBaseExtensionPy.xml
     DocumentObjectGroupPy.xml
     DocumentObjectPy.xml
     GeoFeaturePy.xml
@@ -165,6 +167,8 @@ SET(Document_CPP_SRCS
     MaterialObject.cpp
     MergeDocuments.cpp
     TextDocument.cpp
+    Link.cpp
+    LinkBaseExtensionPyImp.cpp
 )
 
 SET(Document_HPP_SRCS
@@ -203,6 +207,7 @@ SET(Document_HPP_SRCS
     MaterialObject.h
     MergeDocuments.h
     TextDocument.h
+    Link.h
 )
 SET(Document_SRCS
     ${Document_CPP_SRCS}
@@ -288,11 +293,13 @@ add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
 
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
 
+add_dependencies(FreeCADApp fc_version)
+
 SET_BIN_DIR(FreeCADApp FreeCADApp)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADApp
-        RUNTIME DESTINATION bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else(WIN32)

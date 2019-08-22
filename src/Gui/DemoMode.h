@@ -51,8 +51,7 @@ public:
     void reject();
 
 protected Q_SLOTS:
-    void on_playButton_clicked();
-    void on_stopButton_clicked();
+    void on_playButton_toggled(bool);
     void on_fullscreen_toggled(bool);
     void on_timerCheck_toggled(bool);
     void on_speedSlider_valueChanged(int);

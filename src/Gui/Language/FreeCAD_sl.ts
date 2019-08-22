@@ -1245,10 +1245,6 @@ kliknete na levi ali desni gumb in premikate miško gor oz. dol</translation>
       <translation>Omogoči pozdravni zaslon ob zagonu</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Preklopi na zavihek okna s poročilom:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Po zagonu samodejno naloži modul:</translation>
     </message>
@@ -1267,10 +1263,6 @@ kliknete na levi ali desni gumb in premikate miško gor oz. dol</translation>
     <message>
       <source>Size of recent file list</source>
       <translation>Velikost seznama nedavnih datotek</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Slog okna:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1627,6 +1619,53 @@ Navedite drugo mapo.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Zapri</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Poišči ...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Poišči</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Najdi, kar:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Glej</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Skupine</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Imena</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Vrednosti</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Le ujemanje celotnega niza</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Najdi naslednje</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>Ni mogoče najti</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>Ni mogoče najti besedila: %1</translation>
     </message>
   </context>
   <context>
@@ -2723,10 +2762,6 @@ Navedite drugo mapo.</translation>
       <translation>Ukazi gr. up vmesnika</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Beleži ukaze gr. up. vmesnika</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Beleži kot pripombe</translation>
     </message>
@@ -2741,6 +2776,10 @@ Navedite drugo mapo.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Zaženi makre v lokalnem okolju</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Beleži ukaze gr. up. vmesnika</translation>
     </message>
   </context>
   <context>
@@ -2768,10 +2807,6 @@ Navedite drugo mapo.</translation>
     <message>
       <source>Unit</source>
       <translation>Enota</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Uporabniški sistem:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2836,6 +2871,10 @@ Navedite drugo mapo.</translation>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Merski sistem:</translation>
     </message>
   </context>
   <context>
@@ -3880,12 +3919,12 @@ Ali želite shraniti spremembe?</translation>
       <translation>Povlecite po zaslonu z dvema prstoma ali kliknite z desnim miškinim gumbom.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Povlecite po zaslonu z enim prstom ali kliknite z levim miškinim gumbom. V očrtovalniku in drugih načinih urejanja pridržite še tipko Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Uščipnite (na zaslonu dva prsta povlecite skupaj ali narazen), zavrtite miškino kolesce ali na tipkovnici pritisnite Stran ↑/Stran ↓.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4539,12 +4578,12 @@ Ali želite navesti drugo mapo?</translation>
       <translation>Koraki</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Korak vzporednega premikanja: </translation>
+      <source>Translation Increment:</source>
+      <translation>Korak vzporednega premikanja:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Korak sukanja: </translation>
+      <source>Rotation Increment:</source>
+      <translation>Korak sukanja:</translation>
     </message>
   </context>
   <context>

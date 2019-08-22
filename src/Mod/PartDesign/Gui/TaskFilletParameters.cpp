@@ -121,6 +121,7 @@ void TaskFilletParameters::onRefDeleted(void)
     App::DocumentObject* base = pcFillet->Base.getValue();
     std::vector<std::string> refs = pcFillet->Base.getSubValues();
     refs.erase(refs.begin() + ui->listWidgetReferences->currentRow());
+    setupTransaction();
     pcFillet->Base.setValue(base, refs);
     ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
     pcFillet->getDocument()->recomputeFeature(pcFillet);
@@ -130,6 +131,7 @@ void TaskFilletParameters::onLengthChanged(double len)
 {
     clearButtons(none);
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
+    setupTransaction();
     pcFillet->Radius.setValue(len);
     pcFillet->getDocument()->recomputeFeature(pcFillet);
 }

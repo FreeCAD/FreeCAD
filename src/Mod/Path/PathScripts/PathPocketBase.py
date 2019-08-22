@@ -33,13 +33,15 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and implementation for Path pocket operations."
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -51,12 +53,13 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         return PathOp.FeatureBaseFaces | PathOp.FeatureFinishDepth | self.pocketOpFeatures(obj)
 
     def pocketOpFeatures(self, obj):
+        # pylint: disable=unused-argument
         return 0
 
     def initPocketOp(self, obj):
         '''initPocketOp(obj) ... overwrite to initialize subclass.
         Can safely be overwritten by subclass.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def pocketInvertExtraOffset(self):
         '''pocketInvertExtraOffset() ... return True if ExtraOffset's direction is inward.

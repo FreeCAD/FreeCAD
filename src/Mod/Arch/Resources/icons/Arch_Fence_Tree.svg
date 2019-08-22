@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64px"
+   height="64px"
+   id="svg2985"
+   version="1.1"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="Arch_Fence_Tree.svg">
+  <defs
+     id="defs2987">
+    <linearGradient
+       id="linearGradient3794">
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1"
+         offset="0"
+         id="stop3796" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="1"
+         id="stop3798" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3794-8">
+      <stop
+         style="stop-color:#ffb400;stop-opacity:1;"
+         offset="0"
+         id="stop3796-5" />
+      <stop
+         style="stop-color:#ffea00;stop-opacity:1;"
+         offset="1"
+         id="stop3798-8" />
+    </linearGradient>
+    <linearGradient
+       y2="23.848686"
+       x2="62.65237"
+       y1="23.848686"
+       x1="15.184971"
+       gradientTransform="matrix(1.0265568,0,0,0.91490626,-3.236706,-1.8027032)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3886"
+       xlink:href="#linearGradient3794-8"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient3794-1">
+      <stop
+         style="stop-color:#ffb400;stop-opacity:1;"
+         offset="0"
+         id="stop3796-2" />
+      <stop
+         style="stop-color:#ffea00;stop-opacity:1;"
+         offset="1"
+         id="stop3798-2" />
+    </linearGradient>
+    <linearGradient
+       y2="23.848686"
+       x2="62.65237"
+       y1="23.848686"
+       x1="15.184971"
+       gradientTransform="matrix(1.0265568,0,0,0.91490626,-3.236706,-1.8027032)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3886-0"
+       xlink:href="#linearGradient3794-1"
+       inkscape:collect="always" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="7.2080075"
+     inkscape:cx="50.905069"
+     inkscape:cy="22.363535"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2997"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata2990">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[yorikvanhavre]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>Arch_Site_Tree</dc:title>
+        <dc:date>2011-12-06</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Arch/Resources/icons/Arch_Site_Tree.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <g
+       transform="translate(0,-12)"
+       id="g937-3">
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path931-5"
+         d="M 3,55 H 61 V 47 H 3 Z"
+         style="fill:#babdb6;fill-rule:evenodd;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path933-8"
+         d="m 5,49 v 4 h 54 v -4 z"
+         style="fill:none;fill-rule:evenodd;stroke:#eeeeec;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g937"
+       transform="translate(0,2)">
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path931"
+         d="M 3,55 H 61 V 47 H 3 Z"
+         style="fill:#babdb6;fill-rule:evenodd;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path933"
+         d="m 5,49 v 4 h 54 v -4 z"
+         style="fill:none;fill-rule:evenodd;stroke:#eeeeec;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       id="g887"
+       transform="translate(2)">
+      <path
+         sodipodi:nodetypes="cccccc"
+         inkscape:connector-curvature="0"
+         id="path881"
+         d="M 3,61 V 27 l 5,-6 5,6 v 34 z"
+         style="fill:#babdb6;fill-rule:evenodd;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccccc"
+         inkscape:connector-curvature="0"
+         id="path883"
+         d="M 5,59 V 28 l 3,-4 3,4 v 31 z"
+         style="fill:none;fill-rule:evenodd;stroke:#eeeeec;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       transform="translate(46)"
+       id="g887-4">
+      <path
+         sodipodi:nodetypes="cccccc"
+         inkscape:connector-curvature="0"
+         id="path881-4"
+         d="M 3,61 V 27 l 5,-6 5,6 v 34 z"
+         style="fill:#babdb6;fill-rule:evenodd;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccccc"
+         inkscape:connector-curvature="0"
+         id="path883-5"
+         d="M 5,59 V 28 l 3,-4 3,4 v 31 z"
+         style="fill:none;fill-rule:evenodd;stroke:#eeeeec;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       transform="translate(24)"
+       id="g887-4-7">
+      <path
+         sodipodi:nodetypes="cccccc"
+         inkscape:connector-curvature="0"
+         id="path881-4-4"
+         d="M 3,61 V 27 l 5,-6 5,6 v 34 z"
+         style="fill:#babdb6;fill-rule:evenodd;stroke:#2e3436;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccccc"
+         inkscape:connector-curvature="0"
+         id="path883-5-8"
+         d="M 5,59 V 28 l 3,-4 3,4 v 31 z"
+         style="fill:none;fill-rule:evenodd;stroke:#eeeeec;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

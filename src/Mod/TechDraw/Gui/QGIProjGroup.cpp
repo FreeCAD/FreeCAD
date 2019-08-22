@@ -61,7 +61,7 @@ QGIProjGroup::QGIProjGroup()
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFiltersChildEvents(true);
-    borderVisible = false;
+//    setFrameState(false);
 }
 
 TechDraw::DrawProjGroup * QGIProjGroup::getDrawView(void) const
@@ -84,7 +84,7 @@ bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
             switch(event->type()) {
               case QEvent::GraphicsSceneMousePress:
                   // TODO - Perhaps just pass the mouse event on to the anchor somehow?
-                  if (scene()) {
+                  if (scene() && !qAnchor->isSelected()) {
                       scene()->clearSelection();
                       qAnchor->setSelected(true);
                   }

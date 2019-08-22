@@ -47,13 +47,16 @@ def run_analysis(doc, base_name, filepath=''):
     # ATM we only support one solver, search for a frame work solver and run it
     for m in doc.Analysis.Group:
         from femtools.femutils import is_derived_from
-        if is_derived_from(m, "Fem::FemSolverObjectPython") and m.Proxy.Type is not 'Fem::FemSolverCalculixCcxTools':
+        if is_derived_from(m, "Fem::FemSolverObjectPython") \
+                and m.Proxy.Type is not 'Fem::FemSolverCalculixCcxTools':
             solver = m
             break
 
     # we need a file name for the besides dir to work
     save_fc_file = join(filepath, (base_name + '.FCStd'))
-    FreeCAD.Console.PrintMessage('Save FreeCAD file for {} analysis to {}\n.'.format(base_name, save_fc_file))
+    FreeCAD.Console.PrintMessage(
+        'Save FreeCAD file for {} analysis to {}\n.'.format(base_name, save_fc_file)
+    )
     doc.saveAs(save_fc_file)
 
     # get analysis workig dir
@@ -72,6 +75,7 @@ def run_all():
     run_ccx_cantileverfaceload()
     run_ccx_cantilevernodeload()
     run_ccx_cantileverprescribeddisplacement()
+    run_rcwall2d()
 
 
 def run_ccx_cantileverfaceload(solver=None, base_name=None):
@@ -116,6 +120,20 @@ def run_ccx_cantileverprescribeddisplacement(solver=None, base_name=None):
     return doc
 
 
+def run_rcwall2d(solver=None, base_name=None):
+
+    from femexamples.rc_wall_2d import setup_rcwall2d as setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = 'RC_FIB_Wall_2D'
+        if solver is not None:
+            base_name += ('_' + solver)
+    run_analysis(doc, base_name)
+
+    return doc
+
+
 '''
 from femexamples.manager import *
 
@@ -128,5 +146,7 @@ doc = run_ccx_cantileverprescribeddisplacement()
 doc = run_ccx_cantilevernodeload('calculix')
 doc = run_ccx_cantilevernodeload('ccxtools')
 doc = run_ccx_cantilevernodeload('z88')
+
+doc = run_rcwall2d()
 
 '''

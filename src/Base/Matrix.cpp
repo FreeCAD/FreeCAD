@@ -947,3 +947,26 @@ Matrix4D& Matrix4D::Hat(const Vector3d& rV)
 
     return *this;
 }
+
+int Matrix4D::hasScale(double tol) const {
+    // check for uniform scaling
+    //
+    // scaling factors are the column vector length. We use square distance and
+    // ignore the actual scaling signess
+    //
+    if(!tol)
+        tol = 1e-9;
+    double dx = Vector3d(dMtrx4D[0][0],dMtrx4D[1][0],dMtrx4D[2][0]).Sqr();
+    double dy = Vector3d(dMtrx4D[0][1],dMtrx4D[1][1],dMtrx4D[2][1]).Sqr();
+    if(fabs(dx-dy)>tol)
+        return -1;
+    else {
+        double dz = Vector3d(dMtrx4D[0][2],dMtrx4D[1][2],dMtrx4D[2][2]).Sqr();
+        if(fabs(dy-dz)>tol)
+            return -1;
+    }
+    if(fabs(dx-1.0)>tol)
+        return 1;
+    else
+        return 0;
+}

@@ -162,7 +162,7 @@
       <translation>Vă rugăm să selectaţi un obiect unic de plasare pentru a obţine orientarea locală.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>Eroare de intrare</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Eșantioane pe nod</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>Eroare de intrare</translation>
     </message>

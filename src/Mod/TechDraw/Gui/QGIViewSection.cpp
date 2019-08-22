@@ -89,7 +89,7 @@ void QGIViewSection::drawSectionFace()
         return;
     }
 
-    std::vector<TechDrawGeometry::Face *>::iterator fit = sectionFaces.begin();
+    std::vector<TechDraw::Face *>::iterator fit = sectionFaces.begin();
     QColor faceColor = (sectionVp->CutSurfaceColor.getValue()).asValue<QColor>();
     int i = 0;
     for(; fit != sectionFaces.end(); fit++, i++) {
@@ -144,20 +144,22 @@ void QGIViewSection::drawSectionFace()
 
 void QGIViewSection::updateView(bool update)
 {
+    Q_UNUSED(update);
     auto viewPart( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
     if( viewPart == nullptr ) {
         return;
     }
 
-    if(update ||
-       viewPart->SectionNormal.isTouched() ||
-       viewPart->SectionOrigin.isTouched()) {
-        QGIViewPart::updateView(true);
-        drawSectionFace();
-    } else {
-        QGIViewPart::updateView();
-        drawSectionFace();
-    }
+//    if(update ||
+//       viewPart->SectionNormal.isTouched() ||
+//       viewPart->SectionOrigin.isTouched()) {
+////        QGIViewPart::updateView(true);
+////        drawSectionFace();
+//    } else {
+////        QGIViewPart::updateView();
+////        drawSectionFace();
+//    }
+    draw();
 }
 
 void QGIViewSection::drawSectionLine(TechDraw::DrawViewSection* s, bool b)

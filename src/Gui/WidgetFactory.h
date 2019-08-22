@@ -56,6 +56,7 @@ public:
       and the Python wrapper takes ownership of it.
      */
     Py::Object fromQIcon(const QIcon*);
+    QIcon *toQIcon(PyObject *pyobj);
     static void createChildrenNameAttributes(PyObject* root, QObject* object);
     static void setParent(PyObject* pyWdg, QObject* parent);
 };

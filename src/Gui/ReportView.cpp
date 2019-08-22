@@ -29,6 +29,8 @@
 # include <QContextMenuEvent>
 # include <QTextCursor>
 # include <QTextStream>
+# include <QDockWidget>
+# include <QPointer>
 #endif
 
 #include <Base/Interpreter.h>
@@ -37,6 +39,8 @@
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
 #include "BitmapFactory.h"
+#include "MainWindow.h"
+#include "Application.h"
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -226,6 +230,54 @@ private:
 
 // ----------------------------------------------------------
 
+/**
+ * The ReportOutputObserver class is used to check if messages sent to the
+ * report view are warnings or errors, and if so and if the user has not
+ * disabled this in preferences, the report view is toggled on so the
+ * user always gets the warnings/errors
+ */
+
+ReportOutputObserver::ReportOutputObserver(ReportOutput *report)
+{
+    this->reportView = report;
+}
+
+bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::User && obj == reportView.data()) {
+        CustomReportEvent* cr = dynamic_cast<CustomReportEvent*>(event);
+        if (cr) {
+            ReportHighlighter::Paragraph msgType = cr->messageType();
+            if (msgType == ReportHighlighter::Error || msgType == ReportHighlighter::Warning){
+                ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
+
+                if (group->GetBool("checkShowReportViewOnWarningOrError", true)) {
+                    // get the QDockWidget parent of the report view
+                    QDockWidget* dw = nullptr;
+                    QWidget* par = reportView->parentWidget();
+                    while (par) {
+                        dw = qobject_cast<QDockWidget*>(par);
+                        if (dw)
+                            break;
+                        par = par->parentWidget();
+                    }
+
+                    if (dw && !dw->toggleViewAction()->isChecked()) {
+                        dw->toggleViewAction()->activate(QAction::Trigger);
+                    }
+                }
+            }
+        }
+        return false;  //true would prevent the messages reaching the report view
+    }
+
+    // standard event processing
+    return QObject::eventFilter(obj, event);
+}
+
+// ----------------------------------------------------------
+
 class ReportOutput::Data
 {
 public:
@@ -301,6 +353,12 @@ ReportOutput::ReportOutput(QWidget* parent)
     _prefs->Attach(this);
     _prefs->Notify("FontSize");
 
+#ifdef FC_DEBUG
+    messageSize = _prefs->GetInt("LogMessageSize",0);
+#else
+    messageSize = _prefs->GetInt("LogMessageSize",2048);
+#endif
+
     // scroll to bottom at startup to make sure that last appended text is visible
     ensureCursorVisible();
 }
@@ -347,11 +405,13 @@ void ReportOutput::Error  (const char * s)
 void ReportOutput::Log (const char * s)
 {
     QString msg = QString::fromUtf8(s);
-    if (msg.length() < 1000){
-        // Send the event to itself to allow thread-safety. Qt will delete it when done.
-        CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::LogText, msg);
-        QApplication::postEvent(this, ev);
+    if(messageSize>0 && msg.size()>messageSize) {
+        msg.truncate(messageSize);
+        msg += QString::fromLatin1("...\n");
     }
+    // Send the event to itself to allow thread-safety. Qt will delete it when done.
+    CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::LogText, msg);
+    QApplication::postEvent(this, ev);
 }
 
 void ReportOutput::customEvent ( QEvent* ev )
@@ -470,6 +530,10 @@ void ReportOutput::onToggleError()
     getWindowParameter()->SetBool( "checkError", bErr );
 }
 
+void ReportOutput::onToggleShowReportViewOnWarningOrError(){
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarningOrError", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnWarningOrError", !show);
+}
 void ReportOutput::onToggleWarning()
 {
     bWrn = bWrn ? false : true;
@@ -570,6 +634,12 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
         bool checked = rclGrp.GetBool(sReason, true);
         if (checked != d->redirected_stderr)
             onToggleRedirectPythonStderr();
+    }else if(strcmp(sReason, "LogMessageSize") == 0) {
+#ifdef FC_DEBUG
+        messageSize = rclGrp.GetInt(sReason,0);
+#else
+        messageSize = rclGrp.GetInt(sReason,2048);
+#endif
     }
 }
 

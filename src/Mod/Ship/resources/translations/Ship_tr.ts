@@ -129,7 +129,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="319"/>
       <source>Displacement</source>
-      <translation>Yerdeğiştirme</translation>
+      <translation>Yer Değişimi</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>
@@ -555,7 +555,7 @@
     <message>
       <location filename="../../ShipGui.py" line="182"/>
       <source>Create a new load condition spreadsheet</source>
-      <translation>Yeni bir yük durumu elektronik tablosu oluşturun</translation>
+      <translation>Yeni bir yükleme koşulu hesap tablosu oluşturun</translation>
     </message>
   </context>
   <context>

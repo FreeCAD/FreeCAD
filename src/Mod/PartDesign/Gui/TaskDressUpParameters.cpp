@@ -27,6 +27,7 @@
 # include <QListWidgetItem>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include "TaskDressUpParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
@@ -41,6 +42,8 @@
 #include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
+
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -58,12 +61,22 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     , allowEdges(selectEdges)
 {
     selectionMode = none;
+    showObject();
 }
 
 TaskDressUpParameters::~TaskDressUpParameters()
 {
     // make sure to remove selection gate in all cases
     Gui::Selection().rmvSelectionGate();
+}
+
+void TaskDressUpParameters::setupTransaction() {
+    int tid = 0;
+    const char *name = App::GetApplication().getActiveTransaction(&tid);
+    std::string n("Edit ");
+    n += DressUpView->getObject()->Label.getValue();
+    if(!name || n != name)
+        App::GetApplication().setActiveTransaction(n.c_str());
 }
 
 bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
@@ -98,6 +111,7 @@ bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
                 return false;
         }
         DressUpView->highlightReferences(false);
+        setupTransaction();
         pcDressUp->Base.setValue(base, refs);        
         pcDressUp->getDocument()->recomputeFeature(pcDressUp);
 
@@ -152,22 +166,19 @@ void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const 
 
 void TaskDressUpParameters::hideObject()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
     App::DocumentObject* base = getBase();
-    if (doc != NULL && base != NULL) {
-        doc->setHide(DressUpView->getObject()->getNameInDocument());
-        doc->setShow(base->getNameInDocument());
+    if(base) {
+        DressUpView->getObject()->Visibility.setValue(false);
+        base->Visibility.setValue(true);
     }
 }
 
 void TaskDressUpParameters::showObject()
 {
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    DressUpView->getObject()->Visibility.setValue(true);
     App::DocumentObject* base = getBase();
-    if (doc != NULL && base != NULL) {
-        doc->setShow(DressUpView->getObject()->getNameInDocument());
-        doc->setHide(base->getNameInDocument());
-    }
+    if (base) 
+        base->Visibility.setValue(false);
 }
 
 Part::Feature* TaskDressUpParameters::getBase(void) const
@@ -209,19 +220,23 @@ TaskDlgDressUpParameters::~TaskDlgDressUpParameters()
 
 bool TaskDlgDressUpParameters::accept()
 {
-    std::string name = vp->getObject()->getNameInDocument();
     getDressUpView()->highlightReferences(false);
 
     std::vector<std::string> refs = parameter->getReferences();
     std::stringstream str;
-    str << "App.ActiveDocument." << name.c_str() << ".Base = (App.ActiveDocument."
-        << parameter->getBase()->getNameInDocument() << ",[";
+    str << Gui::Command::getObjectCmd(vp->getObject()) << ".Base = (" 
+        << Gui::Command::getObjectCmd(parameter->getBase()) << ",[";
     for (std::vector<std::string>::const_iterator it = refs.begin(); it != refs.end(); ++it)
         str << "\"" << *it << "\",";
     str << "])";
     Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
-
     return TaskDlgFeatureParameters::accept();
+}
+
+bool TaskDlgDressUpParameters::reject()
+{
+    getDressUpView()->highlightReferences(false);
+    return TaskDlgFeatureParameters::reject();
 }
 
 #include "moc_TaskDressUpParameters.cpp"

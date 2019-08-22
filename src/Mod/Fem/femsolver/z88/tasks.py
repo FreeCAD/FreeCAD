@@ -31,14 +31,15 @@ import subprocess
 import os.path
 
 import FreeCAD
-if FreeCAD.GuiUp:
-    from PySide import QtGui
 import femtools.femutils as femutils
 import feminout.importZ88O2Results as importZ88O2Results
 
 from .. import run
 from .. import settings
 from . import writer
+
+if FreeCAD.GuiUp:
+    from PySide import QtGui
 
 
 class Check(run.Check):
@@ -91,7 +92,8 @@ class Solve(run.Solve):
     def run(self):
         # AFAIK: z88r needs to be run twice, once in test mode and once in real solve mode
         # the subprocess was just copied, it seems to work :-)
-        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values, may be compared with the used ones
+        # TODO: search out for "Vektor GS" and "Vektor KOI" and print values
+        # may be compared with the used ones
         self.pushStatus("Executing test solver...\n")
         binary = settings.get_binary("Z88")
         self._process = subprocess.Popen(
@@ -100,7 +102,7 @@ class Solve(run.Solve):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
         self.signalAbort.add(self._process.terminate)
-        output = self._observeSolver(self._process)
+        # output = self._observeSolver(self._process)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)
 
@@ -112,12 +114,12 @@ class Solve(run.Solve):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
         self.signalAbort.add(self._process.terminate)
-        output = self._observeSolver(self._process)
+        # output = self._observeSolver(self._process)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)
         # if not self.aborted:
         #     self._updateOutput(output)
-        del output   # get flake8 quiet
+        # del output   # get flake8 quiet
 
 
 class Results(run.Results):
@@ -159,22 +161,39 @@ class _Container(object):
             self.mesh = mesh
         else:
             if FreeCAD.GuiUp:
-                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+                QtGui.QMessageBox.critical(
+                    None,
+                    "Missing prerequisite",
+                    message
+                )
             raise Exception(message + '\n')
 
         # get member, empty lists are not supported by z88
-        self.materials_linear = self.get_several_member('Fem::Material')
+        # materials
+        self.materials_linear = self.get_several_member(
+            'Fem::Material'
+        )
         self.materials_nonlinear = []
 
-        self.beam_sections = self.get_several_member('Fem::FemElementGeometry1D')
+        # geometries
+        self.beam_sections = self.get_several_member(
+            'Fem::FemElementGeometry1D'
+        )
         self.beam_rotations = []
         self.fluid_sections = []
-        self.shell_thicknesses = self.get_several_member('Fem::FemElementGeometry2D')
+        self.shell_thicknesses = self.get_several_member(
+            'Fem::FemElementGeometry2D'
+        )
 
+        # constraints
         self.constraints_contact = []
         self.constraints_displacement = []
-        self.constraints_fixed = self.get_several_member('Fem::ConstraintFixed')
-        self.constraints_force = self.get_several_member('Fem::ConstraintForce')
+        self.constraints_fixed = self.get_several_member(
+            'Fem::ConstraintFixed'
+        )
+        self.constraints_force = self.get_several_member(
+            'Fem::ConstraintForce'
+        )
         self.constraints_heatflux = []
         self.constraints_initialtemperature = []
         self.constraints_pressure = []

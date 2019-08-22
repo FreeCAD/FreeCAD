@@ -996,8 +996,7 @@
   </g>
   <g
      style="font-size:4px;text-anchor:start;fill:#000000;font-family:osifont"
-     id="titleblock-text-editable"
-     xml:space="preserve">
+     id="titleblock-text-editable">
     <!-- transform="translate(0,4)"> -->
     <text
        sodipodi:linespacing="125%"
@@ -1048,7 +1047,6 @@
          y="241.26292"
          style="font-size:8px"><tspan>TITLE</tspan></text>
     <text
-       xml:space="preserve"
        sodipodi:linespacing="125%"
        freecad:editable="Subtitle"
          sodipodi:role="line"

@@ -162,7 +162,7 @@
       <translation>Vui lòng chọn một đối tượng vị trí duy nhất để nhận định hướng cục bộ.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Các mẫu trên mỗi nút</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation type="unfinished">Input error</translation>
     </message>

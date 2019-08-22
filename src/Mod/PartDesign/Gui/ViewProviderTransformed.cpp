@@ -57,6 +57,7 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
+#include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
 using namespace PartDesignGui;
 
@@ -68,6 +69,21 @@ void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, c
     act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromStdString(featureName)), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
+
+Gui::ViewProvider *ViewProviderTransformed::startEditing(int ModNum) {
+    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    if(!pcTransformed->Originals.getSize()) {
+        for(auto obj : pcTransformed->getInList()) {
+            if(obj->isDerivedFrom(PartDesign::MultiTransform::getClassTypeId())) {
+                auto vp = Gui::Application::Instance->getViewProvider(obj);
+                if(vp)
+                    return vp->startEditing(ModNum);
+                return 0;
+            }
+        }
+    }
+    return ViewProvider::startEditing(ModNum);
 }
 
 bool ViewProviderTransformed::setEdit(int ModNum)
@@ -107,7 +123,7 @@ bool ViewProviderTransformed::setEdit(int ModNum)
     pcRejectedRoot->addChild(rejectedNormb); // NOTE: The code relies on the last child added here being index 6
     pcRoot->addChild(pcRejectedRoot);
 
-    recomputeFeature();
+    recomputeFeature(false);
 
     return ViewProvider::setEdit(ModNum);
 }
@@ -119,12 +135,12 @@ void ViewProviderTransformed::unsetEdit(int ModNum)
     while (pcRejectedRoot->getNumChildren() > 7) {
         SoSeparator* sep = static_cast<SoSeparator*>(pcRejectedRoot->getChild(7));
         SoMultipleCopy* rejectedTrfms = static_cast<SoMultipleCopy*>(sep->getChild(2));
-        rejectedTrfms   ->removeAllChildren();
+        Gui::coinRemoveAllChildren(rejectedTrfms);
         sep->removeChild(1);
         sep->removeChild(0);
         pcRejectedRoot  ->removeChild(7);
     }
-    pcRejectedRoot->removeAllChildren();
+    Gui::coinRemoveAllChildren(pcRejectedRoot);
 
     pcRoot->removeChild(pcRejectedRoot);
 
@@ -136,12 +152,12 @@ bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
     return ViewProvider::onDelete(s);
 }
 
-void ViewProviderTransformed::recomputeFeature(void)
+void ViewProviderTransformed::recomputeFeature(bool recompute)
 {
     PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    pcTransformed->getDocument()->recomputeFeature(pcTransformed);
-    const std::vector<App::DocumentObjectExecReturn*> log = pcTransformed->getDocument()->getRecomputeLog();
-    PartDesign::Transformed::rejectedMap rejected_trsf = pcTransformed->getRejectedTransformations();
+    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
+        pcTransformed->recomputeFeature(true);
+    const PartDesign::Transformed::rejectedMap &rejected_trsf = pcTransformed->getRejectedTransformations();
     unsigned rejected = 0;
     for (PartDesign::Transformed::rejectedMap::const_iterator r = rejected_trsf.begin(); r != rejected_trsf.end(); r++)
         rejected += r->second.size();
@@ -155,20 +171,22 @@ void ViewProviderTransformed::recomputeFeature(void)
             msg = msg.arg(rejected);
         }
     }
-    if (log.size() > 0) {
+    auto error = pcTransformed->getDocument()->getErrorDescription(pcTransformed);
+    if (error) {
         msg = msg.arg(QString::fromLatin1("<font color='red'>%1<br/></font>"));
-        msg = msg.arg(QString::fromStdString(log.back()->Why));
+        msg = msg.arg(QString::fromUtf8(error));
     } else {
         msg = msg.arg(QString::fromLatin1("<font color='green'>%1<br/></font>"));
         msg = msg.arg(QObject::tr("Transformation succeeded"));
     }
+    diagMessage = msg;
     signalDiagnosis(msg);
 
     // Clear all the rejected stuff
     while (pcRejectedRoot->getNumChildren() > 7) {
         SoSeparator* sep = static_cast<SoSeparator*>(pcRejectedRoot->getChild(7));
         SoMultipleCopy* rejectedTrfms = static_cast<SoMultipleCopy*>(sep->getChild(2));
-        rejectedTrfms   ->removeAllChildren();
+        Gui::coinRemoveAllChildren(rejectedTrfms);
         sep->removeChild(1);
         sep->removeChild(0);
         pcRejectedRoot  ->removeChild(7);

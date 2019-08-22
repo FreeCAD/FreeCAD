@@ -30,7 +30,7 @@
     <message>
       <location filename="../../Command.cpp" line="1454"/>
       <source>Boundings info...</source>
-      <translation type="unfinished">Boundings info...</translation>
+      <translation>Selectiekader info...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1455"/>
@@ -49,13 +49,13 @@
     <message>
       <location filename="../../Command.cpp" line="1495"/>
       <source>Regular solid...</source>
-      <translation type="unfinished">Regular solid...</translation>
+      <translation>Regelmatige vaste vorm...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1496"/>
       <location filename="../../Command.cpp" line="1498"/>
       <source>Builds a regular solid</source>
-      <translation type="unfinished">Builds a regular solid</translation>
+      <translation>Bouwt regelmatige vaste vorm op</translation>
     </message>
   </context>
   <context>
@@ -68,7 +68,7 @@
     <message>
       <location filename="../../Command.cpp" line="130"/>
       <source>Interactive demolding direction</source>
-      <translation type="unfinished">Interactive demolding direction</translation>
+      <translation>Interactieve vervormingsrichting</translation>
     </message>
   </context>
   <context>
@@ -113,13 +113,13 @@
     <message>
       <location filename="../../Command.cpp" line="1287"/>
       <source>Check solid mesh</source>
-      <translation type="unfinished">Check solid mesh</translation>
+      <translation>Controleer vast maaswerk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1288"/>
       <location filename="../../Command.cpp" line="1290"/>
       <source>Checks whether the mesh is a solid</source>
-      <translation type="unfinished">Checks whether the mesh is a solid</translation>
+      <translation>Controleert of het maaswerk een vaste vorm is</translation>
     </message>
   </context>
   <context>
@@ -132,13 +132,13 @@
     <message>
       <location filename="../../Command.cpp" line="1116"/>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>Evalueer en repareer maaswerk...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1117"/>
       <location filename="../../Command.cpp" line="1119"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation type="unfinished">Opens a dialog to analyze and repair a mesh</translation>
+      <translation>Opent een venster voor analyse en reparatie van een maaswerk</translation>
     </message>
   </context>
   <context>
@@ -227,13 +227,13 @@
     <message>
       <location filename="../../Command.cpp" line="558"/>
       <source>Create mesh from geometry...</source>
-      <translation type="unfinished">Create mesh from geometry...</translation>
+      <translation>Genereer maaswerk vanuit geometrie...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="559"/>
       <location filename="../../Command.cpp" line="561"/>
       <source>Create mesh from the selected geometry</source>
-      <translation type="unfinished">Create mesh from the selected geometry</translation>
+      <translation>Genereer maaswerk vanuit geselecteerde vorm</translation>
     </message>
   </context>
   <context>
@@ -320,7 +320,7 @@
     <message>
       <location filename="../../Command.cpp" line="1671"/>
       <source>Merges selected meshes into one</source>
-      <translation type="unfinished">Merges selected meshes into one</translation>
+      <translation>Voegt geselecteerde maaswerken samen tot één enkele</translation>
     </message>
   </context>
   <context>
@@ -415,7 +415,7 @@
       <location filename="../../Command.cpp" line="946"/>
       <location filename="../../Command.cpp" line="948"/>
       <source>Trims a mesh with a picked polygon</source>
-      <translation type="unfinished">Trims a mesh with a picked polygon</translation>
+      <translation>Snijdt een maaswerk met een geselecteerde veelhoek</translation>
     </message>
   </context>
   <context>
@@ -453,7 +453,7 @@
       <location filename="../../Command.cpp" line="1201"/>
       <location filename="../../Command.cpp" line="1203"/>
       <source>Remove topologic independent components from the mesh</source>
-      <translation type="unfinished">Remove topologic independent components from the mesh</translation>
+      <translation>Ruimtelijk onafhankelijke onderdelen van het maaswerk verwijderen</translation>
     </message>
   </context>
   <context>
@@ -471,7 +471,7 @@
     <message>
       <location filename="../../Command.cpp" line="1713"/>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Geselecteerde maaswerken schalen</translation>
     </message>
   </context>
   <context>
@@ -484,13 +484,13 @@
     <message>
       <location filename="../../Command.cpp" line="1033"/>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Genereer doorsnede van maaswerk en vlak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1034"/>
       <location filename="../../Command.cpp" line="1035"/>
       <source>Section from mesh and plane</source>
-      <translation type="unfinished">Section from mesh and plane</translation>
+      <translation>Doorsnede van maaswerk en vlak</translation>
     </message>
   </context>
   <context>
@@ -503,7 +503,7 @@
     <message>
       <location filename="../../Command.cpp" line="1600"/>
       <source>Create mesh segments...</source>
-      <translation type="unfinished">Create mesh segments...</translation>
+      <translation>Genereer maaswerk-segmenten...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1601"/>
@@ -522,13 +522,13 @@
     <message>
       <location filename="../../Command.cpp" line="1635"/>
       <source>Create mesh segments from best-fit surfaces...</source>
-      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+      <translation>Genereer maaswerk-segmenten uit meest passende oppervlakken...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <location filename="../../Command.cpp" line="1638"/>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
+      <translation>Genereer maaswerk-segmenten uit meest passende oppervlakken</translation>
     </message>
   </context>
   <context>
@@ -560,7 +560,7 @@
     <message>
       <location filename="../../Command.cpp" line="169"/>
       <source>Segment by tool mesh</source>
-      <translation type="unfinished">Segment by tool mesh</translation>
+      <translation>Segmenteer met behulp van maaswerk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="170"/>
@@ -598,13 +598,13 @@
     <message>
       <location filename="../../Command.cpp" line="1005"/>
       <source>Trim mesh with a plane</source>
-      <translation type="unfinished">Trim mesh with a plane</translation>
+      <translation>Maaswerk bijsnijden met een vlak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1006"/>
       <location filename="../../Command.cpp" line="1007"/>
       <source>Trims a mesh with a plane</source>
-      <translation type="unfinished">Trims a mesh with a plane</translation>
+      <translation>Snijdt een maaswerk bij met een vlak</translation>
     </message>
   </context>
   <context>
@@ -636,7 +636,7 @@
       <location filename="../../Command.cpp" line="643"/>
       <location filename="../../Command.cpp" line="645"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation type="unfinished">Calculates the curvature of the vertices of a mesh</translation>
+      <translation>Berekent de kromming van de hoekpunten binnen een maaswerk</translation>
     </message>
   </context>
   <context>
@@ -1159,6 +1159,13 @@ Please run the command to repair folds first</source>
       <source>Export AMF files using compression</source>
       <translation type="unfinished">Export AMF files using compression</translation>
     </message>
+    <message>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation type="unfinished">This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
@@ -1294,22 +1301,22 @@ Please run the command to repair folds first</source>
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="368"/>
+      <location filename="../../MeshEditor.cpp" line="376"/>
       <source>Add triangle</source>
       <translation>Driehoek toevoegen</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="369"/>
+      <location filename="../../MeshEditor.cpp" line="377"/>
       <source>Flip normal</source>
       <translation>Normaal spiegelen</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="370"/>
+      <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Clear</source>
       <translation>Wissen</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="385"/>
+      <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Finish</source>
       <translation>Voltooien</translation>
     </message>
@@ -1317,7 +1324,7 @@ Please run the command to repair folds first</source>
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="711"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Voltooien</translation>
     </message>

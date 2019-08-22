@@ -24,8 +24,25 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # ifdef FC_OS_LINUX
-#	  include <unistd.h>
+#  include <unistd.h>
 # endif
+# include <Bnd_Box.hxx>
+# include <BndLib_Add3dCurve.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <GCPnts_UniformDeflection.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <gp_Pln.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <Geom_Curve.hxx>
+# include <Geom_Plane.hxx>
+# include <BRep_Tool.hxx>
+# include <GeomAPI_IntCS.hxx>
+# include <Standard_Failure.hxx>
 #endif
 
 
@@ -36,24 +53,22 @@
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Iterator.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
+#include <Mod/Mesh/App/Core/Projection.h>
+#include <Mod/Mesh/App/Core/Grid.h>
 #include <Mod/Mesh/App/Mesh.h>
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
 
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <Geom_Curve.hxx>
-#include <Geom_Plane.hxx>
-#include <BRep_Tool.hxx>
-#include <GeomAPI_IntCS.hxx>
 
 using namespace MeshPart;
-using namespace MeshCore;
-
-
-
+using MeshCore::MeshKernel;
+using MeshCore::MeshFacetIterator;
+using MeshCore::MeshPointIterator;
+using MeshCore::MeshAlgorithm;
+using MeshCore::MeshFacetGrid;
+using MeshCore::MeshFacet;
 
 CurveProjector::CurveProjector(const TopoDS_Shape &aShape, const MeshKernel &pMesh)
 : _Shape(aShape), _Mesh(pMesh)
@@ -665,7 +680,489 @@ void CurveProjectorWithToolMesh::makeToolMesh( const TopoDS_Edge& aEdge,std::vec
     lp = (*It2).p;
     ln = (*It2).n;
   }
+}
 
+// ----------------------------------------------------------------------------
 
+MeshProjection::MeshProjection(const MeshKernel& rMesh)
+  : _rcMesh(rMesh)
+{
+}
 
+MeshProjection::~MeshProjection()
+{
+}
+
+void MeshProjection::discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vector3f>& polyline, std::size_t minPoints) const
+{
+    BRepAdaptor_Curve clCurve(aEdge);
+
+    Standard_Real fFirst = clCurve.FirstParameter();
+    Standard_Real fLast  = clCurve.LastParameter();
+
+    GCPnts_UniformDeflection clDefl(clCurve, 0.01f, fFirst, fLast);
+    if (clDefl.IsDone() == Standard_True) {
+        Standard_Integer nNbPoints = clDefl.NbPoints();
+        for (Standard_Integer i = 1; i <= nNbPoints; i++) {
+            gp_Pnt gpPt = clCurve.Value(clDefl.Parameter(i));
+            polyline.push_back( Base::Vector3f( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() ) );
+        }
+    }
+
+    if (polyline.size() < minPoints) {
+        GCPnts_UniformAbscissa clAbsc(clCurve, static_cast<Standard_Integer>(minPoints), fFirst, fLast);
+        if (clAbsc.IsDone() == Standard_True) {
+            polyline.clear();
+            Standard_Integer nNbPoints = clAbsc.NbPoints();
+            for (Standard_Integer i = 1; i <= nNbPoints; i++) {
+                gp_Pnt gpPt = clCurve.Value(clAbsc.Parameter(i));
+                polyline.push_back( Base::Vector3f( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() ) );
+            }
+        }
+    }
+}
+
+void MeshProjection::splitMeshByShape ( const TopoDS_Shape &aShape, float fMaxDist ) const
+{
+    std::vector<PolyLine> rPolyLines;
+    projectToMesh( aShape, fMaxDist, rPolyLines );
+
+    std::ofstream str("output.asc", std::ios::out | std::ios::binary);
+    str.precision(4);
+    str.setf(std::ios::fixed | std::ios::showpoint);
+    for (std::vector<PolyLine>::const_iterator it = rPolyLines.begin();it!=rPolyLines.end();++it) {
+        for (std::vector<Base::Vector3f>::const_iterator jt = it->points.begin();jt != it->points.end();++jt)
+            str << jt->x << " " << jt->y << " " << jt->z << std::endl;
+    }
+    str.close();
+}
+
+bool MeshProjection::findIntersection(const Edge& edgeSegm, const Edge& meshEdge,
+                                      const Base::Vector3f& dir, Base::Vector3f& res) const
+{
+    Base::Vector3f planeNormal;
+    planeNormal = dir.Cross(edgeSegm.cPt2 - edgeSegm.cPt1);
+    float dist1 = planeNormal.Dot(meshEdge.cPt1 - edgeSegm.cPt1);
+    float dist2 = planeNormal.Dot(meshEdge.cPt2 - edgeSegm.cPt1);
+    if (dist1 * dist2 < 0) {
+        planeNormal = dir.Cross(meshEdge.cPt2 - meshEdge.cPt1);
+        dist1 = planeNormal.Dot(edgeSegm.cPt1 - meshEdge.cPt1);
+        dist2 = planeNormal.Dot(edgeSegm.cPt2 - meshEdge.cPt1);
+        if (dist1 * dist2 < 0) {
+            // intersection detected
+            float t = planeNormal.Dot(meshEdge.cPt1 - edgeSegm.cPt1) /
+                      planeNormal.Dot(edgeSegm.cPt2 - edgeSegm.cPt1);
+            res = edgeSegm.cPt1 * (1-t) + edgeSegm.cPt2 * t;
+            return true;
+        }
+    }
+    return false;
+}
+
+void MeshProjection::findSectionParameters(const TopoDS_Edge& edge, const Base::Vector3f& dir, std::set<double>& parameters) const
+{
+    MeshAlgorithm clAlg( _rcMesh );
+    float fAvgLen = clAlg.GetAverageEdgeLength();
+    BRepAdaptor_Curve adapt(edge);
+    double edgeLen = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
+
+    std::vector<Base::Vector3f> polyline;
+    discretize(edge, polyline, std::max<size_t>(10, static_cast<size_t>(edgeLen/fAvgLen)));
+    if (polyline.empty())
+        return;
+
+    std::vector<Edge> lines;
+    Base::Vector3f start = polyline.front();
+    for (auto it = polyline.begin()+1; it != polyline.end(); ++it) {
+        Edge line;
+        line.cPt1 = start;
+        line.cPt2 = *it;
+        start = line.cPt2;
+        lines.push_back(line);
+    }
+
+    const MeshCore::MeshFacetArray& facets = _rcMesh.GetFacets();
+    const MeshCore::MeshPointArray& points = _rcMesh.GetPoints();
+
+    Base::Vector3f res;
+    for (auto it : facets) {
+        for (int i=0; i<3; i++) {
+            Base::Vector3f pt1 = points[it._aulPoints[i]];
+            Base::Vector3f pt2 = points[it._aulPoints[(i+1)%3]];
+            Edge line;
+            line.cPt1 = pt1;
+            line.cPt2 = pt2;
+
+            for (auto jt : lines) {
+                if (findIntersection(jt, line, dir, res)) {
+                    try {
+                        BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(res.x,res.y,res.z));
+                        BRepExtrema_DistShapeShape extss(aBuilder.Vertex(), edge);
+                        if (extss.NbSolution() == 1) {
+                            Standard_Real par;
+                            //gp_pnt pnt = extss.PointOnShape2(1);
+                            //Standard_Real par = BRep_Tool::Parameter(aBuilder.Vertex(), edge);
+                            extss.ParOnEdgeS2(1, par);
+                            parameters.insert(par);
+                            break;
+                        }
+                    }
+                    catch (const Standard_Failure&) {
+                        // ignore
+                    }
+                }
+            }
+        }
+    }
+}
+
+void MeshProjection::projectToMesh (const TopoDS_Shape &aShape, float fMaxDist, std::vector<PolyLine>& rPolyLines) const
+{
+    // calculate the average edge length and create a grid
+    MeshAlgorithm clAlg( _rcMesh );
+    float fAvgLen = clAlg.GetAverageEdgeLength();
+    MeshFacetGrid cGrid( _rcMesh, 5.0f*fAvgLen );
+
+    TopExp_Explorer Ex;
+
+    int iCnt=0;
+    for (Ex.Init(aShape, TopAbs_EDGE); Ex.More(); Ex.Next())
+        iCnt++;
+
+    Base::SequencerLauncher seq( "Project curve on mesh", iCnt );
+
+    for (Ex.Init(aShape, TopAbs_EDGE); Ex.More(); Ex.Next()) {
+        const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
+        std::vector<SplitEdge> rSplitEdges;
+        projectEdgeToEdge(aEdge, fMaxDist, cGrid, rSplitEdges);
+        PolyLine polyline;
+        polyline.points.reserve(rSplitEdges.size());
+        for (auto it : rSplitEdges)
+            polyline.points.push_back(it.cPt);
+        rPolyLines.push_back(polyline);
+        seq.next();
+    }
+}
+
+void MeshProjection::projectOnMesh(const std::vector<Base::Vector3f>& pointsIn,
+                                   const Base::Vector3f& dir,
+                                   float tolerance,
+                                   std::vector<Base::Vector3f>& pointsOut) const
+{
+    // calculate the average edge length and create a grid
+    MeshAlgorithm clAlg(_rcMesh);
+    float fAvgLen = clAlg.GetAverageEdgeLength();
+    MeshFacetGrid cGrid(_rcMesh, 5.0f*fAvgLen);
+
+    // get all boundary points and edges of the mesh
+    std::vector<Base::Vector3f> boundaryPoints;
+    std::vector<MeshCore::MeshGeomEdge> boundaryEdges;
+
+    const MeshCore::MeshFacetArray& facets = _rcMesh.GetFacets();
+    const MeshCore::MeshPointArray& points = _rcMesh.GetPoints();
+    for (auto it : facets) {
+        for (int i=0; i<3; i++) {
+            if (!it.HasNeighbour(i)) {
+                boundaryPoints.push_back(points[it._aulPoints[i]]);
+
+                MeshCore::MeshGeomEdge edge;
+                edge._bBorder = true;
+                edge._aclPoints[0] = points[it._aulPoints[i]];
+                edge._aclPoints[1] = points[it._aulPoints[(i+1)%3]];
+                boundaryEdges.push_back(edge);
+            }
+        }
+    }
+
+    Base::SequencerLauncher seq( "Project points on mesh", pointsIn.size() );
+
+    for (auto it : pointsIn) {
+        Base::Vector3f result;
+        unsigned long index;
+        if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
+            MeshCore::MeshGeomFacet geomFacet = _rcMesh.GetFacet(index);
+            if (tolerance > 0 && geomFacet.IntersectPlaneWithLine(it, dir, result)) {
+                if (geomFacet.IsPointOfFace(result, tolerance))
+                    pointsOut.push_back(result);
+            }
+            else {
+                pointsOut.push_back(result);
+            }
+        }
+        else {
+            // go through the boundary points and check if the point can be directly projected
+            // onto one of them
+            auto boundaryPnt = std::find_if(boundaryPoints.begin(), boundaryPoints.end(),
+                                            [&it, &dir](const Base::Vector3f& pnt)->bool {
+                Base::Vector3f vec = pnt - it;
+                float angle = vec.GetAngle(dir);
+                return angle < 1e-6f;
+            });
+
+            if (boundaryPnt != boundaryPoints.end()) {
+                pointsOut.push_back(*boundaryPnt);
+            }
+            else {
+                // go through the boundary edges and check if the point can be directly projected
+                // onto one of them
+                Base::Vector3f result1, result2;
+                for (auto jt : boundaryEdges) {
+                    jt.ClosestPointsToLine(it, dir, result1, result2);
+                    float dot = (result1-jt._aclPoints[0]).Dot(result1-jt._aclPoints[1]);
+                    //float distance = Base::Distance(result1, result2);
+                    Base::Vector3f vec = result1 - it;
+                    float angle = vec.GetAngle(dir);
+                    if (dot <= 0 && angle < 1e-6f) {
+                        pointsOut.push_back(result1);
+                        break;
+                    }
+                }
+            }
+        }
+
+        seq.next();
+    }
+}
+
+void MeshProjection::projectParallelToMesh (const TopoDS_Shape &aShape, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const
+{
+    // calculate the average edge length and create a grid
+    MeshAlgorithm clAlg(_rcMesh);
+    float fAvgLen = clAlg.GetAverageEdgeLength();
+    MeshFacetGrid cGrid(_rcMesh, 5.0f*fAvgLen);
+    TopExp_Explorer Ex;
+
+    int iCnt=0;
+    for (Ex.Init(aShape, TopAbs_EDGE); Ex.More(); Ex.Next())
+        iCnt++;
+
+    Base::SequencerLauncher seq( "Project curve on mesh", iCnt );
+
+    for (Ex.Init(aShape, TopAbs_EDGE); Ex.More(); Ex.Next()) {
+        const TopoDS_Edge& aEdge = TopoDS::Edge(Ex.Current());
+        std::vector<Base::Vector3f> points;
+        discretize(aEdge, points, 5);
+
+        typedef std::pair<Base::Vector3f, unsigned long> HitPoint;
+        std::vector<HitPoint> hitPoints;
+        typedef std::pair<HitPoint, HitPoint> HitPoints;
+        std::vector<HitPoints> hitPointPairs;
+        for (auto it : points) {
+            Base::Vector3f result;
+            unsigned long index;
+            if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
+                hitPoints.push_back(std::make_pair(result, index));
+
+                if (hitPoints.size() > 1) {
+                    HitPoint p1 = hitPoints[hitPoints.size()-2];
+                    HitPoint p2 = hitPoints[hitPoints.size()-1];
+                    hitPointPairs.push_back(std::make_pair(p1, p2));
+                }
+            }
+        }
+
+        MeshCore::MeshProjection meshProjection(_rcMesh);
+        PolyLine polyline;
+        for (auto it : hitPointPairs) {
+            points.clear();
+            if (meshProjection.projectLineOnMesh(cGrid, it.first.first, it.first.second,
+                                                 it.second.first, it.second.second, dir, points)) {
+                polyline.points.insert(polyline.points.end(), points.begin(), points.end());
+            }
+        }
+        rPolyLines.push_back(polyline);
+
+        seq.next();
+    }
+}
+
+void MeshProjection::projectParallelToMesh (const std::vector<PolyLine> &aEdges, const Base::Vector3f& dir, std::vector<PolyLine>& rPolyLines) const
+{
+    // calculate the average edge length and create a grid
+    MeshAlgorithm clAlg(_rcMesh);
+    float fAvgLen = clAlg.GetAverageEdgeLength();
+    MeshFacetGrid cGrid(_rcMesh, 5.0f*fAvgLen);
+
+    Base::SequencerLauncher seq( "Project curve on mesh", aEdges.size() );
+
+    for (auto it : aEdges) {
+        std::vector<Base::Vector3f> points = it.points;
+
+        typedef std::pair<Base::Vector3f, unsigned long> HitPoint;
+        std::vector<HitPoint> hitPoints;
+        typedef std::pair<HitPoint, HitPoint> HitPoints;
+        std::vector<HitPoints> hitPointPairs;
+        for (auto it : points) {
+            Base::Vector3f result;
+            unsigned long index;
+            if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
+                hitPoints.push_back(std::make_pair(result, index));
+
+                if (hitPoints.size() > 1) {
+                    HitPoint p1 = hitPoints[hitPoints.size()-2];
+                    HitPoint p2 = hitPoints[hitPoints.size()-1];
+                    hitPointPairs.push_back(std::make_pair(p1, p2));
+                }
+            }
+        }
+
+        MeshCore::MeshProjection meshProjection(_rcMesh);
+        PolyLine polyline;
+        for (auto it : hitPointPairs) {
+            points.clear();
+            if (meshProjection.projectLineOnMesh(cGrid, it.first.first, it.first.second,
+                                                 it.second.first, it.second.second, dir, points)) {
+                polyline.points.insert(polyline.points.end(), points.begin(), points.end());
+            }
+        }
+        rPolyLines.push_back(polyline);
+
+        seq.next();
+    }
+}
+
+void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist, const MeshFacetGrid& rGrid,
+                                         std::vector<SplitEdge>& rSplitEdges ) const
+{
+    std::vector<unsigned long> auFInds;
+    std::map<std::pair<unsigned long, unsigned long>, std::list<unsigned long> > pEdgeToFace;
+    const std::vector<MeshFacet>& rclFAry = _rcMesh.GetFacets();
+
+    // search the facets in the local area of the curve
+    std::vector<Base::Vector3f> acPolyLine;
+    discretize(aEdge, acPolyLine);
+
+    MeshAlgorithm(_rcMesh).SearchFacetsFromPolyline( acPolyLine, fMaxDist, rGrid, auFInds);
+    // remove duplicated elements
+    std::sort(auFInds.begin(), auFInds.end());
+    auFInds.erase(std::unique(auFInds.begin(), auFInds.end()), auFInds.end());
+
+    // facet to edge
+    for ( std::vector<unsigned long>::iterator pI = auFInds.begin(); pI != auFInds.end(); ++pI ) {
+        const MeshFacet& rF = rclFAry[*pI];
+        for (int i = 0; i < 3; i++) {
+            unsigned long ulPt0 = std::min<unsigned long>(rF._aulPoints[i],  rF._aulPoints[(i+1)%3]);
+            unsigned long ulPt1 = std::max<unsigned long>(rF._aulPoints[i],  rF._aulPoints[(i+1)%3]);
+            pEdgeToFace[std::pair<unsigned long, unsigned long>(ulPt0, ulPt1)].push_front(*pI);
+        }
+    }
+
+    // sort intersection points by parameter
+    std::map<Standard_Real, SplitEdge> rParamSplitEdges;
+
+    BRepAdaptor_Curve clCurve(aEdge);
+    Standard_Real fFirst = clCurve.FirstParameter();
+    Standard_Real fLast  = clCurve.LastParameter();
+    Handle(Geom_Curve) hCurve = BRep_Tool::Curve( aEdge,fFirst,fLast );
+
+    // bounds of curve
+//  Bnd_Box clBB;
+//  BndLib_Add3dCurve::Add( BRepAdaptor_Curve(aEdge), 0.0, clBB );
+
+    MeshPointIterator cPI( _rcMesh );
+    MeshFacetIterator cFI( _rcMesh );
+
+    Base::SequencerLauncher seq( "Project curve on mesh", pEdgeToFace.size() );
+    std::map<std::pair<unsigned long, unsigned long>, std::list<unsigned long> >::iterator it;
+    for ( it = pEdgeToFace.begin(); it != pEdgeToFace.end(); ++it ) {
+        seq.next();
+
+        // edge points
+        unsigned long uE0 = it->first.first;
+        cPI.Set( uE0 );
+        Base::Vector3f cE0 = *cPI;
+        unsigned long uE1 = it->first.second;
+        cPI.Set( uE1 );
+        Base::Vector3f cE1 = *cPI;
+
+        const std::list<unsigned long>& auFaces = it->second;
+        if ( auFaces.size() > 2 )
+            continue; // non-manifold edge -> don't handle this
+//      if ( clBB.IsOut( gp_Pnt(cE0.x, cE0.y, cE0.z) ) && clBB.IsOut( gp_Pnt(cE1.x, cE1.y, cE1.z) ) )
+//          continue;
+
+        Base::Vector3f cEdgeNormal;
+        for ( std::list<unsigned long>::const_iterator itF = auFaces.begin(); itF != auFaces.end(); ++itF ) {
+            cFI.Set( *itF );
+            cEdgeNormal += cFI->GetNormal();
+        }
+
+        // create a plane from the edge normal and point
+        Base::Vector3f cPlaneNormal = cEdgeNormal % (cE1 - cE0);
+        Handle(Geom_Plane) hPlane = new Geom_Plane(gp_Pln(gp_Pnt(cE0.x,cE0.y,cE0.z),
+                                    gp_Dir(cPlaneNormal.x,cPlaneNormal.y,cPlaneNormal.z)));
+
+        // get intersection of curve and plane
+        GeomAPI_IntCS Alg(hCurve,hPlane);
+        if ( Alg.IsDone() ) {
+            Standard_Integer nNbPoints = Alg.NbPoints();
+            if ( nNbPoints == 1 ) {
+                Standard_Real fU, fV, fW;
+                Alg.Parameters( 1, fU, fV, fW);
+
+                gp_Pnt P = Alg.Point(1);
+                Base::Vector3f cP0((float)P.X(), (float)P.Y(), (float)P.Z());
+
+                float l = ( (cP0 - cE0) * (cE1 - cE0) ) / ( (cE1 - cE0) * ( cE1 - cE0) );
+
+                // lies the point inside the edge?
+                if ( l>=0.0f && l<=1.0f ) {
+                    Base::Vector3f cSplitPoint = (1-l) * cE0 + l * cE1;
+                    float fDist = Base::Distance( cP0, cSplitPoint );
+
+                    if ( fDist <= fMaxDist ) {
+                        SplitEdge splitEdge;
+                        splitEdge.uE0 = uE0;
+                        splitEdge.uE1 = uE1;
+                        splitEdge.cPt = cSplitPoint;
+                        rParamSplitEdges[fW] = splitEdge;
+                    }
+                }
+            }
+            // search for the right solution
+            else if ( nNbPoints > 1 ) {
+                int nCntSol=0;
+                Base::Vector3f cSplitPoint;
+                Standard_Real fSol;
+                Base::Vector3f cP0;
+                for ( int j=1; j<=nNbPoints; j++ ) {
+                    Standard_Real fU, fV, fW;
+                    Alg.Parameters( j, fU, fV, fW);
+                    gp_Pnt P = Alg.Point(j);
+                    cP0.Set((float)P.X(), (float)P.Y(), (float)P.Z());
+
+                    float l = ( (cP0 - cE0) * (cE1 - cE0) ) / ( (cE1 - cE0) * ( cE1 - cE0) );
+
+                    // lies the point inside the edge?
+                    if ( l>=0.0 && l<=1.0 ) {
+                        cSplitPoint = (1-l) * cE0 + l * cE1;
+                        float fDist = Base::Distance( cP0, cSplitPoint );
+
+                        if (fDist <= fMaxDist) {
+                            nCntSol++;
+                            fSol = fW;
+                        }
+                    }
+                }
+
+                // ok, only one sensible solution
+                if ( nCntSol == 1 ) {
+                    SplitEdge splitEdge;
+                    splitEdge.uE0 = uE0;
+                    splitEdge.uE1 = uE1;
+                    splitEdge.cPt = cSplitPoint;
+                    rParamSplitEdges[fSol] = splitEdge;
+                }
+                else if ( nCntSol > 1 ) {
+                    Base::Console().Log("More than one possible intersection points\n");
+                }
+            }
+        }
+    }
+
+    // sorted by parameter
+    for (std::map<Standard_Real, SplitEdge>::iterator itS =
+         rParamSplitEdges.begin(); itS != rParamSplitEdges.end(); ++itS) {
+         rSplitEdges.push_back( itS->second );
+    }
 }

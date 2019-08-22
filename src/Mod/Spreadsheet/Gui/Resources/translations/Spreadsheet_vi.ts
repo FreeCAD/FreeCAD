@@ -147,8 +147,8 @@
       <translation>Sát nhập các ô</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Sát nhập các ô được chọn trong cùng một bảng tính</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Chia ô</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Tách các ô được sát nhập trước đó trong bảng tính</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Chữ in đậm</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Đặt kiểu chữ in đậm cho các ô được chọn</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Chữ in nghiêng</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Đặt kiểu chữ in nghiêng cho các ô được chọn</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Xám nhạt</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Tùy chọn</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation type="unfinished">Global Sensitivity:</translation>
+      <translation>Globalna czułość:</translation>
     </message>
   </context>
   <context>
@@ -295,13 +295,12 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation type="unfinished">Press middle+left or middle+right button</translation>
+      <translation>Naciśnij środkowy + lewy lub środkowy + prawy przycisk</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>Przewiń środkowy przycisk myszy, albo trzymaj wciśnięty środkowy przycisk myszy podczas kliknięcia lewym lub prawym klawiszem myszy i porusz myszą w górę lub dół</translation>
     </message>
   </context>
   <context>
@@ -407,7 +406,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>To oprogramowanie używa komponentów typu open source, którego prawa autorskie i inne prawa zastrzeżone należą do ich właścicieli:</translation>
     </message>
     <message>
       <source>License</source>
@@ -855,11 +854,11 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</source>
-      <translation type="unfinished">The shortcut '%1' is defined more than once. This could result in unexpected behaviour.</translation>
+      <translation>Skrót '%1' jest zdefiniowany więcej niż jeden raz. Może to spowodować nieoczekiwane zachowanie.</translation>
     </message>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.</source>
-      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.</translation>
+      <translation>Skrót '%1' jest już przypisany do '%2 '.</translation>
     </message>
     <message>
       <source>Do you want to override it?</source>
@@ -1245,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Włącz ekran powitalny przy uruchamianiu</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Przełącz na kartę okna raportu:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Po uruchomieniu, załaduj automatycznie moduł:</translation>
     </message>
@@ -1267,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Size of recent file list</source>
       <translation>Rozmiar listy ostatnich plików</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Styl okna:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1471,8 +1462,8 @@ Być może odmowa dostępu do pliku?</translation>
     <message>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to duplicate to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Nie można zduplikować do '%1'.
+Możliwy błąd dostępu do pliku?</translation>
     </message>
   </context>
   <context>
@@ -1626,6 +1617,53 @@ Specify another directory, please.</source>
     <message>
       <source>&amp;Close</source>
       <translation>Zamknij</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Znajdź...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Znajdź</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Znajdź co:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation type="unfinished">Look at</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Grupy</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Nazwy</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Wartości</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation type="unfinished">Match whole string only</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Znajdź następny</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>Nie znaleziono</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation type="unfinished">Can't find the text: %1</translation>
     </message>
   </context>
   <context>
@@ -2048,7 +2086,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Show navigation cube</source>
-      <translation type="unfinished">Show navigation cube</translation>
+      <translation>Pokaż kostkę nawigacyjną</translation>
     </message>
     <message>
       <source>Corner</source>
@@ -2072,19 +2110,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+      <translation>Użyj OpenGL VBO (Vertex Buffer Object)</translation>
     </message>
     <message>
       <source>New Document Camera Orientation</source>
-      <translation type="unfinished">New Document Camera Orientation</translation>
+      <translation>Orientacja kamery nowego dokumentu</translation>
     </message>
     <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
+      <translation>Eliminuje obroty widoku podczas gestu przybliżania. Dotyczy tylko nawigacji gestami. Obracanie przy pomocy myszy nie jest blokowane.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
-      <translation type="unfinished">Disable touchscreen tilt gesture</translation>
+      <translation>Wyłącz gest obrotu na ekranie dotykowym</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
@@ -2721,10 +2759,6 @@ Specify another directory, please.</source>
       <translation>Polecenia Gui</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Nagrywanie poleceń GUI</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Zarejestruj jako komentarz</translation>
     </message>
@@ -2739,6 +2773,10 @@ Specify another directory, please.</source>
     <message>
       <source>Run macros in local environment</source>
       <translation>Uruchom makro w środowisku lokalnym</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Nagrywanie poleceń GUI</translation>
     </message>
   </context>
   <context>
@@ -2766,10 +2804,6 @@ Specify another directory, please.</source>
     <message>
       <source>Unit</source>
       <translation>Jednostka</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>System użytkownika:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2801,7 +2835,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation type="unfinished">Minimum fractional inch:</translation>
+      <translation>Minimalny ułamek cala:</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2834,6 +2868,10 @@ Specify another directory, please.</source>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Układ jednostek:</translation>
     </message>
   </context>
   <context>
@@ -2876,7 +2914,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <translation>Ustawia teren obszaru na zbieranie elementów w widoku 3D. Większa wartość ułatwia wybieranie rzeczy, ale uniemożliwi wybór niektórych małych funkcji.</translation>
     </message>
     <message>
       <source>Tree View</source>
@@ -2884,11 +2922,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation type="unfinished">Object being edited</translation>
+      <translation>Edytowany obiekt</translation>
     </message>
     <message>
       <source>Active container</source>
-      <translation type="unfinished">Active container</translation>
+      <translation>Aktywny kontener</translation>
     </message>
   </context>
   <context>
@@ -3000,7 +3038,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Sortuj włączone środowiska&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -3094,7 +3132,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
+      <translation>Po usunięciu wybranych katalogów przejściowych nie będziesz w stanie odzyskać żadnych plików.</translation>
     </message>
   </context>
   <context>
@@ -3461,11 +3499,11 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Apply axial</source>
-      <translation type="unfinished">Apply axial</translation>
+      <translation>Zastosuj wzdłuż osi</translation>
     </message>
     <message>
       <source>Shift click for opposite direction</source>
-      <translation type="unfinished">Shift click for opposite direction</translation>
+      <translation>Naciśnij Shift + Click aby odwrócić kierunek</translation>
     </message>
     <message>
       <source>Selected points</source>
@@ -3473,7 +3511,7 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
     <message>
       <source>Apply incremental changes</source>
-      <translation type="unfinished">Apply incremental changes</translation>
+      <translation>Zastosuj zmiany przyrostowe</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
@@ -3870,19 +3908,19 @@ Do you want to save your changes?</source>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Dotknij lub kliknij lewym przyciskiem myszy.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
+      <translation>Przeciągnij po ekranie dwoma palcami lub kliknij prawym przyciskiem myszy.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4166,26 +4204,26 @@ How do you want to proceed?</source>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Dotknij lub kliknij lewym przyciskiem myszy.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
+      <translation>Przeciągnij po ekranie dwoma palcami lub wciśnij Alt + kliknij prawym przyciskiem myszy.</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Przeciągnij po ekranie jednym palcem lub naciśnij ALT + lewy przycisk myszy. W innych trybach jak np. Sketcher dodatkowo przytrzymaj wciśnięty klawisz Alt.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
+      <translation>Uszczypnięcie (umieść dwa palce na ekranie i przeciągnij je od lub do siebie na wzajem) lub przewijanie środkowym przyciskiem myszy, bądź przyciskami PgUp/PgDown na klawiaturze.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
-      <translation type="unfinished">Download started...</translation>
+      <translation>Rozpoczęto pobieranie...</translation>
     </message>
   </context>
   <context>
@@ -4529,12 +4567,12 @@ Do you want to specify another directory?</source>
       <translation>Przyrosty</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Przyrost Tłumaczenia: </translation>
+      <source>Translation Increment:</source>
+      <translation type="unfinished">Translation Increment:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Przyrost Obrotu: </translation>
+      <source>Rotation Increment:</source>
+      <translation type="unfinished">Rotation Increment:</translation>
     </message>
   </context>
   <context>
@@ -6756,7 +6794,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to dimetric view</source>
-      <translation type="unfinished">Set to dimetric view</translation>
+      <translation>Ustaw widok dimetryczny</translation>
     </message>
   </context>
   <context>
@@ -7056,7 +7094,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to trimetric view</source>
-      <translation type="unfinished">Set to trimetric view</translation>
+      <translation>Ustaw widok anizometryczny</translation>
     </message>
   </context>
   <context>
@@ -7347,11 +7385,11 @@ Be aware the point where you click matters.</source>
     <name>Std_Delete</name>
     <message>
       <source>These items are linked to items selected for deletion and might break.</source>
-      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
+      <translation>Te elementy są połączone z innymi elementami wybranymi do usunięcia i mogą ulec uszkodzeniu.</translation>
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>Te elementy są zaznaczone do usunięcia, ale nie należą do aktywnego dokumencie.</translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
@@ -7359,7 +7397,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation type="unfinished">Delete Selection Issues</translation>
+      <translation>Usuń błędy zaznaczenia</translation>
     </message>
   </context>
   <context>
@@ -7499,11 +7537,11 @@ Do you want to duplicate them, too?</source>
     <name>ViewZoomToFitCmd</name>
     <message>
       <source>Zoom to fit</source>
-      <translation type="unfinished">Zoom to fit</translation>
+      <translation>Przybliż i dopasuj</translation>
     </message>
     <message>
       <source>Zoom so that model fills the view</source>
-      <translation type="unfinished">Zoom so that model fills the view</translation>
+      <translation>Przybliż tak, aby model wypełnił widok</translation>
     </message>
   </context>
   <context>

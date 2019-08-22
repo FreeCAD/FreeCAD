@@ -168,5 +168,5 @@ QIcon ViewProviderPrimitive::getIcon(void) const {
     }
 
     str += QString::fromLatin1(".svg");
-    return mergeTip(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
+    return PartDesignGui::ViewProvider::mergeOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }

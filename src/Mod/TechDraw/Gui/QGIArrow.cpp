@@ -45,10 +45,10 @@ QGIArrow::QGIArrow() :
     m_fill(Qt::SolidPattern),
     m_size(5.0),
     m_style(0),
+    m_flipped(false),
     m_dirMode(false),
     m_dir(Base::Vector3d(1.0,0.0,0.0))
 {
-    isFlipped = false;
     m_brush.setStyle(m_fill);
 
     setCacheMode(QGraphicsItem::NoCache);
@@ -57,37 +57,38 @@ QGIArrow::QGIArrow() :
     setFlag(QGraphicsItem::ItemIsMovable, false);
 }
 
-
-void QGIArrow::flip(bool state) {
-    isFlipped = state;
-}
-
 void QGIArrow::draw() {
     QPainterPath path;
     if (m_style == 0) {
         if (m_dirMode) {
             path = makeFilledTriangle(getDirection(), m_size,m_size/6.0);
         } else {
-            path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);     //"arrow l/w sb 3/1" ??
+            path = makeFilledTriangle(m_size,m_size/6.0,isFlipped());     //"arrow l/w sb 3/1" ??
         }
     } else if (m_style == 1) {
         if (m_dirMode) {
             path = makeOpenArrow(getDirection(), m_size,m_size/3.0);          //broad arrow?
         } else {
-            path = makeOpenArrow(m_size,m_size/3.0,isFlipped);
+            path = makeOpenArrow(m_size,m_size/3.0,isFlipped());
         }
     } else if (m_style == 2) {
         if (m_dirMode) {
             path = makeHashMark(getDirection(), m_size/2.0,m_size/2.0);       //big enough?
         } else {
-            path = makeHashMark(m_size/2.0,m_size/2.0,isFlipped);       //big enough?
+            path = makeHashMark(m_size/2.0,m_size/2.0,isFlipped());       //big enough?
         }
     } else if (m_style == 3) {
-        path = makeDot(m_size/2.0,m_size/2.0,isFlipped);
+        path = makeDot(m_size/2.0,m_size/2.0,isFlipped());
     } else if (m_style == 4) {
-        path = makeOpenDot(m_size/2.0,m_size/2.0,isFlipped);
+        path = makeOpenDot(m_size/2.0,m_size/2.0,isFlipped());
+    } else if (m_style == 5) {
+        if (m_dirMode) {
+            path = makeForkArrow(getDirection(), m_size/2.0,m_size/2.0);       //big enough?
+        } else {
+            path = makeForkArrow(m_size/2.0,m_size/2.0,isFlipped());       //big enough?
+        }
     } else {
-        path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);     //sb a question mark or ???
+        path = makeFilledTriangle(m_size,m_size/6.0,isFlipped());     //sb a question mark or ???
     }
     setPath(path);
 }
@@ -185,10 +186,12 @@ QPainterPath QGIArrow::makeHashMark(Base::Vector3d dir, double length, double wi
 {
     double adjWidth = 1.0;
     Base::Vector3d negDir = -dir;
+    Base::Vector3d normDir = dir;
     negDir.Normalize();
+    normDir.Normalize();
     Base::Vector3d perp(-negDir.y,negDir.x, 0.0);
     Base::Vector3d barb1 = negDir * length - perp * (adjWidth * width);
-    Base::Vector3d barb2 = dir * length + perp * (adjWidth * width);
+    Base::Vector3d barb2 = normDir * length + perp * (adjWidth * width);
     
     QPainterPath path;
     path.moveTo(QPointF(Rez::guiX(barb1.x),Rez::guiX(barb1.y)));
@@ -217,6 +220,41 @@ QPainterPath QGIArrow::makeOpenDot(double length, double width, bool flipped)
     return path;
 }
 
+QPainterPath QGIArrow::makeForkArrow(double length, double width, bool flipped)
+{
+//(0,0) is tip of arrow
+    if (flipped) {
+        length *= -1;
+    }
+
+    QPainterPath path;
+    path.moveTo(QPointF(Rez::guiX(length),Rez::guiX(-width)));
+    path.lineTo(QPointF(0.,0.));
+    path.lineTo(QPointF(Rez::guiX(length),Rez::guiX(width)));
+    m_fill = Qt::NoBrush;
+    return path;
+}
+
+QPainterPath QGIArrow::makeForkArrow(Base::Vector3d dir, double length, double width)
+{
+//(0,0) is tip of arrow
+    Base::Vector3d negDir = -dir;
+    Base::Vector3d normDir = dir;
+    negDir.Normalize();
+    normDir.Normalize();
+    Base::Vector3d perp(-normDir.y,normDir.x, 0.0);
+    Base::Vector3d barb1 = normDir * length + perp * width;
+    Base::Vector3d barb2 = normDir * length - perp * width;
+    
+    QPainterPath path;
+    path.moveTo(QPointF(Rez::guiX(barb1.x),Rez::guiX(barb1.y)));
+    path.lineTo(QPointF(0.,0.));
+    path.lineTo(QPointF(Rez::guiX(barb2.x),Rez::guiX(barb2.y)));
+    m_fill = Qt::NoBrush;
+    return path;
+}
+
+
 
 int QGIArrow::getPrefArrowStyle()
 {
@@ -234,7 +272,39 @@ double QGIArrow::getPrefArrowSize()
     return style;
 }
 
-
+double QGIArrow::getOverlapAdjust(int style, double size)
+{
+    // adjustment required depends on arrow size and type! :(
+    // ex for fork and tick, adjustment sb zero. 0.25 is good for filled triangle, 0.1 for open arrow.
+    // open circle sb = radius
+    // NOTE: this may need to be adjusted to account for line thickness too.
+//    Base::Console().Message("QGIA::getOverlapAdjust(%d, %.3f) \n",style, size);
+    double result = 1.0;
+    switch(style) {
+        case 0:         //filled triangle
+            result = 0.50 * size;
+            break;
+        case 1:         //open arrow
+            result = 0.10 * size;
+            break;
+        case 2:         //hash mark
+            result = 0.0;
+            break;
+        case 3:         //dot
+            result = 0.0;
+            break;
+        case 4:         //open circle
+                        //diameter is size/2 so radius is size/4
+            result = 0.25 * size;
+            break;
+        case 5:         //fork
+            result = 0.0;
+            break;
+        default:        //unknown
+            result = 1.0;
+    }
+    return result;
+}
 
 void QGIArrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

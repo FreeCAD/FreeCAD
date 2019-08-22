@@ -22,6 +22,9 @@
    </property>
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBox_6">
+     <property name="toolTip">
+      <string>This preferences dialog will be shown when importing/ exporting DXF files</string>
+     </property>
      <property name="text">
       <string>Show this dialog when importing and exporting</string>
      </property>
@@ -36,7 +39,8 @@
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBox_4">
      <property name="toolTip">
-      <string>If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</string>
+      <string>Python importer is used, otherwise the newer C++ one.
+The C++ importer is faster, but has not as many features yet.</string>
      </property>
      <property name="text">
       <string>Use legacy python importer</string>
@@ -76,7 +80,10 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By checking this, you will allow FreeCAD to download and update the&lt;/p&gt;&lt;p&gt;components needed for DXF import and export. You can also do that&lt;/p&gt;&lt;p&gt;manually, by visiting https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Allow FreeCAD to download the Python converter for DXF import and export.
+You can also do that manually, by visiting
+https://github.com/yorikvanhavre/Draft-dxf-importer
+</string>
           </property>
           <property name="text">
            <string>Allow FreeCAD to automatically download and update the DXF libraries</string>
@@ -125,7 +132,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
           <property name="toolTip">
-           <string>If this is unchecked, texts/mtexts won't be imported</string>
+           <string>If unchecked, texts and mtexts won't be imported</string>
           </property>
           <property name="text">
            <string>texts and dimensions</string>
@@ -140,6 +147,9 @@
         </item>
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
+          <property name="toolTip">
+           <string>If unchecked, points won't be imported</string>
+          </property>
           <property name="text">
            <string>points</string>
           </property>
@@ -154,7 +164,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
           <property name="toolTip">
-           <string>If this is checked, paper space objects will be imported too</string>
+           <string>If checked, paper space objects will be imported too</string>
           </property>
           <property name="text">
            <string>layouts</string>
@@ -170,7 +180,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
           <property name="toolTip">
-           <string>Check this if you want the non-named blocks (beginning with a *) to be imported too</string>
+           <string>If you want the non-named blocks (beginning with a *) to be imported too</string>
           </property>
           <property name="text">
            <string>*blocks</string>
@@ -197,7 +207,7 @@
         <item>
          <widget class="Gui::PrefRadioButton" name="radioButton">
           <property name="toolTip">
-           <string>If this is checked, only standard Part objects will be created (fastest)</string>
+           <string>Only standard Part objects will be created (fastest)</string>
           </property>
           <property name="text">
            <string>simple Part shapes</string>
@@ -216,7 +226,7 @@
         <item>
          <widget class="Gui::PrefRadioButton" name="radioButton_2">
           <property name="toolTip">
-           <string>If this is checked, parametric Draft objects will be created whenever possible</string>
+           <string>Parametric Draft objects will be created whenever possible</string>
           </property>
           <property name="text">
            <string>Draft objects</string>
@@ -232,7 +242,7 @@
         <item>
          <widget class="Gui::PrefRadioButton" name="radioButton_3">
           <property name="toolTip">
-           <string>If this is checked, sketches will be created whenever possible</string>
+           <string>Sketches will be created whenever possible</string>
           </property>
           <property name="text">
            <string>Sketches</string>
@@ -277,7 +287,8 @@
           <property name="toolTip">
            <string>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
-Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches: 25.4, in feet: 304.8</string>
+Example: for files in millimeters: 1, in centimeters: 10,
+                             in meters: 1000, in inches: 25.4, in feet: 304.8</string>
           </property>
           <property name="decimals">
            <number>4</number>
@@ -303,7 +314,8 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_2">
           <property name="toolTip">
-           <string>If this is checked, colors will be retrieved from the DXF objects whenever possible. Otherwise default colors will be applied.</string>
+           <string>Colors will be retrieved from the DXF objects whenever possible.
+Otherwise default colors will be applied. </string>
           </property>
           <property name="text">
            <string>Get original colors from the DXF file</string>
@@ -323,7 +335,8 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_9">
           <property name="toolTip">
-           <string>If checked, FreeCAD will try to join coincident objects into wires. Beware, this can take a while...</string>
+           <string>FreeCAD will try to join coincident objects into wires.
+Note that this can take a while!</string>
           </property>
           <property name="text">
            <string>Join geometry</string>
@@ -343,7 +356,8 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
           <property name="toolTip">
-           <string>If this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</string>
+           <string>Objects from the same layers will be joined into Draft Blocks,
+turning the display faster, but making them less easily editable </string>
           </property>
           <property name="text">
            <string>Group layers into blocks</string>
@@ -363,7 +377,8 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_8">
           <property name="toolTip">
-           <string>If this is checked, imported texts will get the standard Draft text size, instead of the size they have in the DXF document</string>
+           <string>Imported texts will get the standard Draft Text size,
+instead of the size they have in the DXF document</string>
           </property>
           <property name="text">
            <string>Use standard font size for texts</string>
@@ -386,7 +401,10 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
            <string>If this is checked, DXF layers will be imported as Draft VisGroups</string>
           </property>
           <property name="text">
-           <string>Use VisGroups</string>
+           <string>Use Layers</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxfUseDraftVisGroups</cstring>
@@ -403,7 +421,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
           <property name="toolTip">
-           <string>If this is checked, hatches will be converted into simple wires</string>
+           <string>Hatches will be converted into simple wires</string>
           </property>
           <property name="text">
            <string>Import hatch boundaries as wires</string>
@@ -423,7 +441,8 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_11">
           <property name="toolTip">
-           <string>If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</string>
+           <string>If polylines have a width defined, they will be rendered
+as closed wires with correct width</string>
           </property>
           <property name="text">
            <string>Render polylines with width</string>
@@ -485,7 +504,8 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
           <property name="toolTip">
-           <string>When exporting splines to DXF, they are transformed in polylines. This value is the maximum length of each of the polyline segments. If 0, then the whole spline is treated as a straight segment.</string>
+           <string>Maximum length of each of the polyline segments.
+If it is set to '0' the whole spline is treated as a straight segment.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -523,7 +543,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
           <property name="toolTip">
-           <string>If this is checked, all objects containing faces will be exported as 3d polyfaces</string>
+           <string>All objects containing faces will be exported as 3D polyfaces</string>
           </property>
           <property name="text">
            <string>Export 3D objects as polyface meshes</string>
@@ -543,7 +563,8 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_5">
           <property name="toolTip">
-           <string>If this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</string>
+           <string>Drawing Views will be exported as blocks.
+This might fail for post DXF R12 templates.</string>
           </property>
           <property name="text">
            <string>Export Drawing Views as blocks</string>
@@ -566,7 +587,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_12">
           <property name="toolTip">
-           <string>If this is checked, the exported objects will be projected to reflect the current view direction</string>
+           <string>Exported objects will be projected to reflect the current view direction</string>
           </property>
           <property name="text">
            <string>Project exported objects along current view direction</string>

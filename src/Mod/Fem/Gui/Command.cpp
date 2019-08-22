@@ -27,11 +27,15 @@
 # include <QApplication>
 # include <QMessageBox>
 # include <QAction>
-#endif
 
-#include <Inventor/nodes/SoEventCallback.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoEventCallback.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
+
+# include <SMESH_Mesh.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMDSAbs_ElementType.hxx>
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -50,10 +54,6 @@
 #include <Gui/Utilities.h>
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
-
-#include <SMESH_Mesh.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDSAbs_ElementType.hxx>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Fem/App/FemMeshObject.h>
@@ -306,7 +306,7 @@ void CmdFemConstraintBearing::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintBearing");
+    std::string FeatName = getUniqueObjectName("ConstraintBearing");
 
     openCommand("Make FEM constraint for bearing");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintBearing\",\"%s\")",FeatName.c_str());
@@ -347,7 +347,7 @@ void CmdFemConstraintContact::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintContact");
+    std::string FeatName = getUniqueObjectName("ConstraintContact");
 
     openCommand("Make FEM constraint contact on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintContact\",\"%s\")",FeatName.c_str());
@@ -392,7 +392,7 @@ void CmdFemConstraintDisplacement::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintDisplacement");
+    std::string FeatName = getUniqueObjectName("ConstraintDisplacement");
 
     openCommand("Make FEM constraint displacement on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintDisplacement\",\"%s\")",FeatName.c_str());
@@ -435,7 +435,7 @@ void CmdFemConstraintFixed::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintFixed");
+    std::string FeatName = getUniqueObjectName("ConstraintFixed");
 
     openCommand("Make FEM constraint fixed geometry");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFixed\",\"%s\")",FeatName.c_str());
@@ -477,7 +477,7 @@ void CmdFemConstraintFluidBoundary::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FluidBoundary");
+    std::string FeatName = getUniqueObjectName("ConstraintFluidBoundary");
 
     openCommand("Create fluid boundary condition");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintFluidBoundary\",\"%s\")",FeatName.c_str());
@@ -520,7 +520,7 @@ void CmdFemConstraintForce::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintForce");
+    std::string FeatName = getUniqueObjectName("ConstraintForce");
 
     openCommand("Make FEM constraint force on geometry");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")",FeatName.c_str());
@@ -563,7 +563,7 @@ void CmdFemConstraintGear::activated(int)
 
     if(getConstraintPrerequisits(&Analysis))
         return;
-    std::string FeatName = getUniqueObjectName("FemConstraintGear");
+    std::string FeatName = getUniqueObjectName("ConstraintGear");
 
     openCommand("Make FEM constraint for gear");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintGear\",\"%s\")",FeatName.c_str());
@@ -605,7 +605,7 @@ void CmdFemConstraintHeatflux::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintHeatflux");
+    std::string FeatName = getUniqueObjectName("ConstraintHeatflux");
 
     openCommand("Make FEM constraint heatflux on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintHeatflux\",\"%s\")",FeatName.c_str());
@@ -650,7 +650,7 @@ void CmdFemConstraintInitialTemperature::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintInitialTemperature");
+    std::string FeatName = getUniqueObjectName("ConstraintInitialTemperature");
 
     openCommand("Make FEM constraint initial temperature on body");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintInitialTemperature\",\"%s\")",FeatName.c_str());
@@ -693,7 +693,7 @@ void CmdFemConstraintPlaneRotation::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintPlaneRotation");
+    std::string FeatName = getUniqueObjectName("ConstraintPlaneRotation");
 
     openCommand("Make FEM constraint Plane Rotation face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPlaneRotation\",\"%s\")",FeatName.c_str());
@@ -735,7 +735,7 @@ void CmdFemConstraintPressure::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintPressure");
+    std::string FeatName = getUniqueObjectName("ConstraintPressure");
 
     openCommand("Make FEM constraint pressure on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPressure\",\"%s\")",FeatName.c_str());
@@ -780,7 +780,7 @@ void CmdFemConstraintPulley::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintPulley");
+    std::string FeatName = getUniqueObjectName("ConstraintPulley");
 
     openCommand("Make FEM constraint for pulley");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintPulley\",\"%s\")",FeatName.c_str());
@@ -826,7 +826,7 @@ void CmdFemConstraintTemperature::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintTemperature");
+    std::string FeatName = getUniqueObjectName("ConstraintTemperature");
 
     openCommand("Make FEM constraint temperature on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTemperature\",\"%s\")",FeatName.c_str());
@@ -869,7 +869,7 @@ void CmdFemConstraintTransform::activated(int)
     if(getConstraintPrerequisits(&Analysis))
         return;
 
-    std::string FeatName = getUniqueObjectName("FemConstraintTransform");
+    std::string FeatName = getUniqueObjectName("ConstraintTransform");
 
     openCommand("Make FEM constraint transform on face");
     doCommand(Doc,"App.activeDocument().addObject(\"Fem::ConstraintTransform\",\"%s\")",FeatName.c_str());
@@ -1324,11 +1324,21 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
     if (DataAlongLineFilter.match()) {
         Fem::FemPostDataAlongLineFilter* DataAlongLine = static_cast<Fem::FemPostDataAlongLineFilter*>(DataAlongLineFilter.Result[0][0].getObject());
         std::string FieldName = DataAlongLine->PlotData.getValue();
-        if  ((FieldName == "Max shear stress (Tresca)") || (FieldName == "Maximum Principal stress") || (FieldName == "Minimum Principal stress") || (FieldName == "Von Mises stress")) {
-             doCommand(Gui::Command::Doc,"t_coords = App.ActiveDocument.DataAlongLine.XAxisData");
-             doCommand(Gui::Command::Doc,"sValues = App.ActiveDocument.DataAlongLine.YAxisData");
-             doCommand(Gui::Command::Doc, Plot().c_str());
-        } else {
+        if  (
+                (FieldName == "Tresca Stress")
+                || (FieldName == "von Mises Stress")
+                || (FieldName == "Major Principal Stress")
+                || (FieldName == "Intermediate Principal Stress")
+                || (FieldName == "Minor Principal Stress")
+                // names need to match with names in FemVTKTools.cpp, this is not failsafe, but ATM there is no better way for test on a stress result in vtk pipeline
+       ){
+                // TODO FIXME only works if the data along the line object has the name DataAlongLine
+                // we should get the selected data along the line object 
+                doCommand(Gui::Command::Doc,"t_coords = App.ActiveDocument.DataAlongLine.XAxisData");
+                doCommand(Gui::Command::Doc,"sValues = App.ActiveDocument.DataAlongLine.YAxisData");
+                doCommand(Gui::Command::Doc, Plot().c_str());
+        } 
+        else {
                 QMessageBox::warning(Gui::getMainWindow(),
                     qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
                     qApp->translate("CmdFemPostLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
@@ -1625,7 +1635,7 @@ void CmdFemPostPipelineFromResult::activated(int)
 
     std::vector<Fem::FemResultObject*> results = getSelection().getObjectsOfType<Fem::FemResultObject>();
     if (results.size() == 1) {
-        std::string FeatName = getUniqueObjectName("Pipeline");
+        std::string FeatName = getUniqueObjectName("ResultPipeline");
         openCommand("Create pipeline from result");
         doCommand(Doc,"App.activeDocument().addObject('Fem::FemPostPipeline','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().ActiveObject.load("

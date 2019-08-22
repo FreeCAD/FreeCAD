@@ -52,6 +52,14 @@ public:
     //@}
 };
 
+/// Same as Part::Compound, except it marks the Shape as transient, and rebuild it during restore
+class Compound2 : public Compound {
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Compound2);
+public:
+    Compound2();
+    virtual void onDocumentRestored() override;
+};
+
 } //namespace Part
 
 

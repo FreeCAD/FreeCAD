@@ -23,8 +23,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
-import Path
 import PathScripts.PathStock as PathStock
 
 from PathTests.PathTestUtils import PathTestBase

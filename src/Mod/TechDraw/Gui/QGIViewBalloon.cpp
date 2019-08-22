@@ -48,10 +48,12 @@
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <string>
 
 #include <Mod/Part/App/PartFeature.h>
 
+#include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -68,6 +70,7 @@
 #include "QGIViewDimension.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
+#include "TaskBalloon.h"
 
 #define PI  3.14159
 
@@ -75,6 +78,12 @@
 
 using namespace TechDraw;
 using namespace TechDrawGui;
+
+void QGIBalloonLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
+{
+    Gui::Control().showDialog(new TaskDlgBalloon(parent));
+    QGraphicsItem::mouseDoubleClickEvent(event);
+}
 
 //**************************************************************
 QGIViewBalloon::QGIViewBalloon() :
@@ -85,7 +94,9 @@ QGIViewBalloon::QGIViewBalloon() :
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setCacheMode(QGraphicsItem::NoCache);
 
-    balloonLabel = new QGIDatumLabel();
+    balloonLabel = new QGIBalloonLabel();
+    balloonLabel->parent = this;
+
     addToGroup(balloonLabel);
     balloonLabel->setColor(getNormalColor());
     balloonLabel->setPrettyNormal();
@@ -130,78 +141,55 @@ QGIViewBalloon::QGIViewBalloon() :
         balloonLabel, SIGNAL(hover(bool)),
         this  , SLOT  (hover(bool)));
 
-    toggleBorder(false);
+//    toggleBorder(false);
     setZValue(ZVALUE::DIMENSION);                    //note: this won't paint dimensions over another View if it stacks
                                                      //above this Dimension's parent view.   need Layers?
 
 }
 
-void QGIViewBalloon::disconnect(void)
+void QGIViewBalloon::placeBalloon(QPointF pos)
 {
-    auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
-    if (m_parent) {
-        m_parent->signalSelectPoint.disconnect(bnd);
-    }
-}
 
-void QGIViewBalloon::connect(QGIView *parent)
-{
-    auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
-    parent->signalSelectPoint.connect(bnd);
-    m_parent = parent;
-}
-
-void QGIViewBalloon::parentViewMousePressed(QGIView *view, QPointF pos)
-{
-    //Base::Console().Message("%s::parentViewMousePressed from %s\n", this->getViewName(), view->getViewName());
-    onAttachPointPicked(view, pos);
-}
-
-void QGIViewBalloon::onAttachPointPicked(QGIView *view, QPointF pos)
-{
-    Q_UNUSED(view);
     auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
-    if( balloon == nullptr )
+    if( balloon == nullptr ) {
         return;
+    }
 
+    DrawView* balloonParent = nullptr;
+    App::DocumentObject* docObj = balloon->sourceView.getValue();
+    if (docObj == nullptr) {
+        return;
+    } else {
+        balloonParent = dynamic_cast<DrawView*>(docObj);
+    }
+    
+    auto featPage = balloonParent->findParentPage();
+    if (featPage == nullptr) {
+        return;
+    }
+    
     auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
     if ( vp == nullptr ) {
         return;
     }
 
-    auto bnd = boost::bind(&QGIViewBalloon::parentViewMousePressed, this, _1, _2);
+        balloon->OriginX.setValue(mapFromScene(pos).x());
+        balloon->OriginY.setValue(mapFromScene(pos).y());
 
-    if (balloon->OriginIsSet.getValue() == false) {
-   
-        balloon->OriginX.setValue(pos.x());
-        balloon->OriginY.setValue(pos.y());
-        balloon->OriginIsSet.setValue(true);
+        int idx = featPage->getNextBalloonIndex();
+        QString labelText = QString::number(idx);
+        balloon->Text.setValue(std::to_string(idx).c_str());
+     
+        QFont font = balloonLabel->getFont();
+        font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
+        font.setFamily(QString::fromUtf8(vp->Font.getValue()));
+        balloonLabel->setFont(font);
+        prepareGeometryChange();
 
-        m_parent->signalSelectPoint.disconnect(bnd);
-
-        MDIViewPage* mdi = getMDIViewPage();
-        QGVPage* page;
-        if (mdi != nullptr) {
-            page = mdi->getQGVPage();
-
-            page->balloonPlacing(false);
-
-            QString labelText = QString::fromUtf8(std::to_string(page->balloonIndex).c_str());
-            balloon->Text.setValue(std::to_string(page->balloonIndex++).c_str());
-
-            QFont font = balloonLabel->getFont();
-            font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
-            font.setFamily(QString::fromUtf8(vp->Font.getValue()));
-            balloonLabel->setFont(font);
-            prepareGeometryChange();
-
-            // Default label position
-            balloonLabel->setPosFromCenter(pos.x() + 200, pos.y() -200);
-            balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
-
-            QApplication::setOverrideCursor(Qt::ArrowCursor);
-        }
-    }
+        // Default label position
+        balloonLabel->setPosFromCenter(mapFromScene(pos).x() + 200, mapFromScene(pos).y() -200);
+        balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
+//    }
 
     draw();
 }
@@ -274,11 +262,8 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
         return;
     }
 
-    if (balloon->OriginIsSet.getValue() == false)
-        return;
-
     QFont font = balloonLabel->getFont();
-    font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
+    font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
     balloonLabel->setFont(font);
 
@@ -335,10 +320,6 @@ void QGIViewBalloon::draw_modifier(bool modifier)
        (!balloon->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()))) {
         balloonLabel->hide();
         hide();
-        return;
-    }
-
-    if (balloon->OriginIsSet.getValue() == false) {
         return;
     }
 

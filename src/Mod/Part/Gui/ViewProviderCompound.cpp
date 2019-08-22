@@ -72,6 +72,24 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             (prop)->getValues();
         Part::Compound* objComp = static_cast<Part::Compound*>(getObject());
         std::vector<App::DocumentObject*> sources = objComp->Links.getValues();
+
+        if (hist.size() != sources.size()) {
+            // avoid duplicates without changing the order
+            // See also Compound::execute
+            std::set<App::DocumentObject*> tempSources;
+            std::vector<App::DocumentObject*> filter;
+            for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it) {
+                Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+                if (objBase) {
+                    auto pos = tempSources.insert(objBase);
+                    if (pos.second) {
+                        filter.push_back(objBase);
+                    }
+                }
+            }
+
+            sources = filter;
+        }
         if (hist.size() != sources.size())
             return;
 
@@ -84,7 +102,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
-            Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            Part::Feature* objBase = dynamic_cast<Part::Feature*>(Part::Feature::getShapeOwner(*it));
             if (!objBase)
                 continue;
 
@@ -156,10 +174,3 @@ void ViewProviderCompound::dropObject(App::DocumentObject* obj)
     pComp->Links.setValues(pShapes);
 }
 
-void ViewProviderCompound::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
-{
-    Part::Compound* pBool = static_cast<Part::Compound*>(getObject());
-    std::vector<App::DocumentObject*> pShapes = pBool->Links.getValues();
-    std::replace(pShapes.begin(), pShapes.end(), oldValue, newValue);
-    pBool->Links.setValues(pShapes);
-}
