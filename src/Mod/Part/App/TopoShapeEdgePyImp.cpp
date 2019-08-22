@@ -63,16 +63,15 @@
 # include <ShapeAnalysis_Edge.hxx>
 # include <Standard_Failure.hxx>
 # include <Standard_Version.hxx>
-#endif
-
-#include <BRepGProp.hxx>
-#include <GProp_GProps.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <GCPnts_UniformDeflection.hxx>
-#include <GCPnts_TangentialDeflection.hxx>
-#include <GCPnts_QuasiUniformAbscissa.hxx>
-#include <GCPnts_QuasiUniformDeflection.hxx>
+# include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <GCPnts_UniformDeflection.hxx>
+# include <GCPnts_TangentialDeflection.hxx>
+# include <GCPnts_QuasiUniformAbscissa.hxx>
+# include <GCPnts_QuasiUniformDeflection.hxx>
+#endif // _PreComp_
 
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
@@ -139,7 +138,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }
@@ -172,7 +171,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return 0;
         }
         catch (Standard_Failure& e) {
-    
+
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
             return -1;
         }

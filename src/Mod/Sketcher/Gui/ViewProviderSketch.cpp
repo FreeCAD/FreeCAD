@@ -56,6 +56,7 @@
 # include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <Inventor/SbTime.h>
 # include <Gui/Inventor/SmSwitchboard.h>
 
 /// Qt Include Files
@@ -70,14 +71,14 @@
 # include <QPainter>
 # include <QTextStream>
 # include <QKeyEvent>
-#endif
 
-#ifndef _PreComp_
 # include <boost/bind.hpp>
+# include <boost/scoped_ptr.hpp>
 #endif
 
-#include <Inventor/SbTime.h>
-#include <boost/scoped_ptr.hpp>
+
+
+
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Tools.h>
@@ -3805,7 +3806,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 }
                 catch(Base::CADKernelError &e) {
                     // it is "just" a visualisation matter OCC could not calculate the curvature
-                    // terminating here would mean that the other shapes would not be drawed.
+                    // terminating here would mean that the other shapes would not be drawn.
                     // Solution: Report the issue and set dummy curvature to 0
                     e.ReportException();
                     Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", GeoId);
@@ -4017,7 +4018,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             }
             catch(Base::CADKernelError &e) {
                 // it is "just" a visualisation matter OCC could not calculate the curvature
-                // terminating here would mean that the other shapes would not be drawed.
+                // terminating here would mean that the other shapes would not be drawn.
                 // Solution: Report the issue and set dummy curvature to 0
                 e.ReportException();
                 Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", GeoId);

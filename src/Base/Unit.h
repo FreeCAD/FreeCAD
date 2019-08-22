@@ -93,8 +93,11 @@ public:
     static Unit Length;
     /// Mass unit
     static Unit Mass;
+
     /// Angle
     static Unit Angle;
+    static Unit AngleOfFriction;
+    
     static Unit Density;
 
     static Unit Area;

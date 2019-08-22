@@ -45,10 +45,8 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <QAction>
 # include <QMenu>
+# include <boost/bind.hpp>
 #endif
-
-#include <boost/bind.hpp>
-
 
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>

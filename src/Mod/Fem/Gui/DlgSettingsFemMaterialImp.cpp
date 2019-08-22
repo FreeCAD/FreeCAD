@@ -48,6 +48,8 @@ void DlgSettingsFemMaterialImp::saveSettings()
     cb_use_mat_from_config_dir->onSave();
     cb_use_mat_from_custom_dir->onSave();
     fc_custom_mat_dir->onSave();
+    cb_delete_duplicates->onSave();
+    cb_sort_by_resources->onSave();
 }
 
 void DlgSettingsFemMaterialImp::loadSettings()
@@ -56,6 +58,8 @@ void DlgSettingsFemMaterialImp::loadSettings()
     cb_use_mat_from_config_dir->onRestore();
     cb_use_mat_from_custom_dir->onRestore();
     fc_custom_mat_dir->onRestore();
+    cb_delete_duplicates->onRestore();
+    cb_sort_by_resources->onRestore();
 }
 
 /**

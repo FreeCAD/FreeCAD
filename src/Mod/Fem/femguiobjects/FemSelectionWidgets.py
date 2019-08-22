@@ -222,7 +222,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         self.obj_notvisible = []
         self.initElemTypes(eltypes)
         self.allow_multiple_geom_types = multigeom
-        print(self.allow_multiple_geom_types)
+        # print(self.allow_multiple_geom_types)
         self.initUI()
         # set references and fill the list widget
         self.references = []

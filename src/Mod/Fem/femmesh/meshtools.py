@@ -1221,7 +1221,7 @@ def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj
 # depreciated method for pressure faces for constraint pressure and finite solid element mesh
 # why did we switch to the get_ccxelement_faces_from_binary_search?
 # just performance?
-# TODO: Find the forum topic disscussion with ulrich1a and post a link
+# TODO: Find the forum topic discussion with ulrich1a and post a link
 def get_pressure_obj_faces_depreciated(femmesh, femobj):
     pressure_faces = []
     for o, elem_tup in femobj['Object'].References:

@@ -27,58 +27,55 @@
 #endif
 
 #ifndef _PreComp_
-#include <float.h>
-#include <algorithm>
-#include <map>
-#include <Python.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/elements/SoGLVBOElement.h>
-#include <Inventor/elements/SoLineWidthElement.h>
-#include <Inventor/elements/SoPointSizeElement.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/errors/SoReadError.h>
-#include <Inventor/details/SoFaceDetail.h>
-#include <Inventor/details/SoLineDetail.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoContextHandler.h>
+# include <float.h>
+# include <algorithm>
+# include <map>
+# include <Python.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/SoPrimitiveVertex.h>
+# include <Inventor/actions/SoCallbackAction.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/actions/SoGetPrimitiveCountAction.h>
+# include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/actions/SoPickAction.h>
+# include <Inventor/actions/SoWriteAction.h>
+# include <Inventor/bundles/SoMaterialBundle.h>
+# include <Inventor/bundles/SoTextureCoordinateBundle.h>
+# include <Inventor/elements/SoLazyElement.h>
+# include <Inventor/elements/SoOverrideElement.h>
+# include <Inventor/elements/SoCoordinateElement.h>
+# include <Inventor/elements/SoGLCoordinateElement.h>
+# include <Inventor/elements/SoGLCacheContextElement.h>
+# include <Inventor/elements/SoGLVBOElement.h>
+# include <Inventor/elements/SoLineWidthElement.h>
+# include <Inventor/elements/SoPointSizeElement.h>
+# include <Inventor/errors/SoDebugError.h>
+# include <Inventor/errors/SoReadError.h>
+# include <Inventor/details/SoFaceDetail.h>
+# include <Inventor/details/SoLineDetail.h>
+# include <Inventor/misc/SoState.h>
+# include <Inventor/misc/SoContextHandler.h>
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+#  include <GL/gl.h>
+#  include <GL/glext.h>
+# else
+#  ifdef FC_OS_MACOSX
+#   include <OpenGL/gl.h>
+#   include <OpenGL/glext.h>
+#  else
+#   include <GL/gl.h>
+#   include <GL/glext.h>
+#  endif //FC_OS_MACOSX
+# endif //FC_OS_WIN32
+// Should come after glext.h to avoid warnings
+# include <Inventor/C/glue/gl.h>
 #endif
 
 #include "SoBrepFaceSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
 #include <Gui/SoFCInteractiveElement.h>
-
-#ifdef FC_OS_WIN32
-#include <windows.h>
-#include <GL/gl.h>
-#include <GL/glext.h>
-#else
-#ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
-#include <OpenGL/glext.h>
-#else
-#include <GL/gl.h>
-#include <GL/glext.h>
-#endif
-#endif
-
-// Should come after glext.h to avoid warnings
-#include <Inventor/C/glue/gl.h>
-
 
 using namespace PartGui;
 
@@ -378,7 +375,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if (num_selected > 0)
         renderSelection(action);
 //#endif
-    
+
     if(normalCacheUsed)
         this->readUnlockNormalCache();
 }
@@ -748,7 +745,7 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
 
         if (tb.isFunction()) {
             vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
-            if (tb.needIndices()) pointDetail.setTextureCoordIndex(tindices ? *tindices++ : texidx++); 
+            if (tb.needIndices()) pointDetail.setTextureCoordIndex(tindices ? *tindices++ : texidx++);
         }
         else if (tbind != NONE) {
             pointDetail.setTextureCoordIndex(tindices ? *tindices : texidx);
@@ -870,7 +867,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
             nindices = &(nindices[start]);
         else if (nbind == PER_VERTEX)
             normals = &(normals[start]);
-        else 
+        else
             nbind = OVERALL;
 
         // materials
@@ -881,7 +878,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
             &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     }
     state->pop();
-    
+
     if (normalCacheUsed)
         this->readUnlockNormalCache();
 }
@@ -966,14 +963,14 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
             nindices_s = &(nindices[start]);
         else if (nbind == PER_VERTEX)
             normals_s = &(normals[start]);
-        else 
+        else
             nbind = OVERALL;
 
         renderShape(action, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
             &(pindices[id]), numparts, normals_s, nindices_s, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     }
     state->pop();
-    
+
     if (normalCacheUsed)
         this->readUnlockNormalCache();
 }
@@ -1369,7 +1366,7 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
             matindices++;
     }
 
-    glBegin(GL_TRIANGLES); 
+    glBegin(GL_TRIANGLES);
     while (viptr + 2 < viendptr) {
                 v1 = *viptr++;
                 v2 = *viptr++;

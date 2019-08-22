@@ -44,7 +44,6 @@
 # include <BRepLib_FindSurface.hxx>
 #endif
 
-
 #include "FeatureExtrusion.h"
 #include <Base/Tools.h>
 #include <Base/Exception.h>

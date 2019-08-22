@@ -112,8 +112,22 @@ SET(Sketcher_SRCS
     ${Datatypes_SRCS}
 )
 
+SET(Sketcher_PCH_SRCS
+    ${Features_SRCS}
+    ${SketchModule_SRCS}
+    ${Python_SRCS}
+    ${Properties_SRCS}
+    ${Datatypes_SRCS}
+)
+
 add_library(Sketcher SHARED ${Sketcher_SRCS})
 target_link_libraries(Sketcher ${Sketcher_LIBS})
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Sketcher_CPP_SRCS ${Sketcher_PCH_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Sketcher PreCompiled.h PreCompiled.cpp Sketcher_CPP_SRCS)
+endif(FREECAD_USE_PCH)
 
 
 SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)

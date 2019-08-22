@@ -24,13 +24,14 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
+# include <QDateTime>
 #endif
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <App/Property.h>
-#include <QDateTime>
+
 
 #include "Constraint.h"
 #include "ConstraintPy.h"

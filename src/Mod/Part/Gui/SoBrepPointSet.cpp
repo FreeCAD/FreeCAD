@@ -25,12 +25,12 @@
 
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
-# include <windows.h>
+#  include <windows.h>
 # endif
 # ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
+#  include <OpenGL/gl.h>
 # else
-# include <GL/gl.h>
+#  include <GL/gl.h>
 # endif
 # include <float.h>
 # include <algorithm>
@@ -108,7 +108,7 @@ void SoBrepPointSet::GLRenderBelowPath(SoGLRenderAction * action)
     inherited::GLRenderBelowPath(action);
 }
 
-void SoBrepPointSet::renderShape(const SoGLCoordinateElement * const coords, 
+void SoBrepPointSet::renderShape(const SoGLCoordinateElement * const coords,
                                  const int32_t *cindices,
                                  int numindices)
 {

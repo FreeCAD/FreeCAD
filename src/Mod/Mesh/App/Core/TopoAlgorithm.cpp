@@ -1543,6 +1543,8 @@ void MeshTopoAlgorithm::FlipNormals (void)
  * B  = #Boundaries
  * G  = Genus (Number of holes)
  * R  = #components
+ *
+ * See also http://max-limper.de/publications/Euler/
  */
 
 MeshComponents::MeshComponents( const MeshKernel& rclMesh )

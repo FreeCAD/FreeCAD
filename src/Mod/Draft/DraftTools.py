@@ -4322,7 +4322,8 @@ class Edit(Modifier):
                     if "Shape" in self.obj.PropertiesList:
                         plane.alignToFace(self.obj.Shape)
                     if self.planetrack:
-                        self.planetrack.set(self.editpoints[0])
+                        self.planetrack.set(self.obj.Shape.Edges[0].Curve.\
+                                            getPole(1))
                         
                 elif Draft.getType(self.obj) == "Circle":
                     self.setCirclePts()
@@ -4507,6 +4508,8 @@ class Edit(Modifier):
                     done = False
                     selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(p)
                     if not selobjs:
+                        selobjs = [FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)]
+                    if not selobjs or selobjs == [None]:
                         return
                     for info in selobjs:
                         if info["Object"] == self.obj.Name:
@@ -4526,14 +4529,23 @@ class Edit(Modifier):
                                 self.addPoint(pt,info)
                                 done = True
                         ep = None
-                        if ('EditNode' in info["Component"]):
+                        if ('EditNode' in info["Component"]):#True as a result of getObjectInfo
                             ep = int(info["Component"][8:])
-                        elif ('Vertex' in info["Component"]) or ('Edge' in info["Component"]):
+                        elif ('Vertex' in info["Component"]):# if vertex is clicked, the edit point is selected only if (distance < tolerance)
                             p = FreeCAD.Vector(info["x"],info["y"],info["z"])
                             for i,t in enumerate(self.trackers):
                                 if (t.get().sub(p)).Length <= 0.01:
                                     ep = i
                                     break
+                        elif ('Edge' in info["Component"]) or ('Face' in info["Component"]) : # if edge is clicked, the nearest edit point is selected, then tolerance is verified
+                            p = FreeCAD.Vector(info["x"],info["y"],info["z"])
+                            d = 1000000.0
+                            for i,t in enumerate(self.trackers):
+                                if (t.get().sub(p)).Length < d:
+                                    d = (t.get().sub(p)).Length
+                                    ep = i
+                            if d > 20:# should find a way to link the tolerance to zoom
+                                return
                         if ep != None:
                             if self.ui.delButton.isChecked():
                                 self.delPoint(ep)
@@ -4610,7 +4622,7 @@ class Edit(Modifier):
                         knot = 0
                         changep = 1
                     if knot is not None: # we need to modify the opposite pole
-                        segment = knot / self.obj.Degree -1
+                        segment = int(knot / self.obj.Degree) -1
                         cont=self.obj.Continuity[segment] if \
                             len(self.obj.Continuity) > segment else 0
                         if cont == 1: #tangent

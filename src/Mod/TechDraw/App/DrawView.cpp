@@ -91,6 +91,7 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
+//    Base::Console().Message("DV::execute() - %s\n",getNameInDocument());
     handleXYLock();
     requestPaint();
     return App::DocumentObject::execute();

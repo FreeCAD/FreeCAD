@@ -19,13 +19,20 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-/* 
- *  Copyright (c) 2017 Zheng, Lei <realthunder.dev@gmail.com> 
+/*
+ *  Copyright (c) 2017 Zheng, Lei <realthunder.dev@gmail.com>
  */
 
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <TopoDS.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopExp_Explorer.hxx>
+# include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
 #endif
 
 #include "FeaturePathShape.h"
@@ -35,14 +42,6 @@
 #include <Base/Placement.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
-
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopExp_Explorer.hxx>
-#include <Standard_Failure.hxx>
-#include <Standard_Version.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
 
 #include "FeatureArea.h"
 

@@ -36,38 +36,36 @@
 # include <TopoDS_Compound.hxx>
 # include <TopExp_Explorer.hxx>
 # include <sstream>
+# include <Standard_Version.hxx>
+# include <XSControl_WorkSession.hxx>
+# include <XSControl_TransferReader.hxx>
+# include <XSControl_WorkSession.hxx>
+# include <XSControl_TransferReader.hxx>
+# include <Transfer_TransientProcess.hxx>
+# include <STEPConstruct_Styles.hxx>
+# include <TColStd_HSequenceOfTransient.hxx>
+# include <STEPConstruct.hxx>
+# include <StepVisual_StyledItem.hxx>
+# include <StepShape_ShapeRepresentation.hxx>
+# include <StepVisual_PresentationStyleByContext.hxx>
+# include <StepVisual_StyleContextSelect.hxx>
+# include <StepVisual_PresentationStyleByContext.hxx>
+# include <Interface_EntityIterator.hxx>
+# include <StepRepr_RepresentedDefinition.hxx>
+# include <StepShape_ShapeDefinitionRepresentation.hxx>
+# include <StepRepr_CharacterizedDefinition.hxx>
+# include <StepRepr_ProductDefinitionShape.hxx>
+# include <StepRepr_AssemblyComponentUsage.hxx>
+# include <StepRepr_AssemblyComponentUsage.hxx>
+# include <StepRepr_SpecifiedHigherUsageOccurrence.hxx>
+# include <Quantity_Color.hxx>
+# include <TCollection_ExtendedString.hxx>
+# include <StepBasic_Product.hxx>
+# include <StepBasic_Product.hxx>
+# include <StepBasic_ProductDefinition.hxx>
+# include <StepBasic_ProductDefinition.hxx>
+# include <StepBasic_ProductDefinitionFormation.hxx>
 #endif
-
-#include <Standard_Version.hxx>
-#include <XSControl_WorkSession.hxx>
-#include <XSControl_TransferReader.hxx>
-#include <XSControl_WorkSession.hxx>
-#include <XSControl_TransferReader.hxx>
-#include <Transfer_TransientProcess.hxx>
-
-#include <STEPConstruct_Styles.hxx>
-#include <TColStd_HSequenceOfTransient.hxx>
-#include <STEPConstruct.hxx>
-#include <StepVisual_StyledItem.hxx>
-#include <StepShape_ShapeRepresentation.hxx>
-#include <StepVisual_PresentationStyleByContext.hxx>
-#include <StepVisual_StyleContextSelect.hxx>
-#include <StepVisual_PresentationStyleByContext.hxx>
-#include <Interface_EntityIterator.hxx>
-#include <StepRepr_RepresentedDefinition.hxx>
-#include <StepShape_ShapeDefinitionRepresentation.hxx>
-#include <StepRepr_CharacterizedDefinition.hxx>
-#include <StepRepr_ProductDefinitionShape.hxx>
-#include <StepRepr_AssemblyComponentUsage.hxx>
-#include <StepRepr_AssemblyComponentUsage.hxx>
-#include <StepRepr_SpecifiedHigherUsageOccurrence.hxx>
-#include <Quantity_Color.hxx>
-#include <TCollection_ExtendedString.hxx>
-#include <StepBasic_Product.hxx>
-#include <StepBasic_Product.hxx>
-#include <StepBasic_ProductDefinition.hxx>
-#include <StepBasic_ProductDefinition.hxx>
-#include <StepBasic_ProductDefinitionFormation.hxx>
 
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
@@ -100,7 +98,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
     std::string encodednamestr = encodeFilename(std::string(Name));
     const char * encodedname = encodednamestr.c_str();
 
-    if (aReader.ReadFile((Standard_CString)encodedname) != 
+    if (aReader.ReadFile((Standard_CString)encodedname) !=
             IFSelect_RetDone) {
         throw Base::FileException("Cannot open STEP file");
     }
@@ -141,7 +139,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
             TopExp_Explorer ex;
             for (ex.Init(aShape, TopAbs_SOLID); ex.More(); ex.Next())
             {
-                // get the shape 
+                // get the shape
                 const TopoDS_Solid& aSolid = TopoDS::Solid(ex.Current());
 
                 std::string name = fi.fileNamePure();
@@ -177,7 +175,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
             // load all non-solids now
             for (ex.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); ex.More(); ex.Next())
             {
-                // get the shape 
+                // get the shape
                 const TopoDS_Shell& aShell = TopoDS::Shell(ex.Current());
 
                 std::string name = fi.fileNamePure();
@@ -244,7 +242,7 @@ static void findStyledSR (const Handle(StepVisual_StyledItem) &style,
         if (PSA.IsNull())
             continue;
         StepVisual_StyleContextSelect aStyleCntxSlct = PSA->StyleContext();
-        Handle(StepShape_ShapeRepresentation) aCurrentSR = 
+        Handle(StepShape_ShapeRepresentation) aCurrentSR =
             Handle(StepShape_ShapeRepresentation)::DownCast(aStyleCntxSlct.Representation());
         if (aCurrentSR.IsNull())
             continue;
@@ -324,8 +322,8 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
                 if (PDS.IsNull())
                     continue;
                 StepRepr_CharacterizedDefinition aCharDef = PDS->Definition();
-        
-                Handle(StepRepr_AssemblyComponentUsage) ACU = 
+
+                Handle(StepRepr_AssemblyComponentUsage) ACU =
                     Handle(StepRepr_AssemblyComponentUsage)::DownCast(aCharDef.ProductDefinitionRelationship());
                 // PTV 10.02.2003 skip styled item that refer to SHUO
                 if (ACU->IsKind(STANDARD_TYPE(StepRepr_SpecifiedHigherUsageOccurrence))) {
@@ -336,7 +334,7 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
                     Handle(StepRepr_NextAssemblyUsageOccurrence)::DownCast(ACU);
                 if (NAUO.IsNull())
                     continue;
-        
+
                 TopoDS_Shape aSh;
                 // PTV 10.02.2003 to find component of assembly CORRECTLY
                 STEPConstruct_Tool Tool( WS );
@@ -353,14 +351,14 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
         }
         if (isSkipSHUOstyle)
             continue; // skip styled item which refer to SHUO
-    
+
         if ( S.IsNull() ) {
 #ifdef FC_DEBUG
             std::cout << "Warning: item No " << i << "(" << style->Item()->DynamicType()->Name() << ") is not mapped to shape" << std::endl;
 #endif
             continue;
         }
-    
+
         if (!SurfCol.IsNull()) {
             Quantity_Color col;
             Styles.DecodeColor (SurfCol, col);
@@ -383,7 +381,7 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
             // sets the invisibility for shape.
         }
     }
-  
+
     return Standard_True;
 #endif
 }
@@ -411,17 +409,17 @@ bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
 
         // get description of NAUO
         if (enti->DynamicType() == tNAUO) {
-            Handle(StepRepr_NextAssemblyUsageOccurrence) NAUO = 
+            Handle(StepRepr_NextAssemblyUsageOccurrence) NAUO =
                 Handle(StepRepr_NextAssemblyUsageOccurrence)::DownCast(enti);
             if (NAUO.IsNull()) continue;
             Interface_EntityIterator subs = WS->Graph().Sharings(NAUO);
             for (subs.Start(); subs.More(); subs.Next()) {
-                Handle(StepRepr_ProductDefinitionShape) PDS = 
+                Handle(StepRepr_ProductDefinitionShape) PDS =
                     Handle(StepRepr_ProductDefinitionShape)::DownCast(subs.Value());
                 if (PDS.IsNull()) continue;
                 Handle(StepBasic_ProductDefinitionRelationship) PDR = PDS->Definition().ProductDefinitionRelationship();
                 if (PDR.IsNull()) continue;
-                if (PDR->HasDescription() && 
+                if (PDR->HasDescription() &&
                     PDR->Description()->Length() >0 ) name = PDR->Description();
                 else if (PDR->Name()->Length() >0) name = PDR->Name();
                 else name = PDR->Id();
@@ -434,7 +432,7 @@ bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
 
         // for PD get name of associated product
         if (enti->DynamicType() == tPD) {
-            Handle(StepBasic_ProductDefinition) PD = 
+            Handle(StepBasic_ProductDefinition) PD =
                 Handle(StepBasic_ProductDefinition)::DownCast(enti);
             if (PD.IsNull()) continue;
             Handle(StepBasic_Product) Prod = PD->Formation()->OfProduct();

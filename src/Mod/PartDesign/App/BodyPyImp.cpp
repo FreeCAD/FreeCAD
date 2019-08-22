@@ -23,7 +23,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
 #include <cstring>
+#endif
+
 
 #include "Mod/Part/App/Part2DObject.h"
 #include "Mod/PartDesign/App/Body.h"

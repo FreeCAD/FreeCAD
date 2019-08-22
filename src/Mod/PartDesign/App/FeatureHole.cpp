@@ -49,9 +49,10 @@
 # include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <Standard_Version.hxx>
+# include <QCoreApplication>
 #endif
 
-#include <QCoreApplication>
+
 #include <Base/Placement.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -451,42 +452,42 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(ThreadType, ((long)0), "Hole", App::Prop_None, "Thread type");
     ThreadType.setEnums(ThreadTypeEnums);
-    
+
     ADD_PROPERTY_TYPE(ThreadSize, ((long)0), "Hole", App::Prop_None, "Thread size");
     ThreadSize.setEnums(ThreadSize_None_Enums);
-    
+
     ADD_PROPERTY_TYPE(ThreadClass, ((long)0), "Hole", App::Prop_None, "Thread class");
     ThreadClass.setEnums(ThreadClass_None_Enums);
-    
+
     ADD_PROPERTY_TYPE(ThreadFit, ((long)0), "Hole", App::Prop_None, "Thread fit");
     ThreadFit.setEnums(ThreadFitEnums);
-    
+
     ADD_PROPERTY_TYPE(Diameter, (6.0), "Hole", App::Prop_None, "Diameter");
-    
+
     ADD_PROPERTY_TYPE(ThreadDirection, ((long)0), "Hole", App::Prop_None, "Thread direction");
     ThreadDirection.setEnums(ThreadDirectionEnums);
-    
+
     ADD_PROPERTY_TYPE(HoleCutType, ((long)0), "Hole", App::Prop_None, "Head cut type");
     HoleCutType.setEnums(HoleCutType_None_Enums);
-    
+
     ADD_PROPERTY_TYPE(HoleCutDiameter, (0.0), "Hole", App::Prop_None, "Head cut diameter");
-    
+
     ADD_PROPERTY_TYPE(HoleCutDepth, (0.0), "Hole", App::Prop_None, "Head cut deth");
-    
+
     ADD_PROPERTY_TYPE(HoleCutCountersinkAngle, (90.0), "Hole", App::Prop_None, "Head cut countersink angle");
-    
+
     ADD_PROPERTY_TYPE(DepthType, ((long)0), "Hole", App::Prop_None, "Type");
     DepthType.setEnums(DepthTypeEnums);
 
     ADD_PROPERTY_TYPE(Depth, (25.0), "Hole", App::Prop_None, "Length");
-    
+
     ADD_PROPERTY_TYPE(DrillPoint, ((long)1), "Hole", App::Prop_None, "Drill point type");
     DrillPoint.setEnums(DrillPointEnums);
-    
+
     ADD_PROPERTY_TYPE(DrillPointAngle, (118.0), "Hole", App::Prop_None, "Drill point angle");
-    
+
     ADD_PROPERTY_TYPE(Tapered, ((bool)false),"Hole",  App::Prop_None, "Tapered");
-    
+
     ADD_PROPERTY_TYPE(TaperedAngle, (90.0), "Hole", App::Prop_None, "Tapered angle");
 }
 
@@ -548,7 +549,7 @@ void Hole::updateDiameterParam()
     if (Threaded.getValue()) {
         if (std::string(ThreadType.getValueAsString()) != "None") {
             double h = pitch * sqrt(3) / 2;
-            
+
             // Basic profile for ISO and UTS threads
             ThreadPitch.setValue(pitch);
             ThreadAngle.setValue(60);
@@ -559,7 +560,7 @@ void Hole::updateDiameterParam()
         if (ModelActualThread.getValue()) {
             pitch = ThreadPitch.getValue();
         }
-        
+
         /* Use thread tap diameter, normall D - pitch */
         diameter = diameter - pitch;
     }
@@ -724,13 +725,13 @@ void Hole::onChanged(const App::Property *prop)
             HoleCutCountersinkAngle.setValue(90.0);
         else if (type == "UNC" || type == "UNF" || type == "UNEF")
             HoleCutCountersinkAngle.setValue(82.0);
-       
+
         // Signal changes to these
         ProfileBased::onChanged(&ThreadSize);
         ProfileBased::onChanged(&ThreadClass);
         ProfileBased::onChanged(&HoleCutType);
         ProfileBased::onChanged(&Threaded);
-        
+
         bool v = (type != "None") || !Threaded.getValue() || !ModelActualThread.getValue();
         ThreadPitch.setReadOnly(v);
         ThreadAngle.setReadOnly(v);
@@ -765,7 +766,7 @@ void Hole::onChanged(const App::Property *prop)
         bool v =(!ModelActualThread.getValue()) ||
                 (Threaded.isReadOnly()) ||
                 (std::string(ThreadType.getValueAsString()) != "None");
-       
+
         ThreadPitch.setReadOnly(v);
         ThreadAngle.setReadOnly(v);
         ThreadCutOffInner.setReadOnly(v);
@@ -858,13 +859,13 @@ static void computeIntersection(gp_Pnt pa1, gp_Pnt pa2, gp_Pnt pb1, gp_Pnt pb2, 
     double f = 1 / ( ( vx1 * - vy2 ) - ( -vx2 * vy1 ) );
 
     double t1 = -vy2 * f * ( x2 - x1 ) + vx2 * f * ( y2 - y1 );
-    
-#ifdef _DEBUG    
+
+#ifdef _DEBUG
     double t2 = -vy1 * f * ( x2 - x1 ) + vx1 * f * ( y2 - y1 );
 
     assert( ( x1 + t1 * vx1 ) - ( x2 + t2 * vx2 ) < 1e-6 );
     assert( ( y1 + t1 * vy1 ) - ( y2 + t2 * vy2 ) < 1e-6 );
-#endif    
+#endif
 
     x = x1 + t1 * vx1;
     y = y1 + t1 * vy1;
@@ -1133,7 +1134,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         }
         mkWire.Add( BRepBuilderAPI_MakeEdge(lastPoint, firstPoint) );
 
-        
+
         TopoDS_Wire wire = mkWire.Wire();
 
         TopoDS_Face face = BRepBuilderAPI_MakeFace(wire);
@@ -1160,48 +1161,48 @@ App::DocumentObjectExecReturn *Hole::execute(void)
             BRepBuilderAPI_MakeWire mkThreadWire;
             double z = 0;
             double d_min = Diameter.getValue() + ThreadCutOffInner.getValue();
-            double d_maj = Diameter.getValue() - ThreadCutOffInner.getValue();            
+            double d_maj = Diameter.getValue() - ThreadCutOffInner.getValue();
             int i = 0;
 
             firstPoint = toPnt(xDir * d_min);
-            
+
             mkThreadWire.Add(BRepBuilderAPI_MakeEdge(gp_Pnt(0, 0, 0), firstPoint));
             while (z < length) {
                 double z1 = i * ThreadPitch.getValue() + ThreadPitch.getValue() * 0.1;
                 double z2 = i * ThreadPitch.getValue() + ThreadPitch.getValue() * 0.45;
                 double z3 = i * ThreadPitch.getValue() + ThreadPitch.getValue() * 0.55;
                 double z4 = i * ThreadPitch.getValue() + ThreadPitch.getValue() * 0.9;
-                
+
                 gp_Pnt p2 = toPnt(xDir * d_min - zDir * z1);
                 gp_Pnt p3 = toPnt(xDir * d_maj - zDir * z2);
                 gp_Pnt p4 = toPnt(xDir * d_maj - zDir * z3);
                 gp_Pnt p5 = toPnt(xDir * d_min - zDir * z4);
-                
+
                 mkThreadWire.Add(BRepBuilderAPI_MakeEdge(firstPoint, p2));
                 mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3));
                 mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4));
                 mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p5));
                 firstPoint = p5;
-                
+
                 ++i;
                 z += ThreadPitch.getValue();
             }
             mkThreadWire.Add(BRepBuilderAPI_MakeEdge(firstPoint, toPnt(-z * zDir)));
             mkThreadWire.Add(BRepBuilderAPI_MakeEdge(toPnt(-z * zDir), gp_Pnt(0, 0, 0)));
-            
+
             TopoDS_Wire threadWire = mkThreadWire.Wire();
-    
+
             TopoDS_Face threadFace = BRepBuilderAPI_MakeFace(threadWire);
-    
+
             //TopoDS_Wire helix = TopoShape::makeHelix(ThreadPitch.getValue(), ThreadPitch.getValue(), Diameter.getValue());
-            
+
             double angle = Base::toRadians<double>(360.0);
             BRepPrimAPI_MakeRevol RevolMaker2(threadFace, gp_Ax1(gp_Pnt(0,0,0), zDir), angle);
-    
+
             //TopoDS_Shape protoHole;
             if (RevolMaker2.IsDone()) {
                 protoHole = RevolMaker2.Shape();
-    
+
                 if (protoHole.IsNull())
                     return new App::DocumentObjectExecReturn("Hole: Resulting shape is empty");
             }

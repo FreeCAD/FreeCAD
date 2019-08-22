@@ -28,6 +28,11 @@
 # include <ShapeFix_Wire.hxx>
 # include <TopoDS_Compound.hxx>
 # include <Standard_Version.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <cmath>
+# include <iostream>
 #endif
 
 #include <Base/Writer.h>
@@ -50,15 +55,8 @@
 #include <Mod/Part/App/LineSegmentPy.h>
 #include <Mod/Part/App/BSplineCurvePy.h>
 
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-
 #include "Sketch.h"
 #include "Constraint.h"
-#include <cmath>
-
-#include <iostream>
 
 using namespace Sketcher;
 using namespace Base;

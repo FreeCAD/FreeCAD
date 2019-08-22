@@ -45,6 +45,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
+# include <QtGlobal>
 #endif
 
 #include "FaceMakerBullseye.h"
@@ -52,7 +53,7 @@
 
 #include "TopoShape.h"
 
-#include <QtGlobal>
+
 
 using namespace Part;
 

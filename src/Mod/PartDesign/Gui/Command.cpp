@@ -33,10 +33,9 @@
 # include <GeomLib_IsPlanarSurface.hxx>
 # include <QMessageBox>
 # include <Inventor/nodes/SoCamera.h>
+# include <sstream>
+# include <algorithm>
 #endif
-
-#include <sstream>
-#include <algorithm>
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Origin.h>
@@ -114,7 +113,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             std::string tmp = std::string("Create ")+name;
 
             cmd.openCommand(tmp.c_str());
-            cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject('%s','%s')", pcActiveBody->getNameInDocument(), 
+            cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject('%s','%s')", pcActiveBody->getNameInDocument(),
                           fullTypeName.c_str(),FeatName.c_str());
 
             // remove the body from links in case it's selected as
@@ -785,7 +784,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
 //===========================================================================
 
 // Take a list of Part2DObjects and classify them for creating a
-// ProfileBased feature. FirstFreeSketch is the first free sketch in the same body 
+// ProfileBased feature. FirstFreeSketch is the first free sketch in the same body
 // or sketches.end() if non available. The returned number is the amount of free sketches
 unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                           std::vector<PartDesignGui::TaskFeaturePick::featureStatus>& status,
@@ -817,7 +816,7 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                 status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
             else
                 status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
-           
+
             continue;
         }
 
@@ -900,7 +899,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
         }
         else {
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Profile = (App.activeDocument().%s, [\"%s\"])",
-                        FeatName.c_str(), feature->getNameInDocument(), sub.c_str());   
+                        FeatName.c_str(), feature->getNameInDocument(), sub.c_str());
         }
 
         func(static_cast<Part::Feature*>(feature), FeatName);
@@ -1933,7 +1932,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
         }
         if(!direction) {
             auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if(body) {                
+            if(body) {
                 doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
                         body->getOrigin()->getXY()->getNameInDocument());
             }
@@ -1997,7 +1996,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
         }
         if(!direction) {
             auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if(body) {                
+            if(body) {
                 doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
                         body->getOrigin()->getX()->getNameInDocument());
             }
@@ -2063,7 +2062,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         }
         if(!direction) {
             auto body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(features.front()));
-            if(body) {                
+            if(body) {
                 doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
                         body->getOrigin()->getZ()->getNameInDocument());
             }
