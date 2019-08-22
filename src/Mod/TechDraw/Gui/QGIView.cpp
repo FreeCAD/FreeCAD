@@ -113,14 +113,43 @@ QGIView::QGIView()
     m_lockWidth = (double) sizeLock.width();
     m_lockHeight = (double) sizeLock.height();
     m_lock->hide();
-
-    isVisible(true);
 }
 
 QGIView::~QGIView()
 {
     signalSelectPoint.disconnect_all_slots();
 }
+
+void QGIView::isVisible(bool state) 
+{
+    auto feat = getViewObject();
+    if (feat != nullptr) {
+        auto vp = QGIView::getViewProvider(feat);
+        if (vp != nullptr) {
+            Gui::ViewProviderDocumentObject* vpdo = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
+            if (vpdo != nullptr) {
+                vpdo->Visibility.setValue(state);
+            }
+        }
+    }
+}
+
+bool QGIView::isVisible(void)
+{
+    bool result = false;
+    auto feat = getViewObject();
+    if (feat != nullptr) {
+        auto vp = QGIView::getViewProvider(feat);
+        if (vp != nullptr) {
+            Gui::ViewProviderDocumentObject* vpdo = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
+            if (vpdo != nullptr) {
+                result = vpdo->Visibility.getValue();
+            }
+        }
+    }
+    return result;
+}
+
 
 void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 {

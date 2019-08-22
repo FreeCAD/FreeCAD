@@ -37,10 +37,10 @@
 #else // for Linux
 # define PartDesignExport
 # define PartDesignGuiExport
-# define PartExport     
-# define PartGuiExport     
-# define SketcherExport    
-# define SketcherGuiExport 
+# define PartExport
+# define PartGuiExport
+# define SketcherExport
+# define SketcherGuiExport
 #endif
 
 
@@ -57,9 +57,24 @@
 #include <iostream>
 #include <assert.h>
 #include <cmath>
+#include <sstream>
+
+#include <algorithm>
+
+// Boost
+#include <boost/bind.hpp>
 
 // OCC
 #include <Standard_math.hxx>
+#include <Standard_Version.hxx>
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <BRep_Tool.hxx>
+#include <TopoDS.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 
 // STL
 #include <vector>
@@ -81,6 +96,11 @@
 #ifndef __Qt4All__
 # include <Gui/Qt4All.h>
 #endif
+
+#include <QMessageBox>
+#include <QMenu>
+#include <QAction>
+#include <QMessageBox>
 
 // Inventor
 #ifndef __InventorAll__

@@ -372,16 +372,29 @@ void DrawPage::unsetupObject()
     // Remove the Page's views & template from document
     App::Document* doc = getDocument();
     std::string docName = doc->getName();
+    std::string pageName = getNameInDocument();
 
-    while (Views.getValues().size() > 0 ) {
+    try {
         const std::vector<App::DocumentObject*> currViews = Views.getValues();
-        App::DocumentObject* child = currViews.front();
-        std::string viewName = child->getNameInDocument();
-        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                          docName.c_str(), viewName.c_str());
-    }
-    std::vector<App::DocumentObject*> emptyViews;      //probably superfluous
-    Views.setValues(emptyViews);
+        for (auto& v: currViews) {
+            //NOTE: the order of objects in Page.Views does not reflect the object hierarchy
+            //      this means that a ProjGroup could be deleted before it's child ProjGroupItems.
+            //      this causes problems when removing objects from document
+            if (v->isAttachedToDocument()) {
+                std::string viewName = v->getNameInDocument();
+                Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                                  docName.c_str(), viewName.c_str());
+            } else {
+                Base::Console().Log("DP::unsetupObject - v(%s) is not in document. skipping\n", pageName.c_str());
+            }
+        }
+        std::vector<App::DocumentObject*> emptyViews;      //probably superfluous
+        Views.setValues(emptyViews);
+        
+   }
+   catch (...) {
+       Base::Console().Warning("DP::unsetupObject - %s - error while deleting children\n", getNameInDocument());
+   }
 
     App::DocumentObject* tmp = Template.getValue();
     if (tmp != nullptr) {

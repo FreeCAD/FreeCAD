@@ -43,15 +43,16 @@
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/misc/SoState.h>
 # include <cmath>
-#endif
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
+# include <Inventor/actions/SoGetMatrixAction.h>
+# include <Inventor/elements/SoFontNameElement.h>
+# include <Inventor/elements/SoFontSizeElement.h>
+# include <Inventor/elements/SoModelMatrixElement.h>
+# include <Inventor/elements/SoProjectionMatrixElement.h>
+# include <Inventor/elements/SoViewingMatrixElement.h>
+# include <Inventor/elements/SoViewVolumeElement.h>
+# include <Inventor/elements/SoViewportRegionElement.h>
+#endif // _PreComp_
+
 
 #include "SoDatumLabel.h"
 #include <Gui/BitmapFactory.h>
@@ -424,7 +425,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     if (action->handleTransparency(true))
       return;
 
-    /**Remark from Stefan Tröger: 
+    /**Remark from Stefan Tröger:
     * The scale calculation is based on knowledge of SbViewVolume::getWorldToScreenScale
     * implementation internals. The factor returned from this function is calculated from the view frustums
     * nearplane width, height is not taken into account, and hence we divide it with the viewport width
@@ -465,7 +466,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         this->imgHeight = scale * (float) (srch);
         this->imgWidth  = aspectRatio * (float) this->imgHeight;
     }
-    
+
     if (this->datumtype.getValue() == SYMMETRIC) {
         // For the symmetry constraint that does not have text, but does have arrows
         //this->imgHeight = 3.36f;
@@ -474,7 +475,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         this->imgHeight = scale*25.0f;
         this->imgWidth = scale*25.0f;
     }
-   
+
     // Get the points stored in the pnt field
     const SbVec3f *points = this->pnts.getValues(0);
 
@@ -694,7 +695,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
           glVertex2f(ar1[0], ar1[1]);
           glVertex2f(ar2[0], ar2[1]);
         glEnd();
-        
+
         if (this->datumtype.getValue() == DIAMETER) {
             // create second arrowhead
             SbVec3f ar0_1  = p1;
@@ -849,9 +850,9 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         ar1  = ar0 - dir * 0.866f * 2 * margin;
         ar2  = ar1 + normal * margin;
         ar1 -= normal * margin;
-        
+
         glBegin(GL_LINES);
-          glVertex3f(p1[0], p1[1], ZCONSTR); 
+          glVertex3f(p1[0], p1[1], ZCONSTR);
           glVertex3f(ar0[0], ar0[1], ZCONSTR);
           glVertex3f(ar0[0], ar0[1], ZCONSTR);
           glVertex3f(ar1[0], ar1[1], ZCONSTR);
@@ -867,12 +868,12 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         ar4 -= normal * margin;
 
         glBegin(GL_LINES);
-          glVertex3f(p2[0], p2[1], ZCONSTR); 
-          glVertex3f(ar3[0], ar3[1], ZCONSTR); 
-          glVertex3f(ar3[0], ar3[1], ZCONSTR); 
-          glVertex3f(ar4[0], ar4[1], ZCONSTR); 
-          glVertex3f(ar3[0], ar3[1], ZCONSTR); 
-          glVertex3f(ar5[0], ar5[1], ZCONSTR); 
+          glVertex3f(p2[0], p2[1], ZCONSTR);
+          glVertex3f(ar3[0], ar3[1], ZCONSTR);
+          glVertex3f(ar3[0], ar3[1], ZCONSTR);
+          glVertex3f(ar4[0], ar4[1], ZCONSTR);
+          glVertex3f(ar3[0], ar3[1], ZCONSTR);
+          glVertex3f(ar5[0], ar5[1], ZCONSTR);
         glEnd();
 
         // BOUNDING BOX CALCULATION - IMPORTANT

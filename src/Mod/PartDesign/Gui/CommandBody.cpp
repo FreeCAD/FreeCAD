@@ -28,6 +28,7 @@
 # include <QInputDialog>
 # include <Inventor/C/basic.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <TopExp_Explorer.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -52,7 +53,7 @@
 #include "Utils.h"
 #include "TaskFeaturePick.h"
 #include "WorkflowManager.h"
-#include <TopExp_Explorer.hxx>
+
 
 
 //===========================================================================

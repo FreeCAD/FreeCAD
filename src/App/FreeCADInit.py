@@ -338,7 +338,11 @@ App.Units.Length        = App.Units.Unit(1)
 App.Units.Area          = App.Units.Unit(2)
 App.Units.Volume        = App.Units.Unit(3)
 App.Units.Mass          = App.Units.Unit(0,1) 
-App.Units.Angle         = App.Units.Unit(0,0,0,0,0,0,0,1) 
+
+# Angle
+App.Units.Angle            = App.Units.Unit(0,0,0,0,0,0,0,1)
+App.Units.AngleOfFriction  = App.Units.Unit(0,0,0,0,0,0,0,1)
+
 App.Units.Density       = App.Units.Unit(-3,1)
 
 App.Units.TimeSpan      = App.Units.Unit(0,0,1) 

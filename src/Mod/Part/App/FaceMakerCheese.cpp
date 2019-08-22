@@ -43,11 +43,12 @@
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
+# include <QtGlobal>
 #endif
 
 #include "FaceMakerCheese.h"
 
-#include <QtGlobal>
+
 
 using namespace Part;
 

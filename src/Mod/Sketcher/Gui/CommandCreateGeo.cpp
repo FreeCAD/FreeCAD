@@ -25,16 +25,14 @@
 #ifndef _PreComp_
 # include <Inventor/nodes/SoPickStyle.h>
 # include <QApplication>
+# include <QMessageBox>
+# include <stdlib.h>
+# include <qdebug.h>
+# include <QString>
+# include <GC_MakeEllipse.hxx>
+# include <boost/math/special_functions/fpclassify.hpp>
 #endif
 
-# include <QMessageBox>
-
-#include <stdlib.h>
-#include <qdebug.h>
-#include <QString>
-#include <GC_MakeEllipse.hxx>
-
-#include <boost/math/special_functions/fpclassify.hpp>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>

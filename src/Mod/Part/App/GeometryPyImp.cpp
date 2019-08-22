@@ -33,9 +33,9 @@
 # include <Geom_Surface.hxx>
 # include <Precision.hxx>
 # include <Standard_Failure.hxx>
-#endif
 
-#include <boost/uuid/uuid_io.hpp>
+# include <boost/uuid/uuid_io.hpp>
+#endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/Matrix.h>

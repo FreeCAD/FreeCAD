@@ -23,66 +23,65 @@
 
 #ifndef _PreComp_
 # include <cfloat>
-#endif
-
-#include <boost/version.hpp>
-#include <boost/config.hpp>
-#if defined(BOOST_MSVC) && (BOOST_VERSION == 105500)
+# include <boost/version.hpp>
+# include <boost/config.hpp>
+# if defined(BOOST_MSVC) && (BOOST_VERSION == 105500)
 // for fixing issue https://svn.boost.org/trac/boost/ticket/9332
 #   include "boost_fix/intrusive/detail/memory_util.hpp"
 #   include "boost_fix/container/detail/memory_util.hpp"
-#endif
-#include <boost/geometry.hpp>
-#include <boost/geometry/index/rtree.hpp>
-#include <boost/geometry/geometries/geometries.hpp>
-#include <boost/geometry/geometries/register/point.hpp>
-#include <boost/range/adaptor/indexed.hpp>
-#include <boost/range/adaptor/transformed.hpp>
+# endif
+# include <boost/geometry.hpp>
+# include <boost/geometry/index/rtree.hpp>
+# include <boost/geometry/geometries/geometries.hpp>
+# include <boost/geometry/geometries/register/point.hpp>
+# include <boost/range/adaptor/indexed.hpp>
+# include <boost/range/adaptor/transformed.hpp>
 
-#include <BRepLib.hxx>
-#include <BRep_Builder.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepBuilderAPI_FindPlane.hxx>
-#include <BRepLib_FindSurface.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepTools.hxx>
-#include <BRepTools_WireExplorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Solid.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <GeomAbs_JoinType.hxx>
-#include <Geom_Circle.hxx>
-#include <Geom_Ellipse.hxx>
-#include <Geom_Line.hxx>
-#include <Geom_Plane.hxx>
-#include <Standard_Failure.hxx>
-#include <gp_Circ.hxx>
-#include <gp_GTrsf.hxx>
-#include <Standard_Version.hxx>
-#include <GCPnts_QuasiUniformDeflection.hxx>
-#include <GCPnts_UniformAbscissa.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepLib_MakeFace.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <HLRBRep.hxx>
-#include <HLRBRep_Algo.hxx>
-#include <HLRBRep_HLRToShape.hxx>
-#include <HLRAlgo_Projector.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
+# include <BRepLib.hxx>
+# include <BRep_Builder.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
+# include <BRepBuilderAPI_FindPlane.hxx>
+# include <BRepLib_FindSurface.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepTools.hxx>
+# include <BRepTools_WireExplorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS_Solid.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <GeomAbs_JoinType.hxx>
+# include <Geom_Circle.hxx>
+# include <Geom_Ellipse.hxx>
+# include <Geom_Line.hxx>
+# include <Geom_Plane.hxx>
+# include <Standard_Failure.hxx>
+# include <gp_Circ.hxx>
+# include <gp_GTrsf.hxx>
+# include <Standard_Version.hxx>
+# include <GCPnts_QuasiUniformDeflection.hxx>
+# include <GCPnts_UniformAbscissa.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepLib_MakeFace.hxx>
+# include <Bnd_Box.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <HLRBRep.hxx>
+# include <HLRBRep_Algo.hxx>
+# include <HLRBRep_HLRToShape.hxx>
+# include <HLRAlgo_Projector.hxx>
+# include <ShapeFix_ShapeTolerance.hxx>
+# include <ShapeExtend_WireData.hxx>
+# include <ShapeFix_Wire.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
+#endif
 
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -94,6 +93,7 @@
 #include <Mod/Part/App/CrossSection.h>
 #include "Area.h"
 #include "../libarea/Area.h"
+
 
 namespace bg = boost::geometry;
 namespace bgi = boost::geometry::index;
@@ -230,7 +230,7 @@ static bool getShapePlane(const TopoDS_Shape &shape, gp_Pln &pln) {
     //
     // ADD NOTE: Okay, one thing I find out that for face shape, this
     // FindSurface may produce plane at the wrong position, so use
-    // adaptor to get the underlaying surface plane directly (see
+    // adaptor to get the underlying surface plane directly (see
     // above).  It remains to be seen that if FindSurface has the same
     // problem on wires
     pln = GeomAdaptor_Surface(finder.Surface()).Plane();
@@ -333,7 +333,7 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection
     // first and last parameters. Passing the original curve first and last
     // parameters works fine. The following algorithm uses the original curve
     // parameters, and skip those out of range. The algorithm shall work the
-    // same for any other discetization algorithm, althgouth it seems only 
+    // same for any other discetization algorithm, althgouth it seems only
     // QuasiUniformDeflection has this bug.
 
     GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
@@ -1826,7 +1826,7 @@ TopoDS_Shape Area::getShape(int index) {
 }
 
 TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET),
-        int reorient, bool from_center) 
+        int reorient, bool from_center)
 {
     build();
     AREA_SECTION(makeOffset,index,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET),reorient,from_center);
@@ -1910,7 +1910,7 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
             last_stepover = 0;
     }
     for(int i=0;count<0||i<count;++i,offset+=stepover) {
-        if(from_center) 
+        if(from_center)
             areas.push_front(make_shared<CArea>());
         else
             areas.push_back(make_shared<CArea>());
@@ -1951,7 +1951,7 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
         if(count>1)
             FC_TIME_LOG(t1,"makeOffset " << i << '/' << count);
         if(area.m_curves.empty()) {
-            if(from_center) 
+            if(from_center)
                 areas.pop_front();
             else
                 areas.pop_back();
@@ -2088,7 +2088,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         done = true;
         break;
     }default:
-        throw Base::ValueError("unknown poket mode");
+        throw Base::ValueError("unknown pocket mode");
     }
 
     if(!done) {
@@ -2220,7 +2220,7 @@ TopoDS_Shape Area::toShape(const CCurve &_c, const gp_Trsf *trsf, int reorient) 
             builder.Add(compound,hWires->Value(i));
         shape = compound;
     }
-    
+
     if(trsf)
         shape.Move(TopLoc_Location(*trsf));
     return shape;
@@ -2654,7 +2654,7 @@ struct ShapeInfo{
         std::list<TopoDS_Shape> wires;
 
         if(myWires.empty() ||
-           pstart.SquareDistance(myStartPt)>Precision::SquareConfusion()) 
+           pstart.SquareDistance(myStartPt)>Precision::SquareConfusion())
         {
             nearest(pstart);
             if(myWires.empty())
@@ -2834,7 +2834,7 @@ typedef Standard_Real (gp_Pnt::*AxisGetter)() const;
 typedef void (gp_Pnt::*AxisSetter)(Standard_Real);
 
 std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
-    bool has_start, gp_Pnt *_pstart, gp_Pnt *_pend, 
+    bool has_start, gp_Pnt *_pstart, gp_Pnt *_pend,
     double *stepdown_hint, short *_parc_plane,
     PARAM_ARGS(PARAM_FARG,AREA_PARAMS_SORT))
 {

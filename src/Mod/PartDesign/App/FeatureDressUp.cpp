@@ -23,17 +23,18 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#endif
-
-
-#include "FeatureDressUp.h"
-#include <Base/Exception.h>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
 #include <BRep_Tool.hxx>
 #include <TopoDS_Edge.hxx>
+#endif
+
+
+#include "FeatureDressUp.h"
+#include <Base/Exception.h>
+
 
 
 using namespace PartDesign;

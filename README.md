@@ -1,26 +1,45 @@
-FreeCAD
--------
+![Logo](https://www.freecadweb.org/images/logo.png)
+
+### Your own 3D parametric modeler
+
+[Website](https://www.freecadweb.org) • 
+[Documentation](https://www.freecadweb.org/wiki/) •
+[Forum](https://forum.freecadweb.org/) •
+[Bug tracker](https://www.freecadweb.org/tracker/) •
+[Git repository](https://github.com/FreeCAD/FreeCAD)
+
+
+[![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Master][freecad-master-status]][travis-branches] [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad) [![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 
 ![screenshot](http://www.freecadweb.org/wiki/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
 
-FreeCAD is a general purpose feature-based, parametric 3D modeler for 
-CAD, MCAD, CAx, CAE and PLM, aimed directly at mechanical engineering 
-and product design but also fits a wider range of uses in engineering, 
-such as architecture or other engineering specialties. It is 100% Open 
-Source (LGPL2+ license) and extremely modular, allowing for very 
-advanced extension and customization.
+Overview
+--------
 
-FreeCAD is based on OpenCASCADE, a powerful geometry kernel, features an 
-Open Inventor-compliant 3D scene representation model provided by the 
-Coin 3D library, and a broad Python API. The interface is built with Qt. 
-FreeCAD runs exactly the same way on Windows, Mac OSX, BSD and Linux 
-platforms.
+* **Freedom to build what you want**  FreeCAD is an open-source parametric 3D 
+modeler made primarily to design real-life objects of any size. 
+Parametric modeling allows you to easily modify your design by going back into 
+your model history and changing its parameters. 
 
-- [Home page](http://www.freecadweb.org)
-- [Documentation wiki](http://www.freecadweb.org/wiki/)
-- [Forum](http://forum.freecadweb.org/)
-- [Bug tracker](http://www.freecadweb.org/tracker/)
-- [Git repository](https://github.com/FreeCAD/FreeCAD)
+* **Create 3D from 2D & back** FreeCAD allows you to sketch geometry constrained
+ 2D shapes and use them as a base to build other objects. 
+ It contains many components to adjust dimensions or extract design details from 
+ 3D models to create high quality production ready drawings.
+
+* **Designed for your needs** FreeCAD is designed to fit a wide range of uses
+ including product design, mechanical engineering and architecture. 
+ Whether you are a hobbyist, a programmer, an experienced CAD user, 
+ a student or a teacher, you will feel right at home with FreeCAD.
+
+* **Cross platform** FreeCAD runs on Windows, Mac and Linux
+
+* **Underlying technology**
+    * **OpenCASCADE** A powerful geometry kernel, the most important component of FreeCAD
+    * **Coin3D library** Open Inventor-compliant 3D scene representation model
+    * **Python** FreeCAD offers a broad Python API
+    * **Qt** Graphical User Interface built with Qt
+
 
 Installing
 ----------
@@ -36,11 +55,11 @@ Other options are described at the [wiki Download page](http://www.freecadweb.or
 Build Status <img src="https://blog.travis-ci.com/images/travis-mascot-200px.png" height="30"/>
 ------------
 
-| Master | 0.17 | Translation |
+| Master | 0.18 | Translation |
 |:------:|:----:|:-----------:|
-|[![Master][freecad-master-status]][travis-branches]|[![0.17][freecad-0.17-status]][travis-branches]|[![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)|
+|[![Master][freecad-master-status]][travis-branches]|[![0.18][freecad-0.18-status]][travis-branches]|[![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)|
 
-[freecad-0.17-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=releases/FreeCAD-0-17
+[freecad-0.18-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=releases/FreeCAD-0-18
 [freecad-master-status]: https://travis-ci.org/FreeCAD/FreeCAD.svg?branch=master
 [travis-branches]: https://travis-ci.org/FreeCAD/FreeCAD/branches
 [travis-builds]: https://travis-ci.org/FreeCAD/FreeCAD/builds
@@ -66,8 +85,6 @@ The pages below contain up-to-date build instructions:
 
 Usage & Getting help
 --------------------
-
-[![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The FreeCAD wiki contains documentation on 
 general FreeCAD usage, Python scripting, and development. These 

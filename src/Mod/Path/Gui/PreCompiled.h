@@ -69,6 +69,8 @@
 # include <windows.h>
 #endif
 
+// OCC
+#include <TopExp_Explorer.hxx>
 
 // Qt Toolkit
 #ifndef __Qt4All__

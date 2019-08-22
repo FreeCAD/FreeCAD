@@ -160,7 +160,6 @@ DrawViewPart::~DrawViewPart()
 TopoDS_Shape DrawViewPart::getSourceShape(void) const
 {
 //     Base::Console().Message("DVP::getSourceShape() - %s\n", getNameInDocument());
-
     TopoDS_Shape result;
     const std::vector<App::DocumentObject*>& links = Source.getValues();
     if (links.empty())  {
@@ -276,7 +275,7 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
-//    Base::Console().Message("DVP::execute() - %s\n", getNameInDocument());
+//    Base::Console().Message("DVP::execute() - %s\n",getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -346,6 +345,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
     requestPaint();
+//    Base::Console().Message("DVP::execute - %s - exits\n",getNameInDocument());
     return App::DocumentObject::StdReturn;
 }
 
@@ -442,11 +442,11 @@ TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape
         go->extractGeometry(TechDrawGeometry::ecUVISO,
                             false);
     }
-
     auto end   = chrono::high_resolution_clock::now();
     auto diff  = end - start;
     double diffOut = chrono::duration <double, milli> (diff).count();
     Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs in GO::extractGeometry\n",getNameInDocument(),diffOut);
+
     const std::vector<TechDrawGeometry::BaseGeom  *> & edges = go->getEdgeGeometry();
     if (edges.empty()) {
         Base::Console().Log("DVP::buildGO - NO extracted edges!\n");

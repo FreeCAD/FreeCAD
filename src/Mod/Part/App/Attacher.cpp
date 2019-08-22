@@ -55,9 +55,9 @@
 # include <GProp_PrincipalProps.hxx>
 # include <BRepGProp.hxx>
 # include <GeomLib_IsPlanarSurface.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
 #endif
-#include <BRepLProp_SLProps.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
 
 #include "Attacher.h"
 #include "AttachExtension.h"
@@ -420,7 +420,7 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
 {
     if(sh.IsNull())
         return rtAnything;
-    
+
     switch (sh.ShapeType()){
     case TopAbs_SHAPE:
         return rtAnything; //note: there's no rtPart detection here - not enough data!

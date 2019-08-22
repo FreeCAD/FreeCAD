@@ -23,12 +23,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <vector>
-#include <list>
-#include <set>
-#include <boost/bind.hpp>
-#include <QMessageBox>
-#include <QPushButton>
+# include <vector>
+# include <list>
+# include <set>
+# include <boost/bind.hpp>
+# include <QMessageBox>
+# include <QPushButton>
 #endif
 
 #include <Base/Exception.h>

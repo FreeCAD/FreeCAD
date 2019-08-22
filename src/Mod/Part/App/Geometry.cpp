@@ -99,7 +99,10 @@
 # include <GeomAPI_ExtremaCurveCurve.hxx>
 # include <ShapeConstruct_Curve.hxx>
 # include <LProp_NotDefined.hxx>
-#endif
+
+# include <ctime>
+# include <cmath>
+#endif //_PreComp_
 
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/LinePy.h>
@@ -134,9 +137,6 @@
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
-
-#include <ctime>
-#include <cmath>
 
 #include "Geometry.h"
 

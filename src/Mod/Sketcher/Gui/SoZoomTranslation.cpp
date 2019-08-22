@@ -27,16 +27,15 @@
 # include <Inventor/misc/SoState.h>
 # include <cmath>
 # include <cfloat>
+# include <Inventor/actions/SoGetMatrixAction.h>
+# include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/elements/SoModelMatrixElement.h>
+# include <Inventor/elements/SoProjectionMatrixElement.h>
+# include <Inventor/elements/SoViewingMatrixElement.h>
+# include <Inventor/elements/SoViewVolumeElement.h>
+# include <Inventor/elements/SoViewportRegionElement.h>
+# include <Inventor/nodes/SoCamera.h>
 #endif
-
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/nodes/SoCamera.h>
 
 #include <Gui/Application.h>
 #include <Gui/Document.h>

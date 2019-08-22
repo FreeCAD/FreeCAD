@@ -24,9 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/regex.hpp>
 #endif
-
-#include <boost/regex.hpp>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -81,7 +80,7 @@ void PathSim::SetCurrentTool(Tool * tool)
 	case Tool::DRILL:
 		tp = cSimTool::CHAMFER;
 		angle = tool->CuttingEdgeAngle;
-        if (angle > 180) 
+        if (angle > 180)
         {
             angle = 180;
         }
@@ -89,7 +88,7 @@ void PathSim::SetCurrentTool(Tool * tool)
 	case Tool::CENTERDRILL:
 		tp = cSimTool::CHAMFER;
 		angle = tool->CuttingEdgeAngle;
-        if (angle > 180) 
+        if (angle > 180)
         {
             angle = 180;
         }
@@ -107,7 +106,7 @@ void PathSim::SetCurrentTool(Tool * tool)
 	case Tool::ENGRAVER:
 		tp = cSimTool::CHAMFER;
 		angle = tool->CuttingEdgeAngle;
-        if (angle > 180) 
+        if (angle > 180)
         {
             angle = 180;
         }
@@ -155,4 +154,4 @@ Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 
 
 
- 
+

@@ -259,7 +259,7 @@
     </message>
     <message>
         <location filename="../../ArchPanel.py" line="1213"/>
-        <source>The position of the tag text. Keep (0,0,0) for automatic center position</source>
+        <source>The position of the tag text. Keep (0,0,0) for center position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2744,7 +2744,7 @@ Building creation aborted.</source>
     <message>
         <location filename="../../ArchFloor.py" line="101"/>
         <source>You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
-Floor object is not allowed to accept Site or Building objects.
+Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 You can change that in the preferences.</source>
         <translation type="unfinished"></translation>

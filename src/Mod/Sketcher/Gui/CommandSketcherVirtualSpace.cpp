@@ -28,9 +28,8 @@
 # include <Precision.hxx>
 # include <QApplication>
 # include <Standard_Version.hxx>
-#endif
-
 # include <QMessageBox>
+#endif
 
 #include <Base/Console.h>
 #include <App/Application.h>
@@ -155,13 +154,13 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
                                  QObject::tr("Select constraint(s) from the sketch."));
             return;
         }
-        
+
         SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-        
+
         // undo command open
         openCommand("Toggle constraints to the other virtual space");
-        
+
         int successful=SubNames.size();
         // go through the selected subelements
         for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
