@@ -264,11 +264,11 @@ void AttachExtension::updateAttacherVals()
 }
 
 App::PropertyPlacement& AttachExtension::getPlacement() {
-
-    if(!getExtendedObject()->isDerivedFrom(App::GeoFeature::getClassTypeId()))
-        throw Base::RuntimeError("AttachExtension not added to GeooFeature!");
-    
-    return static_cast<App::GeoFeature*>(getExtendedObject())->Placement;
+    auto pla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+            getExtendedObject()->getPropertyByName("Placement"));
+    if(!pla)
+        throw Base::RuntimeError("AttachExtension cannot find placement property");
+    return *pla;
 }
 
 PyObject* AttachExtension::getExtensionPyObject(void) {
