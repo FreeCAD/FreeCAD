@@ -1211,8 +1211,8 @@ void TreeWidget::onActivateDocument(QAction* active)
     // activate the specified document
     QByteArray docname = active->data().toByteArray();
     Gui::Document* doc = Application::Instance->getDocument((const char*)docname);
-    if (doc)
-        doc->setActiveView();
+    if (doc && !doc->setActiveView())
+        doc->setActiveView(0,View3DInventor::getClassTypeId());
 }
 
 Qt::DropActions TreeWidget::supportedDropActions () const
@@ -1297,7 +1297,8 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
             onReloadDoc();
             return;
         }
-        doc->setActiveView();
+        if(!doc->setActiveView())
+            doc->setActiveView(0,View3DInventor::getClassTypeId());
     }
     else if (item->type() == TreeWidget::ObjectType) {
         DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
