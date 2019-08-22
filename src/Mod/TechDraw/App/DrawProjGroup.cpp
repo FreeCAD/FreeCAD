@@ -865,7 +865,7 @@ void DrawProjGroup::updateChildren(void)
             Base::Console().Log("PROBLEM - DPG::updateChildren - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else {
+        } else  if(view->Scale.getValue()!=Scale.getValue()) {
             view->Scale.setValue(Scale.getValue());
         }
     }
@@ -883,7 +883,7 @@ void DrawProjGroup::updateChildrenSource(void)
             Base::Console().Log("PROBLEM - DPG::updateChildrenSource - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else {
+        } else if (view->Source.getValues() != Source.getValues()) {
             view->Source.setValues(Source.getValues());
         }
     }
