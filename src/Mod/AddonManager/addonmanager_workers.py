@@ -713,3 +713,36 @@ class InstallWorker(QtCore.QThread):
         if bakdir:
             shutil.rmtree(bakdir)
         return translate("AddonsInstaller", "Successfully installed") + " " + zipurl
+
+
+class CheckSingleWorker(QtCore.QThread):
+
+    """Worker to check for updates for a single addon"""
+
+    updateAvailable = QtCore.Signal(bool)
+
+    def __init__(self, name):
+
+        QtCore.QThread.__init__(self)
+        self.name = name
+
+    def run(self):
+
+        try:
+            import git
+        except:
+            return
+        FreeCAD.Console.PrintLog("Checking for available updates of the "+name+" addon\n")
+        addondir = os.path.join(FreeCAD.getUserAppDataDir(),"Mod",name)
+        if os.path.exists(addondir):
+            if os.path.exists(addondir + os.sep + '.git'):
+                gitrepo = git.Git(addondir)
+                try:
+                    gitrepo.fetch()
+                    if "git pull" in gitrepo.status():
+                        self.updateAvailable.emit(True)
+                        return
+                except:
+                    # can fail for any number of reasons, ex. not being online
+                    pass
+        self.updateAvailable.emit(False)
