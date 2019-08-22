@@ -110,6 +110,10 @@ public:
       */
     virtual bool positionBySupport(void);
 
+    /** Return whether this attacher is active
+     */
+    bool isAttacherActive() const;
+
     virtual bool isTouched_Mapping()
     {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/}
 
@@ -122,13 +126,14 @@ protected:
     virtual void extensionOnChanged(const App::Property* /*prop*/);
     virtual void extHandleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName);
     
-    App::PropertyPlacement& getPlacement();
+    App::PropertyPlacement& getPlacement() const;
 
 public:
     void updateAttacherVals();
 
 private:
     Attacher::AttachEngine* _attacher;
+    mutable int _active = -1;
 };
 
 

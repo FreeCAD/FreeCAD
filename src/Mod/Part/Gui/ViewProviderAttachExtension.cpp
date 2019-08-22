@@ -51,16 +51,7 @@ QIcon ViewProviderAttachExtension::extensionMergeOverlayIcons(const QIcon & orig
 
         if (attach) {
 
-            bool attached = false;
-
-            try{
-                attached = attach->positionBySupport();
-            }
-            catch (...) { // We are just trying to get an icon, if no placement can be calculated, set unattached.
-                // set unattached
-            }
-
-            if(!attached) {
+            if(!attach->isAttacherActive()) {
                 QPixmap px;
 
                 static const char * const feature_detached_xpm[]={
