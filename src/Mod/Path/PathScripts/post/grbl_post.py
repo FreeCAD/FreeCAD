@@ -76,7 +76,7 @@ TOOL_CHANGE = ''''''              # Tool Change commands will be inserted before
 # ***************************************************************************
 
 # Parser arguments list & definition
-parser = argparse.ArgumentParser(prog='grbl_G81', add_help=False)
+parser = argparse.ArgumentParser(prog='grbl', add_help=False)
 parser.add_argument('--comments',           action='store_true', help='output comment (default)')
 parser.add_argument('--no-comments',        action='store_true', help='suppress comment output')
 parser.add_argument('--header',             action='store_true', help='output headers (default)')
@@ -91,6 +91,7 @@ parser.add_argument('--no-translate_drill', action='store_true', help='don\'t tr
 parser.add_argument('--preamble',                                help='set commands to be issued before the first command, default="G17 G90"')
 parser.add_argument('--postamble',                               help='set commands to be issued after the last command, default="M5\nG17 G90\n;M2"')
 parser.add_argument('--inches',             action='store_true', help='Convert output for US imperial mode (G20)')
+parser.add_argument('--tool-change',        action='store_true', help='Insert M6 for all tool changes')
 TOOLTIP_ARGS = parser.format_help()
 
 
@@ -126,6 +127,7 @@ def processArguments(argstring):
   global UNIT_SPEED_FORMAT
   global UNIT_FORMAT
   global TRANSLATE_DRILL_CYCLES
+  global OUTPUT_TOOL_CHANGE
 
   try:
     args = parser.parse_args(shlex.split(argstring))
@@ -159,6 +161,8 @@ def processArguments(argstring):
       UNIT_SPEED_FORMAT = 'in/min'
       UNIT_FORMAT = 'in'
       PRECISION = 4
+    if args.tool_change:
+      OUTPUT_TOOL_CHANGE = True
 
   except Exception as e:
     return False
@@ -193,7 +197,7 @@ def export(objectslist, filename, argstring):
 
   # Write the preamble
   if OUTPUT_COMMENTS:
-    gcode += linenumber() + "(begin preamble)\n"
+    gcode += linenumber() + "(Begin preamble)\n"
   for line in PREAMBLE.splitlines(True):
     gcode += linenumber() + line
   # verify if PREAMBLE have changed MOTION_MODE or UNITS
@@ -225,7 +229,7 @@ def export(objectslist, filename, argstring):
 
     # do the pre_op
     if OUTPUT_COMMENTS:
-      gcode += linenumber() + "(begin operation: " + obj.Label + ")\n"
+      gcode += linenumber() + "(Begin operation: " + obj.Label + ")\n"
     for line in PRE_OPERATION.splitlines(True):
       gcode += linenumber() + line
 
@@ -234,13 +238,13 @@ def export(objectslist, filename, argstring):
 
     # do the post_op
     if OUTPUT_COMMENTS:
-      gcode += linenumber() + "(finish operation: " + obj.Label + ")\n"
+      gcode += linenumber() + "(Finish operation: " + obj.Label + ")\n"
     for line in POST_OPERATION.splitlines(True):
       gcode += linenumber() + line
 
   # do the post_amble
   if OUTPUT_COMMENTS:
-    gcode += linenumber() + "(begin postamble)\n"
+    gcode += linenumber() + "(Begin postamble)\n"
   for line in POSTAMBLE.splitlines(True):
     gcode += linenumber() + line
 
@@ -256,7 +260,7 @@ def export(objectslist, filename, argstring):
   else:
     final = gcode
 
-  print("done postprocessing.")
+  print("Done postprocessing.")
 
   # write the file
   gfile = pythonopen(filename, "w")
@@ -300,7 +304,7 @@ def parse(pathobj):
 
   if hasattr(pathobj, "Group"):  # We have a compound or project.
     if OUTPUT_COMMENTS:
-      out += linenumber() + "(compound: " + pathobj.Label + ")\n"
+      out += linenumber() + "(Compound: " + pathobj.Label + ")\n"
     for p in pathobj.Group:
       out += parse(p)
     return out
@@ -367,7 +371,7 @@ def parse(pathobj):
       # Check for Tool Change:
       if command in ('M6', 'M06'):
         if OUTPUT_COMMENTS:
-          out += linenumber() + "(begin toolchange)\n"
+          out += linenumber() + "(Begin toolchange)\n"
         if not OUTPUT_TOOL_CHANGE:
           outstring[0] = "(" + outstring[0]
           outstring[-1] = outstring[-1] + ")"
@@ -471,4 +475,4 @@ def drill_translate(outstring, cmd, params):
   return trBuff
 
 
-print(__name__ + ": gCode postprocessor loaded.")
+print(__name__ + ": GCode postprocessor loaded.")
