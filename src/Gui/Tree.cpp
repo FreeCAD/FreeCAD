@@ -63,6 +63,7 @@
 #include "Macro.h"
 #include "Workbench.h"
 #include "Widgets.h"
+#include "ExpressionCompleter.h"
 
 FC_LOG_LEVEL_INIT("Tree",false,true,true);
 
@@ -625,24 +626,30 @@ void TreeWidget::resetItemSearch() {
     searchObject = 0;
 }
 
-void TreeWidget::startItemSearch() {
+void TreeWidget::startItemSearch(QLineEdit *edit) {
     resetItemSearch();
     searchDoc = 0;
     searchContextDoc = 0;
-    if (contextItem) {
-        if(contextItem->type() == DocumentType) {
-            searchDoc = static_cast<DocumentItem*>(contextItem)->document();
-        } else if(contextItem->type() == ObjectType) {
-            searchDoc = static_cast<DocumentObjectItem*>(contextItem)->object()->getDocument();
-        }
-    }else{
-        auto sels = selectedItems();
-        if(sels.size() == 1) {
+    auto sels = selectedItems();
+    if(sels.size() == 1)  {
+        if(sels.front()->type() == DocumentType) {
+            searchDoc = static_cast<DocumentItem*>(sels.front())->document();
+        } else if(sels.front()->type() == ObjectType) {
             auto item = static_cast<DocumentObjectItem*>(sels.front());
             searchDoc = item->object()->getDocument();
             searchContextDoc = item->getOwnerDocument()->document();
         }
-    }
+    }else 
+        searchDoc = Application::Instance->activeDocument();
+
+    App::DocumentObject *obj = 0;
+    if(searchContextDoc && searchContextDoc->getDocument()->getObjects().size())
+        obj = searchContextDoc->getDocument()->getObjects().front();
+    else if(searchDoc && searchDoc->getDocument()->getObjects().size())
+        obj = searchDoc->getDocument()->getObjects().front();
+
+    if(obj)
+        static_cast<ExpressionLineEdit*>(edit)->setDocumentObject(obj);
 }
 
 void TreeWidget::itemSearch(const QString &text, bool select) {
@@ -2702,8 +2709,10 @@ void TreeWidget::onItemSelectionChanged ()
             else if(selItems.front()->type() == DocumentType) {
                 auto ditem = static_cast<DocumentItem*>(selItems.front());
                 if(FC_TREEPARAM(SyncView)) {
+                    bool focus = hasFocus();
                     ditem->document()->setActiveView();
-                    setFocus();
+                    if(focus)
+                        setFocus();
                 }
                 // For triggering property editor refresh
                 Gui::Selection().signalSelectionChanged(SelectionChanges());
@@ -2788,7 +2797,7 @@ TreePanel::TreePanel(const char *name, QWidget* parent)
     connect(this->treeWidget, SIGNAL(emitSearchObjects()),
             this, SLOT(showEditor()));
 
-    this->searchBox = new Gui::ClearLineEdit(this);
+    this->searchBox = new Gui::ExpressionLineEdit(this,true);
     pLayout->addWidget(this->searchBox);
     this->searchBox->hide();
     this->searchBox->installEventFilter(this);
@@ -2797,7 +2806,7 @@ TreePanel::TreePanel(const char *name, QWidget* parent)
 #endif
     connect(this->searchBox, SIGNAL(returnPressed()),
             this, SLOT(accept()));
-    connect(this->searchBox, SIGNAL(textEdited(QString)),
+    connect(this->searchBox, SIGNAL(textChanged(QString)),
             this, SLOT(itemSearch(QString)));
 }
 
@@ -2809,6 +2818,7 @@ void TreePanel::accept()
 {
     QString text = this->searchBox->text();
     hideEditor();
+    this->treeWidget->setFocus();
     this->treeWidget->itemSearch(text,true);
 }
 
@@ -2824,6 +2834,7 @@ bool TreePanel::eventFilter(QObject *obj, QEvent *ev)
         case Qt::Key_Escape:
             hideEditor();
             consumed = true;
+            treeWidget->setFocus();
             break;
 
         default:
@@ -2840,11 +2851,12 @@ void TreePanel::showEditor()
 {
     this->searchBox->show();
     this->searchBox->setFocus();
-    this->treeWidget->startItemSearch();
+    this->treeWidget->startItemSearch(searchBox);
 }
 
 void TreePanel::hideEditor()
 {
+    static_cast<ExpressionLineEdit*>(this->searchBox)->setDocumentObject(0);
     this->searchBox->clear();
     this->searchBox->hide();
     this->treeWidget->resetItemSearch();
@@ -2914,8 +2926,12 @@ void TreeWidget::selectLinkedObject(App::DocumentObject *linked) {
     if(linkedDoc->showItem(linkedItem,true))
         scrollToItem(linkedItem);
 
-    if(linkedDoc->document()->getDocument() != App::GetApplication().getActiveDocument())
+    if(linkedDoc->document()->getDocument() != App::GetApplication().getActiveDocument()) {
+        bool focus = hasFocus();
         linkedDoc->document()->setActiveView(linkedItem->object());
+        if(focus)
+            setFocus();
+    }
 }
 
 // ----------------------------------------------------------------------------
