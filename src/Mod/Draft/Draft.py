@@ -76,6 +76,10 @@ _VisGroup = DraftLayer.Layer
 _ViewProviderVisGroup = DraftLayer.ViewProviderLayer
 makeLayer = DraftLayer.makeLayer
 
+# import DraftFillet
+# Fillet = DraftFillet.Fillet
+# makeFillet = DraftFillet.makeFillet
+
 #---------------------------------------------------------------------------
 # General functions
 #---------------------------------------------------------------------------
