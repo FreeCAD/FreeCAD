@@ -144,42 +144,35 @@ def getPreferences():
 
     """retrieves IFC preferences"""
 
-    global DEBUG, PREFIX_NUMBERS, SKIP, SEPARATE_OPENINGS
-    global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
-    global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
-    global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID, SERIALIZE
-    global SPLIT_LAYERS, EXPORT_2D, FULL_PARAMETRIC, FITVIEW_ONIMPORT
-    global ADD_DEFAULT_SITE, ADD_DEFAULT_STOREY, ADD_DEFAULT_BUILDING
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
         FreeCADGui.showPreferences("Import-Export",0)
-    DEBUG = p.GetBool("ifcDebug",False)
-    PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
-    SKIP = p.GetString("ifcSkip","").split(",")
-    SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
-    ROOT_ELEMENT = p.GetString("ifcRootElement","IfcProduct")
-    GET_EXTRUSIONS = p.GetBool("ifcGetExtrusions",False)
-    MERGE_MATERIALS = p.GetBool("ifcMergeMaterials",False)
-    MERGE_MODE_ARCH = p.GetInt("ifcImportModeArch",0)
-    MERGE_MODE_STRUCT = p.GetInt("ifcImportModeStruct",1)
-    if MERGE_MODE_ARCH > 0:
-        SEPARATE_OPENINGS = False
-        GET_EXTRUSIONS = False
-    if not SEPARATE_OPENINGS:
-        SKIP.append("IfcOpeningElement")
-    CREATE_CLONES = p.GetBool("ifcCreateClones",True)
-    FORCE_BREP = p.GetBool("ifcExportAsBrep",False)
-    IMPORT_PROPERTIES = p.GetBool("ifcImportProperties",False)
-    STORE_UID = p.GetBool("ifcStoreUid",True)
-    SERIALIZE = p.GetBool("ifcSerialize",False)
-    SPLIT_LAYERS = p.GetBool("ifcSplitLayers",False)
-    EXPORT_2D = p.GetBool("ifcExport2D",True)
-    FULL_PARAMETRIC = p.GetBool("IfcExportFreeCADProperties",False)
-    FITVIEW_ONIMPORT = p.GetBool("ifcFitViewOnImport",False)
-    ADD_DEFAULT_SITE = p.GetBool("IfcAddDefaultSite",False)
-    ADD_DEFAULT_STOREY = p.GetBool("IfcAddDefaultStorey",False)
-    ADD_DEFAULT_BUILDING = p.GetBool("IfcAddDefaultBuilding",True)
+
+    preferences = {
+        'DEBUG': p.GetBool("ifcDebug",False),
+        'PREFIX_NUMBERS': p.GetBool("ifcPrefixNumbers",False),
+        'SKIP': p.GetString("ifcSkip","").split(","),
+        'SEPARATE_OPENINGS': p.GetBool("ifcSeparateOpenings",False),
+        'ROOT_ELEMENT': p.GetString("ifcRootElement","IfcProduct"),
+        'GET_EXTRUSIONS': p.GetBool("ifcGetExtrusions",False),
+        'MERGE_MATERIALS': p.GetBool("ifcMergeMaterials",False),
+        'MERGE_MODE_ARCH': p.GetInt("ifcImportModeArch",0),
+        'MERGE_MODE_STRUCT': p.GetInt("ifcImportModeStruct",1),
+        'CREATE_CLONES': p.GetBool("ifcCreateClones",True),
+        'IMPORT_PROPERTIES': p.GetBool("ifcImportProperties",False),
+        'SPLIT_LAYERS': p.GetBool("ifcSplitLayers",False),
+        'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport",False)
+    }
+
+    if preferences['MERGE_MODE_ARCH'] > 0:
+        preferences['SEPARATE_OPENINGS'] = False
+        preferences['GET_EXTRUSIONS'] = False
+    if not preferences['SEPARATE_OPENINGS']:
+        preferences['SKIP'].append("IfcOpeningElement")
+
+    return preferences
 
 
 # ************************************************************************************************
@@ -197,7 +190,7 @@ def open(filename,skip=[],only=[],root=None):
     return doc
 
 
-def insert(filename,docname,skip=[],only=[],root=None):
+def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
 
     """insert(filename,docname,skip=[],only=[],root=None): imports the contents of an IFC file.
     skip can contain a list of ids of objects to be skipped, only can restrict the import to
@@ -205,7 +198,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
     import only the derivates of a certain element type (default = ifcProduct)."""
 
     # read preference settings
-    getPreferences()
+    if preferences is None:
+        preferences = getPreferences()
 
     try:
         import ifcopenshell
@@ -213,19 +207,19 @@ def insert(filename,docname,skip=[],only=[],root=None):
         FreeCAD.Console.PrintError("IfcOpenShell was not found on this system. IFC support is disabled\n")
         return
 
-    if DEBUG: print("Opening ",filename,"...",end="")
+    if preferences['DEBUG']: print("Opening ",filename,"...",end="")
     try:
         doc = FreeCAD.getDocument(docname)
     except:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
-    if DEBUG: print("done.")
+    if preferences['DEBUG']: print("done.")
 
-    global ROOT_ELEMENT, parametrics
+    global parametrics
 
     # allow to override the root element
     if root:
-        ROOT_ELEMENT = root
+        preferences['ROOT_ELEMENT'] = root
 
     # keeping global variable for debugging purposes
     # global ifcfile
@@ -249,20 +243,20 @@ def insert(filename,docname,skip=[],only=[],root=None):
     settings.set(settings.USE_BREP_DATA,True)
     settings.set(settings.SEW_SHELLS,True)
     settings.set(settings.USE_WORLD_COORDS,True)
-    if SEPARATE_OPENINGS:
+    if preferences['SEPARATE_OPENINGS']:
         settings.set(settings.DISABLE_OPENING_SUBTRACTIONS,True)
-    if SPLIT_LAYERS and hasattr(settings,"APPLY_LAYERSETS"):
+    if preferences['SPLIT_LAYERS'] and hasattr(settings,"APPLY_LAYERSETS"):
         settings.set(settings.APPLY_LAYERSETS,True)
 
     # build all needed tables
-    if DEBUG: print("Building types and relationships table...",end="")
+    if preferences['DEBUG']: print("Building types and relationships table...",end="")
     # type tables
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
     floors = ifcfile.by_type("IfcBuildingStorey")
     openings = ifcfile.by_type("IfcOpeningElement")
     materials = ifcfile.by_type("IfcMaterial")
-    products, annotations = importIFCHelper.buildRelProductsAnnotations(ifcfile, ROOT_ELEMENT)
+    products, annotations = importIFCHelper.buildRelProductsAnnotations(ifcfile, preferences['ROOT_ELEMENT'])
     # empty relation tables
     objects = {} # { id:object, ... }
     shapes = {} # { id:shaoe } only used for merge mode
@@ -279,7 +273,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     subtractions = importIFCHelper.buildRelSubtractions(ifcfile)
     mattable = importIFCHelper.buildRelMattable(ifcfile)
     colors, style_material_id = importIFCHelper.buildRelColors(ifcfile, prodrepr)
-    if DEBUG: print("done.")
+    if preferences['DEBUG']: print("done.")
 
     # only import a list of IDs and their children, if defined
     if only:
@@ -296,10 +290,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
     from FreeCAD import Base
     progressbar = Base.ProgressIndicator()
     progressbar.start("Importing IFC objects...",len(products))
-    if DEBUG: print("Parsing",len(products),"BIM objects...")
+    if preferences['DEBUG']: print("Parsing",len(products),"BIM objects...")
 
     # Prepare the 3D view if applicable
-    if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+    if preferences['FITVIEW_ONIMPORT'] and FreeCAD.GuiUp:
         overallboundbox = None
         import FreeCADGui
         FreeCADGui.ActiveDocument.activeView().viewAxonometric()
@@ -317,7 +311,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         pid = product.id()
         guid = product.GlobalId
         ptype = product.is_a()
-        if DEBUG: print(count,"/",len(products),"object #"+str(pid),":",ptype,end="")
+        if preferences['DEBUG']: print(count,"/",len(products),"object #"+str(pid),":",ptype,end="")
 
         # build list of related property sets
         psets = importIFCHelper.getIfcPropertySets(ifcfile, pid)
@@ -325,14 +319,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
         # checking for full FreeCAD parametric definition, overriding everything else
         if psets and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("IfcImportFreeCADProperties",False):
             if "FreeCADPropertySet" in [ifcfile[pset].Name for pset in psets.keys()]:
-                if DEBUG: print(" restoring from parametric definition...",end="")
+                if preferences['DEBUG']: print(" restoring from parametric definition...",end="")
                 obj = createFromProperties(psets,ifcfile)
                 if obj:
                     objects[pid] = obj
-                    if DEBUG: print("done")
+                    if preferences['DEBUG']: print("done")
                     continue
                 else:
-                    if DEBUG: print("failed")
+                    if preferences['DEBUG']: print("failed")
 
         # no parametric data, we go the good old way
         name = str(ptype[3:])
@@ -340,7 +334,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             name = product.Name
             if six.PY2:
                 name = name.encode("utf8")
-        if PREFIX_NUMBERS:
+        if preferences['PREFIX_NUMBERS']:
             name = "ID" + str(pid) + " " + name
         obj = None
         baseobj = None
@@ -353,20 +347,20 @@ def insert(filename,docname,skip=[],only=[],root=None):
         if ptype in structuralifcobjects:
             archobj = False
             structobj = True
-            if DEBUG: print(" (struct)",end="")
+            if preferences['DEBUG']: print(" (struct)",end="")
         else:
-            if DEBUG: print(" (arch)",end="")
-        if MERGE_MODE_ARCH == 4 and archobj:
-            if DEBUG: print(" skipped.")
+            if preferences['DEBUG']: print(" (arch)",end="")
+        if preferences['MERGE_MODE_ARCH'] == 4 and archobj:
+            if preferences['DEBUG']: print(" skipped.")
             continue
-        if MERGE_MODE_STRUCT == 3 and not archobj:
-            if DEBUG: print(" skipped.")
+        if preferences['MERGE_MODE_STRUCT'] == 3 and not archobj:
+            if preferences['DEBUG']: print(" skipped.")
             continue
         if pid in skip: # user given id skip list
-            if DEBUG: print(" skipped.")
+            if preferences['DEBUG']: print(" skipped.")
             continue
-        if ptype in SKIP: # preferences-set type skip list
-            if DEBUG: print(" skipped.")
+        if ptype in preferences['SKIP']: # preferences-set type skip list
+            if preferences['DEBUG']: print(" skipped.")
             continue
 
         # check if this object is sharing its shape (mapped representation)
@@ -376,8 +370,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
         try:
             prepr = product.Representation
         except:
-            if DEBUG: print(" ERROR unable to get object representation",end="")
-        if prepr and (MERGE_MODE_ARCH == 0) and archobj and CREATE_CLONES:
+            if preferences['DEBUG']: print(" ERROR unable to get object representation",end="")
+        if prepr and (preferences['MERGE_MODE_ARCH'] == 0) and archobj and preferences['CREATE_CLONES']:
             for r in prepr.Representations:
                 if r.RepresentationIdentifier.upper() == "BODY":
                     if r.Items[0].is_a("IfcMappedItem"):
@@ -402,7 +396,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
         # from now on we have a brep string
         if brep:
-            if DEBUG: print(" "+str(int(len(brep)/1000))+"k ",end="")
+            if preferences['DEBUG']: print(" "+str(int(len(brep)/1000))+"k ",end="")
 
             # create a Part shape
             shape = Part.Shape()
@@ -410,19 +404,19 @@ def insert(filename,docname,skip=[],only=[],root=None):
             shape.scale(1000.0) # IfcOpenShell always outputs in meters, we convert to mm, the freecad internal unit
 
             if shape.isNull():
-                if DEBUG: print("null shape ",end="")
+                if preferences['DEBUG']: print("null shape ",end="")
             elif not shape.isValid():
-                if DEBUG: print("invalid shape ",end="")
+                if preferences['DEBUG']: print("invalid shape ",end="")
             else:
 
                 # add to the global boundbox if applicable
-                if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
+                if preferences['FITVIEW_ONIMPORT'] and FreeCAD.GuiUp:
                     try:
                         bb = shape.BoundBox
-                        # if DEBUG: print(' ' + str(bb),end="")
+                        # if preferences['DEBUG']: print(' ' + str(bb),end="")
                     except:
                         bb = None
-                        if DEBUG: print(' BB could not be computed',end="")
+                        if preferences['DEBUG']: print(' BB could not be computed',end="")
                     if bb and bb.isValid():
                         if not overallboundbox:
                             overallboundbox = bb
@@ -430,27 +424,27 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             FreeCADGui.SendMsgToActiveView("ViewFit")
                         overallboundbox.add(bb)
 
-                if (MERGE_MODE_ARCH > 0 and archobj) or structobj:
+                if (preferences['MERGE_MODE_ARCH'] > 0 and archobj) or structobj:
                     # we are not using Arch objects
 
                     # additional tweaks to set when not using Arch objects
                     if ptype == "IfcSpace": # do not add spaces to compounds
-                        if DEBUG: print("skipping space ",pid,end="")
+                        if preferences['DEBUG']: print("skipping space ",pid,end="")
                     elif structobj:
                         structshapes[pid] = shape
-                        if DEBUG: print(len(shape.Solids),"solids ",end="")
+                        if preferences['DEBUG']: print(len(shape.Solids),"solids ",end="")
                         baseobj = shape
                     else:
                         shapes[pid] = shape
-                        if DEBUG: print(len(shape.Solids),"solids ",end="")
+                        if preferences['DEBUG']: print(len(shape.Solids),"solids ",end="")
                         baseobj = shape
                 else:
 
                     # create base shape object
                     if clone:
-                        if DEBUG: print("clone ",end="")
+                        if preferences['DEBUG']: print("clone ",end="")
                     else:
-                        if GET_EXTRUSIONS and (MERGE_MODE_ARCH != 1):
+                        if preferences['GET_EXTRUSIONS'] and (preferences['MERGE_MODE_ARCH'] != 1):
 
                             # recompose extrusions from a shape
                             if ptype in ["IfcWall","IfcWallStandardCase","IfcSpace"]:
@@ -528,11 +522,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             baseobj.Shape = shape
         else:
             # this object has no shape (storeys, etc...)
-            if DEBUG: print(" no brep ",end="")
+            if preferences['DEBUG']: print(" no brep ",end="")
 
         # we now have the shape, we create the final object
 
-        if MERGE_MODE_ARCH == 0 and archobj:
+        if preferences['MERGE_MODE_ARCH'] == 0 and archobj:
 
             # full Arch objects
 
@@ -598,7 +592,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             # set additional properties
             obj.Label = name
-            if DEBUG: print(": "+obj.Label+" ",end="")
+            if preferences['DEBUG']: print(": "+obj.Label+" ",end="")
             if hasattr(obj,"Description") and hasattr(product,"Description"):
                 if product.Description:
                     obj.Description = product.Description
@@ -638,7 +632,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             if obj:
                 # print number of solids
-                if DEBUG:
+                if preferences['DEBUG']:
                     s = ""
                     if hasattr(obj,"Shape"):
                         if obj.Shape.Solids:
@@ -646,7 +640,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     print(s,end="")
                 objects[pid] = obj
 
-        elif (MERGE_MODE_ARCH == 1 and archobj) or (MERGE_MODE_STRUCT == 0 and not archobj):
+        elif (preferences['MERGE_MODE_ARCH'] == 1 and archobj) or (preferences['MERGE_MODE_STRUCT'] == 0 and not archobj):
 
             # non-parametric Arch objects (just Arch components with a shape)
 
@@ -660,7 +654,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             elif baseobj:
                 obj = Arch.makeComponent(baseobj,name=name,delete=True)
                 obj.Label = name
-                if DEBUG: print(": "+obj.Label+" ",end="")
+                if preferences['DEBUG']: print(": "+obj.Label+" ",end="")
                 if hasattr(obj,"Description") and hasattr(product,"Description"):
                     if product.Description:
                         obj.Description = product.Description
@@ -674,7 +668,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     a["IfcUID"] = str(guid)
                     obj.IfcData = a
 
-        elif (MERGE_MODE_ARCH == 2 and archobj) or (MERGE_MODE_STRUCT == 1 and not archobj):
+        elif (preferences['MERGE_MODE_ARCH'] == 2 and archobj) or (preferences['MERGE_MODE_STRUCT'] == 1 and not archobj):
 
             # Part shapes
 
@@ -689,7 +683,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
 
-        if DEBUG: print("")  # newline for debug prints, print for a new object should be on a new line
+        if preferences['DEBUG']: print("")  # newline for debug prints, print for a new object should be on a new line
 
         if obj:
 
@@ -700,7 +694,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             if psets:
 
-                if IMPORT_PROPERTIES and hasattr(obj,"IfcProperties"):
+                if preferences['IMPORT_PROPERTIES'] and hasattr(obj,"IfcProperties"):
 
                     # treat as spreadsheet (pref option)
 
@@ -715,13 +709,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     n = 2
                     for c in psets.keys():
                         o = ifcfile[c]
-                        if DEBUG: print("propertyset Name",o.Name,type(o.Name))
+                        if preferences['DEBUG']: print("propertyset Name",o.Name,type(o.Name))
                         catname = o.Name
                         for p in psets[c]:
                             l = ifcfile[p]
                             lname = l.Name
                             if l.is_a("IfcPropertySingleValue"):
-                                if DEBUG:
+                                if preferences['DEBUG']:
                                     print("property name",l.Name,type(l.Name))
                                 if six.PY2:
                                     catname = catname.encode("utf8")
@@ -729,7 +723,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                 ifc_spreadsheet.set(str('A'+str(n)), catname)
                                 ifc_spreadsheet.set(str('B'+str(n)), lname)
                                 if l.NominalValue:
-                                    if DEBUG:
+                                    if preferences['DEBUG']:
                                         print("property NominalValue",l.NominalValue.is_a(),type(l.NominalValue.is_a()))
                                         print("property NominalValue.wrappedValue",l.NominalValue.wrappedValue,type(l.NominalValue.wrappedValue))
                                         #print("l.NominalValue.Unit",l.NominalValue.Unit,type(l.NominalValue.Unit))
@@ -768,11 +762,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
             # color
 
             if FreeCAD.GuiUp and (pid in colors) and hasattr(obj.ViewObject,"ShapeColor"):
-                #if DEBUG: print("    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255))
+                #if preferences['DEBUG']: print("    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255))
                 obj.ViewObject.ShapeColor = colors[pid]
 
-            # if DEBUG is on, recompute after each shape
-            if DEBUG: FreeCAD.ActiveDocument.recompute()
+            # if preferences['DEBUG'] is on, recompute after each shape
+            if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
 
             # attached 2D elements
 
@@ -820,9 +814,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
     progressbar.stop()
     FreeCAD.ActiveDocument.recompute()
 
-    if MERGE_MODE_STRUCT == 2:
+    if preferences['MERGE_MODE_STRUCT'] == 2:
 
-        if DEBUG: print("Joining Structural shapes...",end="")
+        if preferences['DEBUG']: print("Joining Structural shapes...",end="")
 
         for host,children in groups.items(): # Structural
             if ifcfile[host].is_a("IfcStructuralAnalysisModel"):
@@ -833,7 +827,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         del structshapes[c]
                 if compound:
                     name = ifcfile[host].Name or "AnalysisModel"
-                    if PREFIX_NUMBERS: name = "ID" + str(host) + " " + name
+                    if preferences['PREFIX_NUMBERS']: name = "ID" + str(host) + " " + name
                     obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                     obj.Label = name
                     obj.Shape = Part.makeCompound(compound)
@@ -841,11 +835,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
             obj = FreeCAD.ActiveDocument.addObject("Part::Feature","UnclaimedStruct")
             obj.Shape = Part.makeCompound(structshapes.values())
 
-        if DEBUG: print("done")
+        if preferences['DEBUG']: print("done")
 
     else:
 
-        if DEBUG: print("Processing Struct relationships...",end="")
+        if preferences['DEBUG']: print("Processing Struct relationships...",end="")
 
         # groups
 
@@ -864,13 +858,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     for c in childs_to_delete:
                         children.remove(c)  # to not process the child again in remaining groups
                     if cobs:
-                        if DEBUG: print("adding ",len(cobs), " object(s) to ", objects[host].Label)
+                        if preferences['DEBUG']: print("adding ",len(cobs), " object(s) to ", objects[host].Label)
                         Arch.addComponents(cobs,objects[host])
-                        if DEBUG: FreeCAD.ActiveDocument.recompute()
+                        if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
 
-        if DEBUG: print("done")
+        if preferences['DEBUG']: print("done")
 
-        if MERGE_MODE_ARCH > 2:  # if ArchObj is compound or ArchObj not imported
+        if preferences['MERGE_MODE_ARCH'] > 2:  # if ArchObj is compound or ArchObj not imported
             FreeCAD.ActiveDocument.recompute()
 
             # cleaning bad shapes
@@ -888,7 +882,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if ifcfile[host].Name:
                 grp_name = ifcfile[host].Name
             else:
-                if DEBUG: print("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
+                if preferences['DEBUG']: print("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
             if six.PY2:
                 grp_name = grp_name.encode("utf8")
@@ -902,11 +896,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 else:
                     remaining[child] = grp
 
-    if MERGE_MODE_ARCH == 3:
+    if preferences['MERGE_MODE_ARCH'] == 3:
 
         # One compound per storey
 
-        if DEBUG: print("Joining Arch shapes...",end="")
+        if preferences['DEBUG']: print("Joining Arch shapes...",end="")
 
         for host,children in additions.items(): # Arch
             if ifcfile[host].is_a("IfcBuildingStorey"):
@@ -922,7 +916,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                 del shapes[c2]
                 if compound:
                     name = ifcfile[host].Name or "Floor"
-                    if PREFIX_NUMBERS: name = "ID" + str(host) + " " + name
+                    if preferences['PREFIX_NUMBERS']: name = "ID" + str(host) + " " + name
                     obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                     obj.Label = name
                     obj.Shape = Part.makeCompound(compound)
@@ -930,24 +924,24 @@ def insert(filename,docname,skip=[],only=[],root=None):
             obj = FreeCAD.ActiveDocument.addObject("Part::Feature","UnclaimedArch")
             obj.Shape = Part.makeCompound(shapes.values())
 
-        if DEBUG: print("done")
+        if preferences['DEBUG']: print("done")
 
     else:
 
-        if DEBUG: print("Processing Arch relationships...",end="")
+        if preferences['DEBUG']: print("Processing Arch relationships...",end="")
         first = True
 
         # subtractions
 
-        if SEPARATE_OPENINGS:
+        if preferences['SEPARATE_OPENINGS']:
             for subtraction in subtractions:
                 if (subtraction[0] in objects.keys()) and (subtraction[1] in objects.keys()):
-                    if DEBUG and first:
+                    if preferences['DEBUG'] and first:
                         print("")
                         first = False
-                    if DEBUG: print("    subtracting",objects[subtraction[0]].Label, "from", objects[subtraction[1]].Label)
+                    if preferences['DEBUG']: print("    subtracting",objects[subtraction[0]].Label, "from", objects[subtraction[1]].Label)
                     Arch.removeComponents(objects[subtraction[0]],objects[subtraction[1]])
-                    if DEBUG: FreeCAD.ActiveDocument.recompute()
+                    if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
 
         # additions
 
@@ -961,18 +955,18 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     cobs.append(objects[child])
             if not cobs:
                 continue
-            if DEBUG and first:
+            if preferences['DEBUG'] and first:
                 print("")
                 first = False
-            if DEBUG and (len(cobs) > 10) and (not(Draft.getType(objects[host]) in ["Site","Building","Floor","BuildingPart","Project"])):
+            if preferences['DEBUG'] and (len(cobs) > 10) and (not(Draft.getType(objects[host]) in ["Site","Building","Floor","BuildingPart","Project"])):
                 # avoid huge fusions
                 print("more than 10 shapes to add: skipping.")
             else:
-                if DEBUG: print("    adding",len(cobs), "object(s) to", objects[host].Label)
+                if preferences['DEBUG']: print("    adding",len(cobs), "object(s) to", objects[host].Label)
                 Arch.addComponents(cobs,objects[host])
-                if DEBUG: FreeCAD.ActiveDocument.recompute()
+                if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
 
-        if DEBUG and first: print("done.")
+        if preferences['DEBUG'] and first: print("done.")
 
         FreeCAD.ActiveDocument.recompute()
 
@@ -987,7 +981,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     # 2D elements
 
-    if DEBUG and annotations:
+    if preferences['DEBUG'] and annotations:
         print("Processing",len(annotations),"2D objects...")
     prodcount = count
     count = 0
@@ -998,11 +992,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
         aid = annotation.id()
 
         count += 1
-        if DEBUG: print(count,"/",len(annotations),"object #"+str(aid),":",annotation.is_a(),end="")
+        if preferences['DEBUG']: print(count,"/",len(annotations),"object #"+str(aid),":",annotation.is_a(),end="")
 
         if aid in skip:
             continue # user given id skip list
-        if annotation.is_a() in SKIP:
+        if annotation.is_a() in preferences['SKIP']:
             continue # preferences-set type skip list
         if annotation.is_a("IfcGrid"):
             axes = []
@@ -1033,7 +1027,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     name = annotation.Name
                     if six.PY2:
                         name = name.encode("utf8")
-                if PREFIX_NUMBERS:
+                if preferences['PREFIX_NUMBERS']:
                     name = "ID" + str(aid) + " " + name
                 anno = Arch.makeAxisSystem(axes,name)
             print(" axis")
@@ -1045,7 +1039,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     name = name.encode("utf8")
             if "annotation" not in name.lower():
                 name = "Annotation " + name
-            if PREFIX_NUMBERS: name = "ID" + str(aid) + " " + name
+            if preferences['PREFIX_NUMBERS']: name = "ID" + str(aid) + " " + name
             shapes2d = []
             for rep in annotation.Representation.Representations:
                 if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
@@ -1057,14 +1051,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         shapes2d.extend(sh)
             if shapes2d:
                 sh = Part.makeCompound(shapes2d)
-                if DEBUG: print(" shape")
+                if preferences['DEBUG']: print(" shape")
                 anno = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 anno.Shape = sh
                 p = importIFCHelper.getPlacement(annotation.ObjectPlacement,ifcscale)
                 if p: # and annotation.is_a("IfcAnnotation"):
                     anno.Placement = p
             else:
-                if DEBUG: print(" no shape")
+                if preferences['DEBUG']: print(" no shape")
 
         # placing in container if needed
 
@@ -1080,7 +1074,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     # Materials
 
-    if DEBUG and materials: print("Creating materials...",end="")
+    if preferences['DEBUG'] and materials: print("Creating materials...",end="")
     #print("mattable:",mattable)
     #print("materials:",materials)
     fcmats = {}
@@ -1102,7 +1096,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         mdict["DiffuseColor"] = str(colors[o])
         # merge materials with same name and color if setting in prefs is True
         add_material = True
-        if MERGE_MATERIALS:
+        if preferences['MERGE_MATERIALS']:
             for key in list(fcmats.keys()):
                 if key.startswith(name) \
                         and "DiffuseColor" in mdict and "DiffuseColor" in fcmats[key].Material \
@@ -1145,7 +1139,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             # print("    ", o, ": ", colors[o])
                             # print("    ", m, ": ", colors[m])
 
-    if DEBUG and materials: print("done")
+    if preferences['DEBUG'] and materials: print("done")
 
     # restore links from full parametric definitions
     for p in parametrics:
