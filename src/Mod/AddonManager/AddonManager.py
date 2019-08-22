@@ -587,4 +587,13 @@ class CommandAddonManager:
             pref.SetBool("AutoCheck",self.config.checkUpdates.isChecked())
             pref.SetString("CustomRepositories",self.config.customRepositories.toPlainText())
 
+def check_updates(addon_name,callback):
+
+    """Checks for updates for a given addon"""
+
+    oname = "update_checker_"+addon_name
+    setattr(FreeCAD,oname,CheckSingleWorker(addon_name))
+    getattr(FreeCAD,oname).updateAvailable.connect(callback)
+    getattr(FreeCAD,oname).start()
+
 ## @}
