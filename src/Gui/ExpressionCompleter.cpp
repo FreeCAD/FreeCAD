@@ -30,14 +30,26 @@ using namespace Gui;
 
 class ExpressionCompleterModel: public QAbstractItemModel {
 public:
-    ExpressionCompleterModel(QObject *parent, const App::DocumentObject *obj)
-        :QAbstractItemModel(parent)
+    ExpressionCompleterModel(QObject *parent, const App::DocumentObject *obj, bool noProperty)
+        :QAbstractItemModel(parent), noProperty(noProperty)
     {
+        setDocumentObject(obj);
+    }
+
+    void setDocumentObject(const App::DocumentObject *obj) {
+        beginResetModel();
         if(obj) {
             currentDoc = obj->getDocument()->getName();
             currentObj = obj->getNameInDocument();
-            inList = obj->getInListEx(true);
+            if(!noProperty)
+                inList = obj->getInListEx(true);
+        } else {
+            currentDoc.clear();
+            currentObj.clear();
+            inList.clear();
         }
+        endResetModel();
+
     }
 
     // This ExpressionCompleter model works without any pysical items.
@@ -139,7 +151,7 @@ public:
                 obj = objs[idx/2];
                 if(inList.count(obj))
                     return;
-            } else {
+            } else if (!noProperty) {
                 auto cobj = doc->getObject(currentObj.c_str());
                 if(cobj) {
                     idx -= objSize;
@@ -168,9 +180,9 @@ public:
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
                     else
                         res = QString::fromLatin1(obj->getNameInDocument());
-                    if(sep)
+                    if(sep && !noProperty)
                         res += QLatin1Char('.');
-                }else {
+                } else {
                     if(idx & 1) 
                         res = QString::fromUtf8(quote(doc->Label.getStrValue()).c_str());
                     else
@@ -199,7 +211,7 @@ public:
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
                     else
                         res = QString::fromLatin1(obj->getNameInDocument());
-                    if(sep)
+                    if(sep && !noProperty)
                         res += QLatin1Char('.');
                     v->setValue(res);
                 }
@@ -207,6 +219,8 @@ public:
             }
         }
 
+        if(noProperty)
+            return;
         if(!prop) {
             idx = row;
             obj->getPropertyList(props);
@@ -217,8 +231,13 @@ public:
             if(count)
                 *count = propSize;
         }
-        if(v) 
-            *v = QString::fromLatin1(prop->getName());
+        if(v) {
+            QString res;
+            if(sep)
+                res = QLatin1String(".");
+            res += QString::fromLatin1(prop->getName());
+            *v = res;
+        }
         return;
     }
 
@@ -289,6 +308,7 @@ private:
     std::set<App::DocumentObject*> inList;
     std::string currentDoc;
     std::string currentObj;
+    bool noProperty;
 };
 
 /**
@@ -298,8 +318,9 @@ private:
  * @param parent Parent object owning the completer.
  */
 
-ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj, QObject *parent)
-    : QCompleter(parent), prefixStart(0), currentObj(currentDocObj)
+ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj, 
+        QObject *parent, bool noProperty)
+    : QCompleter(parent), currentObj(currentDocObj), noProperty(noProperty)
 {
     setCaseSensitivity(Qt::CaseInsensitive);
 }
@@ -308,9 +329,19 @@ void ExpressionCompleter::init() {
     if(model())
         return;
 
-    setModel(new ExpressionCompleterModel(this,currentObj.getObject()));
+    setModel(new ExpressionCompleterModel(this,currentObj.getObject(),noProperty));
 }
 
+void ExpressionCompleter::setDocumentObject(const App::DocumentObject *obj) {
+    if(!obj || !obj->getNameInDocument())
+        currentObj = App::DocumentObjectT();
+    else
+        currentObj = obj;
+    setCompletionPrefix(QString());
+    auto m = model();
+    if(m)
+        static_cast<ExpressionCompleterModel*>(m)->setDocumentObject(obj);
+}
 
 QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
 {
@@ -386,7 +417,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
 // Code below inspired by blog entry:
 // https://john.nachtimwald.com/2009/07/04/qcompleter-and-comma-separated-tags/
 
-void ExpressionCompleter::slotUpdate(const QString & prefix)
+void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
 {
     init();
 
@@ -401,41 +432,91 @@ void ExpressionCompleter::slotUpdate(const QString & prefix)
     // Tokenize prefix
     std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(expression);
 
-    // No tokens, or last char is a space?
-    if (tokens.size() == 0 || (prefix.size() > 0 && prefix[prefix.size() - 1] == QChar(32))) {
+    // No tokens
+    if (tokens.size() == 0) {
         if (popup())
             popup()->setVisible(false);
         return;
     }
 
-    // Extract last tokens that can be rebuilt to a variable
-    ssize_t i = static_cast<ssize_t>(tokens.size()) - 1;
-    while (i >= 0) {
-        int token = get<0>(tokens[i]);
-        int tok = ExpressionParser::translateToken(token);
-        const auto &s = get<2>(tokens[i]);
+    prefixEnd = prefix.size();
 
-        if (token != '.' && token != '#' && s != "<" && s != "<<" && 
-            tok != ExpressionParser::FC_TOK_IDENTIFIER && 
-            tok != ExpressionParser::FC_TOK_STRING && 
-            tok != ExpressionParser::FC_TOK_UNIT)
+    // Pop those trailing tokens depending on the given position, which may be
+    // in the middle of a token, and we shall include that token.
+    for(auto it=tokens.begin();it!=tokens.end();++it) {
+        if(get<1>(*it) >= pos) {
+            // Include the immediatly followed '.' or '#', because we'll be
+            // inserting these separater too, in ExpressionCompleteModel::pathFromIndex()
+            if(it!=tokens.begin() && get<0>(*it)!='.' && get<0>(*it)!='#')
+                it = it-1;
+            tokens.resize(it-tokens.begin()+1);
+            prefixEnd = start + get<1>(*it) + (int)get<2>(*it).size();
             break;
-        --i;
+        }
     }
 
-    ++i;
+    int trim = 0;
+    if(prefixEnd > pos)
+        trim = prefixEnd - pos;
+
+    // Extract last tokens that can be rebuilt to a variable
+    ssize_t i = static_cast<ssize_t>(tokens.size()) - 1;
+
+    // First, check if we have unclosing string starting from the end
+    bool stringing = false;
+    for(; i>=0; --i) {
+        int token = get<0>(tokens[i]);
+        int tok = ExpressionParser::translateToken(token);
+        if(tok == ExpressionParser::FC_TOK_STRING) {
+            stringing = false;
+            break;
+        }
+        if(tok==ExpressionParser::FC_TOK_OPERATOR && i
+                && get<2>(tokens[i])=="<"
+                && get<2>(tokens[i-1])=="<")
+        {
+            --i;
+            stringing = true;
+            break;
+        }
+    }
+
+    // Not an unclosed string and the last character is a space
+    if(!stringing && prefix.size() && prefix[prefixEnd-1] == QChar(32)) {
+        if (popup())
+            popup()->setVisible(false);
+        return;
+    }
+
+    if(!stringing) {
+        i = static_cast<ssize_t>(tokens.size()) - 1;
+        for(;i>=0;--i) {
+            int token = get<0>(tokens[i]);
+            int tok = ExpressionParser::translateToken(token);
+            if (token != '.' && token != '#' && 
+                tok != ExpressionParser::FC_TOK_IDENTIFIER && 
+                tok != ExpressionParser::FC_TOK_STRING && 
+                tok != ExpressionParser::FC_TOK_UNIT)
+                break;
+        }
+        ++i;
+
+    }
 
     // Set prefix start for use when replacing later
     if (i == static_cast<ssize_t>(tokens.size()))
-        prefixStart = prefix.size();
+        prefixStart = prefixEnd;
     else
-        prefixStart = (prefix.at(0) == QChar::fromLatin1('=') ? 1 : 0) + get<1>(tokens[i]);
+        prefixStart = start + get<1>(tokens[i]);
 
     // Build prefix from tokens
     while (i < static_cast<ssize_t>(tokens.size())) {
         completionPrefix += get<2>(tokens[i]);
         ++i;
     }
+
+    if(trim && trim<(int)completionPrefix.size() )
+        completionPrefix.resize(completionPrefix.size()-trim);
 
     // Set completion prefix
     FC_TRACE("completion prefix " << completionPrefix);
@@ -449,10 +530,11 @@ void ExpressionCompleter::slotUpdate(const QString & prefix)
     }
 }
 
-ExpressionLineEdit::ExpressionLineEdit(QWidget *parent)
+ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty)
     : QLineEdit(parent)
     , completer(0)
     , block(true)
+    , noProperty(noProperty)
 {
     connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 }
@@ -460,17 +542,16 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent)
 void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
 {
     if (completer) {
-        delete completer;
-        completer = 0;
+        completer->setDocumentObject(currentDocObj);
+        return;
     }
-
     if (currentDocObj != 0) {
-        completer = new ExpressionCompleter(currentDocObj, this);
+        completer = new ExpressionCompleter(currentDocObj, this, noProperty);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
-        connect(this, SIGNAL(textChanged2(QString)), completer, SLOT(slotUpdate(QString)));
+        connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
     }
 }
 
@@ -488,19 +569,22 @@ void ExpressionLineEdit::hideCompleter()
 void ExpressionLineEdit::slotTextChanged(const QString & text)
 {
     if (!block) {
-        Q_EMIT textChanged2(text.left(cursorPosition()));
+        Q_EMIT textChanged2(text,cursorPosition());
     }
 }
 
 void ExpressionLineEdit::slotCompleteText(const QString & completionPrefix)
 {
-    int start = completer->getPrefixStart();
+    int start,end;
+    completer->getPrefixRange(start,end);
     QString before(text().left(start));
-    QString after(text().mid(cursorPosition()));
+    QString after(text().mid(end));
 
     Base::FlagToggler<bool> flag(block,false);
-    setText(before + completionPrefix + after);
-    setCursorPosition(QString(before + completionPrefix).length());
+    before += completionPrefix;
+    setText(before + after);
+    setCursorPosition(before.length());
+    completer->updatePrefixEnd(before.length());
 }
 
 void ExpressionLineEdit::keyPressEvent(QKeyEvent *e) {
@@ -522,8 +606,8 @@ ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
 void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
 {
     if (completer) {
-        delete completer;
-        completer = 0;
+        completer->setDocumentObject(currentDocObj);
+        return;
     }
 
     if (currentDocObj != 0) {
@@ -532,7 +616,7 @@ void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
-        connect(this, SIGNAL(textChanged2(QString)), completer, SLOT(slotUpdate(QString)));
+        connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
     }
 }
 
@@ -551,21 +635,22 @@ void ExpressionTextEdit::slotTextChanged()
 {
     if (!block) {
         QTextCursor cursor = textCursor();
-        Q_EMIT textChanged2(cursor.block().text().left(cursor.positionInBlock()));
+        Q_EMIT textChanged2(cursor.block().text(),cursor.positionInBlock());
     }
 }
 
 void ExpressionTextEdit::slotCompleteText(const QString & completionPrefix)
 {
     QTextCursor cursor = textCursor();
-    int start = completer->getPrefixStart();
+    int start,end;
+    completer->getPrefixRange(start,end);
     int pos = cursor.positionInBlock();
-    if(pos>=start) {
-        Base::FlagToggler<bool> flag(block,false);
-        if(pos>start)
-            cursor.movePosition(QTextCursor::PreviousCharacter,QTextCursor::KeepAnchor,pos-start);
-        cursor.insertText(completionPrefix);
-    }
+    if(pos<end)
+        cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::MoveAnchor,end-pos);
+    cursor.movePosition(QTextCursor::PreviousCharacter,QTextCursor::KeepAnchor,end-start);
+    Base::FlagToggler<bool> flag(block,false);
+    cursor.insertText(completionPrefix);
+    completer->updatePrefixEnd(cursor.positionInBlock());
 }
 
 void ExpressionTextEdit::keyPressEvent(QKeyEvent *e) {
