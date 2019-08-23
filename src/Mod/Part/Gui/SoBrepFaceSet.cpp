@@ -93,20 +93,17 @@ public:
         uint32_t myvbo[2];
         std::size_t vertex_array_size;
         std::size_t index_array_size;
+        bool updateVbo;
+        bool vboLoaded;
     };
 
     static SbBool vboAvailable;
-    SbBool updateVbo;
-    SbBool vboLoaded;
     uint32_t indice_array;
     std::map<uint32_t, Buffer> vbomap;
 
     VBO()
     {
         SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
-
-        updateVbo = false;
-        vboLoaded = false;
         indice_array = 0;
     }
     ~VBO()
@@ -141,7 +138,6 @@ public:
 
     static void context_destruction_cb(uint32_t context, void * userdata)
     {
-        Buffer buffer;
         VBO * self = static_cast<VBO*>(userdata);
 
         std::map<uint32_t, Buffer>::iterator it = self->vbomap.find(context);
@@ -151,7 +147,7 @@ public:
             PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
 #endif
             //cc_glglue_glDeleteBuffers(glue, buffer.size(), buffer.data());
-            buffer = it->second;
+            auto &buffer = it->second;
             glDeleteBuffersARB(2, buffer.myvbo);
             self->vbomap.erase(it);
         }
@@ -343,8 +339,10 @@ void SoBrepFaceSet::doAction(SoAction* action)
     // but the base class made this method private so that we can't override it.
     // So, the alternative way is to write a custom SoAction class.
     else if (action->getTypeId() == Gui::SoUpdateVBOAction::getClassTypeId()) {
-        PRIVATE(this)->updateVbo = true;
-        PRIVATE(this)->vboLoaded = false;
+        for(auto &v : PRIVATE(this)->vbomap) {
+            v.second.updateVbo = true;
+            v.second.vboLoaded = false;
+        }
     }
 
     inherited::doAction(action);
@@ -1392,10 +1390,10 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     uint32_t RGBA,R,G,B,A;
     float Rf,Gf,Bf,Af;
 
-    VBO::Buffer buf;
     uint32_t contextId = action->getCacheContext();
-    std::map<uint32_t, VBO::Buffer>::iterator it = this->vbomap.find(contextId);
-    if (it == this->vbomap.end()) {
+    auto res = this->vbomap.insert(std::make_pair(contextId,VBO::Buffer()));
+    VBO::Buffer &buf = res.first->second;
+    if (res.second) {
 #ifdef FC_OS_WIN32
         const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
         PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
@@ -1403,17 +1401,13 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
         glGenBuffersARB(2, buf.myvbo);
         buf.vertex_array_size = 0;
         buf.index_array_size = 0;
-        this->vbomap[contextId] = buf;
-        this->vboLoaded = false;
-    }
-    else {
-        buf = it->second;
+        buf.vboLoaded = false;
     }
 
     if ((buf.vertex_array_size != (sizeof(float) * num_indices * 10)) ||
         (buf.index_array_size != (sizeof(GLuint) * num_indices * 3))) {
         if ((buf.vertex_array_size != 0 ) && ( buf.index_array_size != 0))
-            this->updateVbo = true;
+            buf.updateVbo = true;
     }
 
     // vbo loaded is defining if we must pre-load data into the VBO. When the variable is set to 0
@@ -1422,7 +1416,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     // the graphic card
     // TODO FINISHING THE COLOR SUPPORT !
 
-    if (!this->vboLoaded || this->updateVbo) {
+    if (!buf.vboLoaded || buf.updateVbo) {
 #ifdef FC_OS_WIN32
         const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
 
@@ -1642,8 +1636,8 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
         glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
 
-        this->vboLoaded = true;
-        this->updateVbo = false;
+        buf.vboLoaded = true;
+        buf.updateVbo = false;
         free(vertex_array);
         free(index_array);
     }
@@ -1654,7 +1648,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
 #endif
 
-    if (!this->updateVbo) {
+    if (!buf.updateVbo) {
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo[0]);
         glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, buf.myvbo[1]);
     }
@@ -1674,7 +1668,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     glDisableClientState(GL_VERTEX_ARRAY);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
     glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
-    this->updateVbo = false;
+    buf.updateVbo = false;
     // The data is within the VBO we can clear it at application level
 }
 
