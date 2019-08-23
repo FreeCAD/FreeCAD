@@ -58,6 +58,7 @@
 #include <set>
 #include <bitset>
 
+#include <boost/uuid/uuid_io.hpp>
 
 // OpenCasCade =====================================================================================
 #include <Mod/Part/App/OpenCascadeAll.h>

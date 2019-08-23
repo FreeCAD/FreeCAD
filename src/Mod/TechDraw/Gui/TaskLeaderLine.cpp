@@ -123,6 +123,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     saveState();
 
     m_trackerMode = QGTracker::TrackerMode::Line;
+    m_saveContextPolicy = m_mdi->contextMenuPolicy();
 }
 
 //ctor for creation
@@ -165,6 +166,8 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     ui->pbCancelEdit->setEnabled(false);
 
     m_trackerMode = QGTracker::TrackerMode::Line;
+    m_saveContextPolicy = m_mdi->contextMenuPolicy();
+
 }
 
 TaskLeaderLine::~TaskLeaderLine()
@@ -648,12 +651,12 @@ bool TaskLeaderLine::accept()
 //        removeTracker();
         createLeaderFeature(m_trackerPoints);
     }
-    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     m_trackerMode = QGTracker::TrackerMode::None;
     removeTracker();
 
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 
+    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     return true;
 }
 
@@ -670,9 +673,6 @@ bool TaskLeaderLine::reject()
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc) return false;
 
-    if (m_mdi != nullptr) {
-        m_mdi->setContextMenuPolicy(m_saveContextPolicy);
-    }
     if (getCreateMode() &&
         (m_lineFeat != nullptr) )  {
         removeFeature();
@@ -689,6 +689,10 @@ bool TaskLeaderLine::reject()
     //make sure any dangling objects are cleaned up 
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+
+    if (m_mdi != nullptr) {
+        m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+    }
 
     return false;
 }

@@ -82,7 +82,8 @@ QGIView::QGIView()
     :QGraphicsItemGroup(),
      viewObj(nullptr),
      m_locked(false),
-     m_innerView(false)
+     m_innerView(false),
+     m_selectState(0)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -215,8 +216,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             m_colCurrent = getSelectColor();
+            m_selectState = 2;
         } else {
             m_colCurrent = getNormalColor();
+            m_selectState = 0;
         }
         drawBorder();
     }
@@ -257,8 +260,10 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     // TODO don't like this but only solution at the minute (MLP)
     if (isSelected()) {
         m_colCurrent = getSelectColor();
+        m_selectState = 2;
     } else {
         m_colCurrent = getPreColor();
+        m_selectState = 1;
     }
     drawBorder();
 }
@@ -268,8 +273,10 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     Q_UNUSED(event);
     if(isSelected()) {
         m_colCurrent = getSelectColor();
+        m_selectState = 1;
     } else {
         m_colCurrent = getNormalColor();
+        m_selectState = 0;
     }
     drawBorder();
 }
@@ -518,6 +525,7 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+//    painter->setPen(Qt::red);
 //    painter->drawRect(boundingRect());          //good for debugging
 
     QGraphicsItemGroup::paint(painter, &myOption, widget);
@@ -534,8 +542,12 @@ QRectF QGIView::customChildrenBoundingRect() const
     int textLeaderItemType = QGraphicsItem::UserType + 233;  // TODO: Magic number warning
     int editablePathItemType = QGraphicsItem::UserType + 301;  // TODO: Magic number warning
     int movableTextItemType = QGraphicsItem::UserType + 300;
+    int weldingSymbolItemType = QGraphicsItem::UserType + 340;
     QRectF result;
     for (QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if (!(*it)->isVisible()) {
+            continue;
+        }
         if ( ((*it)->type() != dimItemType) &&
              ((*it)->type() != leaderItemType) &&
              ((*it)->type() != textLeaderItemType) &&
@@ -543,6 +555,7 @@ QRectF QGIView::customChildrenBoundingRect() const
              ((*it)->type() != movableTextItemType) &&
              ((*it)->type() != borderItemType) &&
              ((*it)->type() != labelItemType)  &&
+             ((*it)->type() != weldingSymbolItemType)  &&
              ((*it)->type() != captionItemType) ) {
             QRectF childRect = mapFromItem(*it,(*it)->boundingRect()).boundingRect();
             result = result.united(childRect);
@@ -622,6 +635,7 @@ bool QGIView::getFrameState(void)
     return result;
 }
 
+//TODO: change name to prefNormalColor()
 QColor QGIView::getNormalColor()
 {
     Base::Reference<ParameterGrp> hGrp = getParmGroupCol();

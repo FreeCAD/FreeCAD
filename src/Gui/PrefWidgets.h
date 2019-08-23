@@ -76,6 +76,12 @@ protected:
    * Must be reimplemented in any subclasses.
    */
   virtual void savePreferences()    = 0;
+  /** Print warning that saving failed.
+   */
+  void failedToSave(const QString&) const;
+  /** Print warning that restoring failed.
+   */
+  void failedToRestore(const QString&) const;
 
   PrefWidget();
   virtual ~PrefWidget();

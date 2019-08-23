@@ -55,6 +55,7 @@ set(TechDrawGui_MOC_HDRS
     TaskCosVertex.h
     TaskCenterLine.h
     TaskLineDecor.h
+    TaskWeldingSymbol.h
     QGEPath.h
     QGTracker.h
     QGILeaderLine.h
@@ -63,6 +64,8 @@ set(TechDrawGui_MOC_HDRS
     mrichtextedit.h
     mtextedit.h
     TaskBalloon.h
+    QGIWeldSymbol.h
+    SymbolChooser.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -91,6 +94,8 @@ set(TechDrawGui_UIC_SRCS
     TaskCL2Lines.ui
     TaskLineDecor.ui
     TaskRestoreLines.ui
+    TaskWeldingSymbol.ui
+    SymbolChooser.ui
 )
 
 if(BUILD_QT5)
@@ -168,10 +173,16 @@ SET(TechDrawGui_SRCS
     TaskLineDecor.h
     TaskRestoreLines.ui
     TaskCL2Lines.ui
+    TaskWeldingSymbol.ui
+    TaskWeldingSymbol.cpp
+    TaskWeldingSymbol.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
     Rez.h
+    SymbolChooser.ui
+    SymbolChooser.cpp
+    SymbolChooser.h
 )
 
 SET(TechDrawGuiView_SRCS
@@ -261,6 +272,10 @@ SET(TechDrawGuiView_SRCS
     QGIRichAnno.h
     QGMText.h
     QGMText.cpp
+    QGIWeldSymbol.h
+    QGIWeldSymbol.cpp
+    QGITile.h
+    QGITile.cpp
     TemplateTextField.cpp
     TemplateTextField.h
     ZVALUE.h
@@ -302,6 +317,10 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderLeader.h
     ViewProviderRichAnno.cpp
     ViewProviderRichAnno.h
+    ViewProviderTile.cpp
+    ViewProviderTile.h
+    ViewProviderWeld.cpp
+    ViewProviderWeld.h
 )
 
 SOURCE_GROUP("MRTE" FILES ${MRTE_SRCS})
@@ -323,6 +342,8 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskLineDecor.ui
     TaskRestoreLines.ui
     TaskCL2Lines.ui
+    TaskWeldingSymbol.ui
+    SymbolChooser.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

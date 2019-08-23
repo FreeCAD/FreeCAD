@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 
+# include <boost/uuid/uuid_io.hpp>
 #endif
 
 #include <App/Material.h>
@@ -169,6 +170,11 @@ PyObject* CosmeticEdgePy::getFormat(PyObject *args)
     return result;
 }
 
+Py::String CosmeticEdgePy::getTag(void) const
+{
+    std::string tmp = boost::uuids::to_string(getCosmeticEdgePtr()->getTag());
+    return Py::String(tmp);
+}
 
 PyObject *CosmeticEdgePy::getCustomAttributes(const char* /*attr*/) const
 {

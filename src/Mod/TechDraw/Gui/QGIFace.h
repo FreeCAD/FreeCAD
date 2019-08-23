@@ -74,9 +74,9 @@ public:
     int getProjIndex() const { return projIndex; }
 
     void draw();
-    void setPrettyNormal();
-    void setPrettyPre();
-    void setPrettySel();
+    virtual void setPrettyNormal() override;
+    virtual void setPrettyPre() override;
+    void setPrettySel() override;
     void setDrawEdges(bool b);
     virtual void setOutline(const QPainterPath& path);
  
@@ -85,10 +85,10 @@ public:
     bool isHatched(void) {return m_isHatched;}
     void setFillMode(fillMode m);
 
-    //plain color fill parms
-    void setFill(QColor c, Qt::BrushStyle s);
-    void setFill(QBrush b);
-    void resetFill();
+/*    //plain color fill parms*/
+/*    void setFill(QColor c, Qt::BrushStyle s);*/
+/*    void setFill(QBrush b);*/
+/*    void resetFill();*/
 
     //general hatch parms & methods
     void setHatchColor(App::Color c);
@@ -151,15 +151,15 @@ protected:
 
 
 private:
-    QBrush m_brush;
-    Qt::BrushStyle m_fillStyle;                 //current fill style
-    QColor m_fillColor;                         //current fill color
+/*    QBrush m_brush;*/
+/*    Qt::BrushStyle m_fillStyle;                 //current fill style*/
+/*    QColor m_fillColor;                         //current fill color*/
 
-    QColor m_colDefFill;                        //"no color" default normal fill color
-    QColor m_colNormalFill;                     //current Normal fill color
-    Qt::BrushStyle m_styleDef;                  //default Normal fill style
-    Qt::BrushStyle m_styleNormal;               //current Normal fill style
-    Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style
+/*    QColor m_colDefFill;                        //"no color" default normal fill color*/
+/*    QColor m_colNormalFill;                     //current Normal fill color*/
+/*    Qt::BrushStyle m_styleDef;                  //default Normal fill style*/
+/*    Qt::BrushStyle m_styleNormal;               //current Normal fill style*/
+/*    Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style*/
  
     QPixmap m_texture;                          //
  

@@ -58,6 +58,15 @@ public:
     void setStyle(int s);
     virtual void setNormalColor(QColor c);
     virtual void setCapStyle(Qt::PenCapStyle c);
+    Qt::BrushStyle getFill() { return m_fill; }
+
+    //plain color fill parms
+    void setFill(Qt::BrushStyle f) { m_fill = f; }
+    void setFill(QColor c, Qt::BrushStyle s);
+    void setFill(QBrush b);
+    void resetFill();
+    void setFillColor(QColor c) { m_colNormalFill = c;
+                                  m_colDefFill = c; }
 
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
@@ -72,6 +81,7 @@ protected:
     virtual Qt::PenCapStyle prefCapStyle(void);
 
     bool isHighlighted;
+
     QPen m_pen;
     QColor m_colCurrent;
     QColor m_colNormal;
@@ -79,6 +89,18 @@ protected:
     Qt::PenStyle m_styleCurrent;
     double m_width;
     Qt::PenCapStyle m_capStyle;
+
+    QBrush m_brush;
+    Qt::BrushStyle m_fill;                      //current fille style
+    Qt::BrushStyle m_fillStyle;                 //current fill style*/
+    QColor m_fillColor;                         //current fill color
+
+    QColor m_colDefFill;                        //"no color" default normal fill color
+    QColor m_colNormalFill;                     //current Normal fill color
+    Qt::BrushStyle m_styleDef;                  //default Normal fill style
+    Qt::BrushStyle m_styleNormal;               //current Normal fill style
+    Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style
+
 
 private:
 

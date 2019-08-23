@@ -84,6 +84,9 @@
 #include <Mod/TechDraw/App/DrawViewImage.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
+#include <Mod/TechDraw/App/DrawTile.h>
+#include <Mod/TechDraw/App/DrawTileWeld.h>
 
 #include "Rez.h"
 #include "QGIDrawingTemplate.h"
@@ -100,6 +103,8 @@
 #include "QGILeaderLine.h"
 #include "QGIRichAnno.h"
 #include "QGMText.h"
+#include "QGIWeldSymbol.h"
+#include "QGITile.h"
 
 
 using namespace TechDrawGui;
@@ -364,6 +369,9 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId()) ) {
         qview = m_view->addRichAnno( static_cast<TechDraw::DrawRichAnno*>(obj) );
+
+    } else if (typeId.isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId()) ) {
+        qview = m_view->addWeldSymbol( static_cast<TechDraw::DrawWeldSymbol*>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()) ) {
         //Hatch is not attached like other Views (since it isn't really a View)
