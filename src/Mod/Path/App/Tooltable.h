@@ -50,6 +50,7 @@ namespace Path
         void addTool(const Tool &tool); // adds a tool at the end
         void setTool(const Tool &tool, int); // inserts a tool
         void deleteTool(int); // deletes a tool
+        //void setVersion(int); //set the table version
 
         // auto
         unsigned int getSize(void) const {return Tools.size();}
@@ -59,6 +60,8 @@ namespace Path
 
         // attributes
         std::map<int,Tool*> Tools;
+        int Version;
+        std::string Name;
     };
 
 } //namespace Path
