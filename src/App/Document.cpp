@@ -1216,7 +1216,7 @@ void Document::_abortTransaction()
             FC_WARN("Cannot abort transaction while transacting");
     }
 
-    if (!d->activeUndoTransaction) {
+    if (d->activeUndoTransaction) {
         Base::FlagToggler<bool> flag(d->rollback);
         Application::TransactionSignaller signaller(true,true);
 
