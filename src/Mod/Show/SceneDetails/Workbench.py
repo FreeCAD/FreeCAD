@@ -1,6 +1,6 @@
 #/***************************************************************************
 # *   Copyright (c) Victor Titov (DeepSOIC)                                 *
-# *                                           (vv.titov@gmail.com) 2016     *
+# *                                           (vv.titov@gmail.com) 2019     *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,17 +21,24 @@
 # *                                                                         *
 # ***************************************************************************/
 
-# adapted from http://stackoverflow.com/a/3603824/6285007
-class FrozenClass(object):
-    '''FrozenClass: prevents adding new attributes to class outside of __init__'''
-    __isfrozen = False
-    def __setattr__(self, key, value):
-        if self.__isfrozen and not hasattr(self, key):
-            raise TypeError( "{cls} has no attribute {attr}".format(cls= self.__class__.__name__, attr= key) )
-        object.__setattr__(self, key, value)
+from Show.SceneDetail import SceneDetail
 
-    def _freeze(self):
-        self.__isfrozen = True
+import FreeCADGui
 
-    def _unfreeze(self):
-        self.__isfrozen = False
+class Workbench(SceneDetail):
+    """Workbench(wb = None): Plugin for TempoVis for changing active workbench. 
+    wb: string, a name of a workbench (e.g. 'SketcherWorkbench')"""
+    class_id = 'SDWorkbench'
+    mild_restore = True
+    
+    def __init__(self, wb = None):
+        self.key = 'workbench'
+        if wb is not None:
+            self.data = wb
+            
+    def scene_value(self):
+        return FreeCADGui.activeWorkbench().name()
+    
+    def apply_data(self, val):
+        FreeCADGui.activateWorkbench(val)
+

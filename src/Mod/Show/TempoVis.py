@@ -21,96 +21,269 @@
 # *                                                                         *
 # ***************************************************************************/
 
-import FreeCAD as App
-if App.GuiUp:
-    import FreeCADGui as Gui
 
-from .FrozenClass import FrozenClass
-
-from .DepGraphTools import getAllDependencies, getAllDependent, isContainer
+from .DepGraphTools import getAllDependencies, getAllDependent
+from .ShowUtils import is3DObject
 
 from . import Containers
 Container = Containers.Container
 
-class TempoVis(FrozenClass):
+from . import TVStack
+
+import FreeCAD as App
+if App.GuiUp:
+    import FreeCADGui as Gui
+Wrn = lambda msg: App.Console.PrintWarning(msg + "\n")
+Err = lambda msg: App.Console.PrintError(msg + "\n")
+Log = lambda msg: App.Console.PrintLog(msg + "\n")
+
+from copy import copy
+
+S_EMPTY = 0 # TV is initialized, but no changes were done through it
+S_ACTIVE = 1 # TV has something to be undone 
+S_RESTORED = 2 # TV has been restored
+S_INTERNAL = 3 # TV instance is being used by another TV instance as a redo data storage
+
+def _printTraceback(err):
+    import sys
+    if err is sys.exc_info()[1]:
+        import traceback
+        tb = traceback.format_exc()
+        Log(tb)
+
+class MAINSTACK(object):
+    '''it's just a default value definition for TV constructor'''
+    pass
+class JUST_SAVE(object):
+    '''it's just a default value meaning "save current scene value but don't modify anything"'''
+    pass
+
+class TempoVis(object):
     '''TempoVis - helper object to save visibilities of objects before doing
     some GUI editing, hiding or showing relevant stuff during edit, and
     then restoring all visibilities after editing.
 
     Constructors:
-    TempoVis(document): creates a new TempoVis. Supplying document is mandatory. Objects not belonging to the document can't be modified via TempoVis.'''
+    TempoVis(document, stack = MAINSTACK, **kwargs): creates a new TempoVis. 
+    
+    document: required. Objects not belonging to the document can't be modified via TempoVis.
+    
+    stack: optional. Which stack to insert this new TV into. Can be:
+    a TVStack instance (then, the new TV is added to the top of the stack), 
+    MAINSTACK special value (a global stack for the document will be used), or 
+    None (then, the TV is not in any stack, and can be manually instertd into one if desired).
+    
+    Any additional keyword args are assigned as attributes. You can use it to immediately set a tag, for example.'''
 
-    def __define_attributes(self):
-        self.data = {} # dict. key = ("Object","Property"), value = original value of the property
-        self.data_pickstyle = {} # dict. key = "Object", value = original value of pickstyle
-        self.data_clipplane = {} # dict. key = "Object", value = original state of plane-clipping
-        self.clippingDoc = None
+    document = None
+    stack = None # reference to stack this TV is in
 
-        self.sketch_clipplane_on = False #True if some clipping planes are active
+    data = None # dict. key = ("class_id","key"), value = instance of SceneDetail
+    data_requested = None #same as data, but stores (wanted) values passed to modify()
+    
+    state = S_EMPTY
+    
+    tag = '' #stores any user-defined string for identification purposes
+
+    def _init_attrs(self):
+        '''initialize member variables to empty values (needed because we can't use mutable initial values when initializing member variables in class definition)'''
+        self.data = {}
+        self.data_requested = {}
         
-        self.cam_string = ""          # inventor ASCII string representing the camera
-        self.viewer = None            # viewer the camera is saved from
-
-        self.document = None
-        self.restore_on_delete = False # if true, restore() gets called upon object deletion. It becomes False after explicit call to Restore, and set to true by many methods.
-        
-        self.links_are_lost = False # set to true after restore from JSON. Indicates to attempt to use ActiveDocument/ActiveViewer instead.
-        
-        self._freeze()
-
-    def __init__(self, document):
-        self.__define_attributes()
-
+  #<core interface>
+    def __init__(self, document, stack = MAINSTACK, **kwargs):
+        self._init_attrs()
         self.document = document
-    
-    @staticmethod
-    def is3DObject(obj):
-        """is3DObject(obj): tests if the object has some 3d geometry. 
-        TempoVis is made only for objects in 3d view, so all objects that don't pass this check are ignored by TempoVis."""
         
-        # See "Gui Problem Sketcher and TechDraw" https://forum.freecadweb.org/viewtopic.php?f=3&t=22797
- 
-        # observation: all viewproviders have transform node, then a switch node. If that switch node contains something, the object has something in 3d view.
-        try:
-            from pivy import coin
-            return obj.ViewObject.SwitchNode.getNumChildren()>0
-        except Exception as err:
-            App.Console.PrintWarning(u"Show.TempoVis.isIn3DObject error: {err}\n".format(err= str(err)))
-            return True #assume.
+        if stack is MAINSTACK:
+            stack = TVStack.mainStack(document)
+        
+        if stack is None:
+            pass
+        else:
+            stack.insert(self)
+        
+        for key,val in kwargs.items():
+            setattr(self, key, val)
     
-    def modifyVPProperty(self, doc_obj_or_list, prop_names, new_value):
-        '''modifyVPProperty(self, doc_obj_or_list, prop_name, new_value): modifies
+    def __del__(self):
+        if self.state == S_ACTIVE:
+            self.restore(ultimate= True)
+    
+    def has(self, detail):
+        '''has(self, detail): returns True if this TV has this detail value saved.
+        example: tv.has(VProperty(obj, "Visibility"))'''
+        return detail.full_key in self.data
+    
+    def stored_val(self, detail):
+        '''stored_val(self, detail): returns value of detail remembered by this TV. If not, raises KeyError.'''
+        return self.data[detail.full_key].data
+
+    def save(self, detail, mild_restore = False):
+        '''save(detail, mild_restore = False):saves the scene detail to be restored. 
+        The detail is saved only once; repeated calls are ignored.
+        mild_restore: internal, do not use.'''
+        self._change()
+        if not detail.full_key in self.data:
+            #not saved yet
+            tv1, curr = self._value_after(detail, query_scene= True)
+            self.data[detail.full_key] = copy(curr)
+            self.data[detail.full_key].mild_restore = mild_restore
+        else:
+            #saved already. Change restore policy, if necessary.
+            stored_dt = self.data[detail.full_key]
+            if not mild_restore:
+                stored_dt.mild_restore = False
+
+    def modify(self, detail, mild_restore = None):
+        '''modify(detail, mild_restore = True): modifies scene detail through this TV. 
+        The value is provided as an instance of SceneDetail implementation.
+        The procedure takes care to account for the stack - that is, if in a TV applied 
+        later than this one this detail was changed too, the value saved therein is altered, 
+        rather than applied to the scene.
+        
+        mild_restore: if True, when restoring later, checks if the value was changed 
+        by user after last call to modify(), and doesn't restore if it was changed.
+        
+        Example: tv.modify(VProperty(obj, "Visibility", True))'''
+
+        self._change()
+        
+        if mild_restore is not None:
+            detail.mild_restore = mild_restore
+        
+        # save current
+        self.save(detail, detail.mild_restore)
+        
+        # apply
+        tv1, curr = self._value_after(detail)
+        if tv1 is not None:
+            tv1.data[detail.full_key].data = detail.data
+        else:
+            detail.apply_data(detail.data)
+        
+        # and record.
+        if detail.mild_restore:
+            self.data_requested[detail.full_key] = copy(detail)
+        
+    def restoreDetail(self, detail, ultimate = False):
+        '''restoreDetail(detail, ultimate = False): restores a specific scene detail.
+        ultimate: if true, the saved value is cleaned out.
+        If the detail is not found, nothing is done.
+        '''
+        if not self.has(detail):
+            return
+        self._restore_detail(detail)
+        if ultimate:
+            self.forgetDetail(detail)
+    
+    
+    def forgetDetail(self, detail):
+        '''forgetDetail(detail): ditches a saved detail value, making the change done through this TV permanent.'''
+        self.data.pop(detail.full_key, None)
+        self.data_requested.pop(detail.full_key, None)
+    
+    def forget(self):
+        '''forget(self): clears this TV, making all changes done through it permanent. 
+        Also, withdraws the TV from the stack.'''
+        self.state = S_EMPTY
+        self.data = {}
+        if self.is_in_stack:
+            self.stack.withdraw(self)
+
+    def restore(self, ultimate = True):
+        '''restore(ultimate = True): undoes all changes done through this tempovis / restores saved scene details.
+        ultimate: if true, the saved values are cleaned out, and the TV is withdrawn from 
+        the stack. If false, the TV will still remember stuff, and resore can be called again.
+        '''
+        if self.state == S_RESTORED:
+            return
+
+        if self.state != S_INTERNAL and ultimate:
+            self.state = S_RESTORED        
+        
+        for key, detail in self.data.items():
+            try:
+                self._restoreDetail(detail)
+            except Exception as err:
+                Err("TempoVis.restore: failed to restore detail {key}: {err}".format(key= key, err= str(err)))
+                _printTraceback(err)
+        if ultimate:
+            self.data = {}
+            if self.is_in_stack:
+                self.stack.withdraw(self)
+    
+  #</core interface>
+  
+  #<stack interface>
+    def _inserted(self, stack, index):
+        '''calles when this tv is inserted into a stack'''
+        self.stack = stack
+    def _withdrawn(self, stack, index):
+        '''calles when this tv is withdrawn from a stack'''
+        self.stack = None
+    @property
+    def is_in_stack(self):
+        return self.stack is not None
+  #</stack interface>
+
+  #<convenience functions>            
+    def modifyVPProperty(self, doc_obj_or_list, prop_names, new_value = JUST_SAVE, mild_restore = None):
+        '''modifyVPProperty(doc_obj_or_list, prop_names, new_value = JUST_SAVE, mild_restore = None): modifies
         prop_name property of ViewProvider of doc_obj_or_list, and remembers
         original value of the property. Original values will be restored upon
-        TempoVis deletion, or call to restore().'''
+        TempoVis deletion, or call to restore().
+        
+        mild_restore: test if user changed the value manually when restoring the TV.'''
+        
+        if self.state == S_RESTORED:
+            warn("Attempting to use a TV that has been restored. There must be a problem with code.")
+            return
 
-        if App.GuiUp:
-            if not hasattr(doc_obj_or_list, '__iter__'):
-                doc_obj_or_list = [doc_obj_or_list]
-            if not isinstance(prop_names,(list,tuple)):
-                prop_names = [prop_names]
-            for doc_obj in doc_obj_or_list:
-                if not self.is3DObject(doc_obj):
+        if not hasattr(doc_obj_or_list, '__iter__'):
+            doc_obj_or_list = [doc_obj_or_list]
+        if not isinstance(prop_names,(list,tuple)):
+            prop_names = [prop_names]
+        for doc_obj in doc_obj_or_list:
+            for prop_name in prop_names:
+                if not hasattr(doc_obj.ViewObject, prop_name):
+                    warn("TempoVis: object {obj} has no attribute {attr}. Skipped."
+                                             .format(obj= doc_obj.Name, attr= prop_name))
                     continue
-                for prop_name in prop_names:
-                    if not hasattr(doc_obj.ViewObject, prop_name):
-                        App.Console.PrintWarning("TempoVis: object {obj} has no attribute {attr}. Skipped.\n"
-                                                .format(obj= doc_obj.Name, attr= prop_name))
-                        continue # silently ignore if object doesn't have the property...
 
-                    # Because the introduction of external objects, we shall now
-                    # accept objects from all opening documents.
-                    #
-                    #  if doc_obj.Document is not self.document:  #ignore objects from other documents
-                    #      raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
-                    oldval = getattr(doc_obj.ViewObject, prop_name)
-                    if new_value is not None:
-                        setattr(doc_obj.ViewObject, prop_name, new_value)
-                    self.restore_on_delete = True
-                    key = (doc_obj.Name,prop_name,doc_obj.Document.Name)
-                    self.data.setdefault(key,oldval)
+                # Because the introduction of external objects, we shall now
+                # accept objects from all opened documents.
+                #
+                #  if doc_obj.Document is not self.document:  #ignore objects from other documents
+                #      raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
+                from .SceneDetails.VProperty import VProperty
+                if new_value is JUST_SAVE:
+                    if mild_restore:
+                        Wrn("TempoVis: can't just save a value for mild restore. Saving for hard restore.")
+                    self.save(VProperty(doc_obj, prop_name, new_value))
+                else:
+                    self.modify(VProperty(doc_obj, prop_name, new_value), mild_restore)
 
-    def saveBodyVisibleFeature(self,doc_obj_or_list):
+    def restoreVPProperty(self, doc_obj_or_list, prop_names):
+        '''restoreVPProperty(doc_obj_or_list, prop_name, new_value): restores specific property changes.'''
+        from .SceneDetails.VProperty import VProperty
+        
+        if not hasattr(doc_obj_or_list, '__iter__'):
+            doc_obj_or_list = [doc_obj_or_list]
+        if not isinstance(prop_names,(tuple,list)):
+            prop_names = [prop_names]
+        for doc_obj in doc_obj_or_list:
+            for prop_name in prop_names:
+                try:
+                    self.restoreDetail(VProperty(doc_obj, prop_name))
+                except Exception as err:
+                    Err("TempoVis.restore: failed to restore detail {key}: {err}".format(key= key, err= str(err)))
+                    _printTraceback(err)
+
+
+    def saveBodyVisibleFeature(self, doc_obj_or_list):
+        """saveBodyVisibleFeature(self, doc_obj_or_list): saves Visibility of currently 
+        visible feature, for every body of PartDesign features in the provided list."""
         if not hasattr(doc_obj_or_list, '__iter__'):
             doc_obj_or_list = [doc_obj_or_list]
         objs = []
@@ -123,173 +296,76 @@ class TempoVis(FrozenClass):
             feature = getattr(body,'VisibleFeature',None)
             if feature:
                 objs.append(feature)
-        self.modifyVPProperty(objs, 'Visibility',None)
+        self.modifyVPProperty(objs, 'Visibility', JUST_SAVE)
+        return objs
 
-    def show(self, doc_obj_or_list):
-        '''show(doc_obj_or_list): shows objects (sets their Visibility to True). doc_obj_or_list can be a document object, or a list of document objects'''
-        self.saveBodyVisibleFeature(doc_obj_or_list)
-        self.modifyVPProperty(doc_obj_or_list, ('Visibility','LinkVisibility'),True)
+    def show(self, doc_obj_or_list, links_too = True, mild_restore = None):
+        '''show(doc_obj_or_list, links_too = True): shows objects (sets their Visibility to True). 
+        doc_obj_or_list can be a document object, or a list of document objects.
+        If links_too is True, all Links of the objects are also hidden, by setting LinkVisibility attribute of each object.'''
+        doc_obj_or_list = self._3D_objects(doc_obj_or_list)
+        self.saveBodyVisibleFeature(doc_obj_or_list) #fix implicit hiding of other features by PartDesign not being recorded to TV
+        self.modifyVPProperty(doc_obj_or_list, 'Visibility', True, mild_restore)
+        if links_too:
+            self.modifyVPProperty(doc_obj_or_list, 'LinkVisibility', True, mild_restore)
 
-    def hide(self, doc_obj_or_list):
+    def hide(self, doc_obj_or_list, links_too = True, mild_restore = None):
         '''hide(doc_obj_or_list): hides objects (sets their Visibility to False). doc_obj_or_list can be a document object, or a list of document objects'''
-        self.saveBodyVisibleFeature(doc_obj_or_list)
-        self.modifyVPProperty(doc_obj_or_list, ('Visibility',"LinkVisibility"), False)
+        doc_obj_or_list = self._3D_objects(doc_obj_or_list)
+        # no need to saveBodyVisibleFeature here, as no implicit showing will happen
+        self.modifyVPProperty(doc_obj_or_list, 'Visibility', False, mild_restore)
+        if links_too:
+            self.modifyVPProperty(doc_obj_or_list, 'LinkVisibility', False, mild_restore)
 
-    def get_all_dependent(self, doc_obj, subname=None):
-        '''get_all_dependent(doc_obj): gets all objects that depend on doc_obj. Containers of the object are excluded from the list.'''
+    def get_all_dependent(self, doc_obj, subname = None):
+        '''get_all_dependent(doc_obj, subname = None): gets all objects that depend on doc_obj. Containers and Links (if subname) required for visibility of the object are excluded from the list.'''
+        from Containers import isAContainer
         if subname:
+            # a link-path was provided. doc_obj has nothing to do with the object we want 
+            # to collect dependencies from. So, replace it with the one pointed by link-path.
             cnt_chain = doc_obj.getSubObjectList(subname)
             doc_obj = cnt_chain[-1].getLinkedObject()
+            # cnt_chain can either end with the object (e.g. if a sketch is in a part, and 
+            # a link is to a part), or it may be a Link object (if we have a straight or 
+            # even nested Link to the sketch).
+            #
+            # I don't know why do we need that isAContainer check here, but I'm leaving it, 
+            # realthunder must be knowing his business --DeepSOIC
             cnt_chain = [ o for o in cnt_chain
-                            if o==cnt_chain[-1] or isContainer(o) ]
+                            if o==cnt_chain[-1] or isAContainer(o, links_too= True) ]
         else:
             cnt_chain = Containers.ContainerChain(doc_obj)
         return [o for o in getAllDependent(doc_obj) if not o in cnt_chain]
 
     def hide_all_dependent(self, doc_obj):
         '''hide_all_dependent(doc_obj): hides all objects that depend on doc_obj. Groups, Parts and Bodies are not hidden by this.'''
-        self.hide( self.get_all_dependent(doc_obj) )
+        self.hide(self._3D_objects(self.get_all_dependent(doc_obj)))
 
     def show_all_dependent(self, doc_obj):
         '''show_all_dependent(doc_obj): shows all objects that depend on doc_obj. This method is probably useless.'''
-        self.show( getAllDependent(doc_obj) )
+        self.show(self._3D_objects(getAllDependent(doc_obj)))
 
     def restore_all_dependent(self, doc_obj):
         '''show_all_dependent(doc_obj): restores original visibilities of all dependent objects.'''
-        self.restoreVPProperty( getAllDependent(doc_obj), ('Visibility','LinkVisibility') )
+        self.restoreVPProperty( getAllDependent(doc_obj), ('Visibility', 'LinkVisibility') )
 
     def hide_all_dependencies(self, doc_obj):
         '''hide_all_dependencies(doc_obj): hides all objects that doc_obj depends on (directly and indirectly).'''
-        self.hide( getAllDependencies(doc_obj) )
+        self.hide(self._3D_objects(getAllDependencies(doc_obj)))
 
     def show_all_dependencies(self, doc_obj):
         '''show_all_dependencies(doc_obj): shows all objects that doc_obj depends on (directly and indirectly). This method is probably useless.'''
-        self.show( getAllDependencies(doc_obj) )
+        self.show(self._3D_objects(getAllDependencies(doc_obj)))
 
-    def saveCamera(self):
-        vw = Gui.ActiveDocument.ActiveView
-        self.cam_string        = vw.getCamera()
-        self.viewer            = vw
+    def saveCamera(self, vw = None):
+        self._change()
+        from .SceneDetails.Camera import Camera
+        self.save(Camera(self.document))
         
-        self.restore_on_delete = True
-
-    def restoreCamera(self):
-        if not self.cam_string:
-            return
-        vw = self.viewer
-        if self.links_are_lost: # can happen after save-restore
-            import FreeCADGui as Gui
-            vw = Gui.ActiveDocument.ActiveView
-
-        vw.setCamera(self.cam_string)
-
-    def restore(self):
-        '''restore(): restore all ViewProvider properties modified via TempoVis to their
-        original values, and saved camera, if any. Called automatically when instance is
-        destroyed, unless it was called explicitly. Should not raise exceptions.'''
-        
-        if self.links_are_lost:
-            self.document = App.ActiveDocument
-            self.viewer = Gui.ActiveDocument.ActiveView
-            self.links_are_lost = False
-            
-        for (obj_name, prop_name, doc_name), value in self.data.items():
-            try:
-                setattr(App.getDocument(doc_name).getObject(obj_name).ViewObject,prop_name,value)
-            except Exception as err:
-                App.Console.PrintWarning("TempoVis: failed to restore {obj}.{prop}. {err}\n"
-                                         .format(err= err.message,
-                                                 obj= obj_name,
-                                                 prop= prop_name))
-        
-        self.restoreUnpickable()
-        self.restoreClipPlanes()
-        
-        try:
-            self.restoreCamera()
-        except Exception as err:
-            App.Console.PrintWarning("TempoVis: failed to restore camera. {err}\n"
-                                     .format(err= err.message))
-        self.restore_on_delete = False
-    
-    def restoreVPProperty(self, object_or_list, prop_names):
-        """restoreVPProperty(object_or_list, prop_name): restores original values of certain property for certain objects."""
-        if App.GuiUp:
-            if not hasattr(object_or_list, '__iter__'):
-                object_or_list = [object_or_list]
-            if not isinstance(prop_names,(tuple,list)):
-                prop_names = [prop_names]
-            for doc_obj in object_or_list:
-                if not self.is3DObject(doc_obj):
-                    continue
-                for prop_name in prop_names:
-                    key = (doc_obj.Name, prop_name, doc_obj.Document.Name)
-                    if key in self.data:
-                        try:
-                            setattr(doc_obj.ViewObject, prop_name, self.data[key])
-                        except Exception as err:
-                            App.Console.PrintWarning("TempoVis: failed to restore {obj}.{prop}. {err}\n"
-                                                    .format(err= err.message,
-                                                            obj= doc_obj.Name,
-                                                            prop= prop_name))
-    
-
-    def forget(self):
-        '''forget(): resets TempoVis'''
-        self.data = {}
-        self.data_pickstyle = {}
-        self.data_clipplane = {}
-
-        self.cam_string = ""
-        self.viewer = None
-
-        self.restore_on_delete = False
-
-    def __del__(self):
-        if self.restore_on_delete:
-            self.restore()
-
-    def __getstate__(self):
-        return (list(self.data.items()),
-                self.cam_string,
-                self.restore_on_delete)
-
-    def __setstate__(self, state):
-        self.__define_attributes()
-        
-        items, self.cam_string, self.restore_on_delete = state
-        
-        # need to convert keys to tuples (dict doesn't accept list as key; tuples are converted to lists by json)
-        items = [(tuple(item[0]), item[1]) for item in items]
-        self.data = dict(items)
-        self.links_are_lost = True
-        
-    def _getPickStyleNode(self, viewprovider, make_if_missing = True):
-        from pivy import coin
-        sa = coin.SoSearchAction()
-        sa.setType(coin.SoPickStyle.getClassTypeId())
-        sa.traverse(viewprovider.RootNode)
-        if sa.isFound() and sa.getPath().getLength() == 1:
-            return sa.getPath().getTail()
-        else:
-            if not make_if_missing:
-                return None
-            pick_style = coin.SoPickStyle()
-            pick_style.style.setValue(coin.SoPickStyle.SHAPE)
-            viewprovider.RootNode.insertChild(pick_style, 0)
-            return pick_style
-            
-    def _getPickStyle(self, viewprovider):
-        ps = self._getPickStyleNode(viewprovider, make_if_missing= False)
-        if ps is not None:
-            return ps.style.getValue()
-        else:
-            return 0 #coin.SoPickStyle.SHAPE
-    
-    def _setPickStyle(self, viewprovider, pickstyle):
-        ps = self._getPickStyleNode(viewprovider, make_if_missing= pickstyle != 0) #coin.SoPickStyle.SHAPE
-        if ps is not None:
-            return ps.style.setValue(pickstyle)
+    def restoreCamera(self, ultimate = False):
+        from .SceneDetails.Camera import Camera
+        dt = Camera(self.document)
+        self.restoreDetail(dt, ultimate)
 
     def setUnpickable(self, doc_obj_or_list, actual_pick_style = 2): #2 is coin.SoPickStyle.UNPICKABLE
         '''setUnpickable(doc_obj_or_list, actual_pick_style = 2): sets object unpickable (transparent to clicks).
@@ -302,72 +378,16 @@ class TempoVis(FrozenClass):
         inserted as the very first node, and remains there even after restore()/deleting 
         tempovis. '''
         
-        if App.GuiUp:
-            if not hasattr(doc_obj_or_list, '__iter__'):
-                doc_obj_or_list = [doc_obj_or_list]
-            for doc_obj in doc_obj_or_list:
-                if not self.is3DObject(doc_obj):
-                    continue
-                if doc_obj.Document is not self.document:  #ignore objects from other documents
-                    raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
-                oldval = self._getPickStyle(doc_obj.ViewObject)
-                if actual_pick_style != oldval:
-                    self._setPickStyle(doc_obj.ViewObject, actual_pick_style)
-                    self.restore_on_delete = True
-                if doc_obj.Name not in self.data_pickstyle:
-                    self.data_pickstyle[doc_obj.Name] = oldval
-                    
-    def restoreUnpickable(self):
-        for obj_name in self.data_pickstyle:
-            try:
-                self._setPickStyle(self.document.getObject(obj_name).ViewObject, self.data_pickstyle[obj_name])
-            except Exception as err:
-                App.Console.PrintWarning("TempoVis: failed to restore pickability of {obj}. {err}\n"
-                                         .format(err= err.message,
-                                                 obj= obj_name))
-    
-    def _getClipplaneNode(self, viewprovider, make_if_missing = True):
-        from pivy import coin
-        sa = coin.SoSearchAction()
-        sa.setType(coin.SoClipPlane.getClassTypeId())
-        sa.setName('TVClipPlane')
-        sa.traverse(viewprovider.RootNode)
-        if sa.isFound() and sa.getPath().getLength() == 1:
-            return sa.getPath().getTail()
-        elif not sa.isFound():
-            if not make_if_missing:
-                return None
-            clipplane = coin.SoClipPlane()
-            viewprovider.RootNode.insertChild(clipplane, 0)
-            clipplane.setName('TVClipPlane')
-            clipplane.on.setValue(False) #make sure the plane is not activated by default
-            return clipplane
-            
-    def _enableClipPlane(self, obj, enable, placement = None, offset = 0.0):
-        """Enables or disables clipping for an object. Placement specifies the plane (plane 
-        is placement's XY plane), and should be in global CS. 
-        Offset shifts the plane; positive offset reveals more material, negative offset 
-        hides more material."""
-        if not hasattr(obj, 'getGlobalPlacement'):
-            print("    {obj} has no attribute 'getGlobalPlacement'".format(obj= obj.Name))
-            return #can't clip these yet... skip them for now. Example object: Draft Label
-            
-        node = self._getClipplaneNode(obj.ViewObject, make_if_missing= enable)
-        if node is None:
-            if enable:
-                App.Console.PrintError("TempoVis: failed to set clip plane to {obj}.\n".format(obj= obj.Name))
-            return
-        if placement is not None:
-            from pivy import coin
-            plm_local = obj.getGlobalPlacement().multiply(obj.Placement.inverse()) # placement of CS the object is in
-            plm_plane = plm_local.inverse().multiply(placement)
-            normal = plm_plane.Rotation.multVec(App.Vector(0,0,-1))
-            basepoint = plm_plane.Base + normal * (-offset)
-            normal_coin = coin.SbVec3f(*tuple(normal))
-            basepoint_coin = coin.SbVec3f(*tuple(basepoint))
-            node.plane.setValue(coin.SbPlane(normal_coin,basepoint_coin))
-        node.on.setValue(enable)
+        from .SceneDetails.Pickability import Pickability
         
+        if not hasattr(doc_obj_or_list, '__iter__'):
+            doc_obj_or_list = [doc_obj_or_list]
+        for doc_obj in doc_obj_or_list:
+            if not is3DObject(doc_obj):
+                continue
+            dt = Pickability(doc_obj, actual_pick_style)
+            self.modify(dt)
+
     def clipPlane(self, doc_obj_or_list, enable, placement, offset = 0.02): 
         '''clipPlane(doc_obj_or_list, enable, placement, offset): slices off the object with a clipping plane.
         doc_obj_or_list: object or list of objects to alter (App)
@@ -379,34 +399,20 @@ class TempoVis(FrozenClass):
         of this type as direct child, one is used. Otherwise, new one is created and 
         inserted as the very first node. The node is left, but disabled when tempovis is restoring.'''
         
-        if App.GuiUp:
-            if not hasattr(doc_obj_or_list, '__iter__'):
-                doc_obj_or_list = [doc_obj_or_list]
-            for doc_obj in doc_obj_or_list:
-                if not self.is3DObject(doc_obj):
-                    continue
-                #  if doc_obj.Document is not self.document:  #ignore objects from other documents
-                #      raise ValueError("Document object to be modified does not belong to document TempoVis was made for.")
-                print("Clipping {obj}".format(obj= doc_obj.Name))
-                self._enableClipPlane(doc_obj, enable, placement, offset)
-                self.restore_on_delete = True
-                if doc_obj.Name not in self.data_pickstyle:
-                    self.data_clipplane[doc_obj.Name] = False
-
-    def restoreClipPlanes(self):
-        self.sketchClipPlane(None,False)
-        for obj_name in self.data_clipplane:
-            try:
-                self._enableClipPlane(self.document.getObject(obj_name), self.data_clipplane[obj_name])
-            except Exception as err:
-                App.Console.PrintWarning("TempoVis: failed to remove clipplane for {obj}. {err}\n"
-                                         .format(err= err.message,
-                                                 obj= obj_name))
-
+        from .SceneDetails.ObjectClipPlane import ObjectClipPlane
+        
+        if not hasattr(doc_obj_or_list, '__iter__'):
+            doc_obj_or_list = [doc_obj_or_list]
+        for doc_obj in doc_obj_or_list:
+            if not is3DObject(doc_obj):
+                continue
+            dt = ObjectClipPlane(doc_obj, enable, placement, offset)
+            self.modify(dt)
+                    
     @staticmethod
     def allVisibleObjects(aroundObject):
-        """allVisibleObjects(aroundObject): returns list of objects that have to be toggled invisible for only aroundObject to remain. 
-        If a whole container can be made invisible, it is returned, instead of its child objects."""
+        '''allVisibleObjects(aroundObject): returns list of objects that have to be toggled invisible for only aroundObject to remain. 
+        If a whole container can be made invisible, it is returned, instead of its child objects.'''
         
         chain = Containers.VisGroupChain(aroundObject)
         result = []
@@ -415,7 +421,7 @@ class TempoVis(FrozenClass):
             cnt_next = chain[i+1] if i+1 < len(chain) else aroundObject
             container = Container(cnt)
             for obj in container.getVisGroupChildren():
-                if not TempoVis.is3DObject(obj):
+                if not is3DObject(obj):
                     continue
                 if obj is not cnt_next:
                     if container.isChildVisible(obj):
@@ -423,24 +429,100 @@ class TempoVis(FrozenClass):
         return result
         
     def sketchClipPlane(self, sketch, enable = None):
-        """sketchClipPlane(sketch, enable = None): Clips all objects by plane of sketch. 
-        If enable argument is omitted, calling the routine repeatedly will toggle clipping plane."""
+        '''sketchClipPlane(sketch, enable = None): Clips all objects by plane of sketch. 
+        If enable argument is omitted, calling the routine repeatedly will toggle clipping plane.'''
         
-        editDoc = self.clippingDoc
-        if not editDoc:
-            editDoc = Gui.editDocument()
-        if editDoc:
-            self.clippingDoc = editDoc
-            toggle = 1 if enable else -1 if enable is None else 0
-            editDoc.ActiveView.toggleClippingPlane(
-                    toggle, pla=App.Placement(editDoc.EditingTransform))
-            return
-        elif not sketch:
-            return
+        from .SceneDetails.ClipPlane import ClipPlane
+        
+        editDoc = Gui.editDocument()
+        if editDoc is None:
+            doc = sketch.Document
+            pla = sketch.getGlobalPlacement()
+        else:
+            doc = editDoc.Document
+            pla = App.Placement(editDoc.EditingTransform)
+        toggle = {False: 0, True: 1, None: -1}[enable]
+        
+        self.modify(ClipPlane(doc, toggle, pla, 0.02))
+    
+    def activateWorkbench(self, wb_name):
+        from .SceneDetails.Workbench import Workbench
+        self.modify(Workbench(wb_name))
+    
+  #</convenience functions>
 
-        if enable is None:
-            enable = not self.sketch_clipplane_on
-            self.sketch_clipplane_on = enable
-        self.clipPlane(self.allVisibleObjects(sketch), enable, sketch.getGlobalPlacement(), 0.02)
+  #<internals>
+    def _restoreDetail(self, detail):
+        p = self.data[detail.full_key]
+        tv1, curr = self._value_after(detail, query_scene= p.mild_restore)
+        if p.mild_restore:
+            if self.data_requested[detail.full_key] != curr:
+                #the value on the scene doesn't match what was requested through TV. User probably changed it. We don't want to mess it up.
+                self._purge_milds(detail)
+                return
+        if tv1 is None:
+            # no other TV has changed this detail later, apply to the scene
+            detail.apply_data(p.data)
+        else:
+            #modify saved detail of higher TV
+            tv1.data[detail.full_key].data = p.data
+    
+    def _purge_milds(self, detail):
+        """_purge_milds(detail): wipes out detail from earlier TVs if the detail is mild-restore."""
+        if not self.is_in_stack:
+            return
+        seq_before, seq_after = self.stack.getSplitSequence(self)
+        for tv in reversed(seq_before):
+            if tv.has(detail):
+                if tv.data[detail.full_key].mild_restore:
+                    tv.forgetDetail(detail)
+                else:
+                    #hard-restoring value encountered, stop
+                    break
 
+    def _change(self):
+        '''to be called whenever anything is done that is to be restored later.'''
+        if self.state == S_EMPTY:
+            self.state = S_ACTIVE
+        if self.state == S_RESTORED:
+            Wrn("Attempting to use a TV that has been restored. There must be a problem with code.")
+        self.tv_redo = None    
+
+    def _value_after(self, detail, query_scene = False):
+        '''_value_current(detail): returns (tv, detail1). SceneDetail instance holds "current" value of 
+        scene detail (current from the context of this TV; i.e. either the current scene 
+        status, or the saved state from upper TVs).
+        If no upper TV has saved the detail value, returns either (None, None), or 
+        (None, detail1) if query_scene is True, where detail1 holds value from the scene.'''
+        def scene_value():
+            if query_scene:
+                cpy = copy(detail)
+                cpy.data = cpy.scene_value()
+                return (None, cpy)
+            else:
+                return (None, None)
+            
+        if self.is_in_stack:
+            va = self.stack.value_after(self, detail)
+            if va is None:
+                return scene_value()
+            else:
+                return va
+        else:
+            return scene_value()
+            
+    def _3D_objects(self, doc_obj_or_list):
+        """_3D_objects(doc_obj_or_list): returns list of objects that are in 3d view."""
+        if not hasattr(doc_obj_or_list, '__iter__'):
+            doc_obj_or_list = [doc_obj_or_list]
+        
+        return [obj for obj in doc_obj_or_list if is3DObject(obj)]
+        
+    def __getstate__(self):
+        return None
+        
+    def __setstate__(self, state):
+        self._init_attrs()
+    
+        
 
