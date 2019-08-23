@@ -95,6 +95,7 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
 //    m_line->setPrettyNormal();
 
     addToGroup(m_line);
+    m_line->setPos(0.0, 0.0);
     m_line->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_line->setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
@@ -102,9 +103,11 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
 
     m_arrow1 = new QGIArrow();
     addToGroup(m_arrow1);
+    m_arrow1->setPos(0.0,0.0);
     m_arrow1->hide();
     m_arrow2 = new QGIArrow();
     addToGroup(m_arrow2);
+    m_arrow2->setPos(0.0, 0.0);
     m_arrow2->hide();
 
     setParentItem(m_parentItem);
@@ -128,7 +131,6 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
     QObject::connect(
         m_line, SIGNAL(hover(bool)),
         this  , SLOT  (hover(bool)));
-            
 }
 
 QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -361,6 +363,7 @@ void QGILeaderLine::draw()
         return;
     }
 
+    m_line->setFill(Qt::NoBrush);
     m_line->setStyle(m_lineStyle);
     double scaler = 1.0;
     m_line->setWidth(scaler * m_lineWidth);
@@ -498,6 +501,11 @@ void QGILeaderLine::abandonEdit(void)
     restoreState();
 }
 
+double QGILeaderLine::getLineWidth(void)
+{
+    return m_lineWidth;
+}
+
 TechDraw::DrawLeaderLine* QGILeaderLine::getFeature(void)
 {
     TechDraw::DrawLeaderLine* result = 
@@ -548,6 +556,7 @@ void QGILeaderLine::paint ( QPainter * painter, const QStyleOptionGraphicsItem *
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+//    painter->setPen(Qt::blue);
 //    painter->drawRect(boundingRect());          //good for debugging
 
     QGIView::paint (painter, &myOption, widget);

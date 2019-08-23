@@ -187,6 +187,52 @@ void DrawLeaderLine::adjustLastSegment(void)
     WayPoints.setValues(wp);
 }
 
+//middle of last line segment
+Base::Vector3d DrawLeaderLine::getTileOrigin(void) const
+{
+    Base::Vector3d result;
+    std::vector<Base::Vector3d> wp = WayPoints.getValues();
+    if (wp.size() > 1) {
+        Base::Vector3d last = wp.rbegin()[0];
+        Base::Vector3d second = wp.rbegin()[1];
+        result = (last + second) / 2.0;
+    } else {
+        Base::Console().Warning("DLL::getTileOrigin - no waypoints\n");
+    }
+    return result;
+}
+
+//start of last line segment
+Base::Vector3d DrawLeaderLine::getKinkPoint(void) const
+{
+    Base::Vector3d result;
+    std::vector<Base::Vector3d> wp = WayPoints.getValues();
+    if (wp.size() > 1) {
+        Base::Vector3d second = wp.rbegin()[1];
+        result = second;
+    } else {
+        Base::Console().Warning("DLL::getKinkPoint - no waypoints\n");
+    }
+
+    return result;
+}
+
+//end of last line segment
+Base::Vector3d DrawLeaderLine::getTailPoint(void) const
+{
+    Base::Vector3d result;
+    std::vector<Base::Vector3d> wp = WayPoints.getValues();
+    if (!wp.empty()) {
+        Base::Vector3d last = wp.rbegin()[0];
+        result = last;
+    } else {
+        Base::Console().Warning("DLL::getTailPoint - no waypoints\n");
+    }
+
+    return result;
+}
+
+
 bool DrawLeaderLine::getDefAuto(void) const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->

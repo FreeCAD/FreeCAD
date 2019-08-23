@@ -47,6 +47,8 @@ QGIRichAnno: 233
 QGMText: 300
 QGEPath: 301
 QGMarker: 302
+QGITile: 325
+QGIWeldSymbol: 340
 */
 
 /*

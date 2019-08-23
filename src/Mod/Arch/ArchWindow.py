@@ -1085,11 +1085,10 @@ class _Window(ArchComponent.Component):
                     e = obj.Base.Shape.Edges[hinge]
                     ev1 = e.Vertexes[0].Point
                     ev2 = e.Vertexes[-1].Point
-                    if (ev2.z - ev1.z) < 0.1**Draft.precision():
-                        if ev2.y < ev1.y:
-                            ev1,ev2 = ev2,ev1
-                    elif ev2.z < ev1.z:
+                    # choose the one with lowest z to draw the symbol
+                    if ev2.z < ev1.z:
                         ev1,ev2 = ev2,ev1
+                    # find the point most distant from the hinge
                     p = None
                     d = 0
                     for v in shape.Vertexes:
@@ -1098,13 +1097,16 @@ class _Window(ArchComponent.Component):
                             d = dist
                             p = v.Point
                     if p:
+                        # bring that point to the level of ev1 if needed
                         chord = p.sub(ev1)
                         enorm = ev2.sub(ev1)
                         proj = DraftVecUtils.project(chord,enorm)
                         v1 = ev1
                         if proj.Length > 0:
-                            chord = p.sub(ev1.add(proj))
-                            p = v1.add(chord)
+                            #chord = p.sub(ev1.add(proj))
+                            #p = v1.add(chord)
+                            p = p.add(proj.negative())
+                        # calculate symbols
                         v4 = p.add(DraftVecUtils.scale(enorm,0.5))
                         if omode == 1: # Arc 90
                             v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))

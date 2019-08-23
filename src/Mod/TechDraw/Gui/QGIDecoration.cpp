@@ -83,8 +83,43 @@ void QGIDecoration::setStyle(Qt::PenStyle s)
 
 void QGIDecoration::setColor(QColor c)
 {
+    m_colNormal = c;
     m_colCurrent = c;
     m_pen.setColor(m_colCurrent);
+    m_brush.setColor(m_colCurrent);
+}
+
+QColor QGIDecoration::prefNormalColor()
+{
+    QColor result;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
+    result = fcColor.asValue<QColor>();
+    return result;
+}
+
+QColor QGIDecoration::prefPreColor()
+{
+    QColor result;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("PreSelectColor", 0x00000000));
+    result = fcColor.asValue<QColor>();
+    return result;
+}
+
+QColor QGIDecoration::prefSelectColor()
+{
+    QColor result;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("SelectColor", 0x00000000));
+    result = fcColor.asValue<QColor>();
+    return result;
 }
 
 void QGIDecoration::makeMark(double x, double y)

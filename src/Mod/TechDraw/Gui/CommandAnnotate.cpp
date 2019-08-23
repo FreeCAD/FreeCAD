@@ -48,6 +48,8 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
@@ -60,6 +62,7 @@
 #include "TaskCosVertex.h"
 #include "TaskCenterLine.h"
 #include "TaskLineDecor.h"
+#include "TaskWeldingSymbol.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderViewPart.h"
 #include "QGVPage.h"
@@ -1073,6 +1076,9 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
         }
+        std::vector<int> cv2Delete;
+        std::vector<int> ce2Delete;
+        std::vector<int> cl2Delete;
         for (auto& s: SubNames) {
             int idx = TechDraw::DrawUtil::getIndexFromName(s);
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
@@ -1083,23 +1089,53 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                     int source = bg->source();
                     int sourceIndex = bg->sourceIndex();
                     if (source == 1) {  //this is a "CosmeticEdge"
-                        objFeat->removeCosmeticEdge(sourceIndex);
+                        ce2Delete.push_back(sourceIndex);
                     } else if (source == 2) { //this is a "CenterLine"
-                        objFeat->removeCenterLine(sourceIndex);
+                        cl2Delete.push_back(sourceIndex);
                     } else {
                         Base::Console().Message(
                             "CMD::CosmeticEraserP - edge: %d is confused - source: %d\n",idx,source);
                     }
                 }
             } else if (geomType == "Vertex") {
-                TechDraw::CosmeticVertex* cv = objFeat->getCosmeticVertexByGeom(idx);
-                if (cv != nullptr) {
-                    objFeat->removeCosmeticVertex(cv);
+                TechDraw::Vertex* tdv = objFeat->getProjVertexByIndex(idx);
+                if (tdv != nullptr) {
+                    int delIndex = tdv->cosmeticLink;
+                    if (!(delIndex < 0)) {
+                        cv2Delete.push_back(delIndex);
+                    } else {
+                        Base::Console().Message("CMD::eraser - geom: %d has no cv\n", idx);
+                    }
+                } else {
+                    Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
                 }
             } else {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                            QObject::tr("Unknown object type in selection"));
                 return;
+            }
+
+        }
+        // delete items in reverse order so as not to invalidate indices
+        if (!cv2Delete.empty()) {
+            std::sort(cv2Delete.begin(), cv2Delete.end());
+            auto it = cv2Delete.rbegin();
+            for ( ; it != cv2Delete.rend(); it++) {
+                objFeat->removeCosmeticVertex((*it));
+            }
+        }
+        if (!ce2Delete.empty()) {
+            std::sort(ce2Delete.begin(), ce2Delete.end());
+            auto itce = ce2Delete.rbegin();
+            for ( ; itce != ce2Delete.rend(); itce++) {
+                objFeat->removeCosmeticEdge((*itce));
+            }
+        }
+        if (!cl2Delete.empty()) {
+            std::sort(cl2Delete.begin(), cl2Delete.end());
+            auto itcl = cl2Delete.rbegin();
+            for ( ; itcl != cl2Delete.rend(); itcl++) {
+                objFeat->removeCenterLine((*itcl));
             }
         }
     }
@@ -1246,6 +1282,69 @@ bool CmdTechDrawShowAll::isActive(void)
     return (havePage && haveView);
 }
 
+//===========================================================================
+// TechDraw_WeldSymbol
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawWeldSymbol);
+
+CmdTechDrawWeldSymbol::CmdTechDrawWeldSymbol()
+  : Command("TechDraw_WeldSymbol")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Add welding information to a leader");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_WeldSymbol";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-weldsymbol";
+}
+
+void CmdTechDrawWeldSymbol::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    
+    std::vector<App::DocumentObject*> leaders = getSelection().
+                                         getObjectsOfType(TechDraw::DrawLeaderLine::getClassTypeId());
+    std::vector<App::DocumentObject*> welds = getSelection().
+                                         getObjectsOfType(TechDraw::DrawWeldSymbol::getClassTypeId());
+    TechDraw::DrawLeaderLine* leadFeat = nullptr;
+    TechDraw::DrawWeldSymbol* weldFeat = nullptr;
+    if ( (leaders.size() != 1) &&
+         (welds.size() != 1) ) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select exactly one Leader line or one Weld symbol."));
+        return;
+    }
+    if (!leaders.empty()) {
+        leadFeat = static_cast<TechDraw::DrawLeaderLine*> (leaders.front());
+        Gui::Control().showDialog(new TaskDlgWeldingSymbol(leadFeat));
+    } else if (!welds.empty()) {
+        weldFeat = static_cast<TechDraw::DrawWeldSymbol*> (welds.front());
+        Gui::Control().showDialog(new TaskDlgWeldingSymbol(weldFeat));
+    }
+}
+
+bool CmdTechDrawWeldSymbol::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
+
 void CreateTechDrawCommandsAnnotate(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1264,6 +1363,7 @@ void CreateTechDrawCommandsAnnotate(void)
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticEraser());
     rcCmdMgr.addCommand(new CmdTechDrawDecorateLine());
     rcCmdMgr.addCommand(new CmdTechDrawShowAll());
+    rcCmdMgr.addCommand(new CmdTechDrawWeldSymbol());
 }
 
 //===========================================================================
