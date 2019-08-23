@@ -1295,36 +1295,41 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
 {
     QTreeWidgetItem* item = itemAt(event->pos());
     if (!item) return;
-    if (item->type() == TreeWidget::DocumentType) {
-        //QTreeWidget::mouseDoubleClickEvent(event);
-        Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
-        if (!doc) return;
-        if(doc->getDocument()->testStatus(App::Document::PartialDoc)) {
-            contextItem = item;
-            onReloadDoc();
-            return;
-        }
-        if(!doc->setActiveView())
-            doc->setActiveView(0,View3DInventor::getClassTypeId());
-    }
-    else if (item->type() == TreeWidget::ObjectType) {
-        DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
-        objitem->getOwnerDocument()->document()->setActiveView(objitem->object());
-        auto manager = Application::Instance->macroManager();
-        auto lines = manager->getLines();
-        auto editDoc = Application::Instance->editDocument();
-        App::AutoTransaction committer("Double click", true);
-        std::ostringstream ss;
-        ss << Command::getObjectCmd(objitem->object()->getObject())
-            << ".ViewObject.doubleClicked()";
-        if (!objitem->object()->doubleClicked())
-            QTreeWidget::mouseDoubleClickEvent(event);
-        else if(lines == manager->getLines())
-            manager->addLine(MacroManager::Gui,ss.str().c_str());
 
-        // If the double click starts an editing, let the transaction persist
-        if(!editDoc && Application::Instance->editDocument())
-            committer.setEnable(false);
+    try {
+        if (item->type() == TreeWidget::DocumentType) {
+            //QTreeWidget::mouseDoubleClickEvent(event);
+            Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
+            if (!doc) return;
+            if(doc->getDocument()->testStatus(App::Document::PartialDoc)) {
+                contextItem = item;
+                onReloadDoc();
+                return;
+            }
+            if(!doc->setActiveView())
+                doc->setActiveView(0,View3DInventor::getClassTypeId());
+        }
+        else if (item->type() == TreeWidget::ObjectType) {
+            DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
+            objitem->getOwnerDocument()->document()->setActiveView(objitem->object());
+            auto manager = Application::Instance->macroManager();
+            auto lines = manager->getLines();
+            auto editDoc = Application::Instance->editDocument();
+            App::AutoTransaction committer("Double click", true);
+            std::ostringstream ss;
+            ss << Command::getObjectCmd(objitem->object()->getObject())
+                << ".ViewObject.doubleClicked()";
+            if (!objitem->object()->doubleClicked())
+                QTreeWidget::mouseDoubleClickEvent(event);
+            else if(lines == manager->getLines())
+                manager->addLine(MacroManager::Gui,ss.str().c_str());
+
+            // If the double click starts an editing, let the transaction persist
+            if(!editDoc && Application::Instance->editDocument())
+                committer.setEnable(false);
+        }
+    } catch (Base::Exception &e) {
+        e.ReportException();
     }
 }
 
