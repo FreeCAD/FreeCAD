@@ -231,13 +231,8 @@ public:
             if(count)
                 *count = propSize;
         }
-        if(v) {
-            QString res;
-            if(sep)
-                res = QLatin1String(".");
-            res += QString::fromLatin1(prop->getName());
-            *v = res;
-        }
+        if(v) 
+            *v = QString::fromLatin1(prop->getName());
         return;
     }
 
