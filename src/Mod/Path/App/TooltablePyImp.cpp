@@ -63,6 +63,9 @@ PyObject *TooltablePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // 
 // constructor method
 int TooltablePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    char *name="Tooltable";
+    int version = 1;
+
     if (PyArg_ParseTuple(args, "")) {
         return 0;
     }
@@ -234,6 +237,25 @@ int TooltablePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
+Py::Int TooltablePy::getVersion(void) const 
+{
+    return Py::Int(getTooltablePtr()->Version);
+}
+
+void TooltablePy::setVersion(Py::Int version) {
+    getTooltablePtr()->Version = version;
+}
+
+Py::String TooltablePy::getName(void) const
+{
+    return Py::String(getTooltablePtr()->Name.c_str());
+}
+
+void TooltablePy::setName(Py::String arg)
+{
+    std::string name = arg.as_std_string();
+    getTooltablePtr()->Name = name;
+}
 
 PyObject* TooltablePy::setFromTemplate(PyObject * args)
 {
@@ -263,3 +285,4 @@ PyObject* TooltablePy::templateAttrs(PyObject * args)
     }
     return dict;
 }
+
