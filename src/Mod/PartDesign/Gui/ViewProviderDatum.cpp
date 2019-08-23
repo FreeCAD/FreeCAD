@@ -299,8 +299,9 @@ bool ViewProviderDatum::doubleClicked(void)
 
     if (datumBody != NULL) {
         if (datumBody != activeBody) {
-            _FCMD_OBJ_DOC_CMD(Gui,datumBody,"ActiveView.setActiveObject('" << PDBODYKEY << "', " 
-                    << Gui::Command::getObjectCmd(datumBody) << ")");
+            Gui::Command::doCommand(Gui::Command::Gui,
+                    "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
+                    PDBODYKEY, Gui::Command::getObjectCmd(datumBody).c_str());
             activeBody = datumBody;
         }
     }
