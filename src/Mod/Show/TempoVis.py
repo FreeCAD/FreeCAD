@@ -123,7 +123,6 @@ class TempoVis(FrozenClass):
             feature = getattr(body,'VisibleFeature',None)
             if feature:
                 objs.append(feature)
-        print([o.Name for o in objs])
         self.modifyVPProperty(objs, 'Visibility',None)
 
     def show(self, doc_obj_or_list):
