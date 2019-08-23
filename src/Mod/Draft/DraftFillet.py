@@ -148,9 +148,8 @@ class CommandFillet(DraftTools.Line):
         FreeCADGui.addModule("Draft")
         func = DraftTools.translate("draft", "Create fillet")
 
-        arg = ['arc = DraftFillet.makeFillet(' + _wires + ')',
-               *rems,
-               'Draft.autogroup(arc)',
+        arg = ['arc = DraftFillet.makeFillet(' + _wires + ')'] + rems +\
+              ['Draft.autogroup(arc)',
                'FreeCAD.ActiveDocument.recompute()']
         DraftGui.todo.delayCommit([(func, arg)])
 
