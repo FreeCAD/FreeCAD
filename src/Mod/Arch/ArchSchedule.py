@@ -22,6 +22,7 @@
 #*                                                                         *
 #***************************************************************************
 
+from __future__ import print_function
 import sys
 import FreeCAD, time
 if FreeCAD.GuiUp:
