@@ -176,6 +176,7 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     // setup and diagnose the sketch
     try {
         rebuildExternalGeometry();
+        Constraints.acceptGeometry(getCompleteGeometry());
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
@@ -912,9 +913,7 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     }
 
     this->Geometry.setValues(newVals);
-    this->Constraints.setValues(newConstraints);
-    for (Constraint* it : newConstraints)
-        delete it;
+    this->Constraints.setValues(std::move(newConstraints));
     this->Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
 
@@ -5357,9 +5356,7 @@ int SketchObject::delExternal(int ExtGeoId)
     }
 
     solverNeedsUpdate=true;
-    Constraints.setValues(newConstraints);
-    for (Constraint* it : newConstraints)
-        delete it;
+    Constraints.setValues(std::move(newConstraints));
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     return 0;
@@ -5429,7 +5426,7 @@ int SketchObject::delConstraintsToExternal()
         }
     }
 
-    Constraints.setValues(newConstraints);
+    Constraints.setValues(std::move(newConstraints));
     Constraints.acceptGeometry(getCompleteGeometry());
 
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
