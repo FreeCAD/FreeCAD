@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource>
         <file>icons/PartFeature.svg</file>
         <file>icons/PartFeature.xpm</file>
         <file>icons/PartFeatureImport.xpm</file>
