@@ -49,6 +49,7 @@ PROPERTY_SOURCE(TechDraw::DrawViewArch, TechDraw::DrawViewSymbol)
 const char* DrawViewArch::RenderModeEnums[]= {"Wireframe",
                                               "Solid",
                                               "Coin",
+                                              "Coin mono",
                                               NULL};
 
 DrawViewArch::DrawViewArch(void)
