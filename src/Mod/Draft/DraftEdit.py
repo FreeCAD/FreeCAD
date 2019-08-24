@@ -102,12 +102,13 @@ class Edit():
         "this method defines editpoints and set the editTrackers"
         self.unregister_selection_callback()
         self.obj = self.getObjFromSelection()
-        if not self.obj: return self.finish()          
+        if not self.obj: return self.finish() 
 
-        # store selectable state of the object TODO: Separate function
-        if hasattr(self.obj.ViewObject,"Selectable"):
-            self.selectstate = self.obj.ViewObject.Selectable
-            self.obj.ViewObject.Selectable = False
+        # Save selectstate and turn selectable false.
+        # Object can remain selectable commenting following lines, 
+        # but snap only process the first edge of self.obj TODO: fix it
+        self.saveSelectState(self.obj)        
+        self.setSelectState(self.obj, False)
 
         # start object editing
         FreeCADGui.Selection.clearSelection()
@@ -145,9 +146,7 @@ class Edit():
                 if not self.obj.Closed:
                     self.obj.Closed = True
         if self.ui: self.removeTrackers()
-        if self.obj:
-            if hasattr(self.obj.ViewObject,"Selectable") and (self.selectstate != None):
-                self.obj.ViewObject.Selectable = self.selectstate
+        self.restoreSelectState(self.obj)
         if Draft.getType(self.obj) == "Structure":
             if self.originalDisplayMode != None:
                 self.obj.ViewObject.DisplayMode = self.originalDisplayMode
@@ -301,10 +300,9 @@ class Edit():
         "terminate editing and start object updating process"
         self.finalizeGhost()
         self.trackers[self.editing].on()
-        #if hasattr(self.obj.ViewObject,"Selectable"):
-        #    self.obj.ViewObject.Selectable = True
         FreeCADGui.Snapper.setSelectMode(True)
         self.numericInput(self.trackers[self.editing].get())
+        self.showTrackers()
         DraftTools.redraw3DView()
 
     #---------------------------------------------------------------------------
@@ -339,6 +337,19 @@ class Edit():
         self.editing = None
         self.ui.editUi(self.ui.lastMode)
         self.node = []
+
+    def setSelectState(self, obj, selState = False):
+        if hasattr(obj.ViewObject,"Selectable"):
+            obj.ViewObject.Selectable = selState
+
+    def saveSelectState(self, obj):
+        if hasattr(obj.ViewObject,"Selectable"):
+            self.selectstate = obj.ViewObject.Selectable
+
+    def restoreSelectState(self,obj):
+        if obj:
+            if hasattr(obj.ViewObject,"Selectable") and (self.selectstate != None):
+                obj.ViewObject.Selectable = self.selectstate
 
     def setPlacement(self,obj):
         "set self.pl and self.invpl to self.obj placement and inverse placement"
@@ -521,6 +532,7 @@ class Edit():
         "called by action, add point to obj and reset trackers"
         if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
         pos = event.getPosition()
+        self.setSelectState(self.obj, True)
         selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
         if not selobjs: return
         for info in selobjs:
@@ -539,6 +551,7 @@ class Edit():
         self.editpoints = []
         self.setEditPoints(self.obj)
         self.resetTrackers()
+        self.setSelectState(self.obj, False)
         return
 
 
