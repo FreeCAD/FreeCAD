@@ -79,6 +79,7 @@ enum ViewStatus {
     Detach = 1,
     isRestoring = 2,
     UpdatingView = 3,
+    TouchDocument = 4,
 };
 
 

@@ -182,8 +182,8 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             getObject()->Visibility.setValue(Visibility.getValue());
     }
 
-    if (pcDocument && !pcDocument->isModified()) {
-        if(prop)
+    if (pcDocument && !pcDocument->isModified() && testStatus(Gui::ViewStatus::TouchDocument)) {
+        if (prop)
             FC_LOG(prop->getFullName() << " changed");
         pcDocument->setModified(true);
     }
