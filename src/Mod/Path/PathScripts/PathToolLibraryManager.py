@@ -146,6 +146,7 @@ class ToolLibraryManager():
     '''
 
     #TODO: copy & Duplicate tools between lists
+    #TODO: update version number and handle upgrading
 
     TooltableTypeJSON     = translate("TooltableEditor", "Tooltable JSON (*.json)")
     TooltableTypeXML      = translate("TooltableEditor", "Tooltable XML (*.xml)")
@@ -273,17 +274,19 @@ class ToolLibraryManager():
         return None
 
     def loadToolTables(self):
-        ''' loads the tool tables from tehe stored data '''
+        ''' loads the tool tables from the stored data '''
         self.toolTables = []
         self.currentTableName = ''
 
-        for table in json.loads(self.prefs.GetString(self.PreferenceMainLibraryJSON, "")):
+        prefsData = self.prefs.GetString(self.PreferenceMainLibraryJSON, "")
+        if prefsData:
+            for table in json.loads(prefsData):
 
-            tt = self.tooltableFromAttrs(table)
-            if tt:
-                self.toolTables.append(tt)
-            else:
-                PathLog.error(translate('PathToolLibraryManager', "Unsupported Path tooltable"))
+                tt = self.tooltableFromAttrs(table)
+                if tt:
+                    self.toolTables.append(tt)
+                else:
+                    PathLog.error(translate('PathToolLibraryManager', "Unsupported Path tooltable"))
 
     def saveMainLibrary(self):
         '''Persists the permanent library to FreeCAD user preferences'''
