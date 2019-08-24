@@ -903,7 +903,15 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     }
 
     if (contextMenu.actions().count() > 0) {
-        contextMenu.exec(QCursor::pos());
+        try {
+            contextMenu.exec(QCursor::pos());
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        } catch (std::exception &e) {
+            FC_ERR("C++ exception: " << e.what());
+        } catch (...) {
+            FC_ERR("Unknown exception");
+        }
         contextItem = 0;
     }
 }
@@ -1072,19 +1080,7 @@ void TreeWidget::onRecomputeObject() {
     if(objs.empty())
         return;
     App::AutoTransaction committer("Recompute object");
-    std::string msg;
-    try {
-        objs.front()->getDocument()->recompute(objs,true);
-    }catch (Base::Exception &e) {
-        e.ReportException();
-        msg = e.what();
-    }catch (std::exception &e) {
-        msg = e.what();
-    }
-    if(msg.size()) {
-        QMessageBox::critical(getMainWindow(), QObject::tr("Recompute failed"),
-                QString::fromUtf8(msg.c_str()));
-    }
+    objs.front()->getDocument()->recompute(objs,true);
 }
 
 
@@ -1330,6 +1326,10 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
         }
     } catch (Base::Exception &e) {
         e.ReportException();
+    } catch (std::exception &e) {
+        FC_ERR("C++ exception: " << e.what());
+    } catch (...) {
+        FC_ERR("Unknown exception");
     }
 }
 
@@ -1497,8 +1497,14 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                     return;
                 }
             }
-        }catch(Base::Exception &e){
+        } catch (Base::Exception &e){
             e.ReportException();
+            event->ignore();
+        } catch (std::exception &e) {
+            FC_ERR("C++ exception: " << e.what());
+            event->ignore();
+        } catch (...) {
+            FC_ERR("Unknown exception");
             event->ignore();
         }
     }
@@ -1570,6 +1576,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
     if (items.empty())
         return; // nothing needs to be done
+
+    std::string errMsg;
 
     if(QApplication::keyboardModifiers()== Qt::ControlModifier)
         event->setDropAction(Qt::CopyAction);
@@ -1905,10 +1913,19 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 Selection().selStackPush();
             }
         } catch (const Base::Exception& e) {
+            e.ReportException();
+            errMsg = e.what();
+        } catch (std::exception &e) {
+            FC_ERR("C++ exception: " << e.what());
+            errMsg = e.what();
+        } catch (...) {
+            FC_ERR("Unknown exception");
+            errMsg = "Unknown exception";
+        }
+        if(errMsg.size()) {
             committer.close(true);
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
-                    QString::fromLatin1(e.what()));
-            e.ReportException();
+                    QString::fromUtf8(errMsg.c_str()));
             return;
         }
     }
@@ -2082,10 +2099,19 @@ void TreeWidget::dropEvent(QDropEvent *event)
             Selection().setSelection(thisDoc->getName(),droppedObjs);
 
         } catch (const Base::Exception& e) {
+            e.ReportException();
+            errMsg = e.what();
+        } catch (std::exception &e) {
+            FC_ERR("C++ exception: " << e.what());
+            errMsg = e.what();
+        } catch (...) {
+            FC_ERR("Unknown exception");
+            errMsg = "Unknown exception";
+        }
+        if(errMsg.size()) {
             committer.close(true);
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
-                    QString::fromLatin1(e.what()));
-            e.ReportException();
+                    QString::fromUtf8(errMsg.c_str()));
             return;
         }
     }
@@ -2158,6 +2184,10 @@ void TreeWidget::onCloseDoc() {
         Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
     } catch (const Base::Exception& e) {
         e.ReportException();
+    } catch (std::exception &e) {
+        FC_ERR("C++ exception: " << e.what());
+    } catch (...) {
+        FC_ERR("Unknown exception");
     }
 }
 
