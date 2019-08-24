@@ -68,10 +68,12 @@ class Edit():
         # soraypick action things
         self.pick_radius = 30 # TODO: set pick radius according to user preferences
 
-        #list of supported objects type
+        #list of supported Draft and Arch objects
         self.supportedObjs = ["BezCurve","Wire","BSpline","Circle","Rectangle",
                             "Polygon","Dimension","Space","Structure","PanelCut",
                             "PanelSheet","Wall", "Window"]
+        #list of supported Part objects (they don't have a proxy)
+        #TODO: Add support for "Part::Circle" "Part::RegularPolygon" "Part::Plane" "Part::Ellipse" "Part::Vertex" "Part::Spiral"
         self.supportedPartObjs = ["Part", "Part::Line", "Part::Box"]
 
     def GetResources(self):
@@ -273,11 +275,9 @@ class Edit():
         "start editing selected EditNode"
         pos = event.getPosition()
         ep = self.getEditNodeIndex(pos)
-        if ep == None: 
-            #FreeCAD.Console.PrintMessage("Node not found\n")
-            return
+        if ep == None: return
         FreeCAD.Console.PrintMessage(str("Editing node: n° ")+str(ep)+"\n")
-        self.ui.pointUi()
+        self.ui.lineUi()
         self.ui.isRelative.show()
         self.editing = ep
         self.trackers[self.editing].off()
@@ -285,6 +285,7 @@ class Edit():
         self.ghost = self.initGhost(self.obj)
         self.node.append(self.trackers[self.editing].get())
         FreeCADGui.Snapper.setSelectMode(False)
+        self.hideTrackers()
 
     def updateTrackerAndGhost(self, event):
         "updates tracker position when editing and update ghost"
