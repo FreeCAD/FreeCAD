@@ -681,15 +681,14 @@ class Edit():
         elif objectType == "Part::Line" and obj.TypeId == "Part::Line":
             self.setPartLinePts()
 
+
     def update(self,v):
         "apply the vector to the modified point and update self.obj"
 
-        localVector = self.invpl.multVec(v) #subtract placement from edit vector, to be completed
-
         FreeCAD.ActiveDocument.openTransaction("Edit")
 
-        if Draft.getType(self.obj) in ["Wire","BSpline"]: self.updateWire(localVector)
-        elif Draft.getType(self.obj) == "BezCurve": self.updateWire(localVector)
+        if Draft.getType(self.obj) in ["Wire","BSpline"]: self.updateWire(v)
+        elif Draft.getType(self.obj) == "BezCurve": self.updateWire(v)
         elif Draft.getType(self.obj) == "Circle": self.updateCircle(v)
         elif Draft.getType(self.obj) == "Rectangle": self.updateRectangle(v)
         elif Draft.getType(self.obj) == "Polygon": self.updatePolygon(v)
@@ -721,7 +720,7 @@ class Edit():
 
     def updateWire(self,v):
         pts = self.obj.Points
-        editPnt = v#self.invpl.multVec(v)
+        editPnt = self.invpl.multVec(v)
         # DNC: allows to close the curve by placing ends close to each other
         tol = 0.001
         if ( ( self.editing == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or ( self.editing == len(pts) - 1 ) and ( (editPnt - pts[0]).Length < tol):
