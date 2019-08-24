@@ -31,6 +31,9 @@ import ArchComponent
 import os
 import re
 import tempfile
+import uuid
+import time
+
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -54,6 +57,7 @@ else:
 #  It also contains functionality to produce SVG rendering of
 #  section planes, to be used in TechDraw and Drawing modules
 
+ISRENDERING = False # flag to prevent concurrent runsof the coin renderer
 
 def makeSectionPlane(objectslist=None,name="Section"):
 
@@ -340,7 +344,7 @@ def getSVG(source,
 
     archUserParameters = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     scaledLineWidth = linewidth/scale
-    if renderMode in ["Coin",2]:
+    if renderMode in ["Coin",2,"Coin mono",3]:
         # don't scale linewidths in coin mode
         svgLineWidth = str(linewidth) + 'px'
     else:
@@ -381,14 +385,17 @@ def getSVG(source,
                 source.Proxy.shapecache = None
 
     # generating SVG
-    if renderMode in ["Coin",2]:
+    if renderMode in ["Coin",2,"Coin mono",3]:
         # render using a coin viewer
         if hasattr(source.ViewObject,"ViewData") and source.ViewObject.ViewData:
             cameradata = getCameraData(source.ViewObject.ViewData)
         else:
             cameradata = None
         if not svgcache:
-            svgcache = getCoinSVG(cutplane,objs,cameradata,linewidth="SVGLINEWIDTH")
+            if renderMode in ["Coin mono",3]:
+                svgcache = getCoinSVG(cutplane,objs,cameradata,linewidth="SVGLINEWIDTH",facecolor="#ffffff")
+            else:
+                svgcache = getCoinSVG(cutplane,objs,cameradata,linewidth="SVGLINEWIDTH")
             if hasattr(source,"Proxy"):
                 source.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill,fillSpaces,joinArch]
     elif renderMode in ["Solid",1]:
@@ -619,12 +626,20 @@ def getCameraData(floatlist):
     return c
 
 
-def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False):
+def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,facecolor=None):
 
     """Returns an SVG fragment generated from a coin view"""
 
     if not FreeCAD.GuiUp:
         return ""
+
+    # do not allow concurrent runs
+    # wait until the other rendering has finished
+    global ISRENDERING
+    while ISRENDERING:
+        time.sleep(0.1)
+    
+    ISRENDERING = True
 
     # a name to save a temp file
     svgfile = tempfile.mkstemp(suffix=".svg")[1]
@@ -656,7 +671,8 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False):
 
     # create viewer
     v = FreeCADGui.createViewer()
-    v.setName("TempRenderViewer")
+    viewername = "Temp" + str(uuid.uuid4().hex[:8])
+    v.setName(viewername)
 
     vv = v.getViewer()
     vv.setBackgroundColor(1,1,1)
@@ -751,6 +767,17 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False):
     # remove background rectangle
     svg = re.sub("<path.*?>","",svg,count=1,flags=re.MULTILINE|re.DOTALL)
 
+    # set face color to white
+    if facecolor:
+        res = re.findall("fill:(.*?); stroke:(.*?);",svg)
+        pairs = []
+        for pair in res:
+            if (pair not in pairs) and (pair[0] == pair[1]) and(pair[0] not in ["#0a0a0a"]):
+                # coin seems to be rendering a lot of lines as thin triangles with the #0a0a0a color...
+                pairs.append(pair)
+        for pair in pairs:
+            svg = re.sub("fill:"+pair[0]+"; stroke:"+pair[1]+";","fill:"+facecolor+"; stroke:"+facecolor+";",svg)
+
     # embed everything in a scale group and scale the viewport
     if factor:
         if trans:
@@ -760,23 +787,25 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False):
         svg = svg.replace("</svg>","</g>\n</svg>")
 
     # trigger viewer close
-    QtCore.QTimer.singleShot(0,closeViewer)
+    QtCore.QTimer.singleShot(1,lambda: closeViewer(viewername))
 
     # strip svg tags (needed for TD Arch view)
     svg = re.sub("<\?xml.*?>","",svg,flags=re.MULTILINE|re.DOTALL)
     svg = re.sub("<svg.*?>","",svg,flags=re.MULTILINE|re.DOTALL)
     svg = re.sub("<\/svg>","",svg,flags=re.MULTILINE|re.DOTALL)
 
+    ISRENDERING = False
+
     return svg
 
 
-def closeViewer():
+def closeViewer(name):
     
     """Close temporary viewers"""
     
     mw = FreeCADGui.getMainWindow()
     for sw in mw.findChildren(QtGui.QMdiSubWindow):
-        if sw.windowTitle() == "TempRenderViewer":
+        if sw.windowTitle() == name:
             sw.close()
 
 
