@@ -191,6 +191,8 @@ void View3DInventorPy::init_type()
         "beforeEditing: whether to insert the clipping node before or after editing root node\n"
         "noManip: whether to create a manipulator\n"
         "pla: clipping plane placement");
+    add_varargs_method("hasClippingPlane",&View3DInventorPy::hasClippingPlane,
+        "hasClippingPlane(): check whether ths clipping plane is active");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -2548,4 +2550,11 @@ Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py
     _view->getViewer()->toggleClippingPlane(toggle,PyObject_IsTrue(beforeEditing),
             PyObject_IsTrue(noManip),pla);
     return Py::None();
+}
+
+Py::Object View3DInventorPy::hasClippingPlane(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(_view->getViewer()->hasClippingPlane());
 }
