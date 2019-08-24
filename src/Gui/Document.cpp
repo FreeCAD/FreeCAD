@@ -86,6 +86,7 @@ struct DocumentP
     bool       _isClosing;
     bool       _isModified;
     bool       _isTransacting;
+    bool       _changeViewTouchDocument;
     int                         _editMode;
     ViewProvider*               _editViewProvider;
     ViewProviderDocumentObject* _editViewProviderParent;
@@ -209,12 +210,14 @@ Document::Document(App::Document* pcDocument,Application * app)
     // mustn't increment it (Werner Jan-12-2006)
     _pcDocPy = new Gui::DocumentPy(this);
 
-    if (App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("UsingUndo",true)){
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
+    if (hGrp->GetBool("UsingUndo",true)) {
         d->_pcDocument->setUndoMode(1);
         // set the maximum stack size
-        d->_pcDocument->setMaxUndoStackSize(App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")->GetInt("MaxUndoSize",20));
+        d->_pcDocument->setMaxUndoStackSize(hGrp->GetInt("MaxUndoSize",20));
     }
+
+    d->_changeViewTouchDocument = hGrp->GetBool("ChangeViewProviderTouchDocument", true);
 }
 
 Document::~Document()
@@ -630,6 +633,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             pcProvider = static_cast<ViewProviderDocumentObject*>(base);
             d->_ViewProviderMap[&Obj] = pcProvider;
             d->_CoinMap[pcProvider->getRoot()] = pcProvider;
+            pcProvider->setStatus(Gui::ViewStatus::TouchDocument, d->_changeViewTouchDocument);
 
             try {
                 // if successfully created set the right name and calculate the view
