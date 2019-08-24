@@ -1562,8 +1562,8 @@ MDIView *Document::createView(const Base::Type& typeId)
             std::vector<App::DocumentObject*> children = It2->second->claimChildren3D();
             child_vps.insert(child_vps.end(), children.begin(), children.end());
         }
-        
-        for(App::DocumentObject* obj : child_vps) 
+
+        for (App::DocumentObject* obj : child_vps)
             view3D->getViewer()->removeViewProvider(getViewProvider(obj));
 
         const char* name = getDocument()->Label.getValue();
@@ -1575,7 +1575,7 @@ MDIView *Document::createView(const Base::Type& typeId)
         view3D->setWindowIcon(QApplication::windowIcon());
         view3D->resize(400, 300);
 
-        if(cameraSettings.size()) {
+        if (!cameraSettings.empty()) {
             const char *ppReturn = 0;
             view3D->onMsg(cameraSettings.c_str(),&ppReturn);
         }
@@ -1593,13 +1593,29 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
     if (oldview->getTypeId() == View3DInventor::getClassTypeId()) {
         View3DInventor* view3D = new View3DInventor(this, getMainWindow());
 
-        // attach the viewprovider
+        View3DInventor* firstView = static_cast<View3DInventor*>(oldview);
+        std::string overrideMode = firstView->getViewer()->getOverrideMode();
+        view3D->getViewer()->setOverrideMode(overrideMode);
+
+        // attach the viewproviders. we need to make sure that we only attach the toplevel ones
+        // and not viewproviders which are claimed by other providers. To ensure this we first
+        // add all providers and then remove the ones already claimed
         std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
-        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1)
+        std::vector<App::DocumentObject*> child_vps;
+        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1) {
             view3D->getViewer()->addViewProvider(It1->second);
+            std::vector<App::DocumentObject*> children = It1->second->claimChildren3D();
+            child_vps.insert(child_vps.end(), children.begin(), children.end());
+        }
         std::map<std::string,ViewProvider*>::const_iterator It2;
-        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2)
+        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2) {
             view3D->getViewer()->addViewProvider(It2->second);
+            std::vector<App::DocumentObject*> children = It2->second->claimChildren3D();
+            child_vps.insert(child_vps.end(), children.begin(), children.end());
+        }
+
+        for (App::DocumentObject* obj : child_vps)
+            view3D->getViewer()->removeViewProvider(getViewProvider(obj));
 
         view3D->setWindowTitle(oldview->windowTitle());
         view3D->setWindowModified(oldview->isWindowModified());
