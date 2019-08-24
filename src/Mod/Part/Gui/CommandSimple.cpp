@@ -195,20 +195,18 @@ void CmdPartPointsFromMesh::activated(int iMsg)
     Gui::WaitCursor wc;
     std::vector<App::DocumentObject*>::iterator it;
     openCommand("Points from mesh");
+
     for (it = meshes.begin(); it != meshes.end(); ++it) {
         App::Document* doc = (*it)->getDocument();
         std::string mesh = (*it)->getNameInDocument();
-
         if (!(*it)->isDerivedFrom(Base::Type::fromName("Mesh::Feature")))
             continue;
         doCommand(Doc,"import Part");
         doCommand(Doc,"mesh_pts = FreeCAD.getDocument(\"%s\").getObject(\"%s\").Mesh.Points\n",
-                     doc->getName(),
-                     mesh.c_str());
+                     doc->getName(), mesh.c_str());
         doCommand(Doc,"Part.show(Part.makeCompound([Part.Point(m.Vector).toShape() for m in mesh_pts]),\"%s\")\n",
                   (mesh+"_pts").c_str());
         doCommand(Doc,"del mesh_pts\n");
-
     }
 
     commitCommand();
