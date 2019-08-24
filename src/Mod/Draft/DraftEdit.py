@@ -274,9 +274,15 @@ class Edit():
     def startEditing(self, event):
         "start editing selected EditNode"
         pos = event.getPosition()
-        ep = self.getEditNodeIndex(pos)
+        node = self.getEditNode(pos)
+        ep = self.getEditNodeIndex(node)
         if ep == None: return
         FreeCAD.Console.PrintMessage(str("Editing node: n° ")+str(ep)+"\n")
+
+        doc = FreeCAD.getDocument(str(node.documentName.getValue()))
+        self.obj = doc.getObject(str(node.objectName.getValue()))
+        if self.obj == None: return
+
         self.ui.lineUi()
         self.ui.isRelative.show()
         self.editing = ep
@@ -354,6 +360,7 @@ class Edit():
 
     def setPlacement(self,obj):
         "set self.pl and self.invpl to self.obj placement and inverse placement"
+        if not obj: return
         if "Placement" in obj.PropertiesList:
             self.pl = obj.Placement
             self.invpl = self.pl.inverse()
@@ -366,10 +373,10 @@ class Edit():
         if self.planetrack:
             self.planetrack.set(self.editpoints[0])
 
-    def getEditNodeIndex(self, pos):
-        "get edit node index from given screen position"
-        ep = self.sendRay(pos)
-        return ep
+    def getEditNode(self, pos):
+        "get edit node from given screen position"
+        node = self.sendRay(pos)
+        return node
     
     def sendRay(self, mouse_pos):
         "sends a ray trough the scene and return the nearest entity"
@@ -387,16 +394,20 @@ class Edit():
             path = point.getPath()
             length = path.getLength()
             point = path.getNode(length - 2)
-            import DraftTrackers
-            if hasattr(point,"subElementName"):
-                subElement = str(point.subElementName.getValue())
-                if 'EditNode' in subElement:
-                    ep = int(subElement[8:])
-                    #doc = FreeCAD.getDocument(str(point.documentName.getValue()))
-                    #self.obj = doc.getObject(str(point.objectName.getValue()))
-                    return ep
-                #FreeCAD.Console.PrintMessage(str(self.obj)+str(ep)+"\n")
+            #import DraftTrackers
+            if hasattr(point,"subElementName") and 'EditNode' in str(point.subElementName.getValue()):
+                return point
         return None
+
+    def getEditNodeIndex(self, point):
+        "get edit node index from given screen position"
+        if point:
+            subElement = str(point.subElementName.getValue())
+            ep = int(subElement[8:])
+            return ep
+        else:
+            return None
+
 
     #---------------------------------------------------------------------------
     # EDIT TRACKERS functions
@@ -743,7 +754,7 @@ class Edit():
                 editPnt = editPnt.add(rn.negative())
         pts[self.editing] = editPnt
         self.obj.Points = pts
-        self.trackers[self.editing].set(self.pl.multVec(v))
+        self.trackers[self.editing].set(v)
 
 
     def recomputePointsBezier(self,pts,idx,v,degree,moveTrackers=True):
@@ -1136,8 +1147,10 @@ class Edit():
         # try to add here an editpoint based on wall height (maybe should be good to associate it with a circular tracker)
         if Draft.getType(self.obj.Base) in ["Wire","Circle","Rectangle",
                                         "Polygon"]:
-            self.obj=self.obj.Base
+            #self.obj=self.obj.Base
             self.setPlacement(self.obj.Base)
+            self.setEditPoints(self.obj.Base)
+
         elif Draft.getType(self.obj.Base) == "Sketch":
             if self.obj.Base.GeometryCount == 1:
                 self.editpoints.append(self.obj.Base.getPoint(0,1))
@@ -1148,13 +1161,20 @@ class Edit():
 
     def updateWall(self,v):
         # try to add here an editpoint based on wall height (maybe should be good to associate it with a circular tracker)
-        if self.editing == 0:
-            self.obj.Base.movePoint(0,1,v)
-            self.obj.Base.recompute()
-        if self.editing == 1:
-            self.obj.Base.movePoint(0,2,v)
-            self.obj.Base.recompute()
-        self.obj.recompute()
+        if Draft.getType(self.obj.Base) in ["Wire","Circle","Rectangle",
+                                        "Polygon"]:
+            self.obj = self.obj.Base
+            self.setPlacement(self.obj)
+            self.update(v)
+            self.obj.recompute()
+        if Draft.getType(self.obj.Base) == "Sketch":
+            if self.editing == 0:
+                self.obj.Base.movePoint(0,1,v)
+                self.obj.Base.recompute()
+            if self.editing == 1:
+                self.obj.Base.movePoint(0,2,v)
+                self.obj.Base.recompute()
+
 
     #WINDOW---------------------------------------------------------------------
 
