@@ -743,9 +743,11 @@ class EditorPanel():
     def loadTable(self, name):
         ''' loads the tools for the selected tool table '''
         tooldata = self.TLM.getTools(name)
-        self.form.ToolsList.setModel(tooldata)
-        self.form.ToolsList.resizeColumnsToContents()
-        self.setCurrentToolTableByName(name)
+        if tooldata:
+            self.form.ToolsList.setModel(tooldata)
+            self.form.ToolsList.resizeColumnsToContents()
+            self.setCurrentToolTableByName(name)
+            
 
     def addNewToolTable(self):
         ''' adds new tool to selected tool table '''
@@ -756,13 +758,17 @@ class EditorPanel():
     def loadToolTables(self):
         ''' Load list of available tool tables '''
         self.form.TableList.clear()
-        for table in self.TLM.getLists():
-            listItem = QtGui.QListWidgetItem(table.Name)
-            listItem.setIcon(QtGui.QIcon(':/icons/Path-ToolTable.svg'))
-            listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsEditable)
-            listItem.setSizeHint(QtCore.QSize(0,40))
-            self.form.TableList.addItem(listItem)
-            self.loadTable(self.TLM.toolTables[0].Name)
+        model = self.form.ToolsList.model()
+        if model:
+            model.clear()
+        if len(self.TLM.toolTables) > 0:
+            for table in self.TLM.getLists():
+                listItem = QtGui.QListWidgetItem(table.Name)
+                listItem.setIcon(QtGui.QIcon(':/icons/Path-ToolTable.svg'))
+                listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsEditable)
+                listItem.setSizeHint(QtCore.QSize(0,40))
+                self.form.TableList.addItem(listItem)
+                self.loadTable(self.TLM.toolTables[0].Name)
         
     def setCurrentToolTableByName(self, name):
         ''' get the current tool table '''
