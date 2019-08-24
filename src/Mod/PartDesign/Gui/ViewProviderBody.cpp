@@ -146,8 +146,9 @@ bool ViewProviderBody::doubleClicked(void)
     auto activeDoc = Gui::Application::Instance->activeDocument();
     if(!activeDoc)
         activeDoc = getDocument();
-    auto activeView = activeDoc->getActiveView();
-    if(!activeView) return false;
+    auto activeView = activeDoc->setActiveView(this);
+    if(!activeView) 
+        return false;
 
     if (activeView->isActiveObject(getObject(),PDBODYKEY)) {
         //active body double-clicked. Deactivate.
@@ -160,7 +161,7 @@ bool ViewProviderBody::doubleClicked(void)
 
         // and set correct active objects
         auto* part = App::Part::getPartOfObject ( getObject() );
-        if ( part && part != getActiveView()->getActiveObject<App::Part*> ( PARTKEY ) ) {
+        if ( part && part != activeView->getActiveObject<App::Part*> ( PARTKEY ) ) {
             Gui::Command::doCommand(Gui::Command::Gui,
                     "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
                     PARTKEY, Gui::Command::getObjectCmd(part).c_str());
