@@ -102,6 +102,23 @@ if(BUILD_FEM)
     add_subdirectory(Fem)
 endif(BUILD_FEM)
 
+if(BUILD_CLOUD)
+#------------------------------ OpenSSL and CURL -------------------------
+    IF (APPLE)
+    set(OPENSSL_ROOT_DIR ${HOMEBREW_PREFIX}/Cellar/openssl/*)
+    ENDIF(APPLE)
+    find_package(OPENSSL REQUIRED)
+    IF(OPENSSL_FOUND)
+          message(STATUS "openssl-${OPENSSL_VERSION} has been found\n")
+    ENDIF(OPENSSL_FOUND)
+    find_package(CURL REQUIRED)
+    IF(CURL_FOUND)
+          message(STATUS "CURL has been found\n")
+    ENDIF(CURL_FOUND)
+# ------------------------------------------------------------------------
+    add_subdirectory(Cloud)
+endif(BUILD_CLOUD)
+
 if(BUILD_SANDBOX)
     add_subdirectory(Sandbox)
 endif(BUILD_SANDBOX)
