@@ -599,6 +599,8 @@ size_t ObjectIdentifier::Component::getIndex(size_t count) const {
 Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
     Py::Object res;
     if(isSimple()) {
+        if(!pyobj.hasAttr(getName()))
+            FC_THROWM(Base::AttributeError, "No attribute named '" << getName() << "'");
         res = pyobj.getAttr(getName());
     } else if(isArray()) {
         if(pyobj.isMapping())
