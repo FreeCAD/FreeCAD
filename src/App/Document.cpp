@@ -1268,6 +1268,52 @@ bool Document::isTransactionEmpty() const
     return true;
 }
 
+void Document::emptyDocument()
+{
+    this->d->activeObject = 0;
+
+    if(this->d->objectArray.size()) {
+        GetApplication().signalDeleteDocument(*this);
+        this->d->objectArray.clear();
+        for(auto &v : this->d->objectMap) {
+            v.second->setStatus(ObjectStatus::Destroy, true);
+            delete(v.second);
+        }
+        this->d->objectMap.clear();
+        this->d->objectIdMap.clear();
+        GetApplication().signalNewDocument(*this,false);
+    }
+
+    Base::FlagToggler<> flag(_IsRestoring,false);
+
+    setStatus(Document::PartialDoc,false);
+
+    this->d->clearRecomputeLog();
+    this->d->objectArray.clear();
+    this->d->objectMap.clear();
+    this->d->objectIdMap.clear();
+    this->d->lastObjectId = 0;
+}
+
+void Document::resetTouched()
+{
+/*
+        for (std::map<std::string,DocumentObject*>::iterator It= this->d->objectMap.begin();It!=this->d->objectMap.end();++It) {
+                It->second->connectRelabelSignals();
+                try {
+                     It->second->onDocumentRestored();
+                     It->second->ExpressionEngine.onDocumentRestored();
+                 }
+                catch (const Base::Exception& e) {
+                        Base::Console().Error("Error in %s: %s\n", It->second->Label.getValue(), e.what());
+                }
+                It->second->purgeTouched();
+        }
+*/
+}
+
+
+
 void Document::clearUndos()
 {
     if(isPerformingTransaction() || d->committing) {

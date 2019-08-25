@@ -335,6 +335,8 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
             try {
                 Base::Reader reader(zipstream, jt->FileName, FileVersion);
                 jt->Object->RestoreDocFile(reader);
+                if ( reader.getLocalReader() != nullptr )
+                        reader.getLocalReader()->readFiles(zipstream);
             }
             catch(...) {
                 // For any exception we just continue with the next file.
@@ -576,3 +578,13 @@ std::istream& Base::Reader::getStream()
     return this->_str;
 }
 
+void Base::Reader::initLocalReader(Base::XMLReader *ptr)
+{
+
+        this->localreader=ptr;
+}
+
+Base::XMLReader *Base::Reader::getLocalReader()
+{
+        return(this->localreader);
+}
