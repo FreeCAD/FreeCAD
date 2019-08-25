@@ -192,7 +192,7 @@ def open(filename,skip=[],only=[],root=None):
 
 def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
 
-    """insert(filename,docname,skip=[],only=[],root=None): imports the contents of an IFC file.
+    """insert(filename,docname,skip=[],only=[],root=None,preferences=None): imports the contents of an IFC file.
     skip can contain a list of ids of objects to be skipped, only can restrict the import to
     certain object ids (will also get their children) and root can be used to
     import only the derivates of a certain element type (default = ifcProduct)."""

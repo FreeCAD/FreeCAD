@@ -52,8 +52,6 @@ from importIFCHelper import decode
 #
 #  This module provides tools to export IFC files.
 
-DEBUG = False # Set to True to see debug messages. Otherwise, totally silent
-
 if open.__module__ in ['__builtin__','io']:
     pyopen = open
     # pyopen is use in exporter to open a file in Arch
@@ -116,54 +114,38 @@ def getPreferences():
 
     """retrieves IFC preferences"""
 
-    global DEBUG, PREFIX_NUMBERS, SKIP, SEPARATE_OPENINGS
-    global ROOT_ELEMENT, GET_EXTRUSIONS, MERGE_MATERIALS
-    global MERGE_MODE_ARCH, MERGE_MODE_STRUCT, CREATE_CLONES
-    global FORCE_BREP, IMPORT_PROPERTIES, STORE_UID, SERIALIZE
-    global SPLIT_LAYERS, EXPORT_2D, FULL_PARAMETRIC, FITVIEW_ONIMPORT
-    global ADD_DEFAULT_SITE, ADD_DEFAULT_STOREY, ADD_DEFAULT_BUILDING
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+
     if FreeCAD.GuiUp and p.GetBool("ifcShowDialog",False):
         import FreeCADGui
         FreeCADGui.showPreferences("Import-Export",0)
-    DEBUG = p.GetBool("ifcDebug",False)
-    PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
-    SKIP = p.GetString("ifcSkip","").split(",")
-    SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
-    ROOT_ELEMENT = p.GetString("ifcRootElement","IfcProduct")
-    GET_EXTRUSIONS = p.GetBool("ifcGetExtrusions",False)
-    MERGE_MATERIALS = p.GetBool("ifcMergeMaterials",False)
-    MERGE_MODE_ARCH = p.GetInt("ifcImportModeArch",0)
-    MERGE_MODE_STRUCT = p.GetInt("ifcImportModeStruct",1)
-    if MERGE_MODE_ARCH > 0:
-        SEPARATE_OPENINGS = False
-        GET_EXTRUSIONS = False
-    if not SEPARATE_OPENINGS:
-        SKIP.append("IfcOpeningElement")
-    CREATE_CLONES = p.GetBool("ifcCreateClones",True)
-    FORCE_BREP = p.GetBool("ifcExportAsBrep",False)
-    IMPORT_PROPERTIES = p.GetBool("ifcImportProperties",False)
-    STORE_UID = p.GetBool("ifcStoreUid",True)
-    SERIALIZE = p.GetBool("ifcSerialize",False)
-    SPLIT_LAYERS = p.GetBool("ifcSplitLayers",False)
-    EXPORT_2D = p.GetBool("ifcExport2D",True)
-    FULL_PARAMETRIC = p.GetBool("IfcExportFreeCADProperties",False)
-    FITVIEW_ONIMPORT = p.GetBool("ifcFitViewOnImport",False)
-    ADD_DEFAULT_SITE = p.GetBool("IfcAddDefaultSite",False)
-    ADD_DEFAULT_STOREY = p.GetBool("IfcAddDefaultStorey",False)
-    ADD_DEFAULT_BUILDING = p.GetBool("IfcAddDefaultBuilding",True)
 
+    preferences = {
+        'DEBUG': p.GetBool("ifcDebug",False),
+        'CREATE_CLONES': p.GetBool("ifcCreateClones",True),
+        'FORCE_BREP': p.GetBool("ifcExportAsBrep",False),
+        'STORE_UID': p.GetBool("ifcStoreUid",True),
+        'SERIALIZE': p.GetBool("ifcSerialize",False),
+        'EXPORT_2D': p.GetBool("ifcExport2D",True),
+        'FULL_PARAMETRIC': p.GetBool("IfcExportFreeCADProperties",False),
+        'ADD_DEFAULT_SITE': p.GetBool("IfcAddDefaultSite",False),
+        'ADD_DEFAULT_STOREY': p.GetBool("IfcAddDefaultStorey",False),
+        'ADD_DEFAULT_BUILDING': p.GetBool("IfcAddDefaultBuilding",True)
+    }
+
+    return preferences
 
 # ************************************************************************************************
 # ********** export IFC ****************
 
-def export(exportList,filename,colors=None):
+def export(exportList,filename,colors=None,preferences=None):
 
-    """export(exportList,filename,colors=None) -- exports FreeCAD contents to an IFC file.
+    """export(exportList,filename,colors=None,preferences=None) -- exports FreeCAD contents to an IFC file.
     colors is an optional dictionary of objName:shapeColorTuple or objName:diffuseColorList elements
     to be used in non-GUI mode if you want to be able to export colors."""
 
-    getPreferences()
+    if preferences is None:
+        preferences = getPreferences()
 
     try:
         global ifcopenshell
@@ -189,7 +171,7 @@ def export(exportList,filename,colors=None):
         schema = ["IFC4", "IFC2X3"][FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("IfcVersion",0)]
     else:
         schema = "IFC2X3"
-    if DEBUG: print("Exporting an",schema,"file...")
+    if preferences['DEBUG']: print("Exporting an",schema,"file...")
     template = template.replace("$ifcschema",schema)
     template = template.replace("$owner",owner)
     template = template.replace("$company",FreeCAD.ActiveDocument.Company)
@@ -224,7 +206,7 @@ def export(exportList,filename,colors=None):
     objectslist = [obj for obj in objectslist if obj not in annotations]
     objectslist = Arch.pruneIncluded(objectslist,strict=True)
     objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Dimension","Material","MaterialContainer","WorkingPlaneProxy"]]
-    if FULL_PARAMETRIC:
+    if preferences['FULL_PARAMETRIC']:
         objectslist = Arch.getAllChildren(objectslist)
 
     contextCreator = exportIFCHelper.ContextCreator(ifcfile, objectslist)
@@ -254,7 +236,7 @@ def export(exportList,filename,colors=None):
 
     # build clones table
 
-    if CREATE_CLONES:
+    if preferences['CREATE_CLONES']:
         for o in objectslist:
             b = Draft.getCloneBase(o,strict=True)
             if b:
@@ -292,7 +274,7 @@ def export(exportList,filename,colors=None):
         if not uid:
             uid = ifcopenshell.guid.new()
             # storing the uid for further use
-            if STORE_UID and hasattr(obj,"IfcData"):
+            if preferences['STORE_UID'] and hasattr(obj,"IfcData"):
                 d = obj.IfcData
                 d["IfcUID"] = uid
                 obj.IfcData = d
@@ -347,7 +329,7 @@ def export(exportList,filename,colors=None):
             if len(ifcaxes) > 2:
                 w = ifcaxes[2]
             if u and v:
-                if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",str(len(ifcpols)),"axes ) : ",name)
+                if preferences['DEBUG']: print(str(count).ljust(3)," : ", ifctype, " (",str(len(ifcpols)),"axes ) : ",name)
                 xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
                 zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
                 ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
@@ -375,12 +357,12 @@ def export(exportList,filename,colors=None):
 
         # getting the representation
 
-        representation,placement,shapetype = getRepresentation(ifcfile,context,obj,forcebrep=(brepflag or FORCE_BREP),colors=colors)
+        representation,placement,shapetype = getRepresentation(ifcfile,context,obj,forcebrep=(brepflag or preferences['FORCE_BREP']),colors=colors,preferences=preferences)
         if getstd:
             if isStandardCase(obj,ifctype):
                 ifctype += "StandardCase"
 
-        if DEBUG: print(str(count).ljust(3)," : ", ifctype, " (",shapetype,") : ",name)
+        if preferences['DEBUG']: print(str(count).ljust(3)," : ", ifctype, " (",shapetype,") : ",name)
 
         # setting the arguments
 
@@ -417,8 +399,8 @@ def export(exportList,filename,colors=None):
 
         if hasattr(obj,"Additions") and (shapetype in ["extrusion","no shape"]):
             for o in obj.Additions:
-                r2,p2,c2 = getRepresentation(ifcfile,context,o,colors=colors)
-                if DEBUG: print("      adding ",c2," : ",o.Label)
+                r2,p2,c2 = getRepresentation(ifcfile,context,o,colors=colors,preferences=preferences)
+                if preferences['DEBUG']: print("      adding ",c2," : ",o.Label)
                 l = o.Label
                 if six.PY2:
                     l = l.encode("utf8")
@@ -454,8 +436,8 @@ def export(exportList,filename,colors=None):
                             guests.append(o)
         if hasattr(obj,"Subtractions") and (shapetype in ["extrusion","no shape"]):
             for o in obj.Subtractions + guests:
-                r2,p2,c2 = getRepresentation(ifcfile,context,o,subtraction=True,colors=colors)
-                if DEBUG: print("      subtracting ",c2," : ",o.Label)
+                r2,p2,c2 = getRepresentation(ifcfile,context,o,subtraction=True,colors=colors,preferences=preferences)
+                if preferences['DEBUG']: print("      subtracting ",c2," : ",o.Label)
                 l = o.Label
                 if six.PY2:
                     l = l.encode("utf8")
@@ -494,7 +476,7 @@ def export(exportList,filename,colors=None):
 
                     psets = {}
                     for key,value in obj.IfcProperties.items():
-                        pset, pname, ptype, pvalue = getPropertyData(key,value)
+                        pset, pname, ptype, pvalue = getPropertyData(key,value,preferences)
                         p = ifcbin.createIfcPropertySingleValue(str(pname),str(ptype),pvalue)
                         psets.setdefault(pset,[]).append(p)
                     for pname,props in psets.items():
@@ -565,7 +547,7 @@ def export(exportList,filename,colors=None):
                     for cat in propertiesDic:
                         props = []
                         for prop in propertiesDic[cat]:
-                            if DEBUG:
+                            if preferences['DEBUG']:
                                 print("key",prop["key"],type(prop["key"]))
                                 print("tp",prop["tp"],type(prop["tp"]))
                                 print("val",prop["val"],type(prop["val"]))
@@ -593,7 +575,7 @@ def export(exportList,filename,colors=None):
 
             if obj.IfcData:
                 ifcprop = True
-                #if DEBUG : print("      adding ifc attributes")
+                #if preferences['DEBUG'] : print("      adding ifc attributes")
                 props = []
                 for key in obj.IfcData:
                     if not (key in ["attributes", "complex_attributes", "IfcUID", "FlagForceBrep"]):
@@ -609,7 +591,7 @@ def export(exportList,filename,colors=None):
                             val = "(".join(r[1:])
                             val = val.strip("'")
                             val = val.strip('"')
-                            #if DEBUG: print("      property ",key," : ",val.encode("utf8"), " (", str(tp), ")")
+                            #if preferences['DEBUG']: print("      property ",key," : ",val.encode("utf8"), " (", str(tp), ")")
                             if tp in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
                                 if six.PY2:
                                     val = val.encode("utf8")
@@ -641,7 +623,7 @@ def export(exportList,filename,colors=None):
                     )
 
         if not ifcprop:
-            #if DEBUG : print("no ifc properties to export")
+            #if preferences['DEBUG'] : print("no ifc properties to export")
             pass
 
         # Quantities
@@ -676,7 +658,7 @@ def export(exportList,filename,colors=None):
                     [product],eltq
                 )
 
-        if FULL_PARAMETRIC:
+        if preferences['FULL_PARAMETRIC']:
 
             # exporting all the object properties
 
@@ -737,7 +719,7 @@ def export(exportList,filename,colors=None):
                                     itype = "IfcText"
                                     ivalue = "FreeCADLink_" + t.Name
                             else:
-                                if DEBUG: print("Unable to encode property ",prop," of type ",ptype)
+                                if preferences['DEBUG']: print("Unable to encode property ",prop," of type ",ptype)
                             if itype:
                                 # TODO add description
                                 if realm == "Gui":
@@ -870,7 +852,7 @@ def export(exportList,filename,colors=None):
                     childfloors
                 )
             buildings.append(b)
-            if not defaulthost and not ADD_DEFAULT_STOREY:
+            if not defaulthost and not preferences['ADD_DEFAULT_STOREY']:
                 defaulthost = b
 
     # sites
@@ -892,8 +874,8 @@ def export(exportList,filename,colors=None):
     # add default site, building and storey as required
 
     if not sites:
-        if ADD_DEFAULT_SITE:
-            if DEBUG: print("No site found. Adding default site")
+        if preferences['ADD_DEFAULT_SITE']:
+            if preferences['DEBUG']: print("No site found. Adding default site")
             sites = [ifcfile.createIfcSite(
                 ifcopenshell.guid.new(),
                 history,"Default Site",
@@ -918,8 +900,8 @@ def export(exportList,filename,colors=None):
             project,sites
         )
     if not buildings:
-        if ADD_DEFAULT_BUILDING:
-            if DEBUG: print("No building found. Adding default building")
+        if preferences['ADD_DEFAULT_BUILDING']:
+            if preferences['DEBUG']: print("No building found. Adding default building")
             buildings = [ifcfile.createIfcBuilding(
                 ifcopenshell.guid.new(),
                 history,
@@ -973,7 +955,7 @@ def export(exportList,filename,colors=None):
                         untreated.append(v)
     if untreated:
         if not defaulthost:
-            if ADD_DEFAULT_STOREY:
+            if preferences['ADD_DEFAULT_STOREY']:
                 defaulthost = ifcfile.createIfcBuildingStorey(
                     ifcopenshell.guid.new(),
                     history,
@@ -986,9 +968,10 @@ def export(exportList,filename,colors=None):
                     "ELEMENT",
                     None
                 )
-                # if ADD_DEFAULT_STOREY is on, we need a building to host it, regardless of ADD_DEFAULT_BUILDING
+                # if preferences['ADD_DEFAULT_STOREY'] is on, we need a building
+                # to host it, regardless of preferences['ADD_DEFAULT_BUILDING']
                 if not buildings:
-                    if DEBUG: print("No building found. Adding default building")
+                    if preferences['DEBUG']: print("No building found. Adding default building")
                     buildings = [ifcfile.createIfcBuilding(
                         ifcopenshell.guid.new(),
                         history,
@@ -1041,7 +1024,7 @@ def export(exportList,filename,colors=None):
             )
         else:
             # no default host: aggregate unassigned objects directly under the IfcProject - WARNING: NON STANDARD
-            if DEBUG: print("WARNING - Default building generation is disabled. You are producing a non-standard file.")
+            if preferences['DEBUG']: print("WARNING - Default building generation is disabled. You are producing a non-standard file.")
             ifcfile.createIfcRelAggregates(
                 ifcopenshell.guid.new(),
                 history,
@@ -1098,9 +1081,9 @@ def export(exportList,filename,colors=None):
     # 2D objects
 
     annos = {}
-    if EXPORT_2D:
+    if preferences['EXPORT_2D']:
         curvestyles = {}
-        if annotations and DEBUG: print("exporting 2D objects...")
+        if annotations and preferences['DEBUG']: print("exporting 2D objects...")
         for anno in annotations:
             xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
             zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
@@ -1253,7 +1236,7 @@ def export(exportList,filename,colors=None):
         remaining = [anno for anno in annos.values() if anno not in swallowed]
         if remaining:
             if not defaulthost:
-                if ADD_DEFAULT_STOREY:
+                if preferences['ADD_DEFAULT_STOREY']:
                     defaulthost = ifcfile.createIfcBuildingStorey(
                         ifcopenshell.guid.new(),
                         history,
@@ -1266,7 +1249,9 @@ def export(exportList,filename,colors=None):
                         "ELEMENT",
                         None
                     )
-                    # if ADD_DEFAULT_STOREY is on, we need a building to host it, regardless of ADD_DEFAULT_BUILDING
+                    # if preferences['ADD_DEFAULT_STOREY'] is on, we need a
+                    # building to host it, regardless of
+                    # preferences['ADD_DEFAULT_BUILDING']
                     if not buildings:
                         buildings = [ifcfile.createIfcBuilding(
                             ifcopenshell.guid.new(),
@@ -1307,7 +1292,7 @@ def export(exportList,filename,colors=None):
                         buildings[0],
                         [defaulthost]
                     )
-                elif ADD_DEFAULT_BUILDING:
+                elif preferences['ADD_DEFAULT_BUILDING']:
                     if not buildings:
                         defaulthost = ifcfile.createIfcBuilding(
                             ifcopenshell.guid.new(),
@@ -1360,19 +1345,19 @@ def export(exportList,filename,colors=None):
                     remaining
                 )
 
-    if DEBUG: print("writing ",filename,"...")
+    if preferences['DEBUG']: print("writing ",filename,"...")
 
     filename = decode(filename)
 
     ifcfile.write(filename)
 
-    if STORE_UID:
+    if preferences['STORE_UID']:
         # some properties might have been changed
         FreeCAD.ActiveDocument.recompute()
 
     os.remove(templatefile)
 
-    if DEBUG and ifcbin.compress:
+    if preferences['DEBUG'] and ifcbin.compress:
         f = pyopen(filename,"r")
         s = len(f.read().split("\n"))
         f.close()
@@ -1383,7 +1368,7 @@ def export(exportList,filename,colors=None):
 # ************************************************************************************************
 # ********** helper for export IFC **************
 
-def getPropertyData(key,value):
+def getPropertyData(key,value,preferences):
 
     # in 0.18, properties in IfcProperties dict are stored as "key":"pset;;type;;value" or "key":"type;;value"
     # in 0.19, key = name;;pset, value = ptype;;value (because there can be several props with same name)
@@ -1404,10 +1389,10 @@ def getPropertyData(key,value):
         ptype = value[0]
         pvalue = value[1]
     else:
-        if DEBUG:print("      unable to export property:",pname,value)
+        if preferences['DEBUG']:print("      unable to export property:",pname,value)
         return pset, pname, ptype, None
 
-    #if DEBUG: print("      property ",pname," : ",pvalue.encode("utf8"), " (", str(ptype), ") in ",pset)
+    #if preferences['DEBUG']: print("      property ",pname," : ",pvalue.encode("utf8"), " (", str(ptype), ") in ",pset)
     if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
         if six.PY2:
             pvalue = pvalue.encode("utf8")
@@ -1432,7 +1417,7 @@ def getPropertyData(key,value):
             except:
                 if six.PY2:
                     pvalue = pvalue.encode("utf8")
-                if DEBUG:print("      warning: unable to export property as numeric value:",pname,pvalue)
+                if preferences['DEBUG']:print("      warning: unable to export property as numeric value:",pname,pvalue)
 
     # print('pset: {}, pname: {}, ptype: {}, pvalue: {}'.format(pset, pname, ptype, pvalue))
     return pset, pname, ptype, pvalue
@@ -1700,7 +1685,7 @@ def getProfile(ifcfile,p):
     return profile
 
 
-def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1,colors=None):
+def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1,colors=None,preferences=None):
 
     """returns an IfcShapeRepresentation object or None"""
 
@@ -1857,7 +1842,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
                     from ifcopenshell import geom
                     serialized = False
-                    if hasattr(geom,"serialise") and obj.isDerivedFrom("Part::Feature") and SERIALIZE:
+                    if hasattr(geom,"serialise") and obj.isDerivedFrom("Part::Feature") and preferences['SERIALIZE']:
                         if obj.Shape.Faces:
                             sh = obj.Shape.copy()
                             sh.Placement = obj.getGlobalPlacement()
@@ -1890,7 +1875,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             dataset = fcshape.Solids
                         else:
                             dataset = fcshape.Shells
-                            #if DEBUG: print("Warning! object contains no solids")
+                            #if preferences['DEBUG']: print("Warning! object contains no solids")
 
                         for fcsolid in dataset:
                             fcsolid.scale(0.001) # to meters
