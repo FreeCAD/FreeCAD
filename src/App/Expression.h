@@ -165,7 +165,9 @@ public:
 
     App::DocumentObject *  getOwner() const { return owner; }
 
-    virtual boost::any getValueAsAny() const { static boost::any empty; return empty; }
+    virtual boost::any getValueAsAny() const = 0;
+
+    virtual Py::Object getPyValue() const = 0;
 
     bool isSame(const Expression &other) const;
 
@@ -234,6 +236,8 @@ public:
     double getScaler() const { return quantity.getValue(); }
 
     boost::any getValueAsAny() const { return quantity.getUnit().isEmpty() ? boost::any(quantity.getValue()) : boost::any(quantity); }
+
+    virtual Py::Object getPyValue() const;
 
 protected:
     Base::Quantity quantity;
@@ -307,6 +311,7 @@ public:
         SUB,
         MUL,
         DIV,
+        MOD,
         POW,
         EQ,
         NEQ,
@@ -342,6 +347,10 @@ public:
 
     Expression * getRight() const { return right; }
 
+    virtual boost::any getValueAsAny() const;
+
+    virtual Py::Object getPyValue() const;
+
 protected:
 
     virtual bool isCommutative() const;
@@ -370,11 +379,16 @@ public:
 
     virtual std::string toString(bool persistent=false) const;
 
-    virtual Expression * _copy() const;
-
     virtual int priority() const;
 
+    virtual boost::any getValueAsAny() const;
+
+    virtual Py::Object getPyValue() const;
+
+protected:
+    virtual Expression * _copy() const;
     virtual void _visit(ExpressionVisitor & v);
+    bool evalCond() const;
 
 protected:
 
@@ -451,6 +465,11 @@ public:
 
     virtual void _visit(ExpressionVisitor & v);
 
+    virtual boost::any getValueAsAny() const;
+
+    virtual Py::Object getPyValue() const;
+
+
 protected:
     Expression *evalAggregate() const;
 
@@ -493,6 +512,10 @@ public:
 
     const App::Property *getProperty() const;
 
+    virtual boost::any getValueAsAny() const;
+
+    virtual Py::Object getPyValue() const;
+
 protected:
     virtual void _getDeps(ExpressionDeps &) const;
     virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const;
@@ -529,13 +552,12 @@ public:
 
     virtual ~PyObjectExpression();
 
-    Py::Object getPyObject() const;
-
     void setPyObject(Py::Object pyobj);
     void setPyObject(PyObject *pyobj, bool owned=false);
 
     virtual std::string toString(bool) const;
     virtual boost::any getValueAsAny() const;
+    virtual Py::Object getPyValue() const;
 
     virtual Expression * eval() const { return copy(); }
     virtual Expression * simplify() const { return copy(); }
@@ -567,9 +589,12 @@ public:
 
     virtual int priority() const;
 
-    virtual Expression * _copy() const;
+    virtual boost::any getValueAsAny() const;
+
+    virtual Py::Object getPyValue() const;
 
 protected:
+    virtual Expression * _copy() const;
 
     std::string text; /**< Text string */
 };
@@ -587,15 +612,18 @@ public:
 
     virtual std::string toString(bool persistent=false) const;
 
-    virtual Expression * _copy() const;
-
     virtual int priority() const;
 
     virtual App::Expression * simplify() const;
 
     Range getRange() const;
 
+    virtual boost::any getValueAsAny() const { return boost::any(); }
+
+    virtual Py::Object getPyValue() const;
+
 protected:
+    virtual Expression * _copy() const;
     virtual void _getDeps(ExpressionDeps &) const;
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &);

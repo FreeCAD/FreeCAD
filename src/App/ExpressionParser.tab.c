@@ -91,7 +91,10 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
 # define YYERROR_VERBOSE 0
 #endif
 
-
+/* In a future release of Bison, this section will be replaced
+   by #include "ExpressionParser.tab.h".  */
+#ifndef YY_YY_EXPRESSIONPARSER_TAB_H_INCLUDED
+# define YY_YY_EXPRESSIONPARSER_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -138,11 +141,11 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-
+#endif /* !YY_YY_EXPRESSIONPARSER_TAB_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-#line 146 "ExpressionParser.tab.c" /* yacc.c:358  */
+#line 149 "ExpressionParser.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -384,16 +387,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  38
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   196
+#define YYLAST   202
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  40
+#define YYNTOKENS  41
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  14
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  74
+#define YYNRULES  75
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  132
+#define YYNSTATES  134
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -410,13 +413,13 @@ static const yytype_uint8 yytranslate[] =
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,    37,     2,     2,     2,     2,
-      32,    33,    26,    25,    34,     2,    36,    27,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,    24,    35,
+       2,     2,     2,     2,     2,    38,     2,    28,     2,     2,
+      33,    34,    26,    25,    35,     2,    37,    27,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,    24,    36,
        2,     2,     2,    23,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,    38,     2,    39,    29,     2,     2,     2,     2,     2,
+       2,    39,     2,    40,    30,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -434,8 +437,8 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    28,    30,
-      31
+      15,    16,    17,    18,    19,    20,    21,    22,    29,    31,
+      32
 };
 
 #if YYDEBUG
@@ -443,13 +446,13 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    66,    66,    67,    70,    71,    72,    73,    74,    75,
-      76,    77,    78,    79,    80,    81,    82,    83,    84,    87,
-      88,    89,    90,    92,    93,    94,    95,    96,    97,   100,
-     101,   102,   103,   106,   107,   108,   109,   110,   111,   114,
-     115,   116,   117,   118,   119,   122,   126,   131,   136,   141,
-     149,   150,   154,   155,   156,   157,   158,   159,   160,   161,
-     162,   165,   166,   167,   168,   169,   170,   171,   172,   173,
-     174,   177,   178,   181,   182
+      76,    77,    78,    79,    80,    81,    82,    83,    84,    85,
+      88,    89,    90,    91,    93,    94,    95,    96,    97,    98,
+     101,   102,   103,   104,   107,   108,   109,   110,   111,   112,
+     115,   116,   117,   118,   119,   120,   123,   128,   133,   140,
+     146,   155,   156,   160,   161,   162,   163,   164,   165,   166,
+     167,   168,   171,   172,   173,   174,   175,   176,   177,   178,
+     179,   180,   183,   184,   187,   188
 };
 #endif
 
@@ -461,11 +464,11 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "FUNC", "ONE", "NUM", "IDENTIFIER",
   "UNIT", "INTEGER", "CONSTANT", "CELLADDRESS", "EQ", "NEQ", "LT", "GT",
   "GTE", "LTE", "STRING", "MINUSSIGN", "PROPERTY_REF", "DOCUMENT",
-  "OBJECT", "EXPONENT", "'?'", "':'", "'+'", "'*'", "'/'", "NUM_AND_UNIT",
-  "'^'", "NEG", "POS", "'('", "')'", "','", "';'", "'.'", "'#'", "'['",
-  "']'", "$accept", "input", "exp", "num", "args", "range", "cond",
-  "unit_exp", "identifier", "integer", "path", "subpath", "document",
-  "object", YY_NULLPTR
+  "OBJECT", "EXPONENT", "'?'", "':'", "'+'", "'*'", "'/'", "'%'",
+  "NUM_AND_UNIT", "'^'", "NEG", "POS", "'('", "')'", "','", "';'", "'.'",
+  "'#'", "'['", "']'", "$accept", "input", "exp", "num", "args", "range",
+  "cond", "unit_exp", "identifier", "integer", "path", "subpath",
+  "document", "object", YY_NULLPTR
 };
 #endif
 
@@ -476,17 +479,18 @@ static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,    63,    58,    43,    42,    47,   278,    94,
-     279,   280,    40,    41,    44,    59,    46,    35,    91,    93
+     275,   276,   277,    63,    58,    43,    42,    47,    37,   278,
+      94,   279,   280,    40,    41,    44,    59,    46,    35,    91,
+      93
 };
 # endif
 
-#define YYPACT_NINF -102
+#define YYPACT_NINF -94
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-102)))
+  (!!((Yystate) == (-94)))
 
-#define YYTABLE_NINF -75
+#define YYTABLE_NINF -76
 
 #define yytable_value_is_error(Yytable_value) \
   0
@@ -495,20 +499,20 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      67,    92,  -102,  -102,   131,  -102,  -102,  -102,   -32,    -2,
-     117,   117,    67,     3,    24,   167,    -4,    15,    86,  -102,
-    -102,    23,    45,    -7,   -18,   117,   167,   153,  -102,    73,
-      74,  -102,  -102,   125,    60,    19,  -102,  -102,  -102,   117,
-     117,   117,   117,   117,   117,   117,   117,   117,    67,   117,
-      -4,    59,   117,    -4,    -4,     4,   101,     3,    13,    26,
-    -102,    92,    92,    30,  -102,  -102,  -102,  -102,    55,  -102,
-      75,    77,  -102,  -102,   167,   167,   167,   167,   167,   167,
-     103,   103,    90,    90,    59,  -102,   148,    59,    59,    29,
-    -102,  -102,  -102,    95,  -102,  -102,  -102,  -102,  -102,   167,
-    -102,   167,  -102,    73,   140,    97,   109,   111,   117,  -102,
-       3,  -102,   116,   126,   132,    73,    73,    73,    38,  -102,
-     120,   134,   154,  -102,  -102,  -102,    73,    73,    73,  -102,
-    -102,  -102
+      68,    86,   -94,   -94,   -24,   -94,   -94,   -94,   -33,    44,
+     112,   112,    68,    78,    32,   172,    -5,    15,    98,   -94,
+     -94,    21,    31,   -21,   -16,   112,   172,   157,   -94,    17,
+     130,   -94,   -94,   128,    53,    19,   -94,   -94,   -94,   112,
+     112,   112,   112,   112,   112,   112,   112,   112,    68,   112,
+     112,    -5,    70,   112,    -5,    -5,     1,    92,    78,   102,
+     121,   -94,    86,    86,    60,   -94,   -94,   -94,   -94,    67,
+     -94,    93,    95,   -94,   -94,   172,   172,   172,   172,   172,
+     172,     3,     3,    96,    96,    70,    96,   -94,   152,    70,
+      70,   165,   -94,   -94,   -94,   114,   -94,   -94,   -94,   -94,
+     -94,   172,   -94,   172,   -94,    17,   144,   120,   122,   123,
+     112,   -94,    78,   -94,   131,   132,   134,    17,    17,    17,
+      39,   -94,   138,   158,   159,   -94,   -94,   -94,    17,    17,
+      17,   -94,   -94,   -94
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -516,34 +520,34 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,    19,    20,    52,    39,    21,    22,    53,     6,
+       0,     0,    20,    21,    53,    40,    22,    23,    54,     6,
        0,     0,     0,     0,     0,     2,     4,     0,     3,     7,
-      45,     0,     0,    52,    53,     0,    23,     0,    24,     0,
-       0,     8,     9,     0,     0,    52,    53,    46,     1,     0,
+      46,     0,     0,    53,    54,     0,    24,     0,    25,     0,
+       0,     8,     9,     0,     0,    53,    54,    47,     1,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     5,     0,     0,     0,     0,     0,     0,     0,     0,
-      17,     0,     0,    61,    63,    62,    60,    51,     0,    50,
-       0,     0,    16,    44,    33,    34,    35,    36,    37,    38,
-      11,    10,    12,    13,    14,    15,     0,    41,    40,     0,
-      42,    73,    48,     0,    47,    32,    31,    30,    29,    25,
-      27,    26,    28,     0,     0,    57,    56,    54,     0,    43,
-       0,    70,     0,     0,     0,     0,     0,     0,    18,    49,
-      67,    66,    64,    59,    58,    55,     0,     0,     0,    69,
-      68,    65
+       0,     0,     5,     0,     0,     0,     0,     0,     0,     0,
+       0,    18,     0,     0,    62,    64,    63,    61,    52,     0,
+      51,     0,     0,    17,    45,    34,    35,    36,    37,    38,
+      39,    11,    10,    12,    13,    15,    14,    16,     0,    42,
+      41,     0,    43,    74,    49,     0,    48,    33,    32,    31,
+      30,    26,    28,    27,    29,     0,     0,    58,    57,    55,
+       0,    44,     0,    71,     0,     0,     0,     0,     0,     0,
+      19,    50,    68,    67,    65,    60,    59,    56,     0,     0,
+       0,    70,    69,    66
 };
 
   /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int16 yypgoto[] =
+static const yytype_int8 yypgoto[] =
 {
-    -102,  -102,     0,  -102,  -102,    44,  -102,     5,  -102,   -35,
-      -6,  -101,  -102,   128
+     -94,   -94,     0,   -94,   -94,    51,   -94,     6,   -94,   -36,
+      -6,   -93,   -94,    75
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    14,    33,    16,    27,    28,    17,    34,    19,    71,
-      20,    66,    21,    22
+      -1,    14,    33,    16,    27,    28,    17,    34,    19,    72,
+      20,    67,    21,    22
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -551,50 +555,52 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
-      15,    26,   111,     5,   -74,    18,    59,    37,    67,    35,
-      31,    32,    69,    36,   123,   124,   125,    58,   -74,    95,
-      90,    51,    89,    96,    38,   129,   130,   131,    50,    29,
-     -72,    30,    97,    67,   -73,   -71,    98,    69,    52,    74,
-      75,    76,    77,    78,    79,    80,    81,    82,    83,    85,
-      92,    94,    86,    84,   109,    29,    45,    30,    87,    88,
-      56,    99,   101,    46,    47,    48,   103,    49,   104,   114,
-       1,     2,     3,     4,     5,     6,     7,     8,    67,    63,
-      68,    57,    69,    64,     9,    10,    53,    54,    55,    55,
-      65,    70,    11,    73,   105,     1,     2,     3,    23,    12,
-       6,     7,    24,    13,   119,   100,   102,    35,   118,     9,
-      10,     8,    53,    54,   106,    55,   107,    11,    91,    49,
-       1,     2,     3,     4,    25,     6,     7,     8,    13,    47,
-      48,   110,    49,   115,     9,    10,    39,    40,    41,    42,
-      43,    44,    11,    45,    67,   116,   112,   117,    69,    25,
-      46,    47,    48,    13,    49,   120,   126,   113,    72,    39,
-      40,    41,    42,    43,    44,   121,    45,    29,   -72,    30,
-     127,   122,   108,    46,    47,    48,     0,    49,    39,    40,
-      41,    42,    43,    44,    93,    45,    60,    61,    62,     0,
-     128,     0,    46,    47,    48,     0,    49
+      15,    26,     5,    59,   -75,    68,    18,    37,    60,    70,
+      31,    32,   113,    29,   -73,    30,    29,   -73,    30,    91,
+      92,   -75,    52,    64,   125,   126,   127,    65,    51,    47,
+      48,    49,    38,    50,    66,   131,   132,   133,    53,    75,
+      76,    77,    78,    79,    80,    81,    82,    83,    84,    86,
+      87,    94,    96,    88,    85,   111,    29,    45,    30,    57,
+      89,    90,   101,   103,    46,    47,    48,    49,    58,    50,
+     116,     1,     2,     3,     4,     5,     6,     7,     8,    54,
+      55,   -74,   -72,    56,    35,     9,    10,    74,    36,     1,
+       2,     3,    23,    11,     6,     7,    24,   105,    35,   106,
+      56,    12,     8,     9,    10,    13,   121,   107,    97,    93,
+     120,    11,    98,   102,   104,     1,     2,     3,     4,    25,
+       6,     7,     8,    13,    54,    55,    50,    99,    56,     9,
+      10,   100,    95,   108,    68,   109,    69,    11,    70,    39,
+      40,    41,    42,    43,    44,    25,    45,    71,    68,    13,
+     114,   112,    70,    46,    47,    48,    49,   117,    50,   118,
+     119,   115,    73,    39,    40,    41,    42,    43,    44,    68,
+      45,   122,   123,    70,   124,   128,   110,    46,    47,    48,
+      49,     0,    50,    39,    40,    41,    42,    43,    44,     0,
+      45,    61,    62,    63,     0,   129,   130,    46,    47,    48,
+      49,     0,    50
 };
 
 static const yytype_int16 yycheck[] =
 {
-       0,     1,   103,     7,    36,     0,    24,    13,     4,     6,
-      10,    11,     8,    10,   115,   116,   117,    24,    36,     6,
-      55,    16,    18,    10,     0,   126,   127,   128,    32,    36,
-      37,    38,     6,     4,    36,    37,    10,     8,    23,    39,
+       0,     1,     7,    24,    37,     4,     0,    13,    24,     8,
+      10,    11,   105,    37,    38,    39,    37,    38,    39,    18,
+      56,    37,    16,     6,   117,   118,   119,    10,    33,    26,
+      27,    28,     0,    30,    17,   128,   129,   130,    23,    39,
       40,    41,    42,    43,    44,    45,    46,    47,    48,    49,
-      56,    57,    52,    48,    89,    36,    18,    38,    53,    54,
-      37,    61,    62,    25,    26,    27,    36,    29,    38,   104,
-       3,     4,     5,     6,     7,     8,     9,    10,     4,     6,
-       6,    36,     8,    10,    17,    18,    26,    27,    29,    29,
-      17,    17,    25,    33,    39,     3,     4,     5,     6,    32,
-       8,     9,    10,    36,   110,    61,    62,     6,   108,    17,
-      18,    10,    26,    27,    39,    29,    39,    25,    17,    29,
-       3,     4,     5,     6,    32,     8,     9,    10,    36,    26,
-      27,    36,    29,    36,    17,    18,    11,    12,    13,    14,
-      15,    16,    25,    18,     4,    36,     6,    36,     8,    32,
-      25,    26,    27,    36,    29,    39,    36,    17,    33,    11,
-      12,    13,    14,    15,    16,    39,    18,    36,    37,    38,
-      36,    39,    24,    25,    26,    27,    -1,    29,    11,    12,
-      13,    14,    15,    16,    56,    18,    33,    34,    35,    -1,
-      36,    -1,    25,    26,    27,    -1,    29
+      50,    57,    58,    53,    48,    91,    37,    18,    39,    38,
+      54,    55,    62,    63,    25,    26,    27,    28,    37,    30,
+     106,     3,     4,     5,     6,     7,     8,     9,    10,    26,
+      27,    37,    38,    30,     6,    17,    18,    34,    10,     3,
+       4,     5,     6,    25,     8,     9,    10,    37,     6,    39,
+      30,    33,    10,    17,    18,    37,   112,    40,     6,    17,
+     110,    25,    10,    62,    63,     3,     4,     5,     6,    33,
+       8,     9,    10,    37,    26,    27,    30,     6,    30,    17,
+      18,    10,    57,    40,     4,    40,     6,    25,     8,    11,
+      12,    13,    14,    15,    16,    33,    18,    17,     4,    37,
+       6,    37,     8,    25,    26,    27,    28,    37,    30,    37,
+      37,    17,    34,    11,    12,    13,    14,    15,    16,     4,
+      18,    40,    40,     8,    40,    37,    24,    25,    26,    27,
+      28,    -1,    30,    11,    12,    13,    14,    15,    16,    -1,
+      18,    34,    35,    36,    -1,    37,    37,    25,    26,    27,
+      28,    -1,    30
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -602,45 +608,45 @@ static const yytype_int16 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     3,     4,     5,     6,     7,     8,     9,    10,    17,
-      18,    25,    32,    36,    41,    42,    43,    46,    47,    48,
-      50,    52,    53,     6,    10,    32,    42,    44,    45,    36,
-      38,    42,    42,    42,    47,     6,    10,    50,     0,    11,
-      12,    13,    14,    15,    16,    18,    25,    26,    27,    29,
-      32,    47,    23,    26,    27,    29,    37,    36,    24,    24,
-      33,    34,    35,     6,    10,    17,    51,     4,     6,     8,
-      17,    49,    33,    33,    42,    42,    42,    42,    42,    42,
-      42,    42,    42,    42,    47,    42,    42,    47,    47,    18,
-      49,    17,    50,    53,    50,     6,    10,     6,    10,    42,
-      45,    42,    45,    36,    38,    39,    39,    39,    24,    49,
-      36,    51,     6,    17,    49,    36,    36,    36,    42,    50,
-      39,    39,    39,    51,    51,    51,    36,    36,    36,    51,
-      51,    51
+      18,    25,    33,    37,    42,    43,    44,    47,    48,    49,
+      51,    53,    54,     6,    10,    33,    43,    45,    46,    37,
+      39,    43,    43,    43,    48,     6,    10,    51,     0,    11,
+      12,    13,    14,    15,    16,    18,    25,    26,    27,    28,
+      30,    33,    48,    23,    26,    27,    30,    38,    37,    24,
+      24,    34,    35,    36,     6,    10,    17,    52,     4,     6,
+       8,    17,    50,    34,    34,    43,    43,    43,    43,    43,
+      43,    43,    43,    43,    43,    48,    43,    43,    43,    48,
+      48,    18,    50,    17,    51,    54,    51,     6,    10,     6,
+      10,    43,    46,    43,    46,    37,    39,    40,    40,    40,
+      24,    50,    37,    52,     6,    17,    50,    37,    37,    37,
+      43,    51,    40,    40,    40,    52,    52,    52,    37,    37,
+      37,    52,    52,    52
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    40,    41,    41,    42,    42,    42,    42,    42,    42,
-      42,    42,    42,    42,    42,    42,    42,    42,    42,    43,
-      43,    43,    43,    44,    44,    44,    44,    44,    44,    45,
-      45,    45,    45,    46,    46,    46,    46,    46,    46,    47,
-      47,    47,    47,    47,    47,    48,    48,    48,    48,    48,
-      49,    49,    50,    50,    50,    50,    50,    50,    50,    50,
-      50,    51,    51,    51,    51,    51,    51,    51,    51,    51,
-      51,    52,    52,    53,    53
+       0,    41,    42,    42,    43,    43,    43,    43,    43,    43,
+      43,    43,    43,    43,    43,    43,    43,    43,    43,    43,
+      44,    44,    44,    44,    45,    45,    45,    45,    45,    45,
+      46,    46,    46,    46,    47,    47,    47,    47,    47,    47,
+      48,    48,    48,    48,    48,    48,    49,    49,    49,    49,
+      49,    50,    50,    51,    51,    51,    51,    51,    51,    51,
+      51,    51,    52,    52,    52,    52,    52,    52,    52,    52,
+      52,    52,    53,    53,    54,    54
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     1,     1,     1,     2,     1,     1,     2,     2,
-       3,     3,     3,     3,     3,     3,     3,     3,     5,     1,
-       1,     1,     1,     1,     1,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,     3,     3,     1,
-       3,     3,     3,     4,     3,     1,     2,     3,     3,     5,
-       1,     1,     1,     1,     4,     6,     4,     4,     6,     6,
-       3,     1,     1,     1,     4,     6,     4,     4,     6,     6,
-       3,     1,     1,     1,     1
+       3,     3,     3,     3,     3,     3,     3,     3,     3,     5,
+       1,     1,     1,     1,     1,     1,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
+       1,     3,     3,     3,     4,     3,     1,     2,     3,     3,
+       5,     1,     1,     1,     1,     4,     6,     4,     4,     6,
+       6,     3,     1,     1,     1,     4,     6,     4,     4,     6,
+       6,     3,     1,     1,     1,     1
 };
 
 
@@ -1063,28 +1069,28 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep)
   YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   switch (yytype)
     {
-          case 42: /* exp  */
+          case 43: /* exp  */
 #line 59 "ExpressionParser.y" /* yacc.c:1257  */
       { delete ((*yyvaluep).expr); }
-#line 1070 "ExpressionParser.tab.c" /* yacc.c:1257  */
-        break;
-
-    case 44: /* args  */
-#line 60 "ExpressionParser.y" /* yacc.c:1257  */
-      { std::vector<Expression*>::const_iterator i = ((*yyvaluep).arguments).begin(); while (i != ((*yyvaluep).arguments).end()) { delete *i; ++i; } }
 #line 1076 "ExpressionParser.tab.c" /* yacc.c:1257  */
         break;
 
-    case 46: /* cond  */
-#line 59 "ExpressionParser.y" /* yacc.c:1257  */
-      { delete ((*yyvaluep).expr); }
+    case 45: /* args  */
+#line 60 "ExpressionParser.y" /* yacc.c:1257  */
+      { std::vector<Expression*>::const_iterator i = ((*yyvaluep).arguments).begin(); while (i != ((*yyvaluep).arguments).end()) { delete *i; ++i; } }
 #line 1082 "ExpressionParser.tab.c" /* yacc.c:1257  */
         break;
 
-    case 47: /* unit_exp  */
+    case 47: /* cond  */
 #line 59 "ExpressionParser.y" /* yacc.c:1257  */
       { delete ((*yyvaluep).expr); }
 #line 1088 "ExpressionParser.tab.c" /* yacc.c:1257  */
+        break;
+
+    case 48: /* unit_exp  */
+#line 59 "ExpressionParser.y" /* yacc.c:1257  */
+      { delete ((*yyvaluep).expr); }
+#line 1094 "ExpressionParser.tab.c" /* yacc.c:1257  */
         break;
 
 
@@ -1348,283 +1354,289 @@ yyreduce:
         case 2:
 #line 66 "ExpressionParser.y" /* yacc.c:1646  */
     { ScanResult = (yyvsp[0].expr); valueExpression = true;                                        }
-#line 1352 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1358 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
 #line 67 "ExpressionParser.y" /* yacc.c:1646  */
     { ScanResult = (yyvsp[0].expr); unitExpression = true;                                         }
-#line 1358 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1364 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
 #line 70 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = (yyvsp[0].expr);                                                                        }
-#line 1364 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1370 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
 #line 71 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-1].expr), OperatorExpression::UNIT, (yyvsp[0].expr));  }
-#line 1370 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1376 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
 #line 72 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new StringExpression(DocumentObject, (yyvsp[0].string));                                  }
-#line 1376 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1382 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
 #line 73 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new VariableExpression(DocumentObject, (yyvsp[0].path));                                }
-#line 1382 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1388 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
 #line 74 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[0].expr), OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))); }
-#line 1388 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1394 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
 #line 75 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[0].expr), OperatorExpression::POS, new NumberExpression(DocumentObject, Quantity(1))); }
-#line 1394 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1400 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
 #line 76 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::ADD, (yyvsp[0].expr));   }
-#line 1400 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1406 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
 #line 77 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::SUB, (yyvsp[0].expr));   }
-#line 1406 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1412 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
 #line 78 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::MUL, (yyvsp[0].expr));   }
-#line 1412 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1418 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
 #line 79 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::DIV, (yyvsp[0].expr));   }
-#line 1418 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1424 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
 #line 80 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::DIV, (yyvsp[0].expr));   }
-#line 1424 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::MOD, (yyvsp[0].expr));   }
+#line 1430 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 81 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::POW, (yyvsp[0].expr));   }
-#line 1430 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::DIV, (yyvsp[0].expr));   }
+#line 1436 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
 #line 82 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = (yyvsp[-1].expr);                                                                        }
-#line 1436 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::POW, (yyvsp[0].expr));   }
+#line 1442 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
 #line 83 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new FunctionExpression(DocumentObject, (yyvsp[-2].func), (yyvsp[-1].arguments));                   }
-#line 1442 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = (yyvsp[-1].expr);                                                                        }
+#line 1448 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
 #line 84 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new ConditionalExpression(DocumentObject, (yyvsp[-4].expr), (yyvsp[-2].expr), (yyvsp[0].expr));                     }
-#line 1448 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new FunctionExpression(DocumentObject, (yyvsp[-2].func), (yyvsp[-1].arguments));                   }
+#line 1454 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 87 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new NumberExpression(DocumentObject, Quantity((yyvsp[0].fvalue)));                        }
-#line 1454 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 85 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.expr) = new ConditionalExpression(DocumentObject, (yyvsp[-4].expr), (yyvsp[-2].expr), (yyvsp[0].expr));                     }
+#line 1460 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
 #line 88 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new NumberExpression(DocumentObject, Quantity((yyvsp[0].fvalue)));                        }
-#line 1460 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1466 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
 #line 89 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new NumberExpression(DocumentObject, Quantity((double)(yyvsp[0].ivalue)));                }
-#line 1466 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new NumberExpression(DocumentObject, Quantity((yyvsp[0].fvalue)));                        }
+#line 1472 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
 #line 90 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new ConstantExpression(DocumentObject, (yyvsp[0].constant).name, Quantity((yyvsp[0].constant).fvalue));      }
-#line 1472 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new NumberExpression(DocumentObject, Quantity((double)(yyvsp[0].ivalue)));                }
+#line 1478 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 92 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.arguments).push_back((yyvsp[0].expr));                                                               }
-#line 1478 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 91 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.expr) = new ConstantExpression(DocumentObject, (yyvsp[0].constant).name, Quantity((yyvsp[0].constant).fvalue));      }
+#line 1484 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
 #line 93 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.arguments).push_back((yyvsp[0].expr));                                                               }
-#line 1484 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1490 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
 #line 94 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[-2].arguments).push_back((yyvsp[0].expr));  (yyval.arguments) = (yyvsp[-2].arguments);                                                     }
-#line 1490 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.arguments).push_back((yyvsp[0].expr));                                                               }
+#line 1496 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
 #line 95 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyvsp[-2].arguments).push_back((yyvsp[0].expr));  (yyval.arguments) = (yyvsp[-2].arguments);                                                     }
-#line 1496 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1502 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
 #line 96 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyvsp[-2].arguments).push_back((yyvsp[0].expr));  (yyval.arguments) = (yyvsp[-2].arguments);                                                     }
-#line 1502 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1508 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
 #line 97 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyvsp[-2].arguments).push_back((yyvsp[0].expr));  (yyval.arguments) = (yyvsp[-2].arguments);                                                     }
-#line 1508 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1514 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 100 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new RangeExpression(DocumentObject, (yyvsp[-2].string), (yyvsp[0].string));                               }
-#line 1514 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 98 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[-2].arguments).push_back((yyvsp[0].expr));  (yyval.arguments) = (yyvsp[-2].arguments);                                                     }
+#line 1520 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
 #line 101 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new RangeExpression(DocumentObject, (yyvsp[-2].string), (yyvsp[0].string));                               }
-#line 1520 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1526 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
 #line 102 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new RangeExpression(DocumentObject, (yyvsp[-2].string), (yyvsp[0].string));                               }
-#line 1526 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1532 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
 #line 103 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.expr) = new RangeExpression(DocumentObject, (yyvsp[-2].string), (yyvsp[0].string));                               }
-#line 1532 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1538 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 106 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::EQ, (yyvsp[0].expr));    }
-#line 1538 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 104 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.expr) = new RangeExpression(DocumentObject, (yyvsp[-2].string), (yyvsp[0].string));                               }
+#line 1544 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
 #line 107 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::NEQ, (yyvsp[0].expr));   }
-#line 1544 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::EQ, (yyvsp[0].expr));    }
+#line 1550 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
 #line 108 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::LT, (yyvsp[0].expr));    }
-#line 1550 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::NEQ, (yyvsp[0].expr));   }
+#line 1556 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
 #line 109 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::GT, (yyvsp[0].expr));    }
-#line 1556 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::LT, (yyvsp[0].expr));    }
+#line 1562 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
 #line 110 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::GTE, (yyvsp[0].expr));   }
-#line 1562 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::GT, (yyvsp[0].expr));    }
+#line 1568 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
 #line 111 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::LTE, (yyvsp[0].expr));   }
-#line 1568 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::GTE, (yyvsp[0].expr));   }
+#line 1574 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 114 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new UnitExpression(DocumentObject, (yyvsp[0].quantity).scaler, (yyvsp[0].quantity).unitStr );                }
-#line 1574 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 112 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::LTE, (yyvsp[0].expr));   }
+#line 1580 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
 #line 115 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::DIV, (yyvsp[0].expr));   }
-#line 1580 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new UnitExpression(DocumentObject, (yyvsp[0].quantity).scaler, (yyvsp[0].quantity).unitStr );                }
+#line 1586 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
 #line 116 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::MUL, (yyvsp[0].expr));   }
-#line 1586 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::DIV, (yyvsp[0].expr));   }
+#line 1592 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
 #line 117 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::POW, new NumberExpression(DocumentObject, Quantity((double)(yyvsp[0].ivalue))));   }
-#line 1592 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::MUL, (yyvsp[0].expr));   }
+#line 1598 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
 #line 118 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-3].expr), OperatorExpression::POW, new OperatorExpression(DocumentObject, new NumberExpression(DocumentObject, Quantity((double)(yyvsp[0].ivalue))), OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))));   }
-#line 1598 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::POW, new NumberExpression(DocumentObject, Quantity((double)(yyvsp[0].ivalue))));   }
+#line 1604 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
 #line 119 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = (yyvsp[-1].expr);                                                                        }
-#line 1604 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-3].expr), OperatorExpression::POW, new OperatorExpression(DocumentObject, new NumberExpression(DocumentObject, Quantity((double)(yyvsp[0].ivalue))), OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))));   }
+#line 1610 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 122 "ExpressionParser.y" /* yacc.c:1646  */
+#line 120 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.expr) = (yyvsp[-1].expr);                                                                        }
+#line 1616 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 46:
+#line 123 "ExpressionParser.y" /* yacc.c:1646  */
     { /* Path to property within document object */
                                                   (yyval.path) = ObjectIdentifier(DocumentObject);
                                                   (yyval.path).addComponents((yyvsp[0].components));
                                                   (yyval.path).resolveAmbiguity();
                                                 }
-#line 1613 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1626 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 46:
-#line 126 "ExpressionParser.y" /* yacc.c:1646  */
+  case 47:
+#line 128 "ExpressionParser.y" /* yacc.c:1646  */
     { /* Path to property of the current document object */
                                                   (yyval.path) = ObjectIdentifier(DocumentObject,true);
                                                   (yyval.path).setDocumentObjectName(DocumentObject);
                                                   (yyval.path).addComponents((yyvsp[0].components));
                                                 }
-#line 1623 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1636 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 47:
-#line 131 "ExpressionParser.y" /* yacc.c:1646  */
+  case 48:
+#line 133 "ExpressionParser.y" /* yacc.c:1646  */
     { /* Path to property within document object */
                                                   (yyval.path) = ObjectIdentifier(DocumentObject);
                                                   (yyvsp[-2].string_or_identifier).checkImport(DocumentObject);
@@ -1632,188 +1644,184 @@ yyreduce:
                                                   (yyval.path).addComponents((yyvsp[0].components));
                                                   (yyval.path).resolveAmbiguity();
                                                 }
-#line 1633 "ExpressionParser.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 48:
-#line 136 "ExpressionParser.y" /* yacc.c:1646  */
-    { /* Path to property from an external document, within a named document object */
-                                                  (yyval.path) = ObjectIdentifier(DocumentObject);
-                                                  (yyval.path).setDocumentName(std::move(yyvsp[-2].string_or_identifier), true);
-                                                  if((yyvsp[0].components).size()) {
-                                                      (yyval.path).setDocumentObjectName(ObjectIdentifier::String((yyvsp[0].components).front().getName(),false,true), true);
-                                                      (yyvsp[0].components).pop_front();
-                                                  }
-                                                  (yyval.path).addComponents((yyvsp[0].components));
-                                                  (yyval.path).resolveAmbiguity();
-                                                }
-#line 1643 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1648 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 141 "ExpressionParser.y" /* yacc.c:1646  */
+#line 140 "ExpressionParser.y" /* yacc.c:1646  */
     { /* Path to property from an external document, within a named document object */
                                                   (yyval.path) = ObjectIdentifier(DocumentObject);
-                                                  (yyval.path).setDocumentName(std::move(yyvsp[-4].string_or_identifier), true);
-                                                  (yyval.path).setDocumentObjectName(std::move(yyvsp[-2].string_or_identifier), true);
+                                                  (yyval.path).setDocumentName(std::move((yyvsp[-2].string_or_identifier)), true);
                                                   (yyval.path).addComponents((yyvsp[0].components));
                                                   (yyval.path).resolveAmbiguity();
                                                 }
-#line 1654 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1659 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 149 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.ivalue) = (yyvsp[0].ivalue); }
-#line 1660 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 146 "ExpressionParser.y" /* yacc.c:1646  */
+    { /* Path to property from an external document, within a named document object */
+                                                  (yyval.path) = ObjectIdentifier(DocumentObject);
+                                                  (yyval.path).setDocumentName(std::move((yyvsp[-4].string_or_identifier)), true);
+                                                  (yyval.path).setDocumentObjectName(std::move((yyvsp[-2].string_or_identifier)), true);
+                                                  (yyval.path).addComponents((yyvsp[0].components));
+                                                  (yyval.path).resolveAmbiguity();
+                                                }
+#line 1671 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 150 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.ivalue) = (yyvsp[0].fvalue); }
-#line 1666 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 155 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.ivalue) = (yyvsp[0].ivalue); }
+#line 1677 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 154 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));                         }
-#line 1672 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 156 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.ivalue) = (yyvsp[0].fvalue); }
+#line 1683 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 155 "ExpressionParser.y" /* yacc.c:1646  */
+#line 160 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));                         }
-#line 1678 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1689 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 156 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.components).push_front(ObjectIdentifier::ArrayComponent((yyvsp[-1].ivalue))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-3].string)));                      }
-#line 1684 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 161 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));                         }
+#line 1695 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 157 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[0].components).push_front(ObjectIdentifier::ArrayComponent((yyvsp[-3].ivalue))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string))); (yyval.components) = (yyvsp[0].components);             }
-#line 1690 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 162 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.components).push_front(ObjectIdentifier::ArrayComponent((yyvsp[-1].ivalue))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-3].string)));                     }
+#line 1701 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 158 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.components).push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String((yyvsp[-1].string), true))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-3].string)));          }
-#line 1696 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 163 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[0].components).push_front(ObjectIdentifier::ArrayComponent((yyvsp[-3].ivalue))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string))); (yyval.components) = (yyvsp[0].components);             }
+#line 1707 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 159 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.components).push_front(ObjectIdentifier::MapComponent((yyvsp[-1].string))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-3].string)));                        }
-#line 1702 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 164 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.components).push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String((yyvsp[-1].string), true)));          }
+#line 1713 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 160 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[0].components).push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String((yyvsp[-3].string), true))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string))); (yyval.components) = (yyvsp[0].components); }
-#line 1708 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 165 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.components).push_front(ObjectIdentifier::MapComponent((yyvsp[-1].string))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-3].string)));                       }
+#line 1719 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 161 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[0].components).push_front(ObjectIdentifier::MapComponent((yyvsp[-3].string))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string))); (yyval.components) = (yyvsp[0].components);               }
-#line 1714 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 166 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[0].components).push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String((yyvsp[-3].string), true))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string))); (yyval.components) = (yyvsp[0].components); }
+#line 1725 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 162 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[0].components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-2].string))); (yyval.components) = (yyvsp[0].components);                }
-#line 1720 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 167 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[0].components).push_front(ObjectIdentifier::MapComponent((yyvsp[-3].string))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string))); (yyval.components) = (yyvsp[0].components);               }
+#line 1731 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 165 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));                         }
-#line 1726 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 168 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[0].components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-2].string))); (yyval.components) = (yyvsp[0].components);                }
+#line 1737 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 166 "ExpressionParser.y" /* yacc.c:1646  */
+#line 171 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));                         }
-#line 1732 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1743 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 167 "ExpressionParser.y" /* yacc.c:1646  */
+#line 172 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));                         }
-#line 1738 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1749 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 168 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.components).push_front(ObjectIdentifier::ArrayComponent((yyvsp[-1].ivalue))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-3].string)));                      }
-#line 1744 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 173 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));                         }
+#line 1755 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 169 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[0].components).push_front(ObjectIdentifier::ArrayComponent((yyvsp[-3].ivalue))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string))); (yyval.components) = (yyvsp[0].components);             }
-#line 1750 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 174 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.components).push_front(ObjectIdentifier::ArrayComponent((yyvsp[-1].ivalue))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-3].string)));                     }
+#line 1761 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 170 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.components).push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String((yyvsp[-1].string), true))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-3].string)));          }
-#line 1756 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 175 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[0].components).push_front(ObjectIdentifier::ArrayComponent((yyvsp[-3].ivalue))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string)));(yyval.components) = (yyvsp[0].components);             }
+#line 1767 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 171 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.components).push_front(ObjectIdentifier::MapComponent((yyvsp[-1].string))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-3].string)));                        }
-#line 1762 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 176 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.components).push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String((yyvsp[-1].string), true))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-3].string)));         }
+#line 1773 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 172 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[0].components).push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String((yyvsp[-3].string), true))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string))); (yyval.components) = (yyvsp[0].components); }
-#line 1768 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 177 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.components).push_front(ObjectIdentifier::MapComponent((yyvsp[-1].string))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-3].string)));                       }
+#line 1779 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 173 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[0].components).push_front(ObjectIdentifier::MapComponent((yyvsp[-3].string))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string))); (yyval.components) = (yyvsp[0].components);               }
-#line 1774 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 178 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[0].components).push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String((yyvsp[-3].string), true))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string)));(yyval.components) = (yyvsp[0].components); }
+#line 1785 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 174 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[0].components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-2].string))); (yyval.components) = (yyvsp[0].components);                }
-#line 1780 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 179 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[0].components).push_front(ObjectIdentifier::MapComponent((yyvsp[-3].string))); (yyval.components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-5].string)));(yyval.components) = (yyvsp[0].components);               }
+#line 1791 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 177 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string), true); }
-#line 1786 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 180 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[0].components).push_front(ObjectIdentifier::SimpleComponent((yyvsp[-2].string))); (yyval.components) = (yyvsp[0].components);                }
+#line 1797 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 178 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string));       }
-#line 1792 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 183 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string), true); }
+#line 1803 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 181 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string), true); }
-#line 1798 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 184 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string));       }
+#line 1809 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 182 "ExpressionParser.y" /* yacc.c:1646  */
+#line 187 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string), true); }
-#line 1804 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1815 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 75:
+#line 188 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string), true); }
+#line 1821 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1808 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 1825 "ExpressionParser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2041,5 +2049,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 185 "ExpressionParser.y" /* yacc.c:1906  */
+#line 191 "ExpressionParser.y" /* yacc.c:1906  */
 
