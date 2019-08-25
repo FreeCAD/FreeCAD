@@ -40,3 +40,8 @@ tags
 
 # crowdin file
 src/Tools/freecad.zip
+/FreeCAD.config
+/FreeCAD.creator
+/FreeCAD.creator.user
+/FreeCAD.files
+/FreeCAD.includes
