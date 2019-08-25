@@ -28,6 +28,7 @@
 #include "Base/Matrix.h"
 
 // inclusion of the generated files (generated out of MatrixPy.xml)
+#include "RotationPy.h"
 #include "VectorPy.h"
 #include "GeometryPyCXX.h"
 #include "QuantityPy.h"
@@ -122,17 +123,67 @@ PyObject* MatrixPy::number_subtract_handler(PyObject *self, PyObject *other)
 
 PyObject* MatrixPy::number_multiply_handler(PyObject *self, PyObject *other)
 {
-    if (!PyObject_TypeCheck(self, &(MatrixPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "First arg must be Matrix");
+    if (PyObject_TypeCheck(self, &(MatrixPy::Type))) {
+        Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
+
+        if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
+            auto b = static_cast<VectorPy*>(other)->value();
+            return new VectorPy(a*b);
+        }
+
+        if (PyObject_TypeCheck(other, &(RotationPy::Type))) {
+            auto r = static_cast<RotationPy*>(other)->value();
+            Matrix4D b;
+            r.getValue(b);
+            return new MatrixPy(a*b);
+        }
+
+        if (PyObject_TypeCheck(other, &(MatrixPy::Type))) {
+            Base::Matrix4D b = static_cast<MatrixPy*>(other)->value();
+            return new MatrixPy(a*b);
+        }
+
+        if (PyNumber_Check(other)) {
+            double v = PyFloat_AsDouble(self);
+            a.scale(v,v,v);
+            return new MatrixPy(a);
+        }
+    }
+
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * MatrixPy::number_power_handler (PyObject* self, PyObject* other, PyObject* arg)
+{
+    if (!PyObject_TypeCheck(self, &(MatrixPy::Type)) ||
+
+#if PY_MAJOR_VERSION < 3
+            !PyInt_Check(other)
+#else
+            !PyLong_Check(other)
+#endif
+            || arg != Py_None
+       )
+    {
+        PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
         return 0;
     }
-    if (!PyObject_TypeCheck(other, &(MatrixPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "Second arg must be Matrix");
-        return 0;
-    }
+
     Base::Matrix4D a = static_cast<MatrixPy*>(self)->value();
-    Base::Matrix4D b = static_cast<MatrixPy*>(other)->value();
-    return new MatrixPy(a*b);
+
+    long b = Py::Int(other);
+    if(!b)
+        return new MatrixPy(Matrix4D());
+
+    if(b < 0) {
+        b = 1+b;
+        a.inverse();
+    }
+    auto res = a;
+    for(;b;--b)
+        res *= a;
+    return new MatrixPy(res);
 }
 
 PyObject* MatrixPy::richCompare(PyObject *v, PyObject *w, int op)
@@ -783,12 +834,6 @@ PyObject * MatrixPy::number_remainder_handler (PyObject* /*self*/, PyObject* /*o
 }
 
 PyObject * MatrixPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
-    return 0;
-}
-
-PyObject * MatrixPy::number_power_handler (PyObject* /*self*/, PyObject* /*other*/, PyObject* /*arg*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;

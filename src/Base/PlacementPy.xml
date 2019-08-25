@@ -112,5 +112,11 @@ Placement(Base, Axis, Angle) -- define position and rotation
 			</Documentation>
 			<Parameter Name="Rotation" Type="Object" />
 		</Attribute>
+		<Attribute Name="Matrix" ReadOnly="false">
+			<Documentation>
+                <UserDocu>Set/get matrix representation of this placement</UserDocu>
+			</Documentation>
+			<Parameter Name="Matrix" Type="Object" />
+		</Attribute>
 	</PythonExport>
 </GenerateModel>
