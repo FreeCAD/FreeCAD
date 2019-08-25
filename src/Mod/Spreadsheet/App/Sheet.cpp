@@ -705,7 +705,7 @@ void Sheet::updateProperty(CellAddress key)
                 Base::PyGILStateLocker lock;
                 auto py_expr = freecad_dynamic_cast<PyObjectExpression>(output.get());
                 if(py_expr) 
-                    setObjectProperty(key, py_expr->getPyObject());
+                    setObjectProperty(key, py_expr->getPyValue());
                 else
                     setObjectProperty(key, Py::Object());
             }

@@ -49,7 +49,7 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %left EQ NEQ LT GT GTE LTE
      %left '?' ':'
      %left MINUSSIGN '+'
-     %left '*' '/'
+     %left '*' '/' '%'
      %precedence NUM_AND_UNIT
      %left '^'    /* exponentiation */
      %left EXPONENT
@@ -77,6 +77,7 @@ exp:      num                			{ $$ = $1;                                      
         | exp MINUSSIGN exp                     { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::SUB, $3);   }
         | exp '*' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
         | exp '/' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
+        | exp '%' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MOD, $3);   }
         | exp '/' unit_exp                      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | exp '^' exp                           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
         | '(' exp ')'     			{ $$ = $2;                                                                        }
@@ -158,12 +159,12 @@ integer: INTEGER { $$ = $1; }
 
 path: IDENTIFIER                                       { $$.push_front(ObjectIdentifier::SimpleComponent($1));                         }
     | CELLADDRESS                                      { $$.push_front(ObjectIdentifier::SimpleComponent($1));                         }
-    | IDENTIFIER '[' integer ']'                       { $$.push_front(ObjectIdentifier::ArrayComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1);                     }
-    | IDENTIFIER '[' integer ']' '.' subpath              { $6.push_front(ObjectIdentifier::ArrayComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1); $$ = $6;             }
+    | IDENTIFIER '[' integer ']'                       { $$.push_front(ObjectIdentifier::ArrayComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1));                     }
+    | IDENTIFIER '[' integer ']' '.' subpath              { $6.push_front(ObjectIdentifier::ArrayComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1)); $$ = $6;             }
     | IDENTIFIER '[' STRING ']'                        { $$.push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String($3, true)));          }
-    | IDENTIFIER '[' IDENTIFIER ']'                    { $$.push_front(ObjectIdentifier::MapComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1);                       }
-    | IDENTIFIER '[' STRING ']' '.' subpath               { $6.push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String($3, true))); $$.push_front(ObjectIdentifier::SimpleComponent($1); $$ = $6; }
-    | IDENTIFIER '[' IDENTIFIER ']' '.' subpath           { $6.push_front(ObjectIdentifier::MapComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1); $$ = $6;               }
+    | IDENTIFIER '[' IDENTIFIER ']'                    { $$.push_front(ObjectIdentifier::MapComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1));                       }
+    | IDENTIFIER '[' STRING ']' '.' subpath               { $6.push_front(ObjectIdentifier::MapComponent(ObjectIdentifier::String($3, true))); $$.push_front(ObjectIdentifier::SimpleComponent($1)); $$ = $6; }
+    | IDENTIFIER '[' IDENTIFIER ']' '.' subpath           { $6.push_front(ObjectIdentifier::MapComponent($3)); $$.push_front(ObjectIdentifier::SimpleComponent($1)); $$ = $6;               }
     | IDENTIFIER '.' subpath                              { $3.push_front(ObjectIdentifier::SimpleComponent($1)); $$ = $3;                }
     ;
 
