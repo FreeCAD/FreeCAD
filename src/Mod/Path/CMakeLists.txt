@@ -154,6 +154,7 @@ SET(PathTests_SRCS
     PathTests/test_centroid_00.ngc
     PathTests/test_geomop.fcstd
     PathTests/test_linuxcnc_00.ngc
+    PathTests/test_holes00.fcstd
 )
 
 SET(PathImages_Ops
