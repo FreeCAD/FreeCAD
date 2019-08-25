@@ -62,11 +62,12 @@ class Edit():
         self.originalPoints = None
         self.originalNodes = None
 
+        # settings
+        self.maxObjects = 5
+        self.pick_radius = 30 # TODO: set pick radius according to user preferences
+
         # preview
         self.ghost = None
-
-        # soraypick action things
-        self.pick_radius = 30 # TODO: set pick radius according to user preferences
 
         #list of supported Draft and Arch objects
         self.supportedObjs = ["BezCurve","Wire","BSpline","Circle","Rectangle",
@@ -104,14 +105,14 @@ class Edit():
     def proceed(self):
         "this method defines editpoints and set the editTrackers"
         self.unregister_selection_callback()
-        self.obj = self.getObjFromSelection()
-        if not self.obj: return self.finish() 
+        self.objs = self.getObjsFromSelection()
+        if not self.objs: return self.finish() 
 
         # Save selectstate and turn selectable false.
         # Object can remain selectable commenting following lines, 
         # but snap only process the first edge of self.obj TODO: fix it
-        self.saveSelectState(self.obj)        
-        self.setSelectState(self.obj, False)
+        #self.saveSelectState(self.obj)        
+        #self.setSelectState(self.obj, False)
 
         # start object editing
         FreeCADGui.Selection.clearSelection()
@@ -123,11 +124,13 @@ class Edit():
         self.arc3Pt = True # TODO: Find a more elegant way
         self.ui.editUi()
 
-        self.setEditPoints(self.obj)
+        for obj in self.objs:
+            self.setEditPoints(obj)
 
+        self.register_editing_callbacks()#register action callback
         # set plane tracker to match edited object
-        FreeCAD.DraftWorkingPlane.save()
-        self.alignWorkingPlane()
+        #FreeCAD.DraftWorkingPlane.save()
+        #self.alignWorkingPlane()
 
 
     def finish(self,closed=False):
@@ -242,12 +245,18 @@ class Edit():
                 self.addPoint(event)
                 return
             if self.ui.delButton.isChecked():
-                self.delPoint(self.obj, event)
+                self.delPoint(event)
                 return
-            if Draft.getType(self.obj) == "BezCurve":
+            if Draft.getType(self.obj) == "BezCurve" and (self.ui.sharpButton.isChecked()
+                                    or self.ui.tangentButton.isChecked() or
+                                    self.ui.symmetricButton.isChecked()):
                 pos = event.getPosition()
                 node = self.getEditNode(pos)
                 ep = self.getEditNodeIndex(node)
+                if ep == None: return
+                doc = FreeCAD.getDocument(str(node.documentName.getValue()))
+                self.obj = doc.getObject(str(node.objectName.getValue()))
+                if self.obj == None: return
                 if self.ui.sharpButton.isChecked():
                     return self.smoothBezPoint(ep, 'Sharp')
                 elif self.ui.tangentButton.isChecked():
@@ -274,11 +283,13 @@ class Edit():
         node = self.getEditNode(pos)
         ep = self.getEditNodeIndex(node)
         if ep == None: return
-        FreeCAD.Console.PrintMessage(str("Editing node: n° ")+str(ep)+"\n")
 
         doc = FreeCAD.getDocument(str(node.documentName.getValue()))
         self.obj = doc.getObject(str(node.objectName.getValue()))
         if self.obj == None: return
+        self.setPlacement(self.obj)
+
+        FreeCAD.Console.PrintMessage(str(self.obj.Name)+str(": editing node: n° ")+str(ep)+"\n")
 
         self.ui.lineUi()
         self.ui.isRelative.show()
@@ -313,23 +324,29 @@ class Edit():
     # UTILS
     #---------------------------------------------------------------------------
 
-    def getObjFromSelection(self):
+    def getObjsFromSelection(self):
         "evaluate selection and returns a valid object to edit"
         selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintMessage(translate("draft", "Please select exactly one object")+"\n")
+        self.objs = []
+        if len(selection) > self.maxObjects:
+            FreeCAD.Console.PrintMessage(translate("draft", 
+                "Too many objects selected, max number set to: "+
+                str(self.maxObjects)+"\n"))
             return None
-        if "Proxy" in selection[0].PropertiesList and hasattr(selection[0].Proxy,"Type"):
-            if Draft.getType(selection[0]) in self.supportedObjs:
-                return selection[0]
-        else:
-            try:
-                if Draft.getType(selection[0]) in self.supportedPartObjs and selection[0].TypeId in self.supportedPartObjs:
-                    return selection[0]
-            except:
-                pass
-        FreeCAD.Console.PrintWarning(translate("draft", "This object is not editable")+"\n")
-        return None
+        for obj in selection:
+            if "Proxy" in selection[0].PropertiesList and hasattr(selection[0].Proxy,"Type"):
+                if Draft.getType(obj) in self.supportedObjs:
+                    self.objs.append(obj)
+                    continue
+            else:
+                try:
+                    if Draft.getType(obj) in self.supportedPartObjs and obj.TypeId in self.supportedPartObjs:
+                        self.objs.append(obj)
+                        continue
+                except:
+                    pass
+            FreeCAD.Console.PrintWarning(translate("draft", str(obj.Name)+": this object is not editable")+"\n")
+        return self.objs
 
     def numericInput(self,v,numy=None,numz=None):
         '''this function gets called by the toolbar
@@ -414,7 +431,7 @@ class Edit():
         "set Edit Trackers for editpoints collected from self.obj"
         self.trackers[obj.Name] = []
         if Draft.getType(obj) == "BezCurve":
-            self.resetTrackersBezier()
+            self.resetTrackersBezier(obj)
         else:
             if obj.Name in self.trackers:
                 self.removeTrackers(obj)
@@ -510,7 +527,7 @@ class Edit():
                         import DraftVecUtils
                         p1 = self.invpl.multVec(self.obj.Shape.Vertexes[0].Point)
                         p2 = self.invpl.multVec(self.obj.Shape.Vertexes[1].Point)
-                        p0 = DraftVecUtils.project(self.invpl.multVec(pt),self.invpl.multVec(self.getArcMid()))
+                        p0 = DraftVecUtils.project(self.invpl.multVec(pt),self.invpl.multVec(self.getArcMid(self.obj)))
                         self.ghost.autoinvert=False
                         self.ghost.setRadius(p1.sub(p0).Length)
                         self.ghost.setStartPoint(self.obj.Shape.Vertexes[1].Point)
@@ -519,7 +536,7 @@ class Edit():
                         return
                     else:
                         p1=self.obj.Shape.Vertexes[0].Point
-                        p2=self.getArcMid()
+                        p2=self.getArcMid(self.obj)
                         p3=self.obj.Shape.Vertexes[1].Point
                         if self.editing == 1: p1=pt
                         elif self.editing == 3: p2=pt
@@ -548,14 +565,16 @@ class Edit():
 
     def addPoint(self,event):
         "called by action, add point to obj and reset trackers"
-        if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
         pos = event.getPosition()
-        self.setSelectState(self.obj, True)
+        #self.setSelectState(self.obj, True)
         selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
         if not selobjs: return
         for info in selobjs:
             if not info: return
-            if self.obj.Name != info["Object"]: continue
+            for o in self.objs:
+                if o.Name != info["Object"]: continue
+                self.obj = o
+                break
             if Draft.getType(self.obj) == "Wire" and 'Edge' in info["Component"]:
                 pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
                 self.addPointToWire(pt, int(info["Component"][4:]))
@@ -569,7 +588,7 @@ class Edit():
         self.editpoints = []
         self.removeTrackers(self.obj)
         self.setEditPoints(self.obj)
-        self.setSelectState(self.obj, False)
+        #self.setSelectState(self.obj, False)
         return
 
 
@@ -636,21 +655,27 @@ class Edit():
                 pts.append(self.invpl.multVec(point))
         self.obj.Points = pts
 
-    def delPoint(self,obj,event):
-        if not (Draft.getType(obj) in ["Wire","BSpline","BezCurve"]): return
-        if len(obj.Points) <= 2: return FreeCAD.Console.PrintWarning(
-            translate("draft", "Active object must have more than two points/nodes")+"\n")
+    def delPoint(self,event):
         pos = event.getPosition()
         node = self.getEditNode(pos)
         ep = self.getEditNodeIndex(node)
+
         if ep == None: return FreeCAD.Console.PrintWarning(
             translate("draft", "Node not found\n"))
-        pts = obj.Points
+
+        doc = FreeCAD.getDocument(str(node.documentName.getValue()))
+        self.obj = doc.getObject(str(node.objectName.getValue()))
+        if self.obj == None: return
+        if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
+        if len(self.obj.Points) <= 2: return FreeCAD.Console.PrintWarning(
+            translate("draft", "Active object must have more than two points/nodes")+"\n")
+
+        pts = self.obj.Points
         pts.pop(ep)
         self.obj.Points = pts
-        if Draft.getType(obj) =="BezCurve":
-            self.obj.Proxy.resetcontinuity(obj)
-        obj.recompute()
+        if Draft.getType(self.obj) =="BezCurve":
+            self.obj.Proxy.resetcontinuity(self.obj)
+        self.obj.recompute()
         
         # don't do tan/sym on DWire/BSpline!
         self.editpoints = []
@@ -662,7 +687,7 @@ class Edit():
     #---------------------------------------------------------------------------
 
     def setEditPoints(self,obj):
-        "calculate edit point position from given object and append to self.edipoints"
+        "append given object's editpoints to self.edipoints and set EditTrackers"
 
         self.setPlacement(obj)
 
@@ -673,38 +698,40 @@ class Edit():
             self.setWirePts(obj)
         elif objectType == "BezCurve":
             self.ui.editUi("BezCurve")
-            self.setWirePts(obj)
+            self.resetTrackersBezier(obj)
+            self.editpoints = []
+            return
+            #self.setWirePts(obj)
         elif objectType == "Circle":
-            self.setCirclePts()
+            self.setCirclePts(obj)
         elif objectType == "Rectangle":
-            self.setRectanglePts()
+            self.setRectanglePts(obj)
         elif objectType == "Polygon":
-            self.setPolygonPts()
+            self.setPolygonPts(obj)
         elif objectType == "Dimension":
-            self.setDimensionPts()
+            self.setDimensionPts(obj)
         elif objectType == "Wall":
             self.setWallPts(obj)            
         elif objectType == "Window":
-            self.setWindowPts()
+            self.setWindowPts(obj)
         elif objectType == "Space":
-            self.setSpacePts()
+            self.setSpacePts(obj)
         elif objectType == "Structure":
-            self.setStructurePts()
+            self.setStructurePts(obj)
         elif objectType == "PanelCut":
-            self.setPanelCutPts()
+            self.setPanelCutPts(obj)
         elif objectType == "PanelSheet":
-            self.setPanelSheetPts()
+            self.setPanelSheetPts(obj)
         elif objectType == "Part" and obj.TypeId == "Part::Box":
-            self.setPartBoxPts()
+            self.setPartBoxPts(obj)
         elif objectType == "Part::Line" and obj.TypeId == "Part::Line":
-            self.setPartLinePts()
+            self.setPartLinePts(obj)
         elif objectType == "Sketch":
             self.setSketchPts(obj)
 
         if self.editpoints: # set trackers and align plane
             self.setTrackers(obj)
             self.editpoints = []
-            self.register_editing_callbacks()#register action callback
         else:
             FreeCAD.Console.PrintWarning(translate("draft", "No edit point found for selected object")+"\n")
             # do not finish if some trackers are still present
@@ -832,30 +859,30 @@ class Edit():
 
         return pts #returns the list of new points, taking into account knot continuity
 
-    def resetTrackersBezier(self):
+    def resetTrackersBezier(self, obj):
         #in future move tracker definition to DraftTrackers
         from pivy import coin
         knotmarkers = (coin.SoMarkerSet.DIAMOND_FILLED_9_9,#sharp
                 coin.SoMarkerSet.SQUARE_FILLED_9_9,        #tangent
                 coin.SoMarkerSet.HOURGLASS_FILLED_9_9)     #symmetric
         polemarker = coin.SoMarkerSet.CIRCLE_FILLED_9_9    #pole
-        self.trackers[self.obj.Name]=[]
-        cont=self.obj.Continuity
-        firstknotcont = cont[-1] if (self.obj.Closed and cont) else 0
-        pointswithmarkers=[(self.obj.Shape.Edges[0].Curve.\
+        self.trackers[obj.Name]=[]
+        cont=obj.Continuity
+        firstknotcont = cont[-1] if (obj.Closed and cont) else 0
+        pointswithmarkers=[(obj.Shape.Edges[0].Curve.\
                 getPole(1),knotmarkers[firstknotcont])]
-        for edgeindex, edge in enumerate(self.obj.Shape.Edges):
+        for edgeindex, edge in enumerate(obj.Shape.Edges):
             poles=edge.Curve.getPoles()
             pointswithmarkers.extend([(point,polemarker) for \
                     point in poles[1:-1]])
-            if not self.obj.Closed or len(self.obj.Shape.Edges) > edgeindex +1:
+            if not obj.Closed or len(obj.Shape.Edges) > edgeindex +1:
                 knotmarkeri=cont[edgeindex] if len(cont) > edgeindex else 0
                 pointswithmarkers.append((poles[-1],knotmarkers[knotmarkeri]))
         for index,pwm in enumerate(pointswithmarkers):
             p,marker=pwm
             #if self.pl: p = self.pl.multVec(p)
-            self.trackers[self.obj.Name].append(editTracker(p,self.obj.Name,\
-                index,self.obj.ViewObject.LineColor,\
+            self.trackers[obj.Name].append(editTracker(p,obj.Name,\
+                index,obj.ViewObject.LineColor,\
                 marker=marker))
 
     def smoothBezPoint(self, point, style='Symmetric'):
@@ -942,15 +969,15 @@ class Edit():
     # EDIT OBJECT TOOLS : Rectangle
     #---------------------------------------------------------------------------
 
-    def setRectanglePts(self):
-        self.editpoints.append(self.obj.Placement.Base)
-        self.editpoints.append(self.obj.Shape.Vertexes[2].Point)
-        v = self.obj.Shape.Vertexes
+    def setRectanglePts(self, obj):
+        self.editpoints.append(obj.Placement.Base)
+        self.editpoints.append(obj.Shape.Vertexes[2].Point)
+        v = obj.Shape.Vertexes
         self.bx = v[1].Point.sub(v[0].Point)
-        if self.obj.Length < 0:
+        if obj.Length < 0:
             self.bx = self.bx.negative()
         self.by = v[2].Point.sub(v[1].Point)
-        if self.obj.Height < 0:
+        if obj.Height < 0:
             self.by = self.by.negative()
 
     def updateRectangle(self,v):
@@ -991,16 +1018,16 @@ class Edit():
     # EDIT OBJECT TOOLS : Circle/Arc
     #---------------------------------------------------------------------------
 
-    def setCirclePts(self):
-        self.editpoints.append(self.obj.Placement.Base)
-        if self.obj.FirstAngle == self.obj.LastAngle:#self.obj is a circle
+    def setCirclePts(self, obj):
+        self.editpoints.append(obj.Placement.Base)
+        if obj.FirstAngle == obj.LastAngle:#self.obj is a circle
             self.ui.editUi("Circle")
-            self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
+            self.editpoints.append(obj.Shape.Vertexes[0].Point)
         else:#self.obj is an arc
             self.ui.editUi("Arc")
-            self.editpoints.append(self.obj.Shape.Vertexes[0].Point)#First endpoint
-            self.editpoints.append(self.obj.Shape.Vertexes[1].Point)#Second endpoint
-            self.editpoints.append(self.getArcMid())#Midpoint
+            self.editpoints.append(obj.Shape.Vertexes[0].Point)#First endpoint
+            self.editpoints.append(obj.Shape.Vertexes[1].Point)#Second endpoint
+            self.editpoints.append(self.getArcMid(obj))#Midpoint
         return
 
     def updateCirclePts(self,ep1=1,ep2=1,ep3=1,ep4=1):
@@ -1012,7 +1039,7 @@ class Edit():
         if ep3 == 1:
             self.trackers[self.obj.Name][2].set(self.obj.Shape.Vertexes[1].Point)
         if ep4 == 1:
-            self.trackers[self.obj.Name][3].set(self.getArcMid())
+            self.trackers[self.obj.Name][3].set(self.getArcMid(self.obj))
 
     def updateCircle(self,v):
         delta = self.invpl.multVec(v)
@@ -1058,7 +1085,7 @@ class Edit():
                     import DraftVecUtils
                     p1 = self.invpl.multVec(self.obj.Shape.Vertexes[0].Point)
                     p2 = self.invpl.multVec(self.obj.Shape.Vertexes[1].Point)
-                    p0 = DraftVecUtils.project(delta,self.invpl.multVec(self.getArcMid()))
+                    p0 = DraftVecUtils.project(delta,self.invpl.multVec(self.getArcMid(self.obj)))
                     self.obj.Radius = p1.sub(p0).Length
                     self.obj.FirstAngle = -math.degrees(DraftVecUtils.angle(p1.sub(p0)))
                     self.obj.LastAngle = -math.degrees(DraftVecUtils.angle(p2.sub(p0)))
@@ -1069,7 +1096,7 @@ class Edit():
                 else:
                     if self.editing == 1:#first point
                         p1=v
-                        p2=self.getArcMid()
+                        p2=self.getArcMid(self.obj)
                         p3=self.obj.Shape.Vertexes[1].Point
                     elif self.editing == 3:#midpoint
                         p1=self.obj.Shape.Vertexes[0].Point
@@ -1077,7 +1104,7 @@ class Edit():
                         p3=self.obj.Shape.Vertexes[1].Point
                     elif self.editing == 2:#second point
                         p1=self.obj.Shape.Vertexes[0].Point
-                        p2=self.getArcMid()
+                        p2=self.getArcMid(self.obj)
                         p3=v
                     arc=Part.ArcOfCircle(p1,p2,p3)
                     e = arc.toShape()
@@ -1090,17 +1117,17 @@ class Edit():
                     dangleL = math.degrees(math.atan2(delta[1],delta[0]))
                     self.obj.FirstAngle = dangleF
                     self.obj.LastAngle = dangleL
-                    FreeCAD.Console.PrintMessage("Press I to invert the circle")
+                    FreeCAD.Console.PrintMessage("Press I to invert the circle\n")
                     self.updateCirclePts()
 
-    def getArcMid(self):#Returns object midpoint
-        if Draft.getType(self.obj) == "Circle":
-            if self.obj.LastAngle>self.obj.FirstAngle:
-                midAngle=math.radians(self.obj.FirstAngle+(self.obj.LastAngle-self.obj.FirstAngle)/2)
+    def getArcMid(self, obj):#Returns object midpoint
+        if Draft.getType(obj) == "Circle":
+            if obj.LastAngle>obj.FirstAngle:
+                midAngle=math.radians(obj.FirstAngle+(obj.LastAngle-obj.FirstAngle)/2)
             else:
-                midAngle=math.radians(self.obj.FirstAngle+(self.obj.LastAngle-self.obj.FirstAngle)/2)+math.pi
-            midRadX=self.obj.Radius*math.cos(midAngle)
-            midRadY=self.obj.Radius*math.sin(midAngle)
+                midAngle=math.radians(obj.FirstAngle+(obj.LastAngle-obj.FirstAngle)/2)+math.pi
+            midRadX=obj.Radius*math.cos(midAngle)
+            midRadY=obj.Radius*math.sin(midAngle)
             deltaMid=FreeCAD.Vector(midRadX,midRadY,0.0)
             midPoint=self.pl.multVec(deltaMid) # check this line
             return(midPoint)
@@ -1110,15 +1137,15 @@ class Edit():
         self.obj.recompute()
         self.trackers[self.obj.Name][1].set(self.obj.Shape.Vertexes[0].Point)
         self.trackers[self.obj.Name][2].set(self.obj.Shape.Vertexes[1].Point)
-        self.trackers[self.obj.Name][3].set(self.getArcMid())
+        self.trackers[self.obj.Name][3].set(self.getArcMid(self.obj))
 
     #---------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Polygon (maybe could also rotate the polygon)
     #---------------------------------------------------------------------------
 
-    def setPolygonPts(self):
-        self.editpoints.append(self.obj.Placement.Base)
-        self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
+    def setPolygonPts(self, obj):
+        self.editpoints.append(obj.Placement.Base)
+        self.editpoints.append(obj.Shape.Vertexes[0].Point)
 
     def updatePolygon(self,v):
         delta = v.sub(self.obj.Placement.Base)
@@ -1141,11 +1168,11 @@ class Edit():
     # EDIT OBJECT TOOLS : Dimension (point on dimension line is not clickable)
     #---------------------------------------------------------------------------
 
-    def setDimensionPts(self):
-        p = self.obj.ViewObject.Proxy.textpos.translation.getValue()
-        self.editpoints.append(self.obj.Start)
-        self.editpoints.append(self.obj.End)
-        self.editpoints.append(self.obj.Dimline)
+    def setDimensionPts(self, obj):
+        p = obj.ViewObject.Proxy.textpos.translation.getValue()
+        self.editpoints.append(obj.Start)
+        self.editpoints.append(obj.End)
+        self.editpoints.append(obj.Dimline)
         self.editpoints.append(Vector(p[0],p[1],p[2]))
 
     def updateDimension(self,v):
@@ -1188,7 +1215,7 @@ class Edit():
         if Draft.getType(obj.Base) in ["Wire","Circle","Rectangle",
                                         "Polygon", "Sketch"]:
             self.setEditPoints(obj.Base)
-            pl=self.obj.Base.Placement.multiply(self.obj.Placement)
+            pl=obj.Base.Placement.multiply(obj.Placement)
         self.editpoints.append(pl.multVec(FreeCAD.Vector(0,0,obj.Height)))
 
     def updateWall(self,v):
@@ -1207,15 +1234,15 @@ class Edit():
 
     #WINDOW---------------------------------------------------------------------
 
-    def setWindowPts(self):
+    def setWindowPts(self, obj):
         import DraftGeomUtils
-        pos=self.obj.Base.Placement.Base
-        h=float(self.obj.Height)+pos.z
-        normal=self.obj.Normal
+        pos=obj.Base.Placement.Base
+        h=float(obj.Height)+pos.z
+        normal=obj.Normal
         angle=normal.getAngle(FreeCAD.Vector(1,0,0))
         self.editpoints.append(pos)
-        self.editpoints.append(FreeCAD.Vector(pos.x+float(self.obj.Width)*math.cos(angle-math.pi/2),
-                                                pos.y+float(self.obj.Width)*math.sin(angle-math.pi/2),
+        self.editpoints.append(FreeCAD.Vector(pos.x+float(obj.Width)*math.cos(angle-math.pi/2),
+                                                pos.y+float(obj.Width)*math.sin(angle-math.pi/2),
                                                 pos.z))
         self.editpoints.append(FreeCAD.Vector(pos.x,pos.y,h))
 
@@ -1236,15 +1263,15 @@ class Edit():
 
     #STRUCTURE-------------------------------------------------------------------
 
-    def setStructurePts(self):
-        if self.obj.Nodes:
-            self.originalDisplayMode = self.obj.ViewObject.DisplayMode
-            self.originalPoints = self.obj.ViewObject.NodeSize
-            self.originalNodes = self.obj.ViewObject.ShowNodes
+    def setStructurePts(self, obj):
+        if obj.Nodes:
+            self.originalDisplayMode = obj.ViewObject.DisplayMode
+            self.originalPoints = obj.ViewObject.NodeSize
+            self.originalNodes = obj.ViewObject.ShowNodes
             self.obj.ViewObject.DisplayMode = "Wireframe"
             self.obj.ViewObject.NodeSize = 1
-            self.obj.ViewObject.ShowNodes = True
-            for p in self.obj.Nodes:
+            #   self.obj.ViewObject.ShowNodes = True
+            for p in obj.Nodes:
                 if self.pl:
                     p = self.pl.multVec(p)
                 self.editpoints.append(p)
@@ -1257,9 +1284,9 @@ class Edit():
 
     #SPACE----------------------------------------------------------------------
 
-    def setSpacePts(self):
+    def setSpacePts(self, obj):
         try:
-            self.editpoints.append(self.obj.ViewObject.Proxy.getTextPosition(self.obj.ViewObject))
+            self.editpoints.append(obj.ViewObject.Proxy.getTextPosition(obj.ViewObject))
         except:
             pass
 
@@ -1269,20 +1296,20 @@ class Edit():
 
     #PANELS---------------------------------------------------------------------
 
-    def setPanelCutPts(self):
+    def setPanelCutPts(self, obj):
         if self.obj.TagPosition.Length == 0:
-            pos = self.obj.Shape.BoundBox.Center
+            pos = obj.Shape.BoundBox.Center
         else:
-            pos = self.pl.multVec(self.obj.TagPosition)
+            pos = self.pl.multVec(obj.TagPosition)
         self.editpoints.append(pos)
 
     def updatePanelCut(self,v):
         if self.editing == 0:
             self.obj.TagPosition = self.invpl.multVec(v)
 
-    def setPanelSheetPts(self):
-        self.editpoints.append(self.pl.multVec(self.obj.TagPosition))
-        for o in self.obj.Group:
+    def setPanelSheetPts(self, obj):
+        self.editpoints.append(self.pl.multVec(obj.TagPosition))
+        for o in obj.Group:
             self.editpoints.append(self.pl.multVec(o.Placement.Base))
 
     def updatePanelSheet(self,v):
@@ -1293,9 +1320,9 @@ class Edit():
     
     # PART::LINE----------------------------------------------------------------
 
-    def setPartLinePts(self):
-        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(self.obj.X1,self.obj.Y1,self.obj.Z1)))
-        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(self.obj.X2,self.obj.Y2,self.obj.Z2)))
+    def setPartLinePts(self, obj):
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(obj.X1,obj.Y1,obj.Z1)))
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(obj.X2,obj.Y2,obj.Z2)))
     
     def updatePartLine(self,v):
         pt=self.invpl.multVec(v)
@@ -1310,11 +1337,11 @@ class Edit():
 
     # PART::BOX-----------------------------------------------------------------
 
-    def setPartBoxPts(self):
-        self.editpoints.append(self.obj.Placement.Base)
-        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(self.obj.Length,0,0)))
-        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(0,self.obj.Width,0)))
-        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(0,0,self.obj.Height)))
+    def setPartBoxPts(self, obj):
+        self.editpoints.append(obj.Placement.Base)
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(obj.Length,0,0)))
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(0,obj.Width,0)))
+        self.editpoints.append(self.pl.multVec(FreeCAD.Vector(0,0,obj.Height)))
 
     def updatePartBox(self,v):
         import DraftVecUtils
