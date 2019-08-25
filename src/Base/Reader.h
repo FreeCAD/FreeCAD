@@ -207,6 +207,11 @@ public:
     bool testStatus(ReaderStatus pos) const;
     /// set the status bits
     void setStatus(ReaderStatus pos, bool on);
+    struct FileEntry {
+        std::string FileName;
+        Base::Persistence *Object;
+    };
+    std::vector<FileEntry> FileList;
 
 protected:
     /// read the next element
@@ -281,11 +286,6 @@ protected:
     bool _valid;
     bool _verbose;
 
-    struct FileEntry {
-        std::string FileName;
-        Base::Persistence *Object;
-    };
-    std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
 
     std::bitset<32> StatusBits;
@@ -298,11 +298,14 @@ public:
     std::istream& getStream();
     std::string getFileName() const;
     int getFileVersion() const;
+    void initLocalReader(Base::XMLReader *ptr);
+    Base::XMLReader *getLocalReader();
 
 private:
     std::istream& _str;
     std::string _name;
     int fileVersion;
+    Base::XMLReader *localreader=nullptr;
 };
 
 }
