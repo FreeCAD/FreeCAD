@@ -273,6 +273,20 @@ void PlacementPy::setRotation(Py::Object arg)
     throw Py::TypeError("either Rotation or tuple of four floats expected");
 }
 
+Py::Object PlacementPy::getMatrix(void) const
+{
+    return Py::Matrix(getPlacementPtr()->toMatrix());
+}
+
+void PlacementPy::setMatrix(Py::Object arg)
+{
+    Py::Matrix mat;
+    if (!mat.accepts(arg.ptr()))
+        throw Py::TypeError("Expect type Matrix");
+    mat = arg;
+    getPlacementPtr()->fromMatrix(mat);
+}
+
 PyObject *PlacementPy::getCustomAttributes(const char* attr) const
 {
     // for backward compatibility
