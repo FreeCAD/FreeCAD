@@ -1461,7 +1461,7 @@ class DraftToolBar:
     def getcol(self):
         """opens a color picker dialog"""
         oldColor = self.color
-        self.color=QtGui.QColorDialog.getColor()
+        self.color=QtGui.QColorDialog.getColor(self.color)
         if not QtGui.QColor.isValid(self.color): #user canceled
             self.color = oldColor
             return
@@ -1485,7 +1485,7 @@ class DraftToolBar:
     def getfacecol(self):
         """opens a color picker dialog"""
         oldColor = self.facecolor
-        self.facecolor=QtGui.QColorDialog.getColor()
+        self.facecolor=QtGui.QColorDialog.getColor(self.facecolor)
         if not QtGui.QColor.isValid(self.facecolor): #user canceled
             self.facecolor = oldColor
             return
