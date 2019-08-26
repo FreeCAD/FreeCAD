@@ -74,6 +74,7 @@
 #include "MDIViewPage.h"
 #include "TaskProjGroup.h"
 #include "TaskSectionView.h"
+#include "TaskActiveView.h"
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
@@ -320,6 +321,40 @@ void CmdTechDrawNewView::activated(int iMsg)
 }
 
 bool CmdTechDrawNewView::isActive(void)
+{
+    return DrawGuiUtil::needPage(this);
+}
+
+//===========================================================================
+// TechDraw_NewActiveView
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawNewActiveView);
+
+CmdTechDrawNewActiveView::CmdTechDrawNewActiveView()
+  : Command("TechDraw_NewActiveView")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert ActiveView(3D) as View in Page");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_NewActiveView";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-activeview";
+}
+
+void CmdTechDrawNewActiveView::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+    Gui::Control().showDialog(new TaskDlgActiveView(page));
+}
+
+bool CmdTechDrawNewActiveView::isActive(void)
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -1222,6 +1257,7 @@ void CreateTechDrawCommands(void)
     rcCmdMgr.addCommand(new CmdTechDrawNewPageDef());
     rcCmdMgr.addCommand(new CmdTechDrawNewPage());
     rcCmdMgr.addCommand(new CmdTechDrawNewView());
+    rcCmdMgr.addCommand(new CmdTechDrawNewActiveView());
     rcCmdMgr.addCommand(new CmdTechDrawNewViewSection());
     rcCmdMgr.addCommand(new CmdTechDrawNewViewDetail());
 //    rcCmdMgr.addCommand(new CmdTechDrawNewMulti());          //deprecated
