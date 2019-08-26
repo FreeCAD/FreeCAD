@@ -1,5 +1,6 @@
 # Cloud gui init module
 # (c) 2001 Juergen Riegel LGPL
+# (c) 2019 Jean-Marie Verdun LGPL
 
 class CloudWorkbench ( Workbench ):
 	"Cloud workbench object"

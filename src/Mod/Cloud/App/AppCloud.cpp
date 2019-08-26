@@ -45,9 +45,6 @@ using namespace App;
 /* Python entry */
 PyMOD_INIT_FUNC(Cloud)
 {
-    // ADD YOUR CODE HERE
-    //
-    //
     PyObject* mod = Cloud::initModule();
     Base::Console().Log("Loading Cloud module... done\n");
     PyMOD_Return(mod);
