@@ -156,6 +156,9 @@ private:
     QLabel *balloonCursor;
     QPoint balloonCursorPos;
     void cancelBalloonPlacing(void);
+
+    QPoint panOrigin;
+    bool panningActive;
 };
 
 } // namespace 
