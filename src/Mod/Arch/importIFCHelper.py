@@ -245,6 +245,7 @@ def buildRelColors(ifcfile, prodrepr):
     colors = {} # { id:(r,g,b) }
     style_material_id = {}  # { style_entity_id: material_id) }
 
+    # get style_color_rgb table
     style_color_rgb = {}  # { style_entity_id: (r,g,b) }
     for r in ifcfile.by_type("IfcStyledItem"):
         if r.Styles:
@@ -256,11 +257,34 @@ def buildRelColors(ifcfile, prodrepr):
                                 if style2.SurfaceColour:
                                     c = style2.SurfaceColour
                                     style_color_rgb[r.id()] = (c.Red,c.Green,c.Blue)
+
         # Nova
+        # FIXME: style_entity_id = { style_entity_id: product_id } not material_id ???
+        # see https://forum.freecadweb.org/viewtopic.php?f=39&t=37940&start=10#p329491
+        # last code change in these color code https://github.com/FreeCAD/FreeCAD/commit/2d1f6ab1
+        '''
         if r.Item:
+            # print(r.id())
+            # print(r.Item)  # IfcRepresentationItem or IfcShapeRepresentation
             for p in prodrepr.keys():
                 if r.Item.id() in prodrepr[p]:
                     style_material_id[r.id()] = p
+                    # print(p)  
+                    # print(ifcfile[p])  # product
+        '''
+    # a much faster version for Nova style_material_id with product_ids
+    for p in prodrepr.keys():
+        # print("\n")  
+        # print(ifcfile[p])  # IfcProduct
+        # print(ifcfile[p].Representation)  # IfcProductDefinitionShape
+        # print(ifcfile[p].Representation.Representations[0])  # IfcShapeRepresentation
+        # print(ifcfile[p].Representation.Representations[0].Items[0])  # IfcRepresentationItem
+        # print(ifcfile[p].Representation.Representations[0].Items[0].StyledByItem[0])  # IfcStyledItem
+        # print(ifcfile[p].Representation.Representations[0].Items[0].StyledByItem[0].id())
+        # print(p)
+        representation_item = ifcfile[p].Representation.Representations[0].Items[0]
+        if hasattr(representation_item, "StyledByItem") and representation_item.StyledByItem:
+            style_material_id[representation_item.StyledByItem[0].id()] = p
 
     # Allplan, ArchiCAD
     for m in ifcfile.by_type("IfcMaterialDefinitionRepresentation"):
