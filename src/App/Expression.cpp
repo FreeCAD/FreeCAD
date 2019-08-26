@@ -47,7 +47,7 @@
 #include <stack>
 #include <deque>
 #include <algorithm>
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include <Base/Unit.h>
 #include <App/PropertyUnits.h>
 #include <App/ObjectIdentifier.h>
@@ -2385,13 +2385,13 @@ Py::Object PyObjectExpression::getPyValue() const {
     return Py::Object(pyObj);
 }
 
-void PyObjectExpression::setPyObject(Py::Object obj) {
+void PyObjectExpression::setPyValue(Py::Object obj) {
     Py::_XDECREF(pyObj);
     pyObj = obj.ptr();
     Py::_XINCREF(pyObj);
 }
 
-void PyObjectExpression::setPyObject(PyObject *obj, bool owned) {
+void PyObjectExpression::setPyValue(PyObject *obj, bool owned) {
     if(pyObj == obj)
         return;
     Py::_XDECREF(pyObj);

@@ -38,7 +38,7 @@
 #include <Base/UnitsApi.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include "Sheet.h"
 #include <iomanip>
 
