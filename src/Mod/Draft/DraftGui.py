@@ -1144,6 +1144,7 @@ class DraftToolBar:
         self.isCopy.setChecked(p.GetBool("OffsetCopyMode",False))
         self.occOffset.show()
         self.labelRadius.setText(translate("draft","Distance"))
+        self.radiusValue.setToolTip(translate("draft", "Offset distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         todo.delay(self.radiusValue.setFocus,None)
         self.radiusValue.selectAll()
@@ -1214,6 +1215,7 @@ class DraftToolBar:
         self.taskUi(title)
         self.radiusUi()
         self.labelRadius.setText(translate("draft","Distance"))
+        self.radiusValue.setToolTip(translate("draft", "Trim distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         todo.delay(self.radiusValue.setFocus,None)
         self.radiusValue.selectAll()
@@ -1221,6 +1223,7 @@ class DraftToolBar:
     def radiusUi(self):
         self.hideXYZ()
         self.labelRadius.setText(translate("draft", "Radius"))
+        self.radiusValue.setToolTip(translate("draft", "Radius of Circle"))
         self.labelRadius.show()
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.radiusValue.show()

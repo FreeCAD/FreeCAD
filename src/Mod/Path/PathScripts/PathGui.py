@@ -122,6 +122,11 @@ The spin box gets bound to a given property and supports update in both directio
         if self.valid:
             return self.widget.property('expression')
         return ''
+    
+    def setMinimum(self, quantity):
+        if self.valid:
+            value = quantity.Value if hasattr(quantity, 'Value') else quantity
+            self.widget.setProperty('setMinimum', value)
 
     def updateSpinBox(self, quantity=None):
         '''updateSpinBox(quantity=None) ... update the display value of the spin box.

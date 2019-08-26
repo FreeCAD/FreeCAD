@@ -324,9 +324,14 @@ class Snapper:
                 if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
                     if "Edge" in comp:
                         # we are snapping to an edge
-                        en = int(comp[4:])-1
-                        if len(shape.Edges) > en:
-                            edge = shape.Edges[en]
+                        edge = None
+                        if shape.ShapeType == "Edge":
+                            edge = shape
+                        else:
+                            en = int(comp[4:])-1
+                            if len(shape.Edges) > en:
+                                edge = shape.Edges[en]
+                        if edge:
                             snaps.extend(self.snapToEndpoints(edge))
                             snaps.extend(self.snapToMidpoint(edge))
                             snaps.extend(self.snapToPerpendicular(edge,lastpoint))
