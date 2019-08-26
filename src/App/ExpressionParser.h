@@ -267,6 +267,8 @@ public:
         FLOOR,
         HYPOT,
         CATH,
+        LIST,
+        TUPLE,
 
         // Aggregates
         AGGREGATES,
@@ -453,7 +455,7 @@ public:
 
     Range getRange() const;
 
-    virtual boost::any getValueAsAny() const override { return boost::any(); }
+    virtual boost::any getValueAsAny() const override;
 
     virtual Py::Object getPyValue() const override;
 
