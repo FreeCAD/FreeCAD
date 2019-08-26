@@ -146,7 +146,6 @@ class ToolLibraryManager():
     '''
 
     #TODO: copy & Duplicate tools between lists
-    #TODO: update version number and handle upgrading
 
     TooltableTypeJSON     = translate("TooltableEditor", "Tooltable JSON (*.json)")
     TooltableTypeXML      = translate("TooltableEditor", "Tooltable XML (*.xml)")
@@ -181,18 +180,18 @@ class ToolLibraryManager():
             if table.Name == name:
                 return table
 
-    def getNextToolTableName(self):
+    def getNextToolTableName(self, tableName='Tool Table'):
         ''' get a unique name for a new tool table '''
         iter = 1
-        tableNames = []
+        tempName = tableName[-2:] 
 
-        for table in self.toolTables:
-            tableNames.append(table.Name)
-        
-        while "ToolTable-" + str(iter) in tableNames:
+        if tempName[0] == '-' and tempName[-1].isdigit():
+            tableName = tableName[:-2]
+
+        while any(table.Name == tableName + '-' + str(iter) for table in self.toolTables):
             iter += 1              
         
-        return "ToolTable-" + str(iter)
+        return tableName + '-' + str(iter) 
 
     def addNewToolTable(self):
         ''' creates a new tool table '''
@@ -248,13 +247,16 @@ class ToolLibraryManager():
             
             tt = Path.Tooltable()
             tt.Version = 1
+            tt.Name = self.getNextToolTableName()
 
             if stringattrs.get('Version'):
                 tt.Version = stringattrs.get('Version')
 
             if stringattrs.get('TableName'):
                 tt.Name = stringattrs.get('TableName')
-
+                if any(table.Name == tt.Name for table in self.toolTables):
+                    tt.Name = self.getNextToolTableName(tt.Name)
+            
             for key, attrs in PathUtil.keyValueIter(stringattrs['Tools']):
                     tool = Path.Tool() 
                     tool.Name = str(attrs["name"])
@@ -278,15 +280,22 @@ class ToolLibraryManager():
         self.toolTables = []
         self.currentTableName = ''
 
-        prefsData = self.prefs.GetString(self.PreferenceMainLibraryJSON, "")
-        if prefsData:
-            for table in json.loads(prefsData):
+        def addTable(tt):
+            if tt:
+                self.toolTables.append(tt)
+            else:
+                PathLog.error(translate('PathToolLibraryManager', "Unsupported Path tooltable"))
+                
+        prefsData = json.loads(self.prefs.GetString(self.PreferenceMainLibraryJSON, ""))
 
+        if isinstance(prefsData, dict):
+            tt = self.tooltableFromAttrs(prefsData)
+            addTable(tt)
+
+        if isinstance(prefsData, list):
+            for table in prefsData:
                 tt = self.tooltableFromAttrs(table)
-                if tt:
-                    self.toolTables.append(tt)
-                else:
-                    PathLog.error(translate('PathToolLibraryManager', "Unsupported Path tooltable"))
+                addTable(tt)
 
     def saveMainLibrary(self):
         '''Persists the permanent library to FreeCAD user preferences'''
@@ -384,6 +393,8 @@ class ToolLibraryManager():
     def read(self, filename, listname):
         "imports a tooltable from a file"
 
+        importedTables = []
+
         try:
             fileExtension = os.path.splitext(filename[0])[1].lower()
             xmlHandler = None
@@ -403,15 +414,35 @@ class ToolLibraryManager():
                 ht = xmlHandler.tooltable
             else:
                 with open(PathUtil.toUnicode(filename[0]), "rb") as fp:
-                    ht = self.tooltableFromAttrs(json.load(fp))
+                    tableData = json.load(fp)
 
-            tt = self.getTableFromName(listname)
-            for t in ht.Tools:
-                newt = ht.getTool(t).copy()
-                tt.addTools(newt)
-            if listname == self.getCurrentTableName():
+                    if isinstance(tableData, dict):
+                        ht = self.tooltableFromAttrs(tableData)
+                        if ht:
+                            importedTables.append(ht)
+
+                    if isinstance(tableData, list):
+                        for table in tableData:
+                            ht = self.tooltableFromAttrs(table)                 
+                            if ht:
+                                importedTables.append(ht)
+
+            if importedTables:
+                for tt in importedTables:
+                    self.toolTables.append(tt)
+                
                 self.saveMainLibrary()
-            return True
+                return True
+            else:
+                return False
+
+            # tt = self.getTableFromName(listname)
+            # for t in ht.Tools:
+            #     newt = ht.getTool(t).copy()
+            #     tt.addTools(newt)
+            # if listname == self.getCurrentTableName():
+            #     self.saveMainLibrary()
+            # return True
         except Exception as e: # pylint: disable=broad-except
             print("could not parse file", e)
 
@@ -648,7 +679,8 @@ class EditorPanel():
         if filename[0]:
             listname = self.TLM.getNextToolTableName()
             if self.TLM.read(filename, listname):
-                self.loadTable(listname)
+                self.loadToolTables()
+                #self.loadTable(listname)
 
 
     def exportFile(self):
