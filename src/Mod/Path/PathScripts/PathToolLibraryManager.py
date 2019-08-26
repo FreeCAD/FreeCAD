@@ -166,6 +166,9 @@ class ToolLibraryManager():
 
         return
 
+    def getToolTables(self):
+        return self.toolTables
+
     def getCurrentTableName(self):
         ''' return the name of the currently loaded tool table '''
         return self.currentTableName
@@ -285,7 +288,7 @@ class ToolLibraryManager():
                 self.toolTables.append(tt)
             else:
                 PathLog.error(translate('PathToolLibraryManager', "Unsupported Path tooltable"))
-                
+
         prefsData = json.loads(self.prefs.GetString(self.PreferenceMainLibraryJSON, ""))
 
         if isinstance(prefsData, dict):
@@ -304,43 +307,16 @@ class ToolLibraryManager():
         self.loadToolTables()
         return True
 
-    def getLists(self):
+    def getJobList(self):
         '''Builds the list of all Tool Table lists'''
-        tablelist = self.toolTables.copy()
-        #TODO load a tool table for current job?
-        # Get ToolTables from any open CNC jobs
-        # for o in FreeCAD.ActiveDocument.Objects:
-        #     if hasattr(o, "Proxy"):
-        #         if isinstance(o.Proxy, PathScripts.PathJob.ObjectJob):
-        #             tablelist.append(o.Label)
-        return tablelist
+        tablelist = []
 
-    # def _findList(self, listname):
-    #     tt = None
-    #     if listname == self.getCurrentTableName():
-    #         #print("Findlist - ListName:", listname)
-    #         return self.getCurrentTable()
-    #     else:    
-    #         tmpstring = self.prefs.GetString(self.PreferenceMainLibraryJSON, "")
-    #         if not tmpstring:
-    #             tmpstring = self.prefs.GetString(self.PreferenceMainLibraryXML, "")
-    #         if tmpstring:
-    #             if tmpstring[0] == '{':
-    #                 tt = self.tooltableFromAttrs(json.loads(tmpstring))
-    #             elif tmpstring[0] == '<':
-    #                 # legacy XML table
-    #                 Handler = FreeCADTooltableHandler()
-    #                 xml.sax.parseString(tmpstring, Handler)
-    #                 tt = Handler.tooltable
-    #                 # store new format
-    #                 self.saveMainLibrary()
-    #         else:
-    #             tt = Path.Tooltable()
-    #     # else:
-    #     #     for o in FreeCAD.ActiveDocument.Objects:
-    #     #         if o.Label == listname:
-    #     #             tt = o.Tooltable
-    #     return tt
+        for o in FreeCAD.ActiveDocument.Objects:
+            if hasattr(o, "Proxy"):
+                if isinstance(o.Proxy, PathScripts.PathJob.ObjectJob):
+                    tablelist.append(o.Label)
+                    
+        return tablelist
 
     def getTool(self, listname, toolnum):
         ''' gets the tool object '''
@@ -732,7 +708,7 @@ class EditorPanel():
         if len(tools) == 0:
             return
 
-        targets = self.TLM.getLists()
+        targets = self.TLM.getJobList()
         currList = self.TLM.getCurrentTableName()
 
         for target in targets:
@@ -740,7 +716,7 @@ class EditorPanel():
                 targets.remove(target)
 
         if len(targets) == 0:
-            FreeCAD.Console.PrintWarning("no place to go")
+            FreeCAD.Console.PrintWarning("No Path Jobs in current document")
             return
         elif len(targets) == 1:
             targetlist = targets[0]
@@ -796,14 +772,14 @@ class EditorPanel():
         model = self.form.ToolsList.model()
         if model:
             model.clear()
-        if len(self.TLM.toolTables) > 0:
-            for table in self.TLM.getLists():
+        if len(self.TLM.getToolTables()) > 0:
+            for table in self.TLM.getToolTables():
                 listItem = QtGui.QListWidgetItem(table.Name)
                 listItem.setIcon(QtGui.QIcon(':/icons/Path-ToolTable.svg'))
                 listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsEditable)
                 listItem.setSizeHint(QtCore.QSize(0,40))
                 self.form.TableList.addItem(listItem)
-                self.loadTable(self.TLM.toolTables[0].Name)
+                self.loadTable(self.TLM.getToolTables()[0].Name)
         
     def setCurrentToolTableByName(self, name):
         ''' get the current tool table '''
