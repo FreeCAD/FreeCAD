@@ -755,6 +755,7 @@ App.Units.ThermalTransferCoefficient   = App.Units.Unit(0,1,-3,0,-1)
 App.Units.HeatFlux                     = App.Units.Unit(0,1,-3,0,0)
 App.Units.DynamicViscosity             = App.Units.Unit(-1,1,-1)
 App.Units.KinematicViscosity           = App.Units.Unit(2,0,-1)
+App.Units.ElectricVacuumPermittivity   = App.Units.Unit(-3,-1,4,2)
 
 # clean up namespace
 del(InitApplications)
