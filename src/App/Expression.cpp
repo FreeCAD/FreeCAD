@@ -85,8 +85,7 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 
 #define __EXPR_THROW(_e,_msg,_expr) do {\
     std::ostringstream ss;\
-    ss << _msg;\
-    if(_expr) ss << std::endl << (_expr)->toString();\
+    ss << _msg << (_expr);\
     throw _e(ss.str().c_str());\
 }while(0)
 
@@ -94,8 +93,7 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 
 #define __EXPR_SET_MSG(_e,_msg,_expr) do {\
     std::ostringstream ss;\
-    ss << _msg << _e.what();\
-    if(_expr) ss << std::endl << (_expr)->toString();\
+    ss << _msg << _e.what() << (_expr);\
     _e.setMessage(ss.str());\
 }while(0)
 
@@ -121,6 +119,12 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 #define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, (Expression*)0)
 
 #define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, (Expression*)0)
+
+static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
+    if(expr)
+        os << std::endl << expr->toString();
+    return os;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -1518,18 +1522,18 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case CEIL:
     case FLOOR:
         if (args.size() != 1)
-            throw ExpressionError("Invalid number of arguments: exactly one required.");
+            EXPR_THROW("Invalid number of arguments: exactly one required.");
         break;
     case MOD:
     case ATAN2:
     case POW:
         if (args.size() != 2)
-            throw ExpressionError("Invalid number of arguments: exactly two required.");
+            EXPR_THROW("Invalid number of arguments: exactly two required.");
         break;
     case HYPOT:
     case CATH:
         if (args.size() < 2 || args.size() > 3)
-            throw ExpressionError("Invalid number of arguments: exactly two, or three required.");
+            EXPR_THROW("Invalid number of arguments: exactly two, or three required.");
         break;
     case STDDEV:
     case SUM:
@@ -1538,13 +1542,17 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MIN:
     case MAX:
         if (args.size() == 0)
-            throw ExpressionError("Invalid number of arguments: at least one required.");
+            EXPR_THROW("Invalid number of arguments: at least one required.");
+        break;
+    case LIST:
+    case TUPLE:
         break;
     case NONE:
     case AGGREGATES:
     case LAST:
     default:
-        throw ExpressionError("Unknown function");
+        EXPR_THROW("Unknown function");
+        break;
     }
 }
 
@@ -1771,6 +1779,11 @@ Expression * FunctionExpression::eval() const
     if (f > AGGREGATES)
         return evalAggregate();
 
+    if(f == LIST || f == TUPLE) {
+        Base::PyGILStateLocker lock;
+        return new PyObjectExpression(owner,getPyValue().ptr());
+    }
+
     std::unique_ptr<Expression> e1(args[0]->eval());
     std::unique_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
     std::unique_ptr<Expression> e3(args.size() > 2 ? args[2]->eval() : 0);
@@ -1988,6 +2001,23 @@ boost::any FunctionExpression::getValueAsAny() const {
 }
 
 Py::Object FunctionExpression::getPyValue() const {
+    if(f == LIST) {
+        if(args.size() == 1 && args[0]->isDerivedFrom(RangeExpression::getClassTypeId()))
+            return args[0]->getPyValue();
+        Py::List list(args.size());
+        int i=0;
+        for(auto &arg : args)
+            list.setItem(i++,arg->getPyValue());
+        return list;
+    } else if (f == TUPLE) {
+        if(args.size() == 1 && args[0]->isDerivedFrom(RangeExpression::getClassTypeId()))
+            return Py::Tuple(args[0]->getPyValue());
+        Py::Tuple tuple(args.size());
+        int i=0;
+        for(auto &arg : args)
+            tuple.setItem(i++,arg->getPyValue());
+        return tuple;
+    }
     ExpressionPtr e(eval());
     return e->getPyValue();
 }
@@ -2100,6 +2130,10 @@ std::string FunctionExpression::toString(bool persistent) const
         return "min(" + ss.str() + ")";
     case MAX:
         return "max(" + ss.str() + ")";
+    case LIST:
+        return "list(" + ss.str() + ")";
+    case TUPLE:
+        return "tuple(" + ss.str() + ")";
     default:
         assert(0);
         return std::string();
@@ -2637,11 +2671,24 @@ bool RangeExpression::isTouched() const
 
 Expression *RangeExpression::eval() const
 {
-    throw Exception("Range expression cannot be evaluated");
+    Base::PyGILStateLocker lock;
+    return expressionFromPy(owner,getPyValue());
+}
+
+boost::any RangeExpression::getValueAsAny() const {
+    Base::PyGILStateLocker lock;
+    return __pyObjectFromAny(getPyValue());
 }
 
 Py::Object RangeExpression::getPyValue() const {
-    return Py::Object();
+    Py::List list;
+    Range range(getRange());
+    do {
+        Property * p = owner->getPropertyByName(range.address().c_str());
+        if(p)
+            list.append(Py::asObject(p->getPyObject()));
+    } while (range.next());
+    return list;
 }
 
 std::string RangeExpression::toString(bool) const
@@ -2924,6 +2971,8 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["floor"] = FunctionExpression::FLOOR;
         registered_functions["hypot"] = FunctionExpression::HYPOT;
         registered_functions["cath"] = FunctionExpression::CATH;
+        registered_functions["list"] = FunctionExpression::LIST;
+        registered_functions["tuple"] = FunctionExpression::TUPLE;
 
         // Aggregates
         registered_functions["sum"] = FunctionExpression::SUM;
