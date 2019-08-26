@@ -167,6 +167,7 @@ class ToolLibraryManager():
         return
 
     def getToolTables(self):
+        ''' Return tool table list '''
         return self.toolTables
 
     def getCurrentTableName(self):
@@ -412,13 +413,6 @@ class ToolLibraryManager():
             else:
                 return False
 
-            # tt = self.getTableFromName(listname)
-            # for t in ht.Tools:
-            #     newt = ht.getTool(t).copy()
-            #     tt.addTools(newt)
-            # if listname == self.getCurrentTableName():
-            #     self.saveMainLibrary()
-            # return True
         except Exception as e: # pylint: disable=broad-except
             print("could not parse file", e)
 
@@ -529,7 +523,6 @@ class EditorPanel():
         
         if listname:
             self.loadToolTables()
-            #self.loadTable(listname)
 
         self.job = job
         self.cb = cb
