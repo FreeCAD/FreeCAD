@@ -95,6 +95,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include "Application.h"
 #include "DocumentObject.h"
 #include "MergeDocuments.h"
+#include "ExpressionParser.h"
 #include <App/DocumentPy.h>
 
 #include <Base/Console.h>
