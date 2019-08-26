@@ -1532,14 +1532,16 @@ class Arc(Creator):
                         if self.closedCircle:
                             self.drawArc()
                         else:
-                            self.ui.labelRadius.setText("Start angle")
+                            self.ui.labelRadius.setText(translate("draft","Start angle"))
+                            self.ui.radiusValue.setToolTip(translate("draft","Start angle"))
                             self.ui.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
                             self.linetrack.p1(self.center)
                             self.linetrack.on()
                             self.step = 2
                             FreeCAD.Console.PrintMessage(translate("draft", "Pick start angle")+"\n")
                     elif (self.step == 2): # choose first angle
-                        self.ui.labelRadius.setText("Aperture")
+                        self.ui.labelRadius.setText(translate("draft","Aperture angle"))
+                        self.ui.radiusValue.setToolTip(translate("draft","Aperture angle"))
                         self.step = 3
                         # scale center->point vector for proper display
                         # u = DraftVecUtils.scaleTo(self.point.sub(self.center), self.rad) obsolete?
@@ -1649,14 +1651,16 @@ class Arc(Creator):
             else:
                 self.step = 2
                 self.arctrack.setCenter(self.center)
-                self.ui.labelRadius.setText(translate("draft", "Start Angle"))
+                self.ui.labelRadius.setText(translate("draft", "Start angle"))
+                self.ui.radiusValue.setToolTip(translate("draft", "Start angle"))
                 self.linetrack.p1(self.center)
                 self.linetrack.on()
                 self.ui.radiusValue.setText("")
                 self.ui.radiusValue.setFocus()
                 FreeCAD.Console.PrintMessage(translate("draft", "Pick start angle")+"\n")
         elif (self.step == 2):
-            self.ui.labelRadius.setText(translate("draft", "Aperture"))
+            self.ui.labelRadius.setText(translate("draft", "Aperture angle"))
+            self.ui.radiusValue.setToolTip(translate("draft", "Aperture angle"))
             self.firstangle = math.radians(rad)
             if DraftVecUtils.equals(plane.axis, Vector(1,0,0)): u = Vector(0,self.rad,0)
             else: u = DraftVecUtils.scaleTo(Vector(1,0,0).cross(plane.axis), self.rad)
@@ -2892,6 +2896,7 @@ class Rotate(Modifier):
         self.ui.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
         self.ui.hasFill.hide()
         self.ui.labelRadius.setText(translate("draft","Base angle"))
+        self.ui.radiusValue.setToolTip(translate("draft","The base angle you wish to start the rotation from"))
         self.arctrack.setCenter(self.center)
         for ghost in self.ghosts:
             ghost.center(self.center)
@@ -2902,6 +2907,7 @@ class Rotate(Modifier):
 
     def set_start_point(self):
         self.ui.labelRadius.setText(translate("draft","Rotation"))
+        self.ui.radiusValue.setToolTip(translate("draft", "The amount of rotation you wish to perform. The final angle will be the base angle plus this amount."))
         self.rad = DraftVecUtils.dist(self.point,self.center)
         self.arctrack.on()
         self.arctrack.setStartPoint(self.point)
@@ -3029,6 +3035,7 @@ class Rotate(Modifier):
         self.ui.radiusUi()
         self.ui.hasFill.hide()
         self.ui.labelRadius.setText(translate("draft","Base angle"))
+        self.ui.radiusValue.setToolTip(translate("draft","The base angle you wish to start the rotation from"))
         self.step = 1
         FreeCAD.Console.PrintMessage(translate("draft", "Pick base angle")+"\n")
 
@@ -3036,6 +3043,7 @@ class Rotate(Modifier):
         """this function gets called by the toolbar when valid radius have been entered there"""
         if (self.step == 1):
             self.ui.labelRadius.setText(translate("draft","Rotation"))
+            self.ui.radiusValue.setToolTip(translate("draft","The amount of rotation you wish to perform. The final angle will be the base angle plus this amount."))
             self.firstangle = math.radians(rad)
             self.arctrack.setStartAngle(self.firstangle)
             self.arctrack.on()
@@ -3904,7 +3912,8 @@ class Trimex(Modifier):
             dist = v1.sub(self.newpoint).Length
             ghost.p1(self.newpoint)
             ghost.p2(v2)
-            self.ui.labelRadius.setText("Distance")
+            self.ui.labelRadius.setText(translate("draft","Distance"))
+            self.ui.radiusValue.setToolTip(translate("draft", "The offset distance"))
             if real:
                 if self.force:
                     ray = self.newpoint.sub(v1)
@@ -3917,7 +3926,8 @@ class Trimex(Modifier):
             ang1 = DraftVecUtils.angle(v2.sub(center))
             ang2 = DraftVecUtils.angle(point.sub(center))
             self.newpoint=Vector.add(center,DraftVecUtils.rotate(Vector(rad,0,0),-ang2))
-            self.ui.labelRadius.setText("Angle")
+            self.ui.labelRadius.setText(translate("draft","Angle"))
+            self.ui.radiusValue.setToolTip(translate("draft", "The offset angle"))
             dist = math.degrees(-ang2)
             # if ang1 > ang2: ang1,ang2 = ang2,ang1
             #print("last calculated:",math.degrees(-ang1),math.degrees(-ang2))

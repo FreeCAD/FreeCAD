@@ -947,12 +947,12 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                         p.append([n.x,n.y,n.z])
                     self.coords.point.setValues(0,len(p),p)
                     self.pointset.numPoints.setValue(len(p))
-                    self.lineset.coordIndex.setValues(0,len(p)+1,range(len(p))+[-1])
+                    self.lineset.coordIndex.setValues(0,len(p)+1,list(range(len(p)))+[-1])
                     if hasattr(obj.ViewObject,"NodeType"):
                         if (obj.ViewObject.NodeType == "Area") and (len(p) > 2):
                             self.coords.point.set1Value(len(p),p[0][0],p[0][1],p[0][2])
-                            self.lineset.coordIndex.setValues(0,len(p)+2,range(len(p)+1)+[-1])
-                            self.faceset.coordIndex.setValues(0,len(p)+1,range(len(p))+[-1])
+                            self.lineset.coordIndex.setValues(0,len(p)+2,list(range(len(p)+1))+[-1])
+                            self.faceset.coordIndex.setValues(0,len(p)+1,list(range(len(p)))+[-1])
 
         elif prop in ["IfcType"]:
             if hasattr(obj.ViewObject,"NodeType"):
