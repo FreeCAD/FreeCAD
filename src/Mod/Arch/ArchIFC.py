@@ -30,8 +30,9 @@ class IfcRoot:
         if prop == "IfcType":
             self.setupIfcAttributes(obj)
             self.setupIfcComplexAttributes(obj)
-        if obj.getGroupOfProperty(prop) == "IFC Attributes":
-            self.setObjIfcAttributeValue(obj, prop, obj.getPropertyByName(prop))
+        if prop in obj.PropertiesList:
+            if obj.getGroupOfProperty(prop) == "IFC Attributes":
+                self.setObjIfcAttributeValue(obj, prop, obj.getPropertyByName(prop))
 
     def setupIfcAttributes(self, obj):
         ifcTypeSchema = self.getIfcTypeSchema(obj.IfcType)
