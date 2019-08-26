@@ -26,7 +26,7 @@
 #include <Base/MatrixPy.h>
 #include "DocumentObject.h"
 #include "Document.h"
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include "GeoFeature.h"
 #include "GroupExtension.h"
 #include "GeoFeatureGroupExtension.h"

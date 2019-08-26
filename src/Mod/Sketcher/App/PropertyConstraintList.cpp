@@ -36,6 +36,7 @@
 #include <Base/QuantityPy.h>
 #include <App/ObjectIdentifier.h>
 #include <App/DocumentObject.h>
+#include <App/ExpressionParser.h>
 
 #include "PropertyConstraintList.h"
 #include "ConstraintPy.h"

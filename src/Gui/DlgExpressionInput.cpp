@@ -33,7 +33,7 @@
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <App/Application.h>
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <App/DocumentObject.h>
 
 using namespace App;

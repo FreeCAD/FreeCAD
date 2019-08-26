@@ -35,7 +35,7 @@
 #include "DlgExpressionInput.h"
 #include "Command.h"
 #include <Base/Tools.h>
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <boost/math/special_functions/round.hpp>
 #include "QuantitySpinBox_p.h"
 #include <App/PropertyUnits.h>
