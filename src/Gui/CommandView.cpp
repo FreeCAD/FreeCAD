@@ -3353,98 +3353,40 @@ void StdTreeDrag::activated(int)
 // Std_TreeViewActions
 //===========================================================================
 //
-class StdCmdTreeViewActions : public Gui::Command
+class StdCmdTreeViewActions : public GroupCommand
 {
 public:
-    StdCmdTreeViewActions();
-    virtual const char* className() const {return "StdCmdTreeViewActions";}
-protected:
-    virtual void activated(int iMsg);
-    virtual Gui::Action * createAction(void);
+    StdCmdTreeViewActions()
+        :GroupCommand("Std_TreeViewActions")
+    {
+        sGroup        = QT_TR_NOOP("View");
+        sMenuText     = QT_TR_NOOP("TreeView actions");
+        sToolTipText  = QT_TR_NOOP("TreeView behavior options and actions");
+        sWhatsThis    = "Std_TreeViewActions";
+        sStatusTip    = QT_TR_NOOP("TreeView behavior options and actions");
+        eType         = 0;
+        bCanLog       = false;
 
-    std::vector<std::pair<Command*,size_t> > cmds;
+        addCommand(new StdTreeSyncView());
+        addCommand(new StdTreeSyncSelection());
+        addCommand(new StdTreeSyncPlacement());
+        addCommand(new StdTreePreSelection());
+        addCommand(new StdTreeRecordSelection());
+
+        addCommand();
+
+        addCommand(new StdTreeSingleDocument());
+        addCommand(new StdTreeMultiDocument());
+        addCommand(new StdTreeCollapseDocument());
+
+        addCommand();
+
+        addCommand(new StdTreeDrag(),cmds.size());
+        addCommand(new StdTreeSelection(),cmds.size());
+    };
+    virtual const char* className() const {return "StdCmdTreeViewActions";}
 };
 
-StdCmdTreeViewActions::StdCmdTreeViewActions()
-  : Command("Std_TreeViewActions")
-{
-    sGroup        = QT_TR_NOOP("View");
-    sMenuText     = QT_TR_NOOP("TreeView actions");
-    sToolTipText  = QT_TR_NOOP("TreeView behavior options and actions");
-    sWhatsThis    = "Std_TreeViewActions";
-    sStatusTip    = QT_TR_NOOP("TreeView behavior options and actions");
-    eType         = 0;
-    bCanLog       = false;
-
-    CommandManager &mgr = Application::Instance->commandManager();
-    cmds.reserve(12);
-    cmds.emplace_back(new StdTreeSyncView(),cmds.size());
-    mgr.addCommand(cmds.back().first);
-    cmds.emplace_back(new StdTreeSyncSelection(),cmds.size());
-    mgr.addCommand(cmds.back().first);
-    cmds.emplace_back(new StdTreeSyncPlacement(),cmds.size());
-    mgr.addCommand(cmds.back().first);
-    cmds.emplace_back(new StdTreePreSelection(),cmds.size());
-    mgr.addCommand(cmds.back().first);
-    cmds.emplace_back(new StdTreeRecordSelection(),cmds.size());
-    mgr.addCommand(cmds.back().first);
-
-    cmds.emplace_back(nullptr,0);
-
-    cmds.emplace_back(new StdTreeSingleDocument(),cmds.size()+1);
-    mgr.addCommand(cmds.back().first);
-    cmds.emplace_back(new StdTreeMultiDocument(),cmds.size()+1);
-    mgr.addCommand(cmds.back().first);
-    cmds.emplace_back(new StdTreeCollapseDocument(),cmds.size()-2);
-    mgr.addCommand(cmds.back().first);
-
-    cmds.emplace_back(nullptr,0);
-
-    cmds.emplace_back(new StdTreeDrag(),cmds.size());
-    mgr.addCommand(cmds.back().first);
-
-    cmds.emplace_back(new StdTreeSelection(),cmds.size());
-    mgr.addCommand(cmds.back().first);
-}
-
-Action * StdCmdTreeViewActions::createAction(void) {
-    ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
-    pcAction->setDropDownMenu(true);
-    pcAction->setExclusive(false);
-    applyCommandData(this->className(), pcAction);
-    pcAction->setCheckable(true);
-
-    for(auto &v : cmds) {
-        if(!v.first)
-            pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
-        else
-            v.first->addToGroup(pcAction);
-    }
-    pcAction->setIcon(BitmapFactory().iconFromTheme(cmds[0].first->getPixmap()));
-    pcAction->setChecked(cmds[0].first->getAction()->isChecked(),true);
-
-    return pcAction;
-}
-
-void StdCmdTreeViewActions::activated(int iMsg)
-{
-    if(iMsg<0 || iMsg>=(int)cmds.size())
-        return;
-
-    auto &v = cmds[iMsg];
-    if(!v.first)
-        return;
-
-    if(triggerSource()!=TriggerChildAction)
-        v.first->invoke(0);
-
-    Action* cmdAction = v.first->getAction();
-    if(_pcAction && cmdAction) {
-        _pcAction->setIcon(BitmapFactory().iconFromTheme(v.first->getPixmap()));
-        _pcAction->setChecked(cmdAction->isChecked(),true);
-        _pcAction->setProperty("defaultAction", QVariant((int)v.second));
-    }
-}
 
 //======================================================================
 // Std_SelBoundingBox

@@ -961,6 +961,89 @@ void Command::updateAction(int)
 }
 
 //===========================================================================
+// GroupCommand
+//===========================================================================
+
+GroupCommand::GroupCommand(const char *name)
+    :Command(name)
+{}
+
+int GroupCommand::addCommand(Command *cmd, bool reg) {
+    cmds.emplace_back(cmd,cmds.size());
+    if(cmd && reg)
+        Application::Instance->commandManager().addCommand(cmd);
+    return (int)cmds.size()-1;
+}
+
+Command *GroupCommand::addCommand(const char *name) {
+    auto cmd = Application::Instance->commandManager().getCommandByName(name);
+    if(cmd)
+        addCommand(cmd,false);
+    return cmd;
+}
+
+Action * GroupCommand::createAction(void) {
+    ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    pcAction->setDropDownMenu(true);
+    pcAction->setExclusive(false);
+    pcAction->setCheckable(true);
+
+    for(auto &v : cmds) {
+        if(!v.first)
+            pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
+        else
+            v.first->addToGroup(pcAction);
+    }
+
+    pcAction->setProperty("defaultAction", QVariant(0));
+    setup(pcAction);
+    return pcAction;
+}
+
+void GroupCommand::activated(int iMsg)
+{
+    if(iMsg<0 || iMsg>=(int)cmds.size())
+        return;
+
+    auto &v = cmds[iMsg];
+    if(!v.first)
+        return;
+
+    if(triggerSource()!=TriggerChildAction)
+        v.first->invoke(0);
+
+    Action* cmdAction = v.first->getAction();
+    if(_pcAction && cmdAction) {
+        _pcAction->setProperty("defaultAction", QVariant((int)v.second));
+        setup(_pcAction);
+    }
+}
+
+void GroupCommand::languageChange() {
+    if (_pcAction)
+        setup(_pcAction);
+}
+
+void GroupCommand::setup(Action *pcAction) {
+
+    pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
+    
+    int idx = pcAction->property("defaultAction").toInt();
+    if(idx>=0 && idx<(int)cmds.size() && cmds[idx].first) {
+        auto cmd = cmds[idx].first;
+        pcAction->setIcon(BitmapFactory().iconFromTheme(cmd->getPixmap()));
+        pcAction->setChecked(cmd->getAction()->isChecked(),true);
+        const char *context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName() : cmd->className();
+        const char *tooltip = cmd->getToolTipText();
+        const char *statustip = cmd->getStatusTip();
+        if (!statustip || '\0' == *statustip)
+            statustip = tooltip;
+        pcAction->setToolTip(QCoreApplication::translate(context,tooltip));
+        pcAction->setStatusTip(QCoreApplication::translate(context,statustip));
+    }
+}
+
+//===========================================================================
 // MacroCommand
 //===========================================================================
 
