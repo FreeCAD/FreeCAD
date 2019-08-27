@@ -2200,7 +2200,10 @@ std::string ViewProviderLink::dropObjectEx(App::DocumentObject* obj,
         if(linked)
             return linked->dropObjectEx(obj,owner,subname,elements);
     }
-    ext->setLink(-1,owner,subname);
+    if(owner)
+        ext->setLink(-1,owner,subname);
+    else
+        ext->setLink(-1,obj,0);
     return std::string();
 }
 
