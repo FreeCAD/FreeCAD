@@ -190,7 +190,7 @@ def getTeighaConverter():
 def convertToDxf(dwgfilename):
     """Convert a DWG file to a DXF file.
 
-    If the converter is found it is used, otherwise the convesion fails.
+    If the converter is found it is used, otherwise the conversion fails.
 
     Parameters
     ----------
@@ -234,7 +234,7 @@ def convertToDxf(dwgfilename):
 def convertToDwg(dxffilename, dwgfilename):
     """Convert a DXF file to a DWG file.
 
-    If the converter is found it is used, otherwise the convesion fails.
+    If the converter is found it is used, otherwise the conversion fails.
 
     Parameters
     ----------

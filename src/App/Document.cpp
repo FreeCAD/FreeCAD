@@ -2249,7 +2249,7 @@ bool Document::saveToFile(const char* filename) const
 
         writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
                         << "<!--" << endl
-                        << " FreeCAD Document, see http://www.freecadweb.org for more information..." << endl
+                        << " FreeCAD Document, see https://www.freecadweb.org for more information..." << endl
                         << "-->" << endl;
         Document::Save(writer);
 
@@ -3055,7 +3055,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     }
     if (testStatus(Document::Recomputing)) {
         // this is clearly a bug in the calling instance
-        FC_ERR("Recusrive calling of recomput for dcument " << getName());
+        FC_ERR("Recursive calling of recompute for document " << getName());
         return 0;
     }
     // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
@@ -3075,7 +3075,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
 #if 0
     //////////////////////////////////////////////////////////////////////////
-    // Comment by Realthunder: 
+    // FIXME Comment by Realthunder: 
     // the topologicalSrot() below cannot handle partial recompute, haven't got
     // time to figure out the code yet, simply use back boost::topological_sort
     // for now, that is, rely on getDependencyList() to do the sorting. The
@@ -4321,4 +4321,3 @@ bool Document::mustExecute() const
             return true;
     return false;
 }
-
