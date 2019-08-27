@@ -273,7 +273,7 @@ def buildRelColors(ifcfile, prodrepr):
         if k in style_color_rgb:
             colors[style_material_id[k]] = style_color_rgb[k]
 
-    return colors, style_material_id
+    return colors
 
 
 def getRelProperties(ifcfile):
