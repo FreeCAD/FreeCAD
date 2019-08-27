@@ -526,11 +526,16 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         if(_getShape != Py_None) {
             Py::Tuple args(1);
             args.setItem(0,Py::Object(const_cast<PropertyContainerPy*>(this)));
-            Py::Object res(PyObject_CallObject(_getShape, args.ptr()),true);
-            if(res.hasAttr("isNull")) {
-                Py::Callable func(res.getAttr("isNull"));
-                if(!func.apply().isTrue())
-                    return Py::new_reference_to(res);
+            auto res = PyObject_CallObject(_getShape, args.ptr());
+            if(!res) 
+                PyErr_Clear();
+            else {
+                Py::Object pyres(res,true);
+                if(pyres.hasAttr("isNull")) {
+                    Py::Callable func(pyres.getAttr("isNull"));
+                    if(!func.apply().isTrue())
+                        return Py::new_reference_to(res);
+                }
             }
         }
     }
