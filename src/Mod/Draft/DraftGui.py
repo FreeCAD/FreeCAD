@@ -1096,6 +1096,13 @@ class DraftToolBar:
         self.labelx.setText(translate("draft", "Center X"))
         self.continueCmd.show()
 
+    def rotateSetCenterUi(self):
+        self.pointUi(translate("draft", "Arc"),icon="Draft_Rotate")
+        self.labelx.setText(translate("draft", "Center X"))
+        self.labely.setText(translate("draft", "Center Y"))
+        self.labelz.setText(translate("draft", "Center Z"))
+        self.continueCmd.show()
+
     def pointUi(self,title=translate("draft","Point"),cancel=None,extra=None,getcoords=None,rel=False,icon="Draft_Draft"):
         if cancel: self.cancel = cancel
         if getcoords: self.pointcallback = getcoords

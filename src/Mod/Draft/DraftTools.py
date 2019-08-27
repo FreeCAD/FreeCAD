@@ -2817,7 +2817,7 @@ class Rotate(Modifier):
         self.selected_subelements = FreeCADGui.Selection.getSelectionEx()
         self.step = 0
         self.center = None
-        self.ui.arcUi()
+        self.ui.rotateSetCenterUi()
         self.ui.modUi()
         self.ui.setTitle(translate("draft","Rotate"))
         self.arctrack = arcTracker()
@@ -3036,6 +3036,7 @@ class Rotate(Modifier):
         self.ui.hasFill.hide()
         self.ui.labelRadius.setText(translate("draft","Base angle"))
         self.ui.radiusValue.setToolTip(translate("draft","The base angle you wish to start the rotation from"))
+        self.ui.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
         self.step = 1
         FreeCAD.Console.PrintMessage(translate("draft", "Pick base angle")+"\n")
 
@@ -3044,6 +3045,7 @@ class Rotate(Modifier):
         if (self.step == 1):
             self.ui.labelRadius.setText(translate("draft","Rotation"))
             self.ui.radiusValue.setToolTip(translate("draft","The amount of rotation you wish to perform. The final angle will be the base angle plus this amount."))
+            self.ui.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
             self.firstangle = math.radians(rad)
             self.arctrack.setStartAngle(self.firstangle)
             self.arctrack.on()
