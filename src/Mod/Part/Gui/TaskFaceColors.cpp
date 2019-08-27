@@ -293,6 +293,7 @@ FaceColors::~FaceColors()
     Gui::Selection().rmvSelectionGate();
     d->connectDelDoc.disconnect();
     d->connectDelObj.disconnect();
+    d->connectUndoDoc.disconnect();
     delete d;
 }
 
