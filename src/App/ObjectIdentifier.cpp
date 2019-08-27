@@ -619,6 +619,8 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
             Base::PyException::ThrowException();
         res = Py::asObject(r);
     }
+    if(!res.ptr())
+        Base::PyException::ThrowException();
     if(PyModule_Check(res.ptr()) && !ExpressionParser::isModuleImported(res.ptr()))
         FC_THROWM(Base::RuntimeError, "Module '" << getName() << "' access denied.");
     return res;
