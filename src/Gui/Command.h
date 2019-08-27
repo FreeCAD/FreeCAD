@@ -610,6 +610,39 @@ private:
     TriggerSource _trigger = TriggerNone;
 };
 
+/** Class to help implement a group command
+ *
+ * To use this class, simply add children command in the constructor of your
+ * derived class by calling addCommand();
+ */
+class GuiExport GroupCommand : public Command {
+public:
+    /// Constructor
+    GroupCommand(const char *name);
+
+    /** Add child command
+     * @param cmd: child command. Pass null pointer to add a separator.
+     * @param reg: whether to register the command with CommandManager
+     * @return Return the command index.
+     */
+    int addCommand(Command *cmd = 0, bool reg=true);
+    /** Add child command
+     * @param cmd: child command name.
+     * @return Return the found command, or NULL if not found.
+     */
+    Command *addCommand(const char *cmdName);
+
+protected:
+    virtual void activated(int iMsg);
+    virtual Gui::Action * createAction(void);
+    virtual void languageChange();
+
+    void setup(Action *);
+
+protected:
+    std::vector<std::pair<Command*,size_t> > cmds;
+};
+
 /** The Python command class
  * This is a special type of command class. It's used to bind a Python command class into the 
  * FreeCAD command framework.
