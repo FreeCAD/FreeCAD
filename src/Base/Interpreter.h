@@ -124,14 +124,14 @@ protected:
 inline Py::Object pyCall(PyObject *callable, PyObject *args=0) {
     PyObject *result = PyObject_CallObject(callable, args);
     if(!result)
-        Base::PyException::ThrowException();
+        throw Py::Exception();
     return Py::asObject(result);
 }
 
 inline Py::Object pyCallWithKeywords(PyObject *callable, PyObject *args, PyObject *kwds=0) {
     PyObject *result = PyObject_Call(callable, args, kwds);
     if(!result)
-        Base::PyException::ThrowException();
+        throw Py::Exception();
     return Py::asObject(result);
 }
 
