@@ -382,7 +382,6 @@ SoFCVectorizeSVGAction::SoFCVectorizeSVGAction() :
     m_lineWidth(1.0),
     m_usemm(false)
 {
-    Base::Console().Message("SoFCVSA::SoFCVSA()\n");
     SO_ACTION_CONSTRUCTOR(SoFCVectorizeSVGAction);
     this->setOutput(new SoSVGVectorOutput);
     this->p = new SoFCVectorizeSVGActionP(this);
@@ -401,7 +400,6 @@ SoFCVectorizeSVGAction::getSVGOutput(void) const
 
 void SoFCVectorizeSVGAction::printHeader(void) const
 {
-    Base::Console().Message("SoFCVSA::printHeader()\n");
     std::ostream& str = this->getSVGOutput()->getFileStream();
     str << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" << std::endl;
     str << "<!-- Created with FreeCAD (http://www.freecadweb.org) -->" << std::endl;
@@ -435,8 +433,9 @@ void SoFCVectorizeSVGAction::printViewport(void) const
 
 void SoFCVectorizeSVGAction::printBackground(void) const
 {
-    Base::Console().Message("SoFCVSA::printBackground()\n");
-
+    if (!getBackgroundState()) {
+        return;
+    }
     SbVec2f mul = getRotatedViewportSize();
     SbVec2f add = getRotatedViewportStartpos();
 
