@@ -723,7 +723,7 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
         vz = cutplane.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
         rot = FreeCAD.Rotation(vx,vy,vz,"ZXY")
         v.setCameraOrientation(rot.Q)
-    # this is needed to set correct focal depth, otherwise saving doesnt work properly
+    # this is needed to set correct focal depth, otherwise saving doesn't work properly
     v.fitAll()
 
     # save view
