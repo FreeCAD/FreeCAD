@@ -613,7 +613,7 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
         assert(isRange());
         Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
                                     end!=INT_MAX?Py::Int(end).ptr():0,
-                                    step!=1?Py::Int(step).ptr():0));
+                                    step!=1?Py::Int(step).ptr():0),true);
         PyObject *r = PyObject_GetItem(pyobj.ptr(),slice.ptr());
         if(!r)
             Base::PyException::ThrowException();
@@ -639,7 +639,7 @@ void ObjectIdentifier::Component::set(Py::Object &pyobj, const Py::Object &value
         assert(isRange());
         Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
                                     end!=INT_MAX?Py::Int(end).ptr():0,
-                                    step!=1?Py::Int(step).ptr():0));
+                                    step!=1?Py::Int(step).ptr():0),true);
         if(PyObject_SetItem(pyobj.ptr(),slice.ptr(),value.ptr())<0)
             Base::PyException::ThrowException();
     }
@@ -659,7 +659,7 @@ void ObjectIdentifier::Component::del(Py::Object &pyobj) const {
         assert(isRange());
         Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
                                     end!=INT_MAX?Py::Int(end).ptr():0,
-                                    step!=1?Py::Int(step).ptr():0));
+                                    step!=1?Py::Int(step).ptr():0),true);
         if(PyObject_DelItem(pyobj.ptr(),slice.ptr())<0)
             Base::PyException::ThrowException();
     }
