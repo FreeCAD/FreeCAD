@@ -25,7 +25,11 @@
 #ifndef _PreComp_
 
 #endif
-#include <QGuiApplication>
+
+//#if QT_VERSION >= 0x050000
+//#include <QGuiApplication>
+//#endif
+
 #include <QImage>
 #include <QPixmap>
 #include <QBitmap>
@@ -64,24 +68,17 @@
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec2d.h>
 #include <Inventor/SbViewportRegion.h>
-#include <Inventor/SoDB.h>
 #include <Inventor/SoRenderManager.h>
-#include <Inventor/SoEventManager.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/events/SoEvents.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/Qt/viewers/SoQtViewer.h>
 #include <Inventor/annex/HardCopy/SoVectorizeAction.h>
 
 #include "Rez.h"
@@ -317,9 +314,21 @@ double Grabber3d::getViewerScale(Gui::View3DInventorViewer* viewer)
     double result = 1;
 //    double printerpxmm  = 3.94;    //? 100 dpi?
     double coinpxmm     = 2.83;    //72 dpi
+
+    //accurate dpmm for screen is not easily acquired!
+//    double qtpxmm = 96;
+//#if QT_VERSION >=050000
 //    QScreen *screen = QGuiApplication::primaryScreen();
 //    double qtppi = screen->physicalDotsPerInch();  //~111 dpi
-//    double qtpxmm       = qtppi / 25.4; 
+//    qtpxmm       = qtppi / 25.4; 
+//#else
+////    QSize widgetSize = viewer->size();
+////    int qtDpiXLog = viewer->logicalDpiX();
+////    int qtDpiYLog = viewer->logicalDpiY();
+//    int qtDpiXPhys = viewer->physicalDpiX();
+//    int qtDpiYPhys = viewer->physicalDpiY();
+//    qtpxmm = ((qtDpiXPhys + qtDpiYPhys) / 2.0) / 25.4;
+//#endif
 
     SbViewportRegion vpRegion = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s winSizePx = vpRegion.getWindowSize();                //pixel coords
@@ -349,9 +358,22 @@ double Grabber3d::getPaperScale(Gui::View3DInventorViewer* viewer,
     double result = 1;
 //    double printerpxmm  = 3.94;    //? 100 dpi?
     double coinpxmm     = 2.83;    //72 dpi
+
+    //accurate dpmm for screen is not easily acquired!
+//    double qtpxmm = 96;
+//#if QT_VERSION >=050000
 //    QScreen *screen = QGuiApplication::primaryScreen();
 //    double qtppi = screen->physicalDotsPerInch();  //~111 dpi
-//    double qtpxmm       = qtppi / 25.4; 
+//    qtpxmm       = qtppi / 25.4; 
+//#else
+////    QSize widgetSize = viewer->size();
+////    int qtDpiXLog = viewer->logicalDpiX();
+////    int qtDpiYLog = viewer->logicalDpiY();
+//    int qtDpiXPhys = viewer->physicalDpiX();
+//    int qtDpiYPhys = viewer->physicalDpiY();
+//    qtpxmm = ((qtDpiXPhys + qtDpiYPhys) / 2.0) / 25.4;
+//#endif
+
     SbViewportRegion vpRegion = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s winSizePx = vpRegion.getWindowSize();                //pixel coords
 
