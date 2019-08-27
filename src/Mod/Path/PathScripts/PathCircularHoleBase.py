@@ -46,7 +46,7 @@ if FreeCAD.GuiUp:
 
 __title__ = "Path Circular Holes Base Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 __doc__ = "Base class an implementation for operations on circular holes."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2017"
@@ -150,7 +150,7 @@ class ObjectOp(PathOp.ObjectOp):
                         return shape.Edges[i].Curve.Radius * 2
                         
             
-            # for all other shapes the diameter is just the dimension in X. This may be inaccurate as the BoundBox is calculated on the tesselated geometry
+            # for all other shapes the diameter is just the dimension in X. This may be inaccurate as the BoundBox is calculated on the tessellated geometry
             PathLog.warning(translate("Path", "Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge."))
             return shape.BoundBox.XLength
         except Part.OCCError as e:

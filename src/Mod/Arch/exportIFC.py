@@ -1,7 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2014                                                    *
-# *   Yorik van Havre <yorik@uncreated.net>                                 *
+# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -25,7 +24,7 @@ from __future__ import print_function
 
 __title__ =  "FreeCAD IFC export"
 __author__ = "Yorik van Havre","Jonathan Wiedemann","Bernd Hahnebach"
-__url__ =    "http://www.freecadweb.org"
+__url__ =    "https://www.freecadweb.org"
 
 import six
 import os
