@@ -272,7 +272,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
     groups = importIFCHelper.buildRelGroups(ifcfile)
     subtractions = importIFCHelper.buildRelSubtractions(ifcfile)
     mattable = importIFCHelper.buildRelMattable(ifcfile)
-    colors, style_material_id = importIFCHelper.buildRelColors(ifcfile, prodrepr)
+    colors = importIFCHelper.buildRelColors(ifcfile, prodrepr)
     if preferences['DEBUG']: print("done.")
 
     # only import a list of IDs and their children, if defined
