@@ -55,10 +55,10 @@ public:
     ~QGIFace();
 
     enum {Type = QGraphicsItem::UserType + 104};
-    int type() const { return Type;}
-    QRectF boundingRect() const;
-    QPainterPath shape() const;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    int type() const override { return Type;}
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
 
 public:
     enum fillMode {
