@@ -62,55 +62,55 @@ class GmshTools():
             self.geotol = 1e-08
 
         # order
-        # known_element_orders = ['1st', '2nd']
+        # known_element_orders = ["1st", "2nd"]
         self.order = self.mesh_obj.ElementOrder
-        if self.order == '1st':
-            self.order = '1'
-        elif self.order == '2nd':
-            self.order = '2'
+        if self.order == "1st":
+            self.order = "1"
+        elif self.order == "2nd":
+            self.order = "2"
         else:
-            print('Error in order')
+            print("Error in order")
 
         # dimension
         self.dimension = self.mesh_obj.ElementDimension
 
         # Algorithm2D
         algo2D = self.mesh_obj.Algorithm2D
-        if algo2D == 'Automatic':
-            self.algorithm2D = '2'
-        elif algo2D == 'MeshAdapt':
-            self.algorithm2D = '1'
-        elif algo2D == 'Delaunay':
-            self.algorithm2D = '5'
-        elif algo2D == 'Frontal':
-            self.algorithm2D = '6'
-        elif algo2D == 'BAMG':
-            self.algorithm2D = '7'
-        elif algo2D == 'DelQuad':
-            self.algorithm2D = '8'
+        if algo2D == "Automatic":
+            self.algorithm2D = "2"
+        elif algo2D == "MeshAdapt":
+            self.algorithm2D = "1"
+        elif algo2D == "Delaunay":
+            self.algorithm2D = "5"
+        elif algo2D == "Frontal":
+            self.algorithm2D = "6"
+        elif algo2D == "BAMG":
+            self.algorithm2D = "7"
+        elif algo2D == "DelQuad":
+            self.algorithm2D = "8"
         else:
-            self.algorithm2D = '2'
+            self.algorithm2D = "2"
 
         # Algorithm3D
         algo3D = self.mesh_obj.Algorithm3D
-        if algo3D == 'Automatic':
-            self.algorithm3D = '1'
-        elif algo3D == 'Delaunay':
-            self.algorithm3D = '1'
-        elif algo3D == 'New Delaunay':
-            self.algorithm3D = '2'
-        elif algo3D == 'Frontal':
-            self.algorithm3D = '4'
-        elif algo3D == 'Frontal Delaunay':
-            self.algorithm3D = '5'
-        elif algo3D == 'Frontal Hex':
-            self.algorithm3D = '6'
-        elif algo3D == 'MMG3D':
-            self.algorithm3D = '7'
-        elif algo3D == 'R-tree':
-            self.algorithm3D = '9'
+        if algo3D == "Automatic":
+            self.algorithm3D = "1"
+        elif algo3D == "Delaunay":
+            self.algorithm3D = "1"
+        elif algo3D == "New Delaunay":
+            self.algorithm3D = "2"
+        elif algo3D == "Frontal":
+            self.algorithm3D = "4"
+        elif algo3D == "Frontal Delaunay":
+            self.algorithm3D = "5"
+        elif algo3D == "Frontal Hex":
+            self.algorithm3D = "6"
+        elif algo3D == "MMG3D":
+            self.algorithm3D = "7"
+        elif algo3D == "R-tree":
+            self.algorithm3D = "9"
         else:
-            self.algorithm3D = '1'
+            self.algorithm3D = "1"
 
         # mesh groups
         if self.mesh_obj.GroupsOfNodes is True:
@@ -120,30 +120,30 @@ class GmshTools():
         self.group_elements = {}
 
         # mesh regions
-        self.ele_length_map = {}  # { 'ElementString' : element length }
-        self.ele_node_map = {}  # { 'ElementString' : [element nodes] }
+        self.ele_length_map = {}  # { "ElementString" : element length }
+        self.ele_node_map = {}  # { "ElementString" : [element nodes] }
 
         # mesh boundary layer
         self.bl_setting_list = []  # list of dict, each item map to MeshBoundaryLayer object
         self.bl_boundary_list = []  # to remove duplicated boundary edge or faces
 
         # other initializations
-        self.temp_file_geometry = ''
-        self.temp_file_mesh = ''
-        self.temp_file_geo = ''
-        self.mesh_name = ''
-        self.gmsh_bin = ''
+        self.temp_file_geometry = ""
+        self.temp_file_mesh = ""
+        self.temp_file_geo = ""
+        self.mesh_name = ""
+        self.gmsh_bin = ""
         self.error = False
 
     def create_mesh(self):
         print("\nWe are going to start Gmsh FEM mesh run!")
         print(
-            '  Part to mesh: Name --> {},  Label --> {}, ShapeType --> {}'
+            "  Part to mesh: Name --> {},  Label --> {}, ShapeType --> {}"
             .format(self.part_obj.Name, self.part_obj.Label, self.part_obj.Shape.ShapeType)
         )
-        print('  CharacteristicLengthMax: ' + str(self.clmax))
-        print('  CharacteristicLengthMin: ' + str(self.clmin))
-        print('  ElementOrder: ' + self.order)
+        print("  CharacteristicLengthMax: " + str(self.clmax))
+        print("  CharacteristicLengthMin: " + str(self.clmin))
+        print("  ElementOrder: " + self.order)
         self.get_dimension()
         self.get_tmp_file_paths()
         self.get_gmsh_command()
@@ -158,45 +158,45 @@ class GmshTools():
 
     def get_dimension(self):
         # Dimension
-        # known_element_dimensions = ['From Shape', '1D', '2D', '3D']
+        # known_element_dimensions = ["From Shape", "1D", "2D", "3D"]
         # if not given, Gmsh uses the highest available.
         # A use case for not "From Shape" would be a surface (2D) mesh of a solid
-        if self.dimension == 'From Shape':
+        if self.dimension == "From Shape":
             shty = self.part_obj.Shape.ShapeType
-            if shty == 'Solid' or shty == 'CompSolid':
-                # print('Found: ' + shty)
-                self.dimension = '3'
-            elif shty == 'Face' or shty == 'Shell':
-                # print('Found: ' + shty)
-                self.dimension = '2'
-            elif shty == 'Edge' or shty == 'Wire':
-                # print('Found: ' + shty)
-                self.dimension = '1'
-            elif shty == 'Vertex':
-                # print('Found: ' + shty)
+            if shty == "Solid" or shty == "CompSolid":
+                # print("Found: " + shty)
+                self.dimension = "3"
+            elif shty == "Face" or shty == "Shell":
+                # print("Found: " + shty)
+                self.dimension = "2"
+            elif shty == "Edge" or shty == "Wire":
+                # print("Found: " + shty)
+                self.dimension = "1"
+            elif shty == "Vertex":
+                # print("Found: " + shty)
                 FreeCAD.Console.PrintError("You can not mesh a Vertex.\n")
-                self.dimension = '0'
-            elif shty == 'Compound':
-                # print('  Found a ' + shty)
+                self.dimension = "0"
+            elif shty == "Compound":
+                # print("  Found a " + shty)
                 FreeCAD.Console.PrintLog(
                     "  Found a Compound. Since it could contain"
                     "any kind of shape dimension 3 is used.\n"
                 )
-                self.dimension = '3'  # dimension 3 works for 2D and 1d shapes as well
+                self.dimension = "3"  # dimension 3 works for 2D and 1d shapes as well
             else:
-                self.dimension = '0'
+                self.dimension = "0"
                 FreeCAD.Console.PrintError(
-                    'Could not retrieve Dimension from shape type. Please choose dimension.'
+                    "Could not retrieve Dimension from shape type. Please choose dimension."
                 )
-        elif self.dimension == '3D':
-            self.dimension = '3'
-        elif self.dimension == '2D':
-            self.dimension = '2'
-        elif self.dimension == '1D':
-            self.dimension = '1'
+        elif self.dimension == "3D":
+            self.dimension = "3"
+        elif self.dimension == "2D":
+            self.dimension = "2"
+        elif self.dimension == "1D":
+            self.dimension = "1"
         else:
-            print('Error in dimension')
-        print('  ElementDimension: ' + self.dimension)
+            print("Error in dimension")
+        print("  ElementDimension: " + self.dimension)
 
     def get_tmp_file_paths(self):
         if system() == "Linux":
@@ -207,15 +207,15 @@ class GmshTools():
             path_sep = "/"
         tmpdir = tempfile.gettempdir()
         # geometry file
-        self.temp_file_geometry = tmpdir + path_sep + self.part_obj.Name + '_Geometry.brep'
-        print('  ' + self.temp_file_geometry)
+        self.temp_file_geometry = tmpdir + path_sep + self.part_obj.Name + "_Geometry.brep"
+        print("  " + self.temp_file_geometry)
         # mesh file
-        self.mesh_name = self.part_obj.Name + '_Mesh_TmpGmsh'
-        self.temp_file_mesh = tmpdir + path_sep + self.mesh_name + '.unv'
-        print('  ' + self.temp_file_mesh)
+        self.mesh_name = self.part_obj.Name + "_Mesh_TmpGmsh"
+        self.temp_file_mesh = tmpdir + path_sep + self.mesh_name + ".unv"
+        print("  " + self.temp_file_mesh)
         # Gmsh input file
-        self.temp_file_geo = tmpdir + path_sep + 'shape2mesh.geo'
-        print('  ' + self.temp_file_geo)
+        self.temp_file_geo = tmpdir + path_sep + "shape2mesh.geo"
+        print("  " + self.temp_file_geo)
 
     def get_gmsh_command(self):
         gmsh_std_location = FreeCAD.ParamGet(
@@ -229,12 +229,12 @@ class GmshTools():
                 ).SetString("gmshBinaryPath", gmsh_path)
                 self.gmsh_bin = gmsh_path
             elif system() == "Linux":
-                p1 = subprocess.Popen(['which', 'gmsh'], stdout=subprocess.PIPE)
+                p1 = subprocess.Popen(["which", "gmsh"], stdout=subprocess.PIPE)
                 if p1.wait() == 0:
                     output = p1.stdout.read()
                     if sys.version_info.major >= 3:
-                        output = output.decode('utf-8')
-                    gmsh_path = output.split('\n')[0]
+                        output = output.decode("utf-8")
+                    gmsh_path = output.split("\n")[0]
                 elif p1.wait() == 1:
                     error_message = (
                         "Gmsh binary gmsh not found in standard system binary path. "
@@ -263,7 +263,7 @@ class GmshTools():
                     self.gmsh_bin = FreeCAD.getHomePath() + "bin/gmsh.exe"
                 else:
                     self.gmsh_bin = "gmsh"
-        print('  ' + self.gmsh_bin)
+        print("  " + self.gmsh_bin)
 
     def get_group_data(self):
         # TODO: solids, faces, edges and vertexes don't seem to work together in one group,
@@ -271,10 +271,10 @@ class GmshTools():
 
         # mesh group objects
         if not self.mesh_obj.MeshGroupList:
-            # print('  No mesh group objects.')
+            # print("  No mesh group objects.")
             pass
         else:
-            print('  Mesh group objects, we need to get the elements.')
+            print("  Mesh group objects, we need to get the elements.")
             for mg in self.mesh_obj.MeshGroupList:
                 new_group_elements = meshtools.get_mesh_group_elements(mg, self.part_obj)
                 for ge in new_group_elements:
@@ -288,7 +288,7 @@ class GmshTools():
             "User parameter:BaseApp/Preferences/Mod/Fem/General"
         ).GetBool("AnalysisGroupMeshing", False)
         if self.analysis and analysis_group_meshing:
-            print('  Group meshing for analysis.')
+            print("  Group meshing for analysis.")
             self.group_nodes_export = True
             new_group_elements = meshtools.get_analysis_group_elements(
                 self.analysis,
@@ -300,18 +300,18 @@ class GmshTools():
                 else:
                     FreeCAD.Console.PrintError("  A group with this name exists already.\n")
         else:
-            print('  No Group meshing for analysis.')
+            print("  No Group meshing for analysis.")
 
         if self.group_elements:
-            print('  {}'.format(self.group_elements))
+            print("  {}".format(self.group_elements))
 
     def get_region_data(self):
         # mesh regions
         if not self.mesh_obj.MeshRegionList:
-            # print('  No mesh regions.')
+            # print("  No mesh regions.")
             pass
         else:
-            print('  Mesh regions, we need to get the elements.')
+            print("  Mesh regions, we need to get the elements.")
             # by the use of MeshRegion object and a BooleanSplitCompound
             # there could be problems with node numbers see
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
@@ -324,11 +324,11 @@ class GmshTools():
                             or part.Proxy.Type == "FeatureSlice" \
                             or part.Proxy.Type == "FeatureXOR":
                         error_message = (
-                            '  The mesh to shape is a boolean split tools Compound '
-                            'and the mesh has mesh region list. '
-                            'Gmsh could return unexpected meshes in such circumstances. '
-                            'It is strongly recommended to extract the shape to mesh '
-                            'from the Compound and use this one.'
+                            "  The mesh to shape is a boolean split tools Compound "
+                            "and the mesh has mesh region list. "
+                            "Gmsh could return unexpected meshes in such circumstances. "
+                            "It is strongly recommended to extract the shape to mesh "
+                            "from the Compound and use this one."
                         )
                         FreeCAD.Console.PrintError(error_message + "\n")
                         # TODO: no gui popup because FreeCAD will be in a endless output loop
@@ -387,14 +387,14 @@ class GmshTools():
                                     )
                     else:
                         FreeCAD.Console.PrintError(
-                            'The meshregion: {} is not used to create the mesh '
-                            'because the reference list is empty.\n'
+                            "The meshregion: {} is not used to create the mesh "
+                            "because the reference list is empty.\n"
                             .format(mr_obj.Name)
                         )
                 else:
                     FreeCAD.Console.PrintError(
-                        'The meshregion: {} is not used to create the '
-                        'mesh because the CharacteristicLength is 0.0 mm.\n'
+                        "The meshregion: {} is not used to create the "
+                        "mesh because the CharacteristicLength is 0.0 mm.\n"
                         .format(mr_obj.Name)
                     )
             for eleml in self.ele_length_map:
@@ -402,8 +402,8 @@ class GmshTools():
                 ele_shape = meshtools.get_element(self.part_obj, eleml)
                 ele_vertexes = meshtools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
                 self.ele_node_map[eleml] = ele_vertexes
-            print('  {}'.format(self.ele_length_map))
-            print('  {}'.format(self.ele_node_map))
+            print("  {}".format(self.ele_length_map))
+            print("  {}".format(self.ele_node_map))
 
     def get_boundary_layer_data(self):
         # mesh boundary layer
@@ -412,11 +412,11 @@ class GmshTools():
         # Mesh.CharacteristicLengthMin, must be zero
         # or a value less than first inflation layer height
         if not self.mesh_obj.MeshBoundaryLayerList:
-            # print('  No mesh boundary layer setting document object.')
+            # print("  No mesh boundary layer setting document object.")
             pass
         else:
-            print('  Mesh boundary layers, we need to get the elements.')
-            if self.part_obj.Shape.ShapeType == 'Compound':
+            print("  Mesh boundary layers, we need to get the elements.")
+            if self.part_obj.Shape.ShapeType == "Compound":
                 # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
                 # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
                 err = (
@@ -478,30 +478,30 @@ class GmshTools():
                                         .format(elems, mr_obj.Name)
                                     )
                         setting = {}
-                        setting['hwall_n'] = Units.Quantity(mr_obj.MinimumThickness).Value
-                        setting['ratio'] = mr_obj.GrowthRate
-                        setting['thickness'] = sum([
-                            setting['hwall_n'] * setting['ratio'] ** i for i in range(
+                        setting["hwall_n"] = Units.Quantity(mr_obj.MinimumThickness).Value
+                        setting["ratio"] = mr_obj.GrowthRate
+                        setting["thickness"] = sum([
+                            setting["hwall_n"] * setting["ratio"] ** i for i in range(
                                 mr_obj.NumberOfLayers
                             )
                         ])
-                        # setting['hwall_n'] * 5 # tangential cell dimension
-                        setting['hwall_t'] = setting['thickness']
+                        # setting["hwall_n"] * 5 # tangential cell dimension
+                        setting["hwall_t"] = setting["thickness"]
 
                         # hfar: cell dimension outside boundary
                         # should be set later if some character length is set
-                        if self.clmax > setting['thickness'] * 0.8 \
-                                and self.clmax < setting['thickness'] * 1.6:
-                            setting['hfar'] = self.clmax
+                        if self.clmax > setting["thickness"] * 0.8 \
+                                and self.clmax < setting["thickness"] * 1.6:
+                            setting["hfar"] = self.clmax
                         else:
                             # set a value for safety, it may works as background mesh cell size
-                            setting['hfar'] = setting['thickness']
+                            setting["hfar"] = setting["thickness"]
                         # from face name -> face id is done in geo file write up
                         # TODO: fan angle setup is not implemented yet
-                        if self.dimension == '2':
-                            setting['EdgesList'] = belem_list
-                        elif self.dimension == '3':
-                            setting['FacesList'] = belem_list
+                        if self.dimension == "2":
+                            setting["EdgesList"] = belem_list
+                        elif self.dimension == "3":
+                            setting["FacesList"] = belem_list
                         else:
                             FreeCAD.Console.PrintError(
                                 "boundary layer is only supported for 2D and 3D mesh"
@@ -509,38 +509,38 @@ class GmshTools():
                         self.bl_setting_list.append(setting)
                     else:
                         FreeCAD.Console.PrintError(
-                            'The mesh boundary layer: {} is not used to create '
-                            'the mesh because the reference list is empty.\n'
+                            "The mesh boundary layer: {} is not used to create "
+                            "the mesh because the reference list is empty.\n"
                             .format(mr_obj.Name)
                         )
                 else:
                     FreeCAD.Console.PrintError(
-                        'The mesh boundary layer: {} is not used to create '
-                        'the mesh because the min thickness is 0.0 mm.\n'
+                        "The mesh boundary layer: {} is not used to create "
+                        "the mesh because the min thickness is 0.0 mm.\n"
                         .format(mr_obj.Name)
                     )
-            print('  {}'.format(self.bl_setting_list))
+            print("  {}".format(self.bl_setting_list))
 
     def write_boundary_layer(self, geo):
         # currently single body is supported
         if len(self.bl_setting_list):
             geo.write("// boundary layer setting\n")
-            print('  Start to write boundary layer setup')
+            print("  Start to write boundary layer setup")
             field_number = 1
             for item in self.bl_setting_list:
                 prefix = "Field[" + str(field_number) + "]"
                 geo.write(prefix + " = BoundaryLayer;\n")
                 for k in item:
                     v = item[k]
-                    if k in set(['EdgesList', 'FacesList']):
+                    if k in set(["EdgesList", "FacesList"]):
                         # the element name of FreeCAD which starts
-                        # with 1 (example: 'Face1'), same as Gmsh
+                        # with 1 (example: "Face1"), same as Gmsh
                         # el_id = int(el[4:])  # FIXME:  strip `face` or `edge` prefix
-                        ele_nodes = (''.join((str(el[4:]) + ', ') for el in v)).rstrip(', ')
-                        line = prefix + '.' + str(k) + ' = {' + ele_nodes + ' };\n'
+                        ele_nodes = ("".join((str(el[4:]) + ", ") for el in v)).rstrip(", ")
+                        line = prefix + "." + str(k) + " = {" + ele_nodes + " };\n"
                         geo.write(line)
                     else:
-                        line = prefix + '.' + str(k) + ' = ' + str(v) + ';\n'
+                        line = prefix + "." + str(k) + " = " + str(v) + ";\n"
                         geo.write(line)
                     print(line)
                 geo.write("BoundaryLayer Field = " + str(field_number) + ";\n")
@@ -548,9 +548,9 @@ class GmshTools():
                 field_number += 1
             geo.write("\n")
             geo.flush()
-            print('  finished in boundary layer setup')
+            print("  finished in boundary layer setup")
         else:
-            # print('  no boundary layer setup is found for this mesh')
+            # print("  no boundary layer setup is found for this mesh")
             geo.write("// no boundary layer settings for this mesh\n")
 
     def write_part_file(self):
@@ -561,40 +561,40 @@ class GmshTools():
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
         geo.write("// open brep geometry\n")
-        geo.write('Merge "' + self.temp_file_geometry + '";\n')
+        geo.write("Merge "" + self.temp_file_geometry + "";\n")
         geo.write("\n")
         if self.group_elements:
-            # print('  We are going to have to find elements to make mesh groups for.')
+            # print("  We are going to have to find elements to make mesh groups for.")
             geo.write("// group data\n")
             # we use the element name of FreeCAD which starts
-            # with 1 (example: 'Face1'), same as Gmsh
+            # with 1 (example: "Face1"), same as Gmsh
             # for unit test we need them to have a fixed order
             for group in sorted(self.group_elements.keys()):
                 gdata = self.group_elements[group]
                 # print(gdata)
                 # geo.write("// " + group + "\n")
-                ele_nr = ''
-                if gdata[0].startswith('Solid'):
-                    physical_type = 'Volume'
+                ele_nr = ""
+                if gdata[0].startswith("Solid"):
+                    physical_type = "Volume"
                     for ele in gdata:
-                        ele_nr += (ele.lstrip('Solid') + ', ')
-                elif gdata[0].startswith('Face'):
-                    physical_type = 'Surface'
+                        ele_nr += (ele.lstrip("Solid") + ", ")
+                elif gdata[0].startswith("Face"):
+                    physical_type = "Surface"
                     for ele in gdata:
-                        ele_nr += (ele.lstrip('Face') + ', ')
-                elif gdata[0].startswith('Edge'):
-                    physical_type = 'Line'
+                        ele_nr += (ele.lstrip("Face") + ", ")
+                elif gdata[0].startswith("Edge"):
+                    physical_type = "Line"
                     for ele in gdata:
-                        ele_nr += (ele.lstrip('Edge') + ', ')
-                elif gdata[0].startswith('Vertex'):
-                    physical_type = 'Point'
+                        ele_nr += (ele.lstrip("Edge") + ", ")
+                elif gdata[0].startswith("Vertex"):
+                    physical_type = "Point"
                     for ele in gdata:
-                        ele_nr += (ele.lstrip('Vertex') + ', ')
+                        ele_nr += (ele.lstrip("Vertex") + ", ")
                 if ele_nr:
-                    ele_nr = ele_nr.rstrip(', ')
+                    ele_nr = ele_nr.rstrip(", ")
                     # print(ele_nr)
                     geo.write(
-                        'Physical ' + physical_type + '("' + group + '") = {' + ele_nr + '};\n'
+                        "Physical " + physical_type + "("" + group + "") = {" + ele_nr + "};\n"
                     )
             geo.write("\n")
         geo.write("// Characteristic Length\n")
@@ -604,8 +604,8 @@ class GmshTools():
             geo.write("// Characteristic Length according CharacteristicLengthMap\n")
             for e in self.ele_length_map:
                 ele_nodes = (
-                    ''.join((str(n + 1) + ', ') for n in self.ele_node_map[e])
-                ).rstrip(', ')
+                    "".join((str(n + 1) + ", ") for n in self.ele_node_map[e])
+                ).rstrip(", ")
                 geo.write("// " + e + "\n")
                 elestr1 = "{"
                 elestr2 = "}"
@@ -633,23 +633,23 @@ class GmshTools():
         else:
             geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
         geo.write("\n")
-        if hasattr(self.mesh_obj, 'RecombineAll') and self.mesh_obj.RecombineAll is True:
+        if hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True:
             geo.write("// other mesh options\n")
             geo.write("Mesh.RecombineAll = 1;\n")
             geo.write("\n")
         geo.write("// optimize the mesh\n")
         # Gmsh tetra optimizer
-        if hasattr(self.mesh_obj, 'OptimizeStd') and self.mesh_obj.OptimizeStd is True:
+        if hasattr(self.mesh_obj, "OptimizeStd") and self.mesh_obj.OptimizeStd is True:
             geo.write("Mesh.Optimize = 1;\n")
         else:
             geo.write("Mesh.Optimize = 0;\n")
         # Netgen optimizer in Gmsh
-        if hasattr(self.mesh_obj, 'OptimizeNetgen') and self.mesh_obj.OptimizeNetgen is True:
+        if hasattr(self.mesh_obj, "OptimizeNetgen") and self.mesh_obj.OptimizeNetgen is True:
             geo.write("Mesh.OptimizeNetgen = 1;\n")
         else:
             geo.write("Mesh.OptimizeNetgen = 0;\n")
         # higher order mesh optimizing
-        if hasattr(self.mesh_obj, 'HighOrderOptimize') and self.mesh_obj.HighOrderOptimize is True:
+        if hasattr(self.mesh_obj, "HighOrderOptimize") and self.mesh_obj.HighOrderOptimize is True:
             geo.write(
                 "Mesh.HighOrderOptimize = 1;  // for more HighOrderOptimize "
                 "parameter check http://gmsh.info/doc/texinfo/gmsh.html\n"
@@ -673,7 +673,7 @@ class GmshTools():
             "5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)\n"
         )
         if len(self.bl_setting_list) and self.dimension == 3:
-            geo.write("Mesh.Algorithm = " + 'DelQuad' + ";\n")  # Frontal/DelQuad are tested
+            geo.write("Mesh.Algorithm = " + "DelQuad" + ";\n")  # Frontal/DelQuad are tested
         else:
             geo.write("Mesh.Algorithm = " + self.algorithm2D + ";\n")
         geo.write(
@@ -686,7 +686,7 @@ class GmshTools():
         geo.write("// meshing\n")
         # remove duplicate vertices
         # see https://forum.freecadweb.org/viewtopic.php?f=18&t=21571&start=20#p179443
-        if hasattr(self.mesh_obj, 'CoherenceMesh') and self.mesh_obj.CoherenceMesh is True:
+        if hasattr(self.mesh_obj, "CoherenceMesh") and self.mesh_obj.CoherenceMesh is True:
             geo.write(
                 "Geometry.Tolerance = {}; // set geometrical "
                 "tolerance (also used for merging nodes)\n"
@@ -727,7 +727,7 @@ class GmshTools():
         geo.close()
 
     def run_gmsh_with_geo(self):
-        comandlist = [self.gmsh_bin, '-', self.temp_file_geo]
+        comandlist = [self.gmsh_bin, "-", self.temp_file_geo]
         # print(comandlist)
         try:
             p = subprocess.Popen(
@@ -738,14 +738,14 @@ class GmshTools():
             )
             output, error = p.communicate()
             if sys.version_info.major >= 3:
-                # output = output.decode('utf-8')
-                error = error.decode('utf-8')
+                # output = output.decode("utf-8")
+                error = error.decode("utf-8")
             # stdout is still cut at some point
             # but the warnings are in stderr and thus printed :-)
             # print(output)
             # print(error)
         except:
-            error = 'Error executing: {}\n'.format(" ".join(comandlist))
+            error = "Error executing: {}\n".format(" ".join(comandlist))
             FreeCAD.Console.PrintError(error)
             self.error = True
         return error
@@ -754,25 +754,25 @@ class GmshTools():
         if not self.error:
             fem_mesh = Fem.read(self.temp_file_mesh)
             self.mesh_obj.FemMesh = fem_mesh
-            FreeCAD.Console.PrintMessage('  The Part should have a pretty new FEM mesh!\n')
+            FreeCAD.Console.PrintMessage("  The Part should have a pretty new FEM mesh!\n")
         else:
-            FreeCAD.Console.PrintError('No mesh was created.\n')
+            FreeCAD.Console.PrintError("No mesh was created.\n")
         del self.temp_file_geometry
         del self.temp_file_mesh
 
 ##  @}
 
 
-'''
+"""
 # simple example how to use the class GmshTools
 
 import Part, ObjectsFem
 
 doc = App.ActiveDocument
-box_obj = doc.addObject('Part::Box', 'Box')
+box_obj = doc.addObject("Part::Box", "Box")
 doc.recompute()
 
-femmesh_obj = ObjectsFem.makeMeshGmsh(doc, box_obj.Name + '_Mesh')
+femmesh_obj = ObjectsFem.makeMeshGmsh(doc, box_obj.Name + "_Mesh")
 femmesh_obj.Part = box_obj
 doc.recompute()
 box_obj.ViewObject.Visibility = False
@@ -783,9 +783,9 @@ error = gmsh_mesh.create_mesh()
 print(error)
 doc.recompute()
 
-'''
+"""
 
-'''
+"""
 TODO
 class GmshTools should be splittet in two classes
 one class should only collect the mesh parameter from mesh object and his childs
@@ -794,4 +794,4 @@ writes the input file runs gmsh reads back the unv and returns a FemMesh
 gmsh binary will be collected in the second class
 with this we could mesh without document objects
 create a shape and run meshinging class, get the FemMesh :-)
-'''
+"""
