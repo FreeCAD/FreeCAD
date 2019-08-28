@@ -244,7 +244,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_10">
             <property name="text">
-             <string>Coolant Default:</string>
+             <string>Coolant Mode</string>
             </property>
            </widget>
           </item>
