@@ -68,7 +68,7 @@ def getPattern(pat):
     return ''
 
 
-def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False,rotation=0,fillSpaces=False):
+def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False,rotation=0,fillSpaces=False,override=True):
     '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle],[color],[linespacing]):
     returns a string containing a SVG representation of the given object,
     with the given linewidth and fontsize (used if the given object contains
@@ -77,15 +77,23 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     # if this is a group, gather all the svg views of its children
     if hasattr(obj,"isDerivedFrom"):
-        if obj.isDerivedFrom("App::DocumentObjectGroup"):
+        if obj.isDerivedFrom("App::DocumentObjectGroup") or getType(obj) == "Layer":
             svg = ""
             for child in obj.Group:
-                svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw)
+                svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw,rotation,fillSpaces,override)
             return svg
 
     pathdata = []
     svg = ""
     linewidth = float(linewidth)/scale
+    if not override:
+        if hasattr(obj,"ViewObject"):
+            if hasattr(obj.ViewObject,"LineWidth"):
+                if hasattr(obj.ViewObject.LineWidth,"Value"):
+                    lw = obj.ViewObject.LineWidth.Value
+                else:
+                    lw = obj.ViewObject.LineWidth
+                linewidth = lw*linewidth
     fontsize = (float(fontsize)/scale)/2
     if linespacing:
         linespacing = float(linespacing)/scale
@@ -102,7 +110,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         elif isinstance(direction,WorkingPlane.plane):
             plane = direction
     stroke = "#000000"
-    if color:
+    if color and override:
         if "#" in color:
             stroke = color
         else:
@@ -111,7 +119,15 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if hasattr(obj,"ViewObject"):
             if hasattr(obj.ViewObject,"LineColor"):
                 stroke = getrgb(obj.ViewObject.LineColor)
-
+            elif hasattr(obj.ViewObject,"TextColor"):
+                stroke = getrgb(obj.ViewObject.TextColor)
+    lstyle = "none"
+    if override:
+        lstyle = getLineStyle(linestyle, scale)
+    else:
+        if hasattr(obj,"ViewObject"):
+            if hasattr(obj.ViewObject,"DrawStyle"):
+                lstyle = getLineStyle(obj.ViewObject.DrawStyle, scale)
 
     def getPath(edges=[],wires=[],pathname=None):
         import Part,DraftGeomUtils
@@ -368,7 +384,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += 'x2="'+ str(shootsize*-1) +'" y2="0" />\n'
         return svg
 
-    def getText(color,fontsize,fontname,angle,base,text,linespacing=0.5,align="center",flip=True):
+    def getText(tcolor,fontsize,fontname,angle,base,text,linespacing=0.5,align="center",flip=True):
         if isinstance(angle,FreeCAD.Rotation):
             if not plane:
                 angle = angle.Angle
@@ -390,13 +406,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if techdraw:
             svg = ""
             for i in range(len(text)):
-                t = text[i]
+                t = text[i].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
                 if six.PY2 and not isinstance(t, six.text_type):
                     t = t.decode("utf8")
                 # possible workaround if UTF8 is unsupported
                 #    import unicodedata
                 #    t = u"".join([c for c in unicodedata.normalize("NFKD",t) if not unicodedata.combining(c)]).encode("utf8")
-                svg += '<text fill="' + color +'" font-size="' + str(fontsize) + '" '
+                svg += '<text fill="' + tcolor +'" font-size="' + str(fontsize) + '" '
                 svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
                 svg += 'font-family:'+ fontname +'" '
                 svg += 'transform="rotate('+str(math.degrees(angle))
@@ -407,7 +423,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 svg += '>\n' + t + '</text>\n'
         else:
             svg = '<text fill="'
-            svg += color +'" font-size="'
+            svg += tcolor +'" font-size="'
             svg += str(fontsize) + '" '
             svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
             svg += 'font-family:'+ fontname +'" '
@@ -426,7 +442,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += '>\n'
             if len(text) == 1:
                 try:
-                    svg += text[0]
+                    svg += text[0].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
                 except:
                     svg += text[0].decode("utf8")
             else:
@@ -454,7 +470,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             fill = "#888888"
         else:
             fill = 'url(#'+fillstyle+')'
-        lstyle = getLineStyle(linestyle, scale)
         svg += getPath(obj.Edges,pathname="")
 
 
@@ -552,7 +567,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
                     # drawing arc
                     fill= "none"
-                    lstyle = getLineStyle(linestyle, scale)
                     if obj.ViewObject.DisplayMode == "2D":
                         svg += getPath([prx.circle])
                     else:
@@ -666,7 +680,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 print ("export of axes to SVG is only available in GUI mode")
             else:
                 vobj = obj.ViewObject
-                lorig = getLineStyle(linestyle, scale)
+                lorig = lstyle
                 fill = 'none'
                 rad = vobj.BubbleSize.Value/2
                 n = 0
@@ -703,10 +717,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                 svg += '<tspan>' + obj.ViewObject.Proxy.bubbletexts[n].string.getValues()[0] + '</tspan>\n'
                                 svg += '</text>\n'
                                 n += 1
+                lstyle = lorig
 
     elif getType(obj) == "Pipe":
         fill = stroke
-        lstyle = getLineStyle(linestyle, scale)
         if obj.Base and obj.Diameter:
             svg += getPath(obj.Base.Shape.Edges)
         for f in obj.Shape.Faces:
@@ -716,7 +730,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Rebar":
         fill = "none"
-        lstyle = getLineStyle(linestyle, scale)
         if obj.Proxy:
             if not hasattr(obj.Proxy,"wires"):
                 obj.Proxy.execute(obj)
@@ -743,7 +756,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                 fill_opacity = 1 - (obj.ViewObject.Transparency / 100.0)
                             else:
                                 fill = "#888888"
-                            lstyle = getLineStyle(linestyle, scale)
                             svg += getPath(wires=[obj.Proxy.face.OuterWire])
                 c = getrgb(obj.ViewObject.TextColor)
                 n = obj.ViewObject.FontName
@@ -790,7 +802,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 fill = "#888888"
         else:
             fill = 'none'
-        lstyle = getLineStyle(linestyle, scale)
 
         if len(obj.Shape.Vertexes) > 1:
             wiredEdges = []
@@ -827,5 +838,5 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     # techdraw expects bottom-to-top coordinates
     if techdraw:
-        svg = '<g transform ="scale(1,-1)">'+svg+'</g>'
+        svg = '<g transform ="scale(1,-1)">\n    '+svg+'</g>\n'
     return svg
