@@ -671,7 +671,7 @@ def get_femmesh_groupdata_sets_by_name(
     # no check is done in this regard !!!
     # we just check for the group name and the group data type
     # what happens if a reference shape was changed
-    # but the mesh and the mesh groups were not created new !?!
+    # but the mesh and the mesh groups where not created new !?!
     obj = fem_object["Object"]
     if femmesh.GroupCount:
         for g in femmesh.Groups:
