@@ -1158,12 +1158,6 @@ protected:
 };
 
 
-//FIXME: PropertyXLinkSub hides overloaded virtual functions
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Woverloaded-virtual"
-#endif
-
 /** Link to one or more (sub)object from the same or different document
  */
 class AppExport PropertyXLinkSub: public PropertyXLink {
@@ -1174,10 +1168,12 @@ public:
 
     virtual ~PropertyXLinkSub();
 
+    using PropertyXLink::setValue;
+
     void setValue(App::DocumentObject *,const std::vector<std::string> &SubList, 
             std::vector<ShadowSub > &&ShadowSubList={});
 
-    void setValue(App::DocumentObject *,std::vector<std::string> &&SubList={},
+    void setValue(App::DocumentObject *,std::vector<std::string> &&SubList,
             std::vector<ShadowSub > &&ShadowSubList={});
 
     void setSubValues(std::vector<std::string> &&SubList,
@@ -1191,10 +1187,6 @@ public:
 protected:
     virtual PropertyXLink *createInstance() const override;
 };
-
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
 
 
 /** Link to one or more (sub)object(s) of one or more object(s) from the same or different document
