@@ -1233,6 +1233,7 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
     FC_LOG("Update Selection "<<Chng.DocName << '#' << Chng.ObjName << '.' <<Chng.SubName);
 
     notify(std::move(Chng));
+
     return true;
 }
 
@@ -1337,6 +1338,12 @@ void SelectionSingleton::setVisible(int visible) {
     else if(visible>0)
         visible = 1;
     for(auto &sel : _SelList) {
+        //Note: if selection is changed while processing this list, the contents of _SelList will be 
+        //changed during loop execution.  This may cause crash here when a "non-entry" is processed.
+//        if (_SelList.size() == 0) {
+//            Base::Console().Log("Gui::SS::setVisible - _SelList altered during loop - break!\n");
+//            break;
+//        }
         if(sel.DocName.empty() || sel.FeatName.empty() || !sel.pObject) 
             continue;
         // get parent object
@@ -1350,7 +1357,6 @@ void SelectionSingleton::setVisible(int visible) {
             // prevent setting the same object visibility more than once
             if(!filter.insert(std::make_pair(obj,parent)).second)
                 continue;
-
             int vis = parent->isElementVisible(elementName.c_str());
             if(vis>=0) {
                 if(vis>0) vis = 1;
@@ -1371,11 +1377,12 @@ void SelectionSingleton::setVisible(int visible) {
 
             // Fall back to direct object visibility setting
         }
-
-        if(!filter.insert(std::make_pair(obj,(App::DocumentObject*)0)).second)
+        if(!filter.insert(std::make_pair(obj,(App::DocumentObject*)0)).second){
             continue;
+        }
 
         auto vp = Application::Instance->getViewProvider(obj);
+
         if(vp) {
             int vis;
             if(visible>=0)
