@@ -40,6 +40,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         hlayout.addWidget(form.ToolController)
         layout.addLayout(hlayout)
 
+
+        # Coolant controller
+        hlayout = QtGui.QHBoxLayout()
+        form.coolantController = QtGui.QComboBox()
+        form.coolantControllerLabel = QtGui.QLabel("Coolant Mode")
+        hlayout.addWidget(form.coolantControllerLabel)
+        hlayout.addWidget(form.coolantController)
+        layout.addLayout(hlayout)
+
         # cut region
         formLayout = QtGui.QFormLayout()
         form.Side = QtGui.QComboBox()
@@ -148,6 +157,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.LiftDistance.valueChanged)
         signals.append(self.form.KeepToolDownRatio.valueChanged)
         signals.append(self.form.StockToLeave.valueChanged)
+        signals.append(self.form.coolantController.currentIndexChanged)
 
         # signals.append(self.form.ProcessHoles.stateChanged)
         signals.append(self.form.ForceInsideOut.stateChanged)
@@ -171,6 +181,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         # self.form.ProcessHoles.setChecked(obj.ProcessHoles)
         self.form.ForceInsideOut.setChecked(obj.ForceInsideOut)
         self.setupToolController(obj, self.form.ToolController)
+        self.setupCoolant(obj, self.form.coolantController)
         self.form.StopButton.setChecked(obj.Stopped)
         obj.setEditorMode('AdaptiveInputState', 2)  # hide this property
         obj.setEditorMode('AdaptiveOutputState', 2)  # hide this property
@@ -203,6 +214,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.StopProcessing = True
 
         self.updateToolController(obj, self.form.ToolController)
+        self.updateCoolant(obj, self.form.coolantController)
         obj.setEditorMode('AdaptiveInputState', 2)  # hide this property
         obj.setEditorMode('AdaptiveOutputState', 2)  # hide this property
         obj.setEditorMode('StopProcessing', 2)  # hide this property
