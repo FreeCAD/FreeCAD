@@ -80,7 +80,7 @@ class ObjectOp(PathOp.ObjectOp):
     def opFeatures(self, obj):
         '''opFeatures(obj) ... calls circularHoleFeatures(obj) and ORs in the standard features required for processing circular holes.
         Do not overwrite, implement circularHoleFeatures(obj) instead'''
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureBaseFaces | self.circularHoleFeatures(obj)
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureBaseFaces | self.circularHoleFeatures(obj) | PathOp.FeatureCoolant 
 
     def circularHoleFeatures(self, obj):
         '''circularHoleFeatures(obj) ... overwrite to add operations specific features.
