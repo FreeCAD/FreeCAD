@@ -31,26 +31,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getForm(self):
         form = QtGui.QWidget()
         layout = QtGui.QVBoxLayout()
+        formLayout = QtGui.QFormLayout()
 
         # tool controller
-        hlayout = QtGui.QHBoxLayout()
         form.ToolController = QtGui.QComboBox()
-        form.ToolControllerLabel = QtGui.QLabel("Tool Controller")
-        hlayout.addWidget(form.ToolControllerLabel)
-        hlayout.addWidget(form.ToolController)
-        layout.addLayout(hlayout)
-
+        formLayout.addRow(QtGui.QLabel("Tool Controller"), form.ToolController)
 
         # Coolant controller
-        hlayout = QtGui.QHBoxLayout()
         form.coolantController = QtGui.QComboBox()
-        form.coolantControllerLabel = QtGui.QLabel("Coolant Mode")
-        hlayout.addWidget(form.coolantControllerLabel)
-        hlayout.addWidget(form.coolantController)
-        layout.addLayout(hlayout)
+        formLayout.addRow(QtGui.QLabel("Coolant Mode"), form.coolantController)
 
         # cut region
-        formLayout = QtGui.QFormLayout()
         form.Side = QtGui.QComboBox()
         form.Side.addItem("Inside")
         form.Side.addItem("Outside")
