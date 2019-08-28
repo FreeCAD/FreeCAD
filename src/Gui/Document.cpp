@@ -460,6 +460,7 @@ void Document::_resetEdit(void)
         if (editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
             signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(editViewProvider)));
 #endif
+        App::GetApplication().closeActiveTransaction();
     }
     d->_editViewProviderParent = 0;
     if(Application::Instance->editDocument() == this)
