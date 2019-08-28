@@ -295,6 +295,7 @@ class GlobalEditor(object):
         self.safeHeightOffs = None
         self.rapidHorizontal = None
         self.rapidVertical = None
+        #self.coolantMode = None
 
     def reject(self):
         pass
@@ -318,6 +319,16 @@ class GlobalEditor(object):
         self.safeHeightOffs.updateProperty()
         self.rapidVertical.updateProperty()
         self.rapidHorizontal.updateProperty()
+        #self.coolantMode.updateProperty()
+        self.obj.CoolantMode = self.form.setupCoolantMode.currentText()
+
+    def selectInComboBox(self, name, combo):
+        '''selectInComboBox(name, combo) ... helper function to select a specific value in a combo box.'''
+        index = combo.findText(name, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            combo.blockSignals(True)
+            combo.setCurrentIndex(index)
+            combo.blockSignals(False)
 
     def updateUI(self):
         PathLog.track()
@@ -330,6 +341,7 @@ class GlobalEditor(object):
         self.safeHeightOffs.updateSpinBox()
         self.rapidVertical.updateSpinBox()
         self.rapidHorizontal.updateSpinBox()
+        self.selectInComboBox(self.obj.CoolantMode, self.form.setupCoolantMode)
 
     def updateModel(self, recomp = True):
         PathLog.track()
@@ -346,6 +358,7 @@ class GlobalEditor(object):
         self.safeHeightOffs = PathGui.QuantitySpinBox(self.form.setupSafeHeightOffs, self.obj, 'SafeHeightOffset')
         self.rapidHorizontal = PathGui.QuantitySpinBox(self.form.setupRapidHorizontal, self.obj, 'HorizRapid')
         self.rapidVertical = PathGui.QuantitySpinBox(self.form.setupRapidVertical, self.obj, 'VertRapid')
+        self.form.setupCoolantMode.addItems(self.obj.CoolantModes)
         self.setFields()
 
 class TaskPanel:
