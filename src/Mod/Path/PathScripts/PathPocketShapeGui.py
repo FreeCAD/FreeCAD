@@ -475,9 +475,6 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
             self.extensionsPanel = TaskPanelExtensionPage(obj, features) # pylint: disable=attribute-defined-outside-init
         return self.extensionsPanel
 
-    def pageRegisterSignalHandlers(self):
-        pass
-
 Command = PathOpGui.SetupOperation('Pocket Shape',
         PathPocketShape.Create,
         TaskPanelOpPage,
