@@ -1,7 +1,6 @@
 import six
 
 import FreeCAD, math, os, DraftVecUtils, WorkingPlane
-import Part, DraftGeomUtils
 from FreeCAD import Vector
 from Draft import getType, getrgb, svgpatterns, gui
 
@@ -75,6 +74,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     any text). You can also supply an arbitrary projection vector. the
     scale parameter allows to scale linewidths down, so they are resolution-independant.'''
 
+    import Part, DraftGeomUtils
+
     # if this is a group, gather all the svg views of its children
     if hasattr(obj,"isDerivedFrom"):
         if obj.isDerivedFrom("App::DocumentObjectGroup") or getType(obj) == "Layer":
@@ -130,7 +131,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 lstyle = getLineStyle(obj.ViewObject.DrawStyle, scale)
 
     def getPath(edges=[],wires=[],pathname=None):
-        import Part,DraftGeomUtils
+
         svg = "<path "
         if pathname is None:
             svg += 'id="%s" ' % obj.Name
@@ -141,8 +142,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             egroups = Part.sortEdges(edges)
         else:
             egroups = []
+            first = True
             for w in wires:
                 w1=w.copy()
+                if first:
+                    first = False
+                else:
+                    # invert further wires to create holes
+                    w1 = DraftGeomUtils.invert(w1)
                 w1.fixWire()
                 egroups.append(Part.__sortEdges__(w1.Edges))
         for egroupindex, edges in enumerate(egroups):
@@ -412,7 +419,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 # possible workaround if UTF8 is unsupported
                 #    import unicodedata
                 #    t = u"".join([c for c in unicodedata.normalize("NFKD",t) if not unicodedata.combining(c)]).encode("utf8")
-                svg += '<text fill="' + tcolor +'" font-size="' + str(fontsize) + '" '
+                svg += '<text stroke-width="0" stroke="' + tcolor + '" fill="' + tcolor +'" font-size="' + str(fontsize) + '" '
                 svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
                 svg += 'font-family:'+ fontname +'" '
                 svg += 'transform="rotate('+str(math.degrees(angle))
@@ -422,7 +429,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 #svg += '" freecad:skip="1"'
                 svg += '>\n' + t + '</text>\n'
         else:
-            svg = '<text fill="'
+            svg = '<text stroke-width="0" stroke="' + tcolor + '" fill="'
             svg += tcolor +'" font-size="'
             svg += str(fontsize) + '" '
             svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
@@ -807,6 +814,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             wiredEdges = []
             if obj.Shape.Faces:
                 for i,f in enumerate(obj.Shape.Faces):
+                    # place outer wire first
+                    wires = [f.OuterWire]
+                    wires.extend([w for w in f.Wires if w.hashCode() != f.OuterWire.hashCode()])
                     svg += getPath(wires=f.Wires,pathname='%s_f%04d' % \
                             (obj.Name,i))
                     wiredEdges.extend(f.Edges)
