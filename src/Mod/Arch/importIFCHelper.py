@@ -362,7 +362,7 @@ def getScaling(ifcfile):
     for u in ua.Units:
         if u.UnitType == "LENGTHUNIT":
             if u.is_a("IfcConversionBasedUnit"):
-                f =  getUnit(u.ConversionFactor.UnitComponent)
+                f = getUnit(u.ConversionFactor.UnitComponent)
                 return f * u.ConversionFactor.ValueComponent.wrappedValue
             elif u.is_a("IfcSIUnit") or u.is_a("IfcUnit"):
                 return getUnit(u)
@@ -425,7 +425,7 @@ def getVector(entity,scaling=1000):
     v = None
     if entity.is_a("IfcDirection"):
         if len(entity.DirectionRatios) == 3:
-            v= FreeCAD.Vector(tuple(entity.DirectionRatios))
+            v = FreeCAD.Vector(tuple(entity.DirectionRatios))
         else:
             v = FreeCAD.Vector(tuple(entity.DirectionRatios+[0]))
     elif entity.is_a("IfcCartesianPoint"):
