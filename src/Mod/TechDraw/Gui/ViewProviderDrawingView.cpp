@@ -121,11 +121,11 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
     }
 
     if (prop == &Visibility) {
-       if(Visibility.getValue()) {
-            show();
-        } else {
-            hide();
-        }
+//       if(Visibility.getValue()) {
+//            show();
+//        } else {
+//            hide();
+//        }
     } else if (prop == &KeepLabel) {
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -161,11 +161,20 @@ void ViewProviderDrawingView::hide(void)
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         QGIView* qView = getQView();
         if (qView) {
-            qView->draw();
-            qView->hide();
+            //note: hiding an item in the scene clears its selection status
+            //      this confuses Gui::Selection.
+            //      So we block selection changes while we are hiding the qgiv
+            //      in FC Tree hiding does not change selection state.
+            //      block/unblock selection protects against crash in Gui::SelectionSingleton::setVisible
+            MDIViewPage* mdi = getMDIViewPage();
+            if (mdi != nullptr) {                  //if there is no mdivp, there is nothing to hide!
+                mdi->blockSelection(true);
+                qView->hide();
+                ViewProviderDocumentObject::hide();
+                mdi->blockSelection(false);
+            }
         }
     }
-    ViewProviderDocumentObject::hide();
 }
 
 QGIView* ViewProviderDrawingView::getQView(void)
