@@ -1170,10 +1170,12 @@ public:
 
     virtual ~PropertyXLinkSub();
 
+    using PropertyXLink::setValue;
+
     void setValue(App::DocumentObject *,const std::vector<std::string> &SubList, 
             std::vector<ShadowSub > &&ShadowSubList={});
 
-    void setValue(App::DocumentObject *,std::vector<std::string> &&SubList={},
+    void setValue(App::DocumentObject *,std::vector<std::string> &&SubList,
             std::vector<ShadowSub > &&ShadowSubList={});
 
     void setSubValues(std::vector<std::string> &&SubList,
