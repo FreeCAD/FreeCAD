@@ -194,7 +194,7 @@ class ViewProviderLayer:
                                 setattr(o.ViewObject,p,getattr(vobj,p))
                         # give line color to texts
                         if hasattr(vobj,"LineColor") and hasattr(o.ViewObject,"TextColor"):
-                            o.ViewObject.TextColor = vobj.ShapeColor
+                            o.ViewObject.TextColor = vobj.LineColor
 
         if (prop == "Visibility") and hasattr(vobj,"Visibility"):
             if hasattr(vobj,"Object")and hasattr(vobj.Object,"Group"):
