@@ -308,6 +308,109 @@ def buildRelColors(ifcfile, prodrepr):
     return colors
 
 
+def buildRelProductColors(ifcfile, prodrepr):
+
+    # gets the colors for the products
+    colors = {} # { id:(r,g,b) }
+
+    for p in prodrepr.keys():
+
+        # print(p)
+
+        # representation item, see docu IfcRepresentationItem
+        # all kind of geometric or topological representation items
+        # IfcExtrudedAreaSolid, IfcMappedItem, IfcFacetedBrep, IfcBooleanResult, etc
+        representation_item = ifcfile[p].Representation.Representations[0].Items[0]
+        # print(representation_item)
+
+        # get the geometric representations which have a presentation style
+        # all representation items have the inverse attribute StyledByItem for this
+        # there will be gemetric representations which do not have a presentation style
+        # the StyledByItem will be empty than
+        if representation_item.StyledByItem:
+
+            # it has to be a IfcStyledItem, no check needed
+            styled_item = representation_item.StyledByItem[0]
+
+            # write into colors table if a IfcStyledItem exists for this product
+            # write None if something goes wrong or if the ifc file has errors and thus no valid color is returned
+            colors[p] = getColorFromStyledItem(styled_item)
+
+    return colors
+
+
+def buildRelMaterialColors(ifcfile, prodrepr):
+    # not implemented
+    pass
+
+
+def getColorFromStyledItem(styled_item):
+
+    # styled_item should be a IfcStyledItem
+    if not styled_item.is_a("IfcStyledItem"):
+        print("Not a IfcStyledItem passed.")
+        return None
+
+    rgb_color = None
+
+    # print(styled_item)
+    # The IfcStyledItem holds presentation style information for products,
+    # either explicitly for an IfcGeometricRepresentationItem being part of
+    # an IfcShapeRepresentation assigned to a product, or by assigning presentation
+    # information to IfcMaterial being assigned as other representation for a product.
+
+    # In current IFC release (IFC2x3) only one presentation style assignment shall be assigned.
+
+    if len(styled_item.Styles) != 1:
+        if len(styled_item.Styles) == 0:
+            pass
+            # ca 100x in 210_King_Merged.ifc
+            # empty styles, #4952778=IfcStyledItem(#4952779,(),$)
+            # this is an error in the ifc file IMHO
+            # print(ifcfile[p])
+            # print(styled_item)
+            # print(styled_item.Styles)
+        else:
+            pass
+            # never seen an ifc with more than one Styles in IfcStyledItem
+    else:
+        # get the IfcPresentationStyleAssignment, there should only be one, see above
+        assign_style = styled_item.Styles[0]
+        # print(assign_style)  # IfcPresentationStyleAssignment
+
+        # IfcPresentationStyleAssignment can hold various kinde and count of styles
+        # see IfcPresentationStyleSelect
+        if assign_style.Styles[0].is_a("IfcSurfaceStyle"):
+            # Schependomlaan and Nova and others
+            # print(assign_style.Styles[0].Styles[0])  # IfcSurfaceStyleRendering
+            rgb_color = assign_style.Styles[0].Styles[0].SurfaceColour  # IfcColourRgb
+            # print(rgb_color)
+        elif assign_style.Styles[0].is_a("IfcCurveStyle"):
+            if (
+                len(assign_style.Styles) == 2
+                and assign_style.Styles[1].is_a("IfcSurfaceStyle")
+            ):
+                # Allplan, new IFC export started in 2017
+                # print(assign_style.Styles[0].CurveColour)  # IfcDraughtingPreDefinedColour
+                # on index 1 ist das was wir brauchen !!!
+                rgb_color = assign_style.Styles[1].Styles[0].SurfaceColour
+                # print(rgb_color)
+            else:
+                # 2x Annotations in 210_King_Merged.ifc
+                # print(ifcfile[p])
+                # print(assign_style.Styles[0])
+                # print(assign_style.Styles[0].CurveColour)
+                rgb_color = assign_style.Styles[0].CurveColour
+
+    if rgb_color is not None:
+        col = rgb_color.Red, rgb_color.Green, rgb_color.Blue
+        # print(col)
+    else:
+        col = None
+
+    return col
+
+
 # ************************************************************************************************
 # property related methods
 def buildRelProperties(ifcfile):
