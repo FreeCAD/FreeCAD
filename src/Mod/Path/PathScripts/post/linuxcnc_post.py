@@ -354,6 +354,10 @@ def parse(pathobj):
                 for line in TOOL_CHANGE.splitlines(True):
                     out += linenumber() + line
 
+                # add height offset
+                tool_height = '\nG43 H' + str(int(c.Parameters['T']))
+                outstring.append(tool_height)
+
             if command == "message":
                 if OUTPUT_COMMENTS is False:
                     out = []
