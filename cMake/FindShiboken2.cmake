@@ -2,28 +2,60 @@
 #
 # The following variable are set:
 #   Shiboken2_FOUND   - Shiboken2 was found
-#   SHIBOKEN2_FOUND   - Shiboken2 was found
-#   Shiboken2_DIR     - The Shiboken2 libraries dir
-#   SHIBOKEN2_LIBRARY - The Shiboken2 libraries
+#   Shiboken2_LIBRARY - The Shiboken2 shared library
 
 
 execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} -c "import shiboken2;import os;print(os.path.dirname(shiboken2.__file__), end='')"
+    COMMAND ${PYTHON_EXECUTABLE} -c "
+import shiboken2
+import os
+import re
+dirname = os.path.dirname(shiboken2.__file__)
+for fname in os.listdir(dirname):
+    match = re.match(r'(shiboken2.*).so', fname)
+    if match is not None:
+        print(match.group(1), end='')
+        break
+"
     RESULT_VARIABLE FAILURE
-    OUTPUT_VARIABLE PRINT_OUTPUT
+    OUTPUT_VARIABLE SHIBOKEN_LIBRARY_NAME
 )
 
-set(SHIBOKEN2_FOUND FALSE)
 if(NOT FAILURE)
-    set(SHIBOKEN2_FOUND TRUE)
-    set(SHIBOKEN2_LIBRARY ${PRINT_OUTPUT} CACHE PATH "The location of the Shiboken2 library")
+    # Get the directory of the python module to use as a HINT for find_library
+    execute_process(
+        COMMAND 
+        ${PYTHON_EXECUTABLE} -c "
+import shiboken2
+import os
+print(os.path.dirname(shiboken2.__file__),end='')
+"
+        OUTPUT_VARIABLE SHIBOKEN_LIBRARY_HINT
+    )
+    # Get the version of the shiboken module, which is likely part of the library name
+    execute_process(
+        COMMAND 
+        ${PYTHON_EXECUTABLE} -c "from shiboken2 import _config;print(_config.shiboken_library_soversion, end/'')"
+        OUTPUT_VARIABLE SHIBOKEN_LIBRARY_VERSION
+    )
+    set(_NAMES
+        ${SHIBOKEN_LIBRARY_NAME}
+        lib${SHIBOKEN_LIBRARY_NAME}
+        lib${SHIBOKEN_LIBRARY_NAME}.so
+        lib${SHIBOKEN_LIBRARY_NAME}.so.${SHIBOKEN_LIBRARY_VERSION}
+        lib${SHIBOKEN_LIBRARY_NAME}.dll
+        lib${SHIBOKEN_LIBRARY_NAME}.dll.a
+    )
+    message("SHIBOKEN_LIBRARY_NAME = ${SHIBOKEN_LIBRARY_NAME}")
+    message("SHIBOKEN_LIBRARY_HINT = ${SHIBOKEN_LIBRARY_HINT}")
+    find_library(Shiboken2_LIBRARY 
+        NAMES "lib${SHIBOKEN_LIBRARY_NAME}.so.5.12"
+        HINTS ${SHIBOKEN_LIBRARY_HINT} ENV PATH
+        DOC "The Shiboken2 shared library. The shiboken2 python module uses this, and you can too."
+    )
+    message("Shiboken2_LIBRARY = ${Shiboken2_LIBRARY}")
 endif(NOT FAILURE)
 
-if(NOT SHIBOKEN2_FOUND)
-    MESSAGE("====================\n"
-            "shiboken2 not found.\n"
-            "====================\n")
-endif()
-
-set(Shiboken2_FOUND ${SHIBOKEN2_FOUND})
-set(Shiboken2_DIR ${SHIBOKEN2_LIBRARY})
+# this cmake package handles the expected standard arguments for FindXXX
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(Shiboken2 DEFAULT_MSG Shiboken2_LIBRARY)
