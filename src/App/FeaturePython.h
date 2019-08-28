@@ -67,7 +67,7 @@ public:
 
     int allowDuplicateLabel() const;
 
-    bool redirectSubName(std::ostringstream &ss,
+    int redirectSubName(std::ostringstream &ss,
             App::DocumentObject *topParent, App::DocumentObject *child) const;
 
     int canLoadPartial() const;
@@ -272,8 +272,10 @@ public:
     virtual bool redirectSubName(std::ostringstream &ss,
             App::DocumentObject *topParent, App::DocumentObject *child) const override 
     {
-        return imp->redirectSubName(ss,topParent,child) ||
-            FeatureT::redirectSubName(ss,topParent,child);
+        int ret = imp->redirectSubName(ss,topParent,child);
+        if(ret < 0)
+            return FeatureT::redirectSubName(ss,topParent,child);
+        return ret?true:false;
     }
 
     virtual int canLoadPartial() const override {
