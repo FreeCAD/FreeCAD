@@ -239,9 +239,16 @@ def buildRelMattable(ifcfile):
     return mattable
 
 
+# ************************************************************************************************
+# color relation tables
+# products can have a color and materials can have a color and products can have a material
+# colors for material assigned to a product and product color can be different
+
+
 def buildRelColors(ifcfile, prodrepr):
     """build the colors relation table and"""
 
+    # returns all IfcStyledItem colors, material and product colors
     colors = {} # { id:(r,g,b) }
     style_material_id = {}  # { style_entity_id: material_id) }
 
@@ -269,12 +276,13 @@ def buildRelColors(ifcfile, prodrepr):
             for p in prodrepr.keys():
                 if r.Item.id() in prodrepr[p]:
                     style_material_id[r.id()] = p
-                    # print(p)  
+                    # print(p)
                     # print(ifcfile[p])  # product
         '''
     # a much faster version for Nova style_material_id with product_ids
+    # no material colors, Nova ifc files often do not have materials at all
     for p in prodrepr.keys():
-        # print("\n")  
+        # print("\n")
         # print(ifcfile[p])  # IfcProduct
         # print(ifcfile[p].Representation)  # IfcProductDefinitionShape
         # print(ifcfile[p].Representation.Representations[0])  # IfcShapeRepresentation
@@ -300,10 +308,14 @@ def buildRelColors(ifcfile, prodrepr):
     return colors
 
 
-def getRelProperties(ifcfile):
-    """Builds and returns a dictionary of {object:[properties]} from an IFC file"""
+# ************************************************************************************************
+# property related methods
+def buildRelProperties(ifcfile):
+    """
+    Builds and returns a dictionary of {object:[properties]} from an IFC file
+    """
 
-    # this method no longer used by this importer module
+    # this method no longer used by the importer module
     # but this relation table might be useful anyway for other purposes
 
     properties = {} # { objid : { psetid : [propertyid, ... ], ... }, ... }
@@ -336,6 +348,37 @@ def getIfcPropertySets(ifcfile, pid):
     return psets
 
 
+def getIfcProperties(ifcfile, pid, psets, d):
+    """builds valid property values for FreeCAD"""
+
+    for pset in psets.keys():
+        #print("reading pset: ",pset)
+        psetname = ifcfile[pset].Name
+        if six.PY2:
+            psetname = psetname.encode("utf8")
+        for prop in psets[pset]:
+            e = ifcfile[prop]
+            pname = e.Name
+            if six.PY2:
+                pname = pname.encode("utf8")
+            if e.is_a("IfcPropertySingleValue"):
+                if e.NominalValue:
+                    ptype = e.NominalValue.is_a()
+                    if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
+                        pvalue = e.NominalValue.wrappedValue
+                        if six.PY2:
+                            pvalue = pvalue.encode("utf8")
+                    else:
+                        pvalue = str(e.NominalValue.wrappedValue)
+                    if hasattr(e.NominalValue,'Unit'):
+                        if e.NominalValue.Unit:
+                            pvalue += e.NominalValue.Unit
+                    d[pname+";;"+psetname] = ptype+";;"+pvalue
+                #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
+    return d
+
+
+# ************************************************************************************************
 def getScaling(ifcfile):
     """returns a scaling factor from file units to mm"""
 
@@ -541,33 +584,3 @@ def get2DShape(representation,scaling=1000):
     elif representation.is_a() in ["IfcPolyline","IfcCircle","IfcTrimmedCurve"]:
         result = getCurveSet(representation)
     return result
-
-
-def getIfcProperties(ifcfile, pid, psets, d):
-    """builds valid property values for FreeCAD"""
-
-    for pset in psets.keys():
-        #print("reading pset: ",pset)
-        psetname = ifcfile[pset].Name
-        if six.PY2:
-            psetname = psetname.encode("utf8")
-        for prop in psets[pset]:
-            e = ifcfile[prop]
-            pname = e.Name
-            if six.PY2:
-                pname = pname.encode("utf8")
-            if e.is_a("IfcPropertySingleValue"):
-                if e.NominalValue:
-                    ptype = e.NominalValue.is_a()
-                    if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
-                        pvalue = e.NominalValue.wrappedValue
-                        if six.PY2:
-                            pvalue = pvalue.encode("utf8")
-                    else:
-                        pvalue = str(e.NominalValue.wrappedValue)
-                    if hasattr(e.NominalValue,'Unit'):
-                        if e.NominalValue.Unit:
-                            pvalue += e.NominalValue.Unit
-                    d[pname+";;"+psetname] = ptype+";;"+pvalue
-                #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
-    return d
