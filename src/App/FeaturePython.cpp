@@ -84,6 +84,10 @@ bool FeaturePythonImp::execute()
         }
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
         std::stringstream str;
@@ -272,6 +276,10 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
         return true;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
         ret = 0;
@@ -301,6 +309,10 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
         return true;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
         return true;
@@ -346,6 +358,10 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
         return true;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
         ret = 0;
@@ -369,11 +385,14 @@ int FeaturePythonImp::hasChildElement() const {
         return static_cast<bool>(ok) ? 1 : 0;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return -1;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return 0;
     }
-
-    return -1;
 }
 
 int FeaturePythonImp::isElementVisible(const char *element) const {
@@ -386,10 +405,14 @@ int FeaturePythonImp::isElementVisible(const char *element) const {
         return Py::Int(Base::pyCall(py_isElementVisible.ptr(),args.ptr()));
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return -2;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return -1;
     }
-    return -2;
 }
 
 int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
@@ -403,11 +426,14 @@ int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
         return Py::Int(Base::pyCall(py_setElementVisible.ptr(),args.ptr()));
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return -2;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return -1;
     }
-
-    return -2;
 }
 
 std::string FeaturePythonImp::getViewProviderName()
@@ -437,6 +463,10 @@ int FeaturePythonImp::canLinkProperties() const {
         return ok?1:0;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return -1;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
         return 0;
@@ -453,6 +483,10 @@ int FeaturePythonImp::allowDuplicateLabel() const {
         return ok?1:0;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return -1;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
         return 0;
@@ -469,13 +503,17 @@ int FeaturePythonImp::canLoadPartial() const {
         return ret;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return -1;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return 0;
     }
-    return -1;
 }
 
-bool FeaturePythonImp::redirectSubName(std::ostringstream &ss,
+int FeaturePythonImp::redirectSubName(std::ostringstream &ss,
         App::DocumentObject *topParent, App::DocumentObject *child) const 
 {
     FC_PY_CALL_CHECK(redirectSubName);
@@ -488,16 +526,20 @@ bool FeaturePythonImp::redirectSubName(std::ostringstream &ss,
         args.setItem(3,child?Py::Object(child->getPyObject(),true):Py::Object());
         Py::Object ret(Base::pyCall(py_redirectSubName.ptr(),args.ptr()));
         if(ret.isNone())
-            return false;
+            return 0;
         ss.str("");
         ss << ret.as_string();
-        return true;
+        return 1;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return -1;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return 0;
     }
-    return false;
 }
 
 // ---------------------------------------------------------
