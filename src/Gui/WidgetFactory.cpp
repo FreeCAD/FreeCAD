@@ -413,10 +413,18 @@ QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
             return reinterpret_cast<QIcon*>(cppobject);
         }
     }
-#else
-    Q_UNUSED(pyobj);
-#endif
     return 0;
+#elif QT_VERSION >= 0x050000
+    // Access shiboken2/PySide2 via Python
+    //
+    QObject* ptr = reinterpret_cast<QObject*>(qt_getCppPointer(pyobject, "shiboken2", "getCppPointer"));
+    return qobject_cast<QIcon*>(ptr);
+#else
+    // Access shiboken/PySide via Python
+    //
+    QObject* ptr = reinterpret_cast<QObject*>(qt_getCppPointer(pyobject, "shiboken", "getCppPointer"));
+    return qobject_cast<QIcon*>(ptr);
+#endif
 }
 
 Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
