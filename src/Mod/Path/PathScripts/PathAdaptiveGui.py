@@ -31,17 +31,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getForm(self):
         form = QtGui.QWidget()
         layout = QtGui.QVBoxLayout()
+        formLayout = QtGui.QFormLayout()
 
         # tool controller
-        hlayout = QtGui.QHBoxLayout()
         form.ToolController = QtGui.QComboBox()
-        form.ToolControllerLabel = QtGui.QLabel("Tool Controller")
-        hlayout.addWidget(form.ToolControllerLabel)
-        hlayout.addWidget(form.ToolController)
-        layout.addLayout(hlayout)
+        formLayout.addRow(QtGui.QLabel("Tool Controller"), form.ToolController)
+
+        # Coolant controller
+        form.coolantController = QtGui.QComboBox()
+        formLayout.addRow(QtGui.QLabel("Coolant Mode"), form.coolantController)
 
         # cut region
-        formLayout = QtGui.QFormLayout()
         form.Side = QtGui.QComboBox()
         form.Side.addItem("Inside")
         form.Side.addItem("Outside")
@@ -148,6 +148,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.LiftDistance.valueChanged)
         signals.append(self.form.KeepToolDownRatio.valueChanged)
         signals.append(self.form.StockToLeave.valueChanged)
+        signals.append(self.form.coolantController.currentIndexChanged)
 
         # signals.append(self.form.ProcessHoles.stateChanged)
         signals.append(self.form.ForceInsideOut.stateChanged)
@@ -171,6 +172,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         # self.form.ProcessHoles.setChecked(obj.ProcessHoles)
         self.form.ForceInsideOut.setChecked(obj.ForceInsideOut)
         self.setupToolController(obj, self.form.ToolController)
+        self.setupCoolant(obj, self.form.coolantController)
         self.form.StopButton.setChecked(obj.Stopped)
         obj.setEditorMode('AdaptiveInputState', 2)  # hide this property
         obj.setEditorMode('AdaptiveOutputState', 2)  # hide this property
@@ -203,6 +205,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.StopProcessing = True
 
         self.updateToolController(obj, self.form.ToolController)
+        self.updateCoolant(obj, self.form.coolantController)
         obj.setEditorMode('AdaptiveInputState', 2)  # hide this property
         obj.setEditorMode('AdaptiveOutputState', 2)  # hide this property
         obj.setEditorMode('StopProcessing', 2)  # hide this property

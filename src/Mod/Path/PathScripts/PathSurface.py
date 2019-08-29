@@ -117,7 +117,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def opFeatures(self, obj):
         '''opFeatures(obj) ... return all standard features and edges based geomtries'''
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown  | PathOp.FeatureCoolant 
 
     def initOperation(self, obj):
         '''initPocketOp(obj) ... create facing specific properties'''
