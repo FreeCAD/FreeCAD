@@ -579,8 +579,8 @@ def getVector(entity,scaling=1000):
             v = FreeCAD.Vector(tuple(entity.Coordinates))
         else:
             v = FreeCAD.Vector(tuple(entity.Coordinates+[0]))
-    #if v:
-    #    v.multiply(scaling)
+    # if v:
+    #     v.multiply(scaling)
     return v
 
 

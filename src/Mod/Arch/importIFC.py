@@ -232,10 +232,10 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
 
     # IfcOpenShell multiplies the precision value of the file by 100
     # So we raise the precision by 100 too to compensate...
-    #ctxs = ifcfile.by_type("IfcGeometricRepresentationContext")
-    #for ctx in ctxs:
-    #    if not ctx.is_a("IfcGeometricRepresentationSubContext"):
-    #        ctx.Precision = ctx.Precision/100
+    # ctxs = ifcfile.by_type("IfcGeometricRepresentationContext")
+    # for ctx in ctxs:
+    #     if not ctx.is_a("IfcGeometricRepresentationSubContext"):
+    #         ctx.Precision = ctx.Precision/100
 
     # set default ifcopenshell options to work in brep mode
     from ifcopenshell import geom
@@ -623,7 +623,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                 for attribute in ArchIFCSchema.IfcProducts[product.is_a()]["attributes"]:
                     if attribute["name"] == "Name":
                         continue
-                    #print("attribute:",attribute["name"])
+                    # print("attribute:",attribute["name"])
                     if hasattr(product, attribute["name"]) and getattr(product, attribute["name"]) and hasattr(obj,attribute["name"]):
                         #print("Setting attribute",attribute["name"],"to",getattr(product, attribute["name"]))
                         setattr(obj, attribute["name"], getattr(product, attribute["name"]))
@@ -726,7 +726,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                                     if preferences['DEBUG']:
                                         print("property NominalValue",l.NominalValue.is_a(),type(l.NominalValue.is_a()))
                                         print("property NominalValue.wrappedValue",l.NominalValue.wrappedValue,type(l.NominalValue.wrappedValue))
-                                        #print("l.NominalValue.Unit",l.NominalValue.Unit,type(l.NominalValue.Unit))
+                                        # print("l.NominalValue.Unit",l.NominalValue.Unit,type(l.NominalValue.Unit))
                                     ifc_spreadsheet.set(str('C'+str(n)), l.NominalValue.is_a())
                                     if l.NominalValue.is_a() in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
                                         if six.PY2:
@@ -1075,8 +1075,8 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
     # Materials
 
     if preferences['DEBUG'] and materials: print("Creating materials...",end="")
-    #print("mattable:",mattable)
-    #print("materials:",materials)
+    # print("mattable:",mattable)
+    # print("materials:",materials)
     fcmats = {}
     for material in materials:
         # get and set material name
