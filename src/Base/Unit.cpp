@@ -452,6 +452,7 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::HeatFlux                    )       return QString::fromLatin1("HeatFlux");
     if(*this == Unit::DynamicViscosity            )       return QString::fromLatin1("DynamicViscosity");
     if(*this == Unit::KinematicViscosity          )       return QString::fromLatin1("KinematicViscosity");
+    if(*this == Unit::VacuumPermittivity          )       return QString::fromLatin1("VacuumPermittivity");
 
     return QString();
 
@@ -499,3 +500,4 @@ Unit Unit::ThermalTransferCoefficient  (0,1,-3,0,-1);
 Unit Unit::HeatFlux                    (0,1,-3,0,0);
 Unit Unit::DynamicViscosity            (-1,1,-1);  // SI unit: kg/m/s
 Unit Unit::KinematicViscosity          (2,0,-1);  // SI unit: m^2/s, https://en.wikipedia.org/wiki/Viscosity#Kinematic_viscosity
+Unit Unit::VacuumPermittivity          (-3,-1,4,2); // SI unit: A²*s⁴/kg/m³ https://en.wikipedia.org/wiki/Permittivity#Vacuum_permittivity

@@ -717,6 +717,7 @@ App.Units.Length        = App.Units.Unit(1)
 App.Units.Area          = App.Units.Unit(2)
 App.Units.Volume        = App.Units.Unit(3)
 App.Units.Mass          = App.Units.Unit(0,1) 
+# (length, weight, time, current, temperature, amount of substance, luminous intensity, angle)
 
 # Angle
 App.Units.Angle            = App.Units.Unit(0,0,0,0,0,0,0,1)
@@ -755,6 +756,7 @@ App.Units.ThermalTransferCoefficient   = App.Units.Unit(0,1,-3,0,-1)
 App.Units.HeatFlux                     = App.Units.Unit(0,1,-3,0,0)
 App.Units.DynamicViscosity             = App.Units.Unit(-1,1,-1)
 App.Units.KinematicViscosity           = App.Units.Unit(2,0,-1)
+App.Units.VacuumPermittivity           = App.Units.Unit(-3,-1,4,2)
 
 # clean up namespace
 del(InitApplications)
