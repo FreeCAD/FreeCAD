@@ -166,7 +166,7 @@ def buildRelProductsAnnotations(ifcfile, root_element):
 def buildRelProductRepresentation(ifcfile):
     """build the product/representations relation table"""
 
-    prodrepr = {} # product/representations table
+    prodrepr = {}  # product/representations table
 
     for p in ifcfile.by_type("IfcProduct"):
         if hasattr(p,"Representation"):
@@ -188,7 +188,7 @@ def buildRelProductRepresentation(ifcfile):
 def buildRelAdditions(ifcfile):
     """build the additions relation table"""
 
-    additions = {} # { host:[child,...], ... }
+    additions = {}  # { host:[child,...], ... }
 
     for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
         additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
@@ -201,7 +201,7 @@ def buildRelAdditions(ifcfile):
 def buildRelGroups(ifcfile):
     """build the groups relation table"""
 
-    groups = {} # { host:[child,...], ... }     # used in structural IFC
+    groups = {}  # { host:[child,...], ... }     # used in structural IFC
 
     for r in ifcfile.by_type("IfcRelAssignsToGroup"):
         groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
@@ -212,7 +212,7 @@ def buildRelGroups(ifcfile):
 def buildRelSubtractions(ifcfile):
     """build the subtractions relation table"""
 
-    subtractions = [] # [ [opening,host], ... ]
+    subtractions = []  # [ [opening,host], ... ]
 
     for r in ifcfile.by_type("IfcRelVoidsElement"):
         subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
@@ -223,7 +223,7 @@ def buildRelSubtractions(ifcfile):
 def buildRelMattable(ifcfile):
     """build the mattable relation table"""
 
-    mattable = {} # { objid:matid }
+    mattable = {}  # { objid:matid }
 
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         for o in r.RelatedObjects:
@@ -239,12 +239,20 @@ def buildRelMattable(ifcfile):
     return mattable
 
 
+# ************************************************************************************************
+# color relation tables
+# products can have a color and materials can have a color and products can have a material
+# colors for material assigned to a product and product color can be different
+
+
 def buildRelColors(ifcfile, prodrepr):
     """build the colors relation table and"""
 
-    colors = {} # { id:(r,g,b) }
+    # returns all IfcStyledItem colors, material and product colors
+    colors = {}  # { id:(r,g,b) }
     style_material_id = {}  # { style_entity_id: material_id) }
 
+    # get style_color_rgb table
     style_color_rgb = {}  # { style_entity_id: (r,g,b) }
     for r in ifcfile.by_type("IfcStyledItem"):
         if r.Styles:
@@ -256,11 +264,35 @@ def buildRelColors(ifcfile, prodrepr):
                                 if style2.SurfaceColour:
                                     c = style2.SurfaceColour
                                     style_color_rgb[r.id()] = (c.Red,c.Green,c.Blue)
+
         # Nova
+        # FIXME: style_entity_id = { style_entity_id: product_id } not material_id ???
+        # see https://forum.freecadweb.org/viewtopic.php?f=39&t=37940&start=10#p329491
+        # last code change in these color code https://github.com/FreeCAD/FreeCAD/commit/2d1f6ab1
+        '''
         if r.Item:
+            # print(r.id())
+            # print(r.Item)  # IfcRepresentationItem or IfcShapeRepresentation
             for p in prodrepr.keys():
                 if r.Item.id() in prodrepr[p]:
                     style_material_id[r.id()] = p
+                    # print(p)
+                    # print(ifcfile[p])  # product
+        '''
+    # a much faster version for Nova style_material_id with product_ids
+    # no material colors, Nova ifc files often do not have materials at all
+    for p in prodrepr.keys():
+        # print("\n")
+        # print(ifcfile[p])  # IfcProduct
+        # print(ifcfile[p].Representation)  # IfcProductDefinitionShape
+        # print(ifcfile[p].Representation.Representations[0])  # IfcShapeRepresentation
+        # print(ifcfile[p].Representation.Representations[0].Items[0])  # IfcRepresentationItem
+        # print(ifcfile[p].Representation.Representations[0].Items[0].StyledByItem[0])  # IfcStyledItem
+        # print(ifcfile[p].Representation.Representations[0].Items[0].StyledByItem[0].id())
+        # print(p)
+        representation_item = ifcfile[p].Representation.Representations[0].Items[0]
+        if hasattr(representation_item, "StyledByItem") and representation_item.StyledByItem:
+            style_material_id[representation_item.StyledByItem[0].id()] = p
 
     # Allplan, ArchiCAD
     for m in ifcfile.by_type("IfcMaterialDefinitionRepresentation"):
@@ -273,16 +305,123 @@ def buildRelColors(ifcfile, prodrepr):
         if k in style_color_rgb:
             colors[style_material_id[k]] = style_color_rgb[k]
 
-    return colors, style_material_id
+    return colors
 
 
-def getRelProperties(ifcfile):
-    """Builds and returns a dictionary of {object:[properties]} from an IFC file"""
+def buildRelProductColors(ifcfile, prodrepr):
 
-    # this method no longer used by this importer module
+    # gets the colors for the products
+    colors = {}  # { id:(r,g,b) }
+
+    for p in prodrepr.keys():
+
+        # print(p)
+
+        # representation item, see docu IfcRepresentationItem
+        # all kind of geometric or topological representation items
+        # IfcExtrudedAreaSolid, IfcMappedItem, IfcFacetedBrep, IfcBooleanResult, etc
+        representation_item = ifcfile[p].Representation.Representations[0].Items[0]
+        # print(representation_item)
+
+        # get the geometric representations which have a presentation style
+        # all representation items have the inverse attribute StyledByItem for this
+        # there will be gemetric representations which do not have a presentation style
+        # the StyledByItem will be empty than
+        if representation_item.StyledByItem:
+
+            # it has to be a IfcStyledItem, no check needed
+            styled_item = representation_item.StyledByItem[0]
+
+            # write into colors table if a IfcStyledItem exists for this product
+            # write None if something goes wrong or if the ifc file has errors and thus no valid color is returned
+            colors[p] = getColorFromStyledItem(styled_item)
+
+    return colors
+
+
+def buildRelMaterialColors(ifcfile, prodrepr):
+    # not implemented
+    pass
+
+
+def getColorFromStyledItem(styled_item):
+
+    # styled_item should be a IfcStyledItem
+    if not styled_item.is_a("IfcStyledItem"):
+        print("Not a IfcStyledItem passed.")
+        return None
+
+    rgb_color = None
+
+    # print(styled_item)
+    # The IfcStyledItem holds presentation style information for products,
+    # either explicitly for an IfcGeometricRepresentationItem being part of
+    # an IfcShapeRepresentation assigned to a product, or by assigning presentation
+    # information to IfcMaterial being assigned as other representation for a product.
+
+    # In current IFC release (IFC2x3) only one presentation style assignment shall be assigned.
+
+    if len(styled_item.Styles) != 1:
+        if len(styled_item.Styles) == 0:
+            pass
+            # ca 100x in 210_King_Merged.ifc
+            # empty styles, #4952778=IfcStyledItem(#4952779,(),$)
+            # this is an error in the ifc file IMHO
+            # print(ifcfile[p])
+            # print(styled_item)
+            # print(styled_item.Styles)
+        else:
+            pass
+            # never seen an ifc with more than one Styles in IfcStyledItem
+    else:
+        # get the IfcPresentationStyleAssignment, there should only be one, see above
+        assign_style = styled_item.Styles[0]
+        # print(assign_style)  # IfcPresentationStyleAssignment
+
+        # IfcPresentationStyleAssignment can hold various kinde and count of styles
+        # see IfcPresentationStyleSelect
+        if assign_style.Styles[0].is_a("IfcSurfaceStyle"):
+            # Schependomlaan and Nova and others
+            # print(assign_style.Styles[0].Styles[0])  # IfcSurfaceStyleRendering
+            rgb_color = assign_style.Styles[0].Styles[0].SurfaceColour  # IfcColourRgb
+            # print(rgb_color)
+        elif assign_style.Styles[0].is_a("IfcCurveStyle"):
+            if (
+                len(assign_style.Styles) == 2
+                and assign_style.Styles[1].is_a("IfcSurfaceStyle")
+            ):
+                # Allplan, new IFC export started in 2017
+                # print(assign_style.Styles[0].CurveColour)  # IfcDraughtingPreDefinedColour
+                # on index 1 ist das was wir brauchen !!!
+                rgb_color = assign_style.Styles[1].Styles[0].SurfaceColour
+                # print(rgb_color)
+            else:
+                # 2x Annotations in 210_King_Merged.ifc
+                # print(ifcfile[p])
+                # print(assign_style.Styles[0])
+                # print(assign_style.Styles[0].CurveColour)
+                rgb_color = assign_style.Styles[0].CurveColour
+
+    if rgb_color is not None:
+        col = rgb_color.Red, rgb_color.Green, rgb_color.Blue
+        # print(col)
+    else:
+        col = None
+
+    return col
+
+
+# ************************************************************************************************
+# property related methods
+def buildRelProperties(ifcfile):
+    """
+    Builds and returns a dictionary of {object:[properties]} from an IFC file
+    """
+
+    # this method no longer used by the importer module
     # but this relation table might be useful anyway for other purposes
 
-    properties = {} # { objid : { psetid : [propertyid, ... ], ... }, ... }
+    properties = {}  # { objid : { psetid : [propertyid, ... ], ... }, ... }
     for r in ifcfile.by_type("IfcRelDefinesByProperties"):
         for obj in r.RelatedObjects:
             if not obj.id() in properties:
@@ -312,6 +451,37 @@ def getIfcPropertySets(ifcfile, pid):
     return psets
 
 
+def getIfcProperties(ifcfile, pid, psets, d):
+    """builds valid property values for FreeCAD"""
+
+    for pset in psets.keys():
+        # print("reading pset: ",pset)
+        psetname = ifcfile[pset].Name
+        if six.PY2:
+            psetname = psetname.encode("utf8")
+        for prop in psets[pset]:
+            e = ifcfile[prop]
+            pname = e.Name
+            if six.PY2:
+                pname = pname.encode("utf8")
+            if e.is_a("IfcPropertySingleValue"):
+                if e.NominalValue:
+                    ptype = e.NominalValue.is_a()
+                    if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
+                        pvalue = e.NominalValue.wrappedValue
+                        if six.PY2:
+                            pvalue = pvalue.encode("utf8")
+                    else:
+                        pvalue = str(e.NominalValue.wrappedValue)
+                    if hasattr(e.NominalValue,'Unit'):
+                        if e.NominalValue.Unit:
+                            pvalue += e.NominalValue.Unit
+                    d[pname+";;"+psetname] = ptype+";;"+pvalue
+                # print("adding property: ",pname,ptype,pvalue," pset ",psetname)
+    return d
+
+
+# ************************************************************************************************
 def getScaling(ifcfile):
     """returns a scaling factor from file units to mm"""
 
@@ -338,7 +508,7 @@ def getScaling(ifcfile):
     for u in ua.Units:
         if u.UnitType == "LENGTHUNIT":
             if u.is_a("IfcConversionBasedUnit"):
-                f =  getUnit(u.ConversionFactor.UnitComponent)
+                f = getUnit(u.ConversionFactor.UnitComponent)
                 return f * u.ConversionFactor.ValueComponent.wrappedValue
             elif u.is_a("IfcSIUnit") or u.is_a("IfcUnit"):
                 return getUnit(u)
@@ -378,8 +548,8 @@ def getPlacement(entity,scaling=1000):
         if loc:
             pl.move(loc)
     elif entity.is_a("IfcLocalPlacement"):
-        pl = getPlacement(entity.PlacementRelTo,1) # original placement
-        relpl = getPlacement(entity.RelativePlacement,1) # relative transf
+        pl = getPlacement(entity.PlacementRelTo,1)  # original placement
+        relpl = getPlacement(entity.RelativePlacement,1)  # relative transf
         if pl and relpl:
             pl = pl.multiply(relpl)
         elif relpl:
@@ -401,7 +571,7 @@ def getVector(entity,scaling=1000):
     v = None
     if entity.is_a("IfcDirection"):
         if len(entity.DirectionRatios) == 3:
-            v= FreeCAD.Vector(tuple(entity.DirectionRatios))
+            v = FreeCAD.Vector(tuple(entity.DirectionRatios))
         else:
             v = FreeCAD.Vector(tuple(entity.DirectionRatios+[0]))
     elif entity.is_a("IfcCartesianPoint"):
@@ -409,8 +579,8 @@ def getVector(entity,scaling=1000):
             v = FreeCAD.Vector(tuple(entity.Coordinates))
         else:
             v = FreeCAD.Vector(tuple(entity.Coordinates+[0]))
-    #if v:
-    #    v.multiply(scaling)
+    # if v:
+    #     v.multiply(scaling)
     return v
 
 
@@ -507,43 +677,13 @@ def get2DShape(representation,scaling=1000):
                     if rot.Angle:
                         pla.Rotation = rot
                     for r in preresult:
-                        #r.Placement = pla
+                        # r.Placement = pla
                         result.append(r)
                 else:
                     result = preresult
             elif item.is_a("IfcTextLiteral"):
                 t = Draft.makeText([item.Literal],point=getPlacement(item.Placement,scaling).Base)
-                return t # dirty hack... Object creation should not be done here
+                return t  # dirty hack... Object creation should not be done here
     elif representation.is_a() in ["IfcPolyline","IfcCircle","IfcTrimmedCurve"]:
         result = getCurveSet(representation)
     return result
-
-
-def getIfcProperties(ifcfile, pid, psets, d):
-    """builds valid property values for FreeCAD"""
-
-    for pset in psets.keys():
-        #print("reading pset: ",pset)
-        psetname = ifcfile[pset].Name
-        if six.PY2:
-            psetname = psetname.encode("utf8")
-        for prop in psets[pset]:
-            e = ifcfile[prop]
-            pname = e.Name
-            if six.PY2:
-                pname = pname.encode("utf8")
-            if e.is_a("IfcPropertySingleValue"):
-                if e.NominalValue:
-                    ptype = e.NominalValue.is_a()
-                    if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
-                        pvalue = e.NominalValue.wrappedValue
-                        if six.PY2:
-                            pvalue = pvalue.encode("utf8")
-                    else:
-                        pvalue = str(e.NominalValue.wrappedValue)
-                    if hasattr(e.NominalValue,'Unit'):
-                        if e.NominalValue.Unit:
-                            pvalue += e.NominalValue.Unit
-                    d[pname+";;"+psetname] = ptype+";;"+pvalue
-                #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
-    return d

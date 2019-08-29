@@ -229,7 +229,6 @@ void QGITile::makeText(void)
     m_qgTextC->setPlainText(m_textC);
     m_qgTextC->setColor(m_colCurrent);
     double textHeightC = m_qgTextC->boundingRect().height();
-    textHeightC = textHeightC;
     if (m_row < 0) {                      // below line
         vOffset = m_high  * (1 + verticalFudge);
     } else {

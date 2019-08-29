@@ -1033,6 +1033,8 @@ void MDIViewPage::clearSceneSelection()
 //!Update QGIView's selection state based on Selection made outside Drawing Interface
 void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
 {
+//    Base::Console().Message("MDIVP::selectQGIV(%s) - %d\n", obj->getNameInDocument(), isSelected);
+
     App::DocumentObject* objCopy = obj;
     TechDraw::DrawHatch* hatchObj = dynamic_cast<TechDraw::DrawHatch*>(objCopy);
     if (hatchObj) {                                                    //Hatch does not have a QGIV of it's own. mark parent as selected.
@@ -1055,6 +1057,7 @@ void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
 //really "onTreeSelectionChanged"
 void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+//    Base::Console().Message("MDIVP::onSelectionChanged()\n");
     std::vector<Gui::SelectionSingleton::SelObj> selObjs = Gui::Selection().getSelection(msg.pDocName);
     if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         clearSceneSelection();
@@ -1082,6 +1085,7 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 //! maintain QGScene selected items in selection order
 void MDIViewPage::sceneSelectionManager()
 {
+//    Base::Console().Message("MDIVP::sceneSelectionManager()\n");
     QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
 
     if (sceneSel.isEmpty()) {
@@ -1128,6 +1132,7 @@ void MDIViewPage::sceneSelectionManager()
 //triggered by m_view->scene() signal
 void MDIViewPage::sceneSelectionChanged()
 {
+//    Base::Console().Message("MDIVP::sceneSelctionChanged()\n");
     sceneSelectionManager();
 
 //    QList<QGraphicsItem*> dbsceneSel = m_view->scene()->selectedItems();
@@ -1152,6 +1157,7 @@ void MDIViewPage::sceneSelectionChanged()
 //Note: Qt says: "no guarantee of selection order"!!!
 void MDIViewPage::setTreeToSceneSelect(void)
 {
+//    Base::Console().Message("MDIVP::setTreeToSceneSelect()\n");
     bool saveBlock = blockConnection(true); // block selectionChanged signal from Tree/Observer
     blockSelection(true);
     Gui::Selection().clearSelection();
@@ -1319,6 +1325,7 @@ void MDIViewPage::setTreeToSceneSelect(void)
 
 bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel)
 {
+//    Base::Console().Message("MDIVP::compareSelections()\n");
     bool result = true;
 
     if (treeSel.empty() && sceneSel.empty()) {

@@ -354,6 +354,7 @@ class TaskPanelPage(object):
         controllers = PathUtils.getToolControllers(self.obj)
         labels = [c.Label for c in controllers]
         combo.blockSignals(True)
+        combo.clear()
         combo.addItems(labels)
         combo.blockSignals(False)
 
@@ -368,6 +369,24 @@ class TaskPanelPage(object):
         if obj.ToolController != tc:
             obj.ToolController = tc
 
+    def setupCoolant(self, obj, combo):
+        '''setupCoolant(obj, combo) ... helper function to setup obj's Coolant option.'''
+        job = PathUtils.findParentJob(obj)
+        options = job.SetupSheet.CoolantModes
+        combo.blockSignals(True)
+        combo.clear()
+        combo.addItems(options)
+        combo.blockSignals(False)
+        
+        if hasattr(obj, 'CoolantMode'):
+            self.selectInComboBox(obj.CoolantMode, combo)
+
+    def updateCoolant(self, obj, combo):
+        '''updateCoolant(obj, combo) ... helper function to update obj's Coolant property if a different one has been selected in the combo box.'''
+        option = combo.currentText()
+        if hasattr(obj, 'CoolantMode'):
+            if obj.CoolantMode != option:
+                obj.CoolantMode = option
 
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     '''Page controller for the base geometry.'''

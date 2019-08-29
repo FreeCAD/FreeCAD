@@ -192,6 +192,9 @@ class ViewProviderLayer:
                         for p in ["LineColor","ShapeColor","LineWidth","DrawStyle","Transparency"]:
                             if hasattr(vobj,p) and hasattr(o.ViewObject,p):
                                 setattr(o.ViewObject,p,getattr(vobj,p))
+                        # give line color to texts
+                        if hasattr(vobj,"LineColor") and hasattr(o.ViewObject,"TextColor"):
+                            o.ViewObject.TextColor = vobj.LineColor
 
         if (prop == "Visibility") and hasattr(vobj,"Visibility"):
             if hasattr(vobj,"Object")and hasattr(vobj.Object,"Group"):
@@ -268,9 +271,13 @@ class ViewProviderLayer:
     def setupContextMenu(self,vobj,menu):
 
         from PySide import QtCore,QtGui
+        import Draft_rc
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/button_right.svg"),translate("draft","Activate this layer"),menu)
         action1.triggered.connect(self.activate)
         menu.addAction(action1)
+        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectGroup.svg"),translate("draft","Select contents"),menu)
+        action2.triggered.connect(self.selectcontents)
+        menu.addAction(action2)
 
     def activate(self):
 
@@ -278,6 +285,13 @@ class ViewProviderLayer:
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(self.Object)
             FreeCADGui.runCommand("Draft_AutoGroup")
+
+    def selectcontents(self):
+        
+        if hasattr(self,"Object"):
+            FreeCADGui.Selection.clearSelection()
+            for o in self.Object.Group:
+                FreeCADGui.Selection.addSelection(o)
 
 
 class LayerContainer:

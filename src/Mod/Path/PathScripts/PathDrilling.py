@@ -43,7 +43,7 @@ __title__ = "Path Drilling Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Drilling operation."
-__contributors__ = "russ4262 (Russell Johnson)"
+__contributors__ = "russ4262 (Russell Johnson), IMBack!"
 __created__ = "2014"
 __scriptVersion__ = "1c testing"
 __lastModified__ = "2019-06-25 14:49 CST"
@@ -68,7 +68,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
     def circularHoleFeatures(self, obj):
         '''circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations.'''
         # return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureRotation
-        return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations
+        return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
 
     def initCircularHoleOperation(self, obj):
         '''initCircularHoleOperation(obj) ... add drilling specific properties to obj.'''
@@ -77,10 +77,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyFloat", "DwellTime", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The time to dwell between peck cycles"))
         obj.addProperty("App::PropertyBool", "DwellEnabled", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable dwell"))
         obj.addProperty("App::PropertyBool", "AddTipLength", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate the tip length and subtract from final depth"))
-        obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G98"))
-        obj.ReturnLevel = ['G98', 'G99']  # this is the direction that the Contour runs
-
-        obj.addProperty("App::PropertyDistance", "RetractHeight", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished"))
+        obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G99"))
+        obj.ReturnLevel = ['G99', 'G98']  # Canned Cycle Return Level
+        obj.addProperty("App::PropertyDistance", "RetractHeight", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished while in a peck operation"))
 
         # Rotation related properties
         if not hasattr(obj, 'EnableRotation'):
@@ -115,14 +114,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         holes = PathUtils.sort_jobs(holes, ['x', 'y'])
         self.commandlist.append(Path.Command('G90'))
         self.commandlist.append(Path.Command(obj.ReturnLevel))
-
-        # ml: I'm not sure whey these were here, they seem redundant
-        # # rapid to first hole location, with spindle still retracted:
-        # p0 = holes[0]
-        # self.commandlist.append(Path.Command('G0', {'X': p0['x'], 'Y': p0['y'], 'F': self.horizRapid}))
-        # # move tool to clearance plane
-        # self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-
+ 
         for p in holes:
             cmd = "G81"
             cmdParams = {}
@@ -172,10 +164,12 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 self.commandlist.append(Path.Command('G0', {axisOfRot: angle, 'F': self.axialRapid}))
                 self.commandlist.append(Path.Command('G0', {'X': p['x'], 'Y': p['y'], 'F': self.horizRapid}))
                 self.commandlist.append(Path.Command('G1', {'Z': p['stkTop'], 'F': self.vertFeed}))
-
+            
             # Perform and cancel canned drilling cycle
             self.commandlist.append(Path.Command(cmd, params))
-            self.commandlist.append(Path.Command('G80'))
+            self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value}))
+            
+
 
             # shift axis and angle values
             if obj.EnableRotation != 'Off':
@@ -186,9 +180,27 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
             self.commandlist.append(Path.Command('G0', {lastAxis: 0.0, 'F': self.axialRapid}))
 
+
     def opSetDefaultValues(self, obj, job):
         '''opSetDefaultValues(obj, job) ... set default value for RetractHeight'''
-        obj.RetractHeight = 10.0
+        
+        parentJob = PathUtils.findParentJob(obj)
+
+        if hasattr(parentJob.SetupSheet, 'RetractHeight'):
+            obj.RetractHeight = parentJob.SetupSheet.RetractHeight
+        elif self.applyExpression(obj, 'RetractHeight', 'OpStartDepth+1mm'):
+            obj.RetractHeight = 10
+                    
+        if hasattr(parentJob.SetupSheet, 'PeckDepth'):
+            obj.PeckDepth = parentJob.SetupSheet.PeckDepth
+        elif self.applyExpression(obj, 'PeckDepth', 'OpToolDiameter*0.75'):
+            obj.PeckDepth = 1
+            
+        if hasattr(parentJob.SetupSheet, 'DwellTime'):
+            obj.DwellTime = parentJob.SetupSheet.DwellTime
+        else:
+            obj.DwellTime = 1
+                    
         obj.ReverseDirection = False
         obj.InverseAngle = False
         obj.B_AxisErrorOverride = False
@@ -196,7 +208,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         # Initial setting for EnableRotation is taken from Job SetupSheet
         # User may override on per-operation basis as needed.
-        parentJob = PathUtils.findParentJob(obj)
         if hasattr(parentJob.SetupSheet, 'SetupEnableRotation'):
             obj.EnableRotation = parentJob.SetupSheet.SetupEnableRotation
         else:

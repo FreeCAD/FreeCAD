@@ -43,6 +43,7 @@
         <file>icons/actions/techdraw-new-default.svg</file>
         <file>icons/actions/techdraw-new-pick.svg</file>
         <file>icons/actions/techdraw-view.svg</file>
+        <file>icons/actions/techdraw-activeview.svg</file>
         <file>icons/actions/techdraw-multiview.svg</file>
         <file>icons/actions/techdraw-annotation.svg</file>
         <file>icons/actions/techdraw-clip.svg</file>
