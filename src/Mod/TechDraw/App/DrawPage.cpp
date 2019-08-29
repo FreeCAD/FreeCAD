@@ -50,6 +50,7 @@
 #include "DrawViewPart.h"
 #include "DrawViewDimension.h"
 #include "DrawViewBalloon.h"
+#include "DrawLeaderLine.h"
 
 #include <Mod/TechDraw/App/DrawPagePy.h>  // generated from DrawPagePy.xml
 
@@ -75,6 +76,7 @@ DrawPage::DrawPage(void)
 {
     static const char *group = "Page";
     nowUnsetting = false;
+    forceRedraw(false);
     
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
@@ -127,17 +129,7 @@ void DrawPage::onChanged(const App::Property* prop)
             !isUnsetting()) {
             //would be nice if this message was displayed immediately instead of after the recomputeFeature
             Base::Console().Message("Rebuilding Views for: %s/%s\n",getNameInDocument(),Label.getValue());
-            auto views(Views.getValues());
-            for (auto& v: views) {
-                //check for children of current view 
-                if (v->isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId()))  {
-                    auto dvc = static_cast<TechDraw::DrawViewCollection*>(v);
-                    for (auto& vv: dvc->Views.getValues()) {
-                        vv->touch();
-                    }
-                }
-                v->recomputeFeature();                   //get all views up to date
-            }
+            updateAllViews();
         }
     } else if (prop == &Template) {
         if (!isRestoring() &&
@@ -339,6 +331,7 @@ void DrawPage::onDocumentRestored()
     App::DocumentObject::onDocumentRestored();
 }
 
+//should really be called "updateMostViews".  can still be problems to due execution order.
 void DrawPage::updateAllViews()
 {
     std::vector<App::DocumentObject*> featViews = getAllViews();
@@ -356,6 +349,14 @@ void DrawPage::updateAllViews()
         TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(*it);
         if (dim != nullptr) {
             dim->recomputeFeature();
+        }
+    }
+
+    //third, try to execute all leader lines. may not work if parent DVP isn't ready.
+    for(it = featViews.begin(); it != featViews.end(); ++it) {
+        TechDraw::DrawLeaderLine *line = dynamic_cast<TechDraw::DrawLeaderLine *>(*it);
+        if (line != nullptr) {
+            line->recomputeFeature();
         }
     }
 }
