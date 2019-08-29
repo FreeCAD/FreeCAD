@@ -451,7 +451,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 try:
                     svg += text[0].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
                 except:
-                    svg += text[0].decode("utf8")
+                    svg += text[0].decode("utf8").replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
             else:
                 for i in range(len(text)):
                     if i == 0:
@@ -459,9 +459,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     else:
                         svg += '<tspan x="0" dy="'+str(linespacing)+'">'
                     try:
-                        svg += text[i]
+                        svg += text[i].replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
                     except:
-                        svg += text[i].decode("utf8")
+                        svg += text[i].decode("utf8").replace("&","&amp;").replace("<","&lt;").replace(">","&gt;")
                     svg += '</tspan>\n'
             svg += '</text>\n'
         return svg
