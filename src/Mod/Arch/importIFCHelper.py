@@ -455,7 +455,7 @@ def getIfcProperties(ifcfile, pid, psets, d):
     """builds valid property values for FreeCAD"""
 
     for pset in psets.keys():
-        #print("reading pset: ",pset)
+        # print("reading pset: ",pset)
         psetname = ifcfile[pset].Name
         if six.PY2:
             psetname = psetname.encode("utf8")
@@ -477,7 +477,7 @@ def getIfcProperties(ifcfile, pid, psets, d):
                         if e.NominalValue.Unit:
                             pvalue += e.NominalValue.Unit
                     d[pname+";;"+psetname] = ptype+";;"+pvalue
-                #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
+                # print("adding property: ",pname,ptype,pvalue," pset ",psetname)
     return d
 
 
@@ -677,7 +677,7 @@ def get2DShape(representation,scaling=1000):
                     if rot.Angle:
                         pla.Rotation = rot
                     for r in preresult:
-                        #r.Placement = pla
+                        # r.Placement = pla
                         result.append(r)
                 else:
                     result = preresult
