@@ -872,21 +872,28 @@ def sortEdgesOld(lEdges, aVertex=None):
             return []
 
 
-def invert(edge):
-    '''invert(edge): returns an inverted copy of this edge'''
-    if len(edge.Vertexes) == 1:
-        return edge
-    if geomType(edge) == "Line":
-        return Part.LineSegment(edge.Vertexes[-1].Point,edge.Vertexes[0].Point).toShape()
-    elif geomType(edge) == "Circle":
-        mp = findMidpoint(edge)
-        return Part.Arc(edge.Vertexes[-1].Point,mp,edge.Vertexes[0].Point).toShape()
-    elif geomType(edge) in ["BSplineCurve","BezierCurve"]:
-        if isLine(edge.Curve):
-            return Part.LineSegment(edge.Vertexes[-1].Point,edge.Vertexes[0].Point).toShape()
-    print("DraftGeomUtils.invert: unable to invert ",edge.Curve)
-    return edge
-
+def invert(shape):
+    '''invert(edge): returns an inverted copy of this edge or wire'''
+    if shape.ShapeType == "Wire":
+        edges = [invert(edge) for edge in shape.OrderedEdges]
+        edges.reverse()
+        return Part.Wire(edges)
+    elif shape.ShapeType == "Edge":
+        if len(shape.Vertexes) == 1:
+            return shape
+        if geomType(shape) == "Line":
+            return Part.LineSegment(shape.Vertexes[-1].Point,shape.Vertexes[0].Point).toShape()
+        elif geomType(shape) == "Circle":
+            mp = findMidpoint(shape)
+            return Part.Arc(shape.Vertexes[-1].Point,mp,shape.Vertexes[0].Point).toShape()
+        elif geomType(shape) in ["BSplineCurve","BezierCurve"]:
+            if isLine(shape.Curve):
+                return Part.LineSegment(shape.Vertexes[-1].Point,shape.Vertexes[0].Point).toShape()
+        print("DraftGeomUtils.invert: unable to invert",shape.Curve)
+        return shape
+    else:
+        print("DraftGeomUtils.invert: unable to handle",shape.ShapeType)
+        return shape
 
 def flattenWire(wire):
     '''flattenWire(wire): forces a wire to get completely flat

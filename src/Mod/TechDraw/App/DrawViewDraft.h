@@ -50,6 +50,7 @@ public:
     App::PropertyColor        Color;
     App::PropertyString       LineStyle;
     App::PropertyFloat        LineSpacing;
+    App::PropertyBool         OverrideStyle;
 
     /** @name methods override Feature */
     //@{
