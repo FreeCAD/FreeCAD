@@ -58,6 +58,7 @@
         <file>icons/actions/techdraw-hatch.svg</file>
         <file>icons/actions/techdraw-geomhatch.svg</file>
         <file>icons/actions/techdraw-toggleframe.svg</file>
+        <file>icons/actions/techdraw-forceredraw.svg</file>
         <file>icons/actions/techdraw-projgroup.svg</file>
         <file>icons/actions/techdraw-spreadsheet.svg</file>
         <file>icons/actions/techdraw-image.svg</file>
