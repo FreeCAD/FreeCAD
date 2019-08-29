@@ -166,7 +166,7 @@ def buildRelProductsAnnotations(ifcfile, root_element):
 def buildRelProductRepresentation(ifcfile):
     """build the product/representations relation table"""
 
-    prodrepr = {} # product/representations table
+    prodrepr = {}  # product/representations table
 
     for p in ifcfile.by_type("IfcProduct"):
         if hasattr(p,"Representation"):
@@ -188,7 +188,7 @@ def buildRelProductRepresentation(ifcfile):
 def buildRelAdditions(ifcfile):
     """build the additions relation table"""
 
-    additions = {} # { host:[child,...], ... }
+    additions = {}  # { host:[child,...], ... }
 
     for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
         additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
@@ -201,7 +201,7 @@ def buildRelAdditions(ifcfile):
 def buildRelGroups(ifcfile):
     """build the groups relation table"""
 
-    groups = {} # { host:[child,...], ... }     # used in structural IFC
+    groups = {}  # { host:[child,...], ... }     # used in structural IFC
 
     for r in ifcfile.by_type("IfcRelAssignsToGroup"):
         groups.setdefault(r.RelatingGroup.id(),[]).extend([e.id() for e in r.RelatedObjects])
@@ -212,7 +212,7 @@ def buildRelGroups(ifcfile):
 def buildRelSubtractions(ifcfile):
     """build the subtractions relation table"""
 
-    subtractions = [] # [ [opening,host], ... ]
+    subtractions = []  # [ [opening,host], ... ]
 
     for r in ifcfile.by_type("IfcRelVoidsElement"):
         subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
@@ -223,7 +223,7 @@ def buildRelSubtractions(ifcfile):
 def buildRelMattable(ifcfile):
     """build the mattable relation table"""
 
-    mattable = {} # { objid:matid }
+    mattable = {}  # { objid:matid }
 
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         for o in r.RelatedObjects:
@@ -249,7 +249,7 @@ def buildRelColors(ifcfile, prodrepr):
     """build the colors relation table and"""
 
     # returns all IfcStyledItem colors, material and product colors
-    colors = {} # { id:(r,g,b) }
+    colors = {}  # { id:(r,g,b) }
     style_material_id = {}  # { style_entity_id: material_id) }
 
     # get style_color_rgb table
@@ -311,7 +311,7 @@ def buildRelColors(ifcfile, prodrepr):
 def buildRelProductColors(ifcfile, prodrepr):
 
     # gets the colors for the products
-    colors = {} # { id:(r,g,b) }
+    colors = {}  # { id:(r,g,b) }
 
     for p in prodrepr.keys():
 
@@ -421,7 +421,7 @@ def buildRelProperties(ifcfile):
     # this method no longer used by the importer module
     # but this relation table might be useful anyway for other purposes
 
-    properties = {} # { objid : { psetid : [propertyid, ... ], ... }, ... }
+    properties = {}  # { objid : { psetid : [propertyid, ... ], ... }, ... }
     for r in ifcfile.by_type("IfcRelDefinesByProperties"):
         for obj in r.RelatedObjects:
             if not obj.id() in properties:
@@ -548,8 +548,8 @@ def getPlacement(entity,scaling=1000):
         if loc:
             pl.move(loc)
     elif entity.is_a("IfcLocalPlacement"):
-        pl = getPlacement(entity.PlacementRelTo,1) # original placement
-        relpl = getPlacement(entity.RelativePlacement,1) # relative transf
+        pl = getPlacement(entity.PlacementRelTo,1)  # original placement
+        relpl = getPlacement(entity.RelativePlacement,1)  # relative transf
         if pl and relpl:
             pl = pl.multiply(relpl)
         elif relpl:
@@ -683,7 +683,7 @@ def get2DShape(representation,scaling=1000):
                     result = preresult
             elif item.is_a("IfcTextLiteral"):
                 t = Draft.makeText([item.Literal],point=getPlacement(item.Placement,scaling).Base)
-                return t # dirty hack... Object creation should not be done here
+                return t  # dirty hack... Object creation should not be done here
     elif representation.is_a() in ["IfcPolyline","IfcCircle","IfcTrimmedCurve"]:
         result = getCurveSet(representation)
     return result
