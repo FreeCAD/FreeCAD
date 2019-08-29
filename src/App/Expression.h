@@ -124,15 +124,16 @@ public:
 
     virtual bool isTouched() const { return false; }
 
-    virtual Expression * eval() const = 0;
+    Expression * eval() const;
 
-    virtual std::string toString(bool persistent=false) const = 0;
+    std::string toString(bool persistent=false, bool checkPriority=false, int indent=0) const;
+    void toString(std::ostream &os, bool persistent=false, bool checkPriority=false, int indent=0) const;
 
     static Expression * parse(const App::DocumentObject * owner, const std::string& buffer);
 
     Expression * copy() const;
 
-    virtual int priority() const { return 0; }
+    virtual int priority() const;
 
     void getIdentifiers(std::set<App::ObjectIdentifier> &) const;
     std::set<App::ObjectIdentifier> getIdentifiers() const;
@@ -163,17 +164,30 @@ public:
     };
 
     App::DocumentObject *  getOwner() const { return owner; }
+    struct Component;
 
-    virtual boost::any getValueAsAny() const = 0;
+    virtual void addComponent(Component* component);
 
-    virtual Py::Object getPyValue() const = 0;
+    typedef std::vector<Component*> ComponentList;
+
+    static Component *createComponent(const std::string &n);
+    static Component *createComponent(Expression *e1, Expression *e2=0,
+            Expression *e3=0, bool isRange=false);
+
+    bool hasComponent() const {return !components.empty();}
+
+    boost::any getValueAsAny() const;
+
+    Py::Object getPyValue() const;
 
     bool isSame(const Expression &other) const;
 
     friend ExpressionVisitor;
 
 protected:
+    virtual bool _isIndexable() const {return false;}
     virtual Expression *_copy() const = 0;
+    virtual void _toString(std::ostream &ss, bool persistent, int indent=0) const = 0;
     virtual void _getDeps(ExpressionDeps &) const  {}
     virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const  {}
     virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const  {}
@@ -193,10 +207,13 @@ protected:
     }
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) {}
     virtual void _offsetCells(int, int, ExpressionVisitor &) {}
+    virtual Py::Object _getPyValue() const = 0;
     virtual void _visit(ExpressionVisitor &) {}
 
 protected:
     App::DocumentObject * owner; /**< The document object used to access unqualified variables (i.e local scope) */
+
+    ComponentList components;
 
 public:
     std::string comment;

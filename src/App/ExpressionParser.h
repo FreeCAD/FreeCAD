@@ -37,6 +37,32 @@ namespace App {
 // included by everyone
 ///////////////////////////////////////////////////////////////////////////////////
 
+struct AppExport Expression::Component {
+    ObjectIdentifier::Component comp;
+    Expression* e1;
+    Expression* e2;
+    Expression* e3;
+
+    Component(const std::string &n);
+    Component(Expression *e1, Expression *e2, Expression *e3, bool isRange=false);
+    Component(const ObjectIdentifier::Component &comp);
+    Component(const Component &other);
+    ~Component();
+    Component &operator=(const Component &)=delete;
+
+    void visit(ExpressionVisitor &v);
+    bool isTouched() const;
+    void toString(std::ostream &ss, bool persistent) const;
+    Component *copy() const;
+    Component *eval() const;
+
+    Py::Object get(const Expression *owner, const Py::Object &pyobj) const;
+    void set(const Expression *owner, Py::Object &pyobj, const Py::Object &value) const;
+    void del(const Expression *owner, Py::Object &pyobj) const;
+};
+
+////////////////////////////////////////////////////////////////////////////////////
+
 /**
   * Part of an expressions that contains a unit.
   *
@@ -47,15 +73,13 @@ class  AppExport UnitExpression : public Expression {
 public:
     UnitExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & _quantity = Base::Quantity(), const std::string & _unitStr = std::string());
 
-    virtual Expression * eval() const override;
+    ~UnitExpression();
 
     virtual Expression * simplify() const override;
 
-    virtual std::string toString(bool persistent=false) const override;
-
-    virtual int priority() const override;
-
     void setUnit(const Base::Quantity &_quantity);
+
+    void setQuantity(const Base::Quantity &_quantity);
 
     double getValue() const { return quantity.getValue(); }
 
@@ -67,14 +91,15 @@ public:
 
     double getScaler() const { return quantity.getValue(); }
 
-    boost::any getValueAsAny() const override { return quantity.getUnit().isEmpty() ? boost::any(quantity.getValue()) : boost::any(quantity); }
-
-    virtual Py::Object getPyValue() const override;
-
 protected:
     virtual Expression * _copy() const override;
+    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    virtual Py::Object _getPyValue() const override;
 
 protected:
+    mutable PyObject *cache = 0;
+
+private:
     Base::Quantity quantity;
     std::string unitStr; /**< The unit string from the original parsed string */
 };
@@ -88,50 +113,36 @@ class AppExport NumberExpression : public UnitExpression {
 public:
     NumberExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & quantity = Base::Quantity());
 
-    virtual Expression * eval() const override;
-
     virtual Expression * simplify() const override;
 
-    virtual int priority() const override;
-
     void negate();
-
-    virtual std::string toString(bool persistent=false) const;
 
     bool isInteger(long *v=0) const;
 
 protected:
     virtual Expression * _copy() const override;
-
+    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
 };
 
 class AppExport ConstantExpression : public NumberExpression {
     TYPESYSTEM_HEADER();
 public:
-    ConstantExpression(const App::DocumentObject *_owner = 0, std::string _name = "", const Base::Quantity &_quantity = Base::Quantity());
-
-    virtual std::string toString(bool persistent=false) const override;
-
-    virtual Expression * _copy() const override;
-
-    virtual int priority() const override;
+    ConstantExpression(const App::DocumentObject *_owner = 0, 
+            const char *_name = "", 
+            const Base::Quantity &_quantity = Base::Quantity());
 
     std::string getName() const { return name; }
 
-protected:
-    std::string name; /**< Constant's name */
-};
-
-class AppExport BooleanExpression : public NumberExpression {
-    TYPESYSTEM_HEADER();
-public:
-    BooleanExpression(const App::DocumentObject *_owner = 0, bool _value = false);
+    bool isNumber() const;
 
 protected:
-    virtual Expression * _copy() const override;
+    virtual Py::Object _getPyValue() const override;
+    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    virtual Expression* _copy() const override;
 
+protected:
+    const char *name;
 };
-
 
 /**
   * Class implementing an infix expression.
@@ -165,11 +176,7 @@ public:
 
     virtual bool isTouched() const override;
 
-    virtual Expression * eval() const override;
-
     virtual Expression * simplify() const override;
-
-    virtual std::string toString(bool persistent=false) const override;
 
     virtual int priority() const override;
 
@@ -179,12 +186,12 @@ public:
 
     Expression * getRight() const { return right; }
 
-    virtual boost::any getValueAsAny() const override;
-
-    virtual Py::Object getPyValue() const override;
-
 protected:
     virtual Expression * _copy() const override;
+
+    virtual Py::Object _getPyValue() const override;
+
+    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
 
     virtual void _visit(ExpressionVisitor & v) override;
 
@@ -208,22 +215,15 @@ public:
 
     virtual bool isTouched() const override;
 
-    virtual Expression * eval() const override;
-
     virtual Expression * simplify() const override;
 
-    virtual std::string toString(bool persistent=false) const override;
-
     virtual int priority() const override;
-
-    virtual boost::any getValueAsAny() const override;
-
-    virtual Py::Object getPyValue() const override;
 
 protected:
     virtual Expression * _copy() const;
     virtual void _visit(ExpressionVisitor & v) override;
-    bool evalCond() const;
+    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    virtual Py::Object _getPyValue() const override;
 
 protected:
 
@@ -290,25 +290,16 @@ public:
 
     virtual bool isTouched() const override;
 
-    virtual Expression * eval() const override;
-
     virtual Expression * simplify() const override;
 
-    virtual std::string toString(bool persistent=false) const override;
-
-    virtual Expression * _copy() const override;
-
-    virtual int priority() const override;
-
-    virtual void _visit(ExpressionVisitor & v) override;
-
-    virtual boost::any getValueAsAny() const override;
-
-    virtual Py::Object getPyValue() const override;
-
+    static Py::Object evaluate(const Expression *owner, int type, const std::vector<Expression*> &args);
 
 protected:
-    Expression *evalAggregate() const;
+    static Py::Object evalAggregate(const Expression *owner, int type, const std::vector<Expression*> &args);
+    virtual Py::Object _getPyValue() const override;
+    virtual Expression * _copy() const override;
+    virtual void _visit(ExpressionVisitor & v) override;
+    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
 
     Function f;        /**< Function to execute */
     std::vector<Expression *> args; /** Arguments to function*/
@@ -331,15 +322,7 @@ public:
 
     virtual bool isTouched() const override;
 
-    virtual Expression * eval() const override;
-
     virtual Expression * simplify() const override;
-
-    virtual std::string toString(bool persistent=false) const override;
-
-    virtual Expression * _copy() const override;
-
-    virtual int priority() const override;
 
     std::string name() const { return var.getPropertyName(); }
 
@@ -349,11 +332,13 @@ public:
 
     const App::Property *getProperty() const;
 
-    virtual boost::any getValueAsAny() const override;
-
-    virtual Py::Object getPyValue() const override;
+    virtual void addComponent(Component* component) override;
 
 protected:
+    virtual Expression * _copy() const override;
+    virtual Py::Object _getPyValue() const override;
+    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    virtual bool _isIndexable() const override;
     virtual void _getDeps(ExpressionDeps &) const override;
     virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const override;
     virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const override;
@@ -391,16 +376,12 @@ public:
 
     void setPyValue(Py::Object pyobj);
     void setPyValue(PyObject *pyobj, bool owned=false);
-
-    virtual std::string toString(bool) const override;
-    virtual boost::any getValueAsAny() const override;
-    virtual Py::Object getPyValue() const override;
-
-    virtual Expression * eval() const override { return copy(); }
     virtual Expression * simplify() const override { return copy(); }
 
 protected:
     virtual Expression* _copy() const override;
+    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    virtual Py::Object _getPyValue() const override;
 
 protected:
     PyObject *pyObj = 0;
@@ -415,25 +396,20 @@ class AppExport StringExpression : public Expression {
     TYPESYSTEM_HEADER();
 public:
     StringExpression(const App::DocumentObject *_owner = 0, const std::string & _text = std::string());
-
-    virtual Expression * eval() const override;
+    ~StringExpression();
 
     virtual Expression * simplify() const override;
 
-    virtual std::string toString(bool persistent=false) const override;
-
     virtual std::string getText() const { return text; }
-
-    virtual int priority() const override;
-
-    virtual boost::any getValueAsAny() const override;
-
-    virtual Py::Object getPyValue() const override;
-
 protected:
     virtual Expression * _copy() const override;
+    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    virtual Py::Object _getPyValue() const override;
+    virtual bool _isIndexable() const override { return true; }
 
+private:
     std::string text; /**< Text string */
+    mutable PyObject *cache = 0;
 };
 
 class AppExport RangeExpression : public App::Expression {
@@ -445,22 +421,14 @@ public:
 
     virtual bool isTouched() const override;
 
-    virtual Expression * eval() const override;
-
-    virtual std::string toString(bool persistent=false) const override;
-
-    virtual int priority() const override;
-
     virtual App::Expression * simplify() const override;
 
     Range getRange() const;
 
-    virtual boost::any getValueAsAny() const override;
-
-    virtual Py::Object getPyValue() const override;
-
 protected:
     virtual Expression * _copy() const override;
+    virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
+    virtual Py::Object _getPyValue() const override;
     virtual void _getDeps(ExpressionDeps &) const override;
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &) override;
@@ -500,13 +468,14 @@ public:
     Base::Quantity scaler;
     std::string unitStr;
   } quantity;
+  Expression::Component *component;
   Expression * expr;
   ObjectIdentifier path;
   std::deque<ObjectIdentifier::Component> components;
   long long int ivalue;
   double fvalue;
   struct {
-    std::string name;
+    const char *name = "";
     double fvalue = 0;
   } constant;
   std::vector<Expression*> arguments;
