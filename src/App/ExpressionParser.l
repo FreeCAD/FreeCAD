@@ -264,6 +264,12 @@ EXPO     [eE][-+]?[0-9]+
 "pi"                         COUNTCHARS; yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
 "e"                          COUNTCHARS; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e
 
+"None"                       COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "None"; return CONSTANT;
+"True"                       COUNTCHARS; yylval.constant.fvalue = 1; yylval.constant.name = "True"; return CONSTANT;
+"true"                       COUNTCHARS; yylval.constant.fvalue = 1; yylval.constant.name = "True"; return CONSTANT;
+"False"                      COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "False"; return CONSTANT;
+"false"                      COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "False"; return CONSTANT;
+
 $[A-Za-z]{1,2}+${DIGIT}+     COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 [A-Za-z]{1,2}${DIGIT}+       COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 $[A-Za-z]{1,2}{DIGIT}+       COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
