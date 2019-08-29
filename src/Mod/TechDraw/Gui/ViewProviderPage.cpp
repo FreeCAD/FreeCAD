@@ -259,8 +259,8 @@ bool ViewProviderPage::showMDIViewPage()
         Gui::getMainWindow()->addWindow(m_mdiView);
         m_mdiView->viewAll();  //this is empty function
         m_mdiView->showMaximized();
-        if(!getDrawPage()->KeepUpdated.getValue())
-            getDrawPage()->KeepUpdated.setValue(true);
+//        if(!getDrawPage()->KeepUpdated.getValue())
+//            getDrawPage()->KeepUpdated.setValue(true);
     } else {
         m_mdiView->updateDrawing(true);
         m_mdiView->redrawAllViews();
