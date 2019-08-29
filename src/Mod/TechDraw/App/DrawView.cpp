@@ -365,10 +365,22 @@ void DrawView::handleChangedPropertyType(
 bool DrawView::keepUpdated(void)
 {
     bool result = false;
+
+    bool pageUpdate = false;
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
-        result = page->KeepUpdated.getValue();
+        pageUpdate = page->KeepUpdated.getValue();
     }
+
+    if (DrawPage::GlobalUpdateDrawings() &&
+        pageUpdate)  {
+        result = true;
+    } else if (!DrawPage::GlobalUpdateDrawings() &&
+                DrawPage::AllowPageOverride()    &&
+                pageUpdate) {
+        result = true;
+    }
+
     return result;
 }
 

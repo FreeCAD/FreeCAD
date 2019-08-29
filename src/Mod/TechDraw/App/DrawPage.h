@@ -97,6 +97,10 @@ public:
     DrawViewPart *balloonParent;    //could be many balloons on page? 
     
     int getNextBalloonIndex(void);
+    
+    void updateAllViews(void);
+    static bool GlobalUpdateDrawings(void);
+    static bool AllowPageOverride(void);
 
 protected:
     void onBeforeChange(const App::Property* prop) override;
