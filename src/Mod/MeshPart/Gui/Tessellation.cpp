@@ -298,7 +298,6 @@ bool Tessellation::accept()
                     "__shape__.Placement=__part__.getGlobalPlacement()\n"
                     "__mesh__.Mesh=MeshPart.meshFromShape(%3)\n"
                     "__mesh__.Label=\"%4 (Meshed)\"\n"
-                    "__mesh__.ViewObject.CreaseAngle=25.0\n"
                     "del __doc__, __mesh__, __part__, __shape__\n")
                     .arg(this->document)
                     .arg(shape)
@@ -317,7 +316,6 @@ bool Tessellation::accept()
                     "__shape__.Placement=__part__.getGlobalPlacement()\n"
                     "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__shape__,MaxLength=%3)\n"
                     "__mesh__.Label=\"%4 (Meshed)\"\n"
-                    "__mesh__.ViewObject.CreaseAngle=25.0\n"
                     "del __doc__, __mesh__, __part__, __shape__\n")
                     .arg(this->document)
                     .arg(shape)
@@ -342,7 +340,6 @@ bool Tessellation::accept()
                         "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__shape__,"
                         "Fineness=%3,SecondOrder=%4,Optimize=%5,AllowQuad=%6)\n"
                         "__mesh__.Label=\"%7 (Meshed)\"\n"
-                        "__mesh__.ViewObject.CreaseAngle=25.0\n"
                         "del __doc__, __mesh__, __part__, __shape__\n")
                         .arg(this->document)
                         .arg(shape)
@@ -362,7 +359,6 @@ bool Tessellation::accept()
                         "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__shape__,"
                         "GrowthRate=%3,SegPerEdge=%4,SegPerRadius=%5,SecondOrder=%6,Optimize=%7,AllowQuad=%8)\n"
                         "__mesh__.Label=\"%9 (Meshed)\"\n"
-                        "__mesh__.ViewObject.CreaseAngle=25.0\n"
                         "del __doc__, __mesh__, __part__, __shape__\n")
                         .arg(this->document)
                         .arg(shape)

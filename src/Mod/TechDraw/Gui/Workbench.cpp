@@ -55,6 +55,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_NewPage";
     *draw << "Separator";
     *draw << "TechDraw_NewView";
+    *draw << "TechDraw_NewActiveView";
 //    *draw << "TechDraw_NewMulti";     //deprecated
     *draw << "TechDraw_ProjGroup";
     *draw << "TechDraw_NewViewSection";
@@ -115,6 +116,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem *views = new Gui::ToolBarItem(root);
     views->setCommand("TechDraw Views");
     *views << "TechDraw_NewView";
+    *views << "TechDraw_NewActiveView";
 //    *views << "TechDraw_NewMulti";    //deprecated
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
@@ -184,6 +186,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem *views = new Gui::ToolBarItem(root);
     views->setCommand("Views");
     *views << "TechDraw_NewView";
+    *views << "TechDraw_NewActiveView";
 //    *views << "TechDraw_NewMulti";    //deprecated
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";

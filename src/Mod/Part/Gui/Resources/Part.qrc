@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/PartFeature.svg</file>
         <file>icons/PartFeature.xpm</file>
         <file>icons/PartFeatureImport.xpm</file>
@@ -22,7 +22,7 @@
         <file>icons/Part_Fuse.svg</file>
         <file>icons/Part_Import.svg</file>
         <file>icons/Part_Export.svg</file>
-        <file>icons/Part_BoxSelection.svg</file>        
+        <file>icons/Part_BoxSelection.svg</file>
         <file>icons/Part_Loft.svg</file>
         <file>icons/Part_Mirror.svg</file>
         <file>icons/Part_MirrorPNG.png</file>
@@ -73,6 +73,7 @@
         <file>icons/Tree_Part_Prism.svg</file>
         <file>icons/Tree_Part_Wedge.svg</file>
         <file>icons/Part_Shape_from_Mesh.svg</file>
+        <file>icons/Part_Points_from_Mesh.svg</file>
         <file>icons/Part_JoinBypass.svg</file>
         <file>icons/Part_JoinConnect.svg</file>
         <file>icons/Part_JoinCutout.svg</file>
@@ -117,4 +118,4 @@
         <file>translations/Part_ar.qm</file>
         <file>translations/Part_vi.qm</file>
     </qresource>
-</RCC> 
+</RCC>

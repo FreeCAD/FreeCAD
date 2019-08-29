@@ -433,6 +433,9 @@ void SoFCVectorizeSVGAction::printViewport(void) const
 
 void SoFCVectorizeSVGAction::printBackground(void) const
 {
+    if (!getBackgroundState()) {
+        return;
+    }
     SbVec2f mul = getRotatedViewportSize();
     SbVec2f add = getRotatedViewportStartpos();
 

@@ -5638,7 +5638,8 @@ class Draft_Arc_3Points:
                 placement = FreeCAD.Placement(e.Curve.Center,rot)
                 start = e.FirstParameter
                 end = e.LastParameter/math.pi*180
-                Draft.makeCircle(radius,placement,startangle=start,endangle=end)
+                c = Draft.makeCircle(radius,placement,startangle=start,endangle=end)
+                Draft.autogroup(c)
             self.tracker.off()
             FreeCAD.ActiveDocument.recompute()
 

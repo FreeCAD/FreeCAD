@@ -215,14 +215,14 @@ def deformat(text):
     #print("output text: ",t)
     return t
 
-def locateLayer(wantedLayer,color=None):
+def locateLayer(wantedLayer,color=None,drawstyle=None):
     "returns layer group and creates it if needed"
     wantedLayerName = decodeName(wantedLayer)
     for l in layers:
         if wantedLayerName==l.Label:
             return l
     if dxfUseDraftVisGroups:
-        newLayer = Draft.makeLayer(name=wantedLayer,linecolor=color)
+        newLayer = Draft.makeLayer(name=wantedLayer,linecolor=color,drawstyle=drawstyle)
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup",wantedLayer)
     newLayer.Label = wantedLayerName
@@ -271,6 +271,13 @@ def getACI(ob,text=False):
     if not gui:
         return 0
     else:
+        # detect if we need to set "BYLAYER"
+        for parent in ob.InList:
+            if Draft.getType(parent) == "Layer":
+                if ob in parent.Group:
+                    if hasattr(parent,"ViewObject") and hasattr(parent.ViewObject,"OverrideChildren"):
+                        if parent.ViewObject.OverrideChildren:
+                            return 256 # BYLAYER
         if text:
             col=ob.ViewObject.TextColor
         else:
@@ -1022,7 +1029,10 @@ def addText(text,attrib=False):
         #    except:
         #        pass
         newob = Draft.makeText(val.split("\n"))
-        lay.addObject(newob)
+        if hasattr(lay,"addObject"):
+            lay.addObject(newob)
+        elif hasattr(lay,"Proxy") and hasattr(lay.Proxy,"addObject"):
+            lay.Proxy.addObject(lay,newob)
         rx = rawValue(text,11)
         ry = rawValue(text,21)
         rz = rawValue(text,31)
@@ -1098,6 +1108,22 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
     layerBlocks = {}
     sketch = None
     shapes = []
+
+    # create layers
+    
+    for table in drawing.tables.get_type("table"):
+        for layer in table.get_type("layer"):
+            name = layer.name
+            color = tuple(dxfColorMap.color_map[layer.color])
+            drawstyle = "Solid"
+            lt = rawValue(layer,6)
+            if "DASHED" in lt.upper():
+                drawstyle = "Dashed"
+            elif "HIDDEN" in lt.upper():
+                drawstyle = "Dotted"
+            if ("DASHDOT" in lt.upper()) or ("CENTER" in lt.upper()):
+                drawstyle = "Dashdot"
+            locateLayer(name,color,drawstyle)
 
     # drawing lines
 
@@ -1932,8 +1958,12 @@ def writePanelCut(ob,dxf,nospline,lwPoly,parent=None):
             #    dxf.append(dxfLibrary.Line(pts,color=getACI(ob),layer="Tags"))
 
 def getStrGroup(ob):
-    "gets a string version of the group or layer name"
+    """gets a string version of the group or layer name"""
     l = getGroup(ob)
+    return getStr(l).upper() #DXF R12 seems to like its layers capitalized...
+
+def getStr(l):
+    """make sure the given text is a valid string in both py2 and py3"""
     if six.PY2:
         if isinstance(l,six.text_type):
             # dxf R12 files are rather over-sensitive with utf8...
@@ -1964,13 +1994,23 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
         global exportList
         exportList = objectslist
         exportList = Draft.getGroupContents(exportList)
+        
         nlist = []
+        exportLayers = []
         for ob in exportList:
-            if Draft.getType(ob) == "AxisSystem":
+            t = Draft.getType(ob)
+            if t == "AxisSystem":
                 nlist.extend(ob.Axes)
+            elif t == "Layer":
+                exportLayers.append(ob)
+                for child in ob.Group:
+                    if not child in nlist:
+                        nlist.append(child)
             else:
-                nlist.append(ob)
+                if not ob in nlist:
+                    nlist.append(ob)
         exportList = nlist
+
 
         if (len(exportList) == 1) and (Draft.getType(exportList[0]) == "ArchSectionView"):
 
@@ -1999,9 +2039,23 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
             # other cases, treat objects one by one
 
             dxf = dxfLibrary.Drawing()
+            
+            for ob in exportLayers:
+                if ob.Label != "0": # dxflibrary already creates it
+                    ltype = 'continuous'
+                    if ob.ViewObject:
+                        if ob.ViewObject.DrawStyle == "Dashed":
+                            ltype = 'DASHED'
+                        elif ob.ViewObject.DrawStyle == "Dotted":
+                            ltype = 'HIDDEN'
+                        elif ob.ViewObject.DrawStyle == "Dashdot":
+                            ltype = 'DASHDOT'
+                    #print("exporting layer:",getStr(ob.Label),getACI(ob),ltype)
+                    dxf.layers.append(dxfLibrary.Layer(name=getStr(ob.Label),color=getACI(ob),lineType=ltype))
+            
             for ob in exportList:
 
-                print("processing "+str(ob.Name))
+                #print("processing "+str(ob.Name))
 
                 if Draft.getType(ob) == "PanelSheet":
 
@@ -2109,7 +2163,7 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
 
                 elif Draft.getType(ob) == "Annotation":
 
-                    # texts
+                    # old-style texts
 
                     # temporary - as dxfLibrary doesn't support mtexts well, we use several single-line texts
                     # well, anyway, at the moment, Draft only writes single-line texts, so...
@@ -2128,13 +2182,15 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
 
                     # texts
 
+                    if gui:
+                        height = float(ob.ViewObject.FontSize)
+                    else: 
+                        height = 1
                     for text in ob.Text:
                         point = DraftVecUtils.tup(FreeCAD.Vector(ob.Placement.Base.x,
-                                                         ob.Placement.Base.y-ob.Text.index(text),
+                                                         ob.Placement.Base.y-(height*1.2*ob.Text.index(text)),
                                                          ob.Placement.Base.z))
-                        if gui: height = float(ob.ViewObject.FontSize)
-                        else: height = 1
-                        dxf.append(dxfLibrary.Text(text,point,height=height,
+                        dxf.append(dxfLibrary.Text(text,point,height=height*0.8,
                                                    color=getACI(ob,text=True),
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))

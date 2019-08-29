@@ -116,7 +116,8 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
       pageTemplate(0),
       m_renderer(Native),
       drawBkg(true),
-      m_vpPage(0)
+      m_vpPage(0),
+      panningActive(false)
 {
     assert(vp);
     m_vpPage = vp;
@@ -1112,12 +1113,33 @@ void QGVPage::leaveEvent(QEvent * event)
 
 void QGVPage::mousePressEvent(QMouseEvent *event)
 {
+    if (event->button() == Qt::MiddleButton) {
+        panOrigin = event->pos();
+        panningActive = true;
+        event->accept();
+
+        QApplication::setOverrideCursor(Qt::ClosedHandCursor);
+    }
+
     QGraphicsView::mousePressEvent(event);
 }
 
 void QGVPage::mouseMoveEvent(QMouseEvent *event)
 {
     balloonCursorPos = event->pos();
+
+    if (panningActive) {
+        QScrollBar *horizontalScrollbar = horizontalScrollBar();
+        QScrollBar *verticalScrollbar = verticalScrollBar();
+        QPoint direction = event->pos() - panOrigin;
+
+        horizontalScrollbar->setValue(horizontalScrollbar->value() - m_reversePan*direction.x());
+        verticalScrollbar->setValue(verticalScrollbar->value() - m_reverseScroll*direction.y());
+
+        panOrigin = event->pos();
+        event->accept();
+    }
+
     QGraphicsView::mouseMoveEvent(event);
 }
 
@@ -1150,6 +1172,11 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
         //Horrible hack to force Tree update
         double x = getDrawPage()->balloonParent->X.getValue();
         getDrawPage()->balloonParent->X.setValue(x);
+    }
+
+    if (event->button()&Qt::MiddleButton) {
+        QApplication::restoreOverrideCursor();
+        panningActive = false;
     }
 
     QGraphicsView::mouseReleaseEvent(event);
