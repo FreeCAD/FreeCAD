@@ -94,9 +94,10 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
 App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
 {
 //    Base::Console().Message("DVS::execute() \n");
-    if (!keepUpdated()) {
-        return App::DocumentObject::StdReturn;
-    }
+//    //dvs::execute is pretty fast. doesn't need to be blocked?
+//    if (!keepUpdated()) {
+//        return App::DocumentObject::StdReturn;
+//    }
 
     std::string svg = Symbol.getValue();
     const std::vector<std::string>& editText = EditableTexts.getValues();
