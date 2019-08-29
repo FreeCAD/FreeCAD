@@ -387,10 +387,6 @@ TaskCheckGeometryResults::TaskCheckGeometryResults(QWidget *parent) : QWidget(pa
     this->setWindowTitle(tr("Check Geometry Results"));
     setupInterface();
     setupFunctionMap();
-    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
-    if (group->GetBool("AutoRun", false))
-        goCheck();
 }
 
 TaskCheckGeometryResults::~TaskCheckGeometryResults()
@@ -401,7 +397,7 @@ TaskCheckGeometryResults::~TaskCheckGeometryResults()
 void TaskCheckGeometryResults::setupInterface()
 {
     message = new QLabel(this);
-    message->setText(tr("Click Run check button to run check"));
+    message->setText(tr("Check is running..."));
     model = new ResultModel(this);
     treeView = new QTreeView(this);
     treeView->setModel(model);
@@ -470,8 +466,6 @@ void TaskCheckGeometryResults::goCheck()
           ParameterGrp::handle group = App::GetApplication().GetUserParameter().
           GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
           bool runSignal = group->GetBool("RunBOPCheck", false);
-          //for now, user has edit the config file to turn it on.
-          //following line ensures that the config file has the setting.
           group->SetBool("RunBOPCheck", runSignal);
           if (runSignal) {
             std::string label = "Checking ";
@@ -955,12 +949,16 @@ void PartGui::goSetupResultUnorientableShapeFace(ResultEntry *entry)
 
 TaskCheckGeometryDialog::TaskCheckGeometryDialog() : widget(0), contentLabel(0)
 {
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
+    bool expandShapeContent = group->GetBool("ExpandShapeContent", false);
+
     this->setButtonPosition(TaskDialog::South);
     widget = new TaskCheckGeometryResults();
 
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
-        widget->windowTitle(), false, 0);
+        widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
@@ -969,23 +967,19 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog() : widget(0), contentLabel(0)
     shapeContentBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
         tr("Shape Content"), true, 0);
     shapeContentBox->groupLayout()->addWidget(contentLabel);
-    shapeContentBox->hideGroupBox();
+    if (!expandShapeContent){
+        shapeContentBox->hideGroupBox();
+    }
     Content.push_back(shapeContentBox);
-
-    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
 
     settingsBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
         tr("Settings"), true, 0);
-    settingsBox->hideGroupBox();
     Content.push_back(settingsBox);
 
     autoRunCheckBox = new QCheckBox();
-    autoRunCheckBox->setText(tr("Automatically run check"));
+    autoRunCheckBox->setText(tr("Skip settings page"));
     autoRunCheckBox->setToolTip(tr("\
-Automatically run the geometry check when opening this task.  \n\
-If unchecked, you must click Run check button to run the check.  If checked \n\
-you must wait for the check to finish before this dialog appears. \n\
+Skip this settings page and run the geometry check automatically.\n\
 Default: false"));
     autoRunCheckBox->setChecked(group->GetBool("AutoRun", false));
     connect(autoRunCheckBox, SIGNAL(toggled(bool)),
@@ -1021,83 +1015,105 @@ but more stable.  Default: false"));
             this, SLOT(on_logErrorsCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(logErrorsCheckBox);
 
+    expandShapeContentCheckBox = new QCheckBox();
+    expandShapeContentCheckBox->setText(tr("Expand shape content"));
+    expandShapeContentCheckBox->setToolTip(tr("\
+Expand shape content.  Changes will take effect next time you use \n\
+the check geometry tool.  Default: false"));
+    expandShapeContentCheckBox->setChecked(group->GetBool("ExpandShapeContent", false));
+    connect(expandShapeContentCheckBox, SIGNAL(toggled(bool)),
+            this, SLOT(on_expandShapeContentCheckBox_toggled(bool)));
+    settingsBox->groupLayout()->addWidget(expandShapeContentCheckBox);
+
     settingsBox->groupLayout()->addWidget(new QLabel(tr("\nIndividual BOP Checks:")));
 
     argumentTypeModeCheckBox = new QCheckBox();
-    argumentTypeModeCheckBox->setText(tr("  BOPAlgo BadType"));
-    argumentTypeModeCheckBox->setToolTip(tr("Check for bad argument types. (ArgumentTypeMode check)  Default: true"));
+    argumentTypeModeCheckBox->setText(tr("  Bad type"));
+    argumentTypeModeCheckBox->setToolTip(tr("Check for bad argument types.  Default: true"));
     argumentTypeModeCheckBox->setChecked(group->GetBool("ArgumentTypeMode", true));
     connect(argumentTypeModeCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(on_argumentTypeModeCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(argumentTypeModeCheckBox);
 
     selfInterModeCheckBox = new QCheckBox();
-    selfInterModeCheckBox->setText(tr("  BOPAlgo SelfIntersect"));
-    selfInterModeCheckBox->setToolTip(tr("Check for self-intersections. (SelfInterMode check)  Default: true"));
+    selfInterModeCheckBox->setText(tr("  Self-intersect"));
+    selfInterModeCheckBox->setToolTip(tr("Check for self-intersections.  Default: true"));
     selfInterModeCheckBox->setChecked(group->GetBool("SelfInterMode", true));
     connect(selfInterModeCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(on_selfInterModeCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(selfInterModeCheckBox);
 
     smallEdgeModeCheckBox = new QCheckBox();
-    smallEdgeModeCheckBox->setText(tr("  BOPAlgo TooSmallEdge"));
-    smallEdgeModeCheckBox->setToolTip(tr("Check for edges that are too small (SmallEdgeMode check).  Default: true"));
+    smallEdgeModeCheckBox->setText(tr("  Too small edge"));
+    smallEdgeModeCheckBox->setToolTip(tr("Check for edges that are too small.  Default: true"));
     smallEdgeModeCheckBox->setChecked(group->GetBool("SmallEdgeMode", true));
     connect(smallEdgeModeCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(on_smallEdgeModeCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(smallEdgeModeCheckBox);
 
     rebuildFaceModeCheckBox = new QCheckBox();
-    rebuildFaceModeCheckBox->setText(tr("  BOPAlgo NonRecoverableFace"));
-    rebuildFaceModeCheckBox->setToolTip(tr("Check for non-recoverable faces (RebuildFaceMode check).  Default: true"));
+    rebuildFaceModeCheckBox->setText(tr("  Nonrecoverable face"));
+    rebuildFaceModeCheckBox->setToolTip(tr("Check for nonrecoverable faces.  Default: true"));
     rebuildFaceModeCheckBox->setChecked(group->GetBool("RebuildFaceMode", true));
     connect(rebuildFaceModeCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(on_rebuildFaceModeCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(rebuildFaceModeCheckBox);
 
     continuityModeCheckBox = new QCheckBox();
-    continuityModeCheckBox->setText(tr("  BOPAlgo GeomAbs_C0"));
-    continuityModeCheckBox->setToolTip(tr("Check for continuity errors (ContinuityMode check).  Default: true"));
+    continuityModeCheckBox->setText(tr("  Continuity"));
+    continuityModeCheckBox->setToolTip(tr("Check for continuity.  Default: true"));
     continuityModeCheckBox->setChecked(group->GetBool("ContinuityMode", true));
     connect(continuityModeCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(on_continuityModeCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(continuityModeCheckBox);
 
     tangentModeCheckBox = new QCheckBox();
-    tangentModeCheckBox->setText(tr("  BOPAlgo IncompatibilityOfFace"));
-    tangentModeCheckBox->setToolTip(tr("Check for incompatible faces (TangentMode check).  Default: true"));
+    tangentModeCheckBox->setText(tr("  Incompatibility of face"));
+    tangentModeCheckBox->setToolTip(tr("Check for incompatible faces.  Default: true"));
     tangentModeCheckBox->setChecked(group->GetBool("TangentMode", true));
     connect(tangentModeCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(on_tangentModeCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(tangentModeCheckBox);
 
     mergeVertexModeCheckBox = new QCheckBox();
-    mergeVertexModeCheckBox->setText(tr("  BOPAlgo IncompatibilityOfVertex"));
-    mergeVertexModeCheckBox->setToolTip(tr("Check for incompatible vertices (MergeVertexMode check).  Default: true"));
+    mergeVertexModeCheckBox->setText(tr("  Incompatibility of vertex"));
+    mergeVertexModeCheckBox->setToolTip(tr("Check for incompatible vertices.  Default: true"));
     mergeVertexModeCheckBox->setChecked(group->GetBool("MergeVertexMode", true));
     connect(mergeVertexModeCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(on_mergeVertexModeCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(mergeVertexModeCheckBox);
 
     mergeEdgeModeCheckBox = new QCheckBox();
-    mergeEdgeModeCheckBox->setText(tr("  BOPAlgo IncompatibilityOfEdge"));
-    mergeEdgeModeCheckBox->setToolTip(tr("Check for incompatible edges (MergeEdgeMode check).  Default: true"));
+    mergeEdgeModeCheckBox->setText(tr("  Incompatibility of edge"));
+    mergeEdgeModeCheckBox->setToolTip(tr("Check for incompatible edges.  Default: true"));
     mergeEdgeModeCheckBox->setChecked(group->GetBool("MergeEdgeMode", true));
     connect(mergeEdgeModeCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(on_mergeEdgeModeCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(mergeEdgeModeCheckBox);
 
     curveOnSurfaceModeCheckBox = new QCheckBox();
-    curveOnSurfaceModeCheckBox->setText(tr("  BOPAlgo InvalidCurveOnSurface"));
-    curveOnSurfaceModeCheckBox->setToolTip(tr("Check for invalid curves on surfaces (InvalidCurveOnSurfaceMode check).  Default: true"));
+    curveOnSurfaceModeCheckBox->setText(tr("  Invalid curve on surface"));
+    curveOnSurfaceModeCheckBox->setToolTip(tr("Check for invalid curves on surfaces.  Default: true"));
     curveOnSurfaceModeCheckBox->setChecked(group->GetBool("CurveOnSurfaceMode", true));
     connect(curveOnSurfaceModeCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(on_curveOnSurfaceModeCheckBox_toggled(bool)));
     settingsBox->groupLayout()->addWidget(curveOnSurfaceModeCheckBox);
+    if (group->GetBool("AutoRun",false)){
+        settingsBox->hide();
+        widget->goCheck();
+        contentLabel->setText(widget->getShapeContentString());
+    } else {
+        taskbox->hide();
+        shapeContentBox->hide();
+    }
 }
 
 bool TaskCheckGeometryDialog::accept()
 {
+    settingsBtn->setEnabled(true);
+    settingsBox->hide();
+    shapeContentBox->show();
+    taskbox->show();
     widget->goCheck();
     contentLabel->setText(widget->getShapeContentString());
     return false;
@@ -1108,10 +1124,43 @@ bool TaskCheckGeometryDialog::reject()
     return true;
 }
 
+void TaskCheckGeometryDialog::on_clicked(QAbstractButton *btn)
+{
+    /** when ok (run check) is clicked or when close is clicked
+     *  the appropriate accept() or reject() is called already
+     *  all we need to do here is enable / disable / show / hide
+     *  ui elements
+     */
+
+    if(btn == okBtn){
+        settingsBtn->setEnabled(true);
+    } else if (btn == settingsBtn){
+        settingsBtn->setEnabled(false);
+        taskbox->hide();
+        shapeContentBox->hide();
+        settingsBox->show();
+        resultsBtn->setEnabled(true);
+    } else if (btn == resultsBtn){
+        settingsBtn->setEnabled(true);
+        taskbox->show();
+        shapeContentBox->show();
+        settingsBox->hide();
+        resultsBtn->setEnabled(false);
+    }
+}
+
 void TaskCheckGeometryDialog::modifyStandardButtons(QDialogButtonBox* box)
 {
-    QPushButton* btn = box->button(QDialogButtonBox::Ok);
-    btn->setText(tr("Run check"));
+    okBtn = box->button(QDialogButtonBox::Ok);
+    okBtn->setText(tr("Run check"));
+    settingsBtn = box->addButton(tr("Settings"),QDialogButtonBox::ActionRole);
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
+    if(!group->GetBool("AutoRun",false))
+        settingsBtn->setEnabled(false);
+    resultsBtn = box->addButton(tr("Results"),QDialogButtonBox::ActionRole);
+    resultsBtn->setEnabled(false);
+    connect(box, SIGNAL(clicked(QAbstractButton*)), this, SLOT(on_clicked(QAbstractButton*)));
 }
 
 void TaskCheckGeometryDialog::on_autoRunCheckBox_toggled(bool isOn)
@@ -1147,6 +1196,13 @@ void TaskCheckGeometryDialog::on_argumentTypeModeCheckBox_toggled(bool isOn)
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
     group->SetBool("ArgumentTypeMode", isOn);
+}
+
+void TaskCheckGeometryDialog::on_expandShapeContentCheckBox_toggled(bool isOn)
+{
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
+    group->SetBool("ExpandShapeContent", isOn);
 }
 
 void TaskCheckGeometryDialog::on_selfInterModeCheckBox_toggled(bool isOn)
