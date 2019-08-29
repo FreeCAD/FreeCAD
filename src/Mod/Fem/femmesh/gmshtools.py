@@ -135,7 +135,7 @@ class GmshTools():
         self.gmsh_bin = ""
         self.error = False
 
-    def create_mesh(self):
+    def create_mesh(self, tmpdir=None):
         print("\nWe are going to start Gmsh FEM mesh run!")
         print(
             "  Part to mesh: Name --> {},  Label --> {}, ShapeType --> {}"
@@ -145,7 +145,7 @@ class GmshTools():
         print("  CharacteristicLengthMin: " + str(self.clmin))
         print("  ElementOrder: " + self.order)
         self.get_dimension()
-        self.get_tmp_file_paths()
+        self.get_tmp_file_paths(tmpdir=tmpdir)
         self.get_gmsh_command()
         self.get_group_data()
         self.get_region_data()
@@ -198,14 +198,15 @@ class GmshTools():
             print("Error in dimension")
         print("  ElementDimension: " + self.dimension)
 
-    def get_tmp_file_paths(self):
+    def get_tmp_file_paths(self, tmpdir=None):
         if system() == "Linux":
             path_sep = "/"
         elif system() == "Windows":
             path_sep = "\\"
         else:
-            path_sep = "/"
-        tmpdir = tempfile.gettempdir()
+            path_sep = "/"        
+        if tmpdir == None:
+            tmpdir = tempfile.gettempdir()
         # geometry file
         self.temp_file_geometry = tmpdir + path_sep + self.part_obj.Name + "_Geometry.brep"
         print("  " + self.temp_file_geometry)
