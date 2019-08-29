@@ -271,6 +271,13 @@ def getACI(ob,text=False):
     if not gui:
         return 0
     else:
+        # detect if we need to set "BYLAYER"
+        for parent in ob.InList:
+            if Draft.getType(parent) == "Layer":
+                if ob in parent.Group:
+                    if hasattr(parent,"ViewObject") and hasattr(parent.ViewObject,"OverrideChildren"):
+                        if parent.ViewObject.OverrideChildren:
+                            return 256 # BYLAYER
         if text:
             col=ob.ViewObject.TextColor
         else:
