@@ -1750,7 +1750,6 @@ void Application::initTypes(void)
     App ::ConditionalExpression     ::init();
     App ::StringExpression          ::init();
     App ::FunctionExpression        ::init();
-    App ::BooleanExpression         ::init();
     App ::RangeExpression           ::init();
     App ::PyObjectExpression        ::init();
 
