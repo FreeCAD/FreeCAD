@@ -369,13 +369,13 @@ void PropertyView::onTimer() {
         if(!objSet.insert(ob).second)
             continue;
 
-        std::map<std::string, App::Property*> dataList;
+        std::vector<App::Property*> dataList;
         std::map<std::string, App::Property*> viewList;
 
         auto vp = Application::Instance->getViewProvider(ob);
         if(!vp) {
             checkLink = false;
-            ob->getPropertyMap(dataList);
+            ob->getPropertyList(dataList);
             continue;
         }
 
@@ -386,15 +386,14 @@ void PropertyView::onTimer() {
             vpLast = cvp;
         }
 
-        ob->getPropertyMap(dataList);
+        ob->getPropertyList(dataList);
 
         // get the properties as map here because it doesn't matter to have them sorted alphabetically
         vp->getPropertyMap(viewList);
 
         // store the properties with <name,id> as key in a map
         if (ob) {
-            for (auto &v : dataList) {
-                auto prop = v.second;
+            for (auto prop : dataList) {
                 if (isPropertyHidden(prop))
                     continue;
 
@@ -440,6 +439,7 @@ void PropertyView::onTimer() {
     // name and id
     std::vector<PropInfo>::const_iterator it;
     PropertyModel::PropertyList dataProps;
+    std::map<std::string, std::vector<App::Property*> > dataPropsMap;
     PropertyModel::PropertyList viewProps;
 
     if(checkLink && vpLast) {
@@ -448,12 +448,11 @@ void PropertyView::onTimer() {
         App::DocumentObject *obj = vpLast->getObject();
         auto linked = obj;
         if(obj && obj->canLinkProperties() && (linked=obj->getLinkedObject(true))!=obj && linked) {
-            std::map<std::string, App::Property*> dataList;
+            std::vector<App::Property*> dataList;
             std::map<std::string, App::Property*> propMap;
             obj->getPropertyMap(propMap);
-            linked->getPropertyMap(dataList);
-            for(auto &v : dataList) {
-                auto prop = v.second;
+            linked->getPropertyList(dataList);
+            for(auto prop : dataList) {
                 if(isPropertyHidden(prop))
                     continue;
                 std::string name(prop->getName());
@@ -461,16 +460,18 @@ void PropertyView::onTimer() {
                 if(it!=propMap.end() && !isPropertyHidden(it->second))
                     continue;
                 std::vector<App::Property*> items(1,prop);
-                dataProps.emplace_back(name+"*", std::move(items));
+                if(prop->testStatus(App::Property::PropDynamic))
+                    dataPropsMap.emplace(name+"*",std::move(items));
+                else
+                    dataProps.emplace_back(name+"*", std::move(items));
             }
             auto vpLinked = Application::Instance->getViewProvider(linked);
             if(vpLinked) {
                 propMap.clear();
                 vpLast->getPropertyMap(propMap);
                 dataList.clear();
-                vpLinked->getPropertyMap(dataList);
-                for(auto &v : dataList) {
-                    auto prop = v.second;
+                vpLinked->getPropertyList(dataList);
+                for(auto prop : dataList) {
                     if(isPropertyHidden(prop))
                         continue;
                     std::string name(prop->getName());
@@ -484,16 +485,28 @@ void PropertyView::onTimer() {
         }
     }
 
+    for(auto &v : dataPropsMap)
+        dataProps.emplace_back(v.first,std::move(v.second));
+
+    dataPropsMap.clear();
+
     for (it = propDataMap.begin(); it != propDataMap.end(); ++it) {
-        if (it->propList.size() == array.size())
-            dataProps.push_back(std::make_pair(it->propName, it->propList));
+        if (it->propList.size() == array.size()) {
+            if(it->propList[0]->testStatus(App::Property::PropDynamic))
+                dataPropsMap.emplace(it->propName, std::move(it->propList));
+            else
+                dataProps.emplace_back(it->propName, std::move(it->propList));
+        }
     }
+
+    for(auto &v : dataPropsMap)
+        dataProps.emplace_back(v.first,std::move(v.second));
 
     propertyEditorData->buildUp(std::move(dataProps));
 
     for (it = propViewMap.begin(); it != propViewMap.end(); ++it) {
         if (it->propList.size() == array.size())
-            viewProps.push_back(std::make_pair(it->propName, it->propList));
+            viewProps.emplace_back(it->propName, std::move(it->propList));
     }
 
     propertyEditorView->buildUp(std::move(viewProps));
