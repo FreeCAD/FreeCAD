@@ -154,7 +154,7 @@ void PropertyInteger::setPathValue(const ObjectIdentifier &path, const App::any 
         setValue(App::any_cast<long>(value));
     else if (value.type() == typeid(double))
         setValue(boost::math::round(App::any_cast<double>(value)));
-    else if (value.type() == typeid(Quantity) && App::any_cast<const Quantity &>(value).getUnit().isEmpty())
+    else if (value.type() == typeid(Quantity))
         setValue(boost::math::round(App::any_cast<const Quantity &>(value).getValue()));
     else if (value.type() == typeid(int))
         setValue(App::any_cast<int>(value));
@@ -1035,7 +1035,7 @@ void PropertyFloat::setPathValue(const ObjectIdentifier &path, const App::any &v
 
     if (value.type() == typeid(double))
         setValue(App::any_cast<double>(value));
-    else if (value.type() == typeid(Quantity) && App::any_cast<const Quantity&>(value).getUnit().isEmpty())
+    else if (value.type() == typeid(Quantity))
         setValue((App::any_cast<const Quantity&>(value)).getValue());
     else
         throw bad_cast();
@@ -2167,7 +2167,7 @@ void PropertyBool::setPathValue(const ObjectIdentifier &path, const App::any &va
         setValue(App::any_cast<int>(value) != 0);
     else if (value.type() == typeid(double))
         setValue(boost::math::round(App::any_cast<double>(value)));
-    else if (value.type() == typeid(Quantity) && App::any_cast<const Quantity&>(value).getUnit().isEmpty())
+    else if (value.type() == typeid(Quantity))
         setValue(App::any_cast<const Quantity&>(value).getValue() != 0);
     else
         throw bad_cast();
