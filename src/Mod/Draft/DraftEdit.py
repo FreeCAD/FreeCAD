@@ -50,6 +50,7 @@ class Edit():
         self.running = False
         self.trackers = {'object':[]}
         self.obj = None
+        self.editing = None
 
         # event callbacks
         self.call = None
@@ -63,7 +64,7 @@ class Edit():
         self.originalNodes = None
 
         # settings
-        self.maxObjects = 5
+        self.maxObjects = 1
         self.pick_radius = 30 # TODO: set pick radius according to user preferences
 
         # preview
@@ -116,9 +117,6 @@ class Edit():
 
         # start object editing
         FreeCADGui.Selection.clearSelection()
-        self.editing = None
-        self.editpoints = []
-        
         FreeCADGui.Snapper.setSelectMode(True)
         
         self.arc3Pt = True # TODO: Find a more elegant way
@@ -226,7 +224,6 @@ class Edit():
                 if self.editing == None: self.finish()
                 else:
                     self.finalizeGhost()
-                    self.editpoints = []
                     self.setEditPoints(self.obj)
                     self.resetTrackers()
             if key == 97: # "a"
@@ -585,7 +582,6 @@ class Edit():
                 else: continue
                 self.addPointToCurve(pt,info)
         self.obj.recompute()
-        self.editpoints = []
         self.removeTrackers(self.obj)
         self.setEditPoints(self.obj)
         #self.setSelectState(self.obj, False)
@@ -678,7 +674,6 @@ class Edit():
         self.obj.recompute()
         
         # don't do tan/sym on DWire/BSpline!
-        self.editpoints = []
         self.removeTrackers(self.obj)
         self.setEditPoints(self.obj)
 
@@ -688,7 +683,7 @@ class Edit():
 
     def setEditPoints(self,obj):
         "append given object's editpoints to self.edipoints and set EditTrackers"
-
+        self.editpoints = []
         self.setPlacement(obj)
 
         objectType = Draft.getType(obj)
