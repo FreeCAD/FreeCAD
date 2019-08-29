@@ -50,6 +50,8 @@ void DlgPrefsTechDrawImp::saveSettings()
     cb_Faces->onSave();
     cb_SectionEdges->onSave();
     cb_PageUpdate->onSave();
+    cb_Global->onSave();
+    cb_Override->onSave();
     cb_AutoDist->onSave();
 
     pcb_Normal->onSave();
@@ -81,6 +83,8 @@ void DlgPrefsTechDrawImp::loadSettings()
     cb_Faces->onRestore();
     cb_SectionEdges->onRestore();
     cb_PageUpdate->onRestore();
+    cb_Global->onRestore();
+    cb_Override->onRestore();
     cb_AutoDist->onRestore();
 
     pcb_Normal->onRestore();

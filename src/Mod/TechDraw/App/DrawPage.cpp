@@ -78,7 +78,7 @@ DrawPage::DrawPage(void)
     
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
+    bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", true);   //this is the default value for new pages!
 
     ADD_PROPERTY_TYPE(KeepUpdated, (autoUpdate), group, (App::PropertyType)(App::Prop_Output), "Keep page in sync with model");
     ADD_PROPERTY_TYPE(Template, (0), group, (App::PropertyType)(App::Prop_None), "Attached Template");
@@ -324,14 +324,23 @@ void DrawPage::requestPaint(void)
     signalGuiPaint(this);
 }
 
+//this doesn't work right because there is no guaranteed of the restoration order
 void DrawPage::onDocumentRestored()
 {
-    //control drawing updates on restore based on Preference
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
-    KeepUpdated.setValue(autoUpdate);
+    if (GlobalUpdateDrawings() &&
+        KeepUpdated.getValue())  {
+        updateAllViews();
+    } else if (!GlobalUpdateDrawings() &&
+                AllowPageOverride()    &&
+                KeepUpdated.getValue()) {
+        updateAllViews();
+    }
 
+    App::DocumentObject::onDocumentRestored();
+}
+
+void DrawPage::updateAllViews()
+{
     std::vector<App::DocumentObject*> featViews = getAllViews();
     std::vector<App::DocumentObject*>::const_iterator it = featViews.begin();
     //first, make sure all the Parts have been executed so GeometryObjects exist
@@ -349,7 +358,6 @@ void DrawPage::onDocumentRestored()
             dim->recomputeFeature();
         }
     }
-    App::DocumentObject::onDocumentRestored();
 }
 
 std::vector<App::DocumentObject*> DrawPage::getAllViews(void) 
@@ -438,6 +446,23 @@ void DrawPage::handleChangedPropertyType(
         }
     }
 }
+
+bool DrawPage::GlobalUpdateDrawings(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool result = hGrp->GetBool("GlobalUpdateDrawings", true); 
+    return result;
+}
+
+bool DrawPage::AllowPageOverride(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool result = hGrp->GetBool("AllowPageOverride", true); 
+    return result;
+}
+
 
 // Python Drawing feature ---------------------------------------------------------
 
