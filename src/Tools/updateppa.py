@@ -27,8 +27,8 @@ def runUpdate(filename):
     try:
         wf = open(LOCAL_BRANCH + "/src/Build/Version.h", 'w')
         rf = open(filename, 'r')
-    except IOError, error:
-        raise IOError, error
+    except IOError as error:
+        raise error
     else:
         wf.write(rf.read())
         wf.close()

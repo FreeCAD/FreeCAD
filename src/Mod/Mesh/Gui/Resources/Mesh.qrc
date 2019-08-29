@@ -55,5 +55,7 @@
         <file>translations/Mesh_id.qm</file>
         <file>translations/Mesh_lt.qm</file>
         <file>translations/Mesh_val-ES.qm</file>
+        <file>translations/Mesh_ar.qm</file>
+        <file>translations/Mesh_vi.qm</file>
     </qresource>
 </RCC> 

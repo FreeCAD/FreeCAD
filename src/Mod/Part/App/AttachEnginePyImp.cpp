@@ -262,7 +262,7 @@ PyObject* AttachEnginePy::getModeInfo(PyObject* args)
 #endif
         try {
             Py::Module module(PyImport_ImportModule("PartGui"),true);
-            if (!module.hasAttr("AttachEngineResources")) {
+            if (module.isNull() || !module.hasAttr("AttachEngineResources")) {
                 // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its document methods)
                 throw Py::RuntimeError("Gui is not up");//DeepSOIC: wanted to throw ImportError here, but it's not defined, so I don't know...
             }
@@ -357,7 +357,7 @@ PyObject* AttachEnginePy::getRefTypeInfo(PyObject* args)
 
         try {
             Py::Module module(PyImport_ImportModule("PartGui"),true);
-            if (!module.hasAttr("AttachEngineResources")) {
+            if (module.isNull() || !module.hasAttr("AttachEngineResources")) {
                 // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its document methods)
                 throw Py::RuntimeError("Gui is not up");//DeepSOIC: wanted to throw ImportError here, but it's not defined, so I don't know...
             }
@@ -408,7 +408,7 @@ PyObject* AttachEnginePy::calculateAttachedPlacement(PyObject* args)
         Base::Placement result;
         try{
             result = this->getAttachEnginePtr()->calculateAttachedPlacement(plm);
-        } catch (ExceptionCancel) {
+        } catch (ExceptionCancel&) {
             Py_IncRef(Py_None);
             return Py_None;
         }

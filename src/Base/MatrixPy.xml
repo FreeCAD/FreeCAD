@@ -34,6 +34,14 @@ Scale the matrix with the vector
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="hasScale">
+      <Documentation>
+        <UserDocu>
+hasScale(tol=None)
+Return 0 is no scale factor, 1 for uniform scaling, -1 for non-uniform scaling.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="unity">
       <Documentation>
         <UserDocu>unity() - make this matrix to unity</UserDocu>
@@ -64,6 +72,14 @@ Scale the matrix with the vector
         <UserDocu>
 multiply(Matrix|Vector)
 Multiply a matrix or vector with this matrix
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="multVec" Const="true">
+      <Documentation>
+        <UserDocu>
+multVec(Vector) -> Vector
+Compute the transformed vector using the matrix
         </UserDocu>
       </Documentation>
     </Methode>

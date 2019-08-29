@@ -23,14 +23,14 @@
 # ***************************************************************************
 
 import FreeCAD
-import FreeCADGui
+import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathStock as PathStock
 import json
 
 from FreeCAD import Units
 from PySide import QtCore, QtGui
-from PathScripts.PathPreferences import PathPreferences
 from PathScripts.PathPostProcessor import PostProcessor
 
 
@@ -39,6 +39,8 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class JobPreferencesPage:
     def __init__(self, parent=None):
+        # pylint: disable=unused-argument
+        import FreeCADGui
         self.form = FreeCADGui.PySideUic.loadUi(":preferences/PathJob.ui")
         self.form.toolBox.setCurrentIndex(0) # Take that qt designer!
 
@@ -52,6 +54,9 @@ class JobPreferencesPage:
         geometryTolerance = Units.Quantity(self.form.geometryTolerance.text())
         curveAccuracy = Units.Quantity(self.form.curveAccuracy.text())
         PathPreferences.setJobDefaults(filePath, jobTemplate, geometryTolerance, curveAccuracy)
+
+        if curveAccuracy:
+            Path.Area.setDefaultParams(Accuracy = curveAccuracy)
 
         processor = str(self.form.defaultPostProcessor.currentText())
         args = str(self.form.defaultPostProcessorArgs.text())
@@ -279,7 +284,7 @@ class JobPreferencesPage:
         path = self.form.leDefaultJobTemplate.text()
         if not path:
             path = self.bestGuessForFilePath()
-        foo = QtGui.QFileDialog.getOpenFileName(QtGui.qApp.activeWindow(),
+        foo = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),
                 "Path - Job Template",
                 path,
                 "job_*.json")[0]
@@ -289,13 +294,13 @@ class JobPreferencesPage:
 
     def browseDefaultFilePath(self):
         path = self.bestGuessForFilePath()
-        foo = QtGui.QFileDialog.getExistingDirectory(QtGui.qApp.activeWindow(), "Path - External File Directory", path)
+        foo = QtGui.QFileDialog.getExistingDirectory(QtGui.QApplication.activeWindow(), "Path - External File Directory", path)
         if foo:
             self.form.leDefaultFilePath.setText(foo)
 
     def browseOutputFile(self):
         path = self.form.leOutputFile.text()
-        foo = QtGui.QFileDialog.getExistingDirectory(QtGui.qApp.activeWindow(), "Path - Output File/Directory", path)
+        foo = QtGui.QFileDialog.getExistingDirectory(QtGui.QApplication.activeWindow(), "Path - Output File/Directory", path)
         if foo:
             self.form.leOutputFile.setText(foo)
 

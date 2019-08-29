@@ -5,7 +5,7 @@
 # Python script to make source tarballs.
 #
 
-import sys, os, getopt, tarfile, gzip, time, StringIO, platform, shutil
+import sys, os, getopt, tarfile, gzip, time, io, platform, shutil
 
 def main():
     srcdir="."
@@ -43,7 +43,7 @@ def main():
     revision='%04d' % (info.count('\n'))
 
     verfile = open("%s/src/Build/Version.h" % (bindir), 'r')
-    verstream = StringIO.StringIO(verfile.read())
+    verstream = io.StringIO(verfile.read())
     verfile.close()
 
     version_minor = verstream.getvalue().split('FCVersionMinor "')[1][:2]
@@ -58,11 +58,11 @@ def main():
         TGZNAME = DIRNAME + '-dfsg.tar.gz'
 
     verinfo = tarfile.TarInfo(DIRNAME + "/src/Build/Version.h")
-    verinfo.mode = 0660
+    verinfo.mode = 0o660
     verinfo.size = len(verstream.getvalue())
     verinfo.mtime = time.time()
 
-    print "git archive %s --prefix=%s/ HEAD" % (wta, DIRNAME)
+    print(("git archive %s --prefix=%s/ HEAD" % (wta, DIRNAME)))
     if platform.system() == 'Windows':
         os.popen("git archive %s --prefix=%s/ --output=%s HEAD"
                                 % (wta, DIRNAME, TARNAME)).read()
@@ -80,7 +80,7 @@ def main():
     else:
         tardata = os.popen("git archive %s --prefix=%s/ HEAD"
                                 % (wta, DIRNAME)).read()
-        tarstream = StringIO.StringIO(tardata)
+        tarstream = io.StringIO(tardata)
 
         tar = tarfile.TarFile(mode="a", fileobj=tarstream)
         tar.addfile(verinfo, verstream)
@@ -92,7 +92,7 @@ def main():
         
     if dfsg:
         os.remove("src/.gitattributes")
-    print "Created " + TGZNAME
+    print(("Created " + TGZNAME))
     # Unpack and build
     if check:
         archive=tarfile.open(mode='r:gz',name=TGZNAME)

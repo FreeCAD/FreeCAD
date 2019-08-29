@@ -60,5 +60,7 @@
         <file>translations/Drawing_id.qm</file>
         <file>translations/Drawing_lt.qm</file>
         <file>translations/Drawing_val-ES.qm</file>
+        <file>translations/Drawing_ar.qm</file>
+        <file>translations/Drawing_vi.qm</file>
     </qresource>
 </RCC> 

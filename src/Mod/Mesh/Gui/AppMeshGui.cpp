@@ -112,6 +112,13 @@ PyMOD_INIT_FUNC(MeshGui)
     // instantiating the commands
     CreateMeshCommands();
     (void)new MeshGui::CleanupHandler;
+    
+    // try to instantiate flat-mesh commands
+    try{
+        Base::Interpreter().runString("import MeshFlatteningCommand");
+    } catch (Base::PyException &err){
+        err.ReportException();
+    }
 
     // register preferences pages
     (void)new Gui::PrefPageProducer<MeshGui::DlgSettingsMeshView> ("Display");
@@ -123,6 +130,7 @@ PyMOD_INIT_FUNC(MeshGui)
     MeshGui::SoFCMeshObjectShape                ::initClass();
     MeshGui::SoFCMeshSegmentShape               ::initClass();
     MeshGui::SoFCMeshObjectBoundary             ::initClass();
+    MeshGui::SoFCMaterialEngine                 ::initClass();
     MeshGui::SoFCIndexedFaceSet                 ::initClass();
     MeshGui::SoFCMeshPickNode                   ::initClass();
     MeshGui::SoFCMeshGridNode                   ::initClass();

@@ -26,3 +26,13 @@ download and another to actually download the files.
    since the stored revision ID. The script is meant to run twice, one to get
    a list of pages that have changed, and another one to download the changed
    pages (and all their dependencies) again.
+
+8) To split the generated freecad.qch into parts that are smaller than 50Mb 
+   (github limit): split -d --byte=49M localwiki/freecad.qch localwiki/freecad.qch.part
+   
+9) To join the parts again (for testing): cat localwiki/freecad.qch.part* >> test.qch
+   Then check that test.qch has the same md5 number than localwiki/freecad.qch
+
+10) To test: assistant -collectionFile localwiki/freecad.qhc
+
+

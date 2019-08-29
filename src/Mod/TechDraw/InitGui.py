@@ -45,3 +45,6 @@ class TechDrawWorkbench (Workbench):
         return "TechDrawGui::Workbench"
 
 Gui.addWorkbench(TechDrawWorkbench())
+
+# Append the export handler
+FreeCAD.addExportType("Technical Drawing (*.svg *.dxf *.pdf)","TechDrawGui")

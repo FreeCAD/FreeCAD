@@ -40,6 +40,8 @@
 #include "PropertyUnits.h"
 #include <Base/PyObjectBase.h>
 #include <Base/QuantityPy.h>
+#include <Base/UnitPy.h>
+#include "Expression.h"
 
 using namespace App;
 using namespace Base;
@@ -113,28 +115,40 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
 
 void PropertyQuantity::setPyObject(PyObject *value)
 {
-    Base::Quantity quant= createQuantityFromPy(value);
-
-    Unit unit = quant.getUnit();
-    if (unit.isEmpty()){
-        PropertyFloat::setValue(quant.getValue());
-        return;
+    // Set the unit if Unit object supplied, else check the unit
+    // and set the value
+    
+    if (PyObject_TypeCheck(value, &(UnitPy::Type))) {
+        Base::UnitPy  *pcObject = static_cast<Base::UnitPy*>(value);
+        Base::Unit unit = *(pcObject->getUnitPtr());
+        aboutToSetValue();
+        _Unit = unit;
+        hasSetValue();
     }
+    else {
+        Base::Quantity quant= createQuantityFromPy(value);
 
-    if (unit != _Unit)
-        throw Base::UnitsMismatchError("Not matching Unit!");
+        Unit unit = quant.getUnit();
+        if (unit.isEmpty()){
+            PropertyFloat::setValue(quant.getValue());
+            return;
+        }
 
-    PropertyFloat::setValue(quant.getValue());
+        if (unit != _Unit)
+            throw Base::UnitsMismatchError("Not matching Unit!");
+
+        PropertyFloat::setValue(quant.getValue());
+    }
 }
 
 void PropertyQuantity::setPathValue(const ObjectIdentifier & /*path*/, const boost::any &value)
 {
-    if (value.type() == typeid(double))
-        setValue(boost::any_cast<double>(value));
-    else if (value.type() == typeid(Base::Quantity))
-        setValue((boost::any_cast<Quantity>(value)).getValue());
-    else
-        throw bad_cast();
+    auto q = App::anyToQuantity(value);
+    aboutToSetValue();
+    if(!q.getUnit().isEmpty())
+        _Unit = q.getUnit();
+    _dValue=q.getValue();
+    setValue(q.getValue());
 }
 
 const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*/) const

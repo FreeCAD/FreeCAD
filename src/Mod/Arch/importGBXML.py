@@ -89,7 +89,7 @@ def export(objectslist,filename):
             # spaces
             for space in Draft.getObjectsOfType(Draft.getGroupContents(building.Group,addgroups=True),"Space"):
                 if not space.Zone:
-                    FreeCAD.Console.PrintError(translate("Arch","Error: Space '%s' has no Zone. Aborting.")+ "\n" + % space.Label)
+                    FreeCAD.Console.PrintError(translate("Arch","Error: Space '%s' has no Zone. Aborting.") % space.Label + "\n")
                     return
                 filestream.write( '        <Space id="%s" spaceType="%s" zoneIdRef="%s" conditionType="%f">\n' % (space.Name, space.SpaceType, space.Zone.Name, space.Conditioning) )
                 #filestream.write( '            <CADObjectId>%s</CADObjectId>\n' % space.Name ) # not sure what this is used for?

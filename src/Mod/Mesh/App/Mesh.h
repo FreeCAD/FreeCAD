@@ -255,6 +255,7 @@ public:
     /** @name Topological operations */
     //@{
     void refine();
+    void removeNeedles(float);
     void optimizeTopology(float);
     void optimizeEdges();
     void splitEdges();
@@ -274,6 +275,7 @@ public:
     void flipNormals();
     void harmonizeNormals();
     void validateIndices();
+    void validateCaps(float fMaxAngle, float fSplitFactor);
     void validateDeformations(float fMaxAngle, float fEps);
     void validateDegenerations(float fEps);
     void removeDuplicatedPoints();
@@ -288,6 +290,7 @@ public:
     void removeFullBoundaryFacets();
     bool hasInvalidPoints() const;
     void removeInvalidPoints();
+    void mergeFacets();
     //@}
 
     /** @name Mesh segments */
@@ -297,7 +300,7 @@ public:
     const Segment& getSegment(unsigned long) const;
     Segment& getSegment(unsigned long);
     MeshObject* meshFromSegment(const std::vector<unsigned long>&) const;
-    std::vector<Segment> getSegmentsFromType(GeometryType, float dev, unsigned long minFacets) const;
+    std::vector<Segment> getSegmentsOfType(GeometryType, float dev, unsigned long minFacets) const;
     //@}
 
     /** @name Primitives */

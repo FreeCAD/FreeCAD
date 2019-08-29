@@ -25,7 +25,6 @@
 
 #include <App/DocumentObject.h>
 
-#include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
@@ -58,7 +57,6 @@ public:
     /// Returns template height in mm
     virtual double getHeight() const;
 
-    virtual void getBlockDimensions(double &x, double &y, double &width, double &height) const;
     virtual DrawPage* getParentPage() const;
 
     /** @name methods override Feature */

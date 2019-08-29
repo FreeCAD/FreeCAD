@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,17 +20,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemMeshGmsh"
+__title__ = "FreeCAD FEM mesh gmsh ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package ViewProviderFemMeshGmsh
 #  \ingroup FEM
+#  \brief FreeCAD FEM _ViewProviderFemMeshGmsh
 
+import sys
 import FreeCAD
 import FreeCADGui
 import FemGui
-
 
 # for the panel
 from femobjects import _FemMeshGmsh
@@ -61,7 +62,13 @@ class _ViewProviderFemMeshGmsh:
         return
 
     def setEdit(self, vobj, mode):
-        self.ViewObject.show()  # show the mesh on edit if it is hided
+        # hide all meshes
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("Fem::FemMeshObject"):
+                o.ViewObject.hide()
+        # show the mesh we like to edit
+        self.ViewObject.show()
+        # show task panel
         taskd = _TaskPanelFemMeshGmsh(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
@@ -70,15 +77,17 @@ class _ViewProviderFemMeshGmsh:
     def unsetEdit(self, vobj, mode):
         FreeCADGui.Control.closeDialog()
         self.ViewObject.hide()  # hide the mesh after edit is finished
-        return
+        return True
 
     def doubleClicked(self, vobj):
-        FreeCADGui.activateWorkbench('FemWorkbench')
-        # Group meshing is only active on active analysis, we should make sure the analysis the mesh belongs too is active
+        # Group meshing is only active on active analysis
+        # we should make sure the analysis the mesh belongs too is active
         gui_doc = FreeCADGui.getDocument(vobj.Object.Document)
         if not gui_doc.getInEdit():
-            # may be go the other way around and just activate the analysis the user has doubleClicked on ?!
-            # not a fast one, we need to iterate over all member of all analysis to know to which analyis the object belongs too!!!
+            # may be go the other way around and just activate the
+            # analysis the user has doubleClicked on ?!
+            # not a fast one, we need to iterate over all member of all
+            # analysis to know to which analysis the object belongs too!!!
             # first check if there is an analysis in the active document
             found_an_analysis = False
             for o in gui_doc.Document.Objects:
@@ -92,7 +101,10 @@ class _ViewProviderFemMeshGmsh:
                             if not gui_doc.getInEdit():
                                 gui_doc.setEdit(vobj.Object.Name)
                             else:
-                                FreeCAD.Console.PrintError('Activate the analysis this Gmsh FEM mesh object belongs too!\n')
+                                FreeCAD.Console.PrintError(
+                                    'Activate the analysis this Gmsh FEM '
+                                    'mesh object belongs too!\n'
+                                )
                         else:
                             print('Gmsh FEM mesh object does not belong to the active analysis.')
                             found_mesh_analysis = False
@@ -102,16 +114,27 @@ class _ViewProviderFemMeshGmsh:
                                         if m == self.Object:
                                             found_mesh_analysis = True
                                             FemGui.setActiveAnalysis(o)
-                                            print('The analysis the Gmsh FEM mesh object belongs too was found and activated: ' + o.Name)
+                                            print(
+                                                'The analysis the Gmsh FEM mesh object '
+                                                'belongs to was found and activated: {}'
+                                                .format(o.Name)
+                                            )
                                             gui_doc.setEdit(vobj.Object.Name)
                                             break
                             if not found_mesh_analysis:
-                                print('Gmsh FEM mesh object does not belong to an analysis. Analysis group meshing will be deactivated.')
+                                print(
+                                    'Gmsh FEM mesh object does not belong to an analysis. '
+                                    'Analysis group meshing will be deactivated.'
+                                )
                                 gui_doc.setEdit(vobj.Object.Name)
                     else:
                         FreeCAD.Console.PrintError('Active analysis is not in active document.')
                 else:
-                    print('No active analysis in active document, we are going to have a look if the Gmsh FEM mesh object belongs to a non active analysis.')
+                    print(
+                        'No active analysis in active document, '
+                        'we are going to have a look if the Gmsh FEM mesh object '
+                        'belongs to a non active analysis.'
+                    )
                     found_mesh_analysis = False
                     for o in gui_doc.Document.Objects:
                         if o.isDerivedFrom('Fem::FemAnalysisPython'):
@@ -119,17 +142,26 @@ class _ViewProviderFemMeshGmsh:
                                 if m == self.Object:
                                     found_mesh_analysis = True
                                     FemGui.setActiveAnalysis(o)
-                                    print('The analysis the Gmsh FEM mesh object belongs to was found and activated: ' + o.Name)
+                                    print(
+                                        'The analysis the Gmsh FEM mesh object '
+                                        'belongs to was found and activated: {}'.format(o.Name)
+                                    )
                                     gui_doc.setEdit(vobj.Object.Name)
                                     break
                     if not found_mesh_analysis:
-                        print('Gmsh FEM mesh object does not belong to an analysis. Analysis group meshing will be deactivated.')
+                        print(
+                            'Gmsh FEM mesh object does not belong to an analysis. '
+                            'Analysis group meshing will be deactivated.'
+                        )
                         gui_doc.setEdit(vobj.Object.Name)
             else:
                 print('No analysis in the active document.')
                 gui_doc.setEdit(vobj.Object.Name)
         else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+            from PySide.QtGui import QMessageBox
+            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + '\n')
         return True
 
     def __getstate__(self):
@@ -139,7 +171,10 @@ class _ViewProviderFemMeshGmsh:
         return None
 
     def claimChildren(self):
-        return (self.Object.MeshRegionList + self.Object.MeshGroupList + self.Object.MeshBoundaryLayerList)
+        reg_childs = self.Object.MeshRegionList
+        gro_childs = self.Object.MeshGroupList
+        bou_childs = self.Object.MeshBoundaryLayerList
+        return (reg_childs + gro_childs + bou_childs)
 
     def onDelete(self, feature, subelements):
         try:
@@ -149,32 +184,111 @@ class _ViewProviderFemMeshGmsh:
             FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
         return True
 
+    def canDragObjects(self):
+        return True
+
+    def canDropObjects(self):
+        return True
+
+    def canDragObject(self, dragged_object):
+        if hasattr(dragged_object, "Proxy") \
+                and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+            return True
+        elif hasattr(dragged_object, "Proxy") \
+                and dragged_object.Proxy.Type == "Fem::FemMeshGroup":
+            return True
+        elif hasattr(dragged_object, "Proxy") \
+                and dragged_object.Proxy.Type == "Fem::FemMeshRegion":
+            return True
+        else:
+            return False
+
+    def canDropObject(self, incoming_object):
+        return True
+
+    def dragObject(self, selfvp, dragged_object):
+        if hasattr(dragged_object, "Proxy") \
+                and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+            objs = self.Object.MeshBoundaryLayerList
+            objs.remove(dragged_object)
+            self.Object.MeshBoundaryLayerList = objs
+        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshGroup":
+            objs = self.Object.MeshGroupList
+            objs.remove(dragged_object)
+            self.Object.MeshGroupList = objs
+        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshRegion":
+            objs = self.Object.MeshRegionList
+            objs.remove(dragged_object)
+            self.Object.MeshRegionList = objs
+
+    def dropObject(self, selfvp, incoming_object):
+        if hasattr(incoming_object, "Proxy") \
+                and incoming_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+            objs = self.Object.MeshBoundaryLayerList
+            objs.append(incoming_object)
+            self.Object.MeshBoundaryLayerList = objs
+        elif hasattr(incoming_object, "Proxy") \
+                and incoming_object.Proxy.Type == "Fem::FemMeshGroup":
+            objs = self.Object.MeshGroupList
+            objs.append(incoming_object)
+            self.Object.MeshGroupList = objs
+        elif hasattr(incoming_object, "Proxy") \
+                and incoming_object.Proxy.Type == "Fem::FemMeshRegion":
+            objs = self.Object.MeshRegionList
+            objs.append(incoming_object)
+            self.Object.MeshRegionList = objs
+        FreeCAD.ActiveDocument.recompute()
+
 
 class _TaskPanelFemMeshGmsh:
-    '''The TaskPanel for editing References property of FemMeshGmsh objects and creation of new FEM mesh'''
+    '''The TaskPanel for editing References property of
+    FemMeshGmsh objects and creation of new FEM mesh'''
 
     def __init__(self, obj):
         self.mesh_obj = obj
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshGmsh.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshGmsh.ui"
+        )
 
         self.Timer = QtCore.QTimer()
         self.Timer.start(100)  # 100 milli seconds
         self.gmsh_runs = False
         self.console_message_gmsh = ''
 
-        QtCore.QObject.connect(self.form.if_max, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.max_changed)
-        QtCore.QObject.connect(self.form.if_min, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.min_changed)
-        QtCore.QObject.connect(self.form.cb_dimension, QtCore.SIGNAL("activated(int)"), self.choose_dimension)
-        QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.update_timer_text)
+        QtCore.QObject.connect(
+            self.form.if_max,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.max_changed
+        )
+        QtCore.QObject.connect(
+            self.form.if_min,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.min_changed
+        )
+        QtCore.QObject.connect(
+            self.form.cb_dimension,
+            QtCore.SIGNAL("activated(int)"),
+            self.choose_dimension
+        )
+        QtCore.QObject.connect(
+            self.Timer,
+            QtCore.SIGNAL("timeout()"),
+            self.update_timer_text
+        )
 
-        self.form.cb_dimension.addItems(_FemMeshGmsh._FemMeshGmsh.known_element_dimensions)
+        self.form.cb_dimension.addItems(
+            _FemMeshGmsh._FemMeshGmsh.known_element_dimensions
+        )
 
         self.get_mesh_params()
         self.get_active_analysis()
         self.update()
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
+        button_value = int(
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel
+        )
+        return button_value
         # show a OK, a apply and a Cancel button
         # def reject() is called on Cancel button
         # def clicked(self, button) is needed, to access the apply button
@@ -213,8 +327,12 @@ class _TaskPanelFemMeshGmsh:
         self.form.cb_dimension.setCurrentIndex(index_dimension)
 
     def console_log(self, message="", color="#000000"):
-        self.console_message_gmsh = self.console_message_gmsh + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
-            format(time.time() - self.Start, color, message.encode('utf-8', 'replace'))
+        if (not isinstance(message, bytes)) and (sys.version_info.major < 3):
+            message = message.encode('utf-8', 'replace')
+        self.console_message_gmsh = self.console_message_gmsh + (
+            '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'
+            .format(time.time() - self.Start, color, message)
+        )
         self.form.te_output.setText(self.console_message_gmsh)
         self.form.te_output.moveCursor(QtGui.QTextCursor.End)
 
@@ -241,10 +359,27 @@ class _TaskPanelFemMeshGmsh:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         part = self.obj.Part
         if self.mesh_obj.MeshRegionList:
-            if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):  # other part obj might not have a Proxy, thus an exception would be raised
-                if (part.Proxy.Type == "FeatureBooleanFragments" or part.Proxy.Type == "FeatureSlice" or part.Proxy.Type == "FeatureXOR"):
-                    error_message = "The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. Gmsh could return unexpected meshes in such circumstances. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
-                    QtGui.QMessageBox.critical(None, "Shape to mesh is a BooleanFragmentsCompound and mesh regions are defined", error_message)
+            #  other part obj might not have a Proxy, thus an exception would be raised
+            if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):
+                if part.Proxy.Type == "FeatureBooleanFragments" \
+                        or part.Proxy.Type == "FeatureSlice" \
+                        or part.Proxy.Type == "FeatureXOR":
+                    error_message = (
+                        'The shape to mesh is a boolean split tools Compound '
+                        'and the mesh has mesh region list. '
+                        'Gmsh could return unexpected meshes in such circumstances. '
+                        'It is strongly recommended to extract the shape '
+                        'to mesh from the Compound and use this one.'
+                    )
+                    qtbox_title = (
+                        "Shape to mesh is a BooleanFragmentsCompound "
+                        "and mesh regions are defined"
+                    )
+                    QtGui.QMessageBox.critical(
+                        None,
+                        qtbox_title,
+                        error_message
+                    )
         self.Start = time.time()
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         self.console_message_gmsh = ''
@@ -284,5 +419,5 @@ class _TaskPanelFemMeshGmsh:
                 # print('Mesh is not member of active analysis, means no group meshing')
                 self.analysis = None  # no group meshing
         else:
-            # print('No active analyis, means no group meshing')
+            # print('No active analysis, means no group meshing')
             self.analysis = None  # no group meshing

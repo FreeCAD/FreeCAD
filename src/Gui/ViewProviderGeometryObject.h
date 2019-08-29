@@ -24,8 +24,8 @@
 #ifndef GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
 #define GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
 
-#include <Inventor/lists/SoPickedPointList.h> 
 #include "ViewProviderDragger.h"
+#include <Inventor/lists/SoPickedPointList.h>
 
 class SoPickedPointList;
 class SoSwitch;
@@ -94,7 +94,6 @@ protected:
     void setSelectable(bool Selectable=true);
 
     virtual unsigned long getBoundColor() const;
-    void applyBoundColor();
 
 protected:
     SoMaterial       * pcShapeMaterial;

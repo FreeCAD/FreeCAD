@@ -127,6 +127,7 @@ public:
     void setNormals(const std::vector<Base::Vector3f>&);
     void setWidth(int);
     void setHeight(int);
+    void setPlacement(const Base::Placement&);
 
 protected:
     const PointKernel& points;
@@ -134,6 +135,7 @@ protected:
     std::vector<App::Color> colors;
     std::vector<Base::Vector3f> normals;
     int width, height;
+    Base::Placement placement;
 };
 
 class AscWriter : public Writer

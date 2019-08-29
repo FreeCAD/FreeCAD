@@ -24,13 +24,10 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathLog as PathLog
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathPocket as PathPocket
-import PathScripts.PathSelection as PathSelection
 
-from PySide import QtCore, QtGui
+from PySide import QtCore #, QtGui
 
 __title__ = "Path Pocket Base Operation UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -40,25 +37,27 @@ __doc__ = "Base page controller and command implementation for path pocket opera
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-FeaturePocket = 0x01
-FeatureFacing = 0x02
+FeaturePocket   = 0x01
+FeatureFacing   = 0x02
+FeatureOutline  = 0x04
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
-    '''Page controller class for pocket operations, supports two different features:
+    '''Page controller class for pocket operations, supports:
           FeaturePocket  ... used for pocketing operation
           FeatureFacing  ... used for face milling operation
+          FeatureOutline ... used for pocket-shape operation
     '''
 
     def pocketFeatures(self):
         '''pocketFeatures() ... return which features of the UI are supported by the operation.
-        Typically one of the following is enabled:
           FeaturePocket  ... used for pocketing operation
           FeatureFacing  ... used for face milling operation
+          FeatureOutline ... used for pocket-shape operation
         Must be overwritten by subclasses'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def getForm(self):
-        '''getForm() ... returns UI, adapted to the resutls from pocketFeatures()'''
+        '''getForm() ... returns UI, adapted to the results from pocketFeatures()'''
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
 
         if not FeatureFacing & self.pocketFeatures():
@@ -68,10 +67,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             form.extraOffsetLabel.setText(translate("PathPocket", "Pass Extension"))
             form.extraOffset.setToolTip(translate("PathPocket", "The distance the facing operation will extend beyond the boundary shape."))
 
-        if True:
-            # currently doesn't have an effect or is experimental
-            form.keepToolDown.hide()
-            form.minTravel.hide()
+        if not (FeatureOutline & self.pocketFeatures()):
+            form.useOutline.hide()
+
+        # if True:
+        #     # currently doesn't have an effect or is experimental
+        #     form.minTravel.hide()
 
         return form
 
@@ -109,8 +110,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
-        if obj.KeepToolDown != self.form.keepToolDown.isChecked():
-            obj.KeepToolDown = self.form.keepToolDown.isChecked()
+
+        if FeatureOutline & self.pocketFeatures():
+            if obj.UseOutline != self.form.useOutline.isChecked():
+                obj.UseOutline = self.form.useOutline.isChecked()
 
         self.updateMinTravel(obj)
 
@@ -123,7 +126,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.stepOverPercent.setValue(obj.StepOver)
         self.form.extraOffset.setText(FreeCAD.Units.Quantity(obj.ExtraOffset.Value, FreeCAD.Units.Length).UserString)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
-        self.form.keepToolDown.setChecked(obj.KeepToolDown)
+        if FeatureOutline & self.pocketFeatures():
+            self.form.useOutline.setChecked(obj.UseOutline)
 
         self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
         self.updateZigZagAngle(obj, False)
@@ -149,7 +153,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.useStartPoint.clicked)
-        signals.append(self.form.keepToolDown.clicked)
+        signals.append(self.form.useOutline.clicked)
         signals.append(self.form.minTravel.clicked)
 
         if FeatureFacing & self.pocketFeatures():

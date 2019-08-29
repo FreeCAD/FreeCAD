@@ -451,7 +451,7 @@ PyObject*  VectorPy::normalize(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    if (ptr->Length() < 1.0e-6) {
+    if (ptr->Length() < Vector3d::epsilon()) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot normalize null vector");
         return 0;
     }
@@ -612,8 +612,8 @@ void  VectorPy::setLength(Py::Float arg)
 {
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
     double len = ptr->Length();
-    if (len < 1.0e-6) {
-        throw Py::Exception(std::string("Cannot set length of null vector"));
+    if (len < Vector3d::epsilon()) {
+        throw Py::RuntimeError(std::string("Cannot set length of null vector"));
     }
 
     double val = (double)arg/len;
@@ -672,7 +672,6 @@ int VectorPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 // In generation script allow to more precisely define which slots
 // of the number protocol should be supported instead of setting all.
 
-#if PY_MAJOR_VERSION < 3
 PyObject * VectorPy::number_divide_handler (PyObject* self, PyObject* other)
 {
     if (PyObject_TypeCheck(self, &(VectorPy::Type)) &&
@@ -702,7 +701,6 @@ PyObject * VectorPy::number_divide_handler (PyObject* self, PyObject* other)
                  Py_TYPE(self)->tp_name, Py_TYPE(other)->tp_name);
     return 0;
 }
-#endif
 
 PyObject * VectorPy::number_remainder_handler (PyObject* self, PyObject* other)
 {

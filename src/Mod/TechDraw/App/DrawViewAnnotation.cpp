@@ -89,14 +89,9 @@ void DrawViewAnnotation::onChanged(const App::Property* prop)
             prop == &TextColor ||
             prop == &TextSize ||
             prop == &LineSpace ||
-            prop == &TextStyle ||                                     //changing this doesn't recompute until focus changes??
+            prop == &TextStyle ||
             prop == &MaxWidth) {
-            try {
-                App::DocumentObjectExecReturn *ret = recompute();
-                delete ret;
-            }
-            catch (...) {
-            }
+            requestPaint();
         }
     }
     TechDraw::DrawView::onChanged(prop);

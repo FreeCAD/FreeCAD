@@ -48,6 +48,7 @@ void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const
     QAction* act;
     act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromStdString(featureName())), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 

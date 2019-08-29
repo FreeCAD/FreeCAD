@@ -33,7 +33,7 @@
 using namespace Path;
 
 
-// returns a string which represent the object e.g. when printed in python
+// returns a string which represents the object e.g. when printed in python
 std::string FeaturePathCompoundPy::representation(void) const
 {
     return std::string("<Path::FeatureCompound>");
@@ -69,7 +69,7 @@ PyObject*  FeaturePathCompoundPy::addObject(PyObject *args)
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             if (vp.hasAttr(std::string("addObject"))) {
                 Py::Callable method(vp.getAttr(std::string("addObject")));
-                // check which this method belongs to to avoid an infinite recursion
+                // check to which method this belongs to avoid an infinite recursion
                 if (method.getAttr(std::string("__self__")) != Py::Object(this)) {
                     Py::Tuple args(1);
                     args[0] = Py::Object(object);
@@ -110,7 +110,7 @@ PyObject*  FeaturePathCompoundPy::removeObject(PyObject *args)
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             if (vp.hasAttr(std::string("removeObject"))) {
                 Py::Callable method(vp.getAttr(std::string("removeObject")));
-                // check which this method belongs to to avoid an infinite recursion
+                // check to which method this belongs to avoid an infinite recursion
                 if (method.getAttr(std::string("__self__")) != Py::Object(this)) {
                     Py::Tuple args(1);
                     args[0] = Py::Object(object);
@@ -137,4 +137,3 @@ int FeaturePathCompoundPy::setCustomAttributes(const char* /*attr*/, PyObject* /
 {
     return 0;
 }
-

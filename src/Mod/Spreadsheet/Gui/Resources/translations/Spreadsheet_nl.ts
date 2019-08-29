@@ -102,8 +102,8 @@
       <translation>Verticaal centreren</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>De inhoud van geselecteerde cellen verticaal centreren</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Eigenschappen 'vertikaal uitlijnen' van geselecteerde cellen</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Cellen samenvoegen</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>De geselecteerde cellen in rekenblad samenvoegen</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Cel splitsen</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Eerder samengevoegde cellen in werkblad splitsen</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Vette tekst</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Vette tekst instellen in geselecteerde cellen</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Cursieve tekst</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Cursieve tekst in geselecteerde cellen instellen</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Tekst onderlijnen</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
+      <source>Underline text in selected cells</source>
       <translation>Tekst met onderstreping in geselecteerde cellen instellen</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Eigen</translation>
+      <source>Custom Color</source>
+      <translation>Aangepaste kleur</translation>
     </message>
   </context>
   <context>
@@ -340,19 +340,19 @@
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Zet de voorgrondkleur van de cel(len) op</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Stelt de voorgrondkleur van de Spreadsheet-cel(len) op</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Zet de achtergrondkleur van de cel(len) op</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Stelt de achtergrondkleur van de Spreadsheet-cel(len) op</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Lichtgrijs</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Eigen</translation>
+      <source>Custom Color</source>
+      <translation>Aangepaste kleur</translation>
     </message>
   </context>
   <context>

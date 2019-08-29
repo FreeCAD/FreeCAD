@@ -191,13 +191,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="stopButton">
-       <property name="text">
-        <string>Stop</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -227,7 +220,6 @@
   <tabstop>fullscreen</tabstop>
   <tabstop>timerCheck</tabstop>
   <tabstop>playButton</tabstop>
-  <tabstop>stopButton</tabstop>
   <tabstop>okButton</tabstop>
  </tabstops>
  <resources>

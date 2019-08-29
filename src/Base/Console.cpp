@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *   
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -10,12 +10,12 @@
  *   for detail see the LICENCE text file.                                 *
  *                                                                         *
  *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
- *   License along with FreeCAD; if not, write to the Free Software        * 
+ *   License along with FreeCAD; if not, write to the Free Software        *
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
@@ -39,30 +39,101 @@
 #include "Console.h"
 #include "Exception.h"
 #include "PyObjectBase.h"
-#include <QCoreApplication> 
+#include <QCoreApplication>
+#include <frameobject.h>
 
 using namespace Base;
 
 
 
 
+//=========================================================================
+
+namespace Base {
+
+class ConsoleEvent : public QEvent {
+public:
+    ConsoleSingleton::FreeCAD_ConsoleMsgType msgtype;
+    std::string msg;
+
+    ConsoleEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type, const std::string& msg)
+        : QEvent(QEvent::User), msgtype(type), msg(msg)
+    {
+    }
+    ~ConsoleEvent()
+    {
+    }
+};
+
+class ConsoleOutput : public QObject
+{
+public:
+    static ConsoleOutput* getInstance() {
+        if (!instance)
+            instance = new ConsoleOutput;
+        return instance;
+    }
+    static void destruct() {
+        delete instance;
+        instance = 0;
+    }
+
+    void customEvent(QEvent* ev) {
+        if (ev->type() == QEvent::User) {
+            ConsoleEvent* ce = static_cast<ConsoleEvent*>(ev);
+            switch (ce->msgtype) {
+            case ConsoleSingleton::MsgType_Txt:
+                Console().NotifyMessage(ce->msg.c_str());
+                break;
+            case ConsoleSingleton::MsgType_Log:
+                Console().NotifyLog(ce->msg.c_str());
+                break;
+            case ConsoleSingleton::MsgType_Wrn:
+                Console().NotifyWarning(ce->msg.c_str());
+                break;
+            case ConsoleSingleton::MsgType_Err:
+                Console().NotifyError(ce->msg.c_str());
+                break;
+            }
+        }
+    }
+
+private:
+    ConsoleOutput()
+    {
+    }
+    ~ConsoleOutput()
+    {
+    }
+
+    static ConsoleOutput* instance;
+};
+
+ConsoleOutput* ConsoleOutput::instance = 0;
+
+}
+
 //**************************************************************************
 // Construction destruction
 
 
 ConsoleSingleton::ConsoleSingleton(void)
-  :_bVerbose(false),_bCanRefresh(true)
+  : _bVerbose(true)
+  , _bCanRefresh(true)
+  , connectionMode(Direct)
 #ifdef FC_DEBUG
   ,_defaultLogLevel(FC_LOGLEVEL_LOG)
 #else
   ,_defaultLogLevel(FC_LOGLEVEL_MSG)
 #endif
 {
-
+    // make sure this object is part of the main thread
+    ConsoleOutput::getInstance();
 }
 
 ConsoleSingleton::~ConsoleSingleton()
 {
+    ConsoleOutput::destruct();
     for(std::set<ConsoleObserver * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter)
         delete (*Iter);
 }
@@ -71,20 +142,21 @@ ConsoleSingleton::~ConsoleSingleton()
 //**************************************************************************
 // methods
 
-/**  
+/**
  *  sets the console in a special mode
  */
-void ConsoleSingleton::SetMode(ConsoleMode m)
+void ConsoleSingleton::SetConsoleMode(ConsoleMode m)
 {
-    if(m && Verbose)
+    if (m & Verbose)
         _bVerbose = true;
 }
-/**  
+
+/**
  *  unsets the console from a special mode
  */
-void ConsoleSingleton::UnsetMode(ConsoleMode m)
+void ConsoleSingleton::UnsetConsoleMode(ConsoleMode m)
 {
-    if(m && Verbose)
+    if (m & Verbose)
         _bVerbose = false;
 }
 
@@ -94,7 +166,7 @@ void ConsoleSingleton::UnsetMode(ConsoleMode m)
  * The return value is an OR'ed value of all message types that have changed their state. For example
  * @code
  * // switch off warnings and error messages
- * ConsoleMsgFlags ret = Base::Console().SetEnabledMsgType("myObs", 
+ * ConsoleMsgFlags ret = Base::Console().SetEnabledMsgType("myObs",
  *                             ConsoleMsgType::MsgType_Wrn|ConsoleMsgType::MsgType_Err, false);
  * // do something without notifying observer myObs
  * ...
@@ -159,11 +231,16 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
     }
 }
 
+void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
+{
+    connectionMode = mode;
+}
+
 /** Prints a Message
- *  This method issues a Message. 
+ *  This method issues a Message.
  *  Messages are used to show some non vital information. That means when
- *  FreeCAD is running in GUI mode a Message appears on the status bar. 
- *  In console mode a message is printed to the console. 
+ *  FreeCAD is running in GUI mode a Message appears on the status bar.
+ *  In console mode a message is printed to the console.
  *  \par
  *  You can use a printf like interface like:
  *  \code
@@ -175,18 +252,28 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
  */
 void ConsoleSingleton::Message( const char *pMsg, ... )
 {
-    char format[4024];
-    const unsigned int format_len = 4024;
+#define FC_CONSOLE_FMT(_type,_type2) \
+    char format[BufferSize];\
+    format[sizeof(format)-4] = '.';\
+    format[sizeof(format)-3] = '.';\
+    format[sizeof(format)-2] = '\n';\
+    format[sizeof(format)-1] = 0;\
+    const unsigned int format_len = sizeof(format)-4;\
+    va_list namelessVars;\
+    va_start(namelessVars, pMsg);\
+    vsnprintf(format, format_len, pMsg, namelessVars);\
+    format[sizeof(format)-5] = '.';\
+    va_end(namelessVars);\
+    if (connectionMode == Direct)\
+        Notify##_type(format);\
+    else\
+        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_##_type2, format));
 
-    va_list namelessVars;
-    va_start(namelessVars, pMsg);  // Get the "..." vars
-    vsnprintf(format, format_len, pMsg, namelessVars);
-    va_end(namelessVars);
-    NotifyMessage(format);
+    FC_CONSOLE_FMT(Message,Txt);
 }
 
 /** Prints a Message
- *  This method issues a Warning. 
+ *  This method issues a Warning.
  *  Messages are used to get the users attention. That means when
  *  FreeCAD is in GUI mode a Message Box pops up. In console
  *  mode a colored message is returned to the console! Don't use this carelessly.
@@ -202,21 +289,14 @@ void ConsoleSingleton::Message( const char *pMsg, ... )
  */
 void ConsoleSingleton::Warning( const char *pMsg, ... )
 {
-    char format[4024];
-    const unsigned int format_len = 4024;
-
-    va_list namelessVars;
-    va_start(namelessVars, pMsg);  // Get the "..." vars
-    vsnprintf(format, format_len, pMsg, namelessVars);
-    va_end(namelessVars);
-    NotifyWarning(format);
+    FC_CONSOLE_FMT(Warning,Wrn);
 }
 
 /** Prints a Message
- *  This method issues an Error which makes some execution impossible. 
- *  Errors are used to get the users attention. That means when FreeCAD 
+ *  This method issues an Error which makes some execution impossible.
+ *  Errors are used to get the users attention. That means when FreeCAD
  *  is running in GUI mode an Error Message Box pops up. In console
- *  mode a colored message is printed to the console! Don't use this carelessly. 
+ *  mode a colored message is printed to the console! Don't use this carelessly.
  *  For information purposes the 'Log' or 'Message' methods are more appropriate.
  *  \par
  *  You can use a printf like interface like:
@@ -229,21 +309,14 @@ void ConsoleSingleton::Warning( const char *pMsg, ... )
  */
 void ConsoleSingleton::Error( const char *pMsg, ... )
 {
-    char format[4024];
-    const unsigned int format_len = 4024;
-
-    va_list namelessVars;
-    va_start(namelessVars, pMsg);  // Get the "..." vars
-    vsnprintf(format, format_len, pMsg, namelessVars);
-    va_end(namelessVars);
-    NotifyError(format);
+    FC_CONSOLE_FMT(Error,Err);
 }
 
 
 /** Prints a Message
  *  This method is appropriate for development and tracking purposes.
  *  It can be used to track execution of algorithms and functions.
- *  The normal user doesn't need to see it, it's more for developers 
+ *  The normal user doesn't need to see it, it's more for developers
  *  and experienced users. So in normal user mode the logging is switched off.
  *  \par
  *  You can use a printf-like interface for example:
@@ -258,19 +331,11 @@ void ConsoleSingleton::Error( const char *pMsg, ... )
 
 void ConsoleSingleton::Log( const char *pMsg, ... )
 {
-    char format[4024];
-    const unsigned int format_len = 4024;
-
     if (!_bVerbose)
     {
-        va_list namelessVars;
-        va_start(namelessVars, pMsg);  // Get the "..." vars
-        vsnprintf(format, format_len, pMsg, namelessVars);
-        va_end(namelessVars);
-        NotifyLog(format);
+        FC_CONSOLE_FMT(Log,Log);
     }
 }
-
 
 /** Delivers the time/date
  *  This method gives you a string with the actual time/date. You can
@@ -281,8 +346,8 @@ const char* ConsoleSingleton::Time(void)
 {
     struct tm *newtime;
     time_t aclock;
-    time( &aclock );                 // Get time in seconds 
-    newtime = localtime( &aclock );  // Convert time to struct tm form 
+    time( &aclock );                 // Get time in seconds
+    newtime = localtime( &aclock );  // Convert time to struct tm form
     char* st = asctime( newtime );
     st[24] = 0;
     return st;
@@ -294,7 +359,7 @@ const char* ConsoleSingleton::Time(void)
 // Observer stuff
 
 /** Attaches an Observer to Console
- *  Use this method to attach a ConsoleObserver derived class to 
+ *  Use this method to attach a ConsoleObserver derived class to
  *  the Console. After the observer is attached all messages will also
  *  be forwarded to it.
  *  @see ConsoleObserver
@@ -372,7 +437,7 @@ int *ConsoleSingleton::GetLogLevel(const char *tag, bool create) {
 
 void ConsoleSingleton::Refresh() {
     if(_bCanRefresh)
-        QCoreApplication::sendPostedEvents();
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 }
 
 void ConsoleSingleton::EnableRefresh(bool enable) {
@@ -407,23 +472,23 @@ ConsoleSingleton & ConsoleSingleton::Instance(void)
 
 // ConsoleSingleton Methods						// Methods structure
 PyMethodDef ConsoleSingleton::Methods[] = {
-    {"PrintMessage",         (PyCFunction) ConsoleSingleton::sPyMessage, 1, 
+    {"PrintMessage",         (PyCFunction) ConsoleSingleton::sPyMessage, METH_VARARGS,
      "PrintMessage(string) -- Print a message to the output"},
-    {"PrintLog",             (PyCFunction) ConsoleSingleton::sPyLog, 1,
+    {"PrintLog",             (PyCFunction) ConsoleSingleton::sPyLog, METH_VARARGS,
      "PrintLog(string) -- Print a log message to the output"},
-    {"PrintError"  ,         (PyCFunction) ConsoleSingleton::sPyError, 1,
+    {"PrintError"  ,         (PyCFunction) ConsoleSingleton::sPyError, METH_VARARGS,
      "PrintError(string) -- Print an error message to the output"},
-    {"PrintWarning",         (PyCFunction) ConsoleSingleton::sPyWarning, 1,
+    {"PrintWarning",         (PyCFunction) ConsoleSingleton::sPyWarning, METH_VARARGS,
      "PrintWarning -- Print a warning to the output"},
-    {"SetStatus",            (PyCFunction) ConsoleSingleton::sPySetStatus, 1,
-     "Set the status for either Log, Msg, Wrn, or Error for an observer"},
-    {"GetStatus",            (PyCFunction) ConsoleSingleton::sPyGetStatus, 1,
-     "Get the status for either Log, Msg, Wrn, or Error for an observer"},
+    {"SetStatus",            (PyCFunction) ConsoleSingleton::sPySetStatus, METH_VARARGS,
+     "Set the status for either Log, Msg, Wrn or Error for an observer"},
+    {"GetStatus",            (PyCFunction) ConsoleSingleton::sPyGetStatus, METH_VARARGS,
+     "Get the status for either Log, Msg, Wrn or Error for an observer"},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
 
-PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
 {
     PyObject *output;
     if (!PyArg_ParseTuple(args, "O", &output))
@@ -460,7 +525,7 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyOb
 
     PY_TRY {
         if (string)
-            Instance().Message("%s",string);            // process message
+            Instance().NotifyMessage(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -469,7 +534,7 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args, PyOb
     return Py_None;
 }
 
-PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args)
 {
     PyObject *output;
     if (!PyArg_ParseTuple(args, "O", &output))
@@ -506,7 +571,7 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyOb
 
     PY_TRY {
         if (string)
-            Instance().Warning("%s",string);            // process message
+            Instance().NotifyWarning(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -515,7 +580,7 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args, PyOb
     return Py_None;
 }
 
-PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args)
 {
     PyObject *output;
     if (!PyArg_ParseTuple(args, "O", &output))
@@ -552,7 +617,7 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObje
 
     PY_TRY {
         if (string)
-            Instance().Error("%s",string);            // process message
+            Instance().NotifyError(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -561,7 +626,7 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args, PyObje
     return Py_None;
 }
 
-PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args)
 {
     PyObject *output;
     if (!PyArg_ParseTuple(args, "O", &output))
@@ -598,7 +663,7 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject
 
     PY_TRY {
         if (string)
-            Instance().Log("%s",string);            // process message
+            Instance().NotifyLog(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -607,12 +672,12 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args, PyObject
     return Py_None;
 }
 
-PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
 {
     char *pstr1;
     char *pstr2;
-    if (!PyArg_ParseTuple(args, "ss", &pstr1, &pstr2))     // convert args: Python->C 
-        return NULL;                             // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, "ss", &pstr1, &pstr2))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
 
     PY_TRY{
         bool b=false;
@@ -631,18 +696,18 @@ PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args, Py
             b = pObs->bMsg;
         else if(strcmp(pstr2,"Err") == 0)
             b = pObs->bErr;
-        
+
         return Py_BuildValue("i",b?1:0);
     }PY_CATCH;
 }
 
-PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
+PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args)
 {
     char *pstr1;
     char *pstr2;
     int  Bool;
-    if (!PyArg_ParseTuple(args, "ssi", &pstr1, &pstr2,&Bool))   // convert args: Python->C 
-        return NULL;                                              // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, "ssi", &pstr1, &pstr2,&Bool))   // convert args: Python->C
+        return NULL;                                              // NULL triggers exception
 
     PY_TRY{
         ConsoleObserver *pObs = Instance().Get(pstr1);
@@ -657,12 +722,12 @@ PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args, Py
             else if(strcmp(pstr2,"Err") == 0)
                 pObs->bErr = (Bool==0)?false:true;
             else
-                Py_Error(Base::BaseExceptionFreeCADError,"Unknown Message Type (use Log, Err, Msg, or Wrn)");
+                Py_Error(Base::BaseExceptionFreeCADError,"Unknown Message Type (use Log, Err, Msg or Wrn)");
 
             Py_INCREF(Py_None);
             return Py_None;
         } else {
-            Py_Error(Base::BaseExceptionFreeCADError,"Unknown Console Type");                     
+            Py_Error(Base::BaseExceptionFreeCADError,"Unknown Console Type");
     }
 
     } PY_CATCH;
@@ -795,7 +860,7 @@ void ConsoleObserverStd::Log    (const char *sErr)
     }
 }
 
-RedirectStdOutput::RedirectStdOutput() 
+RedirectStdOutput::RedirectStdOutput()
 {
     buffer.reserve(80);
 }
@@ -817,7 +882,7 @@ int RedirectStdOutput::sync()
     return 0;
 }
 
-RedirectStdLog::RedirectStdLog() 
+RedirectStdLog::RedirectStdLog()
 {
     buffer.reserve(80);
 }
@@ -839,7 +904,7 @@ int RedirectStdLog::sync()
     return 0;
 }
 
-RedirectStdError::RedirectStdError() 
+RedirectStdError::RedirectStdError()
 {
     buffer.reserve(80);
 }
@@ -876,8 +941,23 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
         str << d.count() << ' ';
     }
     if(print_tag) str << '<' << tag << "> ";
-    if(print_src) {
+    if(print_src==2) {
+        PyFrameObject* frame = PyEval_GetFrame();
+        if(frame) {
+            line = PyFrame_GetLineNumber(frame);
+#if PY_MAJOR_VERSION >= 3
+            src = PyUnicode_AsUTF8(frame->f_code->co_filename);
+#else
+            src = PyString_AsString(frame->f_code->co_filename);
+#endif
+        }
+    }
+    if(print_src && src && src[0]) {
+#ifdef FC_OS_WIN32
+        const char *_f = std::strrchr(src, '\\');
+#else
         const char *_f = std::strrchr(src, '/');
+#endif
         str << (_f?_f+1:src)<<"("<<line<<"): ";
     }
     return str;

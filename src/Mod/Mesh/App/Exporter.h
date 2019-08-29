@@ -52,6 +52,11 @@ class Exporter
     public:
         Exporter();
 
+        /*!
+         * \return true if \a is an object that can be exported as mesh.
+         */
+        static bool isSupported(App::DocumentObject *obj);
+
         virtual bool addMeshFeat(App::DocumentObject *obj) = 0;
         virtual bool addPartFeat(App::DocumentObject *obj, float tol) = 0;
 

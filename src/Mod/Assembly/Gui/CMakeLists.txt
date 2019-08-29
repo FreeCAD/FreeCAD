@@ -35,12 +35,20 @@ set(AssemblyGui_MOC_HDRS
 fc_wrap_cpp(AssemblyGui_MOC_SRCS ${AssemblyGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${AssemblyGui_MOC_SRCS})
 
-qt4_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
+if (BUILD_QT5)
+	qt5_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
+else()
+	qt4_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
+endif()
 
 set(AssemblyGui_UIC_SRCS
     #TaskAssemblyConstraints.ui
 )
-qt4_wrap_ui(AssemblyGui_UIC_HDRS ${AssemblyGui_UIC_SRCS})
+if (BUILD_QT5)
+	qt5_wrap_ui(AssemblyGui_UIC_HDRS ${AssemblyGui_UIC_SRCS})
+else()
+	qt4_wrap_ui(AssemblyGui_UIC_HDRS ${AssemblyGui_UIC_SRCS})
+endif()
 
 SET(AssemblyGuiViewProvider_SRCS
     ViewProvider.cpp
@@ -68,7 +76,7 @@ SET(AssemblyGuiModule_SRCS
     Command.cpp
     CommandConstraints.cpp
     Resources/Assembly.qrc
-    qrc_Assembly.cxx
+	#qrc_Assembly.cxx
     PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
@@ -84,14 +92,21 @@ SET(AssemblyGui_SRCS
     ${AssemblyGui_UIC_HDRS}
 )
 
-add_library(AssemblyGui SHARED ${AssemblyGui_SRCS})
+SET(AssemblyGui_Scripts
+    ../InitGui.py
+)
+
+add_library(AssemblyGui SHARED ${AssemblyGui_SRCS} ${AssemblyGui_Scripts})
+if(CMAKE_COMPILER_IS_GNUCXX)
+	set_target_properties(AssemblyGui PROPERTIES COMPILE_FLAGS "-fext-numeric-literals")
+endif()
 target_link_libraries(AssemblyGui ${AssemblyGui_LIBS})
 
 
-fc_target_copy_resource(AssemblyGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Assembly
+fc_target_copy_resource_flat(AssemblyGui
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/Assembly
-    InitGui.py)
+    ${AssemblyGui_Scripts})
 
 SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(AssemblyGui)

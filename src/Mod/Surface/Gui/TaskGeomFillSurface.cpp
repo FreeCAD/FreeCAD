@@ -194,10 +194,15 @@ GeomFillSurface::GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomF
     setEditedObject(obj);
 
     // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QString::fromLatin1("Del"));
-    ui->listWidget->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+    QAction* remove = new QAction(tr("Remove"), this);
+    remove->setShortcut(QString::fromLatin1("Del"));
+    ui->listWidget->addAction(remove);
+    connect(remove, SIGNAL(triggered()), this, SLOT(onDeleteEdge()));
+
+    QAction* orientation = new QAction(tr("Flip orientation"), this);
+    ui->listWidget->addAction(orientation);
+    connect(orientation, SIGNAL(triggered()), this, SLOT(onFlipOrientation()));
+
     ui->listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
@@ -232,12 +237,23 @@ void GeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
 
     auto objects = editedObject->BoundaryList.getValues();
     auto element = editedObject->BoundaryList.getSubValues();
+    auto boolean = editedObject->ReversedList.getValues();
     auto it = objects.begin();
     auto jt = element.begin();
+    std::size_t index = 0;
+
+    QPixmap rotateLeft = Gui::BitmapFactory().pixmap("view-rotate-left");
+    QPixmap rotateRight = Gui::BitmapFactory().pixmap("view-rotate-right");
 
     App::Document* doc = editedObject->getDocument();
-    for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
+    for (; it != objects.end() && jt != element.end(); ++it, ++jt, ++index) {
         QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+        if (index < boolean.size()) {
+            if (boolean[index])
+                item->setIcon(rotateLeft);
+            else
+                item->setIcon(rotateRight);
+        }
         ui->listWidget->addItem(item);
 
         QString text = QString::fromLatin1("%1.%2")
@@ -402,6 +418,7 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
         checkOpenCommand();
         if (selectionMode == Append) {
             QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
+            item->setIcon(Gui::BitmapFactory().pixmap("view-rotate-right"));
             ui->listWidget->addItem(item);
 
             Gui::SelectionObject sel(msg);
@@ -421,17 +438,22 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto element = editedObject->BoundaryList.getSubValues();
             element.push_back(msg.pSubName);
             editedObject->BoundaryList.setValues(objects, element);
+            auto booleans = editedObject->ReversedList.getValues();
+            booleans.push_back(false);
+            editedObject->ReversedList.setValues(booleans);
             this->vp->highlightReferences(true);
         }
         else {
             Gui::SelectionObject sel(msg);
             QList<QVariant> data;
+            int row = 0;
             data << QByteArray(msg.pDocName);
             data << QByteArray(msg.pObjectName);
             data << QByteArray(msg.pSubName);
             for (int i=0; i<ui->listWidget->count(); i++) {
                 QListWidgetItem* item = ui->listWidget->item(i);
                 if (item && item->data(Qt::UserRole) == data) {
+                    row = i;
                     ui->listWidget->takeItem(i);
                     delete item;
                 }
@@ -444,11 +466,24 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
             auto element = editedObject->BoundaryList.getSubValues();
             auto it = objects.begin();
             auto jt = element.begin();
+
+            // remove the element of the bitset at position 'row'
+            const boost::dynamic_bitset<>& old_booleans = editedObject->ReversedList.getValues();
+            boost::dynamic_bitset<> new_booleans = old_booleans >> 1;
+            new_booleans.resize(objects.size()-1);
+
+            // double-check in case 'old_booleans' is out of sync
+            if (new_booleans.size() < old_booleans.size()) {
+                for (int i=0; i<row; i++)
+                    new_booleans[i] = old_booleans[i];
+            }
+
             for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
                 if (*it == obj && *jt == sub) {
                     objects.erase(it);
                     element.erase(jt);
                     editedObject->BoundaryList.setValues(objects, element);
+                    editedObject->ReversedList.setValues(new_booleans);
                     break;
                 }
             }
@@ -479,15 +514,67 @@ void GeomFillSurface::onDeleteEdge()
         auto it = objects.begin();
         auto jt = element.begin();
         this->vp->highlightReferences(false);
+
+        // remove the element of the bitset at position 'row'
+        const boost::dynamic_bitset<>& old_booleans = editedObject->ReversedList.getValues();
+        boost::dynamic_bitset<> new_booleans = old_booleans >> 1;
+        new_booleans.resize(objects.size()-1);
+
+        // double-check in case 'old_booleans' is out of sync
+        if (new_booleans.size() < old_booleans.size()) {
+            for (int i=0; i<row; i++)
+                new_booleans[i] = old_booleans[i];
+        }
+
         for (; it != objects.end() && jt != element.end(); ++it, ++jt) {
             if (*it == obj && *jt == sub) {
                 objects.erase(it);
                 element.erase(jt);
                 editedObject->BoundaryList.setValues(objects, element);
+                editedObject->ReversedList.setValues(new_booleans);
                 break;
             }
         }
         this->vp->highlightReferences(true);
+    }
+}
+
+void GeomFillSurface::flipOrientation(QListWidgetItem* item)
+{
+    // toggle the orientation of the input curve
+    //
+    QPixmap rotateLeft = Gui::BitmapFactory().pixmap("view-rotate-left");
+    QPixmap rotateRight = Gui::BitmapFactory().pixmap("view-rotate-right");
+
+    int row = ui->listWidget->row(item);
+    if (row < editedObject->ReversedList.getSize()) {
+        auto booleans = editedObject->ReversedList.getValues();
+        bool reversed = !booleans[row];
+        booleans[row] = reversed;
+        if (reversed) {
+            item->setIcon(rotateLeft);
+        }
+        else {
+            item->setIcon(rotateRight);
+        }
+
+        editedObject->ReversedList.setValues(booleans);
+        editedObject->recomputeFeature();
+    }
+}
+
+void GeomFillSurface::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
+{
+    if (item) {
+        flipOrientation(item);
+    }
+}
+
+void GeomFillSurface::onFlipOrientation()
+{
+    QListWidgetItem* item = ui->listWidget->currentItem();
+    if (item) {
+        flipOrientation(item);
     }
 }
 

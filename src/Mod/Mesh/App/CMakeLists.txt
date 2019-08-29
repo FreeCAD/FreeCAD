@@ -361,25 +361,15 @@ SET(Mesh_SRCS
     Segment.h
 )
 
-if(MSVC)
+if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Core_SRCS} ${Mesh_SRCS})
     ADD_MSVC_PRECOMPILED_HEADER(Mesh PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(MSVC)
+endif(FREECAD_USE_PCH)
 
 add_library(Mesh SHARED ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})
 
-
-fc_target_copy_resource(Mesh 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Mesh
-    ${CMAKE_BINARY_DIR}/Mod/Mesh
-    Init.py BuildRegularGeoms.py)
-
-fc_target_copy_resource(Mesh 
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Mesh
-    MeshTestsApp.py)
 
 SET_BIN_DIR(Mesh Mesh /Mod/Mesh)
 SET_PYTHON_PREFIX_SUFFIX(Mesh)

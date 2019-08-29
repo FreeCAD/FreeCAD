@@ -109,6 +109,9 @@ public:
     virtual bool allow(App::Document*,App::DocumentObject*, const char*);
 
 protected:
+    SelectionFilterGate();
+
+protected:
     SelectionFilter *Filter;
 };
 

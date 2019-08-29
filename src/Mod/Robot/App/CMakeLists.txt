@@ -75,24 +75,30 @@ SET(Robot_SRCS
     ${Python_SRCS}
 )
 
+# FIXME: The bundled KDL has some extensions which makes it incompatible
+# to an installed KDL. To fix the issue two things must be done:
+# * revert the changes (and look for an alternative)
+# * it must be avoided to include headers of the bundled version if the
+#   installed version is used
+#
 # use external kdl
-if (FREECAD_USE_EXTERNAL_KDL)
-  find_library(KDL_LIBRARY orocos-kdl)
-  find_path(KDL_INCLUDES kdl/kdl.hpp)
-  if(KDL_LIBRARY)
-     message(STATUS "Found orocos-kdl: ${KDL_LIBRARY}")
-  endif()
-  if(KDL_INCLUDES)
-     message(STATUS "Found orocus_kdl headers: ${KDL_INCLUDES}")
-  endif()
-  if(KDL_LIBRARY AND KDL_INCLUDES)
-      list(APPEND Robot_LIBS ${KDL_LIBRARY})
-      include_directories(${KDL_INCLUDES})
-  else()
-      message(FATAL_ERROR "Using external orocos-kdl was specified but was not found.")
-  endif()
-
-else(FREECAD_USE_EXTERNAL_KDL)
+#if (FREECAD_USE_EXTERNAL_KDL)
+#  find_library(KDL_LIBRARY orocos-kdl)
+#  find_path(KDL_INCLUDES kdl/kdl.hpp)
+#  if(KDL_LIBRARY)
+#     message(STATUS "Found orocos-kdl: ${KDL_LIBRARY}")
+#  endif()
+#  if(KDL_INCLUDES)
+#     message(STATUS "Found orocus_kdl headers: ${KDL_INCLUDES}")
+#  endif()
+#  if(KDL_LIBRARY AND KDL_INCLUDES)
+#      list(APPEND Robot_LIBS ${KDL_LIBRARY})
+#      include_directories(${KDL_INCLUDES})
+#  else()
+#      message(FATAL_ERROR "Using external orocos-kdl was specified but was not found.")
+#  endif()
+#
+#else(FREECAD_USE_EXTERNAL_KDL)
   # here we use the internal supplied kdl
   add_definitions(-DKDL_USE_NEW_TREE_INTERFACE=1)
   FILE( GLOB KDL_SRCS kdl_cp/[^.]*.cpp )
@@ -111,47 +117,13 @@ else(FREECAD_USE_EXTERNAL_KDL)
 
   SOURCE_GROUP("KDL" FILES ${KDL_SRCS} ${KDL_HPPS} ${UTIL_SRCS} ${UTIL_HPPS} )
 
-endif(FREECAD_USE_EXTERNAL_KDL)
+#endif(FREECAD_USE_EXTERNAL_KDL)
 
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
-SET(Robot_Scripts
-    Init.py
-    KukaExporter.py
-    RobotExample.py
-    RobotExampleTrajectoryOutOfShapes.py
-)
-
-if (EXISTS ${CMAKE_SOURCE_DIR}/src/Mod/Robot/Lib/Kuka)
-SET(Robot_Resources
-    Lib/Kuka/kr500_1.wrl
-    Lib/Kuka/kr500_1.csv
-    Lib/Kuka/kr_500_2.pdf
-    Lib/Kuka/kr210.WRL
-    Lib/Kuka/kr_210_2.csv
-    Lib/Kuka/kr_210_2.pdf
-    Lib/Kuka/kr16.wrl
-    Lib/Kuka/kr_16.csv
-    Lib/Kuka/kr_16.pdf
-    Lib/Kuka/kr125_3.wrl
-    Lib/Kuka/kr_125.csv
-    Lib/Kuka/kr125_2.pdf
-)
-endif ()
-
 add_library(Robot SHARED ${Robot_SRCS})
 target_link_libraries(Robot ${Robot_LIBS})
-
-fc_target_copy_resource(Robot 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Robot
-    ${CMAKE_BINARY_DIR}/Mod/Robot
-    ${Robot_Scripts})
-
-fc_target_copy_resource(Robot 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Robot
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot
-    ${Robot_Resources})
 
 SET_BIN_DIR(Robot Robot /Mod/Robot)
 SET_PYTHON_PREFIX_SUFFIX(Robot)

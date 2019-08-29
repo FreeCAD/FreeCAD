@@ -61,8 +61,8 @@ QStringList PartGuiExport getRefListForMode(Attacher::AttachEngine &attacher, At
 class PartGuiExport AttacherGuiPy{
 public:
     static PyMethodDef    Methods[];
-    static PyObject* sGetModeStrings(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/);
-    static PyObject* sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/);
+    static PyObject* sGetModeStrings(PyObject * /*self*/, PyObject *args);
+    static PyObject* sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObject *args);
 };
 
 }

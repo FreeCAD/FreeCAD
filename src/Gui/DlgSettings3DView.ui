@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>477</width>
-    <height>505</height>
+    <height>630</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,6 +22,9 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_CornerCoordSystem">
+        <property name="toolTip">
+         <string>Main coordinate system will always be shown at lower right in opened files</string>
+        </property>
         <property name="text">
          <string>Show coordinate system in the corner</string>
         </property>
@@ -38,6 +41,10 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_ShowFPS">
+        <property name="toolTip">
+         <string>Time needed for last operation and resulting frame rate
+will be shown at the lower left in opened files</string>
+        </property>
         <property name="text">
          <string>Show counter of frames per second</string>
         </property>
@@ -50,9 +57,85 @@
        </widget>
       </item>
       <item>
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="CheckBox_NaviCube">
+          <property name="toolTip">
+           <string>Navigation cube will always be shown in opened files </string>
+          </property>
+          <property name="text">
+           <string>Show navigation cube</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShowNaviCube</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="cornerLabel">
+          <property name="text">
+           <string>Corner</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="naviCubeCorner">
+          <property name="toolTip">
+           <string>Corner where navigation cube is shown</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Top left</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Top right</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Bottom left</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Bottom right</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_useVBO">
+        <property name="toolTip">
+         <string>Vertex Buffer Objects (VBO) will be used</string>
+        </property>
         <property name="text">
-         <string>Use OpenGL Vertex Buffer Object (experimental)</string>
+         <string>Use OpenGL vertex buffer object</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>UseVBO</cstring>
@@ -63,15 +146,51 @@
        </widget>
       </item>
       <item>
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="QLabel" name="renderCacheLabel">
+          <property name="text">
+           <string>Render cache</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="renderCache">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Auto</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Distributed</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Centralized</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_UseAutoRotation">
         <property name="enabled">
          <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Enable animated rotations</string>
         </property>
         <property name="text">
          <string>Enable animation</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>UseAutoRotation</cstring>
@@ -92,6 +211,9 @@
         </item>
         <item row="0" column="1">
          <widget class="QComboBox" name="comboNavigationStyle">
+          <property name="toolTip">
+           <string>Navigation settings set</string>
+          </property>
           <property name="currentIndex">
            <number>-1</number>
           </property>
@@ -119,6 +241,11 @@
         </item>
         <item row="1" column="1">
          <widget class="QComboBox" name="comboOrbitStyle">
+          <property name="toolTip">
+           <string>Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</string>
+          </property>
           <property name="currentIndex">
            <number>1</number>
           </property>
@@ -143,6 +270,9 @@
         </item>
         <item row="2" column="1">
          <widget class="Gui::PrefComboBox" name="comboAliasing">
+          <property name="toolTip">
+           <string>What kind of multisample anti-aliasing is used </string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>AntiAliasing</cstring>
           </property>
@@ -176,12 +306,29 @@
           </item>
          </widget>
         </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="newDocViewLabel">
+          <property name="text">
+           <string>New Document Camera Orientation</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QComboBox" name="comboNewDocView">
+          <property name="toolTip">
+           <string>Camera orientation for new documents </string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBoxZoomAtCursor">
+          <property name="toolTip">
+           <string>Zoom operations will be performed at position of mouse pointer</string>
+          </property>
           <property name="text">
            <string>Zoom at cursor</string>
           </property>
@@ -218,6 +365,10 @@
         </item>
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="spinBoxZoomStep">
+          <property name="toolTip">
+           <string>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step. </string>
+          </property>
           <property name="minimum">
            <double>0.010000000000000</double>
           </property>
@@ -242,6 +393,9 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxInvertZoom">
+        <property name="toolTip">
+         <string>Direction of zoom operations will be inverted</string>
+        </property>
         <property name="text">
          <string>Invert zoom</string>
         </property>
@@ -255,6 +409,82 @@
          <cstring>View</cstring>
         </property>
        </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
+        <property name="toolTip">
+         <string>Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</string>
+        </property>
+        <property name="text">
+         <string>Disable touchscreen tilt gesture</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DisableTouchTilt</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxDragAtCursor">
+        <property name="toolTip">
+         <string>Rotations in 3D will use current cursor position as center for rotation</string>
+        </property>
+        <property name="text">
+         <string>Rotate at cursor</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DragAtCursor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="markerSizeLabel">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Marker size:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="boxMarkerSize">
+          <property name="toolTip">
+           <string>Size of vertices in the Sketcher workbench</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="Line" name="line1">
@@ -295,6 +525,11 @@
         </item>
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="FloatSpinBox_EyeDistance">
+          <property name="toolTip">
+           <string>Eye-to-eye distance used for stereo projections.
+The specified value is a factor that will be multiplied with the
+bounding box size of the 3D object that is currently displayed. </string>
+          </property>
           <property name="decimals">
            <number>1</number>
           </property>
@@ -319,6 +554,16 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QGridLayout" name="backlightLayout">
@@ -347,6 +592,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Intensity of the backlight</string>
           </property>
           <property name="maximum">
            <number>100</number>
@@ -379,6 +627,9 @@
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="toolTip">
+           <string>Backlight color</string>
+          </property>
           <property name="color" stdset="0">
            <color>
             <red>255</red>
@@ -396,6 +647,9 @@
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="backlightLabel">
+          <property name="toolTip">
+           <string/>
+          </property>
           <property name="text">
            <string>Intensity of backlight</string>
           </property>
@@ -403,6 +657,9 @@
         </item>
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxBacklight">
+          <property name="toolTip">
+           <string>Backlight is enabled with the defined color</string>
+          </property>
           <property name="text">
            <string>Enable backlight color</string>
           </property>
@@ -442,6 +699,9 @@
       </property>
       <item row="0" column="1">
        <widget class="Gui::PrefRadioButton" name="radioOrthographic">
+        <property name="toolTip">
+         <string>Objects will be projected in orthographic projection</string>
+        </property>
         <property name="text">
          <string>Or&amp;thographic rendering</string>
         </property>
@@ -458,6 +718,9 @@
       </item>
       <item row="0" column="0">
        <widget class="Gui::PrefRadioButton" name="radioPerspective">
+        <property name="toolTip">
+         <string>Objects will appear in a perspective projection</string>
+        </property>
         <property name="text">
          <string>Perspective renderin&amp;g</string>
         </property>
@@ -495,13 +758,8 @@
    <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefSlider</class>
-   <extends>QSlider</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -510,13 +768,18 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefComboBox</class>
-   <extends>QComboBox</extends>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSlider</class>
+   <extends>QSlider</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -528,14 +791,17 @@
  <tabstops>
   <tabstop>CheckBox_CornerCoordSystem</tabstop>
   <tabstop>CheckBox_ShowFPS</tabstop>
+  <tabstop>CheckBox_NaviCube</tabstop>
   <tabstop>CheckBox_useVBO</tabstop>
   <tabstop>CheckBox_UseAutoRotation</tabstop>
   <tabstop>comboNavigationStyle</tabstop>
   <tabstop>mouseButton</tabstop>
   <tabstop>comboOrbitStyle</tabstop>
+  <tabstop>comboNewDocView</tabstop>
   <tabstop>checkBoxZoomAtCursor</tabstop>
   <tabstop>spinBoxZoomStep</tabstop>
   <tabstop>checkBoxInvertZoom</tabstop>
+  <tabstop>checkBoxDragAtCursor</tabstop>
   <tabstop>FloatSpinBox_EyeDistance</tabstop>
   <tabstop>checkBoxBacklight</tabstop>
   <tabstop>backlightColor</tabstop>

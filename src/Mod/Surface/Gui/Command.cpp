@@ -39,6 +39,7 @@
 #include <Geom_BSplineCurve.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
+#include <Python.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
@@ -78,7 +79,7 @@ CmdSurfaceCut::CmdSurfaceCut()
     sToolTipText  = QT_TR_NOOP("Cuts a Shape with another Shape.\nReturns a modified version of the first shape");
     sWhatsThis    = "Surface_Cut";
     sStatusTip    = QT_TR_NOOP("Surface Cut function");
-    sPixmap       = "Cut.svg";
+    sPixmap       = "Surface_Cut";
     sAccel        = "CTRL+H";
 }
 
@@ -136,7 +137,7 @@ CmdSurfaceFilling::CmdSurfaceFilling()
     sToolTipText  = QT_TR_NOOP("Fills a series of boundary curves, constraint curves and vertexes with a surface");
     sStatusTip    = QT_TR_NOOP("Fills a series of boundary curves, constraint curves and vertexes with a surface");
     sWhatsThis    = "Surface_Filling";
-    sPixmap       = "Filling.svg";
+    sPixmap       = "Surface_Filling";
 }
 
 void CmdSurfaceFilling::activated(int iMsg)

@@ -64,12 +64,19 @@ namespace Path
             std::string toGCode(void) const; // gets a gcode string representation from the Path
             
             // shortcut functions
-            unsigned int getSize(void) const{return vpcCommands.size();}
-            const std::vector<Command*> &getCommands(void)const{return vpcCommands;}
-            const Command &getCommand(unsigned int pos)const {return *vpcCommands[pos];}
+            unsigned int getSize(void) const { return vpcCommands.size(); }
+            const std::vector<Command*> &getCommands(void) const { return vpcCommands; }
+            const Command &getCommand(unsigned int pos)    const { return *vpcCommands[pos]; }
         
+            // support for rotation
+            const Base::Vector3d& getCenter() const { return center; }
+            void setCenter(const Base::Vector3d &c);
+
+            static const int SchemaVersion = 2;
+
         protected:
             std::vector<Command*> vpcCommands;
+            Base::Vector3d center;
             //KDL::Path_Composite *pcPath;
             
         /*

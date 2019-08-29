@@ -102,8 +102,8 @@
       <translation>Alinhar no centro verticalmente</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Alinha o conteúdo na vertical de células selecionadas ao centro verticalmente</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Alinha verticalmente o conteúdo das células selecionadas no centro</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Mesclar células</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Mescla as células selecionadas na planilha</translation>
+      <source>Merge selected cells</source>
+      <translation>Mesclar células selecionadas</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Dividir célula</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Divide células mescladas anteriormente na planilha</translation>
+      <source>Split previously merged cells</source>
+      <translation>Dividir células previamente mescladas</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Negrito</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Coloca o texto em negrito nas células selecionadas</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Definir texto em células selecionadas para Negrito</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Itálico</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Coloca o texto em itálico nas células selecionadas</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Definir texto em células selecionadas para Itálico</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Sublinhado</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Coloca o texto sublinhado nas células selecionadas</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Sublinhar o texto nas células selecionadas</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Personalizado</translation>
+      <source>Custom Color</source>
+      <translation>Cor personalizada</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Cinza claro</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personalizado</translation>
+      <source>Custom Color</source>
+      <translation>Cor personalizada</translation>
     </message>
   </context>
   <context>

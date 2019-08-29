@@ -41,7 +41,10 @@
 using namespace TechDrawGui;
 
 QGIPrimPath::QGIPrimPath():
-    m_width(0)
+    m_width(0),
+    m_capStyle(Qt::RoundCap),
+    m_fill(Qt::NoBrush)
+//    m_fill(Qt::SolidPattern)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -52,17 +55,33 @@ QGIPrimPath::QGIPrimPath():
 
     isHighlighted = false;
 
-    m_colCurrent = getNormalColor();
+    m_colOverride = false;
+    m_colNormal = getNormalColor();
+    m_colCurrent = m_colNormal;
     m_styleCurrent = Qt::SolidLine;
     m_pen.setStyle(m_styleCurrent);
-    m_pen.setCapStyle(Qt::RoundCap);
+    m_capStyle = prefCapStyle();
+    m_pen.setCapStyle(m_capStyle);
     m_pen.setWidthF(m_width);
+
+    m_styleDef = Qt::NoBrush;
+    m_styleSelect = Qt::SolidPattern;
+    m_styleNormal = m_styleDef;
+
+    m_colDefFill = Qt::white;
+//    m_colDefFill = Qt::transparent;
+    m_fillStyle = m_styleDef;
+    m_fill = m_styleDef;
+    m_colNormalFill = m_colDefFill;
+    m_brush.setStyle(m_styleDef);
+    m_brush.setColor(m_colDefFill);
 
     setPrettyNormal();
 }
 
 QVariant QGIPrimPath::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+//    Base::Console().Message("QGIPP::itemChange(%d) - type: %d\n", change,type() - QGraphicsItem::UserType);
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             setPrettySel();
@@ -83,15 +102,13 @@ void QGIPrimPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGIPrimPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-//    QGIView *view = dynamic_cast<QGIView *> (parentItem());    //this is temp for debug??
-//    assert(view != 0);
-//    Q_UNUSED(view);
-    if(!isSelected() && !isHighlighted) {
+    if(!isSelected()) {
         setPrettyNormal();
     }
     QGraphicsPathItem::hoverLeaveEvent(event);
 }
 
+//set highlighted is obsolete
 void QGIPrimPath::setHighlighted(bool b)
 {
     isHighlighted = b;
@@ -103,35 +120,35 @@ void QGIPrimPath::setHighlighted(bool b)
 }
 
 void QGIPrimPath::setPrettyNormal() {
-    m_colCurrent = getNormalColor();
+    m_colCurrent = m_colNormal;
+    m_fillColor = m_colNormalFill;
+//    m_colCurrent = getNormalColor();
     update();
 }
 
 void QGIPrimPath::setPrettyPre() {
     m_colCurrent = getPreColor();
+    m_fillColor = getPreColor();
     update();
 }
 
 void QGIPrimPath::setPrettySel() {
     m_colCurrent = getSelectColor();
+    m_fillColor = getSelectColor();
     update();
-}
-
-void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
-    QStyleOptionGraphicsItem myOption(*option);
-    myOption.state &= ~QStyle::State_Selected;
-
-    m_pen.setWidthF(m_width);
-    m_pen.setColor(m_colCurrent);
-    m_pen.setStyle(m_styleCurrent);
-    setPen(m_pen);
-    QGraphicsPathItem::paint (painter, &myOption, widget);
 }
 
 QColor QGIPrimPath::getNormalColor()
 {
+
     QColor result;
     QGIView *parent;
+
+    if (m_colOverride) {
+        result = m_colNormal;
+        return result;
+    }
+
     QGraphicsItem* qparent = parentItem();
     if (qparent == nullptr) {
         parent = nullptr;
@@ -196,13 +213,34 @@ QColor QGIPrimPath::getSelectColor()
 
 void QGIPrimPath::setWidth(double w)
 {
+//    Base::Console().Message("QGIPP::setWidth(%.3f)\n", w);
     m_width = w;
     m_pen.setWidthF(m_width);
 }
 
 void QGIPrimPath::setStyle(Qt::PenStyle s)
 {
+//    Base::Console().Message("QGIPP::setStyle(QTPS: %d)\n", s);
     m_styleCurrent = s;
+}
+
+void QGIPrimPath::setStyle(int s)
+{
+//    Base::Console().Message("QGIPP::setStyle(int: %d)\n", s);
+    m_styleCurrent = (Qt::PenStyle) s;
+}
+
+
+void QGIPrimPath::setNormalColor(QColor c)
+{
+    m_colNormal = c;
+    m_colOverride = true;
+}
+
+void QGIPrimPath::setCapStyle(Qt::PenCapStyle c)
+{
+    m_capStyle = c;
+    m_pen.setCapStyle(c);
 }
 
 Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
@@ -211,3 +249,69 @@ Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     return hGrp;
 }
+
+Qt::PenCapStyle QGIPrimPath::prefCapStyle()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    Qt::PenCapStyle result;
+    unsigned int cap = hGrp->GetUnsigned("EdgeCapStyle", 0x20);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+    result = (Qt::PenCapStyle) cap;
+    return result;
+}
+
+void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+    //wf: this seems a bit of a hack. does it mess up selection of QGIPP??
+    QGIView *parent;
+    QGraphicsItem* qparent = parentItem();
+    if (qparent != nullptr) {
+        parent = dynamic_cast<QGIView *> (qparent);
+        if (parent != nullptr) {
+//            Base::Console().Message("QGIPP::mousePressEvent - passing event to QGIV parent\n");
+            parent->mousePressEvent(event);
+        } else {
+//            qparent->mousePressEvent(event);  //protected!
+            QGraphicsPathItem::mousePressEvent(event);
+            Base::Console().Log("QGIPP::mousePressEvent - no QGIView parent\n");
+        }
+    } else {
+//        Base::Console().Message("QGIPP::mousePressEvent - passing event to ancestor\n");
+        QGraphicsPathItem::mousePressEvent(event);
+    }
+}
+
+void QGIPrimPath::setFill(QColor c, Qt::BrushStyle s) {
+    m_colNormalFill = c;
+    m_styleNormal = s;
+    m_fill = s;
+}
+
+void QGIPrimPath::setFill(QBrush b) {
+    m_colNormalFill = b.color();
+    m_styleNormal = b.style();
+    m_fill = b.style();
+}
+
+void QGIPrimPath::resetFill() {
+    m_colNormalFill = m_colDefFill;
+    m_styleNormal = m_styleDef;
+    m_fill = m_styleDef;
+}
+
+void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
+
+    m_pen.setWidthF(m_width);
+    m_pen.setColor(m_colCurrent);
+    m_pen.setStyle(m_styleCurrent);
+    setPen(m_pen);
+
+    m_brush.setColor(m_fillColor);  //pencolr
+    m_brush.setStyle(m_fill);
+    setBrush(m_brush);
+
+    QGraphicsPathItem::paint (painter, &myOption, widget);
+}
+

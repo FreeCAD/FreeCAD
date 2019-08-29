@@ -198,10 +198,10 @@ U, NT
 *EL FILE
 S, E
 ** outputs --> dat file
-*NODE PRINT , NSET=Nall
-U 
-*EL PRINT , ELSET=Eall
-S 
+** reaction forces for Constraint fixed
+*NODE PRINT, NSET=FemConstraintFixed, TOTALS=ONLY
+RF
+
 
 ***********************************************************
 ** written by write_step_end function

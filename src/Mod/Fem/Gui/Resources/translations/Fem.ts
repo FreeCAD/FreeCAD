@@ -2,6 +2,67 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
+    <name>BoundarySelector</name>
+    <message>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="129"/>
+        <source>Select Faces/Edges/Vertexes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
+        <source>To add references select them in the 3D view and then click &quot;Add&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ControlWidget</name>
+    <message>
+        <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="213"/>
+        <source>Solver Control</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="224"/>
+        <source>Working Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="303"/>
+        <source>Write</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="243"/>
+        <source>Elapsed Time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="309"/>
+        <source>Run</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
+        <source>Re-write</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="313"/>
+        <source>Re-run</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FEM_Analysis</name>
     <message>
         <location filename="_CommandFemAnalysis.py" line="41"/>
@@ -9,8 +70,81 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="_CommandFemAnalysis.py" line="43"/>
-        <source>Creates a analysis container with standard solver CalculiX</source>
+        <location filename="../../../femcommands/commands.py" line="40"/>
+        <source>Creates an analysis container with standard solver CalculiX</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_ClippingPlaneAdd</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="60"/>
+        <source>Clipping plane on face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="62"/>
+        <source>Add a clipping plane on a selected face</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_ClippingPlaneRemoveAll</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="96"/>
+        <source>Remove all clipping planes</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_ConstraintBodyHeatSource</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="115"/>
+        <source>Constraint body heat source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="118"/>
+        <source>Creates a FEM constraint body heat source</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_ConstraintElectrostaticPotential</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="136"/>
+        <source>Constraint electrostatic potential</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="139"/>
+        <source>Creates a FEM constraint electrostatic potential</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_ConstraintFlowVelocity</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="159"/>
+        <source>Constraint flow velocity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="162"/>
+        <source>Creates a FEM constraint flow velocity</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_ConstraintInitialFlowVelocity</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="182"/>
+        <source>Constraint initial flow velocity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="185"/>
+        <source>Creates a FEM constraint initial flow velocity</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -67,6 +201,84 @@
     </message>
 </context>
 <context>
+    <name>FEM_ElementRotation1D</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="278"/>
+        <source>Beam rotation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="280"/>
+        <source>Creates a FEM beam rotation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_EquationElasticity</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="314"/>
+        <source>Elasticity equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="315"/>
+        <source>Creates a FEM equation for elasticity</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_EquationElectrostatic</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="297"/>
+        <source>Electrostatic equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="298"/>
+        <source>Creates a FEM equation for electrostatic</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_EquationFlow</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="331"/>
+        <source>Flow equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="332"/>
+        <source>Creates a FEM equation for flow</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_EquationFluxsolver</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="348"/>
+        <source>Fluxsolver equation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="349"/>
+        <source>Creates a FEM equation for fluxsolver</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_EquationHeat</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="365"/>
+        <source>Fluxsolver heat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="530"/>
+        <source>Fluxsolver heat</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
         <location filename="_CommandFemMesh2Mesh.py" line="42"/>
@@ -81,6 +293,16 @@
 </context>
 <context>
     <name>FEM_MaterialFluid</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="397"/>
+        <source>Material for fluid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="582"/>
+        <source>Material for fluid</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="_CommandFemMaterialFluid.py" line="42"/>
         <source>FEM material for Fluid</source>
@@ -104,17 +326,35 @@
         <source>Creates a nonlinear mechanical material</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="618"/>
+        <source>Creates a nonlinear mechanical material</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_MaterialReinforced</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="674"/>
+        <source>Reinforced material (concrete)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FEM_MaterialSolid</name>
     <message>
-        <location filename="_CommandFemMaterialSolid.py" line="42"/>
-        <source>FEM material for solid</source>
+        <location filename="../../../femcommands/commands.py" line="452"/>
+        <source>Material for solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="_CommandFemMaterialSolid.py" line="44"/>
-        <source>Creates a FEM material for solid</source>
+        <location filename="../../../femcommands/commands.py" line="705"/>
+        <source>Material for solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="_CommandFemMaterialSolid.py" line="42"/>
+        <source>FEM material for solid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -145,20 +385,25 @@
     </message>
 </context>
 <context>
-    <name>FEM_MeshFromShape</name>
+    <name>FEM_MeshDisplayInfo</name>
     <message>
-        <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
-        <source>FEM mesh from shape by Netgen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
-        <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+        <location filename="../../../femcommands/commands.py" line="538"/>
+        <source>Display FEM mesh info</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>FEM_MeshGmshFromShape</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="556"/>
+        <source>FEM mesh from shape by Gmsh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="557"/>
+        <source>Create a FEM mesh from a shape by Gmsh mesher</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
         <source>FEM mesh from shape by GMSH</source>
@@ -184,10 +429,15 @@
     </message>
 </context>
 <context>
-    <name>FEM_MeshPrintInfo</name>
+    <name>FEM_MeshNetgenFromShape</name>
     <message>
-        <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
-        <source>Print FEM mesh info</source>
+        <location filename="../../../femcommands/commands.py" line="603"/>
+        <source>FEM mesh from shape by Netgen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="957"/>
+        <source>FEM mesh from shape by Netgen</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -231,7 +481,30 @@
     </message>
 </context>
 <context>
+    <name>FEM_SolverCalculiX</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="708"/>
+        <source>Solver CalculiX (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="710"/>
+        <source>Creates a FEM solver CalculiX (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FEM_SolverCalculix</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="679"/>
+        <source>Solver CalculiX Standard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="681"/>
+        <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="_CommandFemSolverCalculix.py" line="42"/>
         <source>Solver CalculiX</source>
@@ -253,6 +526,19 @@
     <message>
         <location filename="_CommandFemSolverControl.py" line="42"/>
         <source>Changes solver attributes and runs the calculations for the selected solver</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_SolverElmer</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="740"/>
+        <source>Solver Elmer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="1174"/>
+        <source>Solver Elmer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -294,14 +580,97 @@
         <source>Default Fem Command ToolTip</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>GeometryElementsSelection</name>
     <message>
-        <location filename="../../../PyGui/FemCommands.py" line="41"/>
-        <source>Default Fem Command MenuText</source>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+        <source>Geometry reference selector for a </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../PyGui/FemCommands.py" line="43"/>
-        <source>Default Fem Command ToolTip</source>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
+        <source>Click on &quot;Add&quot; and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
+        <source>Selection mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
+        <source>Solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Material_Editor</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="382"/>
+        <source>Material editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="384"/>
+        <source>Opens the FreeCAD material editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SolidSelector</name>
+    <message>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
+        <source>Select Solids</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
+        <source>Select elements part of the solid that shall be added to the list. To than add the solid click &quot;Add&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>_Selector</name>
+    <message>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_MeshFromShape</name>
+    <message>
+        <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
+        <source>FEM mesh from shape by Netgen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
+        <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_MeshPrintInfo</name>
+    <message>
+        <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
+        <source>Print FEM mesh info</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -879,21 +1248,6 @@
     </message>
 </context>
 <context>
-    <name>CmdFemCreateFromShape</name>
-    <message>
-        <source>Fem</source>
-        <translation type="obsolete">Fem</translation>
-    </message>
-    <message>
-        <source>Create FEM mesh</source>
-        <translation type="obsolete">Skep FEM-maas</translation>
-    </message>
-    <message>
-        <source>Create FEM mesh from shape</source>
-        <translation type="obsolete">Skep FEM-maas van vorm</translation>
-    </message>
-</context>
-<context>
     <name>CmdFemCreateNodesSet</name>
     <message>
         <location filename="../../Command.cpp" line="719"/>
@@ -1053,29 +1407,6 @@
         <location filename="../../DlgSettingsFem.ui" line="449"/>
         <source>User directory</source>
         <translation type="unfinished">User directory</translation>
-    </message>
-</context>
-<context>
-    <name>FemGui::HypothesisWidget</name>
-    <message>
-        <source>Hypothesis</source>
-        <translation type="obsolete">Hipotese</translation>
-    </message>
-    <message>
-        <source>Quadrangle</source>
-        <translation type="obsolete">Vierhoek</translation>
-    </message>
-    <message>
-        <source>Maximum length</source>
-        <translation type="obsolete">Maksimum lengte</translation>
-    </message>
-    <message>
-        <source>Local length</source>
-        <translation type="obsolete">Lokale lengte</translation>
-    </message>
-    <message>
-        <source>Maximum element area</source>
-        <translation type="obsolete">Maksimum elementoppervlak</translation>
     </message>
 </context>
 <context>
@@ -1353,18 +1684,6 @@
         <source>Only faces and edges can be picked</source>
         <translation type="unfinished">Only faces and edges can be picked</translation>
     </message>
-    <message>
-        <source>Point load [N]</source>
-        <translation type="obsolete">Point load [N]</translation>
-    </message>
-    <message>
-        <source>Line load [N/mm]</source>
-        <translation type="obsolete">Line load [N/mm]</translation>
-    </message>
-    <message>
-        <source>Area load [N/mm²]</source>
-        <translation type="obsolete">Area load [N/mm²]</translation>
-    </message>
 </context>
 <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1571,14 +1890,6 @@
         <translation type="unfinished">Time:</translation>
     </message>
     <message>
-        <source>Write Calculix Input File</source>
-        <translation type="obsolete">Write Calculix Input File</translation>
-    </message>
-    <message>
-        <source>Edit Calculix Input File</source>
-        <translation type="obsolete">Edit Calculix Input File</translation>
-    </message>
-    <message>
         <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
         <source>Mechanical material</source>
         <translation type="unfinished">Mechanical material</translation>
@@ -1648,14 +1959,6 @@
         <source>MatWeb database...</source>
         <translation type="unfinished">MatWeb database...</translation>
     </message>
-    <message>
-        <source>0 kg/m^3</source>
-        <translation type="obsolete">0 kg/m^3</translation>
-    </message>
-    <message>
-        <source>Pa</source>
-        <translation type="obsolete">Pa</translation>
-    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -1717,26 +2020,6 @@
         <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
         <source>Edit constraint</source>
         <translation type="unfinished">Edit constraint</translation>
-    </message>
-    <message>
-        <source>Combo View</source>
-        <translation type="obsolete">Saamgestelde aansig</translation>
-    </message>
-    <message>
-        <source>combiTab</source>
-        <translation type="obsolete">combiTab</translation>
-    </message>
-    <message>
-        <source>qt_tabwidget_stackedwidget</source>
-        <translation type="obsolete">qt_tabwidget_stackedwidget</translation>
-    </message>
-    <message>
-        <source>ShaftWizard</source>
-        <translation type="obsolete">ShaftWizard</translation>
-    </message>
-    <message>
-        <source>ShaftWizardLayout</source>
-        <translation type="obsolete">ShaftWizardLayout</translation>
     </message>
     <message>
         <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -1854,14 +2137,6 @@
         <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
         <source>Slider max:</source>
         <translation type="unfinished">Slider max:</translation>
-    </message>
-    <message>
-        <source>Colors</source>
-        <translation type="obsolete">Kleure</translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">mm</translation>
     </message>
 </context>
 <context>

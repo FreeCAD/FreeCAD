@@ -2286,7 +2286,7 @@ class SaxSelectorHandler(handler.ContentHandler):
 
 
 def parseSelect(inFileName):
-    infile = file(inFileName, 'r')
+    infile = open(inFileName, 'r')
     topElementName = None
     parser = make_parser()
     documentHandler = SaxSelectorHandler()

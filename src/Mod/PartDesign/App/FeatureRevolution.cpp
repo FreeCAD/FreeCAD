@@ -42,6 +42,7 @@
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 
+#include <Mod/Part/App/TopoShape.h>
 #include "FeatureRevolution.h"
 
 
@@ -157,7 +158,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
                 BRepAlgoAPI_Fuse mkFuse(base, result);
                 // Let's check if the fusion has been successful
                 if (!mkFuse.IsDone())
-                    throw Base::Exception("Fusion with base feature failed");
+                    throw Part::BooleanException("Fusion with base feature failed");
                 result = mkFuse.Shape();
                 result = refineShapeIfActive(result);
             }

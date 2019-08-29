@@ -102,8 +102,8 @@
       <translation>Wyrównaj do środka pionowo</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Wyrównaj do środka pionowo zawartość wybranych komórek</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Scal komórki</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Scal wybrane komórki w arkuszu kalkulacyjnym</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Podziel komórkę</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Rozdziel uprzednio scalone komórki w arkuszu kalkulacyjnym</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Tekst pogrubiony</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Ustaw pogrubiony tekst w zaznaczonych komórkach</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Kursywa</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Ustaw kursywę w zaznaczonych komórkach</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Podkreśl tekst</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Podkreśl tekst w zaznaczonych komórkach</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Niestandardowe</translation>
+      <source>Custom Color</source>
+      <translation>Kolor użytkownika</translation>
     </message>
   </context>
   <context>
@@ -340,19 +340,19 @@
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Ustaw kolor pierwszego planu komórki (komórek)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Ustawia kolor pierwszego planu komórki(ek) Arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Ustaw kolor tła komórki(ek)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Ustawia kolor tła komórki(ek) Arkusza kalkulacyjnego</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Jasnoszary</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Niestandardowe</translation>
+      <source>Custom Color</source>
+      <translation>Kolor użytkownika</translation>
     </message>
   </context>
   <context>

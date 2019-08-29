@@ -35,6 +35,8 @@ class gp_Pln;
 namespace PartDesign
 {
 
+typedef Part::TopoShape TopoShape;
+
 class Body;
 
  /** PartDesign feature
@@ -50,6 +52,7 @@ public:
 
     /// Base feature which this feature will be fused into or cut out of
     App::PropertyLink   BaseFeature;
+    App::PropertyLinkHidden _Body;
 
     short mustExecute() const;
 
@@ -57,7 +60,7 @@ public:
     static bool isDatum(const App::DocumentObject* feature);
 
     /// Returns the body the feature is in, or none
-    Body* getFeatureBody();
+    Body* getFeatureBody() const;
     
     /**
      * Returns the BaseFeature property's object (if any)
@@ -83,6 +86,7 @@ protected:
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
     static TopoDS_Shape getSolid(const TopoDS_Shape&);    
+    static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID );    
 
     /// Grab any point from the given face
     static const gp_Pnt getPointFromFace(const TopoDS_Face& f);    

@@ -876,12 +876,12 @@ void ClusterGraph<edge_prop, vertex_prop, cluster_prop, objects>::initIndexMaps(
     std::pair<local_vertex_iterator, local_vertex_iterator>  vit = boost::vertices(*this);
 
     for(int c = 0; vit.first != vit.second; vit.first++, c++)
-        setProperty<vertex_index_prop>(*vit.first, c);
+        ClusterGraph::template setProperty<vertex_index_prop>(*vit.first, c);
 
     std::pair<local_edge_iterator, local_edge_iterator>  eit = boost::edges(*this);
 
     for(int c = 0; eit.first != eit.second; eit.first++, c++)
-        setProperty<edge_index_prop>(*eit.first, c);
+        ClusterGraph::template setProperty<edge_index_prop>(*eit.first, c);
 };
 
 template< typename edge_prop, typename vertex_prop, typename cluster_prop, typename objects>

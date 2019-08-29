@@ -118,8 +118,8 @@ void ToroidPy::setMajorRadius(Py::Float arg)
             (getGeomToroidPtr()->handle());
         torus->SetMajorRadius((double)arg);
     }
-    catch (Standard_Failure) {
-        throw Py::Exception("Major radius must be positive and higher than minor radius");
+    catch (Standard_Failure&) {
+        throw Py::RuntimeError("Major radius must be positive and higher than minor radius");
     }
 }
 
@@ -137,8 +137,8 @@ void ToroidPy::setMinorRadius(Py::Float arg)
             (getGeomToroidPtr()->handle());
         torus->SetMinorRadius((double)arg);
     }
-    catch (Standard_Failure) {
-        throw Py::Exception("Minor radius must be positive and lower than major radius");
+    catch (Standard_Failure&) {
+        throw Py::RuntimeError("Minor radius must be positive and lower than major radius");
     }
 }
 
@@ -204,8 +204,8 @@ void ToroidPy::setAxis(Py::Object arg)
         axis.SetDirection(gp_Dir(dir_x, dir_y, dir_z));
         this_surf->SetAxis(axis);
     }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
+    catch (Standard_Failure&) {
+        throw Py::RuntimeError("cannot set axis");
     }
 }
 

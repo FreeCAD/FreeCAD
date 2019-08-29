@@ -189,7 +189,7 @@ struct SuggestResult{
     std::set<eRefType> nextRefTypeHint;
 
     /**
-     * @brief reachableModes. List of modes that can be reached by selecing
+     * @brief reachableModes. List of modes that can be reached by selecting
      * more references. Is a map, where key is the mode that can be reached,
      * and value is a list of reference sequences that can be added to reach
      * the mode (stuff already linked is omitted from these lists; only extra
@@ -203,7 +203,7 @@ struct SuggestResult{
      */
     refTypeString references_Types;
 
-    Base::Exception error;
+    Base::RuntimeError error;
 };
 
 
@@ -456,6 +456,9 @@ public:
     AttachEnginePoint();
     virtual AttachEnginePoint* copy() const;
     virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const;
+
+private:
+    gp_Pnt getProximityPoint(eMapMode mode, const TopoDS_Shape& s1, const TopoDS_Shape& s2) const;
 };
 
 //====================================================================

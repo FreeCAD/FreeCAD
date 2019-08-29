@@ -48,12 +48,18 @@ Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags
     ui->setupUi(this);
     ui->numPln->setRange(1, INT_MAX);
     ui->numPln->setValue(100);
-    ui->radCyl->setRange(0, INT_MAX);
+    ui->crvCyl->setRange(0, INT_MAX);
     ui->numCyl->setRange(1, INT_MAX);
     ui->numCyl->setValue(100);
-    ui->radSph->setRange(0, INT_MAX);
+    ui->crvSph->setRange(0, INT_MAX);
     ui->numSph->setRange(1, INT_MAX);
     ui->numSph->setValue(100);
+    ui->crv1Free->setRange(-INT_MAX, INT_MAX);
+    ui->crv2Free->setRange(-INT_MAX, INT_MAX);
+    ui->numFree->setRange(1, INT_MAX);
+    ui->numFree->setValue(100);
+
+    ui->checkBoxSmooth->setChecked(false);
 }
 
 Segmentation::~Segmentation()
@@ -78,13 +84,19 @@ void Segmentation::accept()
     meshCurv.ComputePerVertex();
 
     std::vector<MeshCore::MeshSurfaceSegment*> segm;
+    if (ui->groupBoxFree->isChecked()) {
+        segm.push_back(new MeshCore::MeshCurvatureFreeformSegment
+            (meshCurv.GetCurvature(), ui->numFree->value(),
+             ui->tol1Free->value(), ui->tol2Free->value(),
+             ui->crv1Free->value(), ui->crv2Free->value()));
+    }
     if (ui->groupBoxCyl->isChecked()) {
         segm.push_back(new MeshCore::MeshCurvatureCylindricalSegment
-            (meshCurv.GetCurvature(), ui->numCyl->value(), ui->tol1Cyl->value(), ui->tol2Cyl->value(), ui->radCyl->value().getValue()));
+            (meshCurv.GetCurvature(), ui->numCyl->value(), ui->tol1Cyl->value(), ui->tol2Cyl->value(), ui->crvCyl->value()));
     }
     if (ui->groupBoxSph->isChecked()) {
         segm.push_back(new MeshCore::MeshCurvatureSphericalSegment
-            (meshCurv.GetCurvature(), ui->numSph->value(), ui->tolSph->value(), ui->radSph->value().getValue()));
+            (meshCurv.GetCurvature(), ui->numSph->value(), ui->tolSph->value(), ui->crvSph->value()));
     }
     if (ui->groupBoxPln->isChecked()) {
         segm.push_back(new MeshCore::MeshCurvaturePlanarSegment

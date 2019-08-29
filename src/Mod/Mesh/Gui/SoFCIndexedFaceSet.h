@@ -24,6 +24,10 @@
 #define MESHGUI_SOFCINDEXEDFACESET_H
 
 #include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/engines/SoSubEngine.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoMFColor.h>
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
@@ -33,6 +37,48 @@ typedef int GLint;
 typedef float GLfloat;
 
 namespace MeshGui {
+
+class MeshRenderer
+{
+public:
+    MeshRenderer();
+    ~MeshRenderer();
+    void generateGLArrays(SoGLRenderAction*, SoMaterialBindingElement::Binding binding,
+        std::vector<float>& vertex, std::vector<int32_t>& index);
+    void renderFacesGLArray(SoGLRenderAction *action);
+    void renderCoordsGLArray(SoGLRenderAction *action);
+    bool canRenderGLArray(SoGLRenderAction *action) const;
+    bool matchMaterial(SoState*) const;
+    static bool shouldRenderDirectly(bool);
+
+private:
+    class Private;
+    Private* p;
+};
+
+/**
+ * class SoFCMaterialEngine
+ * \brief The SoFCMaterialEngine class is used to notify an
+ * SoFCIndexedFaceSet node about material changes.
+ *
+ * @author Werner Mayer
+ */
+class MeshGuiExport SoFCMaterialEngine : public SoEngine
+{
+    SO_ENGINE_HEADER(SoFCMaterialEngine);
+
+public:
+    SoFCMaterialEngine();
+    static void initClass();
+
+    SoMFColor diffuseColor;
+    SoEngineOutput trigger;
+
+private:
+    virtual ~SoFCMaterialEngine();
+    virtual void evaluate();
+    virtual void inputChanged(SoField *);
+};
 
 /**
  * class SoFCIndexedFaceSet
@@ -50,6 +96,7 @@ public:
     static void initClass();
     SoFCIndexedFaceSet();
 
+    SoSFBool updateGLArray;
     unsigned int renderTriangleLimit;
 
     void invalidate();
@@ -58,6 +105,7 @@ protected:
     // Force using the reference count mechanism.
     virtual ~SoFCIndexedFaceSet() {}
     virtual void GLRender(SoGLRenderAction *action);
+    void drawFaces(SoGLRenderAction *action);
     void drawCoords(const SoGLCoordinateElement * const vertexlist,
                     const int32_t *vertexindices,
                     int numindices,
@@ -79,14 +127,10 @@ private:
     void stopVisibility(SoAction * action);
     void renderVisibleFaces(const SbVec3f *);
 
-    void generateGLArrays(SoState * state);
-    void renderFacesGLArray(SoGLRenderAction *action);
-    void renderCoordsGLArray(SoGLRenderAction *action);
+    void generateGLArrays(SoGLRenderAction * action);
 
 private:
-    std::vector<int32_t> index_array;
-    std::vector<float> vertex_array;
-    SbBool updateGLArray;
+    MeshRenderer render;
     GLuint *selectBuf;
 };
 

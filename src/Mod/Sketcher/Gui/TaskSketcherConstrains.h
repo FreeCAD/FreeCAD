@@ -26,7 +26,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <QListWidget>
 
 namespace App {
@@ -51,6 +51,7 @@ protected:
 
 Q_SIGNALS:
     void onUpdateDrivingStatus(QListWidgetItem *item, bool status);
+    void onUpdateActiveStatus(QListWidgetItem *item, bool status);
     void emitCenterSelectedItems();
 
 protected Q_SLOTS:
@@ -60,6 +61,7 @@ protected Q_SLOTS:
     void deleteSelectedItems();
     void doSelectConstraints();
     void updateDrivingStatus();
+    void updateActiveStatus();
     void swapNamedOfSelectedItems();
     void showConstraints();
     void hideConstraints();
@@ -85,13 +87,15 @@ public Q_SLOTS:
     void on_listWidgetConstraints_itemActivated(QListWidgetItem *item);
     void on_listWidgetConstraints_itemChanged(QListWidgetItem * item);
     void on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *item, bool status);
+    void on_listWidgetConstraints_updateActiveStatus(QListWidgetItem *item, bool status);
     void on_listWidgetConstraints_emitCenterSelectedItems(void);
     void on_filterInternalAlignment_stateChanged(int state);
+    void on_extendedInformation_stateChanged(int state);
 
 protected:
     void changeEvent(QEvent *e);
     ViewProviderSketch *sketchView;
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectionConstraintsChanged;
 
 private:

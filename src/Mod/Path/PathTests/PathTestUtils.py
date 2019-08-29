@@ -24,18 +24,18 @@
 
 import FreeCAD
 import Part
+import PathScripts.PathGeom as PathGeom
 import math
 import unittest
 
 from FreeCAD import Vector
-from PathScripts.PathGeom import Side
 
 class PathTestBase(unittest.TestCase):
     """Base test class with some additional asserts."""
 
-    def assertRoughly(self, f1, f2):
+    def assertRoughly(self, f1, f2, error=0.00001):
         """Verify that two float values are approximately the same."""
-        self.assertTrue(math.fabs(f1 - f2) < 0.00001, "%f != %f" % (f1, f2))
+        self.assertTrue(math.fabs(f1 - f2) < error, "%f != %f" % (f1, f2))
 
     def assertCoincide(self, pt1, pt2):
         """Verify that two points coincide - roughly speaking."""
@@ -53,8 +53,8 @@ class PathTestBase(unittest.TestCase):
         """Verify that edge is a line from pt1 to pt2."""
         # Depending on the setting of LineOld ....
         self.assertTrue(type(edge.Curve) is Part.Line or type(edge.Curve) is Part.LineSegment)
-        self.assertCoincide(edge.valueAt(edge.FirstParameter), pt1)
-        self.assertCoincide(edge.valueAt(edge.LastParameter), pt2)
+        self.assertCoincide(pt1, edge.valueAt(edge.FirstParameter))
+        self.assertCoincide(pt2, edge.valueAt(edge.LastParameter))
 
     def assertLines(self, edgs, tail, points):
         """Verify that the edges match the polygon resulting from points."""
@@ -72,11 +72,11 @@ class PathTestBase(unittest.TestCase):
         self.assertCoincide(edge.valueAt(edge.FirstParameter), pt1)
         self.assertCoincide(edge.valueAt(edge.LastParameter), pt2)
         ptm = edge.valueAt((edge.LastParameter + edge.FirstParameter)/2)
-        side = Side.of(pt2 - pt1, ptm - pt1)
+        side = PathGeom.Side.of(pt2 - pt1, ptm - pt1)
         if 'CW' == direction:
-            self.assertEqual(side, Side.Left)
+            self.assertEqual(side, PathGeom.Side.Left)
         else:
-            self.assertEqual(side, Side.Right)
+            self.assertEqual(side, PathGeom.Side.Right)
 
     def assertCircle(self, edge, pt, r):
         """Verivy that edge is a circle at given location."""
@@ -134,4 +134,50 @@ class PathTestBase(unittest.TestCase):
         q1=FreeCAD.Units.Quantity(s1)
         q2=FreeCAD.Units.Quantity(s2)
         self.assertEqual(q1.UserString, q2.UserString)
+
+    def assertEdgeShapesMatch(self,e1,e2):
+        """Verify that 2 edges have the same shape, regardless of orientation."""
+        self.assertEqual(type(e1.Curve), type(e2.Curve))
+        self.assertEqual(len(e1.Vertexes), len(e2.Vertexes))
+        if not e1.Vertexes:
+            self.assertEqual(Part.Line, type(e1.Curve))
+            k1 = e1.valueAt(e1.LastParameter) - e1.valueAt(e1.FirstParameter)
+            k2 = e2.valueAt(e2.LastParameter) - e2.valueAt(e2.FirstParameter)
+            self.assertCoincide(k1, -k2)
+        elif 1 == len(e1.Vertexes):
+            self.assertEqual(Part.Circle, type(e1.Curve))
+            self.assertRoughly(e1.Curve.Radius, e2.Curve.Radius)
+            self.assertCoincide(e1.Curve.Center, e2.Curve.Center)
+            self.assertCoincide(e1.Curve.Axis, -e2.Curve.Axis)
+        else:
+            def valueAt(e, fraction):
+                return e.valueAt(e.FirstParameter + (e.LastParameter - e.FirstParameter)*fraction)
+
+            if PathGeom.pointsCoincide(e1.Vertexes[0].Point, e2.Vertexes[0].Point):
+                self.assertCoincide(e1.Vertexes[-1].Point, e2.Vertexes[-1].Point)
+                self.assertCoincide(valueAt(e1, 0.10), valueAt(e2, 0.10))
+                self.assertCoincide(valueAt(e1, 0.20), valueAt(e2, 0.20))
+                self.assertCoincide(valueAt(e1, 0.25), valueAt(e2, 0.25))
+                self.assertCoincide(valueAt(e1, 0.30), valueAt(e2, 0.30))
+                self.assertCoincide(valueAt(e1, 0.40), valueAt(e2, 0.40))
+                self.assertCoincide(valueAt(e1, 0.50), valueAt(e2, 0.50))
+                self.assertCoincide(valueAt(e1, 0.60), valueAt(e2, 0.60))
+                self.assertCoincide(valueAt(e1, 0.70), valueAt(e2, 0.70))
+                self.assertCoincide(valueAt(e1, 0.75), valueAt(e2, 0.75))
+                self.assertCoincide(valueAt(e1, 0.80), valueAt(e2, 0.80))
+                self.assertCoincide(valueAt(e1, 0.90), valueAt(e2, 0.90))
+            else:
+                self.assertCoincide(e1.Vertexes[0].Point, e2.Vertexes[-1].Point)
+                self.assertCoincide(e1.Vertexes[-1].Point, e2.Vertexes[0].Point)
+                self.assertCoincide(valueAt(e1, 0.10), valueAt(e2, 0.90))
+                self.assertCoincide(valueAt(e1, 0.20), valueAt(e2, 0.80))
+                self.assertCoincide(valueAt(e1, 0.25), valueAt(e2, 0.75))
+                self.assertCoincide(valueAt(e1, 0.30), valueAt(e2, 0.70))
+                self.assertCoincide(valueAt(e1, 0.40), valueAt(e2, 0.60))
+                self.assertCoincide(valueAt(e1, 0.50), valueAt(e2, 0.50))
+                self.assertCoincide(valueAt(e1, 0.60), valueAt(e2, 0.40))
+                self.assertCoincide(valueAt(e1, 0.70), valueAt(e2, 0.30))
+                self.assertCoincide(valueAt(e1, 0.75), valueAt(e2, 0.25))
+                self.assertCoincide(valueAt(e1, 0.80), valueAt(e2, 0.20))
+                self.assertCoincide(valueAt(e1, 0.90), valueAt(e2, 0.10))
 

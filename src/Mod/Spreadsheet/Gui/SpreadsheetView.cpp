@@ -148,6 +148,31 @@ bool SheetView::onMsg(const char *pMsg, const char **)
         getGuiDocument()->saveAs();
         return true;
     }
+    else if(strcmp("Std_Delete",pMsg) == 0) {
+        std::vector<Range> ranges = selectedRanges();
+        if (sheet->hasCell(ranges)) {
+            Gui::Command::openCommand("Clear cell(s)");
+            std::vector<Range>::const_iterator i = ranges.begin();
+            for (; i != ranges.end(); ++i) {
+                FCMD_OBJ_CMD(sheet, "clear('" << i->rangeString() << "')");
+            }
+            Gui::Command::commitCommand();
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        }
+        return true;
+    }
+    else if (strcmp("Cut",pMsg) == 0) {
+        ui->cells->cutSelection();
+        return true;
+    }
+    else if (strcmp("Copy",pMsg) == 0) {
+        ui->cells->copySelection();
+        return true;
+    }
+    else if (strcmp("Paste",pMsg) == 0) {
+        ui->cells->pasteClipboard();
+        return true;
+    }
     else
         return false;
 }
@@ -165,6 +190,12 @@ bool SheetView::onHasMsg(const char *pMsg) const
     else if  (strcmp("Save",pMsg) == 0)
         return true;
     else if (strcmp("SaveAs",pMsg) == 0)
+        return true;
+    else if (strcmp("Cut",pMsg) == 0)
+        return true;
+    else if (strcmp("Copy",pMsg) == 0)
+        return true;
+    else if (strcmp("Paste",pMsg) == 0)
         return true;
     else
         return false;
@@ -215,16 +246,8 @@ void SheetView::columnResizeFinished()
         return;
 
     blockSignals(true);
-    Gui::Command::openCommand("Resize column");
-
-    QMap<int, int>::const_iterator i = newColumnSizes.begin();
-    while (i != newColumnSizes.end()) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setColumnWidth('%s', %d)", sheet->getNameInDocument(),
-                                columnName(i.key()).c_str(), i.value());
-        ++i;
-    }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    for(auto &v : newColumnSizes)
+        sheet->setColumnWidth(v.first,v.second);
     blockSignals(false);
     newColumnSizes.clear();
 }
@@ -235,16 +258,8 @@ void SheetView::rowResizeFinished()
         return;
 
     blockSignals(true);
-    Gui::Command::openCommand("Resize row");
-
-    QMap<int, int>::const_iterator i = newRowSizes.begin();
-    while (i != newRowSizes.end()) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setRowHeight('%s', %d)", sheet->getNameInDocument(),
-                                rowName(i.key()).c_str(), i.value());
-        ++i;
-    }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    for(auto &v : newRowSizes)
+        sheet->setRowHeight(v.first,v.second);
     blockSignals(false);
     newRowSizes.clear();
 }
@@ -309,9 +324,14 @@ void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex 
 void SheetView::updateCell(const App::Property *prop)
 {
     try {
+        if (sheet && prop == &sheet->Label) {
+            QString cap = QString::fromUtf8(sheet->Label.getValue());
+            setWindowTitle(cap);
+        }
         CellAddress address;
 
-        sheet->getCellAddress(prop, address);
+        if(!sheet->getCellAddress(prop, address))
+            return;
 
         if (currentIndex().row() == address.row() && currentIndex().column() == address.col() )
             updateContentLine();
@@ -330,6 +350,11 @@ std::vector<Range> SheetView::selectedRanges() const
 QModelIndexList SheetView::selectedIndexes() const
 {
     return ui->cells->selectionModel()->selectedIndexes();
+}
+
+void SheetView::deleteSelection()
+{
+    ui->cells->deleteSelection();
 }
 
 QModelIndex SheetView::currentIndex() const

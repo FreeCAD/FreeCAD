@@ -145,7 +145,7 @@ const std::string &FileInfo::getTempPath(void)
 
 std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
 {
-    //FIXME: To avoid race conditons we should rather return a file pointer
+    //FIXME: To avoid race conditions we should rather return a file pointer
     //than a file name.
 #ifdef FC_OS_WIN32
     wchar_t buf[MAX_PATH + 2];
@@ -526,7 +526,7 @@ bool FileInfo::deleteDirectory(void) const
 #elif defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
     return rmdir(FileName.c_str()) == 0;
 #else
-#   error "FileInfo::createDirectory() not implemented for this platform!"
+#   error "FileInfo::rmdir() not implemented for this platform!"
 #endif
 }
 
@@ -537,7 +537,12 @@ bool FileInfo::deleteDirectoryRecursive(void) const
 
     for (std::vector<Base::FileInfo>::iterator It = List.begin();It!=List.end();++It) {
         if (It->isDir()) {
-            It->setPermissions(FileInfo::ReadWrite);
+            // At least on Linux, directory needs execute permission to be
+            // deleted. We don't really need to set permission for directory
+            // anyway, since FC code does not touch directory permission.
+            //
+            // It->setPermissions(FileInfo::ReadWrite);
+
             It->deleteDirectoryRecursive();
         }
         else if (It->isFile()) {

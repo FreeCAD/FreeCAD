@@ -79,7 +79,7 @@ QGIMatting::QGIMatting() :
 void QGIMatting::draw()
 {
     prepareGeometryChange();
-    double radiusFudge = 1.1;                    //keep slightly larger than fudge in App/DVDetail to prevent bleed through
+    double radiusFudge = 1.25;                    //keep slightly larger than fudge in App/DVDetail to prevent bleed through
     double outerRadius = m_radius * radiusFudge;
     m_width = outerRadius;
     m_height = outerRadius;

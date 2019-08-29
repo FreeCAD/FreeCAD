@@ -27,8 +27,12 @@ set(Import_LIBS
 SET(Import_SRCS
     AppImport.cpp
     AppImportPy.cpp
+    ExportOCAF.cpp
+    ExportOCAF.h
     ImportOCAF.cpp
     ImportOCAF.h
+    ImportOCAF2.cpp
+    ImportOCAF2.h
     #ImportOCAFAssembly.cpp
     #ImportOCAFAssembly.h
     StepShapePy.xml
@@ -37,6 +41,10 @@ SET(Import_SRCS
     StepShapePyImp.cpp
     PreCompiled.cpp
     PreCompiled.h
+    ImpExpDxf.cpp
+    ImpExpDxf.h
+    dxf.cpp
+    dxf.h
 )
 
 SET(SCL_Resources

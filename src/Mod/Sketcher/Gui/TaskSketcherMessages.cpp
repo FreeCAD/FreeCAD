@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/bind.hpp>
 #endif
 
 #include "ui_TaskSketcherMessages.h"
@@ -36,7 +37,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
-#include <boost/bind.hpp>
+
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -59,16 +60,17 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView)
 
     connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this,_1));
     connectionSolved = sketchView->signalSolved.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSolved, this,_1));
-    
+
     ui->labelConstrainStatus->setOpenExternalLinks(false);
-    
+
     ui->autoUpdate->onRestore();
-    
+    ui->autoRemoveRedundants->onRestore();
+
     if(ui->autoUpdate->isChecked())
         sketchView->getSketchObject()->noRecomputes=false;
     else
         sketchView->getSketchObject()->noRecomputes=true;
-    
+
     /*QObject::connect(
         ui->labelConstrainStatus, SIGNAL(linkActivated(const QString &)),
         this                     , SLOT  (on_labelConstrainStatus_linkActivated(const QString &))
@@ -80,7 +82,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView)
     QObject::connect(
         ui->manualUpdate, SIGNAL(clicked(bool)),
         this                     , SLOT  (on_manualUpdate_clicked(bool))
-       );*/   
+       );*/
 }
 
 TaskSketcherMessages::~TaskSketcherMessages()
@@ -104,9 +106,13 @@ void TaskSketcherMessages::on_labelConstrainStatus_linkActivated(const QString &
 {
     if( str == QString::fromLatin1("#conflicting"))
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectConflictingConstraints");
-    
+
     if( str == QString::fromLatin1("#redundant"))
-        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");            
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");
+
+    if( str == QString::fromLatin1("#dofs"))
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectElementsWithDoFs");
+
 }
 
 void TaskSketcherMessages::on_autoUpdate_stateChanged(int state)
@@ -119,6 +125,12 @@ void TaskSketcherMessages::on_autoUpdate_stateChanged(int state)
         sketchView->getSketchObject()->noRecomputes=true;
         ui->autoUpdate->onSave();
     }
+}
+
+void TaskSketcherMessages::on_autoRemoveRedundants_stateChanged(int state)
+{
+    Q_UNUSED(state);
+    ui->autoRemoveRedundants->onSave();
 }
 
 void TaskSketcherMessages::on_manualUpdate_clicked(bool checked)

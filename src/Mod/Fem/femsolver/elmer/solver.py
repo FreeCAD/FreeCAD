@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,13 +19,14 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Elmer"
+__title__ = "FreeCAD FEM solver object Elmer"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 
 from .. import run
 from .. import solverbase
@@ -40,7 +40,7 @@ from .equations import flow
 
 
 def create(doc, name="ElmerSolver"):
-    return FemUtils.createObject(
+    return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
@@ -95,4 +95,6 @@ class ViewProxy(solverbase.ViewProxy):
     """Proxy for FemSolverElmers View Provider."""
 
     def getIcon(self):
-        return ":/icons/fem-elmer.svg"
+        return ":/icons/fem-solver-elmer.svg"
+
+##  @}

@@ -194,15 +194,6 @@ class ViewProvider(object):
     def toString(self):
         "returns a string representation of the coin node of this object"
         return self.__vobject__.toString()
-    def startEditing(self,mode=0):
-        "sets this object in edit mode"
-        return self.__vobject__.startEditing(mode)
-    def finishEditing(self):
-        "leaves edit mode for this object"
-        self.__vobject__.finishEditing()
-    def isEditing(self):
-        "shows whether this object is in edit mode"
-        self.__vobject__.isEditing()
     def setTransformation(self,trsf):
         "defines a transformation for this object"
         return self.__vobject__.setTransformation(trsf)

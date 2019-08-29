@@ -52,11 +52,17 @@ SOURCE_GROUP("plotutils" FILES ${PlotUtils_SRCS})
 
 SET(all_files ${PlotMain_SRCS} ${PlotAxes_SRCS} ${PlotLabels_SRCS} ${PlotPositions_SRCS} ${PlotSave_SRCS} ${PlotSeries_SRCS} ${PlotUtils_SRCS})
 
+SET(PlotGuiIcon_SVG
+    resources/icons/PlotWorkbench.svg
+)
+
 ADD_CUSTOM_TARGET(Plot ALL
-    SOURCES ${all_files} ${Plot_QRC_SRCS}
+    SOURCES ${all_files} ${Plot_QRC_SRCS} ${PlotGuiIcon_SVG}
 )
 
 fc_copy_sources(Plot "${CMAKE_BINARY_DIR}/Mod/Plot" ${all_files})
+
+fc_copy_sources(Plot "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Plot" ${PlotGuiIcon_SVG})
 
 IF (BUILD_GUI)
     fc_target_copy_resource(Plot
@@ -108,11 +114,9 @@ INSTALL(
     DESTINATION
         Mod/Plot
 )
-
-SET(PlotGuiIcon_SVG
-    resources/icons/PlotWorkbench.svg
+INSTALL(
+    FILES
+        ${PlotGuiIcon_SVG}
+    DESTINATION
+        "${CMAKE_INSTALL_DATADIR}/Mod/Plot/resources/icons"
 )
-
-fc_copy_sources(Plot "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Plot" ${PlotGuiIcon_SVG})
-
-INSTALL(FILES ${PlotGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Plot/resources/icons")

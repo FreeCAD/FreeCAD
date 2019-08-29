@@ -27,7 +27,7 @@
 #include <App/ObjectIdentifier.h>
 #include <boost/shared_ptr.hpp>
 #include <QLabel>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 namespace App {
 class Expression;
@@ -58,7 +58,7 @@ public:
 protected:
     const App::ObjectIdentifier & getPath() const { return path; }
     boost::shared_ptr<App::Expression> getExpression() const;
-    std::string getExpressionString() const;
+    std::string getExpressionString(bool no_throw=true) const;
     std::string getEscapedExpressionString() const;
     virtual void setExpression(boost::shared_ptr<App::Expression> expr);
     
@@ -75,7 +75,7 @@ protected:
     int iconHeight;
 
     void expressionChange(const App::ObjectIdentifier& id);
-    boost::signals::scoped_connection connection;
+    boost::signals2::scoped_connection connection;
     bool m_autoApply;
 };
 

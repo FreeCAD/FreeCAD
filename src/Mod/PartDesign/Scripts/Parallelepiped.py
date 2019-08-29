@@ -3,7 +3,7 @@
 # (c) 2011 Werner Mayer LGPL
 
 """
-An example for a high-level cutsom feature object to form a full-parametric parallelepiped.
+An example for a high-level custom feature object to form a full-parametric parallelepiped.
 """
 
 __author__ = "Werner Mayer <wmayer@users.sourceforge.net>"

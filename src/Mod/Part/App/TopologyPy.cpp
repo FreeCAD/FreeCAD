@@ -190,7 +190,7 @@ TopoShapePyOld::~TopoShapePyOld()						// Everything handled in parent
 //--------------------------------------------------------------------------
 // TopoShapePyOld Attributes
 //--------------------------------------------------------------------------
-PyObject *TopoShapePyOld::_getattr(char *attr)				// __getattr__ function: note only need to handle new state
+PyObject *TopoShapePyOld::_getattr(const char *attr)				// __getattr__ function: note only need to handle new state
 { 
 	try{
 		// Access the number of attributes at this label
@@ -205,7 +205,7 @@ PyObject *TopoShapePyOld::_getattr(char *attr)				// __getattr__ function: note 
 	}
 } 
 
-int TopoShapePyOld::_setattr(char *attr, PyObject *value) 	// __setattr__ function: note only need to handle new state
+int TopoShapePyOld::_setattr(const char *attr, PyObject *value) 	// __setattr__ function: note only need to handle new state
 { 
 	if (Base::streq(attr, "Real"))						// settable new state
 		; 

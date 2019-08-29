@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Bim server URL:</string>
+        <string>BimServer URL:</string>
        </property>
       </widget>
      </item>
@@ -59,7 +59,7 @@
    <item>
     <widget class="QCheckBox" name="checkStore">
      <property name="text">
-      <string>Keep me logged across FreeCAD sessions</string>
+      <string>Keep me logged in across FreeCAD sessions</string>
      </property>
     </widget>
    </item>

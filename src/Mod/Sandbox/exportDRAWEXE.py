@@ -61,7 +61,7 @@ def f2s(n,angle=False,axis=False):
                 return s
 
 def ax2_xdir(normal):
-    #adaped from gp_Ax2.ccc (c) OpenCascade SAS LGPL 2.1+
+    #adapted from gp_Ax2.ccc (c) OpenCascade SAS LGPL 2.1+
 
     xa=abs(normal.x)
     ya=abs(normal.y)
@@ -211,7 +211,7 @@ def isDraftWire(ob):
         if isinstance(ob.Proxy,Draft._Wire):
             #only return true if we support all options
             #"Closed" append last point at the end
-            #"MakeFace" 
+            #"MakeFace"
             #"Points" data we need
             # the usage of 'start' and 'end' is not clear
             if ob.Base is None and ob.Tool is None and \

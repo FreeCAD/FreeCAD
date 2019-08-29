@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "view provider for constraint body heat source object"
+__title__ = "FreeCAD FEM constraint body heat source ViewProvider for the document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 from . import ViewProviderFemConstraint
 
@@ -33,3 +34,5 @@ class ViewProxy(ViewProviderFemConstraint.ViewProxy):
 
     def getIcon(self):
         return ":/icons/fem-constraint-heatflux.svg"
+
+##  @}

@@ -25,6 +25,7 @@
 
 #include <Standard_math.hxx>
 #ifndef _PreComp_
+# include <Python.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 #include <Gui/ViewProviderBuilder.h>

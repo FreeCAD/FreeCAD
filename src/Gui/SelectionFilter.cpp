@@ -62,6 +62,11 @@ SelectionFilterGate::SelectionFilterGate(SelectionFilter* filter)
     Filter = filter;
 }
 
+SelectionFilterGate::SelectionFilterGate()
+{
+    Filter = nullptr;
+}
+
 SelectionFilterGate::~SelectionFilterGate()
 {
     delete Filter;

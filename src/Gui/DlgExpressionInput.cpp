@@ -72,7 +72,7 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
     // rectangle to appear. To avoid this the 'NoSystemBackground' parameter can be
     // set to false. Then a normal non-modal dialog will be shown instead (#0002440).
     bool noBackground = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", true);
+        ("User parameter:BaseApp/Preferences/Expression")->GetBool("NoSystemBackground", false);
 
     if (noBackground) {
 #if defined(Q_OS_MAC)
@@ -90,6 +90,11 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
         ui->horizontalSpacer_3->changeSize(0, 2);
         ui->verticalLayout->setContentsMargins(9, 9, 9, 9);
         this->adjustSize();
+        // It is strange that (at least on Linux) DlgExpressionInput will shrink
+        // to be narrower than ui->expression after calling adjustSize() above.
+        // Why?
+        if(this->width() < ui->expression->width() + 18)
+            this->resize(ui->expression->width()+18,this->height());
     }
     ui->expression->setFocus();
 }
@@ -138,10 +143,12 @@ void DlgExpressionInput::textChanged(const QString &text)
             if (n) {
                 Base::Quantity value = n->getQuantity();
 
-                if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
-                    throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
+                if(!impliedUnit.isEmpty()) {
+                    if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
+                        throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
-                value.setUnit(impliedUnit);
+                    value.setUnit(impliedUnit);
+                }
 
                 ui->msg->setText(value.getUserString());
             }

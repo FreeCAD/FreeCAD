@@ -39,10 +39,15 @@
 # include <TopoDS_Iterator.hxx>
 # include <TopExp.hxx>
 # include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
 # include <gp_GTrsf.hxx>
 # include <gp_Trsf.hxx>
+
+#if OCC_VERSION_HEX >= 0x060800
+# include <OSD_OpenFile.hxx>
 #endif
 
+#endif // _PreComp_
 
 #include <Base/Console.h>
 #include <Base/Writer.h>
@@ -91,7 +96,7 @@ void PropertyPartShape::setValue(const TopoDS_Shape& sh)
     hasSetValue();
 }
 
-const TopoDS_Shape& PropertyPartShape::getValue(void)const 
+const TopoDS_Shape& PropertyPartShape::getValue(void)const
 {
     return _Shape.getShape();
 }
@@ -126,7 +131,7 @@ Base::BoundBox3d PropertyPartShape::getBoundingBox() const
         box.MinZ = zMin;
         box.MaxZ = zMax;
     }
-    catch (Standard_Failure) {
+    catch (Standard_Failure&) {
     }
 
     return box;
@@ -181,7 +186,7 @@ PyObject *PropertyPartShape::getPyObject(void)
         }
     }
 
-    if (prop) prop->setConst();
+    prop->setConst();
     return prop;
 }
 
@@ -241,12 +246,12 @@ void PropertyPartShape::Save (Base::Writer &writer) const
     if(!writer.isForceXML()) {
         //See SaveDocFile(), RestoreDocFile()
         if (writer.getMode("BinaryBrep")) {
-            writer.Stream() << writer.ind() << "<Part file=\"" 
+            writer.Stream() << writer.ind() << "<Part file=\""
                             << writer.addFile("PartShape.bin", this)
                             << "\"/>" << std::endl;
         }
         else {
-            writer.Stream() << writer.ind() << "<Part file=\"" 
+            writer.Stream() << writer.ind() << "<Part file=\""
                             << writer.addFile("PartShape.brp", this)
                             << "\"/>" << std::endl;
         }
@@ -259,9 +264,53 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
+}
+
+// The following two functions are copied from OCCT BRepTools.cxx and modified
+// to disable saving of triangulation
+//
+static void BRepTools_Write(const TopoDS_Shape& Sh, Standard_OStream& S) {
+  BRepTools_ShapeSet SS(Standard_False);
+  // SS.SetProgress(PR);
+  SS.Add(Sh);
+  SS.Write(S);
+  SS.Write(Sh,S);
+}
+
+static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh, const Standard_CString File)
+{
+  std::ofstream os;
+#if OCC_VERSION_HEX >= 0x060800
+  OSD_OpenStream(os, File, std::ios::out);
+#else
+  os.open(File, std::ios::out);
+#endif
+  if (!os.rdbuf()->is_open()) return Standard_False;
+
+  Standard_Boolean isGood = (os.good() && !os.eof());
+  if(!isGood)
+    return isGood;
+
+  BRepTools_ShapeSet SS(Standard_False);
+  // SS.SetProgress(PR);
+  SS.Add(Sh);
+
+  os << "DBRep_DrawableShape\n";  // for easy Draw read
+  SS.Write(os);
+  isGood = os.good();
+  if(isGood )
+    SS.Write(Sh,os);
+  os.flush();
+  isGood = os.good();
+
+  errno = 0;
+  os.close();
+  isGood = os.good() && isGood && !errno;
+
+  return isGood;
 }
 
 void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
@@ -270,12 +319,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
     // can be checked when reading in the data.
     if (_Shape.getShape().IsNull())
         return;
-    // NOTE: Cleaning the triangulation may cause problems on some algorithms like BOP
-    // Before writing to the project we clean all triangulation data to save memory
-    BRepBuilderAPI_Copy copy(_Shape.getShape());
-    const TopoDS_Shape& myShape = copy.Shape();
-    BRepTools::Clean(myShape); // remove triangulation
-
+    TopoDS_Shape myShape = _Shape.getShape();
     if (writer.getMode("BinaryBrep")) {
         TopoShape shape;
         shape.setShape(myShape);
@@ -290,7 +334,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
             // we may run into some problems on the Linux platform
             static Base::FileInfo fi(App::Application::getTempFileName());
 
-            if (!BRepTools::Write(myShape,(const Standard_CString)fi.filePath().c_str())) {
+            if (!BRepTools_Write(myShape,(Standard_CString)fi.filePath().c_str())) {
                 // Note: Do NOT throw an exception here because if the tmp. file could
                 // not be created we should not abort.
                 // We only print an error message but continue writing the next files to the
@@ -298,7 +342,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
                 App::PropertyContainer* father = this->getContainer();
                 if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
                     App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                    Base::Console().Error("Shape of '%s' cannot be written to BRep file '%s'\n", 
+                    Base::Console().Error("Shape of '%s' cannot be written to BRep file '%s'\n",
                         obj->Label.getValue(),fi.filePath().c_str());
                 }
                 else {
@@ -312,7 +356,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
 
             Base::ifstream file(fi, std::ios::in | std::ios::binary);
             if (file) {
-                //unsigned long ulSize = 0; 
+                //unsigned long ulSize = 0;
                 std::streambuf* buf = file.rdbuf();
                 //if (buf) {
                 //    unsigned long ulCurr;
@@ -333,7 +377,7 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
             fi.deleteFile();
         }
         else {
-            BRepTools::Write(myShape, writer.Stream());
+            BRepTools_Write(myShape, writer.Stream());
         }
     }
 }
@@ -356,7 +400,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
 
             // read in the ASCII file and write back to the file stream
             Base::ofstream file(fi, std::ios::out | std::ios::binary);
-            unsigned long ulSize = 0; 
+            unsigned long ulSize = 0;
             if (reader) {
                 std::streambuf* buf = file.rdbuf();
                 reader >> buf;
@@ -369,7 +413,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
             // If it's still empty after reading the (non-empty) file there must occurred an error.
             TopoDS_Shape shape;
             if (ulSize > 0) {
-                if (!BRepTools::Read(shape, (const Standard_CString)fi.filePath().c_str(), builder)) {
+                if (!BRepTools::Read(shape, (Standard_CString)fi.filePath().c_str(), builder)) {
                     // Note: Do NOT throw an exception here because if the tmp. created file could
                     // not be read it's NOT an indication for an invalid input stream 'reader'.
                     // We only print an error message but continue reading the next files from the
@@ -377,7 +421,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
                     App::PropertyContainer* father = this->getContainer();
                     if (father && father->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
                         App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                        Base::Console().Error("BRep file '%s' with shape of '%s' seems to be empty\n", 
+                        Base::Console().Error("BRep file '%s' with shape of '%s' seems to be empty\n",
                             fi.filePath().c_str(),obj->Label.getValue());
                     }
                     else {
@@ -548,7 +592,7 @@ void PropertyFilletEdges::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }

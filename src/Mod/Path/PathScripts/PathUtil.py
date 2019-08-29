@@ -32,43 +32,41 @@ So if you add to this file and think about importing anything from PathScripts
 other than PathLog, then it probably doesn't belong here.
 '''
 
+import six
 import PathScripts.PathLog as PathLog
-import sys
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+LOGLEVEL = False
 
-NotValidBaseTypeIds = ['Sketcher::SketchObject']
+if LOGLEVEL:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+# NotValidBaseTypeIds = ['Sketcher::SketchObject']
+NotValidBaseTypeIds = []
+
 
 def isValidBaseObject(obj):
     '''isValidBaseObject(obj) ... returns true if the object can be used as a base for a job.'''
     if hasattr(obj, 'getParentGeoFeatureGroup') and obj.getParentGeoFeatureGroup():
         # Can't link to anything inside a geo feature group anymore
-        return False
-    if hasattr(obj, 'TypeId') and 'App::Part' == obj.TypeId:
-        return obj.Group and any(hasattr(o, 'Shape') for o in obj.Group)
-    if not hasattr(obj, 'Shape'):
+        PathLog.debug("%s is inside a geo feature group" % obj.Label)
         return False
     if obj.TypeId in NotValidBaseTypeIds:
+        PathLog.debug("%s is blacklisted (%s)" % (obj.Label, obj.TypeId))
         return False
     if hasattr(obj, 'Sheets') or hasattr(obj, 'TagText'): # Arch.Panels and Arch.PanelCut
+        PathLog.debug("%s is not an Arch.Panel" % (obj.Label))
         return False
-    return True
+    import Part
+    return not Part.getShape(obj).isNull()
 
 def isSolid(obj):
     '''isSolid(obj) ... return True if the object is a valid solid.'''
-    if hasattr(obj, 'Tip'):
-        return isSolid(obj.Tip)
-    if hasattr(obj, 'Shape'):
-        if obj.Shape.ShapeType == 'Solid' and obj.Shape.isClosed():
-            return True
-        if obj.Shape.ShapeType == 'Compound':
-            if hasattr(obj, 'Base') and hasattr(obj, 'Tool'):
-                return isSolid(obj.Base) and isSolid(obj.Tool)
-    if hasattr(obj, 'TypeId') and 'App::Part' == obj.TypeId:
-        if not obj.Group or any(hasattr(o, 'Shape') and not isSolid(o) for o in obj.Group):
-            return False
-        return True
-    return False
+    import Part
+    shape = Part.getShape(obj)
+    return not shape.isNull() and shape.Volume and shape.isClosed()
 
 def toolControllerForOp(op):
     '''toolControllerForOp(op) ... return the tool controller used by the op.
@@ -95,25 +93,17 @@ There is currently a bug that invalidates the DAG if an object
 is deleted that still has one or more expressions attached to it.
 Use this function to remove all expressions before deletion.'''
     if hasattr(obj, 'ExpressionEngine'):
-        for attr,expr in obj.ExpressionEngine:
+        for attr, expr in obj.ExpressionEngine: # pylint: disable=unused-variable
             obj.setExpression(attr, None)
 
 def toUnicode(string):
     '''toUnicode(string) ... returns a unicode version of string regardless of the python version.'''
-    if sys.version_info.major < 3:
-        return unicode(string)
-    return string
+    return six.text_type(string)
 
 def isString(string):
     '''isString(string) ... return True if string is a string, regardless of string type and python version.'''
-    if type(string) == str:
-        return True
-    if sys.version_info.major < 3 and type(string) == unicode:
-        return True
-    return False
+    return isinstance(string, six.string_types)
 
 def keyValueIter(dictionary):
     '''keyValueIter(dict) ... return iterable object over dictionary's (key,value) tuples.'''
-    if sys.version_info.major < 3:
-        return dictionary.iteritems()
-    return dictionary.items()
+    return six.iteritems(dictionary)

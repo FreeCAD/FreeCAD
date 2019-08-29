@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
+    <width>484</width>
     <height>388</height>
    </rect>
   </property>
@@ -20,17 +20,57 @@
       <string>Units settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <item row="4" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>79</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Number of decimals:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinBoxDecimals">
+          <property name="toolTip">
+           <string>Number of decimals that should be shown for numbers and dimensions in FreeCAD</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>12</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>User system:</string>
+           <string>Unit system:</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QComboBox" name="comboBox_ViewSystem">
+          <property name="toolTip">
+           <string>Unit system that should be used for all parts of FreeCAD</string>
+          </property>
           <item>
            <property name="text">
             <string>Standard (mm/kg/s/degree)</string>
@@ -66,32 +106,16 @@
             <string>Metric small parts &amp; CNC(mm, mm/min)</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Imperial Civil (ft/ft^2/ft^3)</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Number of decimals:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spinBoxDecimals">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>12</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QTableWidget" name="tableWidget">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
@@ -114,18 +138,58 @@
         </column>
        </widget>
       </item>
-      <item row="3" column="0">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>79</height>
-         </size>
-        </property>
-       </spacer>
+      <item row="2" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Minimum fractional inch:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox_FracInch">
+          <property name="toolTip">
+           <string>Minimum fractional inch to be displayed</string>
+          </property>
+          <item>
+           <property name="text">
+            <string>1/2&quot;</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1/4&quot;</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1/8&quot;</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1/16&quot;</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1/32&quot;</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1/64&quot;</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1/128&quot;</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>

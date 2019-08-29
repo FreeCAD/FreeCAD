@@ -33,11 +33,11 @@
 #include <Gui/Selection.h>
 #include <Gui/GLPainter.h>
 #include <App/Part.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <QCoreApplication>
 #include <Gui/Document.h>
+#include "ShortcutListener.h"
 
-#include <boost/signals.hpp>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -50,6 +50,7 @@ class SoPointSet;
 class SoTransform;
 class SoLineSet;
 class SoMarkerSet;
+class SoPickedPoint;
 
 class SoImage;
 class QImage;
@@ -124,7 +125,7 @@ public:
 
     /// Show/Hide nodes from information layer
     void showRestoreInformationLayer();
-    
+
     /** @name handler control */
     //@{
     /// sets an DrawSketchHandler in control
@@ -225,24 +226,28 @@ public:
     virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
     //@}
 
+    void deleteSelected();
+
     /// updates the visibility of the virtual space
     void updateVirtualSpace(void);
     void setIsShownVirtualSpace(bool isshownvirtualspace);
     bool getIsShownVirtualSpace(void) const;
-    
+
     friend class DrawSketchHandler;
     friend struct ::EditData;
 
     /// signals if the constraints list has changed
-    boost::signal<void ()> signalConstraintsChanged;
+    boost::signals2::signal<void ()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signal<void (QString msg)> signalSetUp;
+    boost::signals2::signal<void (QString msg)> signalSetUp;
     /// signals if the sketch has been solved
-    boost::signal<void (QString msg)> signalSolved;
+    boost::signals2::signal<void (QString msg)> signalSolved;
     /// signals if the elements list has changed
-    boost::signal<void ()> signalElementsChanged;
-        
+    boost::signals2::signal<void ()> signalElementsChanged;
+
 protected:
+    Base::Placement getEditingPlacement() const;
+
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum);
@@ -264,14 +269,17 @@ protected:
     EditData *edit;
     /// build up the visual of the constraints
     void rebuildConstraintsVisual(void);
-    
+
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
-    
+
 protected:
-    boost::signals::connection connectUndoDocument;
-    boost::signals::connection connectRedoDocument;
-    
+    boost::signals2::connection connectUndoDocument;
+    boost::signals2::connection connectRedoDocument;
+
+    /// Return display string for constraint including hiding units if
+    //requested.
+    QString getPresentationString(const Sketcher::Constraint *constraint);
 
     /** @name Protected helpers for drawing constraint icons*/
     //@{
@@ -306,7 +314,7 @@ protected:
 
         /// Pointer to SoInfo object where we store the constraint IDs that the icon refers to
         SoInfo *infoPtr;
-        
+
         /// Angle to rotate an icon
         double iconRotation;
     };
@@ -361,7 +369,7 @@ protected:
     void addSelectPoint(int SelectPoint);
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints(void);
-    
+
     // modes while sketching
     SketchMode Mode;
 
@@ -382,6 +390,7 @@ protected:
     static SbColor SelectColor;
     static SbColor PreselectSelectedColor;
     static SbColor InformationColor;
+    static SbColor DeactivatedConstrDimColor;
 
     static SbTime prvClickTime;
     static SbVec2s prvClickPos; //used by double-click-detector
@@ -390,7 +399,9 @@ protected:
 
     float zCross;
     //float zLines;
-    float zPoints;
+    //float zPoints;
+    float zLowPoints;
+    float zHighPoints;
     float zConstr;
     float zHighlight;
     float zText;
@@ -412,9 +423,15 @@ protected:
     // information layer variables
     bool visibleInformationChanged;
     double combrepscalehyst;
+
+    std::string editDocName;
+    std::string editObjName;
+    std::string editSubName;
     
     // Virtual space variables
     bool isShownVirtualSpace; // indicates whether the present virtual space view is the Real Space or the Virtual Space (virtual space 1 or 2)
+
+    ShortcutListener* listener;
 };
 
 } // namespace PartGui

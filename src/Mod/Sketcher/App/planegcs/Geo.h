@@ -28,10 +28,18 @@
 
 namespace GCS
 {
-    class Point
+    class DependentParameters 
+    {
+    public:
+        DependentParameters():hasDependentParameters(false) {}
+        bool hasDependentParameters;
+    };
+    
+    class Point : public DependentParameters
     {
     public:
         Point(){x = 0; y = 0;}
+        Point(double *px, double *py) {x=px; y=py;}
         double *x;
         double *y;
     };
@@ -88,7 +96,7 @@ namespace GCS
     // Geometries
     ///////////////////////////////////////
 
-    class Curve //a base class for all curve-based objects (line, circle/arc, ellipse/arc)
+    class Curve: public DependentParameters //a base class for all curve-based objects (line, circle/arc, ellipse/arc)
     {
     public:
         virtual ~Curve(){}

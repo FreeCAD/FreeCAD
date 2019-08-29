@@ -40,11 +40,17 @@ DistConfusion = 1e-7
 ParaConfusion = 1e-8
 
 
-def makeCompoundFilter(name):
+def makeCompoundFilter(name, into_group = None):
     '''makeCompoundFilter(name): makes a CompoundFilter object.'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", name)
+    if into_group is None:
+        into_group = FreeCAD.ActiveDocument
+    if into_group.isDerivedFrom('App::Document'):
+        obj = into_group.addObject("Part::FeaturePython", name)
+    else:
+        obj = into_group.newObject("Part::FeaturePython", name)
     _CompoundFilter(obj)
-    _ViewProviderCompoundFilter(obj.ViewObject)
+    if obj.ViewObject:    
+        _ViewProviderCompoundFilter(obj.ViewObject)
     return obj
 
 
@@ -58,7 +64,7 @@ class _CompoundFilter:
         obj.FilterType = 'bypass'
 
         # properties controlling "specific items" mode
-        obj.addProperty("App::PropertyString", "items", "CompoundFilter", "list of indexes of childs to be returned (like this: 1,4,8:10).")
+        obj.addProperty("App::PropertyString", "items", "CompoundFilter", "list of indexes of childs to be returned (like this: 1;4;8:10).")
 
         obj.addProperty("App::PropertyLink", "Stencil", "CompoundFilter", "Object that defines filtering")
 

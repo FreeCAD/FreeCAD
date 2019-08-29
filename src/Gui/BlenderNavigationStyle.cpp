@@ -120,7 +120,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
     }
 
     // give the nodes in the foreground root the chance to handle events (e.g color bar)
-    if (!processed && !viewer->isEditing()) {
+    if (!viewer->isEditing()) {
         processed = handleEventInForeground(ev);
         if (processed)
             return true;
@@ -285,11 +285,13 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         const SoLocation2Event * const event = (const SoLocation2Event *) ev;
         if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
+            newmode = NavigationStyle::SELECTION;
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::PANNING) {
             float ratio = vp.getViewportAspectRatio();
             panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, posn, prevnormalized);
+            newmode = NavigationStyle::SELECTION;
             processed = true;
         }
         else if (this->currentmode == NavigationStyle::DRAGGING) {
@@ -302,7 +304,7 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        const SoMotion3Event * const event = static_cast<const SoMotion3Event * const>(ev);
+        const SoMotion3Event * const event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;

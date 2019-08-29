@@ -59,6 +59,7 @@ public:
     static double m_clipper_scale;
 
 	void append(const CCurve& curve);
+	void move(CCurve&& curve);
 	void Subtract(const CArea& a2);
 	void Intersect(const CArea& a2);
 	void Union(const CArea& a2);

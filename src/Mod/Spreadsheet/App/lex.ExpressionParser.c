@@ -6302,9 +6302,9 @@ YY_RULE_SETUP
 {
                                yylval.ivalue = strtoll( ExpressionParsertext, NULL, 0 );
                                if (yylval.ivalue == LLONG_MIN)
-                                 throw Base::Exception("Integer underflow");
+                                 throw Base::UnderflowError("Integer underflow");
                                else if (yylval.ivalue == LLONG_MAX)
-                                 throw Base::Exception("Integer overflow");
+                                 throw Base::OverflowError("Integer overflow");
                                if (yylval.ivalue == 1) { yylval.fvalue = 1; return ONE; } else return INTEGER;
                              }
 	YY_BREAK

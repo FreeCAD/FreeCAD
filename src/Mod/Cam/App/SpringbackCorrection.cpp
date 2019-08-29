@@ -308,7 +308,7 @@ bool SpringbackCorrection::CalcCurv()
 
                     if (pnt2edge.IsDone() == false)
                     {
-                        throw Base::Exception("couldn't perform distance calculation pnt2edge \n");
+                        throw Base::RuntimeError("couldn't perform distance calculation pnt2edge \n");
                     }
 
                     dist = pnt2edge.Value();
@@ -730,7 +730,7 @@ bool SpringbackCorrection::TransferFaceTriangulationtoFreeCAD(const TopoDS_Face&
     // if the triangulation of only one face is not possible to get
     else
     {
-        throw Base::Exception("Empty face triangulation\n");
+        throw Base::RuntimeError("Empty face triangulation\n");
     }
 
     // finish FreeCAD Mesh Builder and exit with new mesh

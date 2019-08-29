@@ -102,8 +102,8 @@
       <translation>上下中央揃え</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>選択したセルの内容を上下中央揃えにする</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>選択したセルの内容を縦方向中央揃えにする</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>セルの結合</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>スプレッドシートで選択したセルを結合します</translation>
+      <source>Merge selected cells</source>
+      <translation>選択したセルを結合</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>セルの分割</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>スプレッドシートにある結合セルを分割します</translation>
+      <source>Split previously merged cells</source>
+      <translation>結合されているセルを分割</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>太字</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>選択したセルのテキストを太字に設定します。</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>選択したセルのテキストに太字を設定</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>斜体</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>選択したセルのテキストを斜体に設定します。</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>選択したセルのテキストに斜体を設定</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>下線</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>選択したセルに下線を設定します</translation>
+      <source>Underline text in selected cells</source>
+      <translation>選択したセルに下線を設定</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>色の編集</translation>
+      <source>Custom Color</source>
+      <translation>カスタム色</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>明るい灰色</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>色の編集</translation>
+      <source>Custom Color</source>
+      <translation>カスタム色</translation>
     </message>
   </context>
   <context>

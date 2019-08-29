@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 
+#include <Python.h>
 #include <QMessageBox>
 #include "ViewProvider.h"
 #include "DlgSettings3DViewPartImp.h"
@@ -45,6 +46,10 @@ DlgSettings3DViewPart::DlgSettings3DViewPart(QWidget* parent)
   : PreferencePage(parent), ui(new Ui_DlgSettings3DViewPart), checkValue(false)
 {
     ui->setupUi(this);
+    ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Part");
+    double lowerLimit = hPart->GetFloat("MinimumDeviation", ui->maxDeviation->minimum());
+    ui->maxDeviation->setMinimum(lowerLimit);
 }
 
 /** 

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
 	<PythonExport
-		Father="GeometryCurvePy"
+                Father="BoundedCurvePy"
 		Name="BSplineCurvePy"
-        PythonName="Part.BSplineCurve"
+                PythonName="Part.BSplineCurve"
 		Twin="GeomBSplineCurve"
 		TwinPointer="GeomBSplineCurve"
 		Include="Mod/Part/App/Geometry.h"
 		Namespace="Part"
-		FatherInclude="Mod/Part/App/GeometryCurvePy.h"
+                FatherInclude="Mod/Part/App/BoundedCurvePy.h"
 		FatherNamespace="Part"
 		Constructor="true">
 		<Documentation>
@@ -84,7 +84,7 @@ of this B-Spline curve.</UserDocu>
 			</Documentation>
 			<Parameter Name="KnotSequence" Type="List"/>
 		</Attribute>
-		<Methode Name="isRational">
+        <Methode Name="isRational" Const="true">
 			<Documentation>
 				<UserDocu>
 					Returns true if this B-Spline curve is rational.
@@ -93,12 +93,12 @@ of this B-Spline curve.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isPeriodic">
+        <Methode Name="isPeriodic" Const="true">
 			<Documentation>
 				<UserDocu>Returns true if this BSpline curve is periodic.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isClosed">
+        <Methode Name="isClosed" Const="true">
 			<Documentation>
 				<UserDocu>
 					Returns true if the distance between the start point and end point of
@@ -142,7 +142,7 @@ done if Degree is less than or equal to the current degree.</UserDocu>
 			<Documentation>
 				<UserDocu>
 				insertKnot(u, mult = 1, tol = 0.0)
-				Inserts a knot value in the sequence of knots. If u is an existing knot the 
+				Inserts a knot value in the sequence of knots. If u is an existing knot the
 				multiplicity is increased by mult. </UserDocu>
 			</Documentation>
 		</Methode>
@@ -154,12 +154,12 @@ done if Degree is less than or equal to the current degree.</UserDocu>
 
 				For each u = list_of_floats[i], mult = list_of_ints[i]
 
-				If u is an existing knot the multiplicity is increased by mult if bool_add is 
+				If u is an existing knot the multiplicity is increased by mult if bool_add is
 				True, otherwise increased to mult.
 
 				If u is not on the parameter range nothing is done.
 
-				If the multiplicity is negative or null nothing is done. The new multiplicity 
+				If the multiplicity is negative or null nothing is done. The new multiplicity
 				is limited to the degree.
 
 				The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
@@ -198,7 +198,7 @@ done if Degree is less than or equal to the current degree.</UserDocu>
 				<UserDocu>Set a knot of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getKnot">
+        <Methode Name="getKnot" Const="true">
 			<Documentation>
 				<UserDocu>Get a knot of the B-Spline curve.</UserDocu>
 			</Documentation>
@@ -208,7 +208,7 @@ done if Degree is less than or equal to the current degree.</UserDocu>
 				<UserDocu>Set knots of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getKnots">
+        <Methode Name="getKnots" Const="true">
 			<Documentation>
 				<UserDocu>Get all knots of the B-Spline curve.</UserDocu>
 			</Documentation>
@@ -219,12 +219,12 @@ done if Degree is less than or equal to the current degree.</UserDocu>
 to the pole of index Index in the poles table.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPole">
+        <Methode Name="getPole" Const="true">
 			<Documentation>
 				<UserDocu>Get a pole of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPoles">
+        <Methode Name="getPoles" Const="true">
 			<Documentation>
 				<UserDocu>Get all poles of the B-Spline curve.</UserDocu>
 			</Documentation>
@@ -234,19 +234,19 @@ to the pole of index Index in the poles table.</UserDocu>
 				<UserDocu>Set a weight of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getWeight">
+        <Methode Name="getWeight" Const="true">
 			<Documentation>
 				<UserDocu>Get a weight of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getWeights">
+        <Methode Name="getWeights" Const="true">
 			<Documentation>
 				<UserDocu>Get all weights of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPolesAndWeights">
+        <Methode Name="getPolesAndWeights" Const="true">
 			<Documentation>
-				<UserDocu>Returns the table of poles and weights in homogenous ccordinates.</UserDocu>
+				<UserDocu>Returns the table of poles and weights in homogeneous coordinates.</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="getResolution" Const="true">
@@ -266,7 +266,7 @@ ensures that:
 Index1 and Index2 are the indexes in the table of poles of this B-Spline curve
 of the first and last poles designated to be moved.
 
-Returns: (FirstModifiedPole, LastModifiedPole). They are the indexes of the 
+Returns: (FirstModifiedPole, LastModifiedPole). They are the indexes of the
 first and last poles which are effectively modified.</UserDocu>
 			</Documentation>
 		</Methode>
@@ -288,13 +288,13 @@ as the origin of this periodic B-Spline curve. As a consequence,
 the knots and poles tables are modified.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getMultiplicity">
+        <Methode Name="getMultiplicity" Const="true">
 			<Documentation>
-				<UserDocu>Returns the multiplicity of the knot of index 
+				<UserDocu>Returns the multiplicity of the knot of index
 from the knots table of this B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getMultiplicities">
+        <Methode Name="getMultiplicities" Const="true">
 			<Documentation>
 				<UserDocu>
 					Returns the multiplicities table M of the knots of this B-Spline curve.
@@ -307,7 +307,7 @@ from the knots table of this B-Spline curve.</UserDocu>
 					Replaces this B-Spline curve by approximating a set of points.
 					The function accepts keywords as arguments.
 
-					approximate(Points = list_of_points) 
+					approximate(Points = list_of_points)
 
 					Optional arguments :
 
@@ -318,9 +318,9 @@ from the knots table of this B-Spline curve.</UserDocu>
 					Possible values : 'C0','G1','C1','G2','C2','C3','CN'
 
 					LengthWeight = float, CurvatureWeight = float, TorsionWeight = float
-					If one of these arguments is not null, the functions approximates the 
-					points using variational smoothing algorithm, which tries to minimize 
-					additional criterium: 
+					If one of these arguments is not null, the functions approximates the
+					points using variational smoothing algorithm, which tries to minimize
+					additional criterium:
 					LengthWeight*CurveLength + CurvatureWeight*Curvature + TorsionWeight*Torsion
                                         Continuity must be C0, C1(with DegMax >= 3) or C2(with DegMax >= 5).
 
@@ -330,12 +330,12 @@ from the knots table of this B-Spline curve.</UserDocu>
 					ParamType = string ('Uniform','Centripetal' or 'ChordLength')
 					Parameterization type. Only used if weights and Parameters above aren't specified.
 
-					Note : Continuity of the spline defaults to C2. However, it may not be applied if 
+					Note : Continuity of the spline defaults to C2. However, it may not be applied if
 					it conflicts with other parameters ( especially DegMax ).
 				</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="getCardinalSplineTangents" Keyword="true">
+        <Methode Name="getCardinalSplineTangents" Keyword="true" Const="true">
             <Documentation>
                 <UserDocu>Compute the tangents for a Cardinal spline</UserDocu>
             </Documentation>
@@ -346,7 +346,7 @@ from the knots table of this B-Spline curve.</UserDocu>
 					Replaces this B-Spline curve by interpolating a set of points.
 					The function accepts keywords as arguments.
 
-					interpolate(Points = list_of_points) 
+					interpolate(Points = list_of_points)
 
 					Optional arguments :
 
@@ -360,7 +360,7 @@ from the knots table of this B-Spline curve.</UserDocu>
 					EndPoint Tangent constraints :
 
 					InitialTangent = vector, FinalTangent = vector
-					specify tangent vectors for starting and ending points 
+					specify tangent vectors for starting and ending points
 					of the BSpline. Either none, or both must be specified.
 
 					Full Tangent constraints :
@@ -371,7 +371,7 @@ from the knots table of this B-Spline curve.</UserDocu>
 					TangentFlags (bool) activates or deactivates the corresponding tangent.
 					These arguments will be ignored if EndPoint Tangents (above) are also defined.
 
-					Note : Continuity of the spline defaults to C2. However, if periodic, or tangents 
+					Note : Continuity of the spline defaults to C2. However, if periodic, or tangents
 					are supplied, the continuity will drop to C1.
 				</UserDocu>
 			</Documentation>
@@ -388,7 +388,7 @@ from the knots table of this B-Spline curve.</UserDocu>
 			<UserDocu>
 				Builds a B-Spline by a lists of Poles, Mults, Knots.
 				arguments: poles (sequence of Base.Vector), [mults , knots, periodic, degree, weights (sequence of float), CheckRational]
-				
+
 				Examples:
 				from FreeCAD import Base
 				import Part
@@ -399,7 +399,7 @@ from the knots table of this B-Spline curve.</UserDocu>
 				n=Part.BSplineCurve()
 				n.buildFromPolesMultsKnots(poles,(3,1,3),(0,0.5,1),False,2)
 				Part.show(n.toShape())
-				
+
 				# periodic spline
 				p=Part.BSplineCurve()
 				p.buildFromPolesMultsKnots(poles,(1,1,1,1,1),(0,0.25,0.5,0.75,1),True,2)
@@ -412,17 +412,17 @@ from the knots table of this B-Spline curve.</UserDocu>
 			</UserDocu>
 		</Documentation>
 	</Methode>
-		<Methode Name="toBezier">
+        <Methode Name="toBezier" Const="true">
 			<Documentation>
 				<UserDocu>
 					Build a list of Bezier splines.
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="toBiArcs">
+        <Methode Name="toBiArcs" Const="true">
 			<Documentation>
 				<UserDocu>
-					Build a list of arcs and lines to approximate the b-spline.
+					Build a list of arcs and lines to approximate the B-spline.
 					toBiArcs(tolerance) -> list.
 				</UserDocu>
 			</Documentation>
@@ -438,11 +438,11 @@ from the knots table of this B-Spline curve.</UserDocu>
 			<Documentation>
 				<UserDocu>
 					makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)
-					Reduces as far as possible the multiplicities of the knots of this BSpline 
-					(keeping the geometry). It returns a new BSpline, which could still be C0. 
-					tol is a geometrical tolerance. 
-					The tol_ang is angular tolerance, in radians. It sets tolerable angle mismatch 
-					of the tangents on the left and on the right to decide if the curve is G1 or 
+					Reduces as far as possible the multiplicities of the knots of this BSpline
+					(keeping the geometry). It returns a new BSpline, which could still be C0.
+					tol is a geometrical tolerance.
+					The tol_ang is angular tolerance, in radians. It sets tolerable angle mismatch
+					of the tangents on the left and on the right to decide if the curve is G1 or
 					not at a given point.
 				</UserDocu>
 			</Documentation>

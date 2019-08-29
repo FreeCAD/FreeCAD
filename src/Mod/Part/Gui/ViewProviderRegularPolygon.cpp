@@ -27,7 +27,6 @@
 #endif
 
 #include "ViewProviderRegularPolygon.h"
-#include <Base/Parameter.h>
 
 using namespace PartGui;
 using namespace std;

@@ -32,6 +32,7 @@
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Circ.hxx>
@@ -77,7 +78,6 @@
 #include "DrawViewPart.h"
 #include "DrawViewDetail.h"
 
-using namespace TechDrawGeometry;
 using namespace TechDraw;
 using namespace std;
 
@@ -161,7 +161,8 @@ void GeometryObject::clear()
 void GeometryObject::projectShape(const TopoDS_Shape& input,
                                   const gp_Ax2 viewAxis)
 {
-    // Clear previous Geometry
+//    Base::Console().Message("GO::projectShape()\n");
+   // Clear previous Geometry
     clear();
 
     auto start = chrono::high_resolution_clock::now();
@@ -172,23 +173,32 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         brep_hlr->Add(input, m_isoCount);
         if (m_isPersp) {
             double fLength = std::max(Precision::Confusion(),m_focus);
+//            HLRAlgo_Projector projector( projAxis, fLength );
             HLRAlgo_Projector projector( viewAxis, fLength );
             brep_hlr->Projector(projector);
         } else {
+//            HLRAlgo_Projector projector( projAxis );
             HLRAlgo_Projector projector( viewAxis );
             brep_hlr->Projector(projector);
         }
         brep_hlr->Update();
-        brep_hlr->Hide();                           //XXXX: what happens if we don't call Hide()?? and only look at VCompound?
-                                                    // WF: you get back all the edges in the shape, but very fast!!
+        brep_hlr->Hide();
+
     }
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
+                              e.GetMessageString());
+        }
     catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");
+        throw Base::RuntimeError("GeometryObject::projectShape - unknown error occurred while projecting shape");
+//        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");
     }
     auto end   = chrono::high_resolution_clock::now();
     auto diff  = end - start;
     double diffOut = chrono::duration <double, milli> (diff).count();
     Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_Algo & co\n",m_parentName.c_str(),diffOut);
+
+    start = chrono::high_resolution_clock::now();
 
     try {
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
@@ -216,9 +226,17 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         BRepLib::BuildCurves3d(hidOutline);
         BRepLib::BuildCurves3d(hidIso);
     }
-    catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while extracting edges");
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShape - OCC error - %s - while extracting edges\n",
+                              e.GetMessageString());
     }
+    catch (...) {
+        throw Base::RuntimeError("GeometryObject::projectShape - error occurred while extracting edges");
+    }
+    end   = chrono::high_resolution_clock::now();
+    diff  = end - start;
+    diffOut = chrono::duration <double, milli> (diff).count();
+    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in hlrToShape and BuildCurves\n",m_parentName.c_str(),diffOut);
 }
 
 //!set up a hidden line remover and project a shape with it
@@ -227,13 +245,27 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
 {
     // Clear previous Geometry
     clear();
+    
+    //work around for Mantis issue #3332
+    //if 3332 gets fixed in OCC, this will produce shifted views and will need
+    //to be reverted.
+    TopoDS_Shape inCopy;
+    if (!m_isPersp) {
+        gp_Pnt gCenter = findCentroid(input,
+                                      viewAxis);
+        Base::Vector3d motion(-gCenter.X(),-gCenter.Y(),-gCenter.Z());
+        inCopy = moveShape(input,motion);
+    } else {
+        BRepBuilderAPI_Copy BuilderCopy(input);
+        inCopy = BuilderCopy.Shape();
+    }
 
     auto start = chrono::high_resolution_clock::now();
 
     Handle(HLRBRep_PolyAlgo) brep_hlrPoly = NULL;
 
     try {
-        TopExp_Explorer faces(input, TopAbs_FACE);
+        TopExp_Explorer faces(inCopy, TopAbs_FACE);
         for (int i = 1; faces.More(); faces.Next(), i++) {
             const TopoDS_Face& f = TopoDS::Face(faces.Current());
             if (!f.IsNull()) {
@@ -241,7 +273,8 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
             }
         }
         brep_hlrPoly = new HLRBRep_PolyAlgo();
-        brep_hlrPoly->Load(input);
+        brep_hlrPoly->Load(inCopy);
+
         if (m_isPersp) {
             double fLength = std::max(Precision::Confusion(), m_focus);
             HLRAlgo_Projector projector(viewAxis, fLength);
@@ -253,13 +286,14 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
         }
         brep_hlrPoly->Update();
     }
-    catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShapeWithPolygonAlgo - OCC error - %s - while projecting shape\n",
+                              e.GetMessageString());
     }
-    auto end = chrono::high_resolution_clock::now();
-    auto diff = end - start;
-    double diffOut = chrono::duration <double, milli>(diff).count();
-    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_PolyAlgo & co\n", m_parentName.c_str(), diffOut);
+    catch (...) {
+        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
+//        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
+    }
 
     try {
         HLRBRep_PolyHLRToShape polyhlrToShape;
@@ -284,15 +318,24 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
         BRepLib::BuildCurves3d(hidSeam);
         BRepLib::BuildCurves3d(hidOutline);
     }
-    catch (...) {
-        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo - error occurred while extracting edges");
+    catch (Standard_Failure e) {
+        Base::Console().Error("GO::projectShapeWithPolygonAlgo - OCC error - %s - while extracting edges\n",
+                              e.GetMessageString());
     }
+    catch (...) {
+        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while extracting edges");
+//        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo - error occurred while extracting edges");
+    }
+    auto end = chrono::high_resolution_clock::now();
+    auto diff = end - start;
+    double diffOut = chrono::duration <double, milli>(diff).count();
+    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_PolyAlgo & co\n", m_parentName.c_str(), diffOut);
 }
-
 
 //!add edges meeting filter criteria for category, visibility
 void GeometryObject::extractGeometry(edgeClass category, bool visible)
 {
+//    Base::Console().Message("GO::extractGeometry(%d, %d)\n",category, visible);
     TopoDS_Shape filtEdges;
     if (visible) {
         switch (category) {
@@ -344,6 +387,7 @@ void GeometryObject::extractGeometry(edgeClass category, bool visible)
 //! update edgeGeom and vertexGeom from Compound of edges
 void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool visible)
 {
+//    Base::Console().Message("GO::addGeomFromCompound()\n");
     if(edgeCompound.IsNull()) {
         Base::Console().Log("TechDraw::GeometryObject::addGeomFromCompound edgeCompound is NULL\n");
         return; // There is no OpenCascade Geometry to be calculated
@@ -351,7 +395,8 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 
     BaseGeom* base;
     TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
-    for (int i = 1 ; edges.More(); edges.Next(),i++) {
+    int i = 1;
+    for ( ; edges.More(); edges.Next(),i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         if (edge.IsNull()) {
             //Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is NULL\n",i);
@@ -364,9 +409,11 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 
         base = BaseGeom::baseFactory(edge);
         if (base == nullptr) {
-            Base::Console().Message("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
-            throw Base::Exception("GeometryObject::addGeomFromCompound - baseFactory failed");
+            Base::Console().Log("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
+            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
+        base->source(0);             //object geometry
+        base->sourceIndex(i-1);
         base->classOfEdge = category;
         base->visible = visible;
         edgeGeom.push_back(base);
@@ -376,12 +423,12 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             BaseGeom* lastAdded = edgeGeom.back();
             bool v1Add = true, v2Add = true;
             bool c1Add = true;
-            TechDrawGeometry::Vertex* v1 = new TechDrawGeometry::Vertex(lastAdded->getStartPoint());
-            TechDrawGeometry::Vertex* v2 = new TechDrawGeometry::Vertex(lastAdded->getEndPoint());
-            TechDrawGeometry::Circle* circle = dynamic_cast<TechDrawGeometry::Circle*>(lastAdded);
-            TechDrawGeometry::Vertex* c1 = nullptr;
+            TechDraw::Vertex* v1 = new TechDraw::Vertex(lastAdded->getStartPoint());
+            TechDraw::Vertex* v2 = new TechDraw::Vertex(lastAdded->getEndPoint());
+            TechDraw::Circle* circle = dynamic_cast<TechDraw::Circle*>(lastAdded);
+            TechDraw::Vertex* c1 = nullptr;
             if (circle) {
-                c1 = new TechDrawGeometry::Vertex(circle->center);
+                c1 = new TechDraw::Vertex(circle->center);
                 c1->isCenter = true;
                 c1->visible = true;
             }
@@ -425,6 +472,42 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         }
     }  //end TopExp
 }
+
+int GeometryObject::addCosmeticVertex(Base::Vector3d pos, int link)
+{
+    TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
+    v->cosmetic = true;
+    v->cosmeticLink = link;
+    int idx = vertexGeom.size();
+    vertexGeom.push_back(v);
+    return idx;
+}
+
+int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
+                                    int s, int si)
+{
+    base->cosmetic = true;
+    base->source(s);           //1-CosmeticEdge, 2-CenterLine
+    base->sourceIndex(si);     //index into source;
+    
+    edgeGeom.push_back(base);
+    int idx = edgeGeom.size() - 1;
+    return idx;
+}
+
+int GeometryObject::addCenterLine(TechDraw::BaseGeom* base,
+                                    int s, int si)
+{
+//    Base::Console().Message("GO::addCenterLine()\n");
+    base->cosmetic = true;
+    base->source(s);           //1-CosmeticEdge, 2-CenterLine
+    base->sourceIndex(si);     //index into source;
+    
+    edgeGeom.push_back(base);
+    int idx = edgeGeom.size() - 1;
+    return idx;
+}
+
 
 //! empty Face geometry
 void GeometryObject::clearFaceGeom()
@@ -491,18 +574,22 @@ bool GeometryObject::isWithinArc(double theta, double first,
 
 Base::BoundBox3d GeometryObject::calcBoundingBox() const
 {
+//    Base::Console().Message("GO::calcBoundingBox() - edges: %d\n", edgeGeom.size());
     Bnd_Box testBox;
     testBox.SetGap(0.0);
-    for (std::vector<BaseGeom *>::const_iterator it( edgeGeom.begin() );
-            it != edgeGeom.end(); ++it) {
-         BRepBndLib::Add((*it)->occEdge, testBox);
+    if (!edgeGeom.empty()) {
+        for (std::vector<BaseGeom *>::const_iterator it( edgeGeom.begin() );
+                it != edgeGeom.end(); ++it) {
+             BRepBndLib::Add((*it)->occEdge, testBox);
+        }
     }
+
+    double xMin = 0,xMax = 0,yMin = 0,yMax = 0, zMin = 0, zMax = 0;
     if (testBox.IsVoid()) {
         Base::Console().Log("INFO - GO::calcBoundingBox - testBox is void\n");
+    } else {
+        testBox.Get(xMin,yMin,zMin,xMax,yMax,zMax);
     }
-    double xMin,xMax,yMin,yMax,zMin,zMax;
-    testBox.Get(xMin,yMin,zMin,xMax,yMax,zMax);
-
     Base::BoundBox3d bbox(xMin,yMin,zMin,xMax,yMax,zMax);
     return bbox;
 }
@@ -512,7 +599,7 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
     const std::vector<Vertex *>&  oldVerts = getVertexGeometry();
     std::vector<Vertex *> newVerts;
     for (auto& v: oldVerts) {
-        Base::Vector3d v3 = v->getAs3D();
+        Base::Vector3d v3 = v->point();
         double length = (v3 - center).Length();
         if (length < Precision::Confusion()) { 
             continue;
@@ -526,7 +613,7 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
 
 
 //! does this GeometryObject already have this vertex
-bool GeometryObject::findVertex(Base::Vector2d v)
+bool GeometryObject::findVertex(Base::Vector3d v)
 {
     bool found = false;
     std::vector<Vertex*>::iterator it = vertexGeom.begin();
@@ -543,40 +630,50 @@ bool GeometryObject::findVertex(Base::Vector2d v)
 /// utility non-class member functions
 //! gets a coordinate system that matches view system used in 3D with +Z up (or +Y up if necessary)
 //! used for individual views, but not secondary views in projection groups
-gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
+//! flip determines Y mirror or not.
+// getViewAxis 1
+gp_Ax2 TechDraw::getViewAxis(const Base::Vector3d origin,
                                      const Base::Vector3d& direction,
                                      const bool flip)
 {
+    (void) flip;
+    gp_Ax2 viewAxis;
     gp_Pnt inputCenter(origin.x,origin.y,origin.z);
     Base::Vector3d stdZ(0.0,0.0,1.0);
+    Base::Vector3d stdOrg(0.0,0.0,0.0);
     Base::Vector3d flipDirection(direction.x,-direction.y,direction.z);
     if (!flip) {
         flipDirection = Base::Vector3d(direction.x,direction.y,direction.z);
     }
     Base::Vector3d cross = flipDirection;
-    //special cases
-    if ((flipDirection - stdZ).Length() < Precision::Confusion()) {
-        cross = Base::Vector3d(1.0,0.0,0.0);
-    } else if ((flipDirection - (stdZ * -1.0)).Length() < Precision::Confusion()) {
+//    //special case
+    if (TechDraw::DrawUtil::checkParallel(flipDirection, stdZ)) {
         cross = Base::Vector3d(1.0,0.0,0.0);
     } else {
         cross.Normalize();
         cross = cross.Cross(stdZ);
     }
-    gp_Ax2 viewAxis;
+    
+    if (cross.IsEqual(stdOrg,FLT_EPSILON)) {
+        viewAxis = gp_Ax2(inputCenter,
+                          gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z));
+        return viewAxis;
+    }
+    
     viewAxis = gp_Ax2(inputCenter,
                       gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
-//                      gp_Dir(1.0, 1.0, 0.0));
                       gp_Dir(cross.x, cross.y, cross.z));
     return viewAxis;
 }
 
 //! gets a coordinate system specified by Z and X directions
-gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
+//getViewAxis 2
+gp_Ax2 TechDraw::getViewAxis(const Base::Vector3d origin,
                                      const Base::Vector3d& direction,
                                      const Base::Vector3d& xAxis,
                                      const bool flip)
 {
+    (void) flip;
     gp_Pnt inputCenter(origin.x,origin.y,origin.z);
     Base::Vector3d flipDirection(direction.x,-direction.y,direction.z);
     if (!flip) {
@@ -590,11 +687,20 @@ gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
 }
 
 //! Returns the centroid of shape, as viewed according to direction
-gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
+gp_Pnt TechDraw::findCentroid(const TopoDS_Shape &shape,
                                     const Base::Vector3d &direction)
 {
     Base::Vector3d origin(0.0,0.0,0.0);
     gp_Ax2 viewAxis = getViewAxis(origin,direction);
+    return findCentroid(shape,viewAxis);
+}
+
+//! Returns the centroid of shape, as viewed according to direction
+gp_Pnt TechDraw::findCentroid(const TopoDS_Shape &shape,
+                                      const gp_Ax2 viewAxis)
+{
+//    Base::Vector3d origin(0.0,0.0,0.0);
+//    gp_Ax2 viewAxis = getViewAxis(origin,direction);
 
     gp_Trsf tempTransform;
     tempTransform.SetTransformation(viewAxis);
@@ -617,8 +723,16 @@ gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
     return gp_Pnt(x, y, z);
 }
 
+Base::Vector3d TechDraw::findCentroidVec(const TopoDS_Shape &shape,
+                                              const Base::Vector3d &direction)
+{
+    gp_Pnt p = TechDraw::findCentroid(shape,direction);
+    Base::Vector3d result(p.X(),p.Y(),p.Z());
+    return result;
+}
+
 //!scales & mirrors a shape about a center
-TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
+TopoDS_Shape TechDraw::mirrorShape(const TopoDS_Shape &input,
                              const gp_Pnt& inputCenter,
                              double scale)
 {
@@ -652,7 +766,7 @@ TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
 }
 
 //!rotates a shape about a viewAxis
-TopoDS_Shape TechDrawGeometry::rotateShape(const TopoDS_Shape &input,
+TopoDS_Shape TechDraw::rotateShape(const TopoDS_Shape &input,
                              gp_Ax2& viewAxis,
                              double rotAngle)
 {
@@ -678,7 +792,7 @@ TopoDS_Shape TechDrawGeometry::rotateShape(const TopoDS_Shape &input,
 }
 
 //!scales a shape about a origin
-TopoDS_Shape TechDrawGeometry::scaleShape(const TopoDS_Shape &input,
+TopoDS_Shape TechDraw::scaleShape(const TopoDS_Shape &input,
                                           double scale)
 {
     TopoDS_Shape transShape;
@@ -691,6 +805,25 @@ TopoDS_Shape TechDrawGeometry::scaleShape(const TopoDS_Shape &input,
     }
     catch (...) {
         Base::Console().Log("GeometryObject::scaleShape - scale failed.\n");
+        return transShape;
+    }
+    return transShape;
+}
+
+//!moves a shape
+TopoDS_Shape TechDraw::moveShape(const TopoDS_Shape &input,
+                                         const Base::Vector3d& motion)
+{
+    TopoDS_Shape transShape;
+    try {
+        gp_Trsf xlate;
+        xlate.SetTranslation(gp_Vec(motion.x,motion.y,motion.z));
+
+        BRepBuilderAPI_Transform mkTrf(input, xlate);
+        transShape = mkTrf.Shape();
+    }
+    catch (...) {
+        Base::Console().Log("GeometryObject::moveShape - move failed.\n");
         return transShape;
     }
     return transShape;

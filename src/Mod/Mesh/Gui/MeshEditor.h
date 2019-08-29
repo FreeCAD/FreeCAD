@@ -25,7 +25,7 @@
 
 #include <QObject>
 #include <Mod/Mesh/Gui/ViewProvider.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 class SoCoordinate3;
 class SoFaceSet;
@@ -139,7 +139,7 @@ private Q_SLOTS:
 
 private:
     typedef std::vector<unsigned long> TBoundary;
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
 
     static void fileHoleCallback(void * ud, SoEventCallback * n);
     void createPolygons();

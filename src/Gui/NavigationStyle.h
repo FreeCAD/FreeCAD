@@ -36,6 +36,7 @@
 #include <QCursor>
 #include <QEvent>
 #include <Base/BaseClass.h>
+#include <Gui/Namespace.h>
 
 // forward declarations
 class SoEvent;
@@ -98,6 +99,11 @@ public:
         Trackball
     };
 
+    enum RotationCenterMode {
+        ScenePointAtCursor,     /**< Find the point in the scene at the cursor position. If there is no point then the focal plane is used */
+        FocalPointAtCursor      /**< Find the point on the focal plane at the cursor position. */
+    };
+
 public:
     NavigationStyle();
     virtual ~NavigationStyle();
@@ -125,6 +131,12 @@ public:
     SbBool isZoomAtCursor() const;
     void zoomIn();
     void zoomOut();
+    void setDragAtCursor(SbBool);
+    SbBool isDragAtCursor() const;
+    void setRotationCenterMode(RotationCenterMode);
+    RotationCenterMode getRotationCenterMode() const;
+    void setRotationCenter(const SbVec3f& cnt);
+    SbVec3f getFocalPoint() const;
 
     void updateAnimation();
     void redraw();
@@ -146,7 +158,7 @@ public:
     void startSelection(SelectionMode = Lasso);
     void stopSelection();
     SbBool isSelecting() const;
-    const std::vector<SbVec2s>& getPolygon(SbBool* clip_inner=0) const;
+    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=0) const;
 
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
@@ -166,6 +178,7 @@ protected:
     SbBool seekToPoint(const SbVec2s screenpos);
     void seekToPoint(const SbVec3f& scenepos);
     SbBool lookAtPoint(const SbVec2s screenpos);
+    SbVec3f getRotationCenter(SbBool*) const;
 
     void reorientCamera(SoCamera * camera, const SbRotation & rot);
     void panCamera(SoCamera * camera,
@@ -226,7 +239,7 @@ protected:
     //@{
     AbstractMouseSelection* mouseSelection;
     std::vector<SbVec2s> pcPolygon;
-    SbBool clipInner;
+    SelectionRole selectedRole;
     //@}
 
     /** @name Spinning data */
@@ -239,6 +252,7 @@ protected:
     //@}
 
 private:
+    NavigationStyle(const NavigationStyle&);
     struct NavigationStyleP* pimpl;
     friend struct NavigationStyleP;
 };
@@ -374,31 +388,6 @@ protected:
 
 private:
     SoMouseButtonEvent mouseDownConsumedEvent;
-};
-
-class GuiExport GestureNavigationStyle : public UserNavigationStyle {
-    typedef UserNavigationStyle inherited;
-
-    TYPESYSTEM_HEADER();
-
-public:
-    GestureNavigationStyle();
-    ~GestureNavigationStyle();
-    const char* mouseButtons(ViewerMode);
-
-protected:
-    SbBool processSoEvent(const SoEvent * const ev);
-    bool isDraggerUnderCursor(SbVec2s pos);
-
-    SbVec2s mousedownPos;//the position where some mouse button was pressed (local pixel coordinates).
-    short mouseMoveThreshold;//setting. Minimum move required to consider it a move (in pixels).
-    bool mouseMoveThresholdBroken;//a flag that the move threshold was surpassed since last mousedown.
-    int mousedownConsumedCount;//a flag for remembering that a mousedown of button1/button2 was consumed.
-    SoMouseButtonEvent mousedownConsumedEvent[5];//the event that was consumed and is to be refired. 2 should be enough, but just for a case of the maximum 5 buttons...
-    bool testMoveThreshold(const SbVec2s currentPos) const;
-
-    bool thisClickIsComplex;//a flag that becomes set when a complex clicking pattern is detected (i.e., two or more mouse buttons were down at the same time).
-    bool inGesture; //a flag that is used to filter out mouse events during gestures.
 };
 
 class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {

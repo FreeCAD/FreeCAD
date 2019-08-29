@@ -42,10 +42,12 @@
 
 #include <stdio.h>
 #include <sstream>
+#include <iostream>
 
 
 // FreeCAD Base header
 #include <Base/Exception.h>
+#include <Base/Sequencer.h>
 #include <App/Application.h>
 
 
@@ -61,7 +63,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD  ul_reason_for_call, LPVOID lpReserv
         // This name is preliminary, we pass it to Application::init() in initFreeCAD()
         // which does the rest.
         char  szFileName [MAX_PATH];
-        GetModuleFileName((HMODULE)hModule, szFileName, MAX_PATH-1);
+        GetModuleFileNameA((HMODULE)hModule, szFileName, MAX_PATH-1);
         App::Application::Config()["AppHomePath"] = szFileName;
     }
     break;
@@ -98,7 +100,7 @@ PyMOD_INIT_FUNC(FreeCAD)
 #elif defined(FC_OS_CYGWIN)
     HMODULE hModule = GetModuleHandle("FreeCAD.dll");
     char szFileName [MAX_PATH];
-    GetModuleFileName(hModule, szFileName, MAX_PATH-1);
+    GetModuleFileNameA(hModule, szFileName, MAX_PATH-1);
     argv[0] = (char*)malloc(MAX_PATH);
     strncpy(argv[0],szFileName,MAX_PATH);
     argv[0][MAX_PATH-1] = '\0'; // ensure null termination
@@ -143,7 +145,11 @@ PyMOD_INIT_FUNC(FreeCAD)
         // backwards since the FreeCAD path was likely appended just before
         // we were imported.
         for (i = PyList_Size(pySysPath) - 1; i >= 0 ; --i) {
+#if PY_MAJOR_VERSION >= 3
+            const char *basePath;
+#else
             char *basePath;
+#endif
             PyObject *pyPath = PyList_GetItem(pySysPath, i);
             long sz = 0;
 
@@ -224,8 +230,19 @@ PyMOD_INIT_FUNC(FreeCAD)
     free(argv[0]);
     free(argv);
 
+    Base::EmptySequencer* seq = new Base::EmptySequencer();
+    (void)seq;
+    static Base::RedirectStdOutput stdcout;
+    static Base::RedirectStdLog    stdclog;
+    static Base::RedirectStdError  stdcerr;
+    std::cout.rdbuf(&stdcout);
+    std::clog.rdbuf(&stdclog);
+    std::cerr.rdbuf(&stdcerr);
+
 #if PY_MAJOR_VERSION >= 3
-    PyObject* module = _PyImport_FindBuiltin("FreeCAD");
+    //PyObject* module = _PyImport_FindBuiltin("FreeCAD");
+    PyObject* modules = PyImport_GetModuleDict();
+    PyObject* module = PyDict_GetItemString(modules, "FreeCAD");
     if (!module) {
         PyErr_SetString(PyExc_ImportError, "Failed to load FreeCAD module!");
     }

@@ -23,12 +23,21 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
+# ifdef FC_OS_WIN32
+# define _USE_MATH_DEFINES
+# endif // FC_OS_WIN32
+# include <cmath>
 #endif
 
-#include <cmath>
 #include "Quantity.h"
 #include "Exception.h"
 #include "UnitsApi.h"
+#include "Console.h"
+
+/** \defgroup Units Units system
+    \ingroup BASE
+    \brief The quantities and units system enables FreeCAD to work transparently with many different units
+*/
 
 // suppress annoying warnings from generated source files
 #ifdef _MSC_VER
@@ -41,10 +50,15 @@
 
 using namespace Base;
 
+// ====== Static attributes =========================
+int QuantityFormat::defaultDenominator = 8; // for 1/8"
+
+
 QuantityFormat::QuantityFormat()
-  : option(static_cast<NumberOption>(OmitGroupSeparator | RejectGroupSeparator))
+  : option(OmitGroupSeparator | RejectGroupSeparator)
   , format(Fixed)
   , precision(UnitsApi::getDecimals())
+  , denominator(defaultDenominator)
 {
 }
 
@@ -272,17 +286,17 @@ Quantity Quantity::KiloNewton       (1e+6          ,Unit(1,1,-2));
 Quantity Quantity::MegaNewton       (1e+9          ,Unit(1,1,-2));
 Quantity Quantity::MilliNewton      (1.0           ,Unit(1,1,-2));
 
-Quantity Quantity::Pascal           (0.001         ,Unit(-1,1,-2)); // Pascal (kg/m*s^2 or N/m^2)
+Quantity Quantity::Pascal           (0.001         ,Unit(-1,1,-2)); // Pascal (kg/m/s^2 or N/m^2)
 Quantity Quantity::KiloPascal       (1.00          ,Unit(-1,1,-2));
 Quantity Quantity::MegaPascal       (1000.0        ,Unit(-1,1,-2));
 Quantity Quantity::GigaPascal       (1e+6          ,Unit(-1,1,-2));
 
-Quantity Quantity::Torr             (101.325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m*s^2 or N/m^2)
-Quantity Quantity::mTorr            (0.101325/760.0,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m*s^2 or N/m^2)
-Quantity Quantity::yTorr            (0.000101325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m*s^2 or N/m^2)
+Quantity Quantity::Torr             (101.325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+Quantity Quantity::mTorr            (0.101325/760.0,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+Quantity Quantity::yTorr            (0.000101325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
 
-Quantity Quantity::PSI              (0.145038      ,Unit(-1,1,-2)); // pounds/in^2
-Quantity Quantity::KSI              (145.038       ,Unit(-1,1,-2)); // 1000 x pounds/in^2
+Quantity Quantity::PSI              (6.894744825494,Unit(-1,1,-2)); // pounds/in^2
+Quantity Quantity::KSI              (6894.744825494,Unit(-1,1,-2)); // 1000 x pounds/in^2
 
 Quantity Quantity::Watt             (1e+6          ,Unit(2,1,-3));  // Watt (kg*m^2/s^3)
 Quantity Quantity::VoltAmpere       (1e+6          ,Unit(2,1,-3));  // VoltAmpere (kg*m^2/s^3)
@@ -297,6 +311,8 @@ Quantity Quantity::WattSecond       (1e+6          ,Unit(2,1,-2));  // Joule (kg
 Quantity Quantity::KMH              (277.778       ,Unit(1,0,-1));  // km/h
 Quantity Quantity::MPH              (447.04        ,Unit(1,0,-1));  // Mile/h
 
+Quantity Quantity::AngMinute        (1.0/60.0      ,Unit(0,0,0,0,0,0,0,1)); // angular minute
+Quantity Quantity::AngSecond        (1.0/3600.0    ,Unit(0,0,0,0,0,0,0,1)); // angular minute
 Quantity Quantity::Degree           (1.0           ,Unit(0,0,0,0,0,0,0,1)); // degree         (internal standard angle)
 Quantity Quantity::Radian           (180/M_PI      ,Unit(0,0,0,0,0,0,0,1)); // radian
 Quantity Quantity::Gon              (360.0/400.0   ,Unit(0,0,0,0,0,0,0,1)); // gon

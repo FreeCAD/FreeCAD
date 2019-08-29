@@ -492,10 +492,17 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('A52', '=+(-1 + -1)')
 
         self.doc.addObject("Part::Cylinder", "Cylinder")
-        self.doc.addObject("Part::Thickness", "Pipe")
+        # We cannot use Thickness, as this feature requires a source shape,
+        # otherwise it will cause recomputation failure. The new logic of
+        # App::Document will not continue recompute any dependent objects
+
+        #  self.doc.addObject("Part::Thickness", "Pipe")
+        self.doc.addObject("Part::Box", "Box")
+        self.doc.Box.Length = 1
+
         sheet.set('B1', '101')
         sheet.set('A53', '=-(-(B1-1)/2)')
-        sheet.set('A54', '=-(Cylinder.Radius + Pipe.Value - 1"/2)')
+        sheet.set('A54', '=-(Cylinder.Radius + Box.Length - 1"/2)')
 
         self.doc.recompute()
         self.assertEqual(sheet.getContents("A1"), "=1 < 2 ? 3 : 4")
@@ -700,8 +707,11 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.setAlias('B1', 'alias1')
         box = self.doc.addObject('Part::Box', 'Box')
         box.setExpression('Length', 'Spreadsheet.alias1')
+        box2 = self.doc.addObject('Part::Box', 'Box')
+        box2.setExpression('Length', '<<Spreadsheet>>.alias1')
         sheet.Label = "Params"
-        self.assertEqual(box.ExpressionEngine[0][1], "Params.alias1");
+        self.assertEqual(box.ExpressionEngine[0][1], "Spreadsheet.alias1");
+        self.assertEqual(box2.ExpressionEngine[0][1], "<<Params>>.alias1");
 
     def testAlias(self):
         """ Playing with aliases """
@@ -787,11 +797,11 @@ class SpreadsheetCases(unittest.TestCase):
         index=sketch.addGeometry(Part.LineSegment(v(0,0,0),v(10,10,0)),False)
         sketch.addConstraint(Sketcher.Constraint('Distance',index,14.0)) 
         self.doc.recompute()
-        sketch.setExpression('Constraints[0]', u'Spreadsheet.Length')
+        sketch.setExpression('Constraints[0]', u'<<Spreadsheet>>.Length')
         self.doc.recompute()
         sheet.Label="Calc"
         self.doc.recompute()
-        self.assertEqual(sketch.ExpressionEngine[0][1],'Calc.Length')
+        self.assertEqual(sketch.ExpressionEngine[0][1],'<<Calc>>.Length')
         self.assertIn('Up-to-date',sketch.State)
 
     def testCrossDocumentLinks(self):
@@ -831,6 +841,35 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         self.assertEqual(sheet.A1, Units.Quantity('1'))
         self.assertEqual(sheet.A2, Units.Quantity('1 kg/mm'))
+
+    def testIssue3363(self):
+        """ Regression test for issue 3363; Nested conditionals statement fails with additional conditional statement in false-branch"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A1', '1')
+        sheet.set('B1', '=A1==1?11:(A1==2?12:13)')
+        sheet.set('C1', '=A1==1?(A1==2?12:13) : 11')
+        self.doc.recompute()
+
+        # Save and close first document
+        self.doc.saveAs(self.TempPath + os.sep + 'conditionals.fcstd')
+        FreeCAD.closeDocument(self.doc.Name)
+
+        # Open documents again
+        self.doc = FreeCAD.openDocument(self.TempPath + os.sep + 'conditionals.fcstd')
+
+        sheet = self.doc.getObject('Spreadsheet')
+        self.assertEqual(sheet.getContents('B1'), '=A1 == 1 ? 11 : (A1 == 2 ? 12 : 13)')
+        self.assertEqual(sheet.getContents('C1'), '=A1 == 1 ? (A1 == 2 ? 12 : 13) : 11')
+
+    def testIssue3432(self):
+        """ Regression test for issue 3432; numbers with units are ignored from aggregates"""
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.set('A1', '1mm')
+        sheet.set('B1', '2mm')
+        sheet.set('C1', '=max(A1:B1;3mm)')
+        self.doc.recompute()
+        self.assertEqual(sheet.get('C1'), Units.Quantity('3 mm'))
+
 
     def tearDown(self):
         #closing doc

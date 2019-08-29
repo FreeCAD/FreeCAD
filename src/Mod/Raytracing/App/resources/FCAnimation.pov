@@ -49,22 +49,22 @@
 
 // Colormap for Coordinate grid
 #declare scalemap = color_map {
-        [0.000          color GridCol1] // Begin of red bar for main unit
-        [lWidth        color GridCol1] // End of red bar
-        [(0.001+lWidth) color GridTran] // Beginn of first gap
+        [0.000          color GridCol1] // Beginning of red bar for main unit
+        [lWidth         color GridCol1] // End of red bar
+        [(0.001+lWidth) color GridTran] // Beginning of first gap
         [0.249          color GridTran] // End of first gap
-        [0.250          color GridCol2] // Begin of yellow bar for sub unit
+        [0.250          color GridCol2] // Beginning of yellow bar for sub unit
         [(0.250+lWidth) color GridCol2] // End of yellow bar
-        [(0.251+lWidth) color GridTran] // Beginn of second gap
+        [(0.251+lWidth) color GridTran] // Beginning of second gap
         [0.499          color GridTran] // End of first gap
-        [0.500          color GridCol2] // Begin of yellow bar for sub unit
-        [(0.500+lWidth)  color GridCol2] // End of yellow bar
-        [(0.501+lWidth) color GridTran] // Beginn of second gap
+        [0.500          color GridCol2] // Beginning of yellow bar for sub unit
+        [(0.500+lWidth) color GridCol2] // End of yellow bar
+        [(0.501+lWidth) color GridTran] // Beginning of second gap
         [0.749          color GridTran] // End of first gap
-        [0.750          color GridCol2] // Begin of yellow bar for sub unit
+        [0.750          color GridCol2] // Beginning of yellow bar for sub unit
         [(0.750+lWidth) color GridCol2] // End of yellow bar
-        [(0.751+lWidth) color GridTran] // Beginn of second gap
-        [1.0          color GridTran] // End of second gap
+        [(0.751+lWidth) color GridTran] // Beginning of second gap
+        [1.0            color GridTran] // End of second gap
       };
 
 // finish for objects

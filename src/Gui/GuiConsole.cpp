@@ -62,15 +62,15 @@ GUIConsole::GUIConsole (void)
     ::GetConsoleScreenBufferInfo(::GetStdHandle(STD_OUTPUT_HANDLE),&csbi);
      csbi.dwSize.Y = s_nMaxLines;
     ::SetConsoleScreenBufferSize(::GetStdHandle(STD_OUTPUT_HANDLE),csbi.dwSize);
-    ::SetConsoleTitle( "FreeCAD Console");
+    ::SetConsoleTitleA( "FreeCAD Console");
 
-    *stdout = *::_fdopen(::_open_osfhandle(reinterpret_cast<LONG>(::GetStdHandle(STD_OUTPUT_HANDLE)), _O_TEXT), "w");
+    *stdout = *::_fdopen(::_open_osfhandle(reinterpret_cast<intptr_t>(::GetStdHandle(STD_OUTPUT_HANDLE)), _O_TEXT), "w");
     ::setvbuf(stdout, 0, _IONBF, 0);
 
-    *stdin = *::_fdopen(::_open_osfhandle(reinterpret_cast<LONG>(::GetStdHandle(STD_INPUT_HANDLE)), _O_TEXT), "r");
+    *stdin = *::_fdopen(::_open_osfhandle(reinterpret_cast<intptr_t>(::GetStdHandle(STD_INPUT_HANDLE)), _O_TEXT), "r");
     ::setvbuf(stdin, 0, _IONBF, 0);
 
-    *stderr = *::_fdopen(::_open_osfhandle(reinterpret_cast<LONG>(::GetStdHandle(STD_ERROR_HANDLE)), _O_TEXT), "w");
+    *stderr = *::_fdopen(::_open_osfhandle(reinterpret_cast<intptr_t>(::GetStdHandle(STD_ERROR_HANDLE)), _O_TEXT), "w");
     ::setvbuf(stderr, 0, _IONBF, 0);
   }
 }

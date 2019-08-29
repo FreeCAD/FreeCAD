@@ -126,6 +126,14 @@ void  ComplexGeoDataPy::setMatrix(Py::Object arg)
     }
 }
 
+Py::Int ComplexGeoDataPy::getTag() const {
+    return Py::Int(getComplexGeoDataPtr()->Tag);
+}
+
+void ComplexGeoDataPy::setTag(Py::Int tag) {
+    getComplexGeoDataPtr()->Tag = tag;
+}
+
 PyObject *ComplexGeoDataPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

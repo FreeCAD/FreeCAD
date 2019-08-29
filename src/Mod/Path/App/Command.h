@@ -58,6 +58,7 @@ namespace Path
         bool has(const std::string&) const; // returns true if the given string exists in the parameters
         Command transform(const Base::Placement); // returns a transformed copy of this command
         double getValue(const std::string &name) const; // returns the value of a given parameter
+        void scaleBy(double factor); // scales the receiver - use for imperial/metric conversions
 
         // this assumes the name is upper case
         inline double getParam(const std::string &name) const {

@@ -1,13 +1,13 @@
 # SGEOM cmake build file
 #PROJECT(SMESH Fortran CXX)
 
-SET(SMESH_VERSION_MAJOR 5)
-SET(SMESH_VERSION_MINOR 1)
-SET(SMESH_VERSION_PATCH 2)
-SET(SMESH_VERSION_TWEAK 2)
+SET(SMESH_VERSION_MAJOR 7)  # see main CMakeLists.txt of FreeCAD
+SET(SMESH_VERSION_MINOR 7)
+SET(SMESH_VERSION_PATCH 1)
+SET(SMESH_VERSION_TWEAK 0)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment -Wno-unused-parameter -Wno-empty-body")
 elseif(CMAKE_COMPILER_IS_CLANGXX)
     set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-private-field -Wno-unused-function -Wno-sometimes-uninitialized -Wno-overloaded-virtual -Wno-dynamic-class-memaccess -Wno-comment -Wno-unused-parameter")
 endif()
@@ -382,10 +382,14 @@ TARGET_LINK_LIBRARIES(NETGENPlugin SMDS SMESHDS SMESH StdMeshers ${SMESH_LIBS} )
 
 SET_BIN_DIR(NETGENPlugin NETGENPlugin)
 if(WIN32)
-    set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "-DNETGENPLUGIN_EXPORTS -DNO_PARALLEL_THREADS -DOCCGEOMETRY -DNETGEN_VERSION=${NETGEN_VERSION}")
+    set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "-DNETGENPLUGIN_EXPORTS -DNO_PARALLEL_THREADS -DOCCGEOMETRY -DNETGEN_VERSION=${NETGEN_VERSION_C}")
 else()
     set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "${NETGEN_CXX_FLAGS}")
 endif(WIN32)
+IF(NOT NETGEN_VERSION_C LESS NETGEN_VERSION_62) # Version >= 6.2
+    set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD_REQUIRED ON)
+    set_target_properties(NETGENPlugin PROPERTIES CXX_STANDARD 14) # Standard std=c++1y could work aswell
+ENDIF()
 
 endif (BUILD_FEM_NETGEN)
 
@@ -399,8 +403,8 @@ endif (BUILD_FEM_NETGEN)
 
 if(WIN32)
     INSTALL(TARGETS SMDS Driver DriverSTL DriverDAT DriverUNV SMESHDS SMESH MEFISTO2 StdMeshers
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else(WIN32)
     INSTALL(TARGETS SMDS Driver DriverSTL DriverDAT DriverUNV SMESHDS SMESH MEFISTO2 StdMeshers
@@ -411,8 +415,8 @@ endif(WIN32)
 if (BUILD_FEM_NETGEN)
     if(WIN32)
         INSTALL(TARGETS NETGENPlugin
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION lib
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
     else(WIN32)
         INSTALL(TARGETS NETGENPlugin

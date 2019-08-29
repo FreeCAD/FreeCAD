@@ -25,10 +25,10 @@
 #define GUI_TASKVIEW_TaskTransformedMessages_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 class Ui_TaskTransformedMessages;
-typedef boost::signals::connection Connection;
+typedef boost::signals2::connection Connection;
 
 namespace App {
 class Property;

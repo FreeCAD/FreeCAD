@@ -4,7 +4,10 @@
 #include <QObject>
 #include <QCompleter>
 #include <QLineEdit>
+#include <QPlainTextEdit>
 #include <set>
+#include <memory>
+#include <App/DocumentObserver.h>
 
 class QStandardItem;
 
@@ -25,7 +28,7 @@ class GuiExport ExpressionCompleter : public QCompleter
 {
     Q_OBJECT
 public:
-    ExpressionCompleter(const App::Document * currentDoc, const App::DocumentObject * currentDocObj, QObject *parent = 0);
+    ExpressionCompleter(const App::DocumentObject * currentDocObj, QObject *parent = 0);
 
     int getPrefixStart() const { return prefixStart; }
 
@@ -33,14 +36,12 @@ public Q_SLOTS:
     void slotUpdate(const QString &prefix);
 
 private:
-    void createModelForDocument(const App::Document * doc, QStandardItem * parent, const std::set<const App::DocumentObject *> &forbidden);
-    void createModelForDocumentObject(const App::DocumentObject * docObj, QStandardItem * parent);
-    void createModelForPaths(const App::Property * prop, QStandardItem *docObjItem);
-
+    void init();
     virtual QString pathFromIndex ( const QModelIndex & index ) const;
     virtual QStringList splitPath ( const QString & path ) const;
 
     int prefixStart;
+    App::DocumentObjectT currentObj;
 
 };
 
@@ -55,6 +56,27 @@ Q_SIGNALS:
     void textChanged2(QString text);
 public Q_SLOTS:
     void slotTextChanged(const QString & text);
+    void slotCompleteText(const QString & completionPrefix);
+protected:
+    void keyPressEvent(QKeyEvent * event);
+private:
+    ExpressionCompleter * completer;
+    bool block;
+};
+
+class GuiExport ExpressionTextEdit : public QPlainTextEdit {
+    Q_OBJECT
+public:
+    ExpressionTextEdit(QWidget *parent = 0);
+    void setDocumentObject(const App::DocumentObject *currentDocObj);
+    bool completerActive() const;
+    void hideCompleter();
+protected:
+    void keyPressEvent(QKeyEvent * event);
+Q_SIGNALS:
+    void textChanged2(QString text);
+public Q_SLOTS:
+    void slotTextChanged();
     void slotCompleteText(const QString & completionPrefix);
 private:
     ExpressionCompleter * completer;

@@ -42,6 +42,7 @@ class StartWorkbench ( Workbench ):
         # load the module
         import StartGui
         import Start
+
     def GetClassName(self):
         return "StartGui::Workbench"
 

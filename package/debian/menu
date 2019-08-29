@@ -1,6 +1,0 @@
-?package(freecad):needs="X11"\
-  section="Applications/Science/Engineering"\
-  title="FreeCAD"\
-  command="/usr/bin/freecad"\
-  icon="/usr/share/freecad/freecad.xpm"
-

@@ -1,24 +1,28 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2013-2015 - Juergen Riegel <FreeCAD@juergen-riegel.net> *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+import sys
+import FreeCAD
+
 
 # here the usage description if you use this tool from the command line ("__main__")
 CommandlineUsage = """Material - Tool to work with FreeCAD Material definition cards
@@ -49,6 +53,11 @@ Version:
 """
 
 
+# see comments in module importFCMat, there is an independent parser implementation
+# for reading and writing FCMat files
+# inside FreeCAD mostly the one from importFCMat.py is used
+
+
 def importFCMat(fileName):
     "Read a FCMat file into a dictionary"
     try:
@@ -56,9 +65,16 @@ def importFCMat(fileName):
     except ImportError:
         import configparser
 
-    Config = configparser.ConfigParser()
+    FreeCAD.Console.PrintError(
+        'This mat card reader is probably deprecated and not widely used in FreeCAD. '
+        'See comment in Material.py module.\n'
+    )
+    Config = configparser.RawConfigParser()
     Config.optionxform = str
-    Config.read(fileName)
+    if sys.version_info.major >= 3:
+        Config.read(fileName, encoding='utf-8')  # respect unicode filenames
+    else:
+        Config.read(fileName)
     dict1 = {}
     for section in Config.sections():
         options = Config.options(section)
@@ -68,25 +84,29 @@ def importFCMat(fileName):
     return dict1
 
 
-def exportFCMat(fileName,matDict):
+def exportFCMat(fileName, matDict):
     "Write a material dictionary to a FCMat file"
     try:
         import ConfigParser as configparser
     except ImportError:
         import configparser
     import string
-    Config = configparser.ConfigParser()
+    Config = configparser.RawConfigParser()
 
+    FreeCAD.Console.PrintError(
+        'This mat card writer is probably deprecated and not widely used in FreeCAD. '
+        'See comment in Material.py module.\n'
+    )
     # create groups
     for x in matDict.keys():
-        grp,key = string.split(x,sep='_')
+        grp, key = string.split(x, sep='_')
         if not Config.has_section(grp):
             Config.add_section(grp)
 
     # fill groups
     for x in matDict.keys():
-        grp,key = string.split(x,sep='_')
-        Config.set(grp,key,matDict[x])
+        grp, key = string.split(x, sep='_')
+        Config.set(grp, key, matDict[x])
 
     Preamble = "# This is a FreeCAD material-card file\n\n"
     # Writing our configuration file to 'example.cfg'
@@ -96,7 +116,6 @@ def exportFCMat(fileName,matDict):
 
 
 if __name__ == '__main__':
-    import sys
     import getopt
     try:
         opts, args = getopt.getopt(sys.argv[1:], "c:", ["output-csv="])

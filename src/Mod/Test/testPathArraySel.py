@@ -6,6 +6,7 @@
 # tree, not document view!!), then select edges from the "wire" object.
 
 import FreeCAD
+import FreeCADGui
 import Part
 import Draft
 

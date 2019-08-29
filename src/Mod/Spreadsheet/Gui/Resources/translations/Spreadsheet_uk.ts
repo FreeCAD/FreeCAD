@@ -102,8 +102,8 @@
       <translation>Вертикальне вирівнювання по центру</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Вирівняти вміст виділених клітинок вертикально по центру</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Об'єднати клітинки</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Об'єднати виділені клітинки в таблиці</translation>
+      <source>Merge selected cells</source>
+      <translation>Об'єднати обрані комірки</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Розділити клітинку</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Розділити раніше об'єднані клітинки в таблиці</translation>
+      <source>Split previously merged cells</source>
+      <translation>Розділити раніше обʼєднані комірки</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Жирний текст</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Зробити у виділених клітинках текст жирним</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>У виділених комірках відобразити текст жирним шрифтом</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Текст курсивом</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Зробити у виділених клітинках текст курсивом</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>У виділених комірках відобразити текст курсивом</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Підкреслений текст</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Зробити у виділених клітинках текст підкресленим</translation>
+      <source>Underline text in selected cells</source>
+      <translation>У виділених комірках зробити текст підкресленим</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Підлаштувати</translation>
+      <source>Custom Color</source>
+      <translation>Колір, який встановлюється користувачем</translation>
     </message>
   </context>
   <context>
@@ -340,11 +340,11 @@
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Встановити колір переднього плану комірки(ок)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Встановлює колір переднього плану комірки(ок) таблиці</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
@@ -426,8 +426,8 @@
       <translation>Світло-сірий</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Підлаштувати</translation>
+      <source>Custom Color</source>
+      <translation>Колір, який встановлюється користувачем</translation>
     </message>
   </context>
   <context>

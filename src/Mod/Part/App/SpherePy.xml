@@ -45,14 +45,14 @@
 			</Documentation>
 			<Parameter Name="Axis" Type="Object"/>
 		</Attribute>
-		<Methode Name="uIso">
+        <Methode Name="uIso" Const="true">
 			<Documentation>
 				<UserDocu>
 					Builds the U isoparametric circle of this sphere
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="vIso">
+        <Methode Name="vIso" Const="true">
 			<Documentation>
 				<UserDocu>Builds the V isoparametric circle of this sphere 
 where V must be in the range [-Pi/2,Pi/2]</UserDocu>

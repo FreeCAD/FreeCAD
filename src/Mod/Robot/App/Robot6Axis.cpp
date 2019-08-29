@@ -103,7 +103,7 @@ void Robot6Axis::setKinematic(const AxisDefinition KinDef[6])
 	// for now and testing
     Kinematic = temp;
 
-	// get the actuall TCP out of tha axis
+	// get the actual TCP out of the axis
 	calcTcp();
 }
 

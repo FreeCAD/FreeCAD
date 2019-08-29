@@ -175,13 +175,15 @@ void FileChooser::setFileName( const QString &fn )
 
 void FileChooser::chooseFile()
 {
+    QFileDialog::Options dlgOpt = QFileDialog::DontUseNativeDialog;
     QString fn;
-    if ( mode() == File )
+    if ( mode() == File ) {
         fn = QFileDialog::getOpenFileName(this, tr("Select a file"),
-        lineEdit->text(), _filter);
-    else
-        fn = QFileDialog::getExistingDirectory(this, tr("Select a directory"),
-        lineEdit->text() );
+        lineEdit->text(), _filter,0,dlgOpt);
+    } else {
+        QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
+        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), lineEdit->text(),option );
+    }
 
     if (!fn.isEmpty()) {
         lineEdit->setText(fn);
@@ -282,50 +284,50 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
     {
     case Qt::ControlModifier:
         {
-            QKeySequence key(Qt::CTRL+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::CTRL+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::AltModifier:
         {
-            QKeySequence key(Qt::ALT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::ALT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::ShiftModifier:
         {
-            QKeySequence key(Qt::SHIFT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::SHIFT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::ControlModifier+Qt::AltModifier:
         {
-            QKeySequence key(Qt::CTRL+Qt::ALT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::CTRL+Qt::ALT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::ControlModifier+Qt::ShiftModifier:
         {
-            QKeySequence key(Qt::CTRL+Qt::SHIFT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::CTRL+Qt::SHIFT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::ShiftModifier+Qt::AltModifier:
         {
-            QKeySequence key(Qt::SHIFT+Qt::ALT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::SHIFT+Qt::ALT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::ControlModifier+Qt::AltModifier+Qt::ShiftModifier:
         {
-            QKeySequence key(Qt::CTRL+Qt::ALT+Qt::SHIFT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::CTRL+Qt::ALT+Qt::SHIFT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     default:
         {
-            QKeySequence key(key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     }

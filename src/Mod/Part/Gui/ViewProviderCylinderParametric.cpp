@@ -27,7 +27,6 @@
 #endif
 
 #include "ViewProviderCylinderParametric.h"
-#include <Base/Parameter.h>
 
 
 using namespace PartGui;

@@ -36,7 +36,9 @@
 # include <gp_Lin.hxx>
 #endif
 
+#include <QCoreApplication>
 #include <Base/Axis.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
@@ -48,6 +50,8 @@ using namespace PartDesign;
 
 namespace PartDesign {
 
+
+/* TRANSLATOR PartDesign::Groove */
 
 PROPERTY_SOURCE(PartDesign::Groove, PartDesign::ProfileBased)
 
@@ -97,8 +101,13 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     TopoDS_Shape base;
     try {
         base = getBaseShape();
-    } catch (const Base::Exception&) {
-        return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the groove!");
+    }
+    catch (const Base::Exception&) {
+        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n\n"
+                                    "  \xe2\x80\xa2 the active Body does not contain a base shape, so there is no\n"
+                                    "  material to be removed;\n"
+                                    "  \xe2\x80\xa2 the selected sketch does not belong to the active Body."));
+        return new App::DocumentObjectExecReturn(text);
     }
 
     updateAxis();
@@ -149,7 +158,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             BRepAlgoAPI_Cut mkCut(base, result);
             // Let's check if the fusion has been successful
             if (!mkCut.IsDone())
-                throw Base::Exception("Cut out of base feature failed");
+                throw Base::CADKernelError("Cut out of base feature failed");
 
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(mkCut.Shape());
@@ -158,6 +167,12 @@ App::DocumentObjectExecReturn *Groove::execute(void)
 
             solRes = refineShapeIfActive(solRes);
             this->Shape.setValue(getSolid(solRes));
+
+            int solidCount = countSolids(solRes);
+            if (solidCount > 1) {
+                return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. This is not supported at this time.");
+            }
+            
         }
         else
             return new App::DocumentObjectExecReturn("Could not revolve the sketch!");

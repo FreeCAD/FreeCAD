@@ -62,16 +62,14 @@
 #include "QGCustomSvg.h"
 #include "QGCustomRect.h"
 #include "QGIViewPart.h"
+#include "QGIPrimPath.h"
 #include "QGIFace.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
 
 QGIFace::QGIFace(int index) :
-    projIndex(index),
-    m_colDefFill(Qt::white),
-    m_styleDef(Qt::SolidPattern),
-    m_styleSelect(Qt::SolidPattern)
+    projIndex(index)
 {
     m_segCount = 0;
     setFillMode(NoFill);
@@ -80,10 +78,6 @@ QGIFace::QGIFace(int index) :
 
     //setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
     setStyle(Qt::DashLine);
-
-    m_styleNormal = m_styleDef;
-    m_fillStyle = m_styleDef;
-    m_colNormalFill = m_colDefFill;
     m_geomColor = QColor(Qt::black);
     setLineWeight(0.5);                   //0 = cosmetic
     
@@ -99,6 +93,15 @@ QGIFace::QGIFace(int index) :
     m_fillScale = 1.0;
     
     getParameters();
+ 
+    m_styleNormal = m_styleDef;
+    m_fillStyle = m_styleDef;
+    m_fill = m_styleDef;
+    m_colDefFill = Qt::white;
+    m_colNormalFill = m_colDefFill;
+    m_styleDef = Qt::SolidPattern;
+    m_styleSelect = Qt::SolidPattern;
+
 }
 
 QGIFace::~QGIFace()
@@ -115,6 +118,7 @@ void QGIFace::draw()
             if (!m_lineSets.empty()) {
                 m_brush.setTexture(QPixmap());
                 m_fillStyle = m_styleDef;
+                m_fill = m_styleDef;
                 m_styleNormal = m_fillStyle;
                 for (auto& ls: m_lineSets) {
                     lineSetToFillItems(ls);
@@ -130,6 +134,7 @@ void QGIFace::draw()
                     setFillMode(SvgFill);
                     m_brush.setTexture(QPixmap());
                     m_fillStyle = m_styleDef;
+                    m_fill = m_styleDef;
                     m_styleNormal = m_fillStyle;
                     loadSvgHatch(m_fileSpec);
                     buildSvgHatch();
@@ -141,6 +146,7 @@ void QGIFace::draw()
                     setFillMode(BitmapFill);
                     toggleSvg(false);
                     m_fillStyle   = Qt::TexturePattern;
+                    m_fill   = Qt::TexturePattern;
                     m_texture = textureFromBitmap(m_fileSpec);
                     m_brush.setTexture(m_texture);
                 }
@@ -154,11 +160,14 @@ void QGIFace::setPrettyNormal() {
     if (isHatched()  &&
         (m_mode == BitmapFill) ) {                               //hatch with bitmap fill
         m_fillStyle = Qt::TexturePattern;
+        m_fill = Qt::TexturePattern;
         m_brush.setTexture(m_texture);
     } else {
         m_fillStyle = m_styleNormal;
+        m_fill = m_styleNormal;
         m_brush.setTexture(QPixmap());
-        m_brush.setStyle(m_fillStyle);
+//        m_brush.setStyle(m_fillStyle);
+        m_brush.setStyle(m_fill);   //???
         m_fillColor = m_colNormalFill;
     }
     QGIPrimPath::setPrettyNormal();
@@ -167,6 +176,7 @@ void QGIFace::setPrettyNormal() {
 void QGIFace::setPrettyPre() {
     m_brush.setTexture(QPixmap());
     m_fillStyle = m_styleSelect;
+    m_fill = m_styleSelect;
     m_fillColor = getPreColor();
     QGIPrimPath::setPrettyPre();
 }
@@ -174,6 +184,7 @@ void QGIFace::setPrettyPre() {
 void QGIFace::setPrettySel() {
     m_brush.setTexture(QPixmap());
     m_fillStyle = m_styleSelect;
+    m_fill = m_styleSelect;
     m_fillColor = getSelectColor();
     QGIPrimPath::setPrettySel();
 }
@@ -285,7 +296,7 @@ QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d
     return fillItem;
 }
 
-QGraphicsPathItem*  QGIFace::geomToLine(TechDrawGeometry::BaseGeom* base, LineSet& ls)
+QGraphicsPathItem*  QGIFace::geomToLine(TechDraw::BaseGeom* base, LineSet& ls)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
     Base::Vector3d start(base->getStartPoint().x,
@@ -302,7 +313,7 @@ QGraphicsPathItem*  QGIFace::geomToLine(TechDrawGeometry::BaseGeom* base, LineSe
 
 
 //! make a fragment (length = remain) of a dashed line, with pattern starting at +offset
-QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDrawGeometry::BaseGeom* base, double remain, LineSet& ls)
+QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDraw::BaseGeom* base, double remain, LineSet& ls)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
     Base::Vector3d start(base->getStartPoint().x,
@@ -517,6 +528,7 @@ void QGIFace::buildSvgHatch()
     before.append(QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT));
     after.append(QString::fromStdString(SVGCOLPREFIX + m_svgCol));
     QByteArray colorXML = m_svgXML.replace(before,after);
+    long int tileCount = 0;
     for (int iw = 0; iw < int(nw); iw++) {
         for (int ih = 0; ih < int(nh); ih++) {
             QGCustomSvg* tile = new QGCustomSvg();
@@ -525,6 +537,14 @@ void QGIFace::buildSvgHatch()
                 tile->setParentItem(m_rect);
                 tile->setPos(iw*wTile,-h + ih*hTile);
             }
+            tileCount++;
+            if (tileCount > m_maxTile) {
+                Base::Console().Warning("SVG tile count exceeded: %ld\n",tileCount);
+                break;
+            }
+        }
+        if (tileCount > m_maxTile) {
+            break;
         }
     }
 }
@@ -586,21 +606,6 @@ QPixmap QGIFace::textureFromBitmap(std::string fileSpec)
     return pix;
 }
 
-void QGIFace::setFill(QColor c, Qt::BrushStyle s) {
-    m_colNormalFill = c;
-    m_styleNormal = s;
-}
-
-void QGIFace::setFill(QBrush b) {
-    m_colNormalFill = b.color();
-    m_styleNormal = b.style();
-}
-
-void QGIFace::resetFill() {
-    m_colNormalFill = m_colDefFill;
-    m_styleNormal = m_styleDef;
-}
-
 void QGIFace::setLineWeight(double w) {
     m_geomWeight = w;
 }
@@ -611,6 +616,10 @@ void QGIFace::getParameters(void)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
 
     m_maxSeg = hGrp->GetInt("MaxSeg",10000l);
+
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    m_maxTile = hGrp->GetInt("MaxSVGTile",10000l);
 }
 
 
@@ -627,10 +636,11 @@ QPainterPath QGIFace::shape() const
 void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
+//    painter->drawRect(boundingRect());          //good for debugging
 
-    m_brush.setStyle(m_fillStyle);
-    m_brush.setColor(m_fillColor);
-    setBrush(m_brush);
+//    m_brush.setStyle(m_fillStyle);
+//    m_brush.setColor(m_fillColor);
+//    setBrush(m_brush);
     QGIPrimPath::paint (painter, &myOption, widget);
 }
 

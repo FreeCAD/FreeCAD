@@ -15,7 +15,11 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="11" column="5" colspan="2">
-    <widget class="Gui::PrefQuantitySpinBox" name="Diameter" native="true"/>
+    <widget class="Gui::PrefQuantitySpinBox" name="Diameter" native="true">
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+    </widget>
    </item>
    <item row="14" column="0">
     <widget class="QLabel" name="label">
@@ -75,7 +79,11 @@
     </widget>
    </item>
    <item row="12" column="5" colspan="2">
-    <widget class="Gui::PrefQuantitySpinBox" name="Depth" native="true"/>
+    <widget class="Gui::PrefQuantitySpinBox" name="Depth" native="true">
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+    </widget>
    </item>
    <item row="8" column="0" colspan="2">
     <widget class="QLabel" name="label_8">
@@ -104,10 +112,18 @@
     </widget>
    </item>
    <item row="16" column="4" colspan="3">
-    <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDepth" native="true"/>
+    <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDepth" native="true">
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+    </widget>
    </item>
    <item row="15" column="4" colspan="3">
-    <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDiameter" native="true"/>
+    <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDiameter" native="true">
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
+    </widget>
    </item>
    <item row="9" column="2" colspan="5">
     <widget class="QComboBox" name="ThreadSize"/>
@@ -159,7 +175,11 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefQuantitySpinBox" name="DrillPointAngle" native="true"/>
+         <widget class="Gui::PrefQuantitySpinBox" name="DrillPointAngle" native="true">
+          <property name="unit" stdset="0">
+           <string notr="true">deg</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -314,7 +334,11 @@
     </widget>
    </item>
    <item row="17" column="4" colspan="3">
-    <widget class="Gui::PrefQuantitySpinBox" name="HoleCutCountersinkAngle" native="true"/>
+    <widget class="Gui::PrefQuantitySpinBox" name="HoleCutCountersinkAngle" native="true">
+     <property name="unit" stdset="0">
+      <string notr="true">deg</string>
+     </property>
+    </widget>
    </item>
    <item row="12" column="2" colspan="2">
     <widget class="QComboBox" name="DepthType">
@@ -378,12 +402,18 @@
      <property name="enabled">
       <bool>false</bool>
      </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
     </widget>
    </item>
    <item row="5" column="3" colspan="4">
     <widget class="Gui::PrefQuantitySpinBox" name="ThreadAngle" native="true">
      <property name="enabled">
       <bool>false</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">deg</string>
      </property>
     </widget>
    </item>
@@ -392,12 +422,18 @@
      <property name="enabled">
       <bool>false</bool>
      </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
+     </property>
     </widget>
    </item>
    <item row="7" column="3" colspan="4">
     <widget class="Gui::PrefQuantitySpinBox" name="ThreadCutOffOuter" native="true">
      <property name="enabled">
       <bool>false</bool>
+     </property>
+     <property name="unit" stdset="0">
+      <string notr="true">mm</string>
      </property>
     </widget>
    </item>
@@ -439,7 +475,11 @@
     </widget>
    </item>
    <item row="21" column="2" colspan="2">
-    <widget class="Gui::PrefQuantitySpinBox" name="TaperedAngle" native="true"/>
+    <widget class="Gui::PrefQuantitySpinBox" name="TaperedAngle" native="true">
+     <property name="unit" stdset="0">
+      <string notr="true">deg</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

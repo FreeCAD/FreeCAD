@@ -36,6 +36,8 @@ set(Sketcher_LIBS
 
 generate_from_xml(SketchObjectSFPy)
 generate_from_xml(SketchObjectPy)
+generate_from_xml(SketchGeometryExtensionPy)
+generate_from_xml(ExternalGeometryExtensionPy)
 generate_from_xml(ConstraintPy)
 generate_from_xml(SketchPy)
 
@@ -50,8 +52,15 @@ SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 SET(Features_SRCS
     SketchObjectSF.cpp
     SketchObjectSF.h
+    SketchGeometryExtension.cpp
+    SketchGeometryExtension.h
+    ExternalGeometryExtension.cpp
+    ExternalGeometryExtension.h
     SketchObject.cpp
     SketchObject.h
+    SketchAnalysis.h
+    SketchAnalysis.cpp
+    Analyse.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
@@ -68,6 +77,10 @@ SET(Python_SRCS
     SketchObjectSFPyImp.cpp
     SketchObjectPy.xml
     SketchObjectPyImp.cpp
+    SketchGeometryExtensionPy.xml
+    SketchGeometryExtensionPyImp.cpp
+    ExternalGeometryExtensionPy.xml
+    ExternalGeometryExtensionPyImp.cpp
     ConstraintPyImp.cpp
     ConstraintPy.xml
     SketchPy.xml
@@ -109,24 +122,23 @@ SET(Sketcher_SRCS
     ${Datatypes_SRCS}
 )
 
-SET(Sketcher_Scripts
-    Init.py
-    SketcherExample.py
-    TestSketcherApp.py
-    Profiles.py
-    ProfileLib/Hexagon.py
-    ProfileLib/RegularPolygon.py
-    ProfileLib/__init__.py
+SET(Sketcher_PCH_SRCS
+    ${Features_SRCS}
+    ${SketchModule_SRCS}
+    ${Python_SRCS}
+    ${Properties_SRCS}
+    ${Datatypes_SRCS}
 )
 
 add_library(Sketcher SHARED ${Sketcher_SRCS})
 target_link_libraries(Sketcher ${Sketcher_LIBS})
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Sketcher_CPP_SRCS ${Sketcher_PCH_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Sketcher PreCompiled.h PreCompiled.cpp Sketcher_CPP_SRCS)
+endif(FREECAD_USE_PCH)
 
-fc_target_copy_resource(Sketcher 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Sketcher
-    ${CMAKE_BINARY_DIR}/Mod/Sketcher
-    ${Sketcher_Scripts})
 
 SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(Sketcher)

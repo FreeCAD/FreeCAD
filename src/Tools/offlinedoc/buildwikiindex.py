@@ -22,6 +22,8 @@
 #*                                                                         *
 #***************************************************************************
 
+from __future__ import print_function
+
 __title__="buildwikiindex.py"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = "http://www.freecadweb.org"
@@ -38,7 +40,17 @@ from urllib2 import urlopen, HTTPError
 
 URL = "https://www.freecadweb.org/wiki" #default URL if no URL is passed
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
-NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site','Interesting_links','Syndication_feeds','FreeCAD:General_disclaimer','FreeCAD:About','FreeCAD:Privacy_policy','WikiPages'] # pages that won't be fetched (kept online)
+NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 
+              'User_hub','Main_Page','About_this_site','Interesting_links','Syndication_feeds',
+              'FreeCAD:General_disclaimer','FreeCAD:About','FreeCAD:Privacy_policy','WikiPages'] # pages that won't be fetched (kept online)
+NORETRIEVE += ['Constraint_Concentric','Constraint_EqualLength','Constraint_ExternalAngle',
+               'Constraint_Horizontal','Constraint_HorizontalDistance','Constraint_Internal_Alignment',
+               'Constraint_InternalAngle','Constraint_Length','Constraint_Lock','Constraint_Parallel',
+               'Constraint_Perpendicular','Constraint_PointOnEnd','Constraint_PointOnMidPoint',
+               'Constraint_PointOnObject','Constraint_PointOnPoint','Constraint_PointOnStart',
+               'Constraint_PointToObject','Constraint_Radius','Constraint_SnellsLaw',
+               'Constraint_Symmetric','Constraint_Tangent','Constraint_TangentToEnd',
+               'Constraint_TangentToStart','Constraint_Vertical'] # pages that have been renamed but still dangle around...
 GETTRANSLATIONS = False # Set true if you want to get the translations too.
 MAXFAIL = 3 # max number of retries if download fails
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
@@ -60,15 +72,15 @@ def crawl(pagename=[]):
     else:
         if os.path.exists("wikifiles.txt"):
             f = open("wikifiles.txt","r")
-            if VERBOSE: print "Reading existing list..."
+            if VERBOSE: print ("Reading existing list...")
             for l in f.readlines():
                 if l.strip() != "":
-                    if VERBOSE: print "Adding ",l
+                    if VERBOSE: print ("Adding ",l)
                     processed.append(l.strip())
             f.close()
         if os.path.exists("todolist.txt"):
             f = open("todolist.txt","r")
-            if VERBOSE: print "Reading existing todo list..."
+            if VERBOSE: print ("Reading existing todo list...")
             for l in f.readlines():
                 if l.strip() != "":
                     todolist.append(l.strip())
@@ -79,19 +91,19 @@ def crawl(pagename=[]):
     while todolist:
         targetpage = todolist.pop()
         if (not targetpage in NORETRIEVE):
-            if VERBOSE: print count, ": Scanning ", targetpage
+            if VERBOSE: print (count, ": Scanning ", targetpage)
             pages,images = get(targetpage)
             count += 1
             processed.append(targetpage)
             processed.extend(images)
-            if VERBOSE: print "got",len(pages),"links"
+            if VERBOSE: print ("got",len(pages),"links")
             for p in pages:
                 if (not (p in todolist)) and (not (p in processed)):
                     todolist.append(p)
             if WRITETHROUGH:
                 writeList(processed)
                 writeList(todolist,"todolist.txt")
-    if VERBOSE: print "Fetched ", count, " pages"
+    if VERBOSE: print ("Fetched ", count, " pages")
     if not WRITETHROUGH:
         writeList(processed)
     if pagename:
@@ -140,6 +152,8 @@ def getlinks(html):
             rg = re.findall('href="\/wiki\/(.*?)"',l)
             if "images" in rg:
                 rg = None
+            if "mediawiki" in rg:
+                rg = None
         if rg:
             rg = rg[0]
             if not "Command_Reference" in rg:
@@ -156,7 +170,7 @@ def getlinks(html):
                     NORETRIEVE.append(rg)
             if not rg in NORETRIEVE:
                 pages.append(rg)
-                print "got link: ",rg
+                print ("got link: ",rg)
     return pages
 
 def getimagelinks(html):
@@ -167,7 +181,7 @@ def getimagelinks(html):
 
 def fetchpage(page):
     "retrieves given page from the wiki"
-    print "fetching: ",page
+    print ("fetching: ",page)
     failcount = 0
     while failcount < MAXFAIL:
         try:
@@ -175,7 +189,7 @@ def fetchpage(page):
             return html
         except HTTPError:
             failcount += 1
-    print 'Error: unable to fetch page ' + page
+    print ('Error: unable to fetch page ' + page)
     sys.exit()
 
 def cleanList(pagelist):
@@ -193,7 +207,7 @@ def writeList(pages,filename="wikifiles.txt"):
     for p in pages:
         f.write(p+"\n")
     f.close()
-    if VERBOSE: print "written ",filename
+    if VERBOSE: print ("written ",filename)
 
 if __name__ == "__main__":
 	crawl(sys.argv[1:])

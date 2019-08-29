@@ -25,10 +25,12 @@
 
 #ifndef _PreComp_
 # include <sstream>
+
 # include <QKeyEvent>
 # include <QRegExp>
 # include <QTextStream>
 # include <QMessageBox>
+
 # include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <BRepAdaptor_Surface.hxx>
@@ -38,6 +40,8 @@
 # include <BRepAdaptor_Curve.hxx>
 # include <Geom_Line.hxx>
 # include <gp_Lin.hxx>
+
+# include <boost/lexical_cast.hpp> //OvG conversion between string and int etc.
 #endif
 
 #include "ui_TaskFemConstraint.h"
@@ -56,7 +60,6 @@
 
 #include <Base/Console.h>
 
-# include <boost/lexical_cast.hpp> //OvG conversion between string and int etc.
 
 using namespace FemGui;
 using namespace Gui;
@@ -208,7 +211,7 @@ bool TaskDlgFemConstraint::accept()
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!ConstraintView->getObject()->isValid())
-            throw Base::Exception(ConstraintView->getObject()->getStatusString());
+            throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
     }

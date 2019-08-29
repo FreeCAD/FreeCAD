@@ -19,17 +19,17 @@
         <UserDocu>Add a face to the shell.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getFreeEdges">
+    <Methode Name="getFreeEdges" Const="true">
       <Documentation>
         <UserDocu>Get free edges as compound.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getBadEdges">
+    <Methode Name="getBadEdges" Const="true">
       <Documentation>
         <UserDocu>Get bad edges as compound.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makeHalfSpace">
+    <Methode Name="makeHalfSpace" Const="true">
       <Documentation>
         <UserDocu>Make a half-space solid by this shell and a reference point.</UserDocu>
       </Documentation>

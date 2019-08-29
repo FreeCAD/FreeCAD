@@ -151,7 +151,11 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
         std::bind2nd(std::equal_to<Gui::ViewProvider*>(),
         const_cast<Gui::ViewProvider*>(&obj)));
     if (vp != Provider.end()) {
-        std::string prop_name = obj.getPropertyName(&prop);
+        const char* name = obj.getPropertyName(&prop);
+        // this is not a property of the view provider but of the document object
+        if (!name)
+            return;
+        std::string prop_name = name;
         if (prop.getTypeId() == App::PropertyColor::getClassTypeId()) {
             App::Color value = static_cast<const App::PropertyColor&>(prop).getValue();
             if (prop_name == "ShapeColor") {

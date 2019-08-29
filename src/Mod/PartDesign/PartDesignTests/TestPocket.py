@@ -76,14 +76,14 @@ class TestPocket(unittest.TestCase):
         self.PocketSketch1.MapMode = 'FlatFace'
         self.PocketSketch1.Support = (self.Doc.XZ_Plane, [''])
         self.Doc.recompute()
-        TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (2.5, -1), (5, 1))
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch1, (2.5, -0.75), (5, 0.50))
         self.Doc.recompute()
         self.Pocket001 = self.Doc.addObject("PartDesign::Pocket", "Pocket001")
         self.Body.addObject(self.Pocket001)
         self.Pocket001.Profile = self.PocketSketch1
         self.Pocket001.Type = 1
         self.Doc.recompute()
-        self.assertAlmostEqual(self.Pocket001.Shape.Volume, 25.0)
+        self.assertAlmostEqual(self.Pocket001.Shape.Volume, 62.5)
 
     def testPocketToFirstCase(self):
         self.Body = self.Doc.addObject('PartDesign::Body','Body')

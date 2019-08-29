@@ -2,16 +2,25 @@
 // Copyright 2017, Lorenz Lechner
 // This program is released under the BSD license. See the file COPYING for details.
 
+
+#ifdef _MSC_VER
+    #define strdup _strdup
+#endif
+
 #include "Area.h"
 #include "Point.h"
 #include "AreaDxf.h"
 #include "kurve/geometry.h"
+#include "Adaptive.hpp"
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/functional.h>
 #include <pybind11/operators.h>
 
 #include <vector>
+
+
 
 namespace py = pybind11;
 
@@ -38,7 +47,7 @@ static void print_curve(const CCurve& c)
 #if defined SIZEOF_SIZE_T && SIZEOF_SIZE_T == 4
     printf("number of vertices = %d\n", nvertices);
 #else
-    printf("number of vertices = %lu\n", nvertices);
+    printf("number of vertices = %Iu\n", nvertices);
 #endif
     int i = 0;
     for(std::list<CVertex>::const_iterator It = c.m_vertices.begin(); It != c.m_vertices.end(); It++, i++)
@@ -351,9 +360,44 @@ void init_pyarea(py::module &m){
     m.def("holes_linked", holes_linked);
     m.def("AreaFromDxf", AreaFromDxf);
     m.def("TangentialArc", TangentialArc);
+
+	using namespace AdaptivePath;
+	py::enum_<MotionType>(m, "AdaptiveMotionType")
+	 .value("Cutting", MotionType::mtCutting)
+     .value("LinkClear", MotionType::mtLinkClear)
+	 .value("LinkNotClear", MotionType::mtLinkNotClear)
+	 .value("LinkClearAtPrevPass", MotionType::mtLinkClearAtPrevPass);
+
+	py::enum_<OperationType>(m, "AdaptiveOperationType")
+	 .value("ClearingInside", OperationType::otClearingInside)
+     .value("ClearingOutside", OperationType::otClearingOutside)
+     .value("ProfilingInside", OperationType::otProfilingInside)
+	 .value("ProfilingOutside", OperationType::otProfilingOutside);
+
+	py::class_<AdaptiveOutput>(m, "AdaptiveOutput")
+		.def(py::init<>())
+		.def_readwrite("HelixCenterPoint",&AdaptiveOutput::HelixCenterPoint)
+		.def_readwrite("StartPoint",&AdaptiveOutput::StartPoint)
+		.def_readwrite("AdaptivePaths",&AdaptiveOutput::AdaptivePaths)
+		.def_readwrite("ReturnMotionType",&AdaptiveOutput::ReturnMotionType);
+
+	py::class_<Adaptive2d>(m, "Adaptive2d")
+		.def(py::init<>())
+		.def("Execute",&Adaptive2d::Execute)
+	 	.def_readwrite("stepOverFactor", &Adaptive2d::stepOverFactor)
+	 	.def_readwrite("toolDiameter", &Adaptive2d::toolDiameter)
+        .def_readwrite("stockToLeave", &Adaptive2d::stockToLeave)
+		.def_readwrite("helixRampDiameter", &Adaptive2d::helixRampDiameter)
+        .def_readwrite("forceInsideOut", &Adaptive2d::forceInsideOut)
+		//.def_readwrite("polyTreeNestingLimit", &Adaptive2d::polyTreeNestingLimit)
+		.def_readwrite("tolerance", &Adaptive2d::tolerance)
+        .def_readwrite("keepToolDownDistRatio", &Adaptive2d::keepToolDownDistRatio)
+		.def_readwrite("opType", &Adaptive2d::opType);
 }
 
 PYBIND11_MODULE(area, m){
     m.doc()= "not yet";
     init_pyarea(m);
 };
+
+

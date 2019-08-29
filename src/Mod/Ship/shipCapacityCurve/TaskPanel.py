@@ -24,10 +24,10 @@
 import math
 import FreeCAD as App
 import FreeCADGui as Gui
-import Units
+from FreeCAD import Units
 from PySide import QtGui, QtCore
-import Tools
-import PlotAux
+from . import Tools
+from . import PlotAux
 import TankInstance as Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
@@ -93,7 +93,7 @@ class TaskPanel:
         self.retranslateUi()
 
     def getMainWindow(self):
-        toplevel = QtGui.qApp.topLevelWidgets()
+        toplevel = QtGui.QApplication.topLevelWidgets()
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
                 return i

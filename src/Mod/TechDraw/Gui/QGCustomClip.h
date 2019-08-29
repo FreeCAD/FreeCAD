@@ -27,6 +27,8 @@
 #include <QPointF>
 #include <QRectF>
 
+#include <Base/Vector3D.h>
+
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
@@ -51,7 +53,8 @@ public:
     virtual void setRect(QRectF r);
     virtual void setRect(double x, double y, double w, double h);
     virtual QRectF rect();
-    
+    void makeMark(double x, double y);
+    void makeMark(Base::Vector3d v);
 
 protected:
 

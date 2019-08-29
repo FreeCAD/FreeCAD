@@ -79,7 +79,8 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
  */
 DlgPreferencesImp::~DlgPreferencesImp()
 {
-  // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, Qt does it all for us
+    delete ui;
 }
 
 void DlgPreferencesImp::setupPages()
@@ -247,6 +248,11 @@ void DlgPreferencesImp::restoreDefaults()
 
 void DlgPreferencesImp::applyChanges()
 {
+    // Checks if any of the classes that represent several pages of settings
+    // (DlgSettings*.*) implement checkSettings() method.  If any of them do,
+    // call it to validate if user input is correct.  If something fails (i.e.,
+    // not correct), shows a messageBox and set this->invalidParameter = true to
+    // cancel further operation in other methods (like in accept()).
     try {
         for (int i=0; i<ui->tabWidgetStack->count(); i++) {
             QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
@@ -271,6 +277,8 @@ void DlgPreferencesImp::applyChanges()
         return;
     }
 
+    // If everything is ok (i.e., no validation problem), call method
+    // saveSettings() in every subpage (DlgSetting*) object.
     for (int i=0; i<ui->tabWidgetStack->count(); i++) {
         QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
         for (int j=0; j<tabWidget->count(); j++) {
@@ -290,7 +298,7 @@ void DlgPreferencesImp::applyChanges()
 
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
-    canEmbedScrollArea = false;
+    //canEmbedScrollArea = false;
     QDialog::showEvent(ev);
 }
 
@@ -300,7 +308,7 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
         // embed the widget stack into a scroll area if the size is
         // bigger than the available desktop
         QRect rect = QApplication::desktop()->availableGeometry();
-        int maxHeight = rect.height();
+        int maxHeight = rect.height() - 60;
         int maxWidth = rect.width();
         if (height() > maxHeight || width() > maxWidth) {
             canEmbedScrollArea = false;
@@ -317,7 +325,7 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
             if (bar) {
                 int newWidth = width() + bar->width();
                 newWidth = std::min<int>(newWidth, maxWidth);
-                int newHeight = std::min<int>(height(), maxHeight-30);
+                int newHeight = std::min<int>(height(), maxHeight);
                 QMetaObject::invokeMethod(this, "resizeWindow",
                     Qt::QueuedConnection,
                     QGenericReturnArgument(),

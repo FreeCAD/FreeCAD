@@ -46,6 +46,7 @@ Command = PathOpGui.SetupOperation('Pocket 3D',
         TaskPanelOpPage,
         'Path-3DPocket',
         QtCore.QT_TRANSLATE_NOOP("PathPocket", "3D Pocket"),
-        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path 3D Pocket object from a face or faces"))
+        QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path 3D Pocket object from a face or faces"),
+        PathPocket.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathPocketGui... done\n")

@@ -172,7 +172,7 @@ template<> void _class_::init(void){\
  * 
  * A special case that needs to be handled for extensions is the possibility of overridden methods. 
  * Often it is desired to customise extension behaviour by allowing the user to override methods 
- * provided by the extension. On c++ side this is trival, such methods are simply marked as "virtual" 
+ * provided by the extension. On c++ side this is trivial, such methods are simply marked as "virtual" 
  * and can than be overridden in any derived class. This is more involved for the python interface and
  * here special care needs to be taken. 
  * 
@@ -301,17 +301,24 @@ private:
 };
 
 // Property define 
-#define EXTENSION_ADD_PROPERTY(_prop_, _defaultval_) \
+#define _EXTENSION_ADD_PROPERTY(_name, _prop_, _defaultval_) \
   do { \
     this->_prop_.setValue _defaultval_;\
-    propertyData.addProperty(static_cast<App::Extension*>(this), #_prop_, &this->_prop_); \
+    propertyData.addProperty(static_cast<App::Extension*>(this), _name, &this->_prop_); \
+  } while (0)
+
+
+#define EXTENSION_ADD_PROPERTY(_prop_, _defaultval_) \
+    _EXTENSION_ADD_PROPERTY(#_prop_, _prop_, _defaultval_)
+
+#define _EXTENSION_ADD_PROPERTY_TYPE(_name, _prop_, _defaultval_, _group_,_type_,_Docu_) \
+  do { \
+    this->_prop_.setValue _defaultval_;\
+    propertyData.addProperty(static_cast<App::Extension*>(this), _name, &this->_prop_, (_group_),(_type_),(_Docu_)); \
   } while (0)
 
 #define EXTENSION_ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
-  do { \
-    this->_prop_.setValue _defaultval_;\
-    propertyData.addProperty(static_cast<App::Extension*>(this), #_prop_, &this->_prop_, (_group_),(_type_),(_Docu_)); \
-  } while (0)
+    _EXTENSION_ADD_PROPERTY_TYPE(#_prop_, _prop_, _defaultval_, _group_,_type_,_Docu_)
   
 
 /**

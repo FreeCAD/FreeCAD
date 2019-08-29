@@ -33,11 +33,6 @@ add_library(Image SHARED ${Image_SRCS})
 target_link_libraries(Image ${Image_LIBS})
 
 
-fc_target_copy_resource(Image 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Image
-    ${CMAKE_BINARY_DIR}/Mod/Image
-    Init.py)
-
 SET_BIN_DIR(Image Image /Mod/Image)
 SET_PYTHON_PREFIX_SUFFIX(Image)
 

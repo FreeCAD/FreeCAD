@@ -6,7 +6,7 @@
     <message>
       <location filename="../../InitGui.py" line="64"/>
       <source>Ship design</source>
-      <translation>Laivo kūrimas</translation>
+      <translation>Laivo kūryba</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="67"/>
@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Instance.py" line="44"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation>Tiesa, jei teisingas laivo pavyzdys, Melas – kitu atveju</translation>
+      <translation>Nustatyti reikšmę į „Tiesa“, jei teisingas laivo pavyzdys, „Netiesa“ – kitu atveju</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="53"/>
@@ -494,7 +494,7 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="278"/>
       <source>Trim</source>
-      <translation type="unfinished">Trim</translation>
+      <translation>Apkarpyti</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="283"/>
@@ -616,7 +616,7 @@
     <message>
       <location filename="../../TankInstance.py" line="50"/>
       <source>True if it is a valid tank instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid tank instance, False otherwise</translation>
+      <translation>Nustatyti reikšmę į „Tiesa“, jei teisingas talpos pavyzdys, „Netiesa“ – kitu atveju</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="160"/>
@@ -654,7 +654,7 @@
     <message>
       <location filename="../../WeightInstance.py" line="46"/>
       <source>True if it is a valid weight instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid weight instance, False otherwise</translation>
+      <translation>Nustatyti reikšmę į „Tiesa“, jei teisingas svarmens pavyzdys, „Netiesa“ – kitu atveju</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="55"/>

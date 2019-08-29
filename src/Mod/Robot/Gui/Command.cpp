@@ -228,7 +228,7 @@ void CmdRobotSimulate::activated(int)
 
     if(pcTrajectoryObject->Trajectory.getValue().getSize() < 2){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Trajectory not valid"),
-            QObject::tr("You need at least two way points in a trajectory to simulate."));
+            QObject::tr("You need at least two waypoints in a trajectory to simulate."));
         return;
     }
 

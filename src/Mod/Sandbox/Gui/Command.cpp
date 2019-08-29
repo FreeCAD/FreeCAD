@@ -725,7 +725,7 @@ typedef std::list<MeshObjectConstRef> MeshObjectConstRefList;
 typedef std::vector<MeshObjectConstRef> MeshObjectConstRefArray;
 }
 
-struct MeshObject_greater  : public std::binary_function<const Mesh::MeshObjectConstRef&, 
+struct MeshObject_greater  : public std::binary_function<const Mesh::MeshObjectConstRef&,
                                                          const Mesh::MeshObjectConstRef&, bool>
 {
     bool operator()(const Mesh::MeshObjectConstRef& x,
@@ -1033,7 +1033,7 @@ public:
         setAttribute(Qt::WA_NativeWindow);
 #endif
     }
-    QPaintEngine *paintEngine() const { 
+    QPaintEngine *paintEngine() const {
         return 0;
     }
 protected:
@@ -1047,7 +1047,7 @@ protected:
         SelectObject(hdc, GetSysColorBrush(COLOR_WINDOW));
         Rectangle(hdc, 0, 0, width(), height());
         RECT rect = {0, 0, width(), height() };
-        DrawText(hdc, "Hello World!", 12, &rect,
+        DrawTextA(hdc, "Hello World!", 12, &rect,
         DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 #if QT_VERSION < 0x050000
         releaseDC(hdc);
@@ -1427,8 +1427,8 @@ CmdTestGraphicsView::CmdTestGraphicsView()
 {
     sGroup      = QT_TR_NOOP("Standard-Test");
     sMenuText   = QT_TR_NOOP("Create new graphics view");
-    sToolTipText= QT_TR_NOOP("Creates a new  view window for the active document");
-    sStatusTip  = QT_TR_NOOP("Creates a new  view window for the active document");
+    sToolTipText= QT_TR_NOOP("Creates a new view window for the active document");
+    sStatusTip  = QT_TR_NOOP("Creates a new view window for the active document");
 }
 
 void CmdTestGraphicsView::activated(int)

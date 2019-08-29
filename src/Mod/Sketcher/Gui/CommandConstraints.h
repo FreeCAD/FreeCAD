@@ -53,64 +53,74 @@ bool IsPointAlreadyOnCurve(int GeoIdCurve, int GeoIdPoint, Sketcher::PointPos Po
 
 
 // These functions are declared here to promote code reuse from other modules
-    
+
 /// Makes a tangency constraint using external construction line between
-/// geom1 => an ellipse
+/// ellipse => an ellipse
 /// geom2 => any of an ellipse, an arc of ellipse, a circle, or an arc (of circle)
-/// NOTE: A command must be opened before calling this function, which this function
-/// commits or aborts as appropriate. The reason is for compatibility reasons with
-/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp    
-void makeTangentToEllipseviaNewPoint(const Sketcher::SketchObject* Obj,
-                                             const Part::Geometry *geom1, 
-                                             const Part::Geometry *geom2,
-                                             int geoId1,
-                                             int geoId2
-                                            );
-/// Makes a tangency constraint using external construction line between
-/// geom1 => an arc of ellipse
-/// geom2 => any of an arc of ellipse, a circle, or an arc (of circle)
-/// NOTE: A command must be opened before calling this function, which this function
-/// commits or aborts as appropriate. The reason is for compatibility reasons with
-/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp 
-void makeTangentToArcOfEllipseviaNewPoint(const Sketcher::SketchObject* Obj,
-                                             const Part::Geometry *geom1, 
-                                             const Part::Geometry *geom2,
-                                             int geoId1,
-                                             int geoId2
-                                            );
-
-/// Makes a tangency constraint using external construction line between
-/// geom1 => an arc of hyperbola
-/// geom2 => any of an arc of hyperbola, an arc of ellipse, a circle, or an arc (of circle)
-/// NOTE: A command must be opened before calling this function, which this function
-/// commits or aborts as appropriate. The reason is for compatibility reasons with
-/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp 
-void makeTangentToArcOfHyperbolaviaNewPoint(const Sketcher::SketchObject* Obj,
-                                          const Part::Geometry *geom1, 
-                                          const Part::Geometry *geom2,
-                                          int geoId1,
-                                          int geoId2
-);
-
-/// Makes a simple tangency constraint using extra point + tangent via point
-/// geom1 => an arc of parabola
-/// geom2 => any of an arc of parabola, an arc of hyperbola an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the ellipse
+/// geoId2 => geoid of geom2
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void makeTangentToArcOfParabolaviaNewPoint(const Sketcher::SketchObject* Obj,
-                                                       const Part::Geometry *geom1, 
-                                                       const Part::Geometry *geom2,
-                                                       int geoId1,
-                                                       int geoId2
-);
+void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
+                                             const Part::GeomEllipse *ellipse,
+                                             const Part::Geometry *geom2,
+                                             int geoId1,
+                                             int geoId2
+                                            );
+/// Makes a tangency constraint using external construction line between
+/// aoe => an arc of ellipse
+/// geom2 => any of an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the arc of ellipse
+/// geoId2 => geoid of geom2
+/// NOTE: A command must be opened before calling this function, which this function
+/// commits or aborts as appropriate. The reason is for compatibility reasons with
+/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
+void makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
+                                             const Part::GeomArcOfEllipse *aoe,
+                                             const Part::Geometry *geom2,
+                                             int geoId1,
+                                             int geoId2
+                                            );
 
-std::string getStrippedPythonExceptionString(const Base::Exception);
+/// Makes a tangency constraint using external construction line between
+/// aoh => an arc of hyperbola
+/// geom2 => any of an arc of hyperbola, an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the arc of hyperbola
+/// geoId2 => geoid of geom2
+/// NOTE: A command must be opened before calling this function, which this function
+/// commits or aborts as appropriate. The reason is for compatibility reasons with
+/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
+void makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
+                                            const Part::GeomArcOfHyperbola *aoh,
+                                            const Part::Geometry *geom2,
+                                            int geoId1,
+                                            int geoId2
+                                            );
+
+/// Makes a simple tangency constraint using extra point + tangent via point
+/// aop => an arc of parabola
+/// geom2 => any of an arc of parabola, an arc of hyperbola an arc of ellipse, a circle, or an arc (of circle)
+/// geoId1 => geoid of the arc of parabola
+/// geoId2 => geoid of geom2
+/// NOTE: A command must be opened before calling this function, which this function
+/// commits or aborts as appropriate. The reason is for compatibility reasons with
+/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
+void makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* Obj,
+                                            const Part::GeomArcOfParabola *aop,
+                                            const Part::Geometry *geom2,
+                                            int geoId1,
+                                            int geoId2
+                                            );
+
+std::string getStrippedPythonExceptionString(const Base::Exception&);
 
 /// This function tries to auto-recompute the active document if the option
 /// is set in the user parameter. If the option is not set nothing will be done
 /// @return true if a recompute was undertaken, false if not.
-bool tryAutoRecompute();
+bool tryAutoRecompute(Sketcher::SketchObject* obj);
+/// Same as the other overload, but also returns whether redundants shall be removed or not
+bool tryAutoRecompute(Sketcher::SketchObject* obj, bool &autoremoveredundants);
 
 /// This function tries to auto-recompute as tryAutoRecompute. If tryAutoRecompute
 /// is not enabled, then it solves the SketchObject.

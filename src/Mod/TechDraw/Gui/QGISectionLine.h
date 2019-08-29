@@ -61,8 +61,13 @@ protected:
     Qt::PenStyle getSectionStyle();
     void makeLine();
     void makeArrows();
+    void makeArrowsTrad();
+    void makeArrowsISO();
     void makeSymbols();
+    void makeSymbolsTrad();
+    void makeSymbolsISO();
     void setTools();
+    int  getPrefSectionFormat();
 
 private:
     char* m_symbol;
@@ -71,8 +76,8 @@ private:
     QGIArrow*          m_arrow2;
     QGCustomText*      m_symbol1;
     QGCustomText*      m_symbol2;
-    QPointF            m_start;
-    QPointF            m_end;
+    QPointF            m_start;         //start of section line
+    QPointF            m_end;           //end of section line
     Base::Vector3d     m_arrowDir;
     std::string        m_symFontName;
     QFont              m_symFont;
@@ -80,6 +85,7 @@ private:
     double             m_arrowSize;
     //QColor             m_color;
     double             m_extLen;
+//    int                m_sectionFormat;     //0 = ASME, 1 = ISO
 };
 
 }

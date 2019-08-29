@@ -160,9 +160,9 @@ void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item
 void UnitTestDialog::on_helpButton_clicked()
 {
     QMessageBox::information(this, tr("Help"), tr(
-        "Enter the name of a callable object which, when called, will return a TestCase."
+        "Enter the name of a callable object which, when called, will return a TestCase.\n"
         "Click 'start', and the test thus produced will be run.\n\n"
-        "Double click on an error in the tree view to see more information about it,"
+        "Double click on an error in the tree view to see more information about it, "
         "including the stack trace."));
 }
 
@@ -174,7 +174,7 @@ void UnitTestDialog::on_aboutButton_clicked()
     QMessageBox::information(this, tr("About FreeCAD UnitTest"), tr( 
         "Copyright (c) Werner Mayer\n\n"
         "FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for "
-        "own modules."));
+        "ones own modules."));
 }
 
 /**

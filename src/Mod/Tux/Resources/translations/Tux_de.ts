@@ -11,7 +11,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="63"/>
       <source>Zoom</source>
-      <translation>Zoomen</translation>
+      <translation>Vergrößern</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="64"/>
@@ -42,11 +42,6 @@
       <location filename="../../NavigationIndicatorGui.py" line="69"/>
       <source>Rotation focus</source>
       <translation>Drehpunkt</translation>
-    </message>
-    <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
-      <source>Middle mouse button or key H.</source>
-      <translation>Mittlere Maustaste oder H-Taste.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
@@ -92,6 +87,11 @@
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
       <translation>Unbestimmt</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <source>Middle mouse button or H key.</source>
+      <translation>Mittlere Maustaste oder H-Taste.</translation>
     </message>
   </context>
 </TS>

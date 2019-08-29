@@ -108,6 +108,7 @@ public:
     Py::Object repr();
 
     Py::Object getGroup(const Py::Tuple&);
+    Py::Object getGroups(const Py::Tuple&);
     Py::Object remGroup(const Py::Tuple&);
     Py::Object hasGroup(const Py::Tuple&);
 
@@ -121,22 +122,27 @@ public:
 
     Py::Object setBool(const Py::Tuple&);
     Py::Object getBool(const Py::Tuple&);
+    Py::Object getBools(const Py::Tuple&);
     Py::Object remBool(const Py::Tuple&);
 
     Py::Object setInt(const Py::Tuple&);
     Py::Object getInt(const Py::Tuple&);
+    Py::Object getInts(const Py::Tuple&);
     Py::Object remInt(const Py::Tuple&);
 
     Py::Object setUnsigned(const Py::Tuple&);
     Py::Object getUnsigned(const Py::Tuple&);
+    Py::Object getUnsigneds(const Py::Tuple&);
     Py::Object remUnsigned(const Py::Tuple&);
 
     Py::Object setFloat(const Py::Tuple&);
     Py::Object getFloat(const Py::Tuple&);
+    Py::Object getFloats(const Py::Tuple&);
     Py::Object remFloat(const Py::Tuple&);
 
     Py::Object setString(const Py::Tuple&);
     Py::Object getString(const Py::Tuple&);
+    Py::Object getStrings(const Py::Tuple&);
     Py::Object remString(const Py::Tuple&);
 
     Py::Object importFrom(const Py::Tuple&);
@@ -163,6 +169,7 @@ void ParameterGrpPy::init_type()
     behaviors().readyType();
 
     add_varargs_method("GetGroup",&ParameterGrpPy::getGroup,"GetGroup(str)");
+    add_varargs_method("GetGroups",&ParameterGrpPy::getGroups,"GetGroups()");
     add_varargs_method("RemGroup",&ParameterGrpPy::remGroup,"RemGroup(str)");
     add_varargs_method("HasGroup",&ParameterGrpPy::hasGroup,"HasGroup(str)");
 
@@ -176,22 +183,27 @@ void ParameterGrpPy::init_type()
 
     add_varargs_method("SetBool",&ParameterGrpPy::setBool,"SetBool()");
     add_varargs_method("GetBool",&ParameterGrpPy::getBool,"GetBool()");
+    add_varargs_method("GetBools",&ParameterGrpPy::getBools,"GetBools()");
     add_varargs_method("RemBool",&ParameterGrpPy::remBool,"RemBool()");
 
     add_varargs_method("SetInt",&ParameterGrpPy::setInt,"SetInt()");
     add_varargs_method("GetInt",&ParameterGrpPy::getInt,"GetInt()");
+    add_varargs_method("GetInts",&ParameterGrpPy::getInts,"GetInts()");
     add_varargs_method("RemInt",&ParameterGrpPy::remInt,"RemInt()");
 
     add_varargs_method("SetUnsigned",&ParameterGrpPy::setUnsigned,"SetUnsigned()");
     add_varargs_method("GetUnsigned",&ParameterGrpPy::getUnsigned,"GetUnsigned()");
+    add_varargs_method("GetUnsigneds",&ParameterGrpPy::getUnsigneds,"GetUnsigneds()");
     add_varargs_method("RemUnsigned",&ParameterGrpPy::remUnsigned,"RemUnsigned()");
 
     add_varargs_method("SetFloat",&ParameterGrpPy::setFloat,"SetFloat()");
     add_varargs_method("GetFloat",&ParameterGrpPy::getFloat,"GetFloat()");
+    add_varargs_method("GetFloats",&ParameterGrpPy::getFloats,"GetFloats()");
     add_varargs_method("RemFloat",&ParameterGrpPy::remFloat,"RemFloat()");
 
     add_varargs_method("SetString",&ParameterGrpPy::setString,"SetString()");
     add_varargs_method("GetString",&ParameterGrpPy::getString,"GetString()");
+    add_varargs_method("GetStrings",&ParameterGrpPy::getStrings,"GetStrings()");
     add_varargs_method("RemString",&ParameterGrpPy::remString,"RemString()");
 
     add_varargs_method("Import",&ParameterGrpPy::importFrom,"Import()");
@@ -271,6 +283,21 @@ Py::Object ParameterGrpPy::getGroup(const Py::Tuple& args)
     }
 }
 
+Py::Object ParameterGrpPy::getGroups(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    // get the Handle of the wanted group
+    std::vector<Base::Reference<ParameterGrp> > handle = _cParamGrp->GetGroups();
+    Py::List list;
+    for (auto it : handle) {
+        list.append(Py::String(it->GetGroupName()));
+    }
+
+    return list;
+}
+
 Py::Object ParameterGrpPy::setBool(const Py::Tuple& args)
 {
     char *pstr;
@@ -290,6 +317,21 @@ Py::Object ParameterGrpPy::getBool(const Py::Tuple& args)
         throw Py::Exception();
 
     return Py::Boolean(_cParamGrp->GetBool(pstr,Bool!=0));
+}
+
+Py::Object ParameterGrpPy::getBools(const Py::Tuple& args)
+{
+    char *filter=0;
+    if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
+        throw Py::Exception();
+
+    std::vector<std::pair<std::string,bool> > map = _cParamGrp->GetBoolMap(filter);
+    Py::List list;
+    for (auto it : map) {
+        list.append(Py::String(it.first));
+    }
+
+    return list;
 }
 
 Py::Object ParameterGrpPy::setInt(const Py::Tuple& args)
@@ -314,6 +356,21 @@ Py::Object ParameterGrpPy::getInt(const Py::Tuple& args)
 #else
     return Py::Long(_cParamGrp->GetInt(pstr,Int));
 #endif
+}
+
+Py::Object ParameterGrpPy::getInts(const Py::Tuple& args)
+{
+    char *filter=0;
+    if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
+        throw Py::Exception();
+
+    std::vector<std::pair<std::string,long> > map = _cParamGrp->GetIntMap(filter);
+    Py::List list;
+    for (auto it : map) {
+        list.append(Py::String(it.first));
+    }
+
+    return list;
 }
 
 Py::Object ParameterGrpPy::setUnsigned(const Py::Tuple& args)
@@ -341,6 +398,21 @@ Py::Object ParameterGrpPy::getUnsigned(const Py::Tuple& args)
 #endif
 }
 
+Py::Object ParameterGrpPy::getUnsigneds(const Py::Tuple& args)
+{
+    char *filter=0;
+    if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
+        throw Py::Exception();
+
+    std::vector<std::pair<std::string,unsigned long> > map = _cParamGrp->GetUnsignedMap(filter);
+    Py::List list;
+    for (auto it : map) {
+        list.append(Py::String(it.first));
+    }
+
+    return list;
+}
+
 Py::Object ParameterGrpPy::setFloat(const Py::Tuple& args)
 {
     char *pstr;
@@ -362,6 +434,21 @@ Py::Object ParameterGrpPy::getFloat(const Py::Tuple& args)
     return Py::Float(_cParamGrp->GetFloat(pstr,Float));
 }
 
+Py::Object ParameterGrpPy::getFloats(const Py::Tuple& args)
+{
+    char *filter=0;
+    if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
+        throw Py::Exception();
+
+    std::vector<std::pair<std::string,double> > map = _cParamGrp->GetFloatMap(filter);
+    Py::List list;
+    for (auto it : map) {
+        list.append(Py::String(it.first));
+    }
+
+    return list;
+}
+
 Py::Object ParameterGrpPy::setString(const Py::Tuple& args)
 {
     char *pstr;
@@ -381,6 +468,21 @@ Py::Object ParameterGrpPy::getString(const Py::Tuple& args)
         throw Py::Exception();
 
     return Py::String(_cParamGrp->GetASCII(pstr,str));
+}
+
+Py::Object ParameterGrpPy::getStrings(const Py::Tuple& args)
+{
+    char *filter=0;
+    if (!PyArg_ParseTuple(args.ptr(), "|s", &filter))
+        throw Py::Exception();
+
+    std::vector<std::pair<std::string,std::string> > map = _cParamGrp->GetASCIIMap(filter);
+    Py::List list;
+    for (auto it : map) {
+        list.append(Py::String(it.first));
+    }
+
+    return list;
 }
 
 Py::Object ParameterGrpPy::remInt(const Py::Tuple& args)

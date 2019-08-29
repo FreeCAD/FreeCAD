@@ -49,7 +49,6 @@
 # include <Inventor/sensors/SoNodeSensor.h>
 #endif
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 #include <App/Document.h>
@@ -304,7 +303,7 @@ const MovableGroup& MovableGroupModel::activeGroup() const
     // Make sure that the array is not empty
     if (this->_groups.empty())
         throw Base::RuntimeError("Empty group");
-    return *(this->_groups.begin());
+    return this->_groups.front();
 }
 
 void MovableGroupModel::continueAlignment()
@@ -326,6 +325,13 @@ bool MovableGroupModel::isEmpty() const
 int MovableGroupModel::count() const
 {
     return this->_groups.size();
+}
+
+const MovableGroup& MovableGroupModel::getGroup(int i) const
+{
+    if (i >= count())
+        throw Base::IndexError("Index out of range");
+    return this->_groups[i];
 }
 
 // ------------------------------------------------------------------
@@ -842,8 +848,8 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
 void ManualAlignment::continueAlignment()
 {
     myFixedGroup.clearPoints();
-    d->picksepLeft->removeAllChildren();
-    d->picksepRight->removeAllChildren();
+    coinRemoveAllChildren(d->picksepLeft);
+    coinRemoveAllChildren(d->picksepRight);
 
     if (!myAlignModel.isEmpty()) {
         AlignmentGroup& grp = myAlignModel.activeGroup();
@@ -885,8 +891,8 @@ void ManualAlignment::reset()
     myFixedGroup.setAlignable(false);
     myFixedGroup.clear();
 
-    d->picksepLeft->removeAllChildren();
-    d->picksepRight->removeAllChildren();
+    coinRemoveAllChildren(d->picksepLeft);
+    coinRemoveAllChildren(d->picksepRight);
 
     if (myDocument) {
         this->connectDocumentDeletedObject.disconnect();
@@ -1180,8 +1186,8 @@ void ManualAlignment::onClear()
     myAlignModel.activeGroup().clear();
     myFixedGroup.clear();
 
-    d->picksepLeft->removeAllChildren();
-    d->picksepRight->removeAllChildren();
+    coinRemoveAllChildren(d->picksepLeft);
+    coinRemoveAllChildren(d->picksepRight);
 }
 
 void ManualAlignment::onCancel()

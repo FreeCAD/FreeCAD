@@ -1,22 +1,27 @@
-; S380MC - 1.0978 - SEW 092
+; Steel-S380MC
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = S380MC
 NameDE = QStE380 TM
 DescriptionDE = gut biegbar, Fahrgestellrahmen, Hilfsrahmen
 Father = Metal
-YoungsModulus = 210000 MPa
-UltimateTensileStrength = 520
-PoissonRatio = 0.3
-Density = 7800 kg/m^3
 KindOfMaterial = Cold forming steel
 KindOfMaterialDE = Kaltumformstahl
 MaterialNumber = 1.0978
-ModulusOfShare = 81000
 Norm = SEW 092
-ThermalExpansionCoefficient = 1.10E-005
+
+[Mechanical]
+Density = 7800 kg/m^3
+PoissonRatio = 0.3
+ShearModulus = 81000 MPa
 UltimateStrain = 23
-YieldStrength = 380
+UltimateTensileStrength = 520 MPa
+YieldStrength = 380 MPa
+YoungsModulus = 210000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.000011 m/m/K

@@ -102,8 +102,8 @@
       <translation>Centrar verticalmente</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Centra verticalmente el conetnido de las celdas seleccionadas</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Alineado verticalmente centrado del contenido de las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Combinar celdas</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Combinar las celdas seleccionadas en la hoja de cálculo</translation>
+      <source>Merge selected cells</source>
+      <translation>Fusionar celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Dividir celda</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Dividir celdas combinadas previamente en la hoja de cálculo</translation>
+      <source>Split previously merged cells</source>
+      <translation>Dividir celdas previamente fusionadas</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Negrita</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Texto en negrita en las celdas seleccionadas</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Establecer texto en las celdas seleccionadas en negrita</translation>
     </message>
   </context>
   <context>
@@ -204,11 +204,11 @@
     </message>
     <message>
       <source>Italic text</source>
-      <translation>Cursiva</translation>
+      <translation>Texto en cursiva</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Texto en cursiva en las celdas seleccionadas</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Establecer texto en las celdas seleccionadas en cursiva</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Subrayado</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
+      <source>Underline text in selected cells</source>
       <translation>Texto subrayado en las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Personalizado</translation>
+      <source>Custom Color</source>
+      <translation>Color Personalizado</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Gris claro</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personalizado</translation>
+      <source>Custom Color</source>
+      <translation>Color Personalizado</translation>
     </message>
   </context>
   <context>

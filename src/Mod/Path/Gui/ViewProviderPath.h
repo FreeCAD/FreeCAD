@@ -42,8 +42,9 @@ class SoSwitch;
 namespace PathGui
 {
 
+class PathSelectionObserver;
+
 class PathGuiExport ViewProviderPath : public Gui::ViewProviderGeometryObject
-                                     , public Gui::SelectionObserver
 {
     PROPERTY_HEADER(PathGui::ViewProviderPath);
     typedef ViewProviderGeometryObject inherited;
@@ -59,7 +60,6 @@ public:
     App::PropertyInteger LineWidth;
     App::PropertyColor   NormalColor;
     App::PropertyColor   MarkerColor;
-    App::PropertyInteger MarkerSize;
     App::PropertyBool    ShowNodes;
     App::PropertyVector  StartPosition;
 
@@ -79,13 +79,13 @@ public:
     virtual std::string getElement(const SoDetail *) const;
     SoDetail* getDetail(const char* subelement) const;
 
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-
     void updateShowConstraints();
     void updateVisual(bool rebuild = false);
     void hideSelection();
 
     virtual void showBoundingBox(bool show);
+
+    friend class PathSelectionObserver;
 
 protected:
 

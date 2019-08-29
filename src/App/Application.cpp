@@ -77,6 +77,7 @@
 #include <Base/RotationPy.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
+#include <Base/Translate.h>
 #include <Base/UnitsApi.h>
 #include <Base/QuantityPy.h>
 #include <Base/UnitPy.h>
@@ -111,6 +112,7 @@
 #include "Transactions.h"
 #include <App/MaterialPy.h>
 #include <Base/GeometryPyCXX.h>
+#include "Link.h"
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -120,7 +122,6 @@
 
 #include <boost/tokenizer.hpp>
 #include <boost/token_functions.hpp>
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 #include <boost/version.hpp>
 #include <QDir>
@@ -138,46 +139,22 @@ using namespace boost::program_options;
 #include <App/CMakeScript.h>
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
+# if !defined(_DEBUG) && defined(HAVE_SEH)
+# define FC_SE_TRANSLATOR
+# endif
+
 # include <new.h>
 # include <eh.h> // VC exception handling
 #else // Ansi C/C++ new handler
 # include <new>
 #endif
 
+FC_LOG_LEVEL_INIT("App",true,true);
 
 //using Base::GetConsole;
 using namespace Base;
 using namespace App;
 using namespace std;
-
-/** Observer that watches relabeled objects and make sure that the labels inside
- * a document are unique.
- * @note In the FreeCAD design it is explicitly allowed to have duplicate labels
- * (i.e. the user visible text e.g. in the tree view) while the internal names
- * are always guaranteed to be unique.
- */
-class ObjectLabelObserver
-{
-public:
-    /// The one and only instance.
-    static ObjectLabelObserver* instance();
-    /// Destructs the sole instance.
-    static void destruct ();
-
-    /** Checks the new label of the object and relabel it if needed
-     * to make it unique document-wide
-     */
-    void slotRelabelObject(const App::DocumentObject&, const App::Property&);
-
-private:
-    static ObjectLabelObserver* _singleton;
-
-    ObjectLabelObserver();
-    ~ObjectLabelObserver();
-    const App::DocumentObject* current;
-    ParameterGrp::handle _hPGrp;
-};
-
 
 //==========================================================================
 // Application
@@ -190,6 +167,7 @@ Base::ConsoleObserverFile *Application::_pConsoleObserverFile =0;
 
 AppExport std::map<std::string,std::string> Application::mConfig;
 BaseExport extern PyObject* Base::BaseExceptionFreeCADError;
+BaseExport extern PyObject* Base::BaseExceptionFreeCADAbort;
 
 //**************************************************************************
 // Construction and destruction
@@ -206,14 +184,47 @@ PyDoc_STRVAR(FreeCAD_doc,
 PyDoc_STRVAR(Console_doc,
      "FreeCAD Console\n"
     );
-    
+
 PyDoc_STRVAR(Base_doc,
     "The Base module contains the classes for the geometric basics\n"
     "like vector, matrix, bounding box, placement, rotation, axis, ...\n"
     );
 
+#if PY_MAJOR_VERSION >= 3
+// This is called via the PyImport_AppendInittab mechanism called
+// during initialization, to make the built-in __FreeCADBase__
+// module known to Python.
+PyMODINIT_FUNC
+init_freecad_base_module(void)
+{
+    static struct PyModuleDef BaseModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "__FreeCADBase__", Base_doc, -1,
+        NULL, NULL, NULL, NULL, NULL
+    };
+    return PyModule_Create(&BaseModuleDef);
+}
+
+// Set in inside Application
+static PyMethodDef* __AppMethods = nullptr;
+
+PyMODINIT_FUNC
+init_freecad_module(void)
+{
+    static struct PyModuleDef FreeCADModuleDef = {
+        PyModuleDef_HEAD_INIT,
+        "FreeCAD", FreeCAD_doc, -1,
+        __AppMethods,
+        NULL, NULL, NULL, NULL
+    };
+    return PyModule_Create(&FreeCADModuleDef);
+}
+#endif
+
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(0)
+  : _mConfig(mConfig), _pActiveDoc(0), _isRestoring(false),_allowPartial(false)
+  , _isClosingAll(false), _objCount(-1), _activeTransactionID(0)
+  , _activeTransactionGuard(0), _activeTransactionTmpName(false)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -223,14 +234,15 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // setting up Python binding
     Base::PyGILStateLocker lock;
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef FreeCADModuleDef = {
-        PyModuleDef_HEAD_INIT,
-        "FreeCAD", FreeCAD_doc, -1,
-        Application::Methods,
-        NULL, NULL, NULL, NULL
-    };
-    PyObject* pAppModule = PyModule_Create(&FreeCADModuleDef);
-    _PyImport_FixupBuiltin(pAppModule, "FreeCAD");
+    PyObject* modules = PyImport_GetModuleDict();
+
+    __AppMethods = Application::Methods;
+    PyObject* pAppModule = PyImport_ImportModule ("FreeCAD");
+    if (!pAppModule) {
+        PyErr_Clear();
+        pAppModule = init_freecad_module();
+        PyDict_SetItemString(modules, "FreeCAD", pAppModule);
+    }
 #else
     PyObject* pAppModule = Py_InitModule3("FreeCAD", Application::Methods, FreeCAD_doc);
 #endif
@@ -265,18 +277,22 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     // remove these types from the FreeCAD module.
 
 #if PY_MAJOR_VERSION >= 3
-    static struct PyModuleDef BaseModuleDef = {
-        PyModuleDef_HEAD_INIT,
-        "__FreeCADBase__", Base_doc, -1,
-        NULL, NULL, NULL, NULL, NULL
-    };
-    PyObject* pBaseModule = PyModule_Create(&BaseModuleDef);
+    PyObject* pBaseModule = PyImport_ImportModule ("__FreeCADBase__");
+    if (!pBaseModule) {
+        PyErr_Clear();
+        pBaseModule = init_freecad_base_module();
+        PyDict_SetItemString(modules, "__FreeCADBase__", pBaseModule);
+    }
 #else
     PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL, Base_doc);
 #endif
     Base::BaseExceptionFreeCADError = PyErr_NewException("Base.FreeCADError", PyExc_RuntimeError, NULL);
     Py_INCREF(Base::BaseExceptionFreeCADError);
     PyModule_AddObject(pBaseModule, "FreeCADError", Base::BaseExceptionFreeCADError);
+
+    Base::BaseExceptionFreeCADAbort = PyErr_NewException("Base.FreeCADAbort", PyExc_BaseException, NULL);
+    Py_INCREF(Base::BaseExceptionFreeCADAbort);
+    PyModule_AddObject(pBaseModule, "FreeCADAbort", Base::BaseExceptionFreeCADAbort);
 
     // Python types
     Base::Interpreter().addType(&Base::VectorPy          ::Type,pBaseModule,"Vector");
@@ -294,6 +310,11 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     PyModule_AddObject(pAppModule, "Base", pBaseModule);
     Py_INCREF(pConsoleModule);
     PyModule_AddObject(pAppModule, "Console", pConsoleModule);
+
+    // Translate module
+    PyObject* pTranslateModule = (new Base::Translate)->module().ptr();
+    Py_INCREF(pTranslateModule);
+    PyModule_AddObject(pAppModule, "Qt", pTranslateModule);
 
     //insert Units module
 #if PY_MAJOR_VERSION >= 3
@@ -336,6 +357,11 @@ Application::~Application()
 /// get called by the document when the name is changing
 void Application::renameDocument(const char *OldName, const char *NewName)
 {
+#if 1
+    (void)OldName;
+    (void)NewName;
+    throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
+#else
     std::map<std::string,Document*>::iterator pos;
     pos = DocMap.find(OldName);
 
@@ -349,9 +375,10 @@ void Application::renameDocument(const char *OldName, const char *NewName)
     else {
         throw Base::RuntimeError("Application::renameDocument(): no document with this name to rename!");
     }
+#endif
 }
 
-Document* Application::newDocument(const char * Name, const char * UserName)
+Document* Application::newDocument(const char * Name, const char * UserName, bool createView)
 {
     // get a valid name anyway!
     if (!Name || Name[0] == '\0')
@@ -376,7 +403,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     }
 
     // create the FreeCAD document
-    std::unique_ptr<Document> newDoc(new Document());
+    std::unique_ptr<Document> newDoc(new Document(name.c_str()));
 
     // add the document to the internal list
     DocMap[name] = newDoc.release(); // now owned by the Application
@@ -384,13 +411,26 @@ Document* Application::newDocument(const char * Name, const char * UserName)
 
 
     // connect the signals to the application for the new document
+    _pActiveDoc->signalBeforeChange.connect(boost::bind(&App::Application::slotBeforeChangeDocument, this, _1, _2));
+    _pActiveDoc->signalChanged.connect(boost::bind(&App::Application::slotChangedDocument, this, _1, _2));
     _pActiveDoc->signalNewObject.connect(boost::bind(&App::Application::slotNewObject, this, _1));
     _pActiveDoc->signalDeletedObject.connect(boost::bind(&App::Application::slotDeletedObject, this, _1));
+    _pActiveDoc->signalBeforeChangeObject.connect(boost::bind(&App::Application::slotBeforeChangeObject, this, _1, _2));
     _pActiveDoc->signalChangedObject.connect(boost::bind(&App::Application::slotChangedObject, this, _1, _2));
     _pActiveDoc->signalRelabelObject.connect(boost::bind(&App::Application::slotRelabelObject, this, _1));
     _pActiveDoc->signalActivatedObject.connect(boost::bind(&App::Application::slotActivatedObject, this, _1));
     _pActiveDoc->signalUndo.connect(boost::bind(&App::Application::slotUndoDocument, this, _1));
     _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, _1));
+    _pActiveDoc->signalRecomputedObject.connect(boost::bind(&App::Application::slotRecomputedObject, this, _1));
+    _pActiveDoc->signalRecomputed.connect(boost::bind(&App::Application::slotRecomputed, this, _1));
+    _pActiveDoc->signalBeforeRecompute.connect(boost::bind(&App::Application::slotBeforeRecompute, this, _1));
+    _pActiveDoc->signalOpenTransaction.connect(boost::bind(&App::Application::slotOpenTransaction, this, _1, _2));
+    _pActiveDoc->signalCommitTransaction.connect(boost::bind(&App::Application::slotCommitTransaction, this, _1));
+    _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, _1));
+    _pActiveDoc->signalStartSave.connect(boost::bind(&App::Application::slotStartSaveDocument, this, _1, _2));
+    _pActiveDoc->signalFinishSave.connect(boost::bind(&App::Application::slotFinishSaveDocument, this, _1, _2));
+    _pActiveDoc->signalChangePropertyEditor.connect(
+            boost::bind(&App::Application::slotChangePropertyEditor, this, _1, _2));
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -399,7 +439,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
     }
 
-    signalNewDocument(*_pActiveDoc);
+    signalNewDocument(*_pActiveDoc,createView);
 
     // set the UserName after notifying all observers
     _pActiveDoc->Label.setValue(userName);
@@ -425,6 +465,8 @@ bool Application::closeDocument(const char* name)
     std::unique_ptr<Document> delDoc (pos->second);
     DocMap.erase( pos );
 
+    _objCount = -1;
+
     // Trigger observers after removing the document from the internal map.
     signalDeletedDocument();
 
@@ -433,6 +475,7 @@ bool Application::closeDocument(const char* name)
 
 void Application::closeAllDocuments(void)
 {
+    Base::FlagToggler<bool> flag(_isClosingAll);
     std::map<std::string,Document*>::iterator pos;
     while((pos = DocMap.begin()) != DocMap.end())
         closeDocument(pos->first.c_str());
@@ -491,7 +534,185 @@ std::string Application::getUniqueDocumentName(const char *Name) const
     }
 }
 
-Document* Application::openDocument(const char * FileName)
+int Application::addPendingDocument(const char *FileName, const char *objName, bool allowPartial)
+{
+    if(!_isRestoring)
+        return 0;
+    if(allowPartial && _allowPartial)
+        return -1;
+    assert(FileName && FileName[0]);
+    assert(objName && objName[0]);
+    auto ret =  _pendingDocMap.emplace(FileName,std::set<std::string>());
+    ret.first->second.emplace(objName);
+    if(ret.second) {
+        _pendingDocs.push_back(ret.first->first.c_str());
+        return 1;
+    }
+    return -1;
+}
+
+bool Application::isRestoring() const {
+    return _isRestoring || Document::isAnyRestoring();
+}
+
+bool Application::isClosingAll() const {
+    return _isClosingAll;
+}
+
+struct DocTiming {
+    FC_DURATION_DECLARE(d1);
+    FC_DURATION_DECLARE(d2);
+    DocTiming() {
+        FC_DURATION_INIT(d1);
+        FC_DURATION_INIT(d2);
+    }
+};
+
+class DocOpenGuard {
+public:
+    bool &flag;
+    boost::signals2::signal<void ()> &signal;
+    DocOpenGuard(bool &f, boost::signals2::signal<void ()> &s)
+        :flag(f),signal(s)
+    {
+        flag = true;
+    }
+    ~DocOpenGuard() {
+        if(flag) {
+            flag = false;
+            signal();
+        }
+    }
+};
+
+Document* Application::openDocument(const char * FileName, bool createView) {
+    std::vector<std::string> filenames(1,FileName);
+    auto docs = openDocuments(filenames,0,0,0,createView);
+    if(docs.size())
+        return docs.front();
+    return 0;
+}
+
+std::vector<Document*> Application::openDocuments(
+        const std::vector<std::string> &filenames, 
+        const std::vector<std::string> *paths, 
+        const std::vector<std::string> *labels, 
+        std::vector<std::string> *errs,
+        bool createView)
+{
+    std::vector<Document*> res(filenames.size(),nullptr);
+    if(filenames.empty())
+        return res;
+
+    if(errs)
+        errs->resize(filenames.size());
+
+    DocOpenGuard guard(_isRestoring,signalFinishOpenDocument);
+    _pendingDocs.clear();
+    _pendingDocsReopen.clear();
+    _pendingDocMap.clear();
+
+    signalStartOpenDocument();
+
+    ParameterGrp::handle hGrp = GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
+    _allowPartial = !hGrp->GetBool("NoPartialLoading",false);
+
+    for(auto &name : filenames)
+        _pendingDocs.push_back(name.c_str());
+
+    std::deque<std::pair<Document *, DocTiming> > newDocs;
+
+    FC_TIME_INIT(t);
+
+    for(std::size_t count=0;;++count) {
+        const char *name = _pendingDocs.front();
+        _pendingDocs.pop_front();
+        bool isMainDoc = count<filenames.size();
+        try {
+            _objCount = -1;
+            std::set<std::string> objNames;
+            if(_allowPartial) {
+                auto it = _pendingDocMap.find(name);
+                if(it!=_pendingDocMap.end())
+                    objNames.swap(it->second);
+            }
+            FC_TIME_INIT(t1);
+            DocTiming timing;
+            const char *path = name;
+            const char *label = 0;
+            if(isMainDoc) {
+                if(paths && paths->size()>count)
+                    path = (*paths)[count].c_str();
+                if(labels && labels->size()>count)
+                    label = (*labels)[count].c_str();
+            }
+            auto doc = openDocumentPrivate(path,name,label,isMainDoc,createView,objNames);
+            FC_DURATION_PLUS(timing.d1,t1);
+            if(doc)
+                newDocs.emplace_front(doc,timing);
+            if(isMainDoc)
+                res[count] = doc;
+            _objCount = -1;
+        }catch(const Base::Exception &e) {
+            if(!errs && isMainDoc) 
+                throw;
+            if(errs && isMainDoc)
+                (*errs)[count] = e.what();
+            else
+                Console().Error("Exception opening file: %s [%s]\n", name, e.what());
+        }catch(const std::exception &e) {
+            if(!errs && isMainDoc) 
+                throw;
+            if(errs && isMainDoc)
+                (*errs)[count] = e.what();
+            else
+                Console().Error("Exception opening file: %s [%s]\n", name, e.what());
+        }catch(...) {
+            if(errs) {
+                if(isMainDoc)
+                    (*errs)[count] = "unknown error";
+            } else {
+                _pendingDocs.clear();
+                _pendingDocsReopen.clear();
+                _pendingDocMap.clear();
+                throw;
+            }
+        }
+        if(_pendingDocs.empty()) {
+            if(_pendingDocsReopen.empty())
+                break;
+            _allowPartial = false;
+            _pendingDocs.swap(_pendingDocsReopen);
+        }
+    }
+    _pendingDocs.clear();
+    _pendingDocsReopen.clear();
+    _pendingDocMap.clear();
+
+    Base::SequencerLauncher seq("Postprocessing...", newDocs.size());
+    for(auto &v : newDocs) {
+        FC_TIME_INIT(t1);
+        v.first->afterRestore(true);
+        FC_DURATION_PLUS(v.second.d2,t1);
+        seq.next();
+    }
+    setActiveDocument(newDocs.back().first);
+
+    for(auto &v : newDocs) {
+        FC_DURATION_LOG(v.second.d1, v.first->getName() << " restore");
+        FC_DURATION_LOG(v.second.d2, v.first->getName() << " postprocess");
+    }
+    FC_TIME_LOG(t,"total");
+
+    _isRestoring = false;
+    signalFinishOpenDocument();
+    return res;
+}
+
+Document* Application::openDocumentPrivate(const char * FileName, 
+        const char *propFileName, const char *label,
+        bool isMainDoc, bool createView, 
+        const std::set<std::string> &objNames)
 {
     FileInfo File(FileName);
 
@@ -506,23 +727,64 @@ Document* Application::openDocument(const char * FileName)
     for (std::map<std::string,Document*>::iterator it = DocMap.begin(); it != DocMap.end(); ++it) {
         // get unique path separators
         std::string fi = FileInfo(it->second->FileName.getValue()).filePath();
-        if (filepath == fi) {
-            std::stringstream str;
-            str << "The project '" << FileName << "' is already open!";
-            throw Base::FileSystemError(str.str().c_str());
+        if (filepath != fi) 
+            continue;
+        if(it->second->testStatus(App::Document::PartialDoc) 
+                || it->second->testStatus(App::Document::PartialRestore)) {
+            // Here means a document is already partially loaded, but the document
+            // is requested again, either partial or not. We must check if the 
+            // document contains the required object
+            
+            if(isMainDoc) {
+                // Main document must be open fully, so close and reopen
+                closeDocument(it->first.c_str());
+                break;
+            }
+
+            if(_allowPartial) {
+                bool reopen = false;
+                for(auto &name : objNames) {
+                    auto obj = it->second->getObject(name.c_str());
+                    if(!obj || obj->testStatus(App::PartialObject)) {
+                        reopen = true;
+                        break;
+                    }
+                }
+                if(!reopen)
+                    return 0;
+            }
+            auto &names = _pendingDocMap[FileName];
+            names.clear();
+            _pendingDocsReopen.push_back(FileName);
+            return 0;
         }
+
+        if(!isMainDoc)
+            return 0;
+        std::stringstream str;
+        str << "The project '" << FileName << "' is already open!";
+        throw Base::FileSystemError(str.str().c_str());
     }
+
+    std::string name;
+    if(propFileName != FileName) {
+        FileInfo fi(propFileName);
+        name = fi.fileNamePure();
+    }else
+        name = File.fileNamePure();
 
     // Use the same name for the internal and user name.
     // The file name is UTF-8 encoded which means that the internal name will be modified
     // to only contain valid ASCII characters but the user name will be kept.
-    Document* newDoc = newDocument(File.fileNamePure().c_str(), File.fileNamePure().c_str());
+    if(!label)
+        label = name.c_str();
+    Document* newDoc = newDocument(name.c_str(),label,isMainDoc && createView);
 
-    newDoc->FileName.setValue(File.filePath());
+    newDoc->FileName.setValue(propFileName==FileName?File.filePath():propFileName);
 
     try {
         // read the document
-        newDoc->restore();
+        newDoc->restore(File.filePath().c_str(),true,objNames);
         return newDoc;
     }
     // if the project file itself is corrupt then
@@ -587,6 +849,164 @@ void Application::setActiveDocument(const char *Name)
     }
 }
 
+AutoTransaction::AutoTransaction(const char *name, bool tmpName) {
+    auto &app = GetApplication();
+    if(name && app._activeTransactionGuard>=0) {
+        if(!app.getActiveTransaction()
+                || (!tmpName && app._activeTransactionTmpName))
+        {
+            FC_LOG("auto transaction '" << name << "', " << tmpName);
+            tid = app.setActiveTransaction(name);
+            app._activeTransactionTmpName = tmpName;
+        }
+    }
+    // We use negative transaction guard to disable auto transaction from here
+    // and any stack below. This is to support user setting active transaction
+    // before having any existing AutoTransaction on stack, or 'persist'
+    // transaction that can out live AutoTransaction. 
+    if(app._activeTransactionGuard<0)
+        --app._activeTransactionGuard;
+    else if(tid || app._activeTransactionGuard>0)
+        ++app._activeTransactionGuard;
+    else if(app.getActiveTransaction()) {
+        FC_LOG("auto transaction disabled because of '" << app._activeTransactionName << "'");
+        --app._activeTransactionGuard;
+    } else
+        ++app._activeTransactionGuard;
+    FC_TRACE("construct auto Transaction " << app._activeTransactionGuard);
+}
+
+AutoTransaction::~AutoTransaction() {
+    auto &app = GetApplication();
+    FC_TRACE("before destruct auto Transaction " << app._activeTransactionGuard);
+    if(app._activeTransactionGuard<0)
+        ++app._activeTransactionGuard;
+    else if(!app._activeTransactionGuard) {
+#ifdef FC_DEBUG
+        FC_ERR("Transaction guard error");
+#endif
+    } else if(--app._activeTransactionGuard == 0) {
+        try {
+            // We don't call close() here, because close() only closes
+            // transaction that we opened during construction time. However,
+            // when _activeTransactionGuard reaches zero here, we are supposed
+            // to close any transaction opened.
+            app.closeActiveTransaction();
+        } catch(Base::Exception &e) {
+            e.ReportException();
+        } catch(...)
+        {}
+    }
+    FC_TRACE("destruct auto Transaction " << app._activeTransactionGuard);
+}
+
+void AutoTransaction::close(bool abort) {
+    if(tid || abort) {
+        GetApplication().closeActiveTransaction(abort,abort?0:tid);
+        tid = 0;
+    }
+}
+
+void AutoTransaction::setEnable(bool enable) {
+    auto &app = GetApplication();
+    if(!app._activeTransactionGuard)
+        return;
+    if((enable && app._activeTransactionGuard>0)
+            || (!enable && app._activeTransactionGuard<0))
+        return;
+    app._activeTransactionGuard = -app._activeTransactionGuard;
+    FC_TRACE("toggle auto Transaction " << app._activeTransactionGuard);
+    if(!enable && app._activeTransactionTmpName) {
+        bool close = true;
+        for(auto &v : app.DocMap) {
+            if(v.second->hasPendingTransaction()) {
+                close = false;
+                break;
+            }
+        }
+        if(close)
+            app.closeActiveTransaction();
+    }
+}
+
+int Application::setActiveTransaction(const char *name, bool persist) {
+    if(!name || !name[0])
+        name = "Command";
+
+    if(_activeTransactionGuard>0 && getActiveTransaction()) {
+        if(_activeTransactionTmpName) {
+            FC_LOG("transaction rename to '" << name << "'");
+            for(auto &v : DocMap)
+                v.second->renameTransaction(name,_activeTransactionID);
+        } else {
+            if(persist)
+                AutoTransaction::setEnable(false);
+            return 0;
+        }
+    }else{
+        FC_LOG("set active transaction '" << name << "'");
+        _activeTransactionID = 0;
+        for(auto &v : DocMap)
+            v.second->_commitTransaction();
+        _activeTransactionID = Transaction::getNewID();
+    }
+    _activeTransactionTmpName = false;
+    _activeTransactionName = name;
+    if(persist)
+        AutoTransaction::setEnable(false);
+    return _activeTransactionID;
+}
+
+const char *Application::getActiveTransaction(int *id) const {
+    int tid = 0;
+    if(Transaction::getLastID() == _activeTransactionID)
+        tid = _activeTransactionID;
+    if(id) *id = tid;
+    return tid?_activeTransactionName.c_str():0;
+}
+
+void Application::closeActiveTransaction(bool abort, int id) {
+    if(!id) id = _activeTransactionID;
+    if(!id) return;
+
+    if(_activeTransactionGuard>0 && !abort) {
+        FC_LOG("ignore close transaction");
+        return;
+    }
+
+    FC_LOG("close transaction '" << _activeTransactionName << "' " << abort);
+    _activeTransactionID = 0;
+
+    TransactionSignaller siganller(abort,false);
+    for(auto &v : DocMap) {
+        if(v.second->getTransactionID(true) != id)
+            continue;
+        if(abort)
+            v.second->_abortTransaction();
+        else
+            v.second->_commitTransaction();
+    }
+}
+
+static int _TransSignalCount;
+static bool _TransSignalled;
+Application::TransactionSignaller::TransactionSignaller(bool abort, bool signal)
+    :abort(abort)
+{
+    ++_TransSignalCount;
+    if(signal && !_TransSignalled) {
+        _TransSignalled = true;
+        GetApplication().signalBeforeCloseTransaction(abort);
+    }
+}
+
+Application::TransactionSignaller::~TransactionSignaller() {
+    if(--_TransSignalCount == 0 && _TransSignalled) {
+        _TransSignalled = false;
+        GetApplication().signalCloseTransaction(abort);
+    }
+}
+
 const char* Application::getHomePath(void) const
 {
     return _mConfig["AppHomePath"].c_str();
@@ -646,6 +1066,51 @@ std::string Application::getHelpDir()
 #else
     return mConfig["DocPath"];
 #endif
+}
+
+int Application::checkLinkDepth(int depth, bool no_throw) {
+    if(_objCount<0) {
+        _objCount = 0;
+        for(auto &v : DocMap) 
+            _objCount += v.second->countObjects();
+    }
+    if(depth > _objCount+2) {
+        const char *msg = "Link recursion limit reached. "
+                "Please check for cyclic reference.";
+        if(no_throw) {
+            FC_ERR(msg);
+            return 0;
+        }else
+            throw Base::RuntimeError(msg);
+    }
+    return _objCount+2;
+}
+
+std::set<DocumentObject *> Application::getLinksTo(
+        const DocumentObject *obj, int options, int maxCount) const
+{
+    std::set<DocumentObject *> links;
+    if(!obj) {
+        for(auto &v : DocMap) {
+            v.second->getLinksTo(links,obj,options,maxCount);
+            if(maxCount && (int)links.size()>=maxCount)
+                break;
+        }
+    } else {
+        std::set<Document*> docs;
+        for(auto o : obj->getInList()) {
+            if(o && o->getNameInDocument() && docs.insert(o->getDocument()).second) {
+                o->getDocument()->getLinksTo(links,obj,options,maxCount);
+                if(maxCount && (int)links.size()>=maxCount)
+                    break;
+            }
+        }
+    }
+    return links;
+}
+
+bool Application::hasLinksTo(const DocumentObject *obj) const {
+    return !getLinksTo(obj,0,1).empty();
 }
 
 ParameterManager & Application::GetSystemParameter(void)
@@ -940,14 +1405,31 @@ std::map<std::string, std::string> Application::getExportFilters(void) const
 
 //**************************************************************************
 // signaling
+void Application::slotBeforeChangeDocument(const App::Document& doc, const Property& prop)
+{
+    this->signalBeforeChangeDocument(doc, prop);
+}
+
+void Application::slotChangedDocument(const App::Document& doc, const Property& prop)
+{
+    this->signalChangedDocument(doc, prop);
+}
+
 void Application::slotNewObject(const App::DocumentObject&O)
 {
     this->signalNewObject(O);
+    _objCount = -1;
 }
 
 void Application::slotDeletedObject(const App::DocumentObject&O)
 {
     this->signalDeletedObject(O);
+    _objCount = -1;
+}
+
+void Application::slotBeforeChangeObject(const DocumentObject& O, const Property& Prop)
+{
+    this->signalBeforeChangeObject(O, Prop);
 }
 
 void Application::slotChangedObject(const App::DocumentObject&O, const App::Property& P)
@@ -973,6 +1455,51 @@ void Application::slotUndoDocument(const App::Document& d)
 void Application::slotRedoDocument(const App::Document& d)
 {
     this->signalRedoDocument(d);
+}
+
+void Application::slotRecomputedObject(const DocumentObject& obj)
+{
+    this->signalObjectRecomputed(obj);
+}
+
+void Application::slotRecomputed(const Document& doc)
+{
+    this->signalRecomputed(doc);
+}
+
+void Application::slotBeforeRecompute(const Document& doc)
+{
+    this->signalBeforeRecomputeDocument(doc);
+}
+
+void Application::slotOpenTransaction(const Document& d, string s)
+{
+    this->signalOpenTransaction(d, s);
+}
+
+void Application::slotCommitTransaction(const Document& d)
+{
+    this->signalCommitTransaction(d);
+}
+
+void Application::slotAbortTransaction(const Document& d)
+{
+    this->signalAbortTransaction(d);
+}
+
+void Application::slotStartSaveDocument(const App::Document& doc, const std::string& filename)
+{
+    this->signalStartSaveDocument(doc, filename);
+}
+
+void Application::slotFinishSaveDocument(const App::Document& doc, const std::string& filename)
+{
+    this->signalFinishSaveDocument(doc, filename);
+}
+
+void Application::slotChangePropertyEditor(const App::Document &doc, const App::Property &prop)
+{
+    this->signalChangePropertyEditor(doc,prop);
 }
 
 //**************************************************************************
@@ -1014,7 +1541,7 @@ void Application::destruct(void)
     _pcSysParamMngr = 0;
     _pcUserParamMngr = 0;
 
-    // not initialized or doubel destruct!
+    // not initialized or double destruct!
     assert(_pcSingleton);
     delete _pcSingleton;
 
@@ -1110,11 +1637,11 @@ void printBacktrace(size_t skip=0)
 void segmentation_fault_handler(int sig)
 {
 #if defined(FC_OS_LINUX)
+    (void)sig;
     std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
     printBacktrace(2);
     exit(1);
-#endif
-
+#else
     switch (sig) {
         case SIGSEGV:
             std::cerr << "Illegal storage access..." << std::endl;
@@ -1132,9 +1659,10 @@ void segmentation_fault_handler(int sig)
             std::cerr << "Unknown error occurred..." << std::endl;
             break;
     }
+#endif // FC_OS_LINUX
 }
 
-void my_terminate_handler()
+void unhandled_exception_handler()
 {
     std::cerr << "Terminating..." << std::endl;
 }
@@ -1150,23 +1678,28 @@ void unexpection_error_handler()
 #endif
 }
 
-#ifdef _MSC_VER // Microsoft compiler
-
-void my_trans_func( unsigned int code, EXCEPTION_POINTERS* pExp )
+#if defined(FC_SE_TRANSLATOR) // Microsoft compiler
+void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
 {
+    Q_UNUSED(pExp)
+    switch (code)
+    {
+    case EXCEPTION_ACCESS_VIOLATION:
+        throw Base::AccessViolation();
+    case EXCEPTION_FLT_DIVIDE_BY_ZERO:
+    case EXCEPTION_INT_DIVIDE_BY_ZERO:
+        //throw Base::DivisionByZeroError("Division by zero!");
+        Base::Console().Error("SEH exception (%u): Division by zero\n", code);
+        return;
+    }
 
-   //switch (code)
-   //{
-   //    case FLT_DIVIDE_BY_ZERO :
-   //       //throw CMyFunkyDivideByZeroException(code, pExp);
-   //       throw Base::DivisionByZeroError("Devision by zero!");
-   //    break;
-   //}
-
-   // general C++ SEH exception for things we don't need to handle separately....
-   throw Base::RuntimeError("my_trans_func()");
+    std::stringstream str;
+    str << "SEH exception of type: " << code;
+    // general C++ SEH exception for things we don't need to handle separately....
+    throw Base::RuntimeError(str.str());
 }
 #endif
+
 void Application::init(int argc, char ** argv)
 {
     try {
@@ -1182,13 +1715,14 @@ void Application::init(int argc, char ** argv)
 #if defined (_MSC_VER) // Microsoft compiler
         std::signal(SIGSEGV,segmentation_fault_handler);
         std::signal(SIGABRT,segmentation_fault_handler);
-        std::set_terminate(my_terminate_handler);
+        std::set_terminate(unhandled_exception_handler);
         std::set_unexpected(unexpection_error_handler);
-//        _set_se_translator(my_trans_func);
 #elif defined(FC_OS_LINUX)
         std::signal(SIGSEGV,segmentation_fault_handler);
 #endif
-
+#if defined(FC_SE_TRANSLATOR)
+        _set_se_translator(my_se_translator_filter);
+#endif
         initTypes();
 
 #if (BOOST_VERSION < 104600) || (BOOST_FILESYSTEM_VERSION == 2)
@@ -1211,6 +1745,7 @@ void Application::initTypes(void)
     Base::Type                      ::init();
     Base::BaseClass                 ::init();
     Base::Exception                 ::init();
+    Base::AbortException            ::init();
     Base::Persistence               ::init();
 
     // Complex data classes
@@ -1246,21 +1781,32 @@ void Application::initTypes(void)
     App ::PropertyIntegerSet        ::init();
     App ::PropertyMap               ::init();
     App ::PropertyString            ::init();
+    App ::PropertyPersistentObject  ::init();
     App ::PropertyUUID              ::init();
     App ::PropertyFont              ::init();
     App ::PropertyStringList        ::init();
+    App ::PropertyLinkBase          ::init();
+    App ::PropertyLinkListBase      ::init();
     App ::PropertyLink              ::init();
     App ::PropertyLinkChild         ::init();
     App ::PropertyLinkGlobal        ::init();
+    App ::PropertyLinkHidden        ::init();
     App ::PropertyLinkSub           ::init();
     App ::PropertyLinkSubChild      ::init();
     App ::PropertyLinkSubGlobal     ::init();
+    App ::PropertyLinkSubHidden     ::init();
     App ::PropertyLinkList          ::init();
     App ::PropertyLinkListChild     ::init();
     App ::PropertyLinkListGlobal    ::init();
+    App ::PropertyLinkListHidden    ::init();
     App ::PropertyLinkSubList       ::init();
     App ::PropertyLinkSubListChild  ::init();
     App ::PropertyLinkSubListGlobal ::init();
+    App ::PropertyLinkSubListHidden ::init();
+    App ::PropertyXLink             ::init();
+    App ::PropertyXLinkSub          ::init();
+    App ::PropertyXLinkSubList      ::init();
+    App ::PropertyXLinkContainer    ::init();
     App ::PropertyMatrix            ::init();
     App ::PropertyVector            ::init();
     App ::PropertyVectorDistance    ::init();
@@ -1280,6 +1826,7 @@ void Application::initTypes(void)
     App ::PropertyFile              ::init();
     App ::PropertyFileIncluded      ::init();
     App ::PropertyPythonObject      ::init();
+    App ::PropertyExpressionContainer  ::init();
     App ::PropertyExpressionEngine  ::init();
 
     // Extension classes
@@ -1292,6 +1839,10 @@ void Application::initTypes(void)
     App ::GeoFeatureGroupExtensionPython::init();
     App ::OriginGroupExtension          ::init();
     App ::OriginGroupExtensionPython    ::init();
+    App ::LinkBaseExtension             ::init();
+    App ::LinkBaseExtensionPython       ::init();
+    App ::LinkExtension                 ::init();
+    App ::LinkExtensionPython           ::init();
 
     // Document classes
     App ::TransactionalObject       ::init();
@@ -1314,11 +1865,18 @@ void Application::initTypes(void)
     App ::MaterialObjectPython      ::init();
     App ::TextDocument              ::init();
     App ::Placement                 ::init();
+    App ::PlacementPython           ::init();
     App ::OriginFeature             ::init();
     App ::Plane                     ::init();
     App ::Line                      ::init();
     App ::Part                      ::init();
     App ::Origin                    ::init();
+    App ::Link                      ::init();
+    App ::LinkPython                ::init();
+    App ::LinkElement               ::init();
+    App ::LinkElementPython         ::init();
+    App ::LinkGroup                 ::init();
+    App ::LinkGroupPython           ::init();
 
     // Expression classes
     App ::Expression                ::init();
@@ -1332,6 +1890,7 @@ void Application::initTypes(void)
     App ::FunctionExpression        ::init();
     App ::BooleanExpression         ::init();
     App ::RangeExpression           ::init();
+    App ::PyObjectExpression        ::init();
 
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>
@@ -1341,10 +1900,10 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::AbortException>;
     new ExceptionProducer<Base::XMLBaseException>;
     new ExceptionProducer<Base::XMLParseException>;
+    new ExceptionProducer<Base::XMLAttributeError>;
     new ExceptionProducer<Base::FileException>;
     new ExceptionProducer<Base::FileSystemError>;
     new ExceptionProducer<Base::BadFormatError>;
-    new ExceptionProducer<Base::MemoryException>;
     new ExceptionProducer<Base::MemoryException>;
     new ExceptionProducer<Base::AccessViolation>;
     new ExceptionProducer<Base::AbnormalProgramTermination>;
@@ -1353,8 +1912,11 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::TypeError>;
     new ExceptionProducer<Base::ValueError>;
     new ExceptionProducer<Base::IndexError>;
+    new ExceptionProducer<Base::NameError>;
+    new ExceptionProducer<Base::ImportError>;
     new ExceptionProducer<Base::AttributeError>;
     new ExceptionProducer<Base::RuntimeError>;
+    new ExceptionProducer<Base::BadGraphError>;
     new ExceptionProducer<Base::NotImplementedError>;
     new ExceptionProducer<Base::DivisionByZeroError>;
     new ExceptionProducer<Base::ReferencesError>;
@@ -1365,6 +1927,7 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::UnderflowError>;
     new ExceptionProducer<Base::UnitsMismatchError>;
     new ExceptionProducer<Base::CADKernelError>;
+    new ExceptionProducer<Base::RestoreError>;
 }
 
 void Application::initConfig(int argc, char ** argv)
@@ -1415,17 +1978,27 @@ void Application::initConfig(int argc, char ** argv)
 #   endif
 
     // init python
-    mConfig["PythonSearchPath"] = Interpreter().init(argc,argv);
+#if PY_MAJOR_VERSION >= 3
+    PyImport_AppendInittab ("FreeCAD", init_freecad_module);
+    PyImport_AppendInittab ("__FreeCADBase__", init_freecad_base_module);
+#endif
+    const char* pythonpath = Interpreter().init(argc,argv);
+    if (pythonpath)
+        mConfig["PythonSearchPath"] = pythonpath;
+    else
+        Base::Console().Warning("Encoding of Python paths failed\n");
 
     // Parse the options that have impact on the init process
     ParseOptions(argc,argv);
 
     // Init console ===========================================================
     Base::PyGILStateLocker lock;
-    _pConsoleObserverStd = new ConsoleObserverStd();
-    Console().AttachObserver(_pConsoleObserverStd);
+    if (mConfig["LoggingConsole"] == "1") {
+        _pConsoleObserverStd = new ConsoleObserverStd();
+        Console().AttachObserver(_pConsoleObserverStd);
+    }
     if (mConfig["Verbose"] == "Strict")
-        Console().SetMode(ConsoleSingleton::Verbose);
+        Console().UnsetConsoleMode(ConsoleSingleton::Verbose);
 
     // file logging Init ===========================================================
     if (mConfig["LoggingFile"] == "1") {
@@ -1436,48 +2009,55 @@ void Application::initConfig(int argc, char ** argv)
         _pConsoleObserverFile = 0;
 
     // Banner ===========================================================
-    if (!(mConfig["Verbose"] == "Strict"))
-        Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
-                          mConfig["ExeVersion"].c_str(),
-                          mConfig["BuildVersionMajor"].c_str(),
-                          mConfig["BuildVersionMinor"].c_str(),
-                          mConfig["BuildRevision"].c_str(),
-                          mConfig["CopyrightInfo"].c_str());
-    else
-        Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
-                          mConfig["ExeVersion"].c_str(),
-                          mConfig["BuildVersionMajor"].c_str(),
-                          mConfig["BuildVersionMinor"].c_str(),
-                          mConfig["BuildRevision"].c_str());
-
+    if (!(mConfig["RunMode"] == "Cmd")) {
+        // Remove banner if FreeCAD is invoked via the -c command as regular
+        // Python interpreter
+        if (!(mConfig["Verbose"] == "Strict"))
+            Console().Message("%s %s, Libs: %s.%sR%s\n%s",mConfig["ExeName"].c_str(),
+                              mConfig["ExeVersion"].c_str(),
+                              mConfig["BuildVersionMajor"].c_str(),
+                              mConfig["BuildVersionMinor"].c_str(),
+                              mConfig["BuildRevision"].c_str(),
+                              mConfig["CopyrightInfo"].c_str());
+        else
+            Console().Message("%s %s, Libs: %s.%sB%s\n",mConfig["ExeName"].c_str(),
+                              mConfig["ExeVersion"].c_str(),
+                              mConfig["BuildVersionMajor"].c_str(),
+                              mConfig["BuildVersionMinor"].c_str(),
+                              mConfig["BuildRevision"].c_str());
+    }
     LoadParameters();
 
     auto loglevelParam = _pcUserParamMngr->GetGroup("BaseApp/LogLevels");
     const auto &loglevels = loglevelParam->GetIntMap();
     bool hasDefault = false;
-    for(const auto &v : loglevels) {
-        if(v.first == "Default") {
+    for (const auto &v : loglevels) {
+        if (v.first == "Default") {
 #ifndef FC_DEBUG
-            if(v.second>=0) {
+            if (v.second>=0) {
                 hasDefault = true;
                 Base::Console().SetDefaultLogLevel(v.second);
             }
 #endif
-        }else if(v.first == "DebugDefault") {
+        }
+        else if (v.first == "DebugDefault") {
 #ifdef FC_DEBUG
-            if(v.second>=0) {
+            if (v.second>=0) {
                 hasDefault = true;
                 Base::Console().SetDefaultLogLevel(v.second);
             }
 #endif
-        }else
+        }
+        else {
             *Base::Console().GetLogLevel(v.first.c_str()) = v.second;
+        }
     }
-    if(!hasDefault) {
+
+    if (!hasDefault) {
 #ifdef FC_DEBUG
-        loglevelParam->SetInt("DebugDefault",Base::Console().LogLevel(-1));
+        loglevelParam->SetInt("DebugDefault", Base::Console().LogLevel(-1));
 #else
-        loglevelParam->SetInt("Default",Base::Console().LogLevel(-1));
+        loglevelParam->SetInt("Default", Base::Console().LogLevel(-1));
 #endif
     }
 
@@ -1538,6 +2118,12 @@ void Application::initApplication(void)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
     UnitsApi::setSchema((UnitSystem)hGrp->GetInt("UserSchema",0));
+    UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+
+    // In case we are using fractional inches, get user setting for min unit
+    int denom = hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator());
+    Base::QuantityFormat::setDefaultDenominator(denom);
+
 
 #if defined (_DEBUG)
     Console().Log("Application is built with debug information\n");
@@ -1548,10 +2134,9 @@ void Application::initApplication(void)
     try {
         Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
         Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
-        ObjectLabelObserver::instance();
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        e.ReportException();
     }
 }
 
@@ -1618,7 +2203,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     processed.push_back(*it);
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
-                else {
+                else if (file.exists()) {
                     Console().Warning("File format not supported: %s \n", file.filePath().c_str());
                 }
             }
@@ -1641,11 +2226,20 @@ void Application::processCmdLineFiles(void)
 {
     // process files passed to command line
     std::list<std::string> files = getCmdLineFiles();
-    processFiles(files);
+    std::list<std::string> processed = processFiles(files);
 
     if (files.empty()) {
         if (mConfig["RunMode"] == "Exit")
             mConfig["RunMode"] = "Cmd";
+    }
+    else if (processed.empty() && files.size() == 1 && mConfig["RunMode"] == "Cmd") {
+        // In case we are in console mode and the argument is not a file but Python code
+        // then execute it. This is to behave like the standard Python executable.
+        Base::FileInfo file(files.front());
+        if (!file.exists()) {
+            Interpreter().runString(files.front().c_str());
+            mConfig["RunMode"] = "Exit";
+        }
     }
 
     const std::map<std::string,std::string>& cfg = Application::Config();
@@ -1928,7 +2522,7 @@ void Application::ParseOptions(int ac, char ** av)
 #endif
     ;
 
-    // Ignored options, will be safely ignored. Mostly used by underlaying libs.
+    // Ignored options, will be safely ignored. Mostly used by underlying libs.
     //boost::program_options::options_description x11("X11 options");
     //x11.add_options()
     //    ("display",  boost::program_options::value< string >(), "set the X-Server")
@@ -2260,7 +2854,7 @@ void Application::ExtractUserPath()
 
 #elif defined(FC_OS_WIN32)
     WCHAR szPath[MAX_PATH];
-    TCHAR dest[MAX_PATH*3];
+    char dest[MAX_PATH*3];
     // Get the default path where we can save our documents. It seems that
     // 'CSIDL_MYDOCUMENTS' doesn't work on all machines, so we use 'CSIDL_PERSONAL'
     // which does the same.
@@ -2364,8 +2958,8 @@ std::string Application::FindHomePath(const char* sCall)
             absPath = path;
     }
     else {
-        // Find the path of the executable. Theoretically, there could  occur a
-        // race condition when using readlink, but we only use  this method to
+        // Find the path of the executable. Theoretically, there could occur a
+        // race condition when using readlink, but we only use this method to
         // get the absolute path of the executable to compute the actual home
         // path. In the worst case we simply get q wrong path and FreeCAD is not
         // able to load its modules.
@@ -2384,7 +2978,7 @@ std::string Application::FindHomePath(const char* sCall)
 #endif
         if (nchars < 0 || nchars >= PATH_MAX)
             throw Base::FileSystemError("Cannot determine the absolute path of the executable");
-        resolved[nchars] = '\0'; // enfore null termination
+        resolved[nchars] = '\0'; // enforce null termination
         absPath = resolved;
     }
 
@@ -2439,12 +3033,17 @@ std::string Application::FindHomePath(const char* call)
 #elif defined (FC_OS_WIN32)
 std::string Application::FindHomePath(const char* sCall)
 {
-    // We have three ways to start this application either use one of the two executables or
-    // import the FreeCAD.pyd module from a running Python session. In the latter case the
-    // Python interpreter is already initialized.
+    // We have several ways to start this application:
+    // * use one of the two executables
+    // * import the FreeCAD.pyd module from a running Python session. In this case the
+    //   Python interpreter is already initialized.
+    // * use a custom dll that links FreeCAD core dlls and that is loaded by its host application
+    //   In this case the calling name should be set to FreeCADBase.dll or FreeCADApp.dll in order
+    //   to locate the correct home directory
     wchar_t szFileName [MAX_PATH];
-    if (Py_IsInitialized()) {
-        GetModuleFileNameW(GetModuleHandle(sCall),szFileName, MAX_PATH-1);
+    QString dll(QString::fromUtf8(sCall));
+    if (Py_IsInitialized() || dll.endsWith(QLatin1String(".dll"))) {
+        GetModuleFileNameW(GetModuleHandleA(sCall),szFileName, MAX_PATH-1);
     }
     else {
         GetModuleFileNameW(0, szFileName, MAX_PATH-1);
@@ -2481,79 +3080,3 @@ std::string Application::FindHomePath(const char* sCall)
 # error "std::string Application::FindHomePath(const char*) not implemented"
 #endif
 
-ObjectLabelObserver* ObjectLabelObserver::_singleton = 0;
-
-ObjectLabelObserver* ObjectLabelObserver::instance()
-{
-    if (!_singleton)
-        _singleton = new ObjectLabelObserver;
-    return _singleton;
-}
-
-void ObjectLabelObserver::destruct ()
-{
-    delete _singleton;
-    _singleton = 0;
-}
-
-void ObjectLabelObserver::slotRelabelObject(const App::DocumentObject& obj, const App::Property& prop)
-{
-    // observe only the Label property
-    if (&prop == &obj.Label) {
-        // have we processed this (or another?) object right now?
-        if (current) {
-            return;
-        }
-
-        std::string label = obj.Label.getValue();
-        App::Document* doc = obj.getDocument();
-        if (doc && !_hPGrp->GetBool("DuplicateLabels")) {
-            std::vector<std::string> objectLabels;
-            std::vector<App::DocumentObject*>::const_iterator it;
-            std::vector<App::DocumentObject*> objs = doc->getObjects();
-            bool match = false;
-
-            for (it = objs.begin();it != objs.end();++it) {
-                if (*it == &obj)
-                    continue; // don't compare object with itself
-                std::string objLabel = (*it)->Label.getValue();
-                if (!match && objLabel == label)
-                    match = true;
-                objectLabels.push_back(objLabel);
-            }
-
-            // make sure that there is a name conflict otherwise we don't have to do anything
-            if (match && !label.empty()) {
-                // remove number from end to avoid lengthy names
-                size_t lastpos = label.length()-1;
-                while (label[lastpos] >= 48 && label[lastpos] <= 57) {
-                    // if 'lastpos' becomes 0 then all characters are digits. In this case we use
-                    // the complete label again
-                    if (lastpos == 0) {
-                        lastpos = label.length()-1;
-                        break;
-                    }
-                    lastpos--;
-                }
-
-                label = label.substr(0, lastpos+1);
-                label = Base::Tools::getUniqueName(label, objectLabels, 3);
-                this->current = &obj;
-                const_cast<App::DocumentObject&>(obj).Label.setValue(label);
-                this->current = 0;
-            }
-        }
-    }
-}
-
-ObjectLabelObserver::ObjectLabelObserver() : current(0)
-{
-    App::GetApplication().signalChangedObject.connect(boost::bind
-        (&ObjectLabelObserver::slotRelabelObject, this, _1, _2));
-    _hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
-    _hPGrp = _hPGrp->GetGroup("Preferences")->GetGroup("Document");
-}
-
-ObjectLabelObserver::~ObjectLabelObserver()
-{
-}

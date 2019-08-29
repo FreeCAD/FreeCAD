@@ -29,6 +29,7 @@ import FreeCADGui
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
+import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import json
@@ -37,10 +38,8 @@ import xml.sax
 
 from PySide import QtCore, QtGui
 
-
-LOG_MODULE = 'PathToolLibraryManager'
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-#PathLog.trackModule('PathToolLibraryManager')
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -50,33 +49,34 @@ class FreeCADTooltableHandler(xml.sax.ContentHandler):
     # http://www.tutorialspoint.com/python/python_xml_processing.htm
 
     def __init__(self):
+        xml.sax.ContentHandler.__init__(self)
         self.tooltable = None
         self.tool = None
         self.number = None
 
     # Call when an element is found
-    def startElement(self, tag, attributes):
-        if tag == "Tooltable":
+    def startElement(self, name, attrs):
+        if name == "Tooltable":
             self.tooltable = Path.Tooltable()
-        elif tag == "Toolslot":
-            self.number = int(attributes["number"])
-        elif tag == "Tool":
+        elif name == "Toolslot":
+            self.number = int(attrs["number"])
+        elif name == "Tool":
             self.tool = Path.Tool()
-            self.tool.Name = str(attributes["name"])
-            self.tool.ToolType = str(attributes["type"])
-            self.tool.Material = str(attributes["mat"])
+            self.tool.Name = str(attrs["name"])
+            self.tool.ToolType = str(attrs["type"])
+            self.tool.Material = str(attrs["mat"])
             # for some reason without the following line I get an error
-            #print attributes["diameter"]
-            self.tool.Diameter = float(attributes["diameter"])
-            self.tool.LengthOffset = float(attributes["length"])
-            self.tool.FlatRadius = float(attributes["flat"])
-            self.tool.CornerRadius = float(attributes["corner"])
-            self.tool.CuttingEdgeAngle = float(attributes["angle"])
-            self.tool.CuttingEdgeHeight = float(attributes["height"])
+            #print attrs["diameter"]
+            self.tool.Diameter = float(attrs["diameter"])
+            self.tool.LengthOffset = float(attrs["length"])
+            self.tool.FlatRadius = float(attrs["flat"])
+            self.tool.CornerRadius = float(attrs["corner"])
+            self.tool.CuttingEdgeAngle = float(attrs["angle"])
+            self.tool.CuttingEdgeHeight = float(attrs["height"])
 
     # Call when an elements ends
-    def endElement(self, tag):
-        if tag == "Toolslot":
+    def endElement(self, name):
+        if name == "Toolslot":
             if self.tooltable and self.tool and self.number:
                 self.tooltable.setTool(self.number, self.tool)
                 self.number = None
@@ -86,18 +86,19 @@ class FreeCADTooltableHandler(xml.sax.ContentHandler):
 class HeeksTooltableHandler(xml.sax.ContentHandler):
 
     def __init__(self):
+        xml.sax.ContentHandler.__init__(self)
         self.tooltable = Path.Tooltable()
         self.tool = None
         self.number = None
 
     # Call when an element is found
-    def startElement(self, tag, attributes):
-        if tag == "Tool":
+    def startElement(self, name, attrs):
+        if name == "Tool":
             self.tool = Path.Tool()
-            self.number = int(attributes["tool_number"])
-            self.tool.Name = str(attributes["title"])
-        elif tag == "params":
-            t = str(attributes["type"])
+            self.number = int(attrs["tool_number"])
+            self.tool.Name = str(attrs["title"])
+        elif name == "params":
+            t = str(attrs["type"])
             if t == "drill":
                 self.tool.ToolType = "Drill"
             elif t == "center_drill_bit":
@@ -112,25 +113,25 @@ class HeeksTooltableHandler(xml.sax.ContentHandler):
                 self.tool.ToolType = "Chamfer"
             elif t == "engraving_bit":
                 self.tool.ToolType = "Engraver"
-            m = str(attributes["material"])
+            m = str(attrs["material"])
             if m == "0":
                 self.tool.Material = "HighSpeedSteel"
             elif m == "1":
                 self.tool.Material = "Carbide"
             # for some reason without the following line I get an error
-            #print attributes["diameter"]
-            self.tool.Diameter = float(attributes["diameter"])
-            self.tool.LengthOffset = float(attributes["tool_length_offset"])
-            self.tool.FlatRadius = float(attributes["flat_radius"])
-            self.tool.CornerRadius = float(attributes["corner_radius"])
+            #print attrs["diameter"]
+            self.tool.Diameter = float(attrs["diameter"])
+            self.tool.LengthOffset = float(attrs["tool_length_offset"])
+            self.tool.FlatRadius = float(attrs["flat_radius"])
+            self.tool.CornerRadius = float(attrs["corner_radius"])
             self.tool.CuttingEdgeAngle = float(
-                attributes["cutting_edge_angle"])
+                attrs["cutting_edge_angle"])
             self.tool.CuttingEdgeHeight = float(
-                attributes["cutting_edge_height"])
+                attrs["cutting_edge_height"])
 
     # Call when an elements ends
-    def endElement(self, tag):
-        if tag == "Tool":
+    def endElement(self, name):
+        if name == "Tool":
             if self.tooltable and self.tool and self.number:
                 self.tooltable.setTool(self.number, self.tool)
                 self.number = None
@@ -287,7 +288,7 @@ class ToolLibraryManager():
             if listname == "<Main>":
                 self.saveMainLibrary(tt)
             return True
-        except Exception as e:
+        except Exception as e: # pylint: disable=broad-except
             print("could not parse file", e)
 
 
@@ -300,7 +301,7 @@ class ToolLibraryManager():
                     fext = os.path.splitext(name)[1].lower()
                     if fext != ext:
                         name = "{}{}".format(name, ext)
-                    return (open(PathUtil.toUnicode(name), 'wb'), name)
+                    return (open(PathUtil.toUnicode(name), 'w'), name)
 
                 if filename[1] == self.TooltableTypeXML:
                     fp,fname = openFileWithExtension(filename[0], '.xml')
@@ -310,7 +311,7 @@ class ToolLibraryManager():
                     fp,fname = openFileWithExtension(filename[0], '.tbl')
                     for key in tt.Tools:
                         t = tt.Tools[key]
-                        fp.write("T{} P{} Y{} Z{} A{} B{} C{} U{} V{} W{} D{} I{} J{} Q{} ;{}\n".format(key,key,0,t.LengthOffset,0,0,0,0,0,0,t.Diameter,0,0,0,t.Name))
+                        fp.write("T{0} P{0} Y{1} Z{2} A{3} B{4} C{5} U{6} V{7} W{8} D{9} I{10} J{11} Q{12} ;{13}\n".format(key,0,t.LengthOffset,0,0,0,0,0,0,t.Diameter,0,0,0,t.Name))
                 else:
                     fp,fname = openFileWithExtension(filename[0], '.json')
                     json.dump(self.templateAttrs(tt), fp, sort_keys=True, indent=2)
@@ -318,7 +319,7 @@ class ToolLibraryManager():
                 fp.close()
                 print("Written ", PathUtil.toUnicode(fname))
 
-            except Exception as e:
+            except Exception as e: # pylint: disable=broad-except
                 print("Could not write file:", e)
 
     def addnew(self, listname, tool, position = None):
@@ -329,7 +330,7 @@ class ToolLibraryManager():
             tt = Path.Tooltable()
         if position is None:
             tt.addTools(tool)
-            newID = tt.Tools.keys()[-1]
+            newID = list(tt.Tools)[-1]
         else:
             tt.setTool(position, tool)
             newID = position
@@ -392,16 +393,19 @@ class ToolLibraryManager():
 class EditorPanel():
 
     def __init__(self, job, cb):
-        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolLibraryEditor.ui")
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolLibraryEditor.ui")
-        #self.editform = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/ToolEdit.ui")
-        self.editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
         self.TLM = ToolLibraryManager()
 
         self.loadTable()
         self.form.ToolsList.resizeColumnsToContents()
         self.job = job
         self.cb = cb
+
+    def toolEditor(self, tool):
+        dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgToolEdit.ui")
+        editor = PathToolEdit.ToolEditor(tool, dialog.toolEditor, dialog)
+        editor.setupUI()
+        return editor
 
     def accept(self):
         pass
@@ -436,32 +440,14 @@ class EditorPanel():
             return matslist[material]
 
     def addTool(self):
-        t = Path.Tool()
-        editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
-        editform.TypeField.clear()
-        for tooltype in Path.Tool.getToolTypes(t):
-            editform.TypeField.addItem(tooltype)
+        tool = Path.Tool()
+        editor = self.toolEditor(tool)
 
-        editform.MaterialField.clear()
-        for material in Path.Tool.getToolMaterials(t):
-            editform.MaterialField.addItem(material)
-
-        r = editform.exec_()
+        r = editor.Parent.exec_()
         if r:
-            if editform.NameField.text():
-                t.Name = str(editform.NameField.text()) #FIXME: not unicode safe!
-            t.ToolType = self.getType(editform.TypeField.currentIndex())
-            t.Material = self.getMaterial(editform.MaterialField.currentIndex())
-            t.Diameter = FreeCAD.Units.parseQuantity(editform.DiameterField.text())
-            t.LengthOffset = FreeCAD.Units.parseQuantity(editform.LengthOffsetField.text())
-            t.FlatRadius = FreeCAD.Units.parseQuantity(editform.FlatRadiusField.text())
-            t.CornerRadius = FreeCAD.Units.parseQuantity(editform.CornerRadiusField.text())
-            t.CuttingEdgeAngle = FreeCAD.Units.Quantity(editform.CuttingEdgeAngleField.text())
-            t.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(editform.CuttingEdgeHeightField.text())
-
+            editor.accept()
             listname = "<Main>"
-
-            if self.TLM.addnew(listname, t) is True:
+            if self.TLM.addnew(listname, editor.Tool) is True:
                 self.loadTable()
 
     def setFields(self):
@@ -515,40 +501,12 @@ class EditorPanel():
         listname = "<Main>"
         toolnum = int(value)
         tool = self.TLM.getTool(listname, toolnum)
-        editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
+        editor = self.toolEditor(tool)
 
-        editform.TypeField.clear()
-        for tooltype in Path.Tool.getToolTypes(tool):
-            editform.TypeField.addItem(tooltype)
-
-        editform.MaterialField.clear()
-        for material in Path.Tool.getToolMaterials(tool):
-            editform.MaterialField.addItem(material)
-
-        editform.NameField.setText(tool.Name)
-        editform.TypeField.setCurrentIndex(self.getType(tool.ToolType))
-        editform.MaterialField.setCurrentIndex(self.getMaterial(tool.Material))
-        editform.DiameterField.setText(FreeCAD.Units.Quantity(tool.Diameter, FreeCAD.Units.Length).UserString)
-        editform.LengthOffsetField.setText(FreeCAD.Units.Quantity(tool.LengthOffset, FreeCAD.Units.Length).UserString)
-        editform.FlatRadiusField.setText(FreeCAD.Units.Quantity(tool.FlatRadius, FreeCAD.Units.Length).UserString)
-        editform.CornerRadiusField.setText(FreeCAD.Units.Quantity(tool.CornerRadius, FreeCAD.Units.Length).UserString)
-        editform.CuttingEdgeAngleField.setText(FreeCAD.Units.Quantity(tool.CuttingEdgeAngle, FreeCAD.Units.Angle).UserString)
-        editform.CuttingEdgeHeightField.setText(FreeCAD.Units.Quantity(tool.CuttingEdgeHeight, FreeCAD.Units.Length).UserString)
-
-        r = editform.exec_()
+        r = editor.Parent.exec_()
         if r:
-            if editform.NameField.text():
-                tool.Name = str(editform.NameField.text()) #FIXME: not unicode safe!
-            tool.ToolType = self.getType(editform.TypeField.currentIndex())
-            tool.Material = self.getMaterial(editform.MaterialField.currentIndex())
-            tool.Diameter = FreeCAD.Units.parseQuantity(editform.DiameterField.text())
-            tool.LengthOffset = FreeCAD.Units.parseQuantity(editform.LengthOffsetField.text())
-            tool.FlatRadius = FreeCAD.Units.parseQuantity(editform.FlatRadiusField.text())
-            tool.CornerRadius = FreeCAD.Units.parseQuantity(editform.CornerRadiusField.text())
-            tool.CuttingEdgeAngle = FreeCAD.Units.Quantity(editform.CuttingEdgeAngleField.text())
-            tool.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(editform.CuttingEdgeHeightField.text())
-
-            if self.TLM.updateTool(listname, toolnum, tool) is True:
+            editor.accept()
+            if self.TLM.updateTool(listname, toolnum, editor.Tool) is True:
                 self.loadTable()
 
     def importFile(self):
@@ -649,6 +607,9 @@ class EditorPanel():
         self.setFields()
 
 class CommandToolLibraryEdit():
+    def __init__(self):
+        pass
+
     def edit(self, job=None, cb=None):
         editor = EditorPanel(job, cb)
         editor.setupUi()

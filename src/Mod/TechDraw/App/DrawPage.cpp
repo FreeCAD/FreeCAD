@@ -49,6 +49,7 @@
 #include "DrawViewCollection.h"
 #include "DrawViewPart.h"
 #include "DrawViewDimension.h"
+#include "DrawViewBalloon.h"
 
 #include <Mod/TechDraw/App/DrawPagePy.h>  // generated from DrawPagePy.xml
 
@@ -79,9 +80,11 @@ DrawPage::DrawPage(void)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
 
-    ADD_PROPERTY_TYPE(KeepUpdated, (autoUpdate), group, (App::PropertyType)(App::Prop_None), "Keep page in sync with model");
+    ADD_PROPERTY_TYPE(KeepUpdated, (autoUpdate), group, (App::PropertyType)(App::Prop_Output), "Keep page in sync with model");
     ADD_PROPERTY_TYPE(Template, (0), group, (App::PropertyType)(App::Prop_None), "Attached Template");
+    Template.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Views, (0), group, (App::PropertyType)(App::Prop_None), "Attached Views");
+    Views.setScope(App::LinkScope::Global);
 
     // Projection Properties
     ProjectionType.setEnums(ProjectionTypeEnums);
@@ -97,8 +100,14 @@ DrawPage::DrawPage(void)
         ADD_PROPERTY(ProjectionType, ((long)projType));
     }
 
-    ADD_PROPERTY_TYPE(Scale, (1.0), group, App::Prop_None, "Scale factor for this Page");
+    ADD_PROPERTY_TYPE(Scale, (1.0), group, (App::PropertyType)(App::Prop_None), "Scale factor for this Page");
+    ADD_PROPERTY_TYPE(NextBalloonIndex, (1), group, (App::PropertyType)(App::Prop_None),
+                     "Auto-numbering for Balloons");
+
     Scale.setConstraints(&scaleRange);
+    double defScale = hGrp->GetFloat("DefaultScale",1.0);
+    Scale.setValue(defScale);
+    balloonPlacing = false;
 }
 
 DrawPage::~DrawPage()
@@ -137,17 +146,21 @@ void DrawPage::onChanged(const App::Property* prop)
         }
     } else if(prop == &Scale) {
         // touch all views in the Page as they may be dependent on this scale
-        const std::vector<App::DocumentObject*> &vals = Views.getValues();
-        for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
-            TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
-            if (view != NULL && view->ScaleType.isValue("Page")) {
-                if(std::abs(view->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
-                   view->Scale.setValue(Scale.getValue());
+        // WF: not sure this loop is required.  Views figure out their scale as required. but maybe
+        //     this is needed just to mark the Views to recompute??
+        if (!isRestoring()) {
+            const std::vector<App::DocumentObject*> &vals = Views.getValues();
+            for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
+                TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
+                if (view != NULL && view->ScaleType.isValue("Page")) {
+                    if(std::abs(view->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
+                       view->Scale.setValue(Scale.getValue());
+                    }
                 }
             }
         }
     } else if (prop == &ProjectionType) {
-      // touch all ortho views in the Page as they may be dependent on Projection Type
+      // touch all ortho views in the Page as they may be dependent on Projection Type  //(is this true?)
       const std::vector<App::DocumentObject*> &vals = Views.getValues();
       for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
           TechDraw::DrawProjGroup *view = dynamic_cast<TechDraw::DrawProjGroup *>(*it);
@@ -210,7 +223,7 @@ double DrawPage::getPageWidth() const
         return templ->getWidth();
     }
 
-    throw Base::Exception("Template not set for Page");
+    throw Base::RuntimeError("Template not set for Page");
 }
 
 double DrawPage::getPageHeight() const
@@ -225,7 +238,7 @@ double DrawPage::getPageHeight() const
         }
     }
 
-    throw Base::Exception("Template not set for Page");
+    throw Base::RuntimeError("Template not set for Page");
 }
 
 const char * DrawPage::getPageOrientation() const
@@ -240,7 +253,7 @@ const char * DrawPage::getPageOrientation() const
           return templ->Orientation.getValueAsString();
         }
     }
-    throw Base::Exception("Template not set for Page");
+    throw Base::RuntimeError("Template not set for Page");
 }
 
 int DrawPage::addView(App::DocumentObject *docObj)
@@ -249,8 +262,9 @@ int DrawPage::addView(App::DocumentObject *docObj)
         return -1;
     DrawView* view = static_cast<DrawView*>(docObj);
 
-    //position all new views in center of Page (exceptDVDimension)
-    if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
+      //position all new views in center of Page (exceptDVDimension)
+    if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) &&
+        !docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())) {
         view->X.setValue(getPageWidth()/2.0);
         view->Y.setValue(getPageHeight()/2.0);
     }
@@ -318,26 +332,41 @@ void DrawPage::onDocumentRestored()
     bool autoUpdate = hGrp->GetBool("KeepPagesUpToDate", 1l);
     KeepUpdated.setValue(autoUpdate);
 
-    std::vector<App::DocumentObject*> featViews = Views.getValues();
+    std::vector<App::DocumentObject*> featViews = getAllViews();
     std::vector<App::DocumentObject*>::const_iterator it = featViews.begin();
     //first, make sure all the Parts have been executed so GeometryObjects exist
     for(; it != featViews.end(); ++it) {
         TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(*it);
         if (part != nullptr &&
             !part->hasGeometry()) {
-            part->touch();
+            part->recomputeFeature();
         }
     }
     //second, make sure all the Dimensions have been executed so Measurements have References
     for(it = featViews.begin(); it != featViews.end(); ++it) {
         TechDraw::DrawViewDimension *dim = dynamic_cast<TechDraw::DrawViewDimension *>(*it);
-        if (dim != nullptr &&
-            !dim->has2DReferences()) {
-            dim->touch();
+        if (dim != nullptr) {
+            dim->recomputeFeature();
         }
     }
-    recompute();
     App::DocumentObject::onDocumentRestored();
+}
+
+std::vector<App::DocumentObject*> DrawPage::getAllViews(void) 
+{
+    auto views = Views.getValues();   //list of docObjects
+    std::vector<App::DocumentObject*> allViews;
+    for (auto& v: views) {
+        allViews.push_back(v);
+        if (v->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId())) {
+            TechDraw::DrawProjGroup* dpg = static_cast<TechDraw::DrawProjGroup*>(v);
+            if (dpg != nullptr) {                                              //can't really happen!
+              std::vector<App::DocumentObject*> pgViews = dpg->Views.getValues();
+              allViews.insert(allViews.end(),pgViews.begin(),pgViews.end());
+            }
+        }
+    }
+    return allViews;
 }
 
 void DrawPage::unsetupObject()
@@ -347,16 +376,29 @@ void DrawPage::unsetupObject()
     // Remove the Page's views & template from document
     App::Document* doc = getDocument();
     std::string docName = doc->getName();
+    std::string pageName = getNameInDocument();
 
-    while (Views.getValues().size() > 0 ) {
+    try {
         const std::vector<App::DocumentObject*> currViews = Views.getValues();
-        App::DocumentObject* child = currViews.front();
-        std::string viewName = child->getNameInDocument();
-        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                          docName.c_str(), viewName.c_str());
-    }
-    std::vector<App::DocumentObject*> emptyViews;      //probably superfluous
-    Views.setValues(emptyViews);
+        for (auto& v: currViews) {
+            //NOTE: the order of objects in Page.Views does not reflect the object hierarchy
+            //      this means that a ProjGroup could be deleted before it's child ProjGroupItems.
+            //      this causes problems when removing objects from document
+            if (v->isAttachedToDocument()) {
+                std::string viewName = v->getNameInDocument();
+                Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                                  docName.c_str(), viewName.c_str());
+            } else {
+                Base::Console().Log("DP::unsetupObject - v(%s) is not in document. skipping\n", pageName.c_str());
+            }
+        }
+        std::vector<App::DocumentObject*> emptyViews;      //probably superfluous
+        Views.setValues(emptyViews);
+        
+   }
+   catch (...) {
+       Base::Console().Warning("DP::unsetupObject - %s - error while deleting children\n", getNameInDocument());
+   }
 
     App::DocumentObject* tmp = Template.getValue();
     if (tmp != nullptr) {
@@ -367,68 +409,46 @@ void DrawPage::unsetupObject()
     Template.setValue(nullptr);
 }
 
-void DrawPage::Restore(Base::XMLReader &reader)
+int DrawPage::getNextBalloonIndex(void)
 {
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
-
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* schemaProp = getPropertyByName(PropName);
-        try {
-            if(schemaProp){
-                if (strcmp(schemaProp->getTypeId().getName(), TypeName) == 0){        //if the property type in obj == type in schema
-                    schemaProp->Restore(reader);                                      //nothing special to do
-                } else  {
-                    if (strcmp(PropName, "Scale") == 0) {
-                        if (schemaProp->isDerivedFrom(App::PropertyFloatConstraint::getClassTypeId())){  //right property type
-                            schemaProp->Restore(reader);                                                  //nothing special to do
-                        } else {                                                                //Scale, but not PropertyFloatConstraint
-                            App::PropertyFloat tmp;
-                            if (strcmp(tmp.getTypeId().getName(),TypeName)) {                   //property in file is Float
-                                tmp.setContainer(this);
-                                tmp.Restore(reader);
-                                double tmpValue = tmp.getValue();
-                                if (tmpValue > 0.0) {
-                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(tmpValue);
-                                } else {
-                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(1.0);
-                                }
-                            } else {
-                                // has Scale prop that isn't Float! 
-                                Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
-                                // no idea
-                            }
-                        }
-                    } else {
-                        Base::Console().Log("DrawPage::Restore - old Document has unknown Property\n");
-                    }
-                }
-            }
-        }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
-        }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const char* e) {
-            Base::Console().Error("%s\n", e);
-        }
-#ifndef FC_DEBUG
-        catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown");
-        }
-#endif
-
-        reader.readEndElement("Property");
-    }
-    reader.readEndElement("Properties");
+    int result = NextBalloonIndex.getValue();
+    int newValue = result + 1;
+    NextBalloonIndex.setValue(newValue);
+    return result;
 }
 
+void DrawPage::handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
+{
+    if (prop == &Scale) {
+        App::PropertyFloat tmp;
+        if (strcmp(tmp.getTypeId().getName(),TypeName)==0) {                   //property in file is Float
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            double tmpValue = tmp.getValue();
+            if (tmpValue > 0.0) {
+                Scale.setValue(tmpValue);
+            } else {
+                Scale.setValue(1.0);
+            }
+        } else {
+            // has Scale prop that isn't Float! 
+            Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
+            // no idea
+        }
+    }
+}
 
+// Python Drawing feature ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawPagePython, TechDraw::DrawPage)
+template<> const char* TechDraw::DrawPagePython::getViewProviderName(void) const {
+    return "TechDrawGui::ViewProviderPage";
+}
+/// @endcond
+
+// explicit template instantiation
+template class TechDrawExport FeaturePythonT<TechDraw::DrawPage>;
+}

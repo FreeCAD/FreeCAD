@@ -110,7 +110,7 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
         } else {
             double value = quant.getValue()/actUnit.getValue();
             QString val = QLocale::system().toString(value, 'f', Base::UnitsApi::getDecimals());
-            QString out = QString::fromLatin1("%1 %2").arg(val).arg(ui->UnitInput->text());
+            QString out = QString::fromLatin1("%1 %2").arg(val, ui->UnitInput->text());
             ui->ValueOutput->setText(out);
             ui->pushButton_Copy->setEnabled(true);
         }

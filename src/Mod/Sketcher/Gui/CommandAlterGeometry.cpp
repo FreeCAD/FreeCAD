@@ -113,7 +113,10 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
     else // there was a selection, so operate in toggle mode.
     {
         // get the selection
-        std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+        std::vector<Gui::SelectionObject> selection;
+        selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+        Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1) {
@@ -139,13 +142,13 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
             if (it->size() > 4 && it->substr(0,4) == "Edge") {
                 int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
                 // issue the actual commands to toggle
-                doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),GeoId);
+                FCMD_OBJ_CMD2("toggleConstruction(%d) ",selection[0].getObject(),GeoId);
             }
         }
         // finish the transaction and update
         commitCommand();
 
-        tryAutoRecompute();
+        tryAutoRecompute(Obj);
 
         // clear the selection (convenience)
         getSelection().clearSelection();

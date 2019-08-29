@@ -33,6 +33,7 @@
 #include "MatrixPy.h"
 #include "RotationPy.h"
 #include "VectorPy.h"
+#include "Tools.h"
 
 using namespace Base;
 
@@ -158,6 +159,34 @@ PyObject* PlacementPy::move(PyObject * args)
     Py_Return;
 }
 
+PyObject* PlacementPy::translate(PyObject * args)
+{
+    return move(args);
+}
+
+PyObject* PlacementPy::rotate(PyObject *args) {
+    PyObject *obj1, *obj2;
+    double angle;
+    if (!PyArg_ParseTuple(args, "OOd", &obj1, &obj2, &angle))
+        return NULL;
+
+    try {
+        Py::Sequence p1(obj1), p2(obj2);
+        Vector3d center((double)Py::Float(p1[0]),
+                        (double)Py::Float(p1[1]),
+                        (double)Py::Float(p1[2]));
+        Vector3d axis((double)Py::Float(p2[0]),
+                      (double)Py::Float(p2[1]),
+                      (double)Py::Float(p2[2]));
+        (*getPlacementPtr()) *= Placement(
+                Vector3d(),Rotation(axis,toRadians<double>(angle)),center);
+        Py_Return;
+    }
+    catch (const Py::Exception&) {
+        return NULL;
+    }
+}
+
 PyObject* PlacementPy::multiply(PyObject * args)
 {
     PyObject *plm;
@@ -204,11 +233,8 @@ PyObject* PlacementPy::isIdentity(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
-    Base::Vector3d nullvec(0,0,0);
-    Base::Vector3d pos = getPlacementPtr()->getPosition();
-    Base::Rotation rot = getPlacementPtr()->getRotation();
-    bool null = (pos == nullvec) && (rot.isIdentity());
-    return Py_BuildValue("O", (null ? Py_True : Py_False));
+    bool none = getPlacementPtr()->isIdentity();
+    return Py_BuildValue("O", (none ? Py_True : Py_False));
 }
 
 Py::Object PlacementPy::getBase(void) const

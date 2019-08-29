@@ -39,6 +39,7 @@ namespace Gui {
     class TreeWidget;
     class PropertyView;
     class ProjectWidget;
+    class TreePanel;
 namespace PropertyEditor {
 class EditableListView;
 class EditableItem;
@@ -97,7 +98,7 @@ protected:
 private:
     QTabWidget                         * tabs;
     Gui::PropertyView                  * prop;
-    QTreeView                          * tree;
+    Gui::TreePanel                     * tree;
     Gui::TaskView::TaskView            * taskPanel;
   //Gui::ProjectWidget                 * projectView;
 };

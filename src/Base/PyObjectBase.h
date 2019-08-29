@@ -51,6 +51,11 @@
 
 #include <typeinfo>
 #include "Exception.h"
+#if PY_MAJOR_VERSION > 2
+#  ifndef PYCXX_PYTHON_2TO3
+#  define PYCXX_PYTHON_2TO3
+#  endif
+#endif
 #include <CXX/Objects.hxx>
 
 
@@ -142,7 +147,11 @@ inline void Assert(int expr, char *msg)         // C++ assert
 /// return with no return value if nothing happens
 #define Py_Return return Py_INCREF(Py_None), Py_None
 /// returns an error
-#define Py_Error(E, M)   {PyErr_SetString(E, M); return NULL;}
+#define Py_Error(E, M)   _Py_Error(return(NULL),E,M)
+#define _Py_Error(R, E, M)   {PyErr_SetString(E, M); R;}
+/// returns an error
+#define Py_ErrorObj(E, O)   _Py_ErrorObj(return(NULL),E,O)
+#define _Py_ErrorObj(R, E, O)   {PyErr_SetObject(E, O); R;}
 /// checks on a condition and returns an error on failure
 #define Py_Try(F) {if (!(F)) return NULL;}
 /// assert which returns with an error on failure
@@ -196,7 +205,8 @@ class BaseExport PyObjectBase : public PyObject
     enum Status {
         Valid = 0,
         Immutable = 1,
-        Notify = 2
+        Notify = 2,
+        NoTrack = 3
     };
 
 protected:
@@ -226,7 +236,7 @@ public:
      *  need to call the method of the base class! Otherwise even the 
      *  methods of the object will disappear!
      */
-    virtual PyObject *_getattr(char *attr);
+    virtual PyObject *_getattr(const char *attr);
     /// static wrapper for pythons _getattro()
     static  PyObject *__getattro(PyObject * PyObj, PyObject *attro);
 
@@ -236,7 +246,7 @@ public:
      *  this method.
      *  You have to call the method of the base class.
      */
-    virtual int _setattr(char *attro, PyObject *value);    // _setattr method
+    virtual int _setattr(const char *attro, PyObject *value);    // _setattr method
     /// static wrapper for pythons _setattro(). // This should be the entry in Type. 
     static  int __setattro(PyObject *PyObj, PyObject *attro, PyObject *value);
 
@@ -281,6 +291,7 @@ public:
     void setInvalid() { 
         // first bit is not set, i.e. invalid
         StatusBits.reset(Valid);
+        clearAttributes();
         _pcTwinPointer = 0;
     }
 
@@ -307,6 +318,14 @@ public:
 
     void startNotify();
 
+    void setNotTracking(bool on=true) {
+        StatusBits.set(NoTrack, on);
+    }
+
+    bool isNotTracking() const {
+        return StatusBits.test(NoTrack);
+    }
+
     typedef void* PointerType;
 
 private:
@@ -315,6 +334,7 @@ private:
     PyObject* getTrackedAttribute(const char* attr);
     void trackAttribute(const char* attr, PyObject* obj);
     void untrackAttribute(const char* attr);
+    void clearAttributes();
 
 protected:
     std::bitset<32> StatusBits;
@@ -395,6 +415,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
 #define PY_FCERROR (Base::BaseExceptionFreeCADError ? \
  BaseExceptionFreeCADError : PyExc_RuntimeError)
 
+BaseExport extern PyObject* BaseExceptionFreeCADAbort;
 
 /** Exception handling for python callback functions
  * Is a convenience macro to manage the exception handling of python callback
@@ -435,69 +456,48 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
  */
 #define PY_TRY	try 
 
-#ifndef DONT_CATCH_CXX_EXCEPTIONS 
-/// see docu of PY_TRY 
-#  define PY_CATCH catch(Base::Exception &e)                        \
+#define __PY_CATCH(R)                                               \
+    catch(Base::AbortException &e)                                  \
     {                                                               \
-        std::string str;                                            \
-        str += "FreeCAD exception thrown (";                        \
-        str += e.what();                                            \
-        str += ")";                                                 \
         e.ReportException();                                        \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
+        _Py_ErrorObj(R,Base::BaseExceptionFreeCADAbort,e.getPyObject());\
+    }                                                               \
+    catch(Base::Exception &e)                                       \
+    {                                                               \
+        e.ReportException();                                        \
+        auto pye = e.getPyExceptionType();                          \
+        if(!pye)                                                    \
+            pye = Base::BaseExceptionFreeCADError;                  \
+        _Py_ErrorObj(R,pye,e.getPyObject());                        \
     }                                                               \
     catch(std::exception &e)                                        \
     {                                                               \
-        std::string str;                                            \
-        str += "STL exception thrown (";                            \
-        str += e.what();                                            \
-        str += ")";                                                 \
-        Base::Console().Error(str.c_str());                         \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
+        _Py_Error(R,Base::BaseExceptionFreeCADError,e.what());      \
     }                                                               \
     catch(const Py::Exception&)                                     \
     {                                                               \
-        return NULL;                                                \
+        R;                                                          \
     }                                                               \
     catch(const char *e)                                            \
     {                                                               \
-        Py_Error(Base::BaseExceptionFreeCADError,e);                \
+        _Py_Error(R,Base::BaseExceptionFreeCADError,e);             \
     }                                                               \
+
+#ifndef DONT_CATCH_CXX_EXCEPTIONS 
+/// see docu of PY_TRY 
+#  define _PY_CATCH(R)                                              \
+    __PY_CATCH(R)                                                   \
     catch(...)                                                      \
     {                                                               \
-        Py_Error(Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
+        _Py_Error(R,Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
     }
 
 #else
 /// see docu of PY_TRY 
-#  define PY_CATCH catch(Base::Exception &e)                        \
-    {                                                               \
-        std::string str;                                            \
-        str += "FreeCAD exception thrown (";                        \
-        str += e.what();                                            \
-        str += ")";                                                 \
-        e.ReportException();                                        \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
-    }                                                               \
-    catch(std::exception &e)                                        \
-    {                                                               \
-        std::string str;                                            \
-        str += "STL exception thrown (";                            \
-        str += e.what();                                            \
-        str += ")";                                                 \
-        Base::Console().Error(str.c_str());                         \
-        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
-    }                                                               \
-    catch(const Py::Exception&)                                     \
-    {                                                               \
-        return NULL;                                                \
-    }                                                               \
-    catch(const char *e)                                            \
-    {                                                               \
-        Py_Error(Base::BaseExceptionFreeCADError,e);                \
-    }
-
+#  define _PY_CATCH(R) __PY_CATCH(R)
 #endif  // DONT_CATCH_CXX_EXCEPTIONS
+
+#define PY_CATCH _PY_CATCH(return(NULL))
 
 /** Python helper class 
  *  This class encapsulate the Decoding of UTF8 to a python object.

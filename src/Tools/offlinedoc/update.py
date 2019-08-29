@@ -41,7 +41,8 @@ This script needs to be run after the wiki has been fully downloaded. It has thr
 """
 
 import sys, os, re, tempfile, getopt
-from urllib2 import urlopen, HTTPError
+from urllib.request import urlopen
+from urllib.error import HTTPError
 
 #    CONFIGURATION       #################################################
 
@@ -58,70 +59,70 @@ def update(pagename=None):
 
     if not os.path.exists("revisions.txt"):                                             # case 1)
         if not os.path.exists("wikifiles.txt"):
-            print "No wikifiles.txt found. Aborting"
+            print("No wikifiles.txt found. Aborting")
             sys.exit()
         pages = []
         f = open("wikifiles.txt","r")
-        if VERBOSE: print "Reading existing list..."
+        if VERBOSE: print("Reading existing list...")
         for l in f.readlines():
             if l.strip() != "":
                 if not "/wiki/" in l:
-                    if VERBOSE: print "Adding ",l.strip()
+                    if VERBOSE: print("Adding ",l.strip())
                     pages.append(l.strip())
         f.close()
-        if VERBOSE: print "Added ",str(len(pages))," entries"
+        if VERBOSE: print("Added ",str(len(pages))," entries")
         i = 1
         revs = []
         for page in pages:
             rev = getRevision(page)
-            if VERBOSE: print str(i),"         revision: ",rev
+            if VERBOSE: print(str(i),"         revision: ",rev)
             revs.append(page+":"+rev)
             i += 1
         writeList(revs,"revisions.txt")
-        print "All done. Successfully written revisions.txt with ",len(revs)," entries."
+        print("All done. Successfully written revisions.txt with ",len(revs)," entries.")
 
     elif os.path.exists("revisions.txt") and (not os.path.exists("updates.txt")):        # case 2)
         f = open("revisions.txt","r")
-        if VERBOSE: print "Reading revisions list..."
+        if VERBOSE: print("Reading revisions list...")
         revisions = {}
         for l in f.readlines():
             if l.strip() != "":
                 r = l.strip().split(":")
                 p = ":".join(r[:-1])
-                if VERBOSE: print "Adding ",p
+                if VERBOSE: print("Adding ",p)
                 revisions[p] = r[1]
         f.close()
-        if VERBOSE: print "Added ",str(len(revisions.keys()))," entries"
+        if VERBOSE: print("Added ",str(len(list(revisions.keys())))," entries")
         updates = []
         i = 1
-        for page in revisions.keys():
+        for page in list(revisions.keys()):
             rev = getRevision(page)
             if rev != revisions[page]:
-                if VERBOSE: print str(i),page," has a new revision: ",rev
+                if VERBOSE: print(str(i),page," has a new revision: ",rev)
                 updates.append(page)
             else:
-                if VERBOSE: print str(i),page," is up to date "
+                if VERBOSE: print(str(i),page," is up to date ")
             i += 1
         if updates:
             writeList(updates,"updates.txt")
-            print "All done. Successfully written updates.txt with ",len(updates)," entries."
+            print("All done. Successfully written updates.txt with ",len(updates)," entries.")
         else:
-            print "Everything up to date. Nothing to be done."
+            print("Everything up to date. Nothing to be done.")
         
     elif os.path.exists("revisions.txt") and os.path.exists("updates.txt"):              # case 3)
         if not os.path.exists("wikifiles.txt"):
-            print "No wikifiles.txt found. Aborting"
+            print("No wikifiles.txt found. Aborting")
             sys.exit()
         wikifiles = []
         f = open("wikifiles.txt","r")
-        if VERBOSE: print "Reading wikifiles list..."
+        if VERBOSE: print("Reading wikifiles list...")
         for l in f.readlines():
             if l.strip() != "":
                 wikifiles.append(l.strip())
         f.close()
-        if VERBOSE: print "Read ",str(len(wikifiles))," entries"
+        if VERBOSE: print("Read ",str(len(wikifiles))," entries")
         f = open("revisions.txt","r")
-        if VERBOSE: print "Reading revisions list..."
+        if VERBOSE: print("Reading revisions list...")
         revisions = {}
         for l in f.readlines():
             if l.strip() != "":
@@ -131,25 +132,25 @@ def update(pagename=None):
         f.close()
         todo = []
         f = open("updates.txt","r")
-        if VERBOSE: print "Reading updates list..."
+        if VERBOSE: print("Reading updates list...")
         for l in f.readlines():
             if l.strip() != "":
                 todo.append(l.strip())
         f.close()
-        if VERBOSE: print str(len(todo))," pages to scan..."
+        if VERBOSE: print(str(len(todo))," pages to scan...")
         import buildwikiindex
         buildwikiindex.WRITETHROUGH = False
         buildwikiindex.VERBOSE = VERBOSE
         updates = []
         for t in todo:
-            if VERBOSE: print "Scanning ",t
+            if VERBOSE: print("Scanning ",t)
             updates.extend(buildwikiindex.crawl(t))
         updates = [u for u in updates if not u in wikifiles]
-        if VERBOSE: print str(len(updates))," files to download..."
+        if VERBOSE: print(str(len(updates))," files to download...")
         import downloadwiki
         i = 1
         for u in updates:
-            if VERBOSE: print i, ": Fetching ", u
+            if VERBOSE: print(i, ": Fetching ", u)
             downloadwiki.get(u)
             if not "/wiki/" in u:
                 rev = getRevision(u)
@@ -157,26 +158,26 @@ def update(pagename=None):
             if not u in wikifiles:
                 wikifiles.append(u)
             i += 1
-        if VERBOSE: print "Updating wikifiles and revisions..."
+        if VERBOSE: print("Updating wikifiles and revisions...")
         writeList(wikifiles,"wikifiles.txt")
         updatedrevs = []
-        for k in revisions.keys():
+        for k in list(revisions.keys()):
             updatedrevs.append(k+":"+revisions[k])
         writeList(updatedrevs,"revisions.txt")
         os.remove("updates.txt")
-        if VERBOSE: print "All done!"
+        if VERBOSE: print("All done!")
 
 def getRevision(page):
     html = fetchPage(page)
     revs = re.findall("wgCurRevisionId\"\:(.*?),",html)
     if len(revs) == 1:
         return revs[0]
-    print 'Error: unable to get revision ID of ' + page
+    print('Error: unable to get revision ID of ' + page)
     sys.exit()
 
 def fetchPage(page):
     "retrieves given page from the wiki"
-    print "fetching: ",page
+    print("fetching: ",page)
     failcount = 0
     while failcount < MAXFAIL:
         try:
@@ -184,7 +185,7 @@ def fetchPage(page):
             return html
         except HTTPError:
             failcount += 1
-    print 'Error: unable to fetch page ' + page
+    print('Error: unable to fetch page ' + page)
     sys.exit()
 
 def writeList(pages,filename):
@@ -192,7 +193,7 @@ def writeList(pages,filename):
     for p in pages:
         f.write(p+"\n")
     f.close()
-    if VERBOSE: print "written ",filename
+    if VERBOSE: print("written ",filename)
 
 if __name__ == "__main__":
 	update(sys.argv[1:])

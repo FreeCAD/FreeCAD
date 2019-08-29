@@ -94,8 +94,8 @@ bool ExtensionContainer::hasExtension(const std::string& name) const {
 }
 
 
-Extension* ExtensionContainer::getExtension(Base::Type t, bool derived) const {
-
+Extension* ExtensionContainer::getExtension(Base::Type t, bool derived, bool no_except) const {
+   
     auto result = _extensions.find(t);
     if((result == _extensions.end()) && derived) {
         //we need to check for derived types
@@ -103,7 +103,7 @@ Extension* ExtensionContainer::getExtension(Base::Type t, bool derived) const {
             if(entry.first.isDerivedFrom(t))
                 return entry.second;
         }
-
+        if(no_except) return 0;
         //if we arrive here we don't have anything matching
         throw Base::TypeError("ExtensionContainer::getExtension: No extension of given type available");
     }
@@ -111,6 +111,7 @@ Extension* ExtensionContainer::getExtension(Base::Type t, bool derived) const {
         return result->second;
     }
     else {
+        if(no_except) return 0;
         //if we arrive here we don't have anything matching
         throw Base::TypeError("ExtensionContainer::getExtension: No extension of given type available");
     }
@@ -288,7 +289,7 @@ void ExtensionContainer::onChanged(const Property* prop) {
 void ExtensionContainer::Save(Base::Writer& writer) const {
 
     //Note: save extensions must be called first to ensure that the extension element is always the 
-    //      very first inside the object element. That is needed as extension eleent works together with 
+    //      very first inside the object element. This is needed since extension element works together with 
     //      an object attribute, and if another element would be read first the object attributes would be
     //      cleared.
     saveExtensions(writer);
@@ -408,7 +409,7 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("ExtensionContainer::Restore: Unknown C++ exception thrown");
+            Base::Console().Error("ExtensionContainer::Restore: Unknown C++ exception thrown\n");
         }
 #endif
 

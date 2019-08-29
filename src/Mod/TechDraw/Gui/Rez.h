@@ -41,12 +41,12 @@ public:
     static void setRezFactor(double f);
 //turn App side value to Gui side value
     static double guiX(double x);
-    static Base::Vector2d guiX(Base::Vector2d v);
     static Base::Vector3d guiX(Base::Vector3d v);
+    static Base::Vector2d guiX(Base::Vector3d v, bool planar);
 //turn Gui side value to App side value
     static double appX(double x);
-    static Base::Vector2d appX(Base::Vector2d v);
     static Base::Vector3d appX(Base::Vector3d v);
+    static QPointF appX(QPointF p);
 
     static QPointF guiPt(QPointF p);
     static QPointF appPt(QPointF p);

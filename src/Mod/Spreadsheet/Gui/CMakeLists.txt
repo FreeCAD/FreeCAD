@@ -90,23 +90,17 @@ SET(SpreadsheetGui_SRCS
     ${SpreadsheetGui_UIC_HDRS}
 )
 
-add_library(SpreadsheetGui SHARED ${SpreadsheetGui_SRCS})
-target_link_libraries(SpreadsheetGui ${SpreadsheetGui_LIBS})
-
-fc_target_copy_resource(SpreadsheetGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Spreadsheet
-    ${CMAKE_BINARY_DIR}/Mod/Spreadsheet
-    InitGui.py)
-
-SET_BIN_DIR(SpreadsheetGui SpreadsheetGui /Mod/Spreadsheet)
-SET_PYTHON_PREFIX_SUFFIX(SpreadsheetGui)
-
-INSTALL(TARGETS SpreadsheetGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
 SET(SpreadsheetGuiIcon_SVG
     Resources/icons/SpreadsheetWorkbench.svg
 )
 
+add_library(SpreadsheetGui SHARED ${SpreadsheetGui_SRCS} ${SpreadsheetGuiIcon_SVG})
+target_link_libraries(SpreadsheetGui ${SpreadsheetGui_LIBS})
+
+SET_BIN_DIR(SpreadsheetGui SpreadsheetGui /Mod/Spreadsheet)
+SET_PYTHON_PREFIX_SUFFIX(SpreadsheetGui)
+
 fc_copy_sources(SpreadsheetGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Spreadsheet" ${SpreadsheetGuiIcon_SVG})
 
+INSTALL(TARGETS SpreadsheetGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${SpreadsheetGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Spreadsheet/Resources/icons")

@@ -1,6 +1,7 @@
 /**
    \defgroup ZIPIOS Zipios++
    \ingroup EMBEDDED
+   \brief C++ library for reading and writing Zip file
 
    \section intro Introduction
    

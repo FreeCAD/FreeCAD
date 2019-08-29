@@ -59,7 +59,7 @@ App::DocumentObjectExecReturn *ImportBrep::execute(void)
     }
 
     TopoShape aShape;
-    aShape.importBrep((const Standard_CString)FileName.getValue());
+    aShape.importBrep(FileName.getValue());
     this->Shape.setValue(aShape);
 
     return App::DocumentObject::StdReturn;

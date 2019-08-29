@@ -42,6 +42,7 @@ public:
     virtual void updateData(const App::Property*);
 
     void setExtents (Base::BoundBox3d bbox);
+    void setExtents(double l, double w);
 
 private:
     SoCoordinate3 *pCoords;

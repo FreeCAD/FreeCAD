@@ -1,22 +1,27 @@
-; EN-GJS-500-7 - 0.7050 - EN 1563
+; Steel-EN-GJS-500-7
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJS-500-7
 NameDE = GGG-50
 DescriptionDE = Seiltrommeln, Bremsteile, Zylinderköpfe
 Father = Metal
-YoungsModulus = 170000 MPa
-UltimateTensileStrength = 500
-PoissonRatio = 0.3
-Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.705
-ModulusOfShare = 66000
 Norm = EN 1563
-ThermalExpansionCoefficient = 1.10E-005
+
+[Mechanical]
+Density = 7200 kg/m^3
+PoissonRatio = 0.3
+ShearModulus = 66000 MPa
 UltimateStrain = 2
-YieldStrength = 320
+UltimateTensileStrength = 500 MPa
+YieldStrength = 320 MPa
+YoungsModulus = 170000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.000011 m/m/K

@@ -23,7 +23,9 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
+
 link_directories(${OCC_LIBRARY_DIR})
+link_directories(${SMESH_LIB_PATH})
 
 set(MeshPartGui_LIBS
     MeshPart
@@ -73,16 +75,31 @@ SET(MeshPartGui_SRCS
     Workbench.h
 )
 
-add_library(MeshPartGui SHARED ${MeshPartGui_SRCS})
+set(MeshPartGui_Scripts
+    ../InitGui.py
+)
+
+set(FLATMESH_PY_SRCS
+    MeshFlatteningCommand.py
+)
+
+add_library(MeshPartGui SHARED ${MeshPartGui_SRCS} ${MeshPartGui_Scripts} ${FLATMESH_PY_SRCS})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
 
-
-fc_target_copy_resource(MeshPartGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/MeshPart
-    ${CMAKE_BINARY_DIR}/Mod/MeshPart
-    InitGui.py)
 
 SET_BIN_DIR(MeshPartGui MeshPartGui /Mod/MeshPart)
 SET_PYTHON_PREFIX_SUFFIX(MeshPartGui)
 
+fc_target_copy_resource_flat(MeshPartGui
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/MeshPart
+    ${MeshPartGui_Scripts}
+)
+
+fc_copy_sources(MeshPartGui
+   "${CMAKE_BINARY_DIR}/Mod/MeshPart"
+    ${FLATMESH_PY_SRCS}
+)
+
 INSTALL(TARGETS MeshPartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+INSTALL(FILES ${FLATMESH_PY_SRCS} DESTINATION Mod/MeshPart)

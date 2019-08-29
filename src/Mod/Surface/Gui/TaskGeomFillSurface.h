@@ -32,6 +32,8 @@
 #include <Mod/Surface/App/FeatureGeomFillSurface.h>
 #include <GeomFill_FillingStyle.hxx>
 
+class QListWidgetItem;
+
 namespace SurfaceGui
 {
 
@@ -85,6 +87,7 @@ protected:
     /** Notifies when the object is about to be removed. */
     virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
     void changeFillType(GeomFill_FillingStyle);
+    void flipOrientation(QListWidgetItem*);
 
 private Q_SLOTS:
     void on_fillType_stretch_clicked();
@@ -92,7 +95,9 @@ private Q_SLOTS:
     void on_fillType_curved_clicked();
     void on_buttonEdgeAdd_clicked();
     void on_buttonEdgeRemove_clicked();
+    void on_listWidget_itemDoubleClicked(QListWidgetItem*);
     void onDeleteEdge(void);
+    void onFlipOrientation();
     void clearSelection();
 };
 

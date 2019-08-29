@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,19 +19,20 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Flow"
+__title__ = "FreeCAD FEM solver Elmer equation object Flow"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 from . import nonlinear
 from ... import equationbase
 
 
 def create(doc, name="Flow"):
-    return FemUtils.createObject(
+    return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
@@ -47,3 +47,5 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
 
 class ViewProxy(nonlinear.ViewProxy, equationbase.FlowViewProxy):
     pass
+
+##  @}

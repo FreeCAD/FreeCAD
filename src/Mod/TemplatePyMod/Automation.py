@@ -8,13 +8,15 @@ FreeCADCmd -P <path_to_file> Automation.py
 """
 
 import FreeCAD, Part
+import os
+import tempfile
 
 def makeSnapshotWithGui():
 	from PySide import QtGui
 	import FreeCADGui
 
 	def getMainWindow():
-		toplevel = QtGui.qApp.topLevelWidgets()
+		toplevel = QtGui.QApplication.topLevelWidgets()
 		for i in toplevel:
 			if i.metaObject().className() == "Gui::MainWindow":
 				return i
@@ -37,7 +39,7 @@ def makeSnapshotWithGui():
 	view.saveImage('crystal.png',800,600,'Current')
 	FreeCAD.closeDocument(doc.Name)
 	# close the application
-	QtGui.qApp.quit()
+	QtGui.QApplication.quit()
 
 def makeSnapshotWithoutGui():
 	from pivy import coin
@@ -48,7 +50,15 @@ def makeSnapshotWithoutGui():
 
 	# load it into a buffer
 	inp=coin.SoInput()
-	inp.setBuffer(iv)
+	try:
+		inp.setBuffer(iv)
+	except:
+		tempPath = tempfile.gettempdir()
+		fileName = tempPath + os.sep + "cone.iv"
+		file = open(fileName, "w")
+		file.write(iv)
+		file.close()
+		inp.openFile(fileName)
 
 	# and create a scenegraph
 	data = coin.SoDB.readAll(inp)

@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Arch API"
+__title__= "FreeCAD Arch API"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
@@ -30,7 +30,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief Architecture and BIM tools
 #
 #  This module provides tools specialized in Building Information Modeling (BIM).
-#  such as convenience tools to build walls, windows or structures, and 
+#  such as convenience tools to build walls, windows or structures, and
 #  IFC import/export capabilities.
 
 '''The Arch module provides tools specialized in BIM modeling.'''
@@ -42,6 +42,8 @@ if FreeCAD.GuiUp:
 
 from ArchWall import *
 from ArchFloor import *
+from ArchFence import *
+from ArchProject import *
 from ArchSite import *
 from ArchBuilding import *
 from ArchStructure import *
@@ -62,3 +64,5 @@ from ArchMaterial import *
 from ArchSchedule import *
 from ArchPrecast import *
 from ArchPipe import *
+from ArchBuildingPart import *
+from ArchReference import *

@@ -51,7 +51,14 @@ generate_from_xml(ArcOfHyperbolaPy)
 generate_from_xml(ParabolaPy)
 generate_from_xml(OffsetCurvePy)
 generate_from_xml(GeometryPy)
+generate_from_xml(GeometryExtensionPy)
+generate_from_xml(GeometryIntExtensionPy)
+generate_from_xml(GeometryStringExtensionPy)
+generate_from_xml(GeometryBoolExtensionPy)
+generate_from_xml(GeometryDoubleExtensionPy)
 generate_from_xml(GeometryCurvePy)
+generate_from_xml(BoundedCurvePy)
+generate_from_xml(TrimmedCurvePy)
 generate_from_xml(GeometrySurfacePy)
 generate_from_xml(LinePy)
 generate_from_xml(LineSegmentPy)
@@ -209,8 +216,22 @@ SET(Python_SRCS
     OffsetCurvePyImp.cpp
     GeometryPy.xml
     GeometryPyImp.cpp
+    GeometryExtensionPy.xml
+    GeometryExtensionPyImp.cpp
+    GeometryIntExtensionPy.xml
+    GeometryIntExtensionPyImp.cpp
+    GeometryStringExtensionPy.xml
+    GeometryStringExtensionPyImp.cpp
+    GeometryBoolExtensionPy.xml
+    GeometryBoolExtensionPyImp.cpp
+    GeometryDoubleExtensionPy.xml
+    GeometryDoubleExtensionPyImp.cpp
     GeometryCurvePy.xml
     GeometryCurvePyImp.cpp
+    BoundedCurvePy.xml
+    BoundedCurvePyImp.cpp
+    TrimmedCurvePy.xml
+    TrimmedCurvePyImp.cpp
     GeometrySurfacePy.xml
     GeometrySurfacePyImp.cpp
     LinePy.xml
@@ -329,9 +350,15 @@ SET(Part_SRCS
     Attacher.h
     AppPart.cpp
     AppPartPy.cpp
+    BRepOffsetAPI_MakeOffsetFix.cpp
+    BRepOffsetAPI_MakeOffsetFix.h
     BSplineCurveBiArcs.cpp
     CrossSection.cpp
     CrossSection.h
+    GeometryExtension.cpp
+    GeometryExtension.h
+    GeometryDefaultExtension.cpp
+    GeometryDefaultExtension.h
     Geometry.cpp
     Geometry.h
     Geometry2d.cpp
@@ -364,37 +391,15 @@ SET(Part_SRCS
     FaceMakerBullseye.h
 )
 
-SET(Part_Scripts
-    Init.py
-    TestPartApp.py
-    MakeBottle.py
-    JoinFeatures.py
-    AttachmentEditor/__init__.py
-    AttachmentEditor/Commands.py
-    AttachmentEditor/FrozenClass.py
-    AttachmentEditor/TaskAttachmentEditor.py
-    AttachmentEditor/TaskAttachmentEditor.ui
-    BOPTools/__init__.py
-    BOPTools/GeneralFuseResult.py
-    BOPTools/JoinAPI.py
-    BOPTools/JoinFeatures.py
-    BOPTools/ShapeMerge.py
-    BOPTools/SplitAPI.py
-    BOPTools/SplitFeatures.py
-    BOPTools/Utils.py
-    CompoundTools/__init__.py
-    CompoundTools/_CommandCompoundFilter.py
-    CompoundTools/CompoundFilter.py
-)
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Part_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Part PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 add_library(Part SHARED ${Part_SRCS})
 target_link_libraries(Part ${Part_LIBS})
 
-
-fc_target_copy_resource(Part 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Part
-    ${CMAKE_BINARY_DIR}/Mod/Part
-    ${Part_Scripts})
 
 SET_BIN_DIR(Part Part /Mod/Part)
 SET_PYTHON_PREFIX_SUFFIX(Part)

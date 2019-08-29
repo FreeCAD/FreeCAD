@@ -291,7 +291,7 @@ namespace
     try {
       axes = gp_Ax2( p0, normal, v01 );
     }
-    catch ( Standard_Failure ) {
+    catch ( Standard_Failure &) {
       return false;
     }
     for ( size_t i = 0; i < nbNodes; ++i )

@@ -56,6 +56,7 @@ public:
       and the Python wrapper takes ownership of it.
      */
     Py::Object fromQIcon(const QIcon*);
+    QIcon *toQIcon(PyObject *pyobj);
     static void createChildrenNameAttributes(PyObject* root, QObject* object);
     static void setParent(PyObject* pyWdg, QObject* parent);
 };
@@ -173,7 +174,7 @@ public:
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 
@@ -212,7 +213,7 @@ public:
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 
@@ -295,7 +296,7 @@ public:
      */
     virtual void* Produce () const
     {
-        return (void*)(new CLASS);
+        return (new CLASS);
     }
 };
 
@@ -421,7 +422,7 @@ public:
     Py::Object connect(const Py::Tuple&);
 
 private:
-    std::vector<class SignalConnect*> mySingals;
+    std::vector<class SignalConnect*> mySignals;
     QDialog* myDlg;
 };
 

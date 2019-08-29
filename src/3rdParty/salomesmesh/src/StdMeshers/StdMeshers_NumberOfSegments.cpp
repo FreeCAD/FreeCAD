@@ -232,7 +232,7 @@ void StdMeshers_NumberOfSegments::SetTableFunction(const vector<double>& table)
         OCC_CATCH_SIGNALS;
 #endif
         val = pow( 10.0, val );
-      } catch(Standard_Failure) {
+      } catch(Standard_Failure&) {
         throw SALOME_Exception( LOCALIZED( "invalid value"));
         return;
       }
@@ -327,7 +327,7 @@ bool process( const TCollection_AsciiString& str, int convMode,
 #endif
     myExpr = ExprIntrp_GenExp::Create();
     myExpr->Process( str.ToCString() );
-  } catch(Standard_Failure) {
+  } catch(Standard_Failure&) {
     parsed_ok = false;
   }
 

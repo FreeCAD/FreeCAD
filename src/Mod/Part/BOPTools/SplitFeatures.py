@@ -173,7 +173,7 @@ class CommandBooleanFragments:
         return {'Pixmap'  : getIconPath("Part_BooleanFragments.svg"),
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Boolean Fragments"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Part_BooleanFragments: split objects where they intersect")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Split objects where they intersect")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1 :
@@ -251,22 +251,22 @@ class ViewProviderSlice:
             FreeCAD.Console.PrintError("Error in onDelete: " + str(err))
         return True
 
-def cmdCreateSliceFeature(name, mode):
+def cmdCreateSliceFeature(name, mode, transaction= True):
     """cmdCreateSliceFeature(name, mode): implementation of GUI command to create
     Slice feature. Mode can be "Standard", "Split", or "CompSolid"."""
     sel = FreeCADGui.Selection.getSelectionEx()
-    FreeCAD.ActiveDocument.openTransaction("Create Slice")
+    if transaction: FreeCAD.ActiveDocument.openTransaction("Create Slice")
     FreeCADGui.addModule("BOPTools.SplitFeatures")
-    FreeCADGui.doCommand("j = BOPTools.SplitFeatures.makeSlice(name= '{name}')".format(name= name))
-    FreeCADGui.doCommand("j.Base = {sel}[0]\n"
-                         "j.Tools = {sel}[1:]".format(
+    FreeCADGui.doCommand("f = BOPTools.SplitFeatures.makeSlice(name= '{name}')".format(name= name))
+    FreeCADGui.doCommand("f.Base = {sel}[0]\n"
+                         "f.Tools = {sel}[1:]".format(
        sel= "["  +  ", ".join(["App.ActiveDocument."+so.Object.Name for so in sel])  +  "]"
        ))
-    FreeCADGui.doCommand("j.Mode = {mode}".format(mode= repr(mode)))
+    FreeCADGui.doCommand("f.Mode = {mode}".format(mode= repr(mode)))
 
     try:
-        FreeCADGui.doCommand("j.Proxy.execute(j)")
-        FreeCADGui.doCommand("j.purgeTouched()")
+        FreeCADGui.doCommand("f.Proxy.execute(f)")
+        FreeCADGui.doCommand("f.purgeTouched()")
     except Exception as err:
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
@@ -280,25 +280,64 @@ def cmdCreateSliceFeature(name, mode):
         mb.exec_()
 
         if mb.clickedButton() is btnAbort:
-            FreeCAD.ActiveDocument.abortTransaction()
-            return
+            if transaction: FreeCAD.ActiveDocument.abortTransaction()
+            return False
 
-    FreeCADGui.doCommand("for obj in j.ViewObject.Proxy.claimChildren():\n"
+    FreeCADGui.doCommand("for obj in f.ViewObject.Proxy.claimChildren():\n"
                          "    obj.ViewObject.hide()")
 
-    FreeCAD.ActiveDocument.commitTransaction()
+    if transaction: FreeCAD.ActiveDocument.commitTransaction()
+    return True
+
+def cmdSliceApart():
+    FreeCAD.ActiveDocument.openTransaction("Slice apart")
+    made = cmdCreateSliceFeature(name= "Slice", mode= "Split", transaction= False)
+    
+    if made:
+        FreeCADGui.addModule("CompoundTools.Explode")
+        FreeCADGui.doCommand("CompoundTools.Explode.explodeCompound(f)")
+        FreeCADGui.doCommand("f.ViewObject.hide()")
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCADGui.doCommand("App.ActiveDocument.recompute()")
+    else:
+        FreeCAD.ActiveDocument.abortTransaction()
+        
 
 class CommandSlice:
     "Command to create Slice feature"
     def GetResources(self):
         return {'Pixmap'  : getIconPath("Part_Slice.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Slice"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Slice to compound"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Part_Slice: split object by intersections with other objects")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Split object by intersections with other objects, and pack the pieces into a compound.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) > 1 :
             cmdCreateSliceFeature(name= "Slice", mode= "Split")
+        else:
+            mb = QtGui.QMessageBox()
+            mb.setIcon(mb.Icon.Warning)
+            mb.setText(_translate("Part_SplitFeatures", "Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.", None))
+            mb.setWindowTitle(_translate("Part_SplitFeatures","Bad selection", None))
+            mb.exec_()
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument:
+            return True
+        else:
+            return False
+
+class CommandSliceApart:
+    "Command to create exploded Slice feature"
+    def GetResources(self):
+        return {'Pixmap'  : getIconPath("Part_SliceApart.svg"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Slice apart"),
+                'Accel': "",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Split object by intersections with other objects.")}
+
+    def Activated(self):
+        if len(FreeCADGui.Selection.getSelectionEx()) > 1 :
+            cmdSliceApart()
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
@@ -428,7 +467,7 @@ class CommandXOR:
         return {'Pixmap'  : getIconPath("Part_XOR.svg"),
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Boolean XOR"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Part_XOR: remove intersection fragments")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Remove intersection fragments")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1 :
@@ -451,4 +490,5 @@ class CommandXOR:
 def addCommands():
     FreeCADGui.addCommand('Part_BooleanFragments',CommandBooleanFragments())
     FreeCADGui.addCommand('Part_Slice',CommandSlice())
+    FreeCADGui.addCommand('Part_SliceApart',CommandSliceApart())
     FreeCADGui.addCommand('Part_XOR',CommandXOR())

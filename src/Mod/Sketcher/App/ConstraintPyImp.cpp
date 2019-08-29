@@ -21,7 +21,11 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <sstream>
+
+#ifndef _PreComp_
+# include <sstream>
+#endif
+
 #include "Constraint.h"
 #include "ConstraintPy.h"
 #include "ConstraintPy.cpp"
@@ -31,7 +35,7 @@ using namespace Sketcher;
 
 PyObject *ConstraintPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of ConstraintPy and the Twin object 
+    // create a new instance of ConstraintPy and the Twin object
     return new ConstraintPy(new Constraint);
 }
 
@@ -108,18 +112,18 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             else if (strstr(ConstraintType,"InternalAlignment") != NULL) {
                 this->getConstraintPtr()->Type = InternalAlignment;
-                
+
                 valid = true;
                 if(strstr(ConstraintType,"EllipseMajorDiameter") != NULL)
                     this->getConstraintPtr()->AlignmentType=EllipseMajorDiameter;
                 else if(strstr(ConstraintType,"EllipseMinorDiameter") != NULL)
-                    this->getConstraintPtr()->AlignmentType=EllipseMinorDiameter;                    
+                    this->getConstraintPtr()->AlignmentType=EllipseMinorDiameter;
                 else {
                     this->getConstraintPtr()->AlignmentType=Undef;
                     valid = false;
                 }
             }
-            
+
             if (valid) {
                 this->getConstraintPtr()->First = FirstIndex;
                 this->getConstraintPtr()->Second = SecondIndex;
@@ -153,6 +157,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             else if (strcmp("Radius",ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = Radius;
+                // set a value that is out of range of result of atan2
+                // this value is handled in ViewProviderSketch
+                this->getConstraintPtr()->LabelPosition = 10;
+                valid = true;
+            }
+            else if (strcmp("Diameter",ConstraintType) == 0) {
+                this->getConstraintPtr()->Type = Diameter;
                 // set a value that is out of range of result of atan2
                 // this value is handled in ViewProviderSketch
                 this->getConstraintPtr()->LabelPosition = 10;
@@ -193,11 +204,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             else if (strstr(ConstraintType,"InternalAlignment") != NULL) {
                 this->getConstraintPtr()->Type = InternalAlignment;
-                
+
                 valid = true;
-                   
+
                 if(strstr(ConstraintType,"EllipseFocus1") != NULL)
-                    this->getConstraintPtr()->AlignmentType=EllipseFocus1; 
+                    this->getConstraintPtr()->AlignmentType=EllipseFocus1;
                 else if(strstr(ConstraintType,"EllipseFocus2") != NULL)
                     this->getConstraintPtr()->AlignmentType=EllipseFocus2;
                 else {
@@ -317,13 +328,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 valid = true;
 
                 if(strstr(ConstraintType,"BSplineControlPoint") != NULL) {
-                    this->getConstraintPtr()->AlignmentType=BSplineControlPoint; 
+                    this->getConstraintPtr()->AlignmentType=BSplineControlPoint;
                 }
                 else {
                     this->getConstraintPtr()->AlignmentType=Undef;
                     valid = false;
                 }
-                
+
                 if (valid) {
                     this->getConstraintPtr()->First     = intArg1;
                     this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) intArg2;
@@ -331,7 +342,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     this->getConstraintPtr()->InternalAlignmentIndex = intArg4;
                     return 0;
                 }
-                
+
             }
             if (valid) {
                 this->getConstraintPtr()->First     = intArg1;
@@ -491,6 +502,7 @@ std::string ConstraintPy::representation(void) const
         case Vertical           : result << "'Vertical' (" << getConstraintPtr()->First << ")>";break;
         case Block            	: result << "'Block' (" << getConstraintPtr()->First << ")>";break;
         case Radius             : result << "'Radius'>";break;
+        case Diameter           : result << "'Diameter'>";break;
         case Parallel           : result << "'Parallel'>";break;
         case Tangent            :
             if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
@@ -513,7 +525,7 @@ std::string ConstraintPy::representation(void) const
         break;
         case Symmetric          : result << "'Symmetric'>"; break;
         case SnellsLaw          : result << "'SnellsLaw'>"; break;
-        case InternalAlignment  : 
+        case InternalAlignment  :
             switch(this->getConstraintPtr()->AlignmentType) {
                 case Undef                  : result << "'InternalAlignment:Undef'>";break;
                 case EllipseMajorDiameter   : result << "'InternalAlignment:EllipseMajorDiameter'>";break;
@@ -541,6 +553,7 @@ Py::String ConstraintPy::getType(void) const
         case Vertical           : return Py::String("Vertical");break;
         case Block              : return Py::String("Block");break;
         case Radius             : return Py::String("Radius");break;
+        case Diameter           : return Py::String("Diameter");break;
         case Parallel           : return Py::String("Parallel");break;
         case Tangent            : return Py::String("Tangent");break;
         case Perpendicular      : return Py::String("Perpendicular");break;
@@ -574,6 +587,25 @@ Py::Long ConstraintPy::getFirstPos(void) const
     return Py::Long(static_cast<int>(this->getConstraintPtr()->FirstPos));
 }
 
+void ConstraintPy::setFirstPos(Py::Long arg)
+{
+    #if PY_MAJOR_VERSION < 3
+    int pos = Py::Int(arg);
+    #else
+    int pos = arg;
+    #endif
+
+    if(pos>=Sketcher::none && pos<=Sketcher::mid) {
+        this->getConstraintPtr()->FirstPos = (Sketcher::PointPos)pos;
+    }
+    else {
+        std::stringstream str;
+        str << "Invalid PointPos parameter: " << arg << std::endl;
+
+        PyErr_SetString(PyExc_TypeError, str.str().c_str());
+    }
+}
+
 Py::Long ConstraintPy::getSecond(void) const
 {
     return Py::Long(this->getConstraintPtr()->Second);
@@ -593,6 +625,25 @@ Py::Long ConstraintPy::getSecondPos(void) const
     return Py::Long(static_cast<int>(this->getConstraintPtr()->SecondPos));
 }
 
+void ConstraintPy::setSecondPos(Py::Long arg)
+{
+    #if PY_MAJOR_VERSION < 3
+    int pos = Py::Int(arg);
+    #else
+    int pos = arg;
+    #endif
+
+    if(pos>=Sketcher::none && pos<=Sketcher::mid) {
+        this->getConstraintPtr()->SecondPos = (Sketcher::PointPos)pos;
+    }
+    else {
+        std::stringstream str;
+        str << "Invalid PointPos parameter: " << arg << std::endl;
+
+        PyErr_SetString(PyExc_TypeError, str.str().c_str());
+    }
+}
+
 Py::Long ConstraintPy::getThird(void) const
 {
     return Py::Long(this->getConstraintPtr()->Third);
@@ -610,6 +661,25 @@ void  ConstraintPy::setThird(Py::Long arg)
 Py::Long ConstraintPy::getThirdPos(void) const
 {
     return Py::Long(static_cast<int>(this->getConstraintPtr()->ThirdPos));
+}
+
+void ConstraintPy::setThirdPos(Py::Long arg)
+{
+    #if PY_MAJOR_VERSION < 3
+    int pos = Py::Int(arg);
+    #else
+    int pos = arg;
+    #endif
+
+    if(pos>=Sketcher::none && pos<=Sketcher::mid) {
+        this->getConstraintPtr()->ThirdPos = (Sketcher::PointPos)pos;
+    }
+    else {
+        std::stringstream str;
+        str << "Invalid PointPos parameter: " << arg << std::endl;
+
+        PyErr_SetString(PyExc_TypeError, str.str().c_str());
+    }
 }
 
 Py::String ConstraintPy::getName(void) const
@@ -637,6 +707,11 @@ Py::Boolean ConstraintPy::getInVirtualSpace(void) const
     return Py::Boolean(this->getConstraintPtr()->isInVirtualSpace);
 }
 
+Py::Boolean ConstraintPy::getIsActive(void) const
+{
+    return Py::Boolean(this->getConstraintPtr()->isActive);
+}
+
 PyObject *ConstraintPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
@@ -644,5 +719,5 @@ PyObject *ConstraintPy::getCustomAttributes(const char* /*attr*/) const
 
 int ConstraintPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

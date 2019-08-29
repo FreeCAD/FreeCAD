@@ -153,7 +153,7 @@ double Routines::CalcAngle(Base::Vector3f a,Base::Vector3f  b,Base::Vector3f c)
 
 
 
-/*! \brief Algorithim A2.1 from NURBS Book Page 68*/
+/*! \brief Algorithm A2.1 from NURBS Book Page 68*/
 int Routines::FindSpan(int n, int p, double u, std::vector<double> KnotSequence)
 {
     if (u == KnotSequence[n+1])
@@ -178,7 +178,7 @@ int Routines::FindSpan(int n, int p, double u, std::vector<double> KnotSequence)
 }
 
 
-/*! \brief Algorithim A2.4 from NURBS Book page 70*/
+/*! \brief Algorithm A2.4 from NURBS Book page 70*/
 void Routines::Basisfun(int i, double u, int p, std::vector<double> &KnotSequence, std::vector<double> &output)
 {
     double temp, saved;
@@ -199,7 +199,7 @@ void Routines::Basisfun(int i, double u, int p, std::vector<double> &KnotSequenc
         output[j] = saved;
     }
 }
-/*! \brief Algorithim A2.3 from NURBS Book Page 72 */
+/*! \brief Algorithm A2.3 from NURBS Book Page 72 */
 void Routines::DersBasisFuns(int i, double u, int p, int n,
                              std::vector<double> &KnotSequence, std::vector< std::vector<double> > &Derivate)
 {

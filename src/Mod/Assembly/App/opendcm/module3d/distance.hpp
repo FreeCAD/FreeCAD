@@ -22,6 +22,7 @@
 
 #include "geometry.hpp"
 #include <opendcm/core/constraint.hpp>
+#include <opendcm/core/imp/kernel_imp.hpp>
 #include <boost/fusion/include/copy.hpp>
 #include <boost/math/special_functions.hpp>
 

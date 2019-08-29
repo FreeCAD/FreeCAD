@@ -6,7 +6,7 @@
     <message>
       <location filename="../../InitGui.py" line="44"/>
       <source>Plot edition tools</source>
-      <translation type="unfinished">Plot edition tools</translation>
+      <translation>Alati uređivanja ispisa</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="47"/>
@@ -19,12 +19,12 @@
     <message>
       <location filename="../../PlotGui.py" line="62"/>
       <source>Configure axes</source>
-      <translation type="unfinished">Configure axes</translation>
+      <translation>Konfiguriranje osi</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="65"/>
       <source>Configure the axes parameters</source>
-      <translation type="unfinished">Configure the axes parameters</translation>
+      <translation>Konfiguriranje parametara osi</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="../../PlotGui.py" line="109"/>
       <source>Show/Hide grid</source>
-      <translation type="unfinished">Show/Hide grid</translation>
+      <translation>Pokaži/Sakrij rešetku</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="112"/>
       <source>Show/Hide grid on selected plot</source>
-      <translation type="unfinished">Show/Hide grid on selected plot</translation>
+      <translation>Pokaži/Sakrij rešetku na odabranom planu</translation>
     </message>
   </context>
   <context>
@@ -45,12 +45,12 @@
     <message>
       <location filename="../../PlotGui.py" line="152"/>
       <source>Set labels</source>
-      <translation type="unfinished">Set labels</translation>
+      <translation>Postavi oznake</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="155"/>
       <source>Set title and axes labels</source>
-      <translation type="unfinished">Set title and axes labels</translation>
+      <translation>Postavljanje oznake naslova i osi</translation>
     </message>
   </context>
   <context>
@@ -58,12 +58,12 @@
     <message>
       <location filename="../../PlotGui.py" line="135"/>
       <source>Show/Hide legend</source>
-      <translation type="unfinished">Show/Hide legend</translation>
+      <translation>Pokaži/Sakrij legendu</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="138"/>
       <source>Show/Hide legend on selected plot</source>
-      <translation type="unfinished">Show/Hide legend on selected plot</translation>
+      <translation>Pokaži/Sakrij legendu na odabranom planu</translation>
     </message>
   </context>
   <context>
@@ -71,12 +71,12 @@
     <message>
       <location filename="../../PlotGui.py" line="169"/>
       <source>Set positions and sizes</source>
-      <translation type="unfinished">Set positions and sizes</translation>
+      <translation>Postavljanje položaja i veličina</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="172"/>
       <source>Set labels and legend positions and sizes</source>
-      <translation type="unfinished">Set labels and legend positions and sizes</translation>
+      <translation>Postavljanje oznaka i legenda pozicija i veličina</translation>
     </message>
   </context>
   <context>
@@ -89,7 +89,7 @@
     <message>
       <location filename="../../PlotGui.py" line="48"/>
       <source>Save the plot as an image file</source>
-      <translation type="unfinished">Save the plot as an image file</translation>
+      <translation>Spremi plan kao datoteku slike</translation>
     </message>
   </context>
   <context>
@@ -97,120 +97,120 @@
     <message>
       <location filename="../../PlotGui.py" line="81"/>
       <source>Configure series</source>
-      <translation type="unfinished">Configure series</translation>
+      <translation>Konfiguriranje serije</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="84"/>
       <source>Configure series drawing style and label</source>
-      <translation type="unfinished">Configure series drawing style and label</translation>
+      <translation>Konfiguracija stila crtanja i oznaka serije</translation>
     </message>
   </context>
   <context>
     <name>plot_axes</name>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="175"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="177"/>
       <source>Configure axes</source>
-      <translation type="unfinished">Configure axes</translation>
+      <translation>Konfiguriranje osi</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="179"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="181"/>
       <source>Active axes</source>
       <translation>Aktivne osi</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="211"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="213"/>
       <source>Apply to all axes</source>
       <translation>Primjeni na sve osi</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="215"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="217"/>
       <source>Dimensions</source>
       <translation>Dimenzije</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="219"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="221"/>
       <source>X axis position</source>
       <translation>Pozicija X osi</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="223"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="225"/>
       <source>Y axis position</source>
       <translation>Pozicija Y osi</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="199"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="201"/>
       <source>Scales</source>
       <translation>Mjerilo</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="203"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="205"/>
       <source>X auto</source>
       <translation>X automatski</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="207"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="209"/>
       <source>Y auto</source>
       <translation>Y automatski</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="227"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="229"/>
       <source>Index of the active axes</source>
-      <translation type="unfinished">Index of the active axes</translation>
+      <translation>Indeks aktivnih osi</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="231"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="233"/>
       <source>Add new axes to the plot</source>
-      <translation type="unfinished">Add new axes to the plot</translation>
+      <translation>Dodavanje nove osi na plan</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="236"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="238"/>
       <source>Remove selected axes</source>
-      <translation type="unfinished">Remove selected axes</translation>
+      <translation>Uklonite odabrane osi</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="241"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="243"/>
       <source>Check it to apply transformations to all axes</source>
-      <translation type="unfinished">Check it to apply transformations to all axes</translation>
+      <translation>Provjeravanje transformacije za primjenu na sve osi</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="246"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="248"/>
       <source>Left bound of axes</source>
-      <translation type="unfinished">Left bound of axes</translation>
+      <translation>Lijevo vezane za osi</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="251"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="253"/>
       <source>Right bound of axes</source>
-      <translation type="unfinished">Right bound of axes</translation>
+      <translation>Desno vezane za osi</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="256"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="258"/>
       <source>Bottom bound of axes</source>
-      <translation type="unfinished">Bottom bound of axes</translation>
+      <translation>Vezivanje osi na donju granicu</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="261"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="263"/>
       <source>Top bound of axes</source>
-      <translation type="unfinished">Top bound of axes</translation>
+      <translation>Vezivanje osi na gornju granicu</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="266"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="268"/>
       <source>Outward offset of X axis</source>
-      <translation type="unfinished">Outward offset of X axis</translation>
+      <translation>Pomak X osi prema van</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="271"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="273"/>
       <source>Outward offset of Y axis</source>
-      <translation type="unfinished">Outward offset of Y axis</translation>
+      <translation>Pomak Y osi prema van</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="276"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="278"/>
       <source>X axis scale autoselection</source>
-      <translation type="unfinished">X axis scale autoselection</translation>
+      <translation>X os skaliranje auto odabirom</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="281"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="283"/>
       <source>Y axis scale autoselection</source>
-      <translation type="unfinished">Y axis scale autoselection</translation>
+      <translation>Y os skaliranje auto odabirom</translation>
     </message>
   </context>
   <context>
@@ -218,95 +218,95 @@
     <message>
       <location filename="../../Plot.py" line="43"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
-      <translation type="unfinished">matplotlib not found, so Plot module can not be loaded</translation>
+      <translation>matplotlib nije pronađena, tako da Plot module nije moguće učitati</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="54"/>
       <source>matplotlib not found, Plot module will be disabled</source>
-      <translation type="unfinished">matplotlib not found, Plot module will be disabled</translation>
+      <translation>matplotlib nije pronađena, Plot moduli će biti onemogućeni</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="42"/>
+      <location filename="../../plotSave/TaskPanel.py" line="44"/>
       <source>Plot document must be selected in order to save it</source>
-      <translation type="unfinished">Plot document must be selected in order to save it</translation>
+      <translation>Plot dokument mora biti odabran kako bi ga spremili</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="340"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="342"/>
       <source>Axes 0 can not be deleted</source>
-      <translation type="unfinished">Axes 0 can not be deleted</translation>
+      <translation>Osi 0 se ne mogu izbrisati</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="97"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation type="unfinished">The grid must be activated on top of a plot document</translation>
+      <translation>Rešetka mora biti aktivirana na gornjoj granici ispisa dokumenta</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="125"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation type="unfinished">The legend must be activated on top of a plot document</translation>
+      <translation>Legenda mora biti aktivirana na gornjoj granici ispisa dokumenta</translation>
     </message>
   </context>
   <context>
     <name>plot_labels</name>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="133"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="135"/>
       <source>Set labels</source>
-      <translation type="unfinished">Set labels</translation>
+      <translation>Postavi oznake</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="137"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="139"/>
       <source>Active axes</source>
       <translation>Aktivne osi</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="141"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="143"/>
       <source>Title</source>
       <translation>Naslov</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="145"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="147"/>
       <source>X label</source>
       <translation>X oznaka</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="149"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="151"/>
       <source>Y label</source>
       <translation>Y oznaka</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="153"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="155"/>
       <source>Index of the active axes</source>
-      <translation type="unfinished">Index of the active axes</translation>
+      <translation>Indeks aktivnih osi</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="157"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="159"/>
       <source>Title (associated to active axes)</source>
-      <translation type="unfinished">Title (associated to active axes)</translation>
+      <translation>Naslov (povezan na aktivne osi)</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="162"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="164"/>
       <source>Title font size</source>
       <translation>Veličina fonta naslova</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="167"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="169"/>
       <source>X axis title</source>
       <translation>Naslov X osi</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="172"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="174"/>
       <source>X axis title font size</source>
       <translation>Veličina fonta naslova X osi</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="177"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="179"/>
       <source>Y axis title</source>
       <translation>Naslov Y osi</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="182"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="184"/>
       <source>Y axis title font size</source>
-      <translation type="unfinished">Y axis title font size</translation>
+      <translation>Veličina fonta naslova X osi</translation>
     </message>
   </context>
   <context>
@@ -314,7 +314,7 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="121"/>
       <source>Set positions and sizes</source>
-      <translation type="unfinished">Set positions and sizes</translation>
+      <translation>Postavljanje položaja i veličina</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="125"/>
@@ -324,70 +324,70 @@
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="130"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Veličina</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="140"/>
       <source>X item position</source>
-      <translation type="unfinished">X item position</translation>
+      <translation>X stavka pozicija</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="145"/>
       <source>Y item position</source>
-      <translation type="unfinished">Y item position</translation>
+      <translation>Y stavka pozicija</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="150"/>
       <source>Item size</source>
-      <translation type="unfinished">Item size</translation>
+      <translation>Veličinu stavke</translation>
     </message>
     <message>
       <location filename="../../plotPositions/TaskPanel.py" line="135"/>
       <source>List of modifiable items</source>
-      <translation type="unfinished">List of modifiable items</translation>
+      <translation>Popis izmjenljivih stavki</translation>
     </message>
   </context>
   <context>
     <name>plot_save</name>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="127"/>
+      <location filename="../../plotSave/TaskPanel.py" line="129"/>
       <source>Save figure</source>
-      <translation type="unfinished">Save figure</translation>
+      <translation>Spremanje figure</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="131"/>
+      <location filename="../../plotSave/TaskPanel.py" line="133"/>
       <source>Inches</source>
-      <translation type="unfinished">Inches</translation>
+      <translation>Inča</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="136"/>
+      <location filename="../../plotSave/TaskPanel.py" line="138"/>
       <source>Dots per Inch</source>
-      <translation type="unfinished">Dots per Inch</translation>
+      <translation>Točaka po inču</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="141"/>
+      <location filename="../../plotSave/TaskPanel.py" line="143"/>
       <source>Output image file path</source>
-      <translation type="unfinished">Output image file path</translation>
+      <translation>Put izlazne datoteke slike</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="146"/>
+      <location filename="../../plotSave/TaskPanel.py" line="148"/>
       <source>Show a file selection dialog</source>
-      <translation type="unfinished">Show a file selection dialog</translation>
+      <translation>Pokaži dijaloški odabir datoteka</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="151"/>
+      <location filename="../../plotSave/TaskPanel.py" line="153"/>
       <source>X image size</source>
-      <translation type="unfinished">X image size</translation>
+      <translation>X veličina slike</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="156"/>
+      <location filename="../../plotSave/TaskPanel.py" line="158"/>
       <source>Y image size</source>
-      <translation type="unfinished">Y image size</translation>
+      <translation>Y veličina slike</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="161"/>
+      <location filename="../../plotSave/TaskPanel.py" line="163"/>
       <source>Dots per point, with size will define output image resolution</source>
-      <translation type="unfinished">Dots per point, with size will define output image resolution</translation>
+      <translation>Točkica po mjestu sa veličinom će odrediti razlučivost slike</translation>
     </message>
   </context>
   <context>
@@ -395,27 +395,27 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="153"/>
       <source>No label</source>
-      <translation type="unfinished">No label</translation>
+      <translation>Bez oznake</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="188"/>
       <source>Line style</source>
-      <translation type="unfinished">Line style</translation>
+      <translation>Stil crte</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="168"/>
       <source>Marker</source>
-      <translation type="unfinished">Marker</translation>
+      <translation>Marker</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="149"/>
       <source>Configure series</source>
-      <translation type="unfinished">Configure series</translation>
+      <translation>Konfiguriranje serije</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="173"/>
       <source>List of available series</source>
-      <translation type="unfinished">List of available series</translation>
+      <translation>Popis dostupnih serija</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="178"/>
@@ -425,7 +425,7 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="193"/>
       <source>Marker style</source>
-      <translation type="unfinished">Marker style</translation>
+      <translation>Stil Oznake</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="198"/>
@@ -435,27 +435,27 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="203"/>
       <source>Marker size</source>
-      <translation type="unfinished">Marker size</translation>
+      <translation>Veličina Oznake</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="208"/>
       <source>Line and marker color</source>
-      <translation type="unfinished">Line and marker color</translation>
+      <translation>Linija i boja oznake</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="158"/>
       <source>Remove series</source>
-      <translation type="unfinished">Remove series</translation>
+      <translation>Uklanjanje podatkovne serije</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="183"/>
       <source>If checked, series will not be considered for legend</source>
-      <translation type="unfinished">If checked, series will not be considered for legend</translation>
+      <translation>Ako je označeno, podatkovna serija se neće prikazati u legendi</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="213"/>
       <source>Removes this series</source>
-      <translation type="unfinished">Removes this series</translation>
+      <translation>Uklanja ove podatkovne serije</translation>
     </message>
   </context>
 </TS>

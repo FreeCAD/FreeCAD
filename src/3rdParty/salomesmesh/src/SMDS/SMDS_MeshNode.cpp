@@ -263,6 +263,7 @@ int SMDS_MeshNode::NbNodes() const
 
 double* SMDS_MeshNode::getCoord() const
 {
+#if 0
   double coord[3];
   double *coord2;
   vtkUnstructuredGrid *grid;
@@ -288,6 +289,9 @@ double* SMDS_MeshNode::getCoord() const
      return coord2;
   }
   return 0;
+#else
+  return SMDS_Mesh::_meshList[myMeshId]->getGrid()->GetPoint(myVtkID);
+#endif
 }
 
 double SMDS_MeshNode::X() const

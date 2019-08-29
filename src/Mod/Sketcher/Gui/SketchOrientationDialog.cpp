@@ -52,7 +52,7 @@ SketchOrientationDialog::SketchOrientationDialog(void)
 
 SketchOrientationDialog::~SketchOrientationDialog()
 {
-
+    delete ui;
 }
 
 void SketchOrientationDialog::accept()

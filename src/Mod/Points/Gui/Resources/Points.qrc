@@ -38,5 +38,7 @@
         <file>translations/Points_id.qm</file>
         <file>translations/Points_lt.qm</file>
         <file>translations/Points_val-ES.qm</file>
+        <file>translations/Points_ar.qm</file>
+        <file>translations/Points_vi.qm</file>
     </qresource>
 </RCC>

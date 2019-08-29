@@ -66,6 +66,7 @@ void DrawViewImage::onChanged(const App::Property* prop)
 {
     if (prop == &ImageFile) {
         if (!isRestoring()) {
+            requestPaint();
         }
     }
     TechDraw::DrawView::onChanged(prop);
@@ -73,6 +74,7 @@ void DrawViewImage::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewImage::execute(void)
 {
+    requestPaint();
     return DrawView::execute();
 }
 

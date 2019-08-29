@@ -26,10 +26,10 @@ import FreeCADGui
 import PathScripts
 from PySide import QtCore
 
-"""Path SimpleCopy command"""
+__doc__ = """Path SimpleCopy command"""
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -47,7 +47,7 @@ class CommandPathSimpleCopy:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except:
+        except Exception: # pylint: disable=broad-except
             return False
 
     def Activated(self):
@@ -55,11 +55,11 @@ class CommandPathSimpleCopy:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_SimpleCopy", "Please select exactly one path object\n"))
+                translate("Path_SimpleCopy", "Please select exactly one path object")+"\n")
             return
         if not(selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Path_SimpleCopy", "Please select exactly one path object\n"))
+                translate("Path_SimpleCopy", "Please select exactly one path object")+"\n")
             return
 
         FreeCAD.ActiveDocument.openTransaction(

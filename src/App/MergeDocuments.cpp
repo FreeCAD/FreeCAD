@@ -63,6 +63,14 @@ public:
         return true;
     }
 protected:
+
+    // It is not safe to change potential object name reference at this level.
+    // For example, a LinkSub with sub element name Face1 may also be some
+    // object's name that may potentially be mapped. In addition, with the
+    // introduction of full quanlified SubName reference, the Sub value inside
+    // LinkSub may require customized mapping. So we move the mapping logic to
+    // various link property's Restore() function.
+#if 0
     void startElement(const XMLCh* const uri, const XMLCh* const localname,
                       const XMLCh* const qname,
                       const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs)
@@ -80,6 +88,24 @@ protected:
                         it->second = jt->second;
                 }
             }
+            // update the expression if name of the object is used
+            else if (LocalName == "Expression") {
+                std::map<std::string, std::string>::iterator it = AttrMap.find("expression");
+                if (it != AttrMap.end()) {
+                    // search for the part before the first dot that should be the object name.
+                    std::string expression = it->second;
+                    std::string::size_type dotpos = expression.find_first_of(".");
+                    if (dotpos != std::string::npos) {
+                        std::string name = expression.substr(0, dotpos);
+                        std::map<std::string, std::string>::const_iterator jt = nameMap.find(name);
+                        if (jt != nameMap.end()) {
+                            std::string newexpression = jt->second;
+                            newexpression += expression.substr(dotpos);
+                            it->second = newexpression;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -89,6 +115,7 @@ protected:
         if (LocalName == "Property")
             propertyStack.pop();
     }
+#endif
 
 private:
     std::map<std::string, std::string>& nameMap;

@@ -35,12 +35,13 @@ now = datetime.datetime.now()
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
 
 def export(objectslist, filename,argstring):
     "called when freecad exports a list of objects"
+    # pylint: disable=unused-argument
     if len(objectslist) > 1:
         print("This script is unable to write more than one Path object")
         return
@@ -49,7 +50,7 @@ def export(objectslist, filename,argstring):
         print("the given object is not a path")
     gcode = obj.Path.toGCode()
     gcode = parse(gcode)
-    gfile = pythonopen(filename, "wb")
+    gfile = pythonopen(filename, "w")
     gfile.write(gcode)
     gfile.close()
 

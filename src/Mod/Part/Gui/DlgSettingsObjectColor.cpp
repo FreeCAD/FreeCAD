@@ -41,6 +41,7 @@ DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
     : PreferencePage(parent)
 {
     this->setupUi(this);
+    this->DefaultShapeColor->setDisabled(this->checkRandomColor->isChecked());
 }
 
 /** 
@@ -55,6 +56,7 @@ void DlgSettingsObjectColor::saveSettings()
 {
     // Part
     DefaultShapeColor->onSave();
+    checkRandomColor->onSave();
     DefaultShapeLineColor->onSave();
     DefaultShapeLineWidth->onSave();
     DefaultShapeVertexColor->onSave();
@@ -68,6 +70,7 @@ void DlgSettingsObjectColor::loadSettings()
 {
     // Part
     DefaultShapeColor->onRestore();
+    checkRandomColor->onRestore();
     DefaultShapeLineColor->onRestore();
     DefaultShapeLineWidth->onRestore();
     DefaultShapeVertexColor->onRestore();

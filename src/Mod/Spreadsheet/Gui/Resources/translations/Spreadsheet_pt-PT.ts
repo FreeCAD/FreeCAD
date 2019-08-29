@@ -102,8 +102,8 @@
       <translation>Alinhar verticalmente ao centro</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Alinhar verticalmente ao centro o conteúdo das células selecionadas</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Conteúdo das células selecionadas alinhadas ao Centro na verticalmente</translation>
     </message>
   </context>
   <context>
@@ -144,11 +144,11 @@
     </message>
     <message>
       <source>Merge cells</source>
-      <translation>Juntar células</translation>
+      <translation>Unir células</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Juntar células selecionadas na folha de cálculo</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation>Definir atalho</translation>
+      <translation>Definir nome alternativo</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Definir atalho para a célula selecionada</translation>
+      <translation>Definir nome alternativo para a célula selecionada</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Dividir célula</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Dividir células juntas anteriormente na folha de cálculo</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Texto em negrito</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Definir texto em negrito nas células selecionadas</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Texto em itálico</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Definir texto em itálico nas células selecionadas</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Sublinhar texto</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Definir texto sublinhado nas células selecionadas</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Sublinhar o texto nas células selecionadas</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Personalizado</translation>
+      <source>Custom Color</source>
+      <translation>Cor personalizada</translation>
     </message>
   </context>
   <context>
@@ -253,11 +253,11 @@
     </message>
     <message>
       <source>&amp;Alignment</source>
-      <translation>Alinhamento</translation>
+      <translation>&amp;Alinhamento</translation>
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Horizontal</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Vertical</translation>
     </message>
     <message>
       <source>Top</source>
@@ -285,7 +285,7 @@
     </message>
     <message>
       <source>&amp;Style</source>
-      <translation>&amp; Estilo</translation>
+      <translation>&amp;Estilo</translation>
     </message>
     <message>
       <source>Bold</source>
@@ -301,7 +301,7 @@
     </message>
     <message>
       <source>&amp;Display unit</source>
-      <translation>Unidades de exibição</translation>
+      <translation>&amp;Mostrar Unidades</translation>
     </message>
     <message>
       <source>Unit string</source>
@@ -309,11 +309,11 @@
     </message>
     <message>
       <source>A&amp;lias</source>
-      <translation>&amp;Atalho</translation>
+      <translation>Nome&amp; Alternativo</translation>
     </message>
     <message>
       <source>Alias for this cell</source>
-      <translation>Atalho para esta célula</translation>
+      <translation>Nome alternativo para esta célula</translation>
     </message>
   </context>
   <context>
@@ -426,15 +426,15 @@
       <translation>Cinzento claro</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personalizado</translation>
+      <source>Custom Color</source>
+      <translation>Cor personalizada</translation>
     </message>
   </context>
   <context>
     <name>Sheet</name>
     <message>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <source>&amp;Contents</source>

@@ -24,6 +24,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <SMESH_Mesh.hxx>
+# include <vtkDataSetReader.h>
+# include <vtkGeometryFilter.h>
+# include <vtkStructuredGrid.h>
+# include <vtkUnstructuredGrid.h>
+# include <vtkImageData.h>
+# include <vtkRectilinearGrid.h>
+# include <vtkAppendFilter.h>
+# include <vtkXMLUnstructuredGridReader.h>
+# include <vtkXMLPolyDataReader.h>
+# include <vtkXMLStructuredGridReader.h>
+# include <vtkXMLRectilinearGridReader.h>
+# include <vtkXMLImageDataReader.h>
 #endif
 
 #include "FemPostPipeline.h"
@@ -33,22 +46,10 @@
 
 #include <Base/Console.h>
 #include <App/Document.h>
-#include <SMESH_Mesh.hxx>
+
 #include <App/DocumentObjectPy.h>
 #include <Mod/Fem/App/FemPostPipelinePy.h>
 
-#include <vtkDataSetReader.h>
-#include <vtkGeometryFilter.h>
-#include <vtkStructuredGrid.h>
-#include <vtkUnstructuredGrid.h>
-#include <vtkImageData.h>
-#include <vtkRectilinearGrid.h>
-#include <vtkAppendFilter.h>
-#include <vtkXMLUnstructuredGridReader.h>
-#include <vtkXMLPolyDataReader.h>
-#include <vtkXMLStructuredGridReader.h>
-#include <vtkXMLRectilinearGridReader.h>
-#include <vtkXMLImageDataReader.h>
 
 using namespace Fem;
 using namespace App;
@@ -132,7 +133,7 @@ void FemPostPipeline::read(Base::FileInfo File) {
 
     // checking on the file
     if (!File.isReadable())
-        throw Base::Exception("File to load not existing or not readable");
+        throw Base::FileException("File to load not existing or not readable", File);
 
     if (File.hasExtension("vtu"))
         readXMLFile<vtkXMLUnstructuredGridReader>(File.filePath());
@@ -147,7 +148,7 @@ void FemPostPipeline::read(Base::FileInfo File) {
     else if (File.hasExtension("vtk"))
         readXMLFile<vtkDataSetReader>(File.filePath());
     else
-        throw Base::Exception("Unknown extension");
+        throw Base::FileException("Unknown extension");
 }
 
 
@@ -259,12 +260,7 @@ void FemPostPipeline::load(FemResultObject* res) {
 
     //Now copy the point data over
     //############################
-    if(res->getPropertyByName("Velocity")){  // TODO: consider better way to detect result type, res->Type == "CfdResult"
-        FemVTKTools::exportFluidicResult(res, grid);
-    }
-    else{
-        FemVTKTools::exportMechanicalResult(res, grid);
-    }
+    FemVTKTools::exportFreeCADResult(res, grid);
 
     Data.setValue(grid);
 }

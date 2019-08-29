@@ -99,7 +99,7 @@ namespace dcm {
 
 namespace details {
 
-//return always a geometry3d pointer struct, no matter whats the supplied type
+//return always a geometry3d pointer struct, no matter what's the supplied type
 template<typename T, typename R>
 struct converter_g {
     //check if the type T is usable from within module3d, as it could also be a shape type

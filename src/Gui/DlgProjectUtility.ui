@@ -32,7 +32,7 @@
         <item row="0" column="1">
          <widget class="Gui::FileChooser" name="extractSource">
           <property name="filter">
-           <string notr="true">Project file (*.fcstd)</string>
+           <string notr="true">Project file (*.FCStd)</string>
           </property>
          </widget>
         </item>

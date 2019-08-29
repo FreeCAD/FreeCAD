@@ -26,7 +26,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <QListWidget>
 
 namespace App {
@@ -46,11 +46,11 @@ public:
     explicit ElementView(QWidget *parent = 0);
     ~ElementView();
 
-        
+
 Q_SIGNALS:
     void onFilterShortcutPressed();
     void signalCloseShape();
-    
+
 protected:
     void contextMenuEvent (QContextMenuEvent* event);
     void keyPressEvent(QKeyEvent * event);
@@ -68,13 +68,14 @@ protected Q_SLOTS:
     void doPerpendicularConstraint();
     void doLengthConstraint();
     void doRadiusConstraint();
+    void doDiameterConstraint();
     void doAngleConstraint();
     void doEqualConstraint();
     void doPointOnObjectConstraint();
-    void doSymetricConstraint();
+    void doSymmetricConstraint();
     void doTangentConstraint();
     // Other Commands
-    void doToggleConstruction();    
+    void doToggleConstruction();
     // Acelerators
     void doCloseShape();
     void doConnect();
@@ -101,13 +102,16 @@ private:
     void slotElementsChanged(void);
     void updateIcons(int element);
     void updatePreselection();
+    void updateVisibility(int filterindex);
+    void setItemVisibility(int elementindex,int filterindex);
     void clearWidget();
 
 public Q_SLOTS:
-    void on_listWidgetElements_itemSelectionChanged(void); 
+    void on_listWidgetElements_itemSelectionChanged(void);
     void on_listWidgetElements_itemEntered(QListWidgetItem *item);
     void on_listWidgetElements_filterShortcutPressed();
     void on_listWidgetElements_currentFilterChanged ( int index );
+    void on_listWidgetElements_currentModeFilterChanged ( int index );
     void on_namingBox_stateChanged(int state);
     void on_autoSwitchBox_stateChanged(int state);
 
@@ -115,7 +119,7 @@ protected:
     void changeEvent(QEvent *e);
     void leaveEvent ( QEvent * event );
     ViewProviderSketch *sketchView;
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectionElementsChanged;
 
 private:
@@ -123,10 +127,10 @@ private:
     Ui_TaskSketcherElements* ui;
     int focusItemIndex;
     int previouslySelectedItemIndex;
-    
+
     bool isNamingBoxChecked;
     bool isautoSwitchBoxChecked;
-    
+
     bool inhibitSelectionUpdate;
 };
 

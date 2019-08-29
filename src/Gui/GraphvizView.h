@@ -26,7 +26,7 @@
 
 #include "MDIView.h"
 #include <boost/shared_ptr.hpp>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 
 class QGraphicsScene;
@@ -84,7 +84,7 @@ private:
     GraphvizWorker* thread;
     int nPending;
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
+    typedef boost::signals2::scoped_connection Connection;
     Connection recomputeConnection;
     Connection undoConnection;
     Connection redoConnection;

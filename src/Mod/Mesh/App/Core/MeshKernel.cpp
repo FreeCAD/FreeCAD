@@ -773,6 +773,15 @@ std::vector<unsigned long> MeshKernel::HasFacets (const MeshPointIterator &rclIt
     return aulBelongs;
 }
 
+MeshPointArray MeshKernel::GetPoints(const std::vector<unsigned long>& indices) const
+{
+    MeshPointArray ary;
+    ary.reserve(indices.size());
+    for (std::vector<unsigned long>::const_iterator it = indices.begin(); it != indices.end(); ++it)
+        ary.push_back(this->_aclPointArray[*it]);
+    return ary;
+}
+
 MeshFacetArray MeshKernel::GetFacets(const std::vector<unsigned long>& indices) const
 {
     MeshFacetArray ary;
@@ -869,6 +878,11 @@ void MeshKernel::Read (std::istream &rclIn)
             uint32_t v1, v2, v3;
             for (MeshFacetArray::_TIterator it = facetArray.begin(); it != facetArray.end(); ++it) {
                 str >> v1 >> v2 >> v3;
+
+                // make sure to have valid indices
+                if (v1 >= uCtPts || v2 >= uCtPts || v3 >= uCtPts)
+                    throw Base::BadFormatError("Invalid data structure");
+
                 it->_aulPoints[0] = v1;
                 it->_aulPoints[1] = v2;
                 it->_aulPoints[2] = v3;
@@ -878,6 +892,15 @@ void MeshKernel::Read (std::istream &rclIn)
                 // because in algorithms this value is always used to check
                 // for open edges.
                 str >> v1 >> v2 >> v3;
+
+                // make sure to have valid indices
+                if (v1 >= uCtFts && v1 < open_edge)
+                    throw Base::BadFormatError("Invalid data structure");
+                if (v2 >= uCtFts && v2 < open_edge)
+                    throw Base::BadFormatError("Invalid data structure");
+                if (v3 >= uCtFts && v3 < open_edge)
+                    throw Base::BadFormatError("Invalid data structure");
+
                 if (v1 < open_edge)
                     it->_aulNeighbours[0] = v1;
                 else
@@ -908,19 +931,75 @@ void MeshKernel::Read (std::istream &rclIn)
         }
     }
     else {
-        // The old format
+        // The old formats
         unsigned long uCtPts=magic, uCtFts=version;
+        MeshPointArray pointArray;
+        MeshFacetArray facetArray;
 
-        // the stored mesh kernel might be empty
-        if ( uCtPts > 0 ) {
-          _aclPointArray.resize(uCtPts);
-          rclIn.read((char*)&(_aclPointArray[0]), uCtPts*sizeof(MeshPoint));
+        float ratio = 0;
+        if (uCtPts > 0) {
+            ratio = static_cast<float>(uCtFts) / static_cast<float>(uCtPts);
         }
-        if ( uCtFts > 0 ) {
-          _aclFacetArray.resize(uCtFts);
-          rclIn.read((char*)&(_aclFacetArray[0]), uCtFts*sizeof(MeshFacet));
+
+        // without edge array
+        if (ratio < 2.5) {
+            // the stored mesh kernel might be empty
+            if (uCtPts > 0) {
+                pointArray.resize(uCtPts);
+                rclIn.read((char*)&(pointArray[0]), uCtPts*sizeof(MeshPoint));
+            }
+            if (uCtFts > 0) {
+                facetArray.resize(uCtFts);
+                rclIn.read((char*)&(facetArray[0]), uCtFts*sizeof(MeshFacet));
+            }
+            rclIn.read((char*)&_clBoundBox, sizeof(Base::BoundBox3f));
         }
-        rclIn.read((char*)&_clBoundBox, sizeof(Base::BoundBox3f));
+        else {
+            // with edge array
+            unsigned long uCtEdges=uCtFts;
+            str >> magic;
+            uCtFts = magic;
+            pointArray.resize(uCtPts);
+            for (MeshPointArray::_TIterator it = pointArray.begin(); it != pointArray.end(); ++it) {
+                str >> it->x >> it->y >> it->z;
+            }
+            uint32_t dummy;
+            for (unsigned long i=0; i<uCtEdges; i++) {
+                str >> dummy;
+            }
+            uint32_t v1, v2, v3;
+            facetArray.resize(uCtFts);
+            for (MeshFacetArray::_TIterator it = facetArray.begin(); it != facetArray.end(); ++it) {
+                str >> v1 >> v2 >> v3;
+                it->_aulNeighbours[0] = v1;
+                it->_aulNeighbours[1] = v2;
+                it->_aulNeighbours[2] = v3;
+                str >> v1 >> v2 >> v3;
+                it->_aulPoints[0] = v1;
+                it->_aulPoints[1] = v2;
+                it->_aulPoints[2] = v3;
+                str >> it->_ucFlag;
+            }
+
+            str >> _clBoundBox.MinX
+                >> _clBoundBox.MinY
+                >> _clBoundBox.MinZ
+                >> _clBoundBox.MaxX
+                >> _clBoundBox.MaxY
+                >> _clBoundBox.MaxZ;
+        }
+
+        for (auto it = facetArray.begin(); it != facetArray.end(); ++it) {
+            for (int i=0; i<3; i++) {
+                if (it->_aulPoints[i] >= uCtPts)
+                    throw Base::BadFormatError("Invalid data structure");
+                if (it->_aulNeighbours[i] < ULONG_MAX && it->_aulNeighbours[i] >= uCtFts)
+                    throw Base::BadFormatError("Invalid data structure");
+            }
+        }
+
+        _aclPointArray.swap(pointArray);
+        _aclFacetArray.swap(facetArray);
     }
 }
 

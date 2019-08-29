@@ -50,6 +50,7 @@ void DlgPrefsTechDrawImp::saveSettings()
     cb_Faces->onSave();
     cb_SectionEdges->onSave();
     cb_PageUpdate->onSave();
+    cb_AutoDist->onSave();
 
     pcb_Normal->onSave();
     pcb_Select->onSave();
@@ -66,6 +67,9 @@ void DlgPrefsTechDrawImp::saveSettings()
     pfc_DefTemp->onSave();
     pfc_DefDir->onSave();
     pfc_HatchFile->onSave();
+    pfc_LineGroup->onSave();
+    pfc_Welding->onSave();
+
     pfc_FilePattern->onSave();
     le_NamePattern->onSave();
 }
@@ -77,6 +81,7 @@ void DlgPrefsTechDrawImp::loadSettings()
     cb_Faces->onRestore();
     cb_SectionEdges->onRestore();
     cb_PageUpdate->onRestore();
+    cb_AutoDist->onRestore();
 
     pcb_Normal->onRestore();
     pcb_Select->onRestore();
@@ -93,7 +98,8 @@ void DlgPrefsTechDrawImp::loadSettings()
     pfc_DefTemp->onRestore();
     pfc_DefDir->onRestore();
     pfc_HatchFile->onRestore();
-
+    pfc_LineGroup->onRestore();
+    pfc_Welding->onRestore();
 
     pfc_FilePattern->onRestore();
     le_NamePattern->onRestore();

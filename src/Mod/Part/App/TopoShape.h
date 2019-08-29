@@ -29,13 +29,49 @@
 #include <TopoDS_Wire.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <App/ComplexGeoData.h>
+#include <Base/Exception.h>
 
 class gp_Ax1;
 class gp_Ax2;
+class gp_Pln;
 class gp_Vec;
+
+namespace App {
+class Color;
+}
 
 namespace Part
 {
+
+/* A special sub-class to indicate null shapes
+ */
+class PartExport NullShapeException : public Base::ValueError
+{
+public:
+   /// Construction
+   NullShapeException();
+   NullShapeException(const char * sMessage);
+   NullShapeException(const std::string& sMessage);
+   /// Construction
+   NullShapeException(const NullShapeException &inst);
+   /// Destruction
+   virtual ~NullShapeException() throw() {}
+};
+
+/* A special sub-class to indicate boolean failures
+ */
+class PartExport BooleanException : public Base::CADKernelError
+{
+public:
+   /// Construction
+   BooleanException();
+   BooleanException(const char * sMessage);
+   BooleanException(const std::string& sMessage);
+   /// Construction
+   BooleanException(const BooleanException &inst);
+   /// Destruction
+   virtual ~BooleanException() throw() {}
+};
 
 class PartExport ShapeSegment : public Data::Segment
 {
@@ -88,6 +124,8 @@ public:
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     static void convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf);
     static void convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx);
+    static Base::Matrix4D convert(const gp_Trsf& trsf);
+    static gp_Trsf convert(const Base::Matrix4D& mtrx);
     //@}
 
     /** @name Subelement management */
@@ -113,10 +151,14 @@ public:
         std::vector<Facet> &faces) const;
     //@}
     /// get the Topo"sub"Shape with the given name
-    TopoDS_Shape getSubShape(const char* Type) const;
+    TopoDS_Shape getSubShape(const char* Type, bool silent=false) const;
+    TopoDS_Shape getSubShape(TopAbs_ShapeEnum type, int idx, bool silent=false) const;
     unsigned long countSubShapes(const char* Type) const;
+    unsigned long countSubShapes(TopAbs_ShapeEnum type) const;
+    bool hasSubShape(const char *Type) const;
+    bool hasSubShape(TopAbs_ShapeEnum type) const;
     /// get the Topo"sub"Shape with the given name
-    PyObject * getPySubShape(const char* Type) const;
+    PyObject * getPySubShape(const char* Type, bool silent=false) const;
 
     /** @name Save/restore */
     //@{
@@ -136,7 +178,7 @@ public:
     void importIges(const char *FileName);
     void importStep(const char *FileName);
     void importBrep(const char *FileName);
-    void importBrep(std::istream&);
+    void importBrep(std::istream&, int indicator=1);
     void importBinary(std::istream&);
     void exportIges(const char *FileName) const;
     void exportStep(const char *FileName) const;
@@ -144,7 +186,7 @@ public:
     void exportBrep(std::ostream&) const;
     void exportBinary(std::ostream&);
     void exportStl (const char *FileName, double deflection) const;
-    void exportFaceSet(double, double, std::ostream&) const;
+    void exportFaceSet(double, double, const std::vector<App::Color>&, std::ostream&) const;
     void exportLineSet(std::ostream&) const;
     //@}
 
@@ -154,6 +196,8 @@ public:
     bool isValid() const;
     bool analyze(bool runBopCheck, std::ostream&) const;
     bool isClosed() const;
+    bool isCoplanar(const TopoShape &other, double tol=-1) const;
+    bool findPlane(gp_Pln &pln, double tol=-1) const;
     //@}
 
     /** @name Boolean operation*/
@@ -165,8 +209,8 @@ public:
     TopoDS_Shape fuse(TopoDS_Shape) const;
     TopoDS_Shape fuse(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
     TopoDS_Shape oldFuse(TopoDS_Shape) const;
-    TopoDS_Shape section(TopoDS_Shape) const;
-    TopoDS_Shape section(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
+    TopoDS_Shape section(TopoDS_Shape, Standard_Boolean approximate=Standard_False) const;
+    TopoDS_Shape section(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0, Standard_Boolean approximate=Standard_False) const;
     std::list<TopoDS_Wire> slice(const Base::Vector3d&, double) const;
     TopoDS_Compound slices(const Base::Vector3d&, const std::vector<double>&) const;
     /**
@@ -228,7 +272,7 @@ public:
     //@{
     void transformGeometry(const Base::Matrix4D &rclMat);
     TopoDS_Shape transformGShape(const Base::Matrix4D&) const;
-    void transformShape(const Base::Matrix4D&, bool copy);
+    bool transformShape(const Base::Matrix4D&, bool copy, bool checkScale=false);
     TopoDS_Shape mirror(const gp_Ax2&) const;
     TopoDS_Shape toNurbs() const;
     TopoDS_Shape replaceShape(const std::vector< std::pair<TopoDS_Shape,TopoDS_Shape> >& s) const;
@@ -237,6 +281,8 @@ public:
     bool fix(double, double, double);
     bool removeInternalWires(double);
     TopoDS_Shape removeSplitter() const;
+    TopoDS_Shape defeaturing(const std::vector<TopoDS_Shape>& s) const;
+    TopoDS_Shape makeShell(const TopoDS_Shape&) const;
     //@}
 
     /** @name Getting basic geometric entities */
@@ -252,6 +298,68 @@ public:
     void getDomains(std::vector<Domain>&) const;
     //@}
 
+    /** @name Element name mapping aware shape maker 
+     *
+     * To be complete in next batch of patches
+     */
+    //@{
+    TopoShape &makECompound(const std::vector<TopoShape> &shapes, const char *op=0, bool force=true);
+
+    TopoShape &makEWires(const TopoShape &shape, const char *op=0, bool fix=false, double tol=0.0);
+    TopoShape makEWires(const char *op=0, bool fix=false, double tol=0.0) const {
+        return TopoShape().makEWires(*this,op,fix,tol);
+    }
+    TopoShape &makEFace(const std::vector<TopoShape> &shapes, const char *op=0, const char *maker=0);
+    TopoShape &makEFace(const TopoShape &shape, const char *op=0, const char *maker=0);
+    TopoShape makEFace(const char *op=0, const char *maker=0) const {
+        return TopoShape().makEFace(*this,op,maker);
+    }
+    bool _makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
+            const char *op=0, bool checkScale=false, bool copy=false);
+
+    TopoShape &makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
+            const char *op=0, bool checkScale=false, bool copy=false) {
+        _makETransform(shape,mat,op,checkScale,copy);
+        return *this;
+    }
+    TopoShape makETransform(const Base::Matrix4D &mat, const char *op=0, 
+            bool checkScale=false, bool copy=false) const {
+        return TopoShape().makETransform(*this,mat,op,checkScale,copy);
+    }
+
+    TopoShape &makETransform(const TopoShape &shape, const gp_Trsf &trsf, 
+            const char *op=0, bool copy=false);
+    TopoShape makETransform(const gp_Trsf &trsf, const char *op=0, bool copy=false) const {
+        return TopoShape().makETransform(*this,trsf,op,copy);
+    }
+
+    void move(const TopLoc_Location &loc) {
+        _Shape.Move(loc);
+    }
+    TopoShape moved(const TopLoc_Location &loc) const {
+        TopoShape ret(*this);
+        ret._Shape.Move(loc);
+        return ret;
+    }
+
+    TopoShape &makEGTransform(const TopoShape &shape, const Base::Matrix4D &mat, 
+            const char *op=0, bool copy=false);
+    TopoShape makEGTransform(const Base::Matrix4D &mat, const char *op=0, bool copy=false) const {
+        return TopoShape().makEGTransform(*this,mat,op,copy);
+    }
+
+    TopoShape &makERefine(const TopoShape &shape, const char *op=0, bool no_fail=true);
+    TopoShape makERefine(const char *op=0, bool no_fail=true) const {
+        return TopoShape().makERefine(*this,op,no_fail);
+    }
+    //@}
+
+    static TopAbs_ShapeEnum shapeType(const char *type,bool silent=false);
+    static TopAbs_ShapeEnum shapeType(char type,bool silent=false);
+    TopAbs_ShapeEnum shapeType(bool silent=false) const;
+    static const std::string &shapeName(TopAbs_ShapeEnum type,bool silent=false);
+    const std::string &shapeName(bool silent=false) const;
+    static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const char *name);
 private:
     TopoDS_Shape _Shape;
 };

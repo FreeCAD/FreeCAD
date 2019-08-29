@@ -34,7 +34,7 @@
 
 using namespace Spreadsheet;
 
-const int PropertyRowHeights::defaultHeight = 20;
+const int PropertyRowHeights::defaultHeight = 30;
 
 TYPESYSTEM_SOURCE(Spreadsheet::PropertyRowHeights , App::Property);
 
@@ -56,8 +56,11 @@ App::Property *PropertyRowHeights::Copy() const
 
 void PropertyRowHeights::Paste(const Property &from)
 {
+    setValues(static_cast<const PropertyRowHeights&>(from).getValues());
+}
+
+void PropertyRowHeights::setValues(const std::map<int,int> &values) {
     aboutToSetValue();
-    const PropertyRowHeights * fromprh = static_cast<const PropertyRowHeights*>(&from);
 
     std::map<int, int>::const_iterator i;
 
@@ -72,8 +75,8 @@ void PropertyRowHeights::Paste(const Property &from)
     clear();
 
     /* Copy new map from from */
-    i = fromprh->begin();
-    while (i != fromprh->end()) {
+    i = values.begin();
+    while (i != values.end()) {
         insert(*i);
         dirty.insert(i->first);
         ++i;
@@ -85,14 +88,14 @@ void PropertyRowHeights::Save(Base::Writer &writer) const
 {
     // Save row information
     writer.Stream() << writer.ind() << "<RowInfo Count=\"" << size() << "\">" << std::endl;
-    writer.incInd(); // indention for 'RowInfo'
+    writer.incInd(); // indentation for 'RowInfo'
 
     std::map<int, int>::const_iterator ri = begin();
     while (ri != end()) {
         writer.Stream() << writer.ind() << "<Row name=\"" << rowName(ri->first) << "\"  height=\"" << ri->second << "\" />" << std::endl;
         ++ri;
     }
-    writer.decInd(); // indention for 'RowInfo'
+    writer.decInd(); // indentation for 'RowInfo'
     writer.Stream() << writer.ind() << "</RowInfo>" << std::endl;
 }
 

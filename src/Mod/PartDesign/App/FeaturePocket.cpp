@@ -43,6 +43,7 @@
 # include <BRepAlgoAPI_Common.hxx>
 #endif
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <App/Document.h>
@@ -52,6 +53,8 @@
 
 using namespace PartDesign;
 
+/* TRANSLATOR PartDesign::Pocket */
+
 const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace","TwoLengths",NULL};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
@@ -59,7 +62,7 @@ PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
 Pocket::Pocket()
 {
     addSubType = FeatureAddSub::Subtractive;
-    
+
     ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
@@ -112,12 +115,17 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     TopoDS_Shape base;
     try {
         base = getBaseShape();
-    } catch (const Base::Exception&) {
-        return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the pocket!");
+    }
+    catch (const Base::Exception&) {
+        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n\n"
+                                    "  \xe2\x80\xa2 the active Body does not contain a base shape, so there is no\n"
+                                    "  material to be removed;\n"
+                                    "  \xe2\x80\xa2 the selected sketch does not belong to the active Body."));
+        return new App::DocumentObjectExecReturn(text);
     }
 
     // get the Sketch plane
-    Base::Placement SketchPos    = obj->Placement.getValue(); 
+    Base::Placement SketchPos    = obj->Placement.getValue();
     Base::Vector3d  SketchVector = getProfileNormal();
 
     // turn around for pockets
@@ -166,6 +174,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopExp_Explorer Ex(supportface,TopAbs_WIRE);
             if (!Ex.More())
                 supportface = TopoDS_Face();
+#if 0
             BRepFeat_MakePrism PrismMaker;
             PrismMaker.Init(base, profileshape, supportface, dir, 0, 1);
             PrismMaker.Perform(upToFace);
@@ -173,6 +182,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             if (!PrismMaker.IsDone())
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
             TopoDS_Shape prism = PrismMaker.Shape();
+#else
+            TopoDS_Shape prism;
+            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, 1);
+#endif
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
@@ -181,6 +194,12 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
             TopoDS_Shape result = refineShapeIfActive(mkCut.Shape());
             this->AddSubShape.setValue(result);
+
+            int prismCount = countSolids(prism);
+            if (prismCount > 1) {
+                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. This is not supported at this time.");
+            }
+
             this->Shape.setValue(getSolid(prism));
         } else {
             TopoDS_Shape prism;
@@ -203,6 +222,12 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopoDS_Shape solRes = this->getSolid(result);
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is not a solid");
+
+            int solidCount = countSolids(result);
+            if (solidCount > 1) {
+                return new App::DocumentObjectExecReturn("Pocket: Result has multiple solids. This is not supported at this time.");
+
+            }
             solRes = refineShapeIfActive(solRes);
             remapSupportShape(solRes);
             this->Shape.setValue(getSolid(solRes));

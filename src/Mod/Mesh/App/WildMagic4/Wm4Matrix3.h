@@ -28,7 +28,7 @@
 // must therefore be careful about how you interface the transformation code
 // with graphics APIS.
 //
-// For memory organization it might seem natural to chose Real[N][N] for the
+// For memory organization it might seem natural to choose Real[N][N] for the
 // matrix storage, but this can be a problem on a platform/console that
 // chooses to store the data in column-major rather than row-major format.
 // To avoid potential portability problems, the matrix is stored as Real[N*N]

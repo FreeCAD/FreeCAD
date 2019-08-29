@@ -38,20 +38,22 @@
 #include <Base/VectorPy.h>
 
 #include <App/Document.h>
+#include <App/DocumentPy.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
+#include <App/Material.h>
 #include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 
 
 #include <Mod/Part/App/OCCError.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "MDIViewPage.h"
 #include "ViewProviderPage.h"
-
-namespace TechDrawGui {
-//module level static C++ functions go here
-}
+#include "Grabber3d.h"
 
 namespace TechDrawGui {
 
@@ -60,11 +62,17 @@ class Module : public Py::ExtensionModule<Module>
 public:
     Module() : Py::ExtensionModule<Module>("TechDrawGui")
     {
-        add_varargs_method("exportPageAsPdf",&Module::exportPageAsPdf,
+       add_varargs_method("export",&Module::exporter,
+            "TechDraw hook for FC Gui exporter."
+       );
+       add_varargs_method("exportPageAsPdf",&Module::exportPageAsPdf,
             "exportPageAsPdf(DrawPageObject,FilePath) -- print page as Pdf to file."
         );
         add_varargs_method("exportPageAsSvg",&Module::exportPageAsSvg,
             "exportPageAsSvg(DrawPageObject,FilePath) -- print page as Svg to file."
+        );
+        add_varargs_method("copyActiveViewToSvgFile",&Module::copyActiveViewToSvgFile,
+            "copyActiveViewToSvgFile(DrawPageObject,FilePath) -- copy ActiveView to Svg file."
         );
         initialize("This is a module for displaying drawings"); // register with Python
     }
@@ -104,13 +112,60 @@ private:
         }
     }
 
+//! hook for FC Gui export function
+    Py::Object exporter(const Py::Tuple& args)
+    {
+        PyObject* object;
+        char* Name;
+        if (!PyArg_ParseTuple(args.ptr(), "Oet",&object,"utf-8",&Name))
+            throw Py::Exception();
+
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+
+        TechDraw::DrawPage* page = nullptr;
+        Py::Sequence list(object);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            PyObject* item = (*it).ptr();
+            if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
+                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
+                if (obj->getTypeId().isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+                    page = static_cast<TechDraw::DrawPage*>(obj);
+                    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+                    Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
+                    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+                    if ( !(dvp  && dvp->getMDIViewPage()) ) {
+                        throw Py::TypeError("TechDraw can not find Page");
+                    }
+
+                    Base::FileInfo fi_out(EncodedName.c_str());
+
+                    if (fi_out.hasExtension("svg")) {
+                        dvp->getMDIViewPage()->saveSVG(EncodedName);
+                    } else if (fi_out.hasExtension("dxf")) {
+                        dvp->getMDIViewPage()->saveDXF(EncodedName);
+                    } else if (fi_out.hasExtension("pdf")) {
+                        dvp->getMDIViewPage()->savePDF(EncodedName);
+                    } else {
+                        throw Py::TypeError("TechDraw can not export this file format");
+                    }
+                }
+                else {
+                    throw Py::TypeError("Export of this object type is not supported by TechDraw module");
+                }
+            }
+        }
+
+        return Py::None();
+    }
+
 //!exportPageAsPdf(PageObject,FullPath)
     Py::Object exportPageAsPdf(const Py::Tuple& args)
     {
         PyObject *pageObj;
         char* name;
         if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8",&name)) {
-            throw Py::Exception("expected (Page,path");
+            throw Py::TypeError("expected (Page,path");
         } 
         
         std::string filePath = std::string(name);
@@ -151,7 +206,7 @@ private:
         PyObject *pageObj;
         char* name;
         if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8",&name)) {
-            throw Py::Exception("expected (Page,path");
+            throw Py::TypeError("expected (Page,path");
         } 
         
         std::string filePath = std::string(name);
@@ -185,7 +240,61 @@ private:
 
         return Py::None();
     }
+ 
+//!copyActiveViewToSvgFile(document, fileSpec)
+    Py::Object copyActiveViewToSvgFile(const Py::Tuple& args)
+    {
+        double result = 1.0;
+        PyObject *docObj = nullptr;
+        PyObject *colorObj = nullptr;
+        char* name;
 
+        App::Document* appDoc = nullptr;
+        std::string fileSpec;
+        double outWidth = 138.5;    //TODO: change to A4 for release
+        double outHeight = 95.0;    //ISO A5 defaults
+        bool paintBackground = true; 
+        QColor bgColor = QColor(Qt::white);
+        double lineWidth = 1.0;     //1 mm
+        double border = 0.0;        //no border
+        int mode = 0;               //SoRenderManager::RenderMode(0) - AS_IS
+
+        if (!PyArg_ParseTuple(args.ptr(), "Oet|ddpOddi",
+                                        &docObj, "utf-8",&name,
+                                        &outWidth, &outHeight,
+                                        &paintBackground, &colorObj,
+                                        &lineWidth, &border,
+                                        &mode)) {
+            throw Py::TypeError("expected (doc, file|,options)");
+        } 
+
+        fileSpec = std::string(name);
+        PyMem_Free(name);
+        
+        try {
+           if (PyObject_TypeCheck(docObj, &(App::DocumentPy::Type))) {
+               appDoc = static_cast<App::DocumentPy*>(docObj)->getDocumentPtr();
+               if ( (colorObj != nullptr) && 
+                    PyTuple_Check(colorObj)) {
+                   App::Color c = TechDraw::DrawUtil::pyTupleToColor(colorObj);
+                   bgColor = c.asValue<QColor>();
+               }
+               result = 
+               Grabber3d::copyActiveViewToSvgFile(appDoc, fileSpec,
+                                         outWidth, outHeight,
+                                         paintBackground, bgColor,
+                                         lineWidth, border,
+                                         mode);                         //TODO: add svg scale factor?
+           }
+        }
+        catch (Base::Exception &e) {
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+        }
+
+        PyObject* pyResult = nullptr;
+        pyResult = PyFloat_FromDouble(result);
+        return Py::asObject(pyResult);
+    }
  };
 
 PyObject* initModule()

@@ -28,6 +28,7 @@
 #include <Base/Builder3D.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
+#include <Base/Tools.h>
 
 #include "Mesh.h"
 #include "MeshPy.h"
@@ -43,6 +44,7 @@
 #include "Core/Grid.h"
 #include "Core/MeshKernel.h"
 #include "Core/Segmentation.h"
+#include "Core/Smoothing.h"
 #include "Core/Curvature.h"
 
 #include <boost/algorithm/string.hpp>
@@ -141,8 +143,7 @@ PyObject* MeshPy::copy(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
 
-    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
-    return new MeshPy(new MeshObject(kernel));
+    return new MeshPy(new MeshObject(*getMeshObjectPtr()));
 }
 
 PyObject*  MeshPy::read(PyObject *args, PyObject *kwds)
@@ -163,6 +164,7 @@ PyObject*  MeshPy::read(PyObject *args, PyObject *kwds)
     ext["STL" ] = MeshCore::MeshIO::BSTL;
     ext["AST" ] = MeshCore::MeshIO::ASTL;
     ext["OBJ" ] = MeshCore::MeshIO::OBJ;
+    ext["SMF" ] = MeshCore::MeshIO::SMF;
     ext["OFF" ] = MeshCore::MeshIO::OFF;
     ext["IV"  ] = MeshCore::MeshIO::IV;
     ext["X3D" ] = MeshCore::MeshIO::X3D;
@@ -211,6 +213,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
     ext["STL" ] = MeshCore::MeshIO::BSTL;
     ext["AST" ] = MeshCore::MeshIO::ASTL;
     ext["OBJ" ] = MeshCore::MeshIO::OBJ;
+    ext["SMF" ] = MeshCore::MeshIO::SMF;
     ext["OFF" ] = MeshCore::MeshIO::OFF;
     ext["IDTF"] = MeshCore::MeshIO::IDTF;
     ext["MGL" ] = MeshCore::MeshIO::MGL;
@@ -1165,6 +1168,7 @@ PyObject*  MeshPy::fillupHoles(PyObject *args)
         }
 
         MeshPropertyLock lock(this->parentProperty);
+        tria->SetVerifier(new MeshCore::TriangulationVerifierV2);
         getMeshObjectPtr()->fillupHoles(len, level, *tria);
     }
     catch (const Base::Exception& e) {
@@ -1182,6 +1186,20 @@ PyObject*  MeshPy::fixIndices(PyObject *args)
 
     PY_TRY {
         getMeshObjectPtr()->validateIndices();
+    } PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject*  MeshPy::fixCaps(PyObject *args)
+{
+    float fMaxAngle = Base::toRadians<float>(150.0f);
+    float fSplitFactor = 0.25f;
+    if (!PyArg_ParseTuple(args, "|ff", &fMaxAngle, &fSplitFactor))
+        return NULL;
+
+    PY_TRY {
+        getMeshObjectPtr()->validateCaps(fMaxAngle, fSplitFactor);
     } PY_CATCH;
 
     Py_Return;
@@ -1245,6 +1263,43 @@ PyObject*  MeshPy::refine(PyObject *args)
 
     PY_TRY {
         getMeshObjectPtr()->refine();
+    } PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject* MeshPy::removeNeedles(PyObject *args)
+{
+    float length;
+    if (!PyArg_ParseTuple(args, "f", &length))
+        return NULL;
+
+    PY_TRY {
+        getMeshObjectPtr()->removeNeedles(length);
+    } PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject* MeshPy::removeFullBoundaryFacets(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    PY_TRY {
+        getMeshObjectPtr()->removeFullBoundaryFacets();
+    } PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject* MeshPy::mergeFacets(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    PY_TRY {
+        getMeshObjectPtr()->mergeFacets();
     } PY_CATCH;
 
     Py_Return;
@@ -1627,16 +1682,41 @@ PyObject*  MeshPy::trim(PyObject *args)
     Py_Return;
 }
 
-PyObject*  MeshPy::smooth(PyObject *args)
+PyObject*  MeshPy::smooth(PyObject *args, PyObject *kwds)
 {
+    char* method = "Laplace";
     int iter=1;
-    float d_max=FLOAT_MAX;
-    if (!PyArg_ParseTuple(args, "|if", &iter,&d_max))
-        return NULL;
+    double lambda = 0;
+    double micro = 0;
+    static char* keywords_smooth[] = {"Method","Iteration","Lambda","Micro",NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|sidd",keywords_smooth,
+                                     &method, &iter, &lambda, &micro))
+        return 0;
 
     PY_TRY {
         MeshPropertyLock lock(this->parentProperty);
-        getMeshObjectPtr()->smooth(iter, d_max);
+        MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+        if (strcmp(method, "Laplace") == 0) {
+            MeshCore::LaplaceSmoothing smooth(kernel);
+            if (lambda > 0)
+                smooth.SetLambda(lambda);
+            smooth.Smooth(iter);
+        }
+        else if (strcmp(method, "Taubin") == 0) {
+            MeshCore::TaubinSmoothing smooth(kernel);
+            if (lambda > 0)
+                smooth.SetLambda(lambda);
+            if (micro > 0)
+                smooth.SetMicro(micro);
+            smooth.Smooth(iter);
+        }
+        else if (strcmp(method, "PlaneFit") == 0) {
+            MeshCore::PlaneFitSmoothing smooth(kernel);
+            smooth.Smooth(iter);
+        }
+        else {
+            throw Py::ValueError("No such smoothing algorithm");
+        }
     } PY_CATCH;
 
     Py_Return;
@@ -1730,8 +1810,52 @@ PyObject*  MeshPy::getPlanarSegments(PyObject *args)
         return NULL;
 
     Mesh::MeshObject* mesh = getMeshObjectPtr();
-    std::vector<Mesh::Segment> segments = mesh->getSegmentsFromType
+    std::vector<Mesh::Segment> segments = mesh->getSegmentsOfType
         (Mesh::MeshObject::PLANE, dev, minFacets);
+
+    Py::List s;
+    for (std::vector<Mesh::Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {
+        const std::vector<unsigned long>& segm = it->getIndices();
+        Py::List ary;
+        for (std::vector<unsigned long>::const_iterator jt = segm.begin(); jt != segm.end(); ++jt) {
+#if PY_MAJOR_VERSION >= 3
+            ary.append(Py::Long((int)*jt));
+#else
+            ary.append(Py::Int((int)*jt));
+#endif
+        }
+        s.append(ary);
+    }
+
+    return Py::new_reference_to(s);
+}
+
+PyObject*  MeshPy::getSegmentsOfType(PyObject *args)
+{
+    char* type;
+    float dev;
+    unsigned long minFacets=0;
+    if (!PyArg_ParseTuple(args, "sf|k",&type,&dev,&minFacets))
+        return NULL;
+
+    Mesh::MeshObject::GeometryType geoType;
+    if (strcmp(type, "Plane") == 0) {
+        geoType = Mesh::MeshObject::PLANE;
+    }
+    else if (strcmp(type, "Cylinder") == 0) {
+        geoType = Mesh::MeshObject::CYLINDER;
+    }
+    else if (strcmp(type, "Sphere") == 0) {
+        geoType = Mesh::MeshObject::SPHERE;
+    }
+    else {
+        PyErr_SetString(PyExc_ValueError, "Unsupported surface type");
+        return nullptr;
+    }
+
+    Mesh::MeshObject* mesh = getMeshObjectPtr();
+    std::vector<Mesh::Segment> segments = mesh->getSegmentsOfType
+        (geoType, dev, minFacets);
 
     Py::List s;
     for (std::vector<Mesh::Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {

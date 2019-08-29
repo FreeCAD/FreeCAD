@@ -13,10 +13,10 @@ def proceed():
         compute()
     except:
         hide()
-        QtGui.qApp.restoreOverrideCursor()
+        QtGui.QApplication.restoreOverrideCursor()
 
 def compute():    
-    QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
+    QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
    
     if FreeCAD.ActiveDocument==None:
         FreeCAD.newDocument("Gear")
@@ -232,7 +232,7 @@ def compute():
     App.ActiveDocument.recompute()
     Gui.SendMsgToActiveView("ViewFit")
     
-    QtGui.qApp.restoreOverrideCursor()
+    QtGui.QApplication.restoreOverrideCursor()
  
 
     hide()

@@ -1,3 +1,9 @@
+
+# Many warnings caused by vtk
+if(CMAKE_COMPILER_IS_CLANGXX)
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
+endif()
+
 if(MSVC)
     add_definitions(-DFCGuiFem -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
 else(MSVC)
@@ -25,6 +31,7 @@ include_directories(
 )
 
 link_directories(${OCC_LIBRARY_DIR})
+link_directories(${SMESH_LIB_PATH})
 
 
 set(FemGui_LIBS
@@ -45,12 +52,13 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 set(FemGui_MOC_HDRS
     DlgSettingsFemCcxImp.h
+    DlgSettingsFemElmerImp.h
     DlgSettingsFemExportAbaqusImp.h
     DlgSettingsFemGeneralImp.h
     DlgSettingsFemGmshImp.h
     DlgSettingsFemInOutVtkImp.h
+    DlgSettingsFemMaterialImp.h
     DlgSettingsFemZ88Imp.h
-    DlgSettingsFemElmerImp.h
     PropertyFemMeshItem.h
     TaskObjectName.h
     TaskCreateNodeSet.h
@@ -89,12 +97,13 @@ SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
 
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
+    DlgSettingsFemElmer.ui
     DlgSettingsFemExportAbaqus.ui
     DlgSettingsFemGeneral.ui
     DlgSettingsFemGmsh.ui
     DlgSettingsFemInOutVtk.ui
+    DlgSettingsFemMaterial.ui
     DlgSettingsFemZ88.ui
-    DlgSettingsFemElmer.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
@@ -142,24 +151,27 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemCcxImp.cpp
     DlgSettingsFemCcxImp.h
-    DlgSettingsFemGeneral.ui
-    DlgSettingsFemGeneralImp.cpp
-    DlgSettingsFemGeneralImp.h
+    DlgSettingsFemElmer.ui
+    DlgSettingsFemElmerImp.cpp
+    DlgSettingsFemElmerImp.h
     DlgSettingsFemExportAbaqus.ui
     DlgSettingsFemExportAbaqusImp.cpp
     DlgSettingsFemExportAbaqusImp.h
+    DlgSettingsFemGeneral.ui
+    DlgSettingsFemGeneralImp.cpp
+    DlgSettingsFemGeneralImp.h
     DlgSettingsFemGmsh.ui
     DlgSettingsFemGmshImp.cpp
     DlgSettingsFemGmshImp.h
     DlgSettingsFemInOutVtk.ui
     DlgSettingsFemInOutVtkImp.cpp
     DlgSettingsFemInOutVtkImp.h
+    DlgSettingsFemMaterial.ui
+    DlgSettingsFemMaterialImp.cpp
+    DlgSettingsFemMaterialImp.h
     DlgSettingsFemZ88.ui
     DlgSettingsFemZ88Imp.cpp
     DlgSettingsFemZ88Imp.h
-    DlgSettingsFemElmer.ui
-    DlgSettingsFemElmerImp.cpp
-    DlgSettingsFemElmerImp.h
     TaskFemConstraint.ui
     TaskFemConstraint.cpp
     TaskFemConstraint.h
@@ -364,20 +376,18 @@ SET(FemGui_SRCS
     ${FemGui_SRCS_Post}
 )
 
-
-add_library(FemGui SHARED ${FemGui_SRCS})
-target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
-
-
-fc_target_copy_resource(FemGui
-    ${CMAKE_SOURCE_DIR}/src/Mod/Fem
-    ${CMAKE_BINARY_DIR}/Mod/Fem
-    )
-
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${FemGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(FemGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(FemGuiIcon_SVG
     Resources/icons/FemWorkbench.svg
 )
+
+add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG})
+target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
 
 
 fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
@@ -397,6 +407,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/FlowVelocity.ui
     Resources/ui/InitialFlowVelocity.ui
     Resources/ui/Material.ui
+    Resources/ui/MaterialReinforcement.ui
     Resources/ui/MeshBoundaryLayer.ui
     Resources/ui/MeshGmsh.ui
     Resources/ui/MeshGroup.ui

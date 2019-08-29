@@ -51,10 +51,21 @@ using namespace Base;
 #error "Use Python2.5.x or higher"
 #endif
 
+PyException::PyException(const Py::Object &obj) {
+    _sErrMsg = obj.as_string();
+    // WARNING: we are assuming that python type object will never be
+    // destroyed, so we don't keep reference here to save book-keeping in
+    // our copy constructor and destructor
+    _exceptionType = (PyObject*)obj.ptr()->ob_type;
+    _errorType = obj.ptr()->ob_type->tp_name;
+}
 
 PyException::PyException(void)
 {
     PP_Fetch_Error_Text();    /* fetch (and clear) exception */
+
+    setPyObject(PP_PyDict_Object);
+
     std::string prefix = PP_last_error_type; /* exception name text */
 //  prefix += ": ";
     std::string error = PP_last_error_info;            /* exception data text */
@@ -70,6 +81,16 @@ PyException::PyException(void)
     _sErrMsg = error;
     _errorType = prefix;
 
+    _exceptionType = PP_last_exception_type;
+
+    if(PP_last_exception_type) {
+        // WARNING: we are assuming that python type object will never be
+        // destroyed, so we don't keep reference here to save book-keeping in
+        // our copy constructor and destructor
+        Py_DECREF(PP_last_exception_type);
+        PP_last_exception_type = 0;
+
+    }
 
     _stackTrace = PP_last_error_trace;     /* exception traceback text */
 
@@ -86,31 +107,44 @@ PyException::~PyException() throw()
 
 void PyException::ThrowException(void)
 {
-    PyException myexcp = PyException();
+    PyException myexcp;
+    myexcp.ReportException();
+    myexcp.raiseException();
+}
 
+void PyException::raiseException() {
     PyGILStateLocker locker;
+
     if (PP_PyDict_Object!=NULL) {
         // delete the Python dict upon destruction of edict
         Py::Dict edict(PP_PyDict_Object, true);
         PP_PyDict_Object = 0;
 
-        if (!edict.hasKey("sclassname"))
-            throw myexcp;
-
-        std::string exceptionname = static_cast<std::string>(Py::String(edict.getItem("sclassname")));
-        if (!Base::ExceptionFactory::Instance().CanProduce(exceptionname.c_str()))
-            throw myexcp;
-
+        std::string exceptionname;
+        if (_exceptionType == Base::BaseExceptionFreeCADAbort)
+            edict.setItem("sclassname", 
+                    Py::String(typeid(Base::AbortException).name()));
+        if(_isReported)
+            edict.setItem("breported", Py::True());
         Base::ExceptionFactory::Instance().raiseException(edict.ptr());
     }
-    else
-        throw myexcp;
+
+    if (_exceptionType == Base::BaseExceptionFreeCADAbort) {
+        Base::AbortException e(_sErrMsg.c_str());
+        e.setReported(_isReported);
+        throw e;
+    }
+
+    throw *this;
 }
 
 void PyException::ReportException (void) const
 {
-    Base::Console().Error("%s%s: %s\n",
-        _stackTrace.c_str(), _errorType.c_str(), what());
+    if (!_isReported) {
+        _isReported = true;
+        Base::Console().Error("%s%s: %s\n",
+            _stackTrace.c_str(), _errorType.c_str(), what());
+    }
 }
 
 // ---------------------------------------------------------
@@ -354,13 +388,15 @@ void InterpreterSingleton::runInteractiveString(const char *sCmd)
         PyErr_Fetch(&errobj, &errdata, &errtraceback);
 
         RuntimeError exc(""); // do not use PyException since this clears the error indicator
+        if (errdata) {
 #if PY_MAJOR_VERSION >= 3
-        if (PyUnicode_Check(errdata))
-            exc.setMessage(PyUnicode_AsUTF8(errdata));
+            if (PyUnicode_Check(errdata))
+                exc.setMessage(PyUnicode_AsUTF8(errdata));
 #else
-        if (PyString_Check(errdata))
-            exc.setMessage(PyString_AsString(errdata));
+            if (PyString_Check(errdata))
+                exc.setMessage(PyString_AsString(errdata));
 #endif
+        }
         PyErr_Restore(errobj, errdata, errtraceback);
         if (PyErr_Occurred())
             PyErr_Print();
@@ -485,7 +521,26 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
 #else
         Py_SetProgramName(argv[0]);
 #endif
+        // There is a serious bug in VS from 2010 until 2013 where the file descriptor for stdin, stdout or stderr
+        // returns a valid value for GUI applications (i.e. subsystem = Windows) where it shouldn't.
+        // This causes Python to fail during initialization.
+        // A workaround is to use freopen on stdin, stdout and stderr. See the class Redirection inside main()
+        // https://bugs.python.org/issue17797#msg197474
+        //
         Py_Initialize();
+        const char* virtualenv = getenv("VIRTUAL_ENV");
+        if (virtualenv) {
+            PyRun_SimpleString(
+                "# Check for virtualenv, and activate if present.\n"
+                "# See https://virtualenv.pypa.io/en/latest/userguide/#using-virtualenv-without-bin-python\n"
+                "import os\n"
+                "import sys\n"
+                "base_path = os.getenv(\"VIRTUAL_ENV\")\n"
+                "if not base_path is None:\n"
+                "    activate_this = os.path.join(base_path, \"bin\", \"activate_this.py\")\n"
+                "    exec(open(activate_this).read(), {'__file__':activate_this})\n"
+            );
+        }
         PyEval_InitThreads();
 #if PY_MAJOR_VERSION >= 3
         size_t size = argc;
@@ -505,6 +560,7 @@ const char* InterpreterSingleton::init(int argc,char *argv[])
         this->_global = PyEval_SaveThread();
     }
 #if PY_MAJOR_VERSION >= 3
+    PyGILStateLocker lock;
 #if PY_MINOR_VERSION >= 5
     return Py_EncodeLocale(Py_GetPath(),NULL);
 #else

@@ -26,9 +26,9 @@
 #define DRAWINGGUI_VIEWPROVIDERPAGE_H
 
 #include <QPointer>
-#include <Gui/ViewProviderFeature.h>
-#include <Gui/ViewProviderDocumentObjectGroup.h>
-#include <Gui/Selection.h>
+#include <Gui/ViewProviderDocumentObject.h>
+
+#include <boost/signals2.hpp> 
 
 namespace TechDraw{
     class DrawPage;
@@ -37,11 +37,11 @@ namespace TechDraw{
 namespace TechDrawGui {
 
 class MDIViewPage;
+class QGVPage;
 
-class TechDrawGuiExport ViewProviderPage : public Gui::ViewProviderDocumentObject,
-                                                 public Gui::SelectionObserver
+class TechDrawGuiExport ViewProviderPage : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderPage);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderPage);
 
 public:
     /// constructor
@@ -49,51 +49,58 @@ public:
     /// destructor
     virtual ~ViewProviderPage();
 
-    //App::PropertyFloat         HintScale;
-    //App::PropertyFloat         HintOffsetX;
-    //App::PropertyFloat         HintOffsetY;
+    App::PropertyBool  ShowFrames;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual void attach(App::DocumentObject *) override;
+    virtual void setDisplayMode(const char* ModeName) override;
+    virtual bool useNewSelectionModel(void) const override {return false;}
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes(void) const override;
     /// Hides the view provider
-    virtual void hide(void);
+    virtual void hide(void) override;
     /// Shows the view provider
-    virtual void show(void);
-    virtual bool isShow(void) const;
-
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    virtual void show(void) override;
+    virtual bool isShow(void) const override;
 
     /// Claim all the views for the page
-    std::vector<App::DocumentObject*> claimChildren(void) const;
+    std::vector<App::DocumentObject*> claimChildren(void) const override;
 
     /// Is called by the tree if the user double click on the object
-    virtual bool doubleClicked(void);
-    void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual bool onDelete(const std::vector<std::string> &);
-    virtual void onChanged(const App::Property *prop);
-    virtual void updateData(const App::Property* prop);
-    virtual void startRestoring();
-    virtual void finishRestoring();
+    virtual bool doubleClicked(void) override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    virtual bool onDelete(const std::vector<std::string> &) override;
+    virtual void onChanged(const App::Property *prop) override;
+    virtual void updateData(const App::Property* prop) override;
+    virtual void startRestoring() override;
+    virtual void finishRestoring() override;
     bool isRestoring(void) {return !m_docReady;}
 
     TechDraw::DrawPage* getDrawPage() const;
     void onGuiRepaint(const TechDraw::DrawPage* dp); 
-    typedef boost::signals::scoped_connection Connection;
+    typedef boost::signals2::scoped_connection Connection;
     Connection connectGuiRepaint;
 
-    void unsetEdit(int ModNum);
+    void unsetEdit(int ModNum) override;
     MDIViewPage* getMDIViewPage();
     bool showMDIViewPage();
+    void removeMDIView(void);
+
+    virtual Gui::MDIView *getMDIView() override;
+
+    bool getFrameState(void);
+    void setFrameState(bool state);
+    void toggleFrameState(void);
+    void setTemplateMarkers(bool state);
+    void setGraphicsView(QGVPage* gv);
 
 protected:
-    bool setEdit(int ModNum);
+    bool setEdit(int ModNum) override;
 
 private:
     QPointer<MDIViewPage> m_mdiView;
     bool m_docReady;
+    std::string m_pageName;
+    QGVPage* m_graphicsView;
 };
 
 } // namespace TechDrawGui

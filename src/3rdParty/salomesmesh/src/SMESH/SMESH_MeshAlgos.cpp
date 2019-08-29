@@ -1371,7 +1371,7 @@ double SMESH_MeshAlgos::GetDistance( const SMDS_MeshFace* face,
   try {
     tgtCS = gp_Ax3( xyz[0], OZ, OX );
   }
-  catch ( Standard_Failure ) {
+  catch ( Standard_Failure &) {
     return badDistance;
   }
   trsf.SetTransformation( tgtCS );

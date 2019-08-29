@@ -55,6 +55,7 @@ public:
     void setPosition(const Vector3d& Pos){_pos=Pos;}
     void setRotation(const Rotation& Rot) {_rot = Rot;}
 
+    bool isIdentity() const;
     void invert();
     Placement inverse() const;
     void move(const Vector3d& MovVec);

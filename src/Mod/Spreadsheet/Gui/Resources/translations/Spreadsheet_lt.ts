@@ -102,8 +102,8 @@
       <translation>Statmenasis lygiavimas per vidurį</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Pasirinktų langelių statmenasis turinio lygiavimas per vidurį</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Sulieti langelius</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Sulieti pažymėtus langelius skaičiuoklėje</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Skelti langelį</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Perskirti anksčiau sulietus langelius skaičiuoklėje</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Paryškintasis tekstas</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Nustatyti paryškintąjį tekstą pažymėtuose langeliuose</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Pasvirasis tekstas</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Nustatyti pasvirąjį tekstą pažymėtuose langeliuose</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,22 +222,22 @@
       <translation>Pabrauktasis tekstas</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Nustatyti pabrauktąjį tekstą pažymėtuose langeliuose</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Keičiamas</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
-      <translation>Langelio ypatybės</translation>
+      <translation>Langelio savybės</translation>
     </message>
     <message>
       <source>&amp;Color</source>
@@ -245,7 +245,7 @@
     </message>
     <message>
       <source>Text</source>
-      <translation type="unfinished">Text</translation>
+      <translation>Tekstas</translation>
     </message>
     <message>
       <source>Background</source>
@@ -426,8 +426,8 @@
       <translation>Šviesiai pilka</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Keičiamas</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>
@@ -468,7 +468,7 @@
     </message>
     <message>
       <source>Properties...</source>
-      <translation>Ypatybės...</translation>
+      <translation>Savybės...</translation>
     </message>
   </context>
   <context>

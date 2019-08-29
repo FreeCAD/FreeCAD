@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
 #endif
 
 #include "ui_TaskChamferParameters.h"
@@ -84,6 +85,7 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView,QW
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QString::fromLatin1("Del"));
     ui->listWidgetReferences->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -119,6 +121,7 @@ void TaskChamferParameters::onRefDeleted(void)
     App::DocumentObject* base = pcChamfer->Base.getValue();
     std::vector<std::string> refs = pcChamfer->Base.getSubValues();
     refs.erase(refs.begin() + ui->listWidgetReferences->currentRow());
+    setupTransaction();
     pcChamfer->Base.setValue(base, refs);
     ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
@@ -127,6 +130,7 @@ void TaskChamferParameters::onRefDeleted(void)
 void TaskChamferParameters::onLengthChanged(double len)
 {
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    setupTransaction();
     pcChamfer->Size.setValue(len);
     pcChamfer->getDocument()->recomputeFeature(pcChamfer);
 }

@@ -11,7 +11,7 @@ from OpenSCADFeatures import *
 from OpenSCAD2Dgeom import *
 from OpenSCADUtils import *
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pythonopen = open # to distinguish python built-in open function from the one declared here
 
 def openscadmesh(doc,scadstr,objname):
@@ -63,7 +63,7 @@ class Node:
         return bool(self.name or self.arguments or self.children)
 
     def __len__(self):
-        '''return the numer of children'''
+        '''return the number of children'''
         return len(self.children)
 
     def __getitem__(self,key):

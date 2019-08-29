@@ -59,23 +59,21 @@ SET(TestGuiPy_SRCS
     qtunittest.py
 )
 
-add_library(QtUnitGui SHARED ${TestGui_SRCS})
+SET(TestGuiIcon_SVG
+    Resources/icons/TestWorkbench.svg
+)
+
+add_library(QtUnitGui SHARED ${TestGui_SRCS} ${TestGuiPy_SRCS} ${TestGuiIcon_SVG})
 
 target_link_libraries(QtUnitGui ${TestGui_LIBS})
 add_dependencies(QtUnitGui Test)
 
 fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/Mod/Test" qtunittest.py)
+fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Test" ${TestGuiIcon_SVG})
 
 SET_BIN_DIR(QtUnitGui QtUnitGui /Mod/Test)
 SET_PYTHON_PREFIX_SUFFIX(QtUnitGui)
 
 INSTALL(TARGETS QtUnitGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${TestGuiPy_SRCS} DESTINATION Mod/Test)
-
-SET(TestGuiIcon_SVG
-    Resources/icons/TestWorkbench.svg
-)
-
-fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Test" ${TestGuiIcon_SVG})
-
 INSTALL(FILES ${TestGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Test/Resources/icons")

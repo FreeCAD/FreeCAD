@@ -21,19 +21,15 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# import Draft
 import FreeCAD
 import FreeCADGui
-# import Path
-# import PathScripts
-# import PathScripts.PathDressupTag as PathDressupTag
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathDressupHoldingTags as PathDressupTag
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathUtils as PathUtils
 
-from PathScripts.PathGeom import PathGeom
-from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore, QtGui
 from pivy import coin
 
@@ -41,7 +37,7 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule()
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -73,6 +69,11 @@ class PathDressupTagTaskPanel:
         self.pt = FreeCAD.Vector(0, 0, 0)
 
         self.isDirty = True
+        self.buttonBox = None
+        self.tags = None
+        self.Positions = None
+        self.Disabled = None
+        self.editItem = None
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
@@ -326,11 +327,16 @@ class PathDressupTagViewProvider:
 
     def __init__(self, vobj):
         PathLog.track()
-        vobj.Proxy = self
         self.vobj = vobj
         self.panel = None
 
         self.debugDisplay()
+
+        # initialized later
+        self.obj = None
+        self.tags = None
+        self.switch = None
+        self.colors = None
 
     def debugDisplay(self):
         # if False and addDebugDisplay():
@@ -389,12 +395,13 @@ class PathDressupTagViewProvider:
         return [self.obj.Base]
 
     def onDelete(self, arg1=None, arg2=None):
-        PathLog.track()
         '''this makes sure that the base operation is added back to the job and visible'''
+        # pylint: disable=unused-argument
+        PathLog.track()
         if self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = True
         job = PathUtils.findParentJob(self.obj)
-        job.Proxy.addOperation(arg1.Object.Base)
+        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
         arg1.Object.Base = None
         # if self.debugDisplay():
         #    self.vobj.Debug.removeObjectsFromDocument()
@@ -432,11 +439,13 @@ class PathDressupTagViewProvider:
         #    tag.purgeTouched()
 
     def setEdit(self, vobj, mode=0):
+        # pylint: disable=unused-argument
         panel = PathDressupTagTaskPanel(vobj.Object, self)
         self.setupTaskPanel(panel)
         return True
 
     def unsetEdit(self, vobj, mode):
+        # pylint: disable=unused-argument
         if hasattr(self, 'panel') and self.panel:
             self.panel.abort()
 
@@ -474,11 +483,13 @@ class PathDressupTagViewProvider:
         return -1
 
     def allow(self, doc, obj, sub):
+        # pylint: disable=unused-argument
         if obj == self.obj:
             return True
         return False
 
     def addSelection(self, doc, obj, sub, point):
+        # pylint: disable=unused-argument
         PathLog.track(doc, obj, sub, point)
         if self.panel:
             i = self.tagAtPoint(point, sub is None)
@@ -493,13 +504,14 @@ def Create(baseObject, name='DressupTag'):
     '''
     FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupTag", "Create a Tag dressup"))
     obj = PathDressupTag.Create(baseObject, name)
-    vp = PathDressupTagViewProvider(obj.ViewObject)
+    obj.ViewObject.Proxy = PathDressupTagViewProvider(obj.ViewObject)
     FreeCAD.ActiveDocument.commitTransaction()
-    obj.ViewObject.startEditing()
+    obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
     return obj
 
 
 class CommandPathDressupTag:
+    # pylint: disable=no-init
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
@@ -510,14 +522,14 @@ class CommandPathDressupTag:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == 'Job':
-                        return True
+                    return True
         return False
 
     def Activated(self):
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate('Path_DressupTag', 'Please select one path object\n'))
+            PathLog.error(translate('Path_DressupTag', 'Please select one path object')+'\n')
             return
         baseObject = selection[0]
 

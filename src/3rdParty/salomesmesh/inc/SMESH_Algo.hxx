@@ -30,6 +30,7 @@
 
 #include "SMESH_SMESH.hxx"
 
+#include "SMDS_MeshNode.hxx"
 #include "SMDSAbs_ElementType.hxx"
 #include "SMESH_Comment.hxx"
 #include "SMESH_ComputeError.hxx"
@@ -45,7 +46,6 @@
 #include <map>
 #include <set>
 
-class SMDS_MeshNode;
 class SMESHDS_Mesh;
 class SMESHDS_SubMesh;
 class SMESH_Gen;

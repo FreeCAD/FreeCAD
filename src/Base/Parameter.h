@@ -102,7 +102,7 @@ public:
     //@{
     /// make a deep copy to the other group
     void copyTo(Base::Reference<ParameterGrp>);
-    /// overwrite everithing similar, leaf the others allone
+    /// overwrite everything similar, leave the others alone
     void insertTo(Base::Reference<ParameterGrp>);
     /// export this group to a file
     void exportTo(const char* FileName);
@@ -126,7 +126,7 @@ public:
     typedef Base::Reference<ParameterGrp> handle;
     /// remove a sub group from this group
     void RemoveGrp(const char* Name);
-    /// clears everithing in this group (all types)
+    /// clears everything in this group (all types)
     void Clear(void);
     //@}
 
@@ -240,15 +240,15 @@ protected:
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode *Prev, const char* Type) const;
 
     /** Find an element specified by Type and Name
-     *  Search in the parent element Start for the first occourrence of an
+     *  Search in the parent element Start for the first occurrence of an
      *  element of Type and with the attribute Name=Name. On success it returns
      *  the pointer to that element, otherwise NULL
-     *  If the names not given he returns the first occourence fo Type.
+     *  If the names not given it returns the first occurrence of Type.
      */
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name=0L) const;
 
     /** Find an element specified by Type and Name or create it if not found
-     *  Search in the parent element Start for the first occourrence of an
+     *  Search in the parent element Start for the first occurrence of an
      *  element of Type and with the attribute Name=Name. On success it returns
      *  the pointer to that element, otherwise it creates the element and returns the pointer.
      */

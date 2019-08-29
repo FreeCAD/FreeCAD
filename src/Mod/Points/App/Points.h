@@ -58,6 +58,7 @@ public:
     {
         resize(size);
     }
+    PointKernel(const PointKernel&);
     virtual ~PointKernel()
     {
     }

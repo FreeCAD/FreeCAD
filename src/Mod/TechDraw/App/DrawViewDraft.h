@@ -50,6 +50,7 @@ public:
     App::PropertyColor        Color;
     App::PropertyString       LineStyle;
     App::PropertyFloat        LineSpacing;
+    App::PropertyBool         OverrideStyle;
 
     /** @name methods override Feature */
     //@{
@@ -61,11 +62,11 @@ public:
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderDraft";
     }
-    void Restore(Base::XMLReader &reader) override;
 
+    virtual short mustExecute() const override;
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
+/*    virtual void onChanged(const App::Property* prop) override;*/
     Base::BoundBox3d bbox;
     std::string getSVGHead(void);
     std::string getSVGTail(void);

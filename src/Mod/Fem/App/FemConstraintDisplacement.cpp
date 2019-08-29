@@ -44,24 +44,41 @@ PROPERTY_SOURCE(Fem::ConstraintDisplacement, Fem::Constraint);
 
 ConstraintDisplacement::ConstraintDisplacement()
 {
-    ADD_PROPERTY(xDisplacement,(0.0));
-    ADD_PROPERTY(yDisplacement,(0.0));
-    ADD_PROPERTY(zDisplacement,(0.0));
-    ADD_PROPERTY(xRotation,(0.0));
-    ADD_PROPERTY(yRotation,(0.0));
-    ADD_PROPERTY(zRotation,(0.0));
-    ADD_PROPERTY(xFree,(1));
-    ADD_PROPERTY(yFree,(1));
-    ADD_PROPERTY(zFree,(1));
+    // six degree of freedoms are possible
+    // each dof has three attributes, but only one of them should evaluate to True!
+    // Free is True, Free, Fix should be False and Value should be 0.0
+    // Fix is True, totally restrained, Free should be False and Value should be 0.0
+    // Displacement or Rotation not 0.0, prescribed displacement, Free and Fix should be False
+
+    // x displacement
     ADD_PROPERTY(xFix,(0));
+    ADD_PROPERTY(xFree,(1));
+    ADD_PROPERTY(xDisplacement,(0.0));
+
+    // y displacement
     ADD_PROPERTY(yFix,(0));
+    ADD_PROPERTY(yFree,(1));
+    ADD_PROPERTY(yDisplacement,(0.0));
+
+    // z displacement
     ADD_PROPERTY(zFix,(0));
-    ADD_PROPERTY(rotxFree,(1));
-    ADD_PROPERTY(rotyFree,(1));
-    ADD_PROPERTY(rotzFree,(1));
+    ADD_PROPERTY(zFree,(1));
+    ADD_PROPERTY(zDisplacement,(0.0));
+
+    // x rotation
     ADD_PROPERTY(rotxFix,(0));
+    ADD_PROPERTY(rotxFree,(1));
+    ADD_PROPERTY(xRotation,(0.0));
+
+    // y rotation
     ADD_PROPERTY(rotyFix,(0));
+    ADD_PROPERTY(rotyFree,(1));
+    ADD_PROPERTY(yRotation,(0.0));
+
+    // z rotation
     ADD_PROPERTY(rotzFix,(0));
+    ADD_PROPERTY(rotzFree,(1));
+    ADD_PROPERTY(zRotation,(0.0));
 
     ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintFixed",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Points where symbols are drawn");

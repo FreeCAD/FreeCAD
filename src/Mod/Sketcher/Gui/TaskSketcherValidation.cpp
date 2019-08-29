@@ -34,19 +34,18 @@
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
+# include <BRep_Tool.hxx>
+# include <gp_Pnt.hxx>
+# include <Precision.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopoDS_Vertex.hxx>
+# include <algorithm>
 #endif
-
-#include <BRep_Tool.hxx>
-#include <gp_Pnt.hxx>
-#include <Precision.hxx>
-#include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <algorithm>
 
 #include "ui_TaskSketcherValidation.h"
 #include "TaskSketcherValidation.h"
@@ -57,6 +56,7 @@
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -64,7 +64,7 @@ using namespace Gui::TaskView;
 /* TRANSLATOR SketcherGui::SketcherValidation */
 
 SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* parent)
-  : QWidget(parent), ui(new Ui_TaskSketcherValidation()), sketch(Obj), coincidenceRoot(0)
+: QWidget(parent), ui(new Ui_TaskSketcherValidation()), sketch(Obj), sketchAnalyser(Obj), coincidenceRoot(0)
 {
     ui->setupUi(this);
     ui->fixButton->setEnabled(false);
@@ -88,6 +88,7 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
     ui->comboBoxTolerance->setCurrentIndex(5);
     ui->comboBoxTolerance->setEditable(true);
     ui->comboBoxTolerance->setValidator(new QDoubleValidator(0,10,10,this));
+
 }
 
 SketcherValidation::~SketcherValidation()
@@ -103,230 +104,37 @@ void SketcherValidation::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-struct SketcherValidation::VertexIds {
-    Base::Vector3d v;
-    int GeoId;
-    Sketcher::PointPos PosId;
-};
-
-struct SketcherValidation::Vertex_Less : public std::binary_function<const VertexIds&,
-                                                                     const VertexIds&, bool>
-{
-    Vertex_Less(double tolerance) : tolerance(tolerance){}
-    bool operator()(const VertexIds& x,
-                    const VertexIds& y) const
-    {
-        if (fabs (x.v.x - y.v.x) > tolerance)
-            return x.v.x < y.v.x;
-        if (fabs (x.v.y - y.v.y) > tolerance)
-            return x.v.y < y.v.y;
-        if (fabs (x.v.z - y.v.z) > tolerance)
-            return x.v.z < y.v.z;
-        return false; // points are considered to be equal
-    }
-private:
-    double tolerance;
-};
-
-struct SketcherValidation::Vertex_EqualTo : public std::binary_function<const VertexIds&,
-                                                                        const VertexIds&, bool>
-{
-    Vertex_EqualTo(double tolerance) : tolerance(tolerance){}
-    bool operator()(const VertexIds& x,
-                    const VertexIds& y) const
-    {
-        if (fabs (x.v.x - y.v.x) <= tolerance) {
-            if (fabs (x.v.y - y.v.y) <= tolerance) {
-                if (fabs (x.v.z - y.v.z) <= tolerance) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-private:
-    double tolerance;
-};
-
-struct SketcherValidation::ConstraintIds {
-    Base::Vector3d v;
-    int First;
-    int Second;
-    Sketcher::PointPos FirstPos;
-    Sketcher::PointPos SecondPos;
-};
-
-struct SketcherValidation::Constraint_Equal  : public std::unary_function<const ConstraintIds&, bool>
-{
-    ConstraintIds c;
-    Constraint_Equal(const ConstraintIds& c) : c(c)
-    {
-    }
-    bool operator()(const ConstraintIds& x) const
-    {
-        if (c.First == x.First && c.FirstPos == x.FirstPos &&
-            c.Second == x.Second && c.SecondPos == x.SecondPos)
-            return true;
-        if (c.Second == x.First && c.SecondPos == x.FirstPos &&
-            c.First == x.Second && c.FirstPos == x.SecondPos)
-            return true;
-        return false;
-    }
-};
-
 void SketcherValidation::on_findButton_clicked()
 {
-    std::vector<VertexIds> vertexIds;
-    const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
-    for (std::size_t i=0; i<geom.size(); i++) {
-        Part::Geometry* g = geom[i];
-
-        if(g->Construction && ui->checkBoxIgnoreConstruction->isChecked())
-            continue;
-
-        if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *segm = static_cast<const Part::GeomLineSegment*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-        }
-        else if (g->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-            const Part::GeomArcOfEllipse *segm = static_cast<const Part::GeomArcOfEllipse*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint(/*emulateCCW=*/true);
-            vertexIds.push_back(id);
-        }
-        else if (g->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
-            const Part::GeomArcOfHyperbola *segm = static_cast<const Part::GeomArcOfHyperbola*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (g->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-            const Part::GeomArcOfParabola *segm = static_cast<const Part::GeomArcOfParabola*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-        else if (g->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-            const Part::GeomBSplineCurve *segm = static_cast<const Part::GeomBSplineCurve*>(g);
-            VertexIds id;
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint();
-            vertexIds.push_back(id);
-            id.GeoId = (int)i;
-            id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint();
-            vertexIds.push_back(id);
-        }
-    }
-
     double prec = Precision::Confusion();
-    QVariant v = ui->comboBoxTolerance->itemData(ui->comboBoxTolerance->currentIndex());
-    if (v.isValid())
-        prec = v.toDouble();
-    else
-        prec = QLocale::system().toDouble(ui->comboBoxTolerance->currentText());
+    bool ok;
+    double conv;
 
-    std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(prec));
-    std::vector<VertexIds>::iterator vt = vertexIds.begin();
-    Vertex_EqualTo pred(prec);
+    conv = QLocale::system().toDouble(ui->comboBoxTolerance->currentText(),&ok);
 
-    std::list<ConstraintIds> coincidences;
-    // Make a list of constraint we expect for coincident vertexes
-    while (vt < vertexIds.end()) {
-        // get first item whose adjacent element has the same vertex coordinates
-        vt = std::adjacent_find(vt, vertexIds.end(), pred);
-        if (vt < vertexIds.end()) {
-            std::vector<VertexIds>::iterator vn;
-            for (vn = vt+1; vn != vertexIds.end(); ++vn) {
-                if (pred(*vt,*vn)) {
-                    ConstraintIds id;
-                    id.v = vt->v;
-                    id.First = vt->GeoId;
-                    id.FirstPos = vt->PosId;
-                    id.Second = vn->GeoId;
-                    id.SecondPos = vn->PosId;
-                    coincidences.push_back(id);
-                }
-                else {
-                    break;
-                }
-            }
-
-            vt = vn;
+    if(ok) {
+        prec = conv;
+    }
+    else {
+        QVariant v = ui->comboBoxTolerance->itemData(ui->comboBoxTolerance->currentIndex());
+        if (v.isValid()) {
+            prec = v.toDouble();
         }
     }
 
-    // Go through the available 'Coincident', 'Tangent' or 'Perpendicular' constraints
-    // and check which of them is forcing two vertexes to be coincident.
-    // If there is none but two vertexes can be considered equal a coincident constraint is missing.
-    std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
-    for (std::vector<Sketcher::Constraint*>::iterator it = constraint.begin(); it != constraint.end(); ++it) {
-        if ((*it)->Type == Sketcher::Coincident ||
-            (*it)->Type == Sketcher::Tangent ||
-            (*it)->Type == Sketcher::Perpendicular) {
-            ConstraintIds id;
-            id.First = (*it)->First;
-            id.FirstPos = (*it)->FirstPos;
-            id.Second = (*it)->Second;
-            id.SecondPos = (*it)->SecondPos;
-            std::list<ConstraintIds>::iterator pos = std::find_if
-                    (coincidences.begin(), coincidences.end(), Constraint_Equal(id));
-            if (pos != coincidences.end()) {
-                coincidences.erase(pos);
-            }
-        }
-    }
+    sketchAnalyser.detectMissingPointOnPointConstraints(prec,!ui->checkBoxIgnoreConstruction->isChecked());
 
-    this->vertexConstraints.clear();
-    this->vertexConstraints.reserve(coincidences.size());
+    std::vector<Sketcher::ConstraintIds> & vertexConstraints = sketchAnalyser.getMissingPointOnPointConstraints();
+
     std::vector<Base::Vector3d> points;
-    points.reserve(coincidences.size());
-    for (std::list<ConstraintIds>::iterator it = coincidences.begin(); it != coincidences.end(); ++it) {
-        this->vertexConstraints.push_back(*it);
-        points.push_back(it->v);
+    points.reserve(vertexConstraints.size());
+
+    for (auto vc : vertexConstraints) {
+        points.push_back(vc.v);
     }
 
     hidePoints();
-    if (this->vertexConstraints.empty()) {
+    if (vertexConstraints.empty()) {
         QMessageBox::information(this, tr("No missing coincidences"),
             tr("No missing coincidences found"));
         ui->fixButton->setEnabled(false);
@@ -334,7 +142,7 @@ void SketcherValidation::on_findButton_clicked()
     else {
         showPoints(points);
         QMessageBox::warning(this, tr("Missing coincidences"),
-            tr("%1 missing coincidences found").arg(this->vertexConstraints.size()));
+            tr("%1 missing coincidences found").arg(vertexConstraints.size()));
         ui->fixButton->setEnabled(true);
     }
 }
@@ -344,24 +152,11 @@ void SketcherValidation::on_fixButton_clicked()
     // undo command open
     App::Document* doc = sketch->getDocument();
     doc->openTransaction("add coincident constraint");
-    std::vector<Sketcher::Constraint*> constr;
-    for (std::vector<ConstraintIds>::iterator it = this->vertexConstraints.begin(); it != this->vertexConstraints.end(); ++it) {
-        Sketcher::Constraint* c = new Sketcher::Constraint();
-        c->Type = Sketcher::Coincident;
-        c->First = it->First;
-        c->Second = it->Second;
-        c->FirstPos = it->FirstPos;
-        c->SecondPos = it->SecondPos;
-        constr.push_back(c);
-    }
 
-    sketch->addConstraints(constr);
-    this->vertexConstraints.clear();
+    sketchAnalyser.makeMissingPointOnPointCoincident();
+
     ui->fixButton->setEnabled(false);
     hidePoints();
-    for (std::vector<Sketcher::Constraint*>::iterator it = constr.begin(); it != constr.end(); ++it) {
-        delete *it;
-    }
 
     // finish the transaction and update
     Gui::WaitCursor wc;
@@ -372,25 +167,8 @@ void SketcherValidation::on_fixButton_clicked()
 void SketcherValidation::on_highlightButton_clicked()
 {
     std::vector<Base::Vector3d> points;
-    TopoDS_Shape shape = sketch->Shape.getValue();
 
-    Base::Placement Plm = sketch->Placement.getValue();
-
-    Base::Placement invPlm = Plm.inverse();
-
-    // build up map vertex->edge
-    TopTools_IndexedDataMapOfShapeListOfShape vertex2Edge;
-    TopExp::MapShapesAndAncestors(shape, TopAbs_VERTEX, TopAbs_EDGE, vertex2Edge);
-    for (int i=1; i<= vertex2Edge.Extent(); ++i) {
-        const TopTools_ListOfShape& los = vertex2Edge.FindFromIndex(i);
-        if (los.Extent() != 2) {
-            const TopoDS_Vertex& vertex = TopoDS::Vertex(vertex2Edge.FindKey(i));
-            gp_Pnt pnt = BRep_Tool::Pnt(vertex);
-            Base::Vector3d pos;
-            invPlm.multVec(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()),pos);
-            points.push_back(pos);
-        }
-    }
+    points = sketchAnalyser.getOpenVertices();
 
     hidePoints();
     if (!points.empty())
@@ -441,9 +219,9 @@ void SketcherValidation::on_findReversed_clicked()
                 tr("%1 reversed external-geometry arcs were found. Their endpoints are"
                    " encircled in 3d view.\n\n"
                    "%2 constraints are linking to the endpoints. The constraints have"
-                   " been listed in Report view (menu View -> Views -> Report view).\n\n"
+                   " been listed in Report view (menu View -> Panels -> Report view).\n\n"
                    "Click \"Swap endpoints in constraints\" button to reassign endpoints."
-                   " Do this only once to sketches created in FreeCAD older than v0.15.???"
+                   " Do this only once to sketches created in FreeCAD older than v0.15"
                    ).arg(points.size()/2).arg(nc)
                                  );
             ui->swapReversed->setEnabled(true);
@@ -482,7 +260,7 @@ void SketcherValidation::on_orientLockEnable_clicked()
     int n = sketch->changeConstraintsLocking(/*bLock=*/true);
     QMessageBox::warning(this, tr("Constraint orientation locking"),
         tr("Orientation locking was enabled and recomputed for %1 constraints. The"
-           " constraints have been listed in Report view (menu View -> Views ->"
+           " constraints have been listed in Report view (menu View -> Panels ->"
            " Report view).").arg(n));
 
     doc->commitTransaction();
@@ -496,7 +274,7 @@ void SketcherValidation::on_orientLockDisable_clicked()
     int n = sketch->changeConstraintsLocking(/*bLock=*/false);
     QMessageBox::warning(this, tr("Constraint orientation locking"),
         tr("Orientation locking was disabled for %1 constraints. The"
-           " constraints have been listed in Report view (menu View -> Views ->"
+           " constraints have been listed in Report view (menu View -> Panels ->"
            " Report view). Note that for all future constraints, the locking still"
            " defaults to ON.").arg(n));
 
@@ -545,7 +323,7 @@ void SketcherValidation::showPoints(const std::vector<Base::Vector3d>& pts)
     SoBaseColor * markcol = new SoBaseColor();
     markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
     SoMarkerSet* marker = new SoMarkerSet();
-    marker->markerIndex=SoMarkerSet::PLUS_9_9;
+    marker->markerIndex=Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9));
     pointsep->addChild(markcol);
     pointsep->addChild(marker);
 

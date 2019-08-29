@@ -139,8 +139,7 @@ void  SurfaceOfExtrusionPy::setBasisCurve(Py::Object arg)
             curve2->SetBasisCurve(curve);
         }
         catch (Standard_Failure& e) {
-    
-            throw Py::Exception(e.GetMessageString());
+            throw Py::RuntimeError(e.GetMessageString());
         }
     }
 }

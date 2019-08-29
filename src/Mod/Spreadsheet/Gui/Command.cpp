@@ -60,7 +60,7 @@ CmdSpreadsheetMergeCells::CmdSpreadsheetMergeCells()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Merge cells");
-    sToolTipText    = QT_TR_NOOP("Merge selected cells in spreadsheet");
+    sToolTipText    = QT_TR_NOOP("Merge selected cells");
     sWhatsThis      = "Spreadsheet_MergeCells";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetMergeCells";
@@ -113,7 +113,7 @@ CmdSpreadsheetSplitCell::CmdSpreadsheetSplitCell()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Split cell");
-    sToolTipText    = QT_TR_NOOP("Split previously merged cells in spreadsheet");
+    sToolTipText    = QT_TR_NOOP("Split previously merged cells");
     sWhatsThis      = "Spreadsheet_SplitCell";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetSplitCell";
@@ -518,7 +518,7 @@ CmdSpreadsheetAlignVCenter::CmdSpreadsheetAlignVCenter()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Vertically center-align");
-    sToolTipText    = QT_TR_NOOP("Center-align contents vertically of selected cells");
+    sToolTipText    = QT_TR_NOOP("Vertically center-align contents of selected cells");
     sWhatsThis      = "Spreadsheet_AlignVCenter";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetAlignVCenter";
@@ -570,7 +570,7 @@ CmdSpreadsheetStyleBold::CmdSpreadsheetStyleBold()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Bold text");
-    sToolTipText    = QT_TR_NOOP("Set bold text in selected cells");
+    sToolTipText    = QT_TR_NOOP("Set text in selected cells bold");
     sWhatsThis      = "Spreadsheet_StyleBold";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetStyleBold";
@@ -644,7 +644,7 @@ CmdSpreadsheetStyleItalic::CmdSpreadsheetStyleItalic()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Italic text");
-    sToolTipText    = QT_TR_NOOP("Set italic text in selected cells");
+    sToolTipText    = QT_TR_NOOP("Set text in selected cells italic");
     sWhatsThis      = "Spreadsheet_StyleItalic";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetStyleItalic";
@@ -718,7 +718,7 @@ CmdSpreadsheetStyleUnderline::CmdSpreadsheetStyleUnderline()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Underline text");
-    sToolTipText    = QT_TR_NOOP("Set underline text in selected cells");
+    sToolTipText    = QT_TR_NOOP("Underline text in selected cells");
     sWhatsThis      = "Spreadsheet_StyleUnderline";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetStyleUnderline";
@@ -904,4 +904,3 @@ void CreateSpreadsheetCommands(void)
 
     rcCmdMgr.addCommand(new CmdSpreadsheetSetAlias());
 }
-

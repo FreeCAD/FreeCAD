@@ -5,6 +5,7 @@
         <file>icons/Arch_Cell.svg</file>
         <file>icons/Arch_Wall.svg</file>
         <file>icons/Arch_Site.svg</file>
+        <file>icons/Arch_Project.svg</file>
         <file>icons/Arch_Structure.svg</file>
         <file>icons/Arch_Add.svg</file>
         <file>icons/Arch_Remove.svg</file>
@@ -15,11 +16,13 @@
         <file>icons/Arch_SectionPlane.svg</file>
         <file>icons/Arch_Window.svg</file>
         <file>icons/Arch_Wall_Tree.svg</file>
+        <file>icons/Arch_Wall_Clone.svg</file>
         <file>icons/Arch_Cell_Tree.svg</file>
         <file>icons/Arch_Building_Tree.svg</file>
         <file>icons/Arch_Floor_Tree.svg</file>
         <file>icons/Arch_SectionPlane_Tree.svg</file>
         <file>icons/Arch_Site_Tree.svg</file>
+        <file>icons/Arch_Project_Tree.svg</file>
         <file>icons/Arch_Structure_Tree.svg</file>
         <file>icons/Arch_Structure_Clone.svg</file>
         <file>icons/Arch_Window_Tree.svg</file>
@@ -38,6 +41,7 @@
         <file>icons/Arch_Fixture.svg</file>
         <file>icons/Arch_Space.svg</file>
         <file>icons/Arch_Space_Tree.svg</file>
+        <file>icons/Arch_Space_Clone.svg</file>
         <file>icons/Arch_Stairs.svg</file>
         <file>icons/Arch_Stairs_Tree.svg</file>
         <file>icons/Arch_Rebar.svg</file>
@@ -63,11 +67,14 @@
         <file>icons/Git.svg</file>
         <file>icons/Arch_Component.svg</file>
         <file>icons/Arch_Component_Clone.svg</file>
+        <file>icons/Arch_Subcomponent.svg</file>
         <file>icons/Arch_Material.svg</file>
         <file>icons/Arch_Material_Group.svg</file>
         <file>icons/Arch_Material_Multi.svg</file>
         <file>icons/Arch_Schedule.svg</file>
         <file>icons/ArchWorkbench.svg</file>
+        <file>icons/Arch_Fence.svg</file>
+        <file>icons/Arch_Fence_Tree.svg</file>
         <file>ui/preferences-arch.ui</file>
         <file>ui/preferences-archdefaults.ui</file>
         <file>ui/preferences-ifc.ui</file>
@@ -81,6 +88,10 @@
         <file>icons/Arch_ToggleSubs.svg</file>
         <file>icons/Arch_Nest.svg</file>
         <file>icons/Arch_Grid.svg</file>
+        <file>icons/Arch_BuildingPart.svg</file>
+        <file>icons/Arch_BuildingPart_Tree.svg</file>
+        <file>icons/Arch_Profile.svg</file>
+        <file>icons/Arch_Reference.svg</file>
         <file>ui/ParametersWindowDouble.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowFixed.svg</file>
@@ -99,6 +110,7 @@
         <file>ui/DialogBimServerLogin.ui</file>
         <file>ui/DialogDisplayText.ui</file>
         <file>ui/ArchNest.ui</file>
+        <file>ui/DialogIfcProperties.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>
         <file>translations/Arch_fi.qm</file>
@@ -134,5 +146,7 @@
         <file>translations/Arch_id.qm</file>
         <file>translations/Arch_lt.qm</file>
         <file>translations/Arch_val-ES.qm</file>
+        <file>translations/Arch_ar.qm</file>
+        <file>translations/Arch_vi.qm</file>
     </qresource>
 </RCC> 

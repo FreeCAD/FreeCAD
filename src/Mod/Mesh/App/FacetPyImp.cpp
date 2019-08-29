@@ -29,6 +29,7 @@
 #include <Mod/Mesh/App/FacetPy.cpp>
 
 #include <Base/VectorPy.h>
+#include <Base/GeometryPyCXX.h>
 
 using namespace Mesh;
 
@@ -146,6 +147,25 @@ PyObject*  FacetPy::isDegenerated(PyObject *args)
     return Py::new_reference_to(Py::Boolean(tria.IsDegenerated(fEpsilon)));
 }
 
+PyObject*  FacetPy::isDeformed(PyObject *args)
+{
+    float fMinAngle;
+    float fMaxAngle;
+    if (!PyArg_ParseTuple(args, "ff", &fMinAngle, &fMaxAngle))
+        return NULL;
+
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        throw Py::RuntimeError("Unbound facet");
+    }
+
+    float fCosOfMinAngle = cos(fMinAngle);
+    float fCosOfMaxAngle = cos(fMaxAngle);
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    return Py::new_reference_to(Py::Boolean(tria.IsDeformed(fCosOfMinAngle, fCosOfMaxAngle)));
+}
+
 Py::List FacetPy::getPoints(void) const
 {
     FacetPy::PointerType face = this->getFacetPtr();
@@ -199,6 +219,76 @@ Py::Float FacetPy::getArea(void) const
     const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
     MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
     return Py::Float(tria.Area());
+}
+
+Py::Float FacetPy::getAspectRatio(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        return Py::Float(-1.0);
+    }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    return Py::Float(tria.AspectRatio());
+}
+
+Py::Float FacetPy::getAspectRatio2(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        return Py::Float(-1.0);
+    }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    return Py::Float(tria.AspectRatio2());
+}
+
+Py::Float FacetPy::getRoundness(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        return Py::Float(-1.0);
+    }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    return Py::Float(tria.Roundness());
+}
+
+Py::Tuple FacetPy::getCircumCircle(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        return Py::None();
+    }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    Base::Vector3f center;
+    float radius = tria.CenterOfCircumCircle(center);
+    Py::Tuple tuple(2);
+    tuple.setItem(0, Py::Vector(center));
+    tuple.setItem(1, Py::Float(radius));
+    return tuple;
+}
+
+Py::Tuple FacetPy::getInCircle(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        return Py::None();
+    }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    Base::Vector3f center;
+    float radius = tria.CenterOfInscribedCircle(center);
+    Py::Tuple tuple(2);
+    tuple.setItem(0, Py::Vector(center));
+    tuple.setItem(1, Py::Float(radius));
+    return tuple;
 }
 
 PyObject *FacetPy::getCustomAttributes(const char* /*attr*/) const

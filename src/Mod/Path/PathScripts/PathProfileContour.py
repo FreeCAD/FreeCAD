@@ -28,7 +28,6 @@ import ArchPanel
 import FreeCAD
 import Part
 import Path
-import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathProfileBase as PathProfileBase
 import PathScripts.PathLog as PathLog
 
@@ -37,13 +36,15 @@ from PySide import QtCore
 
 FreeCAD.setLogLevel('Path.Area', 0)
 
-if True:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -70,9 +71,12 @@ class ObjectContour(PathProfileBase.ObjectProfile):
         self.baseObject().initAreaOp(obj)
         obj.setEditorMode('Side', 2) # it's always outside
 
-    def areaOpSetDefaultValues(self, obj):
-        '''areaOpSetDefaultValues(obj) ... call super's implementation and set Side="Outside".'''
-        self.baseObject().areaOpSetDefaultValues(obj)
+    def areaOpOnDocumentRestored(self, obj):
+        obj.setEditorMode('Side', 2) # it's always outside
+
+    def areaOpSetDefaultValues(self, obj, job):
+        '''areaOpSetDefaultValues(obj, job) ... call super's implementation and set Side="Outside".'''
+        self.baseObject().areaOpSetDefaultValues(obj, job)
         obj.Side = 'Outside'
 
     def areaOpShapes(self, obj):
@@ -83,32 +87,36 @@ class ObjectContour(PathProfileBase.ObjectProfile):
             self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         isPanel = False
-        if hasattr(self.baseobject, "Proxy"):
-            if isinstance(self.baseobject.Proxy, ArchPanel.PanelSheet):  # process the sheet
+        if 1 == len(self.model) and hasattr(self.model[0], "Proxy"):
+            if isinstance(self.model[0].Proxy, ArchPanel.PanelSheet):  # process the sheet
+                panel = self.model[0]
                 isPanel = True
-                self.baseobject.Proxy.execute(self.baseobject)
-                shapes = self.baseobject.Proxy.getOutlines(self.baseobject, transform=True)
+                panel.Proxy.execute(panel)
+                shapes = panel.Proxy.getOutlines(panel, transform=True)
                 for shape in shapes:
                     f = Part.makeFace([shape], 'Part::FaceMakerSimple')
-                    thickness = self.baseobject.Group[0].Source.Thickness
+                    thickness = panel.Group[0].Source.Thickness
                     return [(f.extrude(FreeCAD.Vector(0, 0, thickness)), False)]
 
-        if hasattr(self.baseobject, "Shape") and not isPanel:
-            return [(PathUtils.getEnvelope(partshape=self.baseobject.Shape, subshape=None, depthparams=self.depthparams), False)]
+        if not isPanel:
+            return [(PathUtils.getEnvelope(partshape=base.Shape, subshape=None, depthparams=self.depthparams), False) for base in self.model if hasattr(base, 'Shape')]
 
     def areaOpAreaParams(self, obj, isHole):
         params = self.baseObject().areaOpAreaParams(obj, isHole)
         params['Coplanar'] = 2
         return params
 
-    def updateDepths(self, obj, ignoreErrors=False):
-        stockBB = self.stock.Shape.BoundBox
-        obj.OpFinalDepth = stockBB.ZMin
-        obj.OpStartDepth = stockBB.ZMax
+    def opUpdateDepths(self, obj):
+        obj.OpStartDepth = obj.OpStockZMax
+        obj.OpFinalDepth = obj.OpStockZMin
 
+def SetupProperties():
+    return [p for p in PathProfileBase.SetupProperties() if p != 'Side']
 
-def Create(name):
+def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Contour operation.'''
-    obj   = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectContour(obj)
+    if obj is None:
+        obj   = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    obj.Proxy = ObjectContour(obj, name)
     return obj
+

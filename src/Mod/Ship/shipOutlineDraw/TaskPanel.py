@@ -24,10 +24,10 @@
 import FreeCAD as App
 from FreeCAD import Base, Vector
 import FreeCADGui as Gui
-import Units
+from FreeCAD import Units
 import Part
 from PySide import QtGui, QtCore
-import Preview
+from . import Preview
 import Instance
 from shipUtils import Paths
 import shipUtils.Locale as Locale
@@ -166,7 +166,7 @@ class TaskPanel:
                                        self.TSections,
                                        self.ship.Shape)
     def getMainWindow(self):
-        toplevel = QtGui.qApp.topLevelWidgets()
+        toplevel = QtGui.QApplication.topLevelWidgets()
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
                 return i

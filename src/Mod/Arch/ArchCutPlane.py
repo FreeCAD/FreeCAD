@@ -51,14 +51,14 @@ def cutComponentwithPlane(archObject, cutPlane, sideFace):
     else:
         cutVolume = cutVolume[1]
     if cutVolume:
-        obj = FreeCAD.ActiveDocument.addObject("Part::Feature", str(translate("Arch","CutVolume")))
+        obj = FreeCAD.ActiveDocument.addObject("Part::Feature","CutVolume")
         obj.Shape = cutVolume
         obj.ViewObject.ShapeColor = (1.00,0.00,0.00)
         obj.ViewObject.Transparency = 75
         if "Additions" in archObject.Object.PropertiesList:
             return ArchCommands.removeComponents(obj,archObject.Object)
         else:
-            cutObj = FreeCAD.ActiveDocument.addObject("Part::Cut", str(translate("Arch","CutPlane")))
+            cutObj = FreeCAD.ActiveDocument.addObject("Part::Cut","CutPlane")
             cutObj.Base = archObject.Object
             cutObj.Tool = obj
             return cutObj
@@ -98,7 +98,7 @@ class _CutPlaneTaskPanel:
         self.combobox.setCurrentIndex(0)
         self.grid.addWidget(self.combobox, 2, 1)
         QtCore.QObject.connect(self.combobox,QtCore.SIGNAL("currentIndexChanged(int)"),self.previewCutVolume)
-        self.previewObj = FreeCAD.ActiveDocument.addObject("Part::Feature", str(translate("Arch", "PreviewCutVolume")))
+        self.previewObj = FreeCAD.ActiveDocument.addObject("Part::Feature","PreviewCutVolume")
         self.retranslateUi(self.form)
         self.previewCutVolume(self.combobox.currentIndex())
 
@@ -111,7 +111,7 @@ class _CutPlaneTaskPanel:
         s = FreeCADGui.Selection.getSelectionEx()
         if len(s) > 1:
             if s[1].SubObjects:
-                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Cutting")))
+                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Cutting"))
                 FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("Arch.cutComponentwithPlane(FreeCADGui.Selection.getSelectionEx()[0],FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0],"+ str(val) +")")
                 FreeCAD.ActiveDocument.commitTransaction()

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
@@ -36,12 +35,11 @@ from PathScripts.PathUtils import findParentJob
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
-    from DraftTools import translate
 else:
     def translate(ctxt, txt):
         return txt
 
-__title__="FreeCAD Path Commands"
+__title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
 __url__ = "http://www.freecadweb.org"
 
@@ -61,27 +59,27 @@ class _CommandSelectLoop:
                 'CmdType': "ForEdit"}
 
     def IsActive(self):
-        if 'PathWorkbench' == FreeCADGui.activeWorkbench().name():
-            if bool(FreeCADGui.Selection.getSelection()) is False:
-                return False
-            try:
-                sel = FreeCADGui.Selection.getSelectionEx()[0]
-                if sel.Object == self.obj and sel.SubElementNames == self.sub:
-                    return self.active
-                self.obj = sel.Object
-                self.sub = sel.SubElementNames
-                if sel.SubObjects:
-                    self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
-                else:
-                    self.active = False
+        if bool(FreeCADGui.Selection.getSelection()) is False:
+            return False
+        try:
+            sel = FreeCADGui.Selection.getSelectionEx()[0]
+            if sel.Object == self.obj and sel.SubElementNames == self.sub:
                 return self.active
-            except Exception as exc:
-                PathLog.error(exc)
-                traceback.print_exc(exc)
-                return False
-        return False
+            self.obj = sel.Object
+            self.sub = sel.SubElementNames
+            if sel.SubObjects:
+                self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+            else:
+                self.active = False
+            return self.active
+        except Exception as exc:
+            PathLog.error(exc)
+            traceback.print_exc(exc)
+            return False
 
     def Activated(self):
+        from PathScripts.PathUtils import horizontalEdgeLoop
+        from PathScripts.PathUtils import horizontalFaceLoop
         sel = FreeCADGui.Selection.getSelectionEx()[0]
         obj = sel.Object
         edge1 = sel.SubObjects[0]
@@ -103,21 +101,53 @@ class _CommandSelectLoop:
             for e in elist:
                 for i in loopwire.Edges:
                     if e.hashCode() == i.hashCode():
-                        FreeCADGui.Selection.addSelection(obj, "Edge"+str(elist.index(e)+1))
+                        FreeCADGui.Selection.addSelection(obj, "Edge" + str(elist.index(e) + 1))
 
     def formsPartOfALoop(self, obj, sub, names):
-        if names[0][0:4] != 'Edge':
-            if names[0][0:4] == 'Face' and horizontalFaceLoop(obj, sub, names):
+        try: 
+            if names[0][0:4] != 'Edge':
+                if names[0][0:4] == 'Face' and horizontalFaceLoop(obj, sub, names):
+                    return True
+                return False
+            if len(names) == 1 and horizontalEdgeLoop(obj, sub):
                 return True
-            return False
-        if len(names) == 1 and horizontalEdgeLoop(obj, sub):
+            if len(names) == 1 or names[1][0:4] != 'Edge':
+                return False
             return True
-        if len(names) == 1 or names[1][0:4] != 'Edge':
+        except Exception:
             return False
-        return True
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_SelectLoop', _CommandSelectLoop())
+
+
+class _ToggleOperation:
+    "command definition to toggle Operation Active state"
+    def GetResources(self):
+        return {'Pixmap': 'Path-OpActive',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_OpActiveToggle", "Toggle the Active State of the Operation"),
+                'Accel': "P, X",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_OpActiveToggle", "Toggle the Active State of the Operation"),
+                'CmdType': "ForEdit"}
+
+    def IsActive(self):
+        if bool(FreeCADGui.Selection.getSelection()) is False:
+            return False
+        try:
+            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+            return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
+        except(IndexError, AttributeError):
+            return False
+
+    def Activated(self):
+        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+        obj.Active = not(obj.Active)
+        FreeCAD.ActiveDocument.recompute()
+
+
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('Path_OpActiveToggle', _ToggleOperation())
 
 
 class _CopyOperation:
@@ -134,7 +164,7 @@ class _CopyOperation:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except:
+        except(IndexError, AttributeError):
             return False
 
     def Activated(self):

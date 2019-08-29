@@ -2,6 +2,7 @@ if(WIN32)
     add_definitions(-DFCBase)
     add_definitions(-DPYCXX_DLL)
     add_definitions(-DBOOST_DYN_LINK)
+    add_definitions(-DZIPIOS_UTF8)
 endif(WIN32)
 
 include_directories(
@@ -19,7 +20,6 @@ include_directories(
 if(MSVC)
     set(FreeCADBase_LIBS
         ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
         debug ${XercesC_DEBUG_LIBRARIES}
         optimized ${XercesC_LIBRARIES}
         ${ZLIB_LIBRARIES}
@@ -36,13 +36,14 @@ if(MSVC)
         list(APPEND FreeCADBase_LIBS
             debug vcruntimed.lib
             debug ucrtd.lib
+            debug concrtd.lib
             optimized vcruntime.lib
             optimized ucrt.lib
+            optimized concrt.lib
         )
     endif()
 elseif(MINGW)
     set(FreeCADBase_LIBS
-        ${PYTHON_LIBRARIES}
         ${XercesC_LIBRARIES}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
@@ -50,7 +51,6 @@ elseif(MINGW)
     )
 else(MSVC)
     set(FreeCADBase_LIBS
-        ${PYTHON_LIBRARIES}
         ${XercesC_LIBRARIES}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
@@ -68,6 +68,10 @@ else()
     )
     list(APPEND FreeCADBase_LIBS ${QT_QTCORE_LIBRARY})
 endif()
+
+if (BUILD_DYNAMIC_LINK_PYTHON)
+    list(APPEND FreeCADBase_LIBS ${PYTHON_LIBRARIES})
+endif (BUILD_DYNAMIC_LINK_PYTHON)
 
 # needed for OpenSUSE
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
@@ -87,7 +91,15 @@ generate_from_xml(UnitPy)
 generate_from_xml(QuantityPy)
 
 if(SWIG_FOUND)
-    execute_process(COMMAND ${SWIG_EXECUTABLE} -python -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/swigpyrun.h)
+    # Create the file swigpyrun.hh and then compare with the file swigpyrun.h.
+    # If the files are different or if swigpyrun.h doesn't exist then copy swigpyrun.hh.
+    # This is to avoid to having to build the target each time cmake configure is executed.
+    execute_process(COMMAND ${SWIG_EXECUTABLE} -python -external-runtime ${CMAKE_CURRENT_BINARY_DIR}/swigpyrun.hh)
+
+    fc_copy_file_if_different(
+        "${CMAKE_CURRENT_BINARY_DIR}/swigpyrun.hh"
+        "${CMAKE_CURRENT_BINARY_DIR}/swigpyrun.h"
+    )
     add_definitions(-DHAVE_SWIG=1)
 endif(SWIG_FOUND)
 
@@ -259,10 +271,12 @@ SET(FreeCADBase_CPP_SRCS
     TimeInfo.cpp
     Tools.cpp
     Tools2D.cpp
+    Translate.cpp
     Type.cpp
     Uuid.cpp
     Vector3D.cpp
     VectorPyImp.cpp
+    ViewProj.cpp
     Writer.cpp
     XMLTools.cpp
 )
@@ -314,12 +328,14 @@ SET(FreeCADBase_HPP_SRCS
     Reader.h
     Rotation.h
     Sequencer.h
+    StdStlTools.h
     Stream.h
     Swap.h
     ${SWIG_HEADERS}
     TimeInfo.h
     Tools.h
     Tools2D.h
+    Translate.h
     Type.h
     Uuid.h
     Vector3D.h
@@ -369,10 +385,10 @@ else(FREECAD_USE_EXTERNAL_ZIPIOS)
 endif(FREECAD_USE_EXTERNAL_ZIPIOS)
 
 
-if(MSVC)
-add_definitions(-D_PreComp_)
-ADD_MSVC_PRECOMPILED_HEADER(FreeCADBase PreCompiled.h PreCompiled.cpp FreeCADBase_CPP_SRCS)
-endif(MSVC)
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    ADD_MSVC_PRECOMPILED_HEADER(FreeCADBase PreCompiled.h PreCompiled.cpp FreeCADBase_CPP_SRCS)
+endif(FREECAD_USE_PCH)
 
 add_library(FreeCADBase SHARED ${FreeCADBase_SRCS})
 
@@ -382,7 +398,7 @@ SET_BIN_DIR(FreeCADBase FreeCADBase)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADBase
-        RUNTIME DESTINATION bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else(WIN32)

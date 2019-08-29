@@ -78,11 +78,15 @@ public:
   void gentle_zoom(double factor);
   void set_modifiers(Qt::KeyboardModifiers modifiers);
   void set_zoom_factor_base(double value);
+  void set_zoom_inverted(bool on) {
+      m_invert_zoom = on;
+  }
 
 private:
   QGraphicsView* _view;
   Qt::KeyboardModifiers _modifiers;
   double _zoom_factor_base;
+  bool m_invert_zoom;
   QPointF target_scene_pos, target_viewport_pos;
   bool eventFilter(QObject* object, QEvent* event);
 };

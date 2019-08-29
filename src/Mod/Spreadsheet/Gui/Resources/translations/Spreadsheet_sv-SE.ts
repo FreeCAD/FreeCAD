@@ -102,8 +102,8 @@
       <translation>Centrera vertikalt</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Centrera vertikalt innehållet i markerade celler</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Centrera innehållet i markerade celler vertikalt</translation>
     </message>
   </context>
   <context>
@@ -114,11 +114,11 @@
     </message>
     <message>
       <source>Export spreadsheet</source>
-      <translation>Exportera kalkylark</translation>
+      <translation>Exportera kalkylblad</translation>
     </message>
     <message>
       <source>Export spreadsheet to CSV file</source>
-      <translation>Exportera kalkylark till CSV-fil</translation>
+      <translation>Exportera kalkylblad till CSV-fil</translation>
     </message>
   </context>
   <context>
@@ -129,11 +129,11 @@
     </message>
     <message>
       <source>Import spreadsheet</source>
-      <translation>Importera kalkylark</translation>
+      <translation>Importera kalkylblad</translation>
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
-      <translation>Importera CSV-fil till kalkylark</translation>
+      <translation>Importera CSV-fil till kalkylblad</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Sammanfoga celler</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Sammanfoga markerade celler i kalkylark</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Dela upp cell</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Dela upp tidigare sammanfogade celler i kalkylark</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Fet text</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Gör texten fet i markerade celler</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Kursiv text</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Gör texten kursiv i markerade celler</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Understruken text</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
+      <source>Underline text in selected cells</source>
       <translation>Stryk under text i markerade celler</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Anpassad</translation>
+      <source>Custom Color</source>
+      <translation>Anpassad färg</translation>
     </message>
   </context>
   <context>
@@ -340,19 +340,19 @@
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Ange cellens förgrundsfärg</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Ställer in förgrundsfärgen för cellerna i kalkylbladet</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Ange cellens bakgrundsfärg</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Ställer in bakgrundsfärgen för cellerna i kalkylbladet</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Ljusgrå</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Anpassad</translation>
+      <source>Custom Color</source>
+      <translation>Anpassad färg</translation>
     </message>
   </context>
   <context>

@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Solver Job Control Task Panel"
+__title__ = "FreeCAD FEM solver job control task panel"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 from PySide import QtCore
 from PySide import QtGui
@@ -332,5 +333,8 @@ class ControlWidget(QtGui.QWidget):
             self._directoryGrp.setDisabled(False)
             self._writeBtt.setDisabled(False)
             self._editBtt.setDisabled(
-                not machine.solver.Proxy.editSupported() or
-                machine.state < femsolver.run.PREPARE)
+                not machine.solver.Proxy.editSupported()
+                or machine.state < femsolver.run.PREPARE
+            )
+
+##  @}

@@ -25,6 +25,7 @@
 
 #include <CXX/Extensions.hxx>
 #include <boost/shared_ptr.hpp>
+#include <SMESH_Version.h>
 
 class SMESH_Hypothesis;
 class SMESH_Gen;
@@ -60,11 +61,13 @@ public:
     Py::Object repr();
     Py::Object getLibName(const Py::Tuple& args);
     Py::Object setLibName(const Py::Tuple& args);
+#if SMESH_VERSION_MAJOR < 7
     Py::Object setParameters(const Py::Tuple& args);
     Py::Object getParameters(const Py::Tuple& args);
     Py::Object setLastParameters(const Py::Tuple& args);
     Py::Object getLastParameters(const Py::Tuple& args);
     Py::Object clearParameters(const Py::Tuple& args);
+#endif
     Py::Object isAuxiliary(const Py::Tuple& args);
     Py::Object setParametersByMesh(const Py::Tuple& args);
 
@@ -219,7 +222,7 @@ public:
     StdMeshers_Hexa_3DPy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_Hexa_3DPy();
 };
-
+#if SMESH_VERSION_MAJOR < 7 ///////////////////////////////////////////////////////////////////////////////
 class StdMeshers_TrianglePreferencePy : public SMESH_HypothesisPy<StdMeshers_TrianglePreferencePy>
 {
 public:
@@ -227,6 +230,7 @@ public:
     StdMeshers_TrianglePreferencePy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_TrianglePreferencePy();
 };
+#endif ///////////////////////////////////////////////////////////////////////////////////////////////
 
 class StdMeshers_StartEndLengthPy : public SMESH_HypothesisPy<StdMeshers_StartEndLengthPy>
 {

@@ -22,10 +22,14 @@
 #*   Milos Koutny 2010                                                     *
 #***************************************************************************/
 
-import FreeCAD, Part, os, FreeCADGui, __builtin__
+import FreeCAD, Part, os, FreeCADGui
 from FreeCAD import Base
 from math import *
 import ImportGui
+
+# to distinguish python built-in open function from the one declared here
+if open.__module__ in ['__builtin__','io']:
+    pythonopen = open
 
 ##########################################################
 # Script version dated 19-Jan-2012                       #
@@ -44,7 +48,7 @@ step_path=FreeCAD.getHomePath()+ "Mod/Idf/Idflibs/"
 ignore_hole_size=0.5 # size in MM to prevent huge number of drilled holes
 EmpDisplayMode=2 # 0='Flat Lines', 1='Shaded', 2='Wireframe', 3='Points'; recommended 2 or 0
 
-IDF_sort=0 # 0-sort per refdes [1 - part number (not preffered)/refdes] 2-sort per footprint/refdes
+IDF_sort=0 # 0-sort per refdes [1 - part number (not preferred)/refdes] 2-sort per footprint/refdes
 
 IDF_diag=0 # 0/1=disabled/enabled output (footprint.lst/missing_models.lst) 
 IDF_diag_path="/tmp" # path for output of footprint.lst and missing_models.lst
@@ -54,15 +58,13 @@ IDF_diag_path="/tmp" # path for output of footprint.lst and missing_models.lst
 #              End config section do not touch code below                              #
 ########################################################################################
 
-pythonopen = __builtin__.open # to distinguish python built-in open function from the one declared here
-
 def open(filename):
-	"""called when freecad opens an Emn file"""
-	docname = os.path.splitext(os.path.basename(filename))[0]
-	doc = FreeCAD.newDocument(docname)
-	message='Started with opening of "'+filename+'" file\n'
-	FreeCAD.Console.PrintMessage(message)
-	process_emn(doc,filename)
+    """called when freecad opens an Emn file"""
+    docname = os.path.splitext(os.path.basename(filename))[0]
+    doc = FreeCAD.newDocument(docname)
+    message='Started with opening of "'+filename+'" file\n'
+    FreeCAD.Console.PrintMessage(message)
+    process_emn(doc,filename)
 
 def insert(filename,docname):
     """called when freecad imports an Emn file"""

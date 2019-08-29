@@ -24,9 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/regex.hpp>
 #endif
-
-#include <boost/regex.hpp>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -81,7 +80,7 @@ void PathSim::SetCurrentTool(Tool * tool)
 	case Tool::DRILL:
 		tp = cSimTool::CHAMFER;
 		angle = tool->CuttingEdgeAngle;
-        if (angle > 180) 
+        if (angle > 180)
         {
             angle = 180;
         }
@@ -89,7 +88,7 @@ void PathSim::SetCurrentTool(Tool * tool)
 	case Tool::CENTERDRILL:
 		tp = cSimTool::CHAMFER;
 		angle = tool->CuttingEdgeAngle;
-        if (angle > 180) 
+        if (angle > 180)
         {
             angle = 180;
         }
@@ -107,7 +106,7 @@ void PathSim::SetCurrentTool(Tool * tool)
 	case Tool::ENGRAVER:
 		tp = cSimTool::CHAMFER;
 		angle = tool->CuttingEdgeAngle;
-        if (angle > 180) 
+        if (angle > 180)
         {
             angle = 180;
         }
@@ -125,21 +124,24 @@ Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 	Point3D fromPos(*pos);
 	Point3D toPos(*pos);
 	toPos.UpdateCmd(*cmd);
-	if (cmd->Name == "G0" || cmd->Name == "G1")
+	if (m_tool != NULL)
 	{
-        m_stock->ApplyLinearTool(fromPos, toPos, *m_tool);
-	}
-	else if (cmd->Name == "G2")
-	{
-		Vector3d vcent = cmd->getCenter();
-		Point3D cent(vcent);
-		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, false);
-	}
-	else if (cmd->Name == "G3")
-	{
-		Vector3d vcent = cmd->getCenter();
-		Point3D cent(vcent);
-		m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, true);
+		if (cmd->Name == "G0" || cmd->Name == "G1")
+		{
+			m_stock->ApplyLinearTool(fromPos, toPos, *m_tool);
+		}
+		else if (cmd->Name == "G2")
+		{
+			Vector3d vcent = cmd->getCenter();
+			Point3D cent(vcent);
+			m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, false);
+		}
+		else if (cmd->Name == "G3")
+		{
+			Vector3d vcent = cmd->getCenter();
+			Point3D cent(vcent);
+			m_stock->ApplyCircularTool(fromPos, toPos, cent, *m_tool, true);
+		}
 	}
 
 	Base::Placement *plc = new Base::Placement();
@@ -152,4 +154,4 @@ Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 
 
 
- 
+

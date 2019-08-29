@@ -29,6 +29,7 @@
 #include <Inventor/SbColor.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewVolume.h>
+#include <Inventor/SbMatrix.h>
 
 class SbViewVolume;
 class QAbstractItemView;
@@ -108,6 +109,8 @@ public:
 
 protected:
     SbViewVolume viewVolume;
+    SbMatrix matrix;
+    SbMatrix invert;
     bool hasTransform;
     Base::Matrix4D transform;
 };

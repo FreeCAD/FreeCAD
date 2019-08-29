@@ -44,6 +44,7 @@ QGICenterLine::QGICenterLine()
     setWidth(0.0);
     setStyle(getCenterStyle());
     setColor(getCenterColor());
+    m_isintersection = false;              //Coverity CID 174669
 }
 
 void QGICenterLine::draw()

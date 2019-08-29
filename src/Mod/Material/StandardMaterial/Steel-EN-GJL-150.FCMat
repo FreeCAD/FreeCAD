@@ -1,22 +1,27 @@
-; EN-GJL-150 - 0.6015 - EN 1561
+; Steel-EN-GJL-150
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJL-150
 NameDE = GG-15
 DescriptionDE = für dünnwandige Teile wie Gehäuse, Ständer
 Father = Metal
-YoungsModulus = 95000 MPa
-UltimateTensileStrength = 150
-PoissonRatio = 0.3
-Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.6015
-ModulusOfShare = 37000
 Norm = EN 1561
-ThermalExpansionCoefficient = 1.00E-005
+
+[Mechanical]
+Density = 7200 kg/m^3
+PoissonRatio = 0.3
+ShearModulus = 37000 MPa
 UltimateStrain = 0
-YieldStrength = 98
+UltimateTensileStrength = 150 MPa
+YieldStrength = 98 MPa
+YoungsModulus = 95000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.00001 m/m/K

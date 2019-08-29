@@ -24,9 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/regex.hpp>
 #endif
-
-#include <boost/regex.hpp>
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -51,9 +50,10 @@ Toolpath::Toolpath()
 }
 
 Toolpath::Toolpath(const Toolpath& otherPath)
-:vpcCommands(otherPath.vpcCommands.size())
+    : vpcCommands(otherPath.vpcCommands.size())
+    , center(otherPath.center)
 {
-    operator=(otherPath);
+    *this = otherPath;
     recalculate();
 }
 
@@ -64,16 +64,21 @@ Toolpath::~Toolpath()
 
 Toolpath &Toolpath::operator=(const Toolpath& otherPath)
 {
+    if (this == &otherPath)
+        return *this;
+
     clear();
     vpcCommands.resize(otherPath.vpcCommands.size());
     int i = 0;
-    for (std::vector<Command*>::const_iterator it=otherPath.vpcCommands.begin();it!=otherPath.vpcCommands.end();++it,i++)
+    for (std::vector<Command*>::const_iterator it=otherPath.vpcCommands.begin();it!=otherPath.vpcCommands.end();++it,i++) {
         vpcCommands[i] = new Command(**it);
+    }
+    center = otherPath.center;
     recalculate();
     return *this;
 }
 
-void Toolpath::clear(void) 
+void Toolpath::clear(void)
 {
     for(std::vector<Command*>::iterator it = vpcCommands.begin();it!=vpcCommands.end();++it)
         delete ( *it );
@@ -96,7 +101,7 @@ void Toolpath::insertCommand(const Command &Cmd, int pos)
         Command *tmp = new Command(Cmd);
         vpcCommands.insert(vpcCommands.begin()+pos,tmp);
     } else {
-        throw Base::Exception("Index not in range");
+        throw Base::IndexError("Index not in range");
     }
     recalculate();
 }
@@ -109,7 +114,7 @@ void Toolpath::deleteCommand(int pos)
     } else if (pos <= static_cast<int>(vpcCommands.size())) {
         vpcCommands.erase (vpcCommands.begin()+pos);
     } else {
-        throw Base::Exception("Index not in range");
+        throw Base::IndexError("Index not in range");
     }
     recalculate();
 }
@@ -140,61 +145,72 @@ double Toolpath::getLength()
     return l;
 }
 
+static void bulkAddCommand(const std::string &gcodestr, std::vector<Command*> &commands, bool &inches)
+{
+    Command *cmd = new Command();
+    cmd->setFromGCode(gcodestr);
+    if ("G20" == cmd->Name) {
+        inches = true;
+        delete cmd;
+    } else if ("G21" == cmd->Name) {
+        inches = false;
+        delete cmd;
+    } else {
+        if (inches) {
+            cmd->scaleBy(25.4);
+        }
+        commands.push_back(cmd);
+    }
+}
+
 void Toolpath::setFromGCode(const std::string instr)
 {
     clear();
-    
+
     // remove comments
     //boost::regex e("\\(.*?\\)");
     //std::string str = boost::regex_replace(instr, e, "");
     std::string str(instr);
-    
+
     // split input string by () or G or M commands
     std::string mode = "command";
     std::size_t found = str.find_first_of("(gGmM");
     int last = -1;
-    while (found!=std::string::npos)
+    bool inches = false;
+    while (found != std::string::npos)
     {
         if (str[found] == '(') {
             // start of comment
             if ( (last > -1) && (mode == "command") ) {
                 // before opening a comment, add the last found command
-                std::string gcodestr = str.substr(last,found-last);
-                Command *tmp = new Command();
-                tmp->setFromGCode(gcodestr);
-                vpcCommands.push_back(tmp);
+                std::string gcodestr = str.substr(last, found-last);
+                bulkAddCommand(gcodestr, vpcCommands, inches);
             }
             mode = "comment";
             last = found;
-            found=str.find_first_of(")",found+1);
+            found = str.find_first_of(")", found+1);
         } else if (str[found] == ')') {
             // end of comment
-            std::string gcodestr = str.substr(last,found-last+1);
-            Command *tmp = new Command();
-            tmp->setFromGCode(gcodestr);
-            vpcCommands.push_back(tmp);
+            std::string gcodestr = str.substr(last, found-last+1);
+            bulkAddCommand(gcodestr, vpcCommands, inches);
             last = -1;
-            found=str.find_first_of("(gGmM",found+1);
+            found = str.find_first_of("(gGmM", found+1);
             mode = "command";
         } else if (mode == "command") {
             // command
             if (last > -1) {
-                std::string gcodestr = str.substr(last,found-last);
-                Command *tmp = new Command();
-                tmp->setFromGCode(gcodestr);
-                vpcCommands.push_back(tmp);
+                std::string gcodestr = str.substr(last, found-last);
+                bulkAddCommand(gcodestr, vpcCommands, inches);
             }
             last = found;
-            found=str.find_first_of("(gGmM",found+1);
+            found = str.find_first_of("(gGmM", found+1);
         }
     }
     // add the last command found, if any
     if (last > -1) {
         if (mode == "command") {
             std::string gcodestr = str.substr(last,std::string::npos);
-            Command *tmp = new Command();
-            tmp->setFromGCode(gcodestr);
-            vpcCommands.push_back(tmp);
+            bulkAddCommand(gcodestr, vpcCommands, inches);
         }
     }
     recalculate();
@@ -208,23 +224,23 @@ std::string Toolpath::toGCode(void) const
         result += "\n";
     }
     return result;
-}    
+}
 
 void Toolpath::recalculate(void) // recalculates the path cache
 {
-    
+
     if(vpcCommands.size()==0)
         return;
-        
+
     // TODO recalculate the KDL stuff. At the moment, this is unused.
 
-    /*
+#if 0
     // delete the old and create a new one
-    if(pcPath) 
+    if(pcPath)
         delete (pcPath);
-        
+
     pcPath = new KDL::Path_Composite();
-    
+
     KDL::Path *tempPath;
     KDL::Frame Last;
 
@@ -268,9 +284,9 @@ void Toolpath::recalculate(void) // recalculates the path cache
             }
         }
     } catch (KDL::Error &e) {
-        throw Base::Exception(e.Description());
+        throw Base::RuntimeError(e.Description());
     }
-    */
+#endif
 }
 
 // reimplemented from base class
@@ -280,19 +296,35 @@ unsigned int Toolpath::getMemSize (void) const
     return toGCode().size();
 }
 
+void Toolpath::setCenter(const Base::Vector3d &c)
+{
+    center = c;
+    recalculate();
+}
+
+static void saveCenter(Writer &writer, const Base::Vector3d &center)
+{
+    writer.Stream() << writer.ind() << "<Center x=\"" << center.x << "\" y=\"" << center.y << "\" z=\"" << center.z << "\"/>" << std::endl;
+}
+
 void Toolpath::Save (Writer &writer) const
 {
     if (writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<Path count=\"" <<  getSize() <<"\">" << std::endl;
+        writer.Stream() << writer.ind() << "<Path count=\"" <<  getSize() << "\" version=\"" << SchemaVersion << "\">" << std::endl;
         writer.incInd();
-        for(unsigned int i = 0;i<getSize(); i++)
+        saveCenter(writer, center);
+        for(unsigned int i = 0; i < getSize(); i++) {
             vpcCommands[i]->Save(writer);
+        }
         writer.decInd();
-        writer.Stream() << writer.ind() << "</Path>" << std::endl;
     } else {
         writer.Stream() << writer.ind()
-            << "<Path file=\"" << writer.addFile((writer.ObjectName+".nc").c_str(), this) << "\"/>" << std::endl;
+            << "<Path file=\"" << writer.addFile((writer.ObjectName+".nc").c_str(), this) << "\" version=\"" << SchemaVersion << "\">" << std::endl;
+        writer.incInd();
+        saveCenter(writer, center);
+        writer.decInd();
     }
+    writer.Stream() << writer.ind() << "</Path>" << std::endl;
 }
 
 void Toolpath::SaveDocFile (Base::Writer &writer) const
@@ -308,7 +340,7 @@ void Toolpath::Restore(XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
@@ -317,7 +349,7 @@ void Toolpath::RestoreDocFile(Base::Reader &reader)
 {
     std::string gcode;
     std::string line;
-    while (reader >> line) { 
+    while (reader >> line) {
         gcode += line;
         gcode += " ";
     }
@@ -328,4 +360,4 @@ void Toolpath::RestoreDocFile(Base::Reader &reader)
 
 
 
- 
+

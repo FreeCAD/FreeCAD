@@ -295,7 +295,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
 }
 
 App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool independent) {
-    
+
     App::DocumentObject* copy = nullptr;
     // Check for null to avoid segfault
     if (!obj)
@@ -363,7 +363,9 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
         // TODO Replace it with commands (2015-09-11, Fat-Zer)
         if(obj->isDerivedFrom(Part::Datum::getClassTypeId())) {
             copy = App::GetApplication().getActiveDocument()->addObject(
-                    obj->getClassTypeId().getName(), name.c_str() );
+                    obj->getTypeId().getName(), name.c_str() );
+
+            assert(copy->isDerivedFrom(Part::Datum::getClassTypeId()));
 
             //we need to reference the individual datums and make again datums. This is important as
             //datum adjust their size dependent on the part size, hence simply copying the shape is
@@ -404,9 +406,25 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
             else
                 shapeProp = &static_cast<PartDesign::ShapeBinder*>(copy)->Shape;
         }
+        else if(obj->isDerivedFrom(App::Plane::getClassTypeId()) ||
+                obj->isDerivedFrom(App::Line::getClassTypeId())) {
 
-        if(independent && shapeProp) {
-            if(entity.empty())
+            copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder", name.c_str());
+
+            if (!independent) {
+                static_cast<PartDesign::ShapeBinder*>(copy)->Support.setValue(obj, entity.c_str());
+            }
+            else {
+                App::GeoFeature* geo = static_cast<App::GeoFeature*>(obj);
+                std::vector<std::string> subvalues;
+                subvalues.push_back(entity);
+                Part::TopoShape shape = PartDesign::ShapeBinder::buildShapeFromReferences(geo, subvalues);
+                static_cast<PartDesign::ShapeBinder*>(copy)->Shape.setValue(shape);
+            }
+        }
+
+        if (independent && shapeProp) {
+            if (entity.empty())
                 shapeProp->setValue(static_cast<Part::Feature*>(obj)->Shape.getValue());
             else
                 shapeProp->setValue(static_cast<Part::Feature*>(obj)->Shape.getShape().getSubShape(entity.c_str()));

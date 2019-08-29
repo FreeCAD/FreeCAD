@@ -23,12 +23,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <vector>
-#include <list>
-#include <set>
-#include <boost/bind.hpp>
-#include <QMessageBox>
-#include <QPushButton>
+# include <vector>
+# include <list>
+# include <set>
+# include <boost/bind.hpp>
+# include <QMessageBox>
+# include <QPushButton>
 #endif
 
 #include <Base/Exception.h>
@@ -76,7 +76,7 @@ void WorkflowManager::init() {
     if (!_instance) {
         _instance = new WorkflowManager();
     } else {
-        //throw Base::Exception( "Trying to init the workflow manager second time." );
+        //throw Base::RuntimeError( "Trying to init the workflow manager second time." );
     }
 }
 
@@ -154,11 +154,11 @@ Workflow WorkflowManager::determineWorkflow(App::Document *doc) {
                     QObject::tr( "Do you want to make the migration automatically?" ) );
         }
         msgBox.setDetailedText( QObject::tr( "Note: If you choose to migrate you won't be able to edit"
-                    " the file with an old FreeCAD versions.\n"
+                    " the file with an older FreeCAD version.\n"
                     "If you refuse to migrate you won't be able to use new PartDesign features"
                     " like Bodies and Parts. As a result you also won't be able to use your parts"
                     " in the assembly workbench.\n"
-                    "Although you will be able to migrate any moment later with 'Part Design->Migrate...'." ) );
+                    "Although you will be able to migrate any moment later with 'Part Design -> Migrate'." ) );
         msgBox.setIcon( QMessageBox::Question );
         QPushButton * yesBtn      = msgBox.addButton ( QMessageBox::Yes );
         QPushButton * manuallyBtn = msgBox.addButton (

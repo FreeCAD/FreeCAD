@@ -42,26 +42,27 @@
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 
 #include "Rez.h"
+#include "DrawGuiUtil.h"
 #include "QGIProjGroup.h"
 
 using namespace TechDrawGui;
 
 QGIProjGroup::QGIProjGroup()
 {
-    origin = new QGraphicsItemGroup();
-    origin->setParentItem(this);
+    m_origin = new QGraphicsItemGroup();                  //QGIG added to this QGIG??
+    m_origin->setParentItem(this);
 
     // In place to ensure correct drawing and bounding box calculations
-    m_backgroundItem = new QGraphicsRectItem();
-    m_backgroundItem->setPen(QPen(QColor(Qt::black)));
+    // WF: obs? not even part of QGIGroup!
+    m_groupBackground = new QGraphicsRectItem();
+    m_groupBackground->setPen(QPen(QColor(Qt::black)));
 
-    //addToGroup(m_backgroundItem);
+    //addToGroup(m_groupBackground);
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFiltersChildEvents(true);
-    borderVisible = false;
+//    setFrameState(false);
 }
-
 
 TechDraw::DrawProjGroup * QGIProjGroup::getDrawView(void) const
 {
@@ -83,7 +84,7 @@ bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
             switch(event->type()) {
               case QEvent::GraphicsSceneMousePress:
                   // TODO - Perhaps just pass the mouse event on to the anchor somehow?
-                  if (scene()) {
+                  if (scene() && !qAnchor->isSelected()) {
                       scene()->clearSelection();
                       qAnchor->setSelected(true);
                   }
@@ -116,25 +117,22 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
                 QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
 
                 if (type == QString::fromLatin1("Front")) {
-                    gView->setLocked(true);
+                    gView->setLocked(true);                  //this locks in GUI only
+                    gView->alignTo(m_origin, QString::fromLatin1("None"));
                     installSceneEventFilter(gView);
-                    App::DocumentObject *docObj = getViewObject();
-                    TechDraw::DrawProjGroup *projectionGroup = dynamic_cast<TechDraw::DrawProjGroup *>(docObj);
-                    projectionGroup->Anchor.setValue(fView);
-                    updateView();
                 } else if ( type == QString::fromLatin1("Top") ||
                     type == QString::fromLatin1("Bottom")) {
-                    gView->alignTo(origin, QString::fromLatin1("Vertical"));
+                    gView->alignTo(m_origin, QString::fromLatin1("Vertical"));
                 } else if ( type == QString::fromLatin1("Left")  ||
                             type == QString::fromLatin1("Right") ||
                             type == QString::fromLatin1("Rear") ) {
-                    gView->alignTo(origin, QString::fromLatin1("Horizontal"));
+                    gView->alignTo(m_origin, QString::fromLatin1("Horizontal"));
                 } else if ( type == QString::fromLatin1("FrontTopRight") ||
                             type == QString::fromLatin1("FrontBottomLeft") ) {
-                    gView->alignTo(origin, QString::fromLatin1("45slash"));
+                    gView->alignTo(m_origin, QString::fromLatin1("45slash"));
                 } else if ( type == QString::fromLatin1("FrontTopLeft") ||
                             type == QString::fromLatin1("FrontBottomRight") ) {
-                    gView->alignTo(origin, QString::fromLatin1("45backslash"));
+                    gView->alignTo(m_origin, QString::fromLatin1("45backslash"));
                 }
             }
          }
@@ -142,14 +140,12 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
     return QGIViewCollection::itemChange(change, value);
 }
 
-
 void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
     QGIView *qAnchor = getAnchorQItem();
     if(qAnchor) {
         QPointF transPos = qAnchor->mapFromScene(event->scenePos());
         if(qAnchor->shape().contains(transPos)) {
-            //QGIViewCollection::mousePressEvent(event);
             mousePos = event->screenPos();
         }
     }
@@ -174,23 +170,16 @@ void QGIProjGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
        QGIView *qAnchor = getAnchorQItem();
         if((mousePos - event->screenPos()).manhattanLength() < 5) {
             if(qAnchor && qAnchor->shape().contains(event->pos())) {
-              qAnchor->mouseReleaseEvent(event);
+                event->ignore();
+                qAnchor->mouseReleaseEvent(event);
             }
-        } else if(scene() && qAnchor && (qAnchor == scene()->mouseGrabberItem())) {
+        } else if(scene() && qAnchor) {
             // End of Drag
-            Gui::Command::openCommand("Drag Projection Group");
-            //TODO: See if these commands actually handle the horizontal/vertical constraints properly...
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f",
-                                    getViewName(), Rez::appX(x()));
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f",
-                                    getViewName(), Rez::appX(getY()));// inverts Y
-            Gui::Command::commitCommand();
-            //Gui::Command::updateActive();
+            getViewObject()->setPosition(Rez::appX(x()),Rez::appX(getY()));
         }
     }
     QGIViewCollection::mouseReleaseEvent(event);
 }
-
 
 QGIView * QGIProjGroup::getAnchorQItem() const
 {
@@ -215,12 +204,19 @@ QGIView * QGIProjGroup::getAnchorQItem() const
 
 void QGIProjGroup::updateView(bool update)
 {
-    m_backgroundItem->setRect(boundingRect());
+    m_groupBackground->setRect(boundingRect());
     return QGIViewCollection::updateView(update);
 }
+
+//QGIPG does not rotate. Only individual views rotate
+void QGIProjGroup::rotateView(void)
+{
+    Base::Console().Warning("QGIPG: Projection Groups do not rotate. Change ignored\n");
+}    
 
 void QGIProjGroup::drawBorder()
 {
 //QGIProjGroup does not have a border!
 //    Base::Console().Message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
 }
+

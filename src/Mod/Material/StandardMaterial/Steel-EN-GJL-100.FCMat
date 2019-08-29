@@ -1,22 +1,26 @@
-; EN-GJL-100 - 0.6010 - EN 1561
+; Steel-EN-GJL-100
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJL-100
 NameDE = GG-10
 DescriptionDE = für gering beanspruchte Teile
 Father = Metal
-YoungsModulus = 88000 MPa
-UltimateTensileStrength = 100
-PoissonRatio = 0.3
-Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.601
-ModulusOfShare = 34000
 Norm = EN 1561
-ThermalExpansionCoefficient = 1.00E-005
+
+[Mechanical]
+Density = 7200 kg/m^3
+PoissonRatio = 0.3
+ShearModulus = 34000 MPa
 UltimateStrain = 0
-YieldStrength = 0
+UltimateTensileStrength = 100 MPa
+YoungsModulus = 88000 MPa
+
+[Thermal]
+ThermalExpansionCoefficient = 0.00001 m/m/K

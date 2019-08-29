@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with FreeCad (https://www.freecadweb.org/) & NotePad++ (https://notepad-plus-plus.org/) by Nicolas Charpentier -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64"
+   height="64"
+   id="svg2"
+   version="1.0"
+   sodipodi:docname="titane_64.svg"
+   viewBox="0 0 64.000001 64.000001">
+
+	<g id="groue">
+		<path id="Line055_w0000"  d="M 57.6 6.4 L 60.8 9.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line008_w0000"  d="M 41.6 38.4 L 44.8 41.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line040_w0000"  d="M 38.4 0.0 L 64.0 25.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line042_w0000"  d="M 54.4 0.0 L 64.0 9.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line029_w0000"  d="M 0.0 12.8 L 3.2 16.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line028_w0000"  d="M 32.0 60.8 L 35.2 64.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line044_w0000"  d="M 25.6 6.4 L 28.8 9.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line036_w0000"  d="M 44.8 57.6 L 48.0 60.8 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line048_w0000"  d="M 51.2 32.0 L 54.4 35.2 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line015_w0000"  d="M 0.0 48.0 L 16.0 64.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line031_w0000"  d="M 12.8 25.6 L 16.0 28.8 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line016_w0000"  d="M 0.0 32.0 L 32.0 64.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line035_w0000"  d="M 38.4 51.2 L 41.6 54.4 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line014_w0000"  d="M 0.0 41.6 L 22.4 64.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line011_w0000"  d="M 60.8 57.6 L 64.0 60.8 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line012_w0000"  d="M 0.0 57.6 L 6.4 64.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line026_w0000"  d="M 19.2 48.0 L 22.4 51.2 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line027_w0000"  d="M 25.6 54.4 L 28.8 57.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line030_w0000"  d="M 6.4 19.2 L 9.6 22.4 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line009_w0000"  d="M 48.0 44.8 L 51.2 48.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line032_w0000"  d="M 19.2 32.0 L 22.4 35.2 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line033_w0000"  d="M 25.6 38.4 L 28.8 41.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line010_w0000"  d="M 54.4 51.2 L 57.6 54.4 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line034_w0000"  d="M 32.0 44.8 L 35.2 48.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line037_w0000"  d="M 16.0 0.0 L 64.0 48.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line038_w0000"  d="M 22.4 0.0 L 64.0 41.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line039_w0000"  d="M 32.0 0.0 L 64.0 32.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line041_w0000"  d="M 48.0 0.0 L 64.0 16.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line043_w0000"  d="M 19.2 0.0 L 22.4 3.2 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line045_w0000"  d="M 32.0 12.8 L 35.2 16.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line046_w0000"  d="M 38.4 19.2 L 41.6 22.4 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line047_w0000"  d="M 44.8 25.6 L 48.0 28.8 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line049_w0000"  d="M 57.6 38.4 L 60.8 41.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line050_w0000"  d="M 38.4 3.2 L 41.6 6.4 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line053_w0000"  d="M 57.6 22.4 L 60.8 25.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line054_w0000"  d="M 51.2 0.0 L 54.4 3.2 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line051_w0000"  d="M 44.8 9.6 L 48.0 12.8 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line052_w0000"  d="M 51.2 16.0 L 54.4 19.2 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line018_w0000"  d="M 0.0 16.0 L 48.0 64.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line_w0000"  d="M 0.0 0.0 L 64.0 64.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line002_w0000"  d="M 3.2 0.0 L 6.4 3.2 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line017_w0000"  d="M 0.0 25.6 L 38.4 64.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line019_w0000"  d="M 0.0 9.6 L 54.4 64.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line020_w0000"  d="M 0.0 44.8 L 3.2 48.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line021_w0000"  d="M 6.4 51.2 L 9.6 54.4 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line022_w0000"  d="M 12.8 57.6 L 16.0 60.8 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line023_w0000"  d="M 0.0 28.8 L 3.2 32.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line024_w0000"  d="M 6.4 35.2 L 9.6 38.4 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line025_w0000"  d="M 12.8 41.6 L 16.0 44.8 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line001_w0000"  d="M 6.4 0.0 L 64.0 57.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line003_w0000"  d="M 9.6 6.4 L 12.8 9.6 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line005_w0000"  d="M 22.4 19.2 L 25.6 22.4 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line004_w0000"  d="M 16.0 12.8 L 19.2 16.0 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line006_w0000"  d="M 28.8 25.6 L 32.0 28.8 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+		<path id="Line007_w0000"  d="M 35.2 32.0 L 38.4 35.2 " stroke="#000000" stroke-width="0.35 px" style="stroke-width:0.35;stroke-miterlimit:4;stroke-dasharray:none;fill:none;fill-rule: evenodd "/>
+	</g>
+</svg>

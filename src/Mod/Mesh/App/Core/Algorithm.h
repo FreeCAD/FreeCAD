@@ -304,7 +304,7 @@ protected:
                        Base::Vector3f> > &rclLines) const;
   /** Searches the nearest facet in \a raulFacets to the ray (\a rclPt, \a rclDir). */
   bool RayNearestField (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, const std::vector<unsigned long> &raulFacets,
-                        Base::Vector3f &rclRes, unsigned long &rulFacet, float fMaxAngle = F_PI) const;
+                        Base::Vector3f &rclRes, unsigned long &rulFacet, float fMaxAngle = Mathf::PI) const;
   /** 
    * Splits the boundary \a rBound in several loops and append this loops to the list of borders.
    */
@@ -375,10 +375,12 @@ public:
     const std::set<unsigned long>& operator[] (unsigned long) const;
     MeshFacetArray::_TConstIterator GetFacet (unsigned long) const;
     std::set<unsigned long> NeighbourPoints(const std::vector<unsigned long>& , int level) const;
+    std::set<unsigned long> NeighbourPoints(unsigned long) const;
     void Neighbours (unsigned long ulFacetInd, float fMaxDist, MeshCollector& collect) const;
     Base::Vector3f GetNormal(unsigned long) const;
     void AddNeighbour(unsigned long, unsigned long);
     void RemoveNeighbour(unsigned long, unsigned long);
+    void RemoveFacet(unsigned long);
 
 protected:
     void SearchNeighbours(const MeshFacetArray& rFacets, unsigned long index, const Base::Vector3f &rclCenter, 

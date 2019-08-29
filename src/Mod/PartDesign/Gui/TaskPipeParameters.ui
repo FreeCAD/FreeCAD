@@ -15,6 +15,32 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
+    <widget class="QGroupBox" name="groupprofile">
+     <property name="title">
+      <string>Profile</string>
+     </property>
+     <layout class="QVBoxLayout">
+      <item>
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="QToolButton" name="buttonProfileBase">
+          <property name="text">
+           <string>Object</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="profileBaseEdit"/>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <layout class="QFormLayout" name="formLayout">
      <property name="fieldGrowthPolicy">
       <enum>QFormLayout::ExpandingFieldsGrow</enum>
@@ -56,13 +82,13 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Profile</string>
+      <string>Path to sweep along</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QToolButton" name="buttonProfileBase">
+         <widget class="QToolButton" name="buttonSpineBase">
           <property name="text">
            <string>Object</string>
           </property>
@@ -72,7 +98,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="profileBaseEdit"/>
+         <widget class="QLineEdit" name="spineBaseEdit"/>
         </item>
        </layout>
       </item>

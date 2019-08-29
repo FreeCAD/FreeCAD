@@ -29,7 +29,7 @@ sys.stdout.write ('Running source documentation ...')
 # running doxygen with the parameters from the config file
 param = "doxygen fcbt"+ds+"BuildDocDoxy.cfg"
 LogFile.write(param)
-print param
+print(param)
 text = os.popen(param).read()
 LogFile.write(text)
 if not os.path.isdir("../../doc/SourceDocumentation"):

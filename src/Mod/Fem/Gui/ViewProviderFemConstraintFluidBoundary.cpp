@@ -25,11 +25,13 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoMultipleCopy.h>
-# include <Precision.hxx>
+
 # include <QMessageBox>
 #endif
 
@@ -168,7 +170,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             int idx = 0;
 #else
             // Redraw all arrows
-            pShapeSep->removeAllChildren();
+            Gui::coinRemoveAllChildren(pShapeSep);
 #endif
             // This should always point outside of the solid
             Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
@@ -205,8 +207,11 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             // Re-orient all arrows
             Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
             Base::Vector3d forceDirection = pcConstraint->DirectionVector.getValue();
-            if (forceDirection.Length() < Precision::Confusion())
+            if (forceDirection.Length() < Precision::Confusion()) {
                 forceDirection = normal;
+                if (boundaryType == "inlet")
+                    forceDirection = - normal;
+            }
 
             SbVec3f dir(forceDirection.x, forceDirection.y, forceDirection.z);
             SbRotation rot(SbVec3f(0,1,0), dir);
@@ -267,7 +272,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             int idx = 0;
 #else
             // Note: Points and Normals are always updated together
-            pShapeSep->removeAllChildren();
+            Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
             for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {

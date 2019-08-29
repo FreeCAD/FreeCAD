@@ -494,7 +494,7 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="278"/>
       <source>Trim</source>
-      <translation>Trim</translation>
+      <translation>Retalla</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="283"/>

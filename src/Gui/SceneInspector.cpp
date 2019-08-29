@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
 # include <QHeaderView>
+# include <QTextStream>
 #endif
 
 #include "SceneInspector.h"
@@ -101,19 +102,28 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
             SoNode* child = group->getChild(i);
             setNode(this->index(i, 0, index), child);
 
-            QMap<SoNode*, QString>::iterator it = nodeNames.find(child);
-            if (it != nodeNames.end()) {
-                this->setData(this->index(i, 1, index), QVariant(it.value()));
+            QHash<SoNode*, QString>::iterator it = nodeNames.find(child);
+            QString name;
+            QTextStream stream(&name);
+            stream << child << ", ";
+            if(child->isOfType(SoSwitch::getClassTypeId())) {
+                auto pcSwitch = static_cast<SoSwitch*>(child);
+                stream << pcSwitch->whichChild.getValue() << ", ";
+            } else if (child->isOfType(SoSeparator::getClassTypeId())) {
+                auto pcSeparator = static_cast<SoSeparator*>(child);
+                stream << pcSeparator->renderCaching.getValue() << ", ";
             }
-            else {
-                this->setData(this->index(i, 1, index), QVariant(QString::fromLatin1(child->getName())));
-            }
+            if (it != nodeNames.end())
+                stream << it.value();
+            else
+                stream << child->getName();
+            this->setData(this->index(i, 1, index), QVariant(name));
         }
     }
     // insert icon
 }
 
-void SceneModel::setNodeNames(const QMap<SoNode*, QString>& names)
+void SceneModel::setNodeNames(const QHash<SoNode*, QString>& names)
 {
     nodeNames = names;
 }
@@ -173,7 +183,7 @@ void DlgInspector::setNodeNames(Gui::Document* doc)
 {
     std::vector<Gui::ViewProvider*> vps = doc->getViewProvidersOfType
             (Gui::ViewProviderDocumentObject::getClassTypeId());
-    QMap<SoNode*, QString> nodeNames;
+    QHash<SoNode*, QString> nodeNames;
     for (std::vector<Gui::ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
         Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(*it);
         App::DocumentObject* obj = vp->getObject();

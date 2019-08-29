@@ -83,7 +83,7 @@ private Q_SLOTS:
     void onThermalBoundaryTypeChanged(void);
     void onReferenceDeleted(void);
     void onButtonDirection(const bool pressed = true);
-    void onCheckReverse(bool); // consider remove this slot as the UI is hiden
+    void onCheckReverse(bool); // consider removing this slot as the UI is hidden
 
 protected:
     virtual void changeEvent(QEvent *e);

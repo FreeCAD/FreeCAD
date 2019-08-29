@@ -27,7 +27,6 @@
 # include <sstream>
 #endif
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 #include "Application.h"
@@ -47,6 +46,11 @@ DocumentT::DocumentT(Document* doc)
     document = doc->getName();
 }
 
+DocumentT::DocumentT(const std::string& name)
+{
+    document = name;
+}
+
 DocumentT::~DocumentT()
 {
 }
@@ -61,6 +65,11 @@ void DocumentT::operator=(const DocumentT& doc)
 void DocumentT::operator=(const Document* doc)
 {
     document = doc->getName();
+}
+
+void DocumentT::operator=(const std::string& name)
+{
+    document = name;
 }
 
 Document* DocumentT::getDocument() const
@@ -78,10 +87,10 @@ std::string DocumentT::getDocumentPython() const
     std::stringstream str;
     Document* doc = GetApplication().getActiveDocument();
     if (doc && document == doc->getName()) {
-        str << "FreeCAD.ActiveDocument";
+        str << "App.ActiveDocument";
     }
     else {
-        str << "FreeCAD.getDocument(\""
+        str << "App.getDocument(\""
             << document
             << "\")";
     }
@@ -94,11 +103,16 @@ DocumentObjectT::DocumentObjectT()
 {
 }
 
-DocumentObjectT::DocumentObjectT(DocumentObject* obj)
+DocumentObjectT::DocumentObjectT(const DocumentObject* obj)
 {
     object = obj->getNameInDocument();
     label = obj->Label.getValue();
     document = obj->getDocument()->getName();
+}
+
+DocumentObjectT::DocumentObjectT(const Property* prop)
+{
+    *this = prop;
 }
 
 DocumentObjectT::~DocumentObjectT()
@@ -112,6 +126,7 @@ void DocumentObjectT::operator=(const DocumentObjectT& obj)
     object = obj.object;
     label = obj.label;
     document = obj.document;
+    property = obj.property;
 }
 
 void DocumentObjectT::operator=(const DocumentObject* obj)
@@ -119,6 +134,16 @@ void DocumentObjectT::operator=(const DocumentObject* obj)
     object = obj->getNameInDocument();
     label = obj->Label.getValue();
     document = obj->getDocument()->getName();
+    property.clear();
+}
+
+void DocumentObjectT::operator=(const Property *prop) {
+    auto obj = dynamic_cast<const DocumentObject*>(prop->getContainer());
+    assert(obj);
+    object = obj->getNameInDocument();
+    label = obj->Label.getValue();
+    document = obj->getDocument()->getName();
+    property = prop->getName();
 }
 
 Document* DocumentObjectT::getDocument() const
@@ -136,10 +161,10 @@ std::string DocumentObjectT::getDocumentPython() const
     std::stringstream str;
     Document* doc = GetApplication().getActiveDocument();
     if (doc && document == doc->getName()) {
-        str << "FreeCAD.ActiveDocument";
+        str << "App.ActiveDocument";
     }
     else {
-        str << "FreeCAD.getDocument(\""
+        str << "App.getDocument(\""
             << document
             << "\")";
     }
@@ -171,10 +196,10 @@ std::string DocumentObjectT::getObjectPython() const
     std::stringstream str;
     Document* doc = GetApplication().getActiveDocument();
     if (doc && document == doc->getName()) {
-        str << "FreeCAD.ActiveDocument.";
+        str << "App.ActiveDocument.";
     }
     else {
-        str << "FreeCAD.getDocument(\""
+        str << "App.getDocument(\""
             << document
             << "\").";
     }
@@ -183,6 +208,27 @@ std::string DocumentObjectT::getObjectPython() const
     return str.str();
 }
 
+std::string DocumentObjectT::getPropertyName() const {
+    return property;
+}
+
+std::string DocumentObjectT::getPropertyPython() const
+{
+    std::stringstream str;
+    str << "FreeCAD.getDocument('" << document 
+        << "').getObject('" << object
+        << "')";
+    if(property.size())
+        str << '.' << property;
+    return str.str();
+}
+
+Property *DocumentObjectT::getProperty() const {
+    auto obj = getObject();
+    if(obj)
+        return obj->getPropertyByName(property.c_str());
+    return 0;
+}
 // -----------------------------------------------------------------------------
 
 DocumentObserver::DocumentObserver() : _document(0)
@@ -228,6 +274,10 @@ void DocumentObserver::attachDocument(Document* doc)
             (&DocumentObserver::slotDeletedObject, this, _1));
         this->connectDocumentChangedObject = _document->signalChangedObject.connect(boost::bind
             (&DocumentObserver::slotChangedObject, this, _1, _2));
+        this->connectDocumentRecomputedObject = _document->signalRecomputedObject.connect(boost::bind
+            (&DocumentObserver::slotRecomputedObject, this, _1));
+        this->connectDocumentRecomputed = _document->signalRecomputed.connect(boost::bind
+            (&DocumentObserver::slotRecomputedDocument, this, _1));
     }
 }
 
@@ -238,6 +288,8 @@ void DocumentObserver::detachDocument()
         this->connectDocumentCreatedObject.disconnect();
         this->connectDocumentDeletedObject.disconnect();
         this->connectDocumentChangedObject.disconnect();
+        this->connectDocumentRecomputedObject.disconnect();
+        this->connectDocumentRecomputed.disconnect();
     }
 }
 
@@ -260,6 +312,15 @@ void DocumentObserver::slotDeletedObject(const App::DocumentObject& /*Obj*/)
 void DocumentObserver::slotChangedObject(const App::DocumentObject& /*Obj*/, const App::Property& /*Prop*/)
 {
 }
+
+void DocumentObserver::slotRecomputedObject(const DocumentObject& /*Obj*/)
+{
+}
+
+void DocumentObserver::slotRecomputedDocument(const Document& /*doc*/)
+{
+}
+
 
 // -----------------------------------------------------------------------------
 

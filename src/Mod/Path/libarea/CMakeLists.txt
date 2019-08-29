@@ -12,17 +12,19 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 
-OPTION(USE_BOOST_PYTHON "use BOOST_PYTHON, otherwise use PYBIND11" ON)
-
-if(USE_BOOST_PYTHON)
+if(NOT FREECAD_USE_PYBIND11)
     if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
-        if(NOT PYTHON_VERSION_MAJOR LESS 3)
-            find_package( Boost COMPONENTS python3)
-            if (NOT Boost_PYTHON3_FOUND)
+        # boost-python >= 1.67 on some platforms has suffix
+        set(BOOST_PY_SUFFIX ${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+
+        find_package( Boost COMPONENTS python${BOOST_PY_SUFFIX} )
+        if (NOT Boost_PYTHON${BOOST_PY_SUFFIX}_FOUND)
+            # try just the major version
+            find_package( Boost COMPONENTS python${PYTHON_VERSION_MAJOR} )
+            if (NOT Boost_PYTHON${PYTHON_VERSION_MAJOR}_FOUND)
+                # unversioned
                 find_package( Boost COMPONENTS python REQUIRED)
             endif()
-        else()
-            find_package( Boost COMPONENTS python REQUIRED)  # find BOOST and boost-python
         endif()
 
         if(Boost_FOUND)
@@ -36,7 +38,9 @@ if(USE_BOOST_PYTHON)
     else()
         include_directories(${Boost_INCLUDE_DIRS})
     endif()
-endif(USE_BOOST_PYTHON)
+else()
+    include_directories(${pybind11_INCLUDE_DIR})
+endif(NOT FREECAD_USE_PYBIND11)
 
 
 # this defines the source-files for library
@@ -58,19 +62,20 @@ set(AREA_SRC_COMMON
 
 set(AREA_SRC_CLIPPER
     AreaClipper.cpp
+	Adaptive.cpp
     clipper.cpp
 )
 
 # this defines the additional source-files for python module (wrapper to libarea)
-if (USE_BOOST_PYTHON)
+if (NOT FREECAD_USE_PYBIND11)
     set(PYAREA_SRC
         PythonStuff.cpp
     )
-else(USE_BOOST_PYTHON)
+else (NOT FREECAD_USE_PYBIND11)
     set(PYAREA_SRC
         pyarea.cpp
     )
-endif(USE_BOOST_PYTHON)
+endif (NOT FREECAD_USE_PYBIND11)
 
 # this defines the headers
 if(DEFINED INCLUDE_INSTALL_DIR)
@@ -93,9 +98,10 @@ add_library(
 
 add_library(
     area
-    MODULE
+    SHARED
     ${PYAREA_SRC}
 )
+
 
 if(MSVC)
     set(area_native_LIBS
@@ -117,32 +123,45 @@ if(MSVC)
 
     set(area_LIBS
         ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
         ${area_native_LIBS}
     )
+    if(BUILD_DYNAMIC_LINK_PYTHON)
+        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+    endif(BUILD_DYNAMIC_LINK_PYTHON)
 elseif(MINGW)
     set(area_native_LIBS
         Rpcrt4.lib
     )
     set(area_LIBS
         ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
         ${area_native_LIBS}
     )
+    if(BUILD_DYNAMIC_LINK_PYTHON)
+        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+    endif(BUILD_DYNAMIC_LINK_PYTHON)
 else(MSVC)
     set(area_native_LIBS
         )
     set(area_LIBS
         ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
     )
+    if(BUILD_DYNAMIC_LINK_PYTHON)
+        list(APPEND area_LIBS ${PYTHON_LIBRARIES})
+    endif(BUILD_DYNAMIC_LINK_PYTHON)
 endif(MSVC)
 
 target_link_libraries(area-native ${area_native_LIBS})
-SET_BIN_DIR(area-native area-native)
+SET_BIN_DIR(area-native area-native /Mod/Path)
 
 target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})
-SET_BIN_DIR(area area)
+
+# TODO why CMAKE_SHARED_LINKER_FLAGS is not used here?
+# This is a dirty workaround!
+if(NOT BUILD_DYNAMIC_LINK_PYTHON AND CMAKE_COMPILER_IS_CLANGXX)
+    target_link_libraries(area "-Wl,-undefined,dynamic_lookup")
+endif()
+
+SET_BIN_DIR(area area /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(area)
 
 # this figures out where to install the Python modules
@@ -157,12 +176,11 @@ message(STATUS "area module (for Path Workbench) will be installed to: " ${CMAKE
 if(WIN32)
     set_target_properties(area-native PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
     INSTALL(TARGETS area-native
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else(WIN32)
     INSTALL(TARGETS area-native
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 endif(WIN32)
 

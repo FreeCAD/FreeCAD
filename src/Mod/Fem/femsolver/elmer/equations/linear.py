@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,13 +19,19 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "_Linear"
+__title__ = "FreeCAD FEM solver Elmer equation object _Linear"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 from . import equation
+
+
+# the linear equation object defines some attributes for some various elmer equations
+# these various elmer equations are based on the linear equation object
+# thus in ObjectsFem module is no method to add a linear equation object
 
 
 LINEAR_SOLVER = ["Direct", "Iterative"]
@@ -101,3 +106,5 @@ class Proxy(equation.Proxy):
 
 class ViewProxy(equation.ViewProxy):
     pass
+
+##  @}

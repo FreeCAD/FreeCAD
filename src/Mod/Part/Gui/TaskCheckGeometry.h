@@ -26,13 +26,17 @@
 #include <boost/tuple/tuple.hpp>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_Status.hxx>
+#include <Message_ProgressIndicator.hxx>
 #include <TopTools_MapOfShape.hxx>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <QAbstractItemModel>
+#include <QProgressDialog>
+#include <QTime>
 
 class SoSeparator;
 class SoSwitch;
+class QCheckBox;
 class QTextEdit;
 
 namespace PartGui {
@@ -102,6 +106,7 @@ public:
 private Q_SLOTS:
     void currentRowChanged (const QModelIndex &current, const QModelIndex &previous);
 
+
 private:
     void setupInterface();
     void goCheck();
@@ -112,7 +117,8 @@ private:
     void dispatchError(ResultEntry *entry, const BRepCheck_Status &stat);
     bool split(QString &input, QString &doc, QString &object, QString &sub);
     void setupFunctionMap();
-    int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName);
+    int goBOPSingleCheck(const TopoDS_Shape &shapeIn, ResultEntry *theRoot, const QString &baseName,
+                         const Handle(Message_ProgressIndicator)& theProgress);
     void buildShapeContent(const QString &baseName, const TopoDS_Shape &shape);
     ResultModel *model;
     QTreeView *treeView;
@@ -121,6 +127,7 @@ private:
     SoSeparator *currentSeparator;
     std::vector<FunctionMapType> functionMap;
     std::string shapeContentString;
+
 };
 
 class TaskCheckGeometryDialog : public Gui::TaskView::TaskDialog
@@ -136,11 +143,32 @@ public:
         {return false;}
     virtual bool needsFullSpace() const {return true;}
 
+private Q_SLOTS:
+    void on_runBOPCheckBox_toggled(bool isOn);
+
 private:
     TaskCheckGeometryResults* widget;
     Gui::TaskView::TaskBox* taskbox;
     Gui::TaskView::TaskBox* shapeContentBox;
+    Gui::TaskView::TaskBox* settingsBox;
     QTextEdit *contentLabel;
+    QCheckBox *runBOPCheckBox;
+};
+
+class BOPProgressIndicator : public Message_ProgressIndicator
+{
+public:
+    BOPProgressIndicator (const QString &title, QWidget* parent);
+    virtual ~BOPProgressIndicator ();
+
+    virtual Standard_Boolean Show (const Standard_Boolean theForce = Standard_True);
+    virtual Standard_Boolean UserBreak();
+
+private:
+    int steps;
+    bool canceled;
+    QTime time;
+    QProgressDialog* myProgress;
 };
 
 }

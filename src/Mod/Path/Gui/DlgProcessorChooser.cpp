@@ -58,6 +58,7 @@ DlgProcessorChooser::DlgProcessorChooser(std::vector<std::string> &scriptnames, 
 
 DlgProcessorChooser::~DlgProcessorChooser()
 {
+    delete ui;
 }
 
 std::string DlgProcessorChooser::getProcessor()

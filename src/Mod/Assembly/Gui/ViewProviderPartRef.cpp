@@ -170,21 +170,21 @@ void ViewProviderPartRef::drop(const std::vector<const App::DocumentObject*> &ob
         //    if (par) {
         //        // allow an object to be in one group only
         //        QString cmd;
-        //        cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
+        //        cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
         //                          "App.getDocument(\"%1\").getObject(\"%3\"))")
-        //                          .arg(QString::fromAscii(doc->getName()))
-        //                          .arg(QString::fromAscii(par->getNameInDocument()))
-        //                          .arg(QString::fromAscii(obj->getNameInDocument()));
+        //                          .arg(QString::fromLatin1(doc->getName()))
+        //                          .arg(QString::fromLatin1(par->getNameInDocument()))
+        //                          .arg(QString::fromLatin1(obj->getNameInDocument()));
         //        Gui::Application::Instance->runPythonCode(cmd.toUtf8());
         //    }
 
         //    // build Python command for execution
         //    QString cmd;
-        //    cmd = QString::fromAscii("App.getDocument(\"%1\").getObject(\"%2\").addObject("
+        //    cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
         //                      "App.getDocument(\"%1\").getObject(\"%3\"))")
-        //                      .arg(QString::fromAscii(doc->getName()))
-        //                      .arg(QString::fromAscii(grp->getNameInDocument()))
-        //                      .arg(QString::fromAscii(obj->getNameInDocument()));
+        //                      .arg(QString::fromLatin1(doc->getName()))
+        //                      .arg(QString::fromLatin1(grp->getNameInDocument()))
+        //                      .arg(QString::fromLatin1(obj->getNameInDocument()));
         //    
         //    Gui::Application::Instance->runPythonCode(cmd.toUtf8());
         //}

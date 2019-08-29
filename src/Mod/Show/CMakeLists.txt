@@ -4,6 +4,7 @@ SET(Show_SRCS
     DepGraphTools.py
     FrozenClass.py
     TempoVis.py
+    Containers.py
 )
 
 SOURCE_GROUP("" FILES ${Show_SRCS})

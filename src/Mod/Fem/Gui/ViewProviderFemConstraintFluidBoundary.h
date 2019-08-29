@@ -42,10 +42,6 @@ public:
     //virtual void onChanged(const App::Property*); //no further property for viewProvider
 protected:
     virtual bool setEdit(int ModNum);
-
-private:
-    /// Direction of the force
-    Base::Vector3f forceDirection;
 };
 
 } //namespace FemGui

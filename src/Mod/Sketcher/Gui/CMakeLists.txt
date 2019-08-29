@@ -114,6 +114,8 @@ SET(SketcherGui_SRCS
     TaskSketcherValidation.ui
     TaskSketcherValidation.cpp
     TaskSketcherValidation.h
+    ShortcutListener.cpp
+    ShortcutListener.h
     ViewProviderSketch.cpp
     ViewProviderSketch.h
     DrawSketchHandler.cpp
@@ -138,29 +140,25 @@ SET(SketcherGui_SRCS
     ViewProviderPython.h
 )
 
-SET(SketcherGui_Scripts
-    InitGui.py
-    TestSketcherGui.py
-)
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${SketcherGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(SketcherGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
-add_library(SketcherGui SHARED ${SketcherGui_SRCS})
-target_link_libraries(SketcherGui ${SketcherGui_LIBS})
-
-
-fc_target_copy_resource(SketcherGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Sketcher
-    ${CMAKE_BINARY_DIR}/Mod/Sketcher
-    ${SketcherGui_Scripts})
-
-SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
-SET_PYTHON_PREFIX_SUFFIX(SketcherGui)
-
-INSTALL(TARGETS SketcherGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 SET(SketcherGuiIcon_SVG
     Resources/icons/SketcherWorkbench.svg
 )
 
+add_library(SketcherGui SHARED ${SketcherGui_SRCS} ${SketcherGuiIcon_SVG})
+target_link_libraries(SketcherGui ${SketcherGui_LIBS})
+
+
+SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
+SET_PYTHON_PREFIX_SUFFIX(SketcherGui)
+
 fc_copy_sources(SketcherGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sketcher" ${SketcherGuiIcon_SVG})
 
+INSTALL(TARGETS SketcherGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${SketcherGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Sketcher/Resources/icons")

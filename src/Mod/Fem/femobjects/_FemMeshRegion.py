@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,19 +20,30 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_FemMeshRegion"
+__title__ = "FreeCAD FEM mesh region document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package FemMeshRegion
 #  \ingroup FEM
+#  \brief FreeCAD FEM _FemMeshRegion
 
 
 class _FemMeshRegion:
     "The FemMeshRegion object"
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLength", "CharacteristicLength", "MeshRegionProperties", "set characteristic length of FEM elements for this region")
-        obj.addProperty("App::PropertyLinkSubList", "References", "MeshRegionShapes", "List of FEM mesh region shapes")
+        obj.addProperty(
+            "App::PropertyLength",
+            "CharacteristicLength",
+            "MeshRegionProperties",
+            "set characteristic length of FEM elements for this region"
+        )
+        obj.addProperty(
+            "App::PropertyLinkSubList",
+            "References",
+            "MeshRegionShapes",
+            "List of FEM mesh region shapes"
+        )
         obj.Proxy = self
         self.Type = "Fem::FemMeshRegion"
 

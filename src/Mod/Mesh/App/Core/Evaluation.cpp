@@ -39,6 +39,7 @@
 #include "Helpers.h"
 #include "Grid.h"
 #include "TopoAlgorithm.h"
+#include "Functional.h"
 #include <Base/Matrix.h>
 
 #include <Base/Sequencer.h>
@@ -839,7 +840,7 @@ bool MeshEvalNeighbourhood::Evaluate ()
         }
         else {
             // we handle only the cases for 1 and 2, for all higher
-            // values we have a non-manifold that is ignorned here
+            // values we have a non-manifold that is ignored here
             if (count == 2) {
                 const MeshFacet& rFace0 = rclFAry[f0];
                 const MeshFacet& rFace1 = rclFAry[f1];
@@ -905,7 +906,7 @@ std::vector<unsigned long> MeshEvalNeighbourhood::GetIndices() const
         }
         else {
             // we handle only the cases for 1 and 2, for all higher
-            // values we have a non-manifold that is ignorned here
+            // values we have a non-manifold that is ignored here
             if (count == 2) {
                 const MeshFacet& rFace0 = rclFAry[f0];
                 const MeshFacet& rFace1 = rclFAry[f1];
@@ -966,7 +967,9 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
     }
 
     // sort the edges
-    std::sort(edges.begin(), edges.end(), Edge_Less());
+    //std::sort(edges.begin(), edges.end(), Edge_Less());
+    int threads = std::max(1, QThread::idealThreadCount());
+    MeshCore::parallel_sort(edges.begin(), edges.end(), Edge_Less(), threads);
 
     unsigned long p0 = ULONG_MAX, p1 = ULONG_MAX;
     unsigned long f0 = ULONG_MAX, f1 = ULONG_MAX;
@@ -979,7 +982,7 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
         }
         else {
             // we handle only the cases for 1 and 2, for all higher
-            // values we have a non-manifold that is ignorned here
+            // values we have a non-manifold that is ignored here
             if (count == 2) {
                 MeshFacet& rFace0 = this->_aclFacetArray[f0];
                 MeshFacet& rFace1 = this->_aclFacetArray[f1];
@@ -1002,7 +1005,7 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
     }
 
     // we handle only the cases for 1 and 2, for all higher
-    // values we have a non-manifold that is ignorned here
+    // values we have a non-manifold that is ignored here
     if (count == 2) {
         MeshFacet& rFace0 = this->_aclFacetArray[f0];
         MeshFacet& rFace1 = this->_aclFacetArray[f1];

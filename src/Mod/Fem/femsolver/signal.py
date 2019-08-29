@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +19,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "signal"
+__title__ = "FreeCAD FEM solver signal"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
+
+## \addtogroup FEM
+#  @{
 
 
 def notify(signal, *args):
     for slot in signal:
         slot(*args)
+
+##  @}

@@ -33,6 +33,7 @@
 
 #include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
+#include <Base/Matrix.h>
 
 // Cannot use namespace Base in constructors of MeshPoint
 #ifdef _MSC_VER
@@ -74,8 +75,17 @@ struct MeshExport EdgeCollapse
 {
   unsigned long _fromPoint;
   unsigned long _toPoint;
+  std::vector<unsigned long> _adjacentFrom; // adjacent points to _fromPoint
+  std::vector<unsigned long> _adjacentTo;   // adjacent points to _toPoint
   std::vector<unsigned long> _removeFacets;
   std::vector<unsigned long> _changeFacets;
+};
+
+struct MeshExport VertexCollapse
+{
+  unsigned long _point;
+  std::vector<unsigned long> _circumPoints;
+  std::vector<unsigned long> _circumFacets;
 };
 
 /**
@@ -99,6 +109,7 @@ public:
   /** @name Construction */
   //@{
   MeshPoint (void) : _ucFlag(0), _ulProp(0) { }
+  inline MeshPoint (float x, float y, float z);
   inline MeshPoint (const Base::Vector3f &rclPt);
   inline MeshPoint (const MeshPoint &rclPt);
   ~MeshPoint (void) { }
@@ -153,6 +164,22 @@ public:
   Base::BoundBox3f GetBoundBox () const;
   /** Checks if the edge intersects with the given bounding box. */
   bool IntersectBoundingBox (const Base::BoundBox3f &rclBB) const;
+  /** Calculates the intersection point of the line defined by the base \a rclPt and the direction \a rclDir
+   * with the edge. The intersection must be inside the edge. If there is no intersection false is returned.
+   */
+  bool IntersectWithLine (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes) const;
+  /**
+   * Calculates the projection of a point onto the line defined by the edge. The caller must check if
+   * the projection point is inside the edge.
+   */
+  void ProjectPointToLine (const Base::Vector3f &rclPoint, Base::Vector3f &rclProj) const;
+  /**
+   * Get the closest points \a rclPnt1 and \a rclPnt2 of the line defined by this edge and the line
+   * defined by \a rclPt and \a rclDir.
+   * If the two points are identical then both lines intersect each other.
+   */
+  void ClosestPointsToLine(const Base::Vector3f &linePt, const Base::Vector3f &lineDir,
+                           Base::Vector3f& rclPnt1, Base::Vector3f& rclPnt2) const;
 
 public:
   Base::Vector3f _aclPoints[2];  /**< Corner points */
@@ -360,7 +387,7 @@ public:
    */
   bool IsDegenerated(float epsilon) const;
   /**
-   * Checks whether the triangle is deformed. A triangle is deformed if the an angle
+   * Checks whether the triangle is deformed. A triangle is deformed if an angle
    * exceeds a given maximum angle or falls below a given minimum angle.
    * For performance reasons the cosine of minimum and maximum angle is expected.
    */
@@ -406,6 +433,8 @@ public:
   inline float Area () const;
   /** Calculates the maximum angle of a facet. */
   float MaximumAngle () const;
+  /** Calculates the minimum angle of a facet. */
+  float MinimumAngle () const;
   /** Checks if the facet is inside the bounding box or intersects with it. */
   inline bool ContainedByOrIntersectBoundingBox (const Base::BoundBox3f &rcBB) const;
   /** Checks if the facet intersects with the given bounding box. */
@@ -439,7 +468,7 @@ public:
    * This does actually the same as IntersectWithLine() with one additionally constraint that the angle 
    * between the direction of the line and the normal of the plane must not exceed \a fMaxAngle.
    */
-  bool Foraminate (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes, float fMaxAngle = F_PI) const;
+  bool Foraminate (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes, float fMaxAngle = Mathf::PI) const;
   /** Checks if the facet intersects with the plane defined by the base \a rclBase and the normal 
    * \a rclNormal and returns true if two points are found, false otherwise.
    */
@@ -475,6 +504,15 @@ public:
    * If one of the facet's points is inside the sphere true is returned, otherwise false.
    */
   bool IsPointOfSphere(const MeshGeomFacet& rFacet) const;
+  /** The aspect ratio is the longest edge length divided by its height.
+   */
+  float AspectRatio() const;
+  /** The alternative aspect ration is the ratio of the radius of the circum-circle and twice the radius of the in-circle.
+   */
+  float AspectRatio2() const;
+  /** The roundness is in the range between 0.0 (colinear) and 1.0 (equilateral).
+   */
+  float Roundness() const;
 
 protected:
   Base::Vector3f  _clNormal; /**< Normal of the facet. */
@@ -523,6 +561,7 @@ public:
 
   // Assignment
   MeshPointArray& operator = (const MeshPointArray &rclPAry);
+  void Transform(const Base::Matrix4D&);
   /**
    * Searches for the first point index  Two points are equal if the distance is less
    * than EPSILON. If no such points is found ULONG_MAX is returned. 
@@ -642,6 +681,17 @@ public:
 private:
     MeshFacetArray& rFacets;
 };
+
+inline MeshPoint::MeshPoint (float x, float y, float z)
+#ifdef _MSC_VER
+: Vector3f(x, y, z),
+#else
+: Base::Vector3f(x, y, z),
+#endif
+  _ucFlag(0),
+  _ulProp(0)
+{
+}
 
 inline MeshPoint::MeshPoint (const Base::Vector3f &rclPt)
 #ifdef _MSC_VER
@@ -800,8 +850,8 @@ inline MeshFacet::MeshFacet (void)
 : _ucFlag(0),
   _ulProp(0)
 {
-    memset(_aulNeighbours, 0xff, sizeof(ULONG_MAX) * 3);
-    memset(_aulPoints, 0xff, sizeof(ULONG_MAX) * 3);
+    memset(_aulNeighbours, 0xff, sizeof(unsigned long) * 3);
+    memset(_aulPoints, 0xff, sizeof(unsigned long) * 3);
 }
 
 inline MeshFacet::MeshFacet(const MeshFacet &rclF)

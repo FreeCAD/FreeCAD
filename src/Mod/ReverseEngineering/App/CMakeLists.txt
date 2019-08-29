@@ -76,11 +76,6 @@ add_library(ReverseEngineering SHARED ${Reen_SRCS})
 target_link_libraries(ReverseEngineering ${Reen_LIBS})
 
 
-fc_target_copy_resource(ReverseEngineering 
-    ${CMAKE_SOURCE_DIR}/src/Mod/ReverseEngineering
-    ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering
-    Init.py)
-
 SET_BIN_DIR(ReverseEngineering ReverseEngineering /Mod/ReverseEngineering)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineering)
 

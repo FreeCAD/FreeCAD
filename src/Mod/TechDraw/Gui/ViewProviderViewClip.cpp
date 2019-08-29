@@ -59,30 +59,18 @@ ViewProviderViewClip::~ViewProviderViewClip()
 
 void ViewProviderViewClip::updateData(const App::Property* prop)
 {
-    //Base::Console().Log("ViewProviderViewClip::updateData - Update View: %s\n",prop->getName());
-    if (prop == &(getViewObject()->Height)      ||
-        prop == &(getViewObject()->Width)       ||
-        prop == &(getViewObject()->ShowFrame)   ||
-        prop == &(getViewObject()->ShowLabels)  ||
-        prop == &(getViewObject()->Views) ) {
-        // redraw QGIVP
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            qgiv->updateView(true);
-        }
-     }
      ViewProviderDrawingView::updateData(prop);
 }
 
 void ViewProviderViewClip::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
+    ViewProviderDrawingView::attach(pcFeat);
 }
 
 void ViewProviderViewClip::setDisplayMode(const char* ModeName)
 {
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
+    ViewProviderDrawingView::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderViewClip::getDisplayModes(void) const

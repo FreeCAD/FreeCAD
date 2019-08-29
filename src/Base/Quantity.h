@@ -36,7 +36,7 @@
 
 namespace Base {
 
-struct QuantityFormat {
+struct BaseExport QuantityFormat {
     enum NumberOption {
         None = 0x00,
         OmitGroupSeparator = 0x01,
@@ -48,10 +48,31 @@ struct QuantityFormat {
         Scientific = 2
     };
 
-    NumberOption option;
+    typedef int NumberOptions;
+    NumberOptions option;
     NumberFormat format;
     int precision;
+    int denominator;
 
+    // Default denominator of minimum fractional inch. Only used in certain 
+    // schemas.
+    static int defaultDenominator; // i.e 8 for 1/8"
+
+    static inline int getDefaultDenominator() {
+        return defaultDenominator;
+    }
+
+    static inline void setDefaultDenominator(int denom) {
+        defaultDenominator = denom;
+    }
+
+    inline int getDenominator() const {
+        return denominator;
+    }
+
+    inline void setDenominator(int denom) {
+        denominator = denom;
+    }
     QuantityFormat();
     inline char toFormat() const {
         switch (format) {
@@ -236,6 +257,8 @@ public:
     static Quantity Degree;
     static Quantity Radian;
     static Quantity Gon;
+    static Quantity AngMinute;
+    static Quantity AngSecond;
     //@}
 
 

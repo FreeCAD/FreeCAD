@@ -81,10 +81,13 @@ public:
     bool operator!=(const Rotation & q) const;
     double & operator [] (unsigned short usIndex){return quat[usIndex];}
     const double & operator [] (unsigned short usIndex) const{return quat[usIndex];}
+    void operator = (const Rotation&);
 
     void multVec(const Vector3d & src, Vector3d & dst) const;
+    Vector3d multVec(const Vector3d & src) const;
     void scaleAngle(const double scaleFactor);
     bool isSame(const Rotation&) const;
+    bool isSame(const Rotation&, double tol) const;
     //@}
 
     /** Specialty constructors */

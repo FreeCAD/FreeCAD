@@ -194,7 +194,7 @@
       <string>Sort enabled workbenches</string>
      </property>
      <property name="whatsThis">
-      <string>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</string>
+      <string>&lt;p&gt;Sort enabled workbenches&lt;/p&gt;</string>
      </property>
      <property name="text">
       <string/>

@@ -23,13 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-
+# include <TopoDS.hxx>
+# include <Precision.hxx>
 #endif
 
 #include "FeatureThickness.h"
 #include <Base/Exception.h>
-#include <TopoDS.hxx>
-#include <Precision.hxx>
+
 
 using namespace PartDesign;
 

@@ -41,11 +41,6 @@ add_library(Web SHARED ${Web_SRCS})
 target_link_libraries(Web ${Web_LIBS})
 
 
-fc_target_copy_resource(Web 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Web
-    ${CMAKE_BINARY_DIR}/Mod/Web
-    Init.py)
-
 SET_BIN_DIR(Web Web /Mod/Web)
 SET_PYTHON_PREFIX_SUFFIX(Web)
 

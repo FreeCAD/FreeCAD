@@ -761,6 +761,10 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         MeshGeomFacet triangle;
         triangle = cTria.GetTriangle(rPoints, facet);
 
+        TriangulationVerifier* verifier = cTria.GetVerifier();
+        if (!verifier)
+            return true;
+
         // Now we have two adjacent triangles which we check for overlaps.
         // Therefore we build a separation plane that must separate the two diametrically opposed points.
         Base::Vector3f planeNormal = rTriangle.GetNormal() % (rTriangle._aclPoints[(ref_side+1)%3]-rTriangle._aclPoints[ref_side]);
@@ -768,9 +772,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         Base::Vector3f ref_point = rTriangle._aclPoints[(ref_side+2)%3];
         Base::Vector3f tri_point = triangle._aclPoints[(tri_side+2)%3];
 
-        float ref_dist = (ref_point - planeBase) * planeNormal;
-        float tri_dist = (tri_point - planeBase) * planeNormal;
-        if (ref_dist * tri_dist > 0.0f) {
+        if (!verifier->Accept(planeNormal, planeBase, ref_point, tri_point)) {
             rFaces.clear();
             rPoints.clear();
             cTria.Discard();
@@ -778,7 +780,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<unsigned long>& boundary,
         }
 
         // we know to have filled a polygon, now check for the orientation
-        if ( triangle.GetNormal() * rTriangle.GetNormal() <= 0.0f ) {
+        if (verifier->MustFlip(triangle.GetNormal(), rTriangle.GetNormal())) {
             for (MeshFacetArray::_TIterator it = rFaces.begin(); it != rFaces.end(); ++it)
                 it->FlipNormal();
         }
@@ -1083,46 +1085,42 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
     Base::Vector3f clPt2d;
     Base::Vector3f clGravityOfFacet;
     bool bNoPointInside;
+    // Cache current view projection matrix since calls to COIN's projection are expensive
+    Base::ViewProjMatrix fixedProj(pclProj->getProjectionMatrix());
+    // Precompute the polygon's bounding box
+    Base::BoundBox2d clPolyBBox = rclPoly.CalcBoundBox();
 
-    // Falls true, verwende Grid auf Mesh, um Suche zu beschleunigen
-    if (bInner)
-    {
+    // if true use grid on mesh to speed up search
+    if (bInner) {
         BoundBox3f clBBox3d;
-        BoundBox2d clViewBBox, clPolyBBox;
+        BoundBox2d clViewBBox;
         std::vector<unsigned long> aulAllElements;
-
-        //B-Box des Polygons
-        clPolyBBox = rclPoly.CalcBoundBox();
-        // Iterator fuer die zu durchsuchenden B-Boxen des Grids
+        // iterator for the bounding box grids
         MeshGridIterator clGridIter(rclGrid);
-        // alle B-Boxen durchlaufen und die Facets speichern
-        for (clGridIter.Init(); clGridIter.More(); clGridIter.Next())
-        {
+        for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
             clBBox3d = clGridIter.GetBoundBox();
-            clViewBBox = clBBox3d.ProjectBox(pclProj);
-            if (clViewBBox.Intersect(clPolyBBox))
-            {
-                // alle Elemente in AllElements sammeln
+            clViewBBox = clBBox3d.ProjectBox(&fixedProj);
+            if (clViewBBox.Intersect(clPolyBBox)) {
+                // collect all elements in aulAllElements
                 clGridIter.GetElements(aulAllElements);
             }
         }
-        // doppelte Elemente wieder entfernen
+
+        // remove duplicates
         std::sort(aulAllElements.begin(), aulAllElements.end());
         aulAllElements.erase(std::unique(aulAllElements.begin(), aulAllElements.end()), aulAllElements.end());
 
-        Base::SequencerLauncher seq( "Check facets", aulAllElements.size() );
+        Base::SequencerLauncher seq("Check facets", aulAllElements.size());
 
-        for (it = aulAllElements.begin(); it != aulAllElements.end(); ++it)
-        {
+        for (it = aulAllElements.begin(); it != aulAllElements.end(); ++it) {
             bNoPointInside = true;
             clGravityOfFacet.Set(0.0f, 0.0f, 0.0f);
             MeshGeomFacet rclFacet = _rclMesh.GetFacet(*it);
-            for (int j=0; j<3; j++)
-            {
-                clPt2d = pclProj->operator()(rclFacet._aclPoints[j]);
+            for (int j=0; j<3; j++) {
+                clPt2d = fixedProj(rclFacet._aclPoints[j]);
                 clGravityOfFacet += clPt2d;
-                if (rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) == bInner)
-                {
+                if (clPolyBBox.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) &&
+                    rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y))) {
                     raulFacets.push_back(*it);
                     bNoPointInside = false;
                     break;
@@ -1130,34 +1128,31 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
             }
 
             // if no facet point is inside the polygon then check also the gravity
-            if (bNoPointInside == true)
-            {
-              clGravityOfFacet *= 1.0f/3.0f;
+            if (bNoPointInside) {
+                clGravityOfFacet *= 1.0f/3.0f;
 
-              if (rclPoly.Contains(Base::Vector2d(clGravityOfFacet.x, clGravityOfFacet.y)) == bInner)
-                 raulFacets.push_back(*it);
+                if (clPolyBBox.Contains(Base::Vector2d(clGravityOfFacet.x, clGravityOfFacet.y)) &&
+                    rclPoly.Contains(Base::Vector2d(clGravityOfFacet.x, clGravityOfFacet.y)))
+                    raulFacets.push_back(*it);
             }
 
             seq.next();
         }
     }
-    // Dreiecke ausserhalb schneiden, dann alles durchsuchen
-    else
-    {
-      Base::SequencerLauncher seq("Check facets", _rclMesh.CountFacets());
-      for (clIter.Init(); clIter.More(); clIter.Next())
-      {
-          for (int j=0; j<3; j++)
-          {
-              clPt2d = pclProj->operator()(clIter->_aclPoints[j]);
-              if (rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) == bInner)
-              {
-                  raulFacets.push_back(clIter.Position());
-                  break;
-              }
-          }
-          seq.next();
-      }
+    // When cutting triangles outside then go through all elements
+    else {
+        Base::SequencerLauncher seq("Check facets", _rclMesh.CountFacets());
+        for (clIter.Init(); clIter.More(); clIter.Next()) {
+            for (int j=0; j<3; j++) {
+                clPt2d = fixedProj(clIter->_aclPoints[j]);
+                if ((clPolyBBox.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) &&
+                     rclPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y))) == false) {
+                    raulFacets.push_back(clIter.Position());
+                    break;
+                }
+            }
+            seq.next();
+        }
     }
 }
 
@@ -1167,11 +1162,19 @@ void MeshAlgorithm::CheckFacets(const Base::ViewProjMethod* pclProj, const Base:
     const MeshPointArray& p = _rclMesh.GetPoints();
     const MeshFacetArray& f = _rclMesh.GetFacets();
     Base::Vector3f pt2d;
+    // Use a bounding box to reduce number of call to Polygon::Contains
+    Base::BoundBox2d bb = rclPoly.CalcBoundBox();
+    // Precompute the screen projection matrix as COIN's projection function is expensive
+    Base::ViewProjMatrix fixedProj(pclProj->getProjectionMatrix());
+
     unsigned long index=0;
     for (MeshFacetArray::_TConstIterator it = f.begin(); it != f.end(); ++it,++index) {
         for (int i = 0; i < 3; i++) {
-            pt2d = (*pclProj)(p[it->_aulPoints[i]]);
-            if (rclPoly.Contains(Base::Vector2d(pt2d.x, pt2d.y)) == bInner) {
+            pt2d = fixedProj(p[it->_aulPoints[i]]);
+
+            // First check whether the point is in the bounding box of the polygon
+            if ((bb.Contains(Base::Vector2d(pt2d.x, pt2d.y)) &&
+                rclPoly.Contains(Base::Vector2d(pt2d.x, pt2d.y))) ^ !bInner) {
                 raulFacets.push_back(index);
                 break;
             }
@@ -1181,13 +1184,13 @@ void MeshAlgorithm::CheckFacets(const Base::ViewProjMethod* pclProj, const Base:
 
 float MeshAlgorithm::Surface (void) const
 {
-  float              fTotal = 0.0f;
-  MeshFacetIterator clFIter(_rclMesh);
+    float              fTotal = 0.0f;
+    MeshFacetIterator clFIter(_rclMesh);
 
-  for (clFIter.Init(); clFIter.More(); clFIter.Next())
-    fTotal +=  clFIter->Area();
-  
-  return fTotal;
+    for (clFIter.Init(); clFIter.More(); clFIter.Next())
+        fTotal +=  clFIter->Area();
+
+    return fTotal;
 }
 
 void MeshAlgorithm::SubSampleByDist (float fDist, std::vector<Base::Vector3f> &rclPoints) const
@@ -1743,6 +1746,24 @@ std::set<unsigned long> MeshRefPointToFacets::NeighbourPoints(const std::vector<
     return nb;
 }
 
+std::set<unsigned long> MeshRefPointToFacets::NeighbourPoints(unsigned long pos) const
+{
+    std::set<unsigned long> p;
+    const std::set<unsigned long>& vf = _map[pos];
+    for (std::set<unsigned long>::const_iterator it = vf.begin(); it != vf.end(); ++it) {
+        unsigned long p1, p2, p3;
+        _rclMesh.GetFacetPoints(*it, p1, p2, p3);
+        if (p1 != pos)
+            p.insert(p1);
+        if (p2 != pos)
+            p.insert(p2);
+        if (p3 != pos)
+            p.insert(p3);
+    }
+
+    return p;
+}
+
 void MeshRefPointToFacets::Neighbours (unsigned long ulFacetInd, float fMaxDist, MeshCollector& collect) const
 {
     std::set<unsigned long> visited;
@@ -1793,6 +1814,16 @@ void MeshRefPointToFacets::AddNeighbour(unsigned long pos, unsigned long facet)
 void MeshRefPointToFacets::RemoveNeighbour(unsigned long pos, unsigned long facet)
 {
     _map[pos].erase(facet);
+}
+
+void MeshRefPointToFacets::RemoveFacet(unsigned long facetIndex)
+{
+    unsigned long p0, p1, p2;
+    _rclMesh.GetFacetPoints(facetIndex, p0, p1, p2);
+
+    _map[p0].erase(facetIndex);
+    _map[p1].erase(facetIndex);
+    _map[p2].erase(facetIndex);
 }
 
 //----------------------------------------------------------------------------

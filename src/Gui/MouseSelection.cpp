@@ -51,7 +51,7 @@ AbstractMouseSelection::AbstractMouseSelection() : _pcView3D(0)
     m_iYold = 0;
     m_iXnew = 0;
     m_iYnew = 0;
-    m_bInner = true;
+    m_selectedRole = SelectionRole::None;
 }
 
 void AbstractMouseSelection::grabMouseModel(Gui::View3DInventorViewer* viewer)
@@ -390,7 +390,16 @@ int PolyPickerSelection::locationEvent(const SoLocation2Event* const, const QPoi
 
     if (polyline.isWorking()) {
         // check the position
+#if QT_VERSION >= 0x050600
+        qreal dpr = _pcView3D->getGLWidget()->devicePixelRatioF();
+#else
+        qreal dpr = 1.0;
+#endif
         QRect r = _pcView3D->getGLWidget()->rect();
+        if (dpr != 1.0) {
+            r.setHeight(r.height()*dpr);
+            r.setWidth(r.width()*dpr);
+        }
 
         if (!r.contains(clPoint)) {
             if (clPoint.x() < r.left())
@@ -434,6 +443,8 @@ int PolyPickerSelection::keyboardEvent(const SoKeyboardEvent* const)
 
 PolyClipSelection::PolyClipSelection()
 {
+    selectionBits.set(1);
+    selectionBits.set(2);
 }
 
 PolyClipSelection::~PolyClipSelection()
@@ -445,7 +456,12 @@ int PolyClipSelection::popupMenu()
     QMenu menu;
     QAction* ci = menu.addAction(QObject::tr("Inner"));
     QAction* co = menu.addAction(QObject::tr("Outer"));
+    QAction* cs = menu.addAction(QObject::tr("Split"));
     QAction* ca = menu.addAction(QObject::tr("Cancel"));
+
+    ci->setVisible(testRole(SelectionRole::Inner));
+    co->setVisible(testRole(SelectionRole::Outer));
+    cs->setVisible(testRole(SelectionRole::Split));
 
     if (getPositions().size() < 3) {
         ci->setEnabled(false);
@@ -455,17 +471,25 @@ int PolyClipSelection::popupMenu()
     QAction* id = menu.exec(QCursor::pos());
 
     if (id == ci) {
-        m_bInner = true;
+        m_selectedRole = SelectionRole::Inner;
         return Finish;
     }
     else if (id == co) {
-        m_bInner = false;
+        m_selectedRole = SelectionRole::Outer;
         return Finish;
     }
-    else if (id == ca)
+    else if (id == cs) {
+        m_selectedRole = SelectionRole::Split;
+        return Finish;
+    }
+    else if (id == ca) {
+        m_selectedRole = SelectionRole::None;
         return Cancel;
-    else
+    }
+    else {
+        m_selectedRole = SelectionRole::None;
         return Restart;
+    }
 }
 
 // -----------------------------------------------------------------------------------
@@ -584,7 +608,16 @@ int FreehandSelection::locationEvent(const SoLocation2Event* const e, const QPoi
 
     if (polyline.isWorking()) {
         // check the position
+#if QT_VERSION >= 0x050600
+        qreal dpr = _pcView3D->getGLWidget()->devicePixelRatioF();
+#else
+        qreal dpr = 1.0;
+#endif
         QRect r = _pcView3D->getGLWidget()->rect();
+        if (dpr != 1.0) {
+            r.setHeight(r.height()*dpr);
+            r.setWidth(r.width()*dpr);
+        }
 
         if (!r.contains(clPoint)) {
             if (clPoint.x() < r.left())

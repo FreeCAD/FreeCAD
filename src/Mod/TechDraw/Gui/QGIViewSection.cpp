@@ -80,13 +80,16 @@ void QGIViewSection::drawSectionFace()
         return;
     }
 
+    float lineWidth    = sectionVp->LineWidth.getValue();
+
+
     auto sectionFaces( section->getFaceGeometry() );
     if (sectionFaces.empty()) {
         //Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
         return;
     }
 
-    std::vector<TechDrawGeometry::Face *>::iterator fit = sectionFaces.begin();
+    std::vector<TechDraw::Face *>::iterator fit = sectionFaces.begin();
     QColor faceColor = (sectionVp->CutSurfaceColor.getValue()).asValue<QColor>();
     int i = 0;
     for(; fit != sectionFaces.end(); fit++, i++) {
@@ -94,6 +97,8 @@ void QGIViewSection::drawSectionFace()
         newFace->setZValue(ZVALUE::SECTIONFACE);
         if (section->showSectionEdges()) {
             newFace->setDrawEdges(true);
+            newFace->setStyle(Qt::SolidLine);
+            newFace->setWidth(lineWidth);
         } else {
             newFace->setDrawEdges(false);
         }
@@ -139,18 +144,22 @@ void QGIViewSection::drawSectionFace()
 
 void QGIViewSection::updateView(bool update)
 {
+    Q_UNUSED(update);
     auto viewPart( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
     if( viewPart == nullptr ) {
         return;
     }
 
-    if(update ||
-       viewPart->SectionNormal.isTouched() ||
-       viewPart->SectionOrigin.isTouched()) {
-        QGIViewPart::updateView(true);
-    } else {
-        QGIViewPart::updateView();
-    }
+//    if(update ||
+//       viewPart->SectionNormal.isTouched() ||
+//       viewPart->SectionOrigin.isTouched()) {
+////        QGIViewPart::updateView(true);
+////        drawSectionFace();
+//    } else {
+////        QGIViewPart::updateView();
+////        drawSectionFace();
+//    }
+    draw();
 }
 
 void QGIViewSection::drawSectionLine(TechDraw::DrawViewSection* s, bool b)

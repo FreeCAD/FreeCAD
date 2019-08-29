@@ -30,10 +30,10 @@ from ViewProviderHole import ViewProviderHole
 class HoleGui:
     def getMainWindow(self):
         "returns the main window"
-        # using QtGui.qApp.activeWindow() isn't very reliable because if another
+        # using QtGui.QApplication.activeWindow() isn't very reliable because if another
         # widget than the mainwindow is active (e.g. a dialog) the wrong widget is
         # returned
-        toplevel = QtGui.qApp.topLevelWidgets()
+        toplevel = QtGui.QApplication.topLevelWidgets()
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
                 return i

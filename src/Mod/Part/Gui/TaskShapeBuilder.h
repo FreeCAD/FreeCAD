@@ -51,6 +51,7 @@ private:
 
 private:
     void createEdgeFromVertex();
+    void createWireFromEdge();
     void createFaceFromVertex();
     void createFaceFromEdge();
     void createShellFromFace();

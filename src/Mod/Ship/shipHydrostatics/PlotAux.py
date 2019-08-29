@@ -72,7 +72,7 @@ class Plot(object):
             ax.yaxis.set_ticks_position('right')
             ax.yaxis.set_label_position('right')
             # And X axis can be placed at bottom
-            for loc, spine in ax.spines.iteritems():
+            for loc, spine in ax.spines.items():
                 if loc in ['bottom', 'top']:
                     spine.set_position(('outward', (i + 1) * 35))
             Plot.grid(True)
@@ -154,7 +154,7 @@ class Plot(object):
             ax.yaxis.set_ticks_position('right')
             ax.yaxis.set_label_position('right')
             # And X axis can be placed at bottom
-            for loc, spine in ax.spines.iteritems():
+            for loc, spine in ax.spines.items():
                 if loc in ['bottom', 'top']:
                     spine.set_position(('outward', (i + 1) * 35))
             Plot.grid(True)
@@ -236,7 +236,7 @@ class Plot(object):
             ax.yaxis.set_ticks_position('right')
             ax.yaxis.set_label_position('right')
             # And X axis can be placed at bottom
-            for loc, spine in ax.spines.iteritems():
+            for loc, spine in ax.spines.items():
                 if loc in ['bottom', 'top']:
                     spine.set_position(('outward', (i + 1) * 35))
             Plot.grid(True)
@@ -309,7 +309,7 @@ class Plot(object):
         s.set("A1", "displacement [ton]")
         s.set("B1", "draft [m]")
         s.set("C1", "wetted surface [m^2]")
-        s.set("D1", "1cm triming ship moment [ton*m]")
+        s.set("D1", "1cm trimming ship moment [ton*m]")
         s.set("E1", "Floating area [m^2]")
         s.set("F1", "KBl [m]")
         s.set("G1", "KBt [m]")

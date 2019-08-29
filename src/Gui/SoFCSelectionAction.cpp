@@ -54,6 +54,7 @@
 
 #include "SoFCSelectionAction.h"
 #include "SoFCSelection.h"
+#include "SoFCUnifiedSelection.h"
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include "Selection.h"
@@ -1159,6 +1160,10 @@ SoBoxSelectionRenderAction::constructorCommon(void)
 
 SoBoxSelectionRenderAction::~SoBoxSelectionRenderAction(void)
 {
+    // clear highlighting node
+    if (PRIVATE(this)->highlightPath) {
+        PRIVATE(this)->highlightPath->unref();
+    }
     PRIVATE(this)->postprocpath->unref();
     PRIVATE(this)->localRoot->unref();
 
@@ -1218,12 +1223,30 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
                     if (shapepath) {
                         SoPathList list;
                         list.append(shapepath);
+                        // clear old highlighting node if still active
+                        if (PRIVATE(this)->highlightPath) {
+                            PRIVATE(this)->highlightPath->unref();
+                        }
                         PRIVATE(this)->highlightPath = path;
                         PRIVATE(this)->highlightPath->ref();
                         this->drawBoxes(path, &list);
                     }
                     PRIVATE(this)->selectsearch->reset();
                 }
+            }
+        }
+        PRIVATE(this)->searchaction->reset();
+
+        // Search for selections of SoFCUnifiedSelection
+        PRIVATE(this)->searchaction->setType(SoFCUnifiedSelection::getClassTypeId());
+        PRIVATE(this)->searchaction->setInterest(SoSearchAction::FIRST);
+        PRIVATE(this)->searchaction->apply(node);
+        SoFullPath * path = static_cast<SoFullPath *>(PRIVATE(this)->searchaction->getPath());
+        if (path) {
+            SoFCUnifiedSelection * selection = static_cast<SoFCUnifiedSelection *>(path->getTail());
+            if (selection->getNumSelected()) {
+                PRIVATE(this)->basecolor->rgb.setValue(selection->colorSelection.getValue());
+                this->drawBoxes(path, selection->getList());
             }
         }
         PRIVATE(this)->searchaction->reset();
@@ -1262,6 +1285,10 @@ SoBoxSelectionRenderAction::apply(SoPath * path)
             if (shapepath) {
                 SoPathList list;
                 list.append(shapepath);
+                // clear old highlighting node if still active
+                if (PRIVATE(this)->highlightPath) {
+                    PRIVATE(this)->highlightPath->unref();
+                }
                 PRIVATE(this)->highlightPath = path;
                 PRIVATE(this)->highlightPath->ref();
                 this->drawBoxes(path, &list);

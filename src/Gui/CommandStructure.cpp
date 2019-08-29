@@ -53,7 +53,7 @@ StdCmdPart::StdCmdPart()
     sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
     sWhatsThis    = "Std_Part";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Geofeaturegroup.svg";
+    sPixmap       = "Geofeaturegroup";
 }
 
 void StdCmdPart::activated(int iMsg)
@@ -69,7 +69,8 @@ void StdCmdPart::activated(int iMsg)
     // TODO We really must set label ourselves? (2015-08-17, Fat-Zer)
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'", PartName.c_str(),
             QObject::tr(PartName.c_str()).toUtf8().data());
-    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
+    doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
+                                 "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
             PARTKEY, PartName.c_str());
 
     updateActive();
@@ -93,7 +94,7 @@ StdCmdGroup::StdCmdGroup()
     sToolTipText  = QT_TR_NOOP("Create a new group for ordering objects");
     sWhatsThis    = "Std_Group";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Group.svg";
+    sPixmap       = "Group";
 }
 
 void StdCmdGroup::activated(int iMsg)

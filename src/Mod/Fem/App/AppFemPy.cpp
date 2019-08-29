@@ -25,6 +25,25 @@
 #ifndef _PreComp_
 # include <Python.h>
 # include <memory>
+# include <cstdlib>
+# include <SMESH_Gen.hxx>
+# include <SMESH_Group.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMDS_MeshNode.hxx>
+# include <StdMeshers_MaxLength.hxx>
+# include <StdMeshers_LocalLength.hxx>
+# include <StdMeshers_NumberOfSegments.hxx>
+# include <StdMeshers_AutomaticLength.hxx>
+# include <StdMeshers_MEFISTO_2D.hxx>
+# include <StdMeshers_Deflection1D.hxx>
+# include <StdMeshers_MaxElementArea.hxx>
+# include <StdMeshers_Regular_1D.hxx>
+# include <StdMeshers_QuadranglePreference.hxx>
+# include <StdMeshers_Quadrangle_2D.hxx>
+# include <StdMeshers_LengthFromEdges.hxx>
+# include <StdMeshers_NotConformAllowed.hxx>
+# include <StdMeshers_Arithmetic1D.hxx>
+# include <Standard_Real.hxx>
 #endif
 
 #include <CXX/Extensions.hxx>
@@ -42,26 +61,6 @@
 //#include <Mod/Mesh/App/Core/Evaluation.h>
 //#include <Mod/Mesh/App/Core/Iterator.h>
 
-#include <SMESH_Gen.hxx>
-#include <SMESH_Group.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDS_MeshNode.hxx>
-#include <StdMeshers_MaxLength.hxx>
-#include <StdMeshers_LocalLength.hxx>
-#include <StdMeshers_NumberOfSegments.hxx>
-#include <StdMeshers_AutomaticLength.hxx>
-#include <StdMeshers_TrianglePreference.hxx>
-#include <StdMeshers_MEFISTO_2D.hxx>
-#include <StdMeshers_Deflection1D.hxx>
-#include <StdMeshers_MaxElementArea.hxx>
-#include <StdMeshers_Regular_1D.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
-#include <StdMeshers_Quadrangle_2D.hxx>
-
-#include <StdMeshers_LengthFromEdges.hxx>
-#include <StdMeshers_NotConformAllowed.hxx>
-#include <StdMeshers_Arithmetic1D.hxx>
-
 #include "FemMesh.h"
 #include "FemMeshObject.h"
 #include "FemMeshPy.h"
@@ -70,9 +69,6 @@
 #include "FemVTKTools.h"
 #endif
 
-#include <cstdlib>
-
-#include <Standard_Real.hxx>
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/OCCError.h>
 
@@ -186,9 +182,9 @@ private:
             pcFeature->FemMesh.setValuePtr(mesh.release());
             pcFeature->purgeTouched();
         }
-        catch(Base::Exception& e) {
+        catch (Base::Exception&) {
 #ifdef FC_USE_VTK
-            if( FemPostPipeline::canRead(file) ) {
+            if (FemPostPipeline::canRead(file)) {
 
                 FemPostPipeline *pcFeature = static_cast<FemPostPipeline *>
                     (pcDoc->addObject("Fem::FemPostPipeline", file.fileNamePure().c_str()));
@@ -198,10 +194,11 @@ private:
                 pcFeature->touch();
                 pcDoc->recomputeFeature(pcFeature);
             }
-            else
-                throw e;
+            else {
+                throw;
+            }
 #else
-            throw e;
+            throw;
 #endif
         }
 

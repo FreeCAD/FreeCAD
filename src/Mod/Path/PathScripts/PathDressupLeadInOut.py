@@ -25,20 +25,21 @@
 from __future__ import print_function
 
 import FreeCAD
-import FreeCADGui
 import Path
 import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
 
 from PySide import QtCore
-from PathScripts.PathGeom import PathGeom
 
-"""LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
+__doc__ = """LeadInOut Dressup MASHIN-CRC USE ROLL-ON ROLL-OFF to profile"""
 
+if FreeCAD.GuiUp:
+    import FreeCADGui
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(text, context="Path_DressupLeadInOut", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -47,7 +48,6 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 movecommands = ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 rapidcommands = ['G0', 'G00']
 arccommands = ['G2', 'G3', 'G02', 'G03']
-global currLocation
 currLocation = {}
 
 
@@ -59,7 +59,7 @@ class ObjectDressup:
         obj.addProperty("App::PropertyBool", "LeadIn", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-on to path"))
         obj.addProperty("App::PropertyBool", "LeadOut", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from path"))
         obj.addProperty("App::PropertyBool", "KeepToolDown", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in Path"))
-        obj.addProperty("App::PropertyBool", "UseMashineCRC", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use Mashine Cutter Radius Compensation /Tool Path Offset G41/G42"))
+        obj.addProperty("App::PropertyBool", "UseMachineCRC", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use Machine Cutter Radius Compensation /Tool Path Offset G41/G42"))
         obj.addProperty("App::PropertyDistance", "Length", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the approach"))
         obj.addProperty("App::PropertyEnumeration", "StyleOn", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "The Style of LeadIn the Path"))
         obj.StyleOn = ["Arc", "Tangent", "Perpendicular"]
@@ -69,10 +69,14 @@ class ObjectDressup:
         obj.RadiusCenter = ["Radius", "Center"]
         obj.Proxy = self
 
+        self.wire = None
+        self.rapids = None
+
     def __getstate__(self):
         return None
 
     def __setstate__(self, state):
+        # pylint: disable=unused-argument
         return None
 
     def setup(self, obj):
@@ -80,7 +84,7 @@ class ObjectDressup:
         obj.LeadIn = True
         obj.LeadOut = True
         obj.KeepToolDown = False
-        obj.UseMashineCRC = False
+        obj.UseMachineCRC = False
         obj.StyleOn = 'Arc'
         obj.StyleOff = 'Arc'
         obj.RadiusCenter = 'Radius'
@@ -93,7 +97,7 @@ class ObjectDressup:
         if not obj.Base.Path:
             return
         if obj.Length < 0:
-            PathLog.error(translate("Length/Radius positiv not Null\n"))
+            PathLog.error(translate("Length/Radius positive not Null")+"\n")
             obj.Length = 0.1
         self.wire, self.rapids = PathGeom.wireForPath(obj.Base.Path)
         obj.Path = self.generateLeadInOutCurve(obj)
@@ -121,7 +125,6 @@ class ObjectDressup:
 
     def getLeadStart(self, obj, queue, action):
         '''returns Lead In G-code.'''
-        global currLocation
         results = []
         # zdepth = currLocation["Z"]
         op = PathDressup.baseOp(obj.Base)
@@ -169,11 +172,11 @@ class ObjectDressup:
             results.append(extendcommand)
         extendcommand = Path.Command('G1', {"X": leadstart.x, "Y": leadstart.y, "Z": p1.z, "F": vertFeed})
         results.append(extendcommand)
-        if obj.UseMashineCRC:
-                if self.getDirectionOfPath(obj) == 'right':
-                    results.append(Path.Command('G42', {'D': toolnummer}))
-                else:
-                    results.append(Path.Command('G41', {'D': toolnummer}))
+        if obj.UseMachineCRC:
+            if self.getDirectionOfPath(obj) == 'right':
+                results.append(Path.Command('G42', {'D': toolnummer}))
+            else:
+                results.append(Path.Command('G41', {'D': toolnummer}))
         if obj.StyleOn == 'Arc':
             arcmove = Path.Command(arcdir, {"X": p0.x, "Y": p0.y, "I": offsetvector.x, "J": offsetvector.y, "F": horizFeed})  # add G2/G3 move
             results.append(arcmove)
@@ -185,8 +188,8 @@ class ObjectDressup:
         return results
 
     def getLeadEnd(self, obj, queue, action):
-        '''returns the  Gcode of LeadOut.'''
-        global currLocation
+        '''returns the Gcode of LeadOut.'''
+         # pylint: disable=unused-argument
         results = []
         horizFeed = PathDressup.toolController(obj.Base).HorizFeed.Value
         R = obj.Length.Value  # Radius of roll or length
@@ -222,12 +225,12 @@ class ObjectDressup:
             results.append(extendcommand)
         else:
             PathLog.notice(" CURRENT_IN Perp")
-        if obj.UseMashineCRC:  # crc off
+        if obj.UseMachineCRC:  # crc off
             results.append(Path.Command('G40', {}))
         return results
 
     def generateLeadInOutCurve(self, obj):
-        global currLocation
+        global currLocation # pylint: disable=global-statement
         firstmove = Path.Command("G0", {"X": 0, "Y": 0, "Z": 0})
         currLocation.update(firstmove.Parameters)
         newpath = []
@@ -297,7 +300,7 @@ class ObjectDressup:
 class ViewProviderDressup:
 
     def __init__(self, vobj):
-        vobj.Proxy = self
+        self.obj = vobj.Object
 
     def attach(self, vobj):
         self.obj = vobj.Object
@@ -316,11 +319,12 @@ class ViewProviderDressup:
         return [self.obj.Base]
 
     def onDelete(self, arg1=None, arg2=None):
-        PathLog.debug("Deleting Dressup")
         '''this makes sure that the base operation is added back to the project and visible'''
+        # pylint: disable=unused-argument
+        PathLog.debug("Deleting Dressup")
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
         job = PathUtils.findParentJob(self.obj)
-        job.Proxy.addOperation(arg1.Object.Base)
+        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
         arg1.Object.Base = None
         return True
 
@@ -328,10 +332,12 @@ class ViewProviderDressup:
         return None
 
     def __setstate__(self, state):
+        # pylint: disable=unused-argument
         return None
 
 
 class CommandPathDressupLeadInOut:
+    # pylint: disable=no-init
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
@@ -349,11 +355,11 @@ class CommandPathDressupLeadInOut:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            PathLog.error(translate("Please select one path object\n"))
+            PathLog.error(translate("Please select one path object")+"\n")
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            PathLog.error(translate("The selected object is not a path\n"))
+            PathLog.error(translate("The selected object is not a path")+"\n")
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
             PathLog.error(translate("Please select a Profile object"))
@@ -365,10 +371,12 @@ class CommandPathDressupLeadInOut:
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "LeadInOutDressup")')
         FreeCADGui.doCommand('dbo = PathScripts.PathDressupLeadInOut.ObjectDressup(obj)')
-        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('PathScripts.PathDressupLeadInOut.ViewProviderDressup(obj.ViewObject)')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
+        FreeCADGui.doCommand('base = FreeCAD.ActiveDocument.' + selection[0].Name)
+        FreeCADGui.doCommand('job = PathScripts.PathUtils.findParentJob(base)')
+        FreeCADGui.doCommand('obj.Base = base')
+        FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy = PathScripts.PathDressupLeadInOut.ViewProviderDressup(obj.ViewObject)')
+        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
         FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

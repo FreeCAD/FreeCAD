@@ -318,16 +318,16 @@ QString SystemPanelScheme::systemStyle(const QPalette& p) const
         "color: #006600;"                                           // todo
     "}"
   )
-  .arg(panelBackground1.name())
-  .arg(panelBackground2.name())
-  .arg(headerBackground1.name())
-  .arg(headerBackground2.name())
-  .arg(headerLabelText.name())
-  .arg(headerLabelTextOver.name())
-  .arg(groupBackground.name())
-  .arg(groupBorder.name())
-  .arg(taskLabelText.name())
-  .arg(taskLabelTextOver.name())
+          .arg(panelBackground1.name(),
+               panelBackground2.name(),
+               headerBackground1.name(),
+               headerBackground2.name(),
+               headerLabelText.name(),
+               headerLabelTextOver.name(),
+               groupBackground.name(),
+               groupBorder.name(),
+               taskLabelText.name())
+           .arg(taskLabelTextOver.name())
   ;
 
   return style;

@@ -587,6 +587,8 @@ void QuantitySpinBox::openFormulaDialog()
     QPoint pos = mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
     box->setExpressionInputSize(width(), height());
+
+    Q_EMIT showFormulaDialog(true);
 }
 
 void QuantitySpinBox::finishFormulaDialog()
@@ -603,6 +605,8 @@ void QuantitySpinBox::finishFormulaDialog()
         setExpression(boost::shared_ptr<Expression>());
 
     box->deleteLater();
+
+    Q_EMIT showFormulaDialog(false);
 }
 
 Base::Unit QuantitySpinBox::unit() const
@@ -733,11 +737,9 @@ bool QuantitySpinBox::event(QEvent * event)
             event->accept();
             return true;
         }
-        else
-            return QAbstractSpinBox::event(event);
     }
-    else
-        return QAbstractSpinBox::event(event);
+
+    return QAbstractSpinBox::event(event);
 }
 
 void QuantitySpinBox::focusInEvent(QFocusEvent * event)

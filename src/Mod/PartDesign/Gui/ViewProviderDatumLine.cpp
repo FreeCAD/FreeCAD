@@ -85,10 +85,10 @@ void ViewProviderDatumLine::setExtents (Base::BoundBox3d bbox) {
     // Add origin of the line to the box if it's not
     bbox.Add ( Base::Vector3d (0, 0, 0) );
 
-    double marging = bbox.LengthZ () * marginFactor ();
+    double margin = bbox.LengthZ () * marginFactor ();
 
     // Display the line
     pCoords->point.setNum (2);
-    pCoords->point.set1Value(0, 0, 0, bbox.MaxZ + marging );
-    pCoords->point.set1Value(1, 0, 0, bbox.MinZ - marging );
+    pCoords->point.set1Value(0, 0, 0, bbox.MaxZ + margin );
+    pCoords->point.set1Value(1, 0, 0, bbox.MinZ - margin );
 }

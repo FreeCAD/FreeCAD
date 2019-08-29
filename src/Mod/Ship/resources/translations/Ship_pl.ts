@@ -51,7 +51,7 @@
     <message>
       <location filename="../../Instance.py" line="103"/>
       <source>Set of load conditions</source>
-      <translation type="unfinished">Set of load conditions</translation>
+      <translation>Zestaw warunków obciążenia</translation>
     </message>
   </context>
   <context>
@@ -159,7 +159,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="374"/>
       <source>Areas curve tool number of points</source>
-      <translation type="unfinished">Areas curve tool number of points</translation>
+      <translation>Liczba punktów narzędzia krzywej obszarów</translation>
     </message>
   </context>
   <context>
@@ -285,7 +285,7 @@
     <message>
       <location filename="../../TankInstance.py" line="128"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation type="unfinished">Tank volume operation failed. The tool is retrying that slightly moving the free surface position</translation>
+      <translation>Operacja objętości zbiornika nie powiodła się. Narzędzie próbuje ponownie lekko przesunąć pozycję wolnej powierzchni</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="133"/>
@@ -295,97 +295,97 @@
     <message>
       <location filename="../../shipGZ/Tools.py" line="196"/>
       <source>Wrong Ship label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Ship label! (no instances labeled as'{}' found)</translation>
+      <translation>Zła etykieta załadunku! (nie znaleziono żadnych przypadków oznaczonych jako "{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="204"/>
       <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Ship label! ({} instances labeled as'{}' found)</translation>
+      <translation>Niejednoznaczna etykieta załadunku! (znaleziono przypadek {} oznaczony jako "{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="182"/>
       <source>More than one loading condition have been selected (the extra loading conditions will be ignored)</source>
-      <translation type="unfinished">More than one loading condition have been selected (the extra loading conditions will be ignored)</translation>
+      <translation>Wybrano więcej niż jeden warunek załadunku (dodatkowe warunki załadunku zostaną zignorowane)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="192"/>
       <source>A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</translation>
+      <translation>Przed użyciem tego narzędzia należy wybrać przypadek warunku załadunku (nie znaleziono prawidłowego warunku załadunku dla wybranych obiektów)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="117"/>
       <source>Too much weight! The ship will never displace water enough</source>
-      <translation type="unfinished">Too much weight! The ship will never displace water enough</translation>
+      <translation>Zbyt duże obciążenie! Statek nigdy nie będzie w stanie wyprzeć wody w wystarczającym stopniu</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="229"/>
       <source>Wrong Weight label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Weight label! (no instances labeled as'{}' found)</translation>
+      <translation>Niepoprawna etykieta Wagi! (nie znaleziono żadnych przypadków oznaczonych jako "{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="237"/>
       <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Weight label! ({} instances labeled as'{}' found)</translation>
+      <translation>Niejednoznaczna etykieta Wagi! (znaleziono przypadki {} oznaczone jako "{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="249"/>
       <source>Invalid Weight! (the object labeled as'{}' is not a weight)</source>
-      <translation type="unfinished">Invalid Weight! (the object labeled as'{}' is not a weight)</translation>
+      <translation>Nieprawidłowa Waga! (obiekt oznaczony jako "{}" nie jest wagą)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="274"/>
       <source>Wrong Tank label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Tank label! (no instances labeled as'{}' found)</translation>
+      <translation>Zła etykieta Zbiornika! (nie znaleziono żadnych przypadków oznaczonych jako "{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="282"/>
       <source>Ambiguous Tank label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Tank label! ({} instances labeled as'{}' found)</translation>
+      <translation>Niejednoznaczna etykieta Zbiornika! (znaleziono przypadek {} oznaczony jako "{}")</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="294"/>
       <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
-      <translation type="unfinished">Invalid Tank! (the object labeled as'{}' is not a tank)</translation>
+      <translation>Nieprawidłowy Zbiornik! (obiekt oznaczony jako "{}" nie jest zbiornikiem)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/Tools.py" line="49"/>
       <source>Computing capacity curves</source>
-      <translation type="unfinished">Computing capacity curves</translation>
+      <translation>Obliczanie krzywych pojemności</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="122"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation type="unfinished">Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</translation>
+      <translation>Operacja logiczna nie powiodła się podczas próby dostanie się pod wodę. Narzędzie ponawia taką operację nieznacznie przesuwając wolną powierzchnię</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="197"/>
       <source>Part.OCCError: Transversal area computation failed</source>
-      <translation type="unfinished">Part.OCCError: Transversal area computation failed</translation>
+      <translation>Part.OCCError: Obliczanie obszaru poprzecznego nie powiodło się</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="273"/>
       <source>ZeroDivisionError: Null volume found during the displacement computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null volume found during the displacement computation!</translation>
+      <translation>ZeroDivisionError: Znaleziono pustą objętość podczas obliczeń przemieszczenia!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="374"/>
       <source>Part.OCCError: Floating area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Floating area cannot be computed</translation>
+      <translation>Part.OCCError: Obszar swobodny nie może zostać obliczony</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="386"/>
       <source>ZeroDivisionError: Null area found during the floating area computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the floating area computation!</translation>
+      <translation>Obszar pływającyZeroDivisionError: Znaleziono pusty obszar podczas obliczania obszaru swobodnego!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="461"/>
       <source>Part.OCCError: Main frame area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Main frame area cannot be computed</translation>
+      <translation>Part.OCCError: Nie można obliczyć głównego obszaru obrysu</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="474"/>
       <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the main frame area coefficient computation!</translation>
+      <translation>ZeroDivisionError: Znaleziono pusty obszar podczas obliczania współczynnika obszaru głównego obrysu!</translation>
     </message>
   </context>
   <context>
@@ -446,7 +446,7 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="239"/>
       <source>Plot the GZ curve</source>
-      <translation type="unfinished">Plot the GZ curve</translation>
+      <translation>Drukuj krzywą GZ</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="243"/>
@@ -461,12 +461,12 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="253"/>
       <source>Variable trim</source>
-      <translation type="unfinished">Variable trim</translation>
+      <translation>Zmienne przycięcie</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="258"/>
       <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
-      <translation type="unfinished">The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</translation>
+      <translation>Statek zostanie obrócony do kąta ustawienia równowagi dla każdego kąta przechyłu. Znacząco zwiększy to wymagany czas obliczeń</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="284"/>
@@ -476,12 +476,12 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="299"/>
       <source>GZ curve tool number of points selected</source>
-      <translation type="unfinished">GZ curve tool number of points selected</translation>
+      <translation>Numer narzędzia krzywej GZ wybranych punktów</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="314"/>
       <source>GZ curve tool variable trim angle selection</source>
-      <translation type="unfinished">GZ curve tool variable trim angle selection</translation>
+      <translation>Wybór kąta zmiennej pozycji narzędzia krzywej GZ</translation>
     </message>
   </context>
   <context>
@@ -550,12 +550,12 @@
     <message>
       <location filename="../../ShipGui.py" line="179"/>
       <source>Create a new loading condition</source>
-      <translation type="unfinished">Create a new loading condition</translation>
+      <translation>Utwórz nowy warunek załadunku</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="182"/>
       <source>Create a new load condition spreadsheet</source>
-      <translation type="unfinished">Create a new load condition spreadsheet</translation>
+      <translation>Utwórz nowy arkusz stanu obciążenia</translation>
     </message>
   </context>
   <context>

@@ -82,7 +82,7 @@ bool UniGridApprox::Perform(double TOL)
         maxErr = CompMeshError();
 
         if (maxErr == -1)
-            throw Base::Exception("CompError() couldn't project one point...");
+            throw Base::RuntimeError("CompError() couldn't project one point...");
 
         cout << " -> " << maxErr << endl;
 

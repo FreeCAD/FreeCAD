@@ -53,7 +53,7 @@ public:
     virtual bool extensionOnDelete(const std::vector<std::string> &) override;
 
 private:
-    bool visible; // helper variable
+    bool guard;
     std::vector<ViewProvider*> nodes;
 };
 

@@ -57,7 +57,7 @@ Py::Object AttachExtensionPy::getAttacher(void) const
 {
     try {
         this->getAttachExtensionPtr()->attacher(); //throws if attacher is not set
-    } catch (Base::Exception) {
+    } catch (Base::Exception&) {
         return Py::None();
     }
 

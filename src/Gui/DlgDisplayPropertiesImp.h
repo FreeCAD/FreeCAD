@@ -25,7 +25,7 @@
 #define GUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
 
 #include <vector>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 #include "ui_DlgDisplayProperties.h"
 #include "Selection.h"
@@ -42,7 +42,7 @@ namespace Gui {
   class Command;
 
 namespace Dialog {
-typedef boost::signals::connection DlgDisplayPropertiesImp_Connection;
+typedef boost::signals2::connection DlgDisplayPropertiesImp_Connection;
 
 /**
  * The DlgDisplayPropertiesImp class implements a dialog containing all available document

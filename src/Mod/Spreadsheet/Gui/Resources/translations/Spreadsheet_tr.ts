@@ -5,22 +5,22 @@
     <name>CmdCreateSpreadsheet</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Create spreadsheet</source>
-      <translation>Yeni hesap tablosu yarat</translation>
+      <translation>Yeni hesap tablosu oluştur</translation>
     </message>
     <message>
       <source>Create a new spreadsheet</source>
-      <translation>Yeni bir e-tablo oluşturma</translation>
+      <translation>Yeni bir hesap tablosu oluştur</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Align bottom</source>
@@ -35,7 +35,7 @@
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Align center</source>
@@ -50,7 +50,7 @@
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Align left</source>
@@ -65,7 +65,7 @@
     <name>CmdSpreadsheetAlignRight</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Align right</source>
@@ -80,7 +80,7 @@
     <name>CmdSpreadsheetAlignTop</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Align top</source>
@@ -95,67 +95,67 @@
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Vertically center-align</source>
       <translation>Dikeyde ortala</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Seçilen hücrelerin içeriğini dikey olarak hizala</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Seçilen hücrelerin içeriğini dikey olarak merkeze hizalayın</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Export spreadsheet</source>
-      <translation>İşlem tablosunu dışa aktar</translation>
+      <translation>Hesap tablosunu dışa aktar</translation>
     </message>
     <message>
       <source>Export spreadsheet to CSV file</source>
-      <translation>İşlem tablosunu CSV dosyasına aktar</translation>
+      <translation>Hesap tablosunu CSV dosyasına aktar</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Import spreadsheet</source>
-      <translation>İşlem Tablosunu İçe Aktar</translation>
+      <translation>Hesap tablosunu içe aktar</translation>
     </message>
     <message>
       <source>Import CSV file into spreadsheet</source>
-      <translation>İşlem tablosunu CSV dosyasına içe aktar</translation>
+      <translation>CSV dosyasını hesap tablosuna (içe) aktar</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Merge cells</source>
       <translation>Hücreleri birleştir</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Seçili hücreleri işlem tablosunda birleştir</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Set alias</source>
@@ -170,67 +170,67 @@
     <name>CmdSpreadsheetSplitCell</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Split cell</source>
       <translation>Hücreyi Böl</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>İşlem tablosunda daha önceden birleştirilen hücreleri ayır</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Bold text</source>
       <translation>Kalın metin</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Seçilen hücrelerdeki yazıları kalınlaştır</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Italic text</source>
       <translation>İtalik metin</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Seçilen hücrelerdeki yazıları yatay yap</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
     <message>
       <source>Underline text</source>
       <translation>Altı çizili metin</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Seçilen hücrelerdeki yazıların altını çiz</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Seçili hücrelerde metnin altını çiz</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Özel</translation>
+      <source>Custom Color</source>
+      <translation>Özel Renk</translation>
     </message>
   </context>
   <context>
@@ -328,7 +328,7 @@
     </message>
     <message>
       <source>Export file</source>
-      <translation>dosyayı dışa aktar</translation>
+      <translation>Dosyayı Dışarı Aktar</translation>
     </message>
     <message>
       <source>Cell contents</source>
@@ -336,7 +336,7 @@
     </message>
     <message>
       <source>Show spreadsheet</source>
-      <translation>İşlem tablosunu göster</translation>
+      <translation>Hesap tablosunu göster</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
@@ -344,7 +344,7 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation>Elektronik tablo hücre(ler) in ön plan rengini ayarlar</translation>
+      <translation>Hesap tablo hücre(ler) inin ön plan rengini ayarlar</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
@@ -352,7 +352,7 @@
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Elektronik tablo hücre(lerinin) arka plan rengini ayarlar</translation>
+      <translation>Hesap tablosu hücre(ler) inin arka plan rengini ayarlar</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Açık gri</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Özel</translation>
+      <source>Custom Color</source>
+      <translation>Özel Renk</translation>
     </message>
   </context>
   <context>
@@ -464,7 +464,7 @@
     </message>
     <message>
       <source>Remove columns</source>
-      <translation>Sütun sil</translation>
+      <translation>Sütunları Kaldır</translation>
     </message>
     <message>
       <source>Properties...</source>
@@ -475,7 +475,7 @@
     <name>Workbench</name>
     <message>
       <source>Spreadsheet</source>
-      <translation>tablo</translation>
+      <translation>Hesap Tablosu</translation>
     </message>
   </context>
 </TS>

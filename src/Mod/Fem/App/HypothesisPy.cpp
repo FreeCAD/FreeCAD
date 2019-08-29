@@ -22,45 +22,51 @@
 
 #include "PreCompiled.h"
 #include "HypothesisPy.h"
+
+#ifndef _PreComp_
+# include <sstream>
+
+# include <StdMeshers_Arithmetic1D.hxx>
+# include <StdMeshers_AutomaticLength.hxx>
+# include <StdMeshers_MaxLength.hxx>
+# include <StdMeshers_LocalLength.hxx>
+# include <StdMeshers_MaxElementArea.hxx>
+# include <StdMeshers_NotConformAllowed.hxx>
+# include <StdMeshers_QuadranglePreference.hxx>
+# include <StdMeshers_Quadrangle_2D.hxx>
+# include <StdMeshers_Regular_1D.hxx>
+# include <StdMeshers_UseExisting_1D2D.hxx>
+# include <StdMeshers_CompositeSegment_1D.hxx>
+# include <StdMeshers_Deflection1D.hxx>
+# include <StdMeshers_Hexa_3D.hxx>
+# include <StdMeshers_LayerDistribution.hxx>
+# include <StdMeshers_LengthFromEdges.hxx>
+# include <StdMeshers_MaxElementVolume.hxx>
+# include <StdMeshers_MEFISTO_2D.hxx>
+# include <StdMeshers_NumberOfLayers.hxx>
+# include <StdMeshers_NumberOfSegments.hxx>
+# include <StdMeshers_Prism_3D.hxx>
+# include <StdMeshers_Projection_1D.hxx>
+# include <StdMeshers_Projection_2D.hxx>
+# include <StdMeshers_Projection_3D.hxx>
+# include <StdMeshers_QuadraticMesh.hxx>
+# include <StdMeshers_RadialPrism_3D.hxx>
+# include <StdMeshers_SegmentAroundVertex_0D.hxx>
+# include <StdMeshers_ProjectionSource1D.hxx>
+# include <StdMeshers_ProjectionSource2D.hxx>
+# include <StdMeshers_ProjectionSource3D.hxx>
+# include <StdMeshers_SegmentLengthAroundVertex.hxx>
+# include <StdMeshers_StartEndLength.hxx>
+# include <StdMeshers_CompositeHexa_3D.hxx>
+# if SMESH_VERSION_MAJOR < 7
+#  include <StdMeshers_TrianglePreference.hxx>
+# endif
+#endif
+
 #include "FemMeshPy.h"
 #include <Base/Interpreter.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
-#include <sstream>
-#include <StdMeshers_Arithmetic1D.hxx>
-#include <StdMeshers_AutomaticLength.hxx>
-#include <StdMeshers_MaxLength.hxx>
-#include <StdMeshers_LocalLength.hxx>
-#include <StdMeshers_MaxElementArea.hxx>
-#include <StdMeshers_NotConformAllowed.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
-#include <StdMeshers_Quadrangle_2D.hxx>
-#include <StdMeshers_Regular_1D.hxx>
-#include <StdMeshers_UseExisting_1D2D.hxx>
-#include <StdMeshers_CompositeSegment_1D.hxx>
-#include <StdMeshers_Deflection1D.hxx>
-#include <StdMeshers_Hexa_3D.hxx>
-#include <StdMeshers_LayerDistribution.hxx>
-#include <StdMeshers_LengthFromEdges.hxx>
-#include <StdMeshers_MaxElementVolume.hxx>
-#include <StdMeshers_MEFISTO_2D.hxx>
-#include <StdMeshers_NumberOfLayers.hxx>
-#include <StdMeshers_NumberOfSegments.hxx>
-#include <StdMeshers_Prism_3D.hxx>
-#include <StdMeshers_Projection_1D.hxx>
-#include <StdMeshers_Projection_2D.hxx>
-#include <StdMeshers_Projection_3D.hxx>
-#include <StdMeshers_QuadraticMesh.hxx>
-#include <StdMeshers_RadialPrism_3D.hxx>
-#include <StdMeshers_SegmentAroundVertex_0D.hxx>
-#include <StdMeshers_TrianglePreference.hxx>
-#include <StdMeshers_ProjectionSource1D.hxx>
-#include <StdMeshers_ProjectionSource2D.hxx>
-#include <StdMeshers_ProjectionSource3D.hxx>
-#include <StdMeshers_SegmentLengthAroundVertex.hxx>
-#include <StdMeshers_StartEndLength.hxx>
-//#include <StdMeshers_Propagation.hxx>
-#include <StdMeshers_CompositeHexa_3D.hxx>
 
 using namespace Fem;
 
@@ -87,11 +93,13 @@ void SMESH_HypothesisPy<T>::init_type(PyObject* module)
 
     SMESH_HypothesisPy::add_varargs_method("setLibName", &SMESH_HypothesisPy<T>::setLibName, "setLibName(String)");
     SMESH_HypothesisPy::add_varargs_method("getLibName", &SMESH_HypothesisPy<T>::getLibName, "String getLibName()");
+#if SMESH_VERSION_MAJOR < 7
     SMESH_HypothesisPy::add_varargs_method("setParameters", &SMESH_HypothesisPy<T>::setParameters, "setParameters(String)");
     SMESH_HypothesisPy::add_varargs_method("getParameters", &SMESH_HypothesisPy<T>::getParameters, "String getParameters()");
     SMESH_HypothesisPy::add_varargs_method("setLastParameters", &SMESH_HypothesisPy<T>::setLastParameters, "setLastParameters(String)");
     SMESH_HypothesisPy::add_varargs_method("getLastParameters", &SMESH_HypothesisPy<T>::getLastParameters, "String getLastParameters()");
     SMESH_HypothesisPy::add_varargs_method("clearParameters", &SMESH_HypothesisPy<T>::clearParameters, "clearParameters()");
+#endif
     SMESH_HypothesisPy::add_varargs_method("isAuxiliary", &SMESH_HypothesisPy<T>::isAuxiliary, "Bool isAuxiliary()");
     SMESH_HypothesisPy::add_varargs_method("setParametersByMesh", &SMESH_HypothesisPy<T>::setParametersByMesh, "setParametersByMesh(Mesh,Shape)");
     Base::Interpreter().addType(SMESH_HypothesisPy<T>::behaviors().type_object(),
@@ -140,6 +148,8 @@ Py::Object SMESH_HypothesisPy<T>::getLibName(const Py::Tuple& args)
     return Py::String(hypothesis<SMESH_Hypothesis>()->GetLibName());
 }
 
+
+#if SMESH_VERSION_MAJOR < 7 //////////////////////////////////////////////////////////
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setParameters(const Py::Tuple& args)
 {
@@ -182,6 +192,7 @@ Py::Object SMESH_HypothesisPy<T>::clearParameters(const Py::Tuple& args)
     hypothesis<SMESH_Hypothesis>()->ClearParameters();
     return Py::None();
 }
+#endif //////////////////////////////////////////////////////////////////////////
 
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setParametersByMesh(const Py::Tuple& args)
@@ -646,6 +657,7 @@ StdMeshers_Hexa_3DPy::~StdMeshers_Hexa_3DPy()
 
 // ----------------------------------------------------------------------------
 
+#if SMESH_VERSION_MAJOR < 7 ///////////////////////////////////////////////////////////
 void StdMeshers_TrianglePreferencePy::init_type(PyObject* module)
 {
     behaviors().name("StdMeshers_TrianglePreference");
@@ -661,6 +673,7 @@ StdMeshers_TrianglePreferencePy::StdMeshers_TrianglePreferencePy(int hypId, int 
 StdMeshers_TrianglePreferencePy::~StdMeshers_TrianglePreferencePy()
 {
 }
+#endif ///////////////////////////////////////////////////////////////////////////
 
 // ----------------------------------------------------------------------------
 

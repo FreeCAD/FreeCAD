@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,15 +19,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Equation"
+__title__ = "FreeCAD FEM solver Elmer equation base object"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD as App
 from ... import equationbase
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -75,8 +75,8 @@ class _TaskPanel(object):
             self.form = self._refWidget
         else:
             self.form = [self.refWidget, propWidget]
-        analysis = FemUtils.findAnalysisOfMember(obj)
-        self._mesh = FemUtils.getSingleMember(analysis, "Fem::FemMeshObject")
+        analysis = femutils.findAnalysisOfMember(obj)
+        self._mesh = femutils.get_single_member(analysis, "Fem::FemMeshObject")
         self._part = self._mesh.Part if self._mesh is not None else None
         self._partVisible = None
         self._meshVisible = None
@@ -109,3 +109,5 @@ class _TaskPanel(object):
                 self._part.ViewObject.show()
             else:
                 self._part.ViewObject.hide()
+
+##  @}

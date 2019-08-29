@@ -30,6 +30,8 @@
 
 #include "DrawView.h"
 
+class TopoDS_Shape;
+
 namespace Measure {
 class Measurement;
 }
@@ -42,7 +44,45 @@ struct DimRef {
     std::string   sub;
 };
 
-class DrawViewPart;
+typedef std::pair<Base::Vector3d,Base::Vector3d> pointPair;
+
+struct anglePoints
+{
+    pointPair ends;
+    Base::Vector3d vertex;
+
+    anglePoints()
+    {
+        ends.first  = Base::Vector3d(0.0,0.0,0.0);
+        ends.second = Base::Vector3d(0.0,0.0,0.0);
+        vertex      = Base::Vector3d(0.0,0.0,0.0);
+    }
+};
+
+struct arcPoints
+{
+    bool isArc;
+    double radius;
+    Base::Vector3d center;
+    pointPair onCurve;
+    pointPair arcEnds;
+    Base::Vector3d midArc;
+    bool arcCW;
+
+    arcPoints() 
+    {
+         isArc = false;
+         radius = 0.0;
+         center         = Base::Vector3d(0.0,0.0,0.0);
+         onCurve.first  = Base::Vector3d(0.0,0.0,0.0);
+         onCurve.second = Base::Vector3d(0.0,0.0,0.0);
+         arcEnds.first  = Base::Vector3d(0.0,0.0,0.0);
+         arcEnds.second = Base::Vector3d(0.0,0.0,0.0);
+         midArc         = Base::Vector3d(0.0,0.0,0.0);
+         arcCW = false;
+    }
+
+};
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
@@ -58,10 +98,14 @@ public:
     App::PropertyLinkSubList       References3D;                       //Points to 3D Geometry SubFeatures
     App::PropertyEnumeration       Type;                               //DistanceX,DistanceY,Diameter, etc
     App::PropertyString            FormatSpec;
+    App::PropertyBool              Arbitrary;
+    App::PropertyFloat             OverTolerance;
+    App::PropertyFloat             UnderTolerance;
 
     short mustExecute() const;
     bool has2DReferences(void) const;
     bool has3DReferences(void) const;
+    bool hasTolerance(void) const;
 
     /** @name methods override Feature */
     //@{
@@ -76,16 +120,24 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void);
 
-    virtual std::string getFormatedValue();
+    virtual std::string getFormatedValue(bool obtuse = false);
     virtual double getDimValue();
     DrawViewPart* getViewPart() const;
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!
     static int getRefType1(const std::string s);
     static int getRefType2(const std::string s1, const std::string s2);
+    static int getRefType3(const std::string g1,
+                           const std::string g2,
+                           const std::string g3);
     int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
     void clear3DMeasurements(void);
     bool checkReferences2D(void) const;
+    pointPair getLinearPoints(void) {return m_linearPoints; }
+    arcPoints getArcPoints(void) {return m_arcPoints; }
+    anglePoints getAnglePoints(void) {return m_anglePoints; }
+    bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
+    bool references(std::string geomName) const;
 
 protected:
     void onChanged(const App::Property* prop);
@@ -94,17 +146,29 @@ protected:
     bool useDecimals() const;
     std::string getPrefix() const;
     std::string getDefaultFormatSpec() const;
+    pointPair getPointsOneEdge();
+    pointPair getPointsTwoEdges();
+    pointPair getPointsTwoVerts();
+    pointPair getPointsEdgeVert();
 
 protected:
     Measure::Measurement *measurement;
-    double dist2Segs(Base::Vector2d s1,
-                     Base::Vector2d e1,
-                     Base::Vector2d s2,
-                     Base::Vector2d e2) const;
+    double dist2Segs(Base::Vector3d s1,
+                     Base::Vector3d e1,
+                     Base::Vector3d s2,
+                     Base::Vector3d e2) const;
+    pointPair closestPoints(TopoDS_Shape s1,
+                            TopoDS_Shape s2) const;
+
 private:
     static const char* TypeEnums[];
     static const char* MeasureTypeEnums[];
     void dumpRefs2D(char* text) const;
+    //Dimension "geometry"
+    pointPair   m_linearPoints;
+    arcPoints   m_arcPoints;
+    anglePoints m_anglePoints;
+    bool        m_hasGeometry;
 };
 
 } //namespace TechDraw

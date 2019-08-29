@@ -22,7 +22,10 @@
 
 #include "PreCompiled.h"
 
-#include <boost/algorithm/string.hpp>
+
+#ifndef _PreComp_
+# include <boost/algorithm/string.hpp>
+#endif
 
 #include <Base/Exception.h>
 #include <Base/Vector3D.h>
@@ -69,8 +72,15 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
     if ( PyArg_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &PyDict_Type, &parameters) ) {
         std::string sname(name);
         boost::to_upper(sname);
-        if (!sname.empty())
-            getCommandPtr()->setFromGCode(name);
+        try {
+            if (!sname.empty())
+                getCommandPtr()->setFromGCode(name);
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return -1;
+        }
+
         PyObject *key, *value;
         Py_ssize_t pos = 0;
         while (parameters && PyDict_Next(parameters, &pos, &key, &value)) {
@@ -114,8 +124,14 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
     if ( PyArg_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &(Base::PlacementPy::Type), &parameters) ) {
         std::string sname(name);
         boost::to_upper(sname);
-        if (!sname.empty())
-            getCommandPtr()->setFromGCode(name);
+        try {
+            if (!sname.empty())
+                getCommandPtr()->setFromGCode(name);
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return -1;
+        }
         Base::PlacementPy *p = static_cast<Base::PlacementPy*>(parameters);
         getCommandPtr()->setFromPlacement( *p->getPlacementPtr() );
         return 0;
@@ -168,7 +184,7 @@ void CommandPy::setParameters(Py::Dict arg)
 #endif
         }
         else {
-            throw Py::Exception("The dictionary can only contain string keys");
+            throw Py::TypeError("The dictionary can only contain string keys");
         }
 
         boost::to_upper(ckey);
@@ -185,7 +201,7 @@ void CommandPy::setParameters(Py::Dict arg)
             cvalue = PyFloat_AsDouble(value);
         }
         else {
-            throw Py::Exception("The dictionary can only contain number values");
+            throw Py::TypeError("The dictionary can only contain number values");
         }
         getCommandPtr()->Parameters[ckey]=cvalue;
     }
@@ -202,7 +218,7 @@ PyObject* CommandPy::toGCode(PyObject *args)
         return PyString_FromString(getCommandPtr()->toGCode().c_str());
 #endif
     }
-    throw Py::Exception("This method accepts no argument");
+    throw Py::TypeError("This method accepts no argument");
 }
 
 PyObject* CommandPy::setFromGCode(PyObject *args)
@@ -210,11 +226,18 @@ PyObject* CommandPy::setFromGCode(PyObject *args)
     char *pstr=0;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         std::string gcode(pstr);
-        getCommandPtr()->setFromGCode(gcode);
+        try {
+            getCommandPtr()->setFromGCode(gcode);
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return nullptr;
+        }
+
         Py_INCREF(Py_None);
         return Py_None;
     }
-    throw Py::Exception("Argument must be a string");
+    throw Py::TypeError("Argument must be a string");
 }
 
 // Placement attribute get/set
@@ -231,7 +254,7 @@ void CommandPy::setPlacement(Py::Object arg)
     if(arg.isType(PlacementType)) {
         getCommandPtr()->setFromPlacement( *static_cast<Base::PlacementPy*>((*arg))->getPlacementPtr() );
     } else
-    throw Py::Exception("Argument must be a placement");
+    throw Py::TypeError("Argument must be a placement");
 }
 
 PyObject* CommandPy::transform(PyObject *args)
@@ -242,7 +265,7 @@ PyObject* CommandPy::transform(PyObject *args)
         Path::Command trCmd = getCommandPtr()->transform( *p->getPlacementPtr() );
         return new CommandPy(new Path::Command(trCmd));
     } else
-    throw Py::Exception("Argument must be a placement");
+    throw Py::TypeError("Argument must be a placement");
 }
 
 // custom attributes get/set

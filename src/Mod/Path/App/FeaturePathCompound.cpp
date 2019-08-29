@@ -64,10 +64,12 @@ App::DocumentObjectExecReturn *FeatureCompound::execute(void)
                     result.addCommand(**it2);
                 }
             }
-        }else
+        } else {
             return new App::DocumentObjectExecReturn("Not all objects in group are paths!");
+        }
     }
 
+    result.setCenter(Path.getValue().getCenter());
     Path.setValue(result);
     
     return App::DocumentObject::StdReturn;

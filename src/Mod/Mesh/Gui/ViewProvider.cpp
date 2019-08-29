@@ -27,6 +27,7 @@
 # include <stdlib.h>
 # include <QAction>
 # include <QMenu>
+# include <QTimer>
 # include <Inventor/SbBox2s.h>
 # include <Inventor/SbLine.h>
 # include <Inventor/SbPlane.h>
@@ -92,6 +93,7 @@
 #include <Mod/Mesh/App/Core/Visitor.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/Gui/ViewProviderMeshPy.h>
 #include <zipios++/gzipoutputstream.h>
 #include <boost/bind.hpp>
 
@@ -347,7 +349,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         pcPointStyle->pointSize = PointSize.getValue();
     }
     else if (prop == &CreaseAngle) {
-        pShapeHints->creaseAngle = (F_PI*CreaseAngle.getValue())/180.0;
+        pShapeHints->creaseAngle = Base::toRadians<float>(CreaseAngle.getValue());
     }
     else if (prop == &OpenEdges) {
         showOpenEdges(OpenEdges.getValue());
@@ -685,7 +687,8 @@ void ViewProviderMesh::exportMesh(const char* filename, const char* fmt) const
         mat.diffuseColor.push_back(App::Color(c[0], c[1], c[2]));
     }
 
-    const Mesh::MeshObject& mesh = static_cast<Mesh::Feature*>(getObject())->Mesh.getValue();
+    Mesh::MeshObject mesh = static_cast<Mesh::Feature*>(getObject())->Mesh.getValue();
+    mesh.setPlacement(static_cast<Mesh::Feature*>(getObject())->globalPlacement());
     if (mat.diffuseColor.size() == mesh.countPoints())
         mat.binding = MeshCore::MeshIO::PER_VERTEX;
     else if (mat.diffuseColor.size() == mesh.countFacets())
@@ -704,8 +707,15 @@ void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Display components"));
     act->setCheckable(true);
-    act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE);
+    act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
+                    highlightMode == "Component");
     func->toggle(act, boost::bind(&ViewProviderMesh::setHighlightedComponents, this, _1));
+
+    QAction* seg = menu->addAction(QObject::tr("Display segments"));
+    seg->setCheckable(true);
+    seg->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
+                    highlightMode == "Segment");
+    func->toggle(seg, boost::bind(&ViewProviderMesh::setHighlightedSegments, this, _1));
 }
 
 bool ViewProviderMesh::setEdit(int ModNum)
@@ -812,6 +822,58 @@ void ViewProviderMesh::showOpenEdges(bool show)
     (void)show;
 }
 
+namespace MeshGui {
+class MeshSplit {
+public:
+    MeshSplit(ViewProviderMesh* mesh,
+              const std::vector<SbVec2f>& poly,
+              const Gui::ViewVolumeProjection& proj)
+        : mesh(mesh)
+        , poly(poly)
+        , proj(proj)
+    {
+
+    }
+    ~MeshSplit() {
+
+    }
+    void cutMesh() {
+        Gui::Document* gui = mesh->getDocument();
+        gui->openCommand("Cut");
+        ViewProviderMesh* copy = makeCopy();
+        mesh->cutMesh(poly, proj, false);
+        copy->cutMesh(poly, proj, true);
+        gui->commitCommand();
+        delete this;
+    }
+    void trimMesh() {
+        Gui::Document* gui = mesh->getDocument();
+        gui->openCommand("Trim");
+        ViewProviderMesh* copy = makeCopy();
+        mesh->trimMesh(poly, proj, false);
+        copy->trimMesh(poly, proj, true);
+        gui->commitCommand();
+        delete this;
+    }
+    ViewProviderMesh* makeCopy() const {
+        Gui::Document* gui = mesh->getDocument();
+        App::Document* doc = gui->getDocument();
+
+        Mesh::Feature* cpy = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
+        Mesh::Feature* org = static_cast<Mesh::Feature*>(mesh->getObject());
+        cpy->Label.setValue(org->Label.getValue());
+        cpy->Mesh.setValue(org->Mesh.getValue());
+
+        return static_cast<ViewProviderMesh*>(gui->getViewProvider(cpy));
+    }
+
+private:
+    ViewProviderMesh* mesh;
+    std::vector<SbVec2f> poly;
+    Gui::ViewVolumeProjection proj;
+};
+}
+
 void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
 {
     // show the wait cursor because this could take quite some time
@@ -823,8 +885,8 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), clipMeshCallback,ud);
     n->setHandled();
 
-    SbBool clip_inner;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3)
         return;
     if (clPoly.front() != clPoly.back())
@@ -833,6 +895,7 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
     std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     if (!views.empty()) {
         Gui::Application::Instance->activeDocument()->openCommand("Cut");
+        bool commitCommand = false;
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
             ViewProviderMesh* self = static_cast<ViewProviderMesh*>(*it);
             if (self->getEditingMode() > -1) {
@@ -842,11 +905,31 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
                 Gui::ViewVolumeProjection proj(vv);
                 proj.setTransform(static_cast<Mesh::Feature*>(self->getObject())->
                                   Placement.getValue().toMatrix());
-                self->cutMesh(clPoly, proj, clip_inner);
+                if (role == Gui::SelectionRole::Inner) {
+                    self->cutMesh(clPoly, proj, true);
+                    commitCommand = true;
+                }
+                else if (role == Gui::SelectionRole::Outer) {
+                    self->cutMesh(clPoly, proj, false);
+                    commitCommand = true;
+                }
+                else if (role == Gui::SelectionRole::Split) {
+                    // We must delay the split because it adds a new
+                    // node to the scenegraph which cannot be done while
+                    // traversing it
+                    Gui::TimerFunction* func = new Gui::TimerFunction();
+                    func->setAutoDelete(true);
+                    MeshSplit* split = new MeshSplit(self, clPoly, proj);
+                    func->setFunction(boost::bind(&MeshSplit::cutMesh, split));
+                    QTimer::singleShot(0, func, SLOT(timeout()));
+                }
             }
         }
 
-        Gui::Application::Instance->activeDocument()->commitCommand();
+        if (commitCommand)
+            Gui::Application::Instance->activeDocument()->commitCommand();
+        else
+            Gui::Application::Instance->activeDocument()->abortCommand();
 
         view->redraw();
     }
@@ -863,8 +946,8 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), trimMeshCallback,ud);
     n->setHandled();
 
-    SbBool clip_inner;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3)
         return;
     if (clPoly.front() != clPoly.back())
@@ -872,7 +955,8 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
 
     std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     if (!views.empty()) {
-        Gui::Application::Instance->activeDocument()->openCommand("Cut");
+        Gui::Application::Instance->activeDocument()->openCommand("Trim");
+        bool commitCommand = false;
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
             ViewProviderMesh* self = static_cast<ViewProviderMesh*>(*it);
             if (self->getEditingMode() > -1) {
@@ -882,11 +966,31 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
                 Gui::ViewVolumeProjection proj(vv);
                 proj.setTransform(static_cast<Mesh::Feature*>(self->getObject())->
                                   Placement.getValue().toMatrix());
-                self->trimMesh(clPoly, proj, clip_inner);
+                if (role == Gui::SelectionRole::Inner) {
+                    self->trimMesh(clPoly, proj, true);
+                    commitCommand = true;
+                }
+                else if (role == Gui::SelectionRole::Outer) {
+                    self->trimMesh(clPoly, proj, false);
+                    commitCommand = true;
+                }
+                else if (role == Gui::SelectionRole::Split) {
+                    // We must delay the split because it adds a new
+                    // node to the scenegraph which cannot be done while
+                    // traversing it
+                    Gui::TimerFunction* func = new Gui::TimerFunction();
+                    func->setAutoDelete(true);
+                    MeshSplit* split = new MeshSplit(self, clPoly, proj);
+                    func->setFunction(boost::bind(&MeshSplit::trimMesh, split));
+                    QTimer::singleShot(0, func, SLOT(timeout()));
+                }
             }
         }
 
-        Gui::Application::Instance->activeDocument()->commitCommand();
+        if (commitCommand)
+            Gui::Application::Instance->activeDocument()->commitCommand();
+        else
+            Gui::Application::Instance->activeDocument()->abortCommand();
 
         view->redraw();
     }
@@ -903,8 +1007,8 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), partMeshCallback,ud);
     cb->setHandled();
 
-    SbBool clip_inner;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3)
         return;
     if (clPoly.front() != clPoly.back())
@@ -940,7 +1044,10 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
                 plm.invert();
                 MeshCore::MeshKernel copyToolMesh(toolMesh);
                 copyToolMesh.Transform(plm.toMatrix());
-                that->splitMesh(copyToolMesh, cNormal, clip_inner);
+                if (role == Gui::SelectionRole::Inner)
+                    that->splitMesh(copyToolMesh, cNormal, true);
+                else
+                    that->splitMesh(copyToolMesh, cNormal, false);
             }
         }
     }
@@ -964,8 +1071,8 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), segmMeshCallback,ud);
     cb->setHandled();
 
-    SbBool clip_inner;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3)
         return;
     if (clPoly.front() != clPoly.back())
@@ -1001,7 +1108,10 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
                 plm.invert();
                 MeshCore::MeshKernel copyToolMesh(toolMesh);
                 copyToolMesh.Transform(plm.toMatrix());
-                that->segmentMesh(copyToolMesh, cNormal, clip_inner);
+                if (role == Gui::SelectionRole::Inner)
+                    that->segmentMesh(copyToolMesh, cNormal, true);
+                else
+                    that->segmentMesh(copyToolMesh, cNormal, false);
             }
         }
     }
@@ -1023,7 +1133,7 @@ void ViewProviderMesh::selectGLCallback(void * ud, SoEventCallback * n)
     n->setHandled();
 
     std::vector<SbVec2f> clPoly = view->getGLPolygon();
-    if (clPoly.size() != 1)
+    if (clPoly.size() != 2)
         return;
     const SoEvent* ev = n->getEvent();
 
@@ -1373,6 +1483,10 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
                 view->removeGraphicsItem(*it);
                 delete *it;
             }
+
+            // See comment below
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+            hGrp->SetBool("ShowNaviCube", hGrp->GetBool("ShowNaviCube", true));
         }
     }
     else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
@@ -1389,11 +1503,19 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
         Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
         if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
             return;
+
+        // FIXME: The Flag class doesn't work well (flickering) when the NaviCube is enabled.
+        // To avoid this the NaviCube is disabled for the time the flags are shown.
+        // When leaving this mode the NaviCube can be displayed again.
+        // For a proper solution it's best to move the Flag class to the QGraphicsView API.
+        view->setEnabledNaviCube(false);
+
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);
         const SoDetail* detail = point->getDetail(that->getShapeNode());
         if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
             // get the boundary to the picked facet
-            unsigned long uFacet = ((SoFaceDetail*)detail)->getFaceIndex();
+            const SoFaceDetail* faceDetail = static_cast<const SoFaceDetail*>(detail);
+            unsigned long uFacet = faceDetail->getFaceIndex();
             that->faceInfo(uFacet);
             Gui::GLFlagWindow* flags = 0;
             std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
@@ -1405,8 +1527,16 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
                 flags = static_cast<Gui::GLFlagWindow*>(glItems.front());
             }
 
+            int point1 = static_cast<const SoPointDetail*>(faceDetail->getPoint(0))->getCoordinateIndex();
+            int point2 = static_cast<const SoPointDetail*>(faceDetail->getPoint(1))->getCoordinateIndex();
+            int point3 = static_cast<const SoPointDetail*>(faceDetail->getPoint(2))->getCoordinateIndex();
             Gui::Flag* flag = new Gui::Flag;
             flag->setText(QObject::tr("Index: %1").arg(uFacet));
+            QString toolTip = QString::fromLatin1("Facet index: %1\n"
+                                                  "Points: <%2, %3, %4>")
+                    .arg(uFacet)
+                    .arg(point1).arg(point2).arg(point3);
+            flag->setToolTip(toolTip);
             flag->setOrigin(point->getPoint());
             flags->addFlag(flag, Gui::FlagLayout::TopRight);
         }
@@ -1525,7 +1655,7 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
 
 void ViewProviderMesh::faceInfo(unsigned long uFacet)
 {
-    Mesh::Feature* fea = reinterpret_cast<Mesh::Feature*>(this->getObject());
+    Mesh::Feature* fea = static_cast<Mesh::Feature*>(this->getObject());
     const MeshCore::MeshKernel& rKernel = fea->Mesh.getValue().getKernel();
     const MeshCore::MeshFacetArray& facets = rKernel.GetFacets();
     if (uFacet < facets.size()) {
@@ -1569,6 +1699,7 @@ void ViewProviderMesh::fillHole(unsigned long uFacet)
         MeshCore::MeshFacetArray faces;
         MeshCore::MeshPointArray points;
         MeshCore::QuasiDelaunayTriangulator cTria/*(0.05f)*/;
+        cTria.SetVerifier(new MeshCore::TriangulationVerifierV2);
         if (meshAlg.FillupHole(boundary, cTria, faces, points, level, &cPt2Fac)) {
             if (boundary.front() == boundary.back())
                 boundary.pop_back();
@@ -1823,6 +1954,14 @@ void ViewProviderMesh::deleteSelection()
     }
 }
 
+bool ViewProviderMesh::hasSelection() const
+{
+    std::vector<unsigned long> indices;
+    Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
+    const Mesh::MeshObject& rMesh = meshProp.getValue();
+    return rMesh.hasSelectedFacets();
+}
+
 void ViewProviderMesh::selectArea(short x, short y, short w, short h,
                                   const SbViewportRegion& region,
                                   SoCamera* camera)
@@ -1874,9 +2013,11 @@ void ViewProviderMesh::unhighlightSelection()
 void ViewProviderMesh::setHighlightedComponents(bool on)
 {
     if (on) {
+        highlightMode = "Component";
         highlightComponents();
     }
     else {
+        highlightMode.clear();
         unhighlightSelection();
     }
 }
@@ -1902,6 +2043,34 @@ void ViewProviderMesh::highlightComponents()
         }
     }
     pcShapeMaterial->diffuseColor.finishEditing();
+}
+
+void ViewProviderMesh::setHighlightedSegments(bool on)
+{
+    if (on) {
+        highlightMode = "Segment";
+        highlightSegments();
+    }
+    else {
+        highlightMode.clear();
+        unhighlightSelection();
+    }
+}
+
+void ViewProviderMesh::highlightSegments()
+{
+    std::vector<App::Color> colors;
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    unsigned long numSegm = rMesh.countSegments();
+    colors.resize(numSegm, this->ShapeColor.getValue());
+
+    for (unsigned long i=0; i<numSegm; i++) {
+        App::Color col;
+        if (col.fromHexString(rMesh.getSegment(i).getColor()))
+            colors[i] = col;
+    }
+
+    highlightSegments(colors);
 }
 
 void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)
@@ -1933,6 +2102,14 @@ void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)
         float fBlu = colors[0].b;
         pcShapeMaterial->diffuseColor.setValue(fRed,fGrn,fBlu);
     }
+}
+
+PyObject* ViewProviderMesh::getPyObject()
+{
+    if (!pyViewObject)
+        pyViewObject = new ViewProviderMeshPy(this);
+    pyViewObject->IncRef();
+    return pyViewObject;
 }
 
 // ------------------------------------------------------

@@ -115,31 +115,33 @@ void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property*
 
 void ViewProviderOriginGroupExtension::slotChangedObjectApp ( const App::DocumentObject& obj) {
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
-    if ( group && group->hasObject (&obj, /*recusive=*/ true ) ) {
+    if ( group && group->hasObject (&obj, /*recursive=*/ true ) ) {
         updateOriginSize ();
     }
 }
 
 void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& vp) {
     if ( !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () )) {
-        // Ignore origins to avoid infinite recursion (not likely in a well-formed focument, 
+        // Ignore origins to avoid infinite recursion (not likely in a well-formed document, 
         //          but may happen in documents designed in old versions of assembly branch )
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
         App::DocumentObject *obj = vp.getObject ();
 
-        if ( group && obj && group->hasObject (obj, /*recusive=*/ true ) ) {
+        if ( group && obj && group->hasObject (obj, /*recursive=*/ true ) ) {
             updateOriginSize ();
         }
     }
 }
 
 void ViewProviderOriginGroupExtension::updateOriginSize () {
+    auto owner = getExtendedViewProvider()->getObject();
     
-    if(getExtendedViewProvider()->getObject()->isRemoving() ||
-       getExtendedViewProvider()->getObject()->getDocument()->testStatus(App::Document::Restoring))
+    if(!owner->getNameInDocument() ||
+       owner->isRemoving() ||
+       owner->getDocument()->testStatus(App::Document::Restoring))
         return;
     
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
+    auto* group = owner->getExtensionByType<App::OriginGroupExtension>();
     if(!group)
         return;
 
@@ -152,17 +154,15 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
 
         Gui::ViewProvider *vp = Gui::Application::Instance->getViewProvider(origin);
         if (!vp) {
-            throw Base::RuntimeError ("No view provider linked to the Origin");
+            Base::Console().Error ("No view provider linked to the Origin\n");
+            return;
         }
         assert ( vp->isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) );
         vpOrigin = static_cast <Gui::ViewProviderOrigin *> ( vp );
     } catch (const Base::Exception &ex) {
-        // if is restoring it is normal that the origin property is null until after restored, so no need to report this.
-        if(!getExtendedViewProvider()->getDocument()->getDocument()->testStatus(App::Document::Restoring))
-            Base::Console().Error ("%s\n", ex.what() );
+        Base::Console().Error ("%s\n", ex.what() );
         return;
     }
-
 
     Gui::Document* gdoc = getExtendedViewProvider()->getDocument();
     if(!gdoc) 

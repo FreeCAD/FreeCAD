@@ -34,8 +34,10 @@
 # include <cfloat>
 # include <QFuture>
 # include <QFutureWatcher>
+# include <QKeyEvent>
 # include <QtConcurrentMap>
 # include <boost/bind.hpp>
+# include <Python.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -173,6 +175,13 @@ void CrossSections::changeEvent(QEvent *e)
     else {
         QDialog::changeEvent(e);
     }
+}
+
+void CrossSections::keyPressEvent(QKeyEvent* ke)
+{
+    // The cross-sections dialog is embedded into a task panel
+    // which is a parent widget and will handle the event
+    ke->ignore();
 }
 
 void CrossSections::accept()

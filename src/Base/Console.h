@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *   
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -10,18 +10,18 @@
  *   for detail see the LICENCE text file.                                 *
  *                                                                         *
  *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
- *   License along with FreeCAD; if not, write to the Free Software        * 
+ *   License along with FreeCAD; if not, write to the Free Software        *
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
  *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
- 
+
 
 
 
@@ -41,15 +41,15 @@
 #include <chrono>
 
 //**************************************************************************
-// Loging levels
+// Logging levels
 
 #ifdef FC_DEBUG
-/// switch on the loging of python object creation and destruction
-#  undef FC_LOGPYOBJECTS 
-/// switch on the loging of Feature update and execution
-#  define FC_LOGFEATUREUPDATE 
-/// switch on the loging of the Update execution through Doc, App, GuiApp and GuiDoc
-#  undef FC_LOGUPDATECHAIN 
+/// switch on the logging of python object creation and destruction
+#  undef FC_LOGPYOBJECTS
+/// switch on the logging of Feature update and execution
+#  define FC_LOGFEATUREUPDATE
+/// switch on the logging of the Update execution through Doc, App, GuiApp and GuiDoc
+#  undef FC_LOGUPDATECHAIN
 #endif
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +57,7 @@
 /** \page LogLevelPage Tag based log helpers
  * Simple tag based log and timing helper macros and functions.
  *
- * \section Motivation 
+ * \section Motivation
  *
  * FreeCAD Base::Console() is capable of outputting to different targets, and has
  * some basic enable/disable control of different types of logs. There is,
@@ -84,7 +84,7 @@
  * the same source file.
  *
  * Predefined log levels are,
- * 
+ *
  * \code{.c}
  * #define FC_LOGLEVEL_ERR 0
  * #define FC_LOGLEVEL_WARN 1
@@ -118,12 +118,12 @@
  * tag log levels, and \c FreeCAD.getLogLevel(tag), which outputs only integer
  * log level.
  *
- * You can fine tune how the log is output by passing extra parameters to 
+ * You can fine tune how the log is output by passing extra parameters to
  * #FC_LOG_LEVEL_INIT(). All the extra parameters are boolean value, which are
  * shown blew along with their default values.
  *
  * \code{.c}
- * FC_LOG_LEVEL_INIT(tag, print_tag=true, print_src=false,
+ * FC_LOG_LEVEL_INIT(tag, print_tag=true, print_src=0,
  *          print_time=false, add_eol=true, refresh=false)
  * \endcode
  *
@@ -133,7 +133,11 @@
  *
  * \code{.c}
  * FC_LOG_INSTANCE.refresh = true; // print time for each log, default false.
- * FC_LOG_INSTANCE.print_src = true; // print file and line number, default false.
+ *
+ * // print file and line number, default 0, if set to 2 then print python
+ * // source from current call frame.
+ * FC_LOG_INSTANCE.print_src = 1; 
+ *
  * FC_LOG_INSTANCE.print_tag = false; // do not print tag, default true
  * FC_LOG_INSTANCE.add_eol = false; // do not add eol
  * FC_LOG_INSTANCE.refresh = true; // refresh GUI after each log
@@ -157,7 +161,7 @@
  * and \c FC_TRACE uses Base::Console().Log(), same as \c FC_LOG. These macros
  * checks the log level defined in \c FC_LOG_LEVEL_INIT to decide whether to
  * print log or not. \c msg here shall be a C++ streaming expression. End of
- * line will be automatically appended by default. 
+ * line will be automatically appended by default.
  *
  * \code
  * FC_ERR("error: " << code << ". exiting")
@@ -171,7 +175,7 @@
  * \code{.c}
  * void operation() {
  *      FC_TIME_INIT(t);
- *      
+ *
  *      //do stuff
  *
  *      FC_TIME_LOG(t,"operation done.");
@@ -182,7 +186,7 @@
  *
  * \code
  * operation done. time: 1.12s
- * \endcode 
+ * \endcode
  *
  * Every time you call \c FC_TIME_LOG it will calculate the time duration
  * between this call and the last \c FC_TIME_LOG or \c FC_TIME_INIT.  Time
@@ -194,7 +198,7 @@
  * \code{.cpp}
  * void operation() {
  *      FC_TIME_INIT2(t,t1);
- *      
+ *
  *      //do stage 1
  *
  *      FC_TIME_LOG(t1,"stage1");
@@ -234,7 +238,7 @@
  * };
  *
  * void operation1(Timing &timing) {
- *      
+ *
  *      FC_TIME_INIT(t);
  *
  *      for(...) {
@@ -245,7 +249,7 @@
  *          FC_DURATION_PLUS(timing.d1_1,t1);
  *
  *          // do step 2
- *          
+ *
  *          FC_DURATION_PLUS(timing.d1_2,t1);
  *      }
  *
@@ -255,7 +259,7 @@
  * }
  *
  * void operation2(Timing &timing) {
- *      
+ *
  *      FC_TIME_INIT(t);
  *
  *      // do stuff
@@ -264,7 +268,7 @@
  * }
  *
  * void operation() {
- *      
+ *
  *      Timing timing;
  *
  *      FC_TIME_INIT(t);
@@ -273,7 +277,7 @@
  *          operation1(timing);
  *
  *          // do other stuff
- *          
+ *
  *          operation2(timing);
  *      }
  *
@@ -285,10 +289,10 @@
  * }
  * \endcode
  *
- * You can also use <tt>FC_DURATION_MSG, FC_DURATION_TRACE</tt> as usual. 
+ * You can also use <tt>FC_DURATION_MSG, FC_DURATION_TRACE</tt> as usual.
  *
  * If you use only macros provided here to do timing, the entire timing code
- * can be complied out by defining \c FC_LOG_NO_TIMING before including 
+ * can be compiled out by defining \c FC_LOG_NO_TIMING before including
  * \c App/Console.h.
  *
  * \section Customization
@@ -300,7 +304,7 @@
  * function returns a pointer to an integer representing the log level. Python
  * developer or end-user can set/get the same tag based log level using
  * FreeCAD.setLogLevel/getLogLevel. Any change to the log level is reflected
- * through the pointer returned by Base::Console().GetLogLevel(). What 
+ * through the pointer returned by Base::Console().GetLogLevel(). What
  * \c FC_LOG_LEVEL_INIT(tag) does is to define a class Base::LogLevel, and then
  * a file static instance of that class to store the pointer to the desired tag
  * log level. The class and instance name is predefined. Various log macros
@@ -326,7 +330,7 @@
  *
  * You can also define your own log levels the same way. Macro
  * #_FC_PRINT(_instance,_l,_func,_msg) checks to see if the log shall proceed,
- * where \c _instance is the static loglevel instance name (default is 
+ * where \c _instance is the static loglevel instance name (default is
  * \c FC_LOG_INSTANCE), and \c _l is the log level constant to be checked,
  * \c _func is the Base::Console() function to print the log.
  *
@@ -349,24 +353,34 @@
 #define FC_LOG_LEVEL_INIT(_tag,...) \
     _FC_LOG_LEVEL_INIT(FC_LOG_INSTANCE, _tag, ## __VA_ARGS__)
 
-#define _FC_PRINT(_instance,_l,_func,_msg) do{\
+#define __FC_PRINT(_instance,_l,_func,_msg,_file,_line) do{\
     if(_instance.isEnabled(_l)) {\
-        std::stringstream str;\
-        _instance.prefix(str,__FILE__,__LINE__) << _msg;\
+        std::stringstream _str;\
+        _instance.prefix(_str,_file,_line) << _msg;\
         if(_instance.add_eol) \
-            str<<std::endl;\
-        Base::Console()._func("%s",str.str().c_str());\
+            _str<<std::endl;\
+        Base::Console()._func(_str.str().c_str());\
         if(_instance.refresh) Base::Console().Refresh();\
     }\
 }while(0)
 
-#define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,Message,_msg)
-#define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,Warning,_msg)
-#define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,Error,_msg)
-#define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,Log,_msg)
-#define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,Log,_msg)
+#define _FC_PRINT(_instance,_l,_func,_msg) __FC_PRINT(_instance,_l,_func,_msg,__FILE__,__LINE__)
+
+#define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,NotifyMessage,_msg)
+#define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,NotifyWarning,_msg)
+#define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,NotifyError,_msg)
+#define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,NotifyLog,_msg)
+#define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,NotifyLog,_msg)
+
+#define _FC_MSG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,NotifyMessage,_msg,_file,_line)
+#define _FC_WARN(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,NotifyWarning,_msg,_file,_line)
+#define _FC_ERR(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,NotifyError,_msg,_file,_line)
+#define _FC_LOG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,NotifyLog,_msg,_file,_line)
+#define _FC_TRACE(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,NotifyLog,_msg,_file,_line)
+
 #define FC_XYZ(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
-#define FC_XY(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
+#define FC_xy(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
+#define FC_xyz(_pt) '('<<(_pt).x<<", " << (_pt).y<<", " << (_pt).z<<')'
 
 #ifndef FC_LOG_NO_TIMING
 #   define FC_TIME_CLOCK high_resolution_clock
@@ -428,7 +442,7 @@
 #   define FC_DURATION_PLUS(...) do{}while(0)
 
 #endif //FC_LOG_NO_TIMING
- 
+
 namespace Base {
 class ConsoleSingleton;
 } // namespace Base
@@ -449,7 +463,7 @@ namespace Base {
 #endif
 
 /** The console observer class
- *  This class distribute the Messages issued to the FCConsole class. 
+ *  This class distribute the Messages issued to the FCConsole class.
  *  If you need to catch some of the Messages you need to inherit from
  *  this class and implement some of the methods.
  *  @see Console
@@ -458,15 +472,15 @@ class BaseExport ConsoleObserver
 {
 public:
     ConsoleObserver()
-        :bErr(true),bMsg(true),bLog(true),bWrn(true) {}
+        :bErr(true),bMsg(true),bLog(true),bWrn(true){}
     virtual ~ConsoleObserver() {}
-    /// get calles when a Warning is issued
+    /// get calls when a Warning is issued
     virtual void Warning(const char *){}
-    /// get calles when a Message is issued
+    /// get calls when a Message is issued
     virtual void Message(const char *){}
-    /// get calles when a Error is issued
+    /// get calls when a Error is issued
     virtual void Error  (const char *)=0;
-    /// get calles when a Log Message is issued
+    /// get calls when a Log Message is issued
     virtual void Log    (const char *){}
 
     virtual const char *Name(void){return 0L;}
@@ -475,7 +489,7 @@ public:
 
 
 /** The console class
- *  This class manage all the stdio stuff. This includes 
+ *  This class manage all the stdio stuff. This includes
  *  Messages, Warnings, Log entries and Errors. The incoming
  *  Messages are distributed with the FCConsoleObserver. The
  *  FCConsole class itself makes no IO, it's more like a manager.
@@ -495,16 +509,22 @@ class BaseExport ConsoleSingleton
 {
 
 public:
-
+    static const unsigned int BufferSize = 4024;
     // exported functions goes here +++++++++++++++++++++++++++++++++++++++
-    /// Prints a Message 
+    /// Prints a Message
     virtual void Message ( const char * pMsg, ... ) ;
-    /// Prints a warning Message 
+    /// Prints a warning Message
     virtual void Warning ( const char * pMsg, ... ) ;
-    /// Prints a error Message 
+    /// Prints a error Message
     virtual void Error   ( const char * pMsg, ... ) ;
-    /// Prints a log Message 
+    /// Prints a log Message
     virtual void Log     ( const char * pMsg, ... ) ;
+
+    // observer processing 
+    void NotifyMessage(const char *sMsg);
+    void NotifyWarning(const char *sMsg);
+    void NotifyError  (const char *sMsg);
+    void NotifyLog    (const char *sMsg);
 
     /// Delivers a time/date string 
     const char* Time(void);
@@ -516,22 +536,27 @@ public:
     enum ConsoleMode{
         Verbose = 1,	// suppress Log messages
     };
+    enum ConnectionMode {
+        Direct = 0,
+        Queued =1
+    };
 
-    enum FreeCAD_ConsoleMsgType { 
+    enum FreeCAD_ConsoleMsgType {
         MsgType_Txt = 1,
         MsgType_Log = 2, // ConsoleObserverStd sends this and higher to stderr
         MsgType_Wrn = 4,
         MsgType_Err = 8
-    } ;
+    };
 
     /// Change mode
-    void SetMode(ConsoleMode m);
+    void SetConsoleMode(ConsoleMode m);
     /// Change mode
-    void UnsetMode(ConsoleMode m);
+    void UnsetConsoleMode(ConsoleMode m);
     /// Enables or disables message types of a certain console observer
     ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool b);
     /// Enables or disables message types of a certain console observer
     bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
+    void SetConnectionMode(ConnectionMode mode);
 
     int *GetLogLevel(const char *tag, bool create=true);
 
@@ -543,29 +568,30 @@ public:
         return level<0?_defaultLogLevel:level;
     }
 
-    /// singleton 
+    /// singleton
     static ConsoleSingleton &Instance(void);
 
     // retrieval of an observer by name
     ConsoleObserver *Get(const char *Name) const;
 
-    static PyMethodDef    Methods[]; 
+    static PyMethodDef    Methods[];
 
     void Refresh();
     void EnableRefresh(bool enable);
 
 protected:
-    // python exports goes here +++++++++++++++++++++++++++++++++++++++++++	
+    // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     // static python wrapper of the exported functions
-    static PyObject *sPyLog      (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPyMessage  (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPyWarning  (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPyError    (PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPySetStatus(PyObject *self,PyObject *args,PyObject *kwd);
-    static PyObject *sPyGetStatus(PyObject *self,PyObject *args,PyObject *kwd);
+    static PyObject *sPyLog      (PyObject *self,PyObject *args);
+    static PyObject *sPyMessage  (PyObject *self,PyObject *args);
+    static PyObject *sPyWarning  (PyObject *self,PyObject *args);
+    static PyObject *sPyError    (PyObject *self,PyObject *args);
+    static PyObject *sPySetStatus(PyObject *self,PyObject *args);
+    static PyObject *sPyGetStatus(PyObject *self,PyObject *args);
 
     bool _bVerbose;
     bool _bCanRefresh;
+    ConnectionMode connectionMode;
 
     // Singleton!
     ConsoleSingleton(void);
@@ -576,23 +602,19 @@ private:
     static void Destruct(void);
     static ConsoleSingleton *_pcSingleton;
 
-    // observer processing 
-    void NotifyMessage(const char *sMsg);
-    void NotifyWarning(const char *sMsg);
-    void NotifyError  (const char *sMsg);
-    void NotifyLog    (const char *sMsg);
-
     // observer list
     std::set<ConsoleObserver * > _aclObservers;
 
     std::map<std::string, int> _logLevels;
     int _defaultLogLevel;
+
+    friend class ConsoleOutput;
 };
 
 /** Access to the Console
- *  This method is used to gain access to the one and only instance of 
+ *  This method is used to gain access to the one and only instance of
  *  the ConsoleSingleton class.
- */  
+ */
 inline ConsoleSingleton &Console(void){
     return ConsoleSingleton::Instance();
 }
@@ -609,18 +631,18 @@ public:
 };
 
 
-/** LogLevel helper class */  
+/** LogLevel helper class */
 class BaseExport LogLevel {
 public:
     std::string tag;
     int &lvl;
     bool print_tag;
-    bool print_src;
+    int print_src;
     bool print_time;
     bool add_eol;
     bool refresh;
 
-    LogLevel(const char *tag, bool print_tag=true, bool print_src=false,
+    LogLevel(const char *tag, bool print_tag=true, int print_src=0,
             bool print_time=false, bool add_eol=true, bool refresh=false)
         :tag(tag),lvl(*Console().GetLogLevel(tag))
         ,print_tag(print_tag),print_src(print_src),print_time(print_time)
@@ -644,7 +666,7 @@ public:
 
 /** The LoggingConsoleObserver class
  *  This class is used by the main modules to write Console messages and logs to a file
- */  
+ */
 class BaseExport ConsoleObserverFile : public ConsoleObserver
 {
 public:
@@ -669,9 +691,9 @@ public:
     ConsoleObserverStd();
     virtual ~ConsoleObserverStd();
     virtual void Warning(const char *sWarn);
-    virtual void Message(const char *sMsg); 
-    virtual void Error  (const char *sErr); 
-    virtual void Log    (const char *sErr); 
+    virtual void Message(const char *sMsg);
+    virtual void Error  (const char *sErr);
+    virtual void Log    (const char *sErr);
     const char* Name(void){return "Console";}
 protected:
     bool useColorStderr;
@@ -717,6 +739,6 @@ private:
 };
 
 
-} // namespace Base 
+} // namespace Base
 
 #endif // BASE_CONSOLE_H

@@ -36,6 +36,7 @@
 
 
 using namespace Raytracing;
+using namespace std;
 
 PROPERTY_SOURCE(Raytracing::RayFeature, Raytracing::RaySegment)
 
@@ -48,6 +49,17 @@ RayFeature::RayFeature(void)
     ADD_PROPERTY(Source,(0));
     ADD_PROPERTY(Color,(App::Color(0.5f,0.5f,0.5f)));
     ADD_PROPERTY(Transparency,(0));
+}
+
+short RayFeature::mustExecute() const
+{
+    if (Source.isTouched())
+        return 1;
+    if (Color.isTouched())
+        return 1;
+    if (Transparency.isTouched())
+        return 1;
+    return RaySegment::mustExecute();
 }
 
 App::DocumentObjectExecReturn *RayFeature::execute(void)

@@ -56,8 +56,8 @@ private:
     std::vector<App::DocumentObject*> constructChildren (
             const std::vector<App::DocumentObject*> &children ) const;
 
-    boost::signals::connection connectChangedObjectApp;
-    boost::signals::connection connectChangedObjectGui;
+    boost::signals2::connection connectChangedObjectApp;
+    boost::signals2::connection connectChangedObjectGui;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension> ViewProviderOriginGroupExtensionPython;

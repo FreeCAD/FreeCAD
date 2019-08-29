@@ -3575,7 +3575,7 @@ namespace { // Structures used by FixQuadraticElements()
 
     bool Contains( const SMDS_MeshNode* node ) const { return count(node); }
 
-    bool IsSpoiled(const QLink* bentLink ) const;
+    //bool IsSpoiled(const QLink* bentLink ) const;
 
     TLinkInSet GetBoundaryLink( const TLinkSet&      links,
                                 const TChainLink&    avoidLink,
@@ -3970,7 +3970,7 @@ namespace { // Structures used by FixQuadraticElements()
    * \brief Checks if the face is distorted due to bentLink
    */
   //================================================================================
-
+#if 0
   bool QFace::IsSpoiled(const QLink* bentLink ) const
   {
     // code is valid for convex faces only
@@ -3995,7 +3995,7 @@ namespace { // Structures used by FixQuadraticElements()
     return false;
     
   }
-
+#endif
   //================================================================================
   /*!
    * \brief Find pairs of continues faces 
@@ -4445,7 +4445,7 @@ namespace { // Structures used by FixQuadraticElements()
             if ( curvNorm * D2 > 0 )
               continue; // convex edge
           }
-          catch ( Standard_Failure )
+          catch ( Standard_Failure &)
           {
             continue;
           }
@@ -4558,7 +4558,7 @@ namespace { // Structures used by FixQuadraticElements()
             if ( concaveU || concaveV )
               concaveFaces.push_back( face );
           }
-          catch ( Standard_Failure )
+          catch ( Standard_Failure &)
           {
             concaveFaces.push_back( face );
           }
@@ -5081,7 +5081,7 @@ void SMESH_MesherHelper::FixQuadraticElements(SMESH_ComputeErrorPtr& compError,
               try {
                 gp_Vec x = x01.Normalized() + x12.Normalized();
                 trsf.SetTransformation( gp_Ax3( gp::Origin(), link1->Normal(), x), gp_Ax3() );
-              } catch ( Standard_Failure ) {
+              } catch ( Standard_Failure &) {
                 trsf.Invert();
               }
               move.Transform(trsf);

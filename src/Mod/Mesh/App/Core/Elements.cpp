@@ -90,6 +90,12 @@ MeshPointArray& MeshPointArray::operator = (const MeshPointArray &rclPAry)
   return *this;
 }
 
+void MeshPointArray::Transform(const Base::Matrix4D& mat)
+{
+  for (_TIterator pP = begin(); pP != end(); ++pP)
+    mat.multVec(*pP,*pP);
+}
+
 void MeshFacetArray::Erase (_TIterator pIter)
 {
   unsigned long i, *pulN;
@@ -217,6 +223,100 @@ bool MeshGeomEdge::IntersectBoundingBox (const Base::BoundBox3f &rclBB) const
 
   IntrSegment3Box3<float> intrsectbox(akSeg, kBox, false);
   return intrsectbox.Test();
+}
+
+bool MeshGeomEdge::IntersectWithLine (const Base::Vector3f &rclPt,
+                                      const Base::Vector3f &rclDir,
+                                      Base::Vector3f &rclRes) const
+{
+    const float eps = 1e-06f;
+    Base::Vector3f n = _aclPoints[1] - _aclPoints[0];
+
+    // check angle between edge and the line direction, FLOAT_MAX is
+    // returned for degenerated edges
+    float fAngle = rclDir.GetAngle(n);
+    if (fAngle == 0) {
+        // parallel lines
+        float distance = _aclPoints[0].DistanceToLine(rclPt, rclDir);
+        if (distance < eps) {
+            // lines are equal
+            rclRes = _aclPoints[0];
+            return true;
+        }
+
+        return false; // no intersection possible
+    }
+
+    // that's the normal of a helper plane and its base at _aclPoints
+    Base::Vector3f normal = n.Cross(rclDir);
+
+    // if the distance of rclPt to the plane is higher than eps then the
+    // two lines are warped and there is no intersection possible
+    if (fabs(rclPt.DistanceToPlane(_aclPoints[0], normal)) > eps)
+        return false;
+
+    // get a second helper plane and get the intersection with the line
+    Base::Vector3f normal2 = normal.Cross(n);
+
+    float s = ((_aclPoints[0] - rclPt) * normal2) / (rclDir * normal2);
+    rclRes = rclPt + s * rclDir;
+
+    float dist1 = Base::Distance(_aclPoints[0], _aclPoints[1]);
+    float dist2 = Base::Distance(_aclPoints[0], rclRes);
+    float dist3 = Base::Distance(_aclPoints[1], rclRes);
+
+    return dist2 + dist3 <= dist1 + eps;
+}
+
+void MeshGeomEdge::ProjectPointToLine (const Base::Vector3f &rclPoint,
+                                       Base::Vector3f &rclProj) const
+{
+    Base::Vector3f pt1 = rclPoint - _aclPoints[0];
+    Base::Vector3f dir = _aclPoints[1] - _aclPoints[0];
+    Base::Vector3f vec;
+    vec.ProjectToLine(pt1, dir);
+    rclProj = rclPoint + vec;
+}
+
+void MeshGeomEdge::ClosestPointsToLine(const Base::Vector3f &linePt, const Base::Vector3f &lineDir,
+                                       Base::Vector3f& rclPnt1, Base::Vector3f& rclPnt2) const
+{
+    const float eps = 1e-06f;
+    Base::Vector3f edgeDir = _aclPoints[1] - _aclPoints[0];
+
+    // check angle between edge and the line direction, FLOAT_MAX is
+    // returned for degenerated edges
+    float fAngle = lineDir.GetAngle(edgeDir);
+    if (fAngle == 0) {
+        // parallel lines
+        float distance = _aclPoints[0].DistanceToLine(linePt, lineDir);
+        if (distance < eps) {
+            // lines are equal
+            rclPnt1 = _aclPoints[0];
+            rclPnt2 = _aclPoints[0];
+        }
+        else {
+            rclPnt1 = _aclPoints[0];
+            MeshGeomEdge edge;
+            edge._aclPoints[0] = linePt;
+            edge._aclPoints[1] = linePt + lineDir;
+            edge.ProjectPointToLine(rclPnt1, rclPnt2);
+        }
+    }
+    else {
+        // that's the normal of a helper plane
+        Base::Vector3f normal = edgeDir.Cross(lineDir);
+
+        // get a second helper plane and get the intersection with the line
+        Base::Vector3f normal2 = normal.Cross(edgeDir);
+        float s = ((_aclPoints[0] - linePt) * normal2) / (lineDir * normal2);
+        rclPnt2 = linePt + s * lineDir;
+
+        // get a third helper plane and get the intersection with the line
+        Base::Vector3f normal3 = normal.Cross(lineDir);
+        float t = ((linePt - _aclPoints[0]) * normal3) / (edgeDir * normal3);
+        rclPnt1 = _aclPoints[0] + t * edgeDir;
+    }
 }
 
 // -----------------------------------------------------------------
@@ -509,75 +609,123 @@ bool MeshGeomFacet::IntersectBoundingBox ( const Base::BoundBox3f &rclBB ) const
 
 bool MeshGeomFacet::IntersectWithPlane (const Base::Vector3f &rclBase, const Base::Vector3f &rclNormal, Base::Vector3f &rclP1, Base::Vector3f &rclP2) const
 {
-  // the triangle's corner points
-  const Base::Vector3f& v0 = _aclPoints[0];
-  const Base::Vector3f& v1 = _aclPoints[1];
-  const Base::Vector3f& v2 = _aclPoints[2];
+    const float eps = 1e-06f;
 
-  // edge lengths
-  float len0 = (v0-v1).Length();
-  float len1 = (v1-v2).Length();
-  float len2 = (v2-v0).Length();
+    // the triangle's corner points
+    const Base::Vector3f& v0 = _aclPoints[0];
+    const Base::Vector3f& v1 = _aclPoints[1];
+    const Base::Vector3f& v2 = _aclPoints[2];
 
-  // Build up the line segments
-  Vector3<float> p0(0.5f*(v0.x+v1.x), 0.5f*(v0.y+v1.y), 0.5f*(v0.z+v1.z));
-  Vector3<float> p1(0.5f*(v1.x+v2.x), 0.5f*(v1.y+v2.y), 0.5f*(v1.z+v2.z));
-  Vector3<float> p2(0.5f*(v2.x+v0.x), 0.5f*(v2.y+v0.y), 0.5f*(v2.z+v0.z));
-
-  Vector3<float> d0(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z);
-  d0.Normalize();
-  Vector3<float> d1(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z);
-  d1.Normalize();
-  Vector3<float> d2(v0.x - v2.x, v0.y - v2.y, v0.z - v2.z);
-  d2.Normalize();
-
-  Segment3<float> akSeg0(p0, d0, len0/2.0f  );
-  Segment3<float> akSeg1(p1, d1, len1/2.0f);
-  Segment3<float> akSeg2(p2, d2, len2/2.0f);
-
-  // Build up the plane
-  Vector3<float> p(rclBase.x, rclBase.y, rclBase.z);
-  Vector3<float> n(rclNormal.x, rclNormal.y, rclNormal.z);
-  Plane3<float> akPln(n, p);
-
-  // Check for intersection with plane for each line segment
-  IntrSegment3Plane3<float> test0(akSeg0, akPln);
-  IntrSegment3Plane3<float> test1(akSeg1, akPln);
-  IntrSegment3Plane3<float> test2(akSeg2, akPln);
-
-  Vector3<float> intr;
-  if ( test0.Find() )
-  {
-    intr = p0 + test0.GetSegmentT() * d0; 
-    rclP1.Set( intr[0], intr[1], intr[2]);
-
-    if ( test1.Find() )
-    {
-      intr = p1 + test1.GetSegmentT() * d1; 
-      rclP2.Set( intr[0], intr[1], intr[2]);
-      return true;
+    // first check if a triangle's edge lies on the plane
+    float dist0 = fabs(v0.DistanceToPlane(rclBase, rclNormal));
+    float dist1 = fabs(v1.DistanceToPlane(rclBase, rclNormal));
+    float dist2 = fabs(v2.DistanceToPlane(rclBase, rclNormal));
+    if (dist0 < eps && dist1 < eps) {
+        rclP1 = v0;
+        rclP2 = v1;
+        return true;
     }
-    else if ( test2.Find() )
-    {
-      intr = p2 + test2.GetSegmentT() * d2; 
-      rclP2.Set( intr[0], intr[1], intr[2]);
-      return true;
+    if (dist1 < eps && dist2 < eps) {
+        rclP1 = v1;
+        rclP2 = v2;
+        return true;
     }
-  }
-  else if ( test1.Find() )
-  {
-    intr = p1 + test1.GetSegmentT() * d1; 
-    rclP1.Set( intr[0], intr[1], intr[2]);
-
-    if ( test2.Find() )
-    {
-      intr = p2 + test2.GetSegmentT() * d2; 
-      rclP2.Set( intr[0], intr[1], intr[2]);
-      return true;
+    if (dist2 < eps && dist0 < eps) {
+        rclP1 = v2;
+        rclP2 = v0;
+        return true;
     }
-  }
 
-  return false;
+    // edge lengths
+    float len0 = (v0-v1).Length();
+    float len1 = (v1-v2).Length();
+    float len2 = (v2-v0).Length();
+
+    // Build up the line segments
+    Vector3<float> p0(0.5f*(v0.x+v1.x), 0.5f*(v0.y+v1.y), 0.5f*(v0.z+v1.z));
+    Vector3<float> p1(0.5f*(v1.x+v2.x), 0.5f*(v1.y+v2.y), 0.5f*(v1.z+v2.z));
+    Vector3<float> p2(0.5f*(v2.x+v0.x), 0.5f*(v2.y+v0.y), 0.5f*(v2.z+v0.z));
+
+    Vector3<float> d0(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z);
+    d0.Normalize();
+    Vector3<float> d1(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z);
+    d1.Normalize();
+    Vector3<float> d2(v0.x - v2.x, v0.y - v2.y, v0.z - v2.z);
+    d2.Normalize();
+
+    Segment3<float> akSeg0(p0, d0, len0/2.0f  );
+    Segment3<float> akSeg1(p1, d1, len1/2.0f);
+    Segment3<float> akSeg2(p2, d2, len2/2.0f);
+
+    // Build up the plane
+    Vector3<float> p(rclBase.x, rclBase.y, rclBase.z);
+    Vector3<float> n(rclNormal.x, rclNormal.y, rclNormal.z);
+    Plane3<float> akPln(n, p);
+
+    // Check for intersection with plane for each line segment
+    IntrSegment3Plane3<float> test0(akSeg0, akPln);
+    IntrSegment3Plane3<float> test1(akSeg1, akPln);
+    IntrSegment3Plane3<float> test2(akSeg2, akPln);
+
+    Vector3<float> intr;
+
+    // now check if a triangle's corner lies on the plane
+    if (dist0 < eps) {
+        rclP1 = v0;
+        rclP2 = v0;
+        if (test1.Find()) {
+            intr = p1 + test1.GetSegmentT() * d1;
+            rclP2.Set(intr[0], intr[1], intr[2]);
+        }
+        return true;
+    }
+    else if (dist1 < eps) {
+        rclP1 = v1;
+        rclP2 = v1;
+        if (test2.Find()) {
+            intr = p2 + test2.GetSegmentT() * d2;
+            rclP2.Set(intr[0], intr[1], intr[2]);
+        }
+        return true;
+    }
+    else if (dist2 < eps) {
+        rclP1 = v2;
+        rclP2 = v2;
+        if (test0.Find()) {
+            intr = p0 + test0.GetSegmentT() * d0;
+            rclP2.Set(intr[0], intr[1], intr[2]);
+        }
+        return true;
+    }
+
+    // check for arbitrary intersections
+    if (test0.Find()) {
+        intr = p0 + test0.GetSegmentT() * d0;
+        rclP1.Set( intr[0], intr[1], intr[2]);
+
+        if (test1.Find()) {
+            intr = p1 + test1.GetSegmentT() * d1;
+            rclP2.Set( intr[0], intr[1], intr[2]);
+            return true;
+        }
+        else if (test2.Find()) {
+            intr = p2 + test2.GetSegmentT() * d2;
+            rclP2.Set( intr[0], intr[1], intr[2]);
+            return true;
+        }
+    }
+    else if (test1.Find()) {
+        intr = p1 + test1.GetSegmentT() * d1;
+        rclP1.Set( intr[0], intr[1], intr[2]);
+
+        if (test2.Find()) {
+            intr = p2 + test2.GetSegmentT() * d2;
+            rclP2.Set( intr[0], intr[1], intr[2]);
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool MeshGeomFacet::Foraminate (const Base::Vector3f &P, const Base::Vector3f &dir, Base::Vector3f &I, float fMaxAngle) const
@@ -587,7 +735,8 @@ bool MeshGeomFacet::Foraminate (const Base::Vector3f &P, const Base::Vector3f &d
 
     // check angle between facet normal and the line direction, FLOAT_MAX is
     // returned for degenerated facets
-    if (dir.GetAngle(n) > fMaxAngle)
+    float fAngle = dir.GetAngle(n);
+    if (fAngle > fMaxAngle)
         return false;
 
     float nn = n * n;
@@ -810,7 +959,7 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
 
     // With extremely acute-angled triangles it may happen that the algorithm
     // claims an intersection but the intersection points are far outside the
-    // model. So, a plausability check is to verify that the intersection points
+    // model. So, a plausibility check is to verify that the intersection points
     // are inside the bounding boxes of both triangles.
     Base::BoundBox3f box1 = this->GetBoundBox();
     if (!box1.IsInBox(rclPt0) || !box1.IsInBox(rclPt1))
@@ -860,7 +1009,7 @@ bool MeshGeomFacet::IsPointOf (const Base::Vector3f &P) const
     double wv = w * v;
     double det = fabs((uu * vv) - (uv * uv));
 
-    // Note: Due to roundoff errros it can happen that we get very small
+    // Note: Due to roundoff errors it can happen that we get very small
     // negative values for s or t. This e.g. can happen if the point lies
     // at the border of the facet. And as det could also become very small
     // we need an adaptive tolerance.
@@ -1132,6 +1281,21 @@ float MeshGeomFacet::MaximumAngle () const
   return fMaxAngle;
 }
 
+float MeshGeomFacet::MinimumAngle () const
+{
+  float fMinAngle = Mathf::PI;
+
+  for ( int i=0; i<3; i++ ) {
+    Base::Vector3f dir1(_aclPoints[(i+1)%3]-_aclPoints[i]);
+    Base::Vector3f dir2(_aclPoints[(i+2)%3]-_aclPoints[i]);
+    float fAngle = dir1.GetAngle(dir2);
+    if (fAngle < fMinAngle)
+      fMinAngle = fAngle;
+  }
+
+  return fMinAngle;
+}
+
 bool MeshGeomFacet::IsPointOfSphere(const Base::Vector3f& rP) const
 {
   float radius;
@@ -1159,3 +1323,46 @@ bool MeshGeomFacet::IsPointOfSphere(const MeshGeomFacet& rFacet) const
   return false;
 }
 
+float MeshGeomFacet::AspectRatio() const
+{
+    Base::Vector3f d0 = _aclPoints[0] - _aclPoints[1];
+    Base::Vector3f d1 = _aclPoints[1] - _aclPoints[2];
+    Base::Vector3f d2 = _aclPoints[2] - _aclPoints[0];
+
+    float l2, maxl2 = d0.Sqr();
+    if ((l2=d1.Sqr()) > maxl2)
+        maxl2 = l2;
+
+    d1 = d2;
+    if ((l2=d1.Sqr()) > maxl2)
+        maxl2 = l2;
+
+    // squared area of the parallelogram spanned by d0 and d1
+    float a2 = (d0 % d1).Sqr();
+    return float(sqrt( (maxl2 * maxl2) / a2 ));
+}
+
+float MeshGeomFacet::AspectRatio2() const
+{
+    const Base::Vector3f& rcP1 = _aclPoints[0];
+    const Base::Vector3f& rcP2 = _aclPoints[1];
+    const Base::Vector3f& rcP3 = _aclPoints[2];
+
+    float a = Base::Distance(rcP1, rcP2);
+    float b = Base::Distance(rcP2, rcP3);
+    float c = Base::Distance(rcP3, rcP1);
+
+    // https://stackoverflow.com/questions/10289752/aspect-ratio-of-a-triangle-of-a-meshed-surface
+    return a * b * c / ((b + c - a) * (c + a - b) * (a + b - c));
+}
+
+float MeshGeomFacet::Roundness() const
+{
+    const double FOUR_ROOT3 = 6.928203230275509;
+    double area = Area();
+    Base::Vector3f d0 = _aclPoints[0] - _aclPoints[1];
+    Base::Vector3f d1 = _aclPoints[1] - _aclPoints[2];
+    Base::Vector3f d2 = _aclPoints[2] - _aclPoints[0];
+
+    return (float) (FOUR_ROOT3 * area / (d0.Sqr() + d1.Sqr() + d2.Sqr()));
+}

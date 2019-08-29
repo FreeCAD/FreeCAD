@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>558</width>
-    <height>742</height>
+    <height>935</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TechDraw 1</string>
+   <string>TechDraw General</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="0" column="0">
@@ -156,6 +156,25 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="Gui::PrefCheckBox" name="cb_AutoDist">
+          <property name="toolTip">
+           <string>Automatically distribute secondary views.</string>
+          </property>
+          <property name="text">
+           <string>AutoDistribute Secondary Views</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AutoDist</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
           </property>
          </widget>
         </item>
@@ -435,6 +454,23 @@
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="1">
+         <widget class="Gui::PrefFileChooser" name="pfc_DefTemp">
+          <property name="prefEntry" stdset="0">
+           <cstring>TemplateFile</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Files</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Welding Directory</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
@@ -469,13 +505,10 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="Gui::PrefFileChooser" name="pfc_DefTemp">
-          <property name="prefEntry" stdset="0">
-           <cstring>TemplateFile</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Files</cstring>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Line Group File</string>
           </property>
          </widget>
         </item>
@@ -492,14 +525,14 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_9">
           <property name="text">
            <string>PAT File</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="5" column="1">
          <widget class="Gui::PrefFileChooser" name="pfc_FilePattern">
           <property name="toolTip">
            <string>Default location for PAT file</string>
@@ -509,6 +542,35 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/PAT</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::PrefFileChooser" name="pfc_LineGroup">
+          <property name="toolTip">
+           <string>Alternate Line Group file</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>LineGroupFile</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Files</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="Gui::PrefFileChooser" name="pfc_Welding">
+          <property name="toolTip">
+           <string>Default directory for welding symbols</string>
+          </property>
+          <property name="mode">
+           <enum>Gui::FileChooser::Directory</enum>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>WeldingDir</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Files</cstring>
           </property>
          </widget>
         </item>
@@ -618,7 +680,7 @@
           </property>
           <property name="currentFont">
            <font>
-            <family>osifont</family>
+            <family>DejaVu Sans</family>
            </font>
           </property>
           <property name="prefEntry" stdset="0">
@@ -632,7 +694,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="lbl_TemplateDot">
           <property name="text">
-           <string>Template Dot Size</string>
+           <string>Editable Text Marker Size</string>
           </property>
          </widget>
         </item>
@@ -668,7 +730,7 @@
            <string>View Label size in units</string>
           </property>
           <property name="value">
-           <double>3.500000000000000</double>
+           <double>8.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LabelSize</cstring>
@@ -681,7 +743,7 @@
         <item row="2" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="plsb_TemplateDot">
           <property name="toolTip">
-           <string>Green edit dot size in units</string>
+           <string>Size of editable text marker in Templates (green dot).</string>
           </property>
           <property name="value">
            <double>3.000000000000000</double>

@@ -76,6 +76,7 @@
 
 #include "Geometry.h"
 #include "GeometryObject.h"
+#include "Cosmetic.h"
 #include "HatchLine.h"
 #include "EdgeWalker.h"
 #include "DrawUtil.h"
@@ -106,13 +107,14 @@ DrawViewSection::DrawViewSection()
     static const char *sgroup = "Section";
     static const char *fgroup = "Cut Surface Format";
 
-
     ADD_PROPERTY_TYPE(SectionSymbol ,("A"),sgroup,App::Prop_None,"The identifier for this section");
     ADD_PROPERTY_TYPE(BaseView ,(0),sgroup,App::Prop_None,"2D View source for this Section");
+    BaseView.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0) ,sgroup,App::Prop_None,"Section Plane normal direction");  //direction of extrusion of cutting prism
     ADD_PROPERTY_TYPE(SectionOrigin ,(0,0,0) ,sgroup,App::Prop_None,"Section Plane Origin");
     SectionDirection.setEnums(SectionDirEnums);
     ADD_PROPERTY_TYPE(SectionDirection,((long)0),sgroup, App::Prop_None, "Direction in Base View for this Section");
+    ADD_PROPERTY_TYPE(FuseBeforeCut ,(false),sgroup,App::Prop_None,"Merge Source(s) into a single shape before cutting");
 
     ADD_PROPERTY_TYPE(FileHatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
     ADD_PROPERTY_TYPE(NameGeomPattern ,(""),fgroup,App::Prop_None,"The pattern name for geometric hatching");
@@ -162,19 +164,24 @@ void DrawViewSection::onChanged(const App::Property* prop)
     }
     if (prop == &FileHatchPattern    ||
         prop == &NameGeomPattern ) {
-      if ((!FileHatchPattern.isEmpty())  &&
-          (!NameGeomPattern.isEmpty())) {
-              std::vector<PATLineSpec> specs = 
-                               DrawGeomHatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
-              m_lineSets.clear();
-              for (auto& hl: specs) {
-                  //hl.dump("hl from section");
-                  LineSet ls;
-                  ls.setPATLineSpec(hl);
-                  m_lineSets.push_back(ls);
-              }
-                  
-      }
+        std::string fileSpec = FileHatchPattern.getValue();
+        Base::FileInfo fi(fileSpec);
+        std::string ext = fi.extension();
+        if ( (ext == "pat") ||
+             (ext == "PAT") ) {
+            if ((!FileHatchPattern.isEmpty())  &&
+                (!NameGeomPattern.isEmpty())) {
+                std::vector<PATLineSpec> specs = 
+                           DrawGeomHatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
+                m_lineSets.clear();
+                for (auto& hl: specs) {
+                    //hl.dump("hl from section");
+                    LineSet ls;
+                    ls.setPATLineSpec(hl);
+                    m_lineSets.push_back(ls);
+                }
+            }
+        }
     }
 
     DrawView::onChanged(prop);
@@ -190,9 +197,22 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
 
-    TopoDS_Shape baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShapeFused();
+    TopoDS_Shape baseShape;
+    if (FuseBeforeCut.getValue()) {
+        baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShapeFused();
+    } else {
+        baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShape();
+    }
+    
     if (baseShape.IsNull()) {
-        Base::Console().Log("DVS::execute - baseShape is Null\n");
+        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+        if (isRestoring) {
+            Base::Console().Warning("DVS::execute - base shape is invalid - (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVS::execute - base shape is Null. - %s\n",
+                                  getNameInDocument());
+        }
         return new App::DocumentObjectExecReturn("BaseView Source object is Null");
     }
 
@@ -245,16 +265,17 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return DrawView::execute();
     }
 
+    m_cutShape = rawShape;
     gp_Pnt inputCenter;
     try {
-        inputCenter = TechDrawGeometry::findCentroid(rawShape,
+        inputCenter = TechDraw::findCentroid(rawShape,
                                                      Direction.getValue());
-        TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(rawShape,
+        TopoDS_Shape mirroredShape = TechDraw::mirrorShape(rawShape,
                                                     inputCenter,
                                                     getScale());
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
-            mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,
+            mirroredShape = TechDraw::rotateShape(mirroredShape,
                                                           viewAxis,
                                                           Rotation.getValue());
         }
@@ -271,12 +292,12 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
     try {
         TopoDS_Compound sectionCompound = findSectionPlaneIntersections(rawShape);
-        TopoDS_Shape mirroredSection = TechDrawGeometry::mirrorShape(sectionCompound,
+        TopoDS_Shape mirroredSection = TechDraw::mirrorShape(sectionCompound,
                                                                      inputCenter,
                                                                      getScale());
         gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
-            mirroredSection = TechDrawGeometry::rotateShape(mirroredSection,
+            mirroredSection = TechDraw::rotateShape(mirroredSection,
                                                             viewAxis,
                                                             Rotation.getValue());
         }
@@ -304,6 +325,13 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         Base::Console().Log("LOG - DVS::execute - failed building section faces for %s - %s **\n",getNameInDocument(),e2.GetMessageString());
         return new App::DocumentObjectExecReturn(e2.GetMessageString());
     }
+
+    //add the cosmetic vertices to the geometry vertices list
+    addCosmeticVertexesToGeom();
+    //add the cosmetic Edges to geometry Edges list
+    addCosmeticEdgesToGeom();
+    //add centerlines to geometry edges list
+    addCenterLinesToGeom();
 
     requestPaint();
     return App::DocumentObject::StdReturn;
@@ -353,23 +381,23 @@ TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shap
 }
 
 //! get display geometry for Section faces
-std::vector<TechDrawGeometry::Face*> DrawViewSection::getFaceGeometry()
+std::vector<TechDraw::Face*> DrawViewSection::getFaceGeometry()
 {
-    std::vector<TechDrawGeometry::Face*> result;
+    std::vector<TechDraw::Face*> result;
     TopoDS_Compound c = sectionFaces;
     TopExp_Explorer faces(c, TopAbs_FACE);
     for (; faces.More(); faces.Next()) {
-        TechDrawGeometry::Face* f = new TechDrawGeometry::Face();
+        TechDraw::Face* f = new TechDraw::Face();
         const TopoDS_Face& face = TopoDS::Face(faces.Current());
         TopExp_Explorer wires(face, TopAbs_WIRE);
         for (; wires.More(); wires.Next()) {
-            TechDrawGeometry::Wire* w = new TechDrawGeometry::Wire();
+            TechDraw::Wire* w = new TechDraw::Wire();
             const TopoDS_Wire& wire = TopoDS::Wire(wires.Current());
             TopExp_Explorer edges(wire, TopAbs_EDGE);
             for (; edges.More(); edges.Next()) {
                 const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
                 //dumpEdge("edge",edgeCount,edge);
-                TechDrawGeometry::BaseGeom* base = TechDrawGeometry::BaseGeom::baseFactory(edge);
+                TechDraw::BaseGeom* base = TechDraw::BaseGeom::baseFactory(edge);
                 w->geoms.push_back(base);
             }
             f->wires.push_back(w);
@@ -385,7 +413,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
                                      const Base::Vector3d &direction)
 {
     if(face.IsNull()) {
-        throw Base::Exception("DrawViewSection::projectFace - input Face is NULL");
+        throw Base::ValueError("DrawViewSection::projectFace - input Face is NULL");
     }
 
     Base::Vector3d origin(faceCenter.X(),faceCenter.Y(),faceCenter.Z());
@@ -612,6 +640,12 @@ void DrawViewSection::getParameters()
         }
     std::string patternName = hGrp->GetASCII("PatternName","Diamond");
     NameGeomPattern.setValue(patternName);
+
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+
+    bool fuseFirst = hGrp->GetBool("SectionFuseFirst",true);
+    FuseBeforeCut.setValue(fuseFirst);
 }
 
 // Python Drawing feature ---------------------------------------------------------

@@ -63,8 +63,11 @@ App::Property *PropertyColumnWidths::Copy() const
 
 void PropertyColumnWidths::Paste(const App::Property &from)
 {
+    setValues(static_cast<const PropertyColumnWidths&>(from).getValues());
+}
+
+void PropertyColumnWidths::setValues(const std::map<int,int> &values) {
     aboutToSetValue();
-    const PropertyColumnWidths * frompcw = static_cast<const PropertyColumnWidths*>(&from);
 
     std::map<int, int>::const_iterator i;
 
@@ -79,8 +82,8 @@ void PropertyColumnWidths::Paste(const App::Property &from)
     clear();
 
     /* Copy new map from from */
-    i = frompcw->begin();
-    while (i != frompcw->end()) {
+    i = values.begin();
+    while (i != values.end()) {
         insert(*i);
         dirty.insert(i->first);
         ++i;
@@ -110,13 +113,13 @@ void PropertyColumnWidths::Save(Base::Writer &writer) const
 {
         // Save column information
     writer.Stream() << writer.ind() << "<ColumnInfo Count=\"" << size() << "\">" << std::endl;
-    writer.incInd(); // indention for 'ColumnInfo'
+    writer.incInd(); // indentation for 'ColumnInfo'
     std::map<int, int>::const_iterator coli = begin();
     while (coli != end()) {
         writer.Stream() << writer.ind() << "<Column name=\"" << columnName(coli->first) << "\" width=\"" << coli->second << "\" />" << std::endl;
         ++coli;
     }
-    writer.decInd(); // indention for 'ColumnInfo'
+    writer.decInd(); // indentation for 'ColumnInfo'
     writer.Stream() << writer.ind() << "</ColumnInfo>" << std::endl;
 }
 

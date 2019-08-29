@@ -30,6 +30,7 @@
 #include <App/FeaturePython.h>
 #include <App/Material.h>
 
+#include <TopoDS_Shape.hxx>
 #include <TopoDS_Compound.hxx>
 
 #include "DrawViewPart.h"
@@ -39,7 +40,7 @@ class gp_Pln;
 class gp_Pnt;
 class TopoDS_Face;
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
 class Face;
 }
@@ -68,6 +69,7 @@ public:
     App::PropertyString NameGeomPattern;
     App::PropertyFloat  HatchScale;
     App::PropertyString SectionSymbol;
+    App::PropertyBool   FuseBeforeCut;
 
     virtual short mustExecute() const;
 
@@ -81,7 +83,7 @@ public:
     }
 
 public:
-    std::vector<TechDrawGeometry::Face*> getFaceGeometry();
+    std::vector<TechDraw::Face*> getFaceGeometry();
     Base::Vector3d getSectionVector (const std::string sectionName);
     TechDraw::DrawViewPart* getBaseDVP();
     TechDraw::DrawProjGroupItem* getBaseDPGI();
@@ -93,6 +95,8 @@ public:
 
     std::vector<LineSet> getDrawableLines(int i = 0);
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
+
+    TopoDS_Shape getCutShape(void) {return m_cutShape;}
 
     static const char* SectionDirEnums[];
 
@@ -108,6 +112,7 @@ protected:
                                      gp_Pnt faceCenter,
                                      const Base::Vector3d &direction);
     void getParameters(void);
+    TopoDS_Shape m_cutShape;
 };
 
 typedef App::FeaturePythonT<DrawViewSection> DrawViewSectionPython;

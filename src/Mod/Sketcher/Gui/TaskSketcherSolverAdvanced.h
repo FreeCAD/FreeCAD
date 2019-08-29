@@ -26,7 +26,6 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
 
 class Ui_TaskSketcherSolverAdvanced;
 

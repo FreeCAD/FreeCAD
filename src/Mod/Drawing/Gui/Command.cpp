@@ -74,7 +74,11 @@ void CmdDrawingOpen::activated(int iMsg)
     {
         // load the file with the module
         Command::doCommand(Command::Gui, "import Drawing, DrawingGui");
+#if PY_MAJOR_VERSION < 3
         Command::doCommand(Command::Gui, "DrawingGui.open(unicode(\"%s\",\"utf-8\"))", (const char*)filename.toUtf8());
+#else
+        Command::doCommand(Command::Gui, "DrawingGui.open(\"%s\")", (const char*)filename.toUtf8());
+#endif
     }
 }
 
@@ -593,7 +597,11 @@ void CmdDrawingSymbol::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Symbol");
         openCommand("Create Symbol");
         doCommand(Doc,"import Drawing");
+#if PY_MAJOR_VERSION < 3
         doCommand(Doc,"f = open(unicode(\"%s\",'utf-8'),'r')",(const char*)filename.toUtf8());
+#else
+        doCommand(Doc,"f = open(\"%s\",'r')",(const char*)filename.toUtf8());
+#endif
         doCommand(Doc,"svg = f.read()");
         doCommand(Doc,"f.close()");
         doCommand(Doc,"App.activeDocument().addObject('Drawing::FeatureViewSymbol','%s')",FeatName.c_str());
@@ -649,7 +657,11 @@ void CmdDrawingExportPage::activated(int iMsg)
 
         doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].FeatName);
         std::string fname = (const char*)fn.toUtf8();
+#if PY_MAJOR_VERSION < 3
         doCommand(Doc,"OutFile = open(unicode(\"%s\",'utf-8'),'w')",fname.c_str());
+#else
+        doCommand(Doc,"OutFile = open(\"%s\",'w')",fname.c_str());
+#endif
         doCommand(Doc,"OutFile.write(PageFile.read())");
         doCommand(Doc,"del OutFile,PageFile");
 

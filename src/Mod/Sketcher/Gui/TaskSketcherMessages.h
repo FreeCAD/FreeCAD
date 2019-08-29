@@ -26,10 +26,10 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 class Ui_TaskSketcherMessages;
-typedef boost::signals::connection Connection;
+typedef boost::signals2::connection Connection;
 
 namespace App {
 class Property;
@@ -53,6 +53,7 @@ public:
 private Q_SLOTS:
     void on_labelConstrainStatus_linkActivated(const QString &);
     void on_autoUpdate_stateChanged(int state);
+    void on_autoRemoveRedundants_stateChanged(int state);
     void on_manualUpdate_clicked(bool checked);
     
 protected:

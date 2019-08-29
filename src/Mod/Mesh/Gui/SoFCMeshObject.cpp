@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <algorithm>
+# include <climits>
 # ifdef FC_OS_WIN32
 # include <windows.h>
 # endif
@@ -241,18 +242,19 @@ SbBool SoSFMeshObject::readValue(SoInput *in)
 // This writes the value of a field to a file.
 void SoSFMeshObject::writeValue(SoOutput *out) const
 {
-    if (!out->isBinary()) {
-        SoOutputStream str(out);
-        MeshCore::MeshOutput(value->getKernel()).SaveMeshNode(str);
-        return;
-    }
-
     if (!value) {
         int32_t count = 0;
         out->write(count);
         out->write(count);
         return;
     }
+
+    if (!out->isBinary()) {
+        SoOutputStream str(out);
+        MeshCore::MeshOutput(value->getKernel()).SaveMeshNode(str);
+        return;
+    }
+
     const MeshCore::MeshPointArray& rPoints = value->getKernel().GetPoints();
     std::vector<float> verts;
     verts.reserve(3*rPoints.size());
@@ -589,7 +591,7 @@ void SoFCMeshObjectShape::initClass()
 }
 
 SoFCMeshObjectShape::SoFCMeshObjectShape()
-    : renderTriangleLimit(100000)
+    : renderTriangleLimit(UINT_MAX)
     , selectBuf(0)
     , updateGLArray(false)
 {
@@ -1051,8 +1053,7 @@ void SoFCMeshObjectShape::stopSelection(SoAction * action, const Mesh::MeshObjec
 
     delete [] selectBuf;
     selectBuf = 0;
-    bool sorted = true;
-    if(sorted) std::sort(hit.begin(),hit.end());
+    std::sort(hit.begin(),hit.end());
 
     Gui::SoGLSelectAction *doaction = static_cast<Gui::SoGLSelectAction*>(action);
     doaction->indices.reserve(hit.size());
@@ -1260,7 +1261,7 @@ void SoFCMeshSegmentShape::initClass()
     SO_NODE_INIT_CLASS(SoFCMeshSegmentShape, SoShape, "Shape");
 }
 
-SoFCMeshSegmentShape::SoFCMeshSegmentShape() : renderTriangleLimit(100000)
+SoFCMeshSegmentShape::SoFCMeshSegmentShape() : renderTriangleLimit(UINT_MAX)
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshSegmentShape);
     SO_NODE_ADD_FIELD(index, (0));

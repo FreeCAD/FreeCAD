@@ -51,11 +51,11 @@ public:
    * Construction.
    */
   MeshEvalInvalids (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshEvalInvalids () { }
-  /** 
+  /**
    * Searches for as 'Invalid' marked points or facets.
    */
   bool Evaluate ();
@@ -77,11 +77,11 @@ public:
    * Construction.
    */
   MeshFixInvalids (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshFixInvalids () { }
-  /** 
+  /**
    * Remove invalid elements.
    */
   bool Fixup ();
@@ -89,7 +89,7 @@ public:
 
 /**
  * The MeshEvalDuplicatePoints class searches for duplicated points.
- * A point is regarded as duplicated if the distances between x, y and z coordinates of two points is 
+ * A point is regarded as duplicated if the distances between x, y and z coordinates of two points is
  * less than an epsilon (defined by MeshDefinitions::_fMinPointDistanceD1, default value=1.0e-5f).
  * @see MeshFixDuplicatePoints
  * @see MeshEvalDegeneratedFacets
@@ -102,7 +102,7 @@ public:
    * Construction.
    */
   MeshEvalDuplicatePoints (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshEvalDuplicatePoints () { }
@@ -128,11 +128,11 @@ public:
    * Construction.
    */
   MeshFixDuplicatePoints (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshFixDuplicatePoints () { }
-  /** 
+  /**
    * Merges duplicated points.
    */
   bool Fixup ();
@@ -150,7 +150,7 @@ public:
    * Construction.
    */
   MeshEvalNaNPoints (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshEvalNaNPoints () { }
@@ -176,11 +176,11 @@ public:
    * Construction.
    */
   MeshFixNaNPoints (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshFixNaNPoints () { }
-  /** 
+  /**
    * Merges duplicated points.
    */
   bool Fixup ();
@@ -188,7 +188,7 @@ public:
 
 /**
  * The MeshEvalDuplicateFacets class searches for duplicated facets.
- * A facet is regarded as duplicated if all its point indices refer to the same location in the point array of the mesh kernel. 
+ * A facet is regarded as duplicated if all its point indices refer to the same location in the point array of the mesh kernel.
  * The actual geometric points are not taken into consideration.
  * @see MeshFixDuplicateFacets
  * @author Werner Mayer
@@ -200,11 +200,11 @@ public:
    * Construction.
    */
   MeshEvalDuplicateFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshEvalDuplicateFacets () { }
-  /** 
+  /**
    * Searches for duplicated facets.
    */
   bool Evaluate ();
@@ -226,11 +226,11 @@ public:
    * Construction.
    */
   MeshFixDuplicateFacets (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshFixDuplicateFacets () { }
-  /** 
+  /**
    * Removes duplicated facets.
    */
   bool Fixup ();
@@ -247,12 +247,12 @@ public:
    * Construction.
    */
   MeshEvalInternalFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshEvalInternalFacets () { }
-  /** 
-   * Identifiy internal facets.
+  /**
+   * Identify internal facets.
    */
   bool Evaluate ();
   /**
@@ -282,11 +282,11 @@ public:
    */
   MeshEvalDegeneratedFacets (const MeshKernel &rclM, float fEps)
       : MeshEvaluation(rclM), fEpsilon(fEps) {}
-  /** 
+  /**
    * Destruction.
    */
   ~MeshEvalDegeneratedFacets () { }
-  /** 
+  /**
    * Searches degenerated facets.
    */
   bool Evaluate ();
@@ -316,22 +316,80 @@ public:
    */
   MeshFixDegeneratedFacets (MeshKernel &rclM, float fEps)
       : MeshValidation(rclM), fEpsilon(fEps) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshFixDegeneratedFacets () { }
-  /** 
+  /**
    * Removes degenerated facets.
    */
   bool Fixup ();
-  /**
-   * Removes all facets with an edge smaller than \a fMinEdgeLength without leaving holes or gaps
-   * in the mesh. Returns the number of removed facets.
-   */
-  unsigned long RemoveEdgeTooSmall (float fMinEdgeLength = MeshDefinitions::_fMinPointDistance,
-                                    float fMinEdgeAngle  = MeshDefinitions::_fMinEdgeAngle);
+
 private:
   float fEpsilon;
+};
+
+/**
+ * The MeshRemoveNeedles class tries to fix degenerations by removing needles.
+ * Needles are triangles where its longest edge is much longer than its shortest edge.
+ * https://graphics.uni-bielefeld.de/publications/vmv01.pdf
+ * @see MeshFixDegeneratedFacets
+ * @see MeshFixCaps
+ * @author Werner Mayer
+ */
+class MeshExport MeshRemoveNeedles : public MeshValidation
+{
+public:
+    /**
+     * Construction. The \arg fMinEdgeLen must be in the range of 0.0 and 0.25.
+     * It defines the amount of perimeter of a triangle for which the shortest
+     * edge is considered for removal.
+     */
+  MeshRemoveNeedles (MeshKernel &rclM, float fMinEdgeLen = 0.05f)
+      : MeshValidation(rclM), fMinEdgeLength(std::min(fMinEdgeLen, 0.25f)) {}
+  /**
+   * Destruction.
+   */
+  ~MeshRemoveNeedles () { }
+  /**
+   * Removes all facets with an edge smaller than \a fMinEdgeLength without leaving holes or gaps
+   * in the mesh.
+   */
+  bool Fixup ();
+
+private:
+  float fMinEdgeLength;
+};
+
+/**
+ * The MeshFixCaps class tries to fix degenerations by swapping the common edge of a cap
+ * and its neighbour.
+ * Caps are triangles with one angle close to 180 degree. The definitions of caps and needles
+ * are not mutually exclusive but here we only consider triangles that are caps but no needles.
+ * https://graphics.uni-bielefeld.de/publications/vmv01.pdf
+ * @see MeshFixDegeneratedFacets
+ * @see MeshRemoveNeedles
+ * @author Werner Mayer
+ */
+class MeshExport MeshFixCaps : public MeshValidation
+{
+public:
+  /**
+   * Construction. The \arg fFactor must be in the range of 0.0 and 0.5.
+   */
+  MeshFixCaps (MeshKernel &rclM, float fMaxAng = 2.61f, float fFactor = 0.25f) // ~150 degree
+      : MeshValidation(rclM), fMaxAngle(fMaxAng), fSplitFactor(fFactor) { }
+  /**
+   * Destruction.
+   */
+  ~MeshFixCaps () { }
+  /**
+   */
+  bool Fixup ();
+
+private:
+  float fMaxAngle;
+  float fSplitFactor;
 };
 
 /**
@@ -348,11 +406,11 @@ public:
    */
   MeshEvalDeformedFacets (const MeshKernel &rclM, float fMinAngle, float fMaxAngle)
       : MeshEvaluation(rclM), fMinAngle(fMinAngle), fMaxAngle(fMaxAngle) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshEvalDeformedFacets () { }
-  /** 
+  /**
    * Searches deformed facets.
    */
   bool Evaluate ();
@@ -362,13 +420,13 @@ public:
   std::vector<unsigned long> GetIndices() const;
 
 private:
-  float fMinAngle;
-  float fMaxAngle;
+  float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as deformed. */
+  float fMaxAngle; /**< If an angle of a facet is higher than fMaxAngle it's considered as deformed. */
 };
 
 /**
- * The MeshFixDeformedFacets class tries to fix deformed facets by swapping the commong edge with one of their neighbours.
- * @note Degenerated facets are also deformed facet but this algorithm tries to fix deformed facets that or not degenrated.
+ * The MeshFixDeformedFacets class tries to fix deformed facets by swapping the common edge with one of their neighbours.
+ * @note Degenerated facets are also deformed facet but this algorithm tries to fix deformed facets that or not degenerated.
  * The removal of degenerated facets is done by @ref MeshFixDegeneratedFacets.
  * @see MeshEvalDeformedFacets
  * @author Werner Mayer
@@ -382,20 +440,46 @@ public:
   MeshFixDeformedFacets (MeshKernel &rclM, float fMinAngle, float fMaxAngle, float fSwapAngle, float fEps)
       : MeshValidation(rclM), fMinAngle(fMinAngle), fMaxAngle(fMaxAngle),
         fMaxSwapAngle(fSwapAngle), fEpsilon(fEps) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshFixDeformedFacets () { }
-  /** 
+  /**
    * Removes deformed facets.
    */
   bool Fixup ();
 
 private:
-  float fMinAngle;
-  float fMaxAngle;
-  float fMaxSwapAngle;
+  float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as deformed. */
+  float fMaxAngle; /**< If an angle of a facet is higher than fMaxAngle it's considered as deformed. */
+  float fMaxSwapAngle; /**< A swap edge is only allowed if the angle of both normals doesn't exceed fMaxSwapAngle */
   float fEpsilon;
+};
+
+/**
+ * The MeshFixMergeFacets class removes vertexes which have three adjacent vertexes and is referenced by three facets.
+ * Usually all the three facets that reference this vertex are not well-formed. If the number of adjacent vertexes
+ * is equal to the number of adjacent facets the affected vertex never lies on the boundary and thus it's safe to delete
+ * and replace the three facets with a single facet.
+ * Effectively this algorithm does the opposite of \ref MeshTopoAlgorithm::InsertVertex
+ * @author Werner Mayer
+ */
+class MeshExport MeshFixMergeFacets : public MeshValidation
+{
+public:
+  /**
+   * Construction.
+   */
+  MeshFixMergeFacets (MeshKernel &rclM)
+      : MeshValidation(rclM) { }
+  /**
+   * Destruction.
+   */
+  ~MeshFixMergeFacets () { }
+  /**
+   * Removes deformed facets.
+   */
+  bool Fixup ();
 };
 
 /**
@@ -523,11 +607,11 @@ public:
    * Construction.
    */
   MeshEvalRangeFacet (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshEvalRangeFacet () { }
-  /** 
+  /**
    * Searches for facets that has neighbour facet indices out of range.
    */
   bool Evaluate ();
@@ -537,7 +621,7 @@ public:
   std::vector<unsigned long> GetIndices() const;
 };
 
-/** 
+/**
  * The MeshFixRangeFacet class fixes facets with invalid neighbour indices.
  * @see MeshEvalRangeFacet
  * @author Werner Mayer
@@ -549,17 +633,17 @@ public:
    * Construction.
    */
   MeshFixRangeFacet (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshFixRangeFacet () { }
-  /** 
+  /**
    * Fixes facets with neighbour indices out of range.
    */
   bool Fixup ();
 };
 
-/** 
+/**
  * The MeshEvalRangePoint class searches for facets that has point indices out of range.
  * @see MeshFixRangePoint
  * @author Werner Mayer
@@ -571,11 +655,11 @@ public:
    * Construction.
    */
   MeshEvalRangePoint (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshEvalRangePoint () { }
-  /** 
+  /**
    * Searches for facets that has point indices out of range.
    */
   bool Evaluate ();
@@ -597,7 +681,7 @@ public:
    * Construction.
    */
   MeshFixRangePoint (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshFixRangePoint () { }
@@ -620,11 +704,11 @@ public:
    * Construction.
    */
   MeshEvalCorruptedFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshEvalCorruptedFacets () { }
-  /** 
+  /**
    * Searches for corrupted facets.
    */
   bool Evaluate ();
@@ -647,11 +731,11 @@ public:
    * Construction.
    */
   MeshFixCorruptedFacets (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /** 
+  /**
    * Destruction.
    */
   ~MeshFixCorruptedFacets () { }
-  /** 
+  /**
    * Removes corrupted facets.
    */
   bool Fixup ();
@@ -659,4 +743,4 @@ public:
 
 } // namespace MeshCore
 
-#endif // MESH_DEGENERATION_H 
+#endif // MESH_DEGENERATION_H

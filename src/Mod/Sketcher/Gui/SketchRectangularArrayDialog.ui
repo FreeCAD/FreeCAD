@@ -90,7 +90,7 @@
    <item>
     <widget class="Gui::PrefCheckBox" name="ConstraintSeparationCheckBox">
      <property name="toolTip">
-      <string>If selected, each element in the array is constraint with respect to the others using construction lines</string>
+      <string>If selected, each element in the array is constrained with respect to the others using construction lines</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>

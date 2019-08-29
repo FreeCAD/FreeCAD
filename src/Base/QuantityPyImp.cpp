@@ -36,6 +36,8 @@ using namespace Base;
 std::string QuantityPy::representation(void) const
 {
     std::stringstream ret;
+    //ret.precision(getQuantityPtr()->getFormat().precision);
+    //ret.setf(std::ios::fixed, std::ios::floatfield);
     ret << getQuantityPtr()->getValue() << " "; 
     ret << getQuantityPtr()->getUnit().getString().toUtf8().constData();
 
@@ -83,6 +85,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     int i6=0;
     int i7=0;
     int i8=0;
+    PyErr_Clear(); // set by PyArg_ParseTuple()
     if (PyArg_ParseTuple(args, "|diiiiiiii", &f,&i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
         if (f != DOUBLE_MAX) {
             *self = Quantity(f,Unit(i1,i2,i3,i4,i5,i6,i7,i8));
@@ -182,9 +185,9 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
         PyErr_Clear();
         char* string;
         if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
-        QString qstr = QString::fromUtf8(string);
-        PyMem_Free(string);
-        quant = Quantity::parse(qstr);
+            QString qstr = QString::fromUtf8(string);
+            PyMem_Free(string);
+            quant = Quantity::parse(qstr);
         }
     }
 
@@ -369,7 +372,6 @@ PyObject* QuantityPy::number_multiply_handler(PyObject *self, PyObject *other)
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
 PyObject * QuantityPy::number_divide_handler (PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
@@ -388,9 +390,16 @@ PyObject * QuantityPy::number_divide_handler (PyObject *self, PyObject *other)
         double b = PyFloat_AsDouble(other);
         return new QuantityPy(new Quantity(*a / b) );
     }
+#if PY_MAJOR_VERSION < 3
     else if (PyInt_Check(other)) {
         Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
         double b = (double)PyInt_AsLong(other);
+        return new QuantityPy(new Quantity(*a / b) );
+    }
+#endif
+    else if (PyLong_Check(other)) {
+        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+        double b = (double)PyLong_AsLong(other);
         return new QuantityPy(new Quantity(*a / b) );
     }
     else {
@@ -398,7 +407,6 @@ PyObject * QuantityPy::number_divide_handler (PyObject *self, PyObject *other)
         return 0;
     }
 }
-#endif
 
 PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other)
 {
@@ -606,42 +614,77 @@ Py::String QuantityPy::getUserString(void) const
     return Py::String(getQuantityPtr()->getUserString().toUtf8(),"utf-8");
 }
 
-Py::Tuple QuantityPy::getFormat(void) const
+Py::Dict QuantityPy::getFormat(void) const
 {
     QuantityFormat fmt = getQuantityPtr()->getFormat();
 
-    Py::Tuple tuple(2);
-    tuple.setItem(0, Py::Int (fmt.precision));
-    tuple.setItem(1, Py::Char(fmt.toFormat()));
-    return tuple;
+    Py::Dict dict;
+    dict.setItem("Precision", Py::Int (fmt.precision));
+    dict.setItem("NumberFormat", Py::Char(fmt.toFormat()));
+    dict.setItem("Denominator", Py::Int(fmt.denominator));
+    return dict;
 }
 
-void  QuantityPy::setFormat(Py::Tuple arg)
+void  QuantityPy::setFormat(Py::Dict arg)
 {
-    QuantityFormat fmt;
+    QuantityFormat fmt = getQuantityPtr()->getFormat();
 
-    Py::Int  prec(arg.getItem(0));
-    Py::Char form(arg.getItem(1));
-    fmt.precision = static_cast<int>(prec);
+    if (arg.hasKey("Precision")) {
+        Py::Int  prec(arg.getItem("Precision"));
+        fmt.precision = static_cast<int>(prec);
+    }
 
+    if (arg.hasKey("NumberFormat")) {
+        Py::Char form(arg.getItem("NumberFormat"));
 #if PY_MAJOR_VERSION >= 3
-    std::string fmtstr = static_cast<std::string>(Py::String(form));
+        std::string fmtstr = static_cast<std::string>(Py::String(form));
 #else
-    std::string fmtstr = static_cast<std::string>(form);
+        std::string fmtstr = static_cast<std::string>(form);
 #endif
-    if (fmtstr.size() != 1)
-        throw Py::ValueError("Invalid format character");
+        if (fmtstr.size() != 1)
+            throw Py::ValueError("Invalid format character");
 
-    bool ok;
-    fmt.format = Base::QuantityFormat::toFormat(fmtstr[0], &ok);
-    if (!ok)
-        throw Py::ValueError("Invalid format character");
+        bool ok;
+        fmt.format = Base::QuantityFormat::toFormat(fmtstr[0], &ok);
+        if (!ok)
+            throw Py::ValueError("Invalid format character");
+    }
+
+    if (arg.hasKey("Denominator")) {
+        Py::Int  denom(arg.getItem("Denominator"));
+        int fracInch = static_cast<int>(denom);
+        // check that the value is positive and a power of 2
+        if (fracInch <= 0)
+            throw Py::ValueError("Denominator must be higher than zero");
+        // bitwise check
+        if (fracInch & (fracInch - 1))
+            throw Py::ValueError("Denominator must be a power of two");
+        fmt.denominator = fracInch;
+    }
 
     getQuantityPtr()->setFormat(fmt);
 }
 
-PyObject *QuantityPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *QuantityPy::getCustomAttributes(const char* attr) const
 {
+    if (strcmp(attr, "Torr") == 0) {
+        return new QuantityPy(new Quantity(Quantity::Torr));
+    }
+    else if (strcmp(attr, "mTorr") == 0) {
+        return new QuantityPy(new Quantity(Quantity::mTorr));
+    }
+    else if (strcmp(attr, "yTorr") == 0) {
+        return new QuantityPy(new Quantity(Quantity::yTorr));
+    }
+    else if (strcmp(attr, "PoundForce") == 0) {
+        return new QuantityPy(new Quantity(Quantity::PoundForce));
+    }
+    else if (strcmp(attr, "AngularMinute") == 0) {
+        return new QuantityPy(new Quantity(Quantity::AngMinute));
+    }
+    else if (strcmp(attr, "AngularSecond") == 0) {
+        return new QuantityPy(new Quantity(Quantity::AngSecond));
+    }
     return 0;
 }
 

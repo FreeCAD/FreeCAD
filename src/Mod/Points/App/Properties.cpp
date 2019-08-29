@@ -39,13 +39,18 @@
 #include "Properties.h"
 #include "PointsPy.h"
 
+#include <QtConcurrentMap>
+#ifdef _WIN32
+# include <ppl.h>
+#endif
+
 using namespace Points;
 using namespace std;
 
-TYPESYSTEM_SOURCE(Points::PropertyGreyValue, App::PropertyFloat);
-TYPESYSTEM_SOURCE(Points::PropertyGreyValueList, App::PropertyLists);
-TYPESYSTEM_SOURCE(Points::PropertyNormalList, App::PropertyLists);
-TYPESYSTEM_SOURCE(Points::PropertyCurvatureList , App::PropertyLists);
+TYPESYSTEM_SOURCE(Points::PropertyGreyValue, App::PropertyFloat)
+TYPESYSTEM_SOURCE(Points::PropertyGreyValueList, App::PropertyLists)
+TYPESYSTEM_SOURCE(Points::PropertyNormalList, App::PropertyLists)
+TYPESYSTEM_SOURCE(Points::PropertyCurvatureList , App::PropertyLists)
 
 PropertyGreyValueList::PropertyGreyValueList()
 {
@@ -142,7 +147,7 @@ void PropertyGreyValueList::Restore(Base::XMLReader &reader)
     string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
@@ -316,7 +321,7 @@ void PropertyNormalList::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }
@@ -387,9 +392,15 @@ void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
     aboutToSetValue();
 
     // Rotate the normal vectors
-    for (int ii=0; ii<getSize(); ii++) {
-        set1Value(ii, rot * operator[](ii));
-    }
+#ifdef _WIN32
+    Concurrency::parallel_for_each(_lValueList.begin(), _lValueList.end(), [rot](Base::Vector3f& value) {
+        value = rot * value;
+    });
+#else
+    QtConcurrent::blockingMap(_lValueList, [rot](Base::Vector3f& value) {
+        rot.multVec(value, value);
+    });
+#endif
 
     hasSetValue();
 }
@@ -553,6 +564,16 @@ void PropertyCurvatureList::removeIndices( const std::vector<unsigned long>& uIn
     setValues(remainValue);
 }
 
+PyObject *PropertyCurvatureList::getPyObject(void)
+{
+    throw Py::NotImplementedError("Not yet implemented");
+}
+
+void PropertyCurvatureList::setPyObject(PyObject *)
+{
+    throw Py::NotImplementedError("Not yet implemented");
+}
+
 void PropertyCurvatureList::Save (Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
@@ -566,7 +587,7 @@ void PropertyCurvatureList::Restore(Base::XMLReader &reader)
     std::string file (reader.getAttribute("file") );
 
     if (!file.empty()) {
-        // initate a file read
+        // initiate a file read
         reader.addFile(file.c_str(),this);
     }
 }

@@ -33,11 +33,14 @@ DlgSettingsImportExport::DlgSettingsImportExport(QWidget* parent)
   : PreferencePage(parent), ui(new Ui_DlgSettingsImportExport)
 {
     ui->setupUi(this);
+    ui->exportAmfCompressed->setToolTip(tr("This parameter indicates whether ZIP compression\n"
+                                           "is used when writing a file in AMF format"));
 }
 
 DlgSettingsImportExport::~DlgSettingsImportExport()
 {
     // no need to delete child widgets, Qt does it all for us
+    delete ui;
 }
 
 void DlgSettingsImportExport::saveSettings()

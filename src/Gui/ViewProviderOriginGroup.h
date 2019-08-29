@@ -23,8 +23,6 @@
 #ifndef VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
 #define VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
 
-#include <boost/signals.hpp>
-
 #include "ViewProviderGeoFeatureGroup.h"
 #include "ViewProviderOriginGroupExtension.h"
 

@@ -35,6 +35,7 @@
 # include <BRep_Tool.hxx>
 # include <ShapeFix_Shape.hxx>
 # include <ShapeFix_ShapeTolerance.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -84,6 +85,8 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         return new App::DocumentObjectExecReturn("No edges specified");
 
     double size = Size.getValue();
+    if (size <= 0)
+        return new App::DocumentObjectExecReturn("Size must be greater than zero");
 
     this->positionByBaseFeature();
     // create an untransformed copy of the basefeature shape
@@ -100,7 +103,11 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
             const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+#if OCC_VERSION_HEX > 0x070300
+            mkChamfer.Add(size, size, edge, face);
+#else
             mkChamfer.Add(size, edge, face);
+#endif
         }
 
         mkChamfer.Build();
@@ -122,6 +129,10 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
             if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
                 return new App::DocumentObjectExecReturn("Resulting shape is invalid");
             }
+        }
+        int solidCount = countSolids(shape);
+        if (solidCount > 1) {
+            return new App::DocumentObjectExecReturn("Chamfer: Result has multiple solids. This is not supported at this time.");
         }
 
         this->Shape.setValue(getSolid(shape));

@@ -46,3 +46,5 @@ class WebWorkbench ( Workbench ):
         return "WebGui::Workbench"
 
 Gui.addWorkbench(WebWorkbench())
+
+FreeCAD.__unit_test__ += [ "TestWebGui" ]

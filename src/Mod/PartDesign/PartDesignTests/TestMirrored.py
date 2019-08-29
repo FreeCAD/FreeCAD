@@ -85,7 +85,7 @@ class TestMirrored(unittest.TestCase):
         self.Mirrored.MirrorPlane = (self.Rect, ["H_Axis"])
         self.Body.addObject(self.Mirrored)
         self.Doc.recompute()
-        self.assertEqual(self.Mirrored.State, ["Invalid"])
+        self.assertIn("Invalid", self.Mirrored.State)
 
     def tearDown(self):
         #closing doc

@@ -48,8 +48,6 @@ class ViewProvider;
 
 namespace PartDesignGui { 
 
-namespace s = boost::signals;
-
 class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
                           public Gui::DocumentObserver
 {
@@ -59,7 +57,7 @@ public:
     TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = 0);
     ~TaskBoxPrimitives();
 
-    void setPrimitive(QString name);
+    void setPrimitive(App::DocumentObject *);
 
 public Q_SLOTS:
     void onBoxLengthChanged(double);

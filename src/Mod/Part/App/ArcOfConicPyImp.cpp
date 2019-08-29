@@ -147,8 +147,8 @@ void  ArcOfConicPy::setAxis(Py::Object arg)
         axis.SetDirection(gp_Dir(val.x, val.y, val.z));
         conic->SetAxis(axis);
     }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
+    catch (Standard_Failure&) {
+        throw Py::RuntimeError("cannot set axis");
     }
 }
 
@@ -187,8 +187,8 @@ void  ArcOfConicPy::setXAxis(Py::Object arg)
         pos.SetXDirection(gp_Dir(val.x, val.y, val.z));
         conic->SetPosition(pos);
     }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set X axis");
+    catch (Standard_Failure&) {
+        throw Py::RuntimeError("cannot set X axis");
     }
 }
 
@@ -227,8 +227,8 @@ void  ArcOfConicPy::setYAxis(Py::Object arg)
         pos.SetYDirection(gp_Dir(val.x, val.y, val.z));
         conic->SetPosition(pos);
     }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set Y axis");
+    catch (Standard_Failure&) {
+        throw Py::RuntimeError("cannot set Y axis");
     }
 }
 

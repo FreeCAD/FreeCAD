@@ -34,6 +34,12 @@ commands (optional) is a list of Path commands</UserDocu>
             </Documentation>
             <Parameter Name="Commands" Type="List"/>
         </Attribute>
+        <Attribute Name="Center" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the center position for all rotational parameters</UserDocu>
+            </Documentation>
+            <Parameter Name="Center" Type="Object"/>
+        </Attribute>
         <Methode Name="addCommands">
             <Documentation>
                 <UserDocu>adds a command or a list of commands at the end of the path</UserDocu>

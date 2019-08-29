@@ -53,8 +53,8 @@ DrawViewClip::DrawViewClip(void)
     ADD_PROPERTY_TYPE(Height     ,(100),group,App::Prop_None,"The height of the view area of this clip");
     ADD_PROPERTY_TYPE(Width      ,(100),group,App::Prop_None,"The width of the view area of this clip");
     ADD_PROPERTY_TYPE(ShowFrame  ,(0) ,group,App::Prop_None,"Specifies if the clip frame appears on the page or not");
-    ADD_PROPERTY_TYPE(ShowLabels ,(0) ,group,App::Prop_None,"Specifies if View labels appear within the clip area");
     ADD_PROPERTY_TYPE(Views      ,(0) ,group,App::Prop_None,"The Views in this Clip group");
+    Views.setScope(App::LinkScope::Global);
 
     // hide N/A properties
     ScaleType.setStatus(App::Property::ReadOnly,true);
@@ -78,8 +78,8 @@ void DrawViewClip::addView(DrawView *view)
     std::vector<App::DocumentObject *> newViews(currViews);
     newViews.push_back(view);
     Views.setValues(newViews);
-    view->X.setValue(Width.getValue()/2.0);
-    view->Y.setValue(Height.getValue()/2.0);
+    view->X.setValue(0.0);                   //position in centre of clip group frame
+    view->Y.setValue(0.0);
     auto page = findParentPage();             //get Page to release child relationship in tree
     page->Views.touch();
 }

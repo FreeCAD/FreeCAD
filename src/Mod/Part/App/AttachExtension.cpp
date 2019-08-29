@@ -37,7 +37,7 @@
 using namespace Part;
 using namespace Attacher;
 
-EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension);
+EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension)
 
 AttachExtension::AttachExtension()
    :  _attacher(0)
@@ -110,13 +110,11 @@ bool AttachExtension::changeAttacherType(const char* typeName)
         AttachEngine* pNewAttacher = static_cast<Attacher::AttachEngine*>(Base::Type::createInstanceByName(typeName));
         this->setAttacher(pNewAttacher);
         return true;
-    } else {
-        std::stringstream errMsg;
-        errMsg << "Object if this type is not derived from AttachEngine: " << typeName;
-        throw Base::Exception(errMsg.str());
     }
-    assert(false);//exec shouldn't ever get here
-    return false;
+
+    std::stringstream errMsg;
+    errMsg << "Object if this type is not derived from AttachEngine: " << typeName;
+    throw AttachEngineException(errMsg.str());
 }
 
 bool AttachExtension::positionBySupport()
@@ -129,7 +127,7 @@ bool AttachExtension::positionBySupport()
             return false;
         getPlacement().setValue(_attacher->calculateAttachedPlacement(getPlacement().getValue()));
         return true;
-    } catch (ExceptionCancel) {
+    } catch (ExceptionCancel&) {
         //disabled, don't do anything
         return false;
     };
@@ -275,6 +273,28 @@ PyObject* AttachExtension::getExtensionPyObject(void) {
         ExtensionPythonObject = Py::Object(new AttachExtensionPy(this),true);
     }
     return Py::new_reference_to(ExtensionPythonObject);
+}
+
+// ------------------------------------------------
+
+AttachEngineException::AttachEngineException()
+  : Base::Exception()
+{
+}
+
+AttachEngineException::AttachEngineException(const char * sMessage)
+  : Base::Exception(sMessage)
+{
+}
+
+AttachEngineException::AttachEngineException(const std::string& sMessage)
+  : Base::Exception(sMessage)
+{
+}
+
+AttachEngineException::AttachEngineException(const AttachEngineException &inst)
+  : Base::Exception(inst)
+{
 }
 
 

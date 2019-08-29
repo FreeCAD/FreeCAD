@@ -27,7 +27,6 @@
 #endif
 
 #include "ViewProviderCircleParametric.h"
-#include <Base/Parameter.h>
 
 
 using namespace PartGui;

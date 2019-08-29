@@ -79,6 +79,13 @@ void Placement::fromMatrix(const Base::Matrix4D& matrix)
     this->_pos.z = matrix[2][3];
 }
 
+bool Placement::isIdentity() const
+{
+    Base::Vector3d nullvec(0,0,0);
+    bool none = (this->_pos == nullvec) && (this->_rot.isIdentity());
+    return none;
+}
+
 void Placement::invert()
 {
     this->_rot = this->_rot.inverse();

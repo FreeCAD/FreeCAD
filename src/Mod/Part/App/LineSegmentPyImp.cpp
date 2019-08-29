@@ -196,7 +196,6 @@ PyObject* LineSegmentPy::setParameterRange(PyObject *args)
         this_curve->SetTrim(first, last);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return NULL;
     }
@@ -244,7 +243,7 @@ void LineSegmentPy::setStartPoint(Py::Object arg)
             Standard_Failure::Raise("Both points are equal");
         GC_MakeSegment ms(p1, p2);
         if (!ms.IsDone()) {
-            throw Py::Exception(gce_ErrorStatusText(ms.Status()));
+            throw Py::RuntimeError(gce_ErrorStatusText(ms.Status()));
         }
 
         // get Geom_Line of line segment
@@ -256,8 +255,7 @@ void LineSegmentPy::setStartPoint(Py::Object arg)
         this_curv->SetTrim(that_curv->FirstParameter(), that_curv->LastParameter());
     }
     catch (Standard_Failure& e) {
-
-        throw Py::Exception(e.GetMessageString());
+        throw Py::RuntimeError(e.GetMessageString());
     }
 }
 
@@ -301,7 +299,7 @@ void LineSegmentPy::setEndPoint(Py::Object arg)
             Standard_Failure::Raise("Both points are equal");
         GC_MakeSegment ms(p1, p2);
         if (!ms.IsDone()) {
-            throw Py::Exception(gce_ErrorStatusText(ms.Status()));
+            throw Py::RuntimeError(gce_ErrorStatusText(ms.Status()));
         }
 
         // get Geom_Line of line segment
@@ -313,8 +311,7 @@ void LineSegmentPy::setEndPoint(Py::Object arg)
         this_curv->SetTrim(that_curv->FirstParameter(), that_curv->LastParameter());
     }
     catch (Standard_Failure& e) {
-
-        throw Py::Exception(e.GetMessageString());
+        throw Py::RuntimeError(e.GetMessageString());
     }
 }
 

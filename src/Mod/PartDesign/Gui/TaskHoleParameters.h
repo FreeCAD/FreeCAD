@@ -114,14 +114,14 @@ private:
 
 protected:
     void changeEvent(QEvent *e) override;
-    void changedObject(const App::Property& Prop);
+    void changedObject(const App::Document&, const App::Property& Prop);
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges &msg) override;
 
 private:
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
+    typedef boost::signals2::scoped_connection Connection;
     Connection connectPropChanged;
 
     std::unique_ptr<Observer> observer;

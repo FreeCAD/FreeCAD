@@ -33,11 +33,6 @@ SET(_TEMPLATE_Gui_SRCS
 add_library(_TEMPLATE_Gui SHARED ${_TEMPLATE_Gui_SRCS})
 target_link_libraries(_TEMPLATE_Gui ${_TEMPLATE_Gui_LIBS})
 
-fc_target_copy_resource(_TEMPLATE_Gui 
-    ${CMAKE_SOURCE_DIR}/src/Tools/_TEMPLATE_
-    ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_
-    InitGui.py)
-
 SET_BIN_DIR(_TEMPLATE_Gui _TEMPLATE_Gui /Mod/_TEMPLATE_)
 SET_PYTHON_PREFIX_SUFFIX(_TEMPLATE_Gui)
     

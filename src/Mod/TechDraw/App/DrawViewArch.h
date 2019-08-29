@@ -45,10 +45,13 @@ public:
     App::PropertyLink         Source;
     App::PropertyBool         AllOn;
     App::PropertyEnumeration  RenderMode; // "Wireframe","Solid"
+    App::PropertyBool         FillSpaces;
     App::PropertyBool         ShowHidden;
     App::PropertyBool         ShowFill;
     App::PropertyFloat        LineWidth;
     App::PropertyFloat        FontSize;
+    App::PropertyFloat        CutLineWidth;
+    App::PropertyBool         JoinArch;
 
     /** @name methods override Feature */
     //@{
@@ -60,15 +63,16 @@ public:
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderArch";
     }
-    void Restore(Base::XMLReader &reader) override;
+
+    virtual short mustExecute() const override;
 
 
 protected:
-    virtual void onChanged(const App::Property* prop) override;
+/*    virtual void onChanged(const App::Property* prop) override;*/
     Base::BoundBox3d bbox;
     std::string getSVGHead(void);
     std::string getSVGTail(void);
-    
+
 private:
     static const char* RenderModeEnums[];
 };

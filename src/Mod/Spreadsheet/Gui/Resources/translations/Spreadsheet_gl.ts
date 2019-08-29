@@ -28,7 +28,7 @@
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Aliñado inferior do contido das celas seleccionadas</translation>
+      <translation>Aliñado inferior do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -43,7 +43,7 @@
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Aliñado ó centro do contido das celas seleccionadas</translation>
+      <translation>Aliñado ó centro do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -58,7 +58,7 @@
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
-      <translation>Aliñado á esquerda do contido das celas seleccionadas</translation>
+      <translation>Aliñado á esquerda do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -73,7 +73,7 @@
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
-      <translation>Aliñado á dereita do contido das celas seleccionadas</translation>
+      <translation>Aliñado á dereita do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Aliñado á cima do contido das celas seleccionadas</translation>
+      <translation>Aliñado á cima do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -102,8 +102,8 @@
       <translation>Aliñación verticalmente centrada</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Aliñado ó centro en sentido vertical do contido das celas seleccionadas</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Aliñado verticalmente ó centro do contido das celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -147,8 +147,8 @@
       <translation>Combinar celas</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Combina as celas seleccionadas nunha, na folla de cálculo</translation>
+      <source>Merge selected cells</source>
+      <translation>Fundir celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -163,7 +163,7 @@
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Define un alcume para as celas seleccionadas</translation>
+      <translation>Define un alcume para as celas escolmadas</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Dividir cela</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Divide celas combinadas anteriormente na folla de cálculo</translation>
+      <source>Split previously merged cells</source>
+      <translation>Dividir celas previamente mesturadas</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Texto en grosa</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Establece o texto das celas seleccionadas en grosa</translation>
+      <source>Set text in selected cells bold</source>
+      <translation>Conxunto de texto en celas escolmadas en negro</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Texto en cursiva</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Establece o texto das celas seleccionadas en cursiva</translation>
+      <source>Set text in selected cells italic</source>
+      <translation>Conxunto de texto en celas escolmadas en itálica</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Texto subliñado</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Establece o texto subliñado nas celas seleccionadas</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Suliñar texto en celas escolmadas</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Personalizar</translation>
+      <source>Custom Color</source>
+      <translation>Personalizar cor</translation>
     </message>
   </context>
   <context>
@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Horizontal</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Vertical</translation>
     </message>
     <message>
       <source>Top</source>
@@ -426,8 +426,8 @@
       <translation>Gris claro</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Personalizar</translation>
+      <source>Custom Color</source>
+      <translation>Personalizar cor</translation>
     </message>
   </context>
   <context>

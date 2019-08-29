@@ -26,7 +26,6 @@
 
 #include "TaskView.h"
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
 #include <App/PropertyLinks.h>
 
 

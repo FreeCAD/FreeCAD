@@ -25,6 +25,7 @@
 #define PARTDESIGN_DATUMPLANE_H
 
 #include <Mod/Part/App/DatumFeature.h>
+#include <App/PropertyUnits.h>
 
 namespace PartDesign
 {
@@ -37,11 +38,19 @@ public:
     Plane();
     virtual ~Plane();
 
+    App::PropertyEnumeration ResizeMode;
+    App::PropertyLength Length;
+    App::PropertyLength Width;
+
+    virtual void onChanged(const App::Property *prop);
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderDatumPlane";
     }
 
     Base::Vector3d getNormal();
+
+private:
+    static const char* ResizeModeEnums[];
 };
 
 } //namespace PartDesign

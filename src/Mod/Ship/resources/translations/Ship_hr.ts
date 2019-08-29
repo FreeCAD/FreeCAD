@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Instance.py" line="44"/>
       <source>True if it is a valid ship instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid ship instance, False otherwise</translation>
+      <translation>Točno ako je valjan primjer broda, inače netočno</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="53"/>
@@ -36,22 +36,22 @@
     <message>
       <location filename="../../Instance.py" line="79"/>
       <source>Set of external faces of the ship hull</source>
-      <translation type="unfinished">Set of external faces of the ship hull</translation>
+      <translation>Skup vanjskih lica brodskog trupa</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="87"/>
       <source>Set of weight instances</source>
-      <translation type="unfinished">Set of weight instances</translation>
+      <translation>Skup instanci težine</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="95"/>
       <source>Set of tank instances</source>
-      <translation type="unfinished">Set of tank instances</translation>
+      <translation>Postavi količinu spremnika</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="103"/>
       <source>Set of load conditions</source>
-      <translation type="unfinished">Set of load conditions</translation>
+      <translation>Postavi uvjete tereta</translation>
     </message>
   </context>
   <context>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../ShipGui.py" line="114"/>
       <source>Plot the ship hydrostatics</source>
-      <translation type="unfinished">Plot the ship hydrostatics</translation>
+      <translation>Iscrtaj hidrostatiku broda</translation>
     </message>
   </context>
   <context>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../ShipGui.py" line="80"/>
       <source>Plots the ship hull outline draw</source>
-      <translation type="unfinished">Plots the ship hull outline draw</translation>
+      <translation>Ispisi vanjske konture brodskog trupa</translation>
     </message>
   </context>
   <context>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>
       <source>Areas curve tool draft selected [m]</source>
-      <translation type="unfinished">Areas curve tool draft selected [m]</translation>
+      <translation>Alat krivulje područja, odabran nacrt [m]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="220"/>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="359"/>
       <source>Areas curve tool trim selected [deg]</source>
-      <translation type="unfinished">Areas curve tool trim selected [deg]</translation>
+      <translation>Alat krivulje područja, odabrao skraćivanje [deg]</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="229"/>
@@ -159,7 +159,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="374"/>
       <source>Areas curve tool number of points</source>
-      <translation type="unfinished">Areas curve tool number of points</translation>
+      <translation>Alat krivulje područja, broj točaka</translation>
     </message>
   </context>
   <context>
@@ -172,12 +172,12 @@
     <message>
       <location filename="../../ShipGui.py" line="165"/>
       <source>Plot the tank capacity curve (level-volume curve)</source>
-      <translation type="unfinished">Plot the tank capacity curve (level-volume curve)</translation>
+      <translation>Ispis krivulje kapaciteta spremnika (krivulja nivoa volumena)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="156"/>
       <source>Plot the tank capacity curve</source>
-      <translation type="unfinished">Plot the tank capacity curve</translation>
+      <translation>Ispis krivulje kapaciteta spremnika</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="160"/>
@@ -195,7 +195,7 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="151"/>
       <source>Ship objects can only be created on top of hull geometry (no solid found at selected objects)</source>
-      <translation type="unfinished">Ship objects can only be created on top of hull geometry (no solid found at selected objects)</translation>
+      <translation>Objekti Broda se mogu stvarati samo na vrhu geometrije trupa (nema čvrstog tijela kod odabranih objekata)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="94"/>
@@ -215,17 +215,17 @@
     <message>
       <location filename="../../shipOutlineDraw/Preview.py" line="127"/>
       <source>Any valid ship section found</source>
-      <translation type="unfinished">Any valid ship section found</translation>
+      <translation>Nije pronađen nijedan ispravan odjeljak broda</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="132"/>
       <source>Ship objects can only be created on top of hull geometry (no objects selected)</source>
-      <translation type="unfinished">Ship objects can only be created on top of hull geometry (no objects selected)</translation>
+      <translation>Objekti Broda se mogu stvarati samo na vrhu geometrije trupa (nema odabranih objekata)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="197"/>
       <source>A ship instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A ship instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Instanca broda mora biti odabrana prije početka korištenja ovog alata (nema odabranih objekata)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="213"/>
@@ -235,27 +235,27 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="223"/>
       <source>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</source>
-      <translation type="unfinished">A ship instance must be selected before using this tool (no valid ship found at the selected objects)</translation>
+      <translation>Instanca broda mora biti odabrana prije početka korištenja ovog alata (nijedan valjan brod nije pronađen kod odabira)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/PlotAux.py" line="57"/>
       <source>Plot module is disabled, so I cannot perform the plot</source>
-      <translation type="unfinished">Plot module is disabled, so I cannot perform the plot</translation>
+      <translation>Iscrtati modul je onemogućen, tako da ne može izvršiti ispis</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="192"/>
       <source>A ship instance must be selected before use this tool (no objects selected)</source>
-      <translation type="unfinished">A ship instance must be selected before use this tool (no objects selected)</translation>
+      <translation>Instanca broda mora biti odabrana prije početka korištenja ovog alata (nema odabranih objekata)</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="210"/>
       <source>More than one ship has been selected (just the first one will be used)</source>
-      <translation type="unfinished">More than one ship has been selected (just the first one will be used)</translation>
+      <translation>Odabrali ste više od jednog broda (samo prvi će se koristiti)</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="220"/>
       <source>A ship instance must be selected before use this tool (novalid ships found in the selected objects)</source>
-      <translation type="unfinished">A ship instance must be selected before use this tool (novalid ships found in the selected objects)</translation>
+      <translation>Instanca broda mora biti odabrana prije početka korištenja ovog alata (nije pronađen nijedan ispravan brod kod odabira)</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="41"/>
@@ -350,7 +350,7 @@
     <message>
       <location filename="../../shipCapacityCurve/Tools.py" line="49"/>
       <source>Computing capacity curves</source>
-      <translation type="unfinished">Computing capacity curves</translation>
+      <translation>Izračunavanje krivulje kapaciteta</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="122"/>
@@ -403,12 +403,12 @@
     <message>
       <location filename="../../shipCreateShip/Preview.py" line="98"/>
       <source>Forward perpendicular</source>
-      <translation type="unfinished">Forward perpendicular</translation>
+      <translation>Naprijed okomito</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/Preview.py" line="114"/>
       <source>After perpendicular</source>
-      <translation type="unfinished">After perpendicular</translation>
+      <translation>Nakon okomito</translation>
     </message>
     <message>
       <location filename="../../shipCreateShip/Preview.py" line="130"/>
@@ -441,7 +441,7 @@
     <message>
       <location filename="../../ShipGui.py" line="196"/>
       <source>GZ curve computation</source>
-      <translation type="unfinished">GZ curve computation</translation>
+      <translation>GZ krivulja računanja</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="239"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="243"/>
       <source>Maximum angle</source>
-      <translation type="unfinished">Maximum angle</translation>
+      <translation>Maksimalni kut</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="248"/>
@@ -499,12 +499,12 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="283"/>
       <source>Minimum draft</source>
-      <translation type="unfinished">Minimum draft</translation>
+      <translation>Minimalni gaz</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="288"/>
       <source>Maximum draft</source>
-      <translation type="unfinished">Maximum draft</translation>
+      <translation>Maksimalni gaz</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="293"/>
@@ -514,22 +514,22 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="410"/>
       <source>Hydrostatics tool trim selected</source>
-      <translation type="unfinished">Hydrostatics tool trim selected</translation>
+      <translation>Alat hidrostatike, odabrano skraćivanje</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="423"/>
       <source>Hydrostatics tool minimum draft selected [m]</source>
-      <translation type="unfinished">Hydrostatics tool minimum draft selected [m]</translation>
+      <translation>Alat hidrostatike, odabran minimalni gaz [m]</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="436"/>
       <source>Hydrostatics tool maximum draft selected [m]</source>
-      <translation type="unfinished">Hydrostatics tool maximum draft selected [m]</translation>
+      <translation>Alat hidrostatike, odabran maksimalni gaz [m]</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="449"/>
       <source>Hydrostatics tool number of points selected</source>
-      <translation type="unfinished">Hydrostatics tool number of points selected</translation>
+      <translation>Alat hidrostatike, broj odabranih točaka</translation>
     </message>
   </context>
   <context>
@@ -537,12 +537,12 @@
     <message>
       <location filename="../../shipLoadExample/TaskPanel.py" line="106"/>
       <source>Load example ship</source>
-      <translation type="unfinished">Load example ship</translation>
+      <translation>Učitaj primjer broda</translation>
     </message>
     <message>
       <location filename="../../shipLoadExample/TaskPanel.py" line="110"/>
       <source>Select ship example geometry</source>
-      <translation type="unfinished">Select ship example geometry</translation>
+      <translation>Odaberite primjer geometrije broda</translation>
     </message>
   </context>
   <context>
@@ -550,12 +550,12 @@
     <message>
       <location filename="../../ShipGui.py" line="179"/>
       <source>Create a new loading condition</source>
-      <translation type="unfinished">Create a new loading condition</translation>
+      <translation>Stvori novo stanje tereta</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="182"/>
       <source>Create a new load condition spreadsheet</source>
-      <translation type="unfinished">Create a new load condition spreadsheet</translation>
+      <translation>Stvori novu proračunsku tablicu stanja tereta</translation>
     </message>
   </context>
   <context>
@@ -598,17 +598,17 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="479"/>
       <source>Transversal section positions [m]</source>
-      <translation type="unfinished">Transversal section positions [m]</translation>
+      <translation>Poprečni položaj dijelova [m]</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="487"/>
       <source>Longitudinal section positions [m]</source>
-      <translation type="unfinished">Longitudinal section positions [m]</translation>
+      <translation>Uzdužni položaj dijelova [m]</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="495"/>
       <source>Water line positions [m]</source>
-      <translation type="unfinished">Water line positions [m]</translation>
+      <translation>Pozicija vodene linije [m]</translation>
     </message>
   </context>
   <context>
@@ -616,12 +616,12 @@
     <message>
       <location filename="../../TankInstance.py" line="50"/>
       <source>True if it is a valid tank instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid tank instance, False otherwise</translation>
+      <translation>Točno ako je valjan primjer spremnika, inače netočno</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="160"/>
       <source>Create a new tank</source>
-      <translation type="unfinished">Create a new tank</translation>
+      <translation>Napravi novi spremnik</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="109"/>
@@ -631,17 +631,17 @@
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="122"/>
       <source>No solids found in the selected objects</source>
-      <translation type="unfinished">No solids found in the selected objects</translation>
+      <translation>Nijedno volumensko tijelo nije pronađeno u odabiru</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="139"/>
       <source>There are not ship objects to create weights into them</source>
-      <translation type="unfinished">There are not ship objects to create weights into them</translation>
+      <translation>Ovdje nema objekata broda gdje bi se mogli napraviti tereti u njima</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="164"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation>Brod</translation>
     </message>
   </context>
   <context>
@@ -649,27 +649,27 @@
     <message>
       <location filename="../../ShipGui.py" line="131"/>
       <source>Create a new ship weight</source>
-      <translation type="unfinished">Create a new ship weight</translation>
+      <translation>Stvoriti novu težinu broda</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="46"/>
       <source>True if it is a valid weight instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid weight instance, False otherwise</translation>
+      <translation>Točno ako je valjan primjer težine, inače netočno</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="55"/>
       <source>Mass [kg]</source>
-      <translation type="unfinished">Mass [kg]</translation>
+      <translation>Masa [kg]</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="64"/>
       <source>Linear density [kg / m]</source>
-      <translation type="unfinished">Linear density [kg / m]</translation>
+      <translation>Linearna gustoća [kg / m]</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="82"/>
       <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
+      <translation>Gustoća [kg / m^3]</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="113"/>
@@ -684,47 +684,47 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="179"/>
       <source>There are not ship objects to create weights into them</source>
-      <translation type="unfinished">There are not ship objects to create weights into them</translation>
+      <translation>Ovdje nema objekata broda gdje bi se mogli napraviti tereti u njima</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="213"/>
       <source>Create a new weight</source>
-      <translation type="unfinished">Create a new weight</translation>
+      <translation>Stvoriti novu težinu</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="217"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation>Brod</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="223"/>
       <source>Mass</source>
-      <translation type="unfinished">Mass</translation>
+      <translation>Masa</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="229"/>
       <source>Linear density</source>
-      <translation type="unfinished">Linear density</translation>
+      <translation>Linearna gustoća</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="235"/>
       <source>Area density</source>
-      <translation type="unfinished">Area density</translation>
+      <translation>Gustoća područja</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="241"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Gustoća</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="73"/>
       <source>Area density [kg / m^2]</source>
-      <translation type="unfinished">Area density [kg / m^2]</translation>
+      <translation>Gustoća područja [kg / m^2]</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="162"/>
       <source>Unknown object shapes selected</source>
-      <translation type="unfinished">Unknown object shapes selected</translation>
+      <translation>Nepoznati oblik objekta odabran</translation>
     </message>
   </context>
 </TS>

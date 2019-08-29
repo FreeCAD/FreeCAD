@@ -1,58 +1,28 @@
-
 add_subdirectory(App)
-if(BUILD_GUI)
-    SET(StartPage_Scripts
-        StartPage.py
-        TranslationTexts.py
-        __init__.py
-    )
 
-    SET(StartPage_Resources
-        ArchDesign.py
-        DefaultWorkbench.py
-        LoadDrawingExample.py
-        LoadPartDesignExample.py
-        LoadRobotExample.py
-        LoadSchenkel.py
-        LoadMRU0.py
-        LoadMRU1.py
-        LoadMRU2.py
-        LoadMRU3.py
-        LoadArchExample.py
-        LoadFemExample2D.py
-        LoadFemExample3D.py
-        LoadFemExample3DNewSolver.py
-        Mesh.py
-        PartDesign.py
-        Ship.py
-        StartPage.css
-        StartPage.js
-        StartPage.html
-        EnableDownload.py
-        images/Background.jpg
-        images/FreeCAD.png
-        images/PartDesign.png
-        images/ArchDesign.png
-        images/Mesh.png
-        images/Complete.png
-        images/PartDesignExample.png
-        images/ArchExample.png
-        images/web.png
-        images/blank.png
-        images/freecad-doc.png
-        images/complete.jpg
-        images/Ship.png
-        images/ShipExample.png
-    )
+set(Start_Scripts
+    Init.py
+)
+
+if(BUILD_GUI)
+    list(APPEND Start_Scripts InitGui.py)
 
     add_subdirectory(Gui)
     add_subdirectory(StartPage)
 endif(BUILD_GUI)
 
+add_custom_target(StartScripts ALL
+    SOURCES ${Start_Scripts}
+)
+
+fc_target_copy_resource(StartScripts
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Start
+    ${Start_Scripts})
+
 INSTALL(
     FILES
-        Init.py
-        InitGui.py
+        ${Start_Scripts}
     DESTINATION
         Mod/Start
 )

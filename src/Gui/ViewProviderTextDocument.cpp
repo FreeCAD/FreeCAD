@@ -24,7 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QPlainTextEdit>
+# include <QMenu>
+# include <QPlainTextEdit>
+# include <boost/bind.hpp>
 #endif
 
 #include <Base/Type.h>
@@ -32,6 +34,7 @@
 #include <Gui/TextDocumentEditorView.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>
+#include <Gui/ActionFunction.h>
 
 #include "ViewProviderTextDocument.h"
 
@@ -43,6 +46,15 @@ PROPERTY_SOURCE(Gui::ViewProviderTextDocument, Gui::ViewProviderDocumentObject)
 ViewProviderTextDocument::ViewProviderTextDocument()
 {
     sPixmap = "TextDocument";
+}
+
+void ViewProviderTextDocument::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(QObject::tr("Edit text"));
+    func->trigger(act, boost::bind(&ViewProviderTextDocument::doubleClicked, this));
+
+    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderTextDocument::doubleClicked()

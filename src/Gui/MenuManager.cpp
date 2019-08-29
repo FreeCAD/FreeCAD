@@ -191,7 +191,20 @@ void MenuManager::setup(MenuItem* menuItems) const
         return; // empty menu bar
 
     QMenuBar* menuBar = getMainWindow()->menuBar();
-    //menuBar->setUpdatesEnabled(false);
+
+#if defined(FC_OS_MACOSX) && QT_VERSION >= 0x050900
+    // Unknown Qt macOS bug observed with Qt >= 5.9.4 causes random crashes when viewing reused top level menus.
+    menuBar->clear();
+#endif
+
+    // On Kubuntu 18.10 global menu has issues with FreeCAD 0.18 menu bar.
+    // Optional parameter, clearing the menu bar, can be set as a workaround.
+    // Clearing the menu bar can cause issues, when trying to access menu bar through Python.
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=30340&start=440#p289330
+    if (App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/MainWindow")->GetBool("ClearMenuBar",false)) {
+        menuBar->clear();
+    }
 
     QList<MenuItem*> items = menuItems->getItems();
     QList<QAction*> actions = menuBar->actions();
@@ -324,7 +337,7 @@ void MenuManager::retranslate(QMenu* menu) const
     // titles. To ease the translation for each menu the native name is set
     // as user data. However, there are special menus that are created by
     // actions for which the name of the according command name is set. For
-    // such menus we have to use the command's menu text instaed. Examples
+    // such menus we have to use the command's menu text instead. Examples
     // for such actions are Std_RecentFiles, Std_Workbench or Std_FreezeViews.
     CommandManager& mgr = Application::Instance->commandManager();
     QByteArray menuName = menu->menuAction()->data().toByteArray();

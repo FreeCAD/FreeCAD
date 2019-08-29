@@ -102,7 +102,7 @@ Part::Feature* Transformed::getBaseObject(bool silent) const {
     }
 
     if (!silent && err) {
-        throw Base::Exception(err);
+        throw Base::RuntimeError(err);
     }
 
     return rv;
@@ -180,7 +180,7 @@ void Transformed::Restore(Base::XMLReader &reader)
         }
 #ifndef FC_DEBUG
         catch (...) {
-            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown");
+            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown\n");
         }
 #endif
 
@@ -331,6 +331,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                         // lets check if the result is a solid
                         if (current.IsNull())
                             return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+
                         /*std::vector<TopoDS_Shape>::const_iterator individualIt;
                         for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
                         {
@@ -378,6 +379,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         for (trsf_it::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
             rejected[it->first].push_back(**it2);
 
+    int solidCount = countSolids(support);
+    if (solidCount > 1) {
+        return new App::DocumentObjectExecReturn("Transformed: Result has multiple solids. This is not supported at this time.");
+    }
+
     this->Shape.setValue(getSolid(support));
 
     if (rejected.size() > 0) {
@@ -395,7 +401,7 @@ TopoDS_Shape Transformed::refineShapeIfActive(const TopoDS_Shape& oldShape) cons
             TopoDS_Shape resShape = mkRefine.Shape();
             return resShape;
         }
-        catch (Standard_Failure) {
+        catch (Standard_Failure&) {
             return oldShape;
         }
     }

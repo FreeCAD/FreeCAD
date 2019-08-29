@@ -148,26 +148,19 @@ SET(RobotGui_SRCS
     ${RobotGui_SRCS_TaskDlg}
 )
 
-
-
-add_library(RobotGui SHARED ${RobotGui_SRCS})
-target_link_libraries(RobotGui ${RobotGui_LIBS})
-
-
-fc_target_copy_resource(RobotGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Robot
-    ${CMAKE_BINARY_DIR}/Mod/Robot
-    InitGui.py MovieTool.py)
-
-SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
-SET_PYTHON_PREFIX_SUFFIX(RobotGui)
-
-INSTALL(TARGETS RobotGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
 SET(RobotGuiIcon_SVG
     Resources/icons/RobotWorkbench.svg
 )
 
+
+add_library(RobotGui SHARED ${RobotGui_SRCS} ${RobotGuiIcon_SVG})
+target_link_libraries(RobotGui ${RobotGui_LIBS})
+
+
+SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
+SET_PYTHON_PREFIX_SUFFIX(RobotGui)
+
 fc_copy_sources(RobotGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot" ${RobotGuiIcon_SVG})
 
+INSTALL(TARGETS RobotGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${RobotGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Robot/Resources/icons")

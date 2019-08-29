@@ -32,7 +32,10 @@
 
 Log ("FreeCAD test running...\n\n")
 
-import TestApp, sys
+import sys
+
+import FreeCAD
+import TestApp
 
 testCase = FreeCAD.ConfigGet("TestCase")
 

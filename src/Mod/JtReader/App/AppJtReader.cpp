@@ -37,7 +37,16 @@ extern struct PyMethodDef JtReader_methods[];
 extern "C" {
 void AppJtReaderExport initJtReader() {
 
+#if PY_MAJOR_VERSION >= 3
+   static struct PyModuleDef JtReaderAPIDef = {
+       PyModuleDef_HEAD_INIT,
+       "JtReader", 0, -1, JtReader_methods,
+       NULL, NULL, NULL, NULL
+   };
+   PyModule_Create(&JtReaderAPIDef);
+#else
    (void) Py_InitModule("JtReader", JtReader_methods);   /* mod name, table ptr */
+#endif
 
    // load dependent module
    Base::Interpreter().loadModule("Mesh");

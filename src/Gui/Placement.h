@@ -24,11 +24,12 @@
 #define GUI_PLACEMENT_H
 
 #include <Gui/InputVector.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Base/Placement.h>
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 class QSignalMapper;
@@ -56,14 +57,19 @@ public:
     void showDefaultButtons(bool);
 
 protected:
+    void open();
     void changeEvent(QEvent *e);
+    void keyPressEvent(QKeyEvent*);
 
 private Q_SLOTS:
+    void openTransaction();
     void on_applyButton_clicked();
     void on_applyIncrementalPlacement_toggled(bool);
     void onPlacementChanged(int);
     void on_resetButton_clicked();
     void on_centerOfMass_toggled(bool);
+    void on_selectedVertex_clicked();
+    void on_applyAxial_clicked();
 
 private:
     bool onApply();
@@ -84,7 +90,7 @@ Q_SIGNALS:
 
 private:
     typedef Gui::LocationInterfaceComp<Ui_Placement> Ui_PlacementComp;
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Ui_PlacementComp* ui;
     QSignalMapper* signalMapper;
     Connection connectAct;
@@ -92,6 +98,15 @@ private:
     Base::Vector3d cntOfMass;
     std::string propertyName; // the name of the placement property
     std::set<std::string> documents;
+    /**
+     * store these so we can reselect original object
+     * after user selects points and clicks Selected point(s)
+     */
+    std::vector<SelectionObject> selectionObjects;
+    /** If false apply the placement directly to the transform nodes,
+     * otherwise change the placement property.
+     */
+    bool changeProperty;
 
     friend class TaskPlacement;
 };
@@ -123,6 +138,7 @@ public:
     bool reject();
     void clicked(int id);
 
+    void open();
     bool isAllowedAlterDocument(void) const
     { return true; }
     bool isAllowedAlterView(void) const

@@ -1,14 +1,15 @@
-import os
 import FreeCAD
-import Path
-import Part
 import Mesh
+import Part
+import Path
+import PathScripts.PathDressup as PathDressup
+import PathScripts.PathGeom as PathGeom
+import PathScripts.PathLog as PathLog
 import PathSimulator
 import math
+import os
+
 from FreeCAD import Vector, Base
-import PathScripts.PathLog as PathLog
-from PathScripts.PathGeom import PathGeom
-import PathScripts.PathDressup as PathDressup
 
 _filePath = os.path.dirname(os.path.abspath(__file__))
 
@@ -58,6 +59,7 @@ class PathSimulation:
             self.taskForm.form.progressBar.setValue(self.iprogress * 100 / self.numCommands)
 
     def Activate(self):
+        self.initdone = False
         self.taskForm = CAMSimTaskUi(self)
         form = self.taskForm.form
         self.Connect(form.toolButtonStop, self.SimStop)
@@ -82,6 +84,7 @@ class PathSimulation:
         self.firstDrill = True
         self.voxSim = PathSimulator.PathSim()
         self.SimulateMill()
+        self.initdone = True
 
     def SetupSimulation(self):
         form = self.taskForm.form
@@ -93,8 +96,7 @@ class PathSimulation:
                 self.firstDrill = True
                 self.activeOps.append(self.operations[i])
                 self.numCommands += len(self.operations[i].Path.Commands)
-        if len(self.activeOps) == 0:
-            return 0
+
         self.stock = self.job.Stock.Shape
         if (self.isVoxel):
             maxlen = self.stock.BoundBox.XLength
@@ -117,7 +119,7 @@ class PathSimulation:
         self.operation = self.activeOps[itool]
         try:
             self.tool = PathDressup.toolController(self.operation).Tool
-        except:
+        except Exception:
             self.tool = None
 
         # if hasattr(self.operation, "ToolController"):
@@ -131,6 +133,7 @@ class PathSimulation:
         self.curpos = FreeCAD.Placement(self.initialPos, self.stdrot)
         # self.cutTool.Placement = FreeCAD.Placement(self.curpos, self.stdrot)
         self.cutTool.Placement = self.curpos
+        self.opCommands =  self.operation.Path.Commands
 
     def SimulateMill(self):
         self.job = self.jobs[self.taskForm.form.comboJobs.currentIndex()]
@@ -211,7 +214,7 @@ class PathSimulation:
             try:
                 if newStock.isValid():
                     self.stock = newStock.removeSplitter()
-            except:
+            except Exception:
                 if self.debug:
                     print("invalid cut at cmd #{}".format(self.icmd))
         if not self.disableAnim:
@@ -240,7 +243,7 @@ class PathSimulation:
             return
         self.busy = True
 
-        cmd = self.operation.Path.Commands[self.icmd]
+        cmd = self.opCommands[self.icmd]
         # for cmd in job.Path.Commands:
         if cmd.Name in ['G0', 'G1', 'G2', 'G3']:
             self.curpos = self.voxSim.ApplyCommand(self.curpos, cmd)
@@ -263,7 +266,7 @@ class PathSimulation:
         self.icmd += 1
         self.iprogress += 1
         self.UpdateProgress()
-        if self.icmd >= len(self.operation.Path.Commands):
+        if self.icmd >= len(self.opCommands):
             # self.cutMaterial.Shape = self.stock.removeSplitter()
             self.ioperation += 1
             if self.ioperation >= len(self.activeOps):
@@ -342,7 +345,7 @@ class PathSimulation:
         try:
             startDir.normalize()
             endDir.normalize()
-        except:
+        except Exception:
             return (None, endPos)
         # height = self.height
 
@@ -364,7 +367,7 @@ class PathSimulation:
         pathWire = Part.Wire(toolPath)
         try:
             pathShell = pathWire.makePipeShell([fullProf], False, True)
-        except:
+        except Exception:
             if self.debug:
                 Part.show(pathWire)
                 Part.show(fullProf)
@@ -437,7 +440,6 @@ class PathSimulation:
         form = self.taskForm.form
         j = self.jobs[form.comboJobs.currentIndex()]
         self.job = j
-        self.SetupSimulation()
         form.listOperations.clear()
         self.operations = []
         for op in j.Operations.OutList:
@@ -446,6 +448,8 @@ class PathSimulation:
             listItem.setCheckState(QtCore.Qt.CheckState.Checked)
             self.operations.append(op)
             form.listOperations.addItem(listItem)
+        if  self.initdone:
+          self.SetupSimulation()
 
     def onSpeedBarChange(self):
         form = self.taskForm.form
@@ -479,16 +483,30 @@ class PathSimulation:
         self.iprogress = 0
         self.EndSimulation()
 
+    def InvalidOperation(self):
+        if len(self.activeOps) == 0:
+          return True
+        if (self.tool == None):
+          TSError("No tool assigned for the operation")
+          return True
+        return False
+
     def SimFF(self):
+        if self.InvalidOperation():
+            return
         self.GuiBusy(True)
         self.timer.start(1)
         self.disableAnim = True
 
     def SimStep(self):
+        if self.InvalidOperation():
+            return
         self.disableAnim = False
         self.PerformCut()
 
     def SimPlay(self):
+        if self.InvalidOperation():
+            return
         self.disableAnim = False
         self.GuiBusy(True)
         self.timer.start(self.simperiod)

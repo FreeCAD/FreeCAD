@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,19 +19,20 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Heat"
+__title__ = "FreeCAD FEM solver Elmer equation object Heat"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 from . import nonlinear
 from ... import equationbase
 
 
 def create(doc, name="Heat"):
-    return FemUtils.createObject(
+    return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
@@ -47,3 +47,5 @@ class Proxy(nonlinear.Proxy, equationbase.HeatProxy):
 
 class ViewProxy(nonlinear.ViewProxy, equationbase.HeatViewProxy):
     pass
+
+##  @}

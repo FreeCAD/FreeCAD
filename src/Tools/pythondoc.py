@@ -16,7 +16,7 @@ def generateDoc():
 
 		# Change to the doc directory
 		cwd = os.getcwd()
-		print 'Change to ' + docpath
+		print('Change to ' + docpath)
 		os.chdir(homepath)
 		if os.path.exists('doc') == False:
 				os.mkdir('doc')
@@ -30,9 +30,9 @@ def generateDoc():
 	
 		# Import FreeCAD module
 		sys.path.append(binpath)
-		print 'Write documentation for module \'FreeCAD\''
+		print('Write documentation for module \'FreeCAD\'')
 		pydoc.writedoc('FreeCAD')
-		print ''
+		print('')
 	
 		# Module directory
 		ModDirs = dircache.listdir(modpath)
@@ -45,36 +45,36 @@ def generateDoc():
 		# Walk through the module paths again and try loading the modules to create HTML files 
 		for Dir in ModDirs:
 				dest = os.path.join(modpath,Dir)
-				print 'Write documentation for module \'' + Dir + '\''
+				print('Write documentation for module \'' + Dir + '\'')
 				if (Dir != '__init__.py'):
 						writedocs(dest)
-						print ''
+						print('')
 						
 		# Now we must create a document and create instances of all Python classes which
 		# cannot be directly created by a module.
 
 		# Create a ZIP archive from all HTML files
-		print 'Creating ZIP archive \'docs.zip\'...'
+		print('Creating ZIP archive \'docs.zip\'...')
 		zip = zipfile.ZipFile('docs.zip', 'w')
 		for file in os.listdir('.'):
 				if not os.path.isdir(file):
 						if file.find('.html') > 0:
-								print '  Adding file ' + file + ' to archive'
+								print('  Adding file ' + file + ' to archive')
 								zip.write(file)
 	
-		print 'done.'
+		print('done.')
 		zip.close()
 	
 		# Remove all HTML files
-		print 'Cleaning up HTML files...'
+		print('Cleaning up HTML files...')
 		for file in os.listdir('.'):
 				if not os.path.isdir(file):
 						if file.find('.html') > 0:
-								print '  Removing ' + file
+								print('  Removing ' + file)
 								os.remove(file)
 		
 		os.chdir(cwd)
-		print 'done.'
+		print('done.')
 
 def writedocs(dir, pkgpath='', done=None):
     """Write out HTML documentation for all modules in a directory tree."""

@@ -177,7 +177,7 @@
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="156"/>
       <source>Plot the tank capacity curve</source>
-      <translation type="unfinished">Plot the tank capacity curve</translation>
+      <translation>Plottar tankkapacitetskurvan</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="160"/>
@@ -230,7 +230,7 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="213"/>
       <source>More than one ship have been selected (the extra ships will be ignored)</source>
-      <translation type="unfinished">More than one ship have been selected (the extra ships will be ignored)</translation>
+      <translation>Mer än ett fartyg har valts (De extra fartygen kommer att ignoreras)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="223"/>

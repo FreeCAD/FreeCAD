@@ -131,7 +131,7 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
                 }
             }
         }
-    } catch (std::exception) {
+    } catch (std::exception&) {
         return new App::DocumentObjectExecReturn("Invalid cell range");
     }
     

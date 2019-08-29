@@ -65,6 +65,7 @@ protected:
     void findShapes();
     bool canExtrude(const TopoDS_Shape&) const;
     void changeEvent(QEvent *e);
+    void keyPressEvent(QKeyEvent*);
 
 private Q_SLOTS:
     void on_rbDirModeCustom_toggled(bool on);

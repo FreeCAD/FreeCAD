@@ -82,8 +82,8 @@ int Line2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject *pV1, *pV2;
     if (PyArg_ParseTuple(args, "O!O!", Base::Vector2dPy::type_object(), &pV1,
                                        Base::Vector2dPy::type_object(), &pV2)) {
-        Base::Vector2d v1 = Py::Vector2d(pV1).getCxxObject()->value();
-        Base::Vector2d v2 = Py::Vector2d(pV2).getCxxObject()->value();
+        Base::Vector2d v1 = Py::toVector2d(pV1);
+        Base::Vector2d v2 = Py::toVector2d(pV2);
         try {
             // Create line out of two points
             double distance = (v1-v2).Length();
@@ -145,7 +145,7 @@ void Line2dPy::setLocation(Py::Object arg)
 
     PyObject *p = arg.ptr();
     if (PyObject_TypeCheck(p, Base::Vector2dPy::type_object())) {
-        Base::Vector2d v = Py::Vector2d(p).getCxxObject()->value();
+        Base::Vector2d v = Py::toVector2d(p);
         pnt.SetX(v.x);
         pnt.SetY(v.y);
     }
@@ -163,7 +163,7 @@ void Line2dPy::setLocation(Py::Object arg)
     try {
         GCE2d_MakeLine ms(pnt, dir);
         if (!ms.IsDone()) {
-            throw Py::Exception(gce_ErrorStatusText(ms.Status()));
+            throw Py::RuntimeError(gce_ErrorStatusText(ms.Status()));
         }
 
         // get Geom_Line of line
@@ -171,8 +171,7 @@ void Line2dPy::setLocation(Py::Object arg)
         this_line->SetLin2d(that_line->Lin2d());
     }
     catch (Standard_Failure& e) {
-
-        throw Py::Exception(e.GetMessageString());
+        throw Py::RuntimeError(e.GetMessageString());
     }
 }
 
@@ -200,7 +199,7 @@ void Line2dPy::setDirection(Py::Object arg)
 
     PyObject *p = arg.ptr();
     if (PyObject_TypeCheck(p, Base::Vector2dPy::type_object())) {
-        Base::Vector2d v = Py::Vector2d(p).getCxxObject()->value();
+        Base::Vector2d v = Py::toVector2d(p);
         dir = gp_Dir2d(v.x,v.y);
     }
     else if (PyTuple_Check(p)) {
@@ -218,7 +217,7 @@ void Line2dPy::setDirection(Py::Object arg)
     try {
         GCE2d_MakeLine ms(pnt, dir);
         if (!ms.IsDone()) {
-            throw Py::Exception(gce_ErrorStatusText(ms.Status()));
+            throw Py::RuntimeError(gce_ErrorStatusText(ms.Status()));
         }
 
         // get Geom_Line of line
@@ -226,8 +225,7 @@ void Line2dPy::setDirection(Py::Object arg)
         this_line->SetLin2d(that_line->Lin2d());
     }
     catch (Standard_Failure& e) {
-
-        throw Py::Exception(e.GetMessageString());
+        throw Py::RuntimeError(e.GetMessageString());
     }
 }
 

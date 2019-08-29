@@ -40,7 +40,7 @@ INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
 QHELPCOMPILER = 'qhelpgenerator'
 QCOLLECTIOMGENERATOR = 'qcollectiongenerator'
-RELEASE = '0.17'
+RELEASE = '0.18'
 
 #    END CONFIGURATION      ##############################################
 
@@ -52,10 +52,10 @@ def crawl():
     # tests ###############################################
     
     if os.system(QHELPCOMPILER +' -v'):
-        print "Error: QAssistant not fully installed, exiting."
+        print ("Error: QAssistant not fully installed, exiting.")
         return 1
     if os.system(QCOLLECTIOMGENERATOR +' -v'):
-        print "Error: QAssistant not fully installed, exiting."
+        print ("Error: QAssistant not fully installed, exiting.")
         return 1
 
     # run ########################################################
@@ -64,22 +64,22 @@ def crawl():
     qhcp = createCollProjectFile()
     shutil.copy("../../Gui/Icons/freecad-icon-64.png","localwiki/freecad-icon-64.png")
     if generate(qhcp) or compile(qhp):
-        print "Error at compiling"
+        print ("Error at compiling")
         return 1
-    if VERBOSE: print "All done!"
+    if VERBOSE: print ("All done!")
     i=raw_input("Copy the files to their correct location in the source tree? y/n (default=no) ")
     if i.upper() in ["Y","YES"]:
         shutil.copy("localwiki/freecad.qch","../../Doc/freecad.qch")
         shutil.copy("localwiki/freecad.qhc","../../Doc/freecad.qhc")
     else:
-        print 'Files are in localwiki. Test with "assistant -collectionFile localwiki/freecad.qhc"'
+        print ('Files are in localwiki. Test with "assistant -collectionFile localwiki/freecad.qhc"')
     return 0
     
 def compile(qhpfile):
     "compiles the whole html doc with qassistant"
     qchfile = FOLDER + os.sep + "freecad.qch"
     if not os.system(QHELPCOMPILER + ' '+qhpfile+' -o '+qchfile):
-        if VERBOSE: print "Successfully created",qchfile
+        if VERBOSE: print ("Successfully created",qchfile)
         return 0
 
 def generate(qhcpfile):
@@ -93,7 +93,7 @@ def generate(qhcpfile):
     about.close()
     qhcfile = FOLDER + os.sep + "freecad.qhc"
     if not os.system(QCOLLECTIOMGENERATOR+' '+qhcpfile+' -o '+qhcfile):
-        if VERBOSE: print "Successfully created ",qhcfile
+        if VERBOSE: print ("Successfully created ",qhcfile)
         return 0
 
 def createCollProjectFile():
@@ -131,12 +131,12 @@ def createCollProjectFile():
     </docFiles>
 </QHelpCollectionProject>
 '''
-    if VERBOSE: print "Building project file..."
+    if VERBOSE: print ("Building project file...")
     qfilename = FOLDER + os.sep + "freecad.qhcp"
     f = open(qfilename,'w')
     f.write(qprojectfile)
     f.close()
-    if VERBOSE: print "Done writing qhcp file",qfilename
+    if VERBOSE: print ("Done writing qhcp file",qfilename)
     return qfilename
 
 def buildtoc():
@@ -182,7 +182,7 @@ def buildtoc():
         if not link: link = 'default.html'
         return title,link
 
-    if VERBOSE: print "Building table of contents..."
+    if VERBOSE: print ("Building table of contents...")
     f = open(FOLDER+os.sep+INDEX+'.html')
     html = ''
     for line in f: html += line
@@ -229,9 +229,9 @@ def buildtoc():
     f = open(qfilename,'wb')
     f.write(qhelpfile)
     f.close()
-    if VERBOSE: print "Done writing qhp file",qfilename
+    if VERBOSE: print ("Done writing qhp file",qfilename)
     return qfilename
     
 if __name__ == "__main__":
-	crawl()
-      
+    crawl()
+

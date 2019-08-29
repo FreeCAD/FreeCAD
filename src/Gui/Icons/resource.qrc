@@ -66,10 +66,24 @@
         <file>edit-paste.svg</file>
         <file>edit-select-all.svg</file>
         <file>edit-select-box.svg</file>
+        <file>edit-element-select-box.svg</file>
         <file>edit-redo.svg</file>
         <file>edit-undo.svg</file>
         <file>edit-edit.svg</file>
         <file>edit-cleartext.svg</file>
+        <file>tree-item-drag.svg</file>
+        <file>tree-goto-sel.svg</file>
+        <file>tree-rec-sel.svg</file>
+        <file>tree-pre-sel.svg</file>
+        <file>tree-sync-sel.svg</file>
+        <file>tree-sync-view.svg</file>
+        <file>tree-sync-pla.svg</file>
+        <file>tree-doc-single.svg</file>
+        <file>tree-doc-multi.svg</file>
+        <file>tree-doc-collapse.svg</file>
+        <file>sel-back.svg</file>
+        <file>sel-forward.svg</file>
+        <file>sel-instance.svg</file>
         <file>help-browser.svg</file>
         <file>preferences-system.svg</file>
         <file>process-stop.svg</file>
@@ -125,6 +139,7 @@
         <file>DrawStyleWireFrame.svg</file>
         <file>user.svg</file>
         <file>CoordinateSystem.svg</file>
+        <file>Std_CoordinateSystem.svg</file>
         <file>MacroEditor.svg</file>
         <file>Param_Bool.svg</file>
         <file>Param_Float.svg</file>
@@ -157,6 +172,23 @@
         <file>Geofeaturegroup.svg</file>
         <file>Std_Axis.svg</file>
         <file>Std_Plane.svg</file>
+        <file>Link.svg</file>
+        <file>LinkArray.svg</file>
+        <file>LinkElement.svg</file>
+        <file>LinkGroup.svg</file>
+        <file>LinkOverlay.xpm</file>
+        <file>LinkArrayOverlay.xpm</file>
+        <file>LinkSubOverlay.xpm</file>
+        <file>LinkSubElement.xpm</file>
+        <file>LinkSub.svg</file>
+        <file>LinkReplace.svg</file>
+        <file>LinkImport.svg</file>
+        <file>LinkImportAll.svg</file>
+        <file>LinkSelect.svg</file>
+        <file>LinkSelectFinal.svg</file>
+        <file>LinkSelectAll.svg</file>
+        <file>Unlink.svg</file>
+        <file>Invisible.svg</file>
     </qresource>
     <!-- Alternative directory names for icons that should be loaded from a theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->
@@ -189,9 +221,23 @@
         <file>edit-paste.svg</file>
         <file>edit-select-all.svg</file>
         <file>edit-select-box.svg</file>
+        <file>edit-element-select-box.svg</file>
         <file>edit-redo.svg</file>
         <file>edit-undo.svg</file>
         <file>edit-edit.svg</file>
+        <file>tree-item-drag.svg</file>
+        <file>tree-goto-sel.svg</file>
+        <file>tree-rec-sel.svg</file>
+        <file>tree-pre-sel.svg</file>
+        <file>tree-sync-sel.svg</file>
+        <file>tree-sync-view.svg</file>
+        <file>tree-sync-pla.svg</file>
+        <file>tree-doc-single.svg</file>
+        <file>tree-doc-multi.svg</file>
+        <file>tree-doc-collapse.svg</file>
+        <file>sel-back.svg</file>
+        <file>sel-forward.svg</file>
+        <file>sel-instance.svg</file>
         <file>help-browser.svg</file>
         <file>preferences-system.svg</file>
         <file>window-new.svg</file>

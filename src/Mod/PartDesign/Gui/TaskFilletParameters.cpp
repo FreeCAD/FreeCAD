@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
 #endif
 
 #include "ui_TaskFilletParameters.h"
@@ -84,6 +85,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWid
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QString::fromLatin1("Del"));
     ui->listWidgetReferences->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -119,6 +121,7 @@ void TaskFilletParameters::onRefDeleted(void)
     App::DocumentObject* base = pcFillet->Base.getValue();
     std::vector<std::string> refs = pcFillet->Base.getSubValues();
     refs.erase(refs.begin() + ui->listWidgetReferences->currentRow());
+    setupTransaction();
     pcFillet->Base.setValue(base, refs);
     ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
     pcFillet->getDocument()->recomputeFeature(pcFillet);
@@ -128,6 +131,7 @@ void TaskFilletParameters::onLengthChanged(double len)
 {
     clearButtons(none);
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
+    setupTransaction();
     pcFillet->Radius.setValue(len);
     pcFillet->getDocument()->recomputeFeature(pcFillet);
 }

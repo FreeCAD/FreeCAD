@@ -215,7 +215,7 @@ ParameterGrp::~ParameterGrp()
 
 void ParameterGrp::copyTo(Base::Reference<ParameterGrp> Grp)
 {
-    // delete previos content
+    // delete previous content
     Grp->Clear();
 
     // copy all
@@ -411,7 +411,7 @@ void  ParameterGrp::SetBool(const char* Name, bool bValue)
 {
     // find or create the Element
     DOMElement *pcElem = FindOrCreateElement(_pGroupNode,"FCBool",Name);
-    // and set the vaue
+    // and set the value
     pcElem->setAttribute(XStr("Value").unicodeForm(), XStr(bValue?"1":"0").unicodeForm());
     // trigger observer
     Notify(Name);
@@ -476,7 +476,7 @@ void  ParameterGrp::SetInt(const char* Name, long lValue)
     char cBuf[256];
     // find or create the Element
     DOMElement *pcElem = FindOrCreateElement(_pGroupNode,"FCInt",Name);
-    // and set the vaue
+    // and set the value
     sprintf(cBuf,"%li",lValue);
     pcElem->setAttribute(XStr("Value").unicodeForm(), XStr(cBuf).unicodeForm());
     // trigger observer
@@ -537,7 +537,7 @@ void  ParameterGrp::SetUnsigned(const char* Name, unsigned long lValue)
     char cBuf[256];
     // find or create the Element
     DOMElement *pcElem = FindOrCreateElement(_pGroupNode,"FCUInt",Name);
-    // and set the vaue
+    // and set the value
     sprintf(cBuf,"%lu",lValue);
     pcElem->setAttribute(XStr("Value").unicodeForm(), XStr(cBuf).unicodeForm());
     // trigger observer
@@ -1353,10 +1353,12 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
         //
         // do the serialization through DOMWriter::writeNode();
         //
-        DOMLSOutput *theOutput = ((DOMImplementationLS*)impl)->createLSOutput();
-        theOutput->setEncoding(gOutputEncoding);
-        theOutput->setByteStream(pFormatTarget);
-        theSerializer->write(_pDocument, theOutput);
+        if (_pDocument) {
+            DOMLSOutput *theOutput = ((DOMImplementationLS*)impl)->createLSOutput();
+            theOutput->setEncoding(gOutputEncoding);
+            theOutput->setByteStream(pFormatTarget);
+            theSerializer->write(_pDocument, theOutput);
+        }
 
         delete theSerializer;
     }

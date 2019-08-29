@@ -64,9 +64,10 @@ private Q_SLOTS:
     void onButtonRefAdd(bool checked);
     void onButtonRefRemove(bool checked);
     void onBaseButton(bool checked);
+    void onProfileButton(bool checked);
   
 protected:
-    enum selectionModes { none, refAdd, refRemove, refObjAdd };
+    enum selectionModes { none, refAdd, refRemove, refObjAdd, refProfile };
     selectionModes selectionMode = none;
     
     void removeFromListWidget(QListWidget*w, QString name);
@@ -100,7 +101,6 @@ private Q_SLOTS:
     void onButtonRefRemove(bool checked);
     void updateUI(int idx);
     void onBaseButton(bool checked);
-    void onTangentChanged(bool checked);
     void onCurvelinearChanged(bool checked);
     void onBinormalChanged(double);
   

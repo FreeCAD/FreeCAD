@@ -31,6 +31,30 @@ namespace MeshCore
 {
 class MeshKernel;
 
+class MeshExport TriangulationVerifier
+{
+public:
+    TriangulationVerifier() {}
+    virtual ~TriangulationVerifier() {}
+    virtual bool Accept(const Base::Vector3f& n,
+                        const Base::Vector3f& p1,
+                        const Base::Vector3f& p2,
+                        const Base::Vector3f& p3) const;
+    virtual bool MustFlip(const Base::Vector3f& n1,
+                          const Base::Vector3f& n2) const;
+};
+
+class MeshExport TriangulationVerifierV2 : public TriangulationVerifier
+{
+public:
+    virtual bool Accept(const Base::Vector3f& n,
+                        const Base::Vector3f& p1,
+                        const Base::Vector3f& p2,
+                        const Base::Vector3f& p3) const;
+    virtual bool MustFlip(const Base::Vector3f& n1,
+                          const Base::Vector3f& n2) const;
+};
+
 class MeshExport AbstractPolygonTriangulator
 {
 public:
@@ -40,6 +64,12 @@ public:
     /** Sets the polygon to be triangulated. */
     void SetPolygon(const std::vector<Base::Vector3f>& raclPoints);
     void SetIndices(const std::vector<unsigned long>& d) {_indices = d;}
+    /** Set a verifier object that checks if the generated triangulation
+     * can be accepted and added to the mesh kernel.
+     * The triangulator takes ownership of the passed verifier.
+     */
+    void SetVerifier(TriangulationVerifier* v);
+    TriangulationVerifier* GetVerifier() const;
     /** Usually the created faces use the indices of the polygon points
      * from [0, n]. If the faces should be appended to an existing mesh
      * they may need to be reindexed from the calling instance.
@@ -63,7 +93,7 @@ public:
      * built out of the axes of the plane.
      */
     Base::Matrix4D GetTransformToFitPlane() const;
-    /** If the points of the polygon set by SetPolygon() doesn't lie in a 
+    /** If the points of the polygon set by SetPolygon() doesn't lie in a
      * plane this method can be used to project the points in a common plane.
      */
     std::vector<Base::Vector3f> ProjectToFitPlane();
@@ -108,6 +138,7 @@ protected:
     std::vector<MeshGeomFacet>  _triangles;
     std::vector<MeshFacet>      _facets;
     std::vector<unsigned long>  _info;
+    TriangulationVerifier*      _verifier;
 };
 
 /**
@@ -126,11 +157,11 @@ protected:
 private:
     /**
     * Static class to triangulate any contour/polygon (without holes) efficiently.
-    * The original code snippet was submitted to FlipCode.com by John W. Ratcliff 
+    * The original code snippet was submitted to FlipCode.com by John W. Ratcliff
     * (jratcliff@verant.com) on July 22, 2000.
     * The original vector of 2d points is replaced by a vector of 3d points where the
-    * z-ccordinate is ignored. This is because the algorithm is often used for 3d points 
-    * projected to a common plane. The result vector of 2d points is replaced by an 
+    * z-coordinate is ignored. This is because the algorithm is often used for 3d points 
+    * projected to a common plane. The result vector of 2d points is replaced by an
     * array of indices to the points of the polygon.
     */
     class Triangulate
@@ -224,4 +255,4 @@ protected:
 } // namespace MeshCore
 
 
-#endif  // MESH_TRIANGULATION_H 
+#endif  // MESH_TRIANGULATION_H

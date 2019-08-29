@@ -72,9 +72,9 @@ public:
 	//---------------------------------------------------------------------
 
 	virtual PyObject *_repr(void);  				// the representation
-	PyObject *_getattr(char *attr);				// __getattr__ function
+	PyObject *_getattr(const char *attr);				// __getattr__ function
 	// getter setter
-	int _setattr(char *attr, PyObject *value);	// __setattr__ function
+	int _setattr(const char *attr, PyObject *value);	// __setattr__ function
 
 	// methods
 	PYFUNCDEF_D (TopoShapePyOld,hasChild);

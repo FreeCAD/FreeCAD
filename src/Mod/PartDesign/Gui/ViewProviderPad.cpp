@@ -53,6 +53,7 @@ void ViewProviderPad::setupContextMenu(QMenu* menu, QObject* receiver, const cha
     QAction* act;
     act = menu->addAction(QObject::tr("Edit pad"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
+    PartDesignGui::ViewProviderSketchBased::setupContextMenu(menu, receiver, member);
 }
 
 TaskDlgFeatureParameters *ViewProviderPad::getEditDialog()

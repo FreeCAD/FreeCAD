@@ -91,6 +91,8 @@ public:
     double deltaAngle;
     double totalAngle;
 
+    static double unbranchAngle(double ang);
+
 };
 
 class SoGestureSwipeEvent : public SoGestureEvent {

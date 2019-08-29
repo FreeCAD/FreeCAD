@@ -36,7 +36,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderHatch : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderHatch);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderHatch);
 
 public:
     /// constructor
@@ -47,15 +47,17 @@ public:
     App::PropertyColor       HatchColor;
     App::PropertyFloatConstraint HatchScale;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual void attach(App::DocumentObject *) override;
+    virtual void setDisplayMode(const char* ModeName) override;
+    virtual bool useNewSelectionModel(void) const override {return false;}
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
-    virtual void onChanged(const App::Property* prop);
-    virtual void updateData(const App::Property*);
+    virtual std::vector<std::string> getDisplayModes(void) const override;
+    virtual void onChanged(const App::Property* prop) override;
+    virtual void updateData(const App::Property*) override;
 
     TechDraw::DrawHatch* getViewObject() const;
+
+    virtual Gui::MDIView *getMDIView() override;
     
 private:
     static App::PropertyFloatConstraint::Constraints scaleRange;

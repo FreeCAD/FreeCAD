@@ -37,6 +37,7 @@
 #include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Gui/DocumentObserver.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
@@ -108,12 +109,13 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
 
 TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget *parent, QString picture, QString text)
     : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent),
+      SelectionObserver(ViewProvider),
       ViewProvider(ViewProvider)
 {
     //check if we are attachable
-    if(!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
-        throw Base::Exception("Object has no PArt::AttachExtension");
-    
+    if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
+        throw Base::RuntimeError("Object has no Part::AttachExtension");
+
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui = new Ui_TaskAttacher();
@@ -161,7 +163,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
     ui->lineRef4->blockSignals(true);
     ui->listOfModes->blockSignals(true);
 
-    // Get the feature data    
+    // Get the feature data
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     std::vector<std::string> refnames = pcAttach->Support.getSubValues();
 
@@ -207,9 +209,11 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
     updatePreview();
 
     // connect object deletion with slot
-    auto bnd = boost::bind(&TaskAttacher::objectDeleted, this, _1);
+    auto bnd1 = boost::bind(&TaskAttacher::objectDeleted, this, _1);
+    auto bnd2 = boost::bind(&TaskAttacher::documentDeleted, this, _1);
     Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
-    connectDelObject = document->signalDeletedObject.connect(bnd);
+    connectDelObject = document->signalDeletedObject.connect(bnd1);
+    connectDelDocument = document->signalDeleteDocument.connect(bnd2);
 }
 
 TaskAttacher::~TaskAttacher()
@@ -221,13 +225,22 @@ TaskAttacher::~TaskAttacher()
     }
 
     connectDelObject.disconnect();
+    connectDelDocument.disconnect();
     delete ui;
 }
 
 void TaskAttacher::objectDeleted(const Gui::ViewProviderDocumentObject& view)
 {
-    if (ViewProvider == &view)
+    if (ViewProvider == &view) {
         ViewProvider = nullptr;
+        this->setDisabled(true);
+    }
+}
+
+void TaskAttacher::documentDeleted(const Gui::Document&)
+{
+    ViewProvider = nullptr;
+    this->setDisabled(true);
 }
 
 const QString makeHintText(std::set<eRefType> hint)
@@ -244,6 +257,8 @@ const QString makeHintText(std::set<eRefType> hint)
 
 void TaskAttacher::updateReferencesUI()
 {
+    if (!ViewProvider)
+        return;
 
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
 
@@ -274,6 +289,9 @@ void TaskAttacher::updateReferencesUI()
 
 bool TaskAttacher::updatePreview()
 {
+    if (!ViewProvider)
+        return false;
+
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     QString errMessage;
     bool attached = false;
@@ -319,6 +337,9 @@ QLineEdit* TaskAttacher::getLine(unsigned idx)
 
 void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    if (!ViewProvider)
+        return;
+
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (iActiveRef < 0)
             return;
@@ -328,7 +349,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::vector<App::DocumentObject*> refs = pcAttach->Support.getValues();
         std::vector<std::string> refnames = pcAttach->Support.getSubValues();
         App::DocumentObject* selObj = ViewProvider->getObject()->getDocument()->getObject(msg.pObjectName);
-        if (selObj == ViewProvider->getObject()) return;//prevent self-referencing
+        if (!selObj || selObj == ViewProvider->getObject()) return;//prevent self-referencing
         
         std::string subname = msg.pSubName;
 
@@ -405,6 +426,9 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
 {
+    if (!ViewProvider)
+        return;
+
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     Base::Placement pl = pcAttach->AttachmentOffset.getValue();
 
@@ -447,22 +471,27 @@ void TaskAttacher::onAttachmentOffsetXChanged(double val)
 {
     onAttachmentOffsetChanged(val, 0);
 }
+
 void TaskAttacher::onAttachmentOffsetYChanged(double val)
 {
     onAttachmentOffsetChanged(val, 1);
 }
+
 void TaskAttacher::onAttachmentOffsetZChanged(double val)
 {
     onAttachmentOffsetChanged(val, 2);
 }
+
 void TaskAttacher::onAttachmentOffsetYawChanged(double val)
 {
     onAttachmentOffsetChanged(val, 3);
 }
+
 void TaskAttacher::onAttachmentOffsetPitchChanged(double val)
 {
     onAttachmentOffsetChanged(val, 4);
 }
+
 void TaskAttacher::onAttachmentOffsetRollChanged(double val)
 {
     onAttachmentOffsetChanged(val, 5);
@@ -470,6 +499,9 @@ void TaskAttacher::onAttachmentOffsetRollChanged(double val)
 
 void TaskAttacher::onCheckFlip(bool on)
 {
+    if (!ViewProvider)
+        return;
+
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     pcAttach->MapReversed.setValue(on);
     ViewProvider->getObject()->getDocument()->recomputeFeature(ViewProvider->getObject());
@@ -493,18 +525,24 @@ void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
 void TaskAttacher::onButtonRef1(const bool checked) {
     onButtonRef(checked, 0);
 }
+
 void TaskAttacher::onButtonRef2(const bool checked) {
     onButtonRef(checked, 1);
 }
+
 void TaskAttacher::onButtonRef3(const bool checked) {
     onButtonRef(checked, 2);
 }
+
 void TaskAttacher::onButtonRef4(const bool checked) {
     onButtonRef(checked, 3);
 }
 
 void TaskAttacher::onModeSelect()
 {
+    if (!ViewProvider)
+        return;
+
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     pcAttach->MapMode.setValue(getActiveMapMode());
     updatePreview();
@@ -512,6 +550,9 @@ void TaskAttacher::onModeSelect()
 
 void TaskAttacher::onRefName(const QString& text, unsigned idx)
 {
+    if (!ViewProvider)
+        return;
+
     QLineEdit* line = getLine(idx);
     if (line == NULL) return;
 
@@ -621,13 +662,16 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
 
 void TaskAttacher::updateRefButton(int idx)
 {
+    if (!ViewProvider)
+        return;
+
     QAbstractButton* b;
     switch(idx){
         case 0: b = ui->buttonRef1; break;
         case 1: b = ui->buttonRef2; break;
         case 2: b = ui->buttonRef3; break;
         case 3: b = ui->buttonRef4; break;
-        default: throw Base::Exception("button index out of range");
+        default: throw Base::IndexError("button index out of range");
     }
 
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
@@ -654,6 +698,9 @@ void TaskAttacher::updateRefButton(int idx)
 
 void TaskAttacher::updateAttachmentOffsetUI()
 {
+    if (!ViewProvider)
+        return;
+
     Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     Base::Placement pl = pcAttach->AttachmentOffset.getValue();
     Base::Vector3d pos = pl.getPosition();
@@ -691,7 +738,7 @@ void TaskAttacher::updateAttachmentOffsetUI()
     ui->attachmentOffsetPitch->setEnabled(!bRotationBound);
     ui->attachmentOffsetRoll->setEnabled(!bRotationBound);
 
-    QString tooltip = bRotationBound ? tr("Not editable because rotation part of AttachmentOffset is bound by expressions.") : QString();
+    QString tooltip = bRotationBound ? tr("Not editable because rotation of AttachmentOffset is bound by expressions.") : QString();
     ui->attachmentOffsetYaw->setToolTip(tooltip);
     ui->attachmentOffsetPitch->setToolTip(tooltip);
     ui->attachmentOffsetRoll->setToolTip(tooltip);
@@ -707,6 +754,9 @@ void TaskAttacher::updateAttachmentOffsetUI()
 
 void TaskAttacher::updateListOfModes()
 {
+    if (!ViewProvider)
+        return;
+
     //first up, remember currently selected mode.
     eMapMode curMode = mmDeactivated;
     auto sel = ui->listOfModes->selectedItems();
@@ -752,8 +802,9 @@ void TaskAttacher::updateListOfModes()
             QString tooltip = mstr[1];
 
             if (mmode != mmDeactivated) {
-                tooltip += tr("\n\nReference combinations:\n") +
-                   AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n"));
+                tooltip += QString::fromLatin1("\n\n%1\n%2")
+                        .arg(tr("Reference combinations:"),
+                             AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n")));
             }
             item->setToolTip(tooltip);
 
@@ -778,7 +829,6 @@ void TaskAttacher::updateListOfModes()
                 }
             } else if (mmode == this->lastSuggestResult.bestFitMode){
                 //suggested mode - make bold
-                assert (item);
                 QFont fnt = item->font();
                 fnt.setBold(true);
                 item->setFont(fnt);
@@ -796,13 +846,13 @@ void TaskAttacher::updateListOfModes()
 
 void TaskAttacher::selectMapMode(eMapMode mmode) {
     ui->listOfModes->blockSignals(true);
-    
+
     for (size_t i = 0;  i < modesInList.size(); ++i) {
         if (modesInList[i] == mmode) {
             ui->listOfModes->item(i)->setSelected(true);
         }
     }
-    
+
     ui->listOfModes->blockSignals(false);
 }
 
@@ -823,19 +873,21 @@ void TaskAttacher::onRefName1(const QString& text)
 {
     onRefName(text, 0);
 }
+
 void TaskAttacher::onRefName2(const QString& text)
 {
     onRefName(text, 1);
 }
+
 void TaskAttacher::onRefName3(const QString& text)
 {
     onRefName(text, 2);
 }
+
 void TaskAttacher::onRefName4(const QString &text)
 {
     onRefName(text, 3);
 }
-
 
 bool TaskAttacher::getFlip() const
 {
@@ -880,8 +932,8 @@ void TaskAttacher::changeEvent(QEvent *e)
 
 void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 {
-    if (opening_not_closing){
-                //crash guards
+    if (opening_not_closing) {
+        //crash guards
         if (!ViewProvider)
             return;
         if (!ViewProvider->getObject())
@@ -890,9 +942,9 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             return;
         try{
             QString code = QString::fromLatin1(
-                "import TempoVis\n"
+                "import Show\n"
                 "from Show.DepGraphTools import getAllDependent, isContainer\n"
-                "tv = TempoVis.TempoVis(App.ActiveDocument)\n"
+                "tv = Show.TempoVis(App.ActiveDocument)\n"
                 "dep_features = [o for o in getAllDependent(%1) if not isContainer(o)]\n"
                 "if %1.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
                 "\tvisible_features = [feat for feat in %1.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
@@ -935,7 +987,8 @@ TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, 
     : TaskDialog(),ViewProvider(ViewProvider), parameter(nullptr)
 {
     assert(ViewProvider);
-    
+    setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
+
     if(createBox) {
         parameter  = new TaskAttacher(ViewProvider);
         Content.push_back(parameter);
@@ -952,43 +1005,46 @@ TaskDlgAttacher::~TaskDlgAttacher()
 
 void TaskDlgAttacher::open()
 {
-    
+
 }
 
 void TaskDlgAttacher::clicked(int)
 {
-    
+
 }
 
 bool TaskDlgAttacher::accept()
 {
-
     try {
+        Gui::DocumentT doc(getDocumentName());
+        Gui::Document* document = doc.getDocument();
+        if (!document || !ViewProvider)
+            return true;
+
         Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
-        std::string name = ViewProvider->getObject()->getNameInDocument();
+        auto obj = ViewProvider->getObject();
 
         //DeepSOIC: changed this to heavily rely on dialog constantly updating feature properties
         if (pcAttach->AttachmentOffset.isTouched()){
             Base::Placement plm = pcAttach->AttachmentOffset.getValue();
             double yaw, pitch, roll;
             plm.getRotation().getYawPitchRoll(yaw,pitch,roll);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
-                                    name.c_str(),
+            FCMD_OBJ_CMD2("AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
+                                    obj,
                                     plm.getPosition().x, plm.getPosition().y, plm.getPosition().z,
                                     yaw, pitch, roll);
         }
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MapReversed = %s", name.c_str(), pcAttach->MapReversed.getValue() ? "True" : "False");
+        FCMD_OBJ_CMD2("MapReversed = %s", obj, pcAttach->MapReversed.getValue() ? "True" : "False");
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Support = %s", name.c_str(), pcAttach->Support.getPyReprString().c_str());
+        FCMD_OBJ_CMD2("Support = %s", obj, pcAttach->Support.getPyReprString().c_str());
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MapMode = '%s'", name.c_str(), AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
+        FCMD_OBJ_CMD2("MapMode = '%s'", obj, AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-        if (!ViewProvider->getObject()->isValid())
-            throw Base::Exception(ViewProvider->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
+        FCMD_OBJ_DOC_CMD(obj, "recompute()");
+
+        FCMD_VOBJ_DOC_CMD(obj,"resetEdit()");
+        document->commitCommand();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Datum dialog: Input error"), QString::fromLatin1(e.what()));
@@ -1000,13 +1056,16 @@ bool TaskDlgAttacher::accept()
 
 bool TaskDlgAttacher::reject()
 {
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    Gui::DocumentT doc(getDocumentName());
+    Gui::Document* document = doc.getDocument();
+    if (document) {
+        // roll back the done things
+        document->abortCommand();
+        Gui::Command::doCommand(Gui::Command::Gui,"%s.resetEdit()", doc.getGuiDocumentPython().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", doc.getAppDocumentPython().c_str());
+    }
+
     return true;
 }
-
-
 
 #include "moc_TaskAttacher.cpp"

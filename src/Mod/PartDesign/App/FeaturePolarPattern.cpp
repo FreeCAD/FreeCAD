@@ -69,10 +69,10 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
 {
     double angle = Angle.getValue();
     if (angle < Precision::Confusion())
-        throw Base::Exception("Pattern angle too small");
+        throw Base::ValueError("Pattern angle too small");
     int occurrences = Occurrences.getValue();
     if (occurrences < 2)
-        throw Base::Exception("At least two occurrences required");
+        throw Base::ValueError("At least two occurrences required");
     bool reversed = Reversed.getValue();
 
     double offset;
@@ -83,10 +83,10 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
 
     App::DocumentObject* refObject = Axis.getValue();
     if (refObject == NULL)
-        throw Base::Exception("No axis reference specified");
+        throw Base::ValueError("No axis reference specified");
     std::vector<std::string> subStrings = Axis.getSubValues();
     if (subStrings.empty())
-        throw Base::Exception("No axis reference specified");
+        throw Base::ValueError("No axis reference specified");
 
     gp_Pnt axbase;
     gp_Dir axdir;
@@ -121,7 +121,7 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         axdir = gp_Dir(d.x, d.y, d.z);
     } else if (refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         if (subStrings[0].empty())
-            throw Base::Exception("No axis reference specified");
+            throw Base::ValueError("No axis reference specified");
         Part::Feature* refFeature = static_cast<Part::Feature*>(refObject);
         Part::TopoShape refShape = refFeature->Shape.getShape();
         TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
@@ -129,18 +129,18 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         if (ref.ShapeType() == TopAbs_EDGE) {
             TopoDS_Edge refEdge = TopoDS::Edge(ref);
             if (refEdge.IsNull())
-                throw Base::Exception("Failed to extract axis edge");
+                throw Base::ValueError("Failed to extract axis edge");
             BRepAdaptor_Curve adapt(refEdge);
             if (adapt.GetType() != GeomAbs_Line)
-                throw Base::Exception("Axis edge must be a straight line");
+                throw Base::TypeError("Axis edge must be a straight line");
 
             axbase = adapt.Value(adapt.FirstParameter());
             axdir = adapt.Line().Direction();
         } else {
-            throw Base::Exception("Axis reference must be an edge");
+            throw Base::TypeError("Axis reference must be an edge");
         }
     } else {
-        throw Base::Exception("Axis reference must be edge of a feature or datum line");
+        throw Base::TypeError("Axis reference must be edge of a feature or datum line");
     }
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     axbase.Transform(invObjLoc.Transformation());

@@ -24,6 +24,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoNormal.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Bnd_Box.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
+# include <BRep_Tool.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 #include "ViewProviderAddSub.h"
@@ -36,19 +49,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Base/Console.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoNormal.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoPickStyle.h>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepMesh_IncrementalMesh.hxx>
-#include <BRep_Tool.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
-#include <Standard_Version.hxx>
+
 
 
 using namespace PartDesignGui;
@@ -77,35 +78,34 @@ ViewProviderAddSub::~ViewProviderAddSub()
 }
 
 void ViewProviderAddSub::attach(App::DocumentObject* obj) {
-     
+
     ViewProvider::attach(obj);
-    
+
     auto* bind = new SoMaterialBinding();
     bind->value = SoMaterialBinding::OVERALL;
     auto* material = new SoMaterial();
-    if(static_cast<PartDesign::FeatureAddSub*>(obj)->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+    if (static_cast<PartDesign::FeatureAddSub*>(obj)->getAddSubType() == PartDesign::FeatureAddSub::Additive)
         material->diffuseColor = SbColor(1,1,0);
     else
         material->diffuseColor = SbColor(1,0,0);
-    
+
     material->transparency = 0.7f;
     auto* pick = new SoPickStyle();
     pick->style = SoPickStyle::UNPICKABLE;
-    
+
     previewShape->addChild(pick);
     previewShape->addChild(bind);
     previewShape->addChild(material);
     previewShape->addChild(previewCoords);
     previewShape->addChild(previewNorm);
     previewShape->addChild(previewFaceSet);
-    
+
     addDisplayMaskMode(previewShape, "Shape preview");
     updateAddSubShapeIndicator();
 }
 
 void ViewProviderAddSub::updateAddSubShapeIndicator() {
 
-    
     TopoDS_Shape cShape(static_cast<PartDesign::FeatureAddSub*>(getObject())->AddSubShape.getValue());
     if (cShape.IsNull()) {
         previewCoords  ->point      .setNum(0);
@@ -197,7 +197,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
             const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
             TColgp_Array1OfDir Normals (Nodes.Lower(), Nodes.Upper());
             getNormals(actFace, mesh, Normals);
-            
+
             for (int g=1;g<=nbTriInFace;g++) {
                 // Get the triangle
                 Standard_Integer N1,N2,N3;
@@ -214,7 +214,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
                 gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
 
                 // get the 3 previewNormals of this triangle
-                gp_Dir NV1(Normals(N1)), NV2(Normals(N2)), NV3(Normals(N3));                
+                gp_Dir NV1(Normals(N1)), NV2(Normals(N2)), NV3(Normals(N3));
 
                 // transform the vertices and previewNormals to the place of the face
                 if(!identity) {
@@ -244,16 +244,16 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
             }
 
             parts[ii] = nbTriInFace; // new part
-            
+
             // counting up the per Face offsets
             faceNodeOffset += nbNodesInFace;
             faceTriaOffset += nbTriInFace;
         }
 
-        // previewNormalize all previewNormals 
+        // previewNormalize all previewNormals
         for (int i = 0; i< numNorms ;i++)
             previewNorms[i].normalize();
-        
+
         // end the editing of the nodes
         previewCoords  ->point       .finishEditing();
         previewNorm    ->vector      .finishEditing();
@@ -266,10 +266,10 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
 }
 
 void ViewProviderAddSub::updateData(const App::Property* p) {
-    
+
     if(strcmp(p->getName(), "AddSubShape")==0)
         updateAddSubShapeIndicator();
-    
+
     PartDesignGui::ViewProvider::updateData(p);
 }
 
@@ -279,13 +279,17 @@ void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
     // displays an object and when restoring the previous state it's
     // not sufficient to only revert the mask mode. Also the child
     // number of the switch node must be reverted.
-    if (onoff && displayMode!="Shape preview") {
+    if (onoff) {
+        if(pcModeSwitch->getChild(getDefaultMode()) == previewShape) 
+            return;
         displayMode = getActiveDisplayMode();
         whichChild = pcModeSwitch->whichChild.getValue();
         setDisplayMaskMode("Shape preview");
     }
 
     if (!onoff) {
+        if(pcModeSwitch->getChild(getDefaultMode()) != previewShape) 
+            return;
         setDisplayMaskMode(displayMode.c_str());
         pcModeSwitch->whichChild.setValue(whichChild);
     }

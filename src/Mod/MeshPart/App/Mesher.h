@@ -25,8 +25,12 @@
 
 #include <sstream>
 #include <Base/Stream.h>
+#ifdef HAVE_SMESH
+#include <SMESH_Version.h>
+#endif
 
 class TopoDS_Shape;
+class SMESH_Gen;
 
 namespace Mesh { class MeshObject; }
 namespace MeshPart {
@@ -152,6 +156,8 @@ private:
 #endif
     std::vector<uint32_t> colors;
     struct Vertex;
+
+    static SMESH_Gen *_mesh_gen;
 };
 
 class MeshingOutput : public std::streambuf

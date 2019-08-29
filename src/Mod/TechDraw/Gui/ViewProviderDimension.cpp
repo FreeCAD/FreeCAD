@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
@@ -43,6 +43,9 @@
 
 using namespace TechDrawGui;
 
+const char *ViewProviderDimension::StandardAndStyleEnums[]=
+    { "ISO Oriented", "ISO Levelled", "ASME Regular", "ASME Inlined", NULL };
+
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDimension, TechDrawGui::ViewProviderDrawingView)
 
 //**************************************************************************
@@ -57,18 +60,21 @@ ViewProviderDimension::ViewProviderDimension()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
     std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+
     hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 3.5);
-
+    double fontSize = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),group,App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,group,(App::PropertyType)(App::Prop_None),"Dimension text size in units");
+
 
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Thin");
+    delete lg;                                   //Coverity CID 174670
     ADD_PROPERTY_TYPE(LineWidth,(weight)    ,group,(App::PropertyType)(App::Prop_None),"Dimension line weight");
+
 
     hGrp = App::GetApplication().GetUserParameter()
                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
@@ -76,6 +82,12 @@ ViewProviderDimension::ViewProviderDimension()
     fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
     ADD_PROPERTY_TYPE(Color,(fcColor),group,App::Prop_None,"The color of the Dimension");
 
+    int standardStyle = hGrp->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
+    ADD_PROPERTY_TYPE(StandardAndStyle, (standardStyle), group, App::Prop_None, "Specify the standard according to which this dimension is drawn");
+    StandardAndStyle.setEnums(StandardAndStyleEnums);
+
+    ADD_PROPERTY_TYPE(ExtendToCenter, (true),  group, App::Prop_None,"Prolong the leader line right upto the center point");
+    ADD_PROPERTY_TYPE(FlipArrowheads, (false), group, App::Prop_None,"Reverse the normal direction of arrowheads on dimline");
 }
 
 ViewProviderDimension::~ViewProviderDimension()
@@ -114,6 +126,8 @@ void ViewProviderDimension::updateData(const App::Property* p)
             sPixmap = "TechDraw_Dimension_Diameter";
         } else if (getViewObject()->Type.isValue("Angle")) {
             sPixmap = "TechDraw_Dimension_Angle";
+        } else if (getViewObject()->Type.isValue("Angle3Pt")) {
+            sPixmap = "TechDraw_Dimension_Angle3Pt";
         }
     }
     ViewProviderDrawingView::updateData(p);
@@ -123,13 +137,17 @@ void ViewProviderDimension::onChanged(const App::Property* p)
 {
     if ((p == &Font)  ||
         (p == &Fontsize) ||
-        (p == &LineWidth) ) {
+        (p == &LineWidth) ||
+        (p == &StandardAndStyle) ||
+        (p == &ExtendToCenter) ||
+        (p == &FlipArrowheads))
+ {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
         }
     }
-    Gui::ViewProviderDocumentObject::onChanged(p);
+    ViewProviderDrawingView::onChanged(p);
 }
 
 TechDraw::DrawViewDimension* ViewProviderDimension::getViewObject() const

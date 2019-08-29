@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/signals.hpp>
+# include <boost/signals2.hpp>
 # include <boost/bind.hpp>
 # include <qapplication.h>
 # include <qregexp.h>
@@ -49,6 +49,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::MDIView,Gui::BaseView);
 
 MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wflags)
   : QMainWindow(parent, wflags), BaseView(pcDocument),currentMode(Child), wstate(Qt::WindowNoState)
+  , ActiveObjects(pcDocument)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     
@@ -94,6 +95,10 @@ void MDIView::deleteSelf()
     QWidget* parent = this->parentWidget();
     if (qobject_cast<QMdiSubWindow*>(parent)) {
         // https://forum.freecadweb.org/viewtopic.php?f=22&t=23070
+#if QT_VERSION < 0x050000
+        // With Qt5 this would lead to some annoying flickering
+        getMainWindow()->removeWindow(this);
+#endif
         parent->close();
     }
     else {
@@ -163,7 +168,7 @@ bool MDIView::canClose(void)
 {
     if (!bIsPassive && getGuiDocument() && getGuiDocument()->isLastView()) {
         this->setFocus(); // raises the view to front
-        return (getGuiDocument()->canClose());
+        return (getGuiDocument()->canClose(true,true));
     }
 
     return true;
@@ -280,7 +285,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
             {
                 if (this->currentMode == Child) {
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-                        getMainWindow()->removeWindow(this);
+                        getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
                     setParent(0, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | 
                                  Qt::WindowMinMaxButtonsHint);
@@ -310,7 +315,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
             {
                 if (this->currentMode == Child) {
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-                        getMainWindow()->removeWindow(this);
+                        getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
                     setParent(0, Qt::Window);
                     showFullScreen();

@@ -9,16 +9,15 @@ add_subdirectory(Doc)
 
 if(BUILD_GUI)
     add_subdirectory(Gui)
+    if(UNIX AND NOT APPLE)
+        add_subdirectory(XDGData)
+    endif()
 endif(BUILD_GUI)
 
 if(BUILD_TEMPLATE)
     add_subdirectory(Tools/_TEMPLATE_)
 endif(BUILD_TEMPLATE)
 
-
-if(FREECAD_MAINTAINERS_BUILD AND WIN32)
-    #add_subdirectory(WindowsInstaller)
-endif(FREECAD_MAINTAINERS_BUILD AND WIN32)
 
 if(FREECAD_CREATE_MAC_APP)
     add_subdirectory(MacAppBundle)

@@ -194,10 +194,19 @@ void ViewProviderGeomHatch::getParameters(void)
     std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Graphic");
+    delete lg;                                                    //Coverity CID 174667
     WeightPattern.setValue(weight);
 }
 
 TechDraw::DrawGeomHatch* ViewProviderGeomHatch::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawGeomHatch*>(pcObject);
+}
+
+Gui::MDIView *ViewProviderGeomHatch::getMDIView() {
+    auto obj = getViewObject();
+    if(!obj) return 0;
+    auto vp = Gui::Application::Instance->getViewProvider(obj->getSourceView());
+    if(!vp) return 0;
+    return vp->getMDIView();
 }

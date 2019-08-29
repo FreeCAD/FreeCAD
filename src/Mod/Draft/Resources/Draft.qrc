@@ -4,11 +4,13 @@
         <file>icons/Draft_AddToGroup.svg</file>
         <file>icons/Draft_Apply.svg</file>
         <file>icons/Draft_Arc.svg</file>
+        <file>icons/Draft_Arc_3Points.svg</file>
         <file>icons/Draft_BSpline.svg</file>
         <file>icons/Draft_BezCurve.svg</file>
         <file>icons/Draft_BezSharpNode.svg</file>
         <file>icons/Draft_BezTanNode.svg</file>
         <file>icons/Draft_BezSymNode.svg</file>
+        <file>icons/Draft_CubicBezCurve.svg</file>
         <file>icons/Draft_Circle.svg</file>
         <file>icons/Draft_Construction.svg</file>
         <file>icons/Draft_DelPoint.svg</file>
@@ -17,6 +19,8 @@
         <file>icons/Draft_Drawing.svg</file>
         <file>icons/Draft_Edit.svg</file>
         <file>icons/Draft_Finish.svg</file>
+        <file>icons/Draft_Fillet.svg</file>
+        <file>icons/Draft_Join.svg</file>
         <file>icons/Draft_Line.svg</file>
         <file>icons/Draft_Lock.svg</file>
         <file>icons/Draft_Macro.svg</file>
@@ -28,6 +32,7 @@
         <file>icons/Draft_Scale.svg</file>
         <file>icons/Draft_SelectGroup.svg</file>
         <file>icons/Draft_SelectPlane.svg</file>
+        <file>icons/Draft_Split.svg</file>
         <file>icons/Draft_SwitchMode.svg</file>
         <file>icons/Draft_Text.svg</file>
         <file>icons/Draft_Trimex.svg</file>
@@ -40,11 +45,14 @@
         <file>icons/Draft_Wipe.svg</file>
         <file>icons/Draft_Draft2Sketch.svg</file>
         <file>icons/Draft_Array.svg</file>
+        <file>icons/Draft_LinkArray.svg</file>
         <file>icons/Draft_Cursor.svg</file>
         <file>icons/Draft_Dot.svg</file>
         <file>icons/Draft_Point.svg</file>
         <file>icons/Draft_Snap.svg</file>
         <file>icons/Draft_PathArray.svg</file>
+        <file>icons/Draft_PathLinkArray.svg</file>
+        <file>icons/Draft_PointArray.svg</file>
         <file>icons/Draft_VisGroup.svg</file>
         <file>icons/Snap_Lock.svg</file>
         <file>icons/Snap_Endpoint.svg</file>
@@ -66,6 +74,7 @@
         <file>icons/Draft_Ellipse.svg</file>
         <file>icons/Draft_ShapeString.svg</file>
         <file>icons/Draft_Facebinder.svg</file>
+        <file>icons/Draft_Facebinder_Provider.svg</file>
         <file>icons/Draft_FlipDimension.svg</file>
         <file>icons/Draft_Mirror.svg</file>
         <file>icons/Draft_Grid.svg</file>
@@ -118,6 +127,8 @@
         <file>translations/Draft_id.qm</file>
         <file>translations/Draft_lt.qm</file>
         <file>translations/Draft_val-ES.qm</file>
+        <file>translations/Draft_ar.qm</file>
+        <file>translations/Draft_vi.qm</file>
         <file>ui/preferences-draft.ui</file>
         <file>ui/preferences-draftsnap.ui</file>
         <file>ui/preferences-drafttexts.ui</file>
@@ -126,5 +137,6 @@
         <file>ui/preferences-dwg.ui</file>
         <file>ui/preferences-svg.ui</file>
         <file>ui/preferences-oca.ui</file>
+        <file>ui/TaskShapeString.ui</file>
     </qresource>
 </RCC> 

@@ -126,7 +126,7 @@ public:
 protected:
     /// Checks integrity of the Origin
     virtual App::DocumentObjectExecReturn *execute(void);
-    /// Creates all corresponding Axises and Planes objects for the origin if they not linked yet
+    /// Creates all corresponding Axes and Planes objects for the origin if they aren't linked yet
     virtual void setupObject ();
     /// Removes all planes and axis if they are still linked to the document
     virtual void unsetupObject ();

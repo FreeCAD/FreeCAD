@@ -1,4 +1,4 @@
-# Raytracing gui init module
+# JtReader gui init module
 # (c) 2003 Juergen Riegel
 #
 # Gathering all the information to start FreeCAD
@@ -30,41 +30,3 @@
 #***************************************************************************/
 
 
-
-class RaytracingWorkbench ( Workbench ):
-	"Raytracing workbench object"
-	Icon = """
-			/* XPM */
-			static char *arrows[]={
-			"16 16 3 1",
-			"# c None",
-			". c None",
-			"a c #0000FF",
-			"...........##...",
-			"...........#a#..",
-			"...##.......#a#a",
-			"..aaa#.......#aa",
-			"..#aaa#......#aa",
-			"...#aaa#........",
-			"....#aaa#.......",
-			".....#aaa#...#..",
-			"......#aaa#.##..",
-			".......#aaa#a#..",
-			"........#aaaa#..",
-			"##.......#aaa#..",
-			"#a#.....#aaaa#..",
-			".#a##...#aaaa#..",
-			"..#aa...........",
-			"..aaa..........."};
-			"""
-	MenuText = "Raytracing"
-	ToolTip = "Raytracing workbench"
-
-	def Initialize(self):
-		# load the module
-		import PartGui
-		import RaytracingGui
-	def GetClassName(self):
-		return "RaytracingGui::Workbench"
-
-Gui.addWorkbench(RaytracingWorkbench())

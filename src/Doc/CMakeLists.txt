@@ -6,7 +6,8 @@ configure_file(ThirdPartyLibraries.html
 
 if(BUILD_GUI)
     FILE(GLOB QCH_FILES freecad.qch.part*)
-    set (DEST_FILE ${CMAKE_CURRENT_BINARY_DIR}/freecad.qch)
+    list(SORT QCH_FILES)
+    set (DEST_FILE ${CMAKE_BINARY_DIR}/doc/freecad.qch)
     foreach(SRC_FILE ${QCH_FILES})
         if(${SRC_FILE} IS_NEWER_THAN ${DEST_FILE})
             EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/catfiles.py
@@ -17,13 +18,15 @@ if(BUILD_GUI)
         endif()
     endforeach()
 
-    configure_file(${DEST_FILE} ${CMAKE_BINARY_DIR}/doc/freecad.qch COPYONLY)
     configure_file(freecad.qhc ${CMAKE_BINARY_DIR}/doc/freecad.qhc COPYONLY)
+    INSTALL(FILES
+        ${CMAKE_BINARY_DIR}/doc/freecad.qch
+        DESTINATION ${CMAKE_INSTALL_DOCDIR}
+    )
 endif(BUILD_GUI)
 
 INSTALL(FILES
     freecad.qhc
-    ${CMAKE_BINARY_DIR}/src/Doc/freecad.qch
     ThirdPartyLibraries.html
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
@@ -62,7 +65,7 @@ if(DOXYGEN_FOUND)
                            ${CMAKE_BINARY_DIR}/src/Gui 
                            ${CMAKE_SOURCE_DIR}/src/Mod
                            ${CMAKE_BINARY_DIR}/src/Mod
-                           ${CMAKE_SOURCE_DIR}/src/Main 
+                           #${CMAKE_SOURCE_DIR}/src/Main #nothing to document there ATM...
                            ${CMAKE_SOURCE_DIR}/src/Doc 
     )
     STRING(REGEX REPLACE ";" " " DOXYGEN_INPUT_LIST "${DOXYGEN_SOURCE_DIR}")
@@ -72,8 +75,6 @@ if(DOXYGEN_FOUND)
     # src/3rdParty/CxImage : Windows thumbnailer
     set(        DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Tools)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/CxImage)
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh)
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Mod/Arch/Dice3DS)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Doc/sphinx)
     # deprecated modules
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Mod/Assembly)

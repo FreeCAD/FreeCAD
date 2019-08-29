@@ -224,7 +224,23 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
             if (Gui::Selection().countObjectsOfType(PartDesign::Transformed::getClassTypeId()) -
                 Gui::Selection().countObjectsOfType(PartDesign::MultiTransform::getClassTypeId()) == 1 )
                 *item << "PartDesign_MultiTransform";
+
+            if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
+                *item << "Std_SetAppearance"
+                      << "Std_RandomColor"
+                      << "Std_Cut"
+                      << "Std_Copy"
+                      << "Std_Paste"
+                      << "Separator"
+                      << "Std_Delete";
+            }
         }
+    }
+
+    if (strcmp(recipient, "View") == 0) {
+        if (item->hasItems())
+            *item << "Separator";
+        Gui::StdWorkbench::setupContextMenu(recipient, item);
     }
 }
 
@@ -240,6 +256,7 @@ void Workbench::activated()
         "PartDesign_Point",
         "PartDesign_Line",
         "PartDesign_Plane",
+        "PartDesign_CoordinateSystem",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Vertex COUNT 1..",
@@ -254,6 +271,7 @@ void Workbench::activated()
         "PartDesign_Point",
         "PartDesign_Line",
         "PartDesign_Plane",
+        "PartDesign_CoordinateSystem",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
@@ -271,6 +289,7 @@ void Workbench::activated()
         "PartDesign_Point",
         "PartDesign_Line",
         "PartDesign_Plane",
+        "PartDesign_CoordinateSystem",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
@@ -304,6 +323,7 @@ void Workbench::activated()
         "PartDesign_Plane",
         "PartDesign_Line",
         "PartDesign_Point",
+        "PartDesign_CoordinateSystem",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT App::Plane COUNT 1",
@@ -316,6 +336,7 @@ void Workbench::activated()
         "PartDesign_Point",
         "PartDesign_Line",
         "PartDesign_Plane",
+        "PartDesign_CoordinateSystem",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Plane COUNT 1",
@@ -340,6 +361,7 @@ void Workbench::activated()
         "PartDesign_Point",
         "PartDesign_Line",
         "PartDesign_Plane",
+        "PartDesign_CoordinateSystem",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Point COUNT 1",
@@ -408,7 +430,8 @@ void Workbench::activated()
     _switchToDocument(App::GetApplication().getActiveDocument());
 
     addTaskWatcher(Watcher);
-    Gui::Control().showTaskView();
+    if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign")->GetBool("SwitchToTask", true))
+        Gui::Control().showTaskView();
 
     // Let us be notified when a document is activated, so that we can update the ActivePartObject
     Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, _1));
@@ -455,7 +478,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Point"
           << "PartDesign_Line"
           << "PartDesign_Plane"
+          << "PartDesign_CoordinateSystem"
           << "PartDesign_ShapeBinder"
+          << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone"
           << "Separator"
           << "PartDesign_Pad"
@@ -520,7 +545,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Point"
           << "PartDesign_Line"
           << "PartDesign_Plane"
+          << "PartDesign_CoordinateSystem"
           << "PartDesign_ShapeBinder"
+          << "PartDesign_SubShapeBinder"
           << "PartDesign_Clone";
 
     part = new Gui::ToolBarItem(root);

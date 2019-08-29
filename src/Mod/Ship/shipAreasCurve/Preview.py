@@ -25,7 +25,7 @@ import FreeCAD
 import FreeCADGui
 from FreeCAD import Base
 import Part
-import Units
+from FreeCAD import Units
 from shipUtils import Paths
 
 

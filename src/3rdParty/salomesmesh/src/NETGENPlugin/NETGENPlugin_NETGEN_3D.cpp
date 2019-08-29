@@ -378,15 +378,15 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
 //    if      ( faceh < 0.5 * maxh ) compareh = -1;
 //    else if ( faceh > 1.5 * maxh ) compareh = 1;
 //    else                           compareh = 0;
-//    // cerr << "faceh " << faceh << endl;
-//    // cerr << "init maxh " << maxh << endl;
-//    // cerr << "compareh " << compareh << endl;
+//    // cerr << "faceh " << faceh << std::endl;
+//    // cerr << "init maxh " << maxh << std::endl;
+//    // cerr << "compareh " << compareh << std::endl;
 
 //    if ( compareh > 0 )
 //      maxh *= 1.2;
 //    else
 //      maxh *= 0.8;
-//    // cerr << "maxh " << maxh << endl;
+//    // cerr << "maxh " << maxh << std::endl;
 
 //    // get bnd box
 //    netgen::Point3d pmin, pmax;
@@ -707,14 +707,14 @@ double NETGENPlugin_NETGEN_3D::GetProgress() const
          strncmp( netgen::multithread.task, volMeshing, 3 ) == 0 ))
   {
     res = 0.001 + meshingRatio * netgen::multithread.percent / 100.;
-    //cout << netgen::multithread.task << " " <<_progressTic << "-" << netgen::multithread.percent << endl;
+    //cout << netgen::multithread.task << " " <<_progressTic << "-" << netgen::multithread.percent << std::endl;
   }
   else // different otimizations
   {
     if ( _progressByTic < 0. )
       ((NETGENPlugin_NETGEN_3D*)this)->_progressByTic = meshingRatio / _progressTic;
     res = _progressByTic * _progressTic;
-    //cout << netgen::multithread.task << " " << _progressTic << " " << res << endl;
+    //cout << netgen::multithread.task << " " << _progressTic << " " << res << std::endl;
   }
   return Min ( res, 0.98 );
 }

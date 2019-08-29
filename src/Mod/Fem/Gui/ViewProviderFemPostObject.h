@@ -80,7 +80,7 @@ public:
 
     App::PropertyEnumeration            Field;
     App::PropertyEnumeration            VectorMode;
-    App::PropertyPercent                Transperency;
+    App::PropertyPercent                Transparency;
 
     void attach(App::DocumentObject *pcObject);
     void setDisplayMode(const char* ModeName);
@@ -102,7 +102,7 @@ public:
     virtual void OnChange(Base::Subject< int >& rCaller, int rcReason);
 
       /** @name Selection handling
-      * This group of methodes do the selection handling.
+      * This group of methods do the selection handling.
       * Here you can define how the selection for your ViewProvider
       * works.
      */
@@ -150,7 +150,7 @@ private:
     void WritePointData(vtkPoints *points, vtkDataArray *normals,
                         vtkDataArray *tcoords);
     void WriteColorData(bool ResetColorBarRange);
-    void WriteTransperency();
+    void WriteTransparency();
 
     App::Enumeration m_coloringEnum, m_vectorEnum;
     bool m_blockPropertyChanges;

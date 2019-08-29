@@ -115,7 +115,7 @@ void GraphicsView::resizeEvent(QResizeEvent *event)
 //QDialog *dialog = new QDialog(0, Qt::Window | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 
 ////dialog->setWindowOpacity(0.8);
-//dialog->setWindowTitle(tr("Titel"));
+//dialog->setWindowTitle(tr("Title"));
 //dialog->setLayout(new QVBoxLayout);
 //dialog->layout()->addWidget(new QLabel(tr("Use mouse wheel to zoom model, and click and drag to rotate model")));
 //dialog->layout()->addWidget(new QLabel(tr("Move the sun around to change the light position")));
@@ -913,7 +913,7 @@ void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->navigationStyle()->setResetCursorPosition(on);
     }
     else if (strcmp(Reason,"InvertZoom") == 0) {
-        bool on = rGrp.GetBool("InvertZoom", false);
+        bool on = rGrp.GetBool("InvertZoom", true);
         _viewer->navigationStyle()->setZoomInverted(on);
     }
     else if (strcmp(Reason,"ZoomAtCursor") == 0) {
@@ -931,7 +931,7 @@ void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
     }
     else if (strcmp(Reason,"UseAutoRotation") == 0) {
-        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",true));
+        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
     }
     else if (strcmp(Reason,"Gradient") == 0) {
         _viewer->setGradientBackground((rGrp.GetBool("Gradient",true)));

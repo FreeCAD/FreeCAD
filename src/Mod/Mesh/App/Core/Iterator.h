@@ -129,7 +129,7 @@ public:
   inline void GetNeighbours (MeshFacetIterator &rclN0, MeshFacetIterator &rclN1, MeshFacetIterator &rclN2) const;
   /// Sets the iterator to the current facet's neighbour of the side \a usN.
   inline void SetToNeighbour (unsigned short usN);
-  /// Retruns the property information to the current facet.
+  /// Returns the property information to the current facet.
   inline unsigned long GetProperty (void) const;
   /// Checks if the iterator points to a valid element inside the array.
   inline bool IsValid (void) const
@@ -381,8 +381,6 @@ inline MeshFacetIterator& MeshFacetIterator::operator = (const MeshFacetIterator
   _clIter  = rpI._clIter;
   _bApply = rpI._bApply;
   _clTrf = rpI._clTrf;
-  // dirty flat copy of reference
-  memcpy((void*)&_rclMesh, &rpI._rclMesh, sizeof(MeshKernel*));
   return *this;
 }
 
@@ -469,8 +467,6 @@ inline MeshPointIterator& MeshPointIterator::operator = (const MeshPointIterator
   _clIter  = rpI._clIter;
   _bApply = rpI._bApply;
   _clTrf = rpI._clTrf;
-  // dirty flat copy of reference
-  memcpy((void*)&_rclMesh, &rpI._rclMesh, sizeof(MeshKernel*));
   return *this;
 }
 

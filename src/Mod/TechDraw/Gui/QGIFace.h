@@ -55,10 +55,10 @@ public:
     ~QGIFace();
 
     enum {Type = QGraphicsItem::UserType + 104};
-    int type() const { return Type;}
-    QRectF boundingRect() const;
-    QPainterPath shape() const;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    int type() const override { return Type;}
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
 
 public:
     enum fillMode {
@@ -74,9 +74,9 @@ public:
     int getProjIndex() const { return projIndex; }
 
     void draw();
-    void setPrettyNormal();
-    void setPrettyPre();
-    void setPrettySel();
+    virtual void setPrettyNormal() override;
+    virtual void setPrettyPre() override;
+    void setPrettySel() override;
     void setDrawEdges(bool b);
     virtual void setOutline(const QPainterPath& path);
  
@@ -85,10 +85,10 @@ public:
     bool isHatched(void) {return m_isHatched;}
     void setFillMode(fillMode m);
 
-    //plain color fill parms
-    void setFill(QColor c, Qt::BrushStyle s);
-    void setFill(QBrush b);
-    void resetFill();
+/*    //plain color fill parms*/
+/*    void setFill(QColor c, Qt::BrushStyle s);*/
+/*    void setFill(QBrush b);*/
+/*    void resetFill();*/
 
     //general hatch parms & methods
     void setHatchColor(App::Color c);
@@ -110,9 +110,9 @@ public:
     void clearFillItems(void);
 
     void lineSetToFillItems(LineSet& ls);
-    QGraphicsPathItem* geomToLine(TechDrawGeometry::BaseGeom* base,LineSet& ls);
-//    QGraphicsPathItem* geomToOffsetLine(TechDrawGeometry::BaseGeom* base, double offset, const LineSet& ls);
-    QGraphicsPathItem* geomToStubbyLine(TechDrawGeometry::BaseGeom* base, double offset, LineSet& ls);
+    QGraphicsPathItem* geomToLine(TechDraw::BaseGeom* base,LineSet& ls);
+//    QGraphicsPathItem* geomToOffsetLine(TechDraw::BaseGeom* base, double offset, const LineSet& ls);
+    QGraphicsPathItem* geomToStubbyLine(TechDraw::BaseGeom* base, double offset, LineSet& ls);
     QGraphicsPathItem* lineFromPoints(Base::Vector3d start, Base::Vector3d end, DashSpec ds);
 
     //bitmap texture fill parms method
@@ -127,7 +127,7 @@ protected:
     std::vector<double> offsetDash(const std::vector<double> dv, const double offset);
     QPainterPath dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end);
     double dashRemain(const std::vector<double> dv, const double offset);
-    double calcOffset(TechDrawGeometry::BaseGeom* g,LineSet ls);
+    double calcOffset(TechDraw::BaseGeom* g,LineSet ls);
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
     QGCustomRect *m_rect;
 
@@ -147,18 +147,19 @@ protected:
     std::vector<DashSpec> m_dashSpecs;
     long int m_segCount;
     long int m_maxSeg;
+    long int m_maxTile;
 
 
 private:
-    QBrush m_brush;
-    Qt::BrushStyle m_fillStyle;                 //current fill style
-    QColor m_fillColor;                         //current fill color
+/*    QBrush m_brush;*/
+/*    Qt::BrushStyle m_fillStyle;                 //current fill style*/
+/*    QColor m_fillColor;                         //current fill color*/
 
-    QColor m_colDefFill;                        //"no color" default normal fill color
-    QColor m_colNormalFill;                     //current Normal fill color
-    Qt::BrushStyle m_styleDef;                  //default Normal fill style
-    Qt::BrushStyle m_styleNormal;               //current Normal fill style
-    Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style
+/*    QColor m_colDefFill;                        //"no color" default normal fill color*/
+/*    QColor m_colNormalFill;                     //current Normal fill color*/
+/*    Qt::BrushStyle m_styleDef;                  //default Normal fill style*/
+/*    Qt::BrushStyle m_styleNormal;               //current Normal fill style*/
+/*    Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style*/
  
     QPixmap m_texture;                          //
  

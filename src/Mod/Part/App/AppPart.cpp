@@ -23,6 +23,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
+#include <Base/ExceptionFactory.h>
 
 #include <App/Application.h>
 
@@ -56,7 +57,13 @@
 #include "Part2DObject.h"
 #include "CustomFeature.h"
 #include "Geometry.h"
+#include "GeometryExtension.h"
+#include "GeometryDefaultExtension.h"
 #include "Geometry2d.h"
+#include "Mod/Part/App/GeometryIntExtensionPy.h"
+#include "Mod/Part/App/GeometryStringExtensionPy.h"
+#include "Mod/Part/App/GeometryBoolExtensionPy.h"
+#include "Mod/Part/App/GeometryDoubleExtensionPy.h"
 #include "Mod/Part/App/TopoShapePy.h"
 #include "Mod/Part/App/TopoShapeVertexPy.h"
 #include "Mod/Part/App/TopoShapeFacePy.h"
@@ -237,7 +244,7 @@ PyMOD_INIT_FUNC(Part)
     // Python's cmath module.
     // For Linux use segmentation_fault_handler in Application.cpp
 #if !defined(_DEBUG) && !defined(FC_OS_LINUX)
-    OSD::SetSignal(Standard_False);
+    //OSD::SetSignal(Standard_False);
 #endif
 
     PyObject* partModule = Part::initModule();
@@ -245,6 +252,11 @@ PyMOD_INIT_FUNC(Part)
 
     Py::Object module(partModule);
     module.setAttr("OCC_VERSION", Py::String(OCC_VERSION_STRING_EXT));
+
+    // C++ exceptions
+    new Base::ExceptionProducer<Part::NullShapeException>;
+    new Base::ExceptionProducer<Part::AttachEngineException>;
+    new Base::ExceptionProducer<Part::BooleanException>;
 
     // Python exceptions
     //
@@ -324,8 +336,8 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::ArcPy                ::Type,partModule,"Arc");
     Base::Interpreter().addType(&Part::ArcOfCirclePy        ::Type,partModule,"ArcOfCircle");
     Base::Interpreter().addType(&Part::ArcOfEllipsePy       ::Type,partModule,"ArcOfEllipse");
-    Base::Interpreter().addType(&Part::ArcOfParabolaPy      ::Type,partModule,"ArcOfParabola");    
-    Base::Interpreter().addType(&Part::ArcOfHyperbolaPy     ::Type,partModule,"ArcOfHyperbola");    
+    Base::Interpreter().addType(&Part::ArcOfParabolaPy      ::Type,partModule,"ArcOfParabola");
+    Base::Interpreter().addType(&Part::ArcOfHyperbolaPy     ::Type,partModule,"ArcOfHyperbola");
     Base::Interpreter().addType(&Part::BezierCurvePy        ::Type,partModule,"BezierCurve");
     Base::Interpreter().addType(&Part::BSplineCurvePy       ::Type,partModule,"BSplineCurve");
     Base::Interpreter().addType(&Part::OffsetCurvePy        ::Type,partModule,"OffsetCurve");
@@ -346,6 +358,11 @@ PyMOD_INIT_FUNC(Part)
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
     Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
+
+    Base::Interpreter().addType(&Part::GeometryIntExtensionPy ::Type,partModule,"GeometryIntExtension");
+    Base::Interpreter().addType(&Part::GeometryStringExtensionPy ::Type,partModule,"GeometryStringExtension");
+    Base::Interpreter().addType(&Part::GeometryBoolExtensionPy ::Type,partModule,"GeometryBoolExtension");
+    Base::Interpreter().addType(&Part::GeometryDoubleExtensionPy ::Type,partModule,"GeometryDoubleExtension");
 
 #if PY_MAJOR_VERSION >= 3
     static struct PyModuleDef BRepOffsetAPIDef = {
@@ -410,7 +427,7 @@ PyMOD_INIT_FUNC(Part)
     Attacher::AttachEnginePlane   ::init();
     Attacher::AttachEngineLine    ::init();
     Attacher::AttachEnginePoint   ::init();
-    
+
     Part::AttachExtension       ::init();
     Part::AttachExtensionPython ::init();
 
@@ -435,6 +452,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Fillet                ::init();
     Part::Chamfer               ::init();
     Part::Compound              ::init();
+    Part::Compound2             ::init();
     Part::Extrusion             ::init();
     Part::Revolution            ::init();
     Part::Mirroring             ::init();
@@ -468,8 +486,14 @@ PyMOD_INIT_FUNC(Part)
     Part::Offset                ::init();
     Part::Offset2D              ::init();
     Part::Thickness             ::init();
+    Part::Refine                ::init();
 
     // Geometry types
+    Part::GeometryExtension	  ::init();
+    Part::GeometryIntExtension	  ::init();
+    Part::GeometryStringExtension ::init();
+    Part::GeometryBoolExtension	  ::init();
+    Part::GeometryDoubleExtension ::init();
     Part::Geometry                ::init();
     Part::GeomPoint               ::init();
     Part::GeomCurve               ::init();
@@ -477,6 +501,7 @@ PyMOD_INIT_FUNC(Part)
     Part::GeomBezierCurve         ::init();
     Part::GeomBSplineCurve        ::init();
     Part::GeomConic               ::init();
+    Part::GeomTrimmedCurve        ::init();
     Part::GeomArcOfConic          ::init();
     Part::GeomCircle              ::init();
     Part::GeomArcOfCircle         ::init();
@@ -489,7 +514,6 @@ PyMOD_INIT_FUNC(Part)
     Part::GeomLine                ::init();
     Part::GeomLineSegment         ::init();
     Part::GeomOffsetCurve         ::init();
-    Part::GeomTrimmedCurve        ::init();
     Part::GeomSurface             ::init();
     Part::GeomBezierSurface       ::init();
     Part::GeomBSplineSurface      ::init();
@@ -574,7 +598,7 @@ PyMOD_INIT_FUNC(Part)
             Interface_Static::SetCVal("write.iges.unit","M");
             break;
         case 2:
-            Interface_Static::SetCVal("write.iges.unit","IN");
+            Interface_Static::SetCVal("write.iges.unit","INCH");
             break;
         default:
             Interface_Static::SetCVal("write.iges.unit","MM");
@@ -589,7 +613,7 @@ PyMOD_INIT_FUNC(Part)
             Interface_Static::SetCVal("write.step.unit","M");
             break;
         case 2:
-            Interface_Static::SetCVal("write.step.unit","IN");
+            Interface_Static::SetCVal("write.step.unit","INCH");
             break;
         default:
             Interface_Static::SetCVal("write.step.unit","MM");

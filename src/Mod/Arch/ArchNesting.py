@@ -116,7 +116,7 @@ class Nester:
             self.setCounter(self.progress)
         if FreeCAD.GuiUp:
             from PySide import QtGui
-            QtGui.qApp.processEvents()
+            QtGui.QApplication.processEvents()
         if not self.running:
             return False
         return True

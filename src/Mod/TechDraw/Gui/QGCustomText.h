@@ -33,6 +33,7 @@ class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
 
 #include <Base/Parameter.h>
+#include <Base/Vector3D.h>
 
 namespace TechDrawGui
 {
@@ -40,23 +41,36 @@ namespace TechDrawGui
 class TechDrawGuiExport QGCustomText : public QGraphicsTextItem
 {
 public:
-    explicit QGCustomText(void);
+    explicit QGCustomText(QGraphicsItem* parent = nullptr);
     ~QGCustomText() {}
 
     enum {Type = QGraphicsItem::UserType + 130};
     int type() const { return Type;}
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
     void setHighlighted(bool state);
-    void setPrettyNormal();
-    void setPrettyPre();
-    void setPrettySel();
+    virtual void setPrettyNormal();
+    virtual void setPrettyPre();
+    virtual void setPrettySel();
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
+    virtual void justifyLeftAt(QPointF centerPos, bool vCenter = true);
+    virtual void justifyLeftAt(double cX, double cY, bool vCenter = true);
+    virtual void justifyRightAt(QPointF centerPos, bool vCenter = true);
+    virtual void justifyRightAt(double cX, double cY, bool vCenter = true);
+
+    virtual double getHeight(void);
+    virtual double getWidth(void);
+    
     virtual QColor getNormalColor(void);
     virtual QColor getPreColor(void);
     virtual QColor getSelectColor(void);
+    virtual void setColor(QColor c) { m_colNormal = c;
+                                      setDefaultTextColor(c); }
+
+    void makeMark(double x, double y);
+    void makeMark(Base::Vector3d v);
 
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -67,6 +81,7 @@ protected:
 
     bool isHighlighted;
     QColor m_colCurrent;
+    QColor m_colNormal;
 
 private:
 

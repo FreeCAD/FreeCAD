@@ -28,6 +28,11 @@
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wdeprecated-register"
 # pragma clang diagnostic ignored "-Wself-assign"
+#elif defined (__GNUC__)
+# pragma GCC diagnostic push
+# if __GNUC__ >= 8
+# pragma GCC diagnostic ignored "-Wcast-function-type"
+# endif
 #endif
 namespace Swig_1_3_38 {
 #define SWIG_PYTHON_NO_BUILD_NONE
@@ -36,5 +41,7 @@ namespace Swig_1_3_38 {
 }
 #if defined(__clang__)
 # pragma clang diagnostic pop
+#elif defined (__GNUC__)
+# pragma GCC diagnostic pop
 #endif
 

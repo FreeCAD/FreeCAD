@@ -25,8 +25,8 @@ __author__ = "Sebastian Hoogen"
 __url__ = ["http://www.freecadweb.org"]
 
 '''
-This Script includes python functions to  shift all placements down the
-feature tree to the most baisc objects
+This Script includes python functions to shift all placements down the
+feature tree to the most basic objects
 '''
 
 import FreeCAD

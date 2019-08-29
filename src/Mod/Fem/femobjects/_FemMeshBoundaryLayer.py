@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_FemMeshBoundaryLayer"
+__title__ = "FreeCAD FEM mesh boundary layer document object"
 __author__ = "Bernd Hahnebach, Qingfeng Xia"
 __url__ = "http://www.freecadweb.org"
 
 ## @package FemMeshBoundaryLayer
 #  \ingroup FEM
+#  \brief FEM mesh boundary layer object
 
 
 class _FemMeshBoundaryLayer:
@@ -35,18 +36,38 @@ class _FemMeshBoundaryLayer:
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to this object
 
-        obj.addProperty("App::PropertyInteger", "NumberOfLayers", "MeshBoundaryLayerProperties", "set number of inflation layers for this boundary")
+        obj.addProperty(
+            "App::PropertyInteger",
+            "NumberOfLayers",
+            "MeshBoundaryLayerProperties",
+            "set number of inflation layers for this boundary"
+        )
 
         obj.NumberOfLayers = 3
 
-        obj.addProperty("App::PropertyLength", "MinimumThickness", "MeshBoundaryLayerProperties", "set minimum thickness,usually the first inflation layer")
+        obj.addProperty(
+            "App::PropertyLength",
+            "MinimumThickness",
+            "MeshBoundaryLayerProperties",
+            "set minimum thickness,usually the first inflation layer"
+        )
         # default to zero, user must specify a proper value for this property
 
-        obj.addProperty("App::PropertyFloat", "GrowthRate", "MeshBoundaryLayerProperties", "set growth rate of inflation layers for smooth transition")
+        obj.addProperty(
+            "App::PropertyFloat",
+            "GrowthRate",
+            "MeshBoundaryLayerProperties",
+            "set growth rate of inflation layers for smooth transition"
+        )
 
         obj.GrowthRate = 1.5
 
-        obj.addProperty("App::PropertyLinkSubList", "References", "MeshBoundaryLayerShapes", "List of FEM mesh region shapes")
+        obj.addProperty(
+            "App::PropertyLinkSubList",
+            "References",
+            "MeshBoundaryLayerShapes",
+            "List of FEM mesh region shapes"
+        )
 
     def execute(self, obj):
         return

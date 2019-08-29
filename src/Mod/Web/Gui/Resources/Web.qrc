@@ -1,5 +1,5 @@
-<!DOCTYPE RCC><RCC version="1.0">
-    <qresource>
+<RCC>
+    <qresource prefix="/">
         <file>icons/actions/web-browser.svg</file>
         <file>icons/actions/web-home.svg</file>
         <file>icons/actions/web-next.svg</file>
@@ -9,9 +9,8 @@
         <file>icons/actions/web-zoom-in.svg</file>
         <file>icons/actions/web-zoom-out.svg</file>
         <file>icons/actions/web-sketchfab.svg</file>
+        <file>icons/actions/web-set-url.svg</file>
         <file>icons/WebWorkbench.svg</file>
-        <file>icons/Sketchfab.svg</file>
-        <file>ui/TaskDlgSketchfab.ui</file>
         <file>translations/Web_de.qm</file>
         <file>translations/Web_af.qm</file>
         <file>translations/Web_zh-CN.qm</file>
@@ -47,5 +46,7 @@
         <file>translations/Web_id.qm</file>
         <file>translations/Web_lt.qm</file>
         <file>translations/Web_val-ES.qm</file>
+        <file>translations/Web_ar.qm</file>
+        <file>translations/Web_vi.qm</file>
     </qresource>
 </RCC>

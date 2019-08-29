@@ -59,31 +59,8 @@ SET(Raytracing_SRCS
     LuxProject.cpp
 )
 
-SET(Raytracing_Scripts
-    Init.py
-    RaytracingExample.py
-)
-
-SET(Raytracing_Templates
-    Templates/LuxClassic.lxs
-    Templates/LuxOutdoor.lxs
-    Templates/ProjectStd.pov
-    Templates/RadiosityNormal.pov
-    Templates/RadiosityOutdoorHQ.pov
-)
-
 add_library(Raytracing SHARED ${Raytracing_SRCS})
 target_link_libraries(Raytracing ${Raytracing_LIBS})
-
-fc_target_copy_resource(Raytracing 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Raytracing
-    ${CMAKE_BINARY_DIR}/Mod/Raytracing
-    ${Raytracing_Scripts})
-
-fc_target_copy_resource(Raytracing 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Raytracing
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Raytracing
-    ${Raytracing_Templates})
 
 SET_BIN_DIR(Raytracing Raytracing /Mod/Raytracing)
 SET_PYTHON_PREFIX_SUFFIX(Raytracing)

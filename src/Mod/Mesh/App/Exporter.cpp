@@ -63,6 +63,30 @@ std::string Exporter::xmlEscape(const std::string &input)
     return out;
 }
 
+bool Exporter::isSupported(App::DocumentObject *obj)
+{
+    Base::Type meshFeatId(Base::Type::fromName("Mesh::Feature"));
+    Base::Type appPartId(Base::Type::fromName("Part::Feature"));
+    Base::Type groupExtensionId(App::GroupExtension::getExtensionClassTypeId());
+
+    if (obj->getTypeId().isDerivedFrom(meshFeatId)) {
+        return true;
+    }
+    else if (obj->getTypeId().isDerivedFrom(appPartId)) {
+        return true;
+    }
+    else if (obj->hasExtension(groupExtensionId)) {
+        auto groupEx( obj->getExtensionByType<App::GroupExtension>() );
+        for (auto it : groupEx->Group.getValues()) {
+            bool ok = isSupported(it);
+            if (ok)
+                return true;
+        }
+    }
+
+    return false;
+}
+
 bool Exporter::addAppGroup(App::DocumentObject *obj, float tol)
 {
     auto ret(true);
@@ -124,9 +148,10 @@ MergeExporter::~MergeExporter()
 bool MergeExporter::addMeshFeat(App::DocumentObject *obj)
 {
     const MeshObject &mesh( static_cast<Mesh::Feature *>(obj)->Mesh.getValue() );
+    Base::Placement plm = static_cast<Mesh::Feature *>(obj)->globalPlacement();
 
-    MeshCore::MeshKernel kernel( mesh.getKernel() );
-    kernel.Transform(mesh.getTransform());
+    MeshCore::MeshKernel kernel(mesh.getKernel());
+    kernel.Transform(plm.toMatrix());
 
     auto countFacets( mergingMesh.countFacets() );
     if (countFacets == 0) {
@@ -180,9 +205,28 @@ bool MergeExporter::addPartFeat(App::DocumentObject *obj, float tol)
 
         auto geoData( static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData() );
         if (geoData) {
+            App::GeoFeature* gf = static_cast<App::GeoFeature*>(obj);
+            Base::Placement plm = gf->globalPlacement();
+            Base::Placement pl  = gf->Placement.getValue();
+            bool applyGlobal = false;
+            if (pl == plm) {
+               //no extension placement
+               applyGlobal = false;
+            } else {
+               //there is a placement from extension
+               applyGlobal = true;
+            }
+
             std::vector<Base::Vector3d> aPoints;
             std::vector<Data::ComplexGeoData::Facet> aTopo;
             geoData->getFaces(aPoints, aTopo, tol);
+
+            if (applyGlobal) {
+                Base::Placement diff_plm = plm * pl.inverse();
+                for (auto& it : aPoints) {
+                    diff_plm.multVec(it,it);
+                }
+            }
 
             mesh->addFacets(aTopo, aPoints, false);
             if (countFacets == 0)

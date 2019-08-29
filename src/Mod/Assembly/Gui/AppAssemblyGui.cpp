@@ -68,7 +68,16 @@ void AssemblyGuiExport initAssemblyGui()
         return;
     }
 
+#if PY_MAJOR_VERSION >= 3
+    static struct PyModuleDef AssemblyGuiAPIDef = {
+        PyModuleDef_HEAD_INIT,
+        "AssemblyGui", 0, -1, AssemblyGui_Import_methods,
+        NULL, NULL, NULL, NULL
+    };
+    PyModule_Create(&AssemblyGuiAPIDef);
+#else
     (void) Py_InitModule("AssemblyGui", AssemblyGui_Import_methods);   /* mod name, table ptr */
+#endif
     Base::Console().Log("Loading GUI of Assembly module... done\n");
 
     // directly load the module for usage in commands

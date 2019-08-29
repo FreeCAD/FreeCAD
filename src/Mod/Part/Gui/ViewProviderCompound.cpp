@@ -28,9 +28,9 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include "ViewProviderCompound.h"
 #include <Gui/Application.h>
 #include <Mod/Part/App/FeatureCompound.h>
+#include "ViewProviderCompound.h"
 
 
 using namespace PartGui;
@@ -39,6 +39,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderCompound,PartGui::ViewProviderPart)
 
 ViewProviderCompound::ViewProviderCompound()
 {
+    sPixmap = "Part_Compound.svg";
 }
 
 ViewProviderCompound::~ViewProviderCompound()
@@ -71,6 +72,24 @@ void ViewProviderCompound::updateData(const App::Property* prop)
             (prop)->getValues();
         Part::Compound* objComp = static_cast<Part::Compound*>(getObject());
         std::vector<App::DocumentObject*> sources = objComp->Links.getValues();
+
+        if (hist.size() != sources.size()) {
+            // avoid duplicates without changing the order
+            // See also Compound::execute
+            std::set<App::DocumentObject*> tempSources;
+            std::vector<App::DocumentObject*> filter;
+            for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it) {
+                Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+                if (objBase) {
+                    auto pos = tempSources.insert(objBase);
+                    if (pos.second) {
+                        filter.push_back(objBase);
+                    }
+                }
+            }
+
+            sources = filter;
+        }
         if (hist.size() != sources.size())
             return;
 
@@ -83,7 +102,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
         int index=0;
         for (std::vector<App::DocumentObject*>::iterator it = sources.begin(); it != sources.end(); ++it, ++index) {
-            Part::Feature* objBase = dynamic_cast<Part::Feature*>(*it);
+            Part::Feature* objBase = dynamic_cast<Part::Feature*>(Part::Feature::getShapeOwner(*it));
             if (!objBase)
                 continue;
 
@@ -154,3 +173,4 @@ void ViewProviderCompound::dropObject(App::DocumentObject* obj)
     pShapes.push_back(obj);
     pComp->Links.setValues(pShapes);
 }
+

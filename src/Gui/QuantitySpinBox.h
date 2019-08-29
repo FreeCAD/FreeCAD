@@ -153,6 +153,10 @@ Q_SIGNALS:
      *  like: minimum, maximum and/or the right Unit (if specified).
      */
     void valueChanged(double);
+    /** Gets emitted if formula dialog is about to be opened (true)
+     *  or finished (false).
+     */
+    void showFormulaDialog(bool);
 
 private:
     QScopedPointer<QuantitySpinBoxPrivate> d_ptr;

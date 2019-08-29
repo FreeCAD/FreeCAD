@@ -29,9 +29,9 @@ import PathScripts
 from PySide import QtCore
 import math
 
-"""Path Array object and FreeCAD command"""
+__doc__ = """Path Array object and FreeCAD command"""
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -213,6 +213,7 @@ class ObjectArray:
 class ViewProviderArray:
 
     def __init__(self, vobj):
+        self.Object = vobj.Object
         vobj.Proxy = self
 
     def attach(self, vobj):
@@ -246,7 +247,7 @@ class CommandPathArray:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except:
+        except(IndexError, AttributeError):
             return False
 
     def Activated(self):
@@ -255,11 +256,11 @@ class CommandPathArray:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("Path_Array", "Please select exactly one path object\n"))
+                translate("Path_Array", "Please select exactly one path object")+"\n")
             return
         if not(selection[0].isDerivedFrom("Path::Feature")):
             FreeCAD.Console.PrintError(
-                translate("Path_Array", "Please select exactly one path object\n"))
+                translate("Path_Array", "Please select exactly one path object")+"\n")
             return
 
         # if everything is ok, execute and register the transaction in the

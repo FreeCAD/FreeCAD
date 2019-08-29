@@ -133,7 +133,7 @@ public:
 
     /// Get the TransformedFeature object associated with this task
     // Either through the ViewProvider or the currently active subFeature of the parentTask
-    Part::Feature *getBaseObject() const;
+    App::DocumentObject *getBaseObject() const;
 
     /// Get the sketch object of the first original either of the object associated with this feature or with the parent feature (MultiTransform mode)
     App::DocumentObject* getSketchObject() const;   
@@ -142,6 +142,7 @@ public:
 
     virtual void apply() = 0;
 
+    void setupTransaction();
 protected Q_SLOTS:
     /**
      * Returns the base transformation view provider
@@ -151,7 +152,7 @@ protected Q_SLOTS:
     PartDesignGui::ViewProviderTransformed *getTopTransformedView () const;
 
     /**
-     * Returns the base transformated object
+     * Returns the base transformed object
      * For stand alone features it will be objects associated with this object
      * For features inside multitransform it will be the base multitransform object
      */
@@ -181,10 +182,12 @@ protected:
     void hideBase();
     void showBase();
 
-    void addReferenceSelectionGate(bool edge, bool face);    
+    void addReferenceSelectionGate(bool edge, bool face, bool planar=true, bool whole=false);    
 
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;
+
+    void checkVisibility();
 
 protected:
     /** Notifies when the object is about to be removed. */

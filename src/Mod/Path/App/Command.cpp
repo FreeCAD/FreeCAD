@@ -24,12 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-
+# include <cinttypes>
+# include <iomanip>
+# include <boost/algorithm/string.hpp>
+# include <boost/lexical_cast.hpp>
 #endif
-#include <cinttypes>
-#include <iomanip>
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
+
 #include <Base/Vector3D.h>
 #include <Base/Rotation.h>
 #include <Base/Writer.h>
@@ -103,7 +103,7 @@ std::string Command::toGCode (int precision, bool padzero) const
     std::stringstream str;
     str.fill('0');
     str << Name;
-    if(precision<0) 
+    if(precision<0)
         precision = 0;
     double scale = std::pow(10.0,precision+1);
     std::int64_t iscale = static_cast<std::int64_t>(scale)/10;
@@ -155,7 +155,7 @@ void Command::setFromGCode (const std::string& str)
                     value = "";
                     mode = "argument";
                 } else {
-                    throw Base::Exception("Badly formatted GCode command");
+                    throw Base::BadFormatError("Badly formatted GCode command");
                 }
                 mode = "argument";
             } else if (mode == "none") {
@@ -168,7 +168,7 @@ void Command::setFromGCode (const std::string& str)
                     key = "";
                     value = "";
                 } else {
-                    throw Base::Exception("Badly formatted GCode argument");
+                    throw Base::BadFormatError("Badly formatted GCode argument");
                 }
             } else if (mode == "comment") {
                 value += str[i];
@@ -198,7 +198,7 @@ void Command::setFromGCode (const std::string& str)
             Parameters[key] = val;
         }
     } else {
-        throw Base::Exception("Badly formatted GCode argument");
+        throw Base::BadFormatError("Badly formatted GCode argument");
     }
 }
 
@@ -279,6 +279,24 @@ Command Command::transform(const Base::Placement other)
         c.Parameters[k] = v;
     }
     return c;
+}
+
+void Command::scaleBy(double factor)
+{
+    for(std::map<std::string, double>::const_iterator i = Parameters.begin(); i != Parameters.end(); ++i) {
+        switch (i->first[0]) {
+            case 'X':
+            case 'Y':
+            case 'Z':
+            case 'I':
+            case 'J':
+            case 'R':
+            case 'Q':
+            case 'F':
+                Parameters[i->first] = i->second * factor;
+                break;
+        }
+    }
 }
 
 // Reimplemented from base class

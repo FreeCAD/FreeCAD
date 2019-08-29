@@ -215,7 +215,7 @@ CmdRobotSetDefaultOrientation::CmdRobotSetDefaultOrientation()
     sAppModule      = "Robot";
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Set default orientation");
-    sToolTipText    = QT_TR_NOOP("set the default orientation for subsequent commands for waypoint creation");
+    sToolTipText    = QT_TR_NOOP("Set the default orientation for subsequent commands for waypoint creation");
     sWhatsThis      = "Robot_SetDefaultOrientation";
     sStatusTip      = sToolTipText;
     sPixmap         = 0;
@@ -226,17 +226,16 @@ CmdRobotSetDefaultOrientation::CmdRobotSetDefaultOrientation()
 void CmdRobotSetDefaultOrientation::activated(int)
 {
     // create placement dialog 
-    Gui::Dialog::Placement *Dlg = new Gui::Dialog::Placement();
+    Gui::Dialog::Placement Dlg;
     Base::Placement place;
-    Dlg->setPlacement(place);
-    if(Dlg->exec() == QDialog::Accepted ){
-        place = Dlg->getPlacement();
+    Dlg.setPlacement(place);
+    if (Dlg.exec() == QDialog::Accepted ){
+        place = Dlg.getPlacement();
         Base::Rotation rot = place.getRotation();
         Base::Vector3d disp = place.getPosition();
         doCommand(Doc,"_DefOrientation = FreeCAD.Rotation(%f,%f,%f,%f)",rot[0],rot[1],rot[2],rot[3]);
         doCommand(Doc,"_DefDisplacement = FreeCAD.Vector(%f,%f,%f)",disp[0],disp[1],disp[2]);
     }
-      
 }
 
 bool CmdRobotSetDefaultOrientation::isActive(void)
@@ -254,7 +253,7 @@ CmdRobotSetDefaultValues::CmdRobotSetDefaultValues()
     sAppModule      = "Robot";
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Set default values");
-    sToolTipText    = QT_TR_NOOP("set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation");
+    sToolTipText    = QT_TR_NOOP("Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation");
     sWhatsThis      = "Robot_SetDefaultValues";
     sStatusTip      = sToolTipText;
     sPixmap         = 0;
@@ -266,7 +265,7 @@ void CmdRobotSetDefaultValues::activated(int)
 {
 
     bool ok;
-    QString text = QInputDialog::getText(0, QObject::tr("set default speed"),
+    QString text = QInputDialog::getText(0, QObject::tr("Set default speed"),
                                           QObject::tr("speed: (e.g. 1 m/s or 3 cm/s)"), QLineEdit::Normal,
                                           QString::fromLatin1("1 m/s"), &ok);
     if ( ok && !text.isEmpty() ) {
@@ -276,14 +275,14 @@ void CmdRobotSetDefaultValues::activated(int)
     QStringList items;
     items  << QString::fromLatin1("False") << QString::fromLatin1("True");
 
-    QString item = QInputDialog::getItem(0, QObject::tr("set default continuity"),
+    QString item = QInputDialog::getItem(0, QObject::tr("Set default continuity"),
                                           QObject::tr("continuous ?"), items, 0, false, &ok);
     if (ok && !item.isEmpty())
         doCommand(Doc,"_DefCont = %s",item.toLatin1().constData());
 
     text.clear();
 
-    text = QInputDialog::getText(0, QObject::tr("set default acceleration"),
+    text = QInputDialog::getText(0, QObject::tr("Set default acceleration"),
                                           QObject::tr("acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)"), QLineEdit::Normal,
                                           QString::fromLatin1("1 m/s^2"), &ok);
     if ( ok && !text.isEmpty() ) {

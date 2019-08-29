@@ -205,6 +205,9 @@ public:
         return _lValueList;
     }
 
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+
     /** @name Save/restore */
     //@{
     void Save (Base::Writer &writer) const;

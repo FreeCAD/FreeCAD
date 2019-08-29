@@ -29,11 +29,13 @@ import PathScripts.PathHelix as PathHelix
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
 __doc__ = "Helix operation page controller and command implementation."
 
-if True:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -85,6 +87,7 @@ Command = PathOpGui.SetupOperation('Helix',
         TaskPanelOpPage,
         'Path-Helix',
         QtCore.QT_TRANSLATE_NOOP("PathHelix", "Helix"),
-        QtCore.QT_TRANSLATE_NOOP("PathHelix", "Creates a Path Helix object from a features of a base object"))
+        QtCore.QT_TRANSLATE_NOOP("PathHelix", "Creates a Path Helix object from a features of a base object"),
+        PathHelix.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathHelixGui... done\n")

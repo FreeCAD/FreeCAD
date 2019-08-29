@@ -28,6 +28,8 @@
 # include <QWidget>
 # ifdef FC_OS_WIN32
 # include <Windows.h>
+# define _USE_MATH_DEFINES
+# include <cmath>
 # endif
 # include <cassert>
 #endif
@@ -42,6 +44,8 @@
 #include <qgesture.h>
 
 #include <Base/Exception.h>
+#include <App/Application.h>
+#include <Base/Parameter.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -129,7 +133,7 @@ QGestureRecognizer::Result WinNativeGestureRecognizerPinch::recognize(QGesture *
         }
         double ang = 0.0;
         if (bRotate)
-            ang=GID_ROTATE_ANGLE_FROM_ARGUMENT(LOWORD(ev->argument));
+            ang = -GID_ROTATE_ANGLE_FROM_ARGUMENT(LOWORD(ev->argument)) / M_PI * 180.0;
         if (q->state() == Qt::NoGesture) {
             //start of a new gesture, prefill stuff
             //d->isNewSequence = true;
@@ -146,11 +150,13 @@ QGestureRecognizer::Result WinNativeGestureRecognizerPinch::recognize(QGesture *
             q->setTotalRotationAngle(0.0); q->setLastRotationAngle(0.0);  q->setRotationAngle(0.0);
             q->setTotalScaleFactor(1.0); q->setLastScaleFactor(1.0); q->setScaleFactor(1.0);
             if(bZoom) {
-                q->lastFingerDistance = ev->argument;
-                q->fingerDistance = ev->argument;
+                q->myLastFingerDistance = ev->argument;
+                q->myFingerDistance = ev->argument;
+                q->myStartFingerDistance = ev->argument;
             } else if (bRotate) {
                 q->myLastRotationAngle = 0;
                 q->myRotationAngle = 0;
+                q->myStartAngle = 0;
             }
         } else {//in the middle of gesture
 
@@ -158,24 +164,24 @@ QGestureRecognizer::Result WinNativeGestureRecognizerPinch::recognize(QGesture *
             q->setLastCenterPoint(q->centerPoint());
             q->setLastRotationAngle(q->rotationAngle());
             q->setLastScaleFactor(q->scaleFactor());
-            q->lastFingerDistance = q->fingerDistance;
+            q->myLastFingerDistance = q->myFingerDistance;
             q->myLastRotationAngle = q->myRotationAngle;
 
             //update the current values
             if (bZoom)
-                q->fingerDistance = ev->argument;
+                q->myFingerDistance = ev->argument;
             if (bRotate)
                 q->myRotationAngle = ang;
             if(ev->gestureType == QNativeGestureEvent::GestureEnd){
-                q->fingerDistance = q->lastFingerDistance;//the end-of-gesture event holds no finger separation data, hence we are using the last value.
+                q->myFingerDistance = q->myLastFingerDistance;//the end-of-gesture event holds no finger separation data, hence we are using the last value.
                 q->myRotationAngle = q->myLastRotationAngle;
             }
             if (bZoom)
                 q->setScaleFactor(
-                        (qreal)(q->fingerDistance) / (qreal)(q->lastFingerDistance)
+                        (qreal)(q->myFingerDistance) / (qreal)(q->myLastFingerDistance)
                 );
             if (bRotate)
-                q->setRotationAngle(qreal(unbranchAngle(q->myRotationAngle - q->myLastRotationAngle)));
+                q->setRotationAngle(q->myRotationAngle);
             q->setCenterPoint(
                   QPointF(
                     qreal(ev->position.x()),
@@ -183,20 +189,20 @@ QGestureRecognizer::Result WinNativeGestureRecognizerPinch::recognize(QGesture *
                   )
             );
 
-            //compute the changes
+            //detect changes
             QPinchGesture::ChangeFlags cf = 0;
             if ( q->scaleFactor() != 1.0 )
                 cf |= QPinchGesture::ScaleFactorChanged;
             if (q->lastCenterPoint() != q->centerPoint())
                 cf |= QPinchGesture::CenterPointChanged;
-            if (q->rotationAngle() != 0.0)
+            if (q->rotationAngle() != q->lastRotationAngle())
                 cf |= QPinchGesture::RotationAngleChanged;
             q->setChangeFlags(cf);
 
-            //increment totals
+            //update totals
             q->setTotalChangeFlags (q->totalChangeFlags() | q->changeFlags());
             q->setTotalScaleFactor (q->totalScaleFactor() * q->scaleFactor());
-            q->setTotalRotationAngle (q->totalRotationAngle() + q->rotationAngle());
+            q->setTotalRotationAngle (q->rotationAngle());
         }
     }
     return result;
@@ -207,7 +213,7 @@ void WinNativeGestureRecognizerPinch::reset(QGesture* gesture)
 {
   QGestureRecognizer::reset(gesture);//resets the state of the gesture, which is not write-accessible otherwise
   QPinchGestureN *q = static_cast<QPinchGestureN*>(gesture);
-  q->lastFingerDistance = 0;
+  q->myLastFingerDistance = 0;
   q->setTotalChangeFlags(0); q->setChangeFlags(0);
 
   q->setLastCenterPoint(QPointF());
@@ -220,8 +226,8 @@ void WinNativeGestureRecognizerPinch::reset(QGesture* gesture)
   q->setStartCenterPoint(q->centerPoint());
   q->setTotalRotationAngle(0.0); q->setLastRotationAngle(0.0);  q->setRotationAngle(0.0);
   q->setTotalScaleFactor(1.0); q->setLastScaleFactor(1.0); q->setScaleFactor(1.0);
-  q->lastFingerDistance = 0;
-  q->fingerDistance = 0;
+  q->myLastFingerDistance = 0;
+  q->myFingerDistance = 0;
 }
 
 //function prototype for dymanic linking
@@ -255,8 +261,16 @@ void WinNativeGestureRecognizerPinch::TuneWindowsGestures(QWidget* target)
     cfgs[0].dwID = GID_PAN;
     cfgs[0].dwWant = GC_PAN;
     cfgs[0].dwBlock = GC_PAN_WITH_GUTTER;//disables stickiness to pure vertical/pure horizontal pans
-    cfgs[1].dwID = GID_ROTATE;
-    cfgs[1].dwWant = GC_ROTATE;
+
+    bool enableGestureTilt = !(App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View")->GetBool("DisableTouchTilt",true));
+    if(enableGestureTilt){
+        cfgs[1].dwID = GID_ROTATE;
+        cfgs[1].dwWant = GC_ROTATE;
+    } else {
+        cfgs[1].dwID = GID_ROTATE;
+        cfgs[1].dwBlock = GC_ROTATE;
+    }
 
     //set the options
     bool ret = dllSetGestureConfig(w, 0, nCfg, cfgs, sizeof(GESTURECONFIG));
@@ -267,17 +281,6 @@ void WinNativeGestureRecognizerPinch::TuneWindowsGestures(QWidget* target)
         throw Base::RuntimeError(errMsg.toLatin1());
     }
 #endif
-}
-
-/*!
- * \brief WinNativeGestureRecognizerPinch::unbranchAngle utility function to bring an angle into -pi..pi region.
- * \param ang
- * \return
- */
-double WinNativeGestureRecognizerPinch::unbranchAngle(double ang)
-{
-    const double Pi = 3.14159265358979323846;
-    return ang - 2.0*Pi*floor((ang+Pi)/(2.0*Pi));
 }
 
 #endif //!defined(QT_NO_NATIVE_GESTURES)

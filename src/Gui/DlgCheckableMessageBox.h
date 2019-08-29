@@ -100,7 +100,7 @@ public:
    static QMessageBox::StandardButton dialogButtonBoxToMessageBoxButton(QDialogButtonBox::StandardButton);
 
    // convenient show method
-   static void showMessage(const QString& haeder, const QString& message, bool check=false, const QString& checkText = QString::fromLatin1("Don't show me again"));
+   static void showMessage(const QString& header, const QString& message, bool check=false, const QString& checkText = QString::fromLatin1("Don't show me again"));
 
 private Q_SLOTS:
    void slotClicked(QAbstractButton *b);

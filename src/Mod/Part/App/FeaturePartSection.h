@@ -38,9 +38,12 @@ class Section : public Boolean
 public:
     Section();
 
+    App::PropertyBool Approximation;
+    
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
+    short mustExecute() const;
 protected:
     BRepAlgoAPI_BooleanOperation* makeOperation(const TopoDS_Shape&, const TopoDS_Shape&) const;
     //@}
