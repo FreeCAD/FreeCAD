@@ -74,11 +74,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.Join = 'Miter'
 
         self.updateToolController(obj, self.form.toolController)
+        self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
         self.form.value_W.setText(FreeCAD.Units.Quantity(obj.Width.Value, FreeCAD.Units.Length).UserString)
         self.form.value_h.setText(FreeCAD.Units.Quantity(obj.ExtraDepth.Value, FreeCAD.Units.Length).UserString)
         self.setupToolController(obj, self.form.toolController)
+        self.setupCoolant(obj, self.form.coolantController)
         self.form.joinRound.setChecked('Round' == obj.Join)
         self.form.joinMiter.setChecked('Miter' == obj.Join)
         self.form.joinFrame.hide()
@@ -93,6 +95,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals = []
         signals.append(self.form.joinMiter.clicked)
         signals.append(self.form.joinRound.clicked)
+        signals.append(self.form.coolantController.currentIndexChanged)
         return signals
 
     def registerSignalHandlers(self, obj):

@@ -67,6 +67,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.Optimize = self.form.optimizeEnabled.isChecked()
 
         self.updateToolController(obj, self.form.toolController)
+        self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
@@ -86,6 +87,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Unchecked)
 
         self.setupToolController(obj, self.form.toolController)
+        self.setupCoolant(obj, self.form.coolantController)
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
@@ -100,6 +102,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.depthOffset.editingFinished)
         signals.append(self.form.optimizeEnabled.stateChanged)
+        signals.append(self.form.coolantController.currentIndexChanged)
 
         return signals
 

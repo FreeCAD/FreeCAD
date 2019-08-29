@@ -68,7 +68,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
     def circularHoleFeatures(self, obj):
         '''circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations.'''
         # return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureRotation
-        return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations
+        return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
 
     def initCircularHoleOperation(self, obj):
         '''initCircularHoleOperation(obj) ... add drilling specific properties to obj.'''
