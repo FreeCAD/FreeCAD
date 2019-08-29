@@ -625,7 +625,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                         continue
                     # print("attribute:",attribute["name"])
                     if hasattr(product, attribute["name"]) and getattr(product, attribute["name"]) and hasattr(obj,attribute["name"]):
-                        #print("Setting attribute",attribute["name"],"to",getattr(product, attribute["name"]))
+                        # print("Setting attribute",attribute["name"],"to",getattr(product, attribute["name"]))
                         setattr(obj, attribute["name"], getattr(product, attribute["name"]))
                         # TODO: ArchIFCSchema.IfcProducts uses the IFC version from the FreeCAD prefs.
                         # This might not coincide with the file being opened, hence some attributes are not properly read.
@@ -762,7 +762,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
             # color
 
             if FreeCAD.GuiUp and (pid in colors) and hasattr(obj.ViewObject,"ShapeColor"):
-                #if preferences['DEBUG']: print("    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255))
+                # if preferences['DEBUG']: print("    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255))
                 obj.ViewObject.ShapeColor = colors[pid]
 
             # if preferences['DEBUG'] is on, recompute after each shape
