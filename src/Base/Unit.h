@@ -133,6 +133,7 @@ public:
     static Unit HeatFlux;
     static Unit DynamicViscosity;
     static Unit KinematicViscosity;
+    static Unit VacuumPermittivity;
 
     //@}
 protected:
