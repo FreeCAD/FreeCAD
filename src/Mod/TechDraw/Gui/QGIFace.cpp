@@ -72,7 +72,7 @@ QGIFace::QGIFace(int index) :
     projIndex(index)
 {
     m_segCount = 0;
-    setFillMode(NoFill);
+//    setFillMode(NoFill);
     isHatched(false);
     setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
 
@@ -91,17 +91,23 @@ QGIFace::QGIFace(int index) :
 
     m_svgCol = SVGCOLDEFAULT;
     m_fillScale = 1.0;
-    
+
+    m_colDefFill = Qt::white;
+    m_styleDef = Qt::SolidPattern;
+    m_styleSelect = Qt::SolidPattern;
+
     getParameters();
  
     m_styleNormal = m_styleDef;
     m_fillStyle = m_styleDef;
     m_fill = m_styleDef;
-    m_colDefFill = Qt::white;
-    m_colNormalFill = m_colDefFill;
-    m_styleDef = Qt::SolidPattern;
-    m_styleSelect = Qt::SolidPattern;
-
+    if (m_defClearFace) {
+        setFillMode(NoFill);
+        setFill(Qt::transparent, m_styleDef);
+    } else {
+        setFillMode(PlainFill);
+        setFill(m_colNormalFill, m_styleDef);
+    }
 }
 
 QGIFace::~QGIFace()
@@ -151,6 +157,10 @@ void QGIFace::draw()
                     m_brush.setTexture(m_texture);
                 }
             }
+        } else if (m_mode == PlainFill) {
+            if (!m_lineSets.empty()) {
+                setFill(m_colNormalFill, m_styleNormal);
+            }
         }
     }
     show();
@@ -166,8 +176,7 @@ void QGIFace::setPrettyNormal() {
         m_fillStyle = m_styleNormal;
         m_fill = m_styleNormal;
         m_brush.setTexture(QPixmap());
-//        m_brush.setStyle(m_fillStyle);
-        m_brush.setStyle(m_fill);   //???
+        m_brush.setStyle(m_fill);
         m_fillColor = m_colNormalFill;
     }
     QGIPrimPath::setPrettyNormal();
@@ -620,8 +629,16 @@ void QGIFace::getParameters(void)
     hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     m_maxTile = hGrp->GetInt("MaxSVGTile",10000l);
-}
 
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color temp = hGrp->GetUnsigned("FaceColor",0xffffffff);
+    setFillColor(temp.asValue<QColor>());
+
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    m_defClearFace = hGrp->GetBool("ClearFace",false);
+}
 
 QRectF QGIFace::boundingRect() const
 {
@@ -638,9 +655,6 @@ void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * optio
     myOption.state &= ~QStyle::State_Selected;
 //    painter->drawRect(boundingRect());          //good for debugging
 
-//    m_brush.setStyle(m_fillStyle);
-//    m_brush.setColor(m_fillColor);
-//    setBrush(m_brush);
     QGIPrimPath::paint (painter, &myOption, widget);
 }
 
