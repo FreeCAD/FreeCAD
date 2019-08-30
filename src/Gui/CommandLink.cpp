@@ -197,7 +197,7 @@ void StdCmdLinkMakeGroup::activated(int option) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-DEF_STD_CMD(StdCmdLinkMake)
+DEF_STD_CMD_A(StdCmdLinkMake)
 
 StdCmdLinkMake::StdCmdLinkMake()
   : Command("Std_LinkMake")
@@ -209,6 +209,10 @@ StdCmdLinkMake::StdCmdLinkMake()
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
     sPixmap       = "Link";
+}
+
+bool StdCmdLinkMake::isActive() {
+    return !!App::GetApplication().getActiveDocument();
 }
 
 void StdCmdLinkMake::activated(int) {
@@ -263,7 +267,7 @@ StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
 {
     sGroup        = QT_TR_NOOP("Link");
     sMenuText     = QT_TR_NOOP("Make relative link");
-    sToolTipText  = QT_TR_NOOP("Create a relative link of two selected objects");
+    sToolTipText  = QT_TR_NOOP("Create a sub-object or sub-element link");
     sWhatsThis    = "Std_LinkMakeRelative";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
@@ -271,7 +275,7 @@ StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
 }
 
 bool StdCmdLinkMakeRelative::isActive() {
-    return Selection().hasSubSelection();
+    return Selection().hasSubSelection(0,true);
 }
 
 void StdCmdLinkMakeRelative::activated(int) {

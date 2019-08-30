@@ -63,6 +63,7 @@
 #include "Macro.h"
 #include "Workbench.h"
 #include "Widgets.h"
+#include "ExpressionCompleter.h"
 
 FC_LOG_LEVEL_INIT("Tree",false,true,true);
 
@@ -625,24 +626,30 @@ void TreeWidget::resetItemSearch() {
     searchObject = 0;
 }
 
-void TreeWidget::startItemSearch() {
+void TreeWidget::startItemSearch(QLineEdit *edit) {
     resetItemSearch();
     searchDoc = 0;
     searchContextDoc = 0;
-    if (contextItem) {
-        if(contextItem->type() == DocumentType) {
-            searchDoc = static_cast<DocumentItem*>(contextItem)->document();
-        } else if(contextItem->type() == ObjectType) {
-            searchDoc = static_cast<DocumentObjectItem*>(contextItem)->object()->getDocument();
-        }
-    }else{
-        auto sels = selectedItems();
-        if(sels.size() == 1) {
+    auto sels = selectedItems();
+    if(sels.size() == 1)  {
+        if(sels.front()->type() == DocumentType) {
+            searchDoc = static_cast<DocumentItem*>(sels.front())->document();
+        } else if(sels.front()->type() == ObjectType) {
             auto item = static_cast<DocumentObjectItem*>(sels.front());
             searchDoc = item->object()->getDocument();
             searchContextDoc = item->getOwnerDocument()->document();
         }
-    }
+    }else 
+        searchDoc = Application::Instance->activeDocument();
+
+    App::DocumentObject *obj = 0;
+    if(searchContextDoc && searchContextDoc->getDocument()->getObjects().size())
+        obj = searchContextDoc->getDocument()->getObjects().front();
+    else if(searchDoc && searchDoc->getDocument()->getObjects().size())
+        obj = searchDoc->getDocument()->getObjects().front();
+
+    if(obj)
+        static_cast<ExpressionLineEdit*>(edit)->setDocumentObject(obj);
 }
 
 void TreeWidget::itemSearch(const QString &text, bool select) {
@@ -896,7 +903,15 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     }
 
     if (contextMenu.actions().count() > 0) {
-        contextMenu.exec(QCursor::pos());
+        try {
+            contextMenu.exec(QCursor::pos());
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        } catch (std::exception &e) {
+            FC_ERR("C++ exception: " << e.what());
+        } catch (...) {
+            FC_ERR("Unknown exception");
+        }
         contextItem = 0;
     }
 }
@@ -1065,19 +1080,7 @@ void TreeWidget::onRecomputeObject() {
     if(objs.empty())
         return;
     App::AutoTransaction committer("Recompute object");
-    std::string msg;
-    try {
-        objs.front()->getDocument()->recompute(objs,true);
-    }catch (Base::Exception &e) {
-        e.ReportException();
-        msg = e.what();
-    }catch (std::exception &e) {
-        msg = e.what();
-    }
-    if(msg.size()) {
-        QMessageBox::critical(getMainWindow(), QObject::tr("Recompute failed"),
-                QString::fromUtf8(msg.c_str()));
-    }
+    objs.front()->getDocument()->recompute(objs,true);
 }
 
 
@@ -1211,8 +1214,8 @@ void TreeWidget::onActivateDocument(QAction* active)
     // activate the specified document
     QByteArray docname = active->data().toByteArray();
     Gui::Document* doc = Application::Instance->getDocument((const char*)docname);
-    if (doc)
-        doc->setActiveView();
+    if (doc && !doc->setActiveView())
+        doc->setActiveView(0,View3DInventor::getClassTypeId());
 }
 
 Qt::DropActions TreeWidget::supportedDropActions () const
@@ -1288,35 +1291,45 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
 {
     QTreeWidgetItem* item = itemAt(event->pos());
     if (!item) return;
-    if (item->type() == TreeWidget::DocumentType) {
-        //QTreeWidget::mouseDoubleClickEvent(event);
-        Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
-        if (!doc) return;
-        if(doc->getDocument()->testStatus(App::Document::PartialDoc)) {
-            contextItem = item;
-            onReloadDoc();
-            return;
-        }
-        doc->setActiveView();
-    }
-    else if (item->type() == TreeWidget::ObjectType) {
-        DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
-        objitem->getOwnerDocument()->document()->setActiveView(objitem->object());
-        auto manager = Application::Instance->macroManager();
-        auto lines = manager->getLines();
-        auto editDoc = Application::Instance->editDocument();
-        App::AutoTransaction committer("Double click", true);
-        std::ostringstream ss;
-        ss << Command::getObjectCmd(objitem->object()->getObject())
-            << ".ViewObject.doubleClicked()";
-        if (!objitem->object()->doubleClicked())
-            QTreeWidget::mouseDoubleClickEvent(event);
-        else if(lines == manager->getLines())
-            manager->addLine(MacroManager::Gui,ss.str().c_str());
 
-        // If the double click starts an editing, let the transaction persist
-        if(!editDoc && Application::Instance->editDocument())
-            committer.setEnable(false);
+    try {
+        if (item->type() == TreeWidget::DocumentType) {
+            //QTreeWidget::mouseDoubleClickEvent(event);
+            Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
+            if (!doc) return;
+            if(doc->getDocument()->testStatus(App::Document::PartialDoc)) {
+                contextItem = item;
+                onReloadDoc();
+                return;
+            }
+            if(!doc->setActiveView())
+                doc->setActiveView(0,View3DInventor::getClassTypeId());
+        }
+        else if (item->type() == TreeWidget::ObjectType) {
+            DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(item);
+            objitem->getOwnerDocument()->document()->setActiveView(objitem->object());
+            auto manager = Application::Instance->macroManager();
+            auto lines = manager->getLines();
+            auto editDoc = Application::Instance->editDocument();
+            App::AutoTransaction committer("Double click", true);
+            std::ostringstream ss;
+            ss << Command::getObjectCmd(objitem->object()->getObject())
+                << ".ViewObject.doubleClicked()";
+            if (!objitem->object()->doubleClicked())
+                QTreeWidget::mouseDoubleClickEvent(event);
+            else if(lines == manager->getLines())
+                manager->addLine(MacroManager::Gui,ss.str().c_str());
+
+            // If the double click starts an editing, let the transaction persist
+            if(!editDoc && Application::Instance->editDocument())
+                committer.setEnable(false);
+        }
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    } catch (std::exception &e) {
+        FC_ERR("C++ exception: " << e.what());
+    } catch (...) {
+        FC_ERR("Unknown exception");
     }
 }
 
@@ -1484,8 +1497,14 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                     return;
                 }
             }
-        }catch(Base::Exception &e){
+        } catch (Base::Exception &e){
             e.ReportException();
+            event->ignore();
+        } catch (std::exception &e) {
+            FC_ERR("C++ exception: " << e.what());
+            event->ignore();
+        } catch (...) {
+            FC_ERR("Unknown exception");
             event->ignore();
         }
     }
@@ -1557,6 +1576,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
     if (items.empty())
         return; // nothing needs to be done
+
+    std::string errMsg;
 
     if(QApplication::keyboardModifiers()== Qt::ControlModifier)
         event->setDropAction(Qt::CopyAction);
@@ -1892,10 +1913,19 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 Selection().selStackPush();
             }
         } catch (const Base::Exception& e) {
+            e.ReportException();
+            errMsg = e.what();
+        } catch (std::exception &e) {
+            FC_ERR("C++ exception: " << e.what());
+            errMsg = e.what();
+        } catch (...) {
+            FC_ERR("Unknown exception");
+            errMsg = "Unknown exception";
+        }
+        if(errMsg.size()) {
             committer.close(true);
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
-                    QString::fromLatin1(e.what()));
-            e.ReportException();
+                    QString::fromUtf8(errMsg.c_str()));
             return;
         }
     }
@@ -2069,10 +2099,19 @@ void TreeWidget::dropEvent(QDropEvent *event)
             Selection().setSelection(thisDoc->getName(),droppedObjs);
 
         } catch (const Base::Exception& e) {
+            e.ReportException();
+            errMsg = e.what();
+        } catch (std::exception &e) {
+            FC_ERR("C++ exception: " << e.what());
+            errMsg = e.what();
+        } catch (...) {
+            FC_ERR("Unknown exception");
+            errMsg = "Unknown exception";
+        }
+        if(errMsg.size()) {
             committer.close(true);
             QMessageBox::critical(getMainWindow(), QObject::tr("Drag & drop failed"),
-                    QString::fromLatin1(e.what()));
-            e.ReportException();
+                    QString::fromUtf8(errMsg.c_str()));
             return;
         }
     }
@@ -2145,6 +2184,10 @@ void TreeWidget::onCloseDoc() {
         Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
     } catch (const Base::Exception& e) {
         e.ReportException();
+    } catch (std::exception &e) {
+        FC_ERR("C++ exception: " << e.what());
+    } catch (...) {
+        FC_ERR("Unknown exception");
     }
 }
 
@@ -2701,8 +2744,10 @@ void TreeWidget::onItemSelectionChanged ()
             else if(selItems.front()->type() == DocumentType) {
                 auto ditem = static_cast<DocumentItem*>(selItems.front());
                 if(FC_TREEPARAM(SyncView)) {
+                    bool focus = hasFocus();
                     ditem->document()->setActiveView();
-                    setFocus();
+                    if(focus)
+                        setFocus();
                 }
                 // For triggering property editor refresh
                 Gui::Selection().signalSelectionChanged(SelectionChanges());
@@ -2787,7 +2832,7 @@ TreePanel::TreePanel(const char *name, QWidget* parent)
     connect(this->treeWidget, SIGNAL(emitSearchObjects()),
             this, SLOT(showEditor()));
 
-    this->searchBox = new Gui::ClearLineEdit(this);
+    this->searchBox = new Gui::ExpressionLineEdit(this,true);
     pLayout->addWidget(this->searchBox);
     this->searchBox->hide();
     this->searchBox->installEventFilter(this);
@@ -2796,7 +2841,7 @@ TreePanel::TreePanel(const char *name, QWidget* parent)
 #endif
     connect(this->searchBox, SIGNAL(returnPressed()),
             this, SLOT(accept()));
-    connect(this->searchBox, SIGNAL(textEdited(QString)),
+    connect(this->searchBox, SIGNAL(textChanged(QString)),
             this, SLOT(itemSearch(QString)));
 }
 
@@ -2808,6 +2853,7 @@ void TreePanel::accept()
 {
     QString text = this->searchBox->text();
     hideEditor();
+    this->treeWidget->setFocus();
     this->treeWidget->itemSearch(text,true);
 }
 
@@ -2823,6 +2869,7 @@ bool TreePanel::eventFilter(QObject *obj, QEvent *ev)
         case Qt::Key_Escape:
             hideEditor();
             consumed = true;
+            treeWidget->setFocus();
             break;
 
         default:
@@ -2839,11 +2886,12 @@ void TreePanel::showEditor()
 {
     this->searchBox->show();
     this->searchBox->setFocus();
-    this->treeWidget->startItemSearch();
+    this->treeWidget->startItemSearch(searchBox);
 }
 
 void TreePanel::hideEditor()
 {
+    static_cast<ExpressionLineEdit*>(this->searchBox)->setDocumentObject(0);
     this->searchBox->clear();
     this->searchBox->hide();
     this->treeWidget->resetItemSearch();
@@ -2913,8 +2961,12 @@ void TreeWidget::selectLinkedObject(App::DocumentObject *linked) {
     if(linkedDoc->showItem(linkedItem,true))
         scrollToItem(linkedItem);
 
-    if(linkedDoc->document()->getDocument() != App::GetApplication().getActiveDocument())
+    if(linkedDoc->document()->getDocument() != App::GetApplication().getActiveDocument()) {
+        bool focus = hasFocus();
         linkedDoc->document()->setActiveView(linkedItem->object());
+        if(focus)
+            setFocus();
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -4585,9 +4637,11 @@ void DocumentObjectItem::displayStatusInfo()
     QString status = TreeWidget::tr("%1, Internal name: %2")
             .arg(info,
                  QString::fromLatin1(Obj->getNameInDocument()));
-    getMainWindow()->showMessage(status);
 
-    if (Obj->isError()) {
+    if (!Obj->isError())
+        getMainWindow()->showMessage(status);
+    else {
+        getMainWindow()->showStatus(MainWindow::Err,status);
         QTreeWidget* tree = this->treeWidget();
         QPoint pos = tree->visualItemRect(this).topRight();
         QToolTip::showText(tree->mapToGlobal(pos), info);

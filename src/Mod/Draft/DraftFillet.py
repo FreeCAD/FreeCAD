@@ -280,13 +280,13 @@ class CommandFillet(DraftTools.Creator):
             args += ', delete=' + str(delete)
         func = ['arc = DraftFillet.makeFillet(' + args + ')']
         func.append('Draft.autogroup(arc)')
-        func.append('FreeCAD.ActiveDocument.recompute()')
-        self.commit(name, func)
-
         # Here we could remove the old objects, but the makeFillet()
         # command already includes an option to remove them.
+        # Therefore, the following is not necessary.
         # rems = [doc + 'removeObject("' + o.Name + '")' for o in wires]
         # func.extend(rems)
+        func.append('FreeCAD.ActiveDocument.recompute()')
+        self.commit(name, func)
 
     def finish(self, close=False):
         """Terminates the operation."""

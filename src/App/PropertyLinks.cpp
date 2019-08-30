@@ -4369,7 +4369,6 @@ void PropertyXLinkContainer::Restore(Base::XMLReader &reader) {
     if(reader.hasAttribute("docs")) {
         auto docCount = reader.getAttributeAsUnsigned("docs");
         _DocMap.clear();
-        std::vector<std::string> docs(count*2);
         for(unsigned i=0;i<docCount;++i) {
             reader.readElement("DocMap");
             auto index = reader.getAttributeAsUnsigned("index");

@@ -122,7 +122,7 @@ public:
     void startDragging();
 
     void resetItemSearch();
-    void startItemSearch();
+    void startItemSearch(QLineEdit*);
     void itemSearch(const QString &text, bool select);
 
 protected:

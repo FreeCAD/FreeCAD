@@ -940,25 +940,37 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             return;
         if (!ViewProvider->getObject()->getNameInDocument())
             return;
+
+        auto editDoc = Gui::Application::Instance->editDocument();
+        App::DocumentObject *editObj = ViewProvider->getObject();
+        std::string editSubName;
+        ViewProviderDocumentObject *editVp = 0;
+        if(editDoc) {
+            editDoc->getInEdit(&editVp,&editSubName);
+            if(editVp)
+                editObj = editVp->getObject();
+        }
         try{
             QString code = QString::fromLatin1(
                 "import Show\n"
-                "from Show.DepGraphTools import getAllDependent, isContainer\n"
                 "tv = Show.TempoVis(App.ActiveDocument)\n"
-                "dep_features = [o for o in getAllDependent(%1) if not isContainer(o)]\n"
-                "if %1.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
-                "\tvisible_features = [feat for feat in %1.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
+                "tvObj = %1\n"
+                "dep_features = tv.get_all_dependent(%2, '%3')\n"
+                "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
+                "\tvisible_features = [feat for feat in tvObj.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
                 "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
+                "\tdel(visible_features)\n"
                 "tv.hide(dep_features)\n"
-                "if not %1.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
-                "\t\tif len(%1.Support) > 0:\n"
-                "\t\t\ttv.show([lnk[0] for lnk in %1.Support])"
-                );
-            QByteArray code_2 = code.arg(
-                QString::fromLatin1("App.ActiveDocument.") +
-                QString::fromLatin1(ViewProvider->getObject()->getNameInDocument())
-                ).toLatin1();
-                Base::Interpreter().runString(code_2.constData());
+                "del(dep_features)\n"
+                "if not tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
+                "\t\tif len(tvObj.Support) > 0:\n"
+                "\t\t\ttv.show([lnk[0] for lnk in tvObj.Support])\n"
+                "del(tvObj)"
+                ).arg(
+                    QString::fromLatin1(Gui::Command::getObjectCmd(ViewProvider->getObject()).c_str()),
+                    QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
+                    QString::fromLatin1(editSubName.c_str()));
+            Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
         }
         catch (const Base::Exception &e){
             e.ReportException();
