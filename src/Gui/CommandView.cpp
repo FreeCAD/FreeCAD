@@ -3121,6 +3121,8 @@ StdCmdSelForward::StdCmdSelForward()
   sPixmap       = "sel-forward";
   sAccel        = "S, F";
   eType         = AlterSelection;
+
+
 }
 
 void StdCmdSelForward::activated(int iMsg)
@@ -3463,6 +3465,13 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdSelBack());
     rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
+
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    if(hGrp->GetASCII("GestureRollFwdCommand").empty())
+        hGrp->SetASCII("GestureRollFwdCommand","Std_SelForward");
+    if(hGrp->GetASCII("GestureRollBackCommand").empty())
+        hGrp->SetASCII("GestureRollBackCommand","Std_SelBack");
 }
 
 } // namespace Gui
