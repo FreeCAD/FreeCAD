@@ -1288,24 +1288,6 @@ void Document::emptyDocument()
     this->d->lastObjectId = 0;
 }
 
-void Document::resetTouched()
-{
-/*
-        for (std::map<std::string,DocumentObject*>::iterator It= this->d->objectMap.begin();It!=this->d->objectMap.end();++It) {
-                It->second->connectRelabelSignals();
-                try {
-                     It->second->onDocumentRestored();
-                     It->second->ExpressionEngine.onDocumentRestored();
-                 }
-                catch (const Base::Exception& e) {
-                        Base::Console().Error("Error in %s: %s\n", It->second->Label.getValue(), e.what());
-                }
-                It->second->purgeTouched();
-        }
-*/
-}
-
-
 
 void Document::clearUndos()
 {

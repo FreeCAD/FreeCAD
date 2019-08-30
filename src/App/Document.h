@@ -180,7 +180,6 @@ public:
     //@}
 
 
-    void resetTouched();
     void emptyDocument();
 
     /** @name File handling of the document */
