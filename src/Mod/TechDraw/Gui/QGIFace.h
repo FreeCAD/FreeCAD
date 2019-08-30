@@ -85,11 +85,6 @@ public:
     bool isHatched(void) {return m_isHatched;}
     void setFillMode(fillMode m);
 
-/*    //plain color fill parms*/
-/*    void setFill(QColor c, Qt::BrushStyle s);*/
-/*    void setFill(QBrush b);*/
-/*    void resetFill();*/
-
     //general hatch parms & methods
     void setHatchColor(App::Color c);
     void setHatchScale(double s);
@@ -151,16 +146,6 @@ protected:
 
 
 private:
-/*    QBrush m_brush;*/
-/*    Qt::BrushStyle m_fillStyle;                 //current fill style*/
-/*    QColor m_fillColor;                         //current fill color*/
-
-/*    QColor m_colDefFill;                        //"no color" default normal fill color*/
-/*    QColor m_colNormalFill;                     //current Normal fill color*/
-/*    Qt::BrushStyle m_styleDef;                  //default Normal fill style*/
-/*    Qt::BrushStyle m_styleNormal;               //current Normal fill style*/
-/*    Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style*/
- 
     QPixmap m_texture;                          //
  
     QPainterPath m_outline;                     //
@@ -169,6 +154,8 @@ private:
  
     QColor m_geomColor;                        //color for crosshatch lines
     double m_geomWeight;                       //lineweight for crosshatch lines
+    bool m_defClearFace;
+    QColor m_defFaceColor;
 };
 
 }

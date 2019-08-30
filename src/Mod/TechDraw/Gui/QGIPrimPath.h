@@ -58,15 +58,18 @@ public:
     void setStyle(int s);
     virtual void setNormalColor(QColor c);
     virtual void setCapStyle(Qt::PenCapStyle c);
-    Qt::BrushStyle getFill() { return m_fill; }
 
     //plain color fill parms
     void setFill(Qt::BrushStyle f) { m_fill = f; }
+    Qt::BrushStyle getFill() { return m_fill; }
+
     void setFill(QColor c, Qt::BrushStyle s);
     void setFill(QBrush b);
     void resetFill();
-    void setFillColor(QColor c) { m_colNormalFill = c;
-                                  m_colDefFill = c; }
+/*    void setFillColor(QColor c) { m_colNormalFill = c;*/
+/*                                  m_colDefFill = c; }*/
+    void setFillColor(QColor c);
+    QColor getFillColor(void) { return m_colDefFill; }
 
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
