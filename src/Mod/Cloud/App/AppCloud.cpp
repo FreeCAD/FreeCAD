@@ -329,7 +329,6 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
 
         // CHANGEME
         sprintf(StringToSign,"GET\n\napplication/octet-stream\n%s\n/%s/%s", date_formatted, this->Bucket, entry->FileName);
-	printf("Reading %s\n",entry->FileName);
         // We have to use HMAC encoding and SHA1
         digest=HMAC(EVP_sha1(),this->SecretKey,strlen(this->SecretKey),
                 (const unsigned char *)&StringToSign,strlen(StringToSign),NULL,NULL);
@@ -592,7 +591,7 @@ bool Cloud::Module::cloudSave(const char *BucketName)
             mywriter.setMode("BinaryBrep");
         mywriter.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
                         << "<!--" << endl
-                        << " FreeCAD Document, see http://www.freecadweb.org for more information..." << endl
+                        << " FreeCAD Document, see https://www.freecadweb.org for more information..." << endl
                         << "-->" << endl;
         doc->Save(mywriter);
 
@@ -618,7 +617,6 @@ void readFiles(Cloud::CloudReader reader, Base::XMLReader *xmlreader)
 
     std::vector<Base::XMLReader::FileEntry>::const_iterator it = xmlreader->FileList.begin();
     while ( it != xmlreader->FileList.end()) {
-	printf("Reading in ReadFiles %s\n",it->FileName.c_str());
         if ( reader.isTouched(it->FileName.c_str()) == 0 )
         {
                 Base::Reader localreader(reader.GetEntry(it->FileName.c_str())->FileStream,it->FileName, xmlreader->FileVersion);
@@ -642,7 +640,7 @@ bool Cloud::Module::cloudRestore (const char *BucketName)
 
     doc->clearUndos();
 
-    doc->emptyDocument();
+    doc->clearDocument();
 
     std::stringstream oss;
 
