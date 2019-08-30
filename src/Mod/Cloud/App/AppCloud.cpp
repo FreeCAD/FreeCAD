@@ -263,7 +263,7 @@ Cloud::CloudReader::CloudReader(const char* Url, const char* AccessKey, const ch
                 sprintf(header_data,"Date: %s", date_formatted);
                 chunk = curl_slist_append(chunk, header_data);
                 chunk = curl_slist_append(chunk, "Content-Type: application/xml");
-               std::string digest_str;
+                std::string digest_str;
                 digest_str=Base::base64_encode(digest,strlen((const char *)digest));
                 sprintf(header_data,"Authorization: AWS %s:%s", this->AccessKey,
                 digest_str.c_str());
@@ -329,7 +329,7 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
 
         // CHANGEME
         sprintf(StringToSign,"GET\n\napplication/octet-stream\n%s\n/%s/%s", date_formatted, this->Bucket, entry->FileName);
-
+	printf("Reading %s\n",entry->FileName);
         // We have to use HMAC encoding and SHA1
         digest=HMAC(EVP_sha1(),this->SecretKey,strlen(this->SecretKey),
                 (const unsigned char *)&StringToSign,strlen(StringToSign),NULL,NULL);
@@ -357,6 +357,7 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
                 sprintf(header_data,"%s:%s/%s/%s", this->Url,this->TcpPort,
                                                     this->Bucket,entry->FileName);
                 curl_easy_setopt(curl, CURLOPT_URL, header_data);
+                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
                 // curl read a file not a memory buffer (it shall be able to do it)
@@ -617,6 +618,7 @@ void readFiles(Cloud::CloudReader reader, Base::XMLReader *xmlreader)
 
     std::vector<Base::XMLReader::FileEntry>::const_iterator it = xmlreader->FileList.begin();
     while ( it != xmlreader->FileList.end()) {
+	printf("Reading in ReadFiles %s\n",it->FileName.c_str());
         if ( reader.isTouched(it->FileName.c_str()) == 0 )
         {
                 Base::Reader localreader(reader.GetEntry(it->FileName.c_str())->FileStream,it->FileName, xmlreader->FileVersion);
@@ -680,10 +682,7 @@ bool Cloud::Module::cloudRestore (const char *BucketName)
 
     // reset all touched
 
-   doc->resetTouched();
-
-//   if(!doc->delaySignal)
-   doc->afterRestore(true);
+    doc->afterRestore(true);
 
     GetApplication().signalFinishRestoreDocument(*doc);
     doc->setStatus(Document::Restoring, false);
