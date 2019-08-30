@@ -202,16 +202,25 @@ class CommandFillet(DraftTools.Creator):
             self.ui.labelRadius.setText(label)
             self.ui.radiusValue.setToolTip(tooltip)
             self.ui.setRadiusValue(self.rad, "Length")
-            self.ui.checkdelete = self.ui._checkbox("isdelete",
-                                                    self.ui.layout,
-                                                    checked=self.delete)
-            self.ui.checkdelete.setText(translate("draft",
-                                                  "Delete original objects"))
-            self.ui.checkdelete.show()
+            self.ui.check_delete = self.ui._checkbox("isdelete",
+                                                     self.ui.layout,
+                                                     checked=self.delete)
+            self.ui.check_delete.setText(translate("draft",
+                                                   "Delete original objects"))
+            self.ui.check_delete.show()
+            self.ui.check_chamfer = self.ui._checkbox("ischamfer",
+                                                      self.ui.layout,
+                                                      checked=self.chamfer)
+            self.ui.check_chamfer.setText(translate("draft",
+                                                    "Create chamfer"))
+            self.ui.check_chamfer.show()
 
-            QtCore.QObject.connect(self.ui.checkdelete,
+            QtCore.QObject.connect(self.ui.check_delete,
                                    QtCore.SIGNAL("stateChanged(int)"),
                                    self.set_delete)
+            QtCore.QObject.connect(self.ui.check_chamfer,
+                                   QtCore.SIGNAL("stateChanged(int)"),
+                                   self.set_chamfer)
             self.linetrack = DraftTrackers.lineTracker(dotted=True)
             self.arctrack = DraftTrackers.arcTracker()
             # self.call = self.view.addEventCallback("SoEvent", self.action)
@@ -232,18 +241,24 @@ class CommandFillet(DraftTools.Creator):
             DraftTools.redraw3DView()
 
     def set_delete(self):
-        """This function is called when the checkbox state changes"""
-        self.delete = self.ui.checkdelete.isChecked()
+        """This function is called when the delete checkbox changes"""
+        self.delete = self.ui.check_delete.isChecked()
         FCC.PrintMessage(translate("draft", "Delete original objects: ")
                          + str(self.delete) + "\n")
+
+    def set_chamfer(self):
+        """This function is called when the chamfer checkbox changes"""
+        self.chamfer = self.ui.check_chamfer.isChecked()
+        FCC.PrintMessage(translate("draft", "Chamfer mode: ")
+                         + str(self.chamfer) + "\n")
 
     def numericRadius(self, rad):
         """This function is called when a valid radius is entered"""
         self.rad = rad
-        self.draw_arc(rad, self.delete)
+        self.draw_arc(rad, self.chamfer, self.delete)
         self.finish()
 
-    def draw_arc(self, rad, delete):
+    def draw_arc(self, rad, chamfer, delete):
         """Processes the selection and draws the actual object"""
         wires = FreeCADGui.Selection.getSelection()
         _two = translate("draft", "two elements needed")
@@ -276,6 +291,8 @@ class CommandFillet(DraftTools.Creator):
         name = translate("draft", "Create fillet")
 
         args = _wires + ', radius=' + str(rad)
+        if chamfer:
+            args += ', chamfer=' + str(chamfer)
         if delete:
             args += ', delete=' + str(delete)
         func = ['arc = DraftFillet.makeFillet(' + args + ')']
