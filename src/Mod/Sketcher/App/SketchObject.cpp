@@ -7699,8 +7699,19 @@ void SketchObject::setExpression(const App::ObjectIdentifier &path, boost::share
 {
     DocumentObject::setExpression(path, expr);
 
-    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver, constraints and UI
+    if(noRecomputes) {// if we do not have a recompute, the sketch must be solved to update the DoF of the solver, constraints and UI
+        try {
+            auto res = ExpressionEngine.execute();
+            if(res) {
+                FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": " << res->Why);
+                delete res;
+            }
+        } catch (Base::Exception &e) {
+            e.ReportException();
+            FC_ERR("Failed to recompute " << ExpressionEngine.getFullName() << ": " << e.what());
+        }
         solve();
+    }
 }
 
 App::DocumentObject *SketchObject::getSubObject(
