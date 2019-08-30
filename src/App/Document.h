@@ -180,7 +180,7 @@ public:
     //@}
 
 
-    void emptyDocument();
+    void clearDocument();
 
     /** @name File handling of the document */
     //@{
