@@ -139,24 +139,33 @@ void DlgExpressionInput::textChanged(const QString &text)
             ui->okBtn->setEnabled(true);
             ui->msg->clear();
 
+            //set default palette as we may have read text right now
+            ui->msg->setPalette(ui->okBtn->palette());
+
             NumberExpression * n = Base::freecad_dynamic_cast<NumberExpression>(result.get());
             if (n) {
                 Base::Quantity value = n->getQuantity();
+                QString msg = value.getUserString();
 
                 if(!impliedUnit.isEmpty()) {
                     if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
                         throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
                     value.setUnit(impliedUnit);
+
+                } else if (!value.getUnit().isEmpty()) {
+                    msg += QString::fromUtf8(" (Warning: unit discarded)");
+
+                    QPalette p(ui->msg->palette());
+                    p.setColor(QPalette::WindowText, Qt::red);
+                    ui->msg->setPalette(p);
                 }
 
-                ui->msg->setText(value.getUserString());
+                ui->msg->setText(msg);
             }
             else
                 ui->msg->setText(Base::Tools::fromStdString(result->toString()));
 
-            //set default palette as we may have read text right now
-            ui->msg->setPalette(ui->okBtn->palette());
         }
     }
     catch (Base::Exception & e) {
