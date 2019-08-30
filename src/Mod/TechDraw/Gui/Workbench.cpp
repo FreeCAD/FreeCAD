@@ -87,7 +87,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_Symbol";
     *draw << "TechDraw_Image";
     *draw << "TechDraw_ToggleFrame";
-//    *decor << "TechDraw_RedrawPage";
+    *draw << "TechDraw_Redraw";
     *draw << "Separator";
     *draw << "TechDraw_Annotation";
     *draw << "TechDraw_LeaderLine";
@@ -156,7 +156,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
-//    *decor << "TechDraw_RedrawPage";
+    *decor << "TechDraw_Redraw";
 
     Gui::ToolBarItem *anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");
@@ -225,6 +225,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
+    *decor << "TechDraw_Redraw";
 
     Gui::ToolBarItem *anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");

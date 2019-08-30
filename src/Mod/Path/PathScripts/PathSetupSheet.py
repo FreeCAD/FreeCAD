@@ -52,6 +52,7 @@ class Template:
 
     HorizRapid = 'HorizRapid'
     VertRapid = 'VertRapid'
+    CoolantMode = 'CoolantMode'
     SafeHeightOffset = 'SafeHeightOffset'
     SafeHeightExpression = 'SafeHeightExpression'
     ClearanceHeightOffset = 'ClearanceHeightOffset'
@@ -60,7 +61,7 @@ class Template:
     FinalDepthExpression = 'FinalDepthExpression'
     StepDownExpression = 'StepDownExpression'
 
-    All = [HorizRapid, VertRapid, SafeHeightOffset, SafeHeightExpression, ClearanceHeightOffset, ClearanceHeightExpression, StartDepthExpression, FinalDepthExpression, StepDownExpression]
+    All = [HorizRapid, VertRapid, CoolantMode, SafeHeightOffset, SafeHeightExpression, ClearanceHeightOffset, ClearanceHeightExpression, StartDepthExpression, FinalDepthExpression, StepDownExpression]
 
 
 def _traverseTemplateAttributes(attrs, codec):
@@ -86,7 +87,7 @@ class SetupSheet:
     TemplateReference = '${SetupSheet}'
 
     DefaultSafeHeightOffset      = '3 mm'
-    DefaultClearanceHeightOffset = '5 mm'
+    DefaultClearanceHeightOffset = '5 mm' 
     DefaultSafeHeightExpression      = "OpStockZMax+${SetupSheet}.SafeHeightOffset"
     DefaultClearanceHeightExpression = "OpStockZMax+${SetupSheet}.ClearanceHeightOffset"
 
@@ -94,10 +95,15 @@ class SetupSheet:
     DefaultFinalDepthExpression = 'OpFinalDepth'
     DefaultStepDownExpression   = 'OpToolDiameter'
 
+    DefaultCoolantModes = ['None', 'Flood', 'Mist'] 
+   
     def __init__(self, obj):
         self.obj = obj
         obj.addProperty('App::PropertySpeed', 'VertRapid',  'ToolController', translate('PathSetupSheet', 'Default speed for horizontal rapid moves.'))
         obj.addProperty('App::PropertySpeed', 'HorizRapid', 'ToolController', translate('PathSetupSheet', 'Default speed for vertical rapid moves.'))
+
+        obj.addProperty('App::PropertyStringList', 'CoolantModes', 'CoolantMode', translate('PathSetupSheet', 'Coolant Modes'))
+        obj.addProperty('App::PropertyEnumeration', 'CoolantMode', 'CoolantMode', translate('PathSetupSheet', 'Default coolant mode.'))
 
         obj.addProperty('App::PropertyLength', 'SafeHeightOffset',          'OperationHeights', translate('PathSetupSheet', 'The usage of this field depends on SafeHeightExpression - by default its value is added to StartDepth and used for SafeHeight of an operation.'))
         obj.addProperty('App::PropertyString', 'SafeHeightExpression',      'OperationHeights', translate('PathSetupSheet', 'Expression set for the SafeHeight of new operations.'))
@@ -116,6 +122,9 @@ class SetupSheet:
         obj.StartDepthExpression = self.decodeAttributeString(self.DefaultStartDepthExpression)
         obj.FinalDepthExpression = self.decodeAttributeString(self.DefaultFinalDepthExpression)
         obj.StepDownExpression   = self.decodeAttributeString(self.DefaultStepDownExpression)
+
+        obj.CoolantModes = self.DefaultCoolantModes
+        obj.CoolantMode = self.DefaultCoolantModes
 
         obj.Proxy = self
 
@@ -171,13 +180,16 @@ class SetupSheet:
                         prop.setupProperty(self.obj, propertyName, propertyGroup, prop.valueFromString(value))
 
 
-    def templateAttributes(self, includeRapids=True, includeHeights=True, includeDepths=True, includeOps=None):
+    def templateAttributes(self, includeRapids=True, includeCoolantMode=True, includeHeights=True, includeDepths=True, includeOps=None):
         '''templateAttributes(includeRapids, includeHeights, includeDepths) ... answers a dictionary with the default values.'''
         attrs = {}
 
         if includeRapids:
             attrs[Template.VertRapid]  = self.obj.VertRapid.UserString
             attrs[Template.HorizRapid] = self.obj.HorizRapid.UserString
+
+        if includeCoolantMode:
+            attrs[Template.CoolantMode] = self.obj.CoolantMode.UserString
 
         if includeHeights:
             attrs[Template.SafeHeightOffset]          = self.obj.SafeHeightOffset.UserString
@@ -264,6 +276,17 @@ class SetupSheet:
         except Exception: # pylint: disable=broad-except
             PathLog.info("SetupSheet has no support for {}".format(opName))
             #traceback.print_exc()
+
+    def onDocumentRestored(self, obj):
+
+        if not hasattr(obj, 'CoolantModes'):
+            obj.addProperty('App::PropertyStringList', 'CoolantModes', 'CoolantMode', translate('PathSetupSheet', 'Coolant Modes'))
+            obj.CoolantModes = self.DefaultCoolantModes
+        
+
+        if not hasattr(obj, 'CoolantMode'):
+            obj.addProperty('App::PropertyEnumeration', 'CoolantMode', 'CoolantMode', translate('PathSetupSheet', 'Default coolant mode.'))
+            obj.CoolantMode = self.DefaultCoolantModes
 
 def Create(name = 'SetupSheet'):
     obj = FreeCAD.ActiveDocument.addObject('App::FeaturePython', name)

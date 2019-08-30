@@ -43,6 +43,7 @@
 # include <Gui/MainWindow.h>
 # include <Gui/FileDialog.h>
 # include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
 
 # include <Mod/Part/App/PartFeature.h>
 
@@ -420,13 +421,13 @@ bool CmdTechDrawToggleFrame::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_RedrawPage
+// TechDraw_Redraw
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawRedrawPage);
+DEF_STD_CMD_A(CmdTechDrawRedraw);
 
-CmdTechDrawRedrawPage::CmdTechDrawRedrawPage()
-  : Command("TechDraw_RedrawPage")
+CmdTechDrawRedraw::CmdTechDrawRedraw()
+  : Command("TechDraw_Redraw")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
@@ -434,27 +435,24 @@ CmdTechDrawRedrawPage::CmdTechDrawRedrawPage()
     sToolTipText    = QT_TR_NOOP("Redraw a page");
     sWhatsThis      = "TechDraw_Redraw";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_Tree_Page_Sync";
+    sPixmap         = "actions/techdraw-forceredraw";
 }
 
-void CmdTechDrawRedrawPage::activated(int iMsg)
+void CmdTechDrawRedraw::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
     if (!page) {
         return;
     }
-    std::string PageName = page->getNameInDocument();
-    bool keepUpdated = page->KeepUpdated.getValue();
-    if (!keepUpdated) {
-        doCommand(Doc,"App.activeDocument().%s.KeepUpdated = True",PageName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.KeepUpdated = False",PageName.c_str());
-    } else {
-        page->requestPaint();
-    }
+    Gui::WaitCursor wc;
+
+    page->forceRedraw(true);
+    page->updateAllViews();
+    page->forceRedraw(false);
 }
 
-bool CmdTechDrawRedrawPage::isActive(void)
+bool CmdTechDrawRedraw::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     return (havePage);
@@ -468,7 +466,7 @@ void CreateTechDrawCommandsDecorate(void)
     rcCmdMgr.addCommand(new CmdTechDrawNewGeomHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
-//    rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
+    rcCmdMgr.addCommand(new CmdTechDrawRedraw());
 //    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
 //    rcCmdMgr.addCommand(new CmdTechDrawRichAnno());
 }

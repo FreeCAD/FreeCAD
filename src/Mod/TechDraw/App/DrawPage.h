@@ -97,6 +97,12 @@ public:
     DrawViewPart *balloonParent;    //could be many balloons on page? 
     
     int getNextBalloonIndex(void);
+    
+    void updateAllViews(void);
+    static bool GlobalUpdateDrawings(void);
+    static bool AllowPageOverride(void);
+    void forceRedraw(bool b) { m_forceRedraw = b; }
+    bool forceRedraw(void)   { return m_forceRedraw; }
 
 protected:
     void onBeforeChange(const App::Property* prop) override;
@@ -104,6 +110,7 @@ protected:
     virtual void onDocumentRestored() override;
     virtual void unsetupObject() override;
 
+    bool m_forceRedraw;
 
 private:
     static const char* ProjectionTypeEnums[];
