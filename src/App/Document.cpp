@@ -1268,7 +1268,7 @@ bool Document::isTransactionEmpty() const
     return true;
 }
 
-void Document::emptyDocument()
+void Document::clearDocument()
 {
     this->d->activeObject = 0;
 
