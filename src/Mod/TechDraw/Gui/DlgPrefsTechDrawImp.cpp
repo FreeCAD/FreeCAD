@@ -61,6 +61,8 @@ void DlgPrefsTechDrawImp::saveSettings()
     pcb_Surface->onSave();
     pcb_Background->onSave();
     pcb_Hatch->onSave();
+    pcb_Face->onSave();
+    pcb_PaintFaces->onSave();  //check box!
 
     pfb_LabelFont->onSave();
     plsb_LabelSize->onSave();
@@ -94,6 +96,8 @@ void DlgPrefsTechDrawImp::loadSettings()
     pcb_Surface->onRestore();
     pcb_Background->onRestore();
     pcb_Hatch->onRestore();
+    pcb_Face->onRestore();
+    pcb_PaintFaces->onRestore();  //check box!
 
     pfb_LabelFont->onRestore();
     plsb_LabelSize->onRestore();

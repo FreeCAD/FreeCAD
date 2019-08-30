@@ -372,6 +372,7 @@ void QGIViewPart::drawViewPart()
             QGIFace* newFace = drawFace(*fit,i);
             newFace->isHatched(false);
             newFace->setFillMode(QGIFace::PlainFill);
+//            newFace->setFill(QColor(Qt::red), Qt::SolidPattern);  //this overrides the QGIF defaults
             TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
             TechDraw::DrawGeomHatch* fGeom = faceIsGeomHatched(i,geomObjs);
             if (fGeom) {
@@ -418,8 +419,8 @@ void QGIViewPart::drawViewPart()
             bool drawEdges = prefFaceEdges();
             newFace->setDrawEdges(drawEdges);                                        //pref. for debugging only
             newFace->setZValue(ZVALUE::FACE);
-            newFace->draw();
             newFace->setPrettyNormal();
+            newFace->draw();
         }
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
