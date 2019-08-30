@@ -6,9 +6,11 @@ import Part
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    import DraftGui
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    from PySide import QtCore
     import DraftTools
+    import DraftTrackers
+    from DraftGui import translate
 else:
     def QT_TRANSLATE_NOOP(context, text):
         return text
@@ -17,51 +19,94 @@ else:
         return text
 
 
-def makeFillet(edge_list, radius=100, chamfer=False):
+def _extract_edges(objs):
+    """Extract the edges from the given objects (Draft lines or Edges).
+
+    objs : list of Draft Lines or Part.Edges
+        The list of edges from which to create the fillet.
+    """
+    o1, o2 = objs
+    if hasattr(o1, "PropertiesList"):
+        if "Proxy" in o1.PropertiesList:
+            if hasattr(o1.Proxy, "Type"):
+                if o1.Proxy.Type in ("Wire", "Fillet"):
+                    e1 = o1.Shape.Edges[0]
+        elif "Shape" in o1.PropertiesList:
+            if o1.Shape.ShapeType in ("Wire", "Edge"):
+                e1 = o1.Shape
+    elif hasattr(o1, "ShapeType"):
+        if o1.ShapeType in "Edge":
+            e1 = o1
+
+    if hasattr(o1, "Label"):
+        FCC.PrintMessage("o1: " + o1.Label)
+    else:
+        FCC.PrintMessage("o1: 1")
+    FCC.PrintMessage(", length: " + str(e1.Length) + "\n")
+
+    if hasattr(o2, "PropertiesList"):
+        if "Proxy" in o2.PropertiesList:
+            if hasattr(o2.Proxy, "Type"):
+                if o2.Proxy.Type in ("Wire", "Fillet"):
+                    e2 = o2.Shape.Edges[0]
+        elif "Shape" in o2.PropertiesList:
+            if o2.Shape.ShapeType in ("Wire", "Edge"):
+                e2 = o2.Shape
+    elif hasattr(o2, "ShapeType"):
+        if o2.ShapeType in "Edge":
+            e2 = o2
+
+    if hasattr(o2, "Label"):
+        FCC.PrintMessage("o2: " + o2.Label)
+    else:
+        FCC.PrintMessage("o2: 2")
+    FCC.PrintMessage(", length: " + str(e2.Length) + "\n")
+
+    return e1, e2
+
+
+def makeFillet(objs, radius=100, chamfer=False, delete=False):
     """Create a fillet between two lines or edges.
 
     Parameters
     ----------
-    edge_list : list
+    objs : list
         List of two objects of type wire, or edges.
     radius : float, optional
         It defaults to 100 mm. The curvature of the fillet.
-    chamfer : bool
-        Defaults to `False`. If `True` it corrects
-        the value of the `radius` so that the chamfer is exactly the radius.
+    chamfer : bool, optional
+        It defaults to `False`. If it is `True` it no longer produces
+        a rounded fillet but a chamfer (straight edge)
+        with the value of the `radius`.
+    delete : bool, optional
+        It defaults to `False`. If it is `True` it will delete
+        the pair of objects that are used to create the fillet.
+        Otherwise, the original objects will still be there.
 
     Returns
     -------
-    Part::Feature
-        The objects of type Fillet.
+    Part::Part2DObject
+        The object of type `'Fillet'`.
+        It returns `None` if it fails producing the object.
     """
-    if len(edge_list) != 2:
-        FCC.PrintError("makeFillet: two elements needed" + "\n")
+    if len(objs) != 2:
+        FCC.PrintError("makeFillet: "
+                       + translate("draft", "two elements needed") + "\n")
         return None
 
-    e1, e2 = edge_list
-    if "Proxy" in e1.PropertiesList:
-        if hasattr(e1.Proxy, "Type"):
-            if e1.Proxy.Type in "Wire":
-                FCC.PrintMessage("e1 : " + e1.Label + "\n")
-                e1 = e1.Shape.Edges[0]
-    elif "Shape" in e1.PropertiesList:
-        if e1.Shape.ShapeType in "Edge":
-            e1 = e1.Shape
-    if "Proxy" in e2.PropertiesList:
-        if hasattr(e2.Proxy, "Type"):
-            if e2.Proxy.Type in "Wire":
-                FCC.PrintMessage("e2 : " + e2.Label + "\n")
-                e2 = e2.Shape.Edges[0]
-    elif "Shape" in e2.PropertiesList:
-        if e2.Shape.ShapeType in "Edge":
-            e2 = e2.Shape
+    e1, e2 = _extract_edges(objs)
 
     edges = DraftGeomUtils.fillet([e1, e2], radius, chamfer)
-    FCC.PrintMessage("E1 :" + str(edges[0]) + "\n")
-    FCC.PrintMessage("E2 :" + str(edges[1]) + "\n")
-    FCC.PrintMessage("E3 :" + str(edges[2]) + "\n")
-    # add, delete = Draft.upgrade(edges, delete=True)
+    if len(edges) < 3:
+        FCC.PrintError("makeFillet: "
+                       + translate("draft", "radius too large"))
+        FCC.PrintError(", r=" + str(radius) + "\n")
+        return None
+
+    _d = translate("draft", "length: ")
+    FCC.PrintMessage("e1, " + _d + str(edges[0].Length) + "\n")
+    FCC.PrintMessage("e2, " + _d + str(edges[1].Length) + "\n")
+    FCC.PrintMessage("e3, " + _d + str(edges[2].Length) + "\n")
 
     try:
         wire = Part.Wire(edges)
@@ -77,6 +122,11 @@ def makeFillet(edge_list, radius=100, chamfer=False):
     obj.End = wire.Vertexes[-1].Point
     obj.FilletRadius = radius
 
+    if delete:
+        FreeCAD.ActiveDocument.removeObject(objs[0].Name)
+        FreeCAD.ActiveDocument.removeObject(objs[1].Name)
+        _r = translate("draft", "removed original objects")
+        FCC.PrintMessage("makeFillet: " + _r + "\n")
     if FreeCAD.GuiUp:
         Draft._ViewProviderWire(obj.ViewObject)
         Draft.formatObject(obj)
@@ -113,9 +163,12 @@ class Fillet(Draft._DraftObject):
             pass
 
 
-class CommandFillet(DraftTools.Line):
+class CommandFillet(DraftTools.Creator):
+    """The Fillet GUI command definition"""
+
     def __init__(self):
-        DraftTools.Line.__init__(self, wiremode=True)
+        DraftTools.Creator.__init__(self)
+        self.featureName = "Fillet"
 
     def GetResources(self):
         return {'Pixmap': 'Draft_Fillet.svg',
@@ -123,35 +176,119 @@ class CommandFillet(DraftTools.Line):
                 'ToolTip': QT_TRANSLATE_NOOP("draft", "Creates a fillet between two wires or edges.")
                 }
 
-    def Activated(self):
-        wires = FreeCADGui.Selection.getSelection()
-        if not wires:
-            FCC.PrintError("CommandFillet: two elements needed" + "\n")
+    def Activated(self, name=translate("draft", "Fillet")):
+        DraftTools.Creator.Activated(self, name)
+        if not self.doc:
+            FCC.PrintWarning(translate("draft", "No active document") + "\n")
             return
+        if self.ui:
+            self.rad = 100
+            self.chamfer = False
+            self.delete = False
+            label = translate("draft", "Fillet radius")
+            tooltip = translate("draft", "Radius of fillet")
 
+            # Call the Task panel for a radius
+            # The graphical widgets are defined in DraftGui
+            self.ui.taskUi(title=name, icon="Draft_Fillet")
+            self.ui.radiusUi()
+            self.ui.sourceCmd = self
+            self.ui.labelRadius.setText(label)
+            self.ui.radiusValue.setToolTip(tooltip)
+            self.ui.setRadiusValue(self.rad, "Length")
+            self.ui.checkdelete = self.ui._checkbox("isdelete",
+                                                    self.ui.layout,
+                                                    checked=self.delete)
+            self.ui.checkdelete.setText(translate("draft",
+                                                  "Delete original objects"))
+            self.ui.checkdelete.show()
+
+            QtCore.QObject.connect(self.ui.checkdelete,
+                                   QtCore.SIGNAL("stateChanged(int)"),
+                                   self.set_delete)
+            self.linetrack = DraftTrackers.lineTracker(dotted=True)
+            self.arctrack = DraftTrackers.arcTracker()
+            # self.call = self.view.addEventCallback("SoEvent", self.action)
+            FCC.PrintMessage(translate("draft", "Enter radius") + "\n")
+
+    def action(self, arg):
+        """Scene event handler. CURRENTLY NOT USED.
+
+        Here the displaying of the trackers (previews)
+        should be implemented by considering the current value of the
+        `ui.radiusValue`.
+        """
+        if arg["Type"] == "SoKeyboardEvent":
+            if arg["Key"] == "ESCAPE":
+                self.finish()
+        elif arg["Type"] == "SoLocation2Event":
+            self.point, ctrlPoint, info = DraftTools.getPoint(self, arg)
+            DraftTools.redraw3DView()
+
+    def set_delete(self):
+        """This function is called when the checkbox state changes"""
+        self.delete = self.ui.checkdelete.isChecked()
+        FCC.PrintMessage(translate("draft", "Delete original objects: ")
+                         + str(self.delete) + "\n")
+
+    def numericRadius(self, rad):
+        """This function is called when a valid radius is entered"""
+        self.rad = rad
+        self.draw_arc(rad, self.delete)
+        self.finish()
+
+    def draw_arc(self, rad, delete):
+        """Processes the selection and draws the actual object"""
+        wires = FreeCADGui.Selection.getSelection()
+        _two = translate("draft", "two elements needed")
+        if not wires:
+            FCC.PrintError("CommandFillet: " + _two + "\n")
+            return
         if len(wires) != 2:
-            FCC.PrintError("CommandFillet: two elements needed" + "\n")
+            FCC.PrintError("CommandFillet: " + _two + "\n")
             return
 
         for o in wires:
             FCC.PrintMessage("CommandFillet: " + Draft.getType(o) + "\n")
 
-            # Choose only wires.
-            # A test could be used to chose edges in general.
-            if Draft.getType(o) not in "Wire":
-                FCC.PrintError("CommandFillet: wires needed" + "\n")
-                return
+        _test = translate("draft", "Test object")
+        _test_off = translate("draft", "Test object removed")
+        _cant = translate("draft", "fillet cannot be created")
+
+        FCC.PrintMessage(4*"=" + _test + "\n")
+        arc = makeFillet(wires, rad)
+        if not arc:
+            FCC.PrintError("CommandFillet: " + _cant + "\n")
+            return
+        self.doc.removeObject(arc.Name)
+        FCC.PrintMessage(4*"=" + _test_off + "\n")
 
         doc = 'FreeCAD.ActiveDocument.'
         _wires = '[' + doc + wires[0].Name + ', ' + doc + wires[1].Name + ']'
-        rems = [doc + 'removeObject("' + o.Name + '")' for o in wires]
-        FreeCADGui.addModule("Draft")
-        func = DraftTools.translate("draft", "Create fillet")
 
-        arg = ['arc = DraftFillet.makeFillet(' + _wires + ')'] + rems +\
-              ['Draft.autogroup(arc)',
-               'FreeCAD.ActiveDocument.recompute()']
-        DraftGui.todo.delayCommit([(func, arg)])
+        FreeCADGui.addModule("DraftFillet")
+        name = translate("draft", "Create fillet")
+
+        args = _wires + ', radius=' + str(rad)
+        if delete:
+            args += ', delete=' + str(delete)
+        func = ['arc = DraftFillet.makeFillet(' + args + ')']
+        func.append('Draft.autogroup(arc)')
+        func.append('FreeCAD.ActiveDocument.recompute()')
+        self.commit(name, func)
+
+        # Here we could remove the old objects, but the makeFillet()
+        # command already includes an option to remove them.
+        # rems = [doc + 'removeObject("' + o.Name + '")' for o in wires]
+        # func.extend(rems)
+
+    def finish(self, close=False):
+        """Terminates the operation."""
+        DraftTools.Creator.finish(self)
+        if self.ui:
+            self.linetrack.finalize()
+            self.arctrack.finalize()
+            self.doc.recompute()
 
 
 if FreeCAD.GuiUp:
