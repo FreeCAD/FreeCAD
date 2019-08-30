@@ -563,6 +563,12 @@ Base::Reader::Reader(std::istream& str, const std::string& name, int version)
 {
 }
 
+Base::Reader::~Reader()
+{
+	if ( this->localreader != nullptr )
+		delete this->localreader;
+}
+
 std::string Base::Reader::getFileName() const
 {
     return this->_name;
