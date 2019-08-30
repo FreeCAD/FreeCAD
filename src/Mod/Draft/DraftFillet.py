@@ -1,3 +1,9 @@
+"""This module provides the Draft fillet tool.
+"""
+## @package DraftFillet
+# \ingroup DRAFT
+# \brief This module provides the Draft fillet tool.
+
 import FreeCAD
 from FreeCAD import Console as FCC
 import Draft
