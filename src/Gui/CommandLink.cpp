@@ -617,8 +617,8 @@ StdCmdLinkSelectLinked::StdCmdLinkSelectLinked()
   : Command("Std_LinkSelectLinked")
 {
     sGroup        = QT_TR_NOOP("Link");
-    sMenuText     = QT_TR_NOOP("Select linked object");
-    sToolTipText  = QT_TR_NOOP("Select the linked object");
+    sMenuText     = QT_TR_NOOP("Go to linked object");
+    sToolTipText  = QT_TR_NOOP("Select the linked object and switch to its owner document");
     sWhatsThis    = "Std_LinkSelectLinked";
     sStatusTip    = sToolTipText;
     eType         = AlterSelection;
@@ -639,8 +639,25 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
         return 0;
 
     auto linkedVp = vp->getLinkedViewProvider(subname,finalLink);
-    if(!linkedVp || linkedVp==vp)
-        return 0;
+    if(!linkedVp || linkedVp==vp) {
+        if(sobj->getDocument()==sels[0].pObject->getDocument())
+            return 0;
+        for(const char *dot=strchr(sels[0].SubName,'.');dot;dot=strchr(dot+1,'.')) {
+            std::string sub(sels[0].SubName,dot+1-sels[0].SubName);
+            auto obj = sels[0].pObject->getSubObject(sub.c_str());
+            if(!obj)
+                break;
+            obj = obj->getLinkedObject(true);
+            if(obj->getDocument()!=sels[0].pObject->getDocument()) {
+                if(finalLink)
+                    return sobj==obj?0:sobj;
+                if(subname) 
+                    *subname = std::string(dot+1);
+                return obj;
+            }
+        }
+        return finalLink?0:sobj;
+    }
 
     if(finalLink && linkedVp == vp->getLinkedViewProvider())
         return 0;
@@ -727,8 +744,8 @@ StdCmdLinkSelectLinkedFinal::StdCmdLinkSelectLinkedFinal()
   : Command("Std_LinkSelectLinkedFinal")
 {
     sGroup        = QT_TR_NOOP("Link");
-    sMenuText     = QT_TR_NOOP("Select the deepest linked object");
-    sToolTipText  = QT_TR_NOOP("Select the deepest linked object");
+    sMenuText     = QT_TR_NOOP("Go to the deepest linked object");
+    sToolTipText  = QT_TR_NOOP("Select the deepest linked object and switch to its owner document");
     sWhatsThis    = "Std_LinkSelectLinkedFinal";
     sStatusTip    = sToolTipText;
     eType         = AlterSelection;
