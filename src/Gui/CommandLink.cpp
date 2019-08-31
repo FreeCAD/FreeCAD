@@ -36,6 +36,7 @@
 #include "Document.h"
 #include "Selection.h"
 #include "WaitCursor.h"
+#include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
 
 #include <Base/Console.h>
@@ -609,6 +610,7 @@ void StdCmdLinkImportAll::activated(int) {
     }
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 DEF_STD_CMD_A(StdCmdLinkSelectLinked)
@@ -805,6 +807,33 @@ void StdCmdLinkSelectAllLinks::activated(int)
     Selection().selStackPush();
 }
 
+
+//======================================================================
+// Std_LinkSelectActions
+//===========================================================================
+
+class StdCmdLinkSelectActions : public GroupCommand
+{
+public:
+    StdCmdLinkSelectActions()
+        : GroupCommand("Std_LinkSelectActions")
+    {
+        sGroup        = QT_TR_NOOP("View");
+        sMenuText     = QT_TR_NOOP("Link navigation");
+        sToolTipText  = QT_TR_NOOP("Link navigation actions");
+        sWhatsThis    = "Std_LinkSelectActions";
+        sStatusTip    = QT_TR_NOOP("Link navigation actions");
+        eType         = AlterSelection;
+        bCanLog       = false;
+
+        addCommand(new StdCmdLinkSelectLinked());
+        addCommand(new StdCmdLinkSelectLinkedFinal());
+        addCommand(new StdCmdLinkSelectAllLinks());
+    }
+
+    virtual const char* className() const {return "StdCmdLinkSelectActions";}
+};
+
 //===========================================================================
 // Instantiation
 //===========================================================================
@@ -815,9 +844,6 @@ namespace Gui {
 void CreateLinkCommands(void)
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
-    rcCmdMgr.addCommand(new StdCmdLinkSelectLinked());
-    rcCmdMgr.addCommand(new StdCmdLinkSelectLinkedFinal());
-    rcCmdMgr.addCommand(new StdCmdLinkSelectAllLinks());
     rcCmdMgr.addCommand(new StdCmdLinkMake());
     rcCmdMgr.addCommand(new StdCmdLinkMakeRelative());
     rcCmdMgr.addCommand(new StdCmdLinkMakeGroup());
@@ -825,6 +851,8 @@ void CreateLinkCommands(void)
     rcCmdMgr.addCommand(new StdCmdLinkUnlink());
     rcCmdMgr.addCommand(new StdCmdLinkImport());
     rcCmdMgr.addCommand(new StdCmdLinkImportAll());
+    rcCmdMgr.addCommand(new StdCmdLinkSelectActions());
+
 }
 
 } // namespace Gui
