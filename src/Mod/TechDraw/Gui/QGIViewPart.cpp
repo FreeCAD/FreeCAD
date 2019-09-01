@@ -1058,15 +1058,23 @@ void QGIViewPart::toggleCosmeticLines(bool state)
     }
 }
 
-
+//get hatchObj for face i if it exists
 TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const
 {
     TechDraw::DrawHatch* result = nullptr;
+    bool found = false;
     for (auto& h:hatchObjs) {
         const std::vector<std::string> &sourceNames = h->Source.getSubValues();
-        int fdx = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));
-        if (fdx == i) {
-            result = h;
+        for (auto& s: sourceNames) {
+//        int fdx = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));   //this sb a loop through all subs
+            int fdx = TechDraw::DrawUtil::getIndexFromName(s);
+            if (fdx == i) {
+                result = h;
+                found = true;
+                break;
+            }
+        }
+        if (found) {
             break;
         }
     }
