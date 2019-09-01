@@ -215,34 +215,83 @@ void CmdTechDrawNewHatch::activated(int iMsg)
     }
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( objFeat == nullptr ) {
+    auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( partFeat == nullptr ) {
         return;
     }
     const std::vector<std::string> &subNames = selection[0].getSubNames();
-    TechDraw::DrawPage* page = objFeat->findParentPage();
+    TechDraw::DrawPage* page = partFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
+    std::vector<int> selFaces;
+    for (auto& s: subNames) {
+        int f = TechDraw::DrawUtil::getIndexFromName(s);
+        selFaces.push_back(f);
+    }
+
+    bool removeOld = false;
+    std::vector<TechDraw::DrawHatch*> hatchObjs = partFeat->getHatches();
+    for (auto& s: subNames) {                             //all the faces selected in DVP
+        int face = TechDraw::DrawUtil::getIndexFromName(s);
+        if (TechDraw::DrawHatch::faceIsHatched(face, hatchObjs)) {
+            QMessageBox::StandardButton rc =
+                    QMessageBox::question(Gui::getMainWindow(), QObject::tr("Replace Hatch?"),
+                            QObject::tr("Some Faces in selection are already hatched.  Replace?"));
+            if (rc == QMessageBox::StandardButton::NoButton) {
+                return;
+            } else {
+                removeOld = true;
+                break;
+            }
+        }
+    }
+
+    openCommand("Create Hatch");
+    if (removeOld) {
+        std::vector<std::pair< int, TechDraw::DrawHatch*> > toRemove;
+        for (auto& h: hatchObjs) {             //all the hatch objects for selected DVP
+            std::vector<std::string> hatchSubs = h->Source.getSubValues();
+            for (auto& hs: hatchSubs) {        //all the Faces in this hatch object
+                int hatchFace = TechDraw::DrawUtil::getIndexFromName(hs);
+                std::vector<int>::iterator it = std::find(selFaces.begin(), selFaces.end(), hatchFace);
+                if (it != selFaces.end()) {
+                    std::pair< int, TechDraw::DrawHatch*> removeItem;
+                    removeItem.first = hatchFace;
+                    removeItem.second = h;
+                    toRemove.push_back(removeItem);
+                }
+            }
+        }
+        for (auto& r: toRemove) {
+            r.second->removeSub(r.first);
+            if (r.second->empty()) {
+                doCommand(Doc,"App.activeDocument().removeObject('%s')",r.second->getNameInDocument());
+            }
+        }
+    }
 
     std::string FeatName = getUniqueObjectName("Hatch");
     std::stringstream featLabel;
-    featLabel << FeatName << "F" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
+    featLabel << FeatName << "F" << 
+                    TechDraw::DrawUtil::getIndexFromName(subNames.at(0)); //use 1st face# for label
 
-    openCommand("Create Hatch");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawHatch','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
 
     auto hatch( static_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str())) );
-    hatch->Source.setValue(objFeat, subNames);
+    hatch->Source.setValue(partFeat, subNames);
+
     //should this be: doCommand(Doc,"App..Feat..Source = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
     //seems very unwieldy
 
     commitCommand();
 
-    //Horrible hack to force Tree update  ??still required??
-    double x = objFeat->X.getValue();
-    objFeat->X.setValue(x);
+    //Horrible hack to force Tree update  ??still required?? 
+    //WF: yes. ViewProvider will not claim children without this!
+    double x = partFeat->X.getValue();
+    partFeat->X.setValue(x);
     getDocument()->recompute();
 }
+
 
 bool CmdTechDrawNewHatch::isActive(void)
 {
