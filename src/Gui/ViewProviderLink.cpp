@@ -1820,22 +1820,16 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
             linkView->renderDoubleSide(v.x*v.y*v.z < 0);
         }
-    }else if(prop == ext->getLinkedObjectProperty() ||
-             prop == ext->getSubElementsProperty()) 
-    {
+    }else if(prop == ext->getLinkedObjectProperty()) {
+
         if(!prop->testStatus(App::Property::User3)) {
             std::vector<std::string> subs;
             const char *subname = ext->getSubName();
             std::string sub;
             if(subname)
                 sub = subname;
-            const char *subElement = ext->getSubElement();
-            if(subElement) {
-                hasSubElement = true;
-                subs.push_back(sub+subElement);
-            }else
-                hasSubElement = false;
-            for(const auto &s : ext->getSubElementsValue()) {
+            hasSubElement = false;
+            for(const auto &s : ext->getSubElements()) {
                 if(s.empty()) continue;
                 hasSubElement = true;
                 subs.push_back(sub+s);
@@ -2163,7 +2157,8 @@ bool ViewProviderLink::canDropObjects() const {
 }
 
 bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj, 
-        App::DocumentObject *owner, const char *subname, const std::vector<std::string> &elements) const
+        App::DocumentObject *owner, const char *subname, 
+        const std::vector<std::string> &subElements) const
 {
     if(pcObject == obj || pcObject == owner)
         return false;
@@ -2180,18 +2175,19 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
                 if(linkedVdp->getObject()==obj || linkedVdp->getObject()==owner)
                     return false;
             }
-            return linked->canDropObjectEx(obj,owner,subname,elements);
+            return linked->canDropObjectEx(obj,owner,subname,subElements);
         }
     }
     if(obj->getDocument() != getObject()->getDocument() && 
-       !freecad_dynamic_cast<App::PropertyXLink>(ext->getLinkedObjectValue()))
+       !freecad_dynamic_cast<App::PropertyXLink>(ext->getLinkedObjectProperty()))
         return false;
 
     return true;
 }
 
 std::string ViewProviderLink::dropObjectEx(App::DocumentObject* obj, 
-    App::DocumentObject *owner, const char *subname, const std::vector<std::string> &elements) 
+    App::DocumentObject *owner, const char *subname, 
+    const std::vector<std::string> &subElements) 
 {
     auto ext = getLinkExtension();
     if(isGroup(ext)) {
@@ -2206,10 +2202,15 @@ std::string ViewProviderLink::dropObjectEx(App::DocumentObject* obj,
     if(!hasSubName) {
         auto linked = getLinkedView(false,ext);
         if(linked)
-            return linked->dropObjectEx(obj,owner,subname,elements);
+            return linked->dropObjectEx(obj,owner,subname,subElements);
     }
-    if(owner)
-        ext->setLink(-1,owner,subname);
+    if(owner) {
+        if(ext->getSubElements().size())
+            ext->setLink(-1,owner,subname,subElements);
+        else
+            ext->setLink(-1,owner,subname);
+    } else if(ext->getSubElements().size())
+        ext->setLink(-1,obj,0,subElements);
     else
         ext->setLink(-1,obj,0);
     return std::string();
