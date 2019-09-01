@@ -189,7 +189,7 @@ class SetupSheet:
             attrs[Template.HorizRapid] = self.obj.HorizRapid.UserString
 
         if includeCoolantMode:
-            attrs[Template.CoolantMode] = self.obj.CoolantMode.UserString
+            attrs[Template.CoolantMode] = self.obj.CoolantMode
 
         if includeHeights:
             attrs[Template.SafeHeightOffset]          = self.obj.SafeHeightOffset.UserString
