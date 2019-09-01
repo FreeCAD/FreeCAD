@@ -1443,6 +1443,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                 if(!(event->possibleActions() & Qt::LinkAction) || items.size()!=1) {
                     TREE_TRACE("cannot drop");
                     event->ignore();
+                    return;
                 }
             }
             for(auto ti : items) {
