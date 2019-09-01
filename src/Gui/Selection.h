@@ -506,7 +506,19 @@ public:
     std::vector<SelObj> getCompleteSelection(int resolve=1) const;
     bool hasSelection() const;
     bool hasSelection(const char* doc, bool resolve=true) const;
-    bool hasSubSelection(const char *doc=0) const;
+
+    /** Check if there is any sub-element selection
+     *
+     * @param doc: optional document to check for selection
+     * @param subElement: whether to count sub-element only selection
+     *
+     * Example sub selections are face, edge or vertex. If \c resolve is false,
+     * then sub-object (i.e. a group child object) selection is also counted
+     * even if it selects the whole sub-object.
+     */
+    bool hasSubSelection(const char *doc=0, bool subElement=false) const;
+
+    /// Check if there is any pre-selection
     bool hasPreselection() const;
 
     /// Size of selected entities for all documents

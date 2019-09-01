@@ -550,10 +550,11 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
             throw Base::RuntimeError("Invalid property owner.");
 
         /* Set value of property */
+        App::any value;
         try {
             // Evaluate expression
             std::unique_ptr<Expression> e(expressions[*it].expression->eval());
-            auto value = e->getValueAsAny();
+            value = e->getValueAsAny();
             if(option == ExecuteOnRestore && prop->testStatus(Property::EvalOnRestore)) {
                 if(isAnyEqual(value, prop->getPathValue(*it)))
                     continue;
@@ -566,6 +567,15 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
             ss << e.what() << std::endl << "in property binding '" << prop->getName() << "'";
             e.setMessage(ss.str());
             throw;
+        }catch(std::bad_cast &e) {
+            std::ostringstream ss;
+            ss << "Invalid type '" << value.type().name() << "'";
+            ss << "\nin property binding '" << prop->getName() << "'";
+            throw Base::TypeError(ss.str().c_str());
+        }catch(std::exception &e) {
+            std::ostringstream ss;
+            ss << e.what() << "\nin property binding '" << prop->getName() << "'";
+            throw Base::RuntimeError(ss.str().c_str());
         }
     }
     return DocumentObject::StdReturn;

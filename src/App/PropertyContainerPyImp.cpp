@@ -482,14 +482,12 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
     }
     Property *prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop) {
-        PY_TRY {
-            PyObject* pyobj = prop->getPyObject();
-            if (!pyobj && PyErr_Occurred()) {
-                // the Python exception is already set
-                throw Py::Exception();
-            }
-            return pyobj;
-        }PY_CATCH
+        PyObject* pyobj = prop->getPyObject();
+        if (!pyobj && PyErr_Occurred()) {
+            // the Python exception is already set
+            throw Py::Exception();
+        }
+        return pyobj;
     }
     else if (Base::streq(attr, "__dict__")) {
         // get the properties to the C++ PropertyContainer class
@@ -528,7 +526,17 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         if(_getShape != Py_None) {
             Py::Tuple args(1);
             args.setItem(0,Py::Object(const_cast<PropertyContainerPy*>(this)));
-            return PyObject_CallObject(_getShape, args.ptr());
+            auto res = PyObject_CallObject(_getShape, args.ptr());
+            if(!res) 
+                PyErr_Clear();
+            else {
+                Py::Object pyres(res,true);
+                if(pyres.hasAttr("isNull")) {
+                    Py::Callable func(pyres.getAttr("isNull"));
+                    if(!func.apply().isTrue())
+                        return Py::new_reference_to(res);
+                }
+            }
         }
     }
 

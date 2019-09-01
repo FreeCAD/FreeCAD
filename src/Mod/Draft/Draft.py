@@ -5711,6 +5711,9 @@ class _DraftLink(_DraftObject):
             obj.addExtension('App::LinkExtensionPython', None)
             self.linkSetup(obj)
 
+    def canLinkProperties(self,_obj):
+        return False
+
     def linkSetup(self,obj):
         obj.configLinkProperty('Placement',LinkedObject='Base')
         if hasattr(obj,'ShowElement'):

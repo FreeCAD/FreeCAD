@@ -4327,6 +4327,16 @@ Restart:
             SoSeparator *sep = static_cast<SoSeparator *>(edit->constrGroup->getChild(i));
             const Constraint *Constr = *it;
 
+            if(Constr->First < -extGeoCount || Constr->First >= intGeoCount 
+                    || (Constr->Second!=Constraint::GeoUndef 
+                        && (Constr->Second < -extGeoCount || Constr->Second >= intGeoCount))
+                    || (Constr->Third!=Constraint::GeoUndef 
+                        && (Constr->Third < -extGeoCount || Constr->Third >= intGeoCount)))
+            {
+                // Constraint can refer to non-existent geometry during undo/redo
+                continue;
+            }
+
             // distinquish different constraint types to build up
             switch (Constr->Type) {
                 case Block:

@@ -405,7 +405,7 @@ Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
 QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    PyTypeObject * type = Shiboken::SbkType<QIcon>();
+    PyTypeObject * type = getPyTypeObjectForTypeName<QIcon>();
     if(type) {
         if (Shiboken::Object::checkType(pyobj)) {
             SbkObject* sbkobject = reinterpret_cast<SbkObject *>(pyobj);

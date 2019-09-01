@@ -153,7 +153,6 @@ void PropertyEditor::commitData (QWidget * editor)
 
 void PropertyEditor::editorDestroyed (QObject * editor)
 {
-    delegate->editorClosed(0,QAbstractItemDelegate::NoHint);
     QTreeView::editorDestroyed(editor);
 }
 
@@ -234,6 +233,8 @@ void PropertyEditor::onItemActivated ( const QModelIndex & index )
 
 void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
 {
+    QTreeView::closeEditor(editor, hint);
+
     if (autoupdate) {
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (doc) {
@@ -249,8 +250,6 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
 
     QModelIndex indexSaved = currentIndex();
     FC_LOG("index saved " << indexSaved.row() << ", " << indexSaved.column());
-
-    QTreeView::closeEditor(editor, hint);
 
     QModelIndex lastIndex;
     while(this->state()!=EditingState) {

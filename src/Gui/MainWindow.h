@@ -180,6 +180,10 @@ public:
 
     void updateActions(bool delay = false);
 
+    enum StatusType {None, Err, Wrn, Pane, Msg, Log, Tmp};
+    void showStatus(int type, const QString & message);
+
+
 public Q_SLOTS:
     /**
      * Sets text to the pane in the status bar.
@@ -255,8 +259,6 @@ protected:
      * relevant user visible text.
      */
     void changeEvent(QEvent *e);
-
-    void showStatus(int type, const QString & message);
 
 private Q_SLOTS:
     /**

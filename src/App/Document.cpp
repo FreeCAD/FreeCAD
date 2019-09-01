@@ -175,6 +175,7 @@ struct DocumentP
     int iTransactionMode;
     bool rollback;
     bool undoing; ///< document in the middle of undo or redo
+    bool committing;
     std::bitset<32> StatusBits;
     int iUndoMode;
     unsigned int UndoMemSize;
@@ -200,6 +201,7 @@ struct DocumentP
         iTransactionMode = 0;
         rollback = false;
         undoing = false;
+        committing = false;
         StatusBits.set((size_t)Document::Closable, true);
         StatusBits.set((size_t)Document::KeepTrailingDigits, true);
         StatusBits.set((size_t)Document::Restoring, false);
@@ -1044,8 +1046,9 @@ std::vector<std::string> Document::getAvailableRedoNames() const
 }
 
 void Document::openTransaction(const char* name) {
-    if(isPerformingTransaction()) {
-        FC_WARN("Cannot open transaction while transacting");
+    if(isPerformingTransaction() || d->committing) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Cannot open transaction while transacting");
         return;
     }
 
@@ -1054,8 +1057,9 @@ void Document::openTransaction(const char* name) {
 
 int Document::_openTransaction(const char* name, int id)
 {
-    if(isPerformingTransaction()) {
-        FC_WARN("Cannot open transaction while transacting");
+    if(isPerformingTransaction() || d->committing) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Cannot open transaction while transacting");
         return 0;
     }
 
@@ -1146,7 +1150,7 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
 
 void Document::_clearRedos()
 {
-    if(isPerformingTransaction()) {
+    if(isPerformingTransaction() || d->committing) {
         FC_ERR("Cannot clear redo while transacting");
         return;
     }
@@ -1159,8 +1163,9 @@ void Document::_clearRedos()
 }
 
 void Document::commitTransaction() {
-    if(isPerformingTransaction()) {
-        FC_WARN("Cannot commit transaction while transacting");
+    if(isPerformingTransaction() || d->committing) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Cannot commit transaction while transacting");
         return;
     }
 
@@ -1170,11 +1175,13 @@ void Document::commitTransaction() {
 
 void Document::_commitTransaction(bool notify)
 {
-    if(isPerformingTransaction()) {
-        FC_WARN("Cannot commit transaction while transacting");
+    if(isPerformingTransaction() || d->committing) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Cannot commit transaction while transacting");
         return;
     }
     if (d->activeUndoTransaction) {
+        Base::FlagToggler<> flag(d->committing);
         Application::TransactionSignaller signaller(false,true);
         int id = d->activeUndoTransaction->getID();
         mUndoTransactions.push_back(d->activeUndoTransaction);
@@ -1193,8 +1200,9 @@ void Document::_commitTransaction(bool notify)
 }
 
 void Document::abortTransaction() {
-    if(isPerformingTransaction()) {
-        FC_WARN("Cannot abort transaction while transacting");
+    if(isPerformingTransaction() || d->committing) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Cannot abort transaction while transacting");
         return;
     }
     if (d->activeUndoTransaction) 
@@ -1203,18 +1211,17 @@ void Document::abortTransaction() {
 
 void Document::_abortTransaction()
 {
-    if(isPerformingTransaction()) {
-        FC_WARN("Cannot abort transaction while transacting");
-        return;
+    if(isPerformingTransaction() || d->committing) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Cannot abort transaction while transacting");
     }
 
     if (d->activeUndoTransaction) {
+        Base::FlagToggler<bool> flag(d->rollback);
         Application::TransactionSignaller signaller(true,true);
-        {
-            Base::FlagToggler<bool> flag(d->rollback);
-            // applying the so far made changes
-            d->activeUndoTransaction->apply(*this,false);
-        }
+
+        // applying the so far made changes
+        d->activeUndoTransaction->apply(*this,false);
 
         // destroy the undo
         mUndoMap.erase(d->activeUndoTransaction->getID());
@@ -1263,7 +1270,7 @@ bool Document::isTransactionEmpty() const
 
 void Document::clearUndos()
 {
-    if(isPerformingTransaction()) {
+    if(isPerformingTransaction() || d->committing) {
         FC_ERR("Cannot clear undos while transacting");
         return;
     }
@@ -3034,6 +3041,12 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
 int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force, bool *hasError, int options) 
 {
+    if (d->undoing || d->rollback) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Ignore document recompute on undo/redo");
+        return 0;
+    }
+
     int objectCount = 0;
     if (testStatus(Document::PartialDoc)) {
         if(mustExecute()) 
@@ -3055,9 +3068,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     // delete recompute log
     d->clearRecomputeLog();
 
-    //do we have anything to do?
-    if(d->objectMap.empty())
-        return 0;
+    FC_TIME_INIT(t);
 
     Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
     signalBeforeRecompute(*this);
@@ -3086,14 +3097,23 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     for(auto obj : topoSortedObjects)
         obj->setStatus(ObjectStatus::PendingRecompute,true);
 
+    ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Document");
+    bool canAbort = hGrp->GetBool("CanAbortRecompute",true);
+
     std::set<App::DocumentObject *> filter;
     size_t idx = 0;
+
+    FC_TIME_INIT(t2);
+
     try {
         // maximum two passes to allow some form of dependency inversion
         for(int passes=0; passes<2 && idx<topoSortedObjects.size(); ++passes) {
-            Base::SequencerLauncher seq("Recompute...", topoSortedObjects.size());
+            std::unique_ptr<Base::SequencerLauncher> seq;
+            if(canAbort)
+                seq.reset(new Base::SequencerLauncher("Recompute...", topoSortedObjects.size()));
             FC_LOG("Recompute pass " << passes);
-            for (;idx<topoSortedObjects.size();seq.next(true),++idx) {
+            for (;idx<topoSortedObjects.size();(seq?seq->next(true):true),++idx) {
                 auto obj = topoSortedObjects[idx];
                 if(!obj->getNameInDocument() || filter.find(obj)!=filter.end())
                     continue;
@@ -3147,6 +3167,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         e.ReportException();
     }
 
+    FC_TIME_LOG(t2, "Recompute");
+
     for(auto obj : topoSortedObjects) {
         if(!obj->getNameInDocument())
             continue;
@@ -3157,6 +3179,11 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     }
 
     signalRecomputed(*this,topoSortedObjects);
+
+    FC_TIME_LOG(t,"Recompute total");
+
+    if(d->_RecomputeLog.size())
+        Base::Console().Error("Recompute failed! Please check report view.\n");
 
     return objectCount;
 }
