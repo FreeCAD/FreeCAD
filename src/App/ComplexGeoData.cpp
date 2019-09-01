@@ -202,6 +202,7 @@ std::string ComplexGeoData::oldElementName(const char *name) {
 }
 
 std::string ComplexGeoData::noElementName(const char *name) {
+    if(!name) return std::string();
     auto element = findElementName(name);
     if(element)
         return std::string(name,element-name);
