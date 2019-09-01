@@ -267,7 +267,7 @@ StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
   : Command("Std_LinkMakeRelative")
 {
     sGroup        = QT_TR_NOOP("Link");
-    sMenuText     = QT_TR_NOOP("Make relative link");
+    sMenuText     = QT_TR_NOOP("Make sub-link");
     sToolTipText  = QT_TR_NOOP("Create a sub-object or sub-element link");
     sWhatsThis    = "Std_LinkMakeRelative";
     sStatusTip    = sToolTipText;
@@ -285,25 +285,46 @@ void StdCmdLinkMakeRelative::activated(int) {
         FC_ERR("no active document");
         return;
     }
-    Command::openCommand("Make relative link");
+    Command::openCommand("Make sub-link");
     try {
-        std::vector<std::string> newNames;
+        std::map<std::pair<App::DocumentObject*,std::string>,
+                 std::pair<App::DocumentObject*, std::vector<std::string> > > linkInfo;
         for(auto &sel : Selection().getCompleteSelection(0)) {
-            std::string name = doc->getUniqueObjectName("Link");
-            FCMD_DOC_CMD(doc,"addObject('App::Link','" << name << "').setLink("
-                    << getObjectCmd(sel.pObject) << ",'" << sel.SubName << "')");
-            auto link = doc->getObject(name.c_str());
-            FCMD_OBJ_CMD(link,"LinkTransform = True");
-            setLinkLabel(sel.pResolvedObject,doc->getName(),name.c_str());
-
-            newNames.push_back(std::move(name));
+            if(!sel.pObject || !sel.pObject->getNameInDocument())
+                continue;
+            auto key = std::make_pair(sel.pObject,
+                    Data::ComplexGeoData::noElementName(sel.SubName));
+            auto element = Data::ComplexGeoData::findElementName(sel.SubName);
+            auto &info = linkInfo[key];
+            info.first = sel.pResolvedObject;
+            if(element && element[0])
+                info.second.emplace_back(element);
         }
+
         Selection().selStackPush();
         Selection().clearCompleteSelection();
-        for(auto &name : newNames)
-            Selection().addSelection(doc->getName(),name.c_str());
-        Selection().selStackPush();
 
+        for(auto &v : linkInfo) {
+            auto &key = v.first;
+            auto &info = v.second;
+
+            std::string name = doc->getUniqueObjectName("Link");
+
+            std::ostringstream ss;
+            ss << '[';
+            for(auto &s : info.second)
+                ss << "'" << s << "',";
+            ss << ']';
+            FCMD_DOC_CMD(doc,"addObject('App::Link','" << name << "').setLink("
+                    << getObjectCmd(key.first) << ",'" << key.second 
+                    << "'," << ss.str() << ")");
+            auto link = doc->getObject(name.c_str());
+            FCMD_OBJ_CMD(link,"LinkTransform = True");
+            setLinkLabel(info.first,doc->getName(),name.c_str());
+
+            Selection().addSelection(doc->getName(),name.c_str());
+        }
+        Selection().selStackPush();
         Command::commitCommand();
     } catch (const Base::Exception& e) {
         Command::abortCommand();

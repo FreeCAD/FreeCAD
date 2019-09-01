@@ -188,8 +188,7 @@ short LinkBaseExtension::extensionMustExecute(void) {
 }
 
 App::GroupExtension *LinkBaseExtension::linkedPlainGroup() const {
-    auto subs = getSubElementsProperty();
-    if(subs && subs->getSize())
+    if(mySubElements.size() && mySubElements[0].size())
         return 0;
     auto linked = getTrueLinkedObject(false);
     if(!linked)
@@ -498,7 +497,7 @@ bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret, in
         }
         return true;
     }
-    if(mySubElement.empty() && getSubElementsValue().empty()) {
+    if(mySubElements.empty() || mySubElements[0].empty()) {
         DocumentObject *linked = getTrueLinkedObject(true);
         if(linked) {
             if(!_getElementCountValue())
@@ -511,6 +510,8 @@ bool LinkBaseExtension::extensionGetSubObjects(std::vector<std::string> &ret, in
                 }
             }
         }
+    } else if(mySubElements.size()>1) {
+        ret = mySubElements;
     }
     return true;
 }
@@ -523,13 +524,17 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
     auto obj = getContainer();
     if(!subname || !subname[0]) {
         ret = const_cast<DocumentObject*>(obj);
-        if(pyObj && !_getElementCountValue() && _getElementListValue().empty()) {
+        if(pyObj && !_getElementCountValue() 
+                && _getElementListValue().empty() && mySubElements.size()<=1) 
+        {
             Base::Matrix4D matNext;
             if(mat) matNext = *mat;
             auto linked = getTrueLinkedObject(false,mat?&matNext:0,depth);
             if(linked && linked!=obj) {
                 if(mat) *mat = matNext;
-                linked->getSubObject(mySubElement.c_str(),pyObj,mat,false,depth+1);
+                linked->getSubObject(
+                        mySubElements.empty()?0:mySubElements.front().c_str(),
+                        pyObj,mat,false,depth+1);
                 checkGeoElementMap(obj,linked,pyObj,0);
             }
         }
@@ -544,8 +549,6 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
         if(elements.size()) {
             if(idx>=(int)elements.size() || !elements[idx] || !elements[idx]->getNameInDocument())
                 return true;
-            if(!subname || !subname[0])
-                subname = mySubElement.c_str();
             ret = elements[idx]->getSubObject(subname,pyObj,mat,true,depth+1);
             // do not resolve the link if this element is the last referenced object
             if(!subname || Data::ComplexGeoData::isMappedElement(subname) || !strchr(subname,'.'))
@@ -576,8 +579,6 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
 
     Base::Matrix4D matNext;
     if(mat) matNext = *mat;
-    if(!subname || !subname[0])
-        subname = mySubElement.c_str();
     ret = linked->getSubObject(subname,pyObj,mat?&matNext:0,false,depth+1);
     std::string postfix;
     if(ret) {
@@ -668,15 +669,36 @@ void LinkBaseExtension::extensionOnChanged(const Property *prop) {
 }
 
 void LinkBaseExtension::parseSubName() const {
-    auto xlink = freecad_dynamic_cast<const PropertyXLink>(getLinkedObjectProperty());
-    const char* subname = xlink?xlink->getSubName():0;
+    // If user has ever linked to some sub-element, the Link shall always accept
+    // sub-element linking in the future, which affects how ViewProviderLink
+    // dropObjectEx() behave. So we will push an empty string later even if no
+    // sub-element linking this time.
+    bool hasSubElement = !mySubElements.empty();
+    mySubElements.clear();
     mySubName.clear();
-    mySubElement.clear();
-    if(!subname || !subname[0])
+    auto xlink = freecad_dynamic_cast<const PropertyXLink>(getLinkedObjectProperty());
+    if(!xlink || xlink->getSubValues().empty()) {
+        if(hasSubElement)
+            mySubElements.emplace_back("");
         return;
+    }
+    const auto &subs = xlink->getSubValues();
+    auto subname = subs.front().c_str();
     auto element = Data::ComplexGeoData::findElementName(subname);
+    if(!element || !element[0]) {
+        mySubName = subs[0];
+        if(hasSubElement)
+            mySubElements.emplace_back("");
+        return;
+    }
+    mySubElements.push_back(element);
     mySubName = std::string(subname,element-subname);
-    mySubElement = element;
+    for(std::size_t i=1;i<subs.size();++i) {
+        auto &sub = subs[i];
+        element = Data::ComplexGeoData::findElementName(sub.c_str());
+        if(element && element[0] && boost::starts_with(sub,mySubName))
+            mySubElements.push_back(element);
+    }
 }
 
 void LinkBaseExtension::slotChangedPlainGroup(const App::DocumentObject &obj, const App::Property &prop) {
@@ -982,8 +1004,6 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             _ChildCache.setValue();
         parseSubName();
         syncElementList();
-    }else if(prop == getSubElementsProperty()) {
-        syncElementList();
     }else if(prop == getLinkTransformProperty()) {
         auto linkPlacement = getLinkPlacementProperty();
         auto placement = getPlacementProperty();
@@ -1019,14 +1039,9 @@ bool LinkBaseExtension::linkTransform() const {
 }
 
 void LinkBaseExtension::syncElementList() {
-    const auto &subElements = getSubElementsValue();
-    auto sub = getSubElementsProperty();
     auto transform = getLinkTransformProperty();
     auto link = getLinkedObjectProperty();
     auto xlink = freecad_dynamic_cast<const PropertyXLink>(link);
-    std::string subname;
-    if(xlink) 
-        subname = xlink->getSubName();
 
     auto owner = getContainer();
     auto ownerID = owner?owner->getID():0;
@@ -1038,9 +1053,6 @@ void LinkBaseExtension::syncElementList() {
 
         element->myOwner = ownerID;
 
-        element->SubElements.setStatus(Property::Hidden,sub!=0);
-        element->SubElements.setStatus(Property::Immutable,sub!=0);
-
         element->LinkTransform.setStatus(Property::Hidden,transform!=0);
         element->LinkTransform.setStatus(Property::Immutable,transform!=0);
         if(transform && element->LinkTransform.getValue()!=transform->getValue())
@@ -1048,13 +1060,16 @@ void LinkBaseExtension::syncElementList() {
 
         element->LinkedObject.setStatus(Property::Hidden,link!=0);
         element->LinkedObject.setStatus(Property::Immutable,link!=0);
-        if(link) {
-            if(element->LinkedObject.getValue()!=link->getValue() ||
-               subname != element->LinkedObject.getSubName() ||
-               subElements != element->SubElements.getValue())
+        if(xlink) {
+            if(element->LinkedObject.getValue()!=xlink->getValue() ||
+               element->LinkedObject.getSubValues()!=xlink->getSubValues())
             {
-                element->setLink(-1,link->getValue(),subname.c_str(),subElements);
+                element->LinkedObject.setValue(xlink->getValue(), xlink->getSubValues());
             }
+        } else if(element->LinkedObject.getValue()!=link->getValue() ||
+                  element->LinkedObject.getSubValues().size())
+        {
+            element->setLink(-1,link->getValue());
         }
     }
 }
@@ -1167,10 +1182,6 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
     // Here means we are assigning a Link
 
     auto xlink = freecad_dynamic_cast<PropertyXLink>(linkProp);
-    auto subElementProp = getSubElementsProperty();
-    if(subElements.size() && !subElementProp)
-        LINK_THROW(Base::RuntimeError,"No SubElements Property configured");
-
     if(obj) {
         if(!obj->getNameInDocument())
             LINK_THROW(Base::ValueError,"Invalid document object");
@@ -1180,18 +1191,23 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
         }
     }
 
-    if(subname && subname[0] && !xlink)
-        LINK_THROW(Base::RuntimeError,"SubName link requires PropertyXLink");
-
-    if(subElementProp && subElements.size()) {
-        subElementProp->setStatus(Property::User3, true);
-        subElementProp->setValue(subElements);
-        subElementProp->setStatus(Property::User3, false);
-    }
-    if(xlink)
-        xlink->setValue(obj,subname);
-    else
+    if(!xlink) {
+        if(subElements.size() || (subname && subname[0]))
+            LINK_THROW(Base::RuntimeError,"SubName/SubElement link requires PropertyXLink");
         linkProp->setValue(obj);
+        return;
+    }
+
+    std::vector<std::string> subs;
+    if(subElements.size()) {
+        subs.reserve(subElements.size());
+        for(const auto &s : subElements) {
+            subs.emplace_back(subname?subname:"");
+            subs.back() += s;
+        }
+    } else if(subname && subname[0])
+        subs.emplace_back(subname);
+    xlink->setValue(obj,std::move(subs));
 }
 
 void LinkBaseExtension::detachElement(DocumentObject *obj) {
