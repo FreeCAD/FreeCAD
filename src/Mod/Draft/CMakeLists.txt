@@ -17,6 +17,7 @@ SET(Draft_SRCS
     DraftLayer.py
     DraftEdit.py
     DraftFillet.py
+    DraftSelectPlane.py
     WorkingPlane.py
     getSVG.py
     importDXF.py
