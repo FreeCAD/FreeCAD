@@ -5668,7 +5668,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         try{
             QString cmdstr = QString::fromLatin1(
                         "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
-                        "tv = Show.TempoVis(App.ActiveDocument)\n"
+                        "tv = Show.TempoVis(App.ActiveDocument, tag= ActiveSketch.ViewObject.TypeId)\n"
                         "if ActiveSketch.ViewObject.EditingWorkbench:\n"
                         "  tv.activateWorkbench(ActiveSketch.ViewObject.EditingWorkbench)\n"
                         "if ActiveSketch.ViewObject.HideDependent:\n"
