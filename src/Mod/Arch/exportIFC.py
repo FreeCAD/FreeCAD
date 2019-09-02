@@ -107,9 +107,7 @@ END-ISO-10303-21;
 
 
 # ************************************************************************************************
-# ********** duplicate methods ****************
-# TODO get rid of this duplicate
-
+# ********** get the prefs, available in import and export ****************
 def getPreferences():
 
     """retrieves IFC preferences"""
@@ -135,9 +133,9 @@ def getPreferences():
 
     return preferences
 
+
 # ************************************************************************************************
 # ********** export IFC ****************
-
 def export(exportList,filename,colors=None,preferences=None):
 
     """export(exportList,filename,colors=None,preferences=None) -- exports FreeCAD contents to an IFC file.
@@ -357,7 +355,14 @@ def export(exportList,filename,colors=None,preferences=None):
 
         # getting the representation
 
-        representation,placement,shapetype = getRepresentation(ifcfile,context,obj,forcebrep=(brepflag or preferences['FORCE_BREP']),colors=colors,preferences=preferences)
+        representation,placement,shapetype = getRepresentation(
+            ifcfile,
+            context,
+            obj,
+            forcebrep=(brepflag or preferences['FORCE_BREP']),
+            colors=colors,
+            preferences=preferences
+        )
         if getstd:
             if isStandardCase(obj,ifctype):
                 ifctype += "StandardCase"
@@ -503,7 +508,7 @@ def export(exportList,filename,colors=None,preferences=None):
                     sheet = obj.IfcProperties
                     propertiesDic = {}
                     categories = []
-                    n=2
+                    n = 2
                     cell = True
                     while cell is True:
                         if hasattr(sheet,'A'+str(n)):

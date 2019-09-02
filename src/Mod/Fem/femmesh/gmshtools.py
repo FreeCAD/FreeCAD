@@ -27,14 +27,13 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import sys
+import subprocess
+
 import FreeCAD
 import Fem
-from . import meshtools
 from FreeCAD import Units
-import subprocess
-import tempfile
-from platform import system
-import sys
+from . import meshtools
 
 
 class GmshTools():
@@ -136,14 +135,7 @@ class GmshTools():
         self.error = False
 
     def create_mesh(self):
-        print("\nWe are going to start Gmsh FEM mesh run!")
-        print(
-            "  Part to mesh: Name --> {},  Label --> {}, ShapeType --> {}"
-            .format(self.part_obj.Name, self.part_obj.Label, self.part_obj.Shape.ShapeType)
-        )
-        print("  CharacteristicLengthMax: " + str(self.clmax))
-        print("  CharacteristicLengthMin: " + str(self.clmin))
-        print("  ElementOrder: " + self.order)
+        self.start_logs()
         self.get_dimension()
         self.get_tmp_file_paths()
         self.get_gmsh_command()
@@ -155,6 +147,17 @@ class GmshTools():
         error = self.run_gmsh_with_geo()
         self.read_and_set_new_mesh()
         return error
+
+    def start_logs(self):
+        print("\nGmsh FEM mesh run is being started.")
+        print("  Part to mesh: Name --> {},  Label --> {}, ShapeType --> {}".format(
+            self.part_obj.Name,
+            self.part_obj.Label,
+            self.part_obj.Shape.ShapeType
+        ))
+        print("  CharacteristicLengthMax: {}".format(self.clmax))
+        print("  CharacteristicLengthMin: {}".format(self.clmin))
+        print("  ElementOrder: {}".format(self.order))
 
     def get_dimension(self):
         # Dimension
@@ -199,25 +202,32 @@ class GmshTools():
         print("  ElementDimension: " + self.dimension)
 
     def get_tmp_file_paths(self):
-        if system() == "Linux":
-            path_sep = "/"
-        elif system() == "Windows":
-            path_sep = "\\"
-        else:
-            path_sep = "/"
-        tmpdir = tempfile.gettempdir()
-        # geometry file
-        self.temp_file_geometry = tmpdir + path_sep + self.part_obj.Name + "_Geometry.brep"
+        from os import mkdir
+        from os.path import join
+        from os.path import isdir
+        from tempfile import gettempdir
+        from uuid import uuid4
+
+        # get an unique id, for simplification we do not use the whole id
+        _gmsh_dir_with_id = "fcfemgmsh_" + str(uuid4())[-12:]
+
+        # check if _unique_tmpdir exits, if not create it
+        # it should not exist, because it is unique
+        _unique_tmpdir = join(gettempdir(), _gmsh_dir_with_id)
+        if not isdir(_unique_tmpdir):
+            mkdir(_unique_tmpdir)
+
+        _geometry_name = self.part_obj.Name + "_Geometry"
+        self.mesh_name = self.part_obj.Name + "_Mesh"
+        self.temp_file_geometry = join(_unique_tmpdir, _geometry_name + ".brep")  # geometry file
+        self.temp_file_mesh = join(_unique_tmpdir, self.mesh_name + ".unv")  # mesh file
+        self.temp_file_geo = join(_unique_tmpdir, "shape2mesh.geo")  # Gmsh input file
         print("  " + self.temp_file_geometry)
-        # mesh file
-        self.mesh_name = self.part_obj.Name + "_Mesh_TmpGmsh"
-        self.temp_file_mesh = tmpdir + path_sep + self.mesh_name + ".unv"
         print("  " + self.temp_file_mesh)
-        # Gmsh input file
-        self.temp_file_geo = tmpdir + path_sep + "shape2mesh.geo"
         print("  " + self.temp_file_geo)
 
     def get_gmsh_command(self):
+        from platform import system
         gmsh_std_location = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
         ).GetBool("UseStandardGmshLocation")
@@ -561,7 +571,8 @@ class GmshTools():
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
         geo.write("// open brep geometry\n")
-        geo.write("Merge "" + self.temp_file_geometry + "";\n")
+        # explicit use double quotes in geo file
+        geo.write('Merge "{}";\n'.format(self.temp_file_geometry))
         geo.write("\n")
         if self.group_elements:
             # print("  We are going to have to find elements to make mesh groups for.")
@@ -593,8 +604,12 @@ class GmshTools():
                 if ele_nr:
                     ele_nr = ele_nr.rstrip(", ")
                     # print(ele_nr)
+                    curly_br_s = "{"
+                    curly_br_e = "}"
+                    # explicit use double quotes in geo file
                     geo.write(
-                        "Physical " + physical_type + "("" + group + "") = {" + ele_nr + "};\n"
+                        'Physical {}("{}") = {}{}{};\n'
+                        .format(physical_type, group, curly_br_s, ele_nr, curly_br_e)
                     )
             geo.write("\n")
         geo.write("// Characteristic Length\n")
@@ -708,7 +723,8 @@ class GmshTools():
                 "for one material there is no group defined;\n")
         geo.write("// Ignore Physical definitions and save all elements;\n")
         geo.write("Mesh.SaveAll = 1;\n")
-        geo.write('Save "' + self.temp_file_mesh + '";\n')
+        # explicit use double quotes in geo file
+        geo.write('Save "{}";\n'.format(self.temp_file_mesh))
         geo.write("\n\n")
         geo.write("//////////////////////////////////////////////////////////////////////\n")
         geo.write("// Gmsh documentation:\n")
@@ -757,8 +773,6 @@ class GmshTools():
             FreeCAD.Console.PrintMessage("  The Part should have a pretty new FEM mesh!\n")
         else:
             FreeCAD.Console.PrintError("No mesh was created.\n")
-        del self.temp_file_geometry
-        del self.temp_file_mesh
 
 ##  @}
 
@@ -777,8 +791,8 @@ femmesh_obj.Part = box_obj
 doc.recompute()
 box_obj.ViewObject.Visibility = False
 
-from femmesh import gmshtools
-gmsh_mesh = gmshtools.GmshTools(femmesh_obj)
+from femmesh.gmshtools import GmshTools as gt
+gmsh_mesh = gt(femmesh_obj)
 error = gmsh_mesh.create_mesh()
 print(error)
 doc.recompute()

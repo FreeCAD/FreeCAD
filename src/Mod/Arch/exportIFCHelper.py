@@ -27,7 +27,7 @@ import math
 
 
 import FreeCAD
-import Draft
+# import Draft
 
 
 def getObjectsOfIfcType(objects, ifcType):
@@ -38,16 +38,21 @@ def getObjectsOfIfcType(objects, ifcType):
                 results.append(object)
     return results
 
+
 class SIUnitCreator:
     def __init__(self, file, text, type):
-        self.prefixes = ["EXA", "PETA", "TERA", "GIGA", "MEGA", "KILO", "HECTO",
+        self.prefixes = [
+            "EXA", "PETA", "TERA", "GIGA", "MEGA", "KILO", "HECTO",
             "DECA", "DECI", "CENTI", "MILLI", "MICRO", "NANO", "PICO", "FEMTO",
-            "ATTO"]
-        self.unitNames = ["AMPERE", "BECQUEREL", "CANDELA", "COULOMB",
+            "ATTO"
+        ]
+        self.unitNames = [
+            "AMPERE", "BECQUEREL", "CANDELA", "COULOMB",
             "CUBIC_METRE", "DEGREE CELSIUS", "FARAD", "GRAM", "GRAY", "HENRY",
             "HERTZ", "JOULE", "KELVIN", "LUMEN", "LUX", "MOLE", "NEWTON", "OHM",
             "PASCAL", "RADIAN", "SECOND", "SIEMENS", "SIEVERT", "SQUARE METRE",
-            "METRE", "STERADIAN", "TESLA", "VOLT", "WATT", "WEBER"]
+            "METRE", "STERADIAN", "TESLA", "VOLT", "WATT", "WEBER"
+        ]
         self.text = text
         self.SIUnit = file.createIfcSIUnit(None, type, self.getSIPrefix(), self.getSIUnitName())
 
@@ -62,6 +67,7 @@ class SIUnitCreator:
             if unitName in self.text.upper():
                 return unitName
         return None
+
 
 class ContextCreator:
     def __init__(self, file, objects):
@@ -99,7 +105,7 @@ class ContextCreator:
                 self.project_data["map_projection"],
                 self.project_data["map_zone"],
                 SIUnit.SIUnit
-                )
+            )
         except:
             return None
 
@@ -113,7 +119,7 @@ class ContextCreator:
                 self.calculateXAxisAbscissa(),
                 self.calculateXAxisOrdinate(),
                 float(self.project_data["scale"])
-                )
+            )
         except:
             return None
 
@@ -169,8 +175,6 @@ class ContextCreator:
         if not self.project_object:
             return {}
         return json.loads(self.project_object.IfcData['complex_attributes'])["RepresentationContexts"]
-
-
 
 
 class recycler:

@@ -163,7 +163,7 @@ def _createMachine(solver, path, testmode):
 
 
 def _getTempDir(solver):
-    return tempfile.mkdtemp(prefix="fem")
+    return tempfile.mkdtemp(prefix="fcfemsolv_")
 
 
 def _getBesideDir(solver):
