@@ -499,6 +499,19 @@ class ToolLibraryManager():
             self.saveMainLibrary()
         return True, target
 
+    def duplicate(self, number, listname):
+        ''' duplicates the selected tool in the selected tool table '''
+        tt = self.getTableFromName(listname)
+        tool = tt.getTool(number).copy()
+        tt.addTools(tool)
+
+        newID = list(tt.Tools)[-1]
+
+        if listname == self.getCurrentTableName():
+            self.saveMainLibrary()
+        return True, newID
+
+
     def delete(self, number, listname):
         '''deletes a tool from the current list'''
         tt = self.getTableFromName(listname)
@@ -591,6 +604,9 @@ class EditorPanel():
 
     def editTool(self, currItem):
         '''load the tool edit dialog'''
+        if not currItem:
+            currItem = self.form.ToolsList.selectedIndexes()[1]
+
         row = currItem.row()
         value = currItem.sibling(row, 1).data()
         listname = self.TLM.getCurrentTableName()
@@ -622,6 +638,17 @@ class EditorPanel():
             number = int(item)
             listname = self.TLM.getCurrentTableName()
             success, newNum = self.TLM.movedown(number, listname) 
+            if success:
+                self.loadTable(listname)
+                self.updateSelection(newNum)
+
+    def duplicate(self):
+        '''duplicated the selected tool in the current tool table'''
+        item = self.form.ToolsList.selectedIndexes()[1].data()
+        if item:
+            number = int(item)
+            listname = self.TLM.getCurrentTableName()
+            success, newNum = self.TLM.duplicate(number, listname)
             if success:
                 self.loadTable(listname)
                 self.updateSelection(newNum)
@@ -661,6 +688,8 @@ class EditorPanel():
         self.form.ButtonDelete.setEnabled(False)
         self.form.ButtonUp.setEnabled(False)
         self.form.ButtonDown.setEnabled(False)
+        self.form.ButtonEdit.setEnabled(False)
+        self.form.ButtonDuplicate.setEnabled(False)
 
         model = self.form.ToolsList.model()
         checkCount = 0
@@ -679,6 +708,8 @@ class EditorPanel():
             self.form.ButtonDelete.setEnabled(True)
             self.form.ButtonUp.setEnabled(True)
             self.form.ButtonDown.setEnabled(True)
+            self.form.ButtonEdit.setEnabled(True)
+            self.form.ButtonDuplicate.setEnabled(True)
 
         if len(PathUtils.GetJobs()) == 0:
             self.form.btnCopyTools.setEnabled(False)
@@ -744,8 +775,9 @@ class EditorPanel():
         if tooldata:
             self.form.ToolsList.setModel(tooldata)
             self.form.ToolsList.resizeColumnsToContents()
+            self.form.ToolsList.horizontalHeader().setResizeMode(self.form.ToolsList.model().columnCount() - 1, QtGui.QHeaderView.Stretch)       
             self.setCurrentToolTableByName(name)
-            
+
 
     def addNewToolTable(self):
         ''' adds new tool to selected tool table '''
@@ -819,6 +851,8 @@ class EditorPanel():
         self.form.ButtonDown.clicked.connect(self.moveDown)
         self.form.ButtonUp.clicked.connect(self.moveUp)
         self.form.ButtonDelete.clicked.connect(self.delete)
+        self.form.ButtonEdit.clicked.connect(self.editTool)
+        self.form.ButtonDuplicate.clicked.connect(self.duplicate)
 
         self.form.ToolsList.doubleClicked.connect(self.editTool)
         self.form.ToolsList.clicked.connect(self.toolSelected)
@@ -836,12 +870,6 @@ class EditorPanel():
         self.form.ButtonRemoveToolTable.setToolTip(translate("TooltableEditor","Delete Selected Tool Table"))
         self.form.ButtonRenameToolTable.clicked.connect(self.initTableRename)
         self.form.ButtonRenameToolTable.setToolTip(translate("TooltableEditor","Rename Selected Tool Table"))
-
-
-        self.form.btnCopyTools.setEnabled(False)
-        self.form.ButtonDelete.setEnabled(False)
-        self.form.ButtonUp.setEnabled(False)
-        self.form.ButtonDown.setEnabled(False)
 
         self.setFields()
 
