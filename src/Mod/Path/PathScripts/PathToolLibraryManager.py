@@ -334,7 +334,7 @@ class ToolLibraryManager():
             return None
 
         tt = self.getTableFromName(tablename)
-        headers = ["","Tool Num.","Name","Tool Type","Material","Diameter","Length Offset","Flat Radius","Corner Radius","Cutting Edge Angle","Cutting Edge Height"]
+        headers = ["","Tool Num.","Name","Tool Type","Diameter"]
         model = QtGui.QStandardItemModel()
         model.setHorizontalHeaderLabels(headers)
 
@@ -353,15 +353,9 @@ class ToolLibraryManager():
                 itemNumber =  QtGui.QStandardItem(str(number))
                 itemName =  QtGui.QStandardItem(t.Name)
                 itemToolType =  QtGui.QStandardItem(t.ToolType)
-                itemMaterial =  QtGui.QStandardItem(t.Material)
                 itemDiameter =  QtGui.QStandardItem(unitconv(t.Diameter))
-                itemLengthOffset =  QtGui.QStandardItem(unitconv(t.LengthOffset))
-                itemFlatRadius =  QtGui.QStandardItem(unitconv(t.FlatRadius))
-                itemCornerRadius =  QtGui.QStandardItem(unitconv(t.CornerRadius))
-                itemCuttingEdgeAngle =  QtGui.QStandardItem(str(t.CuttingEdgeAngle))
-                itemCuttingEdgeHeight =  QtGui.QStandardItem(unitconv(t.CuttingEdgeHeight))
 
-                row = [itemcheck, itemNumber, itemName, itemToolType, itemMaterial, itemDiameter, itemLengthOffset, itemFlatRadius, itemCornerRadius, itemCuttingEdgeAngle, itemCuttingEdgeHeight]
+                row = [itemcheck, itemNumber, itemName, itemToolType, itemDiameter]
                 model.appendRow(row)
 
         return model
