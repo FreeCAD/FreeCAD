@@ -604,8 +604,12 @@ class GmshTools():
                 if ele_nr:
                     ele_nr = ele_nr.rstrip(", ")
                     # print(ele_nr)
+                    curly_br_s = "{"
+                    curly_br_e = "}"
+                    # explicit use double quotes in geo file
                     geo.write(
-                        "Physical " + physical_type + "("" + group + "") = {" + ele_nr + "};\n"
+                        'Physical {}("{}") = {}{}{};\n'
+                        .format(physical_type, group, curly_br_s, ele_nr, curly_br_e)
                     )
             geo.write("\n")
         geo.write("// Characteristic Length\n")
