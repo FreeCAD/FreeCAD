@@ -199,23 +199,19 @@ class GmshTools():
         print("  ElementDimension: " + self.dimension)
 
     def get_tmp_file_paths(self):
-        if system() == "Linux":
-            path_sep = "/"
-        elif system() == "Windows":
-            path_sep = "\\"
-        else:
-            path_sep = "/"
+        from os.path import join
         from tempfile import gettempdir
         tmpdir = gettempdir()
+
         # geometry file
-        self.temp_file_geometry = tmpdir + path_sep + self.part_obj.Name + "_Geometry.brep"
+        self.temp_file_geometry = join(tmpdir, self.part_obj.Name + "_Geometry.brep")
         print("  " + self.temp_file_geometry)
         # mesh file
         self.mesh_name = self.part_obj.Name + "_Mesh_TmpGmsh"
-        self.temp_file_mesh = tmpdir + path_sep + self.mesh_name + ".unv"
+        self.temp_file_mesh = join(tmpdir, self.mesh_name + ".unv")
         print("  " + self.temp_file_mesh)
         # Gmsh input file
-        self.temp_file_geo = tmpdir + path_sep + "shape2mesh.geo"
+        self.temp_file_geo = join(tmpdir, "shape2mesh.geo")
         print("  " + self.temp_file_geo)
 
     def get_gmsh_command(self):
