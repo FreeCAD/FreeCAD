@@ -561,7 +561,7 @@ class GmshTools():
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
         geo.write("// open brep geometry\n")
-        # explizit use double quotes in geo file
+        # explicit use double quotes in geo file
         geo.write('Merge "{}";\n'.format(self.temp_file_geometry))
         geo.write("\n")
         if self.group_elements:
@@ -709,7 +709,7 @@ class GmshTools():
                 "for one material there is no group defined;\n")
         geo.write("// Ignore Physical definitions and save all elements;\n")
         geo.write("Mesh.SaveAll = 1;\n")
-        # explizit use double quotes in geo file
+        # explicit use double quotes in geo file
         geo.write('Save "{}";\n'.format(self.temp_file_mesh))
         geo.write("\n\n")
         geo.write("//////////////////////////////////////////////////////////////////////\n")
