@@ -27,14 +27,14 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import sys
+import subprocess
+from platform import system
+
 import FreeCAD
 import Fem
-from . import meshtools
 from FreeCAD import Units
-import subprocess
-import tempfile
-from platform import system
-import sys
+from . import meshtools
 
 
 class GmshTools():
@@ -205,7 +205,8 @@ class GmshTools():
             path_sep = "\\"
         else:
             path_sep = "/"
-        tmpdir = tempfile.gettempdir()
+        from tempfile import gettempdir
+        tmpdir = gettempdir()
         # geometry file
         self.temp_file_geometry = tmpdir + path_sep + self.part_obj.Name + "_Geometry.brep"
         print("  " + self.temp_file_geometry)
