@@ -138,8 +138,7 @@ structuralifcobjects = (
 
 
 # ************************************************************************************************
-# ********** duplicate methods, they are in importIFC and exportIFC ****************
-# TODO get rid of this duplicate
+# ********** get the prefs, available in import and export ****************
 def getPreferences():
 
     """retrieves IFC preferences"""
