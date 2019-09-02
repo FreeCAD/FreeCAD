@@ -209,18 +209,19 @@ class GmshTools():
         from uuid import uuid4
 
         # get an unique id, for simplification we do not use the whole id
-        _gmsh_dir = "fcfemgmsh_" + str(uuid4())[-12:]
+        _gmsh_dir_with_id = "fcfemgmsh_" + str(uuid4())[-12:]
 
-        # check if dir exits, if not create it (it should not exist, because it should be unique)
-        _tmpdir = join(gettempdir(), _gmsh_dir)
-        if not isdir(_tmpdir):
-            mkdir(_tmpdir)
+        # check if _unique_tmpdir exits, if not create it
+        # it should not exist, because it is unique
+        _unique_tmpdir = join(gettempdir(), _gmsh_dir_with_id)
+        if not isdir(_unique_tmpdir):
+            mkdir(_unique_tmpdir)
 
         _geometry_name = self.part_obj.Name + "_Geometry"
         self.mesh_name = self.part_obj.Name + "_Mesh"
-        self.temp_file_geometry = join(_tmpdir, _geometry_name + ".brep")  # geometry file
-        self.temp_file_mesh = join(_tmpdir, self.mesh_name + ".unv")  # mesh file
-        self.temp_file_geo = join(_tmpdir, "shape2mesh.geo")  # Gmsh input file
+        self.temp_file_geometry = join(_unique_tmpdir, _geometry_name + ".brep")  # geometry file
+        self.temp_file_mesh = join(_unique_tmpdir, self.mesh_name + ".unv")  # mesh file
+        self.temp_file_geo = join(_unique_tmpdir, "shape2mesh.geo")  # Gmsh input file
         print("  " + self.temp_file_geometry)
         print("  " + self.temp_file_mesh)
         print("  " + self.temp_file_geo)
