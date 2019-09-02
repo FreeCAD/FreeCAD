@@ -63,8 +63,8 @@ PyObject *TooltablePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // 
 // constructor method
 int TooltablePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    char *name="Tooltable";
-    int version = 1;
+    //char *name="Tooltable";
+    //int version = 1;
 
     if (PyArg_ParseTuple(args, "")) {
         return 0;
