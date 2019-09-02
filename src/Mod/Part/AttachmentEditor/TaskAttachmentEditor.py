@@ -285,7 +285,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.updatePreview()
         self.updateRefButtons()
 
-        self.tv = TempoVis(self.obj.Document)
+        self.tv = TempoVis(self.obj.Document, tag= "PartGui.TaskAttachmentEditor")
         if self.tv: # tv will still be None if Show module is unavailable
             self.tv.hide_all_dependent(self.obj)
             self.tv.show(self.obj)

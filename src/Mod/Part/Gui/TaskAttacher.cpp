@@ -953,7 +953,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         try{
             QString code = QString::fromLatin1(
                 "import Show\n"
-                "tv = Show.TempoVis(App.ActiveDocument)\n"
+                "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
                 "tvObj = %1\n"
                 "dep_features = tv.get_all_dependent(%2, '%3')\n"
                 "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
