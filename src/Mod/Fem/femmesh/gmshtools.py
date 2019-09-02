@@ -29,7 +29,6 @@ __url__ = "http://www.freecadweb.org"
 
 import sys
 import subprocess
-from platform import system
 
 import FreeCAD
 import Fem
@@ -215,6 +214,7 @@ class GmshTools():
         print("  " + self.temp_file_geo)
 
     def get_gmsh_command(self):
+        from platform import system
         gmsh_std_location = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/Gmsh"
         ).GetBool("UseStandardGmshLocation")
