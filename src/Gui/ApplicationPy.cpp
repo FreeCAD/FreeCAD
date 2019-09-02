@@ -102,8 +102,11 @@ PyMethodDef Application::Methods[] = {
    "addIcon(string, string or list) -> None\n\n"
    "Add an icon as file name or in XPM format to the system"},
   {"getIcon",                 (PyCFunction) Application::sGetIcon, METH_VARARGS,
-   "getIcon(string -> QIcon\n\n"
+   "getIcon(string) -> QIcon\n\n"
    "Get an icon in the system"},
+  {"isIconCached",           (PyCFunction) Application::sIsIconCached, METH_VARARGS,
+   "isIconCached(String) -> Bool\n\n"
+   "Check if an icon with the given name is cached"},
   {"getMainWindow",           (PyCFunction) Application::sGetMainWindow, METH_VARARGS,
    "getMainWindow() -> QMainWindow\n\n"
    "Return the main window instance"},
@@ -1062,9 +1065,11 @@ PyObject* Application::sAddIconPath(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
 {
-    char *iconName;
-    char *pixmap;
-    if (!PyArg_ParseTuple(args, "ss", &iconName,&pixmap))
+    const char *iconName;
+    const char *content;
+    Py_ssize_t size = 0;
+    const char *format = "XPM";
+    if (!PyArg_ParseTuple(args, "ss#|s", &iconName,&content,&size,&format))
         return NULL;
     
     QPixmap icon;
@@ -1073,16 +1078,11 @@ PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
         return NULL;
     }
 
-    QByteArray ary;
-    std::string content = pixmap;
-    int strlen = (int)content.size();
-    ary.resize(strlen);
-    for (int j=0; j<strlen; j++)
-        ary[j]=content[j];
-    icon.loadFromData(ary, "XPM");
+    QByteArray ary(content,size);
+    icon.loadFromData(ary, format);
 
     if (icon.isNull()){
-        QString file = QString::fromUtf8(pixmap);
+        QString file = QString::fromUtf8(content);
         icon.load(file);
     }
 
@@ -1110,6 +1110,16 @@ PyObject* Application::sGetIcon(PyObject * /*self*/, PyObject *args)
     if(!pixmap.isNull())
         return Py::new_reference_to(wrap.fromQIcon(new QIcon(pixmap)));
     Py_Return;
+}
+
+PyObject* Application::sIsIconCached(PyObject * /*self*/, PyObject *args)
+{
+    char *iconName;
+    if (!PyArg_ParseTuple(args, "s", &iconName))
+        return NULL;
+    
+    QPixmap icon;
+    return Py::new_reference_to(Py::Boolean(BitmapFactory().findPixmapInCache(iconName, icon)));
 }
 
 PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)

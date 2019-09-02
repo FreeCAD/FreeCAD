@@ -234,6 +234,7 @@ public:
     static PyObject* sAddIconPath              (PyObject *self,PyObject *args); // adds a path to an icon file
     static PyObject* sAddIcon                  (PyObject *self,PyObject *args); // adds an icon to the cache
     static PyObject* sGetIcon                  (PyObject *self,PyObject *args); // get an icon from the cache
+    static PyObject* sIsIconCached             (PyObject *self,PyObject *args); // check if an icon is cached
 
     static PyObject* sSendActiveView           (PyObject *self,PyObject *args);
     static PyObject* sSendFocusView            (PyObject *self,PyObject *args);
