@@ -1575,7 +1575,7 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
     if(!selList)
         selList = &_SelList;
     for (auto &s : *selList) {
-        if (s.DocName==pDocName && s.FeatName==pObjectName) {
+        if (s.DocName==pDocName && s.FeatName==sel.FeatName) {
             if(!pSubName || s.SubName==pSubName)
                 return 1;
             if(resolve>1 && boost::starts_with(s.SubName,prefix))
