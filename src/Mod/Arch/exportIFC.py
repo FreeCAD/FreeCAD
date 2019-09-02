@@ -107,9 +107,7 @@ END-ISO-10303-21;
 
 
 # ************************************************************************************************
-# ********** duplicate methods ****************
-# TODO get rid of this duplicate
-
+# ********** get the prefs, available in import and export ****************
 def getPreferences():
 
     """retrieves IFC preferences"""
@@ -135,9 +133,9 @@ def getPreferences():
 
     return preferences
 
+
 # ************************************************************************************************
 # ********** export IFC ****************
-
 def export(exportList,filename,colors=None,preferences=None):
 
     """export(exportList,filename,colors=None,preferences=None) -- exports FreeCAD contents to an IFC file.

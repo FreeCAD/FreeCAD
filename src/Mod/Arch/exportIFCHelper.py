@@ -38,6 +38,7 @@ def getObjectsOfIfcType(objects, ifcType):
                 results.append(object)
     return results
 
+
 class SIUnitCreator:
     def __init__(self, file, text, type):
         self.prefixes = ["EXA", "PETA", "TERA", "GIGA", "MEGA", "KILO", "HECTO",
@@ -62,6 +63,7 @@ class SIUnitCreator:
             if unitName in self.text.upper():
                 return unitName
         return None
+
 
 class ContextCreator:
     def __init__(self, file, objects):
@@ -169,8 +171,6 @@ class ContextCreator:
         if not self.project_object:
             return {}
         return json.loads(self.project_object.IfcData['complex_attributes'])["RepresentationContexts"]
-
-
 
 
 class recycler:
