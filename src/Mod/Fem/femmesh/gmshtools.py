@@ -776,8 +776,8 @@ femmesh_obj.Part = box_obj
 doc.recompute()
 box_obj.ViewObject.Visibility = False
 
-from femmesh import gmshtools
-gmsh_mesh = gmshtools.GmshTools(femmesh_obj)
+from femmesh.gmshtools import GmshTools as gt
+gmsh_mesh = gt(femmesh_obj)
 error = gmsh_mesh.create_mesh()
 print(error)
 doc.recompute()
