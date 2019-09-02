@@ -145,8 +145,6 @@ class ToolLibraryManager():
     preferences and all or part of the library can be exported to other formats
     '''
 
-    #TODO: copy & Duplicate tools between lists
-
     TooltableTypeJSON     = translate("TooltableEditor", "Tooltable JSON (*.json)")
     TooltableTypeXML      = translate("TooltableEditor", "Tooltable XML (*.xml)")
     TooltableTypeHeekscad = translate("TooltableEditor", "HeeksCAD tooltable (*.tooltable)")
@@ -587,12 +585,11 @@ class EditorPanel():
         if r:
             editor.accept()
             listname = self.TLM.getCurrentTableName()
-            self.TLM.addnew(listname, editor.Tool) # is True:
+            self.TLM.addnew(listname, editor.Tool)
             self.loadTable(listname)
 
     def delete(self):
         '''deletes the selected tool'''
-        #listname  =  self.form.listView.selectedIndexes()[0].data()
         listname = self.TLM.getCurrentTableName()
         model = self.form.ToolsList.model()
         for i in range(model.rowCount()):
@@ -670,8 +667,6 @@ class EditorPanel():
             listname = self.TLM.getNextToolTableName()
             if self.TLM.read(filename, listname):
                 self.loadToolTables()
-                #self.loadTable(listname)
-
 
     def exportFile(self):
         '''export a tooltable to a file'''
