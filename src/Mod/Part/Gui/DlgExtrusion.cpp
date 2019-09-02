@@ -186,7 +186,7 @@ void DlgExtrusion::on_btnSelectEdge_clicked()
         try{
             QString code = QString::fromLatin1(
                         "import Show\n"
-                        "tv = Show.TempoVis(App.ActiveDocument)\n"
+                        "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::DlgExtrusion')\n"
                         "tv.hide([%1])"
                         );
             std::vector<App::DocumentObject*>sources = getShapesToExtrude();
