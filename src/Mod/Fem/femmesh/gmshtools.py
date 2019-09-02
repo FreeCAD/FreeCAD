@@ -198,19 +198,27 @@ class GmshTools():
         print("  ElementDimension: " + self.dimension)
 
     def get_tmp_file_paths(self):
+        from os import mkdir
         from os.path import join
+        from os.path import isdir
         from tempfile import gettempdir
-        tmpdir = gettempdir()
+        from uuid import uuid4
 
-        # geometry file
-        self.temp_file_geometry = join(tmpdir, self.part_obj.Name + "_Geometry.brep")
+        # get an unique id, for simplification we do not use the whole id
+        _gmsh_dir = "fcfemgmsh_" + str(uuid4())[-12:]
+
+        # check if dir exits, if not create it (it should not exist, because it should be unique)
+        _tmpdir = join(gettempdir(), _gmsh_dir)
+        if not isdir(_tmpdir):
+            mkdir(_tmpdir)
+
+        _geometry_name = self.part_obj.Name + "_Geometry"
+        self.mesh_name = self.part_obj.Name + "_Mesh"
+        self.temp_file_geometry = join(_tmpdir, _geometry_name + ".brep")  # geometry file
+        self.temp_file_mesh = join(_tmpdir, self.mesh_name + ".unv")  # mesh file
+        self.temp_file_geo = join(_tmpdir, "shape2mesh.geo")  # Gmsh input file
         print("  " + self.temp_file_geometry)
-        # mesh file
-        self.mesh_name = self.part_obj.Name + "_Mesh_TmpGmsh"
-        self.temp_file_mesh = join(tmpdir, self.mesh_name + ".unv")
         print("  " + self.temp_file_mesh)
-        # Gmsh input file
-        self.temp_file_geo = join(tmpdir, "shape2mesh.geo")
         print("  " + self.temp_file_geo)
 
     def get_gmsh_command(self):
@@ -756,8 +764,6 @@ class GmshTools():
             FreeCAD.Console.PrintMessage("  The Part should have a pretty new FEM mesh!\n")
         else:
             FreeCAD.Console.PrintError("No mesh was created.\n")
-        del self.temp_file_geometry
-        del self.temp_file_mesh
 
 ##  @}
 
