@@ -296,6 +296,7 @@ ViewProviderSketch::ViewProviderSketch()
     ADD_PROPERTY_TYPE(ShowLinks,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects used in links to external geometry are shown when opening sketch.");
     ADD_PROPERTY_TYPE(ShowSupport,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects this sketch is attached to are shown when opening sketch.");
     ADD_PROPERTY_TYPE(RestoreCamera,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, camera position before entering sketch is remembered, and restored after closing it.");
+    ADD_PROPERTY_TYPE(EditingWorkbench,("SketcherWorkbench"),"Visibility automation",(App::PropertyType)(App::Prop_None),"Name of the workbench to activate when editing this sketch.");
 
     {//visibility automation: update defaults to follow preferences
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
@@ -5596,9 +5597,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
 
-    // always change to sketcher WB, remember where we come from
-    oldWb = Gui::Command::assureWorkbench("SketcherWorkbench");
-
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
@@ -5671,6 +5669,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
             QString cmdstr = QString::fromLatin1(
                         "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
                         "tv = Show.TempoVis(App.ActiveDocument)\n"
+                        "if ActiveSketch.ViewObject.EditingWorkbench:\n"
+                        "  tv.activateWorkbench(ActiveSketch.ViewObject.EditingWorkbench)\n"
                         "if ActiveSketch.ViewObject.HideDependent:\n"
                         "  objs = tv.get_all_dependent(%3, '%4')\n"
                         "  objs = filter(lambda x: not x.TypeId.startswith(\"TechDraw::\"), objs)\n"
@@ -5681,7 +5681,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "if ActiveSketch.ViewObject.ShowLinks:\n"
                         "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
                         "tv.hide(ActiveSketch)\n"
-                        "ActiveSketch.ViewObject.TempoVis = tv\n"
                         "del(tv)\n"
                         ).arg(QString::fromLatin1(getDocument()->getDocument()->getName()),
                               QString::fromLatin1(getSketchObject()->getNameInDocument()),
@@ -6131,11 +6130,6 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
-
-    //Gui::Application::Instance->
-
-    // return to the WB before edeting the sketch
-    Gui::Command::assureWorkbench(oldWb.c_str());
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
