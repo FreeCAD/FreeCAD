@@ -135,14 +135,7 @@ class GmshTools():
         self.error = False
 
     def create_mesh(self):
-        print("\nWe are going to start Gmsh FEM mesh run!")
-        print(
-            "  Part to mesh: Name --> {},  Label --> {}, ShapeType --> {}"
-            .format(self.part_obj.Name, self.part_obj.Label, self.part_obj.Shape.ShapeType)
-        )
-        print("  CharacteristicLengthMax: " + str(self.clmax))
-        print("  CharacteristicLengthMin: " + str(self.clmin))
-        print("  ElementOrder: " + self.order)
+        self.start_logs()
         self.get_dimension()
         self.get_tmp_file_paths()
         self.get_gmsh_command()
@@ -154,6 +147,17 @@ class GmshTools():
         error = self.run_gmsh_with_geo()
         self.read_and_set_new_mesh()
         return error
+
+    def start_logs(self):
+        print("\nGmsh FEM mesh run is being started.")
+        print("  Part to mesh: Name --> {},  Label --> {}, ShapeType --> {}".format(
+            self.part_obj.Name,
+            self.part_obj.Label,
+            self.part_obj.Shape.ShapeType
+        ))
+        print("  CharacteristicLengthMax: {}".format(self.clmax))
+        print("  CharacteristicLengthMin: {}".format(self.clmin))
+        print("  ElementOrder: {}".format(self.order))
 
     def get_dimension(self):
         # Dimension
