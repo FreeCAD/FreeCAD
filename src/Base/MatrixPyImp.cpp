@@ -94,7 +94,7 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 PyObject* MatrixPy::number_add_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(MatrixPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "First arg must be Matrix");
+        PyErr_SetString(PyExc_NotImplementedError, "");
         return 0;
     }
     if (!PyObject_TypeCheck(other, &(MatrixPy::Type))) {
@@ -109,7 +109,7 @@ PyObject* MatrixPy::number_add_handler(PyObject *self, PyObject *other)
 PyObject* MatrixPy::number_subtract_handler(PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(MatrixPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "First arg must be Matrix");
+        PyErr_SetString(PyExc_NotImplementedError, "");
         return 0;
     }
     if (!PyObject_TypeCheck(other, &(MatrixPy::Type))) {
@@ -136,6 +136,11 @@ PyObject* MatrixPy::number_multiply_handler(PyObject *self, PyObject *other)
             Matrix4D b;
             r.getValue(b);
             return new MatrixPy(a*b);
+        }
+
+        if (PyObject_TypeCheck(other, &(PlacementPy::Type))) {
+            auto b = static_cast<PlacementPy*>(other)->value();
+            return new MatrixPy(a*b.toMatrix());
         }
 
         if (PyObject_TypeCheck(other, &(MatrixPy::Type))) {
