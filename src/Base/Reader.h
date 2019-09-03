@@ -27,6 +27,7 @@
 #include <string>
 #include <map>
 #include <bitset>
+#include <memory>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
 #include <xercesc/sax2/Attributes.hpp>
@@ -299,14 +300,14 @@ public:
     std::istream& getStream();
     std::string getFileName() const;
     int getFileVersion() const;
-    void initLocalReader(Base::XMLReader *ptr);
-    Base::XMLReader *getLocalReader();
+    void initLocalReader(std::shared_ptr<Base::XMLReader>);
+    std::shared_ptr<Base::XMLReader> getLocalReader() const;
 
 private:
     std::istream& _str;
     std::string _name;
     int fileVersion;
-    Base::XMLReader *localreader=nullptr;
+    std::shared_ptr<Base::XMLReader> localreader;
 };
 
 }

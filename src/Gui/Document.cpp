@@ -1189,8 +1189,7 @@ void Document::Restore(Base::XMLReader &reader)
 void Document::RestoreDocFile(Base::Reader &reader)
 {
     // We must create an XML parser to read from the input stream
-    Base::XMLReader *localreader;
-    localreader = new Base::XMLReader("GuiDocument.xml", reader);
+    std::shared_ptr<Base::XMLReader> localreader = std::make_shared<Base::XMLReader>("GuiDocument.xml", reader);
     localreader->FileVersion = reader.getFileVersion();
 
     localreader->readElement("Document");
