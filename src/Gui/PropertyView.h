@@ -89,6 +89,8 @@ private:
     void slotRollback();
     void slotActiveDocument(const Gui::Document&);
     void slotDeleteDocument(const Gui::Document&);
+    void slotDeletedViewObject(const Gui::ViewProvider&);
+    void slotDeletedObject(const App::DocumentObject&);
 
     void checkEnable(const char *doc = 0);
 
@@ -105,6 +107,8 @@ private:
     Connection connectRedoDocument;
     Connection connectActiveDoc;
     Connection connectDelDocument;
+    Connection connectDelObject;
+    Connection connectDelViewObject;
     QTabWidget* tabs;
     QTimer* timer;
 };
