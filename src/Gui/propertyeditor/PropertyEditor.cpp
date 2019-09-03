@@ -306,7 +306,7 @@ void PropertyEditor::drawBranches(QPainter *painter, const QRect &rect, const QM
     //painter->setPen(savedPen);
 }
 
-void PropertyEditor::buildUp(PropertyModel::PropertyList &&props)
+void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool checkDocument)
 {
     if (committing) {
         Base::Console().Warning("While committing the data to the property the selection has changed.\n");
@@ -327,8 +327,15 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList &&props)
     propList = std::move(props);
     propOwners.clear();
     for(auto &v : propList) {
-        for(auto prop : v.second)
-            propOwners.insert(prop->getContainer());
+        for(auto prop : v.second) {
+            auto container = prop->getContainer();
+            if(!container)
+                continue;
+            // Include document to get proper handling in PropertyView::slotDeleteDocument()
+            if(checkDocument && container->isDerivedFrom(App::DocumentObject::getClassTypeId()))
+                propOwners.insert(static_cast<App::DocumentObject*>(container)->getDocument());
+            propOwners.insert(container);
+        }
     }
 }
 

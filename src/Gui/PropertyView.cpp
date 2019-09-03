@@ -136,6 +136,12 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectDelDocument = 
         Application::Instance->signalDeleteDocument.connect(
                 boost::bind(&PropertyView::slotDeleteDocument, this, _1));
+    this->connectDelViewObject = 
+        Application::Instance->signalDeletedObject.connect(
+                boost::bind(&PropertyView::slotDeletedViewObject, this, _1));
+    this->connectDelObject = 
+        App::GetApplication().signalDeletedObject.connect(
+                boost::bind(&PropertyView::slotDeletedObject, this, _1));
 }
 
 PropertyView::~PropertyView()
@@ -149,6 +155,8 @@ PropertyView::~PropertyView()
     this->connectRedoDocument.disconnect();
     this->connectActiveDoc.disconnect();
     this->connectDelDocument.disconnect();
+    this->connectDelObject.disconnect();
+    this->connectDelViewObject.disconnect();
 }
 
 static bool _ShowAll;
@@ -253,6 +261,25 @@ void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
         propertyEditorView->buildUp();
         propertyEditorData->buildUp();
         clearPropertyItemSelection();
+        timer->start(50);
+    }
+}
+
+void PropertyView::slotDeletedViewObject(const Gui::ViewProvider &vp) {
+    if(propertyEditorView->propOwners.count(&vp)) {
+        propertyEditorView->buildUp();
+        propertyEditorData->buildUp();
+        clearPropertyItemSelection();
+        timer->start(50);
+    }
+}
+
+void PropertyView::slotDeletedObject(const App::DocumentObject &obj) {
+    if(propertyEditorData->propOwners.count(&obj)) {
+        propertyEditorView->buildUp();
+        propertyEditorData->buildUp();
+        clearPropertyItemSelection();
+        timer->start(50);
     }
 }
 
@@ -297,10 +324,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         return;
 
     // clear the properties.
-    propertyEditorData->buildUp();
-    propertyEditorView->buildUp();
-    clearPropertyItemSelection();
-    timer->start(100);
+    timer->start(50);
 }
 
 void PropertyView::onTimer() {
@@ -309,6 +333,9 @@ void PropertyView::onTimer() {
     propertyEditorView->buildUp();
     clearPropertyItemSelection();
     timer->stop();
+
+    if(!this->isConnectionAttached())
+        return;
 
     if(!Gui::Selection().hasSelection()) {
         auto gdoc = TreeWidget::selectedDocument();
@@ -502,7 +529,7 @@ void PropertyView::onTimer() {
     for(auto &v : dataPropsMap)
         dataProps.emplace_back(v.first,std::move(v.second));
 
-    propertyEditorData->buildUp(std::move(dataProps));
+    propertyEditorData->buildUp(std::move(dataProps),true);
 
     for (it = propViewMap.begin(); it != propViewMap.end(); ++it) {
         if (it->propList.size() == array.size())
