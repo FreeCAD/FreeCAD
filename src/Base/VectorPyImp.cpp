@@ -151,6 +151,13 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
             return new MatrixPy(b);
         }
 
+        if (PyObject_TypeCheck(other, &PlacementPy::Type)) {
+            Base::Placement b = static_cast<PlacementPy*>(other)->value();
+            Vector3d res;
+            b.multVec(a,res);
+            return new VectorPy(res);
+        }
+
         if (PyObject_TypeCheck(other, &RotationPy::Type)) {
             Base::Rotation b = static_cast<RotationPy*>(other)->value();
             return new VectorPy(b.multVec(a));
