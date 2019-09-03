@@ -25,7 +25,7 @@
 
 __title__= "FreeCAD Draft Edit Tool"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin, Carlo Pavan"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 import FreeCAD
 import Draft
@@ -1000,7 +1000,7 @@ class Edit():
         self.trackers[self.obj.Name][1].set(self.obj.Shape.Vertexes[2].Point)
 
     #---------------------------------------------------------------------------
-    # EDIT OBJECT TOOLS : Ellipse (yet to be implemented)
+    # EDIT OBJECT TOOLS : Ellipse (# TODO: yet to be implemented)
     #---------------------------------------------------------------------------
 
     def setEllipsePts(self):

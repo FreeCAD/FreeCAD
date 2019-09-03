@@ -208,7 +208,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 #include <Python.h>
 
-// See also http://www.freecadweb.org/wiki/index.php?title=Embedding_FreeCAD
+// See also https://www.freecadweb.org/wiki/Embedding_FreeCAD
 
 std::string OnFileOpen(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {

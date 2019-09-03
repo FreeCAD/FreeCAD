@@ -592,16 +592,12 @@ class DraftToolBar:
 
         # options
 
-        self.WPLabel = self._label("WPLabel", self.layout,wrap=True)
         fl = QtGui.QHBoxLayout()
         self.layout.addLayout(fl)
         self.numFacesLabel = self._label("numfaceslabel", fl)
         self.numFaces = self._spinbox("numFaces", fl, 3)
         ol = QtGui.QHBoxLayout()
         self.layout.addLayout(ol)
-        self.offsetLabel = self._label("offsetlabel", ol)
-        self.offsetValue = self._inputfield("offsetValue", ol)
-        self.offsetValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         rl = QtGui.QHBoxLayout()
         self.layout.addLayout(rl)
         self.labelRadius = self._label("labelRadius", rl)
@@ -629,44 +625,9 @@ class DraftToolBar:
         bl = QtGui.QHBoxLayout()
         self.layout.addLayout(bl)
         self.selectButton = self._pushbutton("selectButton", bl, icon='view-select')
-        bl = QtGui.QHBoxLayout()
-        self.layout.addLayout(bl)
-        self.xyButton = self._pushbutton("xyButton", bl,icon="view-top")
-        bl = QtGui.QHBoxLayout()
-        self.layout.addLayout(bl)
-        self.xzButton = self._pushbutton("xzButton", bl,icon="view-front")
-        bl = QtGui.QHBoxLayout()
-        self.layout.addLayout(bl)
-        self.yzButton = self._pushbutton("yzButton", bl,icon="view-right")
-        bl = QtGui.QHBoxLayout()
-        self.layout.addLayout(bl)
-        self.currentViewButton = self._pushbutton("view", bl,icon="view-isometric")
-        bl = QtGui.QHBoxLayout()
-        self.layout.addLayout(bl)
-        self.resetPlaneButton = self._pushbutton("none", bl,icon="view-axonometric")
+
         self.isCopy = self._checkbox("isCopy",self.layout,checked=False)
         self.isSubelementMode = self._checkbox("isSubelementMode",self.layout,checked=False)
-        gl = QtGui.QHBoxLayout()
-        self.layout.addLayout(gl)
-        self.gridLabel = self._label("gridLabel", gl)
-        self.gridValue = self._inputfield("gridValue", gl)
-        self.gridValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        ml = QtGui.QHBoxLayout()
-        self.layout.addLayout(ml)
-        self.mainlineLabel = self._label("mainlineLabel", ml)
-        self.mainlineValue = self._spinbox("mainlineValue", ml)
-        gl = QtGui.QHBoxLayout()
-        self.layout.addLayout(gl)
-        self.centerLabel = self._label("centerLabel", gl)
-        self.centerPlane = self._checkbox("centerPlane",gl,checked = self.isCenterPlane)
-        gl = QtGui.QHBoxLayout()
-        self.layout.addLayout(gl)
-        self.snapLabel = self._label("snapLabel", gl)
-        self.snapValue = self._spinbox("snapValue", gl)
-        self.snapValue.setValue(Draft.getParam("snapRange", 8))
-        bl = QtGui.QHBoxLayout()
-        self.layout.addLayout(bl)
-        self.alignToWPButton = self._pushbutton("alignToWP", bl,icon="dagViewVisible")
 
         # spacer
         if not self.taskmode:
@@ -685,7 +646,6 @@ class DraftToolBar:
         QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("valueChanged(double)"),self.changeAngleValue)
         QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("stateChanged(int)"),self.toggleAngle)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("valueChanged(double)"),self.changeRadiusValue)
-        QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("valueChanged(double)"),self.changeOffsetValue)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("returnPressed()"),self.checkx)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("returnPressed()"),self.checky)
         QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("returnPressed()"),self.checkangle)
@@ -703,8 +663,6 @@ class DraftToolBar:
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("down()"),self.sendText)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("up()"),self.lineUp)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.setFocus)
-        QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
-        QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
         QtCore.QObject.connect(self.delButton,QtCore.SIGNAL("toggled(bool)"),self.setDelMode)
         QtCore.QObject.connect(self.sharpButton,QtCore.SIGNAL("toggled(bool)"),self.setSharpMode)
@@ -717,15 +675,10 @@ class DraftToolBar:
         QtCore.QObject.connect(self.orientWPButton,QtCore.SIGNAL("pressed()"),self.orientWP)
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
-        QtCore.QObject.connect(self.xyButton,QtCore.SIGNAL("clicked()"),self.selectXY)
-        QtCore.QObject.connect(self.xzButton,QtCore.SIGNAL("clicked()"),self.selectXZ)
-        QtCore.QObject.connect(self.yzButton,QtCore.SIGNAL("clicked()"),self.selectYZ)
         QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
         QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
         QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("stateChanged(int)"),self.setRelative)
         QtCore.QObject.connect(self.hasFill,QtCore.SIGNAL("stateChanged(int)"),self.setFill)
-        QtCore.QObject.connect(self.currentViewButton,QtCore.SIGNAL("clicked()"),self.selectCurrentView)
-        QtCore.QObject.connect(self.resetPlaneButton,QtCore.SIGNAL("clicked()"),self.selectResetPlane)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
         QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("valueChanged(double)"),self.changeSSizeValue)
@@ -735,11 +688,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.SStringValue,QtCore.SIGNAL("returnPressed()"),self.validateSString)
         QtCore.QObject.connect(self.chooserButton,QtCore.SIGNAL("pressed()"),self.pickFile)
         QtCore.QObject.connect(self.FFileValue,QtCore.SIGNAL("returnPressed()"),self.validateFile)
-        QtCore.QObject.connect(self.gridValue,QtCore.SIGNAL("textEdited(QString)"),self.setGridSize)
-        QtCore.QObject.connect(self.mainlineValue,QtCore.SIGNAL("valueChanged(int)"),self.setMainline)
-        QtCore.QObject.connect(self.centerPlane,QtCore.SIGNAL("stateChanged(int)"),self.setCenterPlane)
-        QtCore.QObject.connect(self.snapValue,QtCore.SIGNAL("valueChanged(int)"),self.setSnapValue)
-        QtCore.QObject.connect(self.alignToWPButton,QtCore.SIGNAL("clicked()"),self.alignToWP)
+
 
         # following lines can cause a crash and are not needed anymore when using the task panel
         # http://forum.freecadweb.org/viewtopic.php?f=3&t=6952
@@ -844,7 +793,6 @@ class DraftToolBar:
         self.finishButton.setToolTip(translate("draft", "Finishes the current drawing or editing operation"))
         self.continueCmd.setToolTip(translate("draft", "If checked, command will not finish until you press the command button again"))
         self.continueCmd.setText(translate("draft", "Continue")+" ("+inCommandShortcuts["Continue"][0]+")")
-        self.WPLabel.setText(translate("draft", "Select a face or working plane proxy or 3 vertices, or choose one of the options below"))
         self.occOffset.setToolTip(translate("draft", "If checked, an OCC-style offset will be performed instead of the classic offset"))
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
         self.addButton.setToolTip(translate("draft", "Add points to the current object"))
@@ -865,17 +813,7 @@ class DraftToolBar:
         self.selectButton.setToolTip(translate("draft", "Selects an existing edge to be measured by this dimension"))
         self.numFacesLabel.setText(translate("draft", "Sides"))
         self.numFaces.setToolTip(translate("draft", "Number of sides"))
-        self.offsetLabel.setText(translate("draft", "Offset"))
-        self.xyButton.setText(translate("draft", "XY (top)"))
-        self.xyButton.setToolTip(translate("draft", "Sets the working plane on the ground XY plane"))
-        self.xzButton.setText(translate("draft", "XZ (front)"))
-        self.xzButton.setToolTip(translate("draft", "Sets the working plane on the front XZ plane"))
-        self.yzButton.setText(translate("draft", "YZ (side)"))
-        self.yzButton.setToolTip(translate("draft", "Sets the working plane on the side YZ plane"))
-        self.currentViewButton.setText(translate("draft", "View"))
-        self.currentViewButton.setToolTip(translate("draft", "Sets the working plane perpendicular to the current view"))
-        self.resetPlaneButton.setText(translate("draft", "Automatic"))
-        self.resetPlaneButton.setToolTip(translate("draft", "The working plane adapts to the current view when a command is started"))
+
         self.isCopy.setText(translate("draft", "Copy")+" ("+inCommandShortcuts["Copy"][0]+")")
         self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved. Preferences -> Draft -> Global copy mode to keep this mode in next commands"))
         self.isSubelementMode.setText(translate("draft", "Modify subelements")+" ("+inCommandShortcuts["SubelementMode"][0]+")")
@@ -888,16 +826,6 @@ class DraftToolBar:
         self.labelSTrack.setText(translate("draft", "Tracking"))
         self.labelFFile.setText(translate("draft", "Full path to font file:"))
         self.chooserButton.setToolTip(translate("draft", "Open a FileChooser for font file"))
-        self.gridLabel.setText(translate("draft", "Grid spacing"))
-        self.gridValue.setToolTip(translate("draft", "The spacing between the grid lines"))
-        self.mainlineLabel.setText(translate("draft", "Main line every"))
-        self.mainlineValue.setToolTip(translate("draft", "The number of lines between main lines"))
-        self.centerLabel.setText(translate("draft", "Center plane on view"))
-        self.centerPlane.setToolTip(translate("draft", "Centers the working plane on the current view"))
-        self.snapLabel.setText(translate("draft", "Snapping radius"))
-        self.snapValue.setToolTip(translate("draft", "This is the distance in screen pixels under which a point will be snapped. You can also change the radius while drawing, using keys")+" "+inCommandShortcuts["Increase"][0]+" , "+inCommandShortcuts["Decrease"][0])
-        self.alignToWPButton.setText(translate("draft", "Align view"))
-        self.alignToWPButton.setToolTip(translate("draft", "Aligns the view direction to face the current working plane"))
         self.retranslateTray(widget)
 
         # Update the maximum width of the push buttons
@@ -999,32 +927,6 @@ class DraftToolBar:
         elif f=="radius":
             self.radiusValue.setFocus()
             self.radiusValue.selectAll()
-
-    def selectPlaneUi(self):
-        self.taskUi(title=translate("draft", "Working plane setup"),icon="Draft_SelectPlane")
-        self.WPLabel.show()
-        self.xyButton.show()
-        self.xzButton.show()
-        self.yzButton.show()
-        self.currentViewButton.show()
-        self.resetPlaneButton.show()
-        self.offsetLabel.show()
-        self.offsetValue.show()
-        self.gridLabel.show()
-        self.gridValue.show()
-        p = Draft.getParam("gridSpacing",1.0)
-        self.gridValue.setText(FreeCAD.Units.Quantity(p,FreeCAD.Units.Length).UserString)
-        self.mainlineLabel.show()
-        self.mainlineValue.show()
-        p = Draft.getParam("gridEvery",10)
-        self.mainlineValue.setValue(p)
-        self.centerLabel.show()
-        self.centerPlane.show()
-        self.snapLabel.show()
-        self.snapValue.show()
-        p = Draft.getParam("snapRange", 8)
-        self.snapValue.setValue(p)
-        self.alignToWPButton.show()
 
     def extraLineUi(self):
         '''shows length and angle controls'''
@@ -1186,13 +1088,6 @@ class DraftToolBar:
             self.wipeButton.hide()
             self.orientWPButton.hide()
             self.selectButton.hide()
-            self.xyButton.hide()
-            self.xzButton.hide()
-            self.yzButton.hide()
-            self.currentViewButton.hide()
-            self.resetPlaneButton.hide()
-            self.offsetLabel.hide()
-            self.offsetValue.hide()
             self.labelRadius.hide()
             self.radiusValue.hide()
             self.isCopy.hide()
@@ -1208,16 +1103,7 @@ class DraftToolBar:
             self.labelFFile.hide()
             self.FFileValue.hide()
             self.chooserButton.hide()
-            self.gridLabel.hide()
-            self.gridValue.hide()
-            self.mainlineLabel.hide()
-            self.mainlineValue.hide()
-            self.centerLabel.hide()
-            self.centerPlane.hide()
-            self.snapLabel.hide()
-            self.snapValue.hide()
-            self.WPLabel.hide()
-            self.alignToWPButton.hide()
+
 
     def trimUi(self,title=translate("draft","Trim")):
         self.taskUi(title)
@@ -1444,26 +1330,6 @@ class DraftToolBar:
         panel = TaskPanel(extra,callback)
         FreeCADGui.Control.showDialog(panel)
 
-    def setGridSize(self,text):
-        """sets the Draft grid to the given grid size"""
-        try:
-            q = FreeCAD.Units.Quantity(text)
-        except:
-            pass
-        else:
-            Draft.setParam("gridSpacing",q.Value)
-            if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.setGrid()
-
-    def setMainline(self,val):
-        """sets the grid main lines"""
-        if val > 1:
-            Draft.setParam("gridEvery",val)
-            if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.setGrid()
-
-    def setCenterPlane(self,val):
-        self.isCenterPlane = bool(val)
 
 #---------------------------------------------------------------------------
 # Processing functions
@@ -1570,14 +1436,6 @@ class DraftToolBar:
                     print("debug: DraftGui.validatePoint: AttributeError")
                 else:
                     self.sourceCmd.numericRadius(rad)
-            elif (self.offsetLabel.isVisible()):
-                try:
-                    #offset=float(self.offsetValue.text())
-                    offset = self.offset
-                except (ValueError, AttributeError):
-                    print("debug: DraftGui.validatePoint: AttributeError")
-                else:
-                    self.sourceCmd.offsetHandler(offset)
             elif (self.labelx.isVisible()):
                 try:
                     #numx=float(self.xValue.text())
@@ -1720,24 +1578,6 @@ class DraftToolBar:
         """allows the dimension command to select an edge"""
         if hasattr(self.sourceCmd,"selectEdge"):
             self.sourceCmd.selectEdge()
-
-    def selectXY(self):
-        self.sourceCmd.selectHandler("XY")
-
-    def selectXZ(self):
-        self.sourceCmd.selectHandler("XZ")
-
-    def selectYZ(self):
-        self.sourceCmd.selectHandler("YZ")
-
-    def selectCurrentView(self):
-        self.sourceCmd.selectHandler("currentView")
-
-    def selectResetPlane(self):
-        self.sourceCmd.selectHandler("reset")
-
-    def alignToWP(self):
-        self.sourceCmd.selectHandler("alignToWP")
 
     def undoSegment(self):
         """undo last line segment"""
@@ -2191,11 +2031,6 @@ class DraftToolBar:
             Draft.setParam("snapRange",par+val)
             FreeCADGui.Snapper.showradius()
 
-    def setSnapValue(self,val):
-        Draft.setParam("snapRange",val)
-        if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.showradius()
-
     def constrain(self,val):
         if val == "angle":
             self.alock = not(self.alock)
@@ -2220,9 +2055,6 @@ class DraftToolBar:
 
     def changeRadiusValue(self,d):
         self.radius = d
-
-    def changeOffsetValue(self,d):
-        self.offset = d
 
     def changeSSizeValue(self,d):
         self.SSize = d

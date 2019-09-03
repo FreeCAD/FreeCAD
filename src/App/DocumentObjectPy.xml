@@ -153,7 +153,7 @@ Return -1 if element visibility is not supported or element not found, 0 if invi
         </Methode>
         <Methode Name="getParentGeoFeatureGroup">
             <Documentation>
-                <UserDocu>Returns the GeoFeatureGroup, and hence the local coorinate system, the object 
+                <UserDocu>Returns the GeoFeatureGroup, and hence the local coordinate system, the object 
                           is in or None if it is not part of a group. Note that an object can only be 
                           in a single group, hence only a single return value.</UserDocu>
             </Documentation>

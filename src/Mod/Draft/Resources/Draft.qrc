@@ -138,5 +138,6 @@
         <file>ui/preferences-svg.ui</file>
         <file>ui/preferences-oca.ui</file>
         <file>ui/TaskShapeString.ui</file>
+        <file>ui/TaskSelectPlane.ui</file>
     </qresource>
 </RCC> 

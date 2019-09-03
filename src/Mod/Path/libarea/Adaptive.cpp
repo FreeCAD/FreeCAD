@@ -1606,7 +1606,7 @@ double Adaptive2d::CalcCutArea(Clipper &clip, const IntPoint &c1, const IntPoint
 		Perf_CalcCutAreaClip.Start();
 		// old way of calculating cut area based on polygon clipping
 		// used in case when there are multiple intersections of tool with cleared poly (very rare case, but important)
-		// 1. find differene between old and new tool shape
+		// 1. find difference between old and new tool shape
 		Path oldTool;
 		Path newTool;
 		TranslatePath(toolGeometry, oldTool, c1);
