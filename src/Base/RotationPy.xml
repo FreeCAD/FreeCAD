@@ -10,6 +10,7 @@
 		  Namespace="Base"
 		  Constructor="true"
 		  Delete="true"
+		  NumberProtocol="true"
           RichCompare="true"
 		  FatherNamespace="Base">
 		<Documentation>
