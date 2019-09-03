@@ -236,7 +236,7 @@
       Type: 'String'
       URL: ''
       Description: " "
-- Vector rendering:
+- VectorRendering:
     SectionFillPattern:
       Type: 'File'
       URL: ''
@@ -270,7 +270,7 @@
       Type: 'String'
       URL: ''
       Description: "Vendor of the material"
-- User defined:
+- UserDefined:
     None:  # Python needs something to iterate over
       Type: ''
       URL: ''
