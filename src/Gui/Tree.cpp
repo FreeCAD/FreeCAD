@@ -4407,6 +4407,7 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     default:
         break;
     }
+    this->setFont(0,f);
 }
 
 const char *DocumentObjectItem::getTreeName() const {
