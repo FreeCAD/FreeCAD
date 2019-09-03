@@ -567,7 +567,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
             ss << e.what() << std::endl << "in property binding '" << prop->getName() << "'";
             e.setMessage(ss.str());
             throw;
-        }catch(std::bad_cast &e) {
+        }catch(std::bad_cast &) {
             std::ostringstream ss;
             ss << "Invalid type '" << value.type().name() << "'";
             ss << "\nin property binding '" << prop->getName() << "'";
