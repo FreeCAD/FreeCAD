@@ -23,12 +23,8 @@
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Base64.h>
-#include <openssl/hmac.h>
-#include <openssl/pem.h>
-#include <curl/curl.h>
-#include <sys/time.h>
-#include <time.h>
-#include <xlocale.h>
+#include <Base/TimeInfo.h>
+#include <xlocale>
 
 #include <App/PropertyContainer.h>
 #include <App/PropertyStandard.h>
@@ -44,13 +40,14 @@
 #include <xercesc/sax/HandlerBase.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
 
-using namespace App;
-using namespace std;
-using namespace xercesc;
+XERCES_CPP_NAMESPACE_BEGIN
+    class DOMNode;
+    class DOMText;
+XERCES_CPP_NAMESPACE_END
 
 namespace Cloud {
 
-class BaseExport CloudReader
+class CloudAppExport CloudReader
 {
 public:
     CloudReader(const char* Url, const char* AccessKey, const char* SecretKey, const char* TcpPort, const char* Bucket);
@@ -63,9 +60,9 @@ public:
         std::stringstream FileStream;
         int touch=0;
     };
-    void checkText(DOMText* text);
-    void checkXML(DOMNode* node);
-    void checkElement(DOMElement* element);
+    void checkText(XERCES_CPP_NAMESPACE_QUALIFIER DOMText* text);
+    void checkXML(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* node);
+    void checkElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* element);
     void addFile(struct Cloud::CloudReader::FileEntry *new_entry);
     struct FileEntry *GetEntry(std::string FileName);
     void DownloadFile(Cloud::CloudReader::FileEntry *entry);
@@ -139,7 +136,7 @@ PyObject* initModule()
 
 // This class is writing files to an S3 cloud storage class
 
-class BaseExport CloudWriter : public Base::Writer
+class CloudAppExport CloudWriter : public Base::Writer
 {
 public:
     CloudWriter(const char* Url, const char* AccessKey, const char* SecretKey, const char* TcpPort, const char* Bucket);
