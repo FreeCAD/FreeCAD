@@ -1189,20 +1189,20 @@ void Document::Restore(Base::XMLReader &reader)
 void Document::RestoreDocFile(Base::Reader &reader)
 {
     // We must create an XML parser to read from the input stream
-    Base::XMLReader xmlReader("GuiDocument.xml", reader);
-    xmlReader.FileVersion = reader.getFileVersion();
+    std::shared_ptr<Base::XMLReader> localreader = std::make_shared<Base::XMLReader>("GuiDocument.xml", reader);
+    localreader->FileVersion = reader.getFileVersion();
 
-    xmlReader.readElement("Document");
-    long scheme = xmlReader.getAttributeAsInteger("SchemaVersion");
-    xmlReader.DocumentSchema = scheme;
+    localreader->readElement("Document");
+    long scheme = localreader->getAttributeAsInteger("SchemaVersion");
+    localreader->DocumentSchema = scheme;
 
-    bool hasExpansion = xmlReader.hasAttribute("HasExpansion");
+    bool hasExpansion = localreader->hasAttribute("HasExpansion");
     if(hasExpansion) {
         auto tree = TreeWidget::instance();
         if(tree) {
             auto docItem = tree->getDocumentItem(this);
             if(docItem)
-                docItem->Restore(xmlReader);
+                docItem->Restore(*localreader);
         }
     }
 
@@ -1212,32 +1212,32 @@ void Document::RestoreDocFile(Base::Reader &reader)
     // SchemeVersion "1"
     if (scheme == 1) {
         // read the viewproviders itself
-        xmlReader.readElement("ViewProviderData");
-        int Cnt = xmlReader.getAttributeAsInteger("Count");
+        localreader->readElement("ViewProviderData");
+        int Cnt = localreader->getAttributeAsInteger("Count");
         for (int i=0; i<Cnt; i++) {
-            xmlReader.readElement("ViewProvider");
-            std::string name = xmlReader.getAttribute("name");
+            localreader->readElement("ViewProvider");
+            std::string name = localreader->getAttribute("name");
             bool expanded = false;
-            if (!hasExpansion && xmlReader.hasAttribute("expanded")) {
-                const char* attr = xmlReader.getAttribute("expanded");
+            if (!hasExpansion && localreader->hasAttribute("expanded")) {
+                const char* attr = localreader->getAttribute("expanded");
                 if (strcmp(attr,"1") == 0) {
                     expanded = true;
                 }
             }
             ViewProvider* pObj = getViewProviderByName(name.c_str());
             if (pObj) // check if this feature has been registered
-                pObj->Restore(xmlReader);
+                pObj->Restore(*localreader);
             if (pObj && expanded) {
                 Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
                 this->signalExpandObject(*vp, Gui::ExpandItem,0,0);
             }
-            xmlReader.readEndElement("ViewProvider");
+            localreader->readEndElement("ViewProvider");
         }
-        xmlReader.readEndElement("ViewProviderData");
+        localreader->readEndElement("ViewProviderData");
 
         // read camera settings
-        xmlReader.readElement("Camera");
-        const char* ppReturn = xmlReader.getAttribute("settings");
+        localreader->readElement("Camera");
+        const char* ppReturn = localreader->getAttribute("settings");
         cameraSettings.clear();
         if(ppReturn && ppReturn[0]) {
             saveCameraSettings(ppReturn);
@@ -1255,13 +1255,10 @@ void Document::RestoreDocFile(Base::Reader &reader)
         }
     }
 
-    xmlReader.readEndElement("Document");
-
-    // In the file GuiDocument.xml new data files might be added
-    if (!xmlReader.getFilenames().empty())
-        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader.getStream()));
+    localreader->readEndElement("Document");
 
     // reset modified flag
+    reader.initLocalReader(localreader);
     setModified(false);
 }
 

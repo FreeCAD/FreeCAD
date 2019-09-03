@@ -27,6 +27,7 @@
 #include <string>
 #include <map>
 #include <bitset>
+#include <memory>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
 #include <xercesc/sax2/Attributes.hpp>
@@ -207,6 +208,11 @@ public:
     bool testStatus(ReaderStatus pos) const;
     /// set the status bits
     void setStatus(ReaderStatus pos, bool on);
+    struct FileEntry {
+        std::string FileName;
+        Base::Persistence *Object;
+    };
+    std::vector<FileEntry> FileList;
 
 protected:
     /// read the next element
@@ -281,11 +287,6 @@ protected:
     bool _valid;
     bool _verbose;
 
-    struct FileEntry {
-        std::string FileName;
-        Base::Persistence *Object;
-    };
-    std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
 
     std::bitset<32> StatusBits;
@@ -295,14 +296,18 @@ class BaseExport Reader : public std::istream
 {
 public:
     Reader(std::istream&, const std::string&, int version);
+    ~Reader();
     std::istream& getStream();
     std::string getFileName() const;
     int getFileVersion() const;
+    void initLocalReader(std::shared_ptr<Base::XMLReader>);
+    std::shared_ptr<Base::XMLReader> getLocalReader() const;
 
 private:
     std::istream& _str;
     std::string _name;
     int fileVersion;
+    std::shared_ptr<Base::XMLReader> localreader;
 };
 
 }

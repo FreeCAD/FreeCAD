@@ -179,6 +179,9 @@ public:
     boost::signals2::signal<void (const App::Document&,const App::Property&)> signalChangePropertyEditor;
     //@}
 
+
+    void clearDocument();
+
     /** @name File handling of the document */
     //@{
     /// Save the Document under a new Name

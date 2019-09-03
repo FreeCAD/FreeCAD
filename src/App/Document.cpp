@@ -1268,6 +1268,34 @@ bool Document::isTransactionEmpty() const
     return true;
 }
 
+void Document::clearDocument()
+{
+    this->d->activeObject = 0;
+
+    if(this->d->objectArray.size()) {
+        GetApplication().signalDeleteDocument(*this);
+        this->d->objectArray.clear();
+        for(auto &v : this->d->objectMap) {
+            v.second->setStatus(ObjectStatus::Destroy, true);
+            delete(v.second);
+        }
+        this->d->objectMap.clear();
+        this->d->objectIdMap.clear();
+        GetApplication().signalNewDocument(*this,false);
+    }
+
+    Base::FlagToggler<> flag(_IsRestoring,false);
+
+    setStatus(Document::PartialDoc,false);
+
+    this->d->clearRecomputeLog();
+    this->d->objectArray.clear();
+    this->d->objectMap.clear();
+    this->d->objectIdMap.clear();
+    this->d->lastObjectId = 0;
+}
+
+
 void Document::clearUndos()
 {
     if(isPerformingTransaction() || d->committing) {
