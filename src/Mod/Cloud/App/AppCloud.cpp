@@ -26,6 +26,10 @@
 # include <Python.h>
 #endif
 
+#include <openssl/hmac.h>
+#include <openssl/pem.h>
+#include <curl/curl.h>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -41,6 +45,8 @@
 #include "AppCloud.h"
 
 using namespace App;
+using namespace std;
+XERCES_CPP_NAMESPACE_USE
 
 /* Python entry */
 PyMOD_INIT_FUNC(Cloud)
@@ -54,7 +60,7 @@ Py::Object Cloud::Module::sCloudUrl(const Py::Tuple& args)
 {
     char *Url;
     if (!PyArg_ParseTuple(args.ptr(), "et","utf-8",&Url))     // convert args: Python->C
-	return Py::None();
+        return Py::None();
     if (this->Url.getStrValue() != Url) {
                 this->Url.setValue(Url);
     }
@@ -125,7 +131,11 @@ Cloud::CloudWriter::CloudWriter(const char* Url, const char* AccessKey, const ch
         // Amazon S3 and Swift require the timezone to be define to
         // GMT. As to simplify the conversion this is performed through the TZ
         // environment variable and a call to localtime as to convert output of gettimeofday
+#if defined(FC_OS_WIN32)
+        _putenv("TZ=GMT");
+#else
         setenv("TZ","GMT",1);
+#endif
 }
 
 Cloud::CloudWriter::~CloudWriter()
@@ -139,7 +149,7 @@ size_t CurlWrite_CallbackFunc_StdString(void *contents, size_t size, size_t nmem
     {
         s->append((char*)contents, newLength);
     }
-    catch(std::bad_alloc &e)
+    catch(std::bad_alloc &)
     {
         //handle memory problem
         return 0;
@@ -213,7 +223,6 @@ Cloud::CloudReader::~CloudReader()
 
 Cloud::CloudReader::CloudReader(const char* Url, const char* AccessKey, const char* SecretKey, const char* TcpPort, const char* Bucket) 
 {
-
         struct timeval tv;
         struct tm *tm;
         char date_formatted[256];
@@ -234,14 +243,21 @@ Cloud::CloudReader::CloudReader(const char* Url, const char* AccessKey, const ch
         // Amazon S3 and Swift require the timezone to be define to
         // GMT. As to simplify the conversion this is performed through the TZ
         // environment variable and a call to localtime as to convert output of gettimeofday
+#if defined(FC_OS_WIN32)
+        _putenv("TZ=GMT");
+#else
         setenv("TZ","GMT",1);
+#endif
 
         // We must get the directory content
 
 
+#if defined(FC_OS_WIN32)
+#else
         gettimeofday(&tv,NULL);
         tm = localtime(&tv.tv_sec);
         strftime(date_formatted,256,"%a, %d %b %Y %T %z", tm);
+#endif
 
         sprintf(StringToSign,"GET\n\napplication/xml\n%s\n/%s/", date_formatted, this->Bucket);
 
@@ -300,11 +316,10 @@ Cloud::CloudReader::CloudReader(const char* Url, const char* AccessKey, const ch
                                      "myxml (in memory)");
 
                 parser->parse(myxml_buf);
-                DOMDocument* dom=parser->getDocument();
+                auto* dom=parser->getDocument();
                 checkXML(dom);
                 // Dumping the filelist name
         }
-
 
 }
 
@@ -323,9 +338,12 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
         // We must get the directory content
 
 
+#if defined(FC_OS_WIN32)
+#else
         gettimeofday(&tv,NULL);
         tm = localtime(&tv.tv_sec);
         strftime(date_formatted,256,"%a, %d %b %Y %T %z", tm);
+#endif
 
         // CHANGEME
         sprintf(StringToSign,"GET\n\napplication/octet-stream\n%s\n/%s/%s", date_formatted, this->Bucket, entry->FileName);
@@ -369,7 +387,6 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
 
                 entry->FileStream << s;
         }
-
 }
 
 struct Cloud::CloudReader::FileEntry * Cloud::CloudReader::GetEntry(std::string FileName)
@@ -462,9 +479,12 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
 
         struct data_buffer curl_buffer;
 
+#if defined(FC_OS_WIN32)
+#else
         gettimeofday(&tv,NULL);
         tm = localtime(&tv.tv_sec);
         strftime(date_formatted,256,"%a, %d %b %Y %T %z", tm);
+#endif
 
         // CHANGEME
         sprintf(StringToSign,"PUT\n\napplication/octet-stream\n%s\n/%s/%s", date_formatted, this->Bucket, FileName);
@@ -623,7 +643,7 @@ void readFiles(Cloud::CloudReader reader, Base::XMLReader *xmlreader)
                 it->Object->RestoreDocFile(localreader);
                 if ( localreader.getLocalReader() != nullptr )
                 {
-			readFiles(reader, localreader.getLocalReader());
+            readFiles(reader, localreader.getLocalReader().get());
                 }
         }
         it++;
