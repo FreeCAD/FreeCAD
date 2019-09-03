@@ -361,7 +361,7 @@ class _ArchMaterial:
                 if "DiffuseColor" in obj.Material:
                     c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").split(",")])
                     for p in obj.InList:
-                        if hasattr(p,"Material"):
+                        if hasattr(p,"Material") and ( (not hasattr(p.ViewObject,"UseMaterialColor")) or p.ViewObject.UseMaterialColor):
                             if p.Material.Name == obj.Name:
                                 p.ViewObject.ShapeColor = c
         return
