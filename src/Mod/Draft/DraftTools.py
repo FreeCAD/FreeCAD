@@ -4065,15 +4065,38 @@ class Scale(Modifier):
                         DraftVecUtils.toString(self.center)))
         command.append('FreeCAD.ActiveDocument.recompute()')
         return command
+    
+    def is_scalable(self,obj):
+        t = Draft.getType(obj)
+        if t in ["Rectangle","Wire","Annotation","BSpline"]:
+            # TODO - support more types in Draft.scale
+            return True
+        else:
+            return False
 
     def scale_object(self):
         if self.task.relative.isChecked():
             self.delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(self.delta)
-        objects = '[' + ','.join(['FreeCAD.ActiveDocument.' + object.Name for object in self.selected_objects]) + ']'
-        FreeCADGui.addModule("Draft")
-        self.commit(translate("draft","Copy" if self.task.isCopy.isChecked() else "Scale"),
-                    ['Draft.scale('+objects+',scale='+DraftVecUtils.toString(self.delta)+',center='+DraftVecUtils.toString(self.center)+',copy='+str(self.task.isCopy.isChecked())+')',
-                     'FreeCAD.ActiveDocument.recompute()'])
+        goods = []
+        bads = []
+        for obj in self.selected_objects:
+            if self.is_scalable(obj):
+                goods.append(obj)
+            else:
+                bads.append(obj)
+        if bads:
+            if len(bads) == 1:
+                m = translate("draft","Unable to scale object")+": "+bads[0].Label
+            else:
+                m = translate("draft","Unable to scale objects")+": "+",".join([o.Label for o in bads])
+            m += " - "+translate("draft","This object type cannot be scaled directly. Please use the clone method.")+"\n"
+            FreeCAD.Console.PrintError(m)
+        if goods:
+            objects = '[' + ','.join(['FreeCAD.ActiveDocument.' + obj.Name for obj in goods]) + ']'
+            FreeCADGui.addModule("Draft")
+            self.commit(translate("draft","Copy" if self.task.isCopy.isChecked() else "Scale"),
+                        ['Draft.scale('+objects+',scale='+DraftVecUtils.toString(self.delta)+',center='+DraftVecUtils.toString(self.center)+',copy='+str(self.task.isCopy.isChecked())+')',
+                         'FreeCAD.ActiveDocument.recompute()'])
 
     def scaleGhost(self,x,y,z,rel):
         delta = Vector(x,y,z)
