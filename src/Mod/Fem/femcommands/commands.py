@@ -464,7 +464,7 @@ class _MaterialEditor(CommandManager):
                 "Opens the FreeCAD material editor"
             )
         }
-        self.is_active = "allways"
+        self.is_active = "always"
 
     def Activated(self):
         FreeCADGui.addModule("MaterialEditor")

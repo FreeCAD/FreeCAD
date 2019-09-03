@@ -57,7 +57,9 @@ class plane:
         The active document. Reset view when `doc` changes.
     weak : bool
         It is `True` if the plane has been defined by `setup()`
-        or has been reset.
+        or has been reset. A weak plane can be changed
+        (it is the "auto" mode), while a strong plane will keep
+        its position until weakened (it is "locked")
     u : Base::Vector3
         An axis (vector) that helps define the working plane.
     v : Base::Vector3
@@ -651,7 +653,7 @@ class plane:
             # len(sex) > 2, look for point and line, three points, etc.
             return False
 
-    def setup(self, direction=None, point=None, upvec=None):
+    def setup(self, direction=None, point=None, upvec=None, force=False):
         """Setup the working plane if it exists but is undefined.
 
         If `direction` and `point` are present,
@@ -676,13 +678,15 @@ class plane:
             It defaults to `None`. It is the new `position` of the plane.
         upvec : Base::Vector3, optional
             It defaults to `None`. It is the new `v` orientation of the plane.
+        force : Bool
+            If True, it sets the plane even if the plane is not in weak mode
 
         To do
         -----
         When the interface is not loaded it should fail and print
         a message, `FreeCAD.Console.PrintError()`.
         """
-        if self.weak:
+        if self.weak or force:
             if direction and point:
                 self.alignToPointAndAxis(point, direction, 0, upvec)
             else:
@@ -704,7 +708,10 @@ class plane:
                                                  vdir.negative(), 0, upvec)
                 except:
                     pass
-            self.weak = True
+            if force:
+                self.weak = False
+            else:
+                self.weak = True
 
     def reset(self):
         """Reset the plane.

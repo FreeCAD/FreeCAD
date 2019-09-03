@@ -32,7 +32,6 @@ import ArchIFC
 
 # ************************************************************************************************
 # ********** some helper, used in import and export, or should stay together
-
 def decode(filename,utf=False):
 
     "turns unicodes into strings"
@@ -243,8 +242,6 @@ def buildRelMattable(ifcfile):
 # color relation tables
 # products can have a color and materials can have a color and products can have a material
 # colors for material assigned to a product and product color can be different
-
-
 def buildRelColors(ifcfile, prodrepr):
     """build the colors relation table and"""
 

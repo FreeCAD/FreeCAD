@@ -57,6 +57,7 @@
 #include <fcntl.h>
 #include <assert.h>
 
+#include <array>
 #include <vector>
 #include <list>
 #include <set>
