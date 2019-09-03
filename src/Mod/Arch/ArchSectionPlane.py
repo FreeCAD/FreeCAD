@@ -57,7 +57,7 @@ else:
 #  It also contains functionality to produce SVG rendering of
 #  section planes, to be used in TechDraw and Drawing modules
 
-ISRENDERING = False # flag to prevent concurrent runsof the coin renderer
+ISRENDERING = False # flag to prevent concurrent runs of the coin renderer
 
 def makeSectionPlane(objectslist=None,name="Section"):
 
@@ -1177,7 +1177,7 @@ class _ArchDrawingView:
 
         if hasattr(obj,"Source"):
             if obj.Source:
-                svgbody = getSVG(section=obj.Source,
+                svgbody = getSVG(source=obj.Source,
                                  renderMode=obj.RenderingMode,
                                  allOn=getattr(obj, 'AlwaysOn', False),
                                  showHidden=obj.ShowCut,
