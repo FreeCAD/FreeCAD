@@ -1,28 +1,29 @@
 # -*- coding: utf8 -*-
 
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
 
-__title__="FreeCAD Draft Workbench - DXF importer/exporter"
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+__title__ = "FreeCAD Draft Workbench - DXF importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
@@ -32,7 +33,7 @@ __url__ = ["http://www.freecadweb.org"]
 #
 # This module provides support for importing and exporting Autodesk DXF files
 
-'''
+"""
 This script uses a DXF-parsing library created by Stani,
 Kitsu and Migius for Blender
 
@@ -43,7 +44,7 @@ mtexts, layers (as groups), colors
 exports:
 lines, polylines, lwpolylines, circles, arcs,
 texts, colors,layers (from groups)
-'''
+"""
 
 TEXTSCALING = 1.35 # scaling factor between autocad font sizes and coin font sizes
 CURRENTDXFLIB = 1.40 # the minimal version of the dxfLibrary needed to run
@@ -58,7 +59,7 @@ from FreeCAD import Vector
 if not hasattr(FreeCAD,"DraftWorkingPlane"):
     plane = WorkingPlane.plane()
     FreeCAD.DraftWorkingPlane = plane
-	
+
 gui = FreeCAD.GuiUp
 draftui = None
 if gui:
@@ -77,6 +78,21 @@ if open.__module__ in ['__builtin__','io']:
 
 
 def errorDXFLib(gui):
+    """Download the files required to convert DXF files.
+
+    It checks the parameter `'dxfAllowDownload'` to decide whether it
+    has access to download the required DXF libraries.
+
+    Parameters
+    ----------
+    gui : bool
+        If `True` it will display error messages in graphical
+        text boxes; otherwise it will display the messages in the terminal.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     dxfAllowDownload = p.GetBool("dxfAllowDownload",False)
     if dxfAllowDownload:
@@ -135,7 +151,16 @@ To enabled FreeCAD to download these libraries, answer Yes.""")
 
 
 def getDXFlibs():
-    "loads the DXF python libraries"
+    """Load the DXF Python libraries.
+
+    It tries loading the global libraries for use in the system
+    `dxfLibrary`, `dxfColorMap`, `dxfReader`,
+    If they are not present, they are downloaded.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     try:
         if FreeCAD.ConfigGet("UserAppData") not in sys.path:
             sys.path.append(FreeCAD.ConfigGet("UserAppData"))
@@ -161,12 +186,27 @@ def getDXFlibs():
             dxfLibrary = None
             FreeCAD.Console.PrintWarning("DXF libraries not available. Aborting.\n")
 
+
 def prec():
-    "returns the current Draft precision level"
+    """Return the current Draft precision level."""
     return Draft.getParam("precision",6)
 
+
 def decodeName(name):
-    "decodes encoded strings"
+    """Decode the encoded name into utf8 or latin1.
+
+    Parameters
+    ----------
+    name : str
+        The string to decode.
+
+    Returns
+    -------
+    str
+        The decoded string in utf8, latin1, or the original `name`
+        if the decoding was not needed, for example,
+        when using Python 3.
+    """
     try:
         decodedName = (name.decode("utf8"))
     except UnicodeDecodeError:
@@ -180,8 +220,24 @@ def decodeName(name):
         decodedName = name
     return decodedName
 
+
 def deformat(text):
-    "removes weird formats in texts and wipes UTF characters"
+    """Remove weird formats in texts and wipes UTF characters.
+
+    It removes `{}`, html codes, \\(U...) characters,
+    and decodes the string as utf8 or latin1 if needed.
+    For Python 3 there is no decoding needed.
+
+    Parameters
+    ----------
+    text : str
+        The input string.
+
+    Results
+    -------
+    str
+        The deformatted string.
+    """
     # remove ACAD string formatation
     #t = re.sub('{([^!}]([^}]|\n)*)}', '', text)
     #print("input text: ",text)
@@ -215,8 +271,51 @@ def deformat(text):
     #print("output text: ",t)
     return t
 
+
 def locateLayer(wantedLayer,color=None,drawstyle=None):
-    "returns layer group and creates it if needed"
+    """Return layer group and create it if needed.
+
+    This function iterates over a global list named `layers`, which is
+    defined in `processdxf`.
+
+    If no layers are found it looks for the global `dxfUseDraftVisGroup`
+    variable defined in `readPreferences`, and creates a new `Draft Layer`
+    with the specified color.
+
+    Otherwise it creates a group (`App::DocumentObjectGroup`)
+    to use as a layer container.
+
+    Parameters
+    ----------
+    wantedLayer : str
+        The name of a layer to search in the global `layers` list.
+
+    color : tuple of four floats, optional
+        It defaults to `None`.
+        A tuple with color information `(r,g,b,a)`, where each value
+        is a float between 0 and 1.
+
+    Returns
+    -------
+    App::FeaturePython or App::DocumentObjectGroup
+        If the `wantedLayer` is found in the global list of layers,
+        it is returned.
+        Otherwise, a new layer or group is created and returned.
+
+        If the global variable `dxfUseDraftVisGroup` is set,
+        it creates a `Draft Layer` (`App::FeaturePython`).
+        Otherwise, it creates a simple group (`App::DocumentObjectGroup`).
+
+    See also
+    --------
+    Draft.makeLayer
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
+    # layers is a global variable.
+    # It should probably be passed as an argument.
     wantedLayerName = decodeName(wantedLayer)
     for l in layers:
         if wantedLayerName==l.Label:
@@ -229,8 +328,30 @@ def locateLayer(wantedLayer,color=None,drawstyle=None):
     layers.append(newLayer)
     return newLayer
 
+
 def getdimheight(style):
-    "returns the dimension text height from the given dimstyle"
+    """Return the dimension text height from the given dimstyle.
+
+    It searches the global variable `drawing.tables.data`,
+    created in `processdxf`, for a `dimstyle`; then iterates on the data,
+    and if a `dimstyle` is found, it compares if its raw value with DXF code 2
+    (Name) is equal to `style`.
+
+    Parameters
+    ---------
+    style : str
+        A raw value of DXF code 3 (other text or name value).
+
+    Returns
+    -------
+    float
+        The data of DXF code 140 (DIMSTYLE setting),
+        or just 1 if no `dimstyle` was found in `drawing.tables.data`.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     for t in drawing.tables.data:
         if t.name == 'dimstyle':
             for a in t.data:
@@ -240,11 +361,38 @@ def getdimheight(style):
                             return rawValue(a,140)
     return 1
 
+
 def calcBulge(v1,bulge,v2):
-    '''
-    calculates intermediary vertex for curved segments.
-    algorithm from http://www.afralisp.net/lisp/Bulges1.htm
-    '''
+    """Calculate intermediary vertex for a curved segment.
+
+    Considering an arc of a circle, it can be defined by two vertices `v1`
+    and `v2`, and a `bulge` value that indicates how curved the arc is.
+    A `bulge` of 0 is a straight line, while a `bulge` of 1 is the maximum
+    curvature, or a semicircle.
+
+    A vertex that is in the curve, equidistant to the two vertices,
+    can be found by finding the sagitta of the arc, that is,
+    the perpendicular to the chord that goes from `v1` to `v2`.
+
+    It uses the algorithm from http://www.afralisp.net/lisp/Bulges1.htm
+
+    Parameters
+    ----------
+    v1 : Base::Vector3
+        The first point.
+    bulge : float
+        The bulge is the tangent of 1/4 of the included angle for the arc
+        between `v1` and `v2`. A negative `bulge` indicates that the arc
+        goes clockwise from `v1` to `v2`. A `bulge` of 0 indicates
+        a straight segment, and a `bulge` of 1 is a semicircle.
+    v2 : Base::Vector3
+        The second point.
+
+    Returns
+    -------
+    Base::Vector3
+        The new point betwwen `v1` and `v2`.
+    """
     chord = v2.sub(v1)
     sagitta = (bulge * chord.Length)/2
     perp = chord.cross(Vector(0,0,1))
@@ -253,8 +401,32 @@ def calcBulge(v1,bulge,v2):
     endpoint = perp.multiply(sagitta)
     return startpoint.add(endpoint)
 
+
 def getGroup(ob):
-    "checks if the object is part of a group or layer"
+    """Get the name of the group or Draft layer that contains the object.
+
+    It looks for the global `dxfUseDraftVisGroup` variable defined
+    in `readPreferences`. Then searches all objects of type "Layer"
+    for the one that contains `ob`.
+
+    Otherwise, it searches all objects derived from
+    `App::DocumentObjectGroup` for the one that contains `ob`.
+
+    Parameters
+    ----------
+    ob : App::DocumentObject
+        Any object to test as belonging to a layer or group.
+
+    Returns
+    -------
+    str
+        The label of the layer, or of the group, if it contains `ob`.
+        Otherwise, return "0".
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     if dxfUseDraftVisGroups:
         for layer in [o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Layer"]:
             if ob in layer.Group:
@@ -266,8 +438,32 @@ def getGroup(ob):
                     return i.Label
     return "0"
 
+
 def getACI(ob,text=False):
-    "gets the ACI color closest to the objects color"
+    """Get the AutoCAD color index (ACI) color closest to the object's color.
+
+    This function only works if the graphical interface is loaded,
+    as it checks the `ViewObject` attribute of the object
+    which only exists when the GUI is available.
+
+    Parameters
+    ----------
+    ob : App::DocumentObject
+        Any object.
+
+    text : bool, optional
+        It defaults ot `False`. If `True`, use the `TextColor`
+        instead of the `LineColor` of the object.
+
+    Returns
+    -------
+    int
+        The numerical value of the AutoCAD color index (ACI) color,
+        which goes from 0 to 255.
+        It returns 0 (black) if no graphical interface is loaded.
+        It returns 256 (`BYLAYER`) if `ob` is inside a Draft Layer,
+        and the layer's `OverrideChildren` view property is `True`.
+    """
     if not gui:
         return 0
     else:
@@ -289,16 +485,45 @@ def getACI(ob,text=False):
             if (dist <= aci[1]): aci=[i,dist]
         return aci[0]
 
+
 def rawValue(entity,code):
-    "returns the  value of a DXF code in an entity section"
+    """Return the value of a DXF code in an entity section.
+
+    Parameters
+    ----------
+    entity : drawing.entities
+        A DXF entity in the `drawing` data obtained from `processdxf`.
+    code : int
+        A numerical value of the code.
+
+    Returns
+    -------
+    float or str
+        The value corresponding to the code. It may be numeric or a string.
+    """
     value = None
     for pair in entity.data:
         if pair[0] == code:
             value = pair[1]
     return value
 
+
 def getMultiplePoints(entity):
-    "scans the given entity for multiple points (paths, leaders, etc)"
+    """Scan the given entity (paths, leaders, etc.) for multiple points.
+
+    Parameters
+    ----------
+    entity : drawing.entities
+        A DXF entity in the `drawing` data obtained from `processdxf`.
+
+    Returns
+    -------
+    list of Base::Vector3
+        The list of points (vectors).
+        Each point has three coordinates `(X,Y,Z)`.
+        If the original point only had two, the third coordinate
+        is set to zero `(X,Y,0)`.
+    """
     pts = []
     for d in entity.data:
         if d[0] == 10:
@@ -314,8 +539,21 @@ def getMultiplePoints(entity):
             points.append(Vector(p[0],p[1],0))
     return points
 
+
 def isBrightBackground():
-    "checks if the current viewport background is bright"
+    """Check if the current viewport's background is a bright color.
+
+    It considers the values of `BackgroundColor` for a solid background,
+    or a combination of `BackgroundColor2` and `BackgroundColor3`
+    for a gradient background from the parameter database.
+
+    Returns
+    -------
+    bool
+        Returns `True` if the value of the color is larger than 128,
+        which is considered light; otherwise it is considered dark
+        and returns `False`.
+    """
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
     if p.GetBool("Gradient"):
         c1 = p.GetUnsigned("BackgroundColor2")
@@ -343,8 +581,39 @@ def isBrightBackground():
     else:
         return True
 
+
 def getGroupColor(dxfobj,index=False):
-    "get color of bylayer stuff"
+    """Get the color of the layer.
+
+    It searches the global variable `drawing.tables`,
+    created in `processdxf`, for a `layer`; then iterates on the data,
+    and if the layer name matches the layer of `dxfobj`, it will try
+    to return the color of its layer.
+
+    It searches the global variable `dxfBrightBackground` to determine
+    if it should return black, or a color from the global
+    `dxfColorMap.color_map` dictionary.
+
+    Parameters
+    ----------
+    dxfobj : Part::Feature
+        An imported DXF object.
+
+    index : bool, optional
+        It defaults to `False`. If it is `True` it will return the layer's
+        color; otherwise it will check the global variable
+        `dxfBrightBackground`, and return black or a mapped color.
+
+    Returns
+    -------
+    list of 3 floats
+        The layer's color as a list `[r, g, b]`, black `[0, 0, 0]`
+        or the mapped color `dxfColorMap.color_map[color]`.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     name = dxfobj.layer
     for table in drawing.tables.get_type("table"):
         if table.name == "layer":
@@ -361,7 +630,18 @@ def getGroupColor(dxfobj,index=False):
                                     return dxfColorMap.color_map[l.color]
     return [0.0,0.0,0.0]
 
+
 def getColor():
+    """Get the Draft color defined in the Draft toolbar or preferences.
+
+    Returns
+    -------
+    tuple of 4 floats
+        Return the `(r, g, b, 0.0)` tuple with the colors defined
+        in the Draft toolbar, if the graphical user interface is active.
+        Otherwise, return the tuple with the color
+        of the `DefaultShapeLineColor` in the parameter database.
+    """
     if gui and draftui:
         r = float(draftui.color.red()/255.0)
         g = float(draftui.color.green()/255.0)
@@ -375,8 +655,36 @@ def getColor():
         b = float(((c>>8)&0xFF)/255)
         return (r,g,b,0.0)
 
+
 def formatObject(obj,dxfobj=None):
-    "applies color and linetype to objects"
+    """Apply text and line color to an object from a DXF object.
+
+    This function only works when the graphical user interface is loaded
+    as it needs access to the `ViewObject` attribute of the objects.
+
+    If `dxfobj` and the global variable `dxfGetColors` exist
+    the `TextColor` and `LineColor` of `obj` will be set to the color
+    indicated by the global dictionary
+    `dxfColorMap.color_map[dxfobj.color_index]`.
+
+    If the global `dxfBrightBackground` is set, it will set the `LineColor`
+    to black.
+
+    If no `dxfobj` is given, `TextColor` and `LineColor`
+    are set to the global variable `dxfDefaultColor`.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        Object that will use the DXF color.
+
+    dxfobj : drawing.entities, optional
+        It defaults to `None`. DXF object from which the color will be taken.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     if dxfGetColors and dxfobj and hasattr(dxfobj,"color_index"):
         if hasattr(obj.ViewObject,"TextColor"):
             if dxfobj.color_index == 256:
@@ -398,8 +706,27 @@ def formatObject(obj,dxfobj=None):
         elif hasattr(obj.ViewObject,"LineColor"):
             obj.ViewObject.LineColor = dxfDefaultColor
 
+
 def vec(pt):
-    "returns a rounded and scaled Vector from a dxf point, or rounded and scaled value"
+    """Return a rounded and scaled Vector from a DXF point.
+
+    Parameters
+    ----------
+    pt : Base::Vector3, list of three numerical values, float, or int
+        A point with three coordinates `(x, y, z)`,
+        or just a single numerical value.
+
+    Returns
+    -------
+    Base::Vector3 or float
+        Each of the components of the vector, or the single numerical value,
+        is rounded to the precision defined by `prec`,
+        and scaled by the amount of the global variable `dxfScaling`.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     if isinstance(pt,float) or isinstance(pt,int):
         v = round(pt,prec())
         if dxfScaling != 1:
@@ -410,8 +737,39 @@ def vec(pt):
             v.multiply(dxfScaling)
     return v
 
+
 def placementFromDXFOCS(ent):
-    "return right placement for polyline, arc, circle, etc. in OCS"
+    """Return the placement of an object from AutoCAD's OCS.
+
+    In AutoCAD DXF's the points of each entity are expressed in terms
+    of the entity's object coordinate system (OCS).
+    Then to determine the entity's position in 3D space,
+    what is needed is a 3D vector defining the Z axis of the OCS,
+    and the elevation value over it.
+
+    It uses `WorkingPlane.alignToPointAndAxis()` to align the working plane
+    to the origin and to `ent.extrusion` (the plane's `axis`).
+    Then it gets the global coordinates of the entity
+    by using `WorkingPlane.getGlobalCoords()`
+    and either `ent.elevation` (Z coordinate) or `ent.loc` a `(x,y,z)` tuple.
+
+    Parameters
+    ----------
+    ent : A DXF entity
+        It could be of several types, like `lwpolyline`, `polynine`,
+        and others, and with `ent.extrusion`, `ent.elevation`
+        or `ent.loc` attributes.
+
+    Returns
+    -------
+    Base::Placement
+        A placement, comprised of a `Base` (`Base::Vector3`),
+        and a `Rotation` (`Base::Rotation`).
+
+    See also
+    --------
+    WorkingPlane.alignToPointAndAxis, WorkingPlane.getGlobalCoords
+    """
     draftWPlane = FreeCAD.DraftWorkingPlane
     draftWPlane.alignToPointAndAxis(FreeCAD.Vector(0.0, 0.0, 0.0), vec(ent.extrusion), 0.0)
     pl = FreeCAD.Placement()
@@ -422,8 +780,37 @@ def placementFromDXFOCS(ent):
         pl.Base = draftWPlane.getGlobalCoords(vec(ent.loc))
     return pl
 
+
 def drawLine(line,forceShape=False):
-    "returns a Part shape from a dxf line"
+    """Return a Part shape (Wire or Edge) from a DXF line.
+
+    Parameters
+    ----------
+    line : drawing.entities
+        The DXF object of type `'line'`.
+
+    forceShape : bool, optional
+        It defaults to `False`. If it is `True` it will produce a `Part.Edge`,
+        otherwise it produces a `Draft Wire`.
+
+    Returns
+    -------
+    Part::Part2DObject or Part::TopoShape ('Edge')
+        The returned object is normally a `Wire`, if the global
+        variables `dxfCreateDraft` or `dxfCreateSketch` are set,
+        and `forceShape` is `False`.
+        Otherwise it produces a `Part.Edge`.
+
+        It returns `None` if it fails.
+
+    See also
+    --------
+    drawBlock
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     if (len(line.points) > 1):
         v1=vec(line.points[0])
         v2=vec(line.points[1])
@@ -437,8 +824,53 @@ def drawLine(line,forceShape=False):
                 warn(line)
     return None
 
+
 def drawPolyline(polyline,forceShape=False,num=None):
-    "returns a Part shape from a dxf polyline"
+    """Return a Part shape (Wire, Face, or Shell) from a DXF polyline.
+
+    It traverses the points of the polyline checking for straight edges,
+    and for curvatures (bulges) between two points.
+    Then it produces `Part.Edges` and `Part.Arcs`, and decides what to output
+    at the end based on the options.
+
+    Parameters
+    ----------
+    polyline : drawing.entities
+        The DXF object of type `'polyline'` or `'lwpolyline'`.
+
+    forceShape : bool, optional
+        It defaults to `False`. If it is `True` it will try to produce
+        a `Part.Wire`, otherwise it try to produce a `Draft Wire`.
+
+    num : float, optional
+        It defaults to `None`. A simple number that identifies this polyline.
+
+    Returns
+    -------
+    Part::Part2DObject or Part::TopoShape ('Wire', 'Face', 'Shell')
+        It returns `None` if it fails producing a shape.
+
+    If the polyline has a `width` and the global variable
+    `dxfRenderPolylineWidth` is set, it will try to return a face simulating
+    a thick line. If the polyline is closed, it will cut the interior loop
+    to produce the a shell.
+
+    If the polyline doesn't have curvatures, and the global variables
+    `dxfCreateDraft` or `dxfCreateSketch` are set, and `forceShape` is `False`
+    it creates a straight `Draft Wire`.
+
+    If the polyline is closed, and the global variable `dxfFillMode`
+    is set, it will return a `Part.Face`, otherwise it will return
+    a `Part.Wire`.
+
+    See also
+    --------
+    drawBlock
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     if (len(polyline.points) > 1):
         edges = []
         curves = False
@@ -514,8 +946,38 @@ def drawPolyline(polyline,forceShape=False,num=None):
                 warn(polyline,num)
     return None
 
+
 def drawArc(arc,forceShape=False):
-    "returns a Part shape from a dxf arc"
+    """Return a Part shape (Arc, Edge) from a DXF arc.
+
+    Parameters
+    ----------
+    arc : drawing.entities
+        The DXF object of type `'arc'`. The `'arc'` object is different from
+        a `'circle'` because it has different start and end angles.
+
+    forceShape : bool, optional
+        It defaults to `False`. If it is `True` it will try to produce
+        a `Part.Edge`, otherwise it tries to produce a `Draft Arc`.
+
+    Returns
+    -------
+    Part::Part2DObject or Part::TopoShape ('Edge')
+        The returned object is normally a `Draft Arc` with no face,
+        if the global variables `dxfCreateDraft` or `dxfCreateSketch` are set,
+        and `forceShape` is `False`.
+        Otherwise it produces a `Part.Edge`.
+
+        It returns `None` if it fails producing a shape.
+
+    See also
+    --------
+    drawCircle, drawBlock
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     v=vec(arc.loc)
     firstangle=round(arc.start_angle,prec())
     lastangle=round(arc.end_angle,prec())
@@ -532,8 +994,38 @@ def drawArc(arc,forceShape=False):
         warn(arc)
     return None
 
+
 def drawCircle(circle,forceShape=False):
-    "returns a Part shape from a dxf circle"
+    """Return a Part shape (Circle, Edge) from a DXF circle.
+
+    Parameters
+    ----------
+    circle : drawing.entities
+        The DXF object of type `'circle'`. The `'circle'` object is different
+        from an `'arc'` because the circle forms a full circumference.
+
+    forceShape : bool, optional
+        It defaults to `False`. If it is `True` it will try to produce
+        a `Part.Edge`, otherwise it tries to produce a `Draft Circle`.
+
+    Returns
+    -------
+    Part::Part2DObject or Part::TopoShape ('Edge')
+        The returned object is normally a `Draft Circle` with no face,
+        if the global variables `dxfCreateDraft` or `dxfCreateSketch` are set,
+        and `forceShape` is `False`.
+        Otherwise it produces a `Part.Edge`.
+
+        It returns `None` if it fails producing a shape.
+
+    See also
+    --------
+    drawArc, drawBlock
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     v = vec(circle.loc)
     curve = Part.Circle()
     curve.Radius = vec(circle.radius)
@@ -548,8 +1040,38 @@ def drawCircle(circle,forceShape=False):
         warn(circle)
     return None
 
+
 def drawEllipse(ellipse,forceShape=False):
-    "returns a Part shape from a dxf arc"
+    """Return a Part shape (Ellipse, Edge) from a DXF ellipse.
+
+    Parameters
+    ----------
+    ellipse : drawing.entities
+        The DXF object of type `'ellipse'`. The ellipse can be a full ellipse
+        or an elliptical arc.
+
+    forceShape : bool, optional
+        It defaults to `False`. If it is `True` it will try to produce
+        a `Part.Edge`, otherwise it tries to produce a `Draft Ellipse`.
+
+    Returns
+    -------
+    Part::Part2DObject or Part::TopoShape ('Edge')
+        The returned object is normally a `Draft Ellipse` with a face,
+        if the global variables `dxfCreateDraft` or `dxfCreateSketch` are set,
+        and `forceShape` is `False`.
+        Otherwise it produces a `Part.Edge`.
+
+        It returns `None` if it fails producing a shape.
+
+    See also
+    --------
+    drawArc, drawCircle
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     try:
         c = vec(ellipse.loc)
         start = round(ellipse.start_angle,prec())
@@ -579,8 +1101,25 @@ def drawEllipse(ellipse,forceShape=False):
         warn(arc)
     return None
 
+
 def drawFace(face):
-    "returns a Part face from a list of points"
+    """Return a Part face (filled) from a list of points.
+
+    It takes the points in a `face` and places them in a list,
+    then appends the first point again to the end.
+    Only in this way the shape returned appears filled.
+
+    Parameters
+    ----------
+    face : drawing.entities
+        The DXF object of type `'3dface'`.
+
+    Returns
+    -------
+    Part::TopoShape ('Face')
+        The returned object is a `Part.Face`.
+        It returns `None` if it fails producing a shape.
+    """
     pl = []
     for p in face.points:
         pl.append(vec(p))
@@ -593,8 +1132,33 @@ def drawFace(face):
         warn(face)
     return None
 
+
 def drawMesh(mesh,forceShape=False):
-    "returns a Mesh from a dxf mesh"
+    """Return a Mesh (Mesh, Shell) from a DXF mesh.
+
+    Parameters
+    ----------
+    mesh : drawing.entities
+        The DXF object of type `'polyline'` or `'lwpolyline'`
+        with `flags` of 16 (3D polygon mesh) or 64 (polyface mesh).
+
+    forceShape : bool, optional
+        It defaults to `False`. If it is `True` it will try to produce
+        a `Part.Shape` of type `'Shell'`,
+        otherwise it tries to produce a `Mesh::MeshObject`.
+
+    Returns
+    -------
+    Mesh::MeshObject or Part::TopoShape ('Shell')
+        The returned object is normally a `Mesh` if `forceShape` is `False`.
+        Otherwise it produces a `Part.Shape` of type `'Shell'`.
+
+        It returns `None` if it fails producing a shape.
+
+    See also
+    --------
+    drawBlock
+    """
     md = []
     if mesh.flags == 16:
         pts = mesh.points
@@ -639,8 +1203,29 @@ def drawMesh(mesh,forceShape=False):
         return m
     return None
 
+
 def drawSolid(solid):
-    "returns a Part shape from a dxf solid"
+    """Return a Part shape (Face) from a DXF solid.
+
+    It takes three or four points from a `solid`, if possible.
+    It adds the first point again to the end of the points list, and creates
+    a polygon, which is then used to create a face.
+
+    Parameters
+    ----------
+    solid : drawing.entities
+        The DXF object of type `'solid'`.
+
+    Returns
+    -------
+    Part::TopoShape ('Face')
+        The returned object is a `Part.Face`.
+        It returns `None` if it fails producing a shape.
+
+    See also
+    --------
+    drawBlock
+    """
     p4 = None
     p1x = rawValue(solid,10)
     p1y = rawValue(solid,20)
@@ -670,8 +1255,49 @@ def drawSolid(solid):
             warn(solid)
     return None
 
-def drawSplineIterpolation(verts,closed=False,forceShape=False,\
-        alwaysDiscretize=False):
+
+def drawSplineIterpolation(verts,closed=False,forceShape=False,
+                           alwaysDiscretize=False):
+    """Return a wire or spline, opened or closed.
+
+    Parameters
+    ----------
+    verts : Base::Vector3
+        A list of points.
+
+    closed : bool, optional
+        It defaults to `False`. If it is `True` it will create a closed
+        Wire, closed BSpline, or a filled Face.
+
+    forceShape : bool, optional
+        It defaults to `False`. If it is `True` it will try to produce
+        a `Part.Shape` of type `'Edge'` or `'Face'`.
+        Otherwise it tries to produce a `Draft Wire` or `Draft BSpline`.
+
+    alwaysDiscretize : bool, optional
+        It defaults to `False`. If it is `True` it will try to produce
+        straight lines (Wires, Edges).
+        Otherwise it will try to produce BSplines.
+
+    Returns
+    -------
+    Part::Part2DObject or Part::TopoShape ('Edge', 'Face')
+        The returned object is normally a `Draft Wire` or `Draft BSpline`,
+        if the global variables `dxfCreateDraft` or `dxfCreateSketch` are set,
+        and `forceShape` is `False`.
+        It is a `Draft Wire` if the global variables
+        `dxfDiscretizeCurves` or `alwaysDiscretize` are `True`,
+        and a `Draft BSpline` otherwise.
+
+        Otherwise it tries producing a `Part.Edge`
+        (`dxfDiscretizeCurves` or `alwaysDiscretize` are `True`)
+        or `Part.Face`
+        if `closed` and the global variable `dxfFillMode` are `True`.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
         if dxfDiscretizeCurves or alwaysDiscretize:
             ob = Draft.makeWire(verts)
@@ -692,8 +1318,37 @@ def drawSplineIterpolation(verts,closed=False,forceShape=False,\
         else:
             return sh
 
+
 def drawSplineOld(spline,forceShape=False):
-    "returns a Part Shape from a dxf spline"
+    """Return a Part Shape from a DXF spline. DEPRECATED.
+
+    It takes the vertices from the spline data,
+    considers the value from code 70 to know if the spline
+    is closed or not, and then calls
+    `drawSplineIterpolation(verts, closed, forceShape)`.
+
+    Parameters
+    ----------
+    spline : drawing.entities
+        The DXF object of type `'spline'`.
+
+    forceShape : bool, optional
+        It defaults to `False`. If it is `True` it will try to produce
+        a `Part.Shape` of type `'Edge'` or `'Face'`.
+        Otherwise it tries to produce a `Draft Wire` or `Draft BSpline`.
+
+    Returns
+    -------
+    Part::Part2DObject or Part::TopoShape ('Edge', 'Face')
+        The returned object is normally a `Draft Wire` or `Draft BSpline`
+        as returned from `drawSplineIterpolation()`.
+
+        It returns `None` if it fails producing a shape.
+
+    See also
+    --------
+    drawSplineIterpolation
+    """
     flag = rawValue(spline,70)
     if flag == 1:
         closed = True
@@ -722,10 +1377,69 @@ def drawSplineOld(spline,forceShape=False):
         warn(spline)
     return None
 
+
 def drawSpline(spline,forceShape=False):
-    """returns a Part Shape from a dxf spline
-as there is currently no Draft premitive to handle splines the result is a
-non-parametric curve"""
+    """Return a Part Shape (BSpline, Wire) from a DXF spline.
+
+    A BSpline may be defined in several ways, by knots,
+    control points, fit points, and weights.
+    The function searches all values to determine the best way
+    of building the BSpline with Draft or Part tools.
+
+    Parameters
+    ----------
+    spline : drawing.entities
+        The DXF object of type `'spline'`.
+
+    forceShape : bool, optional
+        It defaults to `False`. If it is `True` it will try to produce
+        a `Part.Shape` of type `'Wire'`.
+        Otherwise it tries to produce a `Draft BSpline`.
+
+    Returns
+    -------
+    Part::Part2DObject or Part::TopoShape ('Edge', 'Face')
+        The returned object is normally a `Draft BezCurve`
+        created with `Draft.makeBezCurve(controlpoints, Degree=degree)`,
+        if `forceShape` is `False` and there are no weights.
+
+        Otherwise it tries to return a `Part.Shape` of type `'Wire'`,
+        by first creating a Bezier curve with `Part.BezierCurve()`.
+
+        If it's impossible to create the BSpline in this way,
+        it will try to create an interpolated BSpline with
+        `drawSplineIterpolation(controlpoints)`.
+
+        If fit points exist and control points do not,
+        it will try to create an interpolated BSpline with
+        `drawSplineIterpolation(fitpoints)`.
+
+        In other cases it will try to create a `Part.Shape`
+        from a BSpline, using the available control points,
+        multiplicity vector, the kot vector, the degree,
+        the periodic data, and the weights.
+
+        It returns `None` if it fails producing a shape.
+
+    Raises
+    ------
+    ValueError
+        If there are wrong number of knots, wrong number of control points,
+        wrong number of fit points, an inconsistent rational flag, or wrong
+        number of weights.
+
+    See also
+    --------
+    drawBlock, Draft.makeBezCurve, Part.BezierCurve, drawSplineIterpolation,
+    Part.BSplineCurve.buildFromPolesMultsKnots
+
+    To do
+    ----
+    As there is currently no Draft primitive to handle splines
+    the result is a non-parametric curve.
+
+    **2019:** There is a `Draft BSpline` now, but it's not used.
+    """
     flags = rawValue(spline,70)
     closed   = (flags &  1) != 0
     periodic = (flags &  2) != 0 and False # workaround
@@ -839,8 +1553,67 @@ non-parametric curve"""
         warn(spline)
     return None
 
+
 def drawBlock(blockref,num=None,createObject=False):
-    "returns a shape from a dxf block reference"
+    """Return a Part Shape (Compound) from a DXF block reference.
+
+    It inspects the `blockref.entities` for objects of types `'line'`,
+    `'polyline'`, `'lwpolyline'`, `'arc'`, `'circle'`, `'insert'`,
+    `'solid'`, and `'spline'`.
+    If they are found they create shapes with `drawLine`,
+    `drawMesh` or `drawPolyline`, `drawArc`, `drawCircle`, `drawInsert`,
+    `drawSolid`, `drawSpline`, and adds all shapes to a list.
+    Then it makes a compound of all those shapes.
+
+    In the case of entities of type `'text'` and `'mtext'`
+    it will only process the entities if the global variable
+    `dxfImportTexts` exist, and `dxfImportLayouts` exists
+    or if the DXF code 67 doesn't indicate an empty space (empty text).
+    Then it will use `addText` and add the found text to its proper
+    layer.
+
+    Parameters
+    ----------
+    blockref : drawing.blocks.data
+        The DXF block data.
+
+    num : float, optional
+        It defaults to `None`. A simple number that identifies
+        the given `blockref`.
+
+    createObject : bool, optional
+        It defaults to `False`. If it is `True` it will try to produce
+        and return a `'Part::Feature'` with the compound
+        as its shape attribute.
+        Otherwise, just return the `Part.Compound`.
+
+    Returns
+    -------
+    Part::TopoShape ('Compound') or Part::Feature
+        The returned object is normally a `Part.Compound`
+        created from the list of all `Part.Shapes` created from
+        the `blockref` entities, if `createObject` is `False`.
+        Otherwise, it will return a `'Part::Feature'` document object
+        with the compound as its shape attribute.
+
+        In the first case, it will add the compound shape
+        to the global dictionary `blockshapes`.
+        In the latter case, it will add the `'Part::Feature'` object
+        to the global dictionary `blockobjects`.
+
+        It returns `None` if the global variable `dxfStarBlocks`
+        doesn't exist, if the `blockref.entities.data` is empty,
+        or if it fails producing the compound shape.
+
+    See also
+    --------
+    `drawLine`, `drawMesh`, `drawPolyline`, `drawArc`, `drawCircle`,
+    `drawInsert`, `drawSolid`, `drawSpline`, `addText`.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     if not dxfStarBlocks:
         if blockref.name[0] == '*':
             return None
@@ -899,7 +1672,62 @@ def drawBlock(blockref,num=None,createObject=False):
         return shape
     return None
 
+
 def drawInsert(insert,num=None,clone=False):
+    """Return a Part Shape (Compound, Clone) from a DXF insert.
+
+    It searches for `insert.block` in `blockobjects`
+    or `blockshapes`, and returns a clone or a copy of the compound,
+    with transformations applied: rotation, translation (movement),
+    and scaling.
+
+    If the global variable `dxfImportTexts` is available
+    it will check the attributes of `insert` and add those text attributes
+    to their own layers with `addText`.
+
+    Parameters
+    ----------
+    insert : drawing.entities
+        The DXF object of type `'insert'`.
+
+    num : float, optional
+        It defaults to `None`. A simple number that identifies
+        the given block being drawn, if it is not a clone.
+
+    clone : bool, optional
+        It defaults to `False`. If it is `True` it will try to produce
+        and return a `Draft Clone` of the `'insert.block'` contained
+        in the global dictionary `blockobjects`.
+
+        Otherwise, it will try to return a copy of the shape
+        of the `'insert.block'` contained in the global dictionary
+        `blockshapes`, or created from the `drawing.blocks.data`
+        with `drawBlock()`.
+
+    Returns
+    -------
+    Part::TopoShape ('Compound') or
+    Part::Part2DObject or Part::PartFeature (`Draft Clone`)
+        The returned object is normally a copy of the `Part.Compound`
+        extracted from `blockshapes` or created with `drawBlock()`.
+
+        If `clone` is `True` then it will try returning
+        a `Draft Clone` from the `'insert.block'` contained
+        in the global dictionary `blockobjects`.
+        It returns `None` if `insert.block` isn't in `blockobjects`.
+
+        In any of these two cases, it will try to apply the
+        insert transformations: rotation, translation (movement),
+        and scaling.
+
+    See also
+    --------
+    drawBlock
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     if dxfImportTexts:
         attrs = attribs(insert)
         for a in attrs:
@@ -946,8 +1774,29 @@ def drawInsert(insert,num=None,clone=False):
             return shape
     return None
 
+
 def drawLayerBlock(objlist):
-    "draws a Draft block with the given shapes or objects"
+    """Return a Draft Block (compound) from the given object list.
+
+    Parameters
+    ----------
+    objlist : list
+        A list of Draft objects or Part.shapes.
+
+    Returns
+    -------
+    Part::Part2DObject or Part::TopoShape ('Compound')
+        If the global variables `dxfCreateDraft` or `dxfCreateSketch` are set,
+        and no element in `objlist` is a `Part.Shape`,
+        it will try to return a `Draft Block`.
+        Otherwise, it will try to return a `Part.Compound`.
+
+        It returns `None` if it fails producing a shape.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     isObj = True
     for o in objlist:
         if isinstance(o,Part.Shape):
@@ -965,8 +1814,30 @@ def drawLayerBlock(objlist):
             pass
     return obj
 
+
 def attribs(insert):
-    "checks if an insert has attributes, and returns the values if yes"
+    """Check if an insert has attributes, and return the values if positive.
+
+    It checks the `drawing.entities.data` for the `insert`,
+    and saves the index of the element.
+    Then it iterates again looking for entities with an `'attrib'`,
+    collecting the entities in a list.
+
+    Parameters
+    ----------
+    insert : drawing.entities
+        The DXF object of type `'insert'`.
+
+    Returns
+    -------
+    list
+        It returns a list with the entitites that have `'attrib'` data,
+        until `'seqend'` is found.
+
+        It returns an empty list `[]`, if DXF code 66 ("Entities follow")
+        is different from 1, or if the `insert` is not found
+        in `drawing.entities.data`.
+    """
     atts = []
     if rawValue(insert,66) != 1: return []
     index = None
@@ -984,8 +1855,36 @@ def attribs(insert):
             atts.append(ent)
             j += 1
 
+
 def addObject(shape,name="Shape",layer=None):
-    "adds a new object to the document with passed arguments"
+    """Adds a new object to the document, with the given name and layer.
+
+    Parameters
+    ----------
+    shape : Part.Shape or Part::Feature
+        The simple Part.Shape or Draft object previously created
+        from an entity in a DXF file.
+
+    name : str, optional
+        It defaults to "Shape". The name of the new document object.
+
+    layer : App::FeaturePython or App::DocumentObjectGroup, optional
+        It defaults to `None`.
+        The `Draft Layer` (`App::FeaturePython`)
+        or simple group (`App::DocumentObjectGroup`)
+        to which the new object will be added.
+
+    Returns
+    -------
+    Part::Feature or Part::Part2DObject
+        If the `shape` is a simple `Part.Shape`, it will be encapsulated
+        inside a `Part::Feature` object and this will be returned.
+        Otherwise, it is assumed it is already a Draft object
+        (`Part::Part2DObject`) and will just return this.
+
+        It applies the text and line color by calling `formatObject()`
+        before returning the new object.
+    """
     if isinstance(shape,Part.Shape):
         newob=doc.addObject("Part::Feature",name)
         newob.Shape = shape
@@ -993,15 +1892,52 @@ def addObject(shape,name="Shape",layer=None):
         newob = shape
     if layer:
         lay=locateLayer(layer)
+        # For old style layers, which are just groups
         if hasattr(lay,"addObject"):
             lay.addObject(newob)
+        # For new Draft Layers
         elif hasattr(lay,"Proxy") and hasattr(lay.Proxy,"addObject"):
             lay.Proxy.addObject(lay,newob)
     formatObject(newob)
     return newob
 
+
 def addText(text,attrib=False):
-    "adds a new text to the document"
+    """Add a new Draft Text object to the document.
+
+    It creates a `Draft Text` from the `text` entity,
+    and adds the new object to its indicated layer,
+    creating it if it doesn't exist.
+    It also applies its rotation, position, justification
+    ('center' or 'right'), and color.
+
+    If the graphical interface is available, together with the Draft toolbar,
+    as well as the global variable `dxfUseStandardSize`, it will
+    use the toolbar's indicated font size.
+    Otherwise, it will use the text's height scaled by the value of
+    the global variable `TEXTSCALING`.
+
+    Parameters
+    ----------
+    text : drawing.entities
+        The DXF object of type `'text'` or `'mtext'`.
+
+    attrib : bool, optional
+        It defaults to `False`. If `True` it determines
+        the layer name from the DXF code 8, the text value from code 1,
+        the position from codes 10, 20, 30, the height from code 40,
+        the roation from code 50, and assigns the name `'Attribute'`.
+        Otherwise, it assumes these values from `text`
+        and sets the name to `'Text'`.
+
+    See also
+    --------
+    locateLayer, drawBlock, Draft.makeText
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     if attrib:
         lay = locateLayer(rawValue(text,8))
         val = rawValue(text,1)
@@ -1078,16 +2014,85 @@ def addText(text,attrib=False):
             #newob.ViewObject.DisplayMode = "World"
             formatObject(newob,text)
 
+
 def addToBlock(obj,layer):
-    "adds given shape to the layer dict"
+    """Add the given object to the layer in the global dictionary.
+
+    It searches for `layer` in the global dictionary `layerBlocks`.
+    If found, it appends the `obj` to the `layer`;
+    otherwise, it adds the `layer` to `layerBlocks` first,
+    and then adds `obj`.
+
+    Parameters
+    ----------
+    obj : Part.Shape or App::DocumentObject
+        Any shape or Draft object previously created from a DXF file.
+    layer : str
+        The name of a layer to which `obj` is added.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     if layer in layerBlocks:
         layerBlocks[layer].append(obj)
     else:
         layerBlocks[layer] = [obj]
 
+
 def processdxf(document,filename,getShapes=False,reComputeFlag=True):
-    "Recompute causes OpenSCAD import to loop, supply flag to make conditional"
-    "this does the translation of the dxf contents into FreeCAD Part objects"
+    """Process the DXF file, creating Part objects in the document.
+
+    If the `dxfReader` module is not available run `getDXFlibs()`
+    to get the required libraries and `readPreferences()`.
+
+    It defines the global variables `drawing`, `layers`, `doc`,
+    `blockshapes`, `blockobjects`, `badobjects`, `layerBlocks`.
+    The read data is placed in the object `drawing`.
+
+    It iterates over `drawing.tables` to find tables of type `'layer'`,
+    and adds them to the document considering its color and drawing style.
+    Then it iterates over the `drawing.entities` processing the most common
+    drawing types, that include `'line'`, `'lwpolyline'`, `'polyline'`,
+    `'arc'`, `'circle'`, `'solid'`, `'spline'`, `'ellipse'`, `'mtext'`,
+    `'text'`, and `'3dface'`.
+    If `getShapes` is `False` it will additionally process the types
+    `'dimension'`, `'point'`, `'leader'`, `'hatch'`, and `'insert'`.
+
+    Parameters
+    ----------
+    document : App::Document
+        A document object opened in which to create the new Part shapes.
+
+    filename : str
+        The path to the DXF file to process.
+
+    getShapes : bool, optional
+        It defaults to `False`. If it is `True` it will try creating
+        simple `Part Shapes` instead of Draft objects,
+        and will immediately return the list of the most common shapes
+        without processing the entities of types `'dimension'`, `'point'`,
+        `'leader'`, `'hatch'`, and `'insert'`.
+
+    reComputeFlag : bool, optional
+        It defaults to `True`, in which case it recomputes the document
+        after finishing processing of the entities.
+        Otherwise, it skips the recompute.
+
+        The recompute causes OpenSCAD import to loop, so this flag
+        can be set to `False` to prevent this.
+
+    Returns
+    -------
+    list of `Part.Shapes`
+        It returns `None` if the edges (lines, polylines, arcs)
+        are above 100, and the user decides to interrupt (graphically)
+        the process of joining them.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     global drawing # for debugging - so drawing is still accessible to python after the script ran
     if not dxfReader:
         getDXFlibs()
@@ -1109,8 +2114,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
     sketch = None
     shapes = []
 
-    # create layers
-    
+    # Create layers
     for table in drawing.tables.get_type("table"):
         for layer in table.get_type("layer"):
             name = layer.name
@@ -1125,8 +2129,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                 drawstyle = "Dashdot"
             locateLayer(name,color,drawstyle)
 
-    # drawing lines
-
+    # Draw lines
     lines = drawing.entities.get_type("line")
     if lines: FreeCAD.Console.PrintMessage("drawing "+str(len(lines))+" lines...\n")
     for line in lines:
@@ -1154,8 +2157,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                     newob = addObject(shape,"Line",line.layer)
                     if gui: formatObject(newob,line)
 
-    # drawing polylines
-
+    # Draw polylines
     pls = drawing.entities.get_type("lwpolyline")
     pls.extend(drawing.entities.get_type("polyline"))
     polylines = []
@@ -1201,8 +2203,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                     if gui: formatObject(newob,polyline)
             num += 1
 
-    # drawing arcs
-
+    # Draw arcs
     arcs = drawing.entities.get_type("arc")
     if arcs: FreeCAD.Console.PrintMessage("drawing "+str(len(arcs))+" arcs...\n")
     for arc in arcs:
@@ -1230,8 +2231,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                     newob = addObject(shape,"Arc",arc.layer)
                     if gui: formatObject(newob,arc)
 
-    # joining lines, polylines and arcs if needed
-
+    # Join lines, polylines and arcs if needed
     if dxfJoin and shapes:
         FreeCAD.Console.PrintMessage("Joining geometry...\n")
         edges = []
@@ -1254,8 +2254,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
         for s in shapes:
             newob = addObject(s)
 
-    # drawing circles
-
+    # Draw circles
     circles = drawing.entities.get_type("circle")
     if circles: FreeCAD.Console.PrintMessage("drawing "+str(len(circles))+" circles...\n")
     for circle in circles:
@@ -1283,8 +2282,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                     newob = addObject(shape,"Circle",circle.layer)
                     if gui: formatObject(newob,circle)
 
-    # drawing solids
-
+    # Draw solids
     solids = drawing.entities.get_type("solid")
     if solids: FreeCAD.Console.PrintMessage("drawing "+str(len(solids))+" solids...\n")
     for solid in solids:
@@ -1303,8 +2301,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                     newob = addObject(shape,"Solid",lay)
                     if gui: formatObject(newob,solid)
 
-    # drawing splines
-
+    # Draw splines
     splines = drawing.entities.get_type("spline")
     if splines: FreeCAD.Console.PrintMessage("drawing "+str(len(splines))+" splines...\n")
     for spline in splines:
@@ -1323,8 +2320,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                     newob = addObject(shape,"Spline",lay)
                     if gui: formatObject(newob,spline)
 
-    # drawing ellipses
-
+    # Draw ellipses
     ellipses = drawing.entities.get_type("ellipse")
     if ellipses: FreeCAD.Console.PrintMessage("drawing "+str(len(ellipses))+" ellipses...\n")
     for ellipse in ellipses:
@@ -1343,8 +2339,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                     newob = addObject(shape,"Ellipse",lay)
                     if gui: formatObject(newob,ellipse)
 
-    # drawing texts
-
+    # Draw texts
     if dxfImportTexts:
         texts = drawing.entities.get_type("mtext")
         texts.extend(drawing.entities.get_type("text"))
@@ -1356,8 +2351,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
 
     else: FreeCAD.Console.PrintMessage("skipping texts...\n")
 
-    # drawing 3D objects
-
+    # Draw 3D objects
     faces3d = drawing.entities.get_type("3dface")
     if faces3d: FreeCAD.Console.PrintMessage("drawing "+str(len(faces3d))+" 3dfaces...\n")
     for face3d in faces3d:
@@ -1381,13 +2375,11 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
             newob.Mesh = me
             if gui: formatObject(newob,mesh)
 
-    # end of shape-based objects, return if we are just getting shapes
-
+    # End of shape-based objects, return if we are just getting shapes
     if getShapes and shapes:
         return(shapes)
 
-    # drawing dims
-
+    # Draw dimensions
     if dxfImportTexts:
         dims = drawing.entities.get_type("dimension")
         FreeCAD.Console.PrintMessage("drawing "+str(len(dims))+" dimensions...\n")
@@ -1463,8 +2455,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
     else:
         FreeCAD.Console.PrintMessage("skipping dimensions...\n")
 
-    # drawing points
-
+    # Draw points
     if dxfImportPoints:
         points = drawing.entities.get_type("point")
         if points: FreeCAD.Console.PrintMessage("drawing "+str(len(points))+" points...\n")
@@ -1486,8 +2477,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
     else:
         FreeCAD.Console.PrintMessage("skipping points...\n")
 
-    # drawing leaders
-
+    # Draw leaders
     if dxfImportTexts:
         leaders = drawing.entities.get_type("leader")
         if leaders:
@@ -1504,8 +2494,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
     else:
         FreeCAD.Console.PrintMessage("skipping leaders...\n")
 
-    # drawing hatches
-
+    # Draw hatches
     if dxfImportHatches:
         hatches = drawing.entities.get_type("hatch")
         if hatches:
@@ -1534,8 +2523,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
     else:
         FreeCAD.Console.PrintMessage("skipping hatches...\n")
 
-    # drawing blocks
-
+    # Draw blocks
     inserts = drawing.entities.get_type("insert")
     if not dxfStarBlocks:
         FreeCAD.Console.PrintMessage("skipping *blocks...\n")
@@ -1567,8 +2555,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                     if gui: formatObject(newob,insert)
             num += 1
 
-    # make blocks, if any
-
+    # Make blocks, if any
     if dxfMakeBlocks:
         print("creating layerblocks...")
         for k,l in layerBlocks.items():
@@ -1577,15 +2564,13 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
                 newob = addObject(shape,k)
     del layerBlocks
 
-    # hide block objects, if any
-
+    # Hide block objects, if any
     for k,o in blockobjects.items():
         if o.ViewObject:
             o.ViewObject.hide()
     del blockobjects
 
-    # finishing
-
+    # Finishing
     print("done processing")
 
     if reComputeFlag :
@@ -1598,13 +2583,50 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
     del doc
     del blockshapes
 
+
 def warn(dxfobject,num=None):
-    "outputs a warning if a dxf object couldn't be imported"
+    """Print a warning that the DXF object couldn't be imported.
+
+    Also add the object to the global list `badobjects`.
+
+    Parameters
+    ----------
+    dxfobject : drawing.entities
+        The DXF object that couldn't be imported.
+
+    num : float, optional
+        It defaults to `None`. A simple number that identifies
+        the given `dxfobject`.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     print("dxf: couldn't import ", dxfobject, " (",num,")")
     badobjects.append(dxfobject)
 
+
 def open(filename):
-    "called when freecad opens a file."
+    """Open a file and return a new document.
+
+    If the global variable `dxfUseLegacyImporter` exists,
+    it will process `filename` with `processdxf`.
+    Otherwise, it will use the `Import` module, `Import.readDXF(filename)`.
+
+    Parameters
+    ----------
+    filename : str
+        The path to the file to open.
+
+    Returns
+    -------
+    App::Document
+        The new document object with objects and shapes built from `filename`.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     readPreferences()
     if dxfUseLegacyImporter:
         getDXFlibs()
@@ -1632,8 +2654,26 @@ def open(filename):
         import Import
         Import.readDXF(filename)
 
+
 def insert(filename,docname):
-    "called when freecad imports a file"
+    """Import a file into the specified document.
+
+    Parameters
+    ----------
+    filename : str
+        The path to the file to import.
+
+    docname : str
+        The name of an `App::Document` instance into which
+        the objects and shapes from `filename` will be imported.
+
+        If the document doesn't exist, it is created
+        and set as the active document.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     readPreferences()
     try:
         doc=FreeCAD.getDocument(docname)
@@ -1659,8 +2699,29 @@ def insert(filename,docname):
         import Import
         Import.readDXF(filename)
 
+
 def getShapes(filename):
-    "reads a dxf file and returns a list of shapes from its contents"
+    """Read a DXF file, and return a list of shapes from its contents.
+
+    This is an auxiliary function that processes the DXF file to list its
+    contents but doesn't open or create a new document.
+
+    Parameters
+    ----------
+    filename : str
+        The path to the file to read.
+
+    Returns
+    -------
+    list of `Part.Shapes`
+        It returns `None` if the edges (lines, polylines, arcs)
+        are above 100, and the user decides to interrupt (graphically)
+        the process of joining them.
+
+    See also
+    --------
+    open, insert
+    """
     if dxfReader:
         return processdxf(None,filename,getShapes=True)
 
@@ -1668,6 +2729,41 @@ def getShapes(filename):
 # EXPORT ########################################################################
 
 def projectShape(shape,direction,tess=None):
+    """Project shape in a given direction.
+
+    It uses `Drawing.projectEx(shape, direction)`
+    to return a list with all the parts of the projection.
+    The first five elements are added to a list of edges,
+    which are then put in a `Part.Compound`.
+
+    Parameters
+    ----------
+    shape : Part.Shape
+        Any shape previously created from a DXF file.
+
+    direction : Base::Vector3
+        The direction of the projection.
+
+    tess : list, optional
+        It defaults to `None`. If it is available, it is a list with
+        two elements, `[True, segment_length]` which are used by
+        `DraftGeomUtils.cleanProjection(compound, tess[0], tess[1])`
+        to create a valid compound of edges.
+
+        Otherwise, a simple `Part.Compound` is produced.
+
+    Returns
+    -------
+    Part::TopoShape ('Compound')
+        A `Part.Compound` of edges.
+
+        It returns the original `shape` if it fails producing the projection
+        in the given `direction`.
+
+    See also
+    --------
+    Drawing.projectEx, DraftGeomUtils.cleanProjection
+    """
     import Drawing
     edges = []
     try:
@@ -1686,8 +2782,28 @@ def projectShape(shape,direction,tess=None):
             return Part.makeCompound(edges)
             #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
+
 def getArcData(edge):
-    "returns center, radius, start and end angles of a circle-based edge"
+    """Return center, radius, start, and end angles of a circle-based edge.
+
+    Parameters
+    ----------
+    edge : Part::TopoShape ('Edge')
+        An edge representing a circular arc, either open or closed.
+
+    Returns
+    -------
+    (tuple, float, float, float)
+        It returns a tuple of four values; the first value is a tuple
+        with the cordinates of the center `(x, y, z)`;
+        the other three represent the magnitude of the radius,
+        and the start and end angles in degrees that define the arc.
+
+    (tuple, float, 0, 0)
+        If the number of vertices in the `edge` is only one, only the center
+        point exists, so it's a full circumference; in this case, both
+        angles are zero.
+    """
     ce = edge.Curve.Center
     radius = edge.Curve.Radius
     if len(edge.Vertexes) == 1:
@@ -1706,6 +2822,8 @@ def getArcData(edge):
         # we can use Z check since arcs getting here will ALWAYS be in XY plane
         # Z can be 0 if the arc is 180 deg
         #if (v1.cross(v2).z >= 0) or (edge.Curve.Axis.z > 0):
+        # Calculates the angles of the first and last points
+        # in the circular arc, with respect to the global X axis.
         if edge.Curve.Axis.z > 0:
             #clockwise
             ang1 = -DraftVecUtils.angle(v1)
@@ -1727,8 +2845,25 @@ def getArcData(edge):
         return DraftVecUtils.tup(ce), radius, math.degrees(ang1),\
                 math.degrees(ang2)
 
+
 def getSplineSegs(edge):
-    "returns an array of vectors from a Spline or Bezier edge"
+    """Return a list of points from an edge that is a spline or bezier curve.
+
+    Parameters
+    ----------
+    edge : Part::TopoShape ('Edge')
+        An edge representing a spline or bezier curve.
+
+    Returns
+    -------
+    list of Base::Vector3
+        It returns a list with the points that form the curve.
+        It returns the point in `edge.FirstParameter`,
+        all the intermediate points, and the point in `edge.LastParameter`.
+
+        If the `segmentlenth` variable is zero in the parameters database,
+        then it only returns the first and the last point of the `edge`.
+    """
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     seglength = params.GetFloat("maxsegmentlength",5.0)
     points = []
@@ -1747,8 +2882,66 @@ def getSplineSegs(edge):
         points.append(edge.valueAt(edge.LastParameter))
     return points
 
+
 def getWire(wire,nospline=False,lw=True,asis=False):
-    "returns an array of dxf-ready points and bulges from a wire"
+    """Return a list of DXF ready points and bulges from a wire.
+
+    It builds a list of points from the edges of a `wire`.
+    If the edges are circular arcs, the "bulge" of that edge is calculated,
+    for other cases, the bulge is considered zero.
+
+    Parameters
+    ----------
+    wire : Part::TopoShape ('Wire')
+        A shape representing a wire.
+
+    nospline : bool, optional
+        It defaults to `False`.
+        If it is `True`, the edges of the wire are not considered as
+        being one of `'BSplineCurve'`, `'BezierCurve'`, or `'Ellipse'`,
+        and a simple point is added to the list.
+        Otherwise, `getSplineSegs(edge)` is used to extract
+        the points and add them to the list.
+
+    lw : bool, optional
+        It defaults to `True`. If it is `True` it assumes the `wire`
+        is a `'lwpolyline'`.
+        Otherwise, it assumes it is a `'polyline'`.
+
+    asis : bool, optional
+        It defaults to `False`. If it is `True`, it just returns
+        the points of the vertices of the `wire`, and considers the bulge
+        is zero.
+
+        Otherwise, it processes the edges of the `wire` and calculates
+        the bulge of the edges if they are of type `'Circle'`.
+        For types of edges that are `'BSplineCurve'`, `'BezierCurve'`,
+        or `'Ellipse'`, the bulge is zero
+
+    Returns
+    -------
+    list of tuples
+        It returns a list of tuples ``[(...), (...), ...]``
+        where each tuple indicates a point with additional information
+        besides the coordinates.
+        Two types of tuples may be returned.
+
+    [(float, float, float, None, None, float), ...]
+        When `lw` is `True` (`'lwpolyline'`)
+        the first three values represent the coordinates of the point,
+        the next two are `None`, and the last value is the bulge.
+
+    [((float, float, float), None, [None, None], float), ...]
+        When `lw` is `False` (`'polyline'`)
+        the first element is a tuple of three values that indicate
+        the coordinates of the point, the next element is `None`,
+        the next element is a list of two `None` values,
+        and the last element is the value of the bulge.
+
+    See also
+    --------
+    calcBulge
+    """
     def fmt(v,b=0.0):
         if lw:
             # LWpolyline format
@@ -1787,14 +2980,108 @@ def getWire(wire,nospline=False,lw=True,asis=False):
         # print("wire verts: ",points)
     return points
 
+
 def getBlock(sh,obj,lwPoly=False):
-    "returns a dxf block with the contents of the object"
+    """Return a DXF block with the contents of the object.
+
+    It creates a `block` object using `dxfLibrary.Block`,
+    and then writes the given shape with
+    `writeShape(sh, obj, block, lwPoly)`.
+
+    Parameters
+    ----------
+    sh : Part::TopoShape
+        Any shape in the document.
+
+    obj : App::DocumentObject
+        Any object in the document.
+
+    lwPoly : bool, optional
+        It defaults to `False`. If it is `True` it will write
+        a `'lwpolyline'`.
+        Otherwise, it will be a `'polyline'`.
+
+    Returns
+    -------
+    dxfLibrary.Block
+        The block of data with the given `sh` shape and `obj` object.
+    """
     block = dxfLibrary.Block(name=obj.Name,layer=getStrGroup(obj))
     writeShape(sh,obj,block,lwPoly)
     return block
 
+
 def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False,layer=None,color=None,asis=False):
-    "writes the object's shape contents in the given dxf object"
+    """Write the object's shape contents in the given DXF object.
+
+    Iterates over the wires (polylines) and lone edges of `sh`.
+    Then it creates DXF object depending of the type of wire,
+    and adds those objects to the `dxfobject` list.
+
+    If the wire only has one edge and it is of type `'Circle'`
+    it will create an object of type `dxfLibrary.Circle` or `dxfLibrary.Arc`.
+    In other cases, it will try creating objects of type
+    `dxfLibrary.LwPolyLine` or `dxfLibrary.PolyLine`.
+
+    When parsing lone edges it will approximate single closed edges of type
+    `'BSplineCurve'` or `'BezierCurve'` with a `dxfLibrary.Circle`.
+    In the case of edges of type `Ellipse`, it can approximate
+    the edge as a `dxfLibrary.PolyLine`, depending on the value
+    of `'DiscretizeEllipses'` in the parameter database.
+    Otherwise it creates an object of type `dxfLibrary.Ellipse`.
+
+    For other lone edges, they are treated as lines,
+    so they create an object of type `linesdxfLibrary.Line`.
+
+    Parameters
+    ----------
+    sh : Part::TopoShape
+        Any shape in the document.
+
+    ob : App::DocumentObject
+        Any object in the document.
+
+    dxfobject : dxfLibrary.Drawing
+        An object which will be populated with DXF objects created
+        from `sh.Wires` and `sh.Edges`.
+
+    nospline : bool, optional
+        It defaults to `False`.
+        If it is `True`, the edges of the wire are not considered as
+        being one of `'BSplineCurve'`, `'BezierCurve'`, or `'Ellipse'`,
+        and simple points are used to build the new object with
+        `getWire(wire, nospline=True, asis=asis)`.
+
+    lwPoly : bool, optional
+        It defaults to `False`. If it is `True` it will try producing
+        a `dxfLibrary.LwPolyLine`, instead of a `dxfLibrary.PolyLine`.
+
+    layer : str, optional
+        It defaults to `None`. It is the name of the layer or group where `ob`
+        is contained. If it is `None`, `getStrGroup(ob)` is called to search
+        for the layer's name that contains `ob`.
+        The created object is placed in this layer.
+
+    color : int, optional
+        It defaults to `None`. It is the AutoCAD color index (ACI)
+        closest to `ob`'s color obtained with `getACI(ob)`.
+        The created object uses this color.
+
+    asis : bool, optional
+        It defaults to `False`. If it is `True`, it just extracts
+        the edges of the wire as is, and creates the `'lwpolyline'`
+        or `'polyline'` with the simple points returned by
+        `getWire(wire, nospline, asis=True)`.
+
+        Otherwise, the edges are sorted, and then creates
+        more complex shapes with `getWire(wire, nospline, asis=False)`.
+
+    See also
+    --------
+    getWire, getStrGroup, getACI, dxfLibrary.Circle, dxfLibrary.Arc,
+    dxfLibrary.LwPolyLine, dxfLibrary.PolyLine, dxfLibrary.Ellipse,
+    dxfLibrary.Line
+    """
     processededges = []
     if not layer:
         layer=getStrGroup(ob)
@@ -1899,8 +3186,31 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False,layer=None,color=None
                                                      color=color,
                                                      layer=layer))
 
+
 def writeMesh(ob,dxf):
-    "export a shape as a polyface mesh"
+    """Write an object's shape as a polyface mesh in the given DXF list.
+
+    It tessellates the `ob.Shape` with a tolerance of 0.5,
+    to produce mesh data, that is, lists of vertices and face indices:
+    ``([ point1, point2, ...], [(face1 indices), (face2 indices), ...])``
+
+    The points and faces are extracted, and used with
+    `dxfLibrary.PolyLine` to produce a polyface mesh, that is added
+    to the `dxf` object.
+
+    Parameters
+    ----------
+    ob : App::DocumentObject
+        Any object in the document.
+
+    dxf : dxfLibrary.Drawing
+        An object which will be populated with a DXF polyface mesh
+        created from `ob.Shape`.
+
+    See also
+    --------
+    dxfLibrary.Drawing, dxfLibrary.PolyLine, Part.Shape.tessellate
+    """
     meshdata = ob.Shape.tessellate(0.5)
     # print(meshdata)
     points = []
@@ -1914,7 +3224,56 @@ def writeMesh(ob,dxf):
                                          64, color=getACI(ob),
                                          layer=getGroup(ob)))
 
+
 def writePanelCut(ob,dxf,nospline,lwPoly,parent=None):
+    """Create an object's outline and add it to the given DXF list.
+
+    Given an object `ob` that contains an outline in its proxy object,
+    it tries obtaining the outline `outl`, the inline `inl`, and a `tag`.
+    Then tries creating each shape using the `parent` object as base
+    (or `ob` itself), and placing the result in the `dxf` list.
+
+    For `outl` it places the result in an `'Outlines'` layer of color index 5
+    (blue).
+    For `intl`, if it exists, it places the result in a `'Cuts'` layer
+    of color index 4 (light blue).
+    For `tag`, if it exists, it places the result in a `'Tags'` layer
+    of color index 2 (yellow).
+    ::
+        writeShape(outl, parent, dxf, nospline, lwPoly, ...)
+        writeShape(inl, parent, dxf, nospline, lwPoly, ...)
+        writeShape(tag, parent, dxf, nospline, lwPoly, ...)
+
+    Parameters
+    ----------
+    ob : App::DocumentObject
+        Any object in the document.
+
+    dxf : dxfLibrary.Drawing
+        An object which will be populated with a DXF object created
+        from `writeShape()`.
+
+    nospline : bool
+        If it is `True`, the edges of the wire are not considered as
+        being one of `'BSplineCurve'`, `'BezierCurve'`, or `'Ellipse'`,
+        and simple points are used to build the new shape with
+        `writeShape()`.
+
+    lwPoly : bool
+        If it is `True` it will try producing
+        a `dxfLibrary.LwPolyLine`, instead of a `dxfLibrary.PolyLine`,
+        by using `writeShape()`.
+
+    parent : App::DocumentObject, optional
+        It defaults to `None`.
+        If it exists, its `Base::Placement` is used to modify the
+        Placement of the output object and its tag.
+        Otherwise, `ob` is also used as the `parent`.
+
+    See also
+    --------
+    writeShape
+    """
     if not hasattr(ob.Proxy,"outline"):
         ob.Proxy.execute(ob)
     if hasattr(ob.Proxy,"outline"):
@@ -1957,13 +3316,48 @@ def writePanelCut(ob,dxf,nospline,lwPoly,parent=None):
             #    pts = [(v.X,v.Y,v.Z) for v in w.Vertexes]
             #    dxf.append(dxfLibrary.Line(pts,color=getACI(ob),layer="Tags"))
 
+
 def getStrGroup(ob):
-    """gets a string version of the group or layer name"""
+    """Get a string version of the group or layer that contains the object.
+
+    Parameters
+    ----------
+    ob : App::DocumentObject
+        Any object in the document.
+
+    Returns
+    -------
+    str
+        The name of the layer in capital letters,
+        as the DXF R12 format seems to favor this style.
+        ::
+            return getStr(getGroup(ob)).upper()
+
+        By calling `getStr()`, we make sure the layer has a valid
+        utf8 or ascii name.
+    """
     l = getGroup(ob)
     return getStr(l).upper() #DXF R12 seems to like its layers capitalized...
 
+
 def getStr(l):
-    """make sure the given text is a valid string in both py2 and py3"""
+    """Return a string that is valid in both Python 2 and 3.
+
+    If Python 2 is used, it tries to encode the string into ascii,
+    replacing characters as necessary, for example,
+    accented characters.
+
+    Parameters
+    ----------
+    l : str
+        Any string either in Python 2 or 3.
+
+    Returns
+    -------
+    str
+        The same `l` string if Python 3,
+        or ascii encoded if Python 2 is used.
+    """
     if six.PY2:
         if isinstance(l,six.text_type):
             # dxf R12 files are rather over-sensitive with utf8...
@@ -1979,8 +3373,69 @@ def getStr(l):
 
 
 def export(objectslist,filename,nospline=False,lwPoly=False):
+    """Export a DXF file into the specified filename.
 
-    "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs. lwPoly=True is for OpenSCAD DXF"
+    If will read the preferences. If the global variable
+    `dxfUseLegacyExporter` exists, it will try using the `Import` module
+    to write the DXF file.
+    ::
+        Import.writeDXFObject(objectslist, filename, version, lwPoly)
+
+    Where `version` is 14, or 12 if `nospline` is `True`.
+
+    Otherwise it will try to use the DXF export libraries
+    by running `getDXFlibs()`.
+
+    Iterating over all objects it writes shapes individually
+    with `writeShape()`, looking for types `'PanelSheet'`, `'PanelCut'`,
+    `'Axis'`, `'Annotation'`, `'DraftText'`, `'Dimension'`.
+    For objects derived from `'Part::Feature'` it may use `writeMesh()`
+    depending on the parameter `'dxfmesh'`, or it may project the object
+    in the camera view, depending on the parameter `'dxfproject'`.
+
+    Parameters
+    ----------
+    objectslist : list of App::DocumentObject
+        A list with all objects that will be exported.
+        If any object of the given list is a group, its contents are appended
+        to the export list.
+
+        If the list only contains an `'ArchSectionView'` object
+        it will use its `getDXF()` method to provide the DXF information
+        to write into `filename`.
+
+        If the list only contains a `'Drawing::FeaturePage'` 
+        or a `'TechDraw::DrawPage'` object it will use `exportPage()`
+        to produce the DXF file.
+
+    filename : str
+        The path of the new DXF file.
+
+    nospline : bool, optional
+        It defaults to `False`.
+        If it is `True`, the BSplines are exported as straight segments,
+        when passing the objects to `writeShape()`.
+
+    lwPoly : bool, optional.
+        It defaults to `False`.
+        If it is `True` it will try producing
+        a `dxfLibrary.LwPolyLine`, instead of a `dxfLibrary.PolyLine`,
+        by using `writeShape()`.
+        This is required to produce an OpenSCAD DXF.
+
+    Returns
+    -------
+    It returns `None` if the export is succesful.
+
+    See also
+    --------
+    dxfLibrary.Drawing, readPreferences, getDXFlibs, errorDXFLib,
+    writeShape, writeMesh, Import.writeDXFObject
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     readPreferences()
     if not dxfUseLegacyExporter:
         import Import
@@ -2010,7 +3465,6 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                 if not ob in nlist:
                     nlist.append(ob)
         exportList = nlist
-
 
         if (len(exportList) == 1) and (Draft.getType(exportList[0]) == "ArchSectionView"):
 
@@ -2218,8 +3672,11 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
     else:
 
         errorDXFLib(gui)
-        
+
+
 class dxfcounter:
+    """DXF counter class to count the number of entities.
+    """
     def __init__(self):
         self.count = 10000 # this leaves 10000 entities for the template...
     def incr(self,matchobj):
@@ -2227,8 +3684,33 @@ class dxfcounter:
         #print format(self.count,'02x')
         return format(self.count,'02x')
 
+
 def exportPage(page,filename):
-    "special export for pages"
+    """Export a page created with Drawing or TechDraw workbenches.
+
+    The template is extracted from the page.
+    If the template exists in the system, it will be searched
+    for editable text fields, and replaced with their text values.
+    If no template is found a dummy default DXF template is used.
+
+    For TechDraw pages their templates are not supported currently,
+    so the dummy template will be used.
+
+    It considers all views or groups in the page,
+    and tries to get the blocks and entities with `getViewDXF(view)`.
+    It also increments the counter by using the `dxfcounter` class.
+
+    The blocks and entities are added to the template, and finally
+    this template is written into the `filename`.
+
+    Parameters
+    ----------
+    page : object derived from 'Drawing::FeaturePage' or 'TechDraw::DrawPage'
+        A Drawing or TechDraw page to export.
+
+    filename : str
+        The path of the new DXF file.
+    """
     if hasattr(page.Template,"Template"): #techdraw
         template="" # not supported for now...
         views = page.Views
@@ -2279,7 +3761,44 @@ def exportPage(page,filename):
     f.write(template)
     f.close()
 
+
 def getViewBlock(geom,view,blockcount):
+    """Get a view block.
+
+    It iterates over all `geom` objects.
+    If the global variable `dxfExportBlocks` exists, it will create
+    the appropriate strings for `BLOCK` and `INSERT` sections,
+    and increment the `blockcount`.
+    Otherwise, it will just creaate an insert by changing the layer,
+    and setting a handle.
+
+    Parameters
+    ----------
+    geom : list of str
+        A list string objects or a single object, returned by
+        the `getDXF()` method of the `view`.
+
+    view : page view
+        A Drawing or TechDraw view which may be of different types
+        depending on the objects being projected:
+        ``'Drawing::FeatureViewPython'`,
+        `'TechDraw::DrawViewDraft'`, or `'TechDraw::DrawViewArch'`.
+
+    blockcount : int
+        A counter that increments by one each time an insert and block
+        are added to the output strings, if the global variable
+        `dxfExportBlocks` exists.
+
+    Returns
+    -------
+    str, str, int
+        A tuple containing the strings for blocks, inserts,
+        and the final value of `blockcount`.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     insert = ""
     block = ""
     r = view.Rotation
@@ -2303,7 +3822,47 @@ def getViewBlock(geom,view,blockcount):
 
 
 def getViewDXF(view,blocks=True):
-    "returns a DXF fragment from a Drawing View"
+    """Return a DXF fragment from a Drawing view.
+
+    Depending on the type of page view, it will try
+    obtaining `geom`, the DXF representation of `view`,
+    and then extract the block and insert strings
+    with `getViewBlock(geom, view, blockcount)`,
+    starting with a `blockcount` of 1.
+
+    If `view` is a group (`'App::DocumentObjectGroup'`)
+    it will recursively call itself in a loop `getViewDXF(child)`,
+    where `child` is a view contained in `view.Group`,
+    until all children are processed.
+
+    If the `view` is `'Drawing::FeatureViewPart'`,
+    and if the global variable `dxfExportBlocks` exists, it will create
+    the appropriate strings for `BLOCK` and `INSERT` sections,
+    and increment the `blockcount`.
+    Otherwise, it will just creaate an insert by changing the layer,
+    and setting a handle
+
+    Parameters
+    ----------
+    view : App::DocumentObjectGroup or page view
+        A Drawing or TechDraw view which may be of different types
+        depending on the objects being projected:
+        `'Drawing::FeatureViewPython'`,
+        `'TechDraw::DrawViewDraft'`, `'TechDraw::DrawViewArch'`,
+        `'Drawing::FeatureViewPart'`, `'Drawing::FeatureViewAnnotation'`
+
+    blocks : bool, optional
+        It defaults to `True`. Not used?
+
+    Returns
+    -------
+    str, str
+        It returns the two strings for DXF blocks and inserts.
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     block = ""
     insert = ""
     blockcount = 1
@@ -2362,7 +3921,29 @@ def getViewDXF(view,blocks=True):
 
 
 def exportPageLegacy(page,filename):
-    "exports the given page the old way, by converting its SVG code to DXF with the Draft module"
+    """Export a page created with Drawing or TechDraw workbenches. DEPRECATED.
+
+    It uses the `importSVG` module to import the SVG information of `page`
+    into a temporary document, then the objects of this document
+    are used with the exporter to produce the DXF file,
+    and the temporary document is closed.
+    ::
+        temp = importSVG.open(page.PageResult)
+        export(temp.Objects, filename, nospline=True, lwPoly=false)
+        App.closeDocument(temp.Name)
+
+    Parameters
+    ----------
+    page : object derived from 'Drawing::FeaturePage' or 'TechDraw::DrawPage'
+        A Drawing or TechDraw page to export.
+
+    filename : str
+        The path of the new DXF file.
+
+    See also
+    --------
+    exportPage, export, importSVG.open
+    """
     import importSVG
     tempdoc = importSVG.open(page.PageResult)
     tempobj = tempdoc.Objects
@@ -2371,6 +3952,27 @@ def exportPageLegacy(page,filename):
 
 
 def readPreferences():
+    """Read the preferences of the this module from the parameter database.
+
+    It creates and sets the global variables:
+    `dxfCreatePart`, `dxfCreateDraft`, `dxfCreateSketch`,
+    `dxfDiscretizeCurves`, `dxfStarBlocks`, `dxfMakeBlocks`, `dxfJoin`,
+    `dxfRenderPolylineWidth`, `dxfImportTexts`, `dxfImportLayouts`,
+    `dxfImportPoints`, `dxfImportHatches`, `dxfUseStandardSize`,
+    `dxfGetColors`, `dxfUseDraftVisGroups`, `dxfFillMode`,
+    `dxfBrightBackground`, `dxfDefaultColor`, `dxfUseLegacyImporter`,
+    `dxfExportBlocks`, `dxfScaling`, `dxfUseLegacyExporter`
+
+    The parameter path is ``User parameter:BaseApp/Preferences/Mod/Draft``
+
+    See also
+    --------
+    FreeCAD.ParamGet, FreeCAD.ParamGet.GetBool
+
+    To do
+    -----
+    Use local variables, not global variables.
+    """
     # reading parameters
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     if FreeCAD.GuiUp and p.GetBool("dxfShowDialog",False):
