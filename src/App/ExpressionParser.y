@@ -80,7 +80,7 @@ namespace App {
      %type <Integer> INTEGER
      %type <double> ONE
      %type <double> NUM
-     %type <UnitInfo> CONSTANT
+     %type <ConstantInfo> CONSTANT
      %type <ObjectIdentifier> identifier iden
      %type <ComponentPtr> indexer
      %type <ObjectIdentifier::String> document object
@@ -527,7 +527,7 @@ num
     : ONE                                   { $$ = NumberExpression::create(ctx.obj, std::move($1));                        }
     | NUM                                   { $$ = NumberExpression::create(ctx.obj, std::move($1));                        }
     | INTEGER                               { $$ = NumberExpression::create(ctx.obj, (double)$1);                }
-    | CONSTANT                              { $$ = ConstantExpression::create(ctx.obj, std::move($1.first), $1.second);      }
+    | CONSTANT                              { $$ = ConstantExpression::create(ctx.obj, $1.first, $1.second);      }
     ;
 
 range

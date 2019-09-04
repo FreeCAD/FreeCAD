@@ -408,8 +408,11 @@ namespace App { namespace ExpressionParser {
       // indexer
       char dummy1[sizeof(ComponentPtr)];
 
+      // CONSTANT
+      char dummy2[sizeof(ConstantInfo)];
+
       // exp_list
-      char dummy2[sizeof(ExpressionList)];
+      char dummy3[sizeof(ExpressionList)];
 
       // input
       // primary_exp
@@ -460,59 +463,58 @@ namespace App { namespace ExpressionParser {
       // num
       // range
       // unit_exp
-      char dummy3[sizeof(ExpressionPtr)];
+      char dummy4[sizeof(ExpressionPtr)];
 
       // PSTRING
-      char dummy4[sizeof(ExpressionString)];
+      char dummy5[sizeof(ExpressionString)];
 
       // item
-      char dummy5[sizeof(FlagExpression)];
+      char dummy6[sizeof(FlagExpression)];
 
       // items2
       // items
-      char dummy6[sizeof(FlagExpressionList)];
+      char dummy7[sizeof(FlagExpressionList)];
 
       // INTEGER
       // integer
-      char dummy7[sizeof(Integer)];
+      char dummy8[sizeof(Integer)];
 
       // arg_def
       // arg
-      char dummy8[sizeof(NamedArgument)];
+      char dummy9[sizeof(NamedArgument)];
 
       // arg_defs
       // args
-      char dummy9[sizeof(NamedArgumentList)];
+      char dummy10[sizeof(NamedArgumentList)];
 
       // identifier
       // iden
-      char dummy10[sizeof(ObjectIdentifier)];
+      char dummy11[sizeof(ObjectIdentifier)];
 
       // document
       // object
-      char dummy11[sizeof(ObjectIdentifier::String)];
+      char dummy12[sizeof(ObjectIdentifier::String)];
 
       // id_list
-      char dummy12[sizeof(StringList)];
+      char dummy13[sizeof(StringList)];
 
       // UNIT
-      // CONSTANT
-      char dummy13[sizeof(UnitInfo)];
+      char dummy14[sizeof(UnitInfo)];
 
       // target_list
       // target_list2
-      char dummy14[sizeof(VarList)];
+      char dummy15[sizeof(VarList)];
 
       // ONE
       // NUM
-      char dummy15[sizeof(double)];
+      char dummy16[sizeof(double)];
 
       // IDENTIFIER
       // CELLADDRESS
       // STRING
       // module
       // id_or_cell
-      char dummy16[sizeof(std::string)];
+      char dummy17[sizeof(std::string)];
 };
 
     /// Symbol semantic values.
@@ -634,6 +636,8 @@ namespace App { namespace ExpressionParser {
 
   basic_symbol (typename Base::kind_type t, ComponentPtr&& v);
 
+  basic_symbol (typename Base::kind_type t, ConstantInfo&& v);
+
   basic_symbol (typename Base::kind_type t, ExpressionList&& v);
 
   basic_symbol (typename Base::kind_type t, ExpressionPtr&& v);
@@ -754,7 +758,7 @@ namespace App { namespace ExpressionParser {
 
     static inline
     symbol_type
-    make_CONSTANT (UnitInfo&& v);
+    make_CONSTANT (ConstantInfo&& v);
 
     static inline
     symbol_type
@@ -1206,7 +1210,7 @@ namespace App { namespace ExpressionParser {
 
 #line 23 "ExpressionParser.y" // lalr1.cc:418
 } } // App::ExpressionParser
-#line 1210 "ExpressionParser.tab.cc" // lalr1.cc:418
+#line 1214 "ExpressionParser.tab.cc" // lalr1.cc:418
 
 
 
@@ -1214,7 +1218,7 @@ namespace App { namespace ExpressionParser {
 
 // User implementation prologue.
 
-#line 1218 "ExpressionParser.tab.cc" // lalr1.cc:422
+#line 1222 "ExpressionParser.tab.cc" // lalr1.cc:422
 // Unqualified %code blocks.
 #line 30 "ExpressionParser.y" // lalr1.cc:423
 
@@ -1230,7 +1234,7 @@ namespace App {
 }
 
 
-#line 1234 "ExpressionParser.tab.cc" // lalr1.cc:423
+#line 1238 "ExpressionParser.tab.cc" // lalr1.cc:423
 
 
 #ifndef YY_
@@ -1297,7 +1301,7 @@ namespace App {
 
 #line 23 "ExpressionParser.y" // lalr1.cc:489
 namespace App { namespace ExpressionParser {
-#line 1301 "ExpressionParser.tab.cc" // lalr1.cc:489
+#line 1305 "ExpressionParser.tab.cc" // lalr1.cc:489
 
   /* Return YYSTR after stripping away unnecessary quotes and
      backslashes, so that it's suitable for yyerror.  The heuristic is
@@ -1383,6 +1387,10 @@ namespace App { namespace ExpressionParser {
     {
       case 150: // indexer
         value.move< ComponentPtr > (other.value);
+        break;
+
+      case 8: // CONSTANT
+        value.move< ConstantInfo > (other.value);
         break;
 
       case 109: // exp_list
@@ -1484,7 +1492,6 @@ namespace App { namespace ExpressionParser {
         break;
 
       case 6: // UNIT
-      case 8: // CONSTANT
         value.move< UnitInfo > (other.value);
         break;
 
@@ -1524,6 +1531,10 @@ namespace App { namespace ExpressionParser {
     {
       case 150: // indexer
         value.move< ComponentPtr > (v);
+        break;
+
+      case 8: // CONSTANT
+        value.move< ConstantInfo > (v);
         break;
 
       case 109: // exp_list
@@ -1625,7 +1636,6 @@ namespace App { namespace ExpressionParser {
         break;
 
       case 6: // UNIT
-      case 8: // CONSTANT
         value.move< UnitInfo > (v);
         break;
 
@@ -1663,6 +1673,12 @@ namespace App { namespace ExpressionParser {
 
   template <typename Base>
   parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, ComponentPtr&& v)
+    : Base (t)
+    , value (std::move (v))
+  {}
+
+  template <typename Base>
+  parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, ConstantInfo&& v)
     : Base (t)
     , value (std::move (v))
   {}
@@ -1787,6 +1803,10 @@ namespace App { namespace ExpressionParser {
         value.template destroy< ComponentPtr > ();
         break;
 
+      case 8: // CONSTANT
+        value.template destroy< ConstantInfo > ();
+        break;
+
       case 109: // exp_list
         value.template destroy< ExpressionList > ();
         break;
@@ -1886,7 +1906,6 @@ namespace App { namespace ExpressionParser {
         break;
 
       case 6: // UNIT
-      case 8: // CONSTANT
         value.template destroy< UnitInfo > ();
         break;
 
@@ -1933,6 +1952,10 @@ namespace App { namespace ExpressionParser {
     {
       case 150: // indexer
         value.move< ComponentPtr > (s.value);
+        break;
+
+      case 8: // CONSTANT
+        value.move< ConstantInfo > (s.value);
         break;
 
       case 109: // exp_list
@@ -2034,7 +2057,6 @@ namespace App { namespace ExpressionParser {
         break;
 
       case 6: // UNIT
-      case 8: // CONSTANT
         value.move< UnitInfo > (s.value);
         break;
 
@@ -2137,7 +2159,7 @@ namespace App { namespace ExpressionParser {
   }
 
   parser::symbol_type
-  parser::make_CONSTANT (UnitInfo&& v)
+  parser::make_CONSTANT (ConstantInfo&& v)
   {
     return symbol_type (token::TOK_CONSTANT, std::move (v));
   }
@@ -2530,6 +2552,10 @@ namespace App { namespace ExpressionParser {
         value.move< ComponentPtr > (that.value);
         break;
 
+      case 8: // CONSTANT
+        value.move< ConstantInfo > (that.value);
+        break;
+
       case 109: // exp_list
         value.move< ExpressionList > (that.value);
         break;
@@ -2629,7 +2655,6 @@ namespace App { namespace ExpressionParser {
         break;
 
       case 6: // UNIT
-      case 8: // CONSTANT
         value.move< UnitInfo > (that.value);
         break;
 
@@ -2669,6 +2694,10 @@ namespace App { namespace ExpressionParser {
     {
       case 150: // indexer
         value.copy< ComponentPtr > (that.value);
+        break;
+
+      case 8: // CONSTANT
+        value.copy< ConstantInfo > (that.value);
         break;
 
       case 109: // exp_list
@@ -2770,7 +2799,6 @@ namespace App { namespace ExpressionParser {
         break;
 
       case 6: // UNIT
-      case 8: // CONSTANT
         value.copy< UnitInfo > (that.value);
         break;
 
@@ -3019,6 +3047,10 @@ namespace App { namespace ExpressionParser {
         yylhs.value.build< ComponentPtr > ();
         break;
 
+      case 8: // CONSTANT
+        yylhs.value.build< ConstantInfo > ();
+        break;
+
       case 109: // exp_list
         yylhs.value.build< ExpressionList > ();
         break;
@@ -3118,7 +3150,6 @@ namespace App { namespace ExpressionParser {
         break;
 
       case 6: // UNIT
-      case 8: // CONSTANT
         yylhs.value.build< UnitInfo > ();
         break;
 
@@ -3155,145 +3186,145 @@ namespace App { namespace ExpressionParser {
   case 2:
 #line 105 "ExpressionParser.y" // lalr1.cc:871
     { ctx.ScanResult = std::move(yystack_[0].value.as< ExpressionPtr > ()); ctx.valueExpression = true;                                       }
-#line 3159 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3190 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 3:
 #line 106 "ExpressionParser.y" // lalr1.cc:871
     { ctx.ScanResult = std::move(yystack_[0].value.as< ExpressionPtr > ()); ctx.unitExpression = true;                                        }
-#line 3165 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3196 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 4:
 #line 107 "ExpressionParser.y" // lalr1.cc:871
     { ctx.ScanResult = std::move(yystack_[1].value.as< ExpressionPtr > ()); ctx.unitExpression = true;                                        }
-#line 3171 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3202 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 5:
 #line 111 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ());                                                                        }
-#line 3177 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3208 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 6:
 #line 112 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[1].value.as< ExpressionPtr > ()), OP_UNIT, std::move(yystack_[0].value.as< ExpressionPtr > ()));  }
-#line 3183 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3214 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 7:
 #line 113 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3189 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3220 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 8:
 #line 114 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = VariableExpression::create(ctx.obj, std::move(yystack_[0].value.as< ObjectIdentifier > ())); }
-#line 3195 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3226 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 9:
 #line 115 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3201 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3232 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 10:
 #line 116 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3207 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3238 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 11:
 #line 120 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = StringExpression::create(ctx.obj,std::move(yystack_[0].value.as< std::string > ())); }
-#line 3213 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3244 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 12:
 #line 121 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<StringExpression&>(*yystack_[1].value.as< ExpressionPtr > ()).append(std::move(yystack_[0].value.as< std::string > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 3219 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3250 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 13:
 #line 125 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = StringExpression::create(ctx.obj,std::move(yystack_[0].value.as< ExpressionString > ())); }
-#line 3225 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3256 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 14:
 #line 126 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<StringExpression&>(*yystack_[1].value.as< ExpressionPtr > ()).append(std::move(yystack_[0].value.as< ExpressionString > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 3231 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3262 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 15:
 #line 130 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 3237 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3268 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 16:
 #line 131 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3243 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3274 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 17:
 #line 132 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3249 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3280 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 18:
 #line 133 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3255 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3286 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 19:
 #line 134 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3261 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3292 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 20:
 #line 135 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3267 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3298 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 21:
 #line 136 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = VariableExpression::create(ctx.obj,std::move(yystack_[1].value.as< ObjectIdentifier > ())); yylhs.value.as< ExpressionPtr > ()->addComponent(std::move(yystack_[0].value.as< ComponentPtr > ())); }
-#line 3273 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3304 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 22:
 #line 137 "ExpressionParser.y" // lalr1.cc:871
     { yystack_[1].value.as< ExpressionPtr > ()->addComponent(std::move(yystack_[0].value.as< ComponentPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 3279 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3310 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 23:
 #line 138 "ExpressionParser.y" // lalr1.cc:871
     { yystack_[2].value.as< ExpressionPtr > ()->addComponent(Expression::createComponent(yystack_[0].value.as< std::string > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[2].value.as< ExpressionPtr > ()); }
-#line 3285 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3316 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 24:
 #line 142 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = CallableExpression::create(ctx.obj,std::move(yystack_[2].value.as< ObjectIdentifier > ())); }
-#line 3291 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3322 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 25:
 #line 143 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = CallableExpression::create(ctx.obj, std::move(yystack_[3].value.as< ObjectIdentifier > ()), std::move(yystack_[1].value.as< NamedArgumentList > ().first), std::move(yystack_[1].value.as< NamedArgumentList > ().second)); }
-#line 3297 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3328 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 26:
@@ -3302,343 +3333,343 @@ namespace App { namespace ExpressionParser {
                                                 // function and unit, e.g. min
                                                 yylhs.value.as< ExpressionPtr > () = CallableExpression::create(ctx.obj, std::move(yystack_[3].value.as< UnitInfo > ().first), std::move(yystack_[1].value.as< NamedArgumentList > ().first), std::move(yystack_[1].value.as< NamedArgumentList > ().second));
                                             }
-#line 3306 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3337 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 27:
 #line 148 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = CallableExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ())); }
-#line 3312 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3343 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 28:
 #line 149 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = CallableExpression::create(ctx.obj, std::move(yystack_[3].value.as< ExpressionPtr > ()), std::move(yystack_[1].value.as< NamedArgumentList > ().first), std::move(yystack_[1].value.as< NamedArgumentList > ().second)); }
-#line 3318 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3349 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 29:
 #line 150 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = CallableExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ())); }
-#line 3324 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3355 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 30:
 #line 151 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = CallableExpression::create(ctx.obj, std::move(yystack_[3].value.as< ExpressionPtr > ()), std::move(yystack_[1].value.as< NamedArgumentList > ().first), std::move(yystack_[1].value.as< NamedArgumentList > ().second)); }
-#line 3330 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3361 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 31:
 #line 152 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3336 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3367 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 32:
 #line 156 "ExpressionParser.y" // lalr1.cc:871
     { yystack_[1].value.as< ExpressionPtr > ()->addComponent(std::move(yystack_[0].value.as< ComponentPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 3342 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3373 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 33:
 #line 157 "ExpressionParser.y" // lalr1.cc:871
     { yystack_[2].value.as< ExpressionPtr > ()->addComponent(Expression::createComponent(yystack_[0].value.as< std::string > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[2].value.as< ExpressionPtr > ()); }
-#line 3348 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3379 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 34:
 #line 161 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3354 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3385 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 35:
 #line 162 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[0].value.as< ExpressionPtr > ()), OP_NEG, NumberExpression::create(ctx.obj, Quantity(-1))); }
-#line 3360 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3391 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 36:
 #line 163 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[0].value.as< ExpressionPtr > ()), OP_NOT, NumberExpression::create(ctx.obj, Quantity(-1))); }
-#line 3366 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3397 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 37:
 #line 164 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[0].value.as< ExpressionPtr > ()), OP_POS, NumberExpression::create(ctx.obj, Quantity(1))); }
-#line 3372 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3403 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 38:
 #line 168 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3378 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3409 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 39:
 #line 169 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_POW, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3384 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3415 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 40:
 #line 170 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_POW2, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3390 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3421 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 41:
 #line 173 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3396 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3427 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 42:
 #line 174 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_MUL, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3402 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3433 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 43:
 #line 175 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_DIV, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3408 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3439 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 44:
 #line 176 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_DIV, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3414 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3445 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 45:
 #line 177 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_MOD, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3420 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3451 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 46:
 #line 181 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3426 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3457 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 47:
 #line 182 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_ADD, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3432 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3463 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 48:
 #line 183 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_SUB, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3438 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3469 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 49:
 #line 187 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3444 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3475 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 50:
 #line 188 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_LT, std::move(yystack_[0].value.as< ExpressionPtr > ()));    }
-#line 3450 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3481 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 51:
 #line 189 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_GT, std::move(yystack_[0].value.as< ExpressionPtr > ()));    }
-#line 3456 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3487 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 52:
 #line 190 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_GTE, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3462 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3493 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 53:
 #line 191 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_LTE, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3468 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3499 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 54:
 #line 195 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3474 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3505 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 55:
 #line 196 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_EQ, std::move(yystack_[0].value.as< ExpressionPtr > ()));    }
-#line 3480 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3511 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 56:
 #line 197 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_NEQ, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3486 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3517 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 57:
 #line 198 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_IS, std::move(yystack_[0].value.as< ExpressionPtr > ()));    }
-#line 3492 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3523 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 58:
 #line 199 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_IS_NOT, std::move(yystack_[0].value.as< ExpressionPtr > ()));    }
-#line 3498 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3529 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 59:
 #line 200 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_IN, std::move(yystack_[0].value.as< ExpressionPtr > ()));    }
-#line 3504 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3535 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 60:
 #line 201 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_NOT_IN, std::move(yystack_[0].value.as< ExpressionPtr > ()));    }
-#line 3510 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3541 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 61:
 #line 205 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3516 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3547 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 62:
 #line 206 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_AND, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3522 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3553 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 63:
 #line 210 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3528 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3559 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 64:
 #line 211 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_OR, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 3534 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3565 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 65:
 #line 215 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3540 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3571 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 66:
 #line 216 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3546 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3577 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 67:
 #line 220 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3552 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3583 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 68:
 #line 221 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = ConditionalExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), std::move(yystack_[4].value.as< ExpressionPtr > ()), std::move(yystack_[0].value.as< ExpressionPtr > ()), true); }
-#line 3558 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3589 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 69:
 #line 222 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = ConditionalExpression::create(ctx.obj, std::move(yystack_[4].value.as< ExpressionPtr > ()), std::move(yystack_[2].value.as< ExpressionPtr > ()), std::move(yystack_[0].value.as< ExpressionPtr > ()));                     }
-#line 3564 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3595 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 70:
 #line 226 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = LambdaExpression::create(ctx.obj, std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 3570 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3601 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 71:
 #line 227 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = LambdaExpression::create(ctx.obj, std::move(yystack_[0].value.as< ExpressionPtr > ()), std::move(yystack_[2].value.as< NamedArgumentList > ().first), std::move(yystack_[2].value.as< NamedArgumentList > ().second)); }
-#line 3576 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3607 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 72:
 #line 231 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = LambdaExpression::create(ctx.obj, std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 3582 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3613 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 73:
 #line 232 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = LambdaExpression::create(ctx.obj, std::move(yystack_[0].value.as< ExpressionPtr > ()), std::move(yystack_[2].value.as< NamedArgumentList > ().first), std::move(yystack_[2].value.as< NamedArgumentList > ().second)); }
-#line 3588 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3619 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 74:
 #line 236 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3594 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3625 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 75:
 #line 237 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3600 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3631 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 76:
 #line 240 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< StringList > ().push_back(std::move(yystack_[0].value.as< std::string > ())); }
-#line 3606 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3637 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 77:
 #line 241 "ExpressionParser.y" // lalr1.cc:871
     { yystack_[2].value.as< StringList > ().push_back(std::move(yystack_[0].value.as< std::string > ())); yylhs.value.as< StringList > () = std::move(yystack_[2].value.as< StringList > ()); }
-#line 3612 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3643 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 78:
 #line 245 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3618 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3649 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 79:
 #line 246 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = VariableExpression::create(ctx.obj,std::move(yystack_[0].value.as< ObjectIdentifier > ())); }
-#line 3624 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3655 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 80:
 #line 250 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< VarList > ().second=-1; yylhs.value.as< VarList > ().first.push_back(std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 3630 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3661 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 81:
 #line 251 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< VarList > ().second=0; yylhs.value.as< VarList > ().first.push_back(std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 3636 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3667 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 82:
 #line 252 "ExpressionParser.y" // lalr1.cc:871
     { yystack_[2].value.as< VarList > ().first.push_back(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< VarList > () = std::move(yystack_[2].value.as< VarList > ()); }
-#line 3642 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3673 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 83:
@@ -3650,37 +3681,37 @@ namespace App { namespace ExpressionParser {
                                                yystack_[3].value.as< VarList > ().first.push_back(std::move(yystack_[0].value.as< ExpressionPtr > ())); 
                                                yylhs.value.as< VarList > () = std::move(yystack_[3].value.as< VarList > ()); 
                                             }
-#line 3654 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3685 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 84:
 #line 263 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3660 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3691 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 85:
 #line 264 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3666 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3697 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 86:
 #line 268 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< VarList > ().second=-1; yylhs.value.as< VarList > ().first.push_back(std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 3672 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3703 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 87:
 #line 269 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< VarList > ().second=0; yylhs.value.as< VarList > ().first.push_back(std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 3678 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3709 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 88:
 #line 270 "ExpressionParser.y" // lalr1.cc:871
     { yystack_[2].value.as< VarList > ().first.push_back(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< VarList > () = std::move(yystack_[2].value.as< VarList > ()); }
-#line 3684 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3715 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 89:
@@ -3692,187 +3723,187 @@ namespace App { namespace ExpressionParser {
                                                yystack_[3].value.as< VarList > ().first.push_back(std::move(yystack_[0].value.as< ExpressionPtr > ())); 
                                                yylhs.value.as< VarList > () = std::move(yystack_[3].value.as< VarList > ()); 
                                             }
-#line 3696 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3727 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 90:
 #line 281 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = AssignmentExpression::create(ctx.obj,yystack_[2].value.as< VarList > ().second,std::move(yystack_[2].value.as< VarList > ().first),std::move(yystack_[0].value.as< ExpressionList > ())); }
-#line 3702 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3733 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 91:
 #line 285 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionList > ().push_back(std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 3708 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3739 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 92:
 #line 286 "ExpressionParser.y" // lalr1.cc:871
     { yystack_[2].value.as< ExpressionList > ().push_back(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionList > () = std::move(yystack_[2].value.as< ExpressionList > ()); }
-#line 3714 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3745 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 93:
 #line 290 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = AssignmentExpression::create(ctx.obj,std::move(yystack_[2].value.as< ExpressionPtr > ()),std::move(yystack_[0].value.as< ExpressionPtr > ()),OP_MUL); }
-#line 3720 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3751 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 94:
 #line 291 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = AssignmentExpression::create(ctx.obj,std::move(yystack_[2].value.as< ExpressionPtr > ()),std::move(yystack_[0].value.as< ExpressionPtr > ()),OP_POW); }
-#line 3726 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3757 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 95:
 #line 292 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = AssignmentExpression::create(ctx.obj,std::move(yystack_[2].value.as< ExpressionPtr > ()),std::move(yystack_[0].value.as< ExpressionPtr > ()),OP_DIV); }
-#line 3732 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3763 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 96:
 #line 293 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = AssignmentExpression::create(ctx.obj,std::move(yystack_[2].value.as< ExpressionPtr > ()),std::move(yystack_[0].value.as< ExpressionPtr > ()),OP_FDIV); }
-#line 3738 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3769 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 97:
 #line 294 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = AssignmentExpression::create(ctx.obj,std::move(yystack_[2].value.as< ExpressionPtr > ()),std::move(yystack_[0].value.as< ExpressionPtr > ()),OP_MOD); }
-#line 3744 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3775 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 98:
 #line 295 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = AssignmentExpression::create(ctx.obj,std::move(yystack_[2].value.as< ExpressionPtr > ()),std::move(yystack_[0].value.as< ExpressionPtr > ()),OP_ADD); }
-#line 3750 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3781 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 99:
 #line 296 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = AssignmentExpression::create(ctx.obj,std::move(yystack_[2].value.as< ExpressionPtr > ()),std::move(yystack_[0].value.as< ExpressionPtr > ()),OP_SUB); }
-#line 3756 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3787 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 100:
 #line 300 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3762 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3793 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 101:
 #line 301 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3768 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3799 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 102:
 #line 305 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3774 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3805 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 103:
 #line 306 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3780 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3811 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 104:
 #line 307 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = JumpStatement::create(ctx.obj,JUMP_RETURN,std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 3786 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3817 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 105:
 #line 308 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = JumpStatement::create(ctx.obj,JUMP_RETURN); }
-#line 3792 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3823 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 106:
 #line 309 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = JumpStatement::create(ctx.obj,JUMP_BREAK); }
-#line 3798 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3829 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 107:
 #line 310 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = JumpStatement::create(ctx.obj,JUMP_CONTINUE); }
-#line 3804 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3835 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 108:
 #line 311 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = JumpStatement::create(ctx.obj,JUMP_RAISE); }
-#line 3810 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3841 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 109:
 #line 312 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = JumpStatement::create(ctx.obj,JUMP_RAISE,std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 3816 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3847 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 110:
 #line 313 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = PseudoStatement::create(ctx.obj,PY_BEGIN); }
-#line 3822 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3853 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 111:
 #line 314 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = PseudoStatement::create(ctx.obj,PY_END); }
-#line 3828 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3859 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 112:
 #line 315 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = PseudoStatement::create(ctx.obj,PY_PASS); }
-#line 3834 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3865 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 113:
 #line 316 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = DelStatement::create(ctx.obj,std::move(yystack_[0].value.as< VarList > ().first)); }
-#line 3840 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3871 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 114:
 #line 317 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = ScopeStatement::create(ctx.obj,std::move(yystack_[0].value.as< StringList > ())); }
-#line 3846 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3877 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 115:
 #line 318 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = ScopeStatement::create(ctx.obj,std::move(yystack_[0].value.as< StringList > ()),false); }
-#line 3852 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3883 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 116:
 #line 319 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3858 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3889 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 117:
 #line 320 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3864 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3895 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 118:
 #line 321 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3870 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3901 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 119:
 #line 325 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3876 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3907 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 120:
@@ -3886,325 +3917,325 @@ namespace App { namespace ExpressionParser {
                                                stmt->add(std::move(yystack_[0].value.as< ExpressionPtr > ())); 
                                                yylhs.value.as< ExpressionPtr > () = std::move(yystack_[2].value.as< ExpressionPtr > ());
                                             }
-#line 3890 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3921 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 121:
 #line 335 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 3896 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3927 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 122:
 #line 339 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3902 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3933 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 123:
 #line 340 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<IfStatement&>(*yystack_[3].value.as< ExpressionPtr > ()).addElse(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > ()= std::move(yystack_[3].value.as< ExpressionPtr > ()); }
-#line 3908 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3939 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 124:
 #line 341 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3914 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3945 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 125:
 #line 342 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<WhileStatement&>(*yystack_[3].value.as< ExpressionPtr > ()).addElse(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > ()= std::move(yystack_[3].value.as< ExpressionPtr > ()); }
-#line 3920 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3951 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 126:
 #line 343 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3926 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3957 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 127:
 #line 344 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<ForStatement&>(*yystack_[3].value.as< ExpressionPtr > ()).addElse(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > ()= std::move(yystack_[3].value.as< ExpressionPtr > ()); }
-#line 3932 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3963 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 128:
 #line 345 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3938 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3969 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 129:
 #line 346 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<TryStatement&>(*yystack_[0].value.as< ExpressionPtr > ()).check(); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3944 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3975 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 130:
 #line 350 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = Statement::create(ctx.obj, std::move(yystack_[1].value.as< ExpressionPtr > ())); }
-#line 3950 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3981 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 131:
 #line 351 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = Statement::create(ctx.obj, std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 3956 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3987 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 132:
 #line 352 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<Statement&>(*yystack_[2].value.as< ExpressionPtr > ()).add(std::move(yystack_[1].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[2].value.as< ExpressionPtr > ()); }
-#line 3962 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3993 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 133:
 #line 353 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<Statement&>(*yystack_[1].value.as< ExpressionPtr > ()).add(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 3968 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 3999 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 134:
 #line 357 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3974 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4005 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 135:
 #line 358 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 3980 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4011 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 136:
 #line 359 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 3986 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4017 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 137:
 #line 363 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 3992 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4023 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 138:
 #line 364 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 3998 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4029 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 139:
 #line 368 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = IfStatement::create(ctx.obj,std::move(yystack_[2].value.as< ExpressionPtr > ()),std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 4004 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4035 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 140:
 #line 369 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<IfStatement&>(*yystack_[4].value.as< ExpressionPtr > ()).add(std::move(yystack_[2].value.as< ExpressionPtr > ()),std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[4].value.as< ExpressionPtr > ()); }
-#line 4010 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4041 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 141:
 #line 373 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = WhileStatement::create(ctx.obj,std::move(yystack_[2].value.as< ExpressionPtr > ()),std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 4016 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4047 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 142:
 #line 377 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = ForStatement::create(ctx.obj,yystack_[4].value.as< VarList > ().second,std::move(yystack_[4].value.as< VarList > ().first),std::move(yystack_[2].value.as< ExpressionList > ()),std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 4022 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4053 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 143:
 #line 381 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = TryStatement::create(ctx.obj,std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 4028 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4059 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 144:
 #line 382 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<TryStatement&>(*yystack_[3].value.as< ExpressionPtr > ()).add(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[3].value.as< ExpressionPtr > ()); }
-#line 4034 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4065 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 145:
 #line 383 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<TryStatement&>(*yystack_[4].value.as< ExpressionPtr > ()).add(std::move(yystack_[0].value.as< ExpressionPtr > ()),std::move(yystack_[2].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[4].value.as< ExpressionPtr > ()); }
-#line 4040 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4071 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 146:
 #line 384 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<TryStatement&>(*yystack_[6].value.as< ExpressionPtr > ()).add(std::move(yystack_[0].value.as< ExpressionPtr > ()),std::move(yystack_[4].value.as< ExpressionPtr > ()),std::move(yystack_[2].value.as< std::string > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[6].value.as< ExpressionPtr > ()); }
-#line 4046 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4077 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 147:
 #line 385 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<TryStatement&>(*yystack_[3].value.as< ExpressionPtr > ()).addElse(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[3].value.as< ExpressionPtr > ()); }
-#line 4052 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4083 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 148:
 #line 386 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<TryStatement&>(*yystack_[3].value.as< ExpressionPtr > ()).addFinal(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[3].value.as< ExpressionPtr > ()); }
-#line 4058 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4089 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 149:
 #line 390 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgument > ().first = std::move(yystack_[0].value.as< std::string > ()); }
-#line 4064 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4095 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 150:
 #line 391 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgument > ().first = std::move(yystack_[2].value.as< std::string > ()); yylhs.value.as< NamedArgument > ().second = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 4070 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4101 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 151:
 #line 392 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgument > ().first = "*"; yylhs.value.as< NamedArgument > ().first+=yystack_[0].value.as< std::string > (); }
-#line 4076 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4107 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 152:
 #line 393 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgument > ().first = "**"; yylhs.value.as< NamedArgument > ().first+=yystack_[0].value.as< std::string > (); }
-#line 4082 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4113 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 153:
 #line 397 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgumentList > ().first.push_back(std::move(yystack_[0].value.as< NamedArgument > ().first)); yylhs.value.as< NamedArgumentList > ().second.push_back(std::move(yystack_[0].value.as< NamedArgument > ().second)); }
-#line 4088 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4119 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 154:
 #line 398 "ExpressionParser.y" // lalr1.cc:871
     { yystack_[2].value.as< NamedArgumentList > ().first.push_back(std::move(yystack_[0].value.as< NamedArgument > ().first)); yystack_[2].value.as< NamedArgumentList > ().second.push_back(std::move(yystack_[0].value.as< NamedArgument > ().second)); yylhs.value.as< NamedArgumentList > () = std::move(yystack_[2].value.as< NamedArgumentList > ()); }
-#line 4094 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4125 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 155:
 #line 402 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = FunctionStatement::create(ctx.obj, std::move(yystack_[4].value.as< std::string > ()), std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 4100 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4131 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 156:
 #line 403 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = FunctionStatement::create(ctx.obj, std::move(yystack_[5].value.as< std::string > ()), std::move(yystack_[0].value.as< ExpressionPtr > ()), std::move(yystack_[3].value.as< NamedArgumentList > ().first), std::move(yystack_[3].value.as< NamedArgumentList > ().second)); }
-#line 4106 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4137 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 157:
 #line 407 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< std::string > () = std::move(yystack_[0].value.as< std::string > ()); }
-#line 4112 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4143 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 158:
 #line 408 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< std::string > () += "."; yylhs.value.as< std::string > () += yystack_[0].value.as< std::string > (); }
-#line 4118 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4149 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 159:
 #line 412 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = ImportStatement::create(ctx.obj, std::move(yystack_[0].value.as< std::string > ())); }
-#line 4124 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4155 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 160:
 #line 413 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = ImportStatement::create(ctx.obj, std::move(yystack_[2].value.as< std::string > ()), std::move(yystack_[0].value.as< std::string > ())); }
-#line 4130 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4161 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 161:
 #line 414 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<ImportStatement&>(*yystack_[2].value.as< ExpressionPtr > ()).add(std::move(yystack_[0].value.as< std::string > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[2].value.as< ExpressionPtr > ()); }
-#line 4136 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4167 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 162:
 #line 415 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<ImportStatement&>(*yystack_[4].value.as< ExpressionPtr > ()).add(std::move(yystack_[2].value.as< std::string > ()), std::move(yystack_[0].value.as< std::string > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[4].value.as< ExpressionPtr > ()); }
-#line 4142 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4173 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 163:
 #line 419 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = FromStatement::create(ctx.obj, std::move(yystack_[2].value.as< std::string > ()), std::move(yystack_[0].value.as< std::string > ())); }
-#line 4148 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4179 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 164:
 #line 420 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = FromStatement::create(ctx.obj, std::move(yystack_[4].value.as< std::string > ()), std::move(yystack_[2].value.as< std::string > ()), std::move(yystack_[2].value.as< std::string > ())); }
-#line 4154 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4185 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 165:
 #line 421 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<FromStatement&>(*yystack_[2].value.as< ExpressionPtr > ()).add(std::move(yystack_[0].value.as< std::string > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[2].value.as< ExpressionPtr > ()); }
-#line 4160 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4191 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 166:
 #line 422 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<FromStatement&>(*yystack_[4].value.as< ExpressionPtr > ()).add(std::move(yystack_[2].value.as< std::string > ()), std::move(yystack_[0].value.as< std::string > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[4].value.as< ExpressionPtr > ()); }
-#line 4166 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4197 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 167:
 #line 426 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = FromStatement::create(ctx.obj, std::move(yystack_[2].value.as< std::string > ()), std::string("*")); }
-#line 4172 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4203 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 168:
 #line 430 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< std::string > () = std::move(yystack_[0].value.as< std::string > ()); }
-#line 4178 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4209 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 169:
 #line 431 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< std::string > () = std::move(yystack_[0].value.as< std::string > ()); }
-#line 4184 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4215 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 172:
 #line 437 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< FlagExpression > ().first = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 4190 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4221 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 173:
 #line 438 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< FlagExpression > ().first = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 4196 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4227 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 174:
 #line 439 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< FlagExpression > ().first = std::move(yystack_[0].value.as< ExpressionPtr > ()); yylhs.value.as< FlagExpression > ().second = true; }
-#line 4202 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4233 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 175:
 #line 440 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< FlagExpression > ().first = std::move(yystack_[0].value.as< ExpressionPtr > ()); yylhs.value.as< FlagExpression > ().second = true; }
-#line 4208 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4239 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 176:
@@ -4215,7 +4246,7 @@ namespace App { namespace ExpressionParser {
                                                 yylhs.value.as< FlagExpressionList > ().first.push_back(std::move(yystack_[0].value.as< FlagExpression > ().first)); 
                                                 yylhs.value.as< FlagExpressionList > ().second.push_back(yystack_[0].value.as< FlagExpression > ().second);
                                             }
-#line 4219 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4250 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 177:
@@ -4225,301 +4256,301 @@ namespace App { namespace ExpressionParser {
                                                 yystack_[2].value.as< FlagExpressionList > ().second.push_back(std::move(yystack_[0].value.as< FlagExpression > ().second)); 
                                                 yylhs.value.as< FlagExpressionList > () = std::move(yystack_[2].value.as< FlagExpressionList > ()); 
                                             }
-#line 4229 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4260 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 178:
 #line 458 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = TupleExpression::create(ctx.obj); }
-#line 4235 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4266 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 179:
 #line 459 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = TupleExpression::create(ctx.obj, std::move(yystack_[2].value.as< FlagExpression > ().first), yystack_[2].value.as< FlagExpression > ().second); }
-#line 4241 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4272 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 180:
 #line 460 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = TupleExpression::create(ctx.obj, std::move(yystack_[1].value.as< FlagExpressionList > ().first), std::move(yystack_[1].value.as< FlagExpressionList > ().second)); }
-#line 4247 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4278 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 181:
 #line 461 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = TupleExpression::create(ctx.obj, std::move(yystack_[2].value.as< FlagExpressionList > ().first), std::move(yystack_[2].value.as< FlagExpressionList > ().second)); }
-#line 4253 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4284 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 182:
 #line 465 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< FlagExpressionList > ().first.push_back(std::move(yystack_[0].value.as< FlagExpression > ().first)); yylhs.value.as< FlagExpressionList > ().second.push_back(yystack_[0].value.as< FlagExpression > ().second); }
-#line 4259 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4290 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 183:
 #line 466 "ExpressionParser.y" // lalr1.cc:871
     { yystack_[2].value.as< FlagExpressionList > ().first.push_back(std::move(yystack_[0].value.as< FlagExpression > ().first)); yystack_[2].value.as< FlagExpressionList > ().second.push_back(yystack_[0].value.as< FlagExpression > ().second); yylhs.value.as< FlagExpressionList > () = std::move(yystack_[2].value.as< FlagExpressionList > ()); }
-#line 4265 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4296 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 184:
 #line 470 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = ListExpression::create(ctx.obj); }
-#line 4271 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4302 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 185:
 #line 471 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = ListExpression::create(ctx.obj, std::move(yystack_[1].value.as< FlagExpressionList > ().first), std::move(yystack_[1].value.as< FlagExpressionList > ().second)); }
-#line 4277 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4308 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 186:
 #line 472 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = ListExpression::create(ctx.obj, std::move(yystack_[2].value.as< FlagExpressionList > ().first), std::move(yystack_[2].value.as< FlagExpressionList > ().second)); }
-#line 4283 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4314 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 187:
 #line 473 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<ComprehensionExpression&>(*yystack_[1].value.as< ExpressionPtr > ()).setExpr(std::move(yystack_[2].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 4289 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4320 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 188:
 #line 477 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = ComprehensionExpression::create(ctx.obj,yystack_[2].value.as< VarList > ().second,std::move(yystack_[2].value.as< VarList > ().first),std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 4295 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4326 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 189:
 #line 478 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<ComprehensionExpression&>(*yystack_[4].value.as< ExpressionPtr > ()).add(yystack_[2].value.as< VarList > ().second,std::move(yystack_[2].value.as< VarList > ().first),std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[4].value.as< ExpressionPtr > ()); }
-#line 4301 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4332 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 190:
 #line 479 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<ComprehensionExpression&>(*yystack_[2].value.as< ExpressionPtr > ()).addCond(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[2].value.as< ExpressionPtr > ()); }
-#line 4307 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4338 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 193:
 #line 486 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = DictExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 4313 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4344 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 194:
 #line 487 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = DictExpression::create(ctx.obj, std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 4319 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4350 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 195:
 #line 488 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<DictExpression&>(*yystack_[4].value.as< ExpressionPtr > ()).addItem(std::move(yystack_[2].value.as< ExpressionPtr > ()),std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[4].value.as< ExpressionPtr > ()); }
-#line 4325 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4356 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 196:
 #line 489 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<DictExpression&>(*yystack_[3].value.as< ExpressionPtr > ()).addItem(std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[3].value.as< ExpressionPtr > ()); }
-#line 4331 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4362 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 197:
 #line 493 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = DictExpression::create(ctx.obj); }
-#line 4337 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4368 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 198:
 #line 494 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 4343 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4374 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 199:
 #line 495 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[2].value.as< ExpressionPtr > ()); }
-#line 4349 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4380 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 200:
 #line 496 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<ComprehensionExpression&>(*yystack_[1].value.as< ExpressionPtr > ()).setExpr(std::move(yystack_[2].value.as< ExpressionPtr > ()),false); yylhs.value.as< ExpressionPtr > ()= std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 4355 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4386 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 201:
 #line 497 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<ComprehensionExpression&>(*yystack_[1].value.as< ExpressionPtr > ()).setExpr(std::move(yystack_[4].value.as< ExpressionPtr > ()),std::move(yystack_[2].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > ()= std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 4361 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4392 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 202:
 #line 501 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = IDictExpression::create(ctx.obj, std::move(yystack_[2].value.as< std::string > ()), std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 4367 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4398 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 203:
 #line 502 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = IDictExpression::create(ctx.obj, "**", std::move(yystack_[0].value.as< ExpressionPtr > ())); }
-#line 4373 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4404 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 204:
 #line 503 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<IDictExpression&>(*yystack_[4].value.as< ExpressionPtr > ()).addItem(std::move(yystack_[2].value.as< std::string > ()),std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[4].value.as< ExpressionPtr > ()); }
-#line 4379 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4410 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 205:
 #line 504 "ExpressionParser.y" // lalr1.cc:871
     { static_cast<IDictExpression&>(*yystack_[4].value.as< ExpressionPtr > ()).addItem("**",std::move(yystack_[0].value.as< ExpressionPtr > ())); yylhs.value.as< ExpressionPtr > () = std::move(yystack_[4].value.as< ExpressionPtr > ()); }
-#line 4385 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4416 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 206:
 #line 508 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ()); }
-#line 4391 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4422 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 207:
 #line 509 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[2].value.as< ExpressionPtr > ()); }
-#line 4397 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4428 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 208:
 #line 513 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgument > ().second = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 4403 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4434 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 209:
 #line 514 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgument > ().first = std::move(yystack_[2].value.as< std::string > ()); yylhs.value.as< NamedArgument > ().second = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 4409 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4440 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 210:
 #line 515 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgument > ().first = "*"; yylhs.value.as< NamedArgument > ().second = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 4415 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4446 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 211:
 #line 516 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgument > ().second = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 4421 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4452 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 212:
 #line 517 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgument > ().first = "*"; yylhs.value.as< NamedArgument > ().second = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 4427 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4458 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 213:
 #line 518 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgument > ().first = "**"; yylhs.value.as< NamedArgument > ().second = std::move(yystack_[0].value.as< ExpressionPtr > ()); }
-#line 4433 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4464 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 214:
 #line 522 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< NamedArgumentList > ().first.push_back(std::move(yystack_[0].value.as< NamedArgument > ().first)); yylhs.value.as< NamedArgumentList > ().second.push_back(std::move(yystack_[0].value.as< NamedArgument > ().second)); }
-#line 4439 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4470 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 215:
 #line 523 "ExpressionParser.y" // lalr1.cc:871
     { yystack_[2].value.as< NamedArgumentList > ().first.push_back(std::move(yystack_[0].value.as< NamedArgument > ().first)); yystack_[2].value.as< NamedArgumentList > ().second.push_back(std::move(yystack_[0].value.as< NamedArgument > ().second)); yylhs.value.as< NamedArgumentList > () = std::move(yystack_[2].value.as< NamedArgumentList > ()); }
-#line 4445 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4476 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 216:
 #line 527 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = NumberExpression::create(ctx.obj, std::move(yystack_[0].value.as< double > ()));                        }
-#line 4451 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4482 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 217:
 #line 528 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = NumberExpression::create(ctx.obj, std::move(yystack_[0].value.as< double > ()));                        }
-#line 4457 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4488 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 218:
 #line 529 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = NumberExpression::create(ctx.obj, (double)yystack_[0].value.as< Integer > ());                }
-#line 4463 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4494 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 219:
 #line 530 "ExpressionParser.y" // lalr1.cc:871
-    { yylhs.value.as< ExpressionPtr > () = ConstantExpression::create(ctx.obj, std::move(yystack_[0].value.as< UnitInfo > ().first), yystack_[0].value.as< UnitInfo > ().second);      }
-#line 4469 "ExpressionParser.tab.cc" // lalr1.cc:871
+    { yylhs.value.as< ExpressionPtr > () = ConstantExpression::create(ctx.obj, yystack_[0].value.as< ConstantInfo > ().first, yystack_[0].value.as< ConstantInfo > ().second);      }
+#line 4500 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 220:
 #line 534 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = RangeExpression::create(ctx.obj, std::move(yystack_[2].value.as< std::string > ()), std::move(yystack_[0].value.as< std::string > ()));                               }
-#line 4475 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4506 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 221:
 #line 538 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = UnitExpression::create(ctx.obj, yystack_[0].value.as< UnitInfo > ().second, std::move(yystack_[0].value.as< UnitInfo > ().first));                }
-#line 4481 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4512 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 222:
 #line 540 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_DIV, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 4487 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4518 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 223:
 #line 541 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_MUL, std::move(yystack_[0].value.as< ExpressionPtr > ()));   }
-#line 4493 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4524 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 224:
 #line 542 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[2].value.as< ExpressionPtr > ()), OP_POW, NumberExpression::create(ctx.obj, Quantity((double)yystack_[0].value.as< Integer > ())));   }
-#line 4499 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4530 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 225:
 #line 543 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = OperatorExpression::create(ctx.obj, std::move(yystack_[3].value.as< ExpressionPtr > ()), OP_POW, OperatorExpression::create(ctx.obj, NumberExpression::create(ctx.obj, Quantity((double)yystack_[0].value.as< Integer > ())), OP_NEG, NumberExpression::create(ctx.obj, Quantity(-1))));   }
-#line 4505 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4536 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 226:
 #line 544 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ExpressionPtr > () = std::move(yystack_[1].value.as< ExpressionPtr > ());                                                                        }
-#line 4511 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4542 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 227:
 #line 548 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ObjectIdentifier > () = ObjectIdentifier(ctx.obj); yylhs.value.as< ObjectIdentifier > () << ObjectIdentifier::SimpleComponent(yystack_[0].value.as< std::string > ()); }
-#line 4517 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4548 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 228:
 #line 549 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ObjectIdentifier > () = std::move(yystack_[0].value.as< ObjectIdentifier > ()); }
-#line 4523 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4554 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 229:
@@ -4529,7 +4560,7 @@ namespace App { namespace ExpressionParser {
                                                 yylhs.value.as< ObjectIdentifier > ().setDocumentObjectName(ctx.obj,false,ObjectIdentifier::String(std::move(yystack_[2].value.as< std::string > ()),true),true);
                                                 yylhs.value.as< ObjectIdentifier > ().addComponent(ObjectIdentifier::SimpleComponent(yystack_[0].value.as< std::string > ()));
                                             }
-#line 4533 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4564 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 230:
@@ -4539,7 +4570,7 @@ namespace App { namespace ExpressionParser {
                                                 yylhs.value.as< ObjectIdentifier > ().setDocumentObjectName(ctx.obj);
                                                 yylhs.value.as< ObjectIdentifier > ().addComponent(ObjectIdentifier::SimpleComponent(yystack_[0].value.as< std::string > ()));
                                             }
-#line 4543 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4574 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 231:
@@ -4550,7 +4581,7 @@ namespace App { namespace ExpressionParser {
                                                 yylhs.value.as< ObjectIdentifier > ().addComponent(ObjectIdentifier::SimpleComponent(yystack_[0].value.as< std::string > ()));
                                                 yylhs.value.as< ObjectIdentifier > ().resolveAmbiguity();
                                             }
-#line 4554 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4585 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 232:
@@ -4562,7 +4593,7 @@ namespace App { namespace ExpressionParser {
                                                 yylhs.value.as< ObjectIdentifier > ().addComponent(ObjectIdentifier::SimpleComponent(yystack_[0].value.as< std::string > ()));
                                                 yylhs.value.as< ObjectIdentifier > ().resolveAmbiguity();
                                             }
-#line 4566 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4597 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 233:
@@ -4574,7 +4605,7 @@ namespace App { namespace ExpressionParser {
                                                 yylhs.value.as< ObjectIdentifier > ().addComponent(ObjectIdentifier::SimpleComponent(yystack_[0].value.as< std::string > ()));
                                                 yylhs.value.as< ObjectIdentifier > ().resolveAmbiguity();
                                             }
-#line 4578 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4609 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 234:
@@ -4585,101 +4616,101 @@ namespace App { namespace ExpressionParser {
                                                 yylhs.value.as< ObjectIdentifier > ().addComponent(ObjectIdentifier::SimpleComponent(yystack_[0].value.as< std::string > ()));
                                                 yylhs.value.as< ObjectIdentifier > ().resolveAmbiguity();
                                             }
-#line 4589 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4620 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 235:
 #line 590 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ObjectIdentifier > ()= std::move(yystack_[2].value.as< ObjectIdentifier > ()); yylhs.value.as< ObjectIdentifier > ().addComponent(ObjectIdentifier::SimpleComponent(yystack_[0].value.as< std::string > ())); }
-#line 4595 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4626 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 236:
 #line 594 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< Integer > () = std::move(yystack_[0].value.as< Integer > ()); }
-#line 4601 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4632 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 237:
 #line 595 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< Integer > () = std::move(yystack_[0].value.as< double > ()); }
-#line 4607 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4638 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 238:
 #line 599 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ComponentPtr > () = Expression::createComponent(std::move(yystack_[1].value.as< ExpressionPtr > ()));   }
-#line 4613 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4644 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 239:
 #line 600 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ComponentPtr > () = Expression::createComponent(std::move(yystack_[2].value.as< ExpressionPtr > ()),ExpressionPtr(),ExpressionPtr(),true); }
-#line 4619 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4650 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 240:
 #line 601 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ComponentPtr > () = Expression::createComponent(ExpressionPtr(),std::move(yystack_[1].value.as< ExpressionPtr > ())); }
-#line 4625 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4656 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 241:
 #line 602 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ComponentPtr > () = Expression::createComponent(ExpressionPtr(),ExpressionPtr(),std::move(yystack_[1].value.as< ExpressionPtr > ())); }
-#line 4631 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4662 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 242:
 #line 603 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ComponentPtr > () = Expression::createComponent(std::move(yystack_[3].value.as< ExpressionPtr > ()),std::move(yystack_[1].value.as< ExpressionPtr > ()));}
-#line 4637 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4668 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 243:
 #line 604 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ComponentPtr > () = Expression::createComponent(std::move(yystack_[4].value.as< ExpressionPtr > ()),ExpressionPtr(),std::move(yystack_[1].value.as< ExpressionPtr > ())); }
-#line 4643 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4674 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 244:
 #line 605 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ComponentPtr > () = Expression::createComponent(ExpressionPtr(),std::move(yystack_[3].value.as< ExpressionPtr > ()),std::move(yystack_[1].value.as< ExpressionPtr > ())); }
-#line 4649 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4680 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 245:
 #line 606 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ComponentPtr > () = Expression::createComponent(std::move(yystack_[5].value.as< ExpressionPtr > ()),std::move(yystack_[3].value.as< ExpressionPtr > ()),std::move(yystack_[1].value.as< ExpressionPtr > ()));}
-#line 4655 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4686 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 246:
 #line 610 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ObjectIdentifier::String > () = ObjectIdentifier::String(std::move(yystack_[0].value.as< std::string > ()), true); }
-#line 4661 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4692 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 247:
 #line 611 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ObjectIdentifier::String > () = ObjectIdentifier::String(std::move(yystack_[0].value.as< std::string > ()), false, true);}
-#line 4667 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4698 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 248:
 #line 615 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ObjectIdentifier::String > () = ObjectIdentifier::String(std::move(yystack_[0].value.as< std::string > ()), true); }
-#line 4673 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4704 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
   case 249:
 #line 616 "ExpressionParser.y" // lalr1.cc:871
     { yylhs.value.as< ObjectIdentifier::String > () = ObjectIdentifier::String(std::move(yystack_[0].value.as< std::string > ()), false);}
-#line 4679 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4710 "ExpressionParser.tab.cc" // lalr1.cc:871
     break;
 
 
-#line 4683 "ExpressionParser.tab.cc" // lalr1.cc:871
+#line 4714 "ExpressionParser.tab.cc" // lalr1.cc:871
             default:
               break;
             }
@@ -5744,6 +5775,6 @@ namespace App { namespace ExpressionParser {
 
 #line 23 "ExpressionParser.y" // lalr1.cc:1179
 } } // App::ExpressionParser
-#line 5748 "ExpressionParser.tab.cc" // lalr1.cc:1179
+#line 5779 "ExpressionParser.tab.cc" // lalr1.cc:1179
 #line 619 "ExpressionParser.y" // lalr1.cc:1180
 

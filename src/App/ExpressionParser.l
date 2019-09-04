@@ -24,7 +24,7 @@
 }while(0)
 
 #define RET_CONSTANT(_v,_s) do{\
-    if(yylval) yylval->build<UnitInfo>(std::make_pair(std::string(_s),Base::Quantity(_v)));\
+    if(yylval) yylval->build<ConstantInfo>(std::make_pair(_s,Base::Quantity(_v)));\
     RET_TOKEN(TOK_CONSTANT);\
 }while(0)
 

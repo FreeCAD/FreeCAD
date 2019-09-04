@@ -184,12 +184,11 @@ class AppExport ConstantExpression : public NumberExpression {
     EXPR_TYPESYSTEM_HEADER();
 public:
     static ExpressionPtr create(const App::DocumentObject *owner, 
-            std::string &&name, const Base::Quantity &_quantity);
-
-    static ExpressionPtr create(const App::DocumentObject *owner, 
             const char *name, const Base::Quantity &_quantity);
 
-    std::string getName() const { return name; }
+    const char *getName() const { return name; }
+
+    bool isNumber() const;
 
     virtual ExpressionPtr simplify() const;
 
@@ -202,7 +201,7 @@ protected:
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
 
-    std::string name; /**< Constant's name */
+    const char *name; /**< Constant's name */
 };
 
 /**
@@ -352,8 +351,6 @@ class AppExport PyObjectExpression : public Expression {
 public:
     static ExpressionPtr create(const App::DocumentObject *owner, PyObject *pyobj=0);
     virtual ~PyObjectExpression();
-
-    Py::Object getPyObject() const;
 
     void setPyObject(Py::Object pyobj);
     void setPyObject(PyObject *pyobj, bool owned=false);

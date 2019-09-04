@@ -694,7 +694,11 @@ void Sheet::updateProperty(CellAddress key)
         auto number = freecad_dynamic_cast<NumberExpression>(output.get());
         if(number) {
             long l;
-            if (!number->getUnit().isEmpty())
+            auto constant = freecad_dynamic_cast<ConstantExpression>(output.get());
+            if(constant && !constant->isNumber()) {
+                Base::PyGILStateLocker lock;
+                setObjectProperty(key, constant->getPyValue());
+            } else if (!number->getUnit().isEmpty())
                 setQuantityProperty(key, number->getValue(), number->getUnit());
             else if(number->isInteger(&l))
                 setIntegerProperty(key,l);
@@ -708,7 +712,7 @@ void Sheet::updateProperty(CellAddress key)
                 Base::PyGILStateLocker lock;
                 auto py_expr = freecad_dynamic_cast<PyObjectExpression>(output.get());
                 if(py_expr) 
-                    setObjectProperty(key, py_expr->getPyObject());
+                    setObjectProperty(key, py_expr->getPyValue());
                 else
                     setObjectProperty(key, Py::Object());
             }

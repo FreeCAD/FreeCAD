@@ -598,7 +598,10 @@ ExpressionPtr expressionFromPy(const DocumentObject *owner, const Py::Object &va
         return NumberExpression::create(owner,
                 *static_cast<QuantityPy*>(value.ptr())->getQuantityPtr());
     } else if (value.isBoolean()) {
-        return BooleanExpression::create(owner,value.isTrue());
+        if(value.isTrue())
+            return ConstantExpression::create(owner,"True",Quantity(1.0));
+        else
+            return ConstantExpression::create(owner,"False",Quantity(0.0));
     } else {
         Quantity q;
         if(pyToQuantity(q,value))
@@ -4046,12 +4049,6 @@ PyObjectExpression::~PyObjectExpression() {
     }
 }
 
-Py::Object PyObjectExpression::getPyObject() const {
-    if(!pyObj)
-        return Py::Object();
-    return Py::Object(pyObj);
-}
-
 void PyObjectExpression::setPyObject(Py::Object obj) {
     Py::_XDECREF(pyObj);
     pyObj = obj.ptr();
@@ -4375,14 +4372,6 @@ void ConditionalExpression::_visit(ExpressionVisitor &v)
 EXPR_TYPESYSTEM_SOURCE(App::ConstantExpression, App::NumberExpression);
 
 ExpressionPtr ConstantExpression::create(const DocumentObject *owner, 
-        std::string &&name, const Quantity & quantity)
-{
-    _EXPR_NEW(res, ConstantExpression, owner, quantity);
-    res->name = std::move(name);
-    return _res;
-}
-
-ExpressionPtr ConstantExpression::create(const DocumentObject *owner, 
         const char *name, const Quantity & quantity)
 {
     _EXPR_NEW(res,ConstantExpression,owner,quantity);
@@ -4397,7 +4386,7 @@ void ConstantExpression::_toString(std::ostream &ss, bool,int) const
 
 ExpressionPtr ConstantExpression::_copy() const
 {
-    return ConstantExpression::create(owner, std::string(name), getQuantity());
+    return ConstantExpression::create(owner, name, getQuantity());
 }
 
 ExpressionPtr ConstantExpression::simplify() const {
@@ -4406,11 +4395,11 @@ ExpressionPtr ConstantExpression::simplify() const {
 
 Py::Object ConstantExpression::_getPyValue(int *) const {
     if(!cache) {
-        if(name == "None") 
+        if(strcmp(name,"None") == 0)
             cache = Py::new_reference_to(Py::None());
-        if(name == "True")
+        else if(strcmp(name, "True")== 0)
             cache = Py::new_reference_to(Py::True());
-        if(name == "False")
+        else if(strcmp(name, "False")== 0)
             cache = Py::new_reference_to(Py::False());
         else
             return NumberExpression::_getPyValue();
@@ -4418,20 +4407,10 @@ Py::Object ConstantExpression::_getPyValue(int *) const {
     return Py::Object(cache);
 }
 
-/////////////////////////////////////////////////////////////////////////////////////
-
-EXPR_TYPESYSTEM_SOURCE(App::BooleanExpression, App::NumberExpression);
-
-ExpressionPtr BooleanExpression::create(const DocumentObject *owner, bool value) {
-    return EXPR_NEW(BooleanExpression,owner,Quantity(value?1.0:0.0));
-}
-
-ExpressionPtr BooleanExpression::_copy() const {
-    return EXPR_NEW(BooleanExpression,owner,getQuantity());
-}
-
-Py::Object BooleanExpression::_getPyValue(int *) const {
-    return Py::Boolean(essentiallyZero(getValue()));
+bool ConstantExpression::isNumber() const {
+    return strcmp(name,"None") 
+        && strcmp(name,"True") 
+        && strcmp(name, "False");
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -6386,6 +6365,7 @@ typedef ::App::Expression::ExpressionList           ExpressionList;
 typedef ::App::Expression::StringList               StringList;
 typedef std::pair<ExpressionList, int>              VarList;
 typedef std::pair<std::string, Base::Quantity>      UnitInfo;
+typedef std::pair<const char*, Base::Quantity>      ConstantInfo;
 typedef std::pair<std::string, ExpressionPtr>       NamedArgument;
 typedef std::pair<StringList, ExpressionList>       NamedArgumentList;
 typedef ::App::ListExpression::FlagExpression       FlagExpression;
