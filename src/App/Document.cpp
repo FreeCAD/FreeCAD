@@ -1982,7 +1982,7 @@ Document::readObjects(Base::XMLReader& reader)
         reader.readElement("Object");
         std::string type = reader.getAttribute("type");
         std::string name = reader.getAttribute("name");
-        const char *viewType = reader.hasAttribute("ViewType")?reader.getAttribute("ViewType"):0;
+        std::string viewType = reader.hasAttribute("ViewType")?reader.getAttribute("ViewType"):"";
 
         bool partial = false;
         if(d->partialLoadObjects.size()) {
@@ -2019,7 +2019,7 @@ Document::readObjects(Base::XMLReader& reader)
             // otherwise we may cause a dependency to itself
             // Example: Object 'Cut001' references object 'Cut' and removing the
             // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* obj = addObject(type.c_str(), obj_name, /*isNew=*/ false, viewType, partial);
+            App::DocumentObject* obj = addObject(type.c_str(), obj_name, /*isNew=*/ false, viewType.c_str(), partial);
             if (obj) {
                 if(lastId < obj->_Id)
                     lastId = obj->_Id;
