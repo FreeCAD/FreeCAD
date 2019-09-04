@@ -3378,6 +3378,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     }
     catch(Base::AbortException &e){
         e.ReportException();
+        FC_ERR("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog("User abort",Feat);
         return -1;
     }
@@ -3388,6 +3389,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     }
     catch (Base::Exception &e) {
         e.ReportException();
+        FC_ERR("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog(e.what(),Feat);
         return 1;
     }
@@ -3409,11 +3411,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     }else{
         returnCode->Which = Feat;
         d->addRecomputeLog(returnCode);
-#ifdef FC_DEBUG
         FC_ERR("Failed to recompute " << Feat->getFullName() << ": " << returnCode->Why);
-#else
-        FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << returnCode->Why);
-#endif
         return 1;
     }
     return 0;
