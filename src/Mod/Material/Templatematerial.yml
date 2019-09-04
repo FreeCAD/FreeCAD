@@ -159,7 +159,7 @@
     RelativePermittivity:
       Type: 'Float'
       URL: 'https://en.wikipedia.org/wiki/Relative_permittivity'
-      Description: "a material property, expressing the ratio to the permittivity of the Vaccum"
+      Description: "a material property, expressing the ratio to the permittivity of the Vacuum"
 - Architectural:
     Color:
       Type:  'String'
