@@ -584,7 +584,7 @@ void PropertyPlacement::setValue(const Base::Placement &pos)
 bool PropertyPlacement::setValueIfChanged(const Base::Placement &pos,double tol,double atol)
 {
     if(_cPos.getPosition().IsEqual(pos.getPosition(),tol)
-            && _cPos.getRotation().isSame(pos.getRotation(),atol))
+            && _cPos.getRotation().isSimilar(pos.getRotation(),atol))
     {
         return false;
     }

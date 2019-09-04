@@ -396,10 +396,10 @@ bool Rotation::isSame(const Rotation& q) const
     return false;
 }
 
-bool Rotation::isSame(const Rotation& q, double tol) const
+bool Rotation::isSimilar(const Rotation& q, double tol) const
 {
-    Vector3d v(0,0,1);
-    return std::fabs(multVec(v).GetAngle(q.multVec(v))) < tol;
+    double dot = q.quat[0]*quat[0]+q.quat[1]*quat[1]+q.quat[2]*quat[2]+q.quat[3]*quat[3];
+    return fabs(dot) >= 1.0 - tol;
 }
 
 Vector3d Rotation::multVec(const Vector3d & src) const {

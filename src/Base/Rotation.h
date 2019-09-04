@@ -87,7 +87,7 @@ public:
     Vector3d multVec(const Vector3d & src) const;
     void scaleAngle(const double scaleFactor);
     bool isSame(const Rotation&) const;
-    bool isSame(const Rotation&, double tol) const;
+    bool isSimilar(const Rotation&, double tol) const;
     //@}
 
     /** Specialty constructors */
