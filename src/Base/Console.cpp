@@ -331,7 +331,7 @@ void ConsoleSingleton::Error( const char *pMsg, ... )
 
 void ConsoleSingleton::Log( const char *pMsg, ... )
 {
-    if (!_bVerbose)
+    if (_bVerbose)
     {
         FC_CONSOLE_FMT(Log,Log);
     }
