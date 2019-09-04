@@ -958,6 +958,9 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
 {
     if (d->activeDocument == pcDocument)
         return; // nothing needs to be done
+
+    getMainWindow()->updateActions();
+
     if (pcDocument) {
         // This happens if a document with more than one view is about being
         // closed and a second view is activated. The document is still not

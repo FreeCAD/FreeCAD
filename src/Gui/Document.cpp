@@ -772,6 +772,8 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
         FC_LOG(Prop.getFullName() << " modified");
         setModified(true);
     }
+
+    getMainWindow()->updateActions(true);
 }
 
 void Document::slotRelabelObject(const App::DocumentObject& Obj)

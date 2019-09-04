@@ -1001,7 +1001,6 @@ void MainWindow::setActiveWindow(MDIView* view)
     onSetActiveSubWindow(view->parentWidget());
     d->activeView = view;
     Application::Instance->viewActivated(view);
-    updateActions();
 }
 
 void MainWindow::onWindowActivated(QMdiSubWindow* w)
@@ -1025,7 +1024,6 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
     d->activeView = view;
     Application::Instance->viewActivated(view);
-    updateActions();
 }
 
 void MainWindow::onWindowsMenuAboutToShow()
