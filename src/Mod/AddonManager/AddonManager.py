@@ -123,7 +123,7 @@ class CommandAddonManager:
         self.dialog.buttonInstall.setIcon(QtGui.QIcon.fromTheme("download",QtGui.QIcon(":/icons/edit_OK.svg")))
         self.dialog.buttonUpdateAll.setIcon(QtGui.QIcon(":/icons/button_valid.svg"))
         self.dialog.buttonConfigure.setIcon(QtGui.QIcon(":/icons/preferences-system.svg"))
-        self.dialog.tabWidget.setTabIcon(0,QtGui.QIcon(":/icons/Group.svg"))
+        self.dialog.tabWidget.setTabIcon(0,QtGui.QIcon.fromTheme("folder",QtGui.QIcon(":/icons/folder.svg")))
         self.dialog.tabWidget.setTabIcon(1,QtGui.QIcon(":/icons/applications-python.svg"))
 
 
@@ -263,7 +263,7 @@ class CommandAddonManager:
         import AddonManager_rc
         addonicon = QtGui.QIcon(":/icons/" + addon_repo[0] + "_workbench_icon.svg")
         if addonicon.isNull():
-            addonicon = QtGui.QIcon(":/icons/Group.svg")
+            addonicon = QtGui.QIcon.fromTheme("folder",QtGui.QIcon(":/icons/folder.svg"))
         if addon_repo[2] > 0:
             item = QtGui.QListWidgetItem(addonicon,str(addon_repo[0]) + str(" ("+translate("AddonsInstaller","Installed")+")"))
             item.setForeground(QtGui.QBrush(QtGui.QColor(0,182,41)))
@@ -523,7 +523,7 @@ class CommandAddonManager:
                     self.dialog.listWorkbenches.item(i).setText(txt+ext)
                 else:
                     self.dialog.listWorkbenches.item(i).setText(txt)
-                    self.dialog.listWorkbenches.item(i).setIcon(QtGui.QIcon(":/icons/Group.svg"))
+                    self.dialog.listWorkbenches.item(i).setIcon(QtGui.QIcon.fromTheme("folder",QtGui.QIcon(":/icons/folder.svg")))
             for i in range(self.dialog.listMacros.count()):
                 txt = self.dialog.listMacros.item(i).text().strip()
                 if txt.endswith(" ("+translate("AddonsInstaller","Installed")+")"):
@@ -534,7 +534,7 @@ class CommandAddonManager:
                     self.dialog.listMacros.item(i).setText(txt+ext)
                 else:
                     self.dialog.listMacros.item(i).setText(txt)
-                    self.dialog.listMacros.item(i).setIcon(QtGui.QIcon(":/icons/Group.svg"))
+                    self.dialog.listMacros.item(i).setIcon(QtGui.QIcon.fromTheme("folder",QtGui.QIcon(":/icons/folder.svg")))
         else:
             self.dialog.listWorkbenches.clear()
             self.dialog.listMacros.clear()

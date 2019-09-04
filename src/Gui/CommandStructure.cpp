@@ -94,7 +94,7 @@ StdCmdGroup::StdCmdGroup()
     sToolTipText  = QT_TR_NOOP("Create a new group for ordering objects");
     sWhatsThis    = "Std_Group";
     sStatusTip    = sToolTipText;
-    sPixmap       = "Group";
+    sPixmap       = "folder";
 }
 
 void StdCmdGroup::activated(int iMsg)
