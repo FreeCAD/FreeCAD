@@ -954,7 +954,7 @@ int Matrix4D::hasScale(double tol) const {
     // scaling factors are the column vector length. We use square distance and
     // ignore the actual scaling signess
     //
-    if(!tol)
+    if(tol == 0.0)
         tol = 1e-9;
     double dx = Vector3d(dMtrx4D[0][0],dMtrx4D[1][0],dMtrx4D[2][0]).Sqr();
     double dy = Vector3d(dMtrx4D[0][1],dMtrx4D[1][1],dMtrx4D[2][1]).Sqr();
