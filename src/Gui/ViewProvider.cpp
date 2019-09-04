@@ -339,9 +339,10 @@ SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix)
 Base::Matrix4D ViewProvider::convert(const SbMatrix &smat)
 {
     Base::Matrix4D mat;
-    for(int i=0;i<4;++i)
+    for(int i=0;i<4;++i) {
         for(int j=0;j<4;++j)
             mat[i][j] = smat[j][i];
+    }
     return mat;
 }
 
@@ -847,9 +848,10 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const
 bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
     if(!isSelectable()) return false;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for(Gui::ViewProviderExtension* ext : vector) {
         if(ext->extensionGetElementPicked(pp,subname))
             return true;
+    }
     subname = getElement(pp?pp->getDetail():0);
     return true;
 }
@@ -867,9 +869,10 @@ bool ViewProvider::getDetailPath(const char *subname, SoFullPath *pPath, bool ap
         pPath->append(pcModeSwitch);
     }
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for(Gui::ViewProviderExtension* ext : vector) {
         if(ext->extensionGetDetailPath(subname,pPath,det))
             return true;
+    }
     det = getDetail(subname);
     return true;
 }
