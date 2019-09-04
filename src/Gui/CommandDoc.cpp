@@ -46,6 +46,7 @@
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
+#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
