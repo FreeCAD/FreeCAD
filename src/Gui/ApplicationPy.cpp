@@ -144,6 +144,9 @@ PyMethodDef Application::Methods[] = {
   {"listCommands",               (PyCFunction) Application::sListCommands, METH_VARARGS,
    "listCommands() -> list of strings\n\n"
    "Returns a list of all commands known to FreeCAD."},
+  {"updateCommands()",        (PyCFunction) Application::sUpdateCommands, METH_VARARGS,
+   "updateCommands()\n\n"
+   "Update all command active status"},
   {"SendMsgToActiveView",     (PyCFunction) Application::sSendActiveView, METH_VARARGS,
    "deprecated -- use class View"},
   {"sendMsgToFocusView",     (PyCFunction) Application::sSendFocusView, METH_VARARGS,
@@ -1246,6 +1249,14 @@ PyObject* Application::sIsCommandActive(PyObject * /*self*/, PyObject *args)
     }PY_CATCH;
 }
 
+PyObject* Application::sUpdateCommands(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    getMainWindow()->updateActions();
+    Py_Return;
+}
 
 PyObject* Application::sListCommands(PyObject * /*self*/, PyObject *args)
 {
