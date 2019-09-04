@@ -44,6 +44,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/Control.h>
 #include <Gui/ActionFunction.h>
+#include <Gui/MainWindow.h>
 
 #if defined (QSINT_ACTIONPANEL)
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
@@ -613,10 +614,14 @@ void TaskView::showDialog(TaskDialog *dlg)
     ActiveDialog = dlg;
 
     ActiveDialog->open();
+
+    getMainWindow()->updateActions();
 }
 
 void TaskView::removeDialog(void)
 {
+    getMainWindow()->updateActions();
+
     if (ActiveCtrl) {
         taskPanel->removeWidget(ActiveCtrl);
         delete ActiveCtrl;
