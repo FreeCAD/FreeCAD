@@ -64,6 +64,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/AutoTransaction.h>
 #include <Gui/ViewProviderLink.h>
 
 FC_LOG_LEVEL_INIT("Command", true, true);

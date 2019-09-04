@@ -37,6 +37,7 @@
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/AutoTransaction.h>
 #include "MainWindow.h"
 #include "DlgAddProperty.h"
 #include "PropertyEditor.h"
