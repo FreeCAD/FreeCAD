@@ -565,7 +565,7 @@ def p_intersection_action(p):
     p[0] = [mycommon]
     if printverbose: print("End Intersection")
 
-def process_rotate_extrude(obj):
+def process_rotate_extrude(obj,angle):
     newobj=doc.addObject("Part::FeaturePython",'RefineRotateExtrude')
     RefineShape(newobj,obj)
     if gui:
@@ -580,7 +580,7 @@ def process_rotate_extrude(obj):
     myrev.Source = newobj
     myrev.Axis = (0.00,1.00,0.00)
     myrev.Base = (0.00,0.00,0.00)
-    myrev.Angle = 360.00
+    myrev.Angle = angle
     myrev.Placement=FreeCAD.Placement(FreeCAD.Vector(),FreeCAD.Rotation(0,0,90))
     if gui:
         newobj.ViewObject.hide()
@@ -593,7 +593,8 @@ def p_rotate_extrude_action(p):
         part = fuse(p[6],"Rotate Extrude Union")
     else :
         part = p[6][0]
-    p[0] = [process_rotate_extrude(part)]
+    angle = float(p[3]['angle'])    
+    p[0] = [process_rotate_extrude(part,angle)]
     if printverbose: print("End Rotate Extrude")
 
 def p_rotate_extrude_file(p):
