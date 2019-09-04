@@ -263,7 +263,7 @@ class CommandAddonManager:
         import AddonManager_rc
         addonicon = QtGui.QIcon(":/icons/" + addon_repo[0] + "_workbench_icon.svg")
         if addonicon.isNull():
-            addonicon = QtGui.QIcon.fromTheme("folder",QtGui.QIcon(":/icons/folder.svg"))
+            addonicon = QtGui.QIcon(":/icons/document-package.svg")
         if addon_repo[2] > 0:
             item = QtGui.QListWidgetItem(addonicon,str(addon_repo[0]) + str(" ("+translate("AddonsInstaller","Installed")+")"))
             item.setForeground(QtGui.QBrush(QtGui.QColor(0,182,41)))
@@ -368,7 +368,7 @@ class CommandAddonManager:
                 import AddonManager_rc
                 addonicon = QtGui.QIcon(":/icons/" + macro.name.replace(" ","_") + "_macro_icon.svg")
                 if addonicon.isNull():
-                    addonicon = QtGui.QIcon(":/icons/applications-python.svg")
+                    addonicon = QtGui.QIcon(":/icons/document-python.svg")
                 if macro.is_installed():
                     item = QtGui.QListWidgetItem(addonicon, macro.name + str(' (Installed)'))
                     item.setForeground(QtGui.QBrush(QtGui.QColor(0,182,41)))
@@ -523,7 +523,7 @@ class CommandAddonManager:
                     self.dialog.listWorkbenches.item(i).setText(txt+ext)
                 else:
                     self.dialog.listWorkbenches.item(i).setText(txt)
-                    self.dialog.listWorkbenches.item(i).setIcon(QtGui.QIcon.fromTheme("folder",QtGui.QIcon(":/icons/folder.svg")))
+                    self.dialog.listWorkbenches.item(i).setIcon(QtGui.QIcon(":/icons/document-package.svg"))
             for i in range(self.dialog.listMacros.count()):
                 txt = self.dialog.listMacros.item(i).text().strip()
                 if txt.endswith(" ("+translate("AddonsInstaller","Installed")+")"):
@@ -534,7 +534,7 @@ class CommandAddonManager:
                     self.dialog.listMacros.item(i).setText(txt+ext)
                 else:
                     self.dialog.listMacros.item(i).setText(txt)
-                    self.dialog.listMacros.item(i).setIcon(QtGui.QIcon.fromTheme("folder",QtGui.QIcon(":/icons/folder.svg")))
+                    self.dialog.listMacros.item(i).setIcon(QtGui.QIcon(":/icons/document-package.svg"))
         else:
             self.dialog.listWorkbenches.clear()
             self.dialog.listMacros.clear()
@@ -543,13 +543,13 @@ class CommandAddonManager:
                     self.dialog.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/button_valid.svg"),str(wb[0]) + " ("+translate("AddonsInstaller","Installed")+")"))
                     wb[2] = 1
                 else:
-                    self.dialog.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/applications-python.svg"),str(wb[0])))
+                    self.dialog.listWorkbenches.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/document-python.svg"),str(wb[0])))
                     wb[2] = 0
             for macro in self.macros:
                 if macro.is_installed():
                     self.dialog.listMacros.addItem(item)
                 else:
-                    self.dialog.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/applications-python.svg"),+macro.name))
+                    self.dialog.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon(":/icons/document-python.svg"),+macro.name))
 
     def mark(self,repo):
 
