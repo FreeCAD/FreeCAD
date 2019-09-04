@@ -88,11 +88,7 @@ bool FeaturePythonImp::execute()
             PyErr_Clear();
             return false;
         }
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-        std::stringstream str;
-        str << object->Label.getValue() << ": " << e.what();
-        throw Base::RuntimeError(str.str());
+        Base::PyException::ThrowException(); // extract the Python error text
     }
 
     return false;
@@ -165,7 +161,7 @@ bool FeaturePythonImp::onBeforeChangeLabel(std::string &newLabel)
         Py::Object ret(Base::pyCall(py_onBeforeChangeLabel.ptr(),args.ptr()));
         if(!ret.isNone()) {
             if(!ret.isString())
-                throw Base::TypeError("onBeforeChangeLabel expects to return a string");
+                throw Py::TypeError("onBeforeChangeLabel expects to return a string");
             newLabel = ret.as_string();
             return true;
         }
@@ -252,14 +248,14 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
         if(!res.isTrue())
             return false;
         if(!res.isSequence())
-            throw Base::TypeError("getSubObject expects return type of tuple");
+            throw Py::TypeError("getSubObject expects return type of tuple");
         Py::Sequence seq(res);
         if(seq.length() < 2 ||
                 (!seq.getItem(0).isNone() && 
                  !PyObject_TypeCheck(seq.getItem(0).ptr(),&DocumentObjectPy::Type)) ||
                 !PyObject_TypeCheck(seq.getItem(1).ptr(),&Base::MatrixPy::Type))
         {
-            throw Base::TypeError("getSubObject expects return type of (obj,matrix,pyobj)");
+            throw Py::TypeError("getSubObject expects return type of (obj,matrix,pyobj)");
         }
         if(_mat) 
             *_mat = *static_cast<Base::MatrixPy*>(seq.getItem(1).ptr())->getMatrixPtr();
@@ -298,12 +294,12 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
         if(!res.isTrue())
             return true;
         if(!res.isSequence())
-            throw Base::TypeError("getSubObjects expects return type of tuple");
+            throw Py::TypeError("getSubObjects expects return type of tuple");
         Py::Sequence seq(res);
         for(size_t i=0;i<seq.length();++i) {
             Py::Object name(seq[i].ptr());
             if(!name.isString())
-                throw Base::TypeError("getSubObjects expects string in returned sequence");
+                throw Py::TypeError("getSubObjects expects string in returned sequence");
             ret.push_back(name.as_string());
         }
         return true;
@@ -340,14 +336,14 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
             return true;
         }
         if(!res.isSequence())
-            throw Base::TypeError("getLinkedObject expects return type of (object,matrix)");
+            throw Py::TypeError("getLinkedObject expects return type of (object,matrix)");
         Py::Sequence seq(res);
         if(seq.length() != 2 ||
                 (!seq.getItem(0).isNone() && 
                  !PyObject_TypeCheck(seq.getItem(0).ptr(),&DocumentObjectPy::Type)) ||
                 !PyObject_TypeCheck(seq.getItem(1).ptr(),&Base::MatrixPy::Type))
         {
-            throw Base::TypeError("getLinkedObject expects return type of (object,matrix)");
+            throw Py::TypeError("getLinkedObject expects return type of (object,matrix)");
         }
         if(_mat) 
             *_mat = *static_cast<Base::MatrixPy*>(seq.getItem(1).ptr())->getMatrixPtr();
