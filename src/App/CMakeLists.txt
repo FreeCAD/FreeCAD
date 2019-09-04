@@ -254,6 +254,7 @@ SET(FreeCADApp_CPP_SRCS
     ${Properties_CPP_SRCS}
     Application.cpp
     ApplicationPy.cpp
+    AutoTransaction.cpp
     Branding.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
@@ -267,6 +268,7 @@ SET(FreeCADApp_HPP_SRCS
     ${Document_HPP_SRCS}
     ${Properties_HPP_SRCS}
     Application.h
+    AutoTransaction.h
     Branding.h
     ColorModel.h
     ComplexGeoData.h

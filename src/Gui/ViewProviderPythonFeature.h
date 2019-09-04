@@ -25,6 +25,7 @@
 #define GUI_VIEWPROVIDERPYTHONFEATURE_H
 
 #include <App/Application.h>
+#include <App/AutoTransaction.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/Document.h>
 #include <App/PropertyPythonObject.h>

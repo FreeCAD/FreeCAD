@@ -51,6 +51,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Transactions.h>
+#include <App/AutoTransaction.h>
 #include <App/GeoFeatureGroupExtension.h>
 
 #include "Application.h"
