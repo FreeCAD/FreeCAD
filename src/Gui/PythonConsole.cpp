@@ -1423,7 +1423,10 @@ void PythonConsole::saveHistory() const
     QFile f(d->historyFile);
     if (f.open(QIODevice::WriteOnly)) {
         QTextStream t (&f);
-        const QStringList& hist = d->history.values();
+        QStringList hist = d->history.values();
+        // only save last 100 entries so we don't inflate forever...
+        if (hist.length() > 100)
+            hist = hist.mid(hist.length()-100);
         for (QStringList::ConstIterator it = hist.begin(); it != hist.end(); ++it)
             t << *it << "\n";
         f.close();
