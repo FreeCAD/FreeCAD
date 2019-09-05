@@ -509,6 +509,13 @@ class ToolLibraryManager():
             self.saveMainLibrary()
         return True, newID
 
+    def moveToTable(self, number, listname):
+        ''' Moves the tool to selected tool table '''
+        fromTable = self.getTableFromName(self.getCurrentTableName())
+        toTable = self.getTableFromName(listname)
+        tool = fromTable.getTool(number).copy()
+        toTable.addTools(tool)
+        fromTable.deleteTool(number)
 
     def delete(self, number, listname):
         '''deletes a tool from the current list'''
@@ -598,6 +605,7 @@ class EditorPanel():
                 t = model.index(i, 1)
                 self.TLM.delete(int(t.data()) ,listname)
         self.loadTable(listname)
+        self.toolSelectionChanged()
 
     def editTool(self, currItem):
         '''load the tool edit dialog'''
@@ -675,9 +683,10 @@ class EditorPanel():
             listname = self.TLM.getCurrentTableName()
             self.TLM.write(filename, listname)
 
-    def toolSelected(self, index):
+    def toolSelectionChanged(self, index=None):
         ''' updates the ui when tools are selected'''
-        self.form.ToolsList.selectRow(index.row())
+        if index:
+            self.form.ToolsList.selectRow(index.row())
         
         self.form.btnCopyTools.setEnabled(False)
         self.form.ButtonDelete.setEnabled(False)
@@ -761,7 +770,7 @@ class EditorPanel():
 
     def tableSelected(self, index):
         ''' loads the tools for the selected tool table '''
-        name = self.form.TableList.itemFromIndex(index).text()
+        name = self.form.TableList.itemWidget(self.form.TableList.itemFromIndex(index)).getTableName()
         self.loadTable(name)
 
     def loadTable(self, name):
@@ -772,7 +781,6 @@ class EditorPanel():
             self.form.ToolsList.resizeColumnsToContents()
             self.form.ToolsList.horizontalHeader().setResizeMode(self.form.ToolsList.model().columnCount() - 1, QtGui.QHeaderView.Stretch)       
             self.setCurrentToolTableByName(name)
-
 
     def addNewToolTable(self):
         ''' adds new tool to selected tool table '''
@@ -788,36 +796,51 @@ class EditorPanel():
             model.clear()
         if len(self.TLM.getToolTables()) > 0:
             for table in self.TLM.getToolTables():
-                listItem = QtGui.QListWidgetItem(table.Name)
-                listItem.setIcon(QtGui.QIcon(':/icons/Path-ToolTable.svg'))
-                listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsEditable)
-                listItem.setSizeHint(QtCore.QSize(0,40))
-                self.form.TableList.addItem(listItem)
-                self.loadTable(self.TLM.getToolTables()[0].Name)
+                listWidgetItem = QtGui.QListWidgetItem()
+                listItem = ToolTableListWidgetItem(self.TLM)
+                listItem.setTableName(table.Name)
+                listItem.setIcon(QtGui.QPixmap(':/icons/Path-ToolTable.svg'))
+                listItem.toolMoved.connect(self.reloadReset)
+                listWidgetItem.setSizeHint(QtCore.QSize(0,40))
+                self.form.TableList.addItem(listWidgetItem)
+                self.form.TableList.setItemWidget(listWidgetItem, listItem)
+            #Load the first tooltable
+            self.loadTable(self.TLM.getCurrentTableName())
+
+    def reloadReset(self):
+        ''' reloads the current tooltable'''
+        name = self.TLM.getCurrentTableName()
+        self.loadTable(name)
         
     def setCurrentToolTableByName(self, name):
         ''' get the current tool table '''
-        item = self.form.TableList.findItems(name, QtCore.Qt.MatchExactly)[0]
-        self.form.TableList.setCurrentItem(item)
+        item = self.getToolTableByName(name)
+        if item:
+            self.form.TableList.setCurrentItem(item)
+
+    def getToolTableByName(self, name):
+        ''' returns the listWidgetItem for the selected name'''
+        for i in range(self.form.TableList.count()):
+            tableName = self.form.TableList.itemWidget(self.form.TableList.item(i)).getTableName()
+            if tableName == name:
+                return self.form.TableList.item(i)
+        return False
 
     def removeToolTable(self):
         ''' delete the selected tool table '''
         self.TLM.deleteToolTable()
         self.loadToolTables()
     
-    def initTableRename(self):
-        ''' update the tool table list entry to allow renaming '''
+    def renameTable(self):
+        ''' provides dialog for new tablename and renames teh selected tool table'''
         name = self.TLM.getCurrentTableName()
-        item = self.form.TableList.findItems(name, QtCore.Qt.MatchExactly)[0]
-        self.form.TableList.editItem(item)
-
-    def renameTable(self, listItem):
-        ''' rename the selected too table '''
-        newName = listItem.text()
-        index = self.form.TableList.indexFromItem(listItem).row()
-        reloadTables = self.TLM.renameToolTable(newName, index)
-        if reloadTables:
-            self.loadToolTables()
+        newName, ok = QtGui.QInputDialog.getText(None, translate("TooltableEditor","Rename Tooltable"),translate("TooltableEditor","Enter Name:"),QtGui.QLineEdit.Normal,name)
+        if ok and newName:
+            index = self.form.TableList.indexFromItem(self.getToolTableByName(name)).row()
+            reloadTables = self.TLM.renameToolTable(newName, index)
+            if reloadTables:
+                self.loadToolTables()
+                self.loadTable(newName)
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok)
@@ -850,7 +873,7 @@ class EditorPanel():
         self.form.ButtonDuplicate.clicked.connect(self.duplicate)
 
         self.form.ToolsList.doubleClicked.connect(self.editTool)
-        self.form.ToolsList.clicked.connect(self.toolSelected)
+        self.form.ToolsList.clicked.connect(self.toolSelectionChanged)
 
         self.form.btnCopyTools.clicked.connect(self.copyTools)
 
@@ -858,15 +881,62 @@ class EditorPanel():
         self.form.TableList.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         #self.form.TableList.customContextMenuRequested.connect(self.openMenu)
         self.form.TableList.itemChanged.connect(self.renameTable)
+        
 
         self.form.ButtonAddToolTable.clicked.connect(self.addNewToolTable)
         self.form.ButtonAddToolTable.setToolTip(translate("TooltableEditor","Add New Tool Table"))
         self.form.ButtonRemoveToolTable.clicked.connect(self.removeToolTable)
         self.form.ButtonRemoveToolTable.setToolTip(translate("TooltableEditor","Delete Selected Tool Table"))
-        self.form.ButtonRenameToolTable.clicked.connect(self.initTableRename)
+        self.form.ButtonRenameToolTable.clicked.connect(self.renameTable)
         self.form.ButtonRenameToolTable.setToolTip(translate("TooltableEditor","Rename Selected Tool Table"))
 
         self.setFields()
+
+class ToolTableListWidgetItem(QtGui.QWidget):
+    
+    toolMoved = QtCore.Signal()
+  
+    def __init__(self, TLM):
+        super(ToolTableListWidgetItem, self).__init__()
+        
+        self.tlm = TLM   
+        self.setAcceptDrops(True)
+
+        self.mainLayout = QtGui.QHBoxLayout()
+        self.iconQLabel = QtGui.QLabel()
+        self.tableNameLabel = QtGui.QLabel()
+        self.mainLayout.addWidget(self.iconQLabel, 0)
+        self.mainLayout.addWidget(self.tableNameLabel, 1)
+        self.setLayout(self.mainLayout)
+
+    def setTableName (self, text):
+        self.tableNameLabel.setText(text)
+
+    def getTableName(self):
+        return self.tableNameLabel.text()
+
+    def setIcon (self, icon):
+        icon = icon.scaled(24, 24)
+        self.iconQLabel.setPixmap(icon)
+
+    def dragEnterEvent(self, e):
+        currentToolTable = self.tlm.getCurrentTableName()
+        thisToolTable = self.getTableName()
+      
+        if not currentToolTable == thisToolTable:
+            e.accept()
+        else:
+            e.ignore() 
+
+    def dropEvent(self, e):
+        selectedTools = e.source().selectedIndexes()
+        if selectedTools:
+            toolData = selectedTools[1].data()
+        
+            if toolData:
+                self.tlm.moveToTable(int(toolData), self.getTableName())
+                self.toolMoved.emit()
+
 
 class CommandToolLibraryEdit():
     def __init__(self):
