@@ -47,8 +47,10 @@ def run_analysis(doc, base_name, filepath=""):
     # ATM we only support one solver, search for a frame work solver and run it
     for m in doc.Analysis.Group:
         from femtools.femutils import is_derived_from
-        if is_derived_from(m, "Fem::FemSolverObjectPython") \
-                and m.Proxy.Type is not "Fem::FemSolverCalculixCcxTools":
+        if (
+            is_derived_from(m, "Fem::FemSolverObjectPython")
+            and m.Proxy.Type is not "Fem::FemSolverCalculixCcxTools"
+        ):
             solver = m
             break
 
@@ -86,7 +88,7 @@ def run_ccx_cantileverfaceload(solver=None, base_name=None):
     if base_name is None:
         base_name = "CantilverFaceLoad"
         if solver is not None:
-            base_name += ("_" + solver)
+            base_name += "_" + solver
     run_analysis(doc, base_name)
 
     return doc
@@ -100,7 +102,7 @@ def run_ccx_cantilevernodeload(solver=None, base_name=None):
     if base_name is None:
         base_name = "CantileverNodeLoad"
         if solver is not None:
-            base_name += ("_" + solver)
+            base_name += "_" + solver
     run_analysis(doc, base_name)
 
     return doc
@@ -114,7 +116,7 @@ def run_ccx_cantileverprescribeddisplacement(solver=None, base_name=None):
     if base_name is None:
         base_name = "CantileverPrescribedDisplacement"
         if solver is not None:
-            base_name += ("_" + solver)
+            base_name += "_" + solver
     run_analysis(doc, base_name)
 
     return doc
@@ -128,7 +130,7 @@ def run_rcwall2d(solver=None, base_name=None):
     if base_name is None:
         base_name = "RC_FIB_Wall_2D"
         if solver is not None:
-            base_name += ("_" + solver)
+            base_name += "_" + solver
     run_analysis(doc, base_name)
 
     return doc
