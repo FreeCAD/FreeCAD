@@ -38,7 +38,11 @@ from . import meshtools
 
 class GmshTools():
     def __init__(self, gmsh_mesh_obj, analysis=None):
+
+        # mesh obj
         self.mesh_obj = gmsh_mesh_obj
+
+        # analysis
         if analysis:
             self.analysis = analysis
         else:
