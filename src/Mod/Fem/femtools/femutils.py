@@ -67,7 +67,7 @@ def get_member(analysis, t):
     matching = []
     for m in analysis.Group:
         # since is _derived_from is used the father could be used
-        # to test too (ex. 'Fem::FemMeshObject')
+        # to test too (ex. "Fem::FemMeshObject")
         if is_derived_from(m, t):
             matching.append(m)
     return matching
@@ -85,8 +85,8 @@ def get_several_member(analysis, t):
     members = []
     for m in objs:
         obj_dict = {}
-        obj_dict['Object'] = m
-        obj_dict['RefShapeType'] = get_refshape_type(m)
+        obj_dict["Object"] = m
+        obj_dict["RefShapeType"] = get_refshape_type(m)
         members.append(obj_dict)
     return members
 
@@ -94,28 +94,28 @@ def get_several_member(analysis, t):
 def get_mesh_to_solve(analysis):
     mesh_to_solve = None
     for m in analysis.Group:
-        if m.isDerivedFrom("Fem::FemMeshObject") and not is_of_type(m, 'Fem::FemMeshResult'):
+        if m.isDerivedFrom("Fem::FemMeshObject") and not is_of_type(m, "Fem::FemMeshResult"):
             if not mesh_to_solve:
                 mesh_to_solve = m
             else:
-                return (None, 'FEM: multiple mesh in analysis not yet supported!')
+                return (None, "FEM: multiple mesh in analysis not yet supported!")
     if mesh_to_solve is not None:
-        return (mesh_to_solve, '')
+        return (mesh_to_solve, "")
     else:
-        return (None, 'FEM: no mesh object found in analysis.')
+        return (None, "FEM: no mesh object found in analysis.")
 
 
 # typeID and object type defs
 def type_of_obj(obj):
-    '''returns objects TypeId (C++ objects) or Proxy.Type (Python objects)'''
+    """returns objects TypeId (C++ objects) or Proxy.Type (Python objects)"""
     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
         return obj.Proxy.Type
     return obj.TypeId
 
 
 def is_of_type(obj, ty):
-    '''returns True if an object is of
-    a given TypeId (C++ objects) or Proxy.Type (Python Features)'''
+    """returns True if an object is of
+    a given TypeId (C++ objects) or Proxy.Type (Python Features)"""
     # only returns true if the exact TypeId is given.
     # For FeaturPythons the Proxy.Type has to be given.
     # Keep in mind the TypeId for them is the TypeId from the C++ father class
@@ -123,9 +123,9 @@ def is_of_type(obj, ty):
 
 
 def is_derived_from(obj, t):
-    '''returns True if an object or its inheritance chain is of a
-    given TypeId (C++ objects) or Proxy.Type (Python objects)'''
-    # returns true for all FEM objects if given t == 'App::DocumentObject'
+    """returns True if an object or its inheritance chain is of a
+    given TypeId (C++ objects) or Proxy.Type (Python objects)"""
+    # returns true for all FEM objects if given t == "App::DocumentObject"
     # since this is a father of the given object
     # see https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
     if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and obj.Proxy.Type == t):
@@ -147,17 +147,17 @@ def get_pref_working_dir(solver_obj):
     elif dir_setting == settings.CUSTOM:
         setting_working_dir = run._getCustomDir(solver_obj)
     else:
-        setting_working_dir = ''
+        setting_working_dir = ""
     return setting_working_dir
 
 
 # other
 def get_part_to_mesh(mesh_obj):
-    '''
+    """
     gmsh mesh object: the Attribute is Part
     netgen mesh object: the Attribute is Shape
     other mesh objects: do not have a Attribute which holds the part to mesh
-    '''
+    """
     if is_derived_from(mesh_obj, "Fem::FemMeshGmsh"):
         return mesh_obj.Part
     elif is_derived_from(mesh_obj, "Fem::FemMeshShapeNetgenObject"):
@@ -173,7 +173,7 @@ def getBoundBoxOfAllDocumentShapes(doc):
     overalboundbox = None
     for o in doc.Objects:
         # netgen mesh obj has an attribute Shape which is an Document obj, which has no BB
-        if hasattr(o, 'Shape') and hasattr(o.Shape, 'BoundBox'):
+        if hasattr(o, "Shape") and hasattr(o.Shape, "BoundBox"):
             try:
                 bb = o.Shape.BoundBox
             except:
@@ -189,17 +189,17 @@ def getSelectedFace(selectionex):
     aFace = None
     # print(selectionex)
     if len(selectionex) != 1:
-        FreeCAD.Console.PrintMessage('none OR more than one object selected')
+        FreeCAD.Console.PrintMessage("none OR more than one object selected")
     else:
         sel = selectionex[0]
         if len(sel.SubObjects) != 1:
-            FreeCAD.Console.PrintMessage('more than one element selected')
+            FreeCAD.Console.PrintMessage("more than one element selected")
         else:
             aFace = sel.SubObjects[0]
-            if aFace.ShapeType != 'Face':
-                FreeCAD.Console.PrintMessage('not a Face selected')
+            if aFace.ShapeType != "Face":
+                FreeCAD.Console.PrintMessage("not a Face selected")
             else:
-                FreeCAD.Console.PrintMessage(':-)')
+                FreeCAD.Console.PrintMessage(":-)")
                 return aFace
     return aFace
 
@@ -214,19 +214,19 @@ def get_refshape_type(fem_doc_object):
     # we're going to need the RefShapes to be the same type inside one fem_doc_object
     # TODO: check if all RefShapes inside the object really have the same type
     import femmesh.meshtools as FemMeshTools
-    if hasattr(fem_doc_object, 'References') and fem_doc_object.References:
+    if hasattr(fem_doc_object, "References") and fem_doc_object.References:
         first_ref_obj = fem_doc_object.References[0]
         first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
         st = first_ref_shape.ShapeType
         FreeCAD.Console.PrintMessage(
-            fem_doc_object.Name + ' has ' + st + ' reference shapes.\n'
+            fem_doc_object.Name + " has " + st + " reference shapes.\n"
         )
         return st
     else:
         FreeCAD.Console.PrintMessage(
-            fem_doc_object.Name + ' has empty References.\n'
+            fem_doc_object.Name + " has empty References.\n"
         )
-        return ''
+        return ""
 
 
 def pydecode(bytestring):
