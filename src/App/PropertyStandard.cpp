@@ -1973,8 +1973,10 @@ void PropertyMap::Save (Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<Map count=\"" <<  getSize() <<"\">" << endl;
     writer.incInd();
-    for (std::map<std::string,std::string>::const_iterator it = _lValueList.begin();it!= _lValueList.end(); ++it) 
-        writer.Stream() << writer.ind() << "<Item key=\"" <<  it->first <<"\" value=\"" <<  encodeAttribute(it->second) <<"\"/>" << endl;
+    for (std::map<std::string,std::string>::const_iterator it = _lValueList.begin();it!= _lValueList.end(); ++it) {
+        writer.Stream() << writer.ind() << "<Item key=\"" <<  encodeAttribute(it->first)
+                                        << "\" value=\"" <<  encodeAttribute(it->second) <<"\"/>" << endl;
+    }
 
     writer.decInd();
     writer.Stream() << writer.ind() << "</Map>" << endl ;
