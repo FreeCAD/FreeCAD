@@ -32,7 +32,7 @@ __url__ = "http://www.freecadweb.org"
 class _FemElementGeometry1D:
     "The FemElementGeometry1D object"
 
-    known_beam_types = ['Rectangular', 'Circular', 'Pipe']
+    known_beam_types = ["Rectangular", "Circular", "Pipe"]
 
     def __init__(self, obj):
         obj.addProperty(
@@ -78,7 +78,7 @@ class _FemElementGeometry1D:
             "List of beam section shapes"
         )
         obj.SectionType = _FemElementGeometry1D.known_beam_types
-        obj.SectionType = 'Rectangular'
+        obj.SectionType = "Rectangular"
         obj.Proxy = self
         self.Type = "Fem::FemElementGeometry1D"
 

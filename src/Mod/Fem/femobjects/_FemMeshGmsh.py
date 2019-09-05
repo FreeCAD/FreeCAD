@@ -34,25 +34,25 @@ class _FemMeshGmsh():
     """
 
     # they will be used from the task panel too, thus they need to be outside of the __init__
-    known_element_dimensions = ['From Shape', '1D', '2D', '3D']
-    known_element_orders = ['1st', '2nd']
+    known_element_dimensions = ["From Shape", "1D", "2D", "3D"]
+    known_element_orders = ["1st", "2nd"]
     known_mesh_algorithm_2D = [
-        'Automatic',
-        'MeshAdapt',
-        'Delaunay',
-        'Frontal',
-        'BAMG',
-        'DelQuad'
+        "Automatic",
+        "MeshAdapt",
+        "Delaunay",
+        "Frontal",
+        "BAMG",
+        "DelQuad"
     ]
     known_mesh_algorithm_3D = [
-        'Automatic',
-        'Delaunay',
-        'New Delaunay',
-        'Frontal',
-        'Frontal Delaunay',
-        'Frontal Hex',
-        'MMG3D',
-        'R-tree'
+        "Automatic",
+        "Delaunay",
+        "New Delaunay",
+        "Frontal",
+        "Frontal Delaunay",
+        "Frontal Hex",
+        "MMG3D",
+        "R-tree"
     ]
 
     def __init__(self, obj):
@@ -115,7 +115,7 @@ class _FemMeshGmsh():
             "Dimension of mesh elements (Auto = according ShapeType of part to mesh)"
         )
         obj.ElementDimension = _FemMeshGmsh.known_element_dimensions
-        obj.ElementDimension = 'From Shape'  # according ShapeType of Part to mesh
+        obj.ElementDimension = "From Shape"  # according ShapeType of Part to mesh
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -124,7 +124,7 @@ class _FemMeshGmsh():
             "Order of mesh elements"
         )
         obj.ElementOrder = _FemMeshGmsh.known_element_orders
-        obj.ElementOrder = '2nd'
+        obj.ElementOrder = "2nd"
 
         obj.addProperty(
             "App::PropertyBool",
@@ -181,7 +181,7 @@ class _FemMeshGmsh():
             "mesh algorithm 2D"
         )
         obj.Algorithm2D = _FemMeshGmsh.known_mesh_algorithm_2D
-        obj.Algorithm2D = 'Automatic'  # ?
+        obj.Algorithm2D = "Automatic"  # ?
 
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -190,7 +190,7 @@ class _FemMeshGmsh():
             "mesh algorithm 3D"
         )
         obj.Algorithm3D = _FemMeshGmsh.known_mesh_algorithm_3D
-        obj.Algorithm3D = 'Automatic'  # ?
+        obj.Algorithm3D = "Automatic"  # ?
 
         obj.addProperty(
             "App::PropertyBool",
