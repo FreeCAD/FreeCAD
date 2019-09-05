@@ -128,8 +128,9 @@ class BoundarySelector(_Selector):
         super(BoundarySelector, self).__init__()
         self.setWindowTitle(self.tr("Select Faces/Edges/Vertexes"))
         self.setHelpText(self.tr(
-            "To add references select them in the 3D view and then"
-            " click \"Add\"."))
+            "To add references: select them in the 3D view "
+            ' and click "Add".'
+        ))
 
     def getSelection(self):
         selection = []
@@ -147,7 +148,8 @@ class SolidSelector(_Selector):
         self.setWindowTitle(self.tr("Select Solids"))
         self.setHelpText(self.tr(
             "Select elements part of the solid that shall be added"
-            " to the list. To than add the solid click \"Add\"."))
+            ' to the list. To add the solid click "Add".'
+        ))
 
     def getSelection(self):
         selection = []
@@ -184,15 +186,15 @@ class SolidSelector(_Selector):
                     foundSolids.add("Solid" + str(solidId + 1))
         elif sub.ShapeType == "Face":
             for solidId, solid in enumerate(obj.Shape.Solids):
-                if(self._findSub(sub, solid.Faces)):
+                if self._findSub(sub, solid.Faces):
                     foundSolids.add("Solid" + str(solidId + 1))
         elif sub.ShapeType == "Edge":
             for solidId, solid in enumerate(obj.Shape.Solids):
-                if(self._findSub(sub, solid.Edges)):
+                if self._findSub(sub, solid.Edges):
                     foundSolids.add("Solid" + str(solidId + 1))
         elif sub.ShapeType == "Vertex":
             for solidId, solid in enumerate(obj.Shape.Solids):
-                if(self._findSub(sub, solid.Vertexes)):
+                if self._findSub(sub, solid.Vertexes):
                     foundSolids.add("Solid" + str(solidId + 1))
         if len(foundSolids) == 1:
             return iter(foundSolids).next()
@@ -238,7 +240,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         # )
         self.sel_elem_text = ""
         for e in self.sel_elem_types:
-            self.sel_elem_text += (e + ", ")
+            self.sel_elem_text += e + ", "
         self.sel_elem_text = self.sel_elem_text.rstrip(", ")
         # FreeCAD.Console.PrintMessage("Selection of: " + self.sel_elem_text + " is allowed.\n")
         self.selection_mode_std_print_message = (
@@ -259,9 +261,10 @@ class GeometryElementsSelection(QtGui.QWidget):
         self._helpTextLbl = QtGui.QLabel()
         self._helpTextLbl.setWordWrap(True)
         self._helpTextLbl.setText(self.tr(
-            "Click on \"Add\" and select geometric elements to add them to the list."
-            " If no geometry is added to the list, all remaining ones are used."
-            " The following geometry elements are allowed to select: ") + self.sel_elem_text)
+            'Click on "Add" and select geometric elements to add them to the list. '
+            "If no geometry is added to the list, all remaining ones are used. "
+            "The following geometry elements are allowed to select: "
+        ) + self.sel_elem_text)
         # list
         self.list_References = QtGui.QListWidget()
         # radiobutton down the list
@@ -314,7 +317,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                 self.references.append((ref[0], elem))
 
     def get_item_text(self, ref):
-        return (ref[0].Name + ":" + ref[1])
+        return ref[0].Name + ":" + ref[1]
 
     def get_allitems_text(self):
         items = []
@@ -348,8 +351,9 @@ class GeometryElementsSelection(QtGui.QWidget):
                         ref[0].ViewObject.Visibility = True
                     FreeCADGui.Selection.clearSelection()
                     ref_sh_type = ref[0].Shape.ShapeType
-                    if ref[1].startswith("Solid") \
-                            and (ref_sh_type == "Compound" or ref_sh_type == "CompSolid"):
+                    if ref[1].startswith("Solid") and (
+                        ref_sh_type == "Compound" or ref_sh_type == "CompSolid"
+                    ):
                         # selection of Solids of Compounds or CompSolids is not possible
                         # because a Solid is no Subelement
                         # since only Subelements can be selected

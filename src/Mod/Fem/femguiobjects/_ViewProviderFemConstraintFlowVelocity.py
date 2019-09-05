@@ -65,7 +65,8 @@ class _TaskPanel(object):
         self._refWidget = FemSelectionWidgets.BoundarySelector()
         self._refWidget.setReferences(obj.References)
         self._paramWidget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/FlowVelocity.ui")
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/FlowVelocity.ui"
+        )
         self._initParamWidget()
         self.form = [self._refWidget, self._paramWidget]
         analysis = femutils.findAnalysisOfMember(obj)
