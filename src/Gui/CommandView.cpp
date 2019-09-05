@@ -793,7 +793,7 @@ StdCmdToggleVisibility::StdCmdToggleVisibility()
 void StdCmdToggleVisibility::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    Selection().setVisible(-1);
+    Selection().setVisible(SelectionSingleton::VisToggle);
 }
 
 bool StdCmdToggleVisibility::isActive(void)
@@ -867,7 +867,7 @@ StdCmdShowSelection::StdCmdShowSelection()
 void StdCmdShowSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    Selection().setVisible(true);
+    Selection().setVisible(SelectionSingleton::VisShow);
 }
 
 bool StdCmdShowSelection::isActive(void)
@@ -894,7 +894,7 @@ StdCmdHideSelection::StdCmdHideSelection()
 void StdCmdHideSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    Selection().setVisible(false);
+    Selection().setVisible(SelectionSingleton::VisHide);
 }
 
 bool StdCmdHideSelection::isActive(void)
