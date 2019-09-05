@@ -56,7 +56,7 @@ _dirTypes = {}
 
 def run_fem_solver(solver, working_dir=None):
 
-    if solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools':
+    if solver.Proxy.Type == "Fem::FemSolverCalculixCcxTools":
         App.Console.PrintMessage("CalxuliX ccx tools solver!\n")
         from femtools.ccxtools import CcxTools as ccx
         fea = ccx(solver)
