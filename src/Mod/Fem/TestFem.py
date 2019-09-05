@@ -152,7 +152,7 @@ gf()
 # to get all command to start FreeCAD from build dir on Linux
 # and run FEM unit test this could be used:
 from femtest.utilstest import get_fem_test_defs as gf
-gf('in')
+gf("in")
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.testccxtools.TestCcxTools.test_1_static_analysis"))
@@ -252,12 +252,12 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.t
 # be careful on updating these files, they contain the original results!
 # TODO update files, because some of them have non-existing FEM object classes
 app_home = FreeCAD.ConfigGet("AppHomePath")
-doc = FreeCAD.open(app_home + 'Mod/Fem/femtest/testfiles/ccx/cube.FCStd')
-doc = FreeCAD.open(app_home + 'Mod/Fem/femtest/testfiles/ccx/cube_frequency.FCStd')
-doc = FreeCAD.open(app_home + 'Mod/Fem/femtest/testfiles/ccx/cube_static.FCStd')
-doc = FreeCAD.open(app_home + 'Mod/Fem/femtest/testfiles/ccx/Flow1D_thermomech.FCStd')
-doc = FreeCAD.open(app_home + 'Mod/Fem/femtest/testfiles/ccx/multimat.FCStd')
-doc = FreeCAD.open(app_home + 'Mod/Fem/femtest/testfiles/ccx/spine_thermomech.FCStd')
+doc = FreeCAD.open(app_home + "Mod/Fem/femtest/testfiles/ccx/cube.FCStd")
+doc = FreeCAD.open(app_home + "Mod/Fem/femtest/testfiles/ccx/cube_frequency.FCStd")
+doc = FreeCAD.open(app_home + "Mod/Fem/femtest/testfiles/ccx/cube_static.FCStd")
+doc = FreeCAD.open(app_home + "Mod/Fem/femtest/testfiles/ccx/Flow1D_thermomech.FCStd")
+doc = FreeCAD.open(app_home + "Mod/Fem/femtest/testfiles/ccx/multimat.FCStd")
+doc = FreeCAD.open(app_home + "Mod/Fem/femtest/testfiles/ccx/spine_thermomech.FCStd")
 
 # open files generated from test suite
 import femtest.utilstest as ut
@@ -271,10 +271,10 @@ doc = ut.spine_thermomech()
 
 # load std FEM example files
 app_home = FreeCAD.ConfigGet("AppHomePath")
-doc = FreeCAD.open(app_home + 'data/examples/FemCalculixCantilever2D.FCStd')
-doc = FreeCAD.open(app_home + 'data/examples/FemCalculixCantilever3D.FCStd')
-doc = FreeCAD.open(app_home + 'data/examples/FemCalculixCantilever3D_newSolver.FCStd')
-doc = FreeCAD.open(app_home + 'data/examples/Fem.FCStd')
-doc = FreeCAD.open(app_home + 'data/examples/Fem2.FCStd')
+doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever2D.FCStd")
+doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever3D.FCStd")
+doc = FreeCAD.open(app_home + "data/examples/FemCalculixCantilever3D_newSolver.FCStd")
+doc = FreeCAD.open(app_home + "data/examples/Fem.FCStd")
+doc = FreeCAD.open(app_home + "data/examples/Fem2.FCStd")
 
 """
