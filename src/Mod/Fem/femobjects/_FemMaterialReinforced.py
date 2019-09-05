@@ -50,8 +50,8 @@ class _FemMaterialReinforced:
             "Material",
             "Matrix material properties"
         )
-        obj.Category = ['Solid']
-        obj.Category = 'Solid'
+        obj.Category = ["Solid"]
+        obj.Category = "Solid"
         obj.Proxy = self
         self.Type = "Fem::MaterialReinforced"
 

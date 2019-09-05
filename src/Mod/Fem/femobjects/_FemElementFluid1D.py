@@ -33,24 +33,24 @@ __url__ = "http://www.freecadweb.org"
 class _FemElementFluid1D:
     "The FemElementFluid1D object"
 
-    known_fluid_types = ['Liquid']
-    # 'Gas', 'Open Channel' are not implemented in ccx writer
-    # known_fluid_types = ['Liquid', 'Gas', 'Open Channel']
+    known_fluid_types = ["Liquid"]
+    # "Gas", "Open Channel" are not implemented in ccx writer
+    # known_fluid_types = ["Liquid", "Gas", "Open Channel"]
     known_liquid_types = [
-        'PIPE MANNING',
-        'PIPE ENLARGEMENT',
-        'PIPE CONTRACTION',
-        'PIPE INLET',
-        'PIPE OUTLET',
-        'PIPE ENTRANCE',
-        'PIPE DIAPHRAGM',
-        'PIPE BEND',
-        'PIPE GATE VALVE',
-        'LIQUID PUMP',
-        'PIPE WHITE-COLEBROOK'
+        "PIPE MANNING",
+        "PIPE ENLARGEMENT",
+        "PIPE CONTRACTION",
+        "PIPE INLET",
+        "PIPE OUTLET",
+        "PIPE ENTRANCE",
+        "PIPE DIAPHRAGM",
+        "PIPE BEND",
+        "PIPE GATE VALVE",
+        "LIQUID PUMP",
+        "PIPE WHITE-COLEBROOK"
     ]
-    known_gas_types = ['NONE']
-    known_channel_types = ['NONE']
+    known_gas_types = ["NONE"]
+    known_channel_types = ["NONE"]
 
     def __init__(self, obj):
         obj.addProperty(
@@ -272,13 +272,13 @@ class _FemElementFluid1D:
 
         # set property default values
         obj.SectionType = _FemElementFluid1D.known_fluid_types
-        obj.SectionType = 'Liquid'
+        obj.SectionType = "Liquid"
         obj.LiquidSectionType = _FemElementFluid1D.known_liquid_types
-        obj.LiquidSectionType = 'PIPE INLET'
+        obj.LiquidSectionType = "PIPE INLET"
         obj.GasSectionType = _FemElementFluid1D.known_gas_types
-        obj.GasSectionType = 'NONE'
+        obj.GasSectionType = "NONE"
         obj.ChannelSectionType = _FemElementFluid1D.known_channel_types
-        obj.ChannelSectionType = 'NONE'
+        obj.ChannelSectionType = "NONE"
         obj.ManningArea = 10.0
         obj.ManningRadius = 1.0
         obj.ManningCoefficient = 0.0015  # has units of s/mm^(1/3)

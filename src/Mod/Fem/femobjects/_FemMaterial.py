@@ -44,7 +44,7 @@ class _FemMaterial:
             "Material",
             "Material type: fluid or solid"
         )
-        obj.Category = ['Solid', 'Fluid']  # used in TaskPanel
+        obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
         obj.Proxy = self
         self.Type = "Fem::Material"
 
