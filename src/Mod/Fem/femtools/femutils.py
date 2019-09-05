@@ -160,7 +160,7 @@ def get_pref_working_dir(solver_obj):
 
 def get_temp_dir(obj=None):
     from tempfile import mkdtemp
-    return mkdtemp(prefix="fcfemsolv_")
+    return mkdtemp(prefix="fcfem_")
 
 
 def get_beside_dir(obj):

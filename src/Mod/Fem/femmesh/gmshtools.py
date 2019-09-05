@@ -34,6 +34,7 @@ import FreeCAD
 import Fem
 from FreeCAD import Units
 from . import meshtools
+import femtools.femutils as femutils
 
 
 class GmshTools():
@@ -205,27 +206,50 @@ class GmshTools():
             print("Error in dimension")
         print("  ElementDimension: " + self.dimension)
 
-    def get_tmp_file_paths(self):
-        from os import mkdir
-        from os.path import join
-        from os.path import isdir
-        from tempfile import gettempdir
-        from uuid import uuid4
+    def get_tmp_file_paths(self, param_working_dir=None, create=False):
+        self.working_dir = ""
+        # try to use given working dir
+        if param_working_dir is not None:
+            self.working_dir = param_working_dir
+            if femutils.check_working_dir(self.working_dir) is not True:
+                if create is True:
+                    FreeCAD.Console.PrintMessage(
+                        "Dir given as parameter \'{}\' doesn't exist.\n".format(self.working_dir)
+                    )
+                else:
+                    FreeCAD.Console.PrintError(
+                        "Dir given as parameter \'{}\' doesn't exist "
+                        "and create parameter is set to False.\n"
+                        .format(self.working_dir)
+                    )
+                    self.working_dir = femutils.get_pref_working_dir(self.mesh_obj)
+                    FreeCAD.Console.PrintMessage(
+                        "Dir \'{}\' will be used instead.\n"
+                        .format(self.working_dir)
+                    )
+        else:
+            self.working_dir = femutils.get_pref_working_dir(self.mesh_obj)
 
-        # get an unique id, for simplification we do not use the whole id
-        _gmsh_dir_with_id = "fcfemgmsh_" + str(uuid4())[-12:]
+        # check working_dir exist, if not use a tmp dir and inform the user
+        if femutils.check_working_dir(self.working_dir) is not True:
+            FreeCAD.Console.PrintError(
+                "Dir \'{}\' doesn't exist or cannot be created.\n"
+                .format(self.working_dir)
+            )
+            from femsolver.run import _getTempDir
+            self.working_dir = _getTempDir(self.mesh_obj)
+            FreeCAD.Console.PrintMessage(
+                "Dir \'{}\' will be used instead.\n"
+                .format(self.working_dir)
+            )
 
-        # check if _unique_tmpdir exits, if not create it
-        # it should not exist, because it is unique
-        _unique_tmpdir = join(gettempdir(), _gmsh_dir_with_id)
-        if not isdir(_unique_tmpdir):
-            mkdir(_unique_tmpdir)
-
+        # file paths
         _geometry_name = self.part_obj.Name + "_Geometry"
         self.mesh_name = self.part_obj.Name + "_Mesh"
-        self.temp_file_geometry = join(_unique_tmpdir, _geometry_name + ".brep")  # geometry file
-        self.temp_file_mesh = join(_unique_tmpdir, self.mesh_name + ".unv")  # mesh file
-        self.temp_file_geo = join(_unique_tmpdir, "shape2mesh.geo")  # Gmsh input file
+        from os.path import join
+        self.temp_file_geometry = join(self.working_dir, _geometry_name + ".brep")  # geometry file
+        self.temp_file_mesh = join(self.working_dir, self.mesh_name + ".unv")  # mesh file
+        self.temp_file_geo = join(self.working_dir, "shape2mesh.geo")  # Gmsh input file
         print("  " + self.temp_file_geometry)
         print("  " + self.temp_file_mesh)
         print("  " + self.temp_file_geo)
