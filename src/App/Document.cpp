@@ -2372,6 +2372,7 @@ void Document::restore (const char *filename,
     d->activeObject = 0;
 
     bool signal = false;
+    Document *activeDoc = GetApplication().getActiveDocument();
     if(d->objectArray.size()) {
         signal = true;
         GetApplication().signalDeleteDocument(*this);
@@ -2396,7 +2397,8 @@ void Document::restore (const char *filename,
 
     if(signal) {
         GetApplication().signalNewDocument(*this,true);
-        GetApplication().setActiveDocument(this);
+        if(activeDoc == this)
+            GetApplication().setActiveDocument(this);
     }
 
     if(!filename)
