@@ -99,7 +99,7 @@ class Solve(run.Solve):
         if not _inputFileName:
             # TODO do not run solver
             # do not try to read results in a smarter way than an Exception
-            raise Exception('Error on writing CalculiX input file.\n')
+            raise Exception("Error on writing CalculiX input file.\n")
         self.pushStatus("Executing solver...\n")
         binary = settings.get_binary("Calculix")
         self._process = subprocess.Popen(
@@ -122,7 +122,7 @@ class Results(run.Results):
         if not _inputFileName:
             # TODO do not run solver
             # do not try to read results in a smarter way than an Exception
-            raise Exception('Error on writing CalculiX input file.\n')
+            raise Exception("Error on writing CalculiX input file.\n")
         prefs = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):
@@ -139,30 +139,30 @@ class Results(run.Results):
 
     def load_results_ccxfrd(self):
         frd_result_file = os.path.join(
-            self.directory, _inputFileName + '.frd')
+            self.directory, _inputFileName + ".frd")
         if os.path.isfile(frd_result_file):
-            result_name_prefix = 'CalculiX_' + self.solver.AnalysisType + '_'
+            result_name_prefix = "CalculiX_" + self.solver.AnalysisType + "_"
             importCcxFrdResults.importFrd(
                 frd_result_file, self.analysis, result_name_prefix)
         else:
             raise Exception(
-                'FEM: No results found at {}!'.format(frd_result_file))
+                "FEM: No results found at {}!".format(frd_result_file))
 
     def load_results_ccxdat(self):
         dat_result_file = os.path.join(
-            self.directory, _inputFileName + '.dat')
+            self.directory, _inputFileName + ".dat")
         if os.path.isfile(dat_result_file):
             mode_frequencies = importCcxDatResults.import_dat(
                 dat_result_file, self.analysis)
         else:
             raise Exception(
-                'FEM: No .dat results found at {}!'.format(dat_result_file))
+                "FEM: No .dat results found at {}!".format(dat_result_file))
         if mode_frequencies:
             for m in femutils.get_member(self.analysis, "Fem::FemResultObject"):
                 if m.Eigenmode > 0:
                     for mf in mode_frequencies:
-                        if m.Eigenmode == mf['eigenmode']:
-                            m.EigenmodeFrequency = mf['frequency']
+                        if m.Eigenmode == mf["eigenmode"]:
+                            m.EigenmodeFrequency = mf["frequency"]
 
 
 class _Container(object):
@@ -181,69 +181,69 @@ class _Container(object):
                     "Missing prerequisite",
                     message
                 )
-            raise Exception(message + '\n')
+            raise Exception(message + "\n")
 
         # get member
         # materials
         std_mats = self.get_several_member(
-            'Fem::Material'
+            "Fem::Material"
         )
         rei_mats = self.get_several_member(
-            'Fem::MaterialReinforced'
+            "Fem::MaterialReinforced"
         )
         self.materials_linear = std_mats + rei_mats
 
         self.materials_nonlinear = self.get_several_member(
-            'Fem::MaterialMechanicalNonlinear'
+            "Fem::MaterialMechanicalNonlinear"
         )
 
         # geometries
         self.beam_sections = self.get_several_member(
-            'Fem::FemElementGeometry1D'
+            "Fem::FemElementGeometry1D"
         )
         self.beam_rotations = self.get_several_member(
-            'Fem::FemElementRotation1D'
+            "Fem::FemElementRotation1D"
         )
         self.fluid_sections = self.get_several_member(
-            'Fem::FemElementFluid1D'
+            "Fem::FemElementFluid1D"
         )
         self.shell_thicknesses = self.get_several_member(
-            'Fem::FemElementGeometry2D'
+            "Fem::FemElementGeometry2D"
         )
 
         # constraints
         self.constraints_contact = self.get_several_member(
-            'Fem::ConstraintContact'
+            "Fem::ConstraintContact"
         )
         self.constraints_displacement = self.get_several_member(
-            'Fem::ConstraintDisplacement'
+            "Fem::ConstraintDisplacement"
         )
         self.constraints_fixed = self.get_several_member(
-            'Fem::ConstraintFixed'
+            "Fem::ConstraintFixed"
         )
         self.constraints_force = self.get_several_member(
-            'Fem::ConstraintForce'
+            "Fem::ConstraintForce"
         )
         self.constraints_heatflux = self.get_several_member(
-            'Fem::ConstraintHeatflux'
+            "Fem::ConstraintHeatflux"
         )
         self.constraints_initialtemperature = self.get_several_member(
-            'Fem::ConstraintInitialTemperature'
+            "Fem::ConstraintInitialTemperature"
         )
         self.constraints_planerotation = self.get_several_member(
-            'Fem::ConstraintPlaneRotation'
+            "Fem::ConstraintPlaneRotation"
         )
         self.constraints_pressure = self.get_several_member(
-            'Fem::ConstraintPressure'
+            "Fem::ConstraintPressure"
         )
         self.constraints_selfweight = self.get_several_member(
-            'Fem::ConstraintSelfWeight'
+            "Fem::ConstraintSelfWeight"
         )
         self.constraints_temperature = self.get_several_member(
-            'Fem::ConstraintTemperature'
+            "Fem::ConstraintTemperature"
         )
         self.constraints_transform = self.get_several_member(
-            'Fem::ConstraintTransform'
+            "Fem::ConstraintTransform"
         )
 
     def get_several_member(self, t):
