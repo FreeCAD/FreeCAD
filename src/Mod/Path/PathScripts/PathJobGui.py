@@ -36,7 +36,7 @@ import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathStock as PathStock
 import PathScripts.PathToolControllerGui as PathToolControllerGui
-import PathScripts.PathToolLibraryManager as PathToolLibraryManager
+import PathScripts.PathToolLibraryEditor as PathToolLibraryEditor
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
@@ -854,7 +854,7 @@ class TaskPanel:
         self.toolControllerSelect()
 
     def toolControllerAdd(self):
-        PathToolLibraryManager.CommandToolLibraryEdit().edit(self.obj, self.updateToolController)
+        PathToolLibraryEditor.CommandToolLibraryEdit().edit(self.obj, self.updateToolController)
 
     def toolControllerDelete(self):
         self.objectDelete(self.form.toolControllerList)
