@@ -1405,6 +1405,15 @@ class Snapper:
         self.toolbar.toggleViewAction().setVisible(True)
         if FreeCADGui.ActiveDocument:
             self.setTrackers()
+            if not FreeCAD.ActiveDocument.Objects:
+                if FreeCADGui.ActiveDocument.ActiveView:
+                    if FreeCADGui.ActiveDocument.ActiveView.getCameraType() == 'Orthographic':
+                        c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
+                        if c.orientation.getValue().getValue() == (0.0, 0.0, 0.0, 1.0):
+                            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+                            h = p.GetInt("defaultCameraHeight",0)
+                            if h:
+                                c.height.setValue(h)
 
     def hide(self):
         if hasattr(self,"toolbar"):
