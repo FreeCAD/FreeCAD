@@ -845,22 +845,6 @@ class EditorPanel():
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok)
 
-    # def openMenu(self, position):
-    #     menu = QtGui.QMenu()
-    #     newAction = menu.addAction("New Tool Table")
-    #     deleteAction = menu.addAction("Delete")
-    #     renameAction = menu.addAction("Rename")
-    #     action = menu.exec_(self.form.TableList.mapToGlobal(position))
-    #     if action == newAction:
-    #         self.addNewToolTable()
-    #         pass
-    #     if action == deleteAction:
-    #         self.removeToolTable()
-    #         pass
-    #     if action == renameAction:
-    #         self.initTableRename()
-    #         pass
-
     def setupUi(self):
         # Connect Signals and Slots
         self.form.ButtonNewTool.clicked.connect(self.addTool)
@@ -871,17 +855,14 @@ class EditorPanel():
         self.form.ButtonDelete.clicked.connect(self.delete)
         self.form.ButtonEdit.clicked.connect(self.editTool)
         self.form.ButtonDuplicate.clicked.connect(self.duplicate)
-
+        self.form.btnCopyTools.clicked.connect(self.copyTools)
+ 
         self.form.ToolsList.doubleClicked.connect(self.editTool)
         self.form.ToolsList.clicked.connect(self.toolSelectionChanged)
-
-        self.form.btnCopyTools.clicked.connect(self.copyTools)
-
+ 
         self.form.TableList.clicked.connect(self.tableSelected)
         self.form.TableList.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        #self.form.TableList.customContextMenuRequested.connect(self.openMenu)
         self.form.TableList.itemChanged.connect(self.renameTable)
-        
 
         self.form.ButtonAddToolTable.clicked.connect(self.addNewToolTable)
         self.form.ButtonAddToolTable.setToolTip(translate("TooltableEditor","Add New Tool Table"))
