@@ -684,8 +684,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 "Dir \'{}\' doesn't exist or cannot be created.\n"
                 .format(self.working_dir)
             )
-            from femsolver.run import _getTempDir
-            self.working_dir = _getTempDir(self.solver)
+            from femtools.femutils import getTempDir
+            self.working_dir = getTempDir(self.solver)
             FreeCAD.Console.PrintMessage(
                 "Dir \'{}\' will be used instead.\n"
                 .format(self.working_dir)

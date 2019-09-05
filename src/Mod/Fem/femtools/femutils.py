@@ -27,8 +27,16 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
+import os
 import sys
+
 import FreeCAD
+from femsolver import run
+from femsolver import settings
+from femsolver.run import _getUniquePath as getUniquePath
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
 
 
 # analysis and its members
@@ -133,24 +141,82 @@ def is_derived_from(obj, t):
     return obj.isDerivedFrom(t)
 
 
+# ************************************************************************************************
 # working dir
 def get_pref_working_dir(solver_obj):
     # _dirTypes from run are not used
     # be aware beside could get an error if the document has not been saved
-    from femsolver import settings
-    from femsolver import run
     dir_setting = settings.get_dir_setting()
     if dir_setting == settings.TEMPORARY:
-        setting_working_dir = run._getTempDir(solver_obj)
+        setting_working_dir = getTempDir(solver_obj)
     elif dir_setting == settings.BESIDE:
-        setting_working_dir = run._getBesideDir(solver_obj)
+        setting_working_dir = getBesideDir(solver_obj)
     elif dir_setting == settings.CUSTOM:
-        setting_working_dir = run._getCustomDir(solver_obj)
+        setting_working_dir = getCustomDir(solver_obj)
     else:
         setting_working_dir = ""
     return setting_working_dir
 
 
+def getTempDir(obj):
+    from tempfile import mkdtemp
+    return mkdtemp(prefix="fcfemsolv_")
+
+
+def getBesideDir(obj):
+    base = getBesideBase(obj)
+    specificPath = os.path.join(base, obj.Label)
+    specificPath = getUniquePath(specificPath)
+    if not os.path.isdir(specificPath):
+        os.makedirs(specificPath)
+    return specificPath
+
+
+def getCustomDir(obj):
+    base = getCustomBase(obj)
+    specificPath = os.path.join(
+        base, obj.Document.Name, obj.Label)
+    specificPath = getUniquePath(specificPath)
+    if not os.path.isdir(specificPath):
+        os.makedirs(specificPath)
+    return specificPath
+
+
+def getBesideBase(obj):
+    fcstdPath = obj.Document.FileName
+    if fcstdPath == "":
+        error_message = (
+            "Please save the file before executing a solver or creating a mesh. "
+            "This must be done because the location of the working directory "
+            "is set to \"Beside *.FCStd File\"."
+        )
+        FreeCAD.Console.PrintError(error_message + "\n")
+        if FreeCAD.GuiUp:
+            QtGui.QMessageBox.critical(
+                FreeCADGui.getMainWindow(),
+                "Can't start Solver or Mesh creation.",
+                error_message
+            )
+        raise run.MustSaveError()
+    return os.path.splitext(fcstdPath)[0]
+
+
+def getCustomBase(solver):
+    path = settings.get_custom_dir()
+    if not os.path.isdir(path):
+        error_message = "Selected working directory doesn't exist."
+        FreeCAD.Console.PrintError(error_message + "\n")
+        if FreeCAD.GuiUp:
+            QtGui.QMessageBox.critical(
+                FreeCADGui.getMainWindow(),
+                "Can't start Solver or Mesh creation.",
+                error_message
+            )
+        raise run.DirectoryDoesNotExistError("Invalid path")
+    return path
+
+
+# ************************************************************************************************
 # other
 def get_part_to_mesh(mesh_obj):
     """

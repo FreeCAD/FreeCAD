@@ -28,7 +28,6 @@ __url__ = "http://www.freecadweb.org"
 
 import os
 import os.path
-import tempfile
 import threading
 import shutil
 
@@ -128,7 +127,7 @@ def _isPathValid(m, path):
     if setting == settings.BESIDE:
         if t == settings.BESIDE:
             base = os.path.split(m.directory.rstrip("/"))[0]
-            return base == _getBesideBase(m.solver)
+            return base == femutils.getBesideBase(m.solver)
         return False
     if setting == settings.TEMPORARY:
         return t == settings.TEMPORARY
@@ -136,7 +135,7 @@ def _isPathValid(m, path):
         if t == settings.CUSTOM:
             firstBase = os.path.split(m.directory.rstrip("/"))[0]
             customBase = os.path.split(firstBase)[0]
-            return customBase == _getCustomBase(m.solver)
+            return customBase == femutils.getCustomBase(m.solver)
         return False
 
 
@@ -146,13 +145,13 @@ def _createMachine(solver, path, testmode):
     if path is not None:
         _dirTypes[path] = None
     elif setting == settings.BESIDE:
-        path = _getBesideDir(solver)
+        path = femutils.getBesideDir(solver)
         _dirTypes[path] = settings.BESIDE
     elif setting == settings.TEMPORARY:
-        path = _getTempDir(solver)
+        path = femutils.getTempDir(solver)
         _dirTypes[path] = settings.TEMPORARY
     elif setting == settings.CUSTOM:
-        path = _getCustomDir(solver)
+        path = femutils.getCustomDir(solver)
         _dirTypes[path] = settings.CUSTOM
     m = solver.Proxy.createMachine(solver, path, testmode)
     oldMachine = _machines.get(solver)
@@ -160,63 +159,6 @@ def _createMachine(solver, path, testmode):
         del _dirTypes[oldMachine.directory]
     _machines[solver] = m
     return m
-
-
-def _getTempDir(solver):
-    return tempfile.mkdtemp(prefix="fcfemsolv_")
-
-
-def _getBesideDir(solver):
-    base = _getBesideBase(solver)
-    specificPath = os.path.join(base, solver.Label)
-    specificPath = _getUniquePath(specificPath)
-    if not os.path.isdir(specificPath):
-        os.makedirs(specificPath)
-    return specificPath
-
-
-def _getBesideBase(solver):
-    fcstdPath = solver.Document.FileName
-    if fcstdPath == "":
-        error_message = (
-            "Please save the file before executing the solver. "
-            "This must be done because the location of the working "
-            "directory is set to \"Beside *.FCStd File\"."
-        )
-        App.Console.PrintError(error_message + "\n")
-        if App.GuiUp:
-            QtGui.QMessageBox.critical(
-                FreeCADGui.getMainWindow(),
-                "Can't start Solver",
-                error_message
-            )
-        raise MustSaveError()
-    return os.path.splitext(fcstdPath)[0]
-
-
-def _getCustomDir(solver):
-    base = _getCustomBase(solver)
-    specificPath = os.path.join(
-        base, solver.Document.Name, solver.Label)
-    specificPath = _getUniquePath(specificPath)
-    if not os.path.isdir(specificPath):
-        os.makedirs(specificPath)
-    return specificPath
-
-
-def _getCustomBase(solver):
-    path = settings.get_custom_dir()
-    if not os.path.isdir(path):
-        error_message = "Selected working directory doesn't exist."
-        App.Console.PrintError(error_message + "\n")
-        if App.GuiUp:
-            QtGui.QMessageBox.critical(
-                FreeCADGui.getMainWindow(),
-                "Can't start Solver",
-                error_message
-            )
-        raise DirectoryDoesNotExistError("Invalid path")
-    return path
 
 
 def _getUniquePath(path):
