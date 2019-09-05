@@ -131,9 +131,9 @@ class _TaskPanel(object):
                 quantity = Units.Quantity(self._paramWidget.potentialTxt.text())
             except ValueError:
                 FreeCAD.Console.PrintMessage(
-                    'Wrong input. OK has been triggered without a green hook '
-                    'in the input field. Not recognised input: "{}" '
-                    'Potential has not been set.\n'
+                    "Wrong input. OK has been triggered without a green hook "
+                    "in the input field. Not recognised input: '{}' "
+                    "Potential has not been set.\n"
                     .format(self._paramWidget.potentialTxt.text())
                 )
             if quantity is not None:

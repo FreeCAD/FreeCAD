@@ -71,9 +71,9 @@ class _ViewProviderFemResultMechanical:
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
+            message = "Active Task Dialog found! Please close this one before opening  a new one!"
             QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + '\n')
+            FreeCAD.Console.PrintError(message + "\n")
         return True
 
     def setEdit(self, vobj, mode=0):
@@ -86,10 +86,10 @@ class _ViewProviderFemResultMechanical:
             FreeCADGui.Control.showDialog(taskd)
             return True
         else:
-            error_message = 'FEM: Result object has no appropriate FEM mesh.\n'
+            error_message = "FEM: Result object has no appropriate FEM mesh.\n"
             FreeCAD.Console.PrintError(error_message)
             from PySide import QtGui
-            QtGui.QMessageBox.critical(None, 'No result object', error_message)
+            QtGui.QMessageBox.critical(None, "No result object", error_message)
             return False
 
     def unsetEdit(self, vobj, mode=0):
@@ -117,7 +117,7 @@ class _ViewProviderFemResultMechanical:
 
 
 class _TaskPanelFemResultShow:
-    '''The task panel for the post-processing'''
+    """The task panel for the post-processing"""
 
     def __init__(self, obj):
         self.result_obj = obj
@@ -508,8 +508,8 @@ class _TaskPanelFemResultShow:
         self.form.hsb_displacement_factor.setValue(value)
 
     def disable_empty_result_buttons(self):
-        ''' disable radio buttons if result does not exists in result object'''
-        '''assignments
+        """ disable radio buttons if result does not exists in result object"""
+        """assignments
         DisplacementLengths --> rb_abs_displacement
         DisplacementVectors --> rb_x_displacement, rb_y_displacement, rb_z_displacement
         Temperature         --> rb_temperature
@@ -519,7 +519,7 @@ class _TaskPanelFemResultShow:
         MaxShear            --> rb_max_shear_stress
         MassFlowRate        --> rb_massflowrate
         NetworkPressure     --> rb_networkpressure
-        Peeq                --> rb_peeq'''
+        Peeq                --> rb_peeq"""
         if len(self.result_obj.DisplacementLengths) == 0:
             self.form.rb_abs_displacement.setEnabled(0)
         if len(self.result_obj.DisplacementVectors) == 0:
@@ -552,15 +552,15 @@ class _TaskPanelFemResultShow:
         else:
             if not self.mesh_obj.FemMesh.VolumeCount:
                 error_message = (
-                    'FEM: Graphical bending stress output '
-                    'for beam or shell FEM Meshes not yet supported.\n'
+                    "FEM: Graphical bending stress output "
+                    "for beam or shell FEM Meshes not yet supported.\n"
                 )
                 FreeCAD.Console.PrintError(error_message)
-                QtGui.QMessageBox.critical(None, 'No result object', error_message)
+                QtGui.QMessageBox.critical(None, "No result object", error_message)
             else:
-                error_message = 'FEM: Result node numbers are not equal to FEM Mesh NodeCount.\n'
+                error_message = "FEM: Result node numbers are not equal to FEM Mesh NodeCount.\n"
                 FreeCAD.Console.PrintError(error_message)
-                QtGui.QMessageBox.critical(None, 'No result object', error_message)
+                QtGui.QMessageBox.critical(None, "No result object", error_message)
 
     def reset_mesh_deformation(self):
         self.mesh_obj.ViewObject.applyDisplacement(0.0)
@@ -593,7 +593,7 @@ def hide_parts_constraints():
     hide_constraints = fem_prefs.GetBool("HideConstraint", False)
     if hide_constraints:
         for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom('Fem::FemAnalysis'):
+            if o.isDerivedFrom("Fem::FemAnalysis"):
                 for acnstrmesh in getActiveAnalysis().Group:
                     if "Constraint" in acnstrmesh.TypeId:
                         acnstrmesh.ViewObject.Visibility = False

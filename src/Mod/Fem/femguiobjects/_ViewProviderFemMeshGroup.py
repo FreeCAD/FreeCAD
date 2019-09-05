@@ -89,9 +89,9 @@ class _ViewProviderFemMeshGroup:
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
+            message = "Active Task Dialog found! Please close this one before opening  a new one!"
             QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + '\n')
+            FreeCAD.Console.PrintError(message + "\n")
         return True
 
     def __getstate__(self):
@@ -102,7 +102,7 @@ class _ViewProviderFemMeshGroup:
 
 
 class _TaskPanelFemMeshGroup:
-    '''The TaskPanel for editing References property of FemMeshGroup objects'''
+    """The TaskPanel for editing References property of FemMeshGroup objects"""
 
     def __init__(self, obj):
 
@@ -128,7 +128,7 @@ class _TaskPanelFemMeshGroup:
         # start with Solid in list!
         self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
             obj.References,
-            ['Solid', 'Face', 'Edge', 'Vertex']
+            ["Solid", "Face", "Edge", "Vertex"]
         )
 
         # form made from param and selection widget

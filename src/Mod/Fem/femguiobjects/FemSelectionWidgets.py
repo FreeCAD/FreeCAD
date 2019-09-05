@@ -234,13 +234,13 @@ class GeometryElementsSelection(QtGui.QWidget):
     def initElemTypes(self, eltypes):
         self.sel_elem_types = eltypes
         # FreeCAD.Console.PrintMessage(
-        #     'Selection of: {} is allowed.\n'.format(self.sel_elem_types)
+        #     "Selection of: {} is allowed.\n".format(self.sel_elem_types)
         # )
-        self.sel_elem_text = ''
+        self.sel_elem_text = ""
         for e in self.sel_elem_types:
-            self.sel_elem_text += (e + ', ')
-        self.sel_elem_text = self.sel_elem_text.rstrip(', ')
-        # FreeCAD.Console.PrintMessage('Selection of: ' + self.sel_elem_text + ' is allowed.\n')
+            self.sel_elem_text += (e + ", ")
+        self.sel_elem_text = self.sel_elem_text.rstrip(", ")
+        # FreeCAD.Console.PrintMessage("Selection of: " + self.sel_elem_text + " is allowed.\n")
         self.selection_mode_std_print_message = (
             "Single click on a " + self.sel_elem_text + " will add it to the list"
         )
@@ -267,7 +267,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         # radiobutton down the list
         self.lb_selmod = QtGui.QLabel()
         self.lb_selmod.setText(self.tr("Selection mode"))
-        self.rb_standard = QtGui.QRadioButton(self.tr(self.sel_elem_text.lstrip('Solid, ')))
+        self.rb_standard = QtGui.QRadioButton(self.tr(self.sel_elem_text.lstrip("Solid, ")))
         self.rb_solid = QtGui.QRadioButton(self.tr("Solid"))
         self.rb_standard.setChecked(True)
         self.rb_solid.setChecked(False)
@@ -281,7 +281,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         mainLayout.addWidget(self._helpTextLbl)
         mainLayout.addWidget(self.pushButton_Add)
         mainLayout.addWidget(self.list_References)
-        if 'Solid' in self.sel_elem_types:
+        if "Solid" in self.sel_elem_types:
             mainLayout.addLayout(rbtnLayout)
         self.setLayout(mainLayout)
         # signals and slots
@@ -314,7 +314,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                 self.references.append((ref[0], elem))
 
     def get_item_text(self, ref):
-        return (ref[0].Name + ':' + ref[1])
+        return (ref[0].Name + ":" + ref[1])
 
     def get_allitems_text(self):
         items = []
@@ -342,14 +342,14 @@ class GeometryElementsSelection(QtGui.QWidget):
             currentItemName = str(self.list_References.currentItem().text())
             for ref in self.references:
                 if self.get_item_text(ref) == currentItemName:
-                    # print('found: shape: ' + ref[0].Name + ' element: ' + ref[1])
+                    # print("found: shape: " + ref[0].Name + " element: " + ref[1])
                     if not ref[0].ViewObject.Visibility:
                         self.obj_notvisible.append(ref[0])
                         ref[0].ViewObject.Visibility = True
                     FreeCADGui.Selection.clearSelection()
                     ref_sh_type = ref[0].Shape.ShapeType
-                    if ref[1].startswith('Solid') \
-                            and (ref_sh_type == 'Compound' or ref_sh_type == 'CompSolid'):
+                    if ref[1].startswith("Solid") \
+                            and (ref_sh_type == "Compound" or ref_sh_type == "CompSolid"):
                         # selection of Solids of Compounds or CompSolids is not possible
                         # because a Solid is no Subelement
                         # since only Subelements can be selected
@@ -363,7 +363,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                             # find these faces in ref[0]
                             for i, fref in enumerate(ref[0].Shape.Faces):
                                 if fs.isSame(fref):
-                                    fref_elstring = 'Face' + str(i + 1)
+                                    fref_elstring = "Face" + str(i + 1)
                                     if fref_elstring not in faces:
                                         faces.append(fref_elstring)
                         for f in faces:
@@ -373,8 +373,8 @@ class GeometryElementsSelection(QtGui.QWidget):
                         FreeCADGui.Selection.addSelection(ref[0], ref[1])
 
     def setback_listobj_visibility(self):
-        '''set back Visibility of the list objects
-        '''
+        """set back Visibility of the list objects
+        """
         FreeCADGui.Selection.clearSelection()
         for obj in self.obj_notvisible:
             obj.ViewObject.Visibility = False
@@ -418,15 +418,15 @@ class GeometryElementsSelection(QtGui.QWidget):
     def choose_selection_mode_standard(self, state):
         self.selection_mode_solid = not state
         if self.sel_server and not self.selection_mode_solid:
-            FreeCAD.Console.PrintMessage(self.selection_mode_std_print_message + '\n')
+            FreeCAD.Console.PrintMessage(self.selection_mode_std_print_message + "\n")
 
     def choose_selection_mode_solid(self, state):
         self.selection_mode_solid = state
         if self.sel_server and self.selection_mode_solid:
-            FreeCAD.Console.PrintMessage(self.selection_mode_solid_print_message + '\n')
+            FreeCAD.Console.PrintMessage(self.selection_mode_solid_print_message + "\n")
 
     def add_references(self):
-        '''Called if Button add_reference is triggered'''
+        """Called if Button add_reference is triggered"""
         # in constraints EditTaskPanel the selection is active as soon as the taskpanel is open
         # here the addReference button EditTaskPanel has to be triggered to start selection mode
         self.setback_listobj_visibility()
@@ -443,7 +443,7 @@ class GeometryElementsSelection(QtGui.QWidget):
             self.sel_server = FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
-        print('selection: {}  {}  {}'.format(
+        print("selection: {}  {}  {}".format(
             selection[0].Shape.ShapeType,
             selection[0].Name,
             selection[1]
@@ -451,11 +451,11 @@ class GeometryElementsSelection(QtGui.QWidget):
         if hasattr(selection[0], "Shape") and selection[1]:
             elt = selection[0].Shape.getElement(selection[1])
             ele_ShapeType = elt.ShapeType
-            if self.selection_mode_solid and 'Solid' in self.sel_elem_types:
+            if self.selection_mode_solid and "Solid" in self.sel_elem_types:
                 # in solid selection mode use edges and faces for selection of a solid
                 # adapt selection variable to hold the Solid
                 solid_to_add = None
-                if ele_ShapeType == 'Edge':
+                if ele_ShapeType == "Edge":
                     found_edge = False
                     for i, s in enumerate(selection[0].Shape.Solids):
                         for e in s.Edges:
@@ -464,11 +464,11 @@ class GeometryElementsSelection(QtGui.QWidget):
                                     solid_to_add = str(i + 1)
                                 else:
                                     FreeCAD.Console.PrintMessage(
-                                        'Edge belongs to more than one solid\n'
+                                        "Edge belongs to more than one solid\n"
                                     )
                                     solid_to_add = None
                                 found_edge = True
-                elif ele_ShapeType == 'Face':
+                elif ele_ShapeType == "Face":
                     found_face = False
                     for i, s in enumerate(selection[0].Shape.Solids):
                         for e in s.Faces:
@@ -477,21 +477,21 @@ class GeometryElementsSelection(QtGui.QWidget):
                                     solid_to_add = str(i + 1)
                                 else:
                                     FreeCAD.Console.PrintMessage(
-                                        'Face belongs to more than one solid\n'
+                                        "Face belongs to more than one solid\n"
                                     )
                                     solid_to_add = None
                                 found_face = True
                 if solid_to_add:
-                    selection = (selection[0], 'Solid' + solid_to_add)
-                    ele_ShapeType = 'Solid'
+                    selection = (selection[0], "Solid" + solid_to_add)
+                    ele_ShapeType = "Solid"
                     FreeCAD.Console.PrintMessage(
-                        'selection variable adapted to hold the Solid: {}  {}  {}\n'
+                        "selection variable adapted to hold the Solid: {}  {}  {}\n"
                         .format(selection[0].Shape.ShapeType, selection[0].Name, selection[1])
                     )
                 else:
                     return
             if ele_ShapeType in self.sel_elem_types:
-                if (self.selection_mode_solid and ele_ShapeType == 'Solid') \
+                if (self.selection_mode_solid and ele_ShapeType == "Solid") \
                         or self.selection_mode_solid is False:
                     if selection not in self.references:
                         # only equal shape types are allowed to add
@@ -513,7 +513,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                         # selected shape will not added to the list
                         FreeCADGui.Selection.clearSelection()
                         message = (
-                            '{} is in reference list already!\n'
+                            "{} is in reference list already!\n"
                             .format(self.get_item_text(selection))
                         )
                         FreeCAD.Console.PrintMessage(message)
@@ -521,27 +521,27 @@ class GeometryElementsSelection(QtGui.QWidget):
             else:
                 # selected shape will not added to the list
                 FreeCADGui.Selection.clearSelection()
-                message = ele_ShapeType + ' is not allowed to add to the list!\n'
+                message = ele_ShapeType + " is not allowed to add to the list!\n"
                 FreeCAD.Console.PrintMessage(message)
                 QtGui.QMessageBox.critical(None, "Wrong shape type", message)
 
-    def has_equal_references_shape_types(self, ref_shty=''):
+    def has_equal_references_shape_types(self, ref_shty=""):
         for ref in self.references:
             # the method getElement(element) does not return Solid elements
             r = FemMeshTools.get_element(ref[0], ref[1])
             if not r:
                 FreeCAD.Console.PrintError(
-                    'Problem in retrieving element: {} \n'.format(ref[1])
+                    "Problem in retrieving element: {} \n".format(ref[1])
                 )
                 continue
             FreeCAD.Console.PrintLog(
-                '  ReferenceShape : {}, {}, {} --> {}'
+                "  ReferenceShape : {}, {}, {} --> {}"
                 .format(r.ShapeType, ref[0].Name, ref[0].Label, ref[1])
             )
             if not ref_shty:
                 ref_shty = r.ShapeType
             if r.ShapeType != ref_shty:
-                message = 'Multiple shape types are not allowed in the reference list.\n'
+                message = "Multiple shape types are not allowed in the reference list.\n"
                 FreeCAD.Console.PrintMessage(message)
                 QtGui.QMessageBox.critical(None, "Multiple ShapeTypes not allowed", message)
                 return False
@@ -549,8 +549,8 @@ class GeometryElementsSelection(QtGui.QWidget):
 
 
 class FemSelectionObserver:
-    '''selection observer especially for the needs of geometry reference selection of FEM'''
-    def __init__(self, parseSelectionFunction, print_message=''):
+    """selection observer especially for the needs of geometry reference selection of FEM"""
+    def __init__(self, parseSelectionFunction, print_message=""):
         self.parseSelectionFunction = parseSelectionFunction
         FreeCADGui.Selection.addObserver(self)
         FreeCAD.Console.PrintMessage(print_message + "!\n")

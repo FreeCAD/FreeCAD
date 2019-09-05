@@ -91,9 +91,9 @@ class _ViewProviderFemElementGeometry1D:
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
+            message = "Active Task Dialog found! Please close this one before opening  a new one!"
             QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + '\n')
+            FreeCAD.Console.PrintError(message + "\n")
         return True
 
     def __getstate__(self):
@@ -104,7 +104,7 @@ class _ViewProviderFemElementGeometry1D:
 
 
 class _TaskPanelFemElementGeometry1D:
-    '''The TaskPanel for editing References property of FemElementGeometry1D objects'''
+    """The TaskPanel for editing References property of FemElementGeometry1D objects"""
 
     def __init__(self, obj):
 
@@ -155,7 +155,7 @@ class _TaskPanelFemElementGeometry1D:
         # geometry selection widget
         self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
             obj.References,
-            ['Edge']
+            ["Edge"]
         )
 
         # form made from param and selection widget
@@ -196,7 +196,7 @@ class _TaskPanelFemElementGeometry1D:
         self.obj.PipeThickness = self.PipeThickness
 
     def updateParameterWidget(self):
-        'fills the widgets'
+        "fills the widgets"
         index_crosssectiontype = self.parameterWidget.cb_crosssectiontype.findText(
             self.SectionType
         )
