@@ -107,6 +107,7 @@
         <file>panels/PointEdit.ui</file>
         <file>panels/SetupGlobal.ui</file>
         <file>panels/SetupOp.ui</file>
+        <file>panels/ToolBitEditor.ui</file>
         <file>panels/ToolEditor.ui</file>
         <file>panels/ToolLibraryEditor.ui</file>
         <file>panels/TaskPathSimulator.ui</file>

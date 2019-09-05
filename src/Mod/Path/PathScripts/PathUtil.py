@@ -34,14 +34,40 @@ other than PathLog, then it probably doesn't belong here.
 
 import six
 import PathScripts.PathLog as PathLog
+import PySide
 
-LOGLEVEL = False
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+def translate(context, text, disambig=None):
+    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
+
+def _getProperty(obj, prop):
+    o = obj
+    attr = obj
+    name = None
+    for name in prop.split('.'):
+        o = attr
+        if not hasattr(o, name):
+            break
+        attr = getattr(o, name)
+
+    if o == attr:
+        PathLog.warning(translate('PathGui', "%s has no property %s (%s))") % (obj.Label, prop, name))
+        return (None, None, None)
+
+    #PathLog.debug("found property %s of %s (%s: %s)" % (prop, obj.Label, name, attr))
+    return(o, attr, name)
+
+def getProperty(obj, prop):
+    '''getProperty(obj, prop) ... answer obj's property defined by its canonical name.'''
+    o, attr, name = _getProperty(obj, prop) # pylint: disable=unused-variable
+    return attr
+
+def setProperty(obj, prop, value):
+    '''setProperty(obj, prop, value) ... set the property value of obj's property defined by its canonical name.'''
+    o, attr, name = _getProperty(obj, prop) # pylint: disable=unused-variable
+    if o and name:
+        setattr(o, name, value)
 
 # NotValidBaseTypeIds = ['Sketcher::SketchObject']
 NotValidBaseTypeIds = []
