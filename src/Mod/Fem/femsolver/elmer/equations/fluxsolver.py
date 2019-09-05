@@ -48,18 +48,18 @@ class Proxy(linear.Proxy, equationbase.FluxsolverProxy):
         obj.addProperty(
             "App::PropertyString", "FluxVariable",
             "Fluxsolver", "Insert variable name for flux calculation")
-        '''
+        """
         #obj.addProperty(
             #"App::PropertyBool", "CalculateFluxAbs",
             #"Fluxsolver", "Select calculation of abs of flux")
         #obj.addProperty(
             #"App::PropertyBool", "CalculateFluxMagnitude",
             #"Fluxsolver", "Select calculation of magnitude of flux")
-        '''
+        """
         obj.addProperty(
             "App::PropertyBool", "CalculateGrad",
             "Fluxsolver", "Select  calculation of gradient")
-        '''
+        """
         #obj.addProperty(
             #"App::PropertyBool", "CalculateGradAbs",
             #"Fluxsolver", "Select calculation of abs of gradient")
@@ -69,7 +69,7 @@ class Proxy(linear.Proxy, equationbase.FluxsolverProxy):
         #obj.addProperty(
             #"App::PropertyBool", "EnforcePositiveMagnitude",
             #"Fluxsolver", "Select calculation of positive magnitude")
-        '''
+        """
         obj.Priority = 5
 
 

@@ -138,7 +138,7 @@ class Writer(object):
 
     def _writeStartinfo(self):
         path = os.path.join(self.directory, _STARTINFO_NAME)
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             f.write(_SIF_NAME)
 
     def _exportToUnv(self, groups, mesh, meshPath):
@@ -741,7 +741,7 @@ class Writer(object):
 
     def _writeSif(self):
         sifPath = os.path.join(self.directory, _SIF_NAME)
-        with open(sifPath, 'w') as fstream:
+        with open(sifPath, "w") as fstream:
             sif = sifio.Sif(self._builder)
             sif.write(fstream)
 
