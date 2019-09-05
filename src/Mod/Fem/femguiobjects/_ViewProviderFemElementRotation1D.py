@@ -66,7 +66,7 @@ class _ViewProviderFemElementRotation1D:
     def onChanged(self, vobj, prop):
         return
 
-    '''
+    """
     # do not activate the task panel, since rotation with reference shapes is not yet supported
     def setEdit(self, vobj, mode=0):
         # hide all meshes
@@ -82,7 +82,7 @@ class _ViewProviderFemElementRotation1D:
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
         return True
-    '''
+    """
 
     def setEdit(self, vobj, mode=0):
         # avoid edit mode by return False
@@ -97,9 +97,9 @@ class _ViewProviderFemElementRotation1D:
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
+            message = "Active Task Dialog found! Please close this one before opening  a new one!"
             QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + '\n')
+            FreeCAD.Console.PrintError(message + "\n")
         return True
 
     def __getstate__(self):
@@ -110,7 +110,7 @@ class _ViewProviderFemElementRotation1D:
 
 
 class _TaskPanelFemElementRotation1D:
-    '''The TaskPanel for editing References property of FemElementRotation1D objects'''
+    """The TaskPanel for editing References property of FemElementRotation1D objects"""
     def __init__(self, obj):
 
         self.obj = obj
@@ -130,7 +130,7 @@ class _TaskPanelFemElementRotation1D:
         # geometry selection widget
         self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
             obj.References,
-            ['Edge']
+            ["Edge"]
         )
 
         # form made from param and selection widget
