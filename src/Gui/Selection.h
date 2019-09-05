@@ -473,11 +473,21 @@ public:
     template<typename T> inline std::vector<T*> getObjectsOfType(
             const char* pDocName=0, int resolve=1) const;
 
+    /// Visible state used by setVisible()
+    enum VisibleState {
+        /// Hide the selection
+        VisHide = 0,
+        /// Show the selection
+        VisShow = 1,
+        /// Toggle visibility of the selection
+        VisToggle = -1,
+    };
+
     /** Set selection object visibility
      *
-     * @param visible: 1: make visible, 0: make invisible, -1: toggle visibility
+     * @param visible: see VisibleState
      */
-    void setVisible(int visible);
+    void setVisible(VisibleState visible);
 
     /// signal on new object
     boost::signals2::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
