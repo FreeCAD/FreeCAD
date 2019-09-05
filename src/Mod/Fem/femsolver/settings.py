@@ -27,12 +27,12 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-'''
+"""
 parameter in FreeCAD can be edited in two ways, either in the
 Preferences: menu Edit --> Preferences
 or
 Parameter editor: menu Tools --> Edit parameter
-'''
+"""
 
 import FreeCAD
 
@@ -69,13 +69,13 @@ class _SolverDlg(object):
         # ATM pure unix shell commands without path names are used
         # TODO see todo on use_default later in this module
         binary = self.default
-        FreeCAD.Console.PrintLog('Solver binary path: {} \n'.format(binary))
+        FreeCAD.Console.PrintLog("Solver binary path: {} \n".format(binary))
 
         # check if use_default is set to True
         # if True the standard binary path will be overwritten with a user binary path
         if self.param_group.GetBool(self.use_default, True) is False:
             binary = self.param_group.GetString(self.custom_path)
-        FreeCAD.Console.PrintLog('Solver binary path: {} \n'.format(binary))
+        FreeCAD.Console.PrintLog("Solver binary path: {} \n".format(binary))
 
         # get the whole binary path name for the given command or binary path and return it
         from distutils.spawn import find_executable as find_bin
@@ -85,7 +85,7 @@ class _SolverDlg(object):
         return self.param_group.GetBool(self.write_comments, True)
 
 
-'''
+"""
 default:
     default command to run the binary
     this one is taken if the UseStandardXXXLocationis not given or set to True
@@ -99,7 +99,7 @@ use_default:
 custom_path:
     the xxxBinaryPath parameter identifier
     binary path given by the user
-'''
+"""
 _SOLVER_PARAM = {
     "Calculix": _SolverDlg(
         default="ccx",
@@ -127,12 +127,12 @@ _SOLVER_PARAM = {
 def get_binary(name):
     if name in _SOLVER_PARAM:
         binary = _SOLVER_PARAM[name].get_binary()
-        FreeCAD.Console.PrintMessage('Solver binary path: {} \n'.format(binary))
+        FreeCAD.Console.PrintMessage("Solver binary path: {} \n".format(binary))
         return binary
     else:
         FreeCAD.Console.PrintError(
-            'Settings solver name: {} not found in '
-            'solver settings modules _SOLVER_PARAM dirctionary.\n'
+            "Settings solver name: {} not found in "
+            "solver settings modules _SOLVER_PARAM dirctionary.\n"
             .format(name)
         )
         return None
@@ -143,8 +143,8 @@ def get_write_comments(name):
         return _SOLVER_PARAM[name].get_write_comments()
     else:
         FreeCAD.Console.PrintError(
-            'Settings solver name: {} not found in '
-            'solver settings modules _SOLVER_PARAM dirctionary.\n'
+            "Settings solver name: {} not found in "
+            "solver settings modules _SOLVER_PARAM dirctionary.\n"
             .format(name)
         )
         return None
