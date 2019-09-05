@@ -62,7 +62,7 @@ def run_analysis(doc, base_name, filepath=""):
     doc.saveAs(save_fc_file)
 
     # get analysis workig dir
-    from femsolver.run import _getBesideDir as getpath
+    from femtools.femutils import getBesideDir as getpath
     working_dir = getpath(solver)
 
     # run analysis
