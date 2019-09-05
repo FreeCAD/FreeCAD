@@ -37,7 +37,7 @@ from math import isnan
 #  @param analysis
 def purge_results(analysis):
     for m in analysis.Group:
-        if (m.isDerivedFrom('Fem::FemResultObject')):
+        if (m.isDerivedFrom("Fem::FemResultObject")):
             if m.Mesh \
                     and hasattr(m.Mesh, "Proxy") \
                     and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
@@ -49,7 +49,7 @@ def purge_results(analysis):
     # we could run into trouble in one loop because
     # we will delete objects and try to access them later
     for m in analysis.Group:
-        if femutils.is_of_type(m, 'Fem::FemMeshResult'):
+        if femutils.is_of_type(m, "Fem::FemMeshResult"):
             analysis.Document.removeObject(m.Name)
     FreeCAD.ActiveDocument.recompute()
 
@@ -108,7 +108,7 @@ def show_result(resultobj, result_type="Sabs", limit=None):
             values = list(d[match[result_type]])
         show_color_by_scalar_with_cutoff(resultobj, values, limit)
     else:
-        print('Error, No result object given.')
+        print("Error, No result object given.")
 
 
 ## Sets mesh color using list of values. Internally used by show_result function.
@@ -182,12 +182,12 @@ def get_all_stats(res_obj):
 
 
 def fill_femresult_stats(res_obj):
-    '''
+    """
     fills a FreeCAD FEM mechanical result object with stats data
     res_obj: FreeCAD FEM result object
-    '''
+    """
     FreeCAD.Console.PrintLog(
-        'Calculate stats list for result obj: ' + res_obj.Name + '\n'
+        "Calculate stats list for result obj: " + res_obj.Name + "\n"
     )
     no_of_values = 1  # to avoid division by zero
     # set stats values to 0, they may not exist in res_obj
@@ -259,7 +259,7 @@ def fill_femresult_stats(res_obj):
                      temp_min, temp_avg, temp_max,
                      mflow_min, mflow_avg, mflow_max,
                      npress_min, npress_avg, npress_max]
-    '''
+    """
     stat_types = [
         "U1",
         "U2",
@@ -275,7 +275,7 @@ def fill_femresult_stats(res_obj):
         "MFlow",
         "NPress"
     ]
-    '''
+    """
     # len(stat_types) == 13*3 == 39
     # do not forget to adapt initialization of all Stats items in modules:
     # - module femobjects/_FemResultMechanical.py
@@ -285,13 +285,13 @@ def fill_femresult_stats(res_obj):
     # TODO: all stats stuff should be reimplemented
     # maybe a dictionary would be far more robust than a list
 
-    FreeCAD.Console.PrintLog('Stats list for result obj: ' + res_obj.Name + ' calculated\n')
+    FreeCAD.Console.PrintLog("Stats list for result obj: " + res_obj.Name + " calculated\n")
     return res_obj
 
 
 def add_disp_apps(res_obj):
     res_obj.DisplacementLengths = calculate_disp_abs(res_obj.DisplacementVectors)
-    FreeCAD.Console.PrintLog('Added DisplacementLengths.\n')
+    FreeCAD.Console.PrintLog("Added DisplacementLengths.\n")
     return res_obj
 
 
@@ -308,7 +308,7 @@ def add_von_mises(res_obj):
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
         mstress.append(calculate_von_mises((Sxx, Syy, Szz, Sxy, Sxz, Syz)))
     res_obj.StressValues = mstress
-    FreeCAD.Console.PrintLog('Added StressValues (von Mises).\n')
+    FreeCAD.Console.PrintLog("Added StressValues (von Mises).\n")
     return res_obj
 
 
@@ -335,7 +335,7 @@ def add_principal_stress_std(res_obj):
     res_obj.PrincipalMed = prinstress2
     res_obj.PrincipalMin = prinstress3
     res_obj.MaxShear = shearstress
-    FreeCAD.Console.PrintLog('Added principal stress and max shear values.\n')
+    FreeCAD.Console.PrintLog("Added principal stress and max shear values.\n")
     return res_obj
 
 
@@ -357,8 +357,8 @@ def get_concrete_nodes(res_obj):
     ic = np.zeros(nsr)
 
     for obj in res_obj.getParentGroup().Group:
-        if obj.isDerivedFrom('App::MaterialObjectPython') \
-                and femutils.is_of_type(obj, 'Fem::MaterialReinforced'):
+        if obj.isDerivedFrom("App::MaterialObjectPython") \
+                and femutils.is_of_type(obj, "Fem::MaterialReinforced"):
             print("ReinforcedMaterial")
             if obj.References == []:
                 for iic in range(nsr):
@@ -369,8 +369,8 @@ def get_concrete_nodes(res_obj):
                     concrete_nodes = get_femnodes_by_refshape(femmesh, ref)
                     for cn in concrete_nodes:
                         ic[cn - 1] = 1
-        elif obj.isDerivedFrom('App::MaterialObjectPython') \
-                and femutils.is_of_type(obj, 'Fem::Material'):
+        elif obj.isDerivedFrom("App::MaterialObjectPython") \
+                and femutils.is_of_type(obj, "Fem::Material"):
             print("NOT ReinforcedMaterial")
             if obj.References == []:
                 for iic in range(nsr):
@@ -412,15 +412,15 @@ def add_principal_stress_reinforced(res_obj):
 
     # material parameter
     for obj in res_obj.getParentGroup().Group:
-        if femutils.is_of_type(obj, 'Fem::MaterialReinforced'):
+        if femutils.is_of_type(obj, "Fem::MaterialReinforced"):
             matrix_af = float(
-                FreeCAD.Units.Quantity(obj.Material['AngleOfFriction']).getValueAs('rad')
+                FreeCAD.Units.Quantity(obj.Material["AngleOfFriction"]).getValueAs("rad")
             )
             matrix_cs = float(
-                FreeCAD.Units.Quantity(obj.Material['CompressiveStrength']).getValueAs('MPa')
+                FreeCAD.Units.Quantity(obj.Material["CompressiveStrength"]).getValueAs("MPa")
             )
             reinforce_yield = float(
-                FreeCAD.Units.Quantity(obj.Reinforcement['YieldStrength']).getValueAs('MPa')
+                FreeCAD.Units.Quantity(obj.Reinforcement["YieldStrength"]).getValueAs("MPa")
             )
     # print(matrix_af)
     # print(matrix_cs)
@@ -492,16 +492,16 @@ def add_principal_stress_reinforced(res_obj):
     res_obj.PS3Vector = ps3v
 
     FreeCAD.Console.PrintMessage(
-        'Added principal stress and max shear values as well as'
-        'reinforcment rations, Mohr Coloumb values.\n'
+        "Added principal stress and max shear values as well as"
+        "reinforcment rations, Mohr Coloumb values.\n"
     )
     return res_obj
 
 
 def compact_result(res_obj):
-    '''
+    """
     compacts result.Mesh and appropriate result.NodeNumbers
-    '''
+    """
     # as workaround for https://www.freecadweb.org/tracker/view.php?id=2873
 
     # get compact mesh data
@@ -543,7 +543,7 @@ def calculate_principal_stress_std(
     # https://forum.freecadweb.org/viewtopic.php?f=18&t=32649#p274291
     for s in stress_tensor:
         if isnan(s) is True:
-            return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
+            return (float("NaN"), float("NaN"), float("NaN"), float("NaN"))
 
     s11 = stress_tensor[0]  # Sxx
     s22 = stress_tensor[1]  # Syy
