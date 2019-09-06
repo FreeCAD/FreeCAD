@@ -158,7 +158,7 @@ def get_pref_working_dir(solver_obj):
     return setting_working_dir
 
 
-def get_temp_dir(obj):
+def get_temp_dir(obj=None):
     from tempfile import mkdtemp
     return mkdtemp(prefix="fcfemsolv_")
 
@@ -214,6 +214,16 @@ def get_custom_base(solver):
             )
         raise run.DirectoryDoesNotExistError("Invalid path")
     return path
+
+
+def check_working_dir(wdir):
+    # check if working_dir exist, if not use a tmp dir and inform the user
+    # print(wdir)
+    from os.path import isdir
+    if isdir(wdir):
+        return True
+    else:
+        return False
 
 
 # ************************************************************************************************

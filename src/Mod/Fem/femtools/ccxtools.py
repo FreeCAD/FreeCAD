@@ -647,7 +647,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         fem_general_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         if param_working_dir is not None:
             self.working_dir = param_working_dir
-            if self.check_working_dir() is not True:
+            if femutils.check_working_dir(self.working_dir) is not True:
                 if create is True:
                     FreeCAD.Console.PrintMessage(
                         "Dir given as parameter \'{}\' doesn't exist.\n".format(self.working_dir)
@@ -665,7 +665,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     )
         elif fem_general_prefs.GetBool("OverwriteSolverWorkingDirectory", True) is False:
             self.working_dir = self.solver.WorkingDir
-            if self.check_working_dir() is not True:
+            if femutils.check_working_dir(self.working_dir) is not True:
                 FreeCAD.Console.PrintError(
                     "Dir from solver object \'{}\' doesn't exist.\n"
                     .format(self.working_dir)
@@ -679,7 +679,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             self.working_dir = femutils.get_pref_working_dir(self.solver)
 
         # check working_dir exist, if not use a tmp dir and inform the user
-        if self.check_working_dir() is not True:
+        if femutils.check_working_dir(self.working_dir) is not True:
             FreeCAD.Console.PrintError(
                 "Dir \'{}\' doesn't exist or cannot be created.\n"
                 .format(self.working_dir)
@@ -693,14 +693,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
         # Update inp file name
         self.set_inp_file_name()
-
-    def check_working_dir(self):
-        # check if working_dir exist, if not use a tmp dir and inform the user
-        # print(self.working_dir)
-        if os.path.isdir(self.working_dir):
-            return True
-        else:
-            return False
 
     def write_inp_file(self):
         import femsolver.calculix.writer as iw
