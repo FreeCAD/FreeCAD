@@ -188,17 +188,19 @@ def get_beside_base(obj):
         error_message = (
             "Please save the file before executing a solver or creating a mesh. "
             "This must be done because the location of the working directory "
-            "is set to \"Beside *.FCStd File\"."
+            "is set to \"Beside *.FCStd File\". For the moment a tmp dir is used."
         )
         FreeCAD.Console.PrintError(error_message + "\n")
         if FreeCAD.GuiUp:
             QtGui.QMessageBox.critical(
                 FreeCADGui.getMainWindow(),
-                "Can't start Solver or Mesh creation.",
+                "Can't start Solver or Mesh creation besides FC file.",
                 error_message
             )
-        raise run.MustSaveError()
-    return os.path.splitext(fcstdPath)[0]
+        # raise run.MustSaveError()
+        return get_temp_dir()
+    else:
+        return os.path.splitext(fcstdPath)[0]
 
 
 def get_custom_base(solver):
