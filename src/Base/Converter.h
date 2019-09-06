@@ -99,7 +99,7 @@ inline _Vec1 convertTo(const _Vec2& v)
     typedef typename traits_type::float_type float_type;
     traits_type t(v);
     auto tuple = t.get();
-    return make_vec<_Vec1, typename float_type>(std::move(tuple));
+    return make_vec<_Vec1, float_type>(std::move(tuple));
 }
 
 }
