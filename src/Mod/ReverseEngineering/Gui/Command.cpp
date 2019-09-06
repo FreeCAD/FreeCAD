@@ -42,6 +42,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
 #include <Base/CoordinateSystem.h>
+#include <Base/Converter.h>
 
 #include "../App/ApproxSurface.h"
 #include "FitBSplineSurface.h"

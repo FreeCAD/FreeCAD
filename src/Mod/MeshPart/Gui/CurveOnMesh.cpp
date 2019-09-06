@@ -44,6 +44,7 @@
 #endif
 
 #include "CurveOnMesh.h"
+#include <Base/Converter.h>
 #include <App/Document.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>

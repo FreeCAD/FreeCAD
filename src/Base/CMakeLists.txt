@@ -303,6 +303,7 @@ SET(FreeCADBase_HPP_SRCS
     BoundBox.h
     Builder3D.h
     Console.h
+    Converter.h
     CoordinateSystem.h
     Debugger.h
     Exception.h
