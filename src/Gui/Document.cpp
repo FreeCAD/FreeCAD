@@ -1429,9 +1429,9 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
                              const std::map<std::string, std::string>& nameMapping)
 {
     // We must create an XML parser to read from the input stream
-    Base::XMLReader xmlReader("GuiDocument.xml", reader);
-    xmlReader.readElement("Document");
-    long scheme = xmlReader.getAttributeAsInteger("SchemaVersion");
+    std::shared_ptr<Base::XMLReader> localreader = std::make_shared<Base::XMLReader>("GuiDocument.xml", reader);
+    localreader->readElement("Document");
+    long scheme = localreader->getAttributeAsInteger("SchemaVersion");
 
     // At this stage all the document objects and their associated view providers exist.
     // Now we must restore the properties of the view providers only.
@@ -1439,21 +1439,21 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
     // SchemeVersion "1"
     if (scheme == 1) {
         // read the viewproviders itself
-        xmlReader.readElement("ViewProviderData");
-        int Cnt = xmlReader.getAttributeAsInteger("Count");
+        localreader->readElement("ViewProviderData");
+        int Cnt = localreader->getAttributeAsInteger("Count");
         std::vector<App::DocumentObject*>::const_iterator it = obj.begin();
         for (int i=0;i<Cnt&&it!=obj.end();++i,++it) {
             // The stored name usually doesn't match with the current name anymore
             // thus we try to match by type. This should work because the order of
             // objects should not have changed
-            xmlReader.readElement("ViewProvider");
-            std::string name = xmlReader.getAttribute("name");
+            localreader->readElement("ViewProvider");
+            std::string name = localreader->getAttribute("name");
             std::map<std::string, std::string>::const_iterator jt = nameMapping.find(name);
             if (jt != nameMapping.end())
                 name = jt->second;
             bool expanded = false;
-            if (xmlReader.hasAttribute("expanded")) {
-                const char* attr = xmlReader.getAttribute("expanded");
+            if (localreader->hasAttribute("expanded")) {
+                const char* attr = localreader->getAttribute("expanded");
                 if (strcmp(attr,"1") == 0) {
                     expanded = true;
                 }
@@ -1463,22 +1463,22 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
                 pObj->setStatus(Gui::isRestoring,true);
                 auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(pObj);
                 if(vpd) vpd->startRestoring();
-                pObj->Restore(xmlReader);
+                pObj->Restore(*localreader);
                 if (expanded && vpd) 
                     this->signalExpandObject(*vpd, Gui::ExpandItem,0,0);
             }
-            xmlReader.readEndElement("ViewProvider");
+            localreader->readEndElement("ViewProvider");
             if (it == obj.end())
                 break;
         }
-        xmlReader.readEndElement("ViewProviderData");
+        localreader->readEndElement("ViewProviderData");
     }
 
-    xmlReader.readEndElement("Document");
+    localreader->readEndElement("Document");
 
     // In the file GuiDocument.xml new data files might be added
-    if (!xmlReader.getFilenames().empty())
-        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader.getStream()));
+    if (!localreader->getFilenames().empty())
+        reader.initLocalReader(localreader);
 }
 
 void Document::slotFinishImportObjects(const std::vector<App::DocumentObject*> &objs) {
