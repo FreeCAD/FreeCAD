@@ -28,6 +28,7 @@
 # include <algorithm>
 #endif
 
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Persistence.h>

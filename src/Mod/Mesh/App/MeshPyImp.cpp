@@ -26,6 +26,7 @@
 #include <Base/VectorPy.h>
 #include <Base/Handle.h>
 #include <Base/Builder3D.h>
+#include <Base/Converter.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
 #include <Base/Tools.h>

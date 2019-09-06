@@ -27,6 +27,7 @@
 
 #include <CXX/Objects.hxx>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>

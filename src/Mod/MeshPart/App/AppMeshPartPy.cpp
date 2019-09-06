@@ -33,6 +33,7 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
+#include <Base/Converter.h>
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 #include <Mod/Part/App/TopoShapePy.h>

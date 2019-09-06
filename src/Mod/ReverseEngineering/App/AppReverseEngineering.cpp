@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 #include <Base/GeometryPyCXX.h>

@@ -30,6 +30,7 @@
 
 #include <Mod/Mesh/App/MeshFeature.h>
 
+#include <Base/Converter.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
