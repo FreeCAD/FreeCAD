@@ -1,4 +1,4 @@
-# FEM coding rules
+# FEM coding_conventions
 - These coding rules apply to FEM module code only. Other modules or the base system may use different coding rules especially in naming policy of Python.
 
 ## Python and C++
@@ -9,7 +9,7 @@
 - no trailing white spaces
 
 ## Python
-#### Code formating
+#### Code formatting
 - except W503 all Python code is pep8 compliant
 - maximal line length is 100
 - double quotes as string identifier
@@ -22,7 +22,7 @@
 - Function expected to return a value should indicate what is expected, so is_mesh_valid is a good name, but check_mesh is not a good name
 - Class names, methode names and variable that are locally and not supposed to be used for scripting should start with underscore like _MyInternalClass
 
-### Python code formating tools
+### Python code formatting tools
 - flake8
     - in source code directory on Linux shell
 ~~~
