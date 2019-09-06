@@ -165,21 +165,21 @@ def get_temp_dir(obj):
 
 def get_beside_dir(obj):
     base = get_beside_base(obj)
-    specificPath = os.path.join(base, obj.Label)
-    specificPath = getUniquePath(specificPath)
-    if not os.path.isdir(specificPath):
-        os.makedirs(specificPath)
-    return specificPath
+    specific_path = os.path.join(base, obj.Label)
+    specific_path = getUniquePath(specific_path)
+    if not os.path.isdir(specific_path):
+        os.makedirs(specific_path)
+    return specific_path
 
 
 def get_custom_dir(obj):
     base = get_custom_base(obj)
-    specificPath = os.path.join(
+    specific_path = os.path.join(
         base, obj.Document.Name, obj.Label)
-    specificPath = getUniquePath(specificPath)
-    if not os.path.isdir(specificPath):
-        os.makedirs(specificPath)
-    return specificPath
+    specific_path = getUniquePath(specific_path)
+    if not os.path.isdir(specific_path):
+        os.makedirs(specific_path)
+    return specific_path
 
 
 def get_beside_base(obj):
