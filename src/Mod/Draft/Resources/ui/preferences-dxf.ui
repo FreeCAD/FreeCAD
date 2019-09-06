@@ -398,7 +398,7 @@ instead of the size they have in the DXF document</string>
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
-           <string>If this is checked, DXF layers will be imported as Draft VisGroups</string>
+           <string>If this is checked, DXF layers will be imported as Draft Layers</string>
           </property>
           <property name="text">
            <string>Use Layers</string>
