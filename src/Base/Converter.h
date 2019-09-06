@@ -95,14 +95,11 @@ _Vec make_vec(const std::tuple<float_type, float_type, float_type, float_type>&&
 template <class _Vec1, class _Vec2>
 inline _Vec1 convertTo(const _Vec2& v)
 {
-    typedef _Vec1 out_type;
-    typedef _Vec2 inp_type;
-    typedef vec_traits<inp_type> traits_type;
-    typedef vec_traits<out_type> traits_out;
-    typedef typename traits_out::float_type float_type;
+    typedef vec_traits<_Vec2> traits_type;
+    typedef typename traits_type::float_type float_type;
     traits_type t(v);
     auto tuple = t.get();
-    return make_vec<_Vec1, typename traits_type::float_type>(std::move(tuple));
+    return make_vec<_Vec1, typename float_type>(std::move(tuple));
 }
 
 }
