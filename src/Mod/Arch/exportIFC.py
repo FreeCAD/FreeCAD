@@ -149,6 +149,7 @@ def export(exportList,filename,colors=None,preferences=None):
         import ifcopenshell
     except:
         FreeCAD.Console.PrintError("IfcOpenShell was not found on this system. IFC support is disabled\n")
+        FreeCAD.Console.PrintMessage("Visit https://www.freecadweb.org/wiki/Arch_IFC to learn how to install it\n")
         return
 
     version = FreeCAD.Version()
