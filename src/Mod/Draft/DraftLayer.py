@@ -78,7 +78,7 @@ class CommandLayer():
     """The Draft_Layer FreeCAD command"""
 
     def GetResources(self):
-        return {'Pixmap'  : 'Draft_VisGroup',
+        return {'Pixmap'  : 'Draft_Layer',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Layer", "Layer"),
                 'ToolTip' : QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer")}
 
@@ -152,7 +152,7 @@ class ViewProviderLayer:
         if hasattr(self,"icondata"):
             return self.icondata
         import Draft_rc
-        return ":/icons/Draft_VisGroup.svg"
+        return ":/icons/Draft_Layer.svg"
 
     def attach(self,vobj):
         self.Object = vobj.Object
@@ -329,7 +329,7 @@ class ViewProviderLayerContainer:
     def getIcon(self):
 
         import Draft_rc
-        return ":/icons/Draft_VisGroup.svg"
+        return ":/icons/Draft_Layer.svg"
 
     def attach(self,vobj):
 
@@ -339,7 +339,7 @@ class ViewProviderLayerContainer:
 
         import Draft_rc
         from PySide import QtCore,QtGui
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_VisGroup.svg"),"Merge duplicates",menu)
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layer.svg"),"Merge duplicates",menu)
         action1.triggered.connect(self.mergeByName)
         menu.addAction(action1)
 
@@ -348,7 +348,7 @@ class ViewProviderLayerContainer:
         if hasattr(self,"Object") and hasattr(self.Object,"Group"):
             layers = [o for o in self.Object.Group if (hasattr(o,"Proxy") and isinstance(o.Proxy,Layer))]
             todelete = []
-            for layer in layerss:
+            for layer in layers:
                 if layer.Label[-1].isdigit() and layer.Label[-2].isdigit() and layer.Label[-3].isdigit():
                     orig = None
                     for ol in layer:
