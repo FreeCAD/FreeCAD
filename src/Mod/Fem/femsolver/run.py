@@ -127,7 +127,7 @@ def _isPathValid(m, path):
     if setting == settings.BESIDE:
         if t == settings.BESIDE:
             base = os.path.split(m.directory.rstrip("/"))[0]
-            return base == femutils.getBesideBase(m.solver)
+            return base == femutils.get_beside_base(m.solver)
         return False
     if setting == settings.TEMPORARY:
         return t == settings.TEMPORARY
@@ -135,7 +135,7 @@ def _isPathValid(m, path):
         if t == settings.CUSTOM:
             firstBase = os.path.split(m.directory.rstrip("/"))[0]
             customBase = os.path.split(firstBase)[0]
-            return customBase == femutils.getCustomBase(m.solver)
+            return customBase == femutils.get_custom_base(m.solver)
         return False
 
 
@@ -145,13 +145,13 @@ def _createMachine(solver, path, testmode):
     if path is not None:
         _dirTypes[path] = None
     elif setting == settings.BESIDE:
-        path = femutils.getBesideDir(solver)
+        path = femutils.get_beside_dir(solver)
         _dirTypes[path] = settings.BESIDE
     elif setting == settings.TEMPORARY:
-        path = femutils.getTempDir(solver)
+        path = femutils.get_temp_dir(solver)
         _dirTypes[path] = settings.TEMPORARY
     elif setting == settings.CUSTOM:
-        path = femutils.getCustomDir(solver)
+        path = femutils.get_custom_dir(solver)
         _dirTypes[path] = settings.CUSTOM
     m = solver.Proxy.createMachine(solver, path, testmode)
     oldMachine = _machines.get(solver)
