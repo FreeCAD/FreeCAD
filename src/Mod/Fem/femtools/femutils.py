@@ -148,23 +148,23 @@ def get_pref_working_dir(solver_obj):
     # be aware beside could get an error if the document has not been saved
     dir_setting = settings.get_dir_setting()
     if dir_setting == settings.TEMPORARY:
-        setting_working_dir = getTempDir(solver_obj)
+        setting_working_dir = get_temp_dir(solver_obj)
     elif dir_setting == settings.BESIDE:
-        setting_working_dir = getBesideDir(solver_obj)
+        setting_working_dir = get_beside_dir(solver_obj)
     elif dir_setting == settings.CUSTOM:
-        setting_working_dir = getCustomDir(solver_obj)
+        setting_working_dir = get_custom_dir(solver_obj)
     else:
         setting_working_dir = ""
     return setting_working_dir
 
 
-def getTempDir(obj):
+def get_temp_dir(obj):
     from tempfile import mkdtemp
     return mkdtemp(prefix="fcfemsolv_")
 
 
-def getBesideDir(obj):
-    base = getBesideBase(obj)
+def get_beside_dir(obj):
+    base = get_beside_base(obj)
     specificPath = os.path.join(base, obj.Label)
     specificPath = getUniquePath(specificPath)
     if not os.path.isdir(specificPath):
@@ -172,8 +172,8 @@ def getBesideDir(obj):
     return specificPath
 
 
-def getCustomDir(obj):
-    base = getCustomBase(obj)
+def get_custom_dir(obj):
+    base = get_custom_base(obj)
     specificPath = os.path.join(
         base, obj.Document.Name, obj.Label)
     specificPath = getUniquePath(specificPath)
@@ -182,7 +182,7 @@ def getCustomDir(obj):
     return specificPath
 
 
-def getBesideBase(obj):
+def get_beside_base(obj):
     fcstdPath = obj.Document.FileName
     if fcstdPath == "":
         error_message = (
@@ -201,7 +201,7 @@ def getBesideBase(obj):
     return os.path.splitext(fcstdPath)[0]
 
 
-def getCustomBase(solver):
+def get_custom_base(solver):
     path = settings.get_custom_dir()
     if not os.path.isdir(path):
         error_message = "Selected working directory doesn't exist."
