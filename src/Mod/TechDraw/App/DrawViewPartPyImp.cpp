@@ -42,6 +42,10 @@
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 
+#include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeVertexPy.h>
+
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
 #include "Cosmetic.h"
@@ -64,6 +68,7 @@ std::string DrawViewPartPy::representation(void) const
 {
     return std::string("<DrawViewPart object>");
 }
+//TODO: gets & sets for geometry
 
 PyObject* DrawViewPartPy::clearCosmeticVertices(PyObject *args)
 {
@@ -503,7 +508,33 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
     return Py_None;
 }
 
+//------------------------------------------------------------------------------
+PyObject* DrawViewPartPy::getEdgeByIndex(PyObject *args)
+{
+    int edgeIndex = 0;
+    if (!PyArg_ParseTuple(args, "i", &edgeIndex)) {
+        throw Py::TypeError("expected (edgeIndex)");
+    }
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    TechDraw::BaseGeom* geom = dvp->getGeomByIndex(edgeIndex);
+    TopoDS_Edge outEdge = geom->occEdge;
+    return new Part::TopoShapeEdgePy(new Part::TopoShape(outEdge));
+}
 
+PyObject* DrawViewPartPy::getVertexByIndex(PyObject *args)
+{
+    int vertexIndex = 0;
+    if (!PyArg_ParseTuple(args, "i", &vertexIndex)) {
+        throw Py::TypeError("expected (vertIndex)");
+    }
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    TechDraw::Vertex* vert = dvp->getProjVertexByIndex(vertexIndex);
+    TopoDS_Vertex outVertex = vert->occVertex;
+    return new Part::TopoShapeVertexPy(new Part::TopoShape(outVertex));
+}
+
+
+//==============================================================================
 PyObject *DrawViewPartPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

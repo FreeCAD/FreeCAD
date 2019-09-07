@@ -103,6 +103,16 @@
         <UserDocu>formatGeometricEdge(index, style, weight, color, visible). Returns None.</UserDocu>
       </Documentation>
     </Methode>
+        <Methode Name="getEdgeByIndex">
+      <Documentation>
+        <UserDocu>getEdgeByIndex(edgeIndex). Returns Part.TopoShape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getVertexByIndex">
+      <Documentation>
+        <UserDocu>getVertexByIndex(vertexIndex). Returns Part.TopoShape.</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>
