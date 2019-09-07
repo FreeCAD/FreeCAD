@@ -179,6 +179,7 @@ class ToolBit(object):
                     if len(parts) > 1:
                         desc  = parts[1]
                     obj.addProperty(typ, prop, PropertyGroupBit, desc)
+                    obj.setEditorMode(prop, 1)
                     value = constraint.Value
                     if constraint.Type == 'Angle':
                         value = value * 180 / math.pi
