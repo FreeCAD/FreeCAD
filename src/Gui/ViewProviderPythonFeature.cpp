@@ -374,7 +374,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
 std::vector<App::DocumentObject*> 
 ViewProviderPythonFeatureImp::claimChildren(std::vector<App::DocumentObject*>&& base) const 
 {
-    _FC_PY_CALL_CHECK(claimChildren,return(base));
+    _FC_PY_CALL_CHECK(claimChildren,return (std::move(base)));
 
     std::vector<App::DocumentObject*> children;
     Base::PyGILStateLocker lock;
