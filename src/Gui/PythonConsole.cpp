@@ -1235,6 +1235,9 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction *a;
     bool mayPasteHere = cursorBeyond( this->textCursor(), this->inputBegin() );
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+
     a = menu.addAction(tr("&Copy"), this, SLOT(copy()), Qt::CTRL+Qt::Key_C);
     a->setEnabled(textCursor().hasSelection());
 
@@ -1246,6 +1249,11 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
 
     a = menu.addAction( tr("Save history as..."), this, SLOT(onSaveHistoryAs()));
     a->setEnabled(!d->history.isEmpty());
+
+    QAction* saveh = menu.addAction(tr("Save history"));
+    saveh->setToolTip(tr("Saves Python history across %1 sessions").arg(qApp->applicationName()));
+    saveh->setCheckable(true);
+    saveh->setChecked(hGrp->GetBool("SavePythonHistory", false));
 
     menu.addSeparator();
 
@@ -1266,24 +1274,12 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction* wrap = menu.addAction(tr("Word wrap"));
     wrap->setCheckable(true);
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
     if (hGrp->GetBool("PythonWordWrap", true)) {
         wrap->setChecked(true);
         this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
     } else {
         wrap->setChecked(false);
         this->setWordWrapMode(QTextOption::NoWrap);
-    }
-
-    QAction* saveh = menu.addAction(tr("Save history"));
-    saveh->setToolTip(tr("Saves python history across FreeCAD sessions"));
-    saveh->setCheckable(true);
-
-    if (hGrp->GetBool("SavePythonHistory", false)) {
-        saveh->setChecked(true);
-    } else {
-        saveh->setChecked(false);
     }
 
     QAction* exec = menu.exec(e->globalPos());
@@ -1296,13 +1292,8 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
             hGrp->SetBool("PythonWordWrap", false);
         }
     } else if (exec == saveh) {
-        if (saveh->isChecked()) {
-            hGrp->SetBool("SavePythonHistory", true);
-        } else {
-            hGrp->SetBool("SavePythonHistory", false);
-        }
+        hGrp->SetBool("SavePythonHistory", saveh->isChecked());
     }
-
 }
 
 void PythonConsole::onClearConsole()
