@@ -53,10 +53,14 @@ class ObjectOp(PathOp.ObjectOp):
         zValues = []
         if obj.StepDown.Value != 0:
             z = obj.StartDepth.Value - obj.StepDown.Value
+            stepdown = obj.StepDown.Value
+            if stepdown < 0:
+                stepdown = -stepdown
 
             while z > obj.FinalDepth.Value:
                 zValues.append(z)
-                z -= obj.StepDown.Value
+                z -= stepdown
+
         zValues.append(obj.FinalDepth.Value)
         return zValues
 
