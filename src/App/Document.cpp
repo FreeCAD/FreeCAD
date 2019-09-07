@@ -2373,7 +2373,7 @@ void Document::restore (const char *filename,
 
     bool signal = false;
     Document *activeDoc = GetApplication().getActiveDocument();
-    if(d->objectArray.size()) {
+    if (!d->objectArray.empty()) {
         signal = true;
         GetApplication().signalDeleteDocument(*this);
         d->objectArray.clear();
