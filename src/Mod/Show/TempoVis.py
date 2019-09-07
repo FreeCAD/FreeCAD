@@ -447,7 +447,12 @@ class TempoVis(object):
     
     def activateWorkbench(self, wb_name):
         from .SceneDetails.Workbench import Workbench
-        self.modify(Workbench(wb_name))
+        wb = Workbench(wb_name)
+        if wb.scene_value() == 'StartWorkbench':
+            #exclusion - don't switch back to Start, as it causes Start page to appear
+            wb.apply_data(wb_name)
+            return
+        self.modify(wb)
     
   #</convenience functions>
 
