@@ -194,7 +194,7 @@ class TempoVis(object):
     def restore(self, ultimate = True):
         '''restore(ultimate = True): undoes all changes done through this tempovis / restores saved scene details.
         ultimate: if true, the saved values are cleaned out, and the TV is withdrawn from 
-        the stack. If false, the TV will still remember stuff, and resore can be called again.
+        the stack. If false, the TV will still remember stuff, and restore can be called again.
         '''
         if self.state == S_RESTORED:
             return
@@ -525,4 +525,3 @@ class TempoVis(object):
         self._init_attrs()
     
         
-

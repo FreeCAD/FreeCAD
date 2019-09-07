@@ -91,8 +91,8 @@ protected:
     Qt::PenCapStyle m_capStyle;
 
     QBrush m_brush;
-    Qt::BrushStyle m_fill;                      //current fille style
-    Qt::BrushStyle m_fillStyle;                 //current fill style*/
+    Qt::BrushStyle m_fill;                      //current fill style
+    Qt::BrushStyle m_fillStyle;                 //current fill style
     QColor m_fillColor;                         //current fill color
 
     QColor m_colDefFill;                        //"no color" default normal fill color

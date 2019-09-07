@@ -1986,7 +1986,7 @@ def addText(text, attrib=False):
         It defaults to `False`. If `True` it determines
         the layer name from the DXF code 8, the text value from code 1,
         the position from codes 10, 20, 30, the height from code 40,
-        the roation from code 50, and assigns the name `'Attribute'`.
+        the rotation from code 50, and assigns the name `'Attribute'`.
         Otherwise, it assumes these values from `text`
         and sets the name to `'Text'`.
 
@@ -2910,7 +2910,7 @@ def getArcData(edge):
     -------
     (tuple, float, float, float)
         It returns a tuple of four values; the first value is a tuple
-        with the cordinates of the center `(x, y, z)`;
+        with the coordinates of the center `(x, y, z)`;
         the other three represent the magnitude of the radius,
         and the start and end angles in degrees that define the arc.
 
@@ -3573,7 +3573,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
 
     Returns
     -------
-    It returns `None` if the export is succesful.
+    It returns `None` if the export is successful.
 
     See also
     --------
