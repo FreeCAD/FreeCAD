@@ -94,7 +94,16 @@ void View3DInventorPy::init_type()
     add_varargs_method("viewIsometric",&View3DInventorPy::viewIsometric,"viewIsometric()");
     add_varargs_method("viewDimetric",&View3DInventorPy::viewDimetric,"viewDimetric()");
     add_varargs_method("viewTrimetric",&View3DInventorPy::viewTrimetric,"viewTrimetric()");
-    add_varargs_method("viewDefaultOrientation",&View3DInventorPy::viewDefaultOrientation,"viewDefaultOrientation()");
+    add_varargs_method("viewDefaultOrientation",&View3DInventorPy::viewDefaultOrientation,
+                       "viewDefaultOrientation(ori_str = '', scale = -1.0): sets camera rotation to a predefined one, \n"
+                       "and camera position and zoom to show certain amount of model space. \n"
+                       "ori_string can be 'Top', 'Bottom', 'Front', 'Rear', 'Left', 'Right', \n"
+                       "'Isometric', 'Dimetric', 'Trimetric', 'Custom'. If empty, the value is \n"
+                       "fetched from Parameters.\n"
+                       "scale sets distance from camera to origin, and height of the screen in \n"
+                       "model space, so that a sphere of diameter <scale> fits the height of the\n"
+                       "viewport. If zero, scaling is not done. If negative, the value is \n"
+                       "fetched from Parameters.");
     add_varargs_method("viewRotateLeft",&View3DInventorPy::viewRotateLeft,"viewRotateLeft()");
     add_varargs_method("viewRotateRight",&View3DInventorPy::viewRotateRight,"viewRotateRight()");
     add_varargs_method("zoomIn",&View3DInventorPy::zoomIn,"zoomIn()");
@@ -639,7 +648,8 @@ Py::Object View3DInventorPy::viewTrimetric(const Py::Tuple& args)
 Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
 {
     char* view = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "|s", &view))
+    double scale = -1.0;
+    if (!PyArg_ParseTuple(args.ptr(), "|sd", &view, &scale))
         throw Py::Exception();
 
     try {
@@ -650,7 +660,7 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
         }
         else {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-            newDocView = hGrp->GetASCII("NewDocumentCameraOrientation", "Top");
+            newDocView = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
         }
 
         if (newDocView == "Top") {
@@ -689,7 +699,29 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
             rot.setValue(q0, q1, q2, q3);
         }
 
-        _view->getViewer()->setCameraOrientation(rot);
+        SoCamera* cam = _view->getViewer()->getCamera();
+        cam->orientation = rot;
+
+        if (scale < 0.0){
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+            scale = hGrp->GetFloat("NewDocumentCameraScale",100.0);
+        }
+        if (scale > 1e-7) {
+            double f = 0.0; //focal dist
+            if (cam->isOfType(SoOrthographicCamera::getClassTypeId())){
+                static_cast<SoOrthographicCamera*>(cam)->height = scale;
+                f = scale;
+            } else if (cam->isOfType(SoPerspectiveCamera::getClassTypeId())){
+                //nothing to do
+                double ang = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue();
+                f = 0.5 * scale / sin(ang * 0.5);
+            }
+            SbVec3f lookDir;
+            rot.multVec(SbVec3f(0,0,-1), lookDir);
+            SbVec3f pos = lookDir * -f;
+            cam->focalDistance = f;
+            cam->position = pos;
+        }
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
