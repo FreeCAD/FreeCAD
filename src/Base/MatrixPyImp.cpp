@@ -744,7 +744,7 @@ Py::Sequence MatrixPy::getA(void) const
     for (int i=0; i<16; i++) {
         tuple[i] = Py::Float(mat[i]);
     }
-    return tuple;
+    return std::move(tuple);
 }
 
 void MatrixPy::setA(Py::Sequence arg)
