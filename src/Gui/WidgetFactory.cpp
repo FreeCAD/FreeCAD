@@ -754,7 +754,7 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
     QString cmd;
     QTextStream str(&cmd);
     // https://github.com/albop/dolo/blob/master/bin/load_ui.py
-#if defined(HAVE_PYSIDE2)
+#if QT_VERSION >= 0x050000
     str << "import pyside2uic\n"
         << "from PySide2 import QtCore, QtGui, QtWidgets\n"
         << "import xml.etree.ElementTree as xml\n"
@@ -856,7 +856,7 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
         << "loader = UiLoader(globals()[\"base_\"])\n"
         << "widget = loader.load(globals()[\"uiFile_\"])\n"
         << "\n";
-#elif defined(HAVE_PYSIDE2)
+#elif QT_VERSION >= 0x050000
     str << "from PySide2 import QtCore, QtGui, QtWidgets\n"
         << "import FreeCADGui"
         << "\n"

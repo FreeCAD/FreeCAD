@@ -2371,7 +2371,10 @@ void Document::restore (const char *filename,
     clearUndos();
     d->activeObject = 0;
 
-    if(d->objectArray.size()) {
+    bool signal = false;
+    Document *activeDoc = GetApplication().getActiveDocument();
+    if (!d->objectArray.empty()) {
+        signal = true;
         GetApplication().signalDeleteDocument(*this);
         d->objectArray.clear();
         for(auto &v : d->objectMap) {
@@ -2380,7 +2383,6 @@ void Document::restore (const char *filename,
         }
         d->objectMap.clear();
         d->objectIdMap.clear();
-        GetApplication().signalNewDocument(*this,false);
     }
 
     Base::FlagToggler<> flag(_IsRestoring,false);
@@ -2392,6 +2394,12 @@ void Document::restore (const char *filename,
     d->objectMap.clear();
     d->objectIdMap.clear();
     d->lastObjectId = 0;
+
+    if(signal) {
+        GetApplication().signalNewDocument(*this,true);
+        if(activeDoc == this)
+            GetApplication().setActiveDocument(this);
+    }
 
     if(!filename)
         filename = FileName.getValue();

@@ -439,8 +439,8 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     // in the middle of a token, and we shall include that token.
     for(auto it=tokens.begin();it!=tokens.end();++it) {
         if(get<1>(*it) >= pos) {
-            // Include the immediatly followed '.' or '#', because we'll be
-            // inserting these separater too, in ExpressionCompleteModel::pathFromIndex()
+            // Include the immediately followed '.' or '#', because we'll be
+            // inserting these separators too, in ExpressionCompleteModel::pathFromIndex()
             if(it!=tokens.begin() && get<0>(*it)!='.' && get<0>(*it)!='#')
                 it = it-1;
             tokens.resize(it-tokens.begin()+1);

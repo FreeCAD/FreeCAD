@@ -1730,7 +1730,7 @@ TopoDS_Shape Area::toShape(CArea &area, short fill, int reorient) {
                 builder.Add(compound,s);\
             }\
             if(TopExp_Explorer(compound,TopAbs_EDGE).More())\
-                return compound;\
+                return std::move(compound);\
             return TopoDS_Shape();\
         }\
         return mySections[_index]->_op(_index, ## __VA_ARGS__);\
@@ -1868,7 +1868,7 @@ TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET
     if(thicken)
         FC_DURATION_LOG(d,"Thicken");
     if(TopExp_Explorer(compound,TopAbs_EDGE).More())
-        return compound;
+        return std::move(compound);
     return TopoDS_Shape();
 }
 
@@ -2255,7 +2255,7 @@ TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf, in
             AREA_WARN("FaceMakerBullseye failed: "<<e.what());
         }
     }
-    return compound;
+    return std::move(compound);
 }
 
 struct WireInfo {

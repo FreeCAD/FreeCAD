@@ -327,40 +327,45 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
         if(ret.isNone())
             return QIcon();
 
-        PythonWrapper wrap;
-        wrap.loadGuiModule();
-        wrap.loadWidgetsModule();
-        QIcon *picon = wrap.toQIcon(ret.ptr());
-        if(picon) 
-            return *picon;
+        if(ret.isString()) {
+            std::string content = Py::String(ret).as_std_string("utf-8");
+            QPixmap icon;
+            if (BitmapFactory().findPixmapInCache(content.c_str(), icon))
+                return icon;
 
-        std::string content = Py::String(ret).as_std_string("utf-8");
-        QPixmap icon;
-        // Check if the passed string is a filename, otherwise treat as xpm data
-        QFileInfo fi(QString::fromUtf8(content.c_str()));
-        if (fi.isFile() && fi.exists()) {
-            icon.load(fi.absoluteFilePath());
-        } else {
-            QByteArray ary;
-            int strlen = (int)content.size();
-            ary.resize(strlen);
-            for (int j=0; j<strlen; j++)
-                ary[j]=content[j];
-            // Make sure to remove crap around the XPM data
-            QList<QByteArray> lines = ary.split('\n');
-            QByteArray buffer;
-            buffer.reserve(ary.size()+lines.size());
-            for (QList<QByteArray>::iterator it = lines.begin(); it != lines.end(); ++it) {
-                QByteArray trim = it->trimmed();
-                if (!trim.isEmpty()) {
-                    buffer.append(trim);
-                    buffer.append('\n');
+            // Check if the passed string is a filename, otherwise treat as xpm data
+            QFileInfo fi(QString::fromUtf8(content.c_str()));
+            if (fi.isFile() && fi.exists()) {
+                icon.load(fi.absoluteFilePath());
+            } else {
+                QByteArray ary;
+                int strlen = (int)content.size();
+                ary.resize(strlen);
+                for (int j=0; j<strlen; j++)
+                    ary[j]=content[j];
+                // Make sure to remove crap around the XPM data
+                QList<QByteArray> lines = ary.split('\n');
+                QByteArray buffer;
+                buffer.reserve(ary.size()+lines.size());
+                for (QList<QByteArray>::iterator it = lines.begin(); it != lines.end(); ++it) {
+                    QByteArray trim = it->trimmed();
+                    if (!trim.isEmpty()) {
+                        buffer.append(trim);
+                        buffer.append('\n');
+                    }
                 }
+                icon.loadFromData(buffer, "XPM");
             }
-            icon.loadFromData(buffer, "XPM");
-        }
-        if (!icon.isNull()) {
-            return icon;
+            if (!icon.isNull()) {
+                return icon;
+            }
+        } else {
+            PythonWrapper wrap;
+            wrap.loadGuiModule();
+            wrap.loadWidgetsModule();
+            QIcon *picon = wrap.toQIcon(ret.ptr());
+            if(picon) 
+                return *picon;
         }
     }
     catch (Py::Exception&) {
@@ -374,7 +379,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
 std::vector<App::DocumentObject*> 
 ViewProviderPythonFeatureImp::claimChildren(std::vector<App::DocumentObject*>&& base) const 
 {
-    _FC_PY_CALL_CHECK(claimChildren,return(base));
+    _FC_PY_CALL_CHECK(claimChildren,return (std::move(base)));
 
     std::vector<App::DocumentObject*> children;
     Base::PyGILStateLocker lock;

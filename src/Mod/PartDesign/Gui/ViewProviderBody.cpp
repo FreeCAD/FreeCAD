@@ -225,7 +225,7 @@ void ViewProviderBody::updateData(const App::Property* prop)
 
         // restore icons
         for (auto feature : features) {
-            Gui::ViewProvider* vp = Gui::Application::Instance->activeDocument()->getViewProvider(feature);
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(feature);
             if (vp && vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
                 static_cast<PartDesignGui::ViewProvider*>(vp)->setTipIcon(feature == tip);
             }

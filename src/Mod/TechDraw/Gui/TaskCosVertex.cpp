@@ -30,6 +30,8 @@
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Base/Quantity.h>
+#include <Base/UnitsApi.h>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -130,9 +132,13 @@ void TaskCosVertex::setUiPrimary()
     }
     ui->pbTracker->setText(QString::fromUtf8("Point Picker"));
     ui->pbTracker->setEnabled(true);
-    ui->qsbX->setEnabled(true);
-    ui->qsbY->setEnabled(true);
-    ui->qsbZ->setEnabled(false);
+    ui->dsbX->setEnabled(true);
+    ui->dsbY->setEnabled(true);
+    ui->dsbZ->setEnabled(false);
+    int decimals = Base::UnitsApi::getDecimals();
+    ui->dsbX->setDecimals(decimals);
+    ui->dsbY->setDecimals(decimals);
+    ui->dsbZ->setDecimals(decimals);
 }
 
 void TaskCosVertex::updateUi(void)
@@ -140,9 +146,9 @@ void TaskCosVertex::updateUi(void)
     double x = m_savePoint.x();
     double y = - m_savePoint.y();
     double z = 0.0;
-    ui->qsbX->setValue(x);
-    ui->qsbY->setValue(y);
-    ui->qsbZ->setValue(z);
+    ui->dsbX->setValue(x);
+    ui->dsbY->setValue(y);
+    ui->dsbZ->setValue(z);
 }
 
 void TaskCosVertex::addCosVertex(QPointF qPos)
@@ -300,9 +306,9 @@ bool TaskCosVertex::accept()
     if (pointFromTracker) {
         addCosVertex(m_savePoint);
     } else {
-        double x = ui->qsbX->rawValue();
-        double y = ui->qsbY->rawValue();
-//        double z = ui->qsbZ->rawValue();
+        double x = ui->dsbX->value();
+        double y = ui->dsbY->value();
+//        double z = ui->dsbZ->value();
         QPointF uiPoint(x,-y);
         addCosVertex(uiPoint);
     }
@@ -320,10 +326,11 @@ bool TaskCosVertex::reject()
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc) return false;
 
+    removeTracker();
+    m_trackerMode = QGTracker::TrackerMode::None;
     if (m_mdi != nullptr) {
         m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     }
-    m_trackerMode = QGTracker::TrackerMode::None;
 
     //make sure any dangling objects are cleaned up 
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");

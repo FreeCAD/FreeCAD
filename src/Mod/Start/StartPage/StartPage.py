@@ -147,6 +147,9 @@ def getInfo(filename):
                 r = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
                 if r:
                     author = r[0]
+                    # remove email if present in author field
+                    if "&lt;" in author:
+                        author = author.split("&lt;")[0].strip()
                 r = re.findall("Property name=\"Company.*?String value=\"(.*?)\"\/>",doc)
                 if r:
                     company = r[0]
@@ -245,8 +248,8 @@ def buildCard(filename,method,arg=None):
                 result += '<img src="file:///'+image+'">'
                 result += '<div class="caption">'
                 result += '<h4>'+encode(basename)+'</h4>'
-                result += '<p>'+size+'</p>'
                 result += '<p>'+encode(author)+'</p>'
+                result += '<p>'+size+'</p>'
                 result += '</div>'
                 result += '</li>'
                 result += '</a>'
@@ -381,6 +384,8 @@ def handle():
             filename = os.path.join(cfolder,basename)
             SECTION_CUSTOM += encode(buildCard(filename,method="LoadCustom.py?filename="))
         SECTION_CUSTOM += "</ul>"
+        # hide the custom section tooltip if custom section is set (users know about it if they enabled it)
+        HTML = HTML.replace("id=\"customtip\"","id=\"customtip\" style=\"display:none;\"")
     HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
 
     # build IMAGE_SRC paths

@@ -192,7 +192,7 @@ void View3DInventorPy::init_type()
         "noManip: whether to create a manipulator\n"
         "pla: clipping plane placement");
     add_varargs_method("hasClippingPlane",&View3DInventorPy::hasClippingPlane,
-        "hasClippingPlane(): check whether ths clipping plane is active");
+        "hasClippingPlane(): check whether this clipping plane is active");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)

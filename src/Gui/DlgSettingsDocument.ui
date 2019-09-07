@@ -109,7 +109,7 @@
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="prefCheckNewDoc">
         <property name="toolTip">
-         <string>FreeCAD will create a new document when started</string>
+         <string>The application will create a new document when started</string>
         </property>
         <property name="text">
          <string>Create new document at start up</string>
@@ -238,7 +238,7 @@ This feature may slightly increase recomputation time.</string>
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="prefRecovery">
         <property name="toolTip">
-         <string>If there is a recovery file available FreeCAD will
+         <string>If there is a recovery file available the application will
 automatically run a file recovery when it is started.</string>
         </property>
         <property name="text">
@@ -390,7 +390,7 @@ automatically run a file recovery when it is started.</string>
       <item row="6" column="0">
        <widget class="Gui::PrefCheckBox" name="prefAddLogo">
         <property name="toolTip">
-         <string>FreeCAD program logo will be added to the thumbnail</string>
+         <string>Program logo will be added to the thumbnail</string>
         </property>
         <property name="text">
          <string>Add the program logo to the generated thumbnail</string>

@@ -45,7 +45,7 @@
         <item>
          <widget class="QSpinBox" name="spinBoxDecimals">
           <property name="toolTip">
-           <string>Number of decimals that should be shown for numbers and dimensions in FreeCAD</string>
+           <string>Number of decimals that should be shown for numbers and dimensions</string>
           </property>
           <property name="minimum">
            <number>1</number>
@@ -69,7 +69,7 @@
         <item>
          <widget class="QComboBox" name="comboBox_ViewSystem">
           <property name="toolTip">
-           <string>Unit system that should be used for all parts of FreeCAD</string>
+           <string>Unit system that should be used for all parts the application</string>
           </property>
           <item>
            <property name="text">

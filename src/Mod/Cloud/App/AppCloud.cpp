@@ -670,7 +670,7 @@ bool Cloud::Module::cloudRestore (const char *BucketName)
                                   (const char*)this->TcpPort.getStrValue().c_str(),
                                   BucketName);
 
-    // we shall pass there the intial Document.xml file
+    // we shall pass there the initial Document.xml file
 
     Base::XMLReader reader("Document.xml", myreader.GetEntry("Document.xml")->FileStream);
 
@@ -707,4 +707,3 @@ bool Cloud::Module::cloudRestore (const char *BucketName)
     return(true);
 
 }
-

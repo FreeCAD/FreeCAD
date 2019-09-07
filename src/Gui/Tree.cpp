@@ -2383,15 +2383,14 @@ void TreeWidget::onUpdateStatus(void)
             docItem->populateObject(obj);
         docItem->PopulateObjects.clear();
 
-        if(docItem->connectChgObject.connected())
-            continue;
-
         auto doc = v.first->getDocument();
 
-        docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
-                boost::bind(&TreeWidget::slotChangeObject, this, _1, _2));
-        docItem->connectTouchedObject = doc->signalTouchedObject.connect(
-                boost::bind(&TreeWidget::slotTouchedObject, this, _1));
+        if(!docItem->connectChgObject.connected()) {
+            docItem->connectChgObject = docItem->document()->signalChangedObject.connect(
+                    boost::bind(&TreeWidget::slotChangeObject, this, _1, _2));
+            docItem->connectTouchedObject = doc->signalTouchedObject.connect(
+                    boost::bind(&TreeWidget::slotTouchedObject, this, _1));
+        }
 
         if(doc->testStatus(App::Document::PartialDoc))
             docItem->setIcon(0, *documentPartialPixmap);
