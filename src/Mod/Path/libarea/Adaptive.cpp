@@ -1676,11 +1676,14 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 		tolerance = 0.2;
 
 	scaleFactor = RESOLUTION_FACTOR / tolerance;
+	long maxScaleFactor = toolDiameter<1.0 ? 10000: 1000;
+
 	if (stepOverFactor * toolDiameter < 1.0)
 		scaleFactor *= 1.0 / (stepOverFactor * toolDiameter);
-	if (scaleFactor > 1000)
-		scaleFactor = 1000;
 
+
+	if (scaleFactor > maxScaleFactor )
+		scaleFactor = maxScaleFactor;
 	//scaleFactor = round(scaleFactor);
 
 	current_region=0;
