@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>477</width>
-    <height>630</height>
+    <height>763</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -202,23 +202,6 @@ will be shown at the lower left in opened files</string>
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout2">
-        <item row="0" column="0">
-         <widget class="QLabel" name="navigationLabel">
-          <property name="text">
-           <string>3D Navigation</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QComboBox" name="comboNavigationStyle">
-          <property name="toolTip">
-           <string>Navigation settings set</string>
-          </property>
-          <property name="currentIndex">
-           <number>-1</number>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="2">
          <widget class="QPushButton" name="mouseButton">
           <property name="sizePolicy">
@@ -232,10 +215,10 @@ will be shown at the lower left in opened files</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="orbitLabel">
+        <item row="2" column="0">
+         <widget class="QLabel" name="aliasingLAbel">
           <property name="text">
-           <string>Orbit style</string>
+           <string>Anti-Aliasing</string>
           </property>
          </widget>
         </item>
@@ -259,13 +242,6 @@ Turntable: the part will be rotated around the z-axis.</string>
             <string>Trackball</string>
            </property>
           </item>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="aliasingLAbel">
-          <property name="text">
-           <string>Anti-Aliasing</string>
-          </property>
          </widget>
         </item>
         <item row="2" column="1">
@@ -313,10 +289,66 @@ Turntable: the part will be rotated around the z-axis.</string>
           </property>
          </widget>
         </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboNavigationStyle">
+          <property name="toolTip">
+           <string>Navigation settings set</string>
+          </property>
+          <property name="currentIndex">
+           <number>-1</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="orbitLabel">
+          <property name="text">
+           <string>Orbit style</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="navigationLabel">
+          <property name="text">
+           <string>3D Navigation</string>
+          </property>
+         </widget>
+        </item>
         <item row="3" column="1">
          <widget class="QComboBox" name="comboNewDocView">
           <property name="toolTip">
            <string>Camera orientation for new documents </string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>New document scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="PrefUnitSpinBox" name="qspinNewDocScale" native="true">
+          <property name="toolTip">
+           <string>Sets camera zoom for new documents. The value is the diameter of the sphere to fit on the screen.</string>
+          </property>
+          <property name="unit" stdset="0">
+           <string>mm</string>
+          </property>
+          <property name="minimum" stdset="0">
+           <double>0.000010000000000</double>
+          </property>
+          <property name="maximum" stdset="0">
+           <double>10000000.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <string>NewDocumentCameraScale</string>
+          </property>
+          <property name="prefPath" stdset="0">
+           <string>View</string>
+          </property>
+          <property name="rawValue" stdset="0">
+           <double>100.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -786,6 +818,12 @@ bounding box size of the 3D object that is currently displayed. </string>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>PrefUnitSpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/PrefWidgets.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>
