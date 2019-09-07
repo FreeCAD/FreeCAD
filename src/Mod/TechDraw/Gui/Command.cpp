@@ -67,6 +67,7 @@
 #include <Mod/TechDraw/App/DrawViewDraft.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
+#include <Mod/TechDraw/App/DrawViewArch.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/Gui/QGVPage.h>
 
@@ -1224,6 +1225,21 @@ void CmdTechDrawExportPageDxf::activated(int iMsg)
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
     if (!page) {
         return;
+    }
+
+    std::vector<App::DocumentObject*> views = page->Views.getValues();
+    for (auto& v: views) {
+        if (v->isDerivedFrom(TechDraw::DrawViewArch::getClassTypeId())) {
+            QMessageBox::StandardButton rc =
+                QMessageBox::question(Gui::getMainWindow(), QObject::tr("Can not export selection"),
+                            QObject::tr("Page contains DrawViewArch which will not be exported. Continue?"),
+                            QMessageBox::StandardButtons(QMessageBox::Yes| QMessageBox::No));
+            if (rc == QMessageBox::No) {
+                return;
+            } else {
+                break;
+            }
+        }
     }
 
 //WF? allow more than one TD Page per Dxf file??  1 TD page = 1 DXF file = 1 drawing?
