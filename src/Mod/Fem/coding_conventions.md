@@ -2,8 +2,8 @@
 - These coding rules apply to FEM module code only. Other modules or the base system may use different coding rules especially in naming policy of Python.
 
 ## Python and C++
-- All files should have a licence header
-- Unix line endings are preferend
+- All files should have a license header
+- Unix line endings are preferred
 - never use mixed line endings on one file
 - 4 Spaces for indent
 - no trailing white spaces
@@ -29,18 +29,17 @@
 find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --ignore=E266,W503 --max-line-length=100 []
 ~~~
 
-- www.lgtm.com
+- [LGTM](www.lgtm.com)
 - TODO: check pylint
-- automatic code formater will not be used for existant code
-- for new code if someone would like to use a code formater black should be used
+- automatic code formatter will not be used for existent code
+- for new code if someone would like to use a code formatter black should be used
 
 ## C++
 ### Naming policy
 - CamelCase names
 
 ## Spelling
-- Take care on spelling. Quit often it is ignored to check for missspelling.
-- codespelling could be used
-~~~
-codespell -q 3 -L aci,aline,alledges,als,ang,beginn,behaviour,bloaded,calculater,cancelled,cancelling,cas,cascade,centimetre,childs,colour,colours,currenty,doubleclick,dum,eiter,elemente,feld,freez,iff,indicies,initialisation,initialise,initialised,initialises,initialisiert,kilometre,lod,mantatory,methode,metres,millimetre,modell,nd,noe,normale,normaly,nto,numer,oder,ot,pres,programm,que,recurrance,rougly,seperator,serie,sinc,strack,substraction,te,thist,thru,tread,vertexes,uint,unter,whitespaces -S *.ts,*.po src/Mod/Fem
-~~~
+- Be mindful of spelling. Spell checks are quite often neglected.
+- [codespell]((https://github.com/codespell-project/codespell#updating) could be used  
+
+> codespell -q 3 -L aci,ake,aline,alle,alledges,alocation,als,ang,anid,ba,beginn,behaviour,bloaded,byteorder,calculater,cancelled,cancelling,cas,cascade,centimetre,childs,colour,colours,commen,currenty,dof,doubleclick,dum,eiter,elemente,feld,freez,hist,iff,indicies,initialisation,initialise,initialised,initialises,initialisiert,ist,kilometre,lod,mantatory,methode,metres,millimetre,modell,nd,noe,normale,normaly,nto,numer,oder,orgin,orginx,orginy,ot,pard,pres,programm,que,recurrance,rougly,seperator,serie,sinc,strack,substraction,te,thist,thru,tread,uint,unter,vertexes,wallthickness,whitespaces -S *.ts,*.po src/Mod/Fem

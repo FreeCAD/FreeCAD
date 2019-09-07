@@ -301,7 +301,7 @@ def render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,bac
 
     # On Linux, the X server must have indirect rendering enabled in order to be able to do offline
     # PNG rendering. Unfortunately, this is turned off by default on most recent distros. The easiest
-    # way I found is to edit (or create if inexistant) /etc/X11/xorg.conf and add this:
+    # way I found is to edit (or create if inexistent) /etc/X11/xorg.conf and add this:
     #
     # Section "ServerFlags"
     #    Option "AllowIndirectGLX" "on"

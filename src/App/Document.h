@@ -433,7 +433,7 @@ public:
     };
     /** Get a complete list of all objects the given objects depend on. 
      *
-     * This function is defined as static because it accpets objects from
+     * This function is defined as static because it accepts objects from
      * different documents, and the returned list will contain dependent
      * objects from all relevant documents
      *
