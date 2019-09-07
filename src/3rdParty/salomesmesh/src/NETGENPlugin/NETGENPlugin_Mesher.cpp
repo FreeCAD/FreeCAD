@@ -2350,7 +2350,7 @@ namespace
         << ": " << ex.DynamicType()->Name();
     if ( ex.GetMessageString() && strlen( ex.GetMessageString() ))
       str << ": " << ex.GetMessageString();
-    return str;
+    return std::move(str);
   }
   //================================================================================
   /*!
@@ -2364,7 +2364,7 @@ namespace
     if ( strlen( netgen::multithread.task ) > 0 )
       str << " at " << netgen::multithread.task;
     str << ": " << ex.What();
-    return str;
+    return std::move(str);
   }
 
   //================================================================================
