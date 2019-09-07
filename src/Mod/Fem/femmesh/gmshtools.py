@@ -559,6 +559,46 @@ class GmshTools():
                     )
             print("  {}".format(self.bl_setting_list))
 
+    def write_groups(self, geo):
+        if self.group_elements:
+            # print("  We are going to have to find elements to make mesh groups for.")
+            geo.write("// group data\n")
+            # we use the element name of FreeCAD which starts
+            # with 1 (example: "Face1"), same as Gmsh
+            # for unit test we need them to have a fixed order
+            for group in sorted(self.group_elements.keys()):
+                gdata = self.group_elements[group]
+                # print(gdata)
+                # geo.write("// " + group + "\n")
+                ele_nr = ""
+                if gdata[0].startswith("Solid"):
+                    physical_type = "Volume"
+                    for ele in gdata:
+                        ele_nr += (ele.lstrip("Solid") + ", ")
+                elif gdata[0].startswith("Face"):
+                    physical_type = "Surface"
+                    for ele in gdata:
+                        ele_nr += (ele.lstrip("Face") + ", ")
+                elif gdata[0].startswith("Edge"):
+                    physical_type = "Line"
+                    for ele in gdata:
+                        ele_nr += (ele.lstrip("Edge") + ", ")
+                elif gdata[0].startswith("Vertex"):
+                    physical_type = "Point"
+                    for ele in gdata:
+                        ele_nr += (ele.lstrip("Vertex") + ", ")
+                if ele_nr:
+                    ele_nr = ele_nr.rstrip(", ")
+                    # print(ele_nr)
+                    curly_br_s = "{"
+                    curly_br_e = "}"
+                    # explicit use double quotes in geo file
+                    geo.write(
+                        'Physical {}("{}") = {}{}{};\n'
+                        .format(physical_type, group, curly_br_s, ele_nr, curly_br_e)
+                    )
+            geo.write("\n")
+
     def write_boundary_layer(self, geo):
         # currently single body is supported
         if len(self.bl_setting_list):
@@ -602,44 +642,11 @@ class GmshTools():
         # explicit use double quotes in geo file
         geo.write('Merge "{}";\n'.format(self.temp_file_geometry))
         geo.write("\n")
-        if self.group_elements:
-            # print("  We are going to have to find elements to make mesh groups for.")
-            geo.write("// group data\n")
-            # we use the element name of FreeCAD which starts
-            # with 1 (example: "Face1"), same as Gmsh
-            # for unit test we need them to have a fixed order
-            for group in sorted(self.group_elements.keys()):
-                gdata = self.group_elements[group]
-                # print(gdata)
-                # geo.write("// " + group + "\n")
-                ele_nr = ""
-                if gdata[0].startswith("Solid"):
-                    physical_type = "Volume"
-                    for ele in gdata:
-                        ele_nr += (ele.lstrip("Solid") + ", ")
-                elif gdata[0].startswith("Face"):
-                    physical_type = "Surface"
-                    for ele in gdata:
-                        ele_nr += (ele.lstrip("Face") + ", ")
-                elif gdata[0].startswith("Edge"):
-                    physical_type = "Line"
-                    for ele in gdata:
-                        ele_nr += (ele.lstrip("Edge") + ", ")
-                elif gdata[0].startswith("Vertex"):
-                    physical_type = "Point"
-                    for ele in gdata:
-                        ele_nr += (ele.lstrip("Vertex") + ", ")
-                if ele_nr:
-                    ele_nr = ele_nr.rstrip(", ")
-                    # print(ele_nr)
-                    curly_br_s = "{"
-                    curly_br_e = "}"
-                    # explicit use double quotes in geo file
-                    geo.write(
-                        'Physical {}("{}") = {}{}{};\n'
-                        .format(physical_type, group, curly_br_s, ele_nr, curly_br_e)
-                    )
-            geo.write("\n")
+
+        # groups
+        self.write_groups(geo)
+
+        # Characteristic Length of the elements
         geo.write("// Characteristic Length\n")
         if self.ele_length_map:
             # we use the index FreeCAD which starts with 0
@@ -667,6 +674,7 @@ class GmshTools():
         # of Gmsh properties, set them in Gmsh TaskPanel
         self.write_boundary_layer(geo)
 
+        # mesh parameter
         geo.write("// min, max Characteristic Length\n")
         geo.write("Mesh.CharacteristicLengthMax = " + str(self.clmax) + ";\n")
         if len(self.bl_setting_list):
@@ -740,6 +748,8 @@ class GmshTools():
         else:
             geo.write("Mesh  " + self.dimension + ";\n")
         geo.write("\n")
+
+        # save mesh
         geo.write("// save\n")
         geo.write("Mesh.Format = 2;\n")  # unv
         if self.group_elements and self.group_nodes_export:
@@ -754,6 +764,8 @@ class GmshTools():
         # explicit use double quotes in geo file
         geo.write('Save "{}";\n'.format(self.temp_file_mesh))
         geo.write("\n\n")
+
+        # some useful information
         geo.write("//////////////////////////////////////////////////////////////////////\n")
         geo.write("// Gmsh documentation:\n")
         geo.write("// http://gmsh.info/doc/texinfo/gmsh.html#Mesh\n")
