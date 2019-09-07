@@ -113,9 +113,6 @@
        <layout class="QGridLayout" name="gridLayout2">
         <item row="0" column="1">
          <widget class="Gui::PrefFileChooser" name="prefFileChooser2">
-          <property name="toolTip">
-           <string>The path to the POV-Ray executable, if you want to render from FreeCAD</string>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>PovrayExecutable</cstring>
           </property>

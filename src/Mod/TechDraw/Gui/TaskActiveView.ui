@@ -26,7 +26,7 @@
    <string>ActiveView to TD View</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../../../../Source/FreeCAD-src/src/Mod/TechDraw/Gui/Resources/TechDraw.qrc">
+   <iconset resource="Resources/TechDraw.qrc">
     <normaloff>:/icons/actions/techdraw-activeview.svg</normaloff>:/icons/actions/techdraw-activeview.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -237,7 +237,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../../../Source/FreeCAD-src/src/Mod/TechDraw/Gui/Resources/TechDraw.qrc"/>
+  <include location="Resources/TechDraw.qrc"/>
  </resources>
  <connections/>
 </ui>
