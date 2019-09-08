@@ -176,7 +176,10 @@
        <item>
         <widget class="QPushButton" name="discardBtn">
          <property name="text">
-          <string>&amp;Discard</string>
+          <string>&amp;Clear</string>
+         </property>
+         <property name="toolTip">
+          <string>Revert to last calculated value (as constant)</string>
          </property>
          <property name="autoDefault">
           <bool>false</bool>
