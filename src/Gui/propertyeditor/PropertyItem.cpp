@@ -469,7 +469,7 @@ void PropertyItem::setPropertyName(const QString& name)
 
     propName = display;
 
-    QString str = QApplication::translate("App::Property", propName.toLatin1());
+    QString str = QApplication::translate("App::Property", propName.toUtf8());
     displayText = str;
 }
 
