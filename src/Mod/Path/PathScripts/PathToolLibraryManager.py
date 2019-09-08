@@ -29,9 +29,7 @@ import FreeCADGui
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
-import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
-import PathScripts.PathUtils as PathUtils
 import json
 import os
 import xml.sax
@@ -145,12 +143,10 @@ class ToolLibraryManager():
     preferences and all or part of the library can be exported to other formats
     '''
 
-    #TODO: copy & Duplicate tools between lists
-
-    TooltableTypeJSON     = translate("TooltableEditor", "Tooltable JSON (*.json)")
-    TooltableTypeXML      = translate("TooltableEditor", "Tooltable XML (*.xml)")
-    TooltableTypeHeekscad = translate("TooltableEditor", "HeeksCAD tooltable (*.tooltable)")
-    TooltableTypeLinuxCNC = translate("TooltableEditor", "LinuxCNC tooltable (*.tbl)")
+    TooltableTypeJSON     = translate("PathToolLibraryManager", "Tooltable JSON (*.json)")
+    TooltableTypeXML      = translate("PathToolLibraryManager", "Tooltable XML (*.xml)")
+    TooltableTypeHeekscad = translate("PathToolLibraryManager", "HeeksCAD tooltable (*.tooltable)")
+    TooltableTypeLinuxCNC = translate("PathToolLibraryManager", "LinuxCNC tooltable (*.tbl)")
 
     PreferenceMainLibraryXML = "ToolLibrary"
     PreferenceMainLibraryJSON = "ToolLibrary-Main"
@@ -334,7 +330,7 @@ class ToolLibraryManager():
             return None
 
         tt = self.getTableFromName(tablename)
-        headers = ["","Tool Num.","Name","Tool Type","Material","Diameter","Length Offset","Flat Radius","Corner Radius","Cutting Edge Angle","Cutting Edge Height"]
+        headers = ["","Tool Num.","Name","Tool Type","Diameter"]
         model = QtGui.QStandardItemModel()
         model.setHorizontalHeaderLabels(headers)
 
@@ -353,15 +349,9 @@ class ToolLibraryManager():
                 itemNumber =  QtGui.QStandardItem(str(number))
                 itemName =  QtGui.QStandardItem(t.Name)
                 itemToolType =  QtGui.QStandardItem(t.ToolType)
-                itemMaterial =  QtGui.QStandardItem(t.Material)
                 itemDiameter =  QtGui.QStandardItem(unitconv(t.Diameter))
-                itemLengthOffset =  QtGui.QStandardItem(unitconv(t.LengthOffset))
-                itemFlatRadius =  QtGui.QStandardItem(unitconv(t.FlatRadius))
-                itemCornerRadius =  QtGui.QStandardItem(unitconv(t.CornerRadius))
-                itemCuttingEdgeAngle =  QtGui.QStandardItem(str(t.CuttingEdgeAngle))
-                itemCuttingEdgeHeight =  QtGui.QStandardItem(unitconv(t.CuttingEdgeHeight))
 
-                row = [itemcheck, itemNumber, itemName, itemToolType, itemMaterial, itemDiameter, itemLengthOffset, itemFlatRadius, itemCornerRadius, itemCuttingEdgeAngle, itemCuttingEdgeHeight]
+                row = [itemcheck, itemNumber, itemName, itemToolType, itemDiameter]
                 model.appendRow(row)
 
         return model
@@ -505,6 +495,26 @@ class ToolLibraryManager():
             self.saveMainLibrary()
         return True, target
 
+    def duplicate(self, number, listname):
+        ''' duplicates the selected tool in the selected tool table '''
+        tt = self.getTableFromName(listname)
+        tool = tt.getTool(number).copy()
+        tt.addTools(tool)
+
+        newID = list(tt.Tools)[-1]
+
+        if listname == self.getCurrentTableName():
+            self.saveMainLibrary()
+        return True, newID
+
+    def moveToTable(self, number, listname):
+        ''' Moves the tool to selected tool table '''
+        fromTable = self.getTableFromName(self.getCurrentTableName())
+        toTable = self.getTableFromName(listname)
+        tool = fromTable.getTool(number).copy()
+        toTable.addTools(tool)
+        fromTable.deleteTool(number)
+
     def delete(self, number, listname):
         '''deletes a tool from the current list'''
         tt = self.getTableFromName(listname)
@@ -512,370 +522,3 @@ class ToolLibraryManager():
         if listname == self.getCurrentTableName():
             self.saveMainLibrary()
         return True
-
-
-class EditorPanel():
-
-    def __init__(self, job, cb):
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolLibraryEditor.ui")
-        self.TLM = ToolLibraryManager()
-        listname = self.TLM.getCurrentTableName()
-        
-        if listname:
-            self.loadToolTables()
-
-        self.job = job
-        self.cb = cb
-
-    def toolEditor(self, tool):
-        dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgToolEdit.ui")
-        editor = PathToolEdit.ToolEditor(tool, dialog.toolEditor, dialog)
-        editor.setupUI()
-        return editor
-
-    def accept(self):
-        pass
-
-    def reject(self):
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-
-    def getFields(self):
-        pass
-
-    def setFields(self):
-        pass
-
-    def open(self):
-        pass
-
-    def getType(self, tooltype):
-        "gets a combobox index number for a given type or viceversa"
-        toolslist = Path.Tool.getToolTypes(Path.Tool())
-        if isinstance(tooltype, str):
-            if tooltype in toolslist:
-                return toolslist.index(tooltype)
-            else:
-                return 0
-        else:
-            return toolslist[tooltype]
-
-    def getMaterial(self, material):
-        '''gets a combobox index number for a given material or viceversa'''
-        matslist = Path.Tool.getToolMaterials(Path.Tool())
-        if isinstance(material, str):
-            if material in matslist:
-                return matslist.index(material)
-            else:
-                return 0
-        else:
-            return matslist[material]
-
-    def addTool(self):
-        '''adds new tool to the current tool table'''
-        tool = Path.Tool()
-        editor = self.toolEditor(tool)
-
-        r = editor.Parent.exec_()
-        if r:
-            editor.accept()
-            listname = self.TLM.getCurrentTableName()
-            self.TLM.addnew(listname, editor.Tool) # is True:
-            self.loadTable(listname)
-
-    def delete(self):
-        '''deletes the selected tool'''
-        #listname  =  self.form.listView.selectedIndexes()[0].data()
-        listname = self.TLM.getCurrentTableName()
-        model = self.form.ToolsList.model()
-        for i in range(model.rowCount()):
-            item = model.item(i, 0)
-            if item.checkState():
-                t = model.index(i, 1)
-                self.TLM.delete(int(t.data()) ,listname)
-        self.loadTable(listname)
-
-    def editTool(self, currItem):
-        '''load the tool edit dialog'''
-        row = currItem.row()
-        value = currItem.sibling(row, 1).data()
-        listname = self.TLM.getCurrentTableName()
-        toolnum = int(value)
-        tool = self.TLM.getTool(listname, toolnum)
-        editor = self.toolEditor(tool)
-
-        r = editor.Parent.exec_()
-        if r:
-            editor.accept()
-            if self.TLM.updateTool(listname, toolnum, editor.Tool) is True:
-                self.loadTable(listname)
-
-    def moveUp(self):
-        '''moves a tool to a lower number, if possible'''
-        item = self.form.ToolsList.selectedIndexes()[1].data()
-        if item:
-            number = int(item)
-            listname = self.TLM.getCurrentTableName()
-            success, newNum = self.TLM.moveup(number, listname)
-            if success:
-                self.loadTable(listname)
-                self.updateSelection(newNum)
-
-    def moveDown(self):
-        '''moves a tool to a higher number, if possible'''
-        item = self.form.ToolsList.selectedIndexes()[1].data()
-        if item:
-            number = int(item)
-            listname = self.TLM.getCurrentTableName()
-            success, newNum = self.TLM.movedown(number, listname) 
-            if success:
-                self.loadTable(listname)
-                self.updateSelection(newNum)
-
-    def updateSelection(self, number):
-        '''update the tool list selection to track moves'''
-        model = self.form.ToolsList.model()
-        for i in range(model.rowCount()):
-            if int(model.index(i, 1).data()) == number:
-                self.form.ToolsList.selectRow(i)
-                self.form.ToolsList.model().item(i, 0).setCheckState(QtCore.Qt.Checked)
-                return
-
-
-    def importFile(self):
-        '''imports a tooltable from a file'''
-        filename = QtGui.QFileDialog.getOpenFileName(self.form, translate( "TooltableEditor", "Open tooltable", None), None, "{};;{};;{}".format(ToolLibraryManager.TooltableTypeJSON, ToolLibraryManager.TooltableTypeXML, ToolLibraryManager.TooltableTypeHeekscad))
-        if filename[0]:
-            listname = self.TLM.getNextToolTableName()
-            if self.TLM.read(filename, listname):
-                self.loadToolTables()
-                #self.loadTable(listname)
-
-
-    def exportFile(self):
-        '''export a tooltable to a file'''
-        filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("TooltableEditor", "Save tooltable", None), None, "{};;{};;{}".format(ToolLibraryManager.TooltableTypeJSON, ToolLibraryManager.TooltableTypeXML, ToolLibraryManager.TooltableTypeLinuxCNC))
-        if filename[0]:
-            listname = self.TLM.getCurrentTableName()
-            self.TLM.write(filename, listname)
-
-    def toolSelected(self, index):
-        ''' updates the ui when tools are selected'''
-        self.form.ToolsList.selectRow(index.row())
-        
-        self.form.btnCopyTools.setEnabled(False)
-        self.form.ButtonDelete.setEnabled(False)
-        self.form.ButtonUp.setEnabled(False)
-        self.form.ButtonDown.setEnabled(False)
-
-        model = self.form.ToolsList.model()
-        checkCount = 0
-        checkList = []
-        for i in range(model.rowCount()):
-            item = model.item(i, 0)
-            if item.checkState():
-                checkCount += 1
-                checkList.append(i)
-                self.form.btnCopyTools.setEnabled(True)
-
-        # only allow moving or deleting a single tool at a time.
-        if checkCount == 1:
-            #make sure the row is highlighted when the check box gets ticked   
-            self.form.ToolsList.selectRow(checkList[0])       
-            self.form.ButtonDelete.setEnabled(True)
-            self.form.ButtonUp.setEnabled(True)
-            self.form.ButtonDown.setEnabled(True)
-
-        if len(PathUtils.GetJobs()) == 0:
-            self.form.btnCopyTools.setEnabled(False)
-
-    def copyTools(self):
-        ''' copy selected tool '''
-        tools = []
-        model = self.form.ToolsList.model()
-        for i in range(model.rowCount()):
-            item = model.item(i, 0)
-            if item.checkState():
-                item = model.index(i, 1)
-                tools.append(item.data())
-        if len(tools) == 0:
-            return
-
-        targets = self.TLM.getJobList()
-        currList = self.TLM.getCurrentTableName()
-
-        for target in targets:
-            if target == currList:
-                targets.remove(target)
-
-        if len(targets) == 0:
-            FreeCAD.Console.PrintWarning("No Path Jobs in current document")
-            return
-        elif len(targets) == 1:
-            targetlist = targets[0]
-        else:
-            form = FreeCADGui.PySideUic.loadUi(":/panels/DlgToolCopy.ui")
-            form.cboTarget.addItems(targets)
-            r = form.exec_()
-            if r is False:
-                return None
-            else:
-                targetlist = form.cboTarget.currentText()
-
-        for toolnum in tools:
-            tool = self.TLM.getTool(currList, int(toolnum))
-            PathLog.debug('tool: {}, toolnum: {}'.format(tool, toolnum))
-            if self.job:
-                label = "T{}: {}".format(toolnum, tool.Name)
-                tc = PathScripts.PathToolController.Create(label, tool=tool, toolNumber=int(toolnum))
-                self.job.Proxy.addToolController(tc)
-            else:
-                for job in FreeCAD.ActiveDocument.findObjects("Path::Feature"):
-                    if isinstance(job.Proxy, PathScripts.PathJob.ObjectJob) and job.Label == targetlist:
-                        label = "T{}: {}".format(toolnum, tool.Name)
-                        tc = PathScripts.PathToolController.Create(label, tool=tool, toolNumber=int(toolnum))
-                        job.Proxy.addToolController(tc)
-        if self.cb:
-            self.cb()
-        FreeCAD.ActiveDocument.recompute()
-
-    def tableSelected(self, index):
-        ''' loads the tools for the selected tool table '''
-        name = self.form.TableList.itemFromIndex(index).text()
-        self.loadTable(name)
-
-    def loadTable(self, name):
-        ''' loads the tools for the selected tool table '''
-        tooldata = self.TLM.getTools(name)
-        if tooldata:
-            self.form.ToolsList.setModel(tooldata)
-            self.form.ToolsList.resizeColumnsToContents()
-            self.setCurrentToolTableByName(name)
-            
-
-    def addNewToolTable(self):
-        ''' adds new tool to selected tool table '''
-        name = self.TLM.addNewToolTable()
-        self.loadToolTables()
-        self.loadTable(name)
-         
-    def loadToolTables(self):
-        ''' Load list of available tool tables '''
-        self.form.TableList.clear()
-        model = self.form.ToolsList.model()
-        if model:
-            model.clear()
-        if len(self.TLM.getToolTables()) > 0:
-            for table in self.TLM.getToolTables():
-                listItem = QtGui.QListWidgetItem(table.Name)
-                listItem.setIcon(QtGui.QIcon(':/icons/Path-ToolTable.svg'))
-                listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsEditable)
-                listItem.setSizeHint(QtCore.QSize(0,40))
-                self.form.TableList.addItem(listItem)
-                self.loadTable(self.TLM.getToolTables()[0].Name)
-        
-    def setCurrentToolTableByName(self, name):
-        ''' get the current tool table '''
-        item = self.form.TableList.findItems(name, QtCore.Qt.MatchExactly)[0]
-        self.form.TableList.setCurrentItem(item)
-
-    def removeToolTable(self):
-        ''' delete the selected tool table '''
-        self.TLM.deleteToolTable()
-        self.loadToolTables()
-    
-    def initTableRename(self):
-        ''' update the tool table list entry to allow renaming '''
-        name = self.TLM.getCurrentTableName()
-        item = self.form.TableList.findItems(name, QtCore.Qt.MatchExactly)[0]
-        self.form.TableList.editItem(item)
-
-    def renameTable(self, listItem):
-        ''' rename the selected too table '''
-        newName = listItem.text()
-        index = self.form.TableList.indexFromItem(listItem).row()
-        reloadTables = self.TLM.renameToolTable(newName, index)
-        if reloadTables:
-            self.loadToolTables()
-
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
-
-    # def openMenu(self, position):
-    #     menu = QtGui.QMenu()
-    #     newAction = menu.addAction("New Tool Table")
-    #     deleteAction = menu.addAction("Delete")
-    #     renameAction = menu.addAction("Rename")
-    #     action = menu.exec_(self.form.TableList.mapToGlobal(position))
-    #     if action == newAction:
-    #         self.addNewToolTable()
-    #         pass
-    #     if action == deleteAction:
-    #         self.removeToolTable()
-    #         pass
-    #     if action == renameAction:
-    #         self.initTableRename()
-    #         pass
-
-    def setupUi(self):
-        # Connect Signals and Slots
-        self.form.ButtonNewTool.clicked.connect(self.addTool)
-        self.form.ButtonImport.clicked.connect(self.importFile)
-        self.form.ButtonExport.clicked.connect(self.exportFile)
-        self.form.ButtonDown.clicked.connect(self.moveDown)
-        self.form.ButtonUp.clicked.connect(self.moveUp)
-        self.form.ButtonDelete.clicked.connect(self.delete)
-
-        self.form.ToolsList.doubleClicked.connect(self.editTool)
-        self.form.ToolsList.clicked.connect(self.toolSelected)
-
-        self.form.btnCopyTools.clicked.connect(self.copyTools)
-
-        self.form.TableList.clicked.connect(self.tableSelected)
-        self.form.TableList.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        #self.form.TableList.customContextMenuRequested.connect(self.openMenu)
-        self.form.TableList.itemChanged.connect(self.renameTable)
-
-        self.form.ButtonAddToolTable.clicked.connect(self.addNewToolTable)
-        self.form.ButtonAddToolTable.setToolTip(translate("TooltableEditor","Add New Tool Table"))
-        self.form.ButtonRemoveToolTable.clicked.connect(self.removeToolTable)
-        self.form.ButtonRemoveToolTable.setToolTip(translate("TooltableEditor","Delete Selected Tool Table"))
-        self.form.ButtonRenameToolTable.clicked.connect(self.initTableRename)
-        self.form.ButtonRenameToolTable.setToolTip(translate("TooltableEditor","Rename Selected Tool Table"))
-
-
-        self.form.btnCopyTools.setEnabled(False)
-        self.form.ButtonDelete.setEnabled(False)
-        self.form.ButtonUp.setEnabled(False)
-        self.form.ButtonDown.setEnabled(False)
-
-        self.setFields()
-
-class CommandToolLibraryEdit():
-    def __init__(self):
-        pass
-
-    def edit(self, job=None, cb=None):
-        editor = EditorPanel(job, cb)
-        editor.setupUi()
-
-        r = editor.form.exec_()
-        if r:
-            pass
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Path-ToolTable',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolTable","Tool Manager"),
-                'Accel': "P, T",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolTable","Tool Manager")}
-
-    def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
-
-    def Activated(self):
-
-        self.edit()
-
-if FreeCAD.GuiUp:
-    # register the FreeCAD command
-    FreeCADGui.addCommand('Path_ToolLibraryEdit',CommandToolLibraryEdit())
