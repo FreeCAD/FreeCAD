@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>558</width>
-    <height>1095</height>
+    <height>1110</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,489 +17,6 @@
    <string>Default value for new Page</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="gbMisc">
-     <property name="title">
-      <string>General</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <layout class="QFormLayout" name="formLayout">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-        </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="lbl_Angle">
-          <property name="text">
-           <string>Projection Angle</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="Gui::PrefComboBox" name="cb_Angle">
-          <property name="prefEntry" stdset="0">
-           <cstring>ProjectionAngle</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/General</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>First</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Third</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="lbl_HidLine">
-          <property name="text">
-           <string>Hidden Line</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::PrefComboBox" name="cb_HidLine">
-          <property name="toolTip">
-           <string>Style for hidden lines</string>
-          </property>
-          <property name="currentIndex">
-           <number>1</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>HiddenLine</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>NeverShow</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Solid</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Dash</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Dot</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>DashDot</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>DashDotDot</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="Gui::PrefCheckBox" name="cb_Faces">
-          <property name="toolTip">
-           <string>Perform/skip face processing</string>
-          </property>
-          <property name="text">
-           <string>Detect Faces</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>HandleFaces</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="Gui::PrefCheckBox" name="cb_SectionEdges">
-          <property name="toolTip">
-           <string>Debugging option</string>
-          </property>
-          <property name="text">
-           <string>Show Section Edges</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ShowSectionEdges</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="Gui::PrefCheckBox" name="cb_AutoDist">
-          <property name="toolTip">
-           <string>Automatically distribute secondary views.</string>
-          </property>
-          <property name="text">
-           <string>AutoDistribute Secondary Views</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AutoDist</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_12">
-          <property name="font">
-           <font>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Drawing Updates</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="Gui::PrefCheckBox" name="cb_Global">
-          <property name="toolTip">
-           <string>Update drawings with changes in 3D model</string>
-          </property>
-          <property name="text">
-           <string>Update with 3D (Global Policy)</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>GlobalUpdateDrawings</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="Gui::PrefCheckBox" name="cb_Override">
-          <property name="toolTip">
-           <string>Allow Page to override Global update setting</string>
-          </property>
-          <property name="text">
-           <string>Allow Page Override</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AllowPageOverride</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="Gui::PrefCheckBox" name="cb_PageUpdate">
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update Pages as scheduled or skip updates. This is the default setting for new Pages.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Keep Page Up to Date (default)</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>KeepPagesUpToDate</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_4">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="gb_Colors">
-     <property name="title">
-      <string>Colors</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="2" column="4">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Section Hatch</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="4">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Section Face</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="Gui::PrefColorButton" name="pcb_Background">
-          <property name="color">
-           <color>
-            <red>80</red>
-            <green>80</green>
-            <blue>80</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>Background</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="Gui::PrefColorButton" name="pcb_PreSelect">
-          <property name="color">
-           <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>20</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>PreSelectColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="lbl_Normal">
-          <property name="text">
-           <string>Normal</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="6">
-         <widget class="Gui::PrefColorButton" name="pcb_Hidden">
-          <property name="prefEntry" stdset="0">
-           <cstring>HiddenColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefColorButton" name="pcb_Select">
-          <property name="color">
-           <color>
-            <red>28</red>
-            <green>173</green>
-            <blue>28</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SelectColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="5">
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="2">
-         <widget class="Gui::PrefColorButton" name="pcb_Normal">
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>NormalColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="lbl_PreSelect">
-          <property name="text">
-           <string>PreSelected</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="4">
-         <widget class="QLabel" name="lbl_Hidden">
-          <property name="text">
-           <string>Hidden Line</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="6">
-         <widget class="Gui::PrefColorButton" name="pcb_Surface">
-          <property name="color">
-           <color>
-            <red>225</red>
-            <green>225</green>
-            <blue>225</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>CutSurfaceColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="lbl_Select">
-          <property name="text">
-           <string>Selected</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="6">
-         <widget class="Gui::PrefColorButton" name="pcb_Hatch">
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>Hatch</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Background</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="4">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Geom Hatch</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="6">
-         <widget class="Gui::PrefColorButton" name="colorButton">
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>GeomHatch</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="3" column="0">
     <widget class="QGroupBox" name="gb_Templates">
      <property name="title">
@@ -840,6 +357,549 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="gb_Colors">
+     <property name="title">
+      <string>Colors</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="2" column="4">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Section Hatch</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Section Face</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefColorButton" name="pcb_Background">
+          <property name="toolTip">
+           <string>Window background color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>80</red>
+            <green>80</green>
+            <blue>80</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Background</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::PrefColorButton" name="pcb_PreSelect">
+          <property name="toolTip">
+           <string>Preselection color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>20</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>PreSelectColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_Normal">
+          <property name="text">
+           <string>Normal</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="6">
+         <widget class="Gui::PrefColorButton" name="pcb_Hidden">
+          <property name="toolTip">
+           <string>Hidden line color</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>HiddenColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefColorButton" name="pcb_Select">
+          <property name="toolTip">
+           <string>Selected item color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>28</red>
+            <green>173</green>
+            <blue>28</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SelectColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="2">
+         <widget class="Gui::PrefColorButton" name="pcb_Normal">
+          <property name="toolTip">
+           <string>Normal lne color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>NormalColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_PreSelect">
+          <property name="text">
+           <string>PreSelected</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QLabel" name="lbl_Hidden">
+          <property name="text">
+           <string>Hidden Line</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="6">
+         <widget class="Gui::PrefColorButton" name="pcb_Surface">
+          <property name="toolTip">
+           <string>Section Face color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>225</red>
+            <green>225</green>
+            <blue>225</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CutSurfaceColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_Select">
+          <property name="text">
+           <string>Selected</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="6">
+         <widget class="Gui::PrefColorButton" name="pcb_Hatch">
+          <property name="toolTip">
+           <string>Section Face Hatch color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Hatch</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Background</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="4">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Geom Hatch</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="6">
+         <widget class="Gui::PrefColorButton" name="pcb_GeomHatch">
+          <property name="toolTip">
+           <string>Default geometric hatch color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>GeomHatch</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="Gui::PrefColorButton" name="pcb_Face">
+          <property name="toolTip">
+           <string>Default Face Color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FaceColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="Gui::PrefCheckBox" name="pcb_PaintFaces">
+          <property name="toolTip">
+           <string>Transparent faces if checked</string>
+          </property>
+          <property name="text">
+           <string>Transparent Faces</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ClearFace</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="gbMisc">
+     <property name="title">
+      <string>General</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QFormLayout" name="formLayout">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_Angle">
+          <property name="text">
+           <string>Projection Angle</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefComboBox" name="cb_Angle">
+          <property name="prefEntry" stdset="0">
+           <cstring>ProjectionAngle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>First</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Third</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_HidLine">
+          <property name="text">
+           <string>Hidden Line</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefComboBox" name="cb_HidLine">
+          <property name="toolTip">
+           <string>Style for hidden lines</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>HiddenLine</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>NeverShow</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Solid</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Dash</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Dot</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>DashDot</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>DashDotDot</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="Gui::PrefCheckBox" name="cb_Faces">
+          <property name="toolTip">
+           <string>Perform/skip face processing</string>
+          </property>
+          <property name="text">
+           <string>Detect Faces</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>HandleFaces</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="Gui::PrefCheckBox" name="cb_SectionEdges">
+          <property name="toolTip">
+           <string>Debugging option</string>
+          </property>
+          <property name="text">
+           <string>Show Section Edges</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShowSectionEdges</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="Gui::PrefCheckBox" name="cb_AutoDist">
+          <property name="toolTip">
+           <string>Automatically distribute secondary views.</string>
+          </property>
+          <property name="text">
+           <string>AutoDistribute Secondary Views</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AutoDist</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Drawing Updates</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="Gui::PrefCheckBox" name="cb_Global">
+          <property name="toolTip">
+           <string>Update drawings with changes in 3D model</string>
+          </property>
+          <property name="text">
+           <string>Update with 3D (Global Policy)</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>GlobalUpdateDrawings</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="Gui::PrefCheckBox" name="cb_Override">
+          <property name="toolTip">
+           <string>Allow Page to override Global update setting</string>
+          </property>
+          <property name="text">
+           <string>Allow Page Override</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>AllowPageOverride</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="Gui::PrefCheckBox" name="cb_PageUpdate">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update Pages as scheduled or skip updates. This is the default setting for new Pages.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Keep Page Up to Date (default)</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>KeepPagesUpToDate</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>

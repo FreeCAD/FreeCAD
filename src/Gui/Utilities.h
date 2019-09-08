@@ -70,7 +70,9 @@ struct vec_traits<SbRotation> {
     typedef float float_type;
     vec_traits(const vec_type& v) : v(v){}
     inline std::tuple<float_type,float_type,float_type,float_type> get() const {
-        return std::make_tuple(v[0], v[1], v[2], v[3]);
+        float_type q1,q2,q3,q4;
+        v.getValue(q1,q2,q3,q4);
+        return std::make_tuple(q1, q2, q3, q4);
     }
 private:
     const vec_type& v;

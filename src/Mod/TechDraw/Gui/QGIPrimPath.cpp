@@ -138,9 +138,10 @@ void QGIPrimPath::setPrettySel() {
     update();
 }
 
+//wf: why would a face use it's parent's normal colour?
+//this always goes to parameter
 QColor QGIPrimPath::getNormalColor()
 {
-
     QColor result;
     QGIView *parent;
 
@@ -164,6 +165,7 @@ QColor QGIPrimPath::getNormalColor()
         fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
         result = fcColor.asValue<QColor>();
     }
+
     return result;
 }
 
@@ -282,13 +284,13 @@ void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)
 }
 
 void QGIPrimPath::setFill(QColor c, Qt::BrushStyle s) {
-    m_colNormalFill = c;
+    setFillColor(c);
     m_styleNormal = s;
     m_fill = s;
 }
 
 void QGIPrimPath::setFill(QBrush b) {
-    m_colNormalFill = b.color();
+    setFillColor(b.color());
     m_styleNormal = b.style();
     m_fill = b.style();
 }
@@ -299,6 +301,13 @@ void QGIPrimPath::resetFill() {
     m_fill = m_styleDef;
 }
 
+void QGIPrimPath::setFillColor(QColor c)
+{ 
+    m_colNormalFill = c;
+    m_colDefFill = c;
+}
+
+
 void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
@@ -308,7 +317,7 @@ void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
     m_pen.setStyle(m_styleCurrent);
     setPen(m_pen);
 
-    m_brush.setColor(m_fillColor);  //pencolr
+    m_brush.setColor(m_colNormalFill);
     m_brush.setStyle(m_fill);
     setBrush(m_brush);
 
