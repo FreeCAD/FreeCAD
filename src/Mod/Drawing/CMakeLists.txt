@@ -5,6 +5,7 @@ if(BUILD_GUI)
 endif(BUILD_GUI)
 
 set(Drawing_Scripts
+    README.md
     Init.py
     DrawingExample.py
     DrawingTests.py

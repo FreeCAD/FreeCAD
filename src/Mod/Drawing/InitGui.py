@@ -41,6 +41,11 @@ class DrawingWorkbench (Workbench):
     def Initialize(self):
         # load the module
         import DrawingGui
+
+    def Activated(self):
+        FreeCAD.Console.PrintWarning("Drawing became obsolete in 0.17; "
+                                     "consider using TechDraw instead.\n")
+
     def GetClassName(self):
         return "DrawingGui::Workbench"
         
