@@ -77,6 +77,7 @@ def Startup():
         from PathScripts import PathToolController
         from PathScripts import PathToolControllerGui
         from PathScripts import PathToolLibraryManager
+        from PathScripts import PathToolLibraryEditor
         from PathScripts import PathUtilsGui
         Processed = True
     else:
