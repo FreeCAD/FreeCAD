@@ -70,7 +70,19 @@
 #ifndef OCCGEOMETRY
 #define OCCGEOMETRY
 #endif
+
+// DLL_HEADER is re-defined in netgen headers
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmacro-redefined"
+#endif
+
 #include <occgeom.hpp>
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
+
 namespace nglib {
 #include <nglib.h>
 }
