@@ -704,7 +704,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     
     //Dagview through parameter.
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
+          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("DAGView");
 
     bool enabled = group->GetBool("Enabled", false);
     if (enabled)
