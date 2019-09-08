@@ -157,7 +157,8 @@ bool ViewProviderBody::doubleClicked(void)
     } else {
 
         // assure the PartDesign workbench
-        Gui::Command::assureWorkbench("PartDesignWorkbench");
+        if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign")->GetBool("SwitchToWB", true))
+            Gui::Command::assureWorkbench("PartDesignWorkbench");
 
         // and set correct active objects
         auto* part = App::Part::getPartOfObject ( getObject() );
