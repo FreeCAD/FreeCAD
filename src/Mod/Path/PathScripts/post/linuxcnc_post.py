@@ -54,6 +54,7 @@ parser.add_argument('--postamble', help='set commands to be issued after the las
 parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
 parser.add_argument('--modal', action='store_true', help='Output the Same G-command Name USE NonModal Mode')
 parser.add_argument('--axis-modal', action='store_true', help='Output the Same Axis Value Mode')
+parser.add_argument('--no-tlo', action='store_true', help='supress tool length offset (G43) following tool changes')
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -63,6 +64,7 @@ OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
+USE_TLO = True # if true G43 will be output following tool changes 
 OUTPUT_DOUBLES = True  # if false duplicate axis values are suppressed if the same as previous line.
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
@@ -114,6 +116,7 @@ def processArguments(argstring):
     global UNIT_SPEED_FORMAT
     global UNIT_FORMAT
     global MODAL
+    global USE_TLO
     global OUTPUT_DOUBLES
 
     try:
@@ -139,6 +142,8 @@ def processArguments(argstring):
             PRECISION = 4
         if args.modal:
             MODAL = True
+        if args.no_tlo:
+            USE_TLO = False
         if args.axis_modal:
             print ('here')
             OUTPUT_DOUBLES = False
@@ -353,6 +358,11 @@ def parse(pathobj):
                 #     out += linenumber() + "(begin toolchange)\n"
                 for line in TOOL_CHANGE.splitlines(True):
                     out += linenumber() + line
+
+                # add height offset
+                if USE_TLO:
+                    tool_height = '\nG43 H' + str(int(c.Parameters['T']))
+                    outstring.append(tool_height)
 
             if command == "message":
                 if OUTPUT_COMMENTS is False:
