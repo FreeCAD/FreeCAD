@@ -227,11 +227,15 @@ std::vector<Base::Vector3d> BaseGeom::findEndPoints()
 {
     std::vector<Base::Vector3d> result;
 
-    gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
-    result.push_back(Base::Vector3d(p.X(),p.Y(), p.Z()));
-    p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
-    result.push_back(Base::Vector3d(p.X(),p.Y(), p.Z()));
-
+    if (!occEdge.IsNull()) {
+        gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
+        result.push_back(Base::Vector3d(p.X(),p.Y(), p.Z()));
+        p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
+        result.push_back(Base::Vector3d(p.X(),p.Y(), p.Z()));
+    } else {
+        //TODO: this should throw something
+        Base::Console().Message("Geometry::findEndPoints - OCC edge not found\n");
+    }
     return result;
 }
 
@@ -239,13 +243,27 @@ std::vector<Base::Vector3d> BaseGeom::findEndPoints()
 Base::Vector3d BaseGeom::getStartPoint()
 {
     std::vector<Base::Vector3d> verts = findEndPoints();
-    return verts[0];
+    if (!verts.empty()) {
+        return verts[0];
+    } else {
+        //TODO: this should throw something
+        Base::Console().Message("Geometry::getStartPoint - start point not found!\n");
+        Base::Vector3d badResult(0.0, 0.0, 0.0);
+        return badResult;
+    }
 }
 
 
 Base::Vector3d BaseGeom::getEndPoint()
 {
     std::vector<Base::Vector3d> verts = findEndPoints();
+
+    if (verts.size() != 2) {
+        //TODO: this should throw something
+        Base::Console().Message("Geometry::getEndPoint - end point not found!\n");
+        Base::Vector3d badResult(0.0, 0.0, 0.0);
+        return badResult;
+    }
     return verts[1];
 }
 
