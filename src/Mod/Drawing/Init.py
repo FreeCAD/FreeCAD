@@ -24,3 +24,6 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
+
+FreeCAD.Console.PrintLog("Drawing became obsolete in 0.17; "
+                         "consider using TechDraw instead.\n")
