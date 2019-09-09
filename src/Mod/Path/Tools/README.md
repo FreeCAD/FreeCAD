@@ -27,7 +27,7 @@ property. Adding a tool bit directly rsults in the tool getting the next free id
 They largely stay the same as they are today. As an additional feature it should be possible to _copy_ a TC, which
 allows for easy feed/speed changes for the same tool.
 
-Abover requirement highlights one change though, that the `id` should be a property of the Bit, and not of the TC.
+Above requirement highlights one change though, that the `id` should be a property of the Bit, and not of the TC.
 There are two requirements that are currently mapped to a single `id`. There needs to be an identification of which
 TC is being used by a certain op, and which tool number to use for a `M6` command.
 
@@ -40,6 +40,7 @@ The following directory structure is used for supplied (shipped with FreeCAD) to
     + Library
     + Template
 ```
+
 Strictly speaking a user is free to store their tools wherever they want and however they want. By default the file
 dialog will open the corresponding directory (depending on context), or whichever directory the user opened last.
 
