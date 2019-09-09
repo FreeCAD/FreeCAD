@@ -27,7 +27,6 @@
 #include <QContextMenuEvent>
 #include <QGraphicsScene>
 #include <QMouseEvent>
-#include <QGraphicsSceneHoverEvent>
 #include <QPainterPathStroker>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
@@ -92,21 +91,19 @@ QGIFace::QGIFace(int index) :
     m_svgCol = SVGCOLDEFAULT;
     m_fillScale = 1.0;
 
-    m_colDefFill = Qt::white;
+    getParameters();
+ 
     m_styleDef = Qt::SolidPattern;
     m_styleSelect = Qt::SolidPattern;
 
-    getParameters();
- 
-    m_styleNormal = m_styleDef;
-    m_fillStyle = m_styleDef;
-    m_fill = m_styleDef;
     if (m_defClearFace) {
         setFillMode(NoFill);
+        m_colDefFill = Qt::transparent;
         setFill(Qt::transparent, m_styleDef);
     } else {
         setFillMode(PlainFill);
-        setFill(m_colNormalFill, m_styleDef);
+        m_colDefFill = Qt::white;
+        setFill(m_colDefFill, m_styleDef);
     }
 }
 
@@ -123,9 +120,8 @@ void QGIFace::draw()
         if (m_mode == GeomHatchFill) {
             if (!m_lineSets.empty()) {
                 m_brush.setTexture(QPixmap());
-                m_fillStyle = m_styleDef;
-                m_fill = m_styleDef;
-                m_styleNormal = m_fillStyle;
+                m_fillStyleCurrent = m_styleDef;
+                m_styleNormal = m_fillStyleCurrent;
                 for (auto& ls: m_lineSets) {
                     lineSetToFillItems(ls);
                 }
@@ -139,9 +135,8 @@ void QGIFace::draw()
                 if (ext.toUpper() == QString::fromUtf8("SVG")) {
                     setFillMode(SvgFill);
                     m_brush.setTexture(QPixmap());
-                    m_fillStyle = m_styleDef;
-                    m_fill = m_styleDef;
-                    m_styleNormal = m_fillStyle;
+                    m_styleNormal = m_styleDef;
+                    m_fillStyleCurrent = m_styleNormal;
                     loadSvgHatch(m_fileSpec);
                     buildSvgHatch();
                     toggleSvg(true);
@@ -151,8 +146,7 @@ void QGIFace::draw()
                          (ext.toUpper() == QString::fromUtf8("BMP")) ) {
                     setFillMode(BitmapFill);
                     toggleSvg(false);
-                    m_fillStyle   = Qt::TexturePattern;
-                    m_fill   = Qt::TexturePattern;
+                    m_fillStyleCurrent = Qt::TexturePattern;
                     m_texture = textureFromBitmap(m_fileSpec);
                     m_brush.setTexture(m_texture);
                 }
@@ -167,34 +161,26 @@ void QGIFace::draw()
 }
 
 void QGIFace::setPrettyNormal() {
+//    Base::Console().Message("QGIF::setPrettyNormal() - hatched: %d\n", isHatched());
     if (isHatched()  &&
         (m_mode == BitmapFill) ) {                               //hatch with bitmap fill
-        m_fillStyle = Qt::TexturePattern;
-        m_fill = Qt::TexturePattern;
+        m_fillStyleCurrent = Qt::TexturePattern;
         m_brush.setTexture(m_texture);
     } else {
-        m_fillStyle = m_styleNormal;
-        m_fill = m_styleNormal;
         m_brush.setTexture(QPixmap());
-        m_brush.setStyle(m_fill);
-        m_fillColor = m_colNormalFill;
     }
     QGIPrimPath::setPrettyNormal();
 }
 
 void QGIFace::setPrettyPre() {
+//    Base::Console().Message("QGIF::setPrettyPre()\n");
     m_brush.setTexture(QPixmap());
-    m_fillStyle = m_styleSelect;
-    m_fill = m_styleSelect;
-    m_fillColor = getPreColor();
     QGIPrimPath::setPrettyPre();
 }
 
 void QGIFace::setPrettySel() {
+//    Base::Console().Message("QGIF::setPrettySel()\n");
     m_brush.setTexture(QPixmap());
-    m_fillStyle = m_styleSelect;
-    m_fill = m_styleSelect;
-    m_fillColor = getSelectColor();
     QGIPrimPath::setPrettySel();
 }
 
