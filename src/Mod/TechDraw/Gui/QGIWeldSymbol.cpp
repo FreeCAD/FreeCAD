@@ -258,7 +258,7 @@ void QGIWeldSymbol::drawTailText(void)
     }
 
     m_font.setFamily(getPrefFont());
-    m_font.setPixelSize(calculateFontPixelSize(getDimFontSize()));
+    m_font.setPixelSize(prefFontSize());
 
     m_tailText->setFont(m_font);
     m_tailText->setPlainText(
@@ -270,10 +270,13 @@ void QGIWeldSymbol::drawTailText(void)
     double charWidth = textWidth / tText.size();
     double hMargin = charWidth + prefArrowSize();
 
+    double textHeight = m_tailText->boundingRect().width();
+    double vFudge = textHeight * 0.1;
+
     if (getFeature()->isTailRightSide()) {
-        m_tailText->justifyLeftAt(textPos.x() + hMargin, textPos.y(), true);
+        m_tailText->justifyLeftAt(textPos.x() + hMargin, textPos.y() - vFudge, true);
     } else {
-        m_tailText->justifyRightAt(textPos.x() - hMargin, textPos.y(), true);
+        m_tailText->justifyRightAt(textPos.x() - hMargin, textPos.y() - vFudge, true);
     }
 }
 
@@ -497,6 +500,14 @@ double QGIWeldSymbol::prefArrowSize()
     return size;
 }
 
+double QGIWeldSymbol::prefFontSize(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    double sizeMM = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
+    double fontSize = QGIView::calculateFontPixelSize(sizeMM);
+    return fontSize;
+}
 
 QRectF QGIWeldSymbol::boundingRect() const
 {

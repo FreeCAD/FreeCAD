@@ -73,7 +73,8 @@ QGITile::QGITile() :
     addToGroup(m_qgTextC);
 
     m_wide = getSymbolWidth();
-    m_high = prefFontSize();
+    m_high = getSymbolHeight();
+//    m_high = prefFontSize();
     m_textL  = QString();
     m_textR  = QString();
     m_textC  = QString();
@@ -113,7 +114,8 @@ void QGITile::draw(void)
 
     prepareGeometryChange();
     m_wide = getSymbolWidth();
-    m_high = getSymbolHeight() * scaleToFont();
+//    m_high = getSymbolHeight() * scaleToFont();
+    m_high = getSymbolHeight();
 
     makeText();
     makeSymbol();
@@ -170,7 +172,8 @@ void QGITile::makeSymbol(void)
                 return;
             }
             svgFile.close();
-            m_qgSvg->setScale(scaleToFont());
+//            m_qgSvg->setScale(scaleToFont());
+            m_qgSvg->setScale(getSymbolFactor());
             m_qgSvg->centerAt(0.0, 0.0);   //(0,0) is based on symbol size
         } else {
             Base::Console().Error("Error - Could not open file **%s**\n", qPrintable(m_svgPath));  
@@ -188,7 +191,7 @@ void QGITile::makeText(void)
     m_font.setPixelSize(prefFontSize());
     double verticalFudge = 0.10;
 
-    //(0, 0) is 1/2 up (above line symbol)!
+    //(0, 0) is 1/2 up symbol (above line symbol)!
     m_qgTextL->setFont(m_font);
     m_qgTextL->setPlainText(m_textL);
     m_qgTextL->setColor(m_colCurrent);
@@ -196,17 +199,23 @@ void QGITile::makeText(void)
     double charWidth = textWidth / m_textL.size();   //not good for non-ASCII chars
     double hMargin = 1;
     if (!m_textL.isEmpty()) {
-        hMargin = (m_wide / 2.0) + (charWidth / 2.0);
+        hMargin = (m_wide / 2.0) + (charWidth * 1.5);
+    }
+
+    double vertAdjust = 0.0;
+    double minVertAdjust = prefFontSize() * 0.1;
+    if (prefFontSize() > m_high) {       //text is bigger than symbol
+        vertAdjust = ((prefFontSize() - m_high) / 2.0) + minVertAdjust;
     }
 
     double textHeightL = m_qgTextL->boundingRect().height();
     double vOffset = 0.0;
     if (m_row < 0) {                      // below line
         vOffset = textHeightL * verticalFudge;
-    } else {
-        vOffset = 0.0;
+    } else {                              // above line
+        vOffset = -vertAdjust;
     }
-    m_qgTextL->justifyRightAt(-hMargin, vOffset, true);
+    m_qgTextL->justifyRightAt(-hMargin, vOffset, true);   //sb vCentered at 0.5 m_high
 
     m_qgTextR->setFont(m_font);
     m_qgTextR->setPlainText(m_textR);
@@ -215,13 +224,13 @@ void QGITile::makeText(void)
     charWidth = textWidth / m_textR.size();
     hMargin = 1;
     if (!m_textR.isEmpty()) {
-        hMargin = (m_wide / 2.0) + (charWidth / 2.0);
+        hMargin = (m_wide / 2.0) + (charWidth);
     }
     double textHeightR = m_qgTextR->boundingRect().height();
     if (m_row < 0) {                      // below line
         vOffset =  textHeightR * verticalFudge;
     } else {
-        vOffset = 0.0;
+        vOffset = -vertAdjust;
     }
     m_qgTextR->justifyLeftAt(hMargin, vOffset, true);
 
@@ -341,6 +350,7 @@ double QGITile::getSymbolWidth(void) const
 //    double w = 64.0;
     double fudge = 4.0;              //allowance for tile border
     w = w - fudge;
+    w = w * getSymbolFactor();
     return w;
 }
 
@@ -352,9 +362,11 @@ double QGITile::getSymbolHeight(void) const
     double fudge = 4.0;
     h = h - fudge;
 //    double h = 60.0;
+    h = h * getSymbolFactor();
     return h;
 }
 
+//make symbols larger or smaller than standard
 double QGITile::getSymbolFactor(void) const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
@@ -378,7 +390,8 @@ double QGITile::scaleToFont(void) const
 {
     double fpx = prefFontSize();
     double spx = getSymbolHeight();
-    double factor = getSymbolFactor();
+//    double factor = getSymbolFactor();
+    double factor = 1.0;
     double sf = (fpx / spx) * factor;
     return sf;
 }
