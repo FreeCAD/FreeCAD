@@ -24,7 +24,6 @@
 #ifndef _PreComp_
 #include <assert.h>
 #include <QGraphicsScene>
-#include <QGraphicsSceneHoverEvent>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPainterPathStroker>
@@ -68,16 +67,16 @@ void QGIEdge::setHiddenEdge(bool b) {
     } else {
         m_styleCurrent = Qt::SolidLine;
     }
-    update();
 }
 
 void QGIEdge::setPrettyNormal() {
+//    Base::Console().Message("QGIE::setPrettyNormal()\n");
     if (isHiddenEdge) {
         m_colCurrent = getHiddenColor();
     } else {
         m_colCurrent = getNormalColor();
     }
-    update();
+    //should call QGIPP::setPrettyNormal()?
 }
 
 QColor QGIEdge::getHiddenColor()
