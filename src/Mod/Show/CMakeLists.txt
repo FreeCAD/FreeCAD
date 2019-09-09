@@ -8,6 +8,9 @@ SET(Show_SRCS
     TVObserver.py
     TVStack.py
     ShowUtils.py
+)
+
+SET(Show_SceneDetails_SRCS
     SceneDetails/__init__.py
     SceneDetails/Camera.py
     SceneDetails/ClipPlane.py
@@ -17,16 +20,26 @@ SET(Show_SRCS
     SceneDetails/Workbench.py
 )
 
+SET(Show_All_SRCS
+    ${Show_SRCS}
+    ${Show_SceneDetails_SRCS}
+)
+
 SOURCE_GROUP("" FILES ${Show_SRCS})
 
 ADD_CUSTOM_TARGET(Show ALL
-    SOURCES ${Show_SRCS}
+    SOURCES ${Show_All_SRCS}
 )
 
-fc_copy_sources(Show "${CMAKE_BINARY_DIR}/Mod/Show" ${Show_SRCS})
+fc_copy_sources(Show "${CMAKE_BINARY_DIR}/Mod/Show" ${Show_All_SRCS})
 
 INSTALL(
     FILES
         ${Show_SRCS}
     DESTINATION Mod/Show
+)
+INSTALL(
+    FILES
+        ${Show_SceneDetails_SRCS}
+    DESTINATION Mod/Show/SceneDetails
 )
