@@ -83,15 +83,16 @@ class ViewProvider(object):
     def setEdit(self, vobj, mode=0):
         # pylint: disable=unused-argument
         PathLog.track()
-        taskPanel = TaskPanel(vobj)
+        self.taskPanel = TaskPanel(vobj)
         FreeCADGui.Control.closeDialog()
-        FreeCADGui.Control.showDialog(taskPanel)
-        taskPanel.setupUi()
+        FreeCADGui.Control.showDialog(self.taskPanel)
+        self.taskPanel.setupUi()
         return True
 
     def unsetEdit(self, vobj, mode):
         # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
+        self.taskPanel = None
         return
 
     def claimChildren(self):

@@ -56,18 +56,23 @@ ParameterTypeConstraint = {
 def updateConstraint(sketch, name, value):
     for i, constraint in enumerate(sketch.Constraints):
         if constraint.Name.split(';')[0] == name:
+            constr = None
             if constraint.Type in ['DistanceX', 'DistanceY', 'Distance', 'Radius']:
+                constr = Sketcher.Constraint(constraint.Type, constraint.First, value)
+            elif constraint.Type in ['Angle']:
+                constr = Sketcher.Constraint(constraint.Type, constraint.First, constraint.FirstPos, constraint.Second, constraint.SecondPos, value)
+            else:
+                print(constraint.Name, constraint.Type)
+
+            if constr is not None:
                 if not PathGeom.isRoughly(constraint.Value, value.Value):
-                    PathLog.track(name, constraint.Type, 'update', i)
-                    constr = Sketcher.Constraint(constraint.Type, constraint.First, value)
+                    PathLog.track(name, constraint.Type, 'update', i, "(%.2f -> %.2f)" % (constraint.Value, value.Value))
                     sketch.delConstraint(i)
                     sketch.recompute()
                     n = sketch.addConstraint(constr)
                     sketch.renameConstraint(n, constraint.Name)
                 else:
                     PathLog.track(name, constraint.Type, 'unchanged')
-            else:
-                print(constraint.Name, constraint.Type)
             break
 
 PropertyGroupBit = 'Bit'
@@ -183,7 +188,7 @@ class ToolBit(object):
                     value = constraint.Value
                     if constraint.Type == 'Angle':
                         value = value * 180 / math.pi
-                    PathUtil.setProperty(obj, prop, constraint.Value)
+                    PathUtil.setProperty(obj, prop, value)
 
     def getBitThumbnail(self, obj):
         if obj.BitTemplate:

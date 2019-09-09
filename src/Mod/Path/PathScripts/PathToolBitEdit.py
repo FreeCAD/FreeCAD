@@ -37,19 +37,7 @@ from PySide import QtGui
 PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 PathLog.trackModule(PathLog.thisModule())
 
-
-ParameterTypeConstraint = {
-        'Angle':        'Angle',
-        'Distance':     'Length',
-        'DistanceX':    'Length',
-        'DistanceY':    'Length',
-        'Radius':       'Length'
-        }
-
-ParameterTypeProperty = {
-        'Length':   'App::PropertyLength',
-        'Angle':    'App::PropertyAngle'
-        }
+LastPath = 'src/Mod/Path/Tools/Template'
 
 class ToolBitEditor:
     '''UI and controller for editing a ToolBit.
@@ -83,6 +71,11 @@ class ToolBitEditor:
                 #    qsb.setToolTip(parameter['Desc'])
                 layout.addRow(label, qsb)
         self.bitEditor = editor
+        img = tool.Proxy.getBitThumbnail(tool)
+        if img:
+            self.form.image.setPixmap(QtGui.QPixmap(QtGui.QImage.fromData(img)))
+        else:
+            self.form.image.setPixmap(QtGui.QPixmap())
 
     def accept(self):
         self.refresh()
@@ -101,6 +94,10 @@ class ToolBitEditor:
     def updateTemplate(self):
         self.tool.BitTemplate = str(self.form.templatePath.text())
         self.setupTool(self.tool)
+        self.form.toolName.setText(self.tool.Label)
+
+        for editor in self.bitEditor:
+            self.bitEditor[editor].updateSpinBox()
 
     def updateTool(self):
         PathLog.track()
@@ -119,9 +116,23 @@ class ToolBitEditor:
         self.updateUI()
         self.form.blockSignals(False)
 
+    def selectTemplate(self):
+        global LastPath
+        path = self.tool.BitTemplate
+        if not path:
+            path = LastPath
+        foo = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),
+                "Path - Tool Template",
+                path,
+                "*.fcstd")[0]
+        if foo:
+            self.form.templatePath.setText(foo)
+            self.updateTemplate()
+
     def setupUI(self):
         PathLog.track()
         self.updateUI()
 
         self.form.toolName.editingFinished.connect(self.refresh)
         self.form.templatePath.editingFinished.connect(self.updateTemplate)
+        self.form.templateSet.clicked.connect(self.selectTemplate)
