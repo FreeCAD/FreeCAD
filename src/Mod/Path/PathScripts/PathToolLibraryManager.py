@@ -156,11 +156,6 @@ class ToolLibraryManager():
         self.toolTables = []
         self.currentTableName = None
         self.loadToolTables()
-        
-        if len(self.toolTables):
-            self.currentTableName = self.toolTables[0].Name
-
-        return
 
     def getToolTables(self):
         ''' Return tool table list '''
@@ -205,9 +200,10 @@ class ToolLibraryManager():
 
     def deleteToolTable(self):
         ''' deletes the selected tool table '''
-        index = next((index for (index, d) in enumerate(self.toolTables) if d.Name == self.currentTableName), None) 
-        self.toolTables.pop(index)
-        self.saveMainLibrary()
+        if len(self.toolTables):
+            index = next((index for (index, d) in enumerate(self.toolTables) if d.Name == self.currentTableName), None) 
+            self.toolTables.pop(index)
+            self.saveMainLibrary()
 
     def renameToolTable(self, newName, index):
         ''' renames a tool table with the new name'''
@@ -286,7 +282,12 @@ class ToolLibraryManager():
             else:
                 PathLog.error(translate('PathToolLibraryManager', "Unsupported Path tooltable"))
 
-        prefsData = json.loads(self.prefs.GetString(self.PreferenceMainLibraryJSON, ""))
+        prefString = self.prefs.GetString(self.PreferenceMainLibraryJSON, "")
+
+        if not prefString:
+            return
+
+        prefsData = json.loads(prefString)
 
         if isinstance(prefsData, dict):
             tt = self.tooltableFromAttrs(prefsData)
@@ -296,6 +297,9 @@ class ToolLibraryManager():
             for table in prefsData:
                 tt = self.tooltableFromAttrs(table)
                 addTable(tt)
+
+        if len(self.toolTables):
+            self.currentTableName = self.toolTables[0].Name
 
     def saveMainLibrary(self):
         '''Persists the permanent library to FreeCAD user preferences'''
