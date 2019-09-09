@@ -247,6 +247,7 @@ private:
         double result = 1.0;
         PyObject *docObj = nullptr;
         PyObject *colorObj = nullptr;
+        PyObject *paintObj = Py_True;
         char* name;
 
         App::Document* appDoc = nullptr;
@@ -259,10 +260,10 @@ private:
         double border = 0.0;        //no border
         int mode = 0;               //SoRenderManager::RenderMode(0) - AS_IS
 
-        if (!PyArg_ParseTuple(args.ptr(), "Oet|ddpOddi",
+        if (!PyArg_ParseTuple(args.ptr(), "Oet|ddOOddi",
                                         &docObj, "utf-8",&name,
                                         &outWidth, &outHeight,
-                                        &paintBackground, &colorObj,
+                                        &paintObj, &colorObj,
                                         &lineWidth, &border,
                                         &mode)) {
             throw Py::TypeError("expected (doc, file|,options)");
@@ -270,6 +271,13 @@ private:
 
         fileSpec = std::string(name);
         PyMem_Free(name);
+
+        if (paintObj == Py_True) {
+            paintBackground = true;
+        } else {
+            paintBackground = false;
+        }
+
         
         try {
            if (PyObject_TypeCheck(docObj, &(App::DocumentPy::Type))) {
