@@ -54,7 +54,7 @@ parser.add_argument('--postamble', help='set commands to be issued after the las
 parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
 parser.add_argument('--modal', action='store_true', help='Output the Same G-command Name USE NonModal Mode')
 parser.add_argument('--axis-modal', action='store_true', help='Output the Same Axis Value Mode')
-parser.add_argument('--no-tlo', action='store_true', help='supress tool length offset (G43) following tool changes')
+parser.add_argument('--no-tlo', action='store_true', help='suppress tool length offset (G43) following tool changes')
 
 TOOLTIP_ARGS = parser.format_help()
 
