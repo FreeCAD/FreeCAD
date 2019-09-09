@@ -156,11 +156,6 @@ class ToolLibraryManager():
         self.toolTables = []
         self.currentTableName = None
         self.loadToolTables()
-        
-        if len(self.toolTables):
-            self.currentTableName = self.toolTables[0].Name
-
-        return
 
     def getToolTables(self):
         ''' Return tool table list '''
@@ -301,6 +296,9 @@ class ToolLibraryManager():
             for table in prefsData:
                 tt = self.tooltableFromAttrs(table)
                 addTable(tt)
+
+        if len(self.toolTables):
+            self.currentTableName = self.toolTables[0].Name
 
     def saveMainLibrary(self):
         '''Persists the permanent library to FreeCAD user preferences'''
