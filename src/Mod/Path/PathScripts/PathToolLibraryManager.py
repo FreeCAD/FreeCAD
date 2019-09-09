@@ -286,7 +286,12 @@ class ToolLibraryManager():
             else:
                 PathLog.error(translate('PathToolLibraryManager', "Unsupported Path tooltable"))
 
-        prefsData = json.loads(self.prefs.GetString(self.PreferenceMainLibraryJSON, ""))
+        prefString = self.prefs.GetString(self.PreferenceMainLibraryJSON, "")
+
+        if not prefString:
+            return
+
+        prefsData = json.loads(prefString)
 
         if isinstance(prefsData, dict):
             tt = self.tooltableFromAttrs(prefsData)
