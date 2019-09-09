@@ -60,14 +60,12 @@ public:
     virtual void setCapStyle(Qt::PenCapStyle c);
 
     //plain color fill parms
-    void setFill(Qt::BrushStyle f) { m_fill = f; }
-    Qt::BrushStyle getFill() { return m_fill; }
+    void setFillStyle(Qt::BrushStyle f) { m_fillStyleCurrent = f; }
+    Qt::BrushStyle getFillStyle() { return m_fillStyleCurrent; }
 
     void setFill(QColor c, Qt::BrushStyle s);
     void setFill(QBrush b);
     void resetFill();
-/*    void setFillColor(QColor c) { m_colNormalFill = c;*/
-/*                                  m_colDefFill = c; }*/
     void setFillColor(QColor c);
     QColor getFillColor(void) { return m_colDefFill; }
 
@@ -94,12 +92,11 @@ protected:
     Qt::PenCapStyle m_capStyle;
 
     QBrush m_brush;
-    Qt::BrushStyle m_fill;                      //current fill style
-    Qt::BrushStyle m_fillStyle;                 //current fill style
-    QColor m_fillColor;                         //current fill color
+    Qt::BrushStyle m_fillStyleCurrent;                 //current fill style
+    QColor m_fillColorCurrent;                         //current fill color
 
     QColor m_colDefFill;                        //"no color" default normal fill color
-    QColor m_colNormalFill;                     //current Normal fill color
+    QColor m_colNormalFill;                     //current Normal fill color def or plain fill
     Qt::BrushStyle m_styleDef;                  //default Normal fill style
     Qt::BrushStyle m_styleNormal;               //current Normal fill style
     Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style
