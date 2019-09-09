@@ -200,9 +200,10 @@ class ToolLibraryManager():
 
     def deleteToolTable(self):
         ''' deletes the selected tool table '''
-        index = next((index for (index, d) in enumerate(self.toolTables) if d.Name == self.currentTableName), None) 
-        self.toolTables.pop(index)
-        self.saveMainLibrary()
+        if len(self.toolTables):
+            index = next((index for (index, d) in enumerate(self.toolTables) if d.Name == self.currentTableName), None) 
+            self.toolTables.pop(index)
+            self.saveMainLibrary()
 
     def renameToolTable(self, newName, index):
         ''' renames a tool table with the new name'''
