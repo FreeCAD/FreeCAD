@@ -32,7 +32,7 @@ import sys
 
 import FreeCAD
 from femsolver import settings
-from femsolver.run import _getUniquePath as getUniquePath
+# from femsolver.run import _getUniquePath as getUniquePath
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui
@@ -165,7 +165,7 @@ def get_temp_dir(obj=None):
 def get_beside_dir(obj):
     base = get_beside_base(obj)
     specific_path = os.path.join(base, obj.Label)
-    specific_path = getUniquePath(specific_path)
+    # specific_path = getUniquePath(specific_path)
     if not os.path.isdir(specific_path):
         os.makedirs(specific_path)
     return specific_path
@@ -175,7 +175,7 @@ def get_custom_dir(obj):
     base = get_custom_base(obj)
     specific_path = os.path.join(
         base, obj.Document.Name, obj.Label)
-    specific_path = getUniquePath(specific_path)
+    # specific_path = getUniquePath(specific_path)
     if not os.path.isdir(specific_path):
         os.makedirs(specific_path)
     return specific_path
