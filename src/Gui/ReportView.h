@@ -120,11 +120,11 @@ private:
 };
 
 /** Output window to show messages.
- * @see Base::ConsoleObserver
+ * @see Base::ILogger
  * @see QTextEdit
  * \author Werner Mayer
  */
-class GuiExport ReportOutput : public QTextEdit, public WindowParameter, public Base::ConsoleObserver
+class GuiExport ReportOutput : public QTextEdit, public WindowParameter, public Base::ILogger
 {
     Q_OBJECT
 
@@ -135,14 +135,7 @@ public:
     /** Observes its parameter group. */
     void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
 
-    /** Writes warnings */
-    void Warning(const char * s);
-    /** Writes normal text */
-    void Message(const char * s);
-    /** Writes errors */
-    void Error  (const char * s);
-    /** Does not do anything */
-    void Log (const char * s);
+    void SendLog(const std::string& msg, Base::LogStyle level) override;
 
     /// returns the name for observer handling
     const char* Name(void){return "ReportOutput";}
