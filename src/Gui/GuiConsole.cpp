@@ -84,30 +84,27 @@ GUIConsole::~GUIConsole (void)
       FreeConsole();
 }
 
-void GUIConsole::Message(const char *sMsg)
+void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
 {
-  ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-  printf("%s",sMsg);
-  ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-}
+    int color = -1;
+    switch(level){
+        case Base::LogStyle::Warning:
+            color = FOREGROUND_RED | FOREGROUND_GREEN;
+            break;
+        case Base::LogStyle::Message:
+            color = FOREGROUND_GREEN;
+            break;
+        case Base::LogStyle::Error:
+            color = FOREGROUND_RED;
+            break;
+        case Base::LogStyle::Log:
+            color = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
+            break;
+    }
 
-void GUIConsole::Warning(const char *sWarn)
-{
-  ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN);
-  printf("%s",sWarn);
-  ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-}
-
-void GUIConsole::Error  (const char *sErr)
-{
-  ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED );
-  printf("%s",sErr);
-  ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
-}
-
-void GUIConsole::Log  (const char *sLog)
-{
-  printf("%s",sLog);
+    ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE), color);
+    printf("%s", msg.c_str());
+    ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
 }
 
 #else /* FC_OS_LINUX */
@@ -115,9 +112,22 @@ void GUIConsole::Log  (const char *sLog)
 // safely ignore GUIConsole::s_nMaxLines and  GUIConsole::s_nRefCount
 GUIConsole::GUIConsole (void) {}
 GUIConsole::~GUIConsole (void) {}
-void GUIConsole::Message(const char *sMsg) { std::cout<<sMsg; }
-void GUIConsole::Warning(const char *sWarn){ std::cerr<<"Warning: "<<sWarn; }
-void GUIConsole::Error  (const char *sErr) { std::cerr<<"Error: "<<sErr;}
-void GUIConsole::Log  (const char *sLog)   { std::clog<<sLog;}
+void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
+{
+    switch(level){
+        case Base::LogStyle::Warning:
+            std::cerr << "Warning: " << msg;
+            break;
+        case Base::LogStyle::Message:
+            std::cout << msg;
+            break;
+        case Base::LogStyle::Error:
+            std::cerr << "Error: " << msg;
+            break;
+        case Base::LogStyle::Log:
+            std::clog << msg;
+            break;
+    }
+}
 
 #endif /* FC_OS_LINUX */
