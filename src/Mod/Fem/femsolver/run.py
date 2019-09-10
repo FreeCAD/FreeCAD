@@ -457,11 +457,4 @@ class _DocObserver(object):
         return False
 
 
-class MustSaveError(Exception):
-    pass
-
-
-class DirectoryDoesNotExistError(Exception):
-    pass
-
 ##  @}
