@@ -31,7 +31,6 @@ import os
 import sys
 
 import FreeCAD
-from femsolver import run
 from femsolver import settings
 from femsolver.run import _getUniquePath as getUniquePath
 if FreeCAD.GuiUp:
@@ -197,7 +196,7 @@ def get_beside_base(obj):
                 "Can't start Solver or Mesh creation besides FC file.",
                 error_message
             )
-        # raise run.MustSaveError()
+        # raise MustSaveError()
         return get_temp_dir()
     else:
         return os.path.splitext(fcstdPath)[0]
@@ -214,7 +213,7 @@ def get_custom_base(solver):
                 "Can't start Solver or Mesh creation.",
                 error_message
             )
-        raise run.DirectoryDoesNotExistError("Invalid path")
+        raise DirectoryDoesNotExistError("Invalid path")
     return path
 
 
@@ -226,6 +225,14 @@ def check_working_dir(wdir):
         return True
     else:
         return False
+
+
+class MustSaveError(Exception):
+    pass
+
+
+class DirectoryDoesNotExistError(Exception):
+    pass
 
 
 # ************************************************************************************************
