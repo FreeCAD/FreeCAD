@@ -273,11 +273,12 @@ PyObject* RotationPy::toEuler(PyObject * args)
 PyObject* RotationPy::isSame(PyObject *args)
 {
     PyObject *rot;
-    if (!PyArg_ParseTuple(args, "O!", &(RotationPy::Type), &rot))
+    double tol = 0.0;
+    if (!PyArg_ParseTuple(args, "O!|d", &(RotationPy::Type), &rot, &tol))
         return NULL;
     Base::Rotation rot1 = * getRotationPtr();
     Base::Rotation rot2 = * static_cast<RotationPy*>(rot)->getRotationPtr();
-    bool same = rot1.isSame(rot2);
+    bool same = tol > 0.0 ? rot1.isSame(rot2, tol) : rot1.isSame(rot2);
     return Py_BuildValue("O", (same ? Py_True : Py_False));
 }
 

@@ -108,7 +108,8 @@ protected:
 
     virtual QColor prefNormalColor();
     double prefArrowSize();
-    
+    double prefFontSize(void) const;
+
     TechDraw::DrawWeldSymbol* m_weldFeat;
     TechDraw::DrawLeaderLine* m_leadFeat;
     TechDraw::DrawTileWeld*   m_arrowFeat;

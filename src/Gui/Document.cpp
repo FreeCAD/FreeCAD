@@ -51,6 +51,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Transactions.h>
+#include <App/AutoTransaction.h>
 #include <App/GeoFeatureGroupExtension.h>
 
 #include "Application.h"
@@ -772,6 +773,8 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
         FC_LOG(Prop.getFullName() << " modified");
         setModified(true);
     }
+
+    getMainWindow()->updateActions(true);
 }
 
 void Document::slotRelabelObject(const App::DocumentObject& Obj)

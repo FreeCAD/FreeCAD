@@ -6088,24 +6088,6 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         Gui::coinRemoveAllChildren(edit->EditRoot);
         pcRoot->removeChild(edit->EditRoot);
 
-        //visibility autoation
-        try{
-            QString cmdstr = QString::fromLatin1(
-                        "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
-                        "tv = ActiveSketch.ViewObject.TempoVis\n"
-                        "if tv:\n"
-                        "  tv.restore()\n"
-                        "ActiveSketch.ViewObject.TempoVis = None\n"
-                        "del(tv)\n"
-                        ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
-                              QString::fromLatin1(getSketchObject()->getNameInDocument()));
-            QByteArray cmdstr_bytearray = cmdstr.toLatin1();
-            Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
-        } catch (Base::PyException &e){
-            Base::Console().Error("ViewProviderSketch::unsetEdit: visibility automation failed with an error: \n");
-            e.ReportException();
-        }
-
         delete edit;
         edit = 0;
         this->detachSelection();
@@ -6129,6 +6111,24 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
+
+    //visibility autoation
+    try{
+        QString cmdstr = QString::fromLatin1(
+                    "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
+                    "tv = ActiveSketch.ViewObject.TempoVis\n"
+                    "if tv:\n"
+                    "  tv.restore()\n"
+                    "ActiveSketch.ViewObject.TempoVis = None\n"
+                    "del(tv)\n"
+                    ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
+                          QString::fromLatin1(getSketchObject()->getNameInDocument()));
+        QByteArray cmdstr_bytearray = cmdstr.toLatin1();
+        Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
+    } catch (Base::PyException &e){
+        Base::Console().Error("ViewProviderSketch::unsetEdit: visibility automation failed with an error: \n");
+        e.ReportException();
+    }
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)

@@ -76,7 +76,7 @@ public:
     void draw();
     virtual void setPrettyNormal() override;
     virtual void setPrettyPre() override;
-    void setPrettySel() override;
+    virtual void setPrettySel() override;
     void setDrawEdges(bool b);
     virtual void setOutline(const QPainterPath& path);
  

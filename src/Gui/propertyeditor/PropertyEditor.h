@@ -72,7 +72,7 @@ public:
     ~PropertyEditor();
 
     /** Builds up the list view with the properties. */
-    void buildUp(PropertyModel::PropertyList &&props = PropertyModel::PropertyList());
+    void buildUp(PropertyModel::PropertyList &&props = PropertyModel::PropertyList(), bool checkDocument=false);
     void updateProperty(const App::Property&);
     void updateEditorMode(const App::Property&);
     bool appendProperty(const App::Property&);
@@ -113,7 +113,7 @@ private:
     PropertyModel* propertyModel;
     QStringList selectedProperty;
     PropertyModel::PropertyList propList;
-    std::unordered_set<App::PropertyContainer*> propOwners;
+    std::unordered_set<const App::PropertyContainer*> propOwners;
     bool autoupdate;
     bool committing;
     bool delaybuild;

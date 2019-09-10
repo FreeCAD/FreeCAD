@@ -121,9 +121,12 @@ QGIWeldSymbol::QGIWeldSymbol(QGILeaderLine* myParent) :
     m_fieldFlag->setFlag(QGraphicsItem::ItemSendsScenePositionChanges, false);
     m_fieldFlag->setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
     m_fieldFlag->setFlag(QGraphicsItem::ItemStacksBehindParent, true);
+    m_fieldFlag->setFill(prefNormalColor(), Qt::SolidPattern);
 
     m_colCurrent = prefNormalColor();
     m_colSetting = m_colCurrent;
+
+    setPrettyNormal();
 }
 
 QVariant QGIWeldSymbol::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -255,7 +258,7 @@ void QGIWeldSymbol::drawTailText(void)
     }
 
     m_font.setFamily(getPrefFont());
-    m_font.setPixelSize(calculateFontPixelSize(getDimFontSize()));
+    m_font.setPixelSize(prefFontSize());
 
     m_tailText->setFont(m_font);
     m_tailText->setPlainText(
@@ -267,10 +270,13 @@ void QGIWeldSymbol::drawTailText(void)
     double charWidth = textWidth / tText.size();
     double hMargin = charWidth + prefArrowSize();
 
+    double textHeight = m_tailText->boundingRect().width();
+    double vFudge = textHeight * 0.1;
+
     if (getFeature()->isTailRightSide()) {
-        m_tailText->justifyLeftAt(textPos.x() + hMargin, textPos.y(), true);
+        m_tailText->justifyLeftAt(textPos.x() + hMargin, textPos.y() - vFudge, true);
     } else {
-        m_tailText->justifyRightAt(textPos.x() - hMargin, textPos.y(), true);
+        m_tailText->justifyRightAt(textPos.x() - hMargin, textPos.y() - vFudge, true);
     }
 }
 
@@ -297,12 +303,7 @@ void QGIWeldSymbol::drawFieldFlag()
         path.lineTo(flagPoints.at(i) * scale);
     }
 
-    m_fieldFlag->setNormalColor(getCurrentColor());     //penColor
     double width = m_qgLead->getLineWidth();
-
-    m_fieldFlag->setFillColor(getCurrentColor());
-    m_fieldFlag->setFill(Qt::SolidPattern);
-
     m_fieldFlag->setWidth(width);
     m_fieldFlag->setZValue(ZVALUE::DIMENSION);
 
@@ -406,7 +407,6 @@ void QGIWeldSymbol::setPrettyNormal()
     }
     m_colCurrent = m_colNormal;
     m_fieldFlag->setNormalColor(m_colCurrent);
-    m_fieldFlag->setFillColor(m_colCurrent);
     m_fieldFlag->setPrettyNormal();
     m_allAround->setNormalColor(m_colCurrent);
     m_allAround->setPrettyNormal();
@@ -424,7 +424,6 @@ void QGIWeldSymbol::setPrettyPre()
 
     m_colCurrent = getPreColor();
     m_fieldFlag->setNormalColor(getPreColor());
-    m_fieldFlag->setFillColor(getPreColor());
     m_fieldFlag->setPrettyPre();
     m_allAround->setNormalColor(getPreColor());
     m_allAround->setPrettyPre();
@@ -442,7 +441,6 @@ void QGIWeldSymbol::setPrettySel()
 
     m_colCurrent = getSelectColor();
     m_fieldFlag->setNormalColor(getSelectColor());
-    m_fieldFlag->setFillColor(getSelectColor());
     m_fieldFlag->setPrettySel();
     m_allAround->setNormalColor(getSelectColor());
     m_allAround->setPrettySel();
@@ -502,6 +500,14 @@ double QGIWeldSymbol::prefArrowSize()
     return size;
 }
 
+double QGIWeldSymbol::prefFontSize(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                       GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    double sizeMM = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
+    double fontSize = QGIView::calculateFontPixelSize(sizeMM);
+    return fontSize;
+}
 
 QRectF QGIWeldSymbol::boundingRect() const
 {

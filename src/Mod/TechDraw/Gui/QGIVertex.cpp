@@ -30,10 +30,10 @@
 #include <QStyleOptionGraphicsItem>
 #endif
 
-//#include <App/Application.h>
-//#include <App/Material.h>
+#include <App/Application.h>
+#include <App/Material.h>
 #include <Base/Console.h>
-//#include <Base/Parameter.h>
+#include <Base/Parameter.h>
 
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
@@ -44,10 +44,13 @@ QGIVertex::QGIVertex(int index) :
     projIndex(index),
     m_radius(2)
 {
-    m_colDefFill = getNormalColor();
-    m_colNormalFill = m_colDefFill;
-    m_fill = Qt::SolidPattern;
-    m_brush.setStyle(m_fill);
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x00000000));
+    QColor vertexColor = fcColor.asValue<QColor>();
+
+    setFill(vertexColor, Qt::SolidPattern);
 
     setRadius(m_radius);
 }

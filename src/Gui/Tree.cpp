@@ -47,6 +47,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/AutoTransaction.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Link.h>
 
@@ -785,8 +786,6 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
 {
     // ask workbenches and view provider, ...
     MenuItem view;
-    view << "Std_TreeViewActions";
-
     Gui::Application::Instance->setupContextMenu("Tree", &view);
 
     view << "Std_Expressions";
@@ -836,32 +835,6 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
             (this->contextItem);
 
-        auto selItems = this->selectedItems();
-        // if only one item is selected setup the edit menu
-        if (selItems.size() == 1) {
-
-            auto cmd = Gui::Application::Instance->commandManager().getCommandByName("Std_LinkSelectLinked");
-            if(cmd && cmd->isActive())
-                cmd->addTo(&contextMenu);
-            cmd = Gui::Application::Instance->commandManager().getCommandByName("Std_LinkSelectLinkedFinal");
-            if(cmd && cmd->isActive())
-                cmd->addTo(&contextMenu);
-
-            objitem->object()->setupContextMenu(&editMenu, this, SLOT(onStartEditing()));
-            QList<QAction*> editAct = editMenu.actions();
-            if (!editAct.isEmpty()) {
-                contextMenu.addSeparator();
-                for (QList<QAction*>::iterator it = editAct.begin(); it != editAct.end(); ++it)
-                    contextMenu.addAction(*it);
-                QAction* first = editAct.front();
-                contextMenu.setDefaultAction(first);
-                if (objitem->object()->isEditing())
-                    contextMenu.addAction(finishEditingAction);
-            }
-        }
-
-        contextMenu.addSeparator();
-
         App::Document* doc = objitem->object()->getObject()->getDocument();
         showHiddenAction->setChecked(doc->ShowHidden.getValue());
         contextMenu.addAction(this->showHiddenAction);
@@ -869,14 +842,29 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         hideInTreeAction->setChecked(!objitem->object()->showInTree());
         contextMenu.addAction(this->hideInTreeAction);
 
-        contextMenu.addAction(this->searchObjectsAction);
-
         if (objitem->object()->getObject()->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))
             contextMenu.addAction(this->createGroupAction);
 
         contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->recomputeObjectAction);
         contextMenu.addAction(this->relabelObjectAction);
+
+        auto selItems = this->selectedItems();
+        // if only one item is selected setup the edit menu
+        if (selItems.size() == 1) {
+            objitem->object()->setupContextMenu(&editMenu, this, SLOT(onStartEditing()));
+            QList<QAction*> editAct = editMenu.actions();
+            if (!editAct.isEmpty()) {
+                QAction* topact = contextMenu.actions().front();
+                for (QList<QAction*>::iterator it = editAct.begin(); it != editAct.end(); ++it)
+                    contextMenu.insertAction(topact,*it);
+                QAction* first = editAct.front();
+                contextMenu.setDefaultAction(first);
+                if (objitem->object()->isEditing())
+                    contextMenu.insertAction(topact, this->finishEditingAction);
+                contextMenu.insertSeparator(topact);
+            }
+        }
     }
 
 
@@ -4407,6 +4395,7 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     default:
         break;
     }
+    this->setFont(0,f);
 }
 
 const char *DocumentObjectItem::getTreeName() const {

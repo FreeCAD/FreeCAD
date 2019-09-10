@@ -44,6 +44,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/Control.h>
 #include <Gui/ActionFunction.h>
+#include <Gui/MainWindow.h>
 
 #if defined (QSINT_ACTIONPANEL)
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
@@ -613,10 +614,14 @@ void TaskView::showDialog(TaskDialog *dlg)
     ActiveDialog = dlg;
 
     ActiveDialog->open();
+
+    getMainWindow()->updateActions();
 }
 
 void TaskView::removeDialog(void)
 {
+    getMainWindow()->updateActions();
+
     if (ActiveCtrl) {
         taskPanel->removeWidget(ActiveCtrl);
         delete ActiveCtrl;
@@ -720,6 +725,19 @@ void TaskView::addTaskWatcher(void)
     updateWatcher();
 
 #if defined (QSINT_ACTIONPANEL)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+    // Workaround to avoid a crash in Qt. See also
+    // https://forum.freecadweb.org/viewtopic.php?f=8&t=39187
+    //
+    // Notify the button box about a style change so that it can
+    // safely delete the style animation of its push buttons.
+    QDialogButtonBox* box = taskPanel->findChild<QDialogButtonBox*>();
+    if (box) {
+        QEvent event(QEvent::StyleChange);
+        QApplication::sendEvent(box, &event);
+    }
+#endif
+
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
 #endif
 }
