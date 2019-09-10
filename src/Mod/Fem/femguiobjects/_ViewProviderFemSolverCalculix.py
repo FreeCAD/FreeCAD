@@ -212,24 +212,39 @@ class _TaskPanelFemSolverCalculix:
         self.form.textEdit_Output.moveCursor(QtGui.QTextCursor.End)
 
     def printCalculiXstdout(self):
+
         out = self.Calculix.readAllStandardOutput()
+        # print(type(out))
+        # <class 'PySide2.QtCore.QByteArray'>
+
         if out.isEmpty():
             self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
+            return False 
+
+        if sys.version_info.major >= 3:
+            # https://forum.freecadweb.org/viewtopic.php?f=18&t=39195 
+            # convert QByteArray to a binary string an decode it to "utf-8"
+            out = out.data().decode()  # "utf-8" can be omitted
+            # print(type(out))
+            # print(out)
         else:
             try:
                 out = unicode(out, "utf-8", "replace")
                 rx = QtCore.QRegExp("\\*ERROR.*\\n\\n")
-                print(rx)
+                # print(rx)
                 rx.setMinimal(True)
                 pos = rx.indexIn(out)
                 while not pos < 0:
                     match = rx.cap(0)
                     FreeCAD.Console.PrintError(match.strip().replace("\n", " ") + "\n")
                     pos = rx.indexIn(out, pos + 1)
-                out = os.linesep.join([s for s in out.splitlines() if s])
-                self.femConsoleMessage(out.replace("\n", "<br>"))
             except UnicodeDecodeError:
                 self.femConsoleMessage("Error converting stdout from CalculiX", "#FF0000")
+        out = os.linesep.join([s for s in out.splitlines() if s])
+        out = out.replace("\n", "<br>")
+        # print(out)
+        self.femConsoleMessage(out)
+
         if "*ERROR in e_c3d: nonpositive jacobian" in out:
             error_message = (
                 "\n\nCalculiX returned an error due to "
@@ -237,6 +252,7 @@ class _TaskPanelFemSolverCalculix:
                 "Use the run button on selected solver to get a better error output.\n"
             )
             FreeCAD.Console.PrintError(error_message)
+
         if "*ERROR" in out:
             return False
         else:
