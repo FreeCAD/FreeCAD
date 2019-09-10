@@ -121,15 +121,12 @@ public:
     Base::Vector3f inverse (const Base::Vector3f &rclPt) const;
     Base::Vector3d inverse (const Base::Vector3d &rclPt) const;
 
-    void setTransform(const Base::Matrix4D&);
     Base::Matrix4D getProjectionMatrix () const;
 
 protected:
     SbViewVolume viewVolume;
     SbMatrix matrix;
     SbMatrix invert;
-    bool hasTransform;
-    Base::Matrix4D transform;
 };
 
 class GuiExport Tessellator
