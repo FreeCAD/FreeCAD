@@ -63,7 +63,7 @@ namespace Gui {
 /** Displays all messages at startup inside the splash screen.
  * \author Werner Mayer
  */
-class SplashObserver : public Base::ConsoleObserver
+class SplashObserver : public Base::ILogger
 {
 public:
     SplashObserver(QSplashScreen* splasher=0)
@@ -110,28 +110,14 @@ public:
     {
         return "SplashObserver";
     }
-    void Warning(const char * s)
+    void SendLog(const std::string& msg, Base::LogStyle level) override
     {
+        (void) level; // to eliminate unused parameter warning
+
 #ifdef FC_DEBUG
-        Log(s);
+        Log(msg.c_str());
 #else
-        Q_UNUSED(s);
-#endif
-    }
-    void Message(const char * s)
-    {
-#ifdef FC_DEBUG
-        Log(s);
-#else
-        Q_UNUSED(s);
-#endif
-    }
-    void Error  (const char * s)
-    {
-#ifdef FC_DEBUG
-        Log(s);
-#else
-        Q_UNUSED(s);
+        Q_UNUSED(msg.c_str());
 #endif
     }
     void Log (const char * s)
