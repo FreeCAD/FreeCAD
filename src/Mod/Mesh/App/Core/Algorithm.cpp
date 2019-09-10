@@ -1085,8 +1085,8 @@ void MeshAlgorithm::CheckFacets(const MeshFacetGrid& rclGrid, const Base::ViewPr
     Base::Vector3f clPt2d;
     Base::Vector3f clGravityOfFacet;
     bool bNoPointInside;
-    // Cache current view projection matrix since calls to COIN's projection are expensive
-    Base::ViewProjMatrix fixedProj(pclProj->getProjectionMatrix());
+    // Cache current view projection matrix since calls to Coin's projection are expensive
+    Base::ViewProjMatrix fixedProj(pclProj->getComposedProjectionMatrix());
     // Precompute the polygon's bounding box
     Base::BoundBox2d clPolyBBox = rclPoly.CalcBoundBox();
 
@@ -1164,8 +1164,8 @@ void MeshAlgorithm::CheckFacets(const Base::ViewProjMethod* pclProj, const Base:
     Base::Vector3f pt2d;
     // Use a bounding box to reduce number of call to Polygon::Contains
     Base::BoundBox2d bb = rclPoly.CalcBoundBox();
-    // Precompute the screen projection matrix as COIN's projection function is expensive
-    Base::ViewProjMatrix fixedProj(pclProj->getProjectionMatrix());
+    // Precompute the screen projection matrix as Coin's projection function is expensive
+    Base::ViewProjMatrix fixedProj(pclProj->getComposedProjectionMatrix());
 
     unsigned long index=0;
     for (MeshFacetArray::_TConstIterator it = f.begin(); it != f.end(); ++it,++index) {
