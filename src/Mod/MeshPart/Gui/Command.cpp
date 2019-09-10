@@ -148,14 +148,19 @@ void CmdMeshPartTrimByPlane::activated(int)
         double dist = (cnt-base)*normal;
         base = cnt - normal * dist;
 
+        proj.setTransform(Base::Matrix4D());
+
         Base::Vector3d p1 = base + up * len;
         Base::Vector3d p2 = base - up * len;
         Base::Vector3d p3 = p2 + normal * len;
         Base::Vector3d p4 = p1 + normal * len;
-        p1 = mat * p1;
-        p2 = mat * p2;
-        p3 = mat * p3;
-        p4 = mat * p4;
+        p1 = proj(p1);
+        p2 = proj(p2);
+        p3 = proj(p3);
+        p4 = proj(p4);
+
+        // must be set after getting the transformed polygon points
+        proj.setTransform(mesh->getTransform());
 
         Base::Polygon2d polygon2d;
         polygon2d.Add(Base::Vector2d(p1.x, p1.y));
