@@ -50,8 +50,9 @@
         <Methode Name="isSame">
             <Documentation>
                 <UserDocu>
-                    isSame(Rotation)
-                    Checks if the two quaternions perform the same rotation
+                    isSame(Rotation, [tolerance=0])
+                    Checks if the two quaternions perform the same rotation.
+                    Optionally, a tolerance value greater than zero can be passed.
                 </UserDocu>
             </Documentation>
         </Methode>
