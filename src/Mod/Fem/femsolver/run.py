@@ -80,7 +80,7 @@ def run_fem_solver(solver, working_dir=None):
                 machine = getMachine(solver, working_dir)
             else:
                 machine = getMachine(solver)
-        except MustSaveError:
+        except femutils.MustSaveError:
             error_message = (
                 "Please save the file before executing the solver. "
                 "This must be done because the location of the working "
@@ -94,7 +94,7 @@ def run_fem_solver(solver, working_dir=None):
                     error_message
                 )
             return
-        except DirectoryDoesNotExistError:
+        except femutils.DirectoryDoesNotExistError:
             error_message = "Selected working directory doesn't exist."
             App.Console.PrintError(error_message + "\n")
             if App.GuiUp:
