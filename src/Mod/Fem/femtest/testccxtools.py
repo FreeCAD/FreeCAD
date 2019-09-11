@@ -60,6 +60,15 @@ class TestCcxTools(unittest.TestCase):
             'ccx'
         )
 
+    def test_00print(
+        self
+    ):
+        fcc_print("\n{0}\n{1} run FEM TestCcxTools tests {2}\n{0}".format(
+            100 * "*",
+            10 * "*",
+            62 * "*"
+        ))
+
     # ********************************************************************************************
     def test_1_static_analysis(
         self

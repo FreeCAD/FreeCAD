@@ -48,6 +48,15 @@ class TestMaterialUnits(unittest.TestCase):
         FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
+    def test_00print(
+        self
+    ):
+        fcc_print("\n{0}\n{1} run FEM TestMaterialUnits tests {2}\n{0}".format(
+            100 * "*",
+            10 * "*",
+            57 * "*"
+        ))
+
     # ********************************************************************************************
     def test_known_quantity_units(
         self
