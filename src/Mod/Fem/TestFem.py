@@ -28,7 +28,7 @@
 # to get the right order import as is used
 from femtest.testfemimport import TestFemImport as FemTest01
 # from femtest.testcommon import TestFemCommon as FemTest02
-# from femtest.testobject import TestObjectCreate as FemTest03
+from femtest.testobject import TestObjectCreate as FemTest03
 # from femtest.testobject import TestObjectType as FemTest04
 from femtest.testmaterial import TestMaterialUnits as FemTest05
 # from femtest.testmesh import TestMeshCommon as FemTest06
@@ -40,7 +40,7 @@ from femtest.testresult import TestResult as FemTest08
 # dummy usage to get flake8 and lgtm quiet
 False if FemTest01.__name__ else True
 # False if FemTest02.__name__ else True
-# False if FemTest03.__name__ else True
+False if FemTest03.__name__ else True
 # False if FemTest04.__name__ else True
 False if FemTest05.__name__ else True
 # False if FemTest06.__name__ else True
