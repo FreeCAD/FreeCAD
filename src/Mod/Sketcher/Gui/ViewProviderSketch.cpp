@@ -5665,7 +5665,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     //visibility automation
     try{
-        Gui::Command::addModule(Gui::Command::Gui,"Show.TempoVis");
+        Gui::Command::addModule(Gui::Command::Gui,"Show");
         try{
             QString cmdstr = QString::fromLatin1(
                         "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
