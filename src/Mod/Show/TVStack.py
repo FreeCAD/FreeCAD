@@ -21,9 +21,6 @@
 # *                                                                         *
 # ***************************************************************************/
 
-from . import TempoVis
-from . import TVObserver #import to start the observer
-
 import weakref
 
 global_stacks = {} # dict of TVStacks. key = document name.
@@ -39,6 +36,7 @@ class TVStack(object):
         self.document = None
         self.index_LUT = {}
         self.stack = []
+        from . import TVObserver #to start the observer
 
     def insert(self, tv, index = None):
         if index is None:
@@ -83,11 +81,12 @@ class TVStack(object):
  
         tv can be None, then, the function returns the original value of the detail, or 
         None, if the current value matches the original."""
+        from . import mTempoVis
         
         index = self.index_LUT[id(tv)] if tv is not None else -1
         for tvref in self.stack[index + 1 : ]:
             tv = tvref()
-            if tv.state == TempoVis.S_ACTIVE:
+            if tv.state == mTempoVis.S_ACTIVE:
                 if tv.has(detail):
                     return (tv, tv.data[detail.full_key])
         return None
@@ -117,6 +116,8 @@ class TVStack(object):
                 ref().forget()
     
     def unwindForSaving(self):
+        from . import mTempoVis
+
         self.rewindAfterSaving() #just in case there was a failed save before.
         
         details = {} #dict of detail original values. Key = detail key; value = detail instance with data representing the original value
@@ -127,7 +128,7 @@ class TVStack(object):
                     if detail.affects_persistence:
                         details[detail.full_key] = detail
         
-        self._rewind_tv = TempoVis.TempoVis(self.document, None)
+        self._rewind_tv = mTempoVis.TempoVis(self.document, None)
         for key, detail in details.items():
             self._rewind_tv.modify(detail)
     

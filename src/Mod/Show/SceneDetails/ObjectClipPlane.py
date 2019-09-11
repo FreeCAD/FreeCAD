@@ -101,7 +101,7 @@ def placement2plane(placement, offset):
 
 def clipPlane(obj, enable, placement = None, offset = 0, tv = None):
     if tv is None:
-        from Show.TempoVis import TempoVis
+        from Show import TempoVis
         tv = TempoVis(obj.Document)
     tv.modify(ClipPlane(obj, enable, placement, offset))
     return tv
