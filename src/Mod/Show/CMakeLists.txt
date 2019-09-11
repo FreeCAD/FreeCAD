@@ -4,7 +4,7 @@ SET(Show_SRCS
     Containers.py
     DepGraphTools.py
     SceneDetail.py
-    TempoVis.py
+    mTempoVis.py
     TVObserver.py
     TVStack.py
     ShowUtils.py
