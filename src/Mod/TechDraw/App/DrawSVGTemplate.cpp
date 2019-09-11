@@ -39,6 +39,7 @@
 #include <Base/FileInfo.h>
 #include <Base/PyObjectBase.h>
 #include <Base/Quantity.h>
+#include <Base/Tools.h>
 
 #include <App/Application.h>
 
@@ -140,7 +141,7 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
         fi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
         // try the redirect
         if (!fi.isReadable()) {
-            Base::Console().Log("DrawPage::execute() not able to open %s!\n", Template.getValue());
+            Base::Console().Log("DrawSVGTemplate::execute() not able to open %s!\n", Template.getValue());
             std::string error = std::string("Cannot open file ") + Template.getValue();
             return new App::DocumentObjectExecReturn(error);
         }
@@ -151,14 +152,14 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
 
     QFile templateFile(QString::fromUtf8(fi.filePath().c_str()));
     if (!templateFile.open(QIODevice::ReadOnly)) {
-        Base::Console().Log("DrawPage::execute() can't read template %s!\n", Template.getValue());
+        Base::Console().Log("DrawSVGTemplate::execute() can't read template %s!\n", Template.getValue());
         std::string error = std::string("Cannot read file ") + Template.getValue();
         return new App::DocumentObjectExecReturn(error);
     }
 
     QDomDocument templateDocument;
     if (!templateDocument.setContent(&templateFile)) {
-        Base::Console().Message("DrawPage::execute() - failed to parse file: %s\n",
+        Base::Console().Message("DrawSVGTemplate::execute() - failed to parse file: %s\n",
                                 Template.getValue());
         std::string error = std::string("Cannot parse file ") + Template.getValue();
         return new App::DocumentObjectExecReturn(error);
@@ -199,17 +200,15 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
         }
     }
 
-    string pageResultFilename = PageResult.getExchangeTempFile();
-    QFile pageResult(QString::fromUtf8(pageResultFilename.c_str()));
-    if (pageResult.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QTextStream stream(&pageResult);
-        stream << templateDocument.toString();
-        pageResult.close();
-        PageResult.setValue(pageResultFilename.c_str());
-    }
-    else {
-        Base::Console().Message("DrawPage::execute() - failed to open file for writing: %s\n",
-                                pageResultFilename.c_str());
+    //re #4085 - 
+    std::string ssExchangeName = PageResult.getExchangeTempFile();
+    QString qExchangeName = Base::Tools::fromStdString(ssExchangeName);
+    bool rc = writeExchangeFile(qExchangeName, templateDocument.toString()); 
+    if (rc) {
+        PageResult.setValue(ssExchangeName.c_str());
+    } else {
+        Base::Console().Error("DrawSVGTemplate::execute - failed to exchange temp file: %s\n",
+                              ssExchangeName.c_str());
     }
 
     // Calculate the dimensions of the page and store for retrieval
@@ -237,6 +236,24 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     return TechDraw::DrawTemplate::execute();
 }
 
+bool DrawSVGTemplate::writeExchangeFile(QString exchangeName, QString fileContent)
+{
+//    Base::Console().Message("DSVGT::writeExchangeFile(%s)\n", qPrintable(exchangeName));
+    bool rc = true;
+    QFile newTempFile(exchangeName);
+    if (newTempFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream stream(&newTempFile);
+        stream << fileContent;
+        newTempFile.close();
+    }
+    else {
+        Base::Console().Message("DrawSVGT:writeExchangeFile - failed to open temp file for writing: %s\n",
+                                qPrintable(exchangeName));
+        rc = false; 
+    }
+    return rc;
+}
+
 double DrawSVGTemplate::getWidth() const
 {
     return Width.getValue();
@@ -262,21 +279,21 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
         tfi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + tfi.fileName());
         // try the redirect
         if (!tfi.isReadable()) {
-            Base::Console().Log("DrawPage::getEditableTextsFromTemplate() not able to open %s!\n", Template.getValue());
+            Base::Console().Log("DrawSVGTemplate::getEditableTextsFromTemplate() not able to open %s!\n", Template.getValue());
             return editables;
         }
     }
 
     QFile templateFile(QString::fromUtf8(tfi.filePath().c_str()));
     if (!templateFile.open(QIODevice::ReadOnly)) {
-        Base::Console().Log("DrawPage::getEditableTextsFromTemplate() can't read template %s!\n", Template.getValue());
+        Base::Console().Log("DrawSVGTemplate::getEditableTextsFromTemplate() can't read template %s!\n", Template.getValue());
         return editables;
     }
 
 
     QDomDocument templateDocument;
     if (!templateDocument.setContent(&templateFile)) {
-        Base::Console().Message("DrawPage::getEditableTextsFromTemplate() - failed to parse file: %s\n",
+        Base::Console().Message("DrawSVGTemplate::getEditableTextsFromTemplate() - failed to parse file: %s\n",
                                 Template.getValue());
         return editables;
     }

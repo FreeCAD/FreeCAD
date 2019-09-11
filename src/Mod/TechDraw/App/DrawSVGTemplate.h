@@ -73,6 +73,9 @@ protected:
      * Also populates editableSvgIds
      */
     std::map<std::string, std::string> getEditableTextsFromTemplate();
+    
+    bool writeExchangeFile(QString exchangeName, QString fileContent);
+
 };
 
 typedef App::FeaturePythonT<DrawSVGTemplate> DrawSVGTemplatePython;
