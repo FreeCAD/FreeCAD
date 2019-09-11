@@ -36,13 +36,15 @@ class StartGuiExport Workbench : public Gui::StdWorkbench
     TYPESYSTEM_HEADER();
 
 public:
-  Workbench();
-  virtual ~Workbench();
+    Workbench();
+    virtual ~Workbench();
 
     /** Defines the standard context menu. */
     virtual void setupContextMenu(const char* recipient,Gui::MenuItem*) const;
     /** Run some actions when the workbench gets activated. */
     virtual void activated();
+
+    static void loadStartPage();
 
 protected:
     /** Defines the standard menus. */
