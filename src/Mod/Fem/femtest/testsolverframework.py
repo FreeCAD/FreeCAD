@@ -56,6 +56,15 @@ class TestSolverFrameWork(unittest.TestCase):
         self.temp_dir = testtools.get_fem_test_tmp_dir()
         self.test_file_dir = join(testtools.get_fem_test_home_dir(), 'ccx')
 
+    def test_00print(
+        self
+    ):
+        fcc_print("\n{0}\n{1} run FEM TestSolverFrameWork tests {2}\n{0}".format(
+            100 * "*",
+            10 * "*",
+            55 * "*"
+        ))
+
     # ********************************************************************************************
     def test_solver_framework(
         self

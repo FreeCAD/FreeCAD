@@ -48,6 +48,15 @@ class TestObjectCreate(unittest.TestCase):
         FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
+    def test_00print(
+        self
+    ):
+        fcc_print("\n{0}\n{1} run FEM TestObjectCreate tests {2}\n{0}".format(
+            100 * "*",
+            10 * "*",
+            58 * "*"
+        ))
+
     # ********************************************************************************************
     def test_femobjects_make(
         self

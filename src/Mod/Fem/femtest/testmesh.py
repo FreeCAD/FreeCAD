@@ -50,6 +50,15 @@ class TestMeshCommon(unittest.TestCase):
         FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
+    def test_00print(
+        self
+    ):
+        fcc_print("\n{0}\n{1} run FEM TestMeshCommon tests {2}\n{0}".format(
+            100 * "*",
+            10 * "*",
+            60 * "*"
+        ))
+
     # ********************************************************************************************
     def test_mesh_seg2_python(
         self
@@ -280,6 +289,15 @@ class TestMeshEleTetra10(unittest.TestCase):
         fcc_print(expected_elem)
         fcc_print('\n')
         '''
+
+    def test_00print(
+        self
+    ):
+        fcc_print("\n{0}\n{1} run FEM TestMeshEleTetra10 tests {2}\n{0}".format(
+            100 * "*",
+            10 * "*",
+            56 * "*"
+        ))
 
     # ********************************************************************************************
     def get_file_paths(
