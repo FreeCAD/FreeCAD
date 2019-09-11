@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************/
 
-from . import TVStack
 import FreeCAD
 
 class TVObserver(object):
@@ -32,9 +31,11 @@ class TVObserver(object):
         FreeCAD.removeDocumentObserver(self)
     
     def slotStartSaveDocument(self, doc, filepath):
+        from . import TVStack
         TVStack._slotStartSaveDocument(doc)
     
     def slotFinishSaveDocument(self, doc, filepath):
+        from . import TVStack
         TVStack._slotFinishSaveDocument(doc)
         
     def slotDeletedDocument(self, doc):
