@@ -26,6 +26,7 @@
 
 # Unit test for the FEM module
 # to get the right order import as is used
+from femtest.testfemimport import TestFemImport as FemTest01
 from femtest.testcommon import TestFemCommon as FemTest02
 from femtest.testobject import TestObjectCreate as FemTest03
 from femtest.testobject import TestObjectType as FemTest04
@@ -37,6 +38,7 @@ from femtest.testccxtools import TestCcxTools as FemTest09
 from femtest.testsolverframework import TestSolverFrameWork as FemTest10
 
 # dummy usage to get flake8 and lgtm quiet
+False if FemTest01.__name__ else True
 False if FemTest02.__name__ else True
 False if FemTest03.__name__ else True
 False if FemTest04.__name__ else True
@@ -86,7 +88,11 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCAD --run-test "TestFem"
 ./bin/FreeCADCmd --run-test "TestFem"
 
-# module
+# import Fem and FemGui
+./bin/FreeCAD --run-test "femtest.testfemimport"
+./bin/FreeCADCmd --run-test "femtest.testfemimport"
+
+# other module
 ./bin/FreeCAD --run-test "femtest.testccxtools"
 ./bin/FreeCAD --run-test "femtest.testcommon"
 ./bin/FreeCAD --run-test "femtest.testmaterial"

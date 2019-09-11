@@ -132,6 +132,7 @@ SET(FemTests_SRCS
     femtest/__init__.py
     femtest/testccxtools.py
     femtest/testcommon.py
+    femtest/testfemimport.py
     femtest/testmaterial.py
     femtest/testmesh.py
     femtest/testobject.py
