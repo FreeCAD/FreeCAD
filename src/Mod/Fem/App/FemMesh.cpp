@@ -1135,8 +1135,9 @@ void FemMesh::readNastran(const std::string &Filename)
 
     for(unsigned int i=0;i<all_elements.size();i++)
     {
-        //Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig.
-        //Ansonsten ist eine konsistente Datenstruktur nicht möglich
+        // an consistent data structure is only possible
+        // if the elements are added in the right order
+        // thus the order is very important
         //meshds->AddVolumeWithID
         //(
         //    meshds->FindNode(all_elements[i][0]),
@@ -1951,8 +1952,9 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
 }
 //    for(unsigned int i=0;i<all_elements.size();i++)
 //        {
-//            //Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig.
-//            //Ansonsten ist eine konsistente Datenstruktur nicht möglich
+//                // an consistent data structure is only possible
+//                // if the elements are added in the right order
+//                // thus the order is very important
 //                meshds->AddVolumeWithID(
 //                meshds->FindNode(all_elements[i][0]),
 //                meshds->FindNode(all_elements[i][2]),
