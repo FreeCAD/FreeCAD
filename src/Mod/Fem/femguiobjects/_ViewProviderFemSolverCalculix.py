@@ -219,10 +219,10 @@ class _TaskPanelFemSolverCalculix:
 
         if out.isEmpty():
             self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
-            return False 
+            return False
 
         if sys.version_info.major >= 3:
-            # https://forum.freecadweb.org/viewtopic.php?f=18&t=39195 
+            # https://forum.freecadweb.org/viewtopic.php?f=18&t=39195
             # convert QByteArray to a binary string an decode it to "utf-8"
             out = out.data().decode()  # "utf-8" can be omitted
             # print(type(out))
@@ -271,8 +271,8 @@ class _TaskPanelFemSolverCalculix:
         self.femConsoleMessage("CalculiX done without error!", "#00AA00")
 
     def calculixStarted(self):
-        print("calculixStarted()")
-        print(self.Calculix.state())
+        # print("calculixStarted()")
+        FreeCAD.Console.PrintLog("{}".format(self.Calculix.state()))
         self.form.pb_run_ccx.setText("Break CalculiX")
 
     def calculixStateChanged(self, newState):
@@ -284,8 +284,8 @@ class _TaskPanelFemSolverCalculix:
                 self.femConsoleMessage("CalculiX stopped.")
 
     def calculixFinished(self, exitCode):
-        print("calculixFinished() {}".format(exitCode))
-        print(self.Calculix.state())
+        # print("calculixFinished(), exit code: {}".format(exitCode))
+        FreeCAD.Console.PrintLog("{}".format(self.Calculix.state()))
 
         # Restore previous cwd
         QtCore.QDir.setCurrent(self.cwd)
@@ -383,16 +383,16 @@ class _TaskPanelFemSolverCalculix:
                 FemGui.open(self.fea.inp_file_name)
 
     def runCalculix(self):
-        print("runCalculix")
+        # print("runCalculix")
         self.Start = time.time()
 
         self.femConsoleMessage("CalculiX binary: {}".format(self.fea.ccx_binary))
+        self.femConsoleMessage("CalculiX input file: {}".format(self.fea.inp_file_name))
         self.femConsoleMessage("Run CalculiX...")
 
-        # run Calculix
-        print(
+        FreeCAD.Console.PrintMessage(
             "run CalculiX at: {} with: {}"
-            .format(self.fea.ccx_binary, os.path.splitext(self.fea.inp_file_name)[0])
+            .format(self.fea.ccx_binary, self.fea.inp_file_name)
         )
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
