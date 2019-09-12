@@ -154,6 +154,12 @@ void ViewProviderOrigin::resetTemporaryVisibility() {
     tempVisMap.clear ();
 }
 
+double ViewProviderOrigin::defaultSize()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    return 0.25 * hGrp->GetFloat("NewDocumentCameraScale",100.0);
+}
+
 bool ViewProviderOrigin::isTemporaryVisibility() {
     return !tempVisMap.empty();
 }

@@ -49,6 +49,15 @@ class TestResult(unittest.TestCase):
         FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
+    def test_00print(
+        self
+    ):
+        fcc_print("\n{0}\n{1} run FEM TestResult tests {2}\n{0}".format(
+            100 * "*",
+            10 * "*",
+            64 * "*"
+        ))
+
     # ********************************************************************************************
     def test_read_frd_massflow_networkpressure(
         self

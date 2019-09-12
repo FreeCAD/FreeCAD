@@ -42,4 +42,4 @@ find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --igno
 - Be mindful of spelling. Spell checks are quite often neglected.
 - [codespell]((https://github.com/codespell-project/codespell#updating) could be used  
 
-> codespell -q 3 -L aci,ake,aline,alle,alledges,alocation,als,ang,anid,ba,beginn,behaviour,bloaded,byteorder,calculater,cancelled,cancelling,cas,cascade,centimetre,childs,colour,colours,commen,currenty,dof,doubleclick,dum,eiter,elemente,feld,freez,hist,iff,indicies,initialisation,initialise,initialised,initialises,initialisiert,ist,kilometre,lod,mantatory,methode,metres,millimetre,modell,nd,noe,normale,normaly,nto,numer,oder,orgin,orginx,orginy,ot,pard,pres,programm,que,recurrance,rougly,seperator,serie,sinc,strack,substraction,te,thist,thru,tread,uint,unter,vertexes,wallthickness,whitespaces -S *.ts,*.po src/Mod/Fem
+> codespell -q 2 -S *.ts  -L alle,childs,dof,dum,ist,methode,nd,normaly,uint,vertexes  src/Mod/Fem/

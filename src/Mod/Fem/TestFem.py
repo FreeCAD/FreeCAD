@@ -25,29 +25,29 @@
 
 
 # Unit test for the FEM module
-# the order should be as follows:
-# common-, object-, mesh-, inout-, ccxtools-, solverframworktests
-from femtest.testcommon import TestFemCommon
-from femtest.testobject import TestObjectCreate
-from femtest.testobject import TestObjectType
-from femtest.testmaterial import TestMaterialUnits
-from femtest.testmesh import TestMeshCommon
-from femtest.testmesh import TestMeshEleTetra10
-from femtest.testresult import TestResult
-from femtest.testccxtools import TestCcxTools
-from femtest.testsolverframework import TestSolverFrameWork
+# to get the right order import as is used
+from femtest.testfemimport import TestFemImport as FemTest01
+# from femtest.testcommon import TestFemCommon as FemTest02
+from femtest.testobject import TestObjectCreate as FemTest03
+# from femtest.testobject import TestObjectType as FemTest04
+from femtest.testmaterial import TestMaterialUnits as FemTest05
+# from femtest.testmesh import TestMeshCommon as FemTest06
+# from femtest.testmesh import TestMeshEleTetra10 as FemTest07
+from femtest.testresult import TestResult as FemTest08
+# from femtest.testccxtools import TestCcxTools as FemTest09
+# from femtest.testsolverframework import TestSolverFrameWork as FemTest10
 
 # dummy usage to get flake8 and lgtm quiet
-False if TestFemCommon.__name__ else True
-False if TestObjectCreate.__name__ else True
-False if TestObjectType.__name__ else True
-False if TestMaterialUnits.__name__ else True
-False if TestMeshCommon.__name__ else True
-False if TestMeshEleTetra10.__name__ else True
-False if TestMeshEleTetra10.__name__ else True
-False if TestResult.__name__ else True
-False if TestCcxTools.__name__ else True
-False if TestSolverFrameWork.__name__ else True
+False if FemTest01.__name__ else True
+# False if FemTest02.__name__ else True
+False if FemTest03.__name__ else True
+# False if FemTest04.__name__ else True
+False if FemTest05.__name__ else True
+# False if FemTest06.__name__ else True
+# False if FemTest07.__name__ else True
+False if FemTest08.__name__ else True
+# False if FemTest09.__name__ else True
+# False if FemTest10.__name__ else True
 
 
 # For more information on how to run a specific test class or a test method see
@@ -88,7 +88,11 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCAD --run-test "TestFem"
 ./bin/FreeCADCmd --run-test "TestFem"
 
-# module
+# import Fem and FemGui
+./bin/FreeCAD --run-test "femtest.testfemimport"
+./bin/FreeCADCmd --run-test "femtest.testfemimport"
+
+# other module
 ./bin/FreeCAD --run-test "femtest.testccxtools"
 ./bin/FreeCAD --run-test "femtest.testcommon"
 ./bin/FreeCAD --run-test "femtest.testmaterial"
