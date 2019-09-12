@@ -785,7 +785,7 @@ class BezCurve(Line):
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create BezCurve"),
                             ['points = '+pts,
-                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',Degree='+str(self.degree)+')',
+                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',degree='+str(self.degree)+')',
                              'Draft.autogroup(bez)'])
             except:
                 print("Draft: error delaying commit")
@@ -948,7 +948,7 @@ class CubicBezCurve(Line):
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create BezCurve"),
                             ['points = '+pts,
-                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',Degree='+str(self.degree)+')',
+                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',degree='+str(self.degree)+')',
                              'Draft.autogroup(bez)',
                              'FreeCAD.ActiveDocument.recompute()'])
             except:

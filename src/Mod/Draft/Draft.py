@@ -1055,7 +1055,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
 
     return obj
 
-def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,Degree=None):
+def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,degree=None):
     """makeBezCurve(pointslist,[closed],[placement]): Creates a Bezier Curve object
     from the given list of vectors.   Instead of a pointslist, you can also pass a Part Wire."""
     if not FreeCAD.ActiveDocument:
@@ -1072,12 +1072,12 @@ def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,D
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
     _BezCurve(obj)
     obj.Points = pointslist
-    if Degree:
-        obj.Degree = Degree
+    if degree:
+        obj.Degree = degree
     else:
         import Part
-        obj.Degree = min((len(pointslist)-(1 * (not closed))),\
-            Part.BezierCurve().MaxDegree)
+        obj.Degree = min((len(pointslist)-(1 * (not closed))),
+                         Part.BezierCurve().MaxDegree)
     obj.Closed = closed
     obj.Support = support
     if face != None:
