@@ -42,4 +42,6 @@ find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --igno
 - Be mindful of spelling. Spell checks are quite often neglected.
 - [codespell]((https://github.com/codespell-project/codespell#updating) could be used  
 
-> codespell -q 2 -S *.ts  -L alle,childs,dof,dum,ist,methode,nd,normaly,uint,vertexes  src/Mod/Fem/
+~~~
+codespell -q 2 -S *.ts  -L childs,dof,dum,methode,nd,normaly,uint,vertexes,freez  src/Mod/Fem/
+~~~
