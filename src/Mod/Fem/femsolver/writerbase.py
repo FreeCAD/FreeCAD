@@ -108,7 +108,7 @@ class FemInputWriter():
             self.femmesh = self.mesh_object.FemMesh
         else:
             FreeCAD.Console.PrintError(
-                "No finite elemente mesh object was given to the writer class. "
+                "No finite element mesh object was given to the writer class. "
                 "In rare cases this might not be an error.\n")
         self.femnodes_mesh = {}
         self.femelement_table = {}

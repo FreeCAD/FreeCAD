@@ -124,7 +124,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         z8801 = {"INTORD": "2", "INTOS": "2", "IHFLAG": "0", "ISFLAG": "1"}  # hexa8 --> volume1
         z8810 = {"INTORD": "3", "INTOS": "0", "IHFLAG": "0", "ISFLAG": "0"}  # hexa20 --> volume10
         param = {4: z8804, 24: z8824, 23: z8823, 17: z8817, 16: z8816, 1: z8801, 10: z8810}
-        # elemente 17, 16, 10, INTORD etc ... testen !!!
+        # TODO: test elements 17, 16, 10, INTORD etc
         self.z88_element_type = importZ88Mesh.get_z88_element_type(
             self.femmesh,
             self.femelement_table
