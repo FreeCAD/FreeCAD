@@ -717,6 +717,7 @@ FreeCADGui.doCommand("import " + module)
 for s in sorted(App.ActiveDocument.supportedTypes()):
     if s.startswith(module):
         print(s)
+
 """
 
 ##  @}
