@@ -172,7 +172,7 @@ class TestObjectExistance(unittest.TestCase):
 
         # get the supportedTypes for FEM module
 
-        # Fem needs do be imported to get the FEM docuent types
+        # Fem needs do be imported to get the FEM document types
         # with the following instead of import Fem
         # flake8 and lgtm do not complain "Fem imported but unused"
         __import__("Fem")
