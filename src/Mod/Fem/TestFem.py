@@ -27,27 +27,27 @@
 # Unit test for the FEM module
 # to get the right order import as is used
 from femtest.testfemimport import TestFemImport as FemTest01
-# from femtest.testcommon import TestFemCommon as FemTest02
+from femtest.testcommon import TestFemCommon as FemTest02
 from femtest.testobject import TestObjectCreate as FemTest03
-# from femtest.testobject import TestObjectType as FemTest04
+from femtest.testobject import TestObjectType as FemTest04
 from femtest.testmaterial import TestMaterialUnits as FemTest05
-# from femtest.testmesh import TestMeshCommon as FemTest06
-# from femtest.testmesh import TestMeshEleTetra10 as FemTest07
+from femtest.testmesh import TestMeshCommon as FemTest06
+from femtest.testmesh import TestMeshEleTetra10 as FemTest07
 from femtest.testresult import TestResult as FemTest08
-# from femtest.testccxtools import TestCcxTools as FemTest09
-# from femtest.testsolverframework import TestSolverFrameWork as FemTest10
+from femtest.testccxtools import TestCcxTools as FemTest09
+from femtest.testsolverframework import TestSolverFrameWork as FemTest10
 
 # dummy usage to get flake8 and lgtm quiet
 False if FemTest01.__name__ else True
-# False if FemTest02.__name__ else True
+False if FemTest02.__name__ else True
 False if FemTest03.__name__ else True
-# False if FemTest04.__name__ else True
+False if FemTest04.__name__ else True
 False if FemTest05.__name__ else True
-# False if FemTest06.__name__ else True
-# False if FemTest07.__name__ else True
+False if FemTest06.__name__ else True
+False if FemTest07.__name__ else True
 False if FemTest08.__name__ else True
-# False if FemTest09.__name__ else True
-# False if FemTest10.__name__ else True
+False if FemTest09.__name__ else True
+False if FemTest10.__name__ else True
 
 
 # For more information on how to run a specific test class or a test method see
@@ -93,6 +93,7 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCADCmd --run-test "femtest.testfemimport"
 
 # other module
+./bin/FreeCAD --run-test "femtest.testfemimport"
 ./bin/FreeCAD --run-test "femtest.testccxtools"
 ./bin/FreeCAD --run-test "femtest.testcommon"
 ./bin/FreeCAD --run-test "femtest.testmaterial"
@@ -100,6 +101,7 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCAD --run-test "femtest.testobject"
 ./bin/FreeCAD --run-test "femtest.testresult"
 ./bin/FreeCAD --run-test "femtest.testsolverframework"
+./bin/FreeCADCmd --run-test "femtest.testfemimport"
 ./bin/FreeCADCmd --run-test "femtest.testccxtools"
 ./bin/FreeCADCmd --run-test "femtest.testcommon"
 ./bin/FreeCADCmd --run-test "femtest.testmaterial"
@@ -120,6 +122,7 @@ unittest.TextTestRunner().run(alltest)
 from femtest.utilstest import get_fem_test_defs as gf
 gf()
 
+./bin/FreeCADCmd --run-test "femtest.testfemimport.TestObjectExistance.test_objects_existance"
 ./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_1_static_analysis"
 ./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_2_static_multiple_material"
 ./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_3_freq_analysis"

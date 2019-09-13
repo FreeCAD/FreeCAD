@@ -33,7 +33,7 @@ from os.path import join
 
 
 class TestMeshCommon(unittest.TestCase):
-    fcc_print('import TestMeshCommon')
+    fcc_print("import TestMeshCommon")
 
     # ********************************************************************************************
     def setUp(
@@ -161,7 +161,7 @@ class TestMeshCommon(unittest.TestCase):
         tetra10.addNode(9, 3, 9, 10)
         tetra10.addVolume([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
-        unv_file = testtools.get_fem_test_tmp_dir() + '/tetra10_mesh.unv'
+        unv_file = testtools.get_fem_test_tmp_dir() + "/tetra10_mesh.unv"
         tetra10.write(unv_file)
         newmesh = Fem.read(unv_file)
         expected = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
@@ -189,20 +189,20 @@ class TestMeshCommon(unittest.TestCase):
         )
         seg2.addEdge([1, 2])
 
-        inp_file = testtools.get_fem_test_tmp_dir() + '/seg2_mesh.inp'
+        inp_file = testtools.get_fem_test_tmp_dir() + "/seg2_mesh.inp"
         seg2.writeABAQUS(inp_file, 1, False)
 
-        read_file = open(inp_file, 'r')
-        read_node_line = 'line was not found'
+        read_file = open(inp_file, "r")
+        read_node_line = "line was not found"
         for ln in read_file:
             ln = ln.strip()
-            if ln.startswith('2, -5'):
+            if ln.startswith("2, -5"):
                 read_node_line = ln
         read_file.close()
 
         #                  1234567  12345678901234567890  12345678901234567890
-        expected_win = '2, -5e+018, -1.123456789123e-014, -1.234567890123e-102'
-        expected_lin = '2, -5e+18, -1.123456789123e-14, -1.234567890123e-102'
+        expected_win = "2, -5e+018, -1.123456789123e-014, -1.234567890123e-102"
+        expected_lin = "2, -5e+18, -1.123456789123e-14, -1.234567890123e-102"
         expected = [expected_lin, expected_win]
         self.assertTrue(
             True if read_node_line in expected else False,
@@ -220,8 +220,9 @@ class TestMeshCommon(unittest.TestCase):
 
 
 # ************************************************************************************************
+# ************************************************************************************************
 class TestMeshEleTetra10(unittest.TestCase):
-    fcc_print('import TestMeshEleTetra10')
+    fcc_print("import TestMeshEleTetra10")
 
     # ********************************************************************************************
     def setUp(
@@ -239,15 +240,15 @@ class TestMeshEleTetra10(unittest.TestCase):
         self.active_doc = FreeCAD.ActiveDocument
 
         # more inits
-        self.elem = 'tetra10'
+        self.elem = "tetra10"
         self.base_testfile = join(
             testtools.get_fem_test_home_dir(),
-            'mesh',
-            (self.elem + '_mesh.')
+            "mesh",
+            (self.elem + "_mesh.")
         )
         self.base_outfile = join(
             testtools.get_fem_test_tmp_dir(),
-            (self.elem + '_mesh.')
+            (self.elem + "_mesh.")
         )
         # 10 node tetrahedron --> tetra10
         femmesh = Fem.FemMesh()
@@ -264,8 +265,8 @@ class TestMeshEleTetra10(unittest.TestCase):
         femmesh.addVolume([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
         self.femmesh = femmesh
         self.expected_nodes = {
-            'count': 10,
-            'nodes': {
+            "count": 10,
+            "nodes": {
                 1: FreeCAD.Vector(6.0, 12.0, 18.0),
                 2: FreeCAD.Vector(0.0, 0.0, 18.0),
                 3: FreeCAD.Vector(12.0, 0.0, 18.0),
@@ -279,16 +280,16 @@ class TestMeshEleTetra10(unittest.TestCase):
             }
         }
         self.expected_elem = {
-            'volcount': 1,
-            'tetcount': 1,
-            'volumes': [1, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)]
+            "volcount": 1,
+            "tetcount": 1,
+            "volumes": [1, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)]
         }
-        '''
-        fcc_print('\n')
+        """
+        fcc_print("\n")
         fcc_print(expected_nodes)
         fcc_print(expected_elem)
-        fcc_print('\n')
-        '''
+        fcc_print("\n")
+        """
 
     def test_00print(
         self
@@ -318,17 +319,17 @@ class TestMeshEleTetra10(unittest.TestCase):
         filetyp
     ):
 
-        # '''
+        # """
         fcc_print([
             femmesh_testfile.Volumes[0],
             femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
         ])
-        # '''
+        # """
 
         # test reading the test mesh
         self.assertEqual(
             femmesh_testfile.Nodes,
-            self.expected_nodes['nodes'],
+            self.expected_nodes["nodes"],
             "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
                 self.elem,
                 filetyp
@@ -339,7 +340,7 @@ class TestMeshEleTetra10(unittest.TestCase):
                 femmesh_testfile.Volumes[0],
                 femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])
             ],
-            self.expected_elem['volumes'],
+            self.expected_elem["volumes"],
             "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
                 self.elem,
                 filetyp
@@ -348,7 +349,7 @@ class TestMeshEleTetra10(unittest.TestCase):
         # test reading the written mesh
         self.assertEqual(
             femmesh_outfile.Nodes,
-            self.expected_nodes['nodes'],
+            self.expected_nodes["nodes"],
             "Test reading {} mesh to {} file failed. Nodes are different.\n".format(
                 self.elem,
                 filetyp
@@ -359,7 +360,7 @@ class TestMeshEleTetra10(unittest.TestCase):
                 femmesh_outfile.Volumes[0],
                 femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])
             ],
-            self.expected_elem['volumes'],
+            self.expected_elem["volumes"],
             "Test reading {} mesh to {} file failed. Volumes are different.\n".format(
                 self.elem,
                 filetyp
@@ -389,13 +390,13 @@ class TestMeshEleTetra10(unittest.TestCase):
     ):
         # tetra10 element: creating by Python
         node_data = {
-            'count': self.femmesh.NodeCount,
-            'nodes': self.femmesh.Nodes
+            "count": self.femmesh.NodeCount,
+            "nodes": self.femmesh.Nodes
         }
         elem_data = {
-            'volcount': self.femmesh.VolumeCount,
-            'tetcount': self.femmesh.TetraCount,
-            'volumes': [
+            "volcount": self.femmesh.VolumeCount,
+            "tetcount": self.femmesh.TetraCount,
+            "volumes": [
                 self.femmesh.Volumes[0],
                 self.femmesh.getElementNodes(self.femmesh.Volumes[0])
             ]
@@ -410,12 +411,12 @@ class TestMeshEleTetra10(unittest.TestCase):
             self.expected_elem,
             "Elements of Python created " + self.elem + "mesh element are unexpected"
         )
-        '''
+        """
         obj = doc.addObject("Fem::FemMeshObject" , elem)
         obj.FemMesh = femmesh
         obj.Placement.Base = (30,50,0)
         obj.ViewObject.DisplayMode = "Faces, Wireframe & Nodes"
-        '''
+        """
 
     # ********************************************************************************************
     def test_tetra10_inp(
@@ -423,7 +424,7 @@ class TestMeshEleTetra10(unittest.TestCase):
     ):
         # tetra10 element: reading from and writing to inp mesh file format
 
-        file_extension = 'inp'
+        file_extension = "inp"
         outfile, testfile = self.get_file_paths(file_extension)
 
         self.femmesh.writeABAQUS(outfile, 1, False)  # write the mesh
@@ -442,7 +443,7 @@ class TestMeshEleTetra10(unittest.TestCase):
     ):
         # tetra10 element: reading from and writing to unv mesh file format
 
-        file_extension = 'unv'
+        file_extension = "unv"
         outfile, testfile = self.get_file_paths(file_extension)
 
         self.femmesh.write(outfile)  # write the mesh
@@ -461,7 +462,7 @@ class TestMeshEleTetra10(unittest.TestCase):
     ):
         # tetra10 element: reading from and writing to unv mesh file format
 
-        file_extension = 'vtk'
+        file_extension = "vtk"
         outfile, testfile = self.get_file_paths(file_extension)
 
         if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
@@ -475,7 +476,7 @@ class TestMeshEleTetra10(unittest.TestCase):
                 file_extension
             )
         else:
-            fcc_print('FEM_VTK post processing is disabled.')
+            fcc_print("FEM_VTK post processing is disabled.")
 
     # ********************************************************************************************
     def test_tetra10_yml(
@@ -483,7 +484,7 @@ class TestMeshEleTetra10(unittest.TestCase):
     ):
         # tetra10 element: reading from and writing to yaml/json mesh file format
 
-        file_extension = 'yml'
+        file_extension = "yml"
         outfile, testfile = self.get_file_paths(file_extension)
 
         # TODO: implement yaml/json mesh reader writer method calls in C++
@@ -509,7 +510,7 @@ class TestMeshEleTetra10(unittest.TestCase):
     ):
         # tetra10 element: reading from and writing to z88 mesh file format
 
-        file_extension = 'z88'
+        file_extension = "z88"
         outfile, testfile = self.get_file_paths(file_extension)
 
         self.femmesh.write(outfile)  # write the mesh

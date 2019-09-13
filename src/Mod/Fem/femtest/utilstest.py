@@ -36,12 +36,12 @@ from os.path import join
 
 def get_fem_test_home_dir(
 ):
-    return join(FreeCAD.getHomePath(), 'Mod', 'Fem', 'femtest', 'testfiles')
+    return join(FreeCAD.getHomePath(), "Mod", "Fem", "femtest", "testfiles")
 
 
 def get_fem_test_tmp_dir(
 ):
-    temp_dir = join(tempfile.gettempdir(), 'FEM_unittests')
+    temp_dir = join(tempfile.gettempdir(), "FEM_unittests")
     if not os.path.exists(temp_dir):
         os.makedirs(temp_dir)
     return(temp_dir)
@@ -60,22 +60,22 @@ def get_unit_test_tmp_dir(
 def fcc_print(
     message
 ):
-    FreeCAD.Console.PrintMessage('{} \n'.format(message))
+    FreeCAD.Console.PrintMessage("{} \n".format(message))
 
 
 def get_defmake_count(
     fem_vtk_post=True
 ):
-    '''
+    """
     count the def make in module ObjectsFem
     could also be done in bash with
     grep -c  "def make" src/Mod/Fem/ObjectsFem.py
-    '''
-    name_modfile = join(FreeCAD.getHomePath(), 'Mod', 'Fem', 'ObjectsFem.py')
-    modfile = open(name_modfile, 'r')
+    """
+    name_modfile = join(FreeCAD.getHomePath(), "Mod", "Fem", "ObjectsFem.py")
+    modfile = open(name_modfile, "r")
     lines_modefile = modfile.readlines()
     modfile.close()
-    lines_defmake = [l for l in lines_modefile if l.startswith('def make')]
+    lines_defmake = [l for l in lines_modefile if l.startswith("def make")]
     if not fem_vtk_post:
         # FEM VTK post processing is disabled
         # we are not able to create VTK post objects
@@ -88,41 +88,41 @@ def get_defmake_count(
 
 
 def get_fem_test_defs(
-    inout='out'
+    inout="out"
 ):
-    test_path = join(FreeCAD.getHomePath(), 'Mod', 'Fem', 'femtest')
+    test_path = join(FreeCAD.getHomePath(), "Mod", "Fem", "femtest")
     collected_test_modules = []
     collected_test_methods = []
     for tfile in sorted(os.listdir(test_path)):
         if tfile.startswith("test") and tfile.endswith(".py"):
             collected_test_modules.append(join(test_path, tfile))
     for f in collected_test_modules:
-        tfile = open(f, 'r')
+        tfile = open(f, "r")
         module_name = os.path.splitext(os.path.basename(f))[0]
-        class_name = ''
+        class_name = ""
         for ln in tfile:
             ln = ln.lstrip()
             ln = ln.rstrip()
-            if ln.startswith('class '):
-                ln = ln.lstrip('class ')
-                ln = ln.split('(')[0]
+            if ln.startswith("class "):
+                ln = ln.lstrip("class ")
+                ln = ln.split("(")[0]
                 class_name = ln
-            if ln.startswith('def test'):
-                ln = ln.lstrip('def ')
-                ln = ln.split('(')[0]
+            if ln.startswith("def test"):
+                ln = ln.lstrip("def ")
+                ln = ln.split("(")[0]
                 collected_test_methods.append(
-                    'femtest.{}.{}.{}'.format(module_name, class_name, ln)
+                    "femtest.{}.{}.{}".format(module_name, class_name, ln)
                 )
         tfile.close()
-    print('')
+    print("")
     for m in collected_test_methods:
         run_outside_fc = './bin/FreeCADCmd --run-test "{}"'.format(m)
         run_inside_fc = (
-            'unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("{}"))'
+            "unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName('{}'))"
             .format(m)
         )
-        if inout == 'in':
-            print('\nimport unittest')
+        if inout == "in":
+            print("\nimport unittest")
             print(run_inside_fc)
         else:
             print(run_outside_fc)
@@ -132,28 +132,28 @@ def compare_inp_files(
     file_name1,
     file_name2
 ):
-    file1 = open(file_name1, 'r')
+    file1 = open(file_name1, "r")
     f1 = file1.readlines()
     file1.close()
-    # l.startswith('17671.0,1') is a temporary workaround
+    # l.startswith("17671.0,1") is a temporary workaround
     # for python3 problem with 1DFlow input
     # TODO as soon as the 1DFlow result reading is fixed
     # this should be triggered in the 1DFlow unit test
     lf1 = [l for l in f1 if not (
-        l.startswith('**   written ') or l.startswith('**   file ') or l.startswith('17671.0,1')
+        l.startswith("**   written ") or l.startswith("**   file ") or l.startswith("17671.0,1")
     )]
     lf1 = force_unix_line_ends(lf1)
-    file2 = open(file_name2, 'r')
+    file2 = open(file_name2, "r")
     f2 = file2.readlines()
     file2.close()
     # TODO see comment on file1
     lf2 = [l for l in f2 if not (
-        l.startswith('**   written ') or l.startswith('**   file ') or l.startswith('17671.0,1')
+        l.startswith("**   written ") or l.startswith("**   file ") or l.startswith("17671.0,1")
     )]
     lf2 = force_unix_line_ends(lf2)
     import difflib
     diff = difflib.unified_diff(lf1, lf2, n=0)
-    result = ''
+    result = ""
     for l in diff:
         result += l
     if result:
@@ -168,25 +168,25 @@ def compare_files(
     file_name1,
     file_name2
 ):
-    file1 = open(file_name1, 'r')
+    file1 = open(file_name1, "r")
     f1 = file1.readlines()
     file1.close()
     # workaround to compare geos of elmer test and temporary file path
     # (not only names change, path changes with operating system)
     lf1 = [l for l in f1 if not (
-        l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// ')
+        l.startswith('Merge "') or l.startswith('Save "') or l.startswith("// ")
     )]
     lf1 = force_unix_line_ends(lf1)
-    file2 = open(file_name2, 'r')
+    file2 = open(file_name2, "r")
     f2 = file2.readlines()
     file2.close()
     lf2 = [l for l in f2 if not (
-        l.startswith('Merge "') or l.startswith('Save "') or l.startswith('// ')
+        l.startswith('Merge "') or l.startswith('Save "') or l.startswith("// ")
     )]
     lf2 = force_unix_line_ends(lf2)
     import difflib
     diff = difflib.unified_diff(lf1, lf2, n=0)
-    result = ''
+    result = ""
     for l in diff:
         result += l
     if result:
@@ -238,7 +238,7 @@ def compare_stats(
         return True
 
     # get stats to compare with, the expected ones
-    sf = open(stat_file, 'r')
+    sf = open(stat_file, "r")
     sf_content = []
     for l in sf.readlines():
         for st in loc_stat_types:
@@ -268,7 +268,7 @@ def force_unix_line_ends(
     new_line_list = []
     for ln in line_list:
         if ln.endswith("\r\n"):
-            ln = ln[:-2] + '\n'
+            ln = ln[:-2] + "\n"
         new_line_list.append(ln)
     return new_line_list
 
@@ -277,20 +277,20 @@ def collect_python_modules(
     femsubdir=None
 ):
     if not femsubdir:
-        pydir = join(FreeCAD.ConfigGet("AppHomePath"), 'Mod', 'Fem')
+        pydir = join(FreeCAD.ConfigGet("AppHomePath"), "Mod", "Fem")
     else:
-        pydir = join(FreeCAD.ConfigGet("AppHomePath"), 'Mod', 'Fem', femsubdir)
+        pydir = join(FreeCAD.ConfigGet("AppHomePath"), "Mod", "Fem", femsubdir)
     collected_modules = []
     fcc_print(pydir)
     for pyfile in sorted(os.listdir(pydir)):
-        if pyfile.endswith(".py") and not pyfile.startswith('Init'):
+        if pyfile.endswith(".py") and not pyfile.startswith("Init"):
             if not femsubdir:
                 collected_modules.append(
                     os.path.splitext(os.path.basename(pyfile))[0]
                 )
             else:
                 collected_modules.append(
-                    femsubdir.replace('/', '.') + '.' + os.path.splitext(
+                    femsubdir.replace("/", ".") + "." + os.path.splitext(
                         os.path.basename(pyfile)
                     )[0]
                 )
@@ -315,8 +315,8 @@ def cube_frequency(
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
     doc = FreeCAD.open(join(
         get_fem_test_tmp_dir(),
-        'FEM_ccx_frequency',
-        'cube_frequency.FCStd')
+        "FEM_ccx_frequency",
+        "cube_frequency.FCStd")
     )
     return doc
 
@@ -327,8 +327,8 @@ def cube_static(
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
     doc = FreeCAD.open(
         join(get_fem_test_tmp_dir(),
-             'FEM_ccx_static',
-             'cube_static.FCStd')
+             "FEM_ccx_static",
+             "cube_static.FCStd")
     )
     return doc
 
@@ -339,8 +339,8 @@ def Flow1D_thermomech(
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
     doc = FreeCAD.open(join(
         get_fem_test_tmp_dir(),
-        'FEM_ccx_Flow1D_thermomech',
-        'Flow1D_thermomech.FCStd')
+        "FEM_ccx_Flow1D_thermomech",
+        "Flow1D_thermomech.FCStd")
     )
     return doc
 
@@ -351,8 +351,8 @@ def multimat(
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
     doc = FreeCAD.open(join(
         get_fem_test_tmp_dir(),
-        'FEM_ccx_multimat',
-        'multimat.FCStd')
+        "FEM_ccx_multimat",
+        "multimat.FCStd")
     )
     return doc
 
@@ -363,7 +363,7 @@ def spine_thermomech(
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
     doc = FreeCAD.open(join(
         get_fem_test_tmp_dir(),
-        'FEM_ccx_thermomech',
-        'spine_thermomech.FCStd')
+        "FEM_ccx_thermomech",
+        "spine_thermomech.FCStd")
     )
     return doc

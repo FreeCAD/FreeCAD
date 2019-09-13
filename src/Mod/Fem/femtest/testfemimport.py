@@ -72,3 +72,131 @@ class TestFemImport(unittest.TestCase):
                 # to get an error message what was going wrong
                 __import__("{0}".format(mod))
             self.assertTrue(im, "Problem importing {0}".format(mod))
+
+
+# ************************************************************************************************
+# ************************************************************************************************
+# to be sure this is run on very first of FEM test this is here and not in objects
+class TestObjectExistance(unittest.TestCase):
+    fcc_print("import TestObjectExistance")
+
+    # ********************************************************************************************
+    def setUp(
+        self
+    ):
+        # setUp is executed before every test
+        # setting up a document to hold the tests
+        self.doc_name = self.__class__.__name__
+        if FreeCAD.ActiveDocument:
+            if FreeCAD.ActiveDocument.Name != self.doc_name:
+                FreeCAD.newDocument(self.doc_name)
+        else:
+            FreeCAD.newDocument(self.doc_name)
+        FreeCAD.setActiveDocument(self.doc_name)
+        self.active_doc = FreeCAD.ActiveDocument
+
+    def test_00print(
+        self
+    ):
+        fcc_print("\n{0}\n{1} run FEM TestObjectExistance tests {2}\n{0}".format(
+            100 * "*",
+            10 * "*",
+            55 * "*"
+        ))
+
+    # ********************************************************************************************
+    def test_objects_existance(
+        self
+    ):
+
+        expected_obj_types = [
+            "Fem::Constraint",
+            "Fem::ConstraintBearing",
+            "Fem::ConstraintContact",
+            "Fem::ConstraintDisplacement",
+            "Fem::ConstraintFixed",
+            "Fem::ConstraintFluidBoundary",
+            "Fem::ConstraintForce",
+            "Fem::ConstraintGear",
+            "Fem::ConstraintHeatflux",
+            "Fem::ConstraintInitialTemperature",
+            "Fem::ConstraintPlaneRotation",
+            "Fem::ConstraintPressure",
+            "Fem::ConstraintPulley",
+            "Fem::ConstraintPython",
+            "Fem::ConstraintTemperature",
+            "Fem::ConstraintTransform",
+            "Fem::DocumentObject",
+            "Fem::FeaturePython",
+            "Fem::FemAnalysis",
+            "Fem::FemAnalysisPython",
+            "Fem::FemMeshObject",
+            "Fem::FemMeshObjectPython",
+            "Fem::FemMeshShapeNetgenObject",
+            "Fem::FemMeshShapeObject",
+            "Fem::FemResultObject",
+            "Fem::FemResultObjectPython",
+            "Fem::FemSetElementsObject",
+            "Fem::FemSetFacesObject",
+            "Fem::FemSetGeometryObject",
+            "Fem::FemSetNodesObject",
+            "Fem::FemSetObject",
+            "Fem::FemSolverObject",
+            "Fem::FemSolverObjectPython",
+        ]
+
+        expected_vtk_obj_types = [
+            "Fem::FemPostClipFilter",
+            "Fem::FemPostCutFilter",
+            "Fem::FemPostDataAlongLineFilter",
+            "Fem::FemPostDataAtPointFilter",
+            "Fem::FemPostFilter",
+            "Fem::FemPostFunction",
+            "Fem::FemPostFunctionProvider",
+            "Fem::FemPostObject",
+            "Fem::FemPostPipeline",
+            "Fem::FemPostPlaneFunction",
+            "Fem::FemPostScalarClipFilter",
+            "Fem::FemPostSphereFunction",
+            "Fem::FemPostWarpVectorFilter",
+        ]
+
+        # if FEM VTK post processing is enabled, we need to add VTK post objects
+        if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
+            expected_obj_types += expected_vtk_obj_types
+
+        expected_len = len(expected_obj_types)
+        expected_obj_types = sorted(expected_obj_types)
+
+        doc = self.active_doc
+
+        # get the supportedTypes for FEM module
+
+        # Fem needs do be imported to get the FEM document types
+        # with the following instead of import Fem
+        # flake8 and lgtm do not complain "Fem imported but unused"
+        __import__("Fem")
+
+        obj_types = []
+        for obj_type in sorted(doc.supportedTypes()):
+            if obj_type.startswith("Fem"):
+                obj_types.append(obj_type)
+
+        obj_types = sorted(obj_types)
+
+        # test
+        self.assertEqual(
+            expected_len,
+            len(obj_types)
+        )
+
+        self.assertEqual(
+            expected_obj_types,
+            obj_types
+        )
+
+    # ********************************************************************************************
+    def tearDown(
+        self
+    ):
+        FreeCAD.closeDocument(self.doc_name)

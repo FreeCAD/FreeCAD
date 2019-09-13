@@ -1,12 +1,14 @@
 # FEM coding_conventions
 - These coding rules apply to FEM module code only. Other modules or the base system may use different coding rules especially in naming policy of Python.
 
+
 ## Python and C++
 - All files should have a license header
 - Unix line endings are preferred
 - never use mixed line endings on one file
 - 4 Spaces for indent
 - no trailing white spaces
+
 
 ## Python
 #### Code formatting
@@ -34,6 +36,14 @@ find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --igno
 - automatic code formatter will not be used for existent code
 - for new code if someone would like to use a code formatter black should be used
 
+### Coding
+- print() vs. FreeCAD.Console.PrintMessage()
+    - FreeCAD.Console.PrintMessage() or Log or Error should be used
+    - print() should be used for debugging only
+    - forum topic https://forum.freecadweb.org/viewtopic.php?f=10&t=39110
+    - BTW: Console prints need a new line where as print does not need one
+
+
 ## C++
 ### Naming policy
 - CamelCase names
@@ -42,4 +52,6 @@ find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --igno
 - Be mindful of spelling. Spell checks are quite often neglected.
 - [codespell]((https://github.com/codespell-project/codespell#updating) could be used  
 
-> codespell -q 2 -S *.ts  -L alle,childs,dof,dum,ist,methode,nd,normaly,uint,vertexes  src/Mod/Fem/
+~~~
+codespell -q 2 -S *.ts  -L childs,dof,dum,methode,nd,normaly,uint,vertexes,freez  src/Mod/Fem/
+~~~

@@ -95,6 +95,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             self.dir_name,
             "{}_inout_nodes.txt".format(self.mesh_object.Name)
         )
+
+    def write_calculix_input_file(self):
+        timestart = time.clock()
+        FreeCAD.Console.PrintMessage("Start writing CalculiX input file\n")
         FreeCAD.Console.PrintLog(
             "writerbaseCcx --> self.dir_name  -->  " + self.dir_name + "\n"
         )
@@ -104,15 +108,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         FreeCAD.Console.PrintMessage(
             "writerbaseCcx --> self.file_name  -->  " + self.file_name + "\n"
         )
-
-    def write_calculix_input_file(self):
-        timestart = time.clock()
         if self.solver_obj.SplitInputWriter is True:
             self.write_calculix_splitted_input_file()
         else:
             self.write_calculix_one_input_file()
         writing_time_string = (
-            "Writing time input file: {} seconds"
+            "Writing time CalculiX input file: {} seconds"
             .format(round((time.clock() - timestart), 2))
         )
         if self.femelement_count_test is True:

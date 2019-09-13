@@ -279,6 +279,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.transform_constraints = self._get_several_member("Fem::ConstraintTransform")
 
     def check_prerequisites(self):
+        FreeCAD.Console.PrintMessage("Check prerequisites.\n")
         from FreeCAD import Units
         message = ""
         # analysis
@@ -666,10 +667,17 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         elif fem_general_prefs.GetBool("OverwriteSolverWorkingDirectory", True) is False:
             self.working_dir = self.solver.WorkingDir
             if femutils.check_working_dir(self.working_dir) is not True:
-                FreeCAD.Console.PrintError(
-                    "Dir from solver object \'{}\' doesn't exist.\n"
-                    .format(self.working_dir)
-                )
+                if self.working_dir == '':
+                    FreeCAD.Console.PrintError(
+                        "Working Dir is set to be used from solver object "
+                        "but Dir from solver object \'{}\' is empty.\n"
+                        .format(self.working_dir)
+                    )
+                else:
+                    FreeCAD.Console.PrintError(
+                        "Dir from solver object \'{}\' doesn't exist.\n"
+                        .format(self.working_dir)
+                    )
                 self.working_dir = femutils.get_pref_working_dir(self.solver)
                 FreeCAD.Console.PrintMessage(
                     "Dir \'{}\' will be used instead.\n"

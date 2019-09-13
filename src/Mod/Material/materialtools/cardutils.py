@@ -58,7 +58,7 @@ icons = { card_path: icon_path, ... }
 - the whole card_path is saved into the combo box widget, this makes card unique
 - sorting happens on adding to the combo box widgets
 
-a data modell which uses a class and attributes as well as methods to access the attributes
+a data model which uses a class and attributes as well as methods to access the attributes
 would makes sense, like some material library class
 this has been done already by eivind see
 https://forum.freecadweb.org/viewtopic.php?f=38&t=16714

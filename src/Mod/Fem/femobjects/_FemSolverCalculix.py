@@ -93,8 +93,8 @@ class _FemSolverCalculix():
             "Fem",
             "Number of modes for frequency calculations"
         )
-        noe = ccx_prefs.GetInt("EigenmodesCount", 10)
-        obj.EigenmodesCount = (noe, 1, 100, 1)
+        noem = ccx_prefs.GetInt("EigenmodesCount", 10)
+        obj.EigenmodesCount = (noem, 1, 100, 1)
 
         obj.addProperty(
             "App::PropertyFloatConstraint",

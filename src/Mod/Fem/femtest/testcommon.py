@@ -31,7 +31,7 @@ from .utilstest import fcc_print
 
 
 class TestFemCommon(unittest.TestCase):
-    fcc_print('import TestFemCommon')
+    fcc_print("import TestFemCommon")
 
     # ********************************************************************************************
     def setUp(
@@ -74,9 +74,9 @@ class TestFemCommon(unittest.TestCase):
             ref_eles.append("Edge%d" % (i + 1))
         cf.References = [(slab, ref_eles)]
         doc.recompute()
-        expected_reflist = [(slab, ('Edge1', 'Edge2', 'Edge3', 'Edge4'))]
+        expected_reflist = [(slab, ("Edge1", "Edge2", "Edge3", "Edge4"))]
         assert_err_message = (
-            'Adding reference shapes did not result in expected list {} != {}'
+            "Adding reference shapes did not result in expected list {} != {}"
             .format(cf.References, expected_reflist)
         )
         self.assertEqual(cf.References, expected_reflist, assert_err_message)
@@ -89,37 +89,37 @@ class TestFemCommon(unittest.TestCase):
         pymodules = []
 
         # collect all Python modules in FEM
-        pymodules += testtools.collect_python_modules('')  # FEM main dir
-        pymodules += testtools.collect_python_modules('femexamples')
-        pymodules += testtools.collect_python_modules('feminout')
-        pymodules += testtools.collect_python_modules('femmesh')
-        pymodules += testtools.collect_python_modules('femobjects')
-        pymodules += testtools.collect_python_modules('femresult')
-        pymodules += testtools.collect_python_modules('femtest')
-        pymodules += testtools.collect_python_modules('femtools')
-        pymodules += testtools.collect_python_modules('femsolver')
+        pymodules += testtools.collect_python_modules("")  # FEM main dir
+        pymodules += testtools.collect_python_modules("femexamples")
+        pymodules += testtools.collect_python_modules("feminout")
+        pymodules += testtools.collect_python_modules("femmesh")
+        pymodules += testtools.collect_python_modules("femobjects")
+        pymodules += testtools.collect_python_modules("femresult")
+        pymodules += testtools.collect_python_modules("femtest")
+        pymodules += testtools.collect_python_modules("femtools")
+        pymodules += testtools.collect_python_modules("femsolver")
         # TODO test with join on Windows, the use of os.path.join
         # in the following code seems to create problems on Windows OS
-        pymodules += testtools.collect_python_modules('femsolver/elmer')
-        pymodules += testtools.collect_python_modules('femsolver/elmer/equations')
-        pymodules += testtools.collect_python_modules('femsolver/z88')
-        pymodules += testtools.collect_python_modules('femsolver/calculix')
+        pymodules += testtools.collect_python_modules("femsolver/elmer")
+        pymodules += testtools.collect_python_modules("femsolver/elmer/equations")
+        pymodules += testtools.collect_python_modules("femsolver/z88")
+        pymodules += testtools.collect_python_modules("femsolver/calculix")
         if FreeCAD.GuiUp:
-            pymodules += testtools.collect_python_modules('femcommands')
-            pymodules += testtools.collect_python_modules('femguiobjects')
+            pymodules += testtools.collect_python_modules("femcommands")
+            pymodules += testtools.collect_python_modules("femguiobjects")
 
         # import all collected modules
         # fcc_print(pymodules)
         for mod in pymodules:
-            fcc_print('Try importing {0} ...'.format(mod))
+            fcc_print("Try importing {0} ...".format(mod))
             try:
-                im = __import__('{0}'.format(mod))
+                im = __import__("{0}".format(mod))
             except ImportError:
                 im = False
             if not im:
                 # to get an error message what was going wrong
-                __import__('{0}'.format(mod))
-            self.assertTrue(im, 'Problem importing {0}'.format(mod))
+                __import__("{0}".format(mod))
+            self.assertTrue(im, "Problem importing {0}".format(mod))
 
     # ********************************************************************************************
     def tearDown(

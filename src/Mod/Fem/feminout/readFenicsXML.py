@@ -36,9 +36,9 @@ import itertools
 
 
 def read_fenics_mesh_xml(xmlfilename):
-    '''
+    """
         Returns element dictionary to be evaluated by make_femmesh later
-    '''
+    """
 
     Fenics_to_FreeCAD_dict = {
         "triangle": "tria3",
@@ -49,10 +49,10 @@ def read_fenics_mesh_xml(xmlfilename):
     }
 
     def read_mesh_block(mesh_block):
-        '''
+        """
             Reading mesh block from XML file.
             The mesh block only contains cells and vertices.
-        '''
+        """
         dim = int(mesh_block.get("dim"))
         cell_type = mesh_block.get("celltype")
 
@@ -63,12 +63,12 @@ def read_fenics_mesh_xml(xmlfilename):
 
         # every cell type contains a dict with key=dimension and value=number
 
-        cells_parts_dim = {'point': {0: 1},
-                           'interval': {0: 2, 1: 1},
-                           'triangle': {0: 3, 1: 3, 2: 1},
-                           'tetrahedron': {0: 4, 1: 6, 2: 4, 3: 1},
-                           'quadrilateral': {0: 4, 1: 4, 2: 1},
-                           'hexahedron': {0: 8, 1: 12, 2: 6, 3: 1}}
+        cells_parts_dim = {"point": {0: 1},
+                           "interval": {0: 2, 1: 1},
+                           "triangle": {0: 3, 1: 3, 2: 1},
+                           "tetrahedron": {0: 4, 1: 6, 2: 4, 3: 1},
+                           "quadrilateral": {0: 4, 1: 4, 2: 1},
+                           "hexahedron": {0: 8, 1: 12, 2: 6, 3: 1}}
 
         find_vertices = mesh_block.find("vertices")
         find_cells = mesh_block.find("cells")
@@ -85,7 +85,7 @@ def read_fenics_mesh_xml(xmlfilename):
             for vertex in find_vertices:
                 ind = int(vertex.get("index"))
 
-                if vertex.tag.lower() == 'vertex':
+                if vertex.tag.lower() == "vertex":
                     [node_x, node_y, node_z] = [
                         float(vertex.get(coord, 0.)) for coord in ["x", "y", "z"]
                     ]
@@ -126,15 +126,15 @@ def read_fenics_mesh_xml(xmlfilename):
     def generate_lower_dimensional_structures(nodes, cell_dict, cell_type, dim):
 
         def correct_volume_det(element_dict):
-            '''
+            """
                 Checks whether the cell elements
                 all have the same volume (<0?)
                 sign (is necessary to avoid negative
                 Jacobian errors).
                 Works only with tet4 and tri3 elements at the moment
-            '''
+            """
             if dim == 3:
-                for (ind, tet) in list(element_dict['tetra4'].items()):
+                for (ind, tet) in list(element_dict["tetra4"].items()):
                     v0 = nodes[tet[0]]
                     v1 = nodes[tet[1]]
                     v2 = nodes[tet[2]]
@@ -143,17 +143,17 @@ def read_fenics_mesh_xml(xmlfilename):
                     b = v2 - v0
                     c = v3 - v0
                     if a.dot(b.cross(c)) > 0:
-                        element_dict['tetra4'][ind] = (tet[1], tet[0], tet[2], tet[3])
+                        element_dict["tetra4"][ind] = (tet[1], tet[0], tet[2], tet[3])
             if dim == 2:
                 nz = FreeCAD.Vector(0., 0., 1.)
-                for (ind, tria) in list(element_dict['tria3'].items()):
+                for (ind, tria) in list(element_dict["tria3"].items()):
                     v0 = nodes[tria[0]]
                     v1 = nodes[tria[1]]
                     v2 = nodes[tria[2]]
                     a = v1 - v0
                     b = v2 - v0
                     if nz.dot(a.cross(b)) < 0:
-                        element_dict['tria3'][ind] = (tria[1], tria[0], tria[2])
+                        element_dict["tria3"][ind] = (tria[1], tria[0], tria[2])
 
         element_dict = {}
         element_counter = {}
@@ -176,16 +176,16 @@ def read_fenics_mesh_xml(xmlfilename):
                 invdic[it] = key
             return invdic
 
-        num_vert_dict = {'interval': 2,
-                         'triangle': 3,
-                         'tetrahedron': 4,
-                         'hexahedron': 8,
-                         'quadrilateral': 4}
-        lower_dims_dict = {'interval': [],
-                           'triangle': ['interval'],
-                           'tetrahedron': ['triangle', 'interval'],
-                           'hexahedron': ['quadrilateral', 'interval'],
-                           'quadrilateral': ['interval']}
+        num_vert_dict = {"interval": 2,
+                         "triangle": 3,
+                         "tetrahedron": 4,
+                         "hexahedron": 8,
+                         "quadrilateral": 4}
+        lower_dims_dict = {"interval": [],
+                           "triangle": ["interval"],
+                           "tetrahedron": ["triangle", "interval"],
+                           "hexahedron": ["quadrilateral", "interval"],
+                           "quadrilateral": ["interval"]}
 
         # generate cell list from file
         # read vertex list from cells
@@ -207,14 +207,14 @@ def read_fenics_mesh_xml(xmlfilename):
         # print("len & len counter", length_counter)
         for (key, val_dict) in list(element_dict.items()):
             # to ensure distinct indices for FreeCAD
-            # print('key: ', key)
+            # print("key: ", key)
             for (vkey, it) in list(val_dict.items()):
                 val_dict[vkey] = it + length_counter  # maintain distinct element numbers
             len_val_dict = len(val_dict)
             if len_val_dict > 0:
                 length_counter += len_val_dict + 1  # only if preceding list is not empty
-            # print('len: ', len_val_dict)
-            # print('lencounter: ', length_counter)
+            # print("len: ", len_val_dict)
+            # print("lencounter: ", length_counter)
             # inverse of the dict (dict[key] = val -> dict[val] = key)
             element_dict[key] = invertdict(val_dict)
 
@@ -251,17 +251,17 @@ def read_fenics_mesh_xml(xmlfilename):
         print("Internal mesh data found")
 
     return {
-        'Nodes': nodes,
-        'Seg2Elem': element_dict['seg2'],
-        'Seg3Elem': {},
-        'Tria3Elem': element_dict['tria3'],
-        'Tria6Elem': {},
-        'Quad4Elem': element_dict['quad4'],
-        'Quad8Elem': {},
-        'Tetra4Elem': element_dict['tetra4'],
-        'Tetra10Elem': {},
-        'Hexa8Elem': {},
-        'Hexa20Elem': {},
-        'Penta6Elem': {},
-        'Penta15Elem': {}
+        "Nodes": nodes,
+        "Seg2Elem": element_dict["seg2"],
+        "Seg3Elem": {},
+        "Tria3Elem": element_dict["tria3"],
+        "Tria6Elem": {},
+        "Quad4Elem": element_dict["quad4"],
+        "Quad8Elem": {},
+        "Tetra4Elem": element_dict["tetra4"],
+        "Tetra10Elem": {},
+        "Hexa8Elem": {},
+        "Hexa20Elem": {},
+        "Penta6Elem": {},
+        "Penta15Elem": {}
     }

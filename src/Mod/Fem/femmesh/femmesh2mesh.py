@@ -28,6 +28,8 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 
 import time
+
+import FreeCAD
 # import Mesh
 
 
@@ -154,13 +156,13 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                 singleFaces.append(faceCodeList[actFaceIdx])
                 actFaceIdx += 1
         else:
-            print("found a last Face: ", faceCodeList[actFaceIdx])
+            FreeCAD.Console.PrintMessage("Found a last Face: {}\n".format(faceCodeList[actFaceIdx]))
             singleFaces.append(faceCodeList[actFaceIdx])
             actFaceIdx += 1
 
     output_mesh = []
     if myResults:
-        print(myResults.Name)
+        FreeCAD.Console.PrintMessage("{}\n".format(myResults.Name))
         for myFace in singleFaces:
             face_nodes = faceCodeDict[myFace]
             dispVec0 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[0])]
@@ -195,5 +197,7 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                 # print("my 2. triangle: ", triangle)
 
     end_time = time.clock()
-    print("Mesh by surface search method: ", end_time - start_time)
+    FreeCAD.Console.PrintMessage(
+        "Mesh by surface search method: {}\n".format(end_time - start_time)
+    )
     return output_mesh

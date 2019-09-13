@@ -31,7 +31,7 @@ from os.path import join
 
 
 class TestMaterialUnits(unittest.TestCase):
-    fcc_print('import TestMaterialUnits')
+    fcc_print("import TestMaterialUnits")
 
     # ********************************************************************************************
     def setUp(
@@ -65,11 +65,11 @@ class TestMaterialUnits(unittest.TestCase):
         known_quantity_parameter = knownquant()
         from materialtools.cardutils import check_parm_unit as checkparamunit
         for param in known_quantity_parameter:
-            fcc_print('{}'.format(param))
+            fcc_print("{}".format(param))
             self.assertTrue(
                 checkparamunit(param),
-                'Unit of quantity material parameter {} '
-                'is not known by FreeCAD unit system.'
+                "Unit of quantity material parameter {} "
+                "is not known by FreeCAD unit system."
                 .format(param)
             )
 
@@ -89,9 +89,9 @@ class TestMaterialUnits(unittest.TestCase):
             "Material",
             "StandardMaterial"
         )
-        fcc_print('{}'.format(builtin_solid_mat_dir))
+        fcc_print("{}".format(builtin_solid_mat_dir))
         from materialtools.cardutils import add_cards_from_a_dir as addmats
-        materials, cards, icons = addmats({}, {}, {}, builtin_solid_mat_dir, '')
+        materials, cards, icons = addmats({}, {}, {}, builtin_solid_mat_dir, "")
 
         # get known material quantity parameter
         from materialtools.cardutils import get_known_material_quantity_parameter as knownquant
@@ -100,13 +100,13 @@ class TestMaterialUnits(unittest.TestCase):
         # check param, value pairs
         from materialtools.cardutils import check_value_unit as checkvalueunit
         for mat in materials:
-            fcc_print('{}'.format(mat))
+            fcc_print("{}".format(mat))
             for param, value in materials[mat].items():
                 if param in known_quantities:
-                    # fcc_print('    {} --> {}'.format(param, value))
+                    # fcc_print("    {} --> {}".format(param, value))
                     self.assertTrue(
                         checkvalueunit(param, value),
-                        'Unit of quantity {} from material parameter {} is wrong.'
+                        "Unit of quantity {} from material parameter {} is wrong."
                         .format(value, param)
                     )
 

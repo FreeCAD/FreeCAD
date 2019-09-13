@@ -50,10 +50,10 @@ except ImportError:
 # names are fix given from FreeCAD, these methods are called from FreeCAD
 # they are set in FEM modules Init.py
 
-if open.__module__ == '__builtin__':
+if open.__module__ == "__builtin__":
     # because we'll redefine open below (Python2)
     pyopen = open
-elif open.__module__ == 'io':
+elif open.__module__ == "io":
     # because we'll redefine open below (Python3)
     pyopen = open
 
@@ -61,8 +61,8 @@ elif open.__module__ == 'io':
 def open(
     filename
 ):
-    '''called when freecad opens a file
-    a FEM mesh object is created in a new document'''
+    """called when freecad opens a file
+    a FEM mesh object is created in a new document"""
 
     docname = os.path.splitext(os.path.basename(filename))[0]
     return insert(filename, docname)
@@ -72,8 +72,8 @@ def insert(
     filename,
     docname
 ):
-    '''called when freecad wants to import a file"
-    a FEM mesh object is created in a existing document'''
+    """called when freecad wants to import a file"
+    a FEM mesh object is created in a existing document"""
 
     try:
         doc = FreeCAD.getDocument(docname)
@@ -129,7 +129,7 @@ def import_yaml_json_mesh(
     femmesh = read(fileString)
     if femmesh:
         mesh_object = FreeCAD.ActiveDocument.addObject(
-            'Fem::FemMeshObject',
+            "Fem::FemMeshObject",
             mesh_name
         )
         mesh_object.FemMesh = femmesh
@@ -140,8 +140,8 @@ def import_yaml_json_mesh(
 def read(
     fileString
 ):
-    '''read a FemMesh from a yaml/json mesh file and return the FemMesh
-    '''
+    """read a FemMesh from a yaml/json mesh file and return the FemMesh
+    """
     # no document object is created, just the FemMesh is returned
 
     fileExtension = os.path.basename(os.path.splitext(fileString)[1])
@@ -197,8 +197,8 @@ def write(
     fileString,
     fem_mesh
 ):
-    '''directly write a FemMesh to a yaml/json mesh file
-    fem_mesh: a FemMesh'''
+    """directly write a FemMesh to a yaml/json mesh file
+    fem_mesh: a FemMesh"""
 
     mesh_data = importToolsFem.make_dict_from_femmesh(fem_mesh)
 

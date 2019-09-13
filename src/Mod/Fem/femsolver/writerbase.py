@@ -108,7 +108,7 @@ class FemInputWriter():
             self.femmesh = self.mesh_object.FemMesh
         else:
             FreeCAD.Console.PrintError(
-                "No finite elemente mesh object was given to the writer class. "
+                "No finite element mesh object was given to the writer class. "
                 "In rare cases this might not be an error.\n")
         self.femnodes_mesh = {}
         self.femelement_table = {}
@@ -139,7 +139,7 @@ class FemInputWriter():
         # because solid nodes do not have rotational degree of freedom
         if self.femmesh.Volumes \
                 and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
-            print("We need to find the solid nodes.")
+            FreeCAD.Console.PrintMessage("We need to find the solid nodes.\n")
             if not self.femelement_volumes_table:
                 self.femelement_volumes_table = meshtools.get_femelement_volumes_table(
                     self.femmesh
