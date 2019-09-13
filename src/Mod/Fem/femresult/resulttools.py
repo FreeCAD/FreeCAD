@@ -108,7 +108,7 @@ def show_result(resultobj, result_type="Sabs", limit=None):
             values = list(d[match[result_type]])
         show_color_by_scalar_with_cutoff(resultobj, values, limit)
     else:
-        print("Error, No result object given.")
+        FreeCAD.Console.PrintError("Error, No result object given.\n")
 
 
 ## Sets mesh color using list of values. Internally used by show_result function.
@@ -359,7 +359,7 @@ def get_concrete_nodes(res_obj):
     for obj in res_obj.getParentGroup().Group:
         if obj.isDerivedFrom("App::MaterialObjectPython") \
                 and femutils.is_of_type(obj, "Fem::MaterialReinforced"):
-            print("ReinforcedMaterial")
+            FreeCAD.Console.PrintMessage("ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):
                     if ic[iic] == 0:
@@ -371,7 +371,7 @@ def get_concrete_nodes(res_obj):
                         ic[cn - 1] = 1
         elif obj.isDerivedFrom("App::MaterialObjectPython") \
                 and femutils.is_of_type(obj, "Fem::Material"):
-            print("NOT ReinforcedMaterial")
+            FreeCAD.Console.PrintMessage("No ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):
                     if ic[iic] == 0:

@@ -204,14 +204,16 @@ def read_frd_result(
     inout_nodes = []
     inout_nodes_file = frd_input.rsplit('.', 1)[0] + '_inout_nodes.txt'
     if os.path.exists(inout_nodes_file):
-        print('Read special 1DFlow nodes data form: ' + inout_nodes_file)
+        FreeCAD.Console.PrintMessage(
+            "Read special 1DFlow nodes data form: {}\n".format(inout_nodes_file)
+        )
         f = pyopen(inout_nodes_file, "r")
         lines = f.readlines()
         for line in lines:
             a = line.split(',')
             inout_nodes.append(a)
         f.close()
-        print(inout_nodes)
+        FreeCAD.Console.PrintMessage("{}\n".format(inout_nodes))
     frd_file = pyopen(frd_input, "r")
     nodes = {}
     elements_hexa8 = {}

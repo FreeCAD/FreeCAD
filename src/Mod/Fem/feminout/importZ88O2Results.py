@@ -32,9 +32,6 @@ import FreeCAD
 import os
 
 
-Debug = False
-
-
 # ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
@@ -162,9 +159,8 @@ def read_z88_disp(
     mode_results['disp'] = mode_disp
     results.append(mode_results)
 
-    if Debug:
-        for r in results[0]['disp']:
-            print(r, ' --> ', results[0]['disp'][r])
+    for r in results[0]['disp']:
+        FreeCAD.Console.PrintLog("{} --> {}\n".format(r, results[0]['disp'][r]))
 
     z88_disp_file.close()
     return {'Nodes': nodes, 'Results': results}

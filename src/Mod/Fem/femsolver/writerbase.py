@@ -139,7 +139,7 @@ class FemInputWriter():
         # because solid nodes do not have rotational degree of freedom
         if self.femmesh.Volumes \
                 and (len(self.shellthickness_objects) > 0 or len(self.beamsection_objects) > 0):
-            print("We need to find the solid nodes.")
+            FreeCAD.Console.PrintMessage("We need to find the solid nodes.\n")
             if not self.femelement_volumes_table:
                 self.femelement_volumes_table = meshtools.get_femelement_volumes_table(
                     self.femmesh
