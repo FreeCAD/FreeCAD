@@ -32,7 +32,7 @@ from os.path import join
 
 
 class TestResult(unittest.TestCase):
-    fcc_print('import TestResult')
+    fcc_print("import TestResult")
 
     # ********************************************************************************************
     def setUp(
@@ -65,8 +65,8 @@ class TestResult(unittest.TestCase):
         # read data from frd file
         frd_file = join(
             testtools.get_fem_test_home_dir(),
-            'ccx',
-            'Flow1D_thermomech.frd'
+            "ccx",
+            "Flow1D_thermomech.frd"
         )
         from feminout.importCcxFrdResults import read_frd_result as read_frd
         frd_content = read_frd(frd_file)
@@ -75,12 +75,12 @@ class TestResult(unittest.TestCase):
         frd_content_len = []
         for key in sorted(frd_content.keys()):
             frd_content_len.append(len(frd_content[key]))
-        print('read data')
+        print("read data")
         print(frd_content_len)
         print(sorted(frd_content.keys()))
         # print(frd_content)
-        read_mflow = frd_content['Results'][12]['mflow']
-        read_npressure = frd_content['Results'][12]['npressure']
+        read_mflow = frd_content["Results"][12]["mflow"]
+        read_npressure = frd_content["Results"][12]["npressure"]
         res_len = [
             len(read_mflow),
             len(read_npressure)
@@ -90,9 +90,9 @@ class TestResult(unittest.TestCase):
         print(read_npressure)
 
         # create the expected data
-        print('\nexpected data')
+        print("\nexpected data")
         efc = {}  # expected frd content
-        efc['Nodes'] = {
+        efc["Nodes"] = {
             2: FreeCAD.Vector(0.0, 0.0, -50.0),
             3: FreeCAD.Vector(0.0, 0.0, -4300.0),
             4: FreeCAD.Vector(4950.0, 0.0, -4300.0),
@@ -119,13 +119,13 @@ class TestResult(unittest.TestCase):
             26: FreeCAD.Vector(15047.0, 0.0, -11148.0),
             27: FreeCAD.Vector(15047.0, 0.0, -7897.97)
         }
-        efc['Seg2Elem'] = {
+        efc["Seg2Elem"] = {
             1: (15, 2),
             13: (13, 27)
         }
-        efc['Seg3Elem'] = {}
-        '''   deleted during reading because of the inout file
-        efc['Seg3Elem'] = {
+        efc["Seg3Elem"] = {}
+        """   deleted during reading because of the inout file
+        efc["Seg3Elem"] = {
             2: (2, 16, 3),
             3: (3, 17, 4),
             4: (4, 18, 5),
@@ -138,32 +138,32 @@ class TestResult(unittest.TestCase):
             11: (11, 25, 12),
             12: (12, 26, 13)
         }
-        '''
+        """
         # faces
-        efc['Tria3Elem'] = efc['Tria6Elem'] = {}
-        efc['Quad4Elem'] = efc['Quad8Elem'] = {}
+        efc["Tria3Elem"] = efc["Tria6Elem"] = {}
+        efc["Quad4Elem"] = efc["Quad8Elem"] = {}
         # volumes
-        efc['Tetra4Elem'] = efc['Tetra10Elem'] = {}
-        efc['Hexa8Elem'] = efc['Hexa20Elem'] = {}
-        efc['Penta6Elem'] = efc['Penta15Elem'] = {}
+        efc["Tetra4Elem"] = efc["Tetra10Elem"] = {}
+        efc["Hexa8Elem"] = efc["Hexa20Elem"] = {}
+        efc["Penta6Elem"] = efc["Penta15Elem"] = {}
 
-        efc['Results'] = [
-            {'time': 0.00390625},
-            {'time': 0.0078125},
-            {'time': 0.0136719},
-            {'time': 0.0224609},
-            {'time': 0.0356445},
-            {'time': 0.0554199},
-            {'time': 0.085083},
-            {'time': 0.129578},
-            {'time': 0.19632},
-            {'time': 0.296432},
-            {'time': 0.446602},
-            {'time': 0.671856},
+        efc["Results"] = [
+            {"time": 0.00390625},
+            {"time": 0.0078125},
+            {"time": 0.0136719},
+            {"time": 0.0224609},
+            {"time": 0.0356445},
+            {"time": 0.0554199},
+            {"time": 0.085083},
+            {"time": 0.129578},
+            {"time": 0.19632},
+            {"time": 0.296432},
+            {"time": 0.446602},
+            {"time": 0.671856},
             {
-                'number': 0,
-                'time': 1.0,
-                'mflow': {
+                "number": 0,
+                "time": 1.0,
+                "mflow": {
                     1: 78.3918,  # added during reading because of the inout file
                     2: 78.3918,
                     3: 78.3918,
@@ -192,7 +192,7 @@ class TestResult(unittest.TestCase):
                     27: 78.3918,
                     28: 78.3918  # added during reading because of the inout file
                 },
-                'npressure': {
+                "npressure": {
                     1: 0.1,  # added during reading because of the inout file
                     2: 0.1,
                     3: 0.134840,
@@ -232,8 +232,8 @@ class TestResult(unittest.TestCase):
         print(expected_frd_content_len)
         print(sorted(expected_frd_content.keys()))
         # expected results
-        expected_mflow = expected_frd_content['Results'][12]['mflow']
-        expected_npressure = expected_frd_content['Results'][12]['npressure']
+        expected_mflow = expected_frd_content["Results"][12]["mflow"]
+        expected_npressure = expected_frd_content["Results"][12]["npressure"]
         expected_res_len = [
             len(expected_mflow),
             len(expected_npressure)
@@ -249,18 +249,18 @@ class TestResult(unittest.TestCase):
             "Length's of read frd data values are unexpected"
         )
         self.assertEqual(
-            frd_content['Nodes'],
-            expected_frd_content['Nodes'],
+            frd_content["Nodes"],
+            expected_frd_content["Nodes"],
             "Values of read node data are unexpected"
         )
         self.assertEqual(
-            frd_content['Seg2Elem'],
-            expected_frd_content['Seg2Elem'],
+            frd_content["Seg2Elem"],
+            expected_frd_content["Seg2Elem"],
             "Values of read Seg2 data are unexpected"
         )
         self.assertEqual(
-            frd_content['Seg3Elem'],
-            expected_frd_content['Seg3Elem'],
+            frd_content["Seg3Elem"],
+            expected_frd_content["Seg3Elem"],
             "Values of read Seg3 data are unexpected"
         )
         self.assertEqual(
@@ -285,7 +285,7 @@ class TestResult(unittest.TestCase):
     ):
         # node 5 von calculix cantilver 3D example
         # doc = FreeCAD.open(
-        #     FreeCAD.ConfigGet("AppHomePath") + 'data/examples/FemCalculixCantilever3D.FCStd'
+        #     FreeCAD.ConfigGet("AppHomePath") + "data/examples/FemCalculixCantilever3D.FCStd"
         # )
         # doc.Box_Mesh.FemMesh.Nodes[5]
         # Vector (0.0, 1000.0, 0.0)
@@ -431,7 +431,7 @@ class TestResult(unittest.TestCase):
                 round(res[1], 5),
                 round(res[2], 5)
             )
-            # fcc_print('Case{}: {}'.format(i + 1 , rhores))
+            # fcc_print("Case{}: {}".format(i + 1 , rhores))
             self.assertEqual(
                 rhores, case[1],
                 "Calculated rho are not the expected Case{}."
