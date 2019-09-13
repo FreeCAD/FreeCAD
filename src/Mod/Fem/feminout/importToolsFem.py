@@ -69,7 +69,9 @@ def get_FemMeshObjectOrder(
         else:
             presumable_order = [el - 1 for el in edges_length_set]
     else:
-        print("Found no edges in mesh: Element order determination does not work without them.")
+        FreeCAD.Console.PrintMessage(
+            "Found no edges in mesh: Element order determination does not work without them.\n"
+        )
 
     return presumable_order
 

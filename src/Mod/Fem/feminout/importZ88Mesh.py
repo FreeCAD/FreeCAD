@@ -460,7 +460,7 @@ def write_z88_mesh_to_file(
     ):
         node_dof = 6  # schalenelemente
     else:
-        print("Error: wrong z88_element_type")
+        FreeCAD.Console.PrintError("Error: wrong z88_element_type.\n")
         return
     node_count = len(femnodes_mesh)
     element_count = len(femelement_table)
@@ -558,9 +558,9 @@ def get_z88_element_type(
 ):
     import femmesh.meshtools as FemMeshTools
     if not femmesh:
-        print("Error: No femmesh!")
+        FreeCAD.Console.PrintMessage("Error: No femmesh!\n")
     if not femelement_table:
-        print("We need to get the femelement_table first!")
+        FreeCAD.Console.PrintMessage("We need to get the femelement_table first!\n")
         femelement_table = FemMeshTools.get_femelement_table(femmesh)
     # in some cases lowest key in femelement_table is not [1]
     for elem in sorted(femelement_table):
@@ -574,43 +574,43 @@ def get_z88_element_type(
             elif elem_length == 10:
                 return 16
             else:
-                print('Tetra with neither 4 nor 10 nodes')
+                FreeCAD.Console.PrintMessage('Tetra with neither 4 nor 10 nodes.\n')
         elif femmesh.HexaCount == femmesh.VolumeCount:
             if elem_length == 8:
                 return 1
             elif elem_length == 20:
                 return 10
             else:
-                print('Hexa with neither 8 nor 20 nodes')
+                FreeCAD.Console.PrintMessage('Hexa with neither 8 nor 20 nodes.\n')
                 return 0
         else:
-            print('no tetra, no hexa or Mixed Volume Elements')
+            FreeCAD.Console.PrintMessage('no tetra, no hexa or Mixed Volume Elements.\n')
     elif FemMeshTools.is_face_femmesh(femmesh):
         if femmesh.TriangleCount == femmesh.FaceCount:
             if elem_length == 3:
-                print('tria3mesh, not supported by z88')
+                FreeCAD.Console.PrintMessage('tria3mesh, not supported by Z88.\n')
                 return 0
             elif elem_length == 6:
                 return 24
             else:
-                print('Tria with neither 3 nor 6 nodes')
+                FreeCAD.Console.PrintMessage('Tria with neither 3 nor 6 nodes.\n')
                 return 0
         elif femmesh.QuadrangleCount == femmesh.FaceCount:
             if elem_length == 4:
-                print('quad4mesh, not supported by z88')
+                FreeCAD.Console.PrintMessage('quad4mesh, not supported by Z88.\n')
                 return 0
             elif elem_length == 8:
                 return 23
             else:
-                print('Quad with neither 4 nor 8 nodes')
+                FreeCAD.Console.PrintMessage('Quad with neither 4 nor 8 nodes.\n')
                 return 0
         else:
-            print('no tria, no quad')
+            FreeCAD.Console.PrintMessage('no tria, no quad\n')
             return 0
     elif FemMeshTools.is_edge_femmesh(femmesh):
-        print('Edge femmesh will be exported as 3D truss element nr 4')
+        FreeCAD.Console.PrintMessage('Edge femmesh will be exported as 3D truss element nr 4.\n')
         return 4
     else:
-        print('Neither edge nor face nor solid femmesh')
+        FreeCAD.Console.PrintMessage('Neither edge nor face nor solid femmesh.\n')
         return 0
     return 0

@@ -546,8 +546,8 @@ class _MaterialMechanicalNonlinear(CommandManager):
                     solver_object.Proxy.Type == "Fem::FemSolverCalculixCcxTools"
                     or solver_object.Proxy.Type == "Fem::FemSolverObjectCalculix"
                 ):
-            print(
-                "Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for {}"
+            FreeCAD.Console.PrintMessage(
+                "Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for {}\n"
                 .format(solver_object.Label)
             )
             solver_object.MaterialNonlinearity = "nonlinear"

@@ -98,10 +98,10 @@ def setup_cantileverbase(doc=None, solver="ccxtools"):
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
-        print("ERROR on creating nodes")
+        FreeCAD.Console.PrintError("Error on creating nodes.\n")
     control = create_elements(fem_mesh)
     if not control:
-        print("ERROR on creating elements")
+        FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(
         doc.addObject("Fem::FemMeshObject", mesh_name)
     )[0]
