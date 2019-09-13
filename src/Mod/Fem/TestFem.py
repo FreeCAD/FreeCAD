@@ -122,6 +122,7 @@ unittest.TextTestRunner().run(alltest)
 from femtest.utilstest import get_fem_test_defs as gf
 gf()
 
+./bin/FreeCADCmd --run-test "femtest.testfemimport.TestObjectExistance.test_objects_existance"
 ./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_1_static_analysis"
 ./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_2_static_multiple_material"
 ./bin/FreeCADCmd --run-test "femtest.testccxtools.TestCcxTools.test_3_freq_analysis"
