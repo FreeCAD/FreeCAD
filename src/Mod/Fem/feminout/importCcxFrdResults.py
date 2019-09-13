@@ -697,7 +697,7 @@ def read_frd_result(
 
         if mode_time_changed:
             mode_results["time"] = timestep
-            # mode_results["time"] = 0  # Don't return time if static  # WARUM?
+            # mode_results["time"] = 0  # Don't return time if static  # Why?
             mode_time_found = False
             mode_time_changed = False
 
