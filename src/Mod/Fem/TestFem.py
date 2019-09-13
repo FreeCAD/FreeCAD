@@ -93,6 +93,7 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCADCmd --run-test "femtest.testfemimport"
 
 # other module
+./bin/FreeCAD --run-test "femtest.testfemimport"
 ./bin/FreeCAD --run-test "femtest.testccxtools"
 ./bin/FreeCAD --run-test "femtest.testcommon"
 ./bin/FreeCAD --run-test "femtest.testmaterial"
@@ -100,6 +101,7 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCAD --run-test "femtest.testobject"
 ./bin/FreeCAD --run-test "femtest.testresult"
 ./bin/FreeCAD --run-test "femtest.testsolverframework"
+./bin/FreeCADCmd --run-test "femtest.testfemimport"
 ./bin/FreeCADCmd --run-test "femtest.testccxtools"
 ./bin/FreeCADCmd --run-test "femtest.testcommon"
 ./bin/FreeCADCmd --run-test "femtest.testmaterial"
