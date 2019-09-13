@@ -1851,8 +1851,12 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
         writer.Stream() << writer.ind() << "<Object "
         << "type=\"" << (*it)->getTypeId().getName()     << "\" "
         << "name=\"" << (*it)->getExportName()       << "\" "
-        << "id=\"" << (*it)->getID()       << "\" "
-        << "ViewType=\"" << (*it)->getViewProviderNameStored() << "\" ";
+        << "id=\"" << (*it)->getID()       << "\" ";
+
+        // Only write out custom view provider types
+        std::string viewType = (*it)->getViewProviderNameStored();
+        if (viewType != (*it)->getViewProviderName())
+            writer.Stream() << "ViewType=\"" << viewType << "\" ";
 
         // See DocumentObjectPy::getState
         if ((*it)->testStatus(ObjectStatus::Touch))
@@ -3476,7 +3480,7 @@ bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
 }
 
 DocumentObject * Document::addObject(const char* sType, const char* pObjectName, 
-        bool isNew, const char *viewType, bool isPartial)
+                                     bool isNew, const char* viewType, bool isPartial)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
 
@@ -3537,8 +3541,17 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
     pcObject->setStatus(ObjectStatus::PartialObject, isPartial);
 
-    if (!viewType || viewType[0] == '\0')
-        viewType = pcObject->getViewProviderNameOverride();
+    // If an object does not allow to override its view provider then ignore any
+    // input of the Document.xml or from Python as this information could be wrong.
+    // In this case the default type from getViewProviderName() is used.
+    if (pcObject->allowOverrideViewProviderName()) {
+        if (!viewType || viewType[0] == '\0') {
+            viewType = pcObject->getViewProviderNameOverride();
+        }
+    }
+    else {
+        viewType = pcObject->getViewProviderName();
+    }
 
     if (viewType && viewType[0] != '\0')
         pcObject->_pcViewProviderName = viewType;
@@ -3632,8 +3645,16 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
         // mark the object as new (i.e. set status bit 2) and send the signal
         pcObject->setStatus(ObjectStatus::New, true);
 
-        const char *viewType = pcObject->getViewProviderNameOverride();
-        pcObject->_pcViewProviderName = viewType?viewType:"";
+        // If an object does not allow to override its view provider then use
+        // getViewProviderName() instead.
+        if (pcObject->allowOverrideViewProviderName()) {
+            const char *viewType = pcObject->getViewProviderNameOverride();
+            pcObject->_pcViewProviderName = viewType ? viewType : "";
+        }
+        else {
+            const char *viewType = pcObject->getViewProviderName();
+            pcObject->_pcViewProviderName = viewType ? viewType : "";
+        }
 
         signalNewObject(*pcObject);
 
@@ -3691,8 +3712,16 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
     // mark the object as new (i.e. set status bit 2) and send the signal
     pcObject->setStatus(ObjectStatus::New, true);
 
-    const char *viewType = pcObject->getViewProviderNameOverride();
-    pcObject->_pcViewProviderName = viewType?viewType:"";
+    // If an object does not allow to override its view provider then use
+    // getViewProviderName() instead.
+    if (pcObject->allowOverrideViewProviderName()) {
+        const char *viewType = pcObject->getViewProviderNameOverride();
+        pcObject->_pcViewProviderName = viewType ? viewType : "";
+    }
+    else {
+        const char *viewType = pcObject->getViewProviderName();
+        pcObject->_pcViewProviderName = viewType ? viewType : "";
+    }
 
     signalNewObject(*pcObject);
 
@@ -3723,8 +3752,16 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
             d->activeUndoTransaction->addObjectDel(pcObject);
     }
 
-    const char *viewType = pcObject->getViewProviderNameOverride();
-    pcObject->_pcViewProviderName = viewType?viewType:"";
+    // If an object does not allow to override its view provider then use
+    // getViewProviderName() instead.
+    if (pcObject->allowOverrideViewProviderName()) {
+        const char *viewType = pcObject->getViewProviderNameOverride();
+        pcObject->_pcViewProviderName = viewType ? viewType : "";
+    }
+    else {
+        const char *viewType = pcObject->getViewProviderName();
+        pcObject->_pcViewProviderName = viewType ? viewType : "";
+    }
 
     // send the signal
     signalNewObject(*pcObject);

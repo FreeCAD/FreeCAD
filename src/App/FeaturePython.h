@@ -51,6 +51,7 @@ public:
     bool onBeforeChangeLabel(std::string &newLabel);
     void onChanged(const Property* prop);
     void onDocumentRestored();
+    bool allowOverrideViewProviderName() const;
     std::string getViewProviderName();
     PyObject *getPyObject(void);
 
@@ -192,7 +193,10 @@ public:
         }
         return DocumentObject::StdReturn;
     }
-    virtual const char* getViewProviderNameOverride(void) const override{
+    virtual bool allowOverrideViewProviderName() const {
+        return imp->allowOverrideViewProviderName();
+    }
+    virtual const char* getViewProviderNameOverride(void) const override {
         viewProviderName = imp->getViewProviderName();
         if(viewProviderName.size())
             return viewProviderName.c_str();
