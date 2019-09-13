@@ -78,7 +78,7 @@ class TestFemImport(unittest.TestCase):
 # ************************************************************************************************
 # to be sure this is run on very first of FEM test this is here and not in objects
 class TestObjectExistance(unittest.TestCase):
-    fcc_print('import TestObjectExistance')
+    fcc_print("import TestObjectExistance")
 
     # ********************************************************************************************
     def setUp(
