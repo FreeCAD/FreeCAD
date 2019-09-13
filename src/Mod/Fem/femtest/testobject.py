@@ -145,6 +145,7 @@ class TestObjectCreate(unittest.TestCase):
 
 
 # ************************************************************************************************
+# ************************************************************************************************
 class TestObjectType(unittest.TestCase):
     fcc_print('import TestObjectType')
 
