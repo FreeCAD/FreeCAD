@@ -3537,9 +3537,10 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
     pcObject->setStatus(ObjectStatus::PartialObject, isPartial);
 
-    if(!viewType)
+    if (!viewType || viewType[0] == '\0')
         viewType = pcObject->getViewProviderNameOverride();
-    if(viewType) 
+
+    if (viewType && viewType[0] != '\0')
         pcObject->_pcViewProviderName = viewType;
 
     signalNewObject(*pcObject);
