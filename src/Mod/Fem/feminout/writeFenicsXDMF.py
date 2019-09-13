@@ -39,8 +39,8 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh XDMF writer for FEM workbench
 
-ENCODING_ASCII = 'ASCII'
-ENCODING_HDF5 = 'HDF5'
+ENCODING_ASCII = "ASCII"
+ENCODING_HDF5 = "HDF5"
 
 FreeCAD_Group_Dimensions = {
     "Vertex": 0,
@@ -68,9 +68,9 @@ def numpy_array_to_str(
 ):
     res = ""
     dt = str(npa.dtype)
-    if 'int' in dt:
+    if "int" in dt:
         res = "\n".join([" ".join([("%d" % s) for s in a]) for a in npa.tolist()])
-    elif 'float' in dt:
+    elif "float" in dt:
         res = "\n".join([" ".join([("%3.6f" % s) for s in a]) for a in npa.tolist()])
     return res
 
@@ -141,11 +141,11 @@ def write_fenics_mesh_codim_xdmf(
     element_types = get_FemMeshObjectElementTypes(fem_mesh_obj, remove_zero_element_entries=True)
     element_order = get_FemMeshObjectOrder(fem_mesh_obj)
     # we get all elements from mesh to decide which one to write by selection of codim
-    '''
+    """
     nodeindices = [(
         nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_volume_ind)
     ) for (fen_ind, fc_volume_ind) in enumerate(fc_cells)]
-    '''
+    """
     writeout_element_dimension = mesh_dimension - codim
 
     (num_topo, name_topo, dim_topo) = (0, "", 0)
@@ -314,14 +314,14 @@ def write_fenics_mesh_xdmf(
     gmshgroups = get_FemMeshObjectMeshGroups(fem_mesh_obj)
 
     if gmshgroups is not ():
-        print('found mesh groups')
+        print("found mesh groups")
 
     for g in gmshgroups:
         mesh_function_type = fem_mesh.getGroupElementType(g)
         mesh_function_codim = dim_cell - FreeCAD_Group_Dimensions[mesh_function_type]
         mesh_function_name = fem_mesh.getGroupName(g)
 
-        print('group id: %d (label: %s) with element type %s and codim %d'
+        print("group id: %d (label: %s) with element type %s and codim %d"
               % (g, mesh_function_name, mesh_function_type, mesh_function_codim))
 
         mesh_function_grid = ET.SubElement(

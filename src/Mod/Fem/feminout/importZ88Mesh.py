@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -36,10 +37,10 @@ import FreeCAD
 # names are fix given from FreeCAD, these methods are called from FreeCAD
 # they are set in FEM modules Init.py
 
-if open.__module__ == '__builtin__':
+if open.__module__ == "__builtin__":
     # because we'll redefine open below (Python2)
     pyopen = open
-elif open.__module__ == 'io':
+elif open.__module__ == "io":
     # because we'll redefine open below (Python3)
     pyopen = open
 
@@ -47,8 +48,8 @@ elif open.__module__ == 'io':
 def open(
     filename
 ):
-    '''called when freecad opens a file
-    a FEM mesh object is created in a new document'''
+    """called when freecad opens a file
+    a FEM mesh object is created in a new document"""
 
     docname = os.path.splitext(os.path.basename(filename))[0]
     return insert(filename, docname)
@@ -58,8 +59,8 @@ def insert(
     filename,
     docname
 ):
-    '''called when freecad wants to import a file
-    a FEM mesh object is created in a existing document'''
+    """called when freecad wants to import a file
+    a FEM mesh object is created in a existing document"""
 
     try:
         doc = FreeCAD.getDocument(docname)
@@ -109,9 +110,9 @@ def import_z88_mesh(
     analysis=None,
     docname=None
 ):
-    '''read a FEM mesh from a Z88 mesh file and
+    """read a FEM mesh from a Z88 mesh file and
     insert a FreeCAD FEM Mesh object in the ActiveDocument
-    '''
+    """
 
     try:
         doc = FreeCAD.getDocument(docname)
@@ -126,7 +127,7 @@ def import_z88_mesh(
 
     femmesh = read(filename)
     if femmesh:
-        mesh_object = doc.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object = doc.addObject("Fem::FemMeshObject", mesh_name)
         mesh_object.FemMesh = femmesh
 
     return mesh_object
@@ -135,8 +136,8 @@ def import_z88_mesh(
 def read(
     filename
 ):
-    '''read a FemMesh from a Z88 mesh file and return the FemMesh
-    '''
+    """read a FemMesh from a Z88 mesh file and return the FemMesh
+    """
     # no document object is created, just the FemMesh is returned
 
     mesh_data = read_z88_mesh(filename)
@@ -148,9 +149,9 @@ def read(
 def read_z88_mesh(
     z88_mesh_input
 ):
-    ''' reads a z88 mesh file z88i1.txt (Z88OSV14) or z88structure.txt (Z88AuroraV3)
+    """ reads a z88 mesh file z88i1.txt (Z88OSV14) or z88structure.txt (Z88AuroraV3)
         and extracts the nodes and elements
-    '''
+    """
     nodes = {}
     elements_hexa8 = {}
     elements_penta6 = {}
@@ -188,13 +189,13 @@ def read_z88_mesh(
     elements_last_line = elemts_first_line - 1 + elements_count * 2
 
     FreeCAD.Console.PrintLog(nodes_count)
-    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog("\n")
     FreeCAD.Console.PrintLog(elements_count)
-    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog("\n")
     FreeCAD.Console.PrintLog(nodes_last_line)
-    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog("\n")
     FreeCAD.Console.PrintLog(elemts_first_line)
-    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog("\n")
     FreeCAD.Console.PrintLog(elements_last_line)
 
     z88_mesh_file.seek(0)  # go back to the beginning of the file
@@ -395,27 +396,27 @@ def read_z88_mesh(
                     return {}
 
     for n in nodes:
-        FreeCAD.Console.PrintLog(str(n) + '  ' + str(nodes[n]) + '\n')
+        FreeCAD.Console.PrintLog(str(n) + "  " + str(nodes[n]) + "\n")
     for e in elements_tria6:
-        FreeCAD.Console.PrintLog(str(e) + '  ' + str(elements_tria6[e]) + '\n')
-    FreeCAD.Console.PrintLog('\n')
+        FreeCAD.Console.PrintLog(str(e) + "  " + str(elements_tria6[e]) + "\n")
+    FreeCAD.Console.PrintLog("\n")
 
     z88_mesh_file.close()
 
     return {
-        'Nodes': nodes,
-        'Seg2Elem': elements_seg2,
-        'Seg3Elem': elements_seg3,
-        'Tria3Elem': elements_tria3,
-        'Tria6Elem': elements_tria6,
-        'Quad4Elem': elements_quad4,
-        'Quad8Elem': elements_quad8,
-        'Tetra4Elem': elements_tetra4,
-        'Tetra10Elem': elements_tetra10,
-        'Hexa8Elem': elements_hexa8,
-        'Hexa20Elem': elements_hexa20,
-        'Penta6Elem': elements_penta6,
-        'Penta15Elem': elements_penta15
+        "Nodes": nodes,
+        "Seg2Elem": elements_seg2,
+        "Seg3Elem": elements_seg3,
+        "Tria3Elem": elements_tria3,
+        "Tria6Elem": elements_tria6,
+        "Quad4Elem": elements_quad4,
+        "Quad8Elem": elements_quad8,
+        "Tetra4Elem": elements_tetra4,
+        "Tetra10Elem": elements_tetra10,
+        "Hexa8Elem": elements_hexa8,
+        "Hexa20Elem": elements_hexa20,
+        "Penta6Elem": elements_penta6,
+        "Penta15Elem": elements_penta15
     }
 
 
@@ -424,8 +425,8 @@ def write(
     fem_mesh,
     filename
 ):
-    '''directly write a FemMesh to a Z88 mesh file format
-    fem_mesh: a FemMesh'''
+    """directly write a FemMesh to a Z88 mesh file format
+    fem_mesh: a FemMesh"""
 
     if not fem_mesh.isDerivedFrom("Fem::FemMesh"):
         FreeCAD.Console.PrintError("Not a FemMesh was given as parameter.\n")
@@ -565,7 +566,7 @@ def get_z88_element_type(
     # in some cases lowest key in femelement_table is not [1]
     for elem in sorted(femelement_table):
         elem_length = len(femelement_table[elem])
-        FreeCAD.Console.PrintLog('node count of first element: ' + str(elem_length) + '\n')
+        FreeCAD.Console.PrintLog("node count of first element: " + str(elem_length) + "\n")
         break  # break after the first elem
     if FemMeshTools.is_solid_femmesh(femmesh):
         if femmesh.TetraCount == femmesh.VolumeCount:
@@ -574,43 +575,43 @@ def get_z88_element_type(
             elif elem_length == 10:
                 return 16
             else:
-                FreeCAD.Console.PrintMessage('Tetra with neither 4 nor 10 nodes.\n')
+                FreeCAD.Console.PrintMessage("Tetra with neither 4 nor 10 nodes.\n")
         elif femmesh.HexaCount == femmesh.VolumeCount:
             if elem_length == 8:
                 return 1
             elif elem_length == 20:
                 return 10
             else:
-                FreeCAD.Console.PrintMessage('Hexa with neither 8 nor 20 nodes.\n')
+                FreeCAD.Console.PrintMessage("Hexa with neither 8 nor 20 nodes.\n")
                 return 0
         else:
-            FreeCAD.Console.PrintMessage('no tetra, no hexa or Mixed Volume Elements.\n')
+            FreeCAD.Console.PrintMessage("no tetra, no hexa or Mixed Volume Elements.\n")
     elif FemMeshTools.is_face_femmesh(femmesh):
         if femmesh.TriangleCount == femmesh.FaceCount:
             if elem_length == 3:
-                FreeCAD.Console.PrintMessage('tria3mesh, not supported by Z88.\n')
+                FreeCAD.Console.PrintMessage("tria3mesh, not supported by Z88.\n")
                 return 0
             elif elem_length == 6:
                 return 24
             else:
-                FreeCAD.Console.PrintMessage('Tria with neither 3 nor 6 nodes.\n')
+                FreeCAD.Console.PrintMessage("Tria with neither 3 nor 6 nodes.\n")
                 return 0
         elif femmesh.QuadrangleCount == femmesh.FaceCount:
             if elem_length == 4:
-                FreeCAD.Console.PrintMessage('quad4mesh, not supported by Z88.\n')
+                FreeCAD.Console.PrintMessage("quad4mesh, not supported by Z88.\n")
                 return 0
             elif elem_length == 8:
                 return 23
             else:
-                FreeCAD.Console.PrintMessage('Quad with neither 4 nor 8 nodes.\n')
+                FreeCAD.Console.PrintMessage("Quad with neither 4 nor 8 nodes.\n")
                 return 0
         else:
-            FreeCAD.Console.PrintMessage('no tria, no quad\n')
+            FreeCAD.Console.PrintMessage("no tria, no quad\n")
             return 0
     elif FemMeshTools.is_edge_femmesh(femmesh):
-        FreeCAD.Console.PrintMessage('Edge femmesh will be exported as 3D truss element nr 4.\n')
+        FreeCAD.Console.PrintMessage("Edge femmesh will be exported as 3D truss element nr 4.\n")
         return 4
     else:
-        FreeCAD.Console.PrintMessage('Neither edge nor face nor solid femmesh.\n')
+        FreeCAD.Console.PrintMessage("Neither edge nor face nor solid femmesh.\n")
         return 0
     return 0

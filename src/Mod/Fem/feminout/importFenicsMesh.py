@@ -43,10 +43,10 @@ if FreeCAD.GuiUp:
 
 # Template copied from importZ88Mesh.py. Thanks Bernd!
 # ********* generic FreeCAD import and export methods *********
-if open.__module__ == '__builtin__':
+if open.__module__ == "__builtin__":
     # because we'll redefine open below (Python2)
     pyopen = open
-elif open.__module__ == 'io':
+elif open.__module__ == "io":
     # because we'll redefine open below (Python3)
     pyopen = open
 
@@ -175,14 +175,14 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
 
     if fileString != "":
         fileName, fileExtension = os.path.splitext(fileString)
-        if fileExtension.lower() == '.xml':
+        if fileExtension.lower() == ".xml":
             FreeCAD.Console.PrintWarning(
                 "XML is not designed to save higher order elements.\n")
             FreeCAD.Console.PrintWarning(
                 "Reducing order for second order mesh.\n")
             FreeCAD.Console.PrintWarning("Tri6 -> Tri3, Tet10 -> Tet4, etc.\n")
             writeFenicsXML.write_fenics_mesh_xml(obj, fileString)
-        elif fileExtension.lower() == '.xdmf':
+        elif fileExtension.lower() == ".xdmf":
             mesh_groups = importToolsFem.get_FemMeshObjectMeshGroups(obj)
             if mesh_groups is not ():
                 # if there are groups found, make task panel available if GuiUp
@@ -203,13 +203,13 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
 
 # ********* module specific methods *********
 def import_fenics_mesh(filename, analysis=None):
-    '''insert a FreeCAD FEM Mesh object in the ActiveDocument
-    '''
+    """insert a FreeCAD FEM Mesh object in the ActiveDocument
+    """
     mesh_data = readFenicsXML.read_fenics_mesh_xml(filename)
     # xdmf not operational
 
     mesh_name = os.path.basename(os.path.splitext(filename)[0])
     femmesh = importToolsFem.make_femmesh(mesh_data)
     if femmesh:
-        mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObject", mesh_name)
         mesh_object.FemMesh = femmesh

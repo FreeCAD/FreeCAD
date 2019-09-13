@@ -42,7 +42,7 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     if beVerbose == 1:
             FreeCAD.Console.PrintMessage("\nExport of mesh to TetGen file ...")
     (allVertices, allFacets) = meshToExport.Topology
-    f = open(filePath, 'w')
+    f = open(filePath, "w")
     f.write("# This file was generated from FreeCAD geometry\n")
     f.write("# Part 1 - node list\n")
     f.write(
@@ -52,10 +52,10 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     )
     for PointIndex in range(len(allVertices)):
         f.write("%(PointIndex)5i %(x) e %(y) e %(z) e\n" % {
-            'PointIndex': PointIndex,
-            'x': allVertices[PointIndex].x,
-            'y': allVertices[PointIndex].y,
-            'z': allVertices[PointIndex].z
+            "PointIndex": PointIndex,
+            "x": allVertices[PointIndex].x,
+            "y": allVertices[PointIndex].y,
+            "z": allVertices[PointIndex].z
         })
 
     # Find out BoundaryMarker for each facet. If edge connects only two facets,
@@ -92,7 +92,7 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     # disconnectedEdges = len(EdgeKeys)
     if beVerbose == 1:
         FreeCAD.Console.PrintMessage(
-            '\nBoundaryMarker:' + repr(BoundaryMarker) + ' ' + repr(len(EdgeFacets))
+            "\nBoundaryMarker:" + repr(BoundaryMarker) + " " + repr(len(EdgeFacets))
         )
     searchForPair = 1
 
@@ -144,24 +144,24 @@ def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):
     # End of main loop
     if beVerbose == 1:
         FreeCAD.Console.PrintMessage(
-            '\nNew BoundaryMarker:' + repr(BoundaryMarker) + ' ' + repr(len(EdgeFacets))
+            "\nNew BoundaryMarker:" + repr(BoundaryMarker) + " " + repr(len(EdgeFacets))
         )
 
     # ********** Part 2 - write all facets to *.poly file
     f.write("# Part 2 - facet list\n")
     f.write("%(TotalNumOfFacets)i  %(BoundaryMarkerExists)i\n" % {
-        'TotalNumOfFacets': len(allFacets),
-        'BoundaryMarkerExists': BoundaryMarkerExists
+        "TotalNumOfFacets": len(allFacets),
+        "BoundaryMarkerExists": BoundaryMarkerExists
     })
     for FacetIndex in range(len(allFacets)):
-        f.write("# FacetIndex = %(Index)i\n" % {'Index': FacetIndex})
-        f.write("%(NumOfPolygons)3i " % {'NumOfPolygons': 1})
+        f.write("# FacetIndex = %(Index)i\n" % {"Index": FacetIndex})
+        f.write("%(NumOfPolygons)3i " % {"NumOfPolygons": 1})
         if BoundaryMarkerExists == 1:
-            f.write("0 %(BoundaryMarker)i" % {'BoundaryMarker': BoundaryMarker[FacetIndex]})
-        f.write("\n%(NumOfConers)3i  " % {'NumOfConers': len(allFacets[FacetIndex])})
+            f.write("0 %(BoundaryMarker)i" % {"BoundaryMarker": BoundaryMarker[FacetIndex]})
+        f.write("\n%(NumOfConers)3i  " % {"NumOfConers": len(allFacets[FacetIndex])})
         for PointIndex in range(len(allFacets[FacetIndex])):
             #        f.write(repr(allFacets[FacetIndex][PointIndex]))
-            f.write("%(PointIndex)i " % {'PointIndex': allFacets[FacetIndex][PointIndex]})
+            f.write("%(PointIndex)i " % {"PointIndex": allFacets[FacetIndex][PointIndex]})
         f.write("\n")
     # ********** Part 3 and Part 4 are zero
     f.write("# Part 3 - the hole list.\n# There is no hole in bar.\n0\n")
