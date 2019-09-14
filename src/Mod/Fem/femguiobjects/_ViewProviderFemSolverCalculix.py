@@ -325,7 +325,7 @@ class _TaskPanelFemSolverCalculix:
             self.fea.load_results()
         except:
             FreeCAD.Console.PrintError("loading results failed\n")
-                        
+
         QApplication.restoreOverrideCursor()
         self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
 
