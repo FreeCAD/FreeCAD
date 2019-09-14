@@ -208,7 +208,10 @@ def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
     #obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","BuildingPart")
     obj.Label = translate("Arch","BuildingPart")
     BuildingPart(obj)
-    #obj.IfcType = "Building Storey" # set default to Floor
+    # if no IfcType is set it will be the first in the available
+    # Annotation in IFC2x3 and Actuator in IFC4, both is certainly wrong
+    # use Undefined ATM
+    obj.IfcType = "Undefined"
     if FreeCAD.GuiUp:
         ViewProviderBuildingPart(obj.ViewObject)
     if objectslist:
