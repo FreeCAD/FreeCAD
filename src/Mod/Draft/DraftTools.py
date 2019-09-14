@@ -5652,7 +5652,7 @@ FreeCADGui.addCommand('Draft_Polygon',Polygon())
 FreeCADGui.addCommand('Draft_BSpline',BSpline())
 class CommandBezierGroup:
     def GetCommands(self):
-        return tuple(['Draft_BezCurve','Draft_CubicBezCurve'])
+        return tuple(['Draft_CubicBezCurve', 'Draft_BezCurve'])
     def GetResources(self):
         return { 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BezierTools",'Bezier tools'),
                  'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezierTools",'Bezier tools')
