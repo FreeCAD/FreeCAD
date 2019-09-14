@@ -410,6 +410,11 @@ int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
     return -2;
 }
 
+bool FeaturePythonImp::allowOverrideViewProviderName() const
+{
+    return true;
+}
+
 std::string FeaturePythonImp::getViewProviderName()
 {
     _FC_PY_CALL_CHECK(getViewProviderName,return(std::string()));
