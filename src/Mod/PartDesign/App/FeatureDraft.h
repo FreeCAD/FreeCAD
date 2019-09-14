@@ -54,6 +54,10 @@ public:
         return "PartDesignGui::ViewProviderDraft";
     }
     //@}
+
+private:
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
+    static App::PropertyAngle::Constraints floatAngle;
 };
 
 } //namespace PartDesign
