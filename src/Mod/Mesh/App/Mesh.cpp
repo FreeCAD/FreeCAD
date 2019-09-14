@@ -50,6 +50,7 @@
 #include "Core/SetOperations.h"
 #include "Core/Triangulation.h"
 #include "Core/Trim.h"
+#include "Core/TrimByPlane.h"
 #include "Core/Visitor.h"
 #include "Core/Decimation.h"
 
@@ -60,7 +61,7 @@ using namespace Mesh;
 
 float MeshObject::Epsilon = 1.0e-5f;
 
-TYPESYSTEM_SOURCE(Mesh::MeshObject, Data::ComplexGeoData);
+TYPESYSTEM_SOURCE(Mesh::MeshObject, Data::ComplexGeoData)
 
 MeshObject::MeshObject()
 {
@@ -1049,6 +1050,21 @@ void MeshObject::trim(const Base::Polygon2d& polygon2d,
     trim.TrimFacets(check, triangle);
     if (!check.empty())
         this->deleteFacets(check);
+    if (!triangle.empty())
+        this->_kernel.AddFacets(triangle);
+}
+
+void MeshObject::trim(const Base::Vector3f& base, const Base::Vector3f& normal)
+{
+    MeshCore::MeshTrimByPlane trim(this->_kernel);
+    std::vector<unsigned long> trimFacets, removeFacets;
+    std::vector<MeshCore::MeshGeomFacet> triangle;
+
+    MeshCore::MeshFacetGrid meshGrid(this->_kernel);
+    trim.CheckFacets(meshGrid, base, normal, trimFacets, removeFacets);
+    trim.TrimFacets(trimFacets, base, normal, triangle);
+    if (!removeFacets.empty())
+        this->deleteFacets(removeFacets);
     if (!triangle.empty())
         this->_kernel.AddFacets(triangle);
 }
