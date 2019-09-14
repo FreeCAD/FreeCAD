@@ -101,8 +101,8 @@ void CmdMeshPartTrimByPlane::activated(int)
     msgBox.setIcon(QMessageBox::Question);
     msgBox.setWindowTitle(qApp->translate("MeshPart_TrimByPlane","Trim by plane"));
     msgBox.setText(qApp->translate("MeshPart_TrimByPlane","Select the side you want to keep."));
-    QPushButton* inner = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Inner"), QMessageBox::ActionRole);
-    QPushButton* outer = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Outer"), QMessageBox::ActionRole);
+    QPushButton* inner = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Below"), QMessageBox::ActionRole);
+    QPushButton* outer = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Above"), QMessageBox::ActionRole);
     QPushButton* split = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Split"), QMessageBox::ActionRole);
     msgBox.setDefaultButton(inner);
     msgBox.exec();
@@ -123,65 +123,41 @@ void CmdMeshPartTrimByPlane::activated(int)
         return;
     }
 
-    Base::Placement plm = static_cast<App::GeoFeature*>(plane.front())->Placement.getValue();
-    Base::Vector3d normal(0,0,1);
-    plm.getRotation().multVec(normal, normal);
-    Base::Vector3d up(-1,0,0);
-    plm.getRotation().multVec(up, up);
-    Base::Vector3d view(0,1,0);
-    plm.getRotation().multVec(view, view);
-
-    Base::Vector3d base = plm.getPosition();
-    Base::Rotation rot(Base::Vector3d(0,0,1), view);
-    Base::Matrix4D mat;
-    rot.getValue(mat);
-    Base::ViewProjMatrix proj(mat);
+    Base::Placement plnPlacement = static_cast<App::GeoFeature*>(plane.front())->Placement.getValue();
 
     openCommand("Trim with plane");
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
+        Base::Vector3d normal(0,0,1);
+        plnPlacement.getRotation().multVec(normal, normal);
+        Base::Vector3d base = plnPlacement.getPosition();
+
         Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(*it)->Mesh.startEditing();
-        Base::BoundBox3d bbox = mesh->getBoundBox();
-        double len = bbox.CalcDiagonalLength();
-        // project center of bbox onto plane and use this as base point
-        Base::Vector3d cnt = bbox.GetCenter();
-        double dist = (cnt-base)*normal;
-        base = cnt - normal * dist;
 
-        proj.setTransform(Base::Matrix4D());
+        // Apply the inverted mesh placement to the plane because the trimming is done
+        // on the untransformed mesh data
+        Base::Placement meshPlacement = mesh->getPlacement();
+        meshPlacement.invert();
+        meshPlacement.multVec(base, base);
+        meshPlacement.getRotation().multVec(normal, normal);
 
-        Base::Vector3d p1 = base + up * len;
-        Base::Vector3d p2 = base - up * len;
-        Base::Vector3d p3 = p2 + normal * len;
-        Base::Vector3d p4 = p1 + normal * len;
-        p1 = proj(p1);
-        p2 = proj(p2);
-        p3 = proj(p3);
-        p4 = proj(p4);
-
-        // must be set after getting the transformed polygon points
-        proj.setTransform(mesh->getTransform());
-
-        Base::Polygon2d polygon2d;
-        polygon2d.Add(Base::Vector2d(p1.x, p1.y));
-        polygon2d.Add(Base::Vector2d(p2.x, p2.y));
-        polygon2d.Add(Base::Vector2d(p3.x, p3.y));
-        polygon2d.Add(Base::Vector2d(p4.x, p4.y));
+        Base::Vector3f plnBase = Base::convertTo<Base::Vector3f>(base);
+        Base::Vector3f plnNormal = Base::convertTo<Base::Vector3f>(normal);
 
         if (role == Gui::SelectionRole::Inner) {
-            mesh->trim(polygon2d, proj, Mesh::MeshObject::INNER);
+            mesh->trim(plnBase, plnNormal);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
         }
         else if (role == Gui::SelectionRole::Outer) {
-            mesh->trim(polygon2d, proj, Mesh::MeshObject::OUTER);
+            mesh->trim(plnBase, -plnNormal);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
         }
         else if (role == Gui::SelectionRole::Split) {
             Mesh::MeshObject copy(*mesh);
-            mesh->trim(polygon2d, proj, Mesh::MeshObject::INNER);
+            mesh->trim(plnBase, plnNormal);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
 
-            copy.trim(polygon2d, proj, Mesh::MeshObject::OUTER);
+            copy.trim(plnBase, -plnNormal);
             App::Document* doc = (*it)->getDocument();
             Mesh::Feature* fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
             fea->Label.setValue((*it)->Label.getValue());
