@@ -43,6 +43,11 @@ find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --igno
     - forum topic https://forum.freecadweb.org/viewtopic.php?f=10&t=39110
     - BTW: Console prints need a new line where as print does not need one
 
+### Documenting
+- Python style is preferred over Doxygen style
+    - see ccx tools module in fem tools package
+    - see forum topic: https://forum.freecadweb.org/viewtopic.php?f=10&t=37094
+
 
 ## C++
 ### Naming policy
