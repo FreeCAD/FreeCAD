@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+ *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,53 +21,37 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TEXTDOCUMENTEDITORVIEW_H
-#define GUI_TEXTDOCUMENTEDITORVIEW_H
+#ifndef GUI_MDIVIEWPY_H
+#define GUI_MDIVIEWPY_H
 
-#include "PreCompiled.h"
-
-#include <string>
-#include <boost/signals2.hpp>
-#include <QPlainTextEdit>
-
-#include <App/TextDocument.h>
-#include <Gui/MDIView.h>
-#include <Gui/Window.h>
-
+#include <Base/PyObjectBase.h>
+#include <CXX/Extensions.hxx>
+#include <QPointer>
 
 namespace Gui {
+class MDIView;
 
-class GuiExport TextDocumentEditorView : public MDIView {
-    Q_OBJECT
-    TYPESYSTEM_HEADER();
-
+class MDIViewPy : public Py::PythonExtension<MDIViewPy>
+{
 public:
-    TextDocumentEditorView(
-            App::TextDocument* textDocument,
-            QPlainTextEdit* editor, QWidget* parent);
-    ~TextDocumentEditorView();
-    const char *getName() const override { return "TextDocumentEditorView"; }
-    bool onMsg(const char* msg, const char**) override;
-    bool onHasMsg(const char* msg) const override;
-    bool canClose() override;
+    static void init_type(void);    // announce properties and methods
 
-    bool event(QEvent *event) override;
+    MDIViewPy(MDIView *mdi);
+    ~MDIViewPy();
 
-    QPlainTextEdit* getEditor() const { return editor; }
-    App::TextDocument* getTextObject() const { return textDocument; }
+    Py::Object repr();
+
+    Py::Object message(const Py::Tuple&);
+    Py::Object fitAll(const Py::Tuple&);
+    Py::Object setActiveObject(const Py::Tuple&);
+    Py::Object getActiveObject(const Py::Tuple&);
+
+    MDIView* getMDIViewPtr() {return _view.data();}
+
 private:
-    void setupEditor();
-    void setupConnection();
-    void saveToObject();
-    void sourceChanged();
-    void refresh();
-    bool isEditorModified() const;
-    QPlainTextEdit *const editor;
-    App::TextDocument *const textDocument;
-    boost::signals2::connection textConnection;
-    bool sourceModified = false;
+    QPointer<MDIView> _view;
 };
 
-}
+} // namespace Gui
 
-#endif
+#endif //GUI_MDIVIEWPY_H

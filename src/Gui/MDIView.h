@@ -55,7 +55,6 @@ class GuiExport MDIView : public QMainWindow, public BaseView
 
     TYPESYSTEM_HEADER();
 
-
 public:
     /** View constructor
      * Attach the view to the given document. If the document is zero
@@ -80,10 +79,12 @@ public:
     virtual bool canClose(void);
     /// delete itself
     virtual void deleteSelf();
+    virtual PyObject *getPyObject();
     /** @name Printing */
     //@{
 public Q_SLOTS:
     virtual void print(QPrinter* printer);
+
 public:
     /** Print content of view */
     virtual void print();
@@ -148,6 +149,9 @@ protected:
     void closeEvent(QCloseEvent *e);
     /** \internal */
     void changeEvent(QEvent *e);
+
+protected:
+    PyObject* pythonObject;
 
 private:
     ViewMode currentMode;

@@ -40,6 +40,8 @@
 
 using namespace Gui;
 
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::TextDocumentEditorView, Gui::MDIView)
+
 TextDocumentEditorView::TextDocumentEditorView(
         App::TextDocument* txtDoc, QPlainTextEdit* e,
         QWidget* parent)

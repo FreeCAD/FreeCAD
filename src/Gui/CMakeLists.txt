@@ -1133,11 +1133,13 @@ SOURCE_GROUP("Widget" FILES ${Widget_SRCS})
 # The view sources
 SET(View_CPP_SRCS
     MDIView.cpp
+    MDIViewPy.cpp
     GraphvizView.cpp
     ActiveObjectList.cpp
 )
 SET(View_HPP_SRCS
     MDIView.h
+    MDIViewPy.h
     GraphvizView.h
     ActiveObjectList.h
 )
