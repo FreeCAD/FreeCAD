@@ -338,6 +338,9 @@ class _TaskPanelFemResultShow:
     def abs_displacement_selected(self, state):
         if len(self.result_obj.DisplacementLengths) > 0:
             self.result_selected("Uabs", self.result_obj.DisplacementLengths, "mm")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def x_displacement_selected(self, state):
         if len(self.result_obj.DisplacementVectors) > 0:
@@ -345,6 +348,9 @@ class _TaskPanelFemResultShow:
                 self.result_obj.DisplacementVectors, 0
             )
             self.result_selected("U1", res_disp_u1, "mm")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def y_displacement_selected(self, state):
         if len(self.result_obj.DisplacementVectors) > 0:
@@ -352,6 +358,9 @@ class _TaskPanelFemResultShow:
                 self.result_obj.DisplacementVectors, 1
             )
             self.result_selected("U2", res_disp_u2, "mm")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def z_displacement_selected(self, state):
         if len(self.result_obj.DisplacementVectors) > 0:
@@ -359,38 +368,65 @@ class _TaskPanelFemResultShow:
                 self.result_obj.DisplacementVectors, 2
             )
             self.result_selected("U3", res_disp_u3, "mm")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def vm_stress_selected(self, state):
         if len(self.result_obj.StressValues) > 0:
             self.result_selected("Sabs", self.result_obj.StressValues, "MPa")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def max_shear_selected(self, state):
         if len(self.result_obj.MaxShear) > 0:
             self.result_selected("MaxShear", self.result_obj.MaxShear, "MPa")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def max_prin_selected(self, state):
         if len(self.result_obj.PrincipalMax) > 0:
             self.result_selected("MaxPrin", self.result_obj.PrincipalMax, "MPa")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def temperature_selected(self, state):
         if len(self.result_obj.Temperature) > 0:
             self.result_selected("Temp", self.result_obj.Temperature, "K")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def massflowrate_selected(self, state):
         if len(self.result_obj.MassFlowRate) > 0:
             self.result_selected("MFlow", self.result_obj.MassFlowRate, "kg/s")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def networkpressure_selected(self, state):
         if len(self.result_obj.NetworkPressure) > 0:
             self.result_selected("NPress", self.result_obj.NetworkPressure, "MPa")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def min_prin_selected(self, state):
         if len(self.result_obj.PrincipalMin) > 0:
             self.result_selected("MinPrin", self.result_obj.PrincipalMin, "MPa")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def peeq_selected(self, state):
         if len(self.result_obj.Peeq) > 0:
             self.result_selected("Peeq", self.result_obj.Peeq, "")
+        else:
+            self.form.rb_none.setChecked(True)
+            self.none_selected(True)
 
     def user_defined_text(self, equation):
         FreeCAD.FEM_dialog["results_type"] = "user"
