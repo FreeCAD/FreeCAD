@@ -85,6 +85,7 @@
 #include "SoFCDB.h"
 #include "PythonConsolePy.h"
 #include "PythonDebugger.h"
+#include "MDIViewPy.h"
 #include "View3DPy.h"
 #include "DlgOnlineHelpImp.h"
 #include "SpaceballEvent.h"
@@ -93,6 +94,7 @@
 #include "TransactionObject.h"
 #include "FileDialog.h"
 
+#include "TextDocumentEditorView.h"
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
@@ -430,6 +432,7 @@ Application::Application(bool GUIenabled)
     OutputStdout                ::init_type();
     OutputStderr                ::init_type();
     PythonStdin                 ::init_type();
+    MDIViewPy                   ::init_type();
     View3DInventorPy            ::init_type();
     View3DInventorViewerPy      ::init_type();
     AbstractSplitViewPy         ::init_type();
@@ -1654,6 +1657,7 @@ void Application::initTypes(void)
     Gui::View3DInventor                         ::init();
     Gui::AbstractSplitView                      ::init();
     Gui::SplitView3DInventor                    ::init();
+    Gui::TextDocumentEditorView                 ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtension                  ::init();

@@ -111,6 +111,8 @@ using namespace TechDrawGui;
 
 /* TRANSLATOR TechDrawGui::MDIViewPage */
 
+TYPESYSTEM_SOURCE_ABSTRACT(TechDrawGui::MDIViewPage, Gui::MDIView)
+
 MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent),
     m_orientation(QPrinter::Landscape),
@@ -847,7 +849,7 @@ QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
 
 PyObject* MDIViewPage::getPyObject()
 {
-    Py_Return;
+    return Gui::MDIView::getPyObject();
 }
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
