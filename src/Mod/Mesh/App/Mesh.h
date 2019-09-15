@@ -223,6 +223,7 @@ public:
                        float fMinEps = 1.0e-2f, bool bConnectPolygons = false) const;
     void cut(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
     void trim(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
+    void trim(const Base::Vector3f& base, const Base::Vector3f& normal);
     //@}
 
     /** @name Selection */

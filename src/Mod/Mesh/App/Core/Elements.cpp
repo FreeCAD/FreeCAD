@@ -268,6 +268,25 @@ bool MeshGeomEdge::IntersectWithLine (const Base::Vector3f &rclPt,
     return dist2 + dist3 <= dist1 + eps;
 }
 
+bool MeshGeomEdge::IntersectWithPlane (const Base::Vector3f &rclPt,
+                                       const Base::Vector3f &rclDir,
+                                       Base::Vector3f &rclRes) const
+{
+    float dist1 = _aclPoints[0].DistanceToPlane(rclPt, rclDir);
+    float dist2 = _aclPoints[1].DistanceToPlane(rclPt, rclDir);
+
+    // either both points are below or above the plane
+    if (dist1 * dist2 >= 0.0f)
+        return false;
+
+    Base::Vector3f u = _aclPoints[1] - _aclPoints[0];
+    Base::Vector3f b = rclPt - _aclPoints[0];
+    float t = b.Dot(rclDir) / u.Dot(rclDir);
+    rclRes = _aclPoints[0] + t * u;
+
+    return true;
+}
+
 void MeshGeomEdge::ProjectPointToLine (const Base::Vector3f &rclPoint,
                                        Base::Vector3f &rclProj) const
 {

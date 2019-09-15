@@ -88,6 +88,8 @@ SET(Core_SRCS
     Core/Triangulation.h
     Core/Trim.cpp
     Core/Trim.h
+    Core/TrimByPlane.cpp
+    Core/TrimByPlane.h
     Core/tritritest.h
     Core/Visitor.cpp
     Core/Visitor.h

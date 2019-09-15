@@ -33,5 +33,5 @@ def is3DObject(obj):
         return obj.ViewObject.SwitchNode.getNumChildren()>0
     except Exception as err:
         import FreeCAD as App
-        App.Console.PrintWarning(u"Show.TempoVis.is3DObject error: {err}\n".format(err= str(err)))
+        App.Console.PrintWarning(u"Show.ShowUtils.is3DObject error: {err}\n".format(err= str(err)))
         return True #assume.

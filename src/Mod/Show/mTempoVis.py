@@ -21,12 +21,9 @@
 # *                                                                         *
 # ***************************************************************************/
 
-
-from .DepGraphTools import getAllDependencies, getAllDependent
-from .ShowUtils import is3DObject
+# module is named mTempoVis, because Show.TimpoVis exposes the class as its member, and hides the module TempoVis.py.
 
 from . import Containers
-Container = Containers.Container
 
 from . import TVStack
 
@@ -237,7 +234,7 @@ class TempoVis(object):
         mild_restore: test if user changed the value manually when restoring the TV.'''
         
         if self.state == S_RESTORED:
-            warn("Attempting to use a TV that has been restored. There must be a problem with code.")
+            Wrn("Attempting to use a TV that has been restored. There must be a problem with code.")
             return
 
         if not hasattr(doc_obj_or_list, '__iter__'):
@@ -247,7 +244,7 @@ class TempoVis(object):
         for doc_obj in doc_obj_or_list:
             for prop_name in prop_names:
                 if not hasattr(doc_obj.ViewObject, prop_name):
-                    warn("TempoVis: object {obj} has no attribute {attr}. Skipped."
+                    Wrn("TempoVis: object {obj} has no attribute {attr}. Skipped."
                                              .format(obj= doc_obj.Name, attr= prop_name))
                     continue
 
@@ -319,7 +316,9 @@ class TempoVis(object):
 
     def get_all_dependent(self, doc_obj, subname = None):
         '''get_all_dependent(doc_obj, subname = None): gets all objects that depend on doc_obj. Containers and Links (if subname) required for visibility of the object are excluded from the list.'''
-        from Containers import isAContainer
+        from . import Containers
+        from .Containers import isAContainer
+        from .DepGraphTools import getAllDependencies, getAllDependent
         if subname:
             # a link-path was provided. doc_obj has nothing to do with the object we want 
             # to collect dependencies from. So, replace it with the one pointed by link-path.
@@ -343,18 +342,22 @@ class TempoVis(object):
 
     def show_all_dependent(self, doc_obj):
         '''show_all_dependent(doc_obj): shows all objects that depend on doc_obj. This method is probably useless.'''
+        from .DepGraphTools import getAllDependencies, getAllDependent
         self.show(self._3D_objects(getAllDependent(doc_obj)))
 
     def restore_all_dependent(self, doc_obj):
         '''show_all_dependent(doc_obj): restores original visibilities of all dependent objects.'''
+        from .DepGraphTools import getAllDependencies, getAllDependent
         self.restoreVPProperty( getAllDependent(doc_obj), ('Visibility', 'LinkVisibility') )
 
     def hide_all_dependencies(self, doc_obj):
         '''hide_all_dependencies(doc_obj): hides all objects that doc_obj depends on (directly and indirectly).'''
+        from .DepGraphTools import getAllDependencies, getAllDependent
         self.hide(self._3D_objects(getAllDependencies(doc_obj)))
 
     def show_all_dependencies(self, doc_obj):
         '''show_all_dependencies(doc_obj): shows all objects that doc_obj depends on (directly and indirectly). This method is probably useless.'''
+        from .DepGraphTools import getAllDependencies, getAllDependent
         self.show(self._3D_objects(getAllDependencies(doc_obj)))
 
     def saveCamera(self, vw = None):
@@ -379,6 +382,7 @@ class TempoVis(object):
         tempovis. '''
         
         from .SceneDetails.Pickability import Pickability
+        from .ShowUtils import is3DObject
         
         if not hasattr(doc_obj_or_list, '__iter__'):
             doc_obj_or_list = [doc_obj_or_list]
@@ -400,6 +404,7 @@ class TempoVis(object):
         inserted as the very first node. The node is left, but disabled when tempovis is restoring.'''
         
         from .SceneDetails.ObjectClipPlane import ObjectClipPlane
+        from .ShowUtils import is3DObject
         
         if not hasattr(doc_obj_or_list, '__iter__'):
             doc_obj_or_list = [doc_obj_or_list]
@@ -413,13 +418,15 @@ class TempoVis(object):
     def allVisibleObjects(aroundObject):
         '''allVisibleObjects(aroundObject): returns list of objects that have to be toggled invisible for only aroundObject to remain. 
         If a whole container can be made invisible, it is returned, instead of its child objects.'''
+        from .ShowUtils import is3DObject
+        from . import Containers
         
         chain = Containers.VisGroupChain(aroundObject)
         result = []
         for i in range(len(chain)):
             cnt = chain[i]
             cnt_next = chain[i+1] if i+1 < len(chain) else aroundObject
-            container = Container(cnt)
+            container = Containers.Container(cnt)
             for obj in container.getVisGroupChildren():
                 if not is3DObject(obj):
                     continue
@@ -447,12 +454,7 @@ class TempoVis(object):
     
     def activateWorkbench(self, wb_name):
         from .SceneDetails.Workbench import Workbench
-        wb = Workbench(wb_name)
-        if wb.scene_value() == 'StartWorkbench':
-            #exclusion - don't switch back to Start, as it causes Start page to appear
-            wb.apply_data(wb_name)
-            return
-        self.modify(wb)
+        self.modify(Workbench(wb_name))
     
   #</convenience functions>
 
@@ -518,6 +520,8 @@ class TempoVis(object):
             
     def _3D_objects(self, doc_obj_or_list):
         """_3D_objects(doc_obj_or_list): returns list of objects that are in 3d view."""
+        from .ShowUtils import is3DObject
+        
         if not hasattr(doc_obj_or_list, '__iter__'):
             doc_obj_or_list = [doc_obj_or_list]
         

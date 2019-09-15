@@ -168,6 +168,10 @@ public:
    * with the edge. The intersection must be inside the edge. If there is no intersection false is returned.
    */
   bool IntersectWithLine (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes) const;
+  /** Calculates the intersection point of the plane defined by the base \a rclPt and the direction \a rclDir
+   * with the edge. The intersection must be inside the edge. If there is no intersection false is returned.
+   */
+  bool IntersectWithPlane (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes) const;
   /**
    * Calculates the projection of a point onto the line defined by the edge. The caller must check if
    * the projection point is inside the edge.

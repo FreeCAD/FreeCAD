@@ -30,7 +30,7 @@ Q = App.Units.Quantity
 
 from AttachmentEditor.FrozenClass import FrozenClass
 try:
-    from Show.TempoVis import TempoVis
+    from Show import TempoVis
     from Show.DepGraphTools import getAllDependent
 except ImportError as err:
     def TempoVis(doc):
