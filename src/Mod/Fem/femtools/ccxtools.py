@@ -44,14 +44,18 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     known_analysis_types = ["static", "frequency", "thermomech", "check"]
     finished = QtCore.Signal(int)
 
-    ## The constructor
-    #  @param analysis - analysis object to be used as the core object.
-    #  @param test_mode - True indicates that no real calculations will take place
-    # so ccx binary is not required. Used by test module.
-    #  "__init__" tries to use current active analysis in analysis is left empty.
-    #  Raises exception if analysis is not set and there is no active analysis
     def __init__(self, analysis=None, solver=None, test_mode=False):
+        """The constructor
 
+        Parameters
+        ----------
+        analysis : str, optional
+            analysis group as a container for all  objects needed for the analysis
+        solver : str, optional
+            solver object to be used for this solve
+        test_mode : bool, optional
+            mainly used in unit tests
+        """
         QtCore.QRunnable.__init__(self)
         QtCore.QObject.__init__(self)
 
@@ -122,24 +126,24 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 "the exception should have been raised earlier!"
             )
 
-    ## Removes all result objects and result meshes from an analysis group
-    #  @param self The python object self
     def purge_results(self):
+        """Remove all result objects and result meshes from an analysis group
+        """
         from femresult.resulttools import purge_results as pr
         pr(self.analysis)
 
-    ## Resets mesh color, deformation and removes all result objects
-    # if preferences to keep them is not set
-    #  @param self The python object self
     def reset_mesh_purge_results_checked(self):
+        """Reset mesh color, deformation and removes all result objects
+        if preferences to keep them is not set.
+        """
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         keep_results_on_rerun = self.fem_prefs.GetBool("KeepResultsOnReRun", False)
         if not keep_results_on_rerun:
             self.purge_results()
 
-    ## Resets mesh color, deformation and removes all result objects
-    #  @param self The python object self
     def reset_all(self):
+        """Reset mesh color, deformation and removes all result objects
+        """
         self.purge_results()
 
     def _get_several_member(self, obj_type):
@@ -163,7 +167,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 FemGui.setActiveAnalysis(self.analysis)
 
     def find_solver_analysis(self):
-        # get the analysis the solver is in
+        """ get the analysis group the solver belongs to
+        """
         if self.solver.getParentGroup():
             obj = self.solver.getParentGroup()
             if femutils.is_of_type(obj, "Fem::FemAnalysis"):
@@ -613,11 +618,16 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     message += "Fluid sections defined but FEM mesh has no edge elements.\n"
         return message
 
-    ## Sets base_name
-    #  @param self The python object self
-    #  @param base_name base name of .inp/.frd file (without extension).
-    # It is used to construct .inp file path that is passed to CalculiX ccx
     def set_base_name(self, base_name=None):
+        """
+        Set base_name
+
+        Parameters
+        ----------
+        base_name : str, optional
+            base_name base name of .inp/.frd file (without extension).
+            It is used to construct .inp file path that is passed to CalculiX ccx
+        """
         if base_name is None:
             self.base_name = ""
         else:
@@ -625,24 +635,31 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         # Update inp file name
         self.set_inp_file_name()
 
-    ## Sets inp file name that is used to determine location and name of frd result file.
-    # Normally inp file name is set set by write_inp_file
-    # Can be used to read mock calculations file
-    #  @param self The python object self
-    #  @inp_file_name .inp file name. If empty the .inp file path is constructed
-    # from working_dir, base_name and string ".inp"
     def set_inp_file_name(self, inp_file_name=None):
+        """
+        Set inp file name. Normally inp file name is set by write_inp_file.
+        That name is also used to determine location and name of frd result file.
+
+        Parameters
+        ----------
+        inp_file_name : str, optional
+            input file name path
+        """
         if inp_file_name is not None:
             self.inp_file_name = inp_file_name
         else:
             self.inp_file_name = os.path.join(self.working_dir, (self.base_name + ".inp"))
 
-    ## Sets working dir for solver execution.
-    # Called with no working_dir uses WorkingDir from FEM preferences
-    #  @param self The python object self
-    #  param_working_dir directory to be used for writing
-    #  solver input file or files and executing solver
     def setup_working_dir(self, param_working_dir=None, create=False):
+        """Set working dir for solver execution.
+
+        Parameters
+        ----------
+        param_working_dir :  str, optional
+            directory to be used for writing
+        create : bool, optional
+            Should the working directory be created if it does not exist
+        """
         self.working_dir = ""
         # try to use given working dir or overwrite with solver working dir
         fem_general_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
@@ -736,13 +753,21 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             )
             raise
 
-    ## Sets CalculiX ccx binary path and validates if the binary can be executed
-    #  @param self The python object self
-    #  @ccx_binary path to ccx binary, default is guessed:
-    #  "bin/ccx" windows, "ccx" for other systems
-    #  @ccx_binary_sig expected output form ccx when run empty.
-    #  Default value is "CalculiX.exe -i jobname"
     def setup_ccx(self, ccx_binary=None, ccx_binary_sig="CalculiX"):
+        """Set Calculix binary path and validate its execution.
+
+        Parameters
+        ----------
+        ccx_binary : str, optional
+            It defaults to `None`. The path to the `ccx` binary. If it is `None`,
+            the path is guessed.
+        ccx_binary_sig : str, optional
+            Defaults to 'CalculiX'. Expected output from `ccx` when run empty.
+
+        Raises
+        ------
+        Exception
+        """
         error_title = "No CalculiX binary ccx"
         error_message = ""
         from platform import system
@@ -1121,9 +1146,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.load_results_ccxfrd()
         self.load_results_ccxdat()
 
-    ## Load results of ccx calculations from .frd file.
-    #  @param self The python object self
     def load_results_ccxfrd(self):
+        """Load results of ccx calculations from .frd file.
+        """
         import feminout.importCcxFrdResults as importCcxFrdResults
         frd_result_file = os.path.splitext(self.inp_file_name)[0] + ".frd"
         if os.path.isfile(frd_result_file):
@@ -1144,9 +1169,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         else:
             raise Exception("FEM: No results found at {}!".format(frd_result_file))
 
-    ## Load results of ccx calculations from .dat file.
-    #  @param self The python object self
     def load_results_ccxdat(self):
+        """Load results of ccx calculations from .dat file.
+        """
         import feminout.importCcxDatResults as importCcxDatResults
         dat_result_file = os.path.splitext(self.inp_file_name)[0] + ".dat"
         if os.path.isfile(dat_result_file):
