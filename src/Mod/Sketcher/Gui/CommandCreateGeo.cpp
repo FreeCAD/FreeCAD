@@ -31,6 +31,7 @@
 # include <QString>
 # include <GC_MakeEllipse.hxx>
 # include <boost/math/special_functions/fpclassify.hpp>
+# include <memory>
 #endif
 
 #include <Base/Console.h>
@@ -124,14 +125,14 @@ Base::Vector2d GetCircleCenter (const Base::Vector2d &p1, const Base::Vector2d &
     return Base::Vector2d(x, y);
 }
 
-void ActivateHandler(Gui::Document *doc,DrawSketchHandler *handler)
+void ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler)
 {
+    std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
-            (SketcherGui::ViewProviderSketch::getClassTypeId())) {
-                SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
-                vp->purgeHandler();
-                vp->activateHandler(handler);
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
+            vp->purgeHandler();
+            vp->activateHandler(ptr.release());
         }
     }
 }
