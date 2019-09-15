@@ -1156,7 +1156,7 @@ public:
                     // #3974: if in radians, the printf %f defaults to six decimals, which leads to loss of precision
                     double arcAngle = abs(round( (endAngle - startAngle) / (M_PI/4)) * 45); // in degrees
 
-                    FCMD_OBJ_CMD2("App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%i,App.Units.Quantity('%f deg'))) ",
+                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Angle',%i,App.Units.Quantity('%f deg'))) ",
                                             sketchgui->getObject(),
                                             lastCurve, arcAngle);
                 }
@@ -6334,7 +6334,7 @@ public:
                 FCMD_OBJ_CMD2("extend(%d, %f, %d)\n", // GeoId, increment, PointPos
                     sketchgui->getObject(), BaseGeoId, Increment,
                     ExtendFromStart ? Sketcher::start : Sketcher::end);
-                    Gui::Command::commitCommand();
+                Gui::Command::commitCommand();
 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
