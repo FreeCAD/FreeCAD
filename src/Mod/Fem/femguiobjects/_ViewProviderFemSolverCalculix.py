@@ -272,7 +272,7 @@ class _TaskPanelFemSolverCalculix:
 
     def calculixStarted(self):
         # print("calculixStarted()")
-        FreeCAD.Console.PrintLog("{}".format(self.Calculix.state()))
+        FreeCAD.Console.PrintLog("calculix state: {}\n".format(self.Calculix.state()))
         self.form.pb_run_ccx.setText("Break CalculiX")
 
     def calculixStateChanged(self, newState):
@@ -285,7 +285,7 @@ class _TaskPanelFemSolverCalculix:
 
     def calculixFinished(self, exitCode):
         # print("calculixFinished(), exit code: {}".format(exitCode))
-        FreeCAD.Console.PrintLog("{}".format(self.Calculix.state()))
+        FreeCAD.Console.PrintLog("calculix state: {}\n".format(self.Calculix.state()))
 
         # Restore previous cwd
         QtCore.QDir.setCurrent(self.cwd)
@@ -321,7 +321,11 @@ class _TaskPanelFemSolverCalculix:
             raise
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        self.fea.load_results()
+        try:
+            self.fea.load_results()
+        except:
+            FreeCAD.Console.PrintError("loading results failed\n")
+
         QApplication.restoreOverrideCursor()
         self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
 
@@ -391,7 +395,7 @@ class _TaskPanelFemSolverCalculix:
         self.femConsoleMessage("Run CalculiX...")
 
         FreeCAD.Console.PrintMessage(
-            "run CalculiX at: {} with: {}"
+            "run CalculiX at: {} with: {}\n"
             .format(self.fea.ccx_binary, self.fea.inp_file_name)
         )
         # change cwd because ccx may crash if directory has no write permission
