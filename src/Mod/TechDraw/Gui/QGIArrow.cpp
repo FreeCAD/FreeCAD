@@ -319,9 +319,5 @@ void QGIArrow::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    setPen(m_pen);
-    m_brush.setColor(m_colCurrent);
-    m_brush.setStyle(m_fill);
-    setBrush(m_brush);
     QGIPrimPath::paint (painter, &myOption, widget);
 }
