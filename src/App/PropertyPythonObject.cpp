@@ -92,7 +92,7 @@ std::string PropertyPythonObject::toString() const
         Py::Module pickle(PyImport_ImportModule("json"),true);
         if (pickle.isNull())
             throw Py::Exception();
-        int indent = -1;
+        static int indent = -1;
         if(indent<0) {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                     "User parameter:BaseApp/Preferences/Document");
@@ -406,9 +406,9 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
     } else if (reader.hasAttribute("file")) {
         std::string file(reader.getAttribute("file"));
         reader.addFile(file.c_str(),this);
-    }
-
-    else if(buffer.size()) {
+    } 
+    
+    if(buffer.size()) {
         if (load_json)
             this->fromString(buffer);
         else if (load_pickle)
