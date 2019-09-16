@@ -33,6 +33,7 @@
 #include "Exception.h"
 #include "UnitsApi.h"
 #include "Console.h"
+#include <boost/math/special_functions/fpclassify.hpp>
 
 /** \defgroup Units Units system
     \ingroup BASE
@@ -87,7 +88,7 @@ double Quantity::getValueAs(const Quantity &q)const
 
 bool Quantity::operator ==(const Quantity& that) const
 {
-    return (this->_Value == that._Value) && (this->_Unit == that._Unit) ;
+    return (this->_Value == that._Value) && (this->_Unit == that._Unit);
 }
 
 bool Quantity::operator <(const Quantity& that) const
@@ -148,7 +149,7 @@ Quantity Quantity::pow(const Quantity &p) const
         throw Base::UnitsMismatchError("Quantity::pow(): exponent must not have a unit");
     return Quantity(
         std::pow(this->_Value, p._Value),
-        this->_Unit.pow((short)p._Value)
+        this->_Unit.pow(static_cast<signed char>(p._Value))
         );
 }
 
@@ -214,23 +215,24 @@ QString Quantity::getUserString(double& factor, QString& unitString) const
 /// true if it has a number without a unit
 bool Quantity::isDimensionless(void)const
 {
-    return _Value != DOUBLE_MIN && _Unit.isEmpty();
+    return isValid() && _Unit.isEmpty();
 }
 
 // true if it has a number and a valid unit
 bool Quantity::isQuantity(void)const
 {
-    return _Value != DOUBLE_MIN && !_Unit.isEmpty();
+    return isValid() && !_Unit.isEmpty();
 }
+
 // true if it has a number with or without a unit
 bool Quantity::isValid(void)const
 {
-    return _Value != DOUBLE_MIN ;
+    return !boost::math::isnan(_Value);
 }
 
 void Quantity::setInvalid(void)
 {
-    _Value = DOUBLE_MIN ;
+    _Value = std::numeric_limits<double>::quiet_NaN();
 }
 
 // === Predefined types =====================================================

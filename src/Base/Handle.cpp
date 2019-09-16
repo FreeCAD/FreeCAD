@@ -47,7 +47,7 @@ Handled::Handled()
 
 Handled::~Handled()
 {
-    if ((int)(*_lRefCount) != 0)
+    if (static_cast<int>(*_lRefCount) != 0)
         std::cerr << "Reference counter of deleted object is not zero!!!!!" << std::endl;
     delete _lRefCount;
 }
@@ -67,7 +67,7 @@ void Handled::unref() const
 
 int Handled::getRefCount(void) const
 {
-    return (int)(*_lRefCount);
+    return static_cast<int>(*_lRefCount);
 }
 
 const Handled& Handled::operator = (const Handled&)

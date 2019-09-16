@@ -274,9 +274,9 @@ void Builder3D::addTransformation(const Base::Matrix4D& transform)
   Base::Vector3f cAxis, cBase;
   float fAngle, fTranslation;
   transform.toAxisAngle(cBase, cAxis,fAngle,fTranslation);
-  cBase.x = (float)transform[0][3];
-  cBase.y = (float)transform[1][3];
-  cBase.z = (float)transform[2][3];
+  cBase.x = static_cast<float>(transform[0][3]);
+  cBase.y = static_cast<float>(transform[1][3]);
+  cBase.z = static_cast<float>(transform[2][3]);
   addTransformation(cBase,cAxis,fAngle);
 }
 
@@ -896,9 +896,9 @@ void InventorBuilder::addTransformation(const Matrix4D& transform)
     Vector3f cAxis, cBase;
     float fAngle, fTranslation;
     transform.toAxisAngle(cBase, cAxis,fAngle,fTranslation);
-    cBase.x = (float)transform[0][3];
-    cBase.y = (float)transform[1][3];
-    cBase.z = (float)transform[2][3];
+    cBase.x = static_cast<float>(transform[0][3]);
+    cBase.y = static_cast<float>(transform[1][3]);
+    cBase.z = static_cast<float>(transform[2][3]);
     addTransformation(cBase,cAxis,fAngle);
 }
 

@@ -41,9 +41,9 @@ template <typename T>
 inline Vector3<T> getVectorFromTuple(PyObject* o)
 {
     Py::Sequence tuple(o);
-    T x = (T)Py::Float(tuple.getItem(0));
-    T y = (T)Py::Float(tuple.getItem(1));
-    T z = (T)Py::Float(tuple.getItem(2));
+    T x = static_cast<T>(Py::Float(tuple.getItem(0)));
+    T y = static_cast<T>(Py::Float(tuple.getItem(1)));
+    T z = static_cast<T>(Py::Float(tuple.getItem(2)));
     return Vector3<T>(x,y,z);
 }
 
