@@ -157,7 +157,7 @@ void QGIViewAnnotation::drawAnnotation()
             ss << "<br>" << *it ;
         }
     }
-    ss << "</p>\n</body>\n</html> ";
+    ss << "<br></p>\n</body>\n</html> ";
 
     prepareGeometryChange();
     m_textItem->setTextWidth(Rez::guiX(viewAnno->MaxWidth.getValue()));
