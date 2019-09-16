@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
+# include <memory>
 # include <QMessageBox>
 # include <Precision.hxx>
 # include <QApplication>
@@ -74,15 +75,14 @@ bool isSketcherAcceleratorActive(Gui::Document *doc, bool actsOnSelection )
     return false;
 }
 
-void ActivateAcceleratorHandler(Gui::Document *doc,DrawSketchHandler *handler)
+void ActivateAcceleratorHandler(Gui::Document *doc, DrawSketchHandler *handler)
 {
+    std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
-           (SketcherGui::ViewProviderSketch::getClassTypeId())) {
-
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
             vp->purgeHandler();
-            vp->activateHandler(handler);
+            vp->activateHandler(ptr.release());
         }
     }
 }

@@ -3639,7 +3639,7 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair> &selSe
 
         // undo command open
         openCommand("add parallel constraint");
-        FCMD_OBJ_CMD2(".addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
+        FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
             sketchgui->getObject(), GeoId1, GeoId2);
         // finish the transaction and update
         commitCommand();

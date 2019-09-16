@@ -37,6 +37,7 @@
 #include <Gui/WidgetFactory.h>
 
 #include "Workbench.h"
+#include "MDIViewPage.h"
 
 #include "DlgPrefsTechDrawImp.h"
 #include "DlgPrefsTechDraw2Imp.h"
@@ -114,6 +115,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
     CreateTechDrawCommandsAnnotate();
 
     TechDrawGui::Workbench::init();
+    TechDrawGui::MDIViewPage::init();
 
     TechDrawGui::ViewProviderPage::init();
     TechDrawGui::ViewProviderDrawingView::init();
