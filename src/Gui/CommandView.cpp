@@ -3140,7 +3140,7 @@ bool StdCmdSelForward::isActive(void)
 #define TREEVIEW_DOC_CMD_DEF(_name,_v) \
 DEF_STD_CMD_AC(StdTree##_name) \
 void StdTree##_name::activated(int){ \
-    FC_TREEPARAM_SET(DocumentMode,_v);\
+    TreeParams::Instance()->setDocumentMode(_v);\
     if(_pcAction) _pcAction->setChecked(true,true);\
 }\
 Action * StdTree##_name::createAction(void) {\
@@ -3152,7 +3152,7 @@ Action * StdTree##_name::createAction(void) {\
     return pcAction;\
 }\
 bool StdTree##_name::isActive() {\
-    bool checked = FC_TREEPARAM(DocumentMode)==_v;\
+    bool checked = TreeParams::Instance()->DocumentMode()==_v;\
     if(_pcAction && _pcAction->isChecked()!=checked)\
         _pcAction->setChecked(checked,true);\
     return true;\
@@ -3212,8 +3212,8 @@ StdTreeCollapseDocument::StdTreeCollapseDocument()
 #define TREEVIEW_CMD_DEF(_name) \
 DEF_STD_CMD_AC(StdTree##_name) \
 void StdTree##_name::activated(int){ \
-    auto checked = !FC_TREEPARAM(_name);\
-    FC_TREEPARAM_SET(_name,checked);\
+    auto checked = !TreeParams::Instance()->_name();\
+    TreeParams::Instance()->set##_name(checked);\
     if(_pcAction) _pcAction->setChecked(checked,true);\
 }\
 Action * StdTree##_name::createAction(void) {\
@@ -3225,7 +3225,7 @@ Action * StdTree##_name::createAction(void) {\
     return pcAction;\
 }\
 bool StdTree##_name::isActive() {\
-    bool checked = FC_TREEPARAM(_name);\
+    bool checked = TreeParams::Instance()->_name();\
     if(_pcAction && _pcAction->isChecked()!=checked)\
         _pcAction->setChecked(checked,true);\
     return true;\

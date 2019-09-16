@@ -62,7 +62,7 @@ void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, 
     auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
     if(!vp) return;
 
-    if(FC_TREEPARAM(TreeActiveAutoExpand))
+    if(TreeParams::Instance()->TreeActiveAutoExpand())
         vp->getDocument()->signalExpandObject(*vp, 
                 enable?Gui::ExpandPath:Gui::CollapseItem, info.obj, info.subname.c_str());
 
