@@ -346,10 +346,12 @@ void QGISectionLine::setTools()
 
     m_line->setPen(m_pen);
 
-    m_arrow1->setPen(m_pen);
-    m_arrow2->setPen(m_pen);
-    m_arrow1->setBrush(m_brush);
-    m_arrow2->setBrush(m_brush);
+//    m_arrow1->setPen(m_pen);
+//    m_arrow2->setPen(m_pen);
+//    m_arrow1->setBrush(m_brush);
+//    m_arrow2->setBrush(m_brush);
+    m_arrow1->setPrettyNormal();
+    m_arrow2->setPrettyNormal();
 
     m_symbol1->setDefaultTextColor(m_colCurrent);
     m_symbol2->setDefaultTextColor(m_colCurrent);
