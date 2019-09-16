@@ -3781,6 +3781,7 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
                 }else if(topParent!=parent)
                     continue;
                 showItem(item,false,true);
+                item->setExpanded(true);
             }
             break;
         case Gui::CollapseItem:
