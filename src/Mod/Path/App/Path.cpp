@@ -355,7 +355,7 @@ void Toolpath::Restore(XMLReader &reader)
             reader.addFile(file.c_str(),this);
         }
     }
-    unsigned count = reader.getAttributeAsUnsigned("count");
+    unsigned count = reader.getAttributeAsUnsigned("count","0");
     if (reader.hasAttribute("version")) {
         int version = reader.getAttributeAsInteger("version");
         if (version >= Toolpath::SchemaVersion) {
