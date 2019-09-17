@@ -67,7 +67,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 
-FC_LOG_LEVEL_INIT("ViewProviderPythonFeature",true,true);
+FC_LOG_LEVEL_INIT("ViewProviderPythonFeature",true,true)
 
 
 using namespace Gui;

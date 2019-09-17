@@ -680,7 +680,7 @@ void intrusive_ptr_release(Gui::LinkInfo *px){
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-EXTENSION_TYPESYSTEM_SOURCE(Gui::ViewProviderLinkObserver,Gui::ViewProviderExtension);
+EXTENSION_TYPESYSTEM_SOURCE(Gui::ViewProviderLinkObserver,Gui::ViewProviderExtension)
 
 ViewProviderLinkObserver::ViewProviderLinkObserver() {
     // TODO: any better way to get deleted automatically?
@@ -861,7 +861,7 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-TYPESYSTEM_SOURCE(Gui::LinkView,Base::BaseClass);
+TYPESYSTEM_SOURCE(Gui::LinkView,Base::BaseClass)
 
 LinkView::LinkView()
     :nodeType(SnapshotTransform)

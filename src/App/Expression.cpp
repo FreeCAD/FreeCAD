@@ -663,7 +663,7 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
 // Expression base-class
 //
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::Expression, Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(App::Expression, Base::BaseClass)
 
 Expression::Expression(const DocumentObject *_owner)
     : owner(const_cast<App::DocumentObject*>(_owner)) 
@@ -917,7 +917,7 @@ Expression *Expression::copy() const {
 // UnitExpression class
 //
 
-TYPESYSTEM_SOURCE(App::UnitExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::UnitExpression, App::Expression)
 
 UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Quantity & _quantity, const std::string &_unitStr)
     : Expression(_owner)
@@ -991,7 +991,7 @@ int UnitExpression::priority() const
 // NumberExpression class
 //
 
-TYPESYSTEM_SOURCE(App::NumberExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::NumberExpression, App::Expression)
 
 NumberExpression::NumberExpression(const DocumentObject *_owner, const Quantity &_quantity)
     : UnitExpression(_owner, _quantity)
@@ -1063,7 +1063,7 @@ bool NumberExpression::isInteger(long *l) const {
 // OperatorExpression class
 //
 
-TYPESYSTEM_SOURCE(App::OperatorExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::OperatorExpression, App::Expression)
 
 OperatorExpression::OperatorExpression(const App::DocumentObject *_owner, Expression * _left, Operator _op, Expression * _right)
     : UnitExpression(_owner)
@@ -1388,7 +1388,7 @@ bool OperatorExpression::isRightAssociative() const
 // FunctionExpression class. This class handles functions with one or two parameters.
 //
 
-TYPESYSTEM_SOURCE(App::FunctionExpression, App::UnitExpression);
+TYPESYSTEM_SOURCE(App::FunctionExpression, App::UnitExpression)
 
 FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, std::vector<Expression *> _args)
     : UnitExpression(_owner)
@@ -2030,7 +2030,7 @@ void FunctionExpression::_visit(ExpressionVisitor &v)
 // VariableExpression class
 //
 
-TYPESYSTEM_SOURCE(App::VariableExpression, App::UnitExpression);
+TYPESYSTEM_SOURCE(App::VariableExpression, App::UnitExpression)
 
 VariableExpression::VariableExpression(const DocumentObject *_owner, ObjectIdentifier _var)
     : UnitExpression(_owner)
@@ -2305,7 +2305,7 @@ void VariableExpression::setPath(const ObjectIdentifier &path)
 // PyObjectExpression class
 //
 
-TYPESYSTEM_SOURCE(App::PyObjectExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::PyObjectExpression, App::Expression)
 
 PyObjectExpression::~PyObjectExpression() {
     if(pyObj) {
@@ -2361,7 +2361,7 @@ boost::any PyObjectExpression::getValueAsAny() const {
 // StringExpression class
 //
 
-TYPESYSTEM_SOURCE(App::StringExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::StringExpression, App::Expression)
 
 StringExpression::StringExpression(const DocumentObject *_owner, const std::string &_text)
     : Expression(_owner)
@@ -2406,7 +2406,7 @@ Expression *StringExpression::_copy() const
     return new StringExpression(owner, text);
 }
 
-TYPESYSTEM_SOURCE(App::ConditionalExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::ConditionalExpression, App::Expression)
 
 ConditionalExpression::ConditionalExpression(const DocumentObject *_owner, Expression *_condition, Expression *_trueExpr, Expression *_falseExpr)
     : Expression(_owner)
@@ -2489,7 +2489,7 @@ void ConditionalExpression::_visit(ExpressionVisitor &v)
     falseExpr->visit(v);
 }
 
-TYPESYSTEM_SOURCE(App::ConstantExpression, App::NumberExpression);
+TYPESYSTEM_SOURCE(App::ConstantExpression, App::NumberExpression)
 
 ConstantExpression::ConstantExpression(const DocumentObject *_owner, std::string _name, const Quantity & _quantity)
     : NumberExpression(_owner, _quantity)
@@ -2512,7 +2512,7 @@ int ConstantExpression::priority() const
     return 20;
 }
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::BooleanExpression, App::NumberExpression);
+TYPESYSTEM_SOURCE_ABSTRACT(App::BooleanExpression, App::NumberExpression)
 
 BooleanExpression::BooleanExpression(const DocumentObject *_owner, bool _value)
     : NumberExpression(_owner, Quantity(_value ? 1.0 : 0.0))
@@ -2524,7 +2524,7 @@ Expression *BooleanExpression::_copy() const
     return new BooleanExpression(owner, getValue() > 0.5 ? true : false);
 }
 
-TYPESYSTEM_SOURCE(App::RangeExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::RangeExpression, App::Expression)
 
 RangeExpression::RangeExpression(const DocumentObject *_owner, const std::string &begin, const std::string &end)
     : Expression(_owner), begin(begin), end(end)

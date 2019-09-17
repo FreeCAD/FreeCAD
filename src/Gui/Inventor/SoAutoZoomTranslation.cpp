@@ -47,7 +47,7 @@ using namespace Gui;
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(SoAutoZoomTranslation);
+SO_NODE_SOURCE(SoAutoZoomTranslation)
 
 void SoAutoZoomTranslation::initClass()
 {

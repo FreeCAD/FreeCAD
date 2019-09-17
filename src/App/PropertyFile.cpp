@@ -53,7 +53,7 @@ using namespace std;
 // PropertyFileIncluded
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyFileIncluded , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyFileIncluded , App::Property)
 
 
 PropertyFileIncluded::PropertyFileIncluded()
@@ -626,7 +626,7 @@ unsigned int PropertyFileIncluded::getMemSize (void) const
 // PropertyFile
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyFile , App::PropertyString);
+TYPESYSTEM_SOURCE(App::PropertyFile , App::PropertyString)
 
 PropertyFile::PropertyFile()
 {

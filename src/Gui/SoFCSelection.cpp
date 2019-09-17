@@ -76,7 +76,7 @@ SoFullPath * Gui::SoFCSelection::currenthighlight = NULL;
 
 // *************************************************************************
 
-SO_NODE_SOURCE(SoFCSelection);
+SO_NODE_SOURCE(SoFCSelection)
 
 /*!
   Constructor.

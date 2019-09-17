@@ -43,7 +43,7 @@
 
 using namespace Gui;
 
-SO_NODE_SOURCE(SoFCColorGradient);
+SO_NODE_SOURCE(SoFCColorGradient)
 
 /*!
   Constructor.

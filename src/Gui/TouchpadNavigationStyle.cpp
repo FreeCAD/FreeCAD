@@ -51,7 +51,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::TouchpadNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::TouchpadNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::TouchpadNavigationStyle, Gui::UserNavigationStyle)
 
 TouchpadNavigationStyle::TouchpadNavigationStyle()
 {
