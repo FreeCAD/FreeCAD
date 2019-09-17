@@ -363,6 +363,7 @@ public:
                 pcSnapshot = new SoFCSelectionRoot;
             else
                 pcSnapshot = new SoSeparator;
+            pcSnapshot->boundingBoxCaching = SoSeparator::OFF;
             pcSnapshot->renderCaching = SoSeparator::OFF;
             std::ostringstream ss;
             ss << pcLinked->getObject()->getNameInDocument() 

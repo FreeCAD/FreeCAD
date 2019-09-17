@@ -493,6 +493,12 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
         pcPointsRoot->renderCaching =
         wireframe->renderCaching = SoSeparator::OFF;
 
+    pcNormalRoot->boundingBoxCaching =
+        pcFlatRoot->boundingBoxCaching =
+        pcWireframeRoot->boundingBoxCaching =
+        pcPointsRoot->boundingBoxCaching =
+        wireframe->boundingBoxCaching = SoSeparator::OFF;
+
     // enable two-side rendering
     pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
