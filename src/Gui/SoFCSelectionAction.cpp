@@ -1142,7 +1142,8 @@ SoBoxSelectionRenderAction::constructorCommon(void)
     // Initialize local variables
     PRIVATE(this)->initBoxGraph();
 
-    this->hlVisible = true;
+    // this->hlVisible = true;
+    this->hlVisible = false;
 
     PRIVATE(this)->basecolor->rgb.setValue(1.0f, 0.0f, 0.0f);
     PRIVATE(this)->drawstyle->linePattern = 0xffff;
@@ -1233,20 +1234,6 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
                     }
                     PRIVATE(this)->selectsearch->reset();
                 }
-            }
-        }
-        PRIVATE(this)->searchaction->reset();
-
-        // Search for selections of SoFCUnifiedSelection
-        PRIVATE(this)->searchaction->setType(SoFCUnifiedSelection::getClassTypeId());
-        PRIVATE(this)->searchaction->setInterest(SoSearchAction::FIRST);
-        PRIVATE(this)->searchaction->apply(node);
-        SoFullPath * path = static_cast<SoFullPath *>(PRIVATE(this)->searchaction->getPath());
-        if (path) {
-            SoFCUnifiedSelection * selection = static_cast<SoFCUnifiedSelection *>(path->getTail());
-            if (selection->getNumSelected()) {
-                PRIVATE(this)->basecolor->rgb.setValue(selection->colorSelection.getValue());
-                this->drawBoxes(path, selection->getList());
             }
         }
         PRIVATE(this)->searchaction->reset();

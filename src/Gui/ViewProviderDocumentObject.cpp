@@ -57,6 +57,7 @@
 #include "TaskView/TaskAppearance.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
+#include "SoFCUnifiedSelection.h"
 #include "Tree.h"
 #include <Gui/ViewProviderDocumentObjectPy.h>
 
@@ -74,6 +75,10 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
     ADD_PROPERTY(DisplayMode,((long)0));
     ADD_PROPERTY(Visibility,(true));
     ADD_PROPERTY(ShowInTree,(true));
+
+    ADD_PROPERTY(SelectionStyle,((long)0));
+    static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
+    SelectionStyle.setEnums(SelectionStyleEnum);
 
     static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",NULL};
     ADD_PROPERTY(OnTopWhenSelected,((long int)0));
@@ -180,6 +185,12 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
         }
         if(getObject() && getObject()->Visibility.getValue()!=Visibility.getValue())
             getObject()->Visibility.setValue(Visibility.getValue());
+    }
+    else if (prop == &SelectionStyle) {
+        if(getRoot()->isOfType(SoFCSelectionRoot::getClassTypeId())) {
+            static_cast<SoFCSelectionRoot*>(getRoot())->selectionStyle = SelectionStyle.getValue()
+                ?SoFCSelectionRoot::BOX:SoFCSelectionRoot::FULL;
+        }
     }
 
     if (pcDocument && !pcDocument->isModified()) {

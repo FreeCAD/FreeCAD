@@ -102,10 +102,6 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     ADD_PROPERTY(BoundingBox,(false));
     ADD_PROPERTY(Selectable,(true));
 
-    ADD_PROPERTY(SelectionStyle,((long)0));
-    static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
-    SelectionStyle.setEnums(SelectionStyleEnum);
-
     Selectable.setValue(ViewParams::instance()->getEnableSelection());
 
     pcShapeMaterial = new SoMaterial;

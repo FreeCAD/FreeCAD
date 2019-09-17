@@ -890,6 +890,53 @@ void SoBrepFaceSet::GLRenderBelowPath(SoGLRenderAction * action)
     inherited::GLRenderBelowPath(action);
 }
 
+void SoBrepFaceSet::getBoundingBox(SoGetBoundingBoxAction * action) {
+
+    if (this->coordIndex.getNum() < 3)
+        return;
+
+    SelContextPtr ctx2 = Gui::SoFCSelectionRoot::getSecondaryActionContext<SelContext>(action,this);
+    if(!ctx2 || ctx2->isSelectAll()) {
+        inherited::getBoundingBox(action);
+        return;
+    }
+
+    if(ctx2->selectionIndex.empty())
+        return;
+
+    auto state = action->getState();
+    auto coords = SoCoordinateElement::getInstance(state);
+    const SbVec3f *coords3d = static_cast<const SoGLCoordinateElement*>(coords)->getArrayPtr3();
+    const int32_t *cindices = this->coordIndex.getValues(0);
+    const int32_t *pindices = this->partIndex.getValues(0);
+    int numparts = this->partIndex.getNum();
+
+    SbBox3f bbox;
+    for(auto id : ctx2->selectionIndex) {
+        if (id<0 || id >= numparts)
+            break;
+        // coords
+        int length=0;
+        int start=0;
+        length = (int)pindices[id]*4;
+        for (int j=0;j<id;j++)
+            start+=(int)pindices[j];
+        start *= 4;
+
+        auto viptr = &cindices[start];
+        auto viendptr = viptr + length;
+        while (viptr + 2 < viendptr) {
+            bbox.extendBy(coords3d[*viptr++]);
+            bbox.extendBy(coords3d[*viptr++]);
+            bbox.extendBy(coords3d[*viptr++]);
+            ++viptr;
+        }
+    }
+
+    if(!bbox.isEmpty())
+        action->extendBy(bbox);
+}
+
   // this macro actually makes the code below more readable  :-)
 #define DO_VERTEX(idx) \
   if (mbind == PER_VERTEX) {                  \

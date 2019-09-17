@@ -62,6 +62,7 @@ public:
     App::PropertyBool Visibility;
     App::PropertyBool ShowInTree;
     App::PropertyEnumeration OnTopWhenSelected;
+    App::PropertyEnumeration SelectionStyle;
 
     virtual void attach(App::DocumentObject *pcObject);
     virtual void reattach(App::DocumentObject *);

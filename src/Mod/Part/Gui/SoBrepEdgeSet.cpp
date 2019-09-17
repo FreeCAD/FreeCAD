@@ -164,6 +164,41 @@ void SoBrepEdgeSet::GLRenderBelowPath(SoGLRenderAction * action)
     inherited::GLRenderBelowPath(action);
 }
 
+void SoBrepEdgeSet::getBoundingBox(SoGetBoundingBoxAction * action) {
+
+    SelContextPtr ctx2 = Gui::SoFCSelectionRoot::getSecondaryActionContext<SelContext>(action,this);
+    if(!ctx2 || (ctx2->sl.size()==1 && ctx2->sl[0]<0)) {
+        inherited::getBoundingBox(action);
+        return;
+    }
+
+    if(ctx2->sl.empty())
+        return;
+
+    auto state = action->getState();
+    auto coords = SoCoordinateElement::getInstance(state);
+    const SbVec3f *coords3d = coords->getArrayPtr3();
+
+    if(!validIndexes(coords,ctx2->sl))
+        return;
+
+    SbBox3f bbox;
+
+    int32_t i;
+    const int32_t *cindices = &ctx2->sl[0];
+    const int32_t *end = cindices + ctx2->sl.size();
+    while (cindices < end) {
+        bbox.extendBy(coords3d[*cindices++]);
+        i = (cindices < end) ? *cindices++ : -1;
+        while (i >= 0) {
+            bbox.extendBy(coords3d[i]);
+            i = cindices < end ? *cindices++ : -1;
+        }
+    }
+    if(!bbox.isEmpty())
+        action->extendBy(bbox);
+}
+
 void SoBrepEdgeSet::renderShape(const SoGLCoordinateElement * const coords,
                                 const int32_t *cindices, int numindices)
 {

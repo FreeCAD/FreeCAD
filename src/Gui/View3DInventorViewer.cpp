@@ -506,11 +506,15 @@ void View3DInventorViewer::init()
     pcOnTopMaterial->setOverride(true);
     pcGroupOnTop->addChild(pcOnTopMaterial);
 
-    pcGroupOnTopSel = new SoFCSelectionRoot;
+    auto selRoot = new SoFCSelectionRoot;
+    selRoot->selectionStyle = SoFCSelectionRoot::PASSTHROUGH;
+    pcGroupOnTopSel = selRoot;
     pcGroupOnTopSel->setName("GroupOnTopSel");
     pcGroupOnTopSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopSel);
-    pcGroupOnTopPreSel = new SoFCSelectionRoot;
+    selRoot = new SoFCSelectionRoot;
+    selRoot->selectionStyle = SoFCSelectionRoot::PASSTHROUGH;
+    pcGroupOnTopPreSel = selRoot;
     pcGroupOnTopPreSel->setName("GroupOnTopPreSel");
     pcGroupOnTopPreSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopPreSel);
@@ -797,9 +801,12 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     // onTop==2 means on top only if whole object is selected,
     // onTop==3 means on top only if some sub-element is selected
     // onTop==1 means either
-    onTop = Gui::Selection().needPickedList() 
-            || vp->OnTopWhenSelected.getValue() 
-            || svp->OnTopWhenSelected.getValue();
+    if(Gui::Selection().needPickedList())
+        onTop = 1;
+    else if(vp->OnTopWhenSelected.getValue())
+        onTop = vp->OnTopWhenSelected.getValue();
+    else
+        onTop = svp->OnTopWhenSelected.getValue();
     if(Reason.Type == SelectionChanges::SetPreselect) {
         SoHighlightElementAction action;
         action.setHighlighted(true);
