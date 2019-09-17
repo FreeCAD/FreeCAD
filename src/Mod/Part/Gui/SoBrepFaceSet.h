@@ -98,6 +98,7 @@ protected:
         const SoPrimitiveVertex * v3,
         SoPickedPoint * pp);
     virtual void generatePrimitives(SoAction * action);
+    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
 private:
     enum Binding {
