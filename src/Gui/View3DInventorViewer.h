@@ -377,6 +377,7 @@ public:
     virtual PyObject *getPyObject(void);
 
 protected:
+    GLenum getInternalTextureFormat() const;
     void renderScene();
     void renderFramebuffer();
     void renderGLImage();
