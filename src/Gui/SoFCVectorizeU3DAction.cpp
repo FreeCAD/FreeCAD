@@ -289,7 +289,7 @@ void SoFCVectorizeU3DActionP::printImage(const SoVectorizeImage * item) const
 
 // -------------------------------------------------------
 
-SO_ACTION_SOURCE(SoFCVectorizeU3DAction);
+SO_ACTION_SOURCE(SoFCVectorizeU3DAction)
 
 void SoFCVectorizeU3DAction::initClass(void)
 {

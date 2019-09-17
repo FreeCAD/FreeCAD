@@ -51,7 +51,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::RevitNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::RevitNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::RevitNavigationStyle, Gui::UserNavigationStyle)
 
 RevitNavigationStyle::RevitNavigationStyle() : lockButton1(false)
 {

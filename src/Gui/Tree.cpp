@@ -66,7 +66,7 @@
 #include "Widgets.h"
 #include "ExpressionCompleter.h"
 
-FC_LOG_LEVEL_INIT("Tree",false,true,true);
+FC_LOG_LEVEL_INIT("Tree",false,true,true)
 
 #define _TREE_PRINT(_level,_func,_msg) \
     _FC_PRINT(FC_LOG_INSTANCE,_level,_func, '['<<getTreeName()<<"] " << _msg)

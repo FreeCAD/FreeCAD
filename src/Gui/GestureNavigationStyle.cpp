@@ -838,7 +838,7 @@ public:
 
 /* TRANSLATOR Gui::GestureNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::GestureNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::GestureNavigationStyle, Gui::UserNavigationStyle)
 
 
 GestureNavigationStyle::GestureNavigationStyle()

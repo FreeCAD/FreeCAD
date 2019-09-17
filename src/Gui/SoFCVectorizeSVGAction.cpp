@@ -370,7 +370,7 @@ void SoFCVectorizeSVGActionP::printImage(const SoVectorizeImage * item) const
 
 // -------------------------------------------------------
 
-SO_ACTION_SOURCE(SoFCVectorizeSVGAction);
+SO_ACTION_SOURCE(SoFCVectorizeSVGAction)
 
 void SoFCVectorizeSVGAction::initClass(void)
 {

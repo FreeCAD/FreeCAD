@@ -117,7 +117,7 @@
 #include "View3DInventorViewer.h"
 #include "DlgObjectSelection.h"
 
-FC_LOG_LEVEL_INIT("MainWindow",false,true,true);
+FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
 #if defined(Q_OS_WIN32)
 #define slots

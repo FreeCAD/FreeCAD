@@ -149,7 +149,7 @@ using namespace boost::program_options;
 # include <new>
 #endif
 
-FC_LOG_LEVEL_INIT("App",true,true);
+FC_LOG_LEVEL_INIT("App",true,true)
 
 //using Base::GetConsole;
 using namespace Base;

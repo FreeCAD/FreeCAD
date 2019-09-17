@@ -34,7 +34,7 @@
 
 using namespace Base;
 
-TYPESYSTEM_SOURCE_ABSTRACT(Base::Persistence,Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(Base::Persistence,Base::BaseClass)
 
 
 //**************************************************************************

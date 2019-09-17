@@ -95,7 +95,7 @@
 #include "ViewProviderGeometryObject.h"
 #include "ViewParams.h"
 
-FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true);
+FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true)
 
 using namespace Gui;
 
@@ -103,7 +103,7 @@ SoFullPath * Gui::SoFCUnifiedSelection::currenthighlight = NULL;
 
 // *************************************************************************
 
-SO_NODE_SOURCE(SoFCUnifiedSelection);
+SO_NODE_SOURCE(SoFCUnifiedSelection)
 
 /*!
   Constructor.
@@ -905,7 +905,7 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoHighlightElementAction);
+SO_ACTION_SOURCE(SoHighlightElementAction)
 
 void SoHighlightElementAction::initClass()
 {
@@ -974,7 +974,7 @@ const SoDetail* SoHighlightElementAction::getElement() const
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoSelectionElementAction);
+SO_ACTION_SOURCE(SoSelectionElementAction)
 
 void SoSelectionElementAction::initClass()
 {
@@ -1041,7 +1041,7 @@ const SoDetail* SoSelectionElementAction::getElement() const
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoVRMLAction);
+SO_ACTION_SOURCE(SoVRMLAction)
 
 void SoVRMLAction::initClass()
 {
@@ -1124,7 +1124,7 @@ bool SoFCSelectionRoot::StackComp::operator()(const Stack &a, const Stack &b) co
 }
 // ---------------------------------------------------------------------------------
 SoSeparator::CacheEnabled SoFCSeparator::CacheMode = SoSeparator::AUTO;
-SO_NODE_SOURCE(SoFCSeparator);
+SO_NODE_SOURCE(SoFCSeparator)
 
 SoFCSeparator::SoFCSeparator(bool trackCacheMode)
     :trackCacheMode(trackCacheMode)
@@ -1159,7 +1159,7 @@ SoFCSelectionRoot::ColorStack SoFCSelectionRoot::SelColorStack;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::HlColorStack;
 SoFCSelectionRoot* SoFCSelectionRoot::ShapeColorNode;
 
-SO_NODE_SOURCE(SoFCSelectionRoot);
+SO_NODE_SOURCE(SoFCSelectionRoot)
 
 SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode)
     :SoFCSeparator(trackCacheMode)
@@ -1637,7 +1637,7 @@ int SoFCSelectionRoot::SelContext::merge(int status, SoFCSelectionContextBasePtr
 
 /////////////////////////////////////////////////////////////////////////////
 
-SO_NODE_SOURCE(SoFCPathAnnotation);
+SO_NODE_SOURCE(SoFCPathAnnotation)
 
 SoFCPathAnnotation::SoFCPathAnnotation()
 {

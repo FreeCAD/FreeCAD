@@ -35,10 +35,10 @@
 
 using namespace Data;
 
-TYPESYSTEM_SOURCE_ABSTRACT(Data::Segment , Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(Data::Segment , Base::BaseClass)
 
 
-TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData , Base::Persistence);
+TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData , Base::Persistence)
 
 
 ComplexGeoData::ComplexGeoData(void)

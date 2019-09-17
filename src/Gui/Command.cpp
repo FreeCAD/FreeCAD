@@ -67,7 +67,7 @@
 #include <App/AutoTransaction.h>
 #include <Gui/ViewProviderLink.h>
 
-FC_LOG_LEVEL_INIT("Command", true, true);
+FC_LOG_LEVEL_INIT("Command", true, true)
 
 using Base::Interpreter;
 using namespace Gui;

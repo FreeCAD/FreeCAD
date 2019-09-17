@@ -3078,7 +3078,7 @@ void CmdViewMeasureToggleAll::activated(int iMsg)
 // Std_SelBack
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdSelBack);
+DEF_STD_CMD_A(StdCmdSelBack)
 
 StdCmdSelBack::StdCmdSelBack()
   :Command("Std_SelBack")
@@ -3108,7 +3108,7 @@ bool StdCmdSelBack::isActive(void)
 // Std_SelForward
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdSelForward);
+DEF_STD_CMD_A(StdCmdSelForward)
 
 StdCmdSelForward::StdCmdSelForward()
   :Command("Std_SelForward")

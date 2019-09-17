@@ -41,7 +41,7 @@ using namespace Gui;
 // Std_Recompute
 //===========================================================================
 
-DEF_STD_CMD(StdCmdFeatRecompute);
+DEF_STD_CMD(StdCmdFeatRecompute)
 
 StdCmdFeatRecompute::StdCmdFeatRecompute()
   :Command("Std_Recompute")
@@ -65,7 +65,7 @@ void StdCmdFeatRecompute::activated(int iMsg)
 // Std_RandomColor
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdRandomColor);
+DEF_STD_CMD_A(StdCmdRandomColor)
 
 StdCmdRandomColor::StdCmdRandomColor()
   :Command("Std_RandomColor")

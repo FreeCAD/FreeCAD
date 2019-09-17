@@ -43,7 +43,7 @@ using namespace App;
 using namespace Base;
 using namespace boost;
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyExpressionContainer , App::PropertyXLinkContainer);
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyExpressionContainer , App::PropertyXLinkContainer)
 
 static std::set<PropertyExpressionContainer*> _ExprContainers;
 
@@ -73,7 +73,7 @@ void PropertyExpressionContainer::slotRelabelDocument(const App::Document &doc) 
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::PropertyExpressionContainer);
+TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::PropertyExpressionContainer)
 
 /**
  * @brief Construct a new PropertyExpressionEngine object.

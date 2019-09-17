@@ -173,7 +173,7 @@ const Base::Type& NavigationStyleEvent::style() const
 #define PRIVATE(ptr) (ptr->pimpl)
 #define PUBLIC(ptr) (ptr->pub)
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::NavigationStyle,Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::NavigationStyle,Base::BaseClass)
 
 NavigationStyle::NavigationStyle() : viewer(0), mouseSelection(0)
 {
@@ -1625,7 +1625,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 
 // ----------------------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::UserNavigationStyle,Gui::NavigationStyle);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::UserNavigationStyle,Gui::NavigationStyle)
 
 std::string UserNavigationStyle::userFriendlyName() const
 {

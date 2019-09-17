@@ -38,7 +38,7 @@
 #include "PropertyItem.h"
 #include "PropertyEditor.h"
 
-FC_LOG_LEVEL_INIT("PropertyView",true,true);
+FC_LOG_LEVEL_INIT("PropertyView",true,true)
 
 using namespace Gui::PropertyEditor;
 
