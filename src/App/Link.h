@@ -201,7 +201,7 @@ public:
         return static_cast<LINK_PPTYPE(_param) *>(prop);\
     }\
 
-    // defines get##Name() and get##Name##Property() accessor
+    // defines get##Name##Property() and get##Name##Value() accessor
     BOOST_PP_SEQ_FOR_EACH(LINK_PROP_GET,_,LINK_PARAMS)
 
     PropertyLinkList *_getElementListProperty() const;
@@ -281,6 +281,8 @@ public:
     void cacheChildLabel(int enable=-1) const;
 
 protected:
+    void _handleChangedPropertyName(Base::XMLReader &reader, 
+            const char * TypeName, const char *PropName);
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
     void syncElementList();
@@ -299,10 +301,12 @@ protected:
     std::unordered_map<const App::DocumentObject*, 
         boost::signals2::scoped_connection> plainGroupConns;
 
+    long myOwner;
+
     mutable std::unordered_map<std::string,int> myLabelCache; // for label based subname lookup
     mutable bool enableLabelCache;
 
-    long myOwner;
+    bool hasOldSubElement;
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -449,6 +453,12 @@ public:
         inherited::onDocumentRestored();
     }
 
+    void handleChangedPropertyName(Base::XMLReader &reader, 
+            const char * TypeName, const char *PropName) override
+    {
+        _handleChangedPropertyName(reader,TypeName,PropName);
+    }
+
     bool canLinkProperties() const override;
 };
 
@@ -482,6 +492,12 @@ public:
     }
 
     bool canDelete() const;
+
+    void handleChangedPropertyName(Base::XMLReader &reader, 
+            const char * TypeName, const char *PropName) override
+    {
+        _handleChangedPropertyName(reader,TypeName,PropName);
+    }
 };
 
 typedef App::FeaturePythonT<LinkElement> LinkElementPython;

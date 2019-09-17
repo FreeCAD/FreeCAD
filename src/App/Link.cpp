@@ -44,7 +44,7 @@ using namespace Base;
 EXTENSION_PROPERTY_SOURCE(App::LinkBaseExtension, App::DocumentObjectExtension)
 
 LinkBaseExtension::LinkBaseExtension(void)
-    :enableLabelCache(false),myOwner(0)
+    :myOwner(0),enableLabelCache(false),hasOldSubElement(false)
 {
     initExtensionType(LinkBaseExtension::getExtensionClassTypeId());
     EXTENSION_ADD_PROPERTY_TYPE(_LinkTouched, (false), " Link", 
@@ -1076,12 +1076,57 @@ void LinkBaseExtension::syncElementList() {
 
 void LinkBaseExtension::onExtendedDocumentRestored() {
     inherited::onExtendedDocumentRestored();
-    auto parent = getContainer();
     myHiddenElements.clear();
-    if(parent) {
-        update(parent,getVisibilityListProperty());
-        update(parent,getLinkedObjectProperty());
-        update(parent,getElementListProperty());
+    auto parent = getContainer();
+    if(!parent)
+        return;
+    if(hasOldSubElement) {
+        hasOldSubElement = false;
+        // SubElements was stored as a PropertyStringList. It is now migrated to be
+        // stored inside PropertyXLink.
+        auto xlink = freecad_dynamic_cast<PropertyXLink>(getLinkedObjectProperty());
+        if(!xlink) 
+            FC_ERR("Failed to restore SubElements for " << parent->getFullName());
+        else if(!xlink->getValue())
+            FC_ERR("Discard SubElements of " << parent->getFullName() << " due to null link");
+        else if(xlink->getSubValues().size() > 1)
+            FC_ERR("Failed to restore SubElements for " << parent->getFullName() 
+                    << " due to conflict subnames");
+        else if(xlink->getSubValues().empty()) {
+            auto subs = xlink->getSubValues();
+            xlink->setSubValues(std::move(subs));
+        } else {
+            std::set<std::string> subset(mySubElements.begin(),mySubElements.end());
+            auto sub = xlink->getSubValues().front();
+            auto element = Data::ComplexGeoData::findElementName(sub.c_str());
+            if(element && element[0]) {
+                subset.insert(element);
+                sub.resize(element - sub.c_str());
+            }
+            std::vector<std::string> subs;
+            for(auto &s : subset)
+                subs.push_back(sub + s);
+            xlink->setSubValues(std::move(subs));
+        }
+    }
+    update(parent,getVisibilityListProperty());
+    update(parent,getLinkedObjectProperty());
+    update(parent,getElementListProperty());
+}
+
+void LinkBaseExtension::_handleChangedPropertyName(
+        Base::XMLReader &reader, const char * TypeName, const char *PropName)
+{
+    if(strcmp(PropName,"SubElements")==0
+        && strcmp(TypeName,PropertyStringList::getClassTypeId().getName())==0)
+    {
+        PropertyStringList prop;
+        prop.setContainer(getContainer());
+        prop.Restore(reader);
+        if(prop.getSize()) {
+            mySubElements = prop.getValues();
+            hasOldSubElement = true;
+        }
     }
 }
 
