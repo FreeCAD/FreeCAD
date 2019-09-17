@@ -347,7 +347,7 @@ class EditorPanel():
         self.loadToolTables()
     
     def renameTable(self):
-        ''' provides dialog for new tablename and renames teh selected tool table'''
+        ''' provides dialog for new tablename and renames the selected tool table'''
         name = self.TLM.getCurrentTableName()
         newName, ok = QtGui.QInputDialog.getText(None, translate("TooltableEditor","Rename Tooltable"),translate("TooltableEditor","Enter Name:"),QtGui.QLineEdit.Normal,name)
         if ok and newName:
