@@ -1557,6 +1557,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
         if (!useCoinOffscreenRenderer) {
             SoQtOffscreenRenderer renderer(vp);
             renderer.setNumPasses(s);
+            renderer.setInternalTextureFormat(getInternalTextureFormat());
             renderer.setPbufferEnable(usePixelBuffer);
             if (bgColor.isValid())
                 renderer.setBackgroundColor(SbColor4f(bgColor.redF(), bgColor.greenF(), bgColor.blueF(), bgColor.alphaF()));
@@ -1859,6 +1860,53 @@ int View3DInventorViewer::getNumSamples()
     }
 }
 
+GLenum View3DInventorViewer::getInternalTextureFormat() const
+{
+#if defined(HAVE_QT5_OPENGL)
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    std::string format = hGrp->GetASCII("InternalTextureFormat", "Default");
+
+    if (format == "GL_RGB") {
+        return GL_RGB;
+    }
+    else if (format == "GL_RGBA") {
+        return GL_RGBA;
+    }
+    else if (format == "GL_RGB8") {
+        return GL_RGB8;
+    }
+    else if (format == "GL_RGBA8") {
+        return GL_RGBA8;
+    }
+    else if (format == "GL_RGB10") {
+        return GL_RGB10;
+    }
+    else if (format == "GL_RGB10_A2") {
+        return GL_RGB10_A2;
+    }
+    else if (format == "GL_RGB16") {
+        return GL_RGB16;
+    }
+    else if (format == "GL_RGBA16") {
+        return GL_RGBA16;
+    }
+    else if (format == "GL_RGB32F") {
+        return GL_RGB32F_ARB;
+    }
+    else if (format == "GL_RGBA32F") {
+        return GL_RGBA32F_ARB;
+    }
+    else {
+        QOpenGLFramebufferObjectFormat fboFormat;
+        return fboFormat.internalTextureFormat();
+    }
+#else
+    //return GL_RGBA;
+    return GL_RGB;
+#endif
+}
+
 void View3DInventorViewer::setRenderType(const RenderType type)
 {
     renderType = type;
@@ -1946,7 +1994,7 @@ QImage View3DInventorViewer::grabFramebuffer()
         fboFormat.setSamples(getNumSamples());
         fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
         fboFormat.setTextureTarget(GL_TEXTURE_2D);
-        fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
+        fboFormat.setInternalTextureFormat(getInternalTextureFormat());
 
         QOpenGLFramebufferObject fbo(width, height, fboFormat);
         renderToFramebuffer(&fbo);
@@ -1978,18 +2026,8 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
     // is to use a certain background color using GL_RGB as texture
     // format and in the output image search for the above color and
     // replaces it with the color requested by the user.
-#if defined(HAVE_QT5_OPENGL)
-    if (App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("SaveThumbnailFix",false)) {
-        fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
-    }
-    else {
-        fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
-    }
-#else
-    //fboFormat.setInternalTextureFormat(GL_RGBA);
-    fboFormat.setInternalTextureFormat(GL_RGB);
-#endif
+    fboFormat.setInternalTextureFormat(getInternalTextureFormat());
+
     QtGLFramebufferObject fbo(width, height, fboFormat);
 
     const QColor col = backgroundColor();

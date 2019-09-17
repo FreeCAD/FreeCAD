@@ -61,12 +61,13 @@ DrawViewAnnotation::DrawViewAnnotation(void)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
     std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+    double defFontSize = hGrp->GetFloat("LabelSize", 5.0);
 
     ADD_PROPERTY_TYPE(Text ,("Default Text"),vgroup,App::Prop_None,"The text to be displayed");
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),vgroup,App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(TextColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The color of the text");
 
-    ADD_PROPERTY_TYPE(TextSize,(8.0),vgroup,App::Prop_None,"The size of the text in units");
+    ADD_PROPERTY_TYPE(TextSize,(defFontSize),vgroup,App::Prop_None,"The size of the text in units");
     ADD_PROPERTY_TYPE(MaxWidth,(-1.0),vgroup,App::Prop_None,"The maximum width of the Annotation block");
     ADD_PROPERTY_TYPE(LineSpace,(80),vgroup,App::Prop_None,"Line spacing adjustment. 100 is normal spacing.");
 
