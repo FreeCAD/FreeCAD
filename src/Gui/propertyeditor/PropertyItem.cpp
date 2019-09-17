@@ -37,6 +37,8 @@
 # include <QtGlobal>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -3502,8 +3504,7 @@ void LinkSelection::select()
 {
     Gui::Selection().clearSelection();
     Gui::Selection().addSelection((const char*)link[0].toLatin1(),
-                                  (const char*)link[1].toLatin1(),
-                                  link.size()>=6?(const char*)link[5].toUtf8():0);
+                                  (const char*)link[1].toLatin1());
     this->deleteLater();
 }
 
@@ -3642,18 +3643,46 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
             objName = _objName.c_str();
         }
 
-        if(xlink && xlink->getSubName(false)[0]) {
-            auto subObj = obj->getSubObject(xlink->getSubName(false));
-            if(subObj)
-                list << QString::fromLatin1("%1 (%2.%3)").
-                    arg(QString::fromUtf8(subObj->Label.getValue()),
-                        QString::fromLatin1(objName),
-                        QString::fromUtf8(xlink->getSubName(false)));
-            else
-                list << QString::fromLatin1("%1.%2").
-                    arg(QString::fromLatin1(objName),
-                        QString::fromUtf8(xlink->getSubName(false)));
-        }else if(objName!=obj->Label.getValue()) {
+        if(xlink && xlink->getSubValues().size()) {
+            int count = 0;
+            std::stringstream ss;
+            ss << objName << ' ';
+
+            std::string prevSub;
+            for(const auto &sub : xlink->getSubValues(false)) {
+                if(++count > 3)
+                    break;
+
+                if(count>1)
+                    ss << ',';
+                else
+                    ss << '(';
+
+                auto element = Data::ComplexGeoData::findElementName(sub.c_str());
+                if(prevSub.size()==(std::size_t)(element-sub.c_str()) 
+                        && boost::starts_with(sub,prevSub))
+                {
+                    ss << element;
+                    continue;
+                }
+
+                prevSub.clear();
+
+                if(element && element[0])
+                    prevSub = sub.substr(0,element-sub.c_str());
+
+                if(count > 1)
+                    ss << ' ';
+                ss << sub;
+            }
+            if(count) {
+                if(count>3)
+                    ss << "...";
+                ss << ')';
+            }
+            list << QString::fromUtf8(ss.str().c_str());
+
+        }else if(obj->Label.getStrValue() != objName) {
             list << QString::fromLatin1("%1 (%2)").
                     arg(QString::fromUtf8(obj->Label.getValue()),
                         QString::fromLatin1(objName));
