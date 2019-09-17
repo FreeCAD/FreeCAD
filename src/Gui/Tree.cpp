@@ -4197,6 +4197,7 @@ void DocumentItem::selectItems(bool sync) {
             // this means it is the old selection and is not in the current
             // selection
             item->selected = 0;
+            item->mySubs.clear();
             item->setSelected(false);
         }else if(item->selected) {
             if(item->selected == 2) {
