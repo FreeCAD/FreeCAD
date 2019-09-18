@@ -87,7 +87,7 @@ void _class_::init(void){\
 
 /// define to implement a subclass of Base::BaseClass
 #define TYPESYSTEM_SOURCE_TEMPLATE_T(_class_, _parentclass_) \
-TYPESYSTEM_SOURCE_TEMPLATE_P(_class_);\
+TYPESYSTEM_SOURCE_TEMPLATE_P(_class_)\
 template<> void _class_::init(void){\
     initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
 }
