@@ -40,6 +40,58 @@ if FreeCAD.GuiUp:
 
 
 class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
+    """
+
+    Attributes
+    ----------
+    analysis : Fem::FemAnalysis
+        FEM group analysis object
+        has to be present, will be set in __init__
+    solver : Fem::FemSolverObjectPython
+        FEM solver object
+        has to be present, will be set in __init__
+    base_name : str
+        name of .inp/.frd file (without extension)
+        It is used to construct .inp file path that is passed to CalculiX ccx
+    ccx_binary : str
+    working_dir : str
+    results_present : bool
+        indicating if there are calculation results ready for us
+
+    materials_linear : list of dictionaries
+        list of nonlinear materials from the analysis. Updated with update_objects
+    fixed_constraints :  list of dictionaries
+        list of fixed constraints from the analysis. Updated with update_objects
+    selfweight_constraints : list of dictionaries
+        list of selfweight constraints from the analysis. Updated with update_objects
+    force_constraints : list of dictionaries
+        list of force constraints from the analysis. Updated with update_objects
+    pressure_constraints : list of dictionaries
+        list of pressure constraints from the analysis. Updated with update_objects
+    beam_sections : list of dictionaries
+        list of beam sections from the analysis. Updated with update_objects
+    beam_rotations :  list of dictionaries
+        list of beam rotations from the analysis. Updated with update_objects
+    fluid_sections : list of dictionaries
+        list of fluid sections from the analysis. Updated with update_objects
+    shell_thicknesses : list of dictionaries
+        list of shell thicknesses from the analysis. Updated with update_objects
+    displacement_constraints : list of dictionaries
+        list of displacements for the analysis. Updated with update_objects
+    temperature_constraints : list of dictionaries
+        list of temperatures for the analysis. Updated with update_objects
+    heatflux_constraints : list of dictionaries
+        list of heatflux constraints for the analysis. Updated with update_objects
+    initialtemperature_constraints : list of dictionaries
+        list of initial temperatures for the analysis. Updated with update_objects
+    planerotation_constraints : list of dictionaries
+        list of plane rotation constraints from the analysis. Updated with update_objects
+    contact_constraints : list of dictionaries
+        list of contact constraints from the analysis. Updated with update_objects
+    transform_constraints : list of dictionaries
+        list of transform constraints from the analysis. Updated with update_objects
+
+    """
 
     known_analysis_types = ["static", "frequency", "thermomech", "check"]
     finished = QtCore.Signal(int)
@@ -56,17 +108,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         test_mode : bool, optional
             mainly used in unit tests
         """
+
         QtCore.QRunnable.__init__(self)
         QtCore.QObject.__init__(self)
 
-        ## @var analysis
-        #  FEM analysis - the core object. Has to be present.
-        #  It's set to analysis passed in "__init__"
-        # or set to current active analysis by default
-        # if nothing has been passed to "__init__".
         self.analysis = None
-        ## @var solver
-        #  solver of the analysis. Used to store the active solver and analysis parameters
         self.solver = None
 
         if analysis:
@@ -106,12 +152,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if self.analysis and self.solver:
             self.working_dir = ""
             self.ccx_binary = ""
-            ## @var base_name
-            #  base name of .inp/.frd file (without extension).
-            # It is used to construct .inp file path that is passed to CalculiX ccx
             self.base_name = ""
-            ## @var results_present
-            #  boolean variable indicating if there are calculation results ready for use
             self.results_present = False
             if test_mode:
                 self.test_mode = True
@@ -226,61 +267,27 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         # [{"Object":shell_thicknesses, "xxxxxxxx":value}, {}, ...]
         # [{"Object":contact_constraints, "xxxxxxxx":value}, {}, ...]
 
-        ## @var materials_linear
-        #  list of linear materials from the analysis. Updated with update_objects
         self.materials_linear = (
             self._get_several_member("Fem::Material")
             + self._get_several_member("Fem::MaterialReinforced")
         )
-        ## @var materials_nonlinear
-        #  list of nonlinear materials from the analysis. Updated with update_objects
         self.materials_nonlinear = self._get_several_member("Fem::MaterialMechanicalNonlinear")
-        ## @var fixed_constraints
-        #  list of fixed constraints from the analysis. Updated with update_objects
         self.fixed_constraints = self._get_several_member("Fem::ConstraintFixed")
-        ## @var selfweight_constraints
-        #  list of selfweight constraints from the analysis. Updated with update_objects
         self.selfweight_constraints = self._get_several_member("Fem::ConstraintSelfWeight")
-        ## @var force_constraints
-        #  list of force constraints from the analysis. Updated with update_objects
         self.force_constraints = self._get_several_member("Fem::ConstraintForce")
-        ## @var pressure_constraints
-        #  list of pressure constraints from the analysis. Updated with update_objects
         self.pressure_constraints = self._get_several_member("Fem::ConstraintPressure")
-        ## @var beam_sections
-        # list of beam sections from the analysis. Updated with update_objects
         self.beam_sections = self._get_several_member("Fem::FemElementGeometry1D")
-        ## @var beam_rotations
-        # list of beam rotations from the analysis. Updated with update_objects
         self.beam_rotations = self._get_several_member("Fem::FemElementRotation1D")
-        ## @var fluid_sections
-        # list of fluid sections from the analysis. Updated with update_objects
         self.fluid_sections = self._get_several_member("Fem::FemElementFluid1D")
-        ## @var shell_thicknesses
-        # list of shell thicknesses from the analysis. Updated with update_objects
         self.shell_thicknesses = self._get_several_member("Fem::FemElementGeometry2D")
-        ## @var displacement_constraints
-        # list of displacements for the analysis. Updated with update_objects
         self.displacement_constraints = self._get_several_member("Fem::ConstraintDisplacement")
-        ## @var temperature_constraints
-        # list of temperatures for the analysis. Updated with update_objects
         self.temperature_constraints = self._get_several_member("Fem::ConstraintTemperature")
-        ## @var heatflux_constraints
-        # list of heatflux constraints for the analysis. Updated with update_objects
         self.heatflux_constraints = self._get_several_member("Fem::ConstraintHeatflux")
-        ## @var initialtemperature_constraints
-        # list of initial temperatures for the analysis. Updated with update_objects
         self.initialtemperature_constraints = self._get_several_member(
             "Fem::ConstraintInitialTemperature"
         )
-        ## @var planerotation_constraints
-        #  list of plane rotation constraints from the analysis. Updated with update_objects
         self.planerotation_constraints = self._get_several_member("Fem::ConstraintPlaneRotation")
-        ## @var contact_constraints
-        #  list of contact constraints from the analysis. Updated with update_objects
         self.contact_constraints = self._get_several_member("Fem::ConstraintContact")
-        ## @var transform_constraints
-        #  list of transform constraints from the analysis. Updated with update_objects
         self.transform_constraints = self._get_several_member("Fem::ConstraintTransform")
 
     def check_prerequisites(self):
