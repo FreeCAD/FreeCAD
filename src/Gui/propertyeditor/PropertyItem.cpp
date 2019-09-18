@@ -2308,6 +2308,7 @@ void PropertyStringListItem::setValue(const QVariant& value)
         text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
 
         std::string pystr = Base::Tools::escapedUnicodeFromUtf8(text.toUtf8());
+        pystr = Base::Interpreter().strToPython(pystr.c_str());
         str << "u\"" << pystr.c_str() << "\", ";
     }
     str << "]";
