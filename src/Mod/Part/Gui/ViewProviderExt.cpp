@@ -124,7 +124,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
-FC_LOG_LEVEL_INIT("Part", true, true);
+FC_LOG_LEVEL_INIT("Part", true, true)
 
 using namespace PartGui;
 
