@@ -55,7 +55,7 @@
 
 using namespace Fem;
 
-TYPESYSTEM_SOURCE(Fem::PropertyPostDataObject , App::Property);
+TYPESYSTEM_SOURCE(Fem::PropertyPostDataObject , App::Property)
 
 PropertyPostDataObject::PropertyPostDataObject()
 {

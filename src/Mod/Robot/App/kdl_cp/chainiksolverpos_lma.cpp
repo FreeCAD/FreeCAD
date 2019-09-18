@@ -283,4 +283,4 @@ int ChainIkSolverPos_LMA::CartToJnt(const KDL::JntArray& q_init, const KDL::Fram
 
 
 
-};//namespace KDL
+}//namespace KDL

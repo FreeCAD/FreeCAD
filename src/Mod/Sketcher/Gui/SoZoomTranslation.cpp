@@ -52,7 +52,7 @@ using namespace SketcherGui;
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(SoZoomTranslation);
+SO_NODE_SOURCE(SoZoomTranslation)
 
 void SoZoomTranslation::initClass()
 {

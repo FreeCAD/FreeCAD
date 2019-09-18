@@ -71,7 +71,7 @@
 // TODO Remove this header after fixing code so it won;t be needed here (2015-10-20, Fat-Zer)
 #include "ui_DlgReference.h"
 
-FC_LOG_LEVEL_INIT("PartDesign",true,true);
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace std;
 using namespace Attacher;
@@ -153,7 +153,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
 
 /* Datum feature commands =======================================================*/
 
-DEF_STD_CMD_A(CmdPartDesignPlane);
+DEF_STD_CMD_A(CmdPartDesignPlane)
 
 CmdPartDesignPlane::CmdPartDesignPlane()
   :Command("PartDesign_Plane")
@@ -181,7 +181,7 @@ bool CmdPartDesignPlane::isActive(void)
         return false;
 }
 
-DEF_STD_CMD_A(CmdPartDesignLine);
+DEF_STD_CMD_A(CmdPartDesignLine)
 
 CmdPartDesignLine::CmdPartDesignLine()
   :Command("PartDesign_Line")
@@ -209,7 +209,7 @@ bool CmdPartDesignLine::isActive(void)
         return false;
 }
 
-DEF_STD_CMD_A(CmdPartDesignPoint);
+DEF_STD_CMD_A(CmdPartDesignPoint)
 
 CmdPartDesignPoint::CmdPartDesignPoint()
   :Command("PartDesign_Point")
@@ -269,7 +269,7 @@ bool CmdPartDesignCS::isActive(void)
 // PartDesign_ShapeBinder
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartDesignShapeBinder);
+DEF_STD_CMD_A(CmdPartDesignShapeBinder)
 
 CmdPartDesignShapeBinder::CmdPartDesignShapeBinder()
   :Command("PartDesign_ShapeBinder")
@@ -334,7 +334,7 @@ bool CmdPartDesignShapeBinder::isActive(void)
 // PartDesign_SubShapeBinder
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartDesignSubShapeBinder);
+DEF_STD_CMD_A(CmdPartDesignSubShapeBinder)
 
 CmdPartDesignSubShapeBinder::CmdPartDesignSubShapeBinder()
   :Command("PartDesign_SubShapeBinder")
@@ -508,7 +508,7 @@ bool CmdPartDesignClone::isActive(void)
 //===========================================================================
 
 /* Sketch commands =======================================================*/
-DEF_STD_CMD_A(CmdPartDesignNewSketch);
+DEF_STD_CMD_A(CmdPartDesignNewSketch)
 
 CmdPartDesignNewSketch::CmdPartDesignNewSketch()
   :Command("PartDesign_NewSketch")
@@ -1178,7 +1178,7 @@ void finishProfileBased(const Gui::Command* cmd, const Part::Feature* sketch, Ap
 //===========================================================================
 // PartDesign_Pad
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignPad);
+DEF_STD_CMD_A(CmdPartDesignPad)
 
 CmdPartDesignPad::CmdPartDesignPad()
   : Command("PartDesign_Pad")
@@ -1229,7 +1229,7 @@ bool CmdPartDesignPad::isActive(void)
 //===========================================================================
 // PartDesign_Pocket
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignPocket);
+DEF_STD_CMD_A(CmdPartDesignPocket)
 
 CmdPartDesignPocket::CmdPartDesignPocket()
   : Command("PartDesign_Pocket")
@@ -1276,7 +1276,7 @@ bool CmdPartDesignPocket::isActive(void)
 //===========================================================================
 // PartDesign_Hole
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignHole);
+DEF_STD_CMD_A(CmdPartDesignHole)
 
 CmdPartDesignHole::CmdPartDesignHole()
   : Command("PartDesign_Hole")
@@ -1322,7 +1322,7 @@ bool CmdPartDesignHole::isActive(void)
 //===========================================================================
 // PartDesign_Revolution
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignRevolution);
+DEF_STD_CMD_A(CmdPartDesignRevolution)
 
 CmdPartDesignRevolution::CmdPartDesignRevolution()
   : Command("PartDesign_Revolution")
@@ -1380,7 +1380,7 @@ bool CmdPartDesignRevolution::isActive(void)
 //===========================================================================
 // PartDesign_Groove
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignGroove);
+DEF_STD_CMD_A(CmdPartDesignGroove)
 
 CmdPartDesignGroove::CmdPartDesignGroove()
   : Command("PartDesign_Groove")
@@ -1446,7 +1446,7 @@ bool CmdPartDesignGroove::isActive(void)
 //===========================================================================
 // PartDesign_Additive_Pipe
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignAdditivePipe);
+DEF_STD_CMD_A(CmdPartDesignAdditivePipe)
 
 CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
   : Command("PartDesign_AdditivePipe")
@@ -1496,7 +1496,7 @@ bool CmdPartDesignAdditivePipe::isActive(void)
 //===========================================================================
 // PartDesign_Subtractive_Pipe
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignSubtractivePipe);
+DEF_STD_CMD_A(CmdPartDesignSubtractivePipe)
 
 CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
   : Command("PartDesign_SubtractivePipe")
@@ -1546,7 +1546,7 @@ bool CmdPartDesignSubtractivePipe::isActive(void)
 //===========================================================================
 // PartDesign_Additive_Loft
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignAdditiveLoft);
+DEF_STD_CMD_A(CmdPartDesignAdditiveLoft)
 
 CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
   : Command("PartDesign_AdditiveLoft")
@@ -1596,7 +1596,7 @@ bool CmdPartDesignAdditiveLoft::isActive(void)
 //===========================================================================
 // PartDesign_Subtractive_Loft
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignSubtractiveLoft);
+DEF_STD_CMD_A(CmdPartDesignSubtractiveLoft)
 
 CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
   : Command("PartDesign_SubtractiveLoft")
@@ -1744,7 +1744,7 @@ void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
 //===========================================================================
 // PartDesign_Fillet
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignFillet);
+DEF_STD_CMD_A(CmdPartDesignFillet)
 
 CmdPartDesignFillet::CmdPartDesignFillet()
   :Command("PartDesign_Fillet")
@@ -1772,7 +1772,7 @@ bool CmdPartDesignFillet::isActive(void)
 //===========================================================================
 // PartDesign_Chamfer
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignChamfer);
+DEF_STD_CMD_A(CmdPartDesignChamfer)
 
 CmdPartDesignChamfer::CmdPartDesignChamfer()
   :Command("PartDesign_Chamfer")
@@ -1801,7 +1801,7 @@ bool CmdPartDesignChamfer::isActive(void)
 //===========================================================================
 // PartDesign_Draft
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignDraft);
+DEF_STD_CMD_A(CmdPartDesignDraft)
 
 CmdPartDesignDraft::CmdPartDesignDraft()
   :Command("PartDesign_Draft")
@@ -1858,7 +1858,7 @@ bool CmdPartDesignDraft::isActive(void)
 //===========================================================================
 // PartDesign_Thickness
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignThickness);
+DEF_STD_CMD_A(CmdPartDesignThickness)
 
 CmdPartDesignThickness::CmdPartDesignThickness()
   :Command("PartDesign_Thickness")
@@ -2010,7 +2010,7 @@ void finishTransformed(Gui::Command* cmd, App::DocumentObject *Feat)
 //===========================================================================
 // PartDesign_Mirrored
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignMirrored);
+DEF_STD_CMD_A(CmdPartDesignMirrored)
 
 CmdPartDesignMirrored::CmdPartDesignMirrored()
   : Command("PartDesign_Mirrored")
@@ -2072,7 +2072,7 @@ bool CmdPartDesignMirrored::isActive(void)
 //===========================================================================
 // PartDesign_LinearPattern
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignLinearPattern);
+DEF_STD_CMD_A(CmdPartDesignLinearPattern)
 
 CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
   : Command("PartDesign_LinearPattern")
@@ -2136,7 +2136,7 @@ bool CmdPartDesignLinearPattern::isActive(void)
 //===========================================================================
 // PartDesign_PolarPattern
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignPolarPattern);
+DEF_STD_CMD_A(CmdPartDesignPolarPattern)
 
 CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
   : Command("PartDesign_PolarPattern")
@@ -2201,7 +2201,7 @@ bool CmdPartDesignPolarPattern::isActive(void)
 //===========================================================================
 // PartDesign_Scaled
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignScaled);
+DEF_STD_CMD_A(CmdPartDesignScaled)
 
 CmdPartDesignScaled::CmdPartDesignScaled()
   : Command("PartDesign_Scaled")
@@ -2250,7 +2250,7 @@ bool CmdPartDesignScaled::isActive(void)
 //===========================================================================
 // PartDesign_MultiTransform
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignMultiTransform);
+DEF_STD_CMD_A(CmdPartDesignMultiTransform)
 
 CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
   : Command("PartDesign_MultiTransform")
@@ -2373,7 +2373,7 @@ bool CmdPartDesignMultiTransform::isActive(void)
 //===========================================================================
 
 /* Boolean commands =======================================================*/
-DEF_STD_CMD_A(CmdPartDesignBoolean);
+DEF_STD_CMD_A(CmdPartDesignBoolean)
 
 CmdPartDesignBoolean::CmdPartDesignBoolean()
   :Command("PartDesign_Boolean")

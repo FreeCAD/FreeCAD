@@ -162,7 +162,7 @@ bool FemFace::isSameFace (FemFace &face)
     }
 
     return false;
-};
+}
 
 // ----------------------------------------------------------------------------
 
@@ -715,7 +715,7 @@ inline void insEdgeVec(std::map<int,std::set<int> > &map, int n1, int n2)
     //    map[n2].insert(n1);
     //else
         map[n2].insert(n1);
-};
+}
 
 inline unsigned long ElemFold(unsigned long Element,unsigned long FaceNbr)
 {

@@ -50,7 +50,7 @@ using namespace TechDraw;
 // PropertyGeomFormatList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(TechDraw::PropertyGeomFormatList, App::PropertyLists);
+TYPESYSTEM_SOURCE(TechDraw::PropertyGeomFormatList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction

@@ -108,7 +108,7 @@ char* _edgeTypeToText(int e);
 
 // this is deprecated. use individual add dimension commands.
 
-DEF_STD_CMD_A(CmdTechDrawNewDimension);
+DEF_STD_CMD_A(CmdTechDrawNewDimension)
 
 CmdTechDrawNewDimension::CmdTechDrawNewDimension()
   : Command("TechDraw_NewDimension")
@@ -235,7 +235,7 @@ bool CmdTechDrawNewDimension::isActive(void)
 // TechDraw_NewRadiusDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewRadiusDimension);
+DEF_STD_CMD_A(CmdTechDrawNewRadiusDimension)
 
 CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
   : Command("TechDraw_NewRadiusDimension")
@@ -357,7 +357,7 @@ bool CmdTechDrawNewRadiusDimension::isActive(void)
 // TechDraw_NewDiameterDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewDiameterDimension);
+DEF_STD_CMD_A(CmdTechDrawNewDiameterDimension)
 
 CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
   : Command("TechDraw_NewDiameterDimension")
@@ -478,7 +478,7 @@ bool CmdTechDrawNewDiameterDimension::isActive(void)
 // TechDraw_NewLengthDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewLengthDimension);
+DEF_STD_CMD_A(CmdTechDrawNewLengthDimension)
 
 CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
   : Command("TechDraw_NewLengthDimension")
@@ -591,7 +591,7 @@ bool CmdTechDrawNewLengthDimension::isActive(void)
 // TechDraw_NewDistanceXDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewDistanceXDimension);
+DEF_STD_CMD_A(CmdTechDrawNewDistanceXDimension)
 
 CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
   : Command("TechDraw_NewDistanceXDimension")
@@ -704,7 +704,7 @@ bool CmdTechDrawNewDistanceXDimension::isActive(void)
 // TechDraw_NewDistanceYDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewDistanceYDimension);
+DEF_STD_CMD_A(CmdTechDrawNewDistanceYDimension)
 
 CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
   : Command("TechDraw_NewDistanceYDimension")
@@ -816,7 +816,7 @@ bool CmdTechDrawNewDistanceYDimension::isActive(void)
 // TechDraw_NewAngleDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewAngleDimension);
+DEF_STD_CMD_A(CmdTechDrawNewAngleDimension)
 
 CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
   : Command("TechDraw_NewAngleDimension")
@@ -904,7 +904,7 @@ bool CmdTechDrawNewAngleDimension::isActive(void)
 // TechDraw_NewAngle3PtDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewAngle3PtDimension);
+DEF_STD_CMD_A(CmdTechDrawNewAngle3PtDimension)
 
 CmdTechDrawNewAngle3PtDimension::CmdTechDrawNewAngle3PtDimension()
   : Command("TechDraw_NewAngle3PtDimension")
@@ -996,7 +996,7 @@ bool CmdTechDrawNewAngle3PtDimension::isActive(void)
 // TechDraw_LinkDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawLinkDimension);
+DEF_STD_CMD_A(CmdTechDrawLinkDimension)
 
 CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
   : Command("TechDraw_LinkDimension")

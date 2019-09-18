@@ -50,7 +50,7 @@ using namespace TechDraw;
 // PropertyCosmeticEdgeList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(TechDraw::PropertyCosmeticEdgeList, App::PropertyLists);
+TYPESYSTEM_SOURCE(TechDraw::PropertyCosmeticEdgeList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
