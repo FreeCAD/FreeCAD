@@ -2,7 +2,16 @@
 - These coding rules apply to FEM module code only. Other modules or the base system may use different coding rules especially in naming policy of Python.
 
 
+## Spelling
+- Be mindful of spelling. Spell checks are quite often neglected.
+- [codespell]((https://github.com/codespell-project/codespell#updating) could be used  
+
+~~~
+codespell -q 2 -S *.ts  -L childs,dof,dum,methode,nd,normaly,uint,vertexes,freez  src/Mod/Fem/
+~~~
+
 ## Python and C++
+#### Code formatting
 - All files should have a license header
 - Unix line endings are preferred
 - never use mixed line endings on one file
@@ -52,11 +61,3 @@ find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --igno
 ## C++
 ### Naming policy
 - CamelCase names
-
-## Spelling
-- Be mindful of spelling. Spell checks are quite often neglected.
-- [codespell]((https://github.com/codespell-project/codespell#updating) could be used  
-
-~~~
-codespell -q 2 -S *.ts  -L childs,dof,dum,methode,nd,normaly,uint,vertexes,freez  src/Mod/Fem/
-~~~
