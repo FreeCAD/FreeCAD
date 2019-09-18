@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,46 +20,47 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SOPOLYGON_H
-#define MESHGUI_SOPOLYGON_H
 
-#include <Inventor/fields/SoSFUInt32.h>
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/elements/SoReplacedElement.h>
+#ifndef MESH_MESHTEXTURE_H
+#define MESH_MESHTEXTURE_H
 
-namespace MeshGui {
+#include <memory>
+#include "Core/Algorithm.h"
+#include "Core/MeshKernel.h"
+#include "Core/KDTree.h"
+#include "Mesh.h"
 
-class MeshGuiExport SoPolygon : public SoShape {
-    typedef SoShape inherited;
 
-    SO_NODE_HEADER(SoPolygon);
+namespace Mesh
+{
 
+/*! The MeshTexture class.
+  This algorithm is useful to update the material after a mesh has been modified
+  by removing points or facets. It can't be used if the coordinates of points have
+  changed or if new points have been added.
+  @author Werner Mayer
+ */
+class MeshExport MeshTexture
+{
 public:
-    static void initClass();
-    SoPolygon();
-
-    SoSFInt32 startIndex;
-    SoSFInt32 numVertices;
-    SoSFBool  highlight;
-    SoSFBool  render;
-
-protected:
-    virtual ~SoPolygon() {}
-    virtual void GLRender(SoGLRenderAction *action);
-    virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
-    virtual void rayPick (SoRayPickAction *action);
-    virtual void generatePrimitives(SoAction *action);
+    /*!
+      A mesh with material. The number of points or facets must match with the number of colors.
+     */
+    MeshTexture(const Mesh::MeshObject& mesh, const MeshCore::Material &material);
+    /*!
+      The \a mesh must be a sub-set of the mesh passed to the constructor. This means
+      that points or facets can be removed but neither changed nor new points added.
+     */
+    void apply(const Mesh::MeshObject& mesh, MeshCore::Material &material);
 
 private:
-    void drawPolygon(const SbVec3f *,int32_t) const;
+    const MeshCore::Material &materialRefMesh;
+    unsigned long countPointsRefMesh;
+    std::unique_ptr<MeshCore::MeshKDTree> kdTree;
+    std::unique_ptr<MeshCore::MeshRefPointToFacets> refPnt2Fac;
+    MeshCore::MeshIO::Binding binding = MeshCore::MeshIO::OVERALL;
 };
 
-} // namespace MeshGui
+} // namespace Mesh
 
-
-#endif // MESHGUI_SOPOLYGON_H
-
+#endif // MESH_MESHTEXTURE_H

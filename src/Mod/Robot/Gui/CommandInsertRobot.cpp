@@ -42,7 +42,7 @@
 
 using namespace std;
 
-DEF_STD_CMD_A(CmdRobotInsertKukaIR500);
+DEF_STD_CMD_A(CmdRobotInsertKukaIR500)
 
 CmdRobotInsertKukaIR500::CmdRobotInsertKukaIR500()
 	:Command("Robot_InsertKukaIR500")
@@ -84,7 +84,7 @@ bool CmdRobotInsertKukaIR500::isActive(void)
 // #####################################################################################################
 
 
-DEF_STD_CMD_A(CmdRobotInsertKukaIR16);
+DEF_STD_CMD_A(CmdRobotInsertKukaIR16)
 
 CmdRobotInsertKukaIR16::CmdRobotInsertKukaIR16()
 	:Command("Robot_InsertKukaIR16")
@@ -125,7 +125,7 @@ bool CmdRobotInsertKukaIR16::isActive(void)
 // #####################################################################################################
 
 
-DEF_STD_CMD_A(CmdRobotInsertKukaIR210);
+DEF_STD_CMD_A(CmdRobotInsertKukaIR210)
 
 CmdRobotInsertKukaIR210::CmdRobotInsertKukaIR210()
 	:Command("Robot_InsertKukaIR210")
@@ -165,7 +165,7 @@ bool CmdRobotInsertKukaIR210::isActive(void)
 // #####################################################################################################
 
 
-DEF_STD_CMD_A(CmdRobotInsertKukaIR125);
+DEF_STD_CMD_A(CmdRobotInsertKukaIR125)
 
 CmdRobotInsertKukaIR125::CmdRobotInsertKukaIR125()
 	:Command("Robot_InsertKukaIR125")
@@ -206,7 +206,7 @@ bool CmdRobotInsertKukaIR125::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotAddToolShape);
+DEF_STD_CMD_A(CmdRobotAddToolShape)
 
 CmdRobotAddToolShape::CmdRobotAddToolShape()
 	:Command("Robot_AddToolShape")

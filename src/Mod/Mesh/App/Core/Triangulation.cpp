@@ -143,7 +143,7 @@ Base::Matrix4D AbstractPolygonTriangulator::GetTransformToFitPlane() const
     for (std::vector<Base::Vector3f>::const_iterator it = _points.begin(); it!=_points.end(); ++it)
         planeFit.AddPoint(*it);
 
-    if (planeFit.Fit() == FLOAT_MAX)
+    if (planeFit.Fit() >= FLOAT_MAX)
         throw Base::RuntimeError("Plane fit failed");
 
     Base::Vector3f bs = planeFit.GetBase();

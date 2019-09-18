@@ -50,7 +50,7 @@ using namespace TechDraw;
 // PropertyCenterLineList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(TechDraw::PropertyCenterLineList, App::PropertyLists);
+TYPESYSTEM_SOURCE(TechDraw::PropertyCenterLineList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction

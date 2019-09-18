@@ -5857,7 +5857,7 @@ void CmdSketcherConstrainDiameter::updateAction(int mode)
 
 // ======================================================================================
 
-DEF_STD_CMD_ACLU(CmdSketcherCompConstrainRadDia);
+DEF_STD_CMD_ACLU(CmdSketcherCompConstrainRadDia)
 
 CmdSketcherCompConstrainRadDia::CmdSketcherCompConstrainRadDia()
 : Command("Sketcher_CompConstrainRadDia")
@@ -6934,7 +6934,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selS
 
 // ======================================================================================
 
-DEF_STD_CMD_A(CmdSketcherConstrainSnellsLaw);
+DEF_STD_CMD_A(CmdSketcherConstrainSnellsLaw)
 
 CmdSketcherConstrainSnellsLaw::CmdSketcherConstrainSnellsLaw()
     :Command("Sketcher_ConstrainSnellsLaw")
@@ -7084,7 +7084,7 @@ bool CmdSketcherConstrainSnellsLaw::isActive(void)
 
 // ======================================================================================
 
-DEF_STD_CMD_A(CmdSketcherConstrainInternalAlignment);
+DEF_STD_CMD_A(CmdSketcherConstrainInternalAlignment)
 
 CmdSketcherConstrainInternalAlignment::CmdSketcherConstrainInternalAlignment()
     :Command("Sketcher_ConstrainInternalAlignment")
@@ -7500,7 +7500,7 @@ bool CmdSketcherConstrainInternalAlignment::isActive(void)
 
 // ======================================================================================
 /*** Creation Mode / Toggle to or from Reference ***/
-DEF_STD_CMD_A(CmdSketcherToggleDrivingConstraint);
+DEF_STD_CMD_A(CmdSketcherToggleDrivingConstraint)
 
 CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
     :Command("Sketcher_ToggleDrivingConstraint")
@@ -7624,7 +7624,7 @@ bool CmdSketcherToggleDrivingConstraint::isActive(void)
     return isCreateGeoActive( getActiveGuiDocument() );
 }
 
-DEF_STD_CMD_A(CmdSketcherToggleActiveConstraint);
+DEF_STD_CMD_A(CmdSketcherToggleActiveConstraint)
 
 CmdSketcherToggleActiveConstraint::CmdSketcherToggleActiveConstraint()
 :Command("Sketcher_ToggleActiveConstraint")

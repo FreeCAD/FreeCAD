@@ -40,7 +40,7 @@
 
 using namespace Fem;
 
-TYPESYSTEM_SOURCE(Fem::PropertyFemMesh , App::PropertyComplexGeoData);
+TYPESYSTEM_SOURCE(Fem::PropertyFemMesh , App::PropertyComplexGeoData)
 
 PropertyFemMesh::PropertyFemMesh() : _FemMesh(new FemMesh)
 {

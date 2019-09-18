@@ -37,7 +37,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintContact, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintContact, Fem::Constraint)
 
 ConstraintContact::ConstraintContact()
 {

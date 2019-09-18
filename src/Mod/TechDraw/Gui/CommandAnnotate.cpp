@@ -87,7 +87,7 @@ void exec2PointCenterLine(Gui::Command* cmd);
 // TechDraw_Leader
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawLeaderLine);
+DEF_STD_CMD_A(CmdTechDrawLeaderLine)
 
 CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
   : Command("TechDraw_LeaderLine")
@@ -147,7 +147,7 @@ bool CmdTechDrawLeaderLine::isActive(void)
 // TechDraw_RichAnno
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawRichAnno);
+DEF_STD_CMD_A(CmdTechDrawRichAnno)
 
 CmdTechDrawRichAnno::CmdTechDrawRichAnno()
   : Command("TechDraw_RichAnno")
@@ -198,7 +198,7 @@ bool CmdTechDrawRichAnno::isActive(void)
 // CosmeticVertexGroup
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdTechDrawCosmeticVertexGrp);
+DEF_STD_CMD_ACL(CmdTechDrawCosmeticVertexGrp)
 
 CmdTechDrawCosmeticVertexGrp::CmdTechDrawCosmeticVertexGrp()
   : Command("TechDraw_CosmeticVertexGrp")
@@ -412,7 +412,7 @@ void execQuadrant(Gui::Command* cmd)
     cmd->updateActive();
 }
 
-DEF_STD_CMD_A(CmdTechDrawCosmeticVertex);
+DEF_STD_CMD_A(CmdTechDrawCosmeticVertex)
 
 CmdTechDrawCosmeticVertex::CmdTechDrawCosmeticVertex()
   : Command("TechDraw_CosmeticVertex")
@@ -471,7 +471,7 @@ bool CmdTechDrawCosmeticVertex::isActive(void)
 // TechDraw_Midpoints
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawMidpoints);
+DEF_STD_CMD_A(CmdTechDrawMidpoints)
 
 CmdTechDrawMidpoints::CmdTechDrawMidpoints()
   : Command("TechDraw_Midpoints")
@@ -508,7 +508,7 @@ bool CmdTechDrawMidpoints::isActive(void)
 // TechDraw_Quadrant
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawQuadrant);
+DEF_STD_CMD_A(CmdTechDrawQuadrant)
 
 CmdTechDrawQuadrant::CmdTechDrawQuadrant()
   : Command("TechDraw_Quadrant")
@@ -545,7 +545,7 @@ bool CmdTechDrawQuadrant::isActive(void)
 // TechDraw_Annotation
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawAnnotation);
+DEF_STD_CMD_A(CmdTechDrawAnnotation)
 
 CmdTechDrawAnnotation::CmdTechDrawAnnotation()
   : Command("TechDraw_Annotation")
@@ -585,7 +585,7 @@ bool CmdTechDrawAnnotation::isActive(void)
 // CenterLineGroup
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdTechDrawCenterLineGrp);
+DEF_STD_CMD_ACL(CmdTechDrawCenterLineGrp)
 
 CmdTechDrawCenterLineGrp::CmdTechDrawCenterLineGrp()
   : Command("TechDraw_CenterLineGrp")
@@ -688,7 +688,7 @@ bool CmdTechDrawCenterLineGrp::isActive(void)
 // TechDraw_Centerline
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawFaceCenterLine);
+DEF_STD_CMD_A(CmdTechDrawFaceCenterLine)
 
 CmdTechDrawFaceCenterLine::CmdTechDrawFaceCenterLine()
   : Command("TechDraw_FaceCenterLine")
@@ -802,7 +802,7 @@ void execCenterLine(Gui::Command* cmd)
 // TechDraw_2LineCenterline
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDraw2LineCenterLine);
+DEF_STD_CMD_A(CmdTechDraw2LineCenterLine)
 
 CmdTechDraw2LineCenterLine::CmdTechDraw2LineCenterLine()
   : Command("TechDraw_2LineCenterLine")
@@ -914,7 +914,7 @@ void exec2LineCenterLine(Gui::Command* cmd)
 // TechDraw_2PointCenterline
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDraw2PointCenterLine);
+DEF_STD_CMD_A(CmdTechDraw2PointCenterLine)
 
 CmdTechDraw2PointCenterLine::CmdTechDraw2PointCenterLine()
   : Command("TechDraw_2PointCenterLine")
@@ -1017,7 +1017,7 @@ void exec2PointCenterLine(Gui::Command* cmd)
 // TechDraw_CosmeticEraser
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawCosmeticEraser);
+DEF_STD_CMD_A(CmdTechDrawCosmeticEraser)
 
 CmdTechDrawCosmeticEraser::CmdTechDrawCosmeticEraser()
   : Command("TechDraw_CosmeticEraser")
@@ -1152,7 +1152,7 @@ bool CmdTechDrawCosmeticEraser::isActive(void)
 // TechDraw_DecorateLine
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawDecorateLine);
+DEF_STD_CMD_A(CmdTechDrawDecorateLine)
 
 CmdTechDrawDecorateLine::CmdTechDrawDecorateLine()
   : Command("TechDraw_DecorateLine")
@@ -1229,7 +1229,7 @@ bool CmdTechDrawDecorateLine::isActive(void)
 // TechDraw_ShowAll
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawShowAll);
+DEF_STD_CMD_A(CmdTechDrawShowAll)
 
 CmdTechDrawShowAll::CmdTechDrawShowAll()
   : Command("TechDraw_ShowAll")
@@ -1286,7 +1286,7 @@ bool CmdTechDrawShowAll::isActive(void)
 // TechDraw_WeldSymbol
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawWeldSymbol);
+DEF_STD_CMD_A(CmdTechDrawWeldSymbol)
 
 CmdTechDrawWeldSymbol::CmdTechDrawWeldSymbol()
   : Command("TechDraw_WeldSymbol")

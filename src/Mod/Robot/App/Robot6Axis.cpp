@@ -67,7 +67,7 @@ AxisDefinition KukaIR500[6] = {
 };
 
 
-TYPESYSTEM_SOURCE(Robot::Robot6Axis , Base::Persistence);
+TYPESYSTEM_SOURCE(Robot::Robot6Axis , Base::Persistence)
 
 Robot6Axis::Robot6Axis()
 {

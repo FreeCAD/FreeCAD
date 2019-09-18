@@ -40,7 +40,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint)
 
 // also defined in TaskFemConstraintFluidBoundary.cpp and FoamCaseBuilder/BasicBuilder.py, update simultaneously
 // the second (index 1) item is the default enum, as index 0 causes compiling error

@@ -63,7 +63,7 @@ using namespace SketcherGui;
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(SoDatumLabel);
+SO_NODE_SOURCE(SoDatumLabel)
 
 void SoDatumLabel::initClass()
 {

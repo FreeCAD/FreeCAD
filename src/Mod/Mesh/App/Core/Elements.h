@@ -121,11 +121,11 @@ public:
    */
   //@{
   void SetFlag (TFlagType tF) const
-  { const_cast<MeshPoint*>(this)->_ucFlag |= (unsigned char)(tF); }
+  { const_cast<MeshPoint*>(this)->_ucFlag |= static_cast<unsigned char>(tF); }
   void ResetFlag (TFlagType tF) const
-  { const_cast<MeshPoint*>(this)->_ucFlag &= ~(unsigned char)(tF); }
+  { const_cast<MeshPoint*>(this)->_ucFlag &= ~static_cast<unsigned char>(tF); }
   bool IsFlag (TFlagType tF) const
-  { return (_ucFlag & (unsigned char)(tF)) == (unsigned char)(tF);  }
+  { return (_ucFlag & static_cast<unsigned char>(tF)) == static_cast<unsigned char>(tF);  }
   void ResetInvalid (void) const
   { ResetFlag(INVALID); }
   void  SetInvalid (void) const
@@ -226,11 +226,11 @@ public:
    */
   //@{
   void SetFlag (TFlagType tF) const
-  { const_cast<MeshFacet*>(this)->_ucFlag |= (unsigned char)(tF); }
+  { const_cast<MeshFacet*>(this)->_ucFlag |= static_cast<unsigned char>(tF); }
   void ResetFlag (TFlagType tF) const
-  { const_cast<MeshFacet*>(this)->_ucFlag &= ~(unsigned char)(tF); }
+  { const_cast<MeshFacet*>(this)->_ucFlag &= ~static_cast<unsigned char>(tF); }
   bool IsFlag (TFlagType tF) const
-  { return (_ucFlag & (unsigned char)(tF)) == (unsigned char)(tF); }
+  { return (_ucFlag & static_cast<unsigned char>(tF)) == static_cast<unsigned char>(tF); }
   void ResetInvalid (void) const
   { ResetFlag(INVALID); }
   void SetProperty(unsigned long uP) const
@@ -412,17 +412,17 @@ public:
    * Adjusts the facet's orientation to its normal.
    */
   inline void AdjustCirculationDirection (void);
-  /** Checks if the normal is not yet calculated. */
+  /** Invalidate the normal. It will be recomputed when querying it. */
   void NormalInvalid (void) { _bNormalCalculated = false; }
   /** Query the flag state of the facet. */
   bool IsFlag (MeshFacet::TFlagType tF) const
-  { return (_ucFlag & (unsigned char)(tF)) == (unsigned char)(tF); }
+  { return (_ucFlag & static_cast<unsigned char>(tF)) == static_cast<unsigned char>(tF); }
     /** Set flag state */
   void SetFlag (MeshFacet::TFlagType tF)
-  { _ucFlag |= (unsigned char)(tF); }
+  { _ucFlag |= static_cast<unsigned char>(tF); }
   /** Reset flag state */
   void ResetFlag (MeshFacet::TFlagType tF)
-  { _ucFlag &= ~(unsigned char)(tF); }
+  { _ucFlag &= ~static_cast<unsigned char>(tF); }
   /** Calculates the facet's gravity point. */
   inline Base::Vector3f GetGravityPoint (void) const;
   /** Returns the normal of the facet. */
@@ -517,6 +517,9 @@ public:
   /** The roundness is in the range between 0.0 (colinear) and 1.0 (equilateral).
    */
   float Roundness() const;
+  /** Apply a transformation on the triangle.
+   */
+  void Transform(const Base::Matrix4D&);
 
 protected:
   Base::Vector3f  _clNormal; /**< Normal of the facet. */

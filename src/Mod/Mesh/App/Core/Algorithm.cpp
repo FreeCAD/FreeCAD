@@ -252,6 +252,30 @@ float MeshAlgorithm::GetAverageEdgeLength() const
     return fLen;
 }
 
+float MeshAlgorithm::GetMinimumEdgeLength() const
+{
+    float fLen = FLOAT_MAX;
+    MeshFacetIterator cF(_rclMesh);
+    for (cF.Init(); cF.More(); cF.Next()) {
+        for (int i=0; i<3; i++)
+            fLen = std::min(fLen, Base::Distance(cF->_aclPoints[i], cF->_aclPoints[(i+1)%3]));
+    }
+
+    return fLen;
+}
+
+float MeshAlgorithm::GetMaximumEdgeLength() const
+{
+    float fLen = 0.0f;
+    MeshFacetIterator cF(_rclMesh);
+    for (cF.Init(); cF.More(); cF.Next()) {
+        for (int i=0; i<3; i++)
+            fLen = std::max(fLen, Base::Distance(cF->_aclPoints[i], cF->_aclPoints[(i+1)%3]));
+    }
+
+    return fLen;
+}
+
 Base::Vector3f MeshAlgorithm::GetGravityPoint() const
 {
     Base::Vector3f center;
@@ -260,7 +284,7 @@ Base::Vector3f MeshAlgorithm::GetGravityPoint() const
         center += *cP;
     }
 
-    return center / (float)_rclMesh.CountPoints();
+    return center / static_cast<float>(_rclMesh.CountPoints());
 }
 
 void MeshAlgorithm::GetMeshBorders (std::list<std::vector<Base::Vector3f> > &rclBorders) const
@@ -409,7 +433,7 @@ void MeshAlgorithm::GetFacetBorders (const std::vector<unsigned long> &raulInd,
     std::list<std::pair<unsigned long, unsigned long> >  aclEdges;
     for (std::vector<unsigned long>::const_iterator it = raulInd.begin(); it != raulInd.end(); ++it) {
         const MeshFacet  &rclFacet = rclFAry[*it];
-        for (int i = 0; i < 3; i++) {
+        for (unsigned short i = 0; i < 3; i++) {
             unsigned long ulNB = rclFacet._aulNeighbours[i];
             if (ulNB != ULONG_MAX) {
                 if (rclFAry[ulNB].IsFlag(MeshFacet::VISIT) == true)
@@ -497,7 +521,7 @@ void MeshAlgorithm::GetMeshBorder(unsigned long uFacet, std::list<unsigned long>
         return;
     // add the open edge to the beginning of the list
     MeshFacetArray::_TConstIterator face = rFAry.begin() + uFacet;
-    for (int i = 0; i < 3; i++)
+    for (unsigned short i = 0; i < 3; i++)
     {
         if (face->_aulNeighbours[i] == ULONG_MAX)
             openEdges.push_back(face->GetEdge(i));
@@ -510,7 +534,7 @@ void MeshAlgorithm::GetMeshBorder(unsigned long uFacet, std::list<unsigned long>
     {
         if (it == face)
             continue;
-        for (int i = 0; i < 3; i++)
+        for (unsigned short i = 0; i < 3; i++)
         {
             if (it->_aulNeighbours[i] == ULONG_MAX)
                 openEdges.push_back(it->GetEdge(i));
@@ -1036,7 +1060,7 @@ int MeshAlgorithm::Surround(const Base::BoundBox3f& rBox, const Base::Vector3f& 
 
         std::vector<MeshGeomFacet> cFacet(12);
         int id=0;
-        for (int ii=0; ii<12; ii++) {
+        for (size_t ii=0; ii<12; ii++) {
             cFacet[ii]._aclPoints[0]=cCorner[triangles[id++]]; 
             cFacet[ii]._aclPoints[1]=cCorner[triangles[id++]]; 
             cFacet[ii]._aclPoints[2]=cCorner[triangles[id++]];
@@ -1679,10 +1703,10 @@ bool MeshAlgorithm::Distance (const Base::Vector3f &rclPt, unsigned long ulFacet
 float MeshAlgorithm::CalculateMinimumGridLength(float fLength, const Base::BoundBox3f& rBBox, unsigned long maxElements) const
 {
   // Max. limit of grid elements
-  float fMaxGridElements=(float)maxElements;
+  float fMaxGridElements=static_cast<float>(maxElements);
 
   // estimate the minimum allowed grid length
-  float fMinGridLen = (float)pow((rBBox.LengthX()*rBBox.LengthY()*rBBox.LengthZ()/fMaxGridElements), 0.3333f);
+  float fMinGridLen = static_cast<float>(pow((rBBox.LengthX()*rBBox.LengthY()*rBBox.LengthZ()/fMaxGridElements), 0.3333f));
   return std::max<float>(fMinGridLen, fLength);
 }
 
@@ -1806,6 +1830,28 @@ MeshRefPointToFacets::operator[] (unsigned long pos) const
     return _map[pos];
 }
 
+std::vector<unsigned long>
+MeshRefPointToFacets::GetIndices(unsigned long pos1, unsigned long pos2) const
+{
+    std::vector<unsigned long> intersection;
+    std::back_insert_iterator<std::vector<unsigned long> > result(intersection);
+    const std::set<unsigned long>& set1 = _map[pos1];
+    const std::set<unsigned long>& set2 = _map[pos2];
+    std::set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), result);
+    return intersection;
+}
+
+std::vector<unsigned long>
+MeshRefPointToFacets::GetIndices(unsigned long pos1, unsigned long pos2, unsigned long pos3) const
+{
+    std::vector<unsigned long> intersection;
+    std::back_insert_iterator<std::vector<unsigned long> > result(intersection);
+    std::vector<unsigned long> set1 = GetIndices(pos1, pos2);
+    const std::set<unsigned long>& set2 = _map[pos3];
+    std::set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), result);
+    return intersection;
+}
+
 void MeshRefPointToFacets::AddNeighbour(unsigned long pos, unsigned long facet)
 {
     _map[pos].insert(facet);
@@ -1850,6 +1896,17 @@ const std::set<unsigned long>&
 MeshRefFacetToFacets::operator[] (unsigned long pos) const
 {
     return _map[pos];
+}
+
+std::vector<unsigned long>
+MeshRefFacetToFacets::GetIndices(unsigned long pos1, unsigned long pos2) const
+{
+    std::vector<unsigned long> intersection;
+    std::back_insert_iterator<std::vector<unsigned long> > result(intersection);
+    const std::set<unsigned long>& set1 = _map[pos1];
+    const std::set<unsigned long>& set2 = _map[pos2];
+    std::set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), result);
+    return intersection;
 }
 
 //----------------------------------------------------------------------------
