@@ -1,4 +1,5 @@
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2010 - Juergen Riegel <juergen.riegel@web.de>           *
 # *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
@@ -20,9 +21,14 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# *   Juergen Riegel 2002                                                   *
-# ***************************************************************************/
+# ***************************************************************************
 
+__title__ = "FreeCAD tetgen exporter"
+__author__ = "Juergen Riegel"
+__url__ = "http://www.freecadweb.org"
+
+## \addtogroup FEM
+#  @{
 
 # Make mesh of pn junction in TetGen format
 import FreeCAD
@@ -31,9 +37,6 @@ App = FreeCAD  # shortcut
 if FreeCAD.GuiUp:
     import FreeCADGui
     Gui = FreeCADGui  # shortcut
-
-## \addtogroup FEM
-#  @{
 
 
 def exportMeshToTetGenPoly(meshToExport, filePath, beVerbose=1):

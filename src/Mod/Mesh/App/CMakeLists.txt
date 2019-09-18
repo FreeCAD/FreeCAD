@@ -357,6 +357,8 @@ SET(Mesh_SRCS
     MeshProperties.cpp
     MeshProperties.h
     MeshPyImp.cpp
+    MeshTexture.cpp
+    MeshTexture.h
     PreCompiled.cpp
     PreCompiled.h
     Segment.cpp
