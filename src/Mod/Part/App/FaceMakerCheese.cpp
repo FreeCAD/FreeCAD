@@ -52,7 +52,7 @@
 
 using namespace Part;
 
-TYPESYSTEM_SOURCE(Part::FaceMakerCheese, Part::FaceMakerPublic);
+TYPESYSTEM_SOURCE(Part::FaceMakerCheese, Part::FaceMakerPublic)
 
 
 TopoDS_Face FaceMakerCheese::validateFace(const TopoDS_Face& face)

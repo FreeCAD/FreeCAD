@@ -50,7 +50,7 @@ using namespace std;
 // CmdDrawingOpen
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingOpen);
+DEF_STD_CMD(CmdDrawingOpen)
 
 CmdDrawingOpen::CmdDrawingOpen()
   : Command("Drawing_Open")
@@ -86,7 +86,7 @@ void CmdDrawingOpen::activated(int iMsg)
 // Drawing_NewPage
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdDrawingNewPage);
+DEF_STD_CMD_ACL(CmdDrawingNewPage)
 
 CmdDrawingNewPage::CmdDrawingNewPage()
   : Command("Drawing_NewPage")
@@ -263,7 +263,7 @@ bool CmdDrawingNewPage::isActive(void)
 // Drawing_NewA3Landscape
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingNewA3Landscape);
+DEF_STD_CMD_A(CmdDrawingNewA3Landscape)
 
 CmdDrawingNewA3Landscape::CmdDrawingNewA3Landscape()
   : Command("Drawing_NewA3Landscape")
@@ -302,7 +302,7 @@ bool CmdDrawingNewA3Landscape::isActive(void)
 // Drawing_NewView
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingNewView);
+DEF_STD_CMD(CmdDrawingNewView)
 
 CmdDrawingNewView::CmdDrawingNewView()
   : Command("Drawing_NewView")
@@ -381,7 +381,7 @@ void CmdDrawingNewView::activated(int iMsg)
 // Drawing_OrthoView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingOrthoViews);
+DEF_STD_CMD_A(CmdDrawingOrthoViews)
 
 CmdDrawingOrthoViews::CmdDrawingOrthoViews()
   : Command("Drawing_OrthoViews")
@@ -431,7 +431,7 @@ bool CmdDrawingOrthoViews::isActive(void)
 // Drawing_OpenBrowserView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingOpenBrowserView);
+DEF_STD_CMD_A(CmdDrawingOpenBrowserView)
 
 CmdDrawingOpenBrowserView::CmdDrawingOpenBrowserView()
   : Command("Drawing_OpenBrowserView")
@@ -469,7 +469,7 @@ bool CmdDrawingOpenBrowserView::isActive(void)
 // Drawing_Annotation
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingAnnotation);
+DEF_STD_CMD_A(CmdDrawingAnnotation)
 
 CmdDrawingAnnotation::CmdDrawingAnnotation()
   : Command("Drawing_Annotation")
@@ -517,7 +517,7 @@ bool CmdDrawingAnnotation::isActive(void)
 // Drawing_Clip
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingClip);
+DEF_STD_CMD_A(CmdDrawingClip)
 
 CmdDrawingClip::CmdDrawingClip()
   : Command("Drawing_Clip")
@@ -562,7 +562,7 @@ bool CmdDrawingClip::isActive(void)
 // Drawing_Symbol
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingSymbol);
+DEF_STD_CMD_A(CmdDrawingSymbol)
 
 CmdDrawingSymbol::CmdDrawingSymbol()
   : Command("Drawing_Symbol")
@@ -622,7 +622,7 @@ bool CmdDrawingSymbol::isActive(void)
 // Drawing_ExportPage
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingExportPage);
+DEF_STD_CMD_A(CmdDrawingExportPage)
 
 CmdDrawingExportPage::CmdDrawingExportPage()
   : Command("Drawing_ExportPage")
@@ -678,7 +678,7 @@ bool CmdDrawingExportPage::isActive(void)
 // Drawing_ProjectShape
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingProjectShape);
+DEF_STD_CMD_A(CmdDrawingProjectShape)
 
 CmdDrawingProjectShape::CmdDrawingProjectShape()
   : Command("Drawing_ProjectShape")
@@ -714,7 +714,7 @@ bool CmdDrawingProjectShape::isActive(void)
 // Drawing_Draft_View
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingDraftView);
+DEF_STD_CMD_A(CmdDrawingDraftView)
 
 CmdDrawingDraftView::CmdDrawingDraftView()
   : Command("Drawing_DraftView")
@@ -745,7 +745,7 @@ bool CmdDrawingDraftView::isActive(void)
 // Drawing_Spreadheet_View
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingSpreadsheetView);
+DEF_STD_CMD_A(CmdDrawingSpreadsheetView)
 
 CmdDrawingSpreadsheetView::CmdDrawingSpreadsheetView()
   : Command("Drawing_SpreadsheetView")

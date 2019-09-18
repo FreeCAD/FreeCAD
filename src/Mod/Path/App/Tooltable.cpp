@@ -34,7 +34,7 @@
 using namespace Base;
 using namespace Path;
 
-TYPESYSTEM_SOURCE(Path::Tooltable , Base::Persistence);
+TYPESYSTEM_SOURCE(Path::Tooltable , Base::Persistence)
 
 Tooltable::Tooltable()
 {

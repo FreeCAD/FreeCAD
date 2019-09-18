@@ -37,7 +37,7 @@
 //===========================================================================
 // Part_Cylinder
 //===========================================================================
-DEF_STD_CMD_A(CmdPartCylinder);
+DEF_STD_CMD_A(CmdPartCylinder)
 
 CmdPartCylinder::CmdPartCylinder()
   : Command("Part_Cylinder")
@@ -78,7 +78,7 @@ bool CmdPartCylinder::isActive(void)
 //===========================================================================
 // Part_Box
 //===========================================================================
-DEF_STD_CMD_A(CmdPartBox);
+DEF_STD_CMD_A(CmdPartBox)
 
 CmdPartBox::CmdPartBox()
   : Command("Part_Box")
@@ -119,7 +119,7 @@ bool CmdPartBox::isActive(void)
 //===========================================================================
 // Part_Sphere
 //===========================================================================
-DEF_STD_CMD_A(CmdPartSphere);
+DEF_STD_CMD_A(CmdPartSphere)
 
 CmdPartSphere::CmdPartSphere()
   : Command("Part_Sphere")
@@ -160,7 +160,7 @@ bool CmdPartSphere::isActive(void)
 //===========================================================================
 // Part_Cone
 //===========================================================================
-DEF_STD_CMD_A(CmdPartCone);
+DEF_STD_CMD_A(CmdPartCone)
 
 CmdPartCone::CmdPartCone()
   : Command("Part_Cone")
@@ -201,7 +201,7 @@ bool CmdPartCone::isActive(void)
 //===========================================================================
 // Part_Torus
 //===========================================================================
-DEF_STD_CMD_A(CmdPartTorus);
+DEF_STD_CMD_A(CmdPartTorus)
 
 CmdPartTorus::CmdPartTorus()
   : Command("Part_Torus")
