@@ -167,7 +167,7 @@ private:
 
 // Defines all required member variables and functions for a
 // single-value field
-SO_SFIELD_SOURCE(SoSFMeshObject, const Mesh::MeshObject*, const Mesh::MeshObject*);
+SO_SFIELD_SOURCE(SoSFMeshObject, const Mesh::MeshObject*, const Mesh::MeshObject*)
 
 
 void SoSFMeshObject::initClass()
@@ -286,7 +286,7 @@ void SoSFMeshObject::writeValue(SoOutput *out) const
 
 // -------------------------------------------------------
 
-SO_ELEMENT_SOURCE(SoFCMeshObjectElement);
+SO_ELEMENT_SOURCE(SoFCMeshObjectElement)
 
 void SoFCMeshObjectElement::initClass()
 {
@@ -329,7 +329,7 @@ void SoFCMeshObjectElement::print(FILE * /* file */) const
 
 // -------------------------------------------------------
 
-SO_NODE_SOURCE(SoFCMeshPickNode);
+SO_NODE_SOURCE(SoFCMeshPickNode)
 
 /*!
   Constructor.
@@ -401,7 +401,7 @@ void SoFCMeshPickNode::pick(SoPickAction * action)
 
 // -------------------------------------------------------
 
-SO_NODE_SOURCE(SoFCMeshGridNode);
+SO_NODE_SOURCE(SoFCMeshGridNode)
 
 /*!
   Constructor.
@@ -488,7 +488,7 @@ void SoFCMeshGridNode::GLRender(SoGLRenderAction * /*action*/)
 
 // -------------------------------------------------------
 
-SO_NODE_SOURCE(SoFCMeshObjectNode);
+SO_NODE_SOURCE(SoFCMeshObjectNode)
 
 /*!
   Constructor.
@@ -583,7 +583,7 @@ inline SbVec3f sbvec3f(const Base::Vector3f& _v)
     return SbVec3f(_v.x, _v.y, _v.z); 
 }
 
-SO_NODE_SOURCE(SoFCMeshObjectShape);
+SO_NODE_SOURCE(SoFCMeshObjectShape)
 
 void SoFCMeshObjectShape::initClass()
 {
@@ -1254,7 +1254,7 @@ unsigned int SoFCMeshObjectShape::countTriangles(SoAction * action) const
 
 // -------------------------------------------------------
 
-SO_NODE_SOURCE(SoFCMeshSegmentShape);
+SO_NODE_SOURCE(SoFCMeshSegmentShape)
 
 void SoFCMeshSegmentShape::initClass()
 {
@@ -1657,7 +1657,7 @@ void SoFCMeshSegmentShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 // -------------------------------------------------------
 
-SO_NODE_SOURCE(SoFCMeshObjectBoundary);
+SO_NODE_SOURCE(SoFCMeshObjectBoundary)
 
 void SoFCMeshObjectBoundary::initClass()
 {
