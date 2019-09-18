@@ -415,7 +415,7 @@ bool MeshRenderer::shouldRenderDirectly(bool direct)
 
 // ----------------------------------------------------------------------------
 
-SO_ENGINE_SOURCE(SoFCMaterialEngine);
+SO_ENGINE_SOURCE(SoFCMaterialEngine)
 
 SoFCMaterialEngine::SoFCMaterialEngine()
 {
@@ -446,7 +446,7 @@ void SoFCMaterialEngine::evaluate()
 
 // ----------------------------------------------------------------------------
 
-SO_NODE_SOURCE(SoFCIndexedFaceSet);
+SO_NODE_SOURCE(SoFCIndexedFaceSet)
 
 void SoFCIndexedFaceSet::initClass()
 {

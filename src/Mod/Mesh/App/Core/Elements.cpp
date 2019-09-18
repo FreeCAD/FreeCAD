@@ -533,7 +533,7 @@ bool MeshGeomFacet::IsDegenerated(float epsilon) const
     Base::Vector3d u = p2 - p1;
     Base::Vector3d v = p3 - p1;
 
-    double eps = epsilon;
+    double eps = static_cast<double>(epsilon);
     double uu = u*u;
     if (uu <= eps)
         return true;
@@ -991,15 +991,15 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
     // Note: The algorithm delivers sometimes false-positives, i.e. it claims
     // that the two triangles intersect but they don't. It seems that this bad
     // behaviour occurs if the triangles are nearly co-planar
-    float mult = (float)fabs(this->GetNormal() * rclFacet.GetNormal());
+    float mult = fabs(this->GetNormal() * rclFacet.GetNormal());
     if (rclPt0 == rclPt1) {
-        if (mult < 0.995) // not co-planar, thus no test needed
+        if (mult < 0.995f) // not co-planar, thus no test needed
             return 1;
         if (this->IsPointOf(rclPt0) && rclFacet.IsPointOf(rclPt0))
             return 1;
     }
     else {
-        if (mult < 0.995) // not co-planar, thus no test needed
+        if (mult < 0.995f) // not co-planar, thus no test needed
             return 2;
         if (this->IsPointOf(rclPt0) && rclFacet.IsPointOf(rclPt0) &&
             this->IsPointOf(rclPt1) && rclFacet.IsPointOf(rclPt1))
@@ -1085,9 +1085,9 @@ float MeshGeomFacet::CenterOfCircumCircle(Base::Vector3f& rclCenter) const
   float vw = - (v * w);
   float uw = - (w * u);
 
-  float w0 = (float)(2 * sqrt(uu * ww - uw * uw) * uw / (uu * ww));
-  float w1 = (float)(2 * sqrt(uu * vv - uv * uv) * uv / (uu * vv));
-  float w2 = (float)(2 * sqrt(vv * ww - vw * vw) * vw / (vv * ww));
+  float w0 = static_cast<float>(2 * sqrt(uu * ww - uw * uw) * uw / (uu * ww));
+  float w1 = static_cast<float>(2 * sqrt(uu * vv - uv * uv) * uv / (uu * vv));
+  float w2 = static_cast<float>(2 * sqrt(vv * ww - vw * vw) * vw / (vv * ww));
 
   // center of the circle
   float wx = w0 + w1 + w2;
@@ -1096,7 +1096,7 @@ float MeshGeomFacet::CenterOfCircumCircle(Base::Vector3f& rclCenter) const
   rclCenter.z = (w0*p0.z + w1*p1.z + w2*p2.z)/wx;
 
   // radius of the circle
-  float fRadius = (float)(sqrt(uu * vv * ww) / (4 * Area()));
+  float fRadius = static_cast<float>(sqrt(uu * vv * ww) / (4 * Area()));
 
   return fRadius;
 }
@@ -1378,10 +1378,19 @@ float MeshGeomFacet::AspectRatio2() const
 float MeshGeomFacet::Roundness() const
 {
     const double FOUR_ROOT3 = 6.928203230275509;
-    double area = Area();
+    double area = static_cast<double>(Area());
     Base::Vector3f d0 = _aclPoints[0] - _aclPoints[1];
     Base::Vector3f d1 = _aclPoints[1] - _aclPoints[2];
     Base::Vector3f d2 = _aclPoints[2] - _aclPoints[0];
 
-    return (float) (FOUR_ROOT3 * area / (d0.Sqr() + d1.Sqr() + d2.Sqr()));
+    double sum = static_cast<double>(d0.Sqr() + d1.Sqr() + d2.Sqr());
+    return static_cast<float>(FOUR_ROOT3 * area / sum);
+}
+
+void MeshGeomFacet::Transform(const Base::Matrix4D& mat)
+{
+    mat.multVec(_aclPoints[0], _aclPoints[0]);
+    mat.multVec(_aclPoints[1], _aclPoints[1]);
+    mat.multVec(_aclPoints[2], _aclPoints[2]);
+    NormalInvalid();
 }
