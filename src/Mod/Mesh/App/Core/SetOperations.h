@@ -185,6 +185,6 @@ private:
 };
 
 
-}; // namespace MeshCore
+} // namespace MeshCore
 
 #endif  // MESH_SETOPERATIONS_H

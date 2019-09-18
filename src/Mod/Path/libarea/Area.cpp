@@ -32,15 +32,15 @@ double CArea::m_after_MakeOffsets_length = 0.0;
     _type CArea::get_##_name() {return m_##_name;}\
     void CArea::set_##_name(_type _name) {m_##_name = _name;}
 
-_CAREA_PARAM_DEFINE(Point,double,tolerance);
+_CAREA_PARAM_DEFINE(Point,double,tolerance)
 CAREA_PARAM_DEFINE(bool,fit_arcs)
-CAREA_PARAM_DEFINE(bool,clipper_simple);
-CAREA_PARAM_DEFINE(double,clipper_clean_distance);
-CAREA_PARAM_DEFINE(double,accuracy);
-CAREA_PARAM_DEFINE(double,units);
-CAREA_PARAM_DEFINE(short,min_arc_points);
-CAREA_PARAM_DEFINE(short,max_arc_points);
-CAREA_PARAM_DEFINE(double,clipper_scale);
+CAREA_PARAM_DEFINE(bool,clipper_simple)
+CAREA_PARAM_DEFINE(double,clipper_clean_distance)
+CAREA_PARAM_DEFINE(double,accuracy)
+CAREA_PARAM_DEFINE(double,units)
+CAREA_PARAM_DEFINE(short,min_arc_points)
+CAREA_PARAM_DEFINE(short,max_arc_points)
+CAREA_PARAM_DEFINE(double,clipper_scale)
 
 void CArea::append(const CCurve& curve)
 {

@@ -36,7 +36,7 @@
 
 using namespace std;
 
-DEF_STD_CMD(CmdStartPage);
+DEF_STD_CMD(CmdStartPage)
 
 CmdStartPage::CmdStartPage()
 	:Command("Start_StartPage")

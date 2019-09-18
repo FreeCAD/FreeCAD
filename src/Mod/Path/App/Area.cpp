@@ -152,7 +152,7 @@ CAreaConfig::~CAreaConfig() {
 
 //////////////////////////////////////////////////////////////////////////////
 
-TYPESYSTEM_SOURCE(Path::Area, Base::BaseClass);
+TYPESYSTEM_SOURCE(Path::Area, Base::BaseClass)
 
 bool Area::s_aborting;
 

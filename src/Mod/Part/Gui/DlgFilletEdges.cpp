@@ -223,7 +223,7 @@ namespace PartGui {
             }
         };
     };
-};
+}
 
 /* TRANSLATOR PartGui::DlgFilletEdges */
 

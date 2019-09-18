@@ -1611,7 +1611,7 @@ double AttachEngine3D::calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp
 
 //=================================================================================
 
-TYPESYSTEM_SOURCE(Attacher::AttachEnginePlane, Attacher::AttachEngine);
+TYPESYSTEM_SOURCE(Attacher::AttachEnginePlane, Attacher::AttachEngine)
 
 AttachEnginePlane::AttachEnginePlane()
 {
@@ -1640,7 +1640,7 @@ Base::Placement AttachEnginePlane::calculateAttachedPlacement(Base::Placement or
 
 //=================================================================================
 
-TYPESYSTEM_SOURCE(Attacher::AttachEngineLine, Attacher::AttachEngine);
+TYPESYSTEM_SOURCE(Attacher::AttachEngineLine, Attacher::AttachEngine)
 
 AttachEngineLine::AttachEngineLine()
 {
