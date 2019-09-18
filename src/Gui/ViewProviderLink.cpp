@@ -2775,13 +2775,47 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         return colors;
     }
 
+    int element_count = ext->getElementCountValue();
+
     for(auto &sub : subs) {
         if(++i >= size)
             break;
-        if((isPrefix && (boost::starts_with(sub.first,subname) || boost::starts_with(sub.second,subname))) ||
-           (!isPrefix && (sub.first==subname || sub.second==subname)))
+
+        int offset = 0;
+
+        if(sub.second.size() && element_count && !std::isdigit(sub.second[0])) {
+            // For checking and expanding color override of array base
+            if(!subname[0]) {
+                std::ostringstream ss;
+                ss << "0." << sub.second;
+                if(getObject()->getSubObject(ss.str().c_str())) {
+                    for(int j=0;j<element_count;++j) {
+                        ss.str("");
+                        ss << j << '.' << sub.second;
+                        colors.emplace(ss.str(),OverrideColorList[i]);
+                    }
+                    continue;
+                }
+            } else if (std::isdigit(subname[0])) {
+                const char *dot = strchr(subname,'.');
+                if(dot) 
+                    offset = dot-subname+1;
+            }
+        }
+
+        if(isPrefix) {
+            if(!boost::starts_with(sub.first,subname+offset) 
+                    && !boost::starts_with(sub.second,subname+offset))
+                continue;
+        }else if(sub.first!=subname+offset && sub.second!=subname+offset)
+            continue;
+
+        if(offset) 
+            colors.emplace(std::string(subname,offset)+sub.second, OverrideColorList[i]);
+        else
             colors[sub.second] = OverrideColorList[i];
     }
+
     if(!subname[0])
         return colors;
 
@@ -2819,6 +2853,10 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
     if(!ext || ! ext->getColoredElementsProperty())
         return;
 
+    // For checking and collapsing array element color
+    std::map<std::string,std::map<int,App::Color> > subMap;
+    int element_count = ext->getElementCountValue();
+
     std::vector<std::string> subs;
     std::vector<App::Color> colors;
     App::Color faceColor;
@@ -2827,11 +2865,43 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
         if(!hasFaceColor && v.first == "Face") {
             hasFaceColor = true;
             faceColor = v.second;
-        }else{
+            continue;
+        }
+        
+        if(element_count && v.first.size() && std::isdigit(v.first[0])) {
+            // In case of array, check if there are override of the same
+            // sub-element for every array element. And collapse those overrides
+            // into one without the index.
+            const char *dot = strchr(v.first.c_str(),'.');
+            if(dot) {
+                subMap[dot+1][std::atoi(v.first.c_str())] = v.second;
+                continue;
+            }
+        }
+        subs.push_back(v.first);
+        colors.push_back(v.second);
+    }
+    for(auto &v : subMap) {
+        if(element_count == (int)v.second.size()) {
+            App::Color firstColor = v.second.begin()->second;
             subs.push_back(v.first);
-            colors.push_back(v.second);
+            colors.push_back(firstColor);
+            for(auto it=v.second.begin();it!=v.second.end();) {
+                if(it->second==firstColor)
+                    it = v.second.erase(it);
+                else
+                    ++it;
+            }
+        }
+        std::ostringstream ss;
+        for(auto &colorInfo : v.second) {
+            ss.str("");
+            ss << colorInfo.first << '.' << v.first;
+            subs.push_back(ss.str());
+            colors.push_back(colorInfo.second);
         }
     }
+
     auto prop = ext->getColoredElementsProperty();
     if(subs!=prop->getSubValues() || colors!=OverrideColorList.getValues()) {
         prop->setStatus(App::Property::User3,true);
