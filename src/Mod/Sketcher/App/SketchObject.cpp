@@ -89,7 +89,7 @@
 using namespace Sketcher;
 using namespace Base;
 
-FC_LOG_LEVEL_INIT("Sketch",true,true);
+FC_LOG_LEVEL_INIT("Sketch",true,true)
 
 const int GeoEnum::RtPnt  = -1;
 const int GeoEnum::HAxis  = -1;

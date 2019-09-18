@@ -50,7 +50,7 @@ using namespace Sketcher;
 // PropertyConstraintList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(Sketcher::PropertyConstraintList, App::PropertyLists);
+TYPESYSTEM_SOURCE(Sketcher::PropertyConstraintList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction

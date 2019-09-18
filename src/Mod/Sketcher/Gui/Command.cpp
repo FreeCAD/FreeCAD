@@ -133,7 +133,7 @@ namespace SketcherGui {
 
 
 /* Sketch commands =======================================================*/
-DEF_STD_CMD_A(CmdSketcherNewSketch);
+DEF_STD_CMD_A(CmdSketcherNewSketch)
 
 CmdSketcherNewSketch::CmdSketcherNewSketch()
     :Command("Sketcher_NewSketch")
@@ -251,7 +251,7 @@ bool CmdSketcherNewSketch::isActive(void)
         return false;
 }
 
-DEF_STD_CMD_A(CmdSketcherEditSketch);
+DEF_STD_CMD_A(CmdSketcherEditSketch)
 
 CmdSketcherEditSketch::CmdSketcherEditSketch()
     :Command("Sketcher_EditSketch")
@@ -282,7 +282,7 @@ bool CmdSketcherEditSketch::isActive(void)
     return Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 1;
 }
 
-DEF_STD_CMD_A(CmdSketcherLeaveSketch);
+DEF_STD_CMD_A(CmdSketcherLeaveSketch)
 
 CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
   : Command("Sketcher_LeaveSketch")
@@ -328,7 +328,7 @@ bool CmdSketcherLeaveSketch::isActive(void)
     return false;
 }
 
-DEF_STD_CMD_A(CmdSketcherReorientSketch);
+DEF_STD_CMD_A(CmdSketcherReorientSketch)
 
 CmdSketcherReorientSketch::CmdSketcherReorientSketch()
     :Command("Sketcher_ReorientSketch")
@@ -411,7 +411,7 @@ bool CmdSketcherReorientSketch::isActive(void)
         (Sketcher::SketchObject::getClassTypeId()) == 1;
 }
 
-DEF_STD_CMD_A(CmdSketcherMapSketch);
+DEF_STD_CMD_A(CmdSketcherMapSketch)
 
 CmdSketcherMapSketch::CmdSketcherMapSketch()
   : Command("Sketcher_MapSketch")
@@ -569,7 +569,7 @@ bool CmdSketcherMapSketch::isActive(void)
     return getActiveGuiDocument() != 0;
 }
 
-DEF_STD_CMD_A(CmdSketcherViewSketch);
+DEF_STD_CMD_A(CmdSketcherViewSketch)
 
 CmdSketcherViewSketch::CmdSketcherViewSketch()
   : Command("Sketcher_ViewSketch")
@@ -607,7 +607,7 @@ bool CmdSketcherViewSketch::isActive(void)
     return false;
 }
 
-DEF_STD_CMD_A(CmdSketcherValidateSketch);
+DEF_STD_CMD_A(CmdSketcherValidateSketch)
 
 CmdSketcherValidateSketch::CmdSketcherValidateSketch()
   : Command("Sketcher_ValidateSketch")
@@ -641,7 +641,7 @@ bool CmdSketcherValidateSketch::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-DEF_STD_CMD_A(CmdSketcherMirrorSketch);
+DEF_STD_CMD_A(CmdSketcherMirrorSketch)
 
 CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
 : Command("Sketcher_MirrorSketch")
@@ -751,7 +751,7 @@ bool CmdSketcherMirrorSketch::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-DEF_STD_CMD_A(CmdSketcherMergeSketches);
+DEF_STD_CMD_A(CmdSketcherMergeSketches)
 
 CmdSketcherMergeSketches::CmdSketcherMergeSketches()
 : Command("Sketcher_MergeSketches")
@@ -831,7 +831,7 @@ bool CmdSketcherMergeSketches::isActive(void)
 // Acknowledgement of idea and original python macro goes to SpritKopf:
 // https://github.com/Spritkopf/freecad-macros/blob/master/clip-sketch/clip_sketch.FCMacro
 // https://forum.freecadweb.org/viewtopic.php?p=231481#p231085
-DEF_STD_CMD_A(CmdSketcherViewSection);
+DEF_STD_CMD_A(CmdSketcherViewSection)
 
 CmdSketcherViewSection::CmdSketcherViewSection()
 : Command("Sketcher_ViewSection")

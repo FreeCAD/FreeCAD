@@ -50,7 +50,7 @@ using namespace TechDraw;
 // PropertyCosmeticVertexList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(TechDraw::PropertyCosmeticVertexList, App::PropertyLists);
+TYPESYSTEM_SOURCE(TechDraw::PropertyCosmeticVertexList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction

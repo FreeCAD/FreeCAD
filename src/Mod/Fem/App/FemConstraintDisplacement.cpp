@@ -40,7 +40,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintDisplacement, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintDisplacement, Fem::Constraint)
 
 ConstraintDisplacement::ConstraintDisplacement()
 {

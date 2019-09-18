@@ -87,7 +87,7 @@ void ActivateVirtualSpaceHandler(Gui::Document *doc,DrawSketchHandler *handler)
 }
 
 // Show/Hide B-spline degree
-DEF_STD_CMD_A(CmdSketcherSwitchVirtualSpace);
+DEF_STD_CMD_A(CmdSketcherSwitchVirtualSpace)
 
 CmdSketcherSwitchVirtualSpace::CmdSketcherSwitchVirtualSpace()
 :Command("Sketcher_SwitchVirtualSpace")

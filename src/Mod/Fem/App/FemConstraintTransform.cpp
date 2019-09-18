@@ -37,7 +37,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintTransform, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintTransform, Fem::Constraint)
 
 static const char* TransformTypes[] = {"Cylindrical","Rectangular", NULL};
 

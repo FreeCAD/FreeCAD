@@ -408,7 +408,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
 
-DEF_STD_CMD_AU(CmdSketcherCreateLine);
+DEF_STD_CMD_AU(CmdSketcherCreateLine)
 
 CmdSketcherCreateLine::CmdSketcherCreateLine()
   : Command("Sketcher_CreateLine")
@@ -647,7 +647,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
 
-DEF_STD_CMD_AU(CmdSketcherCreateRectangle);
+DEF_STD_CMD_AU(CmdSketcherCreateRectangle)
 
 CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
   : Command("Sketcher_CreateRectangle")
@@ -1380,7 +1380,7 @@ protected:
     }
 };
 
-DEF_STD_CMD_AU(CmdSketcherCreatePolyline);
+DEF_STD_CMD_AU(CmdSketcherCreatePolyline)
 
 CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
   : Command("Sketcher_CreatePolyline")
@@ -1665,7 +1665,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateArc);
+DEF_STD_CMD_A(CmdSketcherCreateArc)
 
 CmdSketcherCreateArc::CmdSketcherCreateArc()
   : Command("Sketcher_CreateArc")
@@ -1976,7 +1976,7 @@ protected:
     Sketcher::PointPos arcPos1, arcPos2;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreate3PointArc);
+DEF_STD_CMD_A(CmdSketcherCreate3PointArc)
 
 CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
   : Command("Sketcher_Create3PointArc")
@@ -2003,7 +2003,7 @@ bool CmdSketcherCreate3PointArc::isActive(void)
 }
 
 
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateArc);
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateArc)
 
 CmdSketcherCompCreateArc::CmdSketcherCompCreateArc()
   : Command("Sketcher_CompCreateArc")
@@ -2278,7 +2278,7 @@ protected:
 
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateCircle);
+DEF_STD_CMD_A(CmdSketcherCreateCircle)
 
 CmdSketcherCreateCircle::CmdSketcherCreateCircle()
   : Command("Sketcher_CreateCircle")
@@ -3114,7 +3114,7 @@ private:
 };
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCreateEllipseByCenter'
-DEF_STD_CMD_A(CmdSketcherCreateEllipseByCenter);
+DEF_STD_CMD_A(CmdSketcherCreateEllipseByCenter)
 
 /**
  * @brief ctor
@@ -3144,7 +3144,7 @@ bool CmdSketcherCreateEllipseByCenter::isActive(void)
 }
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCreateEllipseBy3Points'
-DEF_STD_CMD_A(CmdSketcherCreateEllipseBy3Points);
+DEF_STD_CMD_A(CmdSketcherCreateEllipseBy3Points)
 
 /**
  * @brief ctor
@@ -3518,7 +3518,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateArcOfEllipse);
+DEF_STD_CMD_A(CmdSketcherCreateArcOfEllipse)
 
 CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
   : Command("Sketcher_CreateArcOfEllipse")
@@ -3900,7 +3900,7 @@ protected:
 
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateArcOfHyperbola);
+DEF_STD_CMD_A(CmdSketcherCreateArcOfHyperbola)
 
 CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
   : Command("Sketcher_CreateArcOfHyperbola")
@@ -5254,7 +5254,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreate3PointCircle);
+DEF_STD_CMD_A(CmdSketcherCreate3PointCircle)
 
 CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
   : Command("Sketcher_Create3PointCircle")
@@ -5281,7 +5281,7 @@ bool CmdSketcherCreate3PointCircle::isActive(void)
 }
 
 
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateCircle);
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateCircle)
 
 CmdSketcherCompCreateCircle::CmdSketcherCompCreateCircle()
   : Command("Sketcher_CompCreateCircle")
@@ -5502,7 +5502,7 @@ protected:
     std::vector<AutoConstraint> sugConstr;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreatePoint);
+DEF_STD_CMD_A(CmdSketcherCreatePoint)
 
 CmdSketcherCreatePoint::CmdSketcherCreatePoint()
   : Command("Sketcher_CreatePoint")
@@ -5531,7 +5531,7 @@ bool CmdSketcherCreatePoint::isActive(void)
 
 // ======================================================================================
 
-DEF_STD_CMD_A(CmdSketcherCreateText);
+DEF_STD_CMD_A(CmdSketcherCreateText)
 
 CmdSketcherCreateText::CmdSketcherCreateText()
   : Command("Sketcher_CreateText")
@@ -5559,7 +5559,7 @@ bool CmdSketcherCreateText::isActive(void)
 
 // ======================================================================================
 
-DEF_STD_CMD_A(CmdSketcherCreateDraftLine);
+DEF_STD_CMD_A(CmdSketcherCreateDraftLine)
 
 CmdSketcherCreateDraftLine::CmdSketcherCreateDraftLine()
   : Command("Sketcher_CreateDraftLine")
@@ -5876,7 +5876,7 @@ protected:
     Base::Vector2d firstPos;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateFillet);
+DEF_STD_CMD_A(CmdSketcherCreateFillet)
 
 CmdSketcherCreateFillet::CmdSketcherCreateFillet()
   : Command("Sketcher_CreateFillet")
@@ -5937,7 +5937,7 @@ namespace SketcherGui {
             return  false;
         }
     };
-};
+}
 
 
 /* XPM */
@@ -6039,7 +6039,7 @@ public:
     }
 };
 
-DEF_STD_CMD_A(CmdSketcherTrimming);
+DEF_STD_CMD_A(CmdSketcherTrimming)
 
 CmdSketcherTrimming::CmdSketcherTrimming()
   : Command("Sketcher_Trimming")
@@ -6393,7 +6393,7 @@ private:
     }
 };
 
-DEF_STD_CMD_A(CmdSketcherExtend);
+DEF_STD_CMD_A(CmdSketcherExtend)
 
 //TODO: fix the translations for this
 CmdSketcherExtend::CmdSketcherExtend()
@@ -6620,7 +6620,7 @@ public:
     }
 };
 
-DEF_STD_CMD_A(CmdSketcherExternal);
+DEF_STD_CMD_A(CmdSketcherExternal)
 
 CmdSketcherExternal::CmdSketcherExternal()
   : Command("Sketcher_External")
@@ -6705,7 +6705,7 @@ namespace SketcherGui {
             return  true;
         }
     };
-};
+}
 
 
 /* XPM */
@@ -6837,7 +6837,7 @@ static const char *cursor_carboncopy[]={
         }
     };
 
-    DEF_STD_CMD_AU(CmdSketcherCarbonCopy);
+    DEF_STD_CMD_AU(CmdSketcherCarbonCopy)
 
     CmdSketcherCarbonCopy::CmdSketcherCarbonCopy()
     : Command("Sketcher_CarbonCopy")
@@ -7117,7 +7117,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
 
-DEF_STD_CMD_AU(CmdSketcherCreateSlot);
+DEF_STD_CMD_AU(CmdSketcherCreateSlot)
 
 CmdSketcherCreateSlot::CmdSketcherCreateSlot()
   : Command("Sketcher_CreateSlot")
@@ -7351,7 +7351,8 @@ protected:
 };
 
 
-DEF_STD_CMD_A(CmdSketcherCreateTriangle);
+DEF_STD_CMD_A(CmdSketcherCreateTriangle)
+
 CmdSketcherCreateTriangle::CmdSketcherCreateTriangle()
   : Command("Sketcher_CreateTriangle")
 {
@@ -7377,7 +7378,8 @@ bool CmdSketcherCreateTriangle::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_A(CmdSketcherCreateSquare);
+DEF_STD_CMD_A(CmdSketcherCreateSquare)
+
 CmdSketcherCreateSquare::CmdSketcherCreateSquare()
   : Command("Sketcher_CreateSquare")
 {
@@ -7403,7 +7405,8 @@ bool CmdSketcherCreateSquare::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_A(CmdSketcherCreatePentagon);
+DEF_STD_CMD_A(CmdSketcherCreatePentagon)
+
 CmdSketcherCreatePentagon::CmdSketcherCreatePentagon()
   : Command("Sketcher_CreatePentagon")
 {
@@ -7430,7 +7433,8 @@ bool CmdSketcherCreatePentagon::isActive(void)
 }
 
 
-DEF_STD_CMD_A(CmdSketcherCreateHexagon);
+DEF_STD_CMD_A(CmdSketcherCreateHexagon)
+
 CmdSketcherCreateHexagon::CmdSketcherCreateHexagon()
   : Command("Sketcher_CreateHexagon")
 {
@@ -7456,7 +7460,8 @@ bool CmdSketcherCreateHexagon::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_A(CmdSketcherCreateHeptagon);
+DEF_STD_CMD_A(CmdSketcherCreateHeptagon)
+
 CmdSketcherCreateHeptagon::CmdSketcherCreateHeptagon()
   : Command("Sketcher_CreateHeptagon")
 {
@@ -7482,7 +7487,8 @@ bool CmdSketcherCreateHeptagon::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_A(CmdSketcherCreateOctagon);
+DEF_STD_CMD_A(CmdSketcherCreateOctagon)
+
 CmdSketcherCreateOctagon::CmdSketcherCreateOctagon()
   : Command("Sketcher_CreateOctagon")
 {
@@ -7508,7 +7514,8 @@ bool CmdSketcherCreateOctagon::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_A(CmdSketcherCreateRegularPolygon);
+DEF_STD_CMD_A(CmdSketcherCreateRegularPolygon)
+
 CmdSketcherCreateRegularPolygon::CmdSketcherCreateRegularPolygon()
 : Command("Sketcher_CreateRegularPolygon")
 {
@@ -7534,7 +7541,7 @@ bool CmdSketcherCreateRegularPolygon::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateRegularPolygon);
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateRegularPolygon)
 
 CmdSketcherCompCreateRegularPolygon::CmdSketcherCompCreateRegularPolygon()
   : Command("Sketcher_CompCreateRegularPolygon")

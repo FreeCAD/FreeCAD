@@ -40,7 +40,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintPulley, Fem::ConstraintGear);
+PROPERTY_SOURCE(Fem::ConstraintPulley, Fem::ConstraintGear)
 
 ConstraintPulley::ConstraintPulley()
 {

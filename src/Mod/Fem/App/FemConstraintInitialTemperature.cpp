@@ -40,7 +40,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintInitialTemperature, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintInitialTemperature, Fem::Constraint)
 
 ConstraintInitialTemperature::ConstraintInitialTemperature()
 {

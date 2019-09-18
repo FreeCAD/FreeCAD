@@ -58,7 +58,7 @@ using namespace Base;
 //using namespace KDL;
 
 
-TYPESYSTEM_SOURCE(Robot::Trajectory , Base::Persistence);
+TYPESYSTEM_SOURCE(Robot::Trajectory , Base::Persistence)
 
 Trajectory::Trajectory()
 :pcTrajectory(0)
