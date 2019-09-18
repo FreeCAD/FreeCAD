@@ -205,7 +205,7 @@
 #include "FaceMakerBullseye.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 
-FC_LOG_LEVEL_INIT("TopoShape",true,true);
+FC_LOG_LEVEL_INIT("TopoShape",true,true)
 
 using namespace Part;
 
@@ -278,7 +278,7 @@ BooleanException::BooleanException(const BooleanException &inst)
 
 // ------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::ShapeSegment , Data::Segment);
+TYPESYSTEM_SOURCE(Part::ShapeSegment , Data::Segment)
 
 std::string ShapeSegment::getName() const
 {

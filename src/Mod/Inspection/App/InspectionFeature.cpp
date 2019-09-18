@@ -493,7 +493,7 @@ float InspectNominalShape::getDistance(const Base::Vector3f& point)
 
 // ----------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Inspection::PropertyDistanceList, App::PropertyLists);
+TYPESYSTEM_SOURCE(Inspection::PropertyDistanceList, App::PropertyLists)
 
 PropertyDistanceList::PropertyDistanceList()
 {

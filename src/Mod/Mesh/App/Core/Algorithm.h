@@ -511,6 +511,6 @@ protected:
     std::vector<Base::Vector3f> _norm;
 };
 
-}; // namespace MeshCore 
+} // namespace MeshCore 
 
 #endif  // MESH_ALGORITHM_H 

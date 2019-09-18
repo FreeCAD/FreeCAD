@@ -55,7 +55,7 @@
 #include <boost/bind.hpp>
 #include <deque>
 
-FC_LOG_LEVEL_INIT("Spreadsheet",true,true);
+FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
 
 using namespace Base;
 using namespace App;
@@ -1449,7 +1449,7 @@ std::string Sheet::getColumn(int offset) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-TYPESYSTEM_SOURCE(Spreadsheet::PropertySpreadsheetQuantity, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(Spreadsheet::PropertySpreadsheetQuantity, App::PropertyQuantity)
 
 Property *PropertySpreadsheetQuantity::Copy() const
 {

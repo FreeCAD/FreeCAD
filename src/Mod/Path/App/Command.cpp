@@ -40,7 +40,7 @@
 using namespace Base;
 using namespace Path;
 
-TYPESYSTEM_SOURCE(Path::Command , Base::Persistence);
+TYPESYSTEM_SOURCE(Path::Command , Base::Persistence)
 
 // Constructors & destructors
 

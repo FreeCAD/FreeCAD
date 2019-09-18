@@ -97,7 +97,7 @@ inline void MeshHelpPoint::Set (unsigned long ulCorner, unsigned long ulFacet, c
 {
   _ulInd = (ulFacet << 2) | ulCorner;
   _clPt  = rclPt;
-};
+}
 
 inline bool MeshHelpPoint::operator < (const MeshHelpPoint &rclObj) const
 {

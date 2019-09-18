@@ -39,6 +39,9 @@
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Woverloaded-virtual"
+#elif defined (__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wpedantic"
 #endif
 
 #include <SMESH_Gen.hxx>
@@ -70,6 +73,8 @@
 #endif // HAVE_NETGEN
 #if defined(__clang__)
 # pragma clang diagnostic pop
+#elif defined (__GNUC__)
+# pragma GCC diagnostic pop
 #endif
 #endif // HAVE_SMESH
 

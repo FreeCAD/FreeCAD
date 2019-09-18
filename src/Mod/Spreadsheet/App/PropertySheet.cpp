@@ -43,13 +43,13 @@
 #include "Utils.h"
 #include <PropertySheetPy.h>
 #include <App/ExpressionVisitors.h>
-FC_LOG_LEVEL_INIT("Spreadsheet", true, true);
+FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 
 using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
 
-TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::PropertyExpressionContainer);
+TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::PropertyExpressionContainer)
 
 void PropertySheet::clear()
 {

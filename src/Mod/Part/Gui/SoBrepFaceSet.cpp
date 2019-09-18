@@ -83,7 +83,7 @@
 
 using namespace PartGui;
 
-SO_NODE_SOURCE(SoBrepFaceSet);
+SO_NODE_SOURCE(SoBrepFaceSet)
 
 #define PRIVATE(p) ((p)->pimpl)
 
