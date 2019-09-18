@@ -2126,7 +2126,7 @@ gp_Pnt AttachEnginePoint::getProximityPoint(eMapMode mmode, const TopoDS_Shape& 
                 return points.front();
         }
     }
-    catch (Standard_Failure) {
+    catch (const Standard_Failure&) {
         // ignore
     }
 
