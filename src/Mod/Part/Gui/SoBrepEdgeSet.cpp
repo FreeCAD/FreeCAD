@@ -65,7 +65,7 @@
 
 using namespace PartGui;
 
-SO_NODE_SOURCE(SoBrepEdgeSet);
+SO_NODE_SOURCE(SoBrepEdgeSet)
 
 struct SoBrepEdgeSet::SelContext: Gui::SoFCSelectionContext {
     std::vector<int32_t> hl, sl;

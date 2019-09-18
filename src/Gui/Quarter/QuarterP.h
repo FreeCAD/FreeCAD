@@ -24,7 +24,7 @@ class QuarterP {
   bool initCoin;
 };
 
-}}};
+}}}
 
 #define QUARTER_MAJOR_VERSION 1
 #define QUARTER_MINOR_VERSION 0

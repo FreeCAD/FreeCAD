@@ -40,7 +40,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintForce, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintForce, Fem::Constraint)
 
 ConstraintForce::ConstraintForce()
 {

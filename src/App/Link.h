@@ -39,6 +39,8 @@
 #include "FeaturePython.h"
 #include "GroupExtension.h"
 
+//FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
+
 #define LINK_THROW(_type,_msg) do{\
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))\
         FC_ERR(_msg);\

@@ -49,7 +49,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintFixed, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintFixed, Fem::Constraint)
 
 ConstraintFixed::ConstraintFixed()
 {

@@ -149,7 +149,7 @@
 
 #include "ViewProviderLink.h"
 
-FC_LOG_LEVEL_INIT("3DViewer",true,true);
+FC_LOG_LEVEL_INIT("3DViewer",true,true)
 
 //#define FC_LOGGING_CB
 

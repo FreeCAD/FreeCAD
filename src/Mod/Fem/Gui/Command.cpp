@@ -108,7 +108,7 @@ std::string gethideMeshShowPartStr(std::string showConstr="")
 // commands Part, Analysis, Solver
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemAddPart);
+DEF_STD_CMD_A(CmdFemAddPart)
 
 CmdFemAddPart::CmdFemAddPart()
   : Command("FEM_FemAddPart")
@@ -173,7 +173,7 @@ bool CmdFemAddPart::isActive(void)
 //================================================================================================
 // analysis
 /* done in Python
-DEF_STD_CMD_A(CmdFemCreateAnalysis);
+DEF_STD_CMD_A(CmdFemCreateAnalysis)
 
 CmdFemCreateAnalysis::CmdFemCreateAnalysis()
   : Command("FEM_CreateAnalysis")
@@ -237,7 +237,7 @@ bool CmdFemCreateAnalysis::isActive(void)
 //================================================================================================
 // solver
 /* done in Python
-DEF_STD_CMD_A(CmdFemCreateSolver);
+DEF_STD_CMD_A(CmdFemCreateSolver)
 
 CmdFemCreateSolver::CmdFemCreateSolver()
   : Command("FEM_CreateSolver")
@@ -285,7 +285,7 @@ bool CmdFemCreateSolver::isActive(void)
 // commands Constraints
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintBearing);
+DEF_STD_CMD_A(CmdFemConstraintBearing)
 
 CmdFemConstraintBearing::CmdFemConstraintBearing()
   : Command("FEM_ConstraintBearing")
@@ -326,7 +326,7 @@ bool CmdFemConstraintBearing::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintContact);
+DEF_STD_CMD_A(CmdFemConstraintContact)
 
 CmdFemConstraintContact::CmdFemConstraintContact()
   : Command("FEM_ConstraintContact")
@@ -371,7 +371,7 @@ bool CmdFemConstraintContact::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintDisplacement);
+DEF_STD_CMD_A(CmdFemConstraintDisplacement)
 
 CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
   : Command("FEM_ConstraintDisplacement")
@@ -414,7 +414,7 @@ bool CmdFemConstraintDisplacement::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintFixed);
+DEF_STD_CMD_A(CmdFemConstraintFixed)
 
 CmdFemConstraintFixed::CmdFemConstraintFixed()
   : Command("FEM_ConstraintFixed")
@@ -456,7 +456,7 @@ bool CmdFemConstraintFixed::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintFluidBoundary);
+DEF_STD_CMD_A(CmdFemConstraintFluidBoundary)
 
 CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
   : Command("FEM_ConstraintFluidBoundary")
@@ -499,7 +499,7 @@ bool CmdFemConstraintFluidBoundary::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintForce);
+DEF_STD_CMD_A(CmdFemConstraintForce)
 
 CmdFemConstraintForce::CmdFemConstraintForce()
   : Command("FEM_ConstraintForce")
@@ -543,7 +543,7 @@ bool CmdFemConstraintForce::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintGear);
+DEF_STD_CMD_A(CmdFemConstraintGear)
 
 CmdFemConstraintGear::CmdFemConstraintGear()
   : Command("FEM_ConstraintGear")
@@ -584,7 +584,7 @@ bool CmdFemConstraintGear::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintHeatflux);
+DEF_STD_CMD_A(CmdFemConstraintHeatflux)
 
 CmdFemConstraintHeatflux::CmdFemConstraintHeatflux()
   : Command("FEM_ConstraintHeatflux")
@@ -629,7 +629,7 @@ bool CmdFemConstraintHeatflux::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintInitialTemperature);
+DEF_STD_CMD_A(CmdFemConstraintInitialTemperature)
 
 CmdFemConstraintInitialTemperature::CmdFemConstraintInitialTemperature()
   : Command("FEM_ConstraintInitialTemperature")
@@ -672,7 +672,7 @@ bool CmdFemConstraintInitialTemperature::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintPlaneRotation);
+DEF_STD_CMD_A(CmdFemConstraintPlaneRotation)
 
 CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
   : Command("FEM_ConstraintPlaneRotation")
@@ -714,7 +714,7 @@ bool CmdFemConstraintPlaneRotation::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintPressure);
+DEF_STD_CMD_A(CmdFemConstraintPressure)
 
 CmdFemConstraintPressure::CmdFemConstraintPressure()
   : Command("FEM_ConstraintPressure")
@@ -759,7 +759,7 @@ bool CmdFemConstraintPressure::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintPulley);
+DEF_STD_CMD_A(CmdFemConstraintPulley)
 
 CmdFemConstraintPulley::CmdFemConstraintPulley()
   : Command("FEM_ConstraintPulley")
@@ -805,7 +805,7 @@ bool CmdFemConstraintPulley::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintTemperature);
+DEF_STD_CMD_A(CmdFemConstraintTemperature)
 
 CmdFemConstraintTemperature::CmdFemConstraintTemperature()
   : Command("FEM_ConstraintTemperature")
@@ -848,7 +848,7 @@ bool CmdFemConstraintTemperature::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemConstraintTransform);
+DEF_STD_CMD_A(CmdFemConstraintTransform)
 
 CmdFemConstraintTransform::CmdFemConstraintTransform()
   : Command("FEM_ConstraintTransform")
@@ -898,7 +898,7 @@ bool CmdFemConstraintTransform::isActive(void)
 // commands mesh
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemDefineNodesSet);
+DEF_STD_CMD_A(CmdFemDefineNodesSet)
 
 void DefineNodesCallback(void * ud, SoEventCallback * n)
 {
@@ -1040,7 +1040,7 @@ bool CmdFemDefineNodesSet::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemCreateNodesSet);
+DEF_STD_CMD_A(CmdFemCreateNodesSet)
 
 CmdFemCreateNodesSet::CmdFemCreateNodesSet()
   : Command("FEM_CreateNodesSet")
@@ -1134,7 +1134,7 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
         cmd->updateActive();
         cmd->doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
     }
-};
+}
 
 
 std::string Plot() {
@@ -1196,7 +1196,7 @@ plt.show()\n";
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostClipFilter);
+DEF_STD_CMD_A(CmdFemPostClipFilter)
 
 CmdFemPostClipFilter::CmdFemPostClipFilter()
   : Command("FEM_PostCreateClipFilter")
@@ -1222,7 +1222,7 @@ bool CmdFemPostClipFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostCutFilter);
+DEF_STD_CMD_A(CmdFemPostCutFilter)
 
 CmdFemPostCutFilter::CmdFemPostCutFilter()
   : Command("FEM_PostCreateCutFilter")
@@ -1248,7 +1248,7 @@ bool CmdFemPostCutFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostDataAlongLineFilter);
+DEF_STD_CMD_A(CmdFemPostDataAlongLineFilter)
 
 CmdFemPostDataAlongLineFilter::CmdFemPostDataAlongLineFilter()
   : Command("FEM_PostCreateDataAlongLineFilter")
@@ -1274,7 +1274,7 @@ bool CmdFemPostDataAlongLineFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostDataAtPointFilter);
+DEF_STD_CMD_A(CmdFemPostDataAtPointFilter)
 
 CmdFemPostDataAtPointFilter::CmdFemPostDataAtPointFilter()
   : Command("FEM_PostCreateDataAtPointFilter")
@@ -1302,7 +1302,7 @@ bool CmdFemPostDataAtPointFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostLinearizedStressesFilter);
+DEF_STD_CMD_A(CmdFemPostLinearizedStressesFilter)
 
 CmdFemPostLinearizedStressesFilter::CmdFemPostLinearizedStressesFilter()
   : Command("FEM_PostCreateLinearizedStressesFilter")
@@ -1359,7 +1359,7 @@ bool CmdFemPostLinearizedStressesFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostScalarClipFilter);
+DEF_STD_CMD_A(CmdFemPostScalarClipFilter)
 
 CmdFemPostScalarClipFilter::CmdFemPostScalarClipFilter()
   : Command("FEM_PostCreateScalarClipFilter")
@@ -1385,7 +1385,7 @@ bool CmdFemPostScalarClipFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostWarpVectorFilter);
+DEF_STD_CMD_A(CmdFemPostWarpVectorFilter)
 
 CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
   : Command("FEM_PostCreateWarpVectorFilter")
@@ -1411,7 +1411,7 @@ bool CmdFemPostWarpVectorFilter::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_ACL(CmdFemPostFunctions);
+DEF_STD_CMD_ACL(CmdFemPostFunctions)
 
 CmdFemPostFunctions::CmdFemPostFunctions()
   : Command("FEM_PostCreateFunctions")
@@ -1551,7 +1551,7 @@ bool CmdFemPostFunctions::isActive(void)
 
 
 //================================================================================================
-DEF_STD_CMD_AC(CmdFemPostApllyChanges);
+DEF_STD_CMD_AC(CmdFemPostApllyChanges)
 
 CmdFemPostApllyChanges::CmdFemPostApllyChanges()
   : Command("FEM_PostApplyChanges")
@@ -1596,7 +1596,7 @@ Gui::Action * CmdFemPostApllyChanges::createAction(void)
 
 
 //================================================================================================
-DEF_STD_CMD_A(CmdFemPostPipelineFromResult);
+DEF_STD_CMD_A(CmdFemPostPipelineFromResult)
 
 CmdFemPostPipelineFromResult::CmdFemPostPipelineFromResult()
   : Command("FEM_PostPipelineFromResult")

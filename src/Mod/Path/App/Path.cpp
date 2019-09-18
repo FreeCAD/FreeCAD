@@ -43,7 +43,7 @@
 using namespace Path;
 using namespace Base;
 
-TYPESYSTEM_SOURCE(Path::Toolpath , Base::Persistence);
+TYPESYSTEM_SOURCE(Path::Toolpath , Base::Persistence)
 
 Toolpath::Toolpath()
 {

@@ -51,7 +51,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::OpenCascadeNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::OpenCascadeNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::OpenCascadeNavigationStyle, Gui::UserNavigationStyle)
 
 OpenCascadeNavigationStyle::OpenCascadeNavigationStyle()
 {

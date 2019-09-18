@@ -40,7 +40,7 @@
 
 using namespace Robot;
 
-TYPESYSTEM_SOURCE(Robot::PropertyTrajectory , App::Property);
+TYPESYSTEM_SOURCE(Robot::PropertyTrajectory , App::Property)
 
 PropertyTrajectory::PropertyTrajectory()
 {

@@ -46,7 +46,7 @@ grid=coin.SoType.fromName("SoDrawingGrid").createInstance()
 Gui.ActiveDocument.ActiveView.getSceneGraph().addChild(grid)
 */
 
-SO_NODE_SOURCE(SoDrawingGrid);
+SO_NODE_SOURCE(SoDrawingGrid)
 
 void
 SoDrawingGrid::initClass()

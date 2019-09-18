@@ -42,7 +42,7 @@
 #include "ViewProviderShapeBinder.h"
 #include "TaskShapeBinder.h"
 
-FC_LOG_LEVEL_INIT("ShapeBinder",true,true);
+FC_LOG_LEVEL_INIT("ShapeBinder",true,true)
 
 using namespace PartDesignGui;
 

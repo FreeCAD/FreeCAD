@@ -33,7 +33,7 @@
 using namespace Base;
 using namespace Path;
 
-TYPESYSTEM_SOURCE(Path::Tool , Base::Persistence);
+TYPESYSTEM_SOURCE(Path::Tool , Base::Persistence)
 
 // Constructors & destructors
 

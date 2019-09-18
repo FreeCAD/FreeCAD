@@ -444,6 +444,7 @@ public:
     /// Print to Python console the current calling source file and line number
     static void printCaller(const char *file, int line);
 
+    //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
     /** Convenience macro to run a command with printf like formatter
      *
      * @sa Command::_doCommand()

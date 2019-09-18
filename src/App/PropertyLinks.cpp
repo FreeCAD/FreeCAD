@@ -50,7 +50,7 @@
 
 #include "PropertyLinks.h"
 
-FC_LOG_LEVEL_INIT("PropertyLinks",true,true);
+FC_LOG_LEVEL_INIT("PropertyLinks",true,true)
 
 using namespace App;
 using namespace Base;

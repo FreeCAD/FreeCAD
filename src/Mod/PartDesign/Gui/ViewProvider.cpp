@@ -347,7 +347,7 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
 
 namespace Gui {
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewProvider);
+PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewProvider)
 /// @endcond
 
 // explicit template instantiation

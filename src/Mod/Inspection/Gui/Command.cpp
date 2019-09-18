@@ -40,7 +40,7 @@
 #include "ViewProviderInspection.h"
 
 
-DEF_STD_CMD_A(CmdVisualInspection);
+DEF_STD_CMD_A(CmdVisualInspection)
 
 CmdVisualInspection::CmdVisualInspection()
   : Command("Inspection_VisualInspection")
@@ -66,7 +66,7 @@ bool CmdVisualInspection::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
-DEF_STD_CMD_A(CmdInspectElement);
+DEF_STD_CMD_A(CmdInspectElement)
 
 CmdInspectElement::CmdInspectElement()
   : Command("Inspection_InspectElement")

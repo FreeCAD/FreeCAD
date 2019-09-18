@@ -42,7 +42,7 @@ class View3DPy;
 
 class GuiExport GLOverlayWidget : public QWidget
 {
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     GLOverlayWidget(QWidget* parent=0) : QWidget(parent)
@@ -63,7 +63,7 @@ protected:
  */
 class GuiExport View3DInventor : public MDIView, public ParameterGrp::ObserverType
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     TYPESYSTEM_HEADER();
 

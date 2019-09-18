@@ -41,7 +41,7 @@
 #include "PropertyContainerPy.h"
 #include "PropertyContainerPy.cpp"
 
-FC_LOG_LEVEL_INIT("Property", true, 2);
+FC_LOG_LEVEL_INIT("Property", true, 2)
 
 using namespace App;
 

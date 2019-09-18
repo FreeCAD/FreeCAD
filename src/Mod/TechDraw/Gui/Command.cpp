@@ -86,7 +86,7 @@ using namespace std;
 // TechDraw_NewPageDef (default template)
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewPageDef);
+DEF_STD_CMD_A(CmdTechDrawNewPageDef)
 
 CmdTechDrawNewPageDef::CmdTechDrawNewPageDef()
   : Command("TechDraw_NewPageDef")
@@ -156,7 +156,7 @@ bool CmdTechDrawNewPageDef::isActive(void)
 // TechDraw_NewPage (with template choice)
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewPage);
+DEF_STD_CMD_A(CmdTechDrawNewPage)
 
 CmdTechDrawNewPage::CmdTechDrawNewPage()
   : Command("TechDraw_NewPage")
@@ -236,7 +236,7 @@ bool CmdTechDrawNewPage::isActive(void)
 // TechDraw_NewView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewView);
+DEF_STD_CMD_A(CmdTechDrawNewView)
 
 CmdTechDrawNewView::CmdTechDrawNewView()
   : Command("TechDraw_NewView")
@@ -330,7 +330,7 @@ bool CmdTechDrawNewView::isActive(void)
 // TechDraw_NewActiveView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewActiveView);
+DEF_STD_CMD_A(CmdTechDrawNewActiveView)
 
 CmdTechDrawNewActiveView::CmdTechDrawNewActiveView()
   : Command("TechDraw_NewActiveView")
@@ -364,7 +364,7 @@ bool CmdTechDrawNewActiveView::isActive(void)
 // TechDraw_NewViewSection
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewViewSection);
+DEF_STD_CMD_A(CmdTechDrawNewViewSection)
 
 CmdTechDrawNewViewSection::CmdTechDrawNewViewSection()
   : Command("TechDraw_NewViewSection")
@@ -434,7 +434,7 @@ bool CmdTechDrawNewViewSection::isActive(void)
 // TechDraw_NewViewDetail
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewViewDetail);
+DEF_STD_CMD_A(CmdTechDrawNewViewDetail)
 
 CmdTechDrawNewViewDetail::CmdTechDrawNewViewDetail()
   : Command("TechDraw_NewViewDetail")
@@ -503,7 +503,7 @@ bool CmdTechDrawNewViewDetail::isActive(void)
 // TechDraw_ProjGroup
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawProjGroup);
+DEF_STD_CMD_A(CmdTechDrawProjGroup)
 
 CmdTechDrawProjGroup::CmdTechDrawProjGroup()
   : Command("TechDraw_ProjGroup")
@@ -699,7 +699,7 @@ bool _checkDrawViewPartBalloon(Gui::Command* cmd) {
     return true;
 }
 
-DEF_STD_CMD_A(CmdTechDrawNewBalloon);
+DEF_STD_CMD_A(CmdTechDrawNewBalloon)
 
 CmdTechDrawNewBalloon::CmdTechDrawNewBalloon()
   : Command("TechDraw_NewBalloon")
@@ -748,7 +748,7 @@ bool CmdTechDrawNewBalloon::isActive(void)
 // TechDraw_Clip
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawClip);
+DEF_STD_CMD_A(CmdTechDrawClip)
 
 CmdTechDrawClip::CmdTechDrawClip()
   : Command("TechDraw_Clip")
@@ -788,7 +788,7 @@ bool CmdTechDrawClip::isActive(void)
 // TechDraw_ClipPlus
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawClipPlus);
+DEF_STD_CMD_A(CmdTechDrawClipPlus)
 
 CmdTechDrawClipPlus::CmdTechDrawClipPlus()
   : Command("TechDraw_ClipPlus")
@@ -871,7 +871,7 @@ bool CmdTechDrawClipPlus::isActive(void)
 // TechDraw_ClipMinus
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawClipMinus);
+DEF_STD_CMD_A(CmdTechDrawClipMinus)
 
 CmdTechDrawClipMinus::CmdTechDrawClipMinus()
   : Command("TechDraw_ClipMinus")
@@ -945,7 +945,7 @@ bool CmdTechDrawClipMinus::isActive(void)
 // TechDraw_Symbol
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawSymbol);
+DEF_STD_CMD_A(CmdTechDrawSymbol)
 
 CmdTechDrawSymbol::CmdTechDrawSymbol()
   : Command("TechDraw_Symbol")
@@ -999,7 +999,7 @@ bool CmdTechDrawSymbol::isActive(void)
 // TechDraw_DraftView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawDraftView);
+DEF_STD_CMD_A(CmdTechDrawDraftView)
 
 CmdTechDrawDraftView::CmdTechDrawDraftView()
   : Command("TechDraw_DraftView")
@@ -1052,7 +1052,7 @@ bool CmdTechDrawDraftView::isActive(void)
 // TechDraw_ArchView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawArchView);
+DEF_STD_CMD_A(CmdTechDrawArchView)
 
 CmdTechDrawArchView::CmdTechDrawArchView()
   : Command("TechDraw_ArchView")
@@ -1102,7 +1102,7 @@ bool CmdTechDrawArchView::isActive(void)
 // TechDraw_Spreadheet
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawSpreadsheet);
+DEF_STD_CMD_A(CmdTechDrawSpreadsheet)
 
 CmdTechDrawSpreadsheet::CmdTechDrawSpreadsheet()
   : Command("TechDraw_Spreadsheet")
@@ -1162,7 +1162,7 @@ bool CmdTechDrawSpreadsheet::isActive(void)
 // TechDraw_ExportPage (Svg)
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawExportPage);
+DEF_STD_CMD_A(CmdTechDrawExportPage)
 
 CmdTechDrawExportPage::CmdTechDrawExportPage()
   : Command("TechDraw_ExportPage")
@@ -1206,7 +1206,7 @@ bool CmdTechDrawExportPage::isActive(void)
 // TechDraw_ExportPage (Dxf)
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawExportPageDxf);
+DEF_STD_CMD_A(CmdTechDrawExportPageDxf)
 
 CmdTechDrawExportPageDxf::CmdTechDrawExportPageDxf()
   : Command("TechDraw_ExportPageDxf")

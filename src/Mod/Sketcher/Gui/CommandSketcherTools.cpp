@@ -88,7 +88,7 @@ void ActivateAcceleratorHandler(Gui::Document *doc, DrawSketchHandler *handler)
 }
 
 // Close Shape Command
-DEF_STD_CMD_A(CmdSketcherCloseShape);
+DEF_STD_CMD_A(CmdSketcherCloseShape)
 
 CmdSketcherCloseShape::CmdSketcherCloseShape()
     :Command("Sketcher_CloseShape")
@@ -194,7 +194,7 @@ bool CmdSketcherCloseShape::isActive(void)
 
 
 // Connect Edges Command
-DEF_STD_CMD_A(CmdSketcherConnect);
+DEF_STD_CMD_A(CmdSketcherConnect)
 
 CmdSketcherConnect::CmdSketcherConnect()
     :Command("Sketcher_ConnectLines")
@@ -277,7 +277,7 @@ bool CmdSketcherConnect::isActive(void)
 }
 
 // Select Constraints of selected elements
-DEF_STD_CMD_A(CmdSketcherSelectConstraints);
+DEF_STD_CMD_A(CmdSketcherSelectConstraints)
 
 CmdSketcherSelectConstraints::CmdSketcherSelectConstraints()
     :Command("Sketcher_SelectConstraints")
@@ -341,7 +341,7 @@ bool CmdSketcherSelectConstraints::isActive(void)
 }
 
 // Select Origin
-DEF_STD_CMD_A(CmdSketcherSelectOrigin);
+DEF_STD_CMD_A(CmdSketcherSelectOrigin)
 
 CmdSketcherSelectOrigin::CmdSketcherSelectOrigin()
     :Command("Sketcher_SelectOrigin")
@@ -389,7 +389,7 @@ bool CmdSketcherSelectOrigin::isActive(void)
 }
 
 // Select Vertical Axis
-DEF_STD_CMD_A(CmdSketcherSelectVerticalAxis);
+DEF_STD_CMD_A(CmdSketcherSelectVerticalAxis)
 
 CmdSketcherSelectVerticalAxis::CmdSketcherSelectVerticalAxis()
     :Command("Sketcher_SelectVerticalAxis")
@@ -433,7 +433,7 @@ bool CmdSketcherSelectVerticalAxis::isActive(void)
 }
 
 // Select Horizontal Axis
-DEF_STD_CMD_A(CmdSketcherSelectHorizontalAxis);
+DEF_STD_CMD_A(CmdSketcherSelectHorizontalAxis)
 
 CmdSketcherSelectHorizontalAxis::CmdSketcherSelectHorizontalAxis()
     :Command("Sketcher_SelectHorizontalAxis")
@@ -476,7 +476,7 @@ bool CmdSketcherSelectHorizontalAxis::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
-DEF_STD_CMD_A(CmdSketcherSelectRedundantConstraints);
+DEF_STD_CMD_A(CmdSketcherSelectRedundantConstraints)
 
 CmdSketcherSelectRedundantConstraints::CmdSketcherSelectRedundantConstraints()
     :Command("Sketcher_SelectRedundantConstraints")
@@ -529,7 +529,7 @@ bool CmdSketcherSelectRedundantConstraints::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
-DEF_STD_CMD_A(CmdSketcherSelectConflictingConstraints);
+DEF_STD_CMD_A(CmdSketcherSelectConflictingConstraints)
 
 CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints()
     :Command("Sketcher_SelectConflictingConstraints")
@@ -580,7 +580,7 @@ bool CmdSketcherSelectConflictingConstraints::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
-DEF_STD_CMD_A(CmdSketcherSelectElementsAssociatedWithConstraints);
+DEF_STD_CMD_A(CmdSketcherSelectElementsAssociatedWithConstraints)
 
 CmdSketcherSelectElementsAssociatedWithConstraints::CmdSketcherSelectElementsAssociatedWithConstraints()
     :Command("Sketcher_SelectElementsAssociatedWithConstraints")
@@ -702,7 +702,7 @@ bool CmdSketcherSelectElementsAssociatedWithConstraints::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
 }
 
-DEF_STD_CMD_A(CmdSketcherSelectElementsWithDoFs);
+DEF_STD_CMD_A(CmdSketcherSelectElementsWithDoFs)
 
 CmdSketcherSelectElementsWithDoFs::CmdSketcherSelectElementsWithDoFs()
 :Command("Sketcher_SelectElementsWithDoFs")
@@ -809,7 +809,7 @@ bool CmdSketcherSelectElementsWithDoFs::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
-DEF_STD_CMD_A(CmdSketcherRestoreInternalAlignmentGeometry);
+DEF_STD_CMD_A(CmdSketcherRestoreInternalAlignmentGeometry)
 
 CmdSketcherRestoreInternalAlignmentGeometry::CmdSketcherRestoreInternalAlignmentGeometry()
     :Command("Sketcher_RestoreInternalAlignmentGeometry")
@@ -902,7 +902,7 @@ bool CmdSketcherRestoreInternalAlignmentGeometry::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
 }
 
-DEF_STD_CMD_A(CmdSketcherSymmetry);
+DEF_STD_CMD_A(CmdSketcherSymmetry)
 
 CmdSketcherSymmetry::CmdSketcherSymmetry()
     :Command("Sketcher_Symmetry")
@@ -1791,7 +1791,7 @@ static const char *cursor_createrectangulararray[]={
     };
 
 
-DEF_STD_CMD_A(CmdSketcherRectangularArray);
+DEF_STD_CMD_A(CmdSketcherRectangularArray)
 
 CmdSketcherRectangularArray::CmdSketcherRectangularArray()
 :Command("Sketcher_RectangularArray")
@@ -1930,7 +1930,7 @@ bool CmdSketcherRectangularArray::isActive(void)
 }
 
 // Select Origin
-DEF_STD_CMD_A(CmdSketcherDeleteAllGeometry);
+DEF_STD_CMD_A(CmdSketcherDeleteAllGeometry)
 
 CmdSketcherDeleteAllGeometry::CmdSketcherDeleteAllGeometry()
 :Command("Sketcher_DeleteAllGeometry")
@@ -1993,7 +1993,7 @@ bool CmdSketcherDeleteAllGeometry::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
-DEF_STD_CMD_A(CmdSketcherDeleteAllConstraints);
+DEF_STD_CMD_A(CmdSketcherDeleteAllConstraints)
 
 CmdSketcherDeleteAllConstraints::CmdSketcherDeleteAllConstraints()
 :Command("Sketcher_DeleteAllConstraints")

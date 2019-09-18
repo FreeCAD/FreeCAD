@@ -83,7 +83,7 @@ App::Part* assertActivePart () {
 
 // PartDesign_Body
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignBody);
+DEF_STD_CMD_A(CmdPartDesignBody)
 
 CmdPartDesignBody::CmdPartDesignBody()
   : Command("PartDesign_Body")
@@ -329,7 +329,7 @@ bool CmdPartDesignBody::isActive(void)
 // PartDesign_Migrate
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartDesignMigrate);
+DEF_STD_CMD_A(CmdPartDesignMigrate)
 
 CmdPartDesignMigrate::CmdPartDesignMigrate()
   : Command("PartDesign_Migrate")
@@ -543,7 +543,7 @@ bool CmdPartDesignMigrate::isActive(void)
 //===========================================================================
 // PartDesign_MoveTip
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignMoveTip);
+DEF_STD_CMD_A(CmdPartDesignMoveTip)
 
 CmdPartDesignMoveTip::CmdPartDesignMoveTip()
   : Command("PartDesign_MoveTip")
@@ -622,7 +622,7 @@ bool CmdPartDesignMoveTip::isActive(void)
 // PartDesign_DuplicateSelection
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartDesignDuplicateSelection);
+DEF_STD_CMD_A(CmdPartDesignDuplicateSelection)
 
 CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
   :Command("PartDesign_DuplicateSelection")
@@ -677,7 +677,7 @@ bool CmdPartDesignDuplicateSelection::isActive(void)
 // PartDesign_MoveFeature
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartDesignMoveFeature);
+DEF_STD_CMD_A(CmdPartDesignMoveFeature)
 
 CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
   :Command("PartDesign_MoveFeature")
@@ -839,7 +839,7 @@ bool CmdPartDesignMoveFeature::isActive(void)
     return hasActiveDocument () && !PartDesignGui::isLegacyWorkflow ( getDocument () );
 }
 
-DEF_STD_CMD_A(CmdPartDesignMoveFeatureInTree);
+DEF_STD_CMD_A(CmdPartDesignMoveFeatureInTree)
 
 CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
   :Command("PartDesign_MoveFeatureInTree")

@@ -56,7 +56,7 @@
 //===========================================================================
 // CmdPointsImport
 //===========================================================================
-DEF_STD_CMD_A(CmdPointsImport);
+DEF_STD_CMD_A(CmdPointsImport)
 
 CmdPointsImport::CmdPointsImport()
   : Command("Points_Import")
@@ -103,7 +103,7 @@ bool CmdPointsImport::isActive(void)
         return false;
 }
 
-DEF_STD_CMD_A(CmdPointsExport);
+DEF_STD_CMD_A(CmdPointsExport)
 
 CmdPointsExport::CmdPointsExport()
   : Command("Points_Export")
@@ -142,7 +142,7 @@ bool CmdPointsExport::isActive(void)
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
 }
 
-DEF_STD_CMD_A(CmdPointsTransform);
+DEF_STD_CMD_A(CmdPointsTransform)
 
 CmdPointsTransform::CmdPointsTransform()
   :Command("Points_Transform")
@@ -179,7 +179,7 @@ bool CmdPointsTransform::isActive(void)
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
 }
 
-DEF_STD_CMD_A(CmdPointsConvert);
+DEF_STD_CMD_A(CmdPointsConvert)
 
 CmdPointsConvert::CmdPointsConvert()
   :Command("Points_Convert")
@@ -264,7 +264,7 @@ bool CmdPointsConvert::isActive(void)
     return getSelection().countObjectsOfType(Base::Type::fromName("App::GeoFeature")) > 0;
 }
 
-DEF_STD_CMD_A(CmdPointsPolyCut);
+DEF_STD_CMD_A(CmdPointsPolyCut)
 
 CmdPointsPolyCut::CmdPointsPolyCut()
   :Command("Points_PolyCut")

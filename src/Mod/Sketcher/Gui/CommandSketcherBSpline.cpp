@@ -98,7 +98,7 @@ void ShowRestoreInformationLayer(SketcherGui::ViewProviderSketch* vp, char * vis
 }
 
 // Show/Hide B-spline degree
-DEF_STD_CMD_A(CmdSketcherBSplineDegree);
+DEF_STD_CMD_A(CmdSketcherBSplineDegree)
 
 CmdSketcherBSplineDegree::CmdSketcherBSplineDegree()
 :Command("Sketcher_BSplineDegree")
@@ -132,7 +132,7 @@ bool CmdSketcherBSplineDegree::isActive(void)
 }
 
 // Show/Hide B-spline polygon
-DEF_STD_CMD_A(CmdSketcherBSplinePolygon);
+DEF_STD_CMD_A(CmdSketcherBSplinePolygon)
 
 CmdSketcherBSplinePolygon::CmdSketcherBSplinePolygon()
     :Command("Sketcher_BSplinePolygon")
@@ -166,7 +166,7 @@ bool CmdSketcherBSplinePolygon::isActive(void)
 }
 
 // Show/Hide B-spline comb
-DEF_STD_CMD_A(CmdSketcherBSplineComb);
+DEF_STD_CMD_A(CmdSketcherBSplineComb)
 
 CmdSketcherBSplineComb::CmdSketcherBSplineComb()
 :Command("Sketcher_BSplineComb")
@@ -200,7 +200,7 @@ bool CmdSketcherBSplineComb::isActive(void)
 }
 
 //
-DEF_STD_CMD_A(CmdSketcherBSplineKnotMultiplicity);
+DEF_STD_CMD_A(CmdSketcherBSplineKnotMultiplicity)
 
 CmdSketcherBSplineKnotMultiplicity::CmdSketcherBSplineKnotMultiplicity()
 :Command("Sketcher_BSplineKnotMultiplicity")
@@ -234,7 +234,7 @@ bool CmdSketcherBSplineKnotMultiplicity::isActive(void)
 }
 
 // Composite drop down menu for show/hide geometry information layer
-DEF_STD_CMD_ACLU(CmdSketcherCompBSplineShowHideGeometryInformation);
+DEF_STD_CMD_ACLU(CmdSketcherCompBSplineShowHideGeometryInformation)
 
 CmdSketcherCompBSplineShowHideGeometryInformation::CmdSketcherCompBSplineShowHideGeometryInformation()
 : Command("Sketcher_CompBSplineShowHideGeometryInformation")
@@ -338,7 +338,7 @@ bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive(void)
 }
 
 // Convert to NURB
-DEF_STD_CMD_A(CmdSketcherConvertToNURB);
+DEF_STD_CMD_A(CmdSketcherConvertToNURB)
 
 CmdSketcherConvertToNURB::CmdSketcherConvertToNURB()
 :Command("Sketcher_BSplineConvertToNURB")
@@ -417,7 +417,7 @@ bool CmdSketcherConvertToNURB::isActive(void)
 }
 
 // Convert to NURB
-DEF_STD_CMD_A(CmdSketcherIncreaseDegree);
+DEF_STD_CMD_A(CmdSketcherIncreaseDegree)
 
 CmdSketcherIncreaseDegree::CmdSketcherIncreaseDegree()
 :Command("Sketcher_BSplineIncreaseDegree")
@@ -494,7 +494,7 @@ bool CmdSketcherIncreaseDegree::isActive(void)
     return isSketcherBSplineActive( getActiveGuiDocument(), true );
 }
 
-DEF_STD_CMD_A(CmdSketcherIncreaseKnotMultiplicity);
+DEF_STD_CMD_A(CmdSketcherIncreaseKnotMultiplicity)
 
 CmdSketcherIncreaseKnotMultiplicity::CmdSketcherIncreaseKnotMultiplicity()
 :Command("Sketcher_BSplineIncreaseKnotMultiplicity")
@@ -653,7 +653,7 @@ bool CmdSketcherIncreaseKnotMultiplicity::isActive(void)
     return isSketcherBSplineActive( getActiveGuiDocument(), true );
 }
 
-DEF_STD_CMD_A(CmdSketcherDecreaseKnotMultiplicity);
+DEF_STD_CMD_A(CmdSketcherDecreaseKnotMultiplicity)
 
 CmdSketcherDecreaseKnotMultiplicity::CmdSketcherDecreaseKnotMultiplicity()
 :Command("Sketcher_BSplineDecreaseKnotMultiplicity")
@@ -800,7 +800,7 @@ bool CmdSketcherDecreaseKnotMultiplicity::isActive(void)
 
 
 // Composite drop down for knot increase/decrease
-DEF_STD_CMD_ACLU(CmdSketcherCompModifyKnotMultiplicity);
+DEF_STD_CMD_ACLU(CmdSketcherCompModifyKnotMultiplicity)
 
 CmdSketcherCompModifyKnotMultiplicity::CmdSketcherCompModifyKnotMultiplicity()
 : Command("Sketcher_CompModifyKnotMultiplicity")

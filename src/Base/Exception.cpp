@@ -31,12 +31,12 @@
 #include "Console.h"
 #include <CXX/Objects.hxx>
 
-FC_LOG_LEVEL_INIT("Exception", true, true);
+FC_LOG_LEVEL_INIT("Exception", true, true)
 
 using namespace Base;
 
 
-TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass);
+TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass)
 
 
 Exception::Exception(void)
@@ -151,7 +151,7 @@ void Exception::setPyObject( PyObject * pydict)
 
 // ---------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Base::AbortException,Base::Exception);
+TYPESYSTEM_SOURCE(Base::AbortException,Base::Exception)
 
 AbortException::AbortException(const char * sMessage)
   : Exception( sMessage )

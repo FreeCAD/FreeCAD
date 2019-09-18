@@ -46,7 +46,7 @@ using namespace App;
 using namespace Base;
 using namespace std;
 
-TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence);
+TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence)
 
 
 //**************************************************************************

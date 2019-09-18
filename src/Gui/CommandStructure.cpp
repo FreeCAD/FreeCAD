@@ -43,7 +43,7 @@ using namespace Gui;
 //===========================================================================
 // Std_Part
 //===========================================================================
-DEF_STD_CMD_A(StdCmdPart);
+DEF_STD_CMD_A(StdCmdPart)
 
 StdCmdPart::StdCmdPart()
   : Command("Std_Part")
@@ -84,7 +84,7 @@ bool StdCmdPart::isActive(void)
 //===========================================================================
 // Std_Group
 //===========================================================================
-DEF_STD_CMD_A(StdCmdGroup);
+DEF_STD_CMD_A(StdCmdGroup)
 
 StdCmdGroup::StdCmdGroup()
   : Command("Std_Group")

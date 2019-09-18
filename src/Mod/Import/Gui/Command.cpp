@@ -39,7 +39,7 @@ using Gui::FileDialog;
 //===========================================================================
 // Import_Box
 //===========================================================================
-DEF_STD_CMD_A(FCCmdImportReadBREP);
+DEF_STD_CMD_A(FCCmdImportReadBREP)
 
 FCCmdImportReadBREP::FCCmdImportReadBREP()
    : Command("Import_ReadBREP")
@@ -75,7 +75,7 @@ bool FCCmdImportReadBREP::isActive(void)
 //===========================================================================
 // PartImportStep
 //===========================================================================
-DEF_STD_CMD_A(ImportStep);
+DEF_STD_CMD_A(ImportStep)
 
 ImportStep::ImportStep()
   : Command("Part_ImportStep")
@@ -115,7 +115,7 @@ bool ImportStep::isActive(void)
 //===========================================================================
 // ImportIges
 //===========================================================================
-DEF_STD_CMD_A(ImportIges);
+DEF_STD_CMD_A(ImportIges)
 
 ImportIges::ImportIges()
   : Command("Import_Iges")

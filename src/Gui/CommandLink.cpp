@@ -47,7 +47,7 @@
 #include <App/DocumentObserver.h>
 #include <App/Link.h>
 
-FC_LOG_LEVEL_INIT("CommandLink",true,true);
+FC_LOG_LEVEL_INIT("CommandLink",true,true)
 
 using namespace Gui;
 

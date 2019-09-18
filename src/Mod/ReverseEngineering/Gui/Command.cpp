@@ -50,7 +50,7 @@
 
 using namespace std;
 
-DEF_STD_CMD_A(CmdApproxSurface);
+DEF_STD_CMD_A(CmdApproxSurface)
 
 CmdApproxSurface::CmdApproxSurface()
   : Command("Reen_ApproxSurface")
@@ -85,7 +85,7 @@ bool CmdApproxSurface::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-DEF_STD_CMD_A(CmdApproxPlane);
+DEF_STD_CMD_A(CmdApproxPlane)
 
 CmdApproxPlane::CmdApproxPlane()
   : Command("Reen_ApproxPlane")
@@ -186,7 +186,7 @@ bool CmdApproxPlane::isActive(void)
     return false;
 }
 
-DEF_STD_CMD_A(CmdPoissonReconstruction);
+DEF_STD_CMD_A(CmdPoissonReconstruction)
 
 CmdPoissonReconstruction::CmdPoissonReconstruction()
   : Command("Reen_PoissonReconstruction")
@@ -220,7 +220,7 @@ bool CmdPoissonReconstruction::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-DEF_STD_CMD_A(CmdViewTriangulation);
+DEF_STD_CMD_A(CmdViewTriangulation)
 
 CmdViewTriangulation::CmdViewTriangulation()
   : Command("Reen_ViewTriangulation")

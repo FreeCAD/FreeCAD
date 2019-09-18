@@ -53,7 +53,7 @@ using namespace RobotGui;
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotCreateTrajectory);
+DEF_STD_CMD_A(CmdRobotCreateTrajectory)
 
 CmdRobotCreateTrajectory::CmdRobotCreateTrajectory()
 	:Command("Robot_CreateTrajectory")
@@ -86,7 +86,7 @@ bool CmdRobotCreateTrajectory::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotInsertWaypoint);
+DEF_STD_CMD_A(CmdRobotInsertWaypoint)
 
 CmdRobotInsertWaypoint::CmdRobotInsertWaypoint()
 	:Command("Robot_InsertWaypoint")
@@ -143,7 +143,7 @@ bool CmdRobotInsertWaypoint::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotInsertWaypointPreselect);
+DEF_STD_CMD_A(CmdRobotInsertWaypointPreselect)
 
 CmdRobotInsertWaypointPreselect::CmdRobotInsertWaypointPreselect()
 	:Command("Robot_InsertWaypointPreselect")
@@ -207,7 +207,7 @@ bool CmdRobotInsertWaypointPreselect::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotSetDefaultOrientation);
+DEF_STD_CMD_A(CmdRobotSetDefaultOrientation)
 
 CmdRobotSetDefaultOrientation::CmdRobotSetDefaultOrientation()
 	:Command("Robot_SetDefaultOrientation")
@@ -245,7 +245,7 @@ bool CmdRobotSetDefaultOrientation::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotSetDefaultValues);
+DEF_STD_CMD_A(CmdRobotSetDefaultValues)
 
 CmdRobotSetDefaultValues::CmdRobotSetDefaultValues()
 	:Command("Robot_SetDefaultValues")
@@ -311,7 +311,7 @@ bool CmdRobotSetDefaultValues::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotEdge2Trac);
+DEF_STD_CMD_A(CmdRobotEdge2Trac)
 
 CmdRobotEdge2Trac::CmdRobotEdge2Trac()
 	:Command("Robot_Edge2Trac")
@@ -375,7 +375,7 @@ bool CmdRobotEdge2Trac::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotTrajectoryDressUp);
+DEF_STD_CMD_A(CmdRobotTrajectoryDressUp)
 
 CmdRobotTrajectoryDressUp::CmdRobotTrajectoryDressUp()
 	:Command("Robot_TrajectoryDressUp")
@@ -422,7 +422,7 @@ bool CmdRobotTrajectoryDressUp::isActive(void)
 
 // #####################################################################################################
 
-DEF_STD_CMD_A(CmdRobotTrajectoryCompound);
+DEF_STD_CMD_A(CmdRobotTrajectoryCompound)
 
 CmdRobotTrajectoryCompound::CmdRobotTrajectoryCompound()
 	:Command("Robot_TrajectoryCompound")
