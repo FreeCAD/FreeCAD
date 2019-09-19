@@ -258,6 +258,11 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertOrtho2Perspective(const SoOrthographicCamera* in,
         SoPerspectiveCamera* out)
 {
+    if (!in || !out) {
+        Base::Console().Log("Quarter::convertOrtho2Perspective",
+                            "Cannot convert camera settings due to wrong input.");
+        return;
+    }
     out->aspectRatio.setValue(in->aspectRatio.getValue());
     out->focalDistance.setValue(in->focalDistance.getValue());
     out->orientation.setValue(in->orientation.getValue());
