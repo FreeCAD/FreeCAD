@@ -253,13 +253,13 @@ void FemPostPipeline::load(FemResultObject* res) {
     }
 
     //first copy the mesh over
-    //########################
+    // ***************************
     const FemMesh& mesh = static_cast<FemMeshObject*>(res->Mesh.getValue())->FemMesh.getValue();
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     FemVTKTools::exportVTKMesh(&mesh, grid);
 
     //Now copy the point data over
-    //############################
+    // ***************************
     FemVTKTools::exportFreeCADResult(res, grid);
 
     Data.setValue(grid);
