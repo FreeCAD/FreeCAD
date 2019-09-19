@@ -33,9 +33,15 @@ import numpy as np
 from math import isnan
 
 
-## Removes all result objects and result meshes from an analysis group
-#  @param analysis
 def purge_results(analysis):
+    """Removes all result objects and result meshes from an analysis group
+
+    Parameters
+    ----------
+    analysis : Fem::FemAnalysis
+        analysis group as a container for all  objects needed for the analysis
+    """
+
     for m in analysis.Group:
         if (m.isDerivedFrom("Fem::FemResultObject")):
             if m.Mesh \
@@ -54,17 +60,29 @@ def purge_results(analysis):
     FreeCAD.ActiveDocument.recompute()
 
 
-## Resets result mesh deformation
-#  @param result object
 def reset_mesh_deformation(resultobj):
+    """Resets result mesh deformation
+
+    Parameters
+    ----------
+    resultobj : Fem::FemResultMechanical
+        FreeCAD FEM mechanical result object
+    """
+
     if FreeCAD.GuiUp:
         if resultobj.Mesh:
             resultobj.Mesh.ViewObject.applyDisplacement(0.0)
 
 
-## Resets result mesh color
-#  @param result object
 def reset_mesh_color(resultobj):
+    """Resets result mesh color
+
+    Parameters
+    ----------
+    resultobj : Fem::FemResultMechanical
+        FreeCAD FEM mechanical result object
+    """
+
     if FreeCAD.GuiUp:
         if resultobj.Mesh:
             resultobj.Mesh.ViewObject.NodeColor = {}
@@ -84,15 +102,24 @@ def show_displacement(resultobj, displacement_factor=0.0):
         resultobj.Mesh.ViewObject.applyDisplacement(displacement_factor)
 
 
-## Sets mesh color using selected type of results (Sabs by default)
-#  @param self The python object self
-#  @param result_type Type of FEM result, allowed are:
-#  - U1, U2, U3 - deformation
-#  - Uabs - absolute deformation
-#  - Sabs - Von Mises stress
-#  @param limit cutoff value. All values over the limit are treated
-#  as equal to the limit. Useful for filtering out hotspots.
 def show_result(resultobj, result_type="Sabs", limit=None):
+    """Sets mesh color using selected type of results
+
+    Parameters
+    ----------
+    resultobj : Fem::FemResultMechanical
+        FreeCAD FEM mechanical result object
+    result_type : str, optional
+        default is Sabs
+        FreeCAD FEM mechanical result object
+        - U1, U2, U3 - deformation
+        - Uabs - absolute deformation
+        - Sabs - Von Mises stress
+    limit : float
+        limit cutoff value. All values over the limit are treated
+        as equal to the limit. Useful for filtering out hotspots.
+    """
+
     if result_type == "None":
         reset_mesh_color(resultobj.Mesh)
         return
@@ -111,12 +138,22 @@ def show_result(resultobj, result_type="Sabs", limit=None):
         FreeCAD.Console.PrintError("Error, No result object given.\n")
 
 
-## Sets mesh color using list of values. Internally used by show_result function.
-#  @param self The python object self
-#  @param values list of values
-#  @param limit cutoff value. All values over the limit are treated
-#  as equal to the limit. Useful for filtering out hotspots.
 def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
+    """Sets mesh color using list of values. Internally used by show_result function.
+
+    Parameters
+    ----------
+    resultobj : Fem::FemResultMechanical
+        FreeCAD FEM mechanical result object
+    values : list of floats
+        the values to be colored and cutoff
+        has to be the same length as resultobj.NodeNumbers
+        resultobj.NodeNumbers has to be present in the resultobj
+    limit : float
+        limit cutoff value. All values over the limit are treated
+        as equal to the limit. Useful for filtering out hotspots.
+    """
+
     if limit:
         filtered_values = []
         for v in values:
@@ -134,12 +171,20 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
         )
 
 
-## Returns minimum, average and maximum value for provided result type
-#  @param result object
-#  @param result_type Type of FEM result, allowed are:
-#  - see def get_all_stats() for dict keys description
-#  - None - always return (0.0, 0.0, 0.0)
 def get_stats(res_obj, result_type):
+    """Returns minimum, average and maximum value for provided result type
+
+    Parameters
+    ----------
+    resultobj : Fem::FemResultMechanical
+        FreeCAD FEM mechanical result object
+    result_type : str
+        type of FEM result
+        allowed are: see dict keys in def get_all_stats()
+        None - always return (0.0, 0.0, 0.0)
+
+    """
+
     match_table = get_all_stats(res_obj)
     match_table["None"] = (0.0, 0.0, 0.0)
     stats = ()
@@ -148,8 +193,6 @@ def get_stats(res_obj, result_type):
     return stats
 
 
-## Returns all stats for provided result type
-#  @param result object
 #  - U1, U2, U3 - deformation
 #  - Uabs - absolute deformation
 #  - Sabs - Von Mises stress
@@ -162,6 +205,35 @@ def get_stats(res_obj, result_type):
 #  - MFlow - MassFlowRate
 #  - NPress - NetworkPressure
 def get_all_stats(res_obj):
+    """Returns all stats for provided result type
+
+    - U1, U2, U3 - deformation
+    - Uabs - absolute deformation
+    - Sabs - Von Mises stress
+    - MaxPrin - Principal stress 1
+    - MidPrin - Principal stress 2
+    - MinPrin - Principal stress 3
+    - MaxShear - maximum shear stress
+    - Peeq - peeq strain
+    - Temp - Temperature
+    - MFlow - MassFlowRate
+    - NPress - NetworkPressure
+
+    for more information on result types and names
+    see in code file src/Mod/Fem/App/FemVTKTools.cpp
+    the methods _getFreeCADMechResultVectorProperties()
+    and _getFreeCADMechResultScalarProperties()
+    as well as forum topic
+    https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=30#p277434
+
+    Parameters
+    ----------
+    resultobj : Fem::FemResultMechanical
+        FreeCAD FEM mechanical result object
+
+
+    """
+
     m = res_obj.Stats
     stats_dict = {
         "U1": (m[0], m[1], m[2]),
@@ -182,10 +254,14 @@ def get_all_stats(res_obj):
 
 
 def fill_femresult_stats(res_obj):
+    """Fills a FreeCAD FEM mechanical result object with stats data
+
+    Parameters
+    ----------
+    resultobj : Fem::FemResultMechanical
+        FreeCAD FEM mechanical result object
     """
-    fills a FreeCAD FEM mechanical result object with stats data
-    res_obj: FreeCAD FEM result object
-    """
+
     FreeCAD.Console.PrintLog(
         "Calculate stats list for result obj: " + res_obj.Name + "\n"
     )
