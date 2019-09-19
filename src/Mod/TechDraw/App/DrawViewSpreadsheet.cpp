@@ -257,14 +257,15 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             cellwidth = sheet->getColumnWidth(address.col());
             cellheight = sheet->getRowHeight(address.row());
             celltext = "";
+            Spreadsheet::Cell* cell = sheet->getCell(address);
             // get the text
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
             if (prop != 0) {
-                if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId())))
-                    field << static_cast<App::PropertyQuantity*>(prop)->getValue();
-                else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId())))
-                    field << static_cast<App::PropertyFloat*>(prop)->getValue();
+                if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId()))) {
+                    field << cell->getFormattedQuantity();
+                } else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId())))
+                    field << cell->getFormattedQuantity();
                 else if (prop->isDerivedFrom((App::PropertyString::getClassTypeId())))
                     field << static_cast<App::PropertyString*>(prop)->getValue();
                 else
@@ -276,7 +277,6 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             std::string bcolor = "none";
             std::string fcolor = c.asCSSString();
             std::string textstyle = "";
-            Spreadsheet::Cell* cell = sheet->getCell(address);
             if (cell) {
                 App::Color f,b;
                 std::set<std::string> st;
