@@ -122,6 +122,9 @@ DrawViewSection::DrawViewSection()
 
     getParameters();
 
+    std::string hatchFilter("Svg files (*.svg *.SVG);;PAT files (*.pat *.PAT);;All files (*)");
+    FileHatchPattern.setFilter(hatchFilter);
+
 }
 
 DrawViewSection::~DrawViewSection()
