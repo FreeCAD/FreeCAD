@@ -1,4 +1,3 @@
-message("Running the INCLUDE stuff!!!!!!!!!!!!!!!!!!")
 file(GLOB FREECAD_HELPER_CMAKE_FILES ./*.cmake)
 set(_SKIP_FILES "SetupQt.cmake")
 foreach(_CMAKE_FILE ${FREECAD_HELPER_CMAKE_FILES})
