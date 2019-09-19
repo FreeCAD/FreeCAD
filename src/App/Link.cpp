@@ -777,6 +777,24 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             dst->setValue(src->getValue());
             dst->setStatus(Property::User3,false);
         }
+    }else if(prop == getScaleProperty()) {
+        if(!prop->testStatus(Property::User3) && getScaleVectorProperty()) {
+            auto s = getScaleValue();
+            auto p = getScaleVectorProperty();
+            p->setStatus(Property::User3,true);
+            p->setValue(s,s,s);
+            p->setStatus(Property::User3,false);
+        }
+    }else if(prop == getScaleVectorProperty()) {
+        if(!prop->testStatus(Property::User3) && getScaleProperty()) {
+            const auto &v = getScaleVectorValue();
+            if(v.x == v.y && v.x == v.z) {
+                auto p = getScaleProperty();
+                p->setStatus(Property::User3,true);
+                p->setValue(v.x);
+                p->setStatus(Property::User3,false);
+            }
+        }
     }else if(prop == _getShowElementProperty()) {
         if(_getShowElementValue()) 
             update(parent,_getElementCountProperty());
@@ -1108,6 +1126,13 @@ void LinkBaseExtension::onExtendedDocumentRestored() {
                 subs.push_back(sub + s);
             xlink->setSubValues(std::move(subs));
         }
+    }
+    if(getScaleVectorProperty() && getScaleProperty()) {
+        // Scale vector is added later. The code here is for migration.
+        const auto &v = getScaleVectorValue();
+        double s = getScaleValue();
+        if(v.x == v.y && v.x == v.z && v.x != s)
+            getScaleVectorProperty()->setValue(s,s,s);
     }
     update(parent,getVisibilityListProperty());
     update(parent,getLinkedObjectProperty());
