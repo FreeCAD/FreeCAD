@@ -102,6 +102,9 @@ DrawGeomHatch::DrawGeomHatch(void)
 
     getParameters();
 
+    std::string patFilter("pat files (*.pat *.PAT);;All files (*)");
+    FilePattern.setFilter(patFilter);
+
 }
 
 DrawGeomHatch::~DrawGeomHatch()
