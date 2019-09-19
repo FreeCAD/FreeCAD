@@ -1800,9 +1800,11 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
         if(!prop->testStatus(App::Property::User3))
             applyColors();
     }else if(prop==ext->getScaleProperty() || prop==ext->getScaleVectorProperty()) {
-        const auto &v = ext->getScaleVector();
-        pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
-        linkView->renderDoubleSide(v.x*v.y*v.z < 0);
+        if(!prop->testStatus(App::Property::User3)) {
+            const auto &v = ext->getScaleVector();
+            pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
+            linkView->renderDoubleSide(v.x*v.y*v.z < 0);
+        }
     }else if(prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
         auto propLinkPlacement = ext->getLinkPlacementProperty();
         if(!propLinkPlacement || propLinkPlacement == prop) {
