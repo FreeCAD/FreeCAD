@@ -214,8 +214,12 @@ class GmshTools():
             if femutils.check_working_dir(self.working_dir) is not True:
                 if create is True:
                     FreeCAD.Console.PrintMessage(
-                        "Dir given as parameter \'{}\' doesn't exist.\n".format(self.working_dir)
+                        "Dir given as parameter \'{}\' doesn't exist, "
+                        "but parameter to create it is set to True. "
+                        "Dir will be created.\n".format(self.working_dir)
                     )
+                    from os import mkdir
+                    mkdir(param_working_dir)
                 else:
                     FreeCAD.Console.PrintError(
                         "Dir given as parameter \'{}\' doesn't exist "
@@ -236,8 +240,7 @@ class GmshTools():
                 "Dir \'{}\' doesn't exist or cannot be created.\n"
                 .format(self.working_dir)
             )
-            from femsolver.run import _getTempDir
-            self.working_dir = _getTempDir(self.mesh_obj)
+            self.working_dir = femutils.get_temp_dir(self.mesh_obj)
             FreeCAD.Console.PrintMessage(
                 "Dir \'{}\' will be used instead.\n"
                 .format(self.working_dir)
