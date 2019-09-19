@@ -2120,6 +2120,12 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
     if(touched && FC_TREEPARAM(RecomputeOnDrop))
         thisDoc->recompute();
+
+    if(touched && TreeParams::Instance()->SyncView()) {
+        auto gdoc = Application::Instance->getDocument(thisDoc);
+        if(gdoc)
+            gdoc->setActiveView();
+    }
 }
 
 void TreeWidget::drawRow(QPainter *painter, const QStyleOptionViewItem &options, const QModelIndex &index) const
