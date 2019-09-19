@@ -122,6 +122,8 @@ public:
 
     App::CellAddress getAddress() const { return address; }
 
+    std::string getFormattedQuantity(void);
+
     /* Alignment */
     static const int ALIGNMENT_LEFT;
     static const int ALIGNMENT_HCENTER;
