@@ -305,7 +305,9 @@ void PropertyPythonObject::Save (Base::Writer &writer) const
                         << "\" encoded=\"yes\"/>\n";
     } else if(writer.isForceXML()) {
         std::string json = this->toString();
-        if(json.size() && json != "null") {
+        if(json == "null")
+            writer.Stream() << " value=\"null\"/>\n";
+        else if(json.size()) {
             writer.Stream() << " cdata=\"1\">\n";
             writer.beginCharStream(false) << '\n' << json << '\n';
             writer.endCharStream() << '\n' << writer.ind() << "</Python>\n";
