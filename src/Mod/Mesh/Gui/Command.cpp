@@ -1051,6 +1051,31 @@ bool CmdMeshSectionByPlane::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdMeshCrossSections)
+
+CmdMeshCrossSections::CmdMeshCrossSections()
+  : Command("Mesh_CrossSections")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Cross-sections...");
+    sToolTipText  = QT_TR_NOOP("Cross-sections");
+    sStatusTip    = QT_TR_NOOP("Cross-sections");
+}
+
+void CmdMeshCrossSections::activated(int)
+{
+    doCommand(Doc,"import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_CrossSections')\n");
+}
+
+bool CmdMeshCrossSections::isActive(void)
+{
+    return (Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0 &&
+            !Gui::Control().activeDialog());
+}
+
+//--------------------------------------------------------------------------------------
+
 DEF_STD_CMD_A(CmdMeshPolySplit)
 
 CmdMeshPolySplit::CmdMeshPolySplit()
@@ -1769,6 +1794,7 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshPolyTrim());
     rcCmdMgr.addCommand(new CmdMeshTrimByPlane());
     rcCmdMgr.addCommand(new CmdMeshSectionByPlane());
+    rcCmdMgr.addCommand(new CmdMeshCrossSections());
     rcCmdMgr.addCommand(new CmdMeshEvaluation());
     rcCmdMgr.addCommand(new CmdMeshEvaluateFacet());
     rcCmdMgr.addCommand(new CmdMeshEvaluateSolid());
