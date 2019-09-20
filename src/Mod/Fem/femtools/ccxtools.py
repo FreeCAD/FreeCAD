@@ -101,9 +101,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
         Parameters
         ----------
-        analysis : str, optional
+        analysis : Fem::FemAnalysis, optional
             analysis group as a container for all  objects needed for the analysis
-        solver : str, optional
+        solver : Fem::FemSolverObjectPython, optional
             solver object to be used for this solve
         test_mode : bool, optional
             mainly used in unit tests

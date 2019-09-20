@@ -139,6 +139,7 @@ using namespace boost::program_options;
 #include <App/CMakeScript.h>
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
+# pragma warning( disable : 4535 )
 # if !defined(_DEBUG) && defined(HAVE_SEH)
 # define FC_SE_TRANSLATOR
 # endif

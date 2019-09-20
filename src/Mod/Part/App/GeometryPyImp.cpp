@@ -278,7 +278,7 @@ PyObject* GeometryPy::getExtensionOfType(PyObject *args)
                 PyErr_SetString(PartExceptionOCCError, e.what());
                 return 0;
             }
-            catch(const std::bad_weak_ptr& e) {
+            catch(const std::bad_weak_ptr&) {
                 PyErr_SetString(PartExceptionOCCError, "Geometry extension does not exist anymore.");
                 return 0;
             }
@@ -312,7 +312,7 @@ PyObject* GeometryPy::getExtensionOfName(PyObject *args)
             PyErr_SetString(PartExceptionOCCError, e.what());
             return 0;
         }
-        catch(const std::bad_weak_ptr& e) {
+        catch(const std::bad_weak_ptr&) {
             PyErr_SetString(PartExceptionOCCError, "Geometry extension does not exist anymore.");
             return 0;
         }

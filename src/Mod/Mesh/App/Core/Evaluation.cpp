@@ -218,7 +218,7 @@ std::vector<unsigned long> MeshEvalOrientation::GetIndices() const
         // In the currently visited component we have found less than 40% as correct
         // oriented and the rest as false oriented. So, we decide that it should be the other
         // way round and swap the indices of this component.
-        if (uComplement.size() < (unsigned long)(0.4f*(float)ulVisited)) {
+        if (uComplement.size() < static_cast<unsigned long>(0.4f*static_cast<float>(ulVisited))) {
             uIndices.erase(uIndices.begin()+wrongFacets, uIndices.end());
             uIndices.insert(uIndices.end(), uComplement.begin(), uComplement.end());
         }
@@ -1050,16 +1050,16 @@ Base::Matrix4D MeshEigensystem::Transform() const
     // x = Q * y - Q * c
     Base::Matrix4D clTMat;
     // rotation part
-    clTMat[0][0] = _cU.x; clTMat[0][1] = _cU.y; clTMat[0][2] = _cU.z; clTMat[0][3] = 0.0f;
-    clTMat[1][0] = _cV.x; clTMat[1][1] = _cV.y; clTMat[1][2] = _cV.z; clTMat[1][3] = 0.0f;
-    clTMat[2][0] = _cW.x; clTMat[2][1] = _cW.y; clTMat[2][2] = _cW.z; clTMat[2][3] = 0.0f;
-    clTMat[3][0] =  0.0f; clTMat[3][1] =  0.0f; clTMat[3][2] =  0.0f; clTMat[3][3] = 1.0f;
+    clTMat[0][0] = double(_cU.x); clTMat[0][1] = double(_cU.y); clTMat[0][2] = double(_cU.z); clTMat[0][3] = 0.0;
+    clTMat[1][0] = double(_cV.x); clTMat[1][1] = double(_cV.y); clTMat[1][2] = double(_cV.z); clTMat[1][3] = 0.0;
+    clTMat[2][0] = double(_cW.x); clTMat[2][1] = double(_cW.y); clTMat[2][2] = double(_cW.z); clTMat[2][3] = 0.0;
+    clTMat[3][0] =  0.0; clTMat[3][1] =  0.0; clTMat[3][2] =  0.0; clTMat[3][3] = 1.0;
 
     Base::Vector3f c(_cC);
     c = clTMat * c;
 
     // translation part
-    clTMat[0][3] = -c.x; clTMat[1][3] = -c.y; clTMat[2][3] = -c.z;
+    clTMat[0][3] = double(-c.x); clTMat[1][3] = double(-c.y); clTMat[2][3] = double(-c.z);
 
     return clTMat;
 }
