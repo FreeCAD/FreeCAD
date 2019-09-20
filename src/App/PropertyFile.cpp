@@ -630,11 +630,21 @@ TYPESYSTEM_SOURCE(App::PropertyFile , App::PropertyString)
 
 PropertyFile::PropertyFile()
 {
-
+    m_filter = "";
 }
 
 PropertyFile::~PropertyFile()
 {
 
+}
+
+void PropertyFile::setFilter(const std::string f)
+{
+    m_filter = f;
+}
+
+std::string PropertyFile::getFilter(void) const
+{
+    return m_filter;
 }
 

@@ -75,6 +75,9 @@ DrawSVGTemplate::DrawSVGTemplate()
     Height.setStatus(App::Property::ReadOnly,true);
     Width.setStatus(App::Property::ReadOnly,true);
     Orientation.setStatus(App::Property::ReadOnly,true);
+
+    std::string svgFilter("Svg files (*.svg *.SVG);;All files (*)");
+    Template.setFilter(svgFilter);
 }
 
 DrawSVGTemplate::~DrawSVGTemplate()
