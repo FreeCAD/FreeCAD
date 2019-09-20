@@ -56,7 +56,7 @@ const PropertyQuantityConstraint::Constraints AngleStandard = {-360,360,1.0};
 // PropertyQuantity
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat);
+TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat)
 
 Base::Quantity PropertyQuantity::getQuantityValue(void) const
 {
@@ -161,7 +161,7 @@ const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*
 // PropertyQuantityConstraint
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyQuantityConstraint, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertyQuantityConstraint, App::PropertyQuantity)
 
 
 
@@ -211,7 +211,7 @@ void PropertyQuantityConstraint::setPyObject(PyObject *value)
 // PropertyDistance
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyDistance, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertyDistance, App::PropertyQuantity)
 
 PropertyDistance::PropertyDistance()
 {
@@ -223,7 +223,7 @@ PropertyDistance::PropertyDistance()
 // PropertySpeed
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertySpeed, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertySpeed, App::PropertyQuantity)
 
 PropertySpeed::PropertySpeed()
 {
@@ -235,7 +235,7 @@ PropertySpeed::PropertySpeed()
 // PropertyAcceleration
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyAcceleration, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertyAcceleration, App::PropertyQuantity)
 
 PropertyAcceleration::PropertyAcceleration()
 {
@@ -247,7 +247,7 @@ PropertyAcceleration::PropertyAcceleration()
 // PropertyLength
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantityConstraint);
+TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantityConstraint)
 
 PropertyLength::PropertyLength()
 {
@@ -260,7 +260,7 @@ PropertyLength::PropertyLength()
 // PropertyArea
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyArea, App::PropertyQuantityConstraint);
+TYPESYSTEM_SOURCE(App::PropertyArea, App::PropertyQuantityConstraint)
 
 PropertyArea::PropertyArea()
 {
@@ -273,7 +273,7 @@ PropertyArea::PropertyArea()
 // PropertyVolume
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyVolume, App::PropertyQuantityConstraint);
+TYPESYSTEM_SOURCE(App::PropertyVolume, App::PropertyQuantityConstraint)
 
 PropertyVolume::PropertyVolume()
 {
@@ -286,7 +286,7 @@ PropertyVolume::PropertyVolume()
 // PropertyAngle
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyAngle, App::PropertyQuantityConstraint);
+TYPESYSTEM_SOURCE(App::PropertyAngle, App::PropertyQuantityConstraint)
 
 PropertyAngle::PropertyAngle()
 {
@@ -299,7 +299,7 @@ PropertyAngle::PropertyAngle()
 // PropertyPressure
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPressure, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertyPressure, App::PropertyQuantity)
 
 PropertyPressure::PropertyPressure()
 {
@@ -311,7 +311,7 @@ PropertyPressure::PropertyPressure()
 // PropertyForce
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyForce, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(App::PropertyForce, App::PropertyQuantity)
 
 PropertyForce::PropertyForce()
 {

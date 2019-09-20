@@ -40,7 +40,7 @@ using Base::XMLReader;
 #include "Document.h"
 #include "DocumentObject.h"
 
-FC_LOG_LEVEL_INIT("App",true,true);
+FC_LOG_LEVEL_INIT("App",true,true)
 
 using namespace App;
 using namespace std;
@@ -260,7 +260,7 @@ void Transaction::addObjectChange(const TransactionalObject *Obj, const Property
 // TransactionObject
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionObject, Base::Persistence);
+TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionObject, Base::Persistence)
 
 //**************************************************************************
 // Construction/Destruction
@@ -411,7 +411,7 @@ void TransactionObject::Restore(Base::XMLReader &/*reader*/)
 // TransactionDocumentObject
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionDocumentObject, App::TransactionObject);
+TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionDocumentObject, App::TransactionObject)
 
 //**************************************************************************
 // Construction/Destruction

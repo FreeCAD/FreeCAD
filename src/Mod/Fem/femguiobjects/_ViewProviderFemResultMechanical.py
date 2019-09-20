@@ -465,6 +465,9 @@ class _TaskPanelFemResultShow:
         x = np.array(dispvectors[:, 0])
         y = np.array(dispvectors[:, 1])
         z = np.array(dispvectors[:, 2])
+        s1x, s1y, s1z = np.array([]), np.array([]), np.array([])
+        s2x, s2y, s2z = np.array([]), np.array([]), np.array([])
+        s3x, s3y, s3z = np.array([]), np.array([]), np.array([])
         # If PSxVector is empty all UserDefined equation does not work
         if self.result_obj.PS1Vector:
             ps1vector = np.array(self.result_obj.PS1Vector)
@@ -487,11 +490,12 @@ class _TaskPanelFemResultShow:
         self.restore_result_dialog()
         userdefined_eq = self.form.user_def_eq.toPlainText()  # Get equation to be used
         UserDefinedFormula = eval(userdefined_eq).tolist()
-        self.result_obj.UserDefined = UserDefinedFormula
-        minm = min(UserDefinedFormula)
-        avg = sum(UserDefinedFormula) / len(UserDefinedFormula)
-        maxm = max(UserDefinedFormula)
-        self.update_colors_stats(UserDefinedFormula, "", minm, avg, maxm)
+        if UserDefinedFormula:
+            self.result_obj.UserDefined = UserDefinedFormula
+            minm = min(UserDefinedFormula)
+            avg = sum(UserDefinedFormula) / len(UserDefinedFormula)
+            maxm = max(UserDefinedFormula)
+            self.update_colors_stats(UserDefinedFormula, "", minm, avg, maxm)
 
         # Dummy use of the variables to get around flake8 error
         del x, y, z, T, Von, Peeq, P1, P2, P3

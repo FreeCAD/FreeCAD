@@ -33,7 +33,7 @@
 #include "ViewProviderDocumentObject.h"
 #include "ui_DlgObjectSelection.h"
 
-FC_LOG_LEVEL_INIT("Gui",true,true);
+FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
 

@@ -48,7 +48,7 @@
 //===========================================================================
 // Part_SimpleCylinder
 //===========================================================================
-DEF_STD_CMD_A(CmdPartSimpleCylinder);
+DEF_STD_CMD_A(CmdPartSimpleCylinder)
 
 CmdPartSimpleCylinder::CmdPartSimpleCylinder()
   :Command("Part_SimpleCylinder")
@@ -99,7 +99,7 @@ bool CmdPartSimpleCylinder::isActive(void)
 //===========================================================================
 // Part_ShapeFromMesh
 //===========================================================================
-DEF_STD_CMD_A(CmdPartShapeFromMesh);
+DEF_STD_CMD_A(CmdPartShapeFromMesh)
 
 CmdPartShapeFromMesh::CmdPartShapeFromMesh()
   :Command("Part_ShapeFromMesh")
@@ -171,7 +171,7 @@ bool CmdPartShapeFromMesh::isActive(void)
 //===========================================================================
 // Part_PointsFromMesh
 //===========================================================================
-DEF_STD_CMD_A(CmdPartPointsFromMesh);
+DEF_STD_CMD_A(CmdPartPointsFromMesh)
 
 CmdPartPointsFromMesh::CmdPartPointsFromMesh()
   :Command("Part_PointsFromMesh")
@@ -221,7 +221,7 @@ bool CmdPartPointsFromMesh::isActive(void)
 //===========================================================================
 // Part_SimpleCopy
 //===========================================================================
-DEF_STD_CMD_A(CmdPartSimpleCopy);
+DEF_STD_CMD_A(CmdPartSimpleCopy)
 
 CmdPartSimpleCopy::CmdPartSimpleCopy()
   : Command("Part_SimpleCopy")
@@ -292,7 +292,7 @@ bool CmdPartSimpleCopy::isActive(void)
 //===========================================================================
 // Part_TransformedCopy
 //===========================================================================
-DEF_STD_CMD_A(CmdPartTransformedCopy);
+DEF_STD_CMD_A(CmdPartTransformedCopy)
 
 CmdPartTransformedCopy::CmdPartTransformedCopy()
   : Command("Part_TransformedCopy")
@@ -320,7 +320,7 @@ bool CmdPartTransformedCopy::isActive(void)
 //===========================================================================
 // Part_ElementCopy
 //===========================================================================
-DEF_STD_CMD_A(CmdPartElementCopy);
+DEF_STD_CMD_A(CmdPartElementCopy)
 
 CmdPartElementCopy::CmdPartElementCopy()
   : Command("Part_ElementCopy")
@@ -348,7 +348,7 @@ bool CmdPartElementCopy::isActive(void)
 //===========================================================================
 // Part_RefineShape
 //===========================================================================
-DEF_STD_CMD_A(CmdPartRefineShape);
+DEF_STD_CMD_A(CmdPartRefineShape)
 
 CmdPartRefineShape::CmdPartRefineShape()
   : Command("Part_RefineShape")
@@ -376,7 +376,7 @@ bool CmdPartRefineShape::isActive(void)
 //===========================================================================
 // Part_Defeaturing
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDefeaturing);
+DEF_STD_CMD_A(CmdPartDefeaturing)
 
 CmdPartDefeaturing::CmdPartDefeaturing()
   : Command("Part_Defeaturing")

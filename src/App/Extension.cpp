@@ -38,7 +38,7 @@
 /* We do not use a standard property macro for type initiation. The reason is that we have the first
  * PropertyData in the extension chain, there is no parent property data. 
  */
-EXTENSION_TYPESYSTEM_SOURCE_P(App::Extension);
+EXTENSION_TYPESYSTEM_SOURCE_P(App::Extension)
 const App::PropertyData * App::Extension::extensionGetPropertyDataPtr(void){return &propertyData;}
 const App::PropertyData & App::Extension::extensionGetPropertyData(void) const{return propertyData;}
 App::PropertyData App::Extension::propertyData;

@@ -51,7 +51,7 @@ using namespace Part;
 // PropertyGeometryList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(Part::PropertyGeometryList, App::PropertyLists);
+TYPESYSTEM_SOURCE(Part::PropertyGeometryList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction

@@ -42,7 +42,8 @@
 #include <App/GroupExtension.h>
 #include <App/OriginFeature.h>
 #include <Mod/Part/App/TopoShape.h>
-FC_LOG_LEVEL_INIT("PartDesign",true,true);
+
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846

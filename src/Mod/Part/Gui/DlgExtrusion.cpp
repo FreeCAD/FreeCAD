@@ -57,7 +57,7 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Utilities.h>
 
-FC_LOG_LEVEL_INIT("Part",true,true);
+FC_LOG_LEVEL_INIT("Part",true,true)
 
 using namespace PartGui;
 

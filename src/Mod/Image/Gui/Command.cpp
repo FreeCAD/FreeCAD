@@ -44,7 +44,7 @@
 
 using namespace ImageGui;
 
-DEF_STD_CMD(CmdImageOpen);
+DEF_STD_CMD(CmdImageOpen)
 
 CmdImageOpen::CmdImageOpen()
   : Command("Image_Open")
@@ -92,7 +92,7 @@ void CmdImageOpen::activated(int iMsg)
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-DEF_STD_CMD_A(CmdCreateImagePlane);
+DEF_STD_CMD_A(CmdCreateImagePlane)
 
 CmdCreateImagePlane::CmdCreateImagePlane()
     :Command("Image_CreateImagePlane")
@@ -166,7 +166,7 @@ bool CmdCreateImagePlane::isActive()
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-DEF_STD_CMD(CmdImageScaling);
+DEF_STD_CMD(CmdImageScaling)
 
 CmdImageScaling::CmdImageScaling()
   : Command("Image_Scaling")

@@ -38,7 +38,7 @@
 #include "Sheet.h"
 #include <iomanip>
 
-FC_LOG_LEVEL_INIT("Spreadsheet",true,true);
+FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
 
 #ifdef _MSC_VER
 #define __func__ __FUNCTION__

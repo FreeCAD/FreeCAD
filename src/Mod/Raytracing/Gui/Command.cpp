@@ -73,7 +73,7 @@
 //===========================================================================
 // CmdRaytracingWriteCamera
 //===========================================================================
-DEF_STD_CMD_A(CmdRaytracingWriteCamera);
+DEF_STD_CMD_A(CmdRaytracingWriteCamera)
 
 CmdRaytracingWriteCamera::CmdRaytracingWriteCamera()
   :Command("Raytracing_WriteCamera")
@@ -166,7 +166,7 @@ bool CmdRaytracingWriteCamera::isActive(void)
 //===========================================================================
 // CmdRaytracingWritePart
 //===========================================================================
-DEF_STD_CMD_A(CmdRaytracingWritePart);
+DEF_STD_CMD_A(CmdRaytracingWritePart)
 
 CmdRaytracingWritePart::CmdRaytracingWritePart()
   :Command("Raytracing_WritePart")
@@ -212,7 +212,7 @@ bool CmdRaytracingWritePart::isActive(void)
 //===========================================================================
 // CmdRaytracingWriteView
 //===========================================================================
-DEF_STD_CMD_A(CmdRaytracingWriteView);
+DEF_STD_CMD_A(CmdRaytracingWriteView)
 
 CmdRaytracingWriteView::CmdRaytracingWriteView()
   :Command("Raytracing_WriteView")
@@ -311,7 +311,7 @@ bool CmdRaytracingWriteView::isActive(void)
 // Raytracing_NewPovrayProject
 //===========================================================================
 
-DEF_STD_CMD_AC(CmdRaytracingNewPovrayProject);
+DEF_STD_CMD_AC(CmdRaytracingNewPovrayProject)
 
 CmdRaytracingNewPovrayProject::CmdRaytracingNewPovrayProject()
   : Command("Raytracing_NewPovrayProject")
@@ -428,7 +428,7 @@ bool CmdRaytracingNewPovrayProject::isActive(void)
 // Raytracing_NewPartView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdRaytracingNewPartSegment);
+DEF_STD_CMD_A(CmdRaytracingNewPartSegment)
 
 CmdRaytracingNewPartSegment::CmdRaytracingNewPartSegment()
   : Command("Raytracing_NewPartSegment")
@@ -511,7 +511,7 @@ bool CmdRaytracingNewPartSegment::isActive(void)
 // Raytracing_ExportProject
 //===========================================================================
 
-DEF_STD_CMD_A(CmdRaytracingExportProject);
+DEF_STD_CMD_A(CmdRaytracingExportProject)
 
 CmdRaytracingExportProject::CmdRaytracingExportProject()
   : Command("Raytracing_ExportProject")
@@ -578,7 +578,7 @@ bool CmdRaytracingExportProject::isActive(void)
 // Raytracing_Render
 //===========================================================================
 
-DEF_STD_CMD_A(CmdRaytracingRender);
+DEF_STD_CMD_A(CmdRaytracingRender)
 
 CmdRaytracingRender::CmdRaytracingRender()
   : Command("Raytracing_Render")
@@ -745,7 +745,7 @@ bool CmdRaytracingRender::isActive(void)
 // Raytracing_NewLuxProject
 //===========================================================================
 
-DEF_STD_CMD_AC(CmdRaytracingNewLuxProject);
+DEF_STD_CMD_AC(CmdRaytracingNewLuxProject)
 
 CmdRaytracingNewLuxProject::CmdRaytracingNewLuxProject()
   : Command("Raytracing_NewLuxProject")
@@ -857,7 +857,7 @@ bool CmdRaytracingNewLuxProject::isActive(void)
 // Raytracing_ResetCamera
 //===========================================================================
 
-DEF_STD_CMD_A(CmdRaytracingResetCamera);
+DEF_STD_CMD_A(CmdRaytracingResetCamera)
 
 CmdRaytracingResetCamera::CmdRaytracingResetCamera()
   : Command("Raytracing_ResetCamera")

@@ -376,7 +376,7 @@ class BuildingPart(ArchIFC.IfcProduct):
             self.svgcache = None
             self.shapecache = None
 
-        if (prop == "Height") and prop.Height.Value:
+        if (prop == "Height") and obj.Height.Value:
             for child in obj.Group:
                 if Draft.getType(child) in ["Wall","Structure"]:
                     if not child.Height.Value:

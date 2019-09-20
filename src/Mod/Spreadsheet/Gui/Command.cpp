@@ -52,7 +52,7 @@ using namespace App;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetMergeCells);
+DEF_STD_CMD_A(CmdSpreadsheetMergeCells)
 
 CmdSpreadsheetMergeCells::CmdSpreadsheetMergeCells()
   : Command("Spreadsheet_MergeCells")
@@ -105,7 +105,7 @@ bool CmdSpreadsheetMergeCells::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetSplitCell);
+DEF_STD_CMD_A(CmdSpreadsheetSplitCell)
 
 CmdSpreadsheetSplitCell::CmdSpreadsheetSplitCell()
   : Command("Spreadsheet_SplitCell")
@@ -161,7 +161,7 @@ bool CmdSpreadsheetSplitCell::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetImport);
+DEF_STD_CMD_A(CmdSpreadsheetImport)
 
 CmdSpreadsheetImport::CmdSpreadsheetImport()
   : Command("Spreadsheet_Import")
@@ -201,7 +201,7 @@ bool CmdSpreadsheetImport::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetExport);
+DEF_STD_CMD_A(CmdSpreadsheetExport)
 
 CmdSpreadsheetExport::CmdSpreadsheetExport()
   : Command("Spreadsheet_Export")
@@ -250,7 +250,7 @@ bool CmdSpreadsheetExport::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignLeft);
+DEF_STD_CMD_A(CmdSpreadsheetAlignLeft)
 
 CmdSpreadsheetAlignLeft::CmdSpreadsheetAlignLeft()
   : Command("Spreadsheet_AlignLeft")
@@ -302,7 +302,7 @@ bool CmdSpreadsheetAlignLeft::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignCenter);
+DEF_STD_CMD_A(CmdSpreadsheetAlignCenter)
 
 CmdSpreadsheetAlignCenter::CmdSpreadsheetAlignCenter()
   : Command("Spreadsheet_AlignCenter")
@@ -354,7 +354,7 @@ bool CmdSpreadsheetAlignCenter::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignRight);
+DEF_STD_CMD_A(CmdSpreadsheetAlignRight)
 
 CmdSpreadsheetAlignRight::CmdSpreadsheetAlignRight()
   : Command("Spreadsheet_AlignRight")
@@ -406,7 +406,7 @@ bool CmdSpreadsheetAlignRight::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignTop);
+DEF_STD_CMD_A(CmdSpreadsheetAlignTop)
 
 CmdSpreadsheetAlignTop::CmdSpreadsheetAlignTop()
   : Command("Spreadsheet_AlignTop")
@@ -458,7 +458,7 @@ bool CmdSpreadsheetAlignTop::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignBottom);
+DEF_STD_CMD_A(CmdSpreadsheetAlignBottom)
 
 CmdSpreadsheetAlignBottom::CmdSpreadsheetAlignBottom()
   : Command("Spreadsheet_AlignBottom")
@@ -510,7 +510,7 @@ bool CmdSpreadsheetAlignBottom::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetAlignVCenter);
+DEF_STD_CMD_A(CmdSpreadsheetAlignVCenter)
 
 CmdSpreadsheetAlignVCenter::CmdSpreadsheetAlignVCenter()
   : Command("Spreadsheet_AlignVCenter")
@@ -562,7 +562,7 @@ bool CmdSpreadsheetAlignVCenter::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetStyleBold);
+DEF_STD_CMD_A(CmdSpreadsheetStyleBold)
 
 CmdSpreadsheetStyleBold::CmdSpreadsheetStyleBold()
   : Command("Spreadsheet_StyleBold")
@@ -636,7 +636,7 @@ bool CmdSpreadsheetStyleBold::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetStyleItalic);
+DEF_STD_CMD_A(CmdSpreadsheetStyleItalic)
 
 CmdSpreadsheetStyleItalic::CmdSpreadsheetStyleItalic()
   : Command("Spreadsheet_StyleItalic")
@@ -710,7 +710,7 @@ bool CmdSpreadsheetStyleItalic::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetStyleUnderline);
+DEF_STD_CMD_A(CmdSpreadsheetStyleUnderline)
 
 CmdSpreadsheetStyleUnderline::CmdSpreadsheetStyleUnderline()
   : Command("Spreadsheet_StyleUnderline")
@@ -783,7 +783,7 @@ bool CmdSpreadsheetStyleUnderline::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdSpreadsheetSetAlias);
+DEF_STD_CMD_A(CmdSpreadsheetSetAlias)
 
 CmdSpreadsheetSetAlias::CmdSpreadsheetSetAlias()
   : Command("Spreadsheet_SetAlias")
@@ -847,7 +847,7 @@ bool CmdSpreadsheetSetAlias::isActive()
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_A(CmdCreateSpreadsheet);
+DEF_STD_CMD_A(CmdCreateSpreadsheet)
 
 CmdCreateSpreadsheet::CmdCreateSpreadsheet()
     :Command("Spreadsheet_CreateSheet")

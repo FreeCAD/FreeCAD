@@ -74,7 +74,7 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 //// TechDraw_Leader
 ////===========================================================================
 
-//DEF_STD_CMD_A(CmdTechDrawLeaderLine);
+//DEF_STD_CMD_A(CmdTechDrawLeaderLine)
 
 //CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
 //  : Command("TechDraw_LeaderLine")
@@ -134,7 +134,7 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 //// TechDraw_RichAnno
 ////===========================================================================
 
-//DEF_STD_CMD_A(CmdTechDrawRichAnno);
+//DEF_STD_CMD_A(CmdTechDrawRichAnno)
 
 //CmdTechDrawRichAnno::CmdTechDrawRichAnno()
 //  : Command("TechDraw_RichAnno")
@@ -193,7 +193,7 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 // TechDraw_NewHatch
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewHatch);
+DEF_STD_CMD_A(CmdTechDrawNewHatch)
 
 CmdTechDrawNewHatch::CmdTechDrawNewHatch()
   : Command("TechDraw_NewHatch")
@@ -304,7 +304,7 @@ bool CmdTechDrawNewHatch::isActive(void)
 // TechDraw_NewGeomHatch
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewGeomHatch);
+DEF_STD_CMD_A(CmdTechDrawNewGeomHatch)
 
 CmdTechDrawNewGeomHatch::CmdTechDrawNewGeomHatch()
   : Command("TechDraw_NewGeomHatch")
@@ -374,7 +374,7 @@ bool CmdTechDrawNewGeomHatch::isActive(void)
 // TechDraw_Image
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawImage);
+DEF_STD_CMD_A(CmdTechDrawImage)
 
 CmdTechDrawImage::CmdTechDrawImage()
   : Command("TechDraw_Image")
@@ -426,7 +426,7 @@ bool CmdTechDrawImage::isActive(void)
 // TechDraw_ToggleFrame
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawToggleFrame);
+DEF_STD_CMD_A(CmdTechDrawToggleFrame)
 
 CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
   : Command("TechDraw_ToggleFrame")
@@ -473,7 +473,7 @@ bool CmdTechDrawToggleFrame::isActive(void)
 // TechDraw_Redraw
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawRedraw);
+DEF_STD_CMD_A(CmdTechDrawRedraw)
 
 CmdTechDrawRedraw::CmdTechDrawRedraw()
   : Command("TechDraw_Redraw")

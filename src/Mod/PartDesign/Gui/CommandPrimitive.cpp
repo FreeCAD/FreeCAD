@@ -44,7 +44,7 @@
 
 using namespace std;
 
-DEF_STD_CMD_ACL(CmdPrimtiveCompAdditive);
+DEF_STD_CMD_ACL(CmdPrimtiveCompAdditive)
 
 static const char * primitiveIntToName(int id)
 {
@@ -59,7 +59,7 @@ static const char * primitiveIntToName(int id)
         case 7:  return "Wedge";
         default: return nullptr;
     };
-};
+}
 
 CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
   : Command("PartDesign_CompPrimitiveAdditive")
@@ -230,7 +230,7 @@ bool CmdPrimtiveCompAdditive::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-DEF_STD_CMD_ACL(CmdPrimtiveCompSubtractive);
+DEF_STD_CMD_ACL(CmdPrimtiveCompSubtractive)
 
 CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
   : Command("PartDesign_CompPrimitiveSubtractive")

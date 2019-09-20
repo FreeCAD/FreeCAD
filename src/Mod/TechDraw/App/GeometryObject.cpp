@@ -185,7 +185,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         brep_hlr->Hide();
 
     }
-    catch (Standard_Failure e) {
+    catch (const Standard_Failure& e) {
         Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
                               e.GetMessageString());
         }
@@ -226,7 +226,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         BRepLib::BuildCurves3d(hidOutline);
         BRepLib::BuildCurves3d(hidIso);
     }
-    catch (Standard_Failure e) {
+    catch (const Standard_Failure& e) {
         Base::Console().Error("GO::projectShape - OCC error - %s - while extracting edges\n",
                               e.GetMessageString());
     }
@@ -286,7 +286,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
         }
         brep_hlrPoly->Update();
     }
-    catch (Standard_Failure e) {
+    catch (const Standard_Failure& e) {
         Base::Console().Error("GO::projectShapeWithPolygonAlgo - OCC error - %s - while projecting shape\n",
                               e.GetMessageString());
     }
@@ -318,7 +318,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
         BRepLib::BuildCurves3d(hidSeam);
         BRepLib::BuildCurves3d(hidOutline);
     }
-    catch (Standard_Failure e) {
+    catch (const Standard_Failure& e) {
         Base::Console().Error("GO::projectShapeWithPolygonAlgo - OCC error - %s - while extracting edges\n",
                               e.GetMessageString());
     }

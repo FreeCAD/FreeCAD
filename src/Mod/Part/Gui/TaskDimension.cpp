@@ -365,7 +365,7 @@ void PartGui::ensure3dDimensionVisible()
 }
 
 
-SO_KIT_SOURCE(PartGui::DimensionLinear);
+SO_KIT_SOURCE(PartGui::DimensionLinear)
 
 void PartGui::DimensionLinear::initClass()
 {
@@ -1110,7 +1110,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   dimension->unref();
 }
 
-SO_KIT_SOURCE(PartGui::DimensionAngular);
+SO_KIT_SOURCE(PartGui::DimensionAngular)
 
 void PartGui::DimensionAngular::initClass()
 {
@@ -1272,7 +1272,7 @@ void PartGui::DimensionAngular::setupDimension()
   material->unref();
 }
 
-SO_ENGINE_SOURCE(PartGui::ArcEngine);
+SO_ENGINE_SOURCE(PartGui::ArcEngine)
 
 PartGui::ArcEngine::ArcEngine()
 {

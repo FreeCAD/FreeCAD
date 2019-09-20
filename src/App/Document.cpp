@@ -126,7 +126,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include "Link.h"
 #include "GeoFeature.h"
 
-FC_LOG_LEVEL_INIT("App", true, true, true);
+FC_LOG_LEVEL_INIT("App", true, true, true)
 
 using Base::Console;
 using Base::streq;

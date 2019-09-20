@@ -349,7 +349,7 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     
     ret_val = atof( temp ); 
     return ret_val;
-};
+}
 
 // error func
 void Quantity_yyerror(char *errorinfo)

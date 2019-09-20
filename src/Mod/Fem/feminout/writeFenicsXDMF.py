@@ -19,7 +19,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from __future__ import print_function
+
+__title__ = "FreeCAD Fenics XDMF mesh writer"
+__author__ = "Johannes Hartung"
+__url__ = "http://www.freecadweb.org"
+
+## @package exportFenicsXDMF
+#  \ingroup FEM
+#  \brief FreeCAD Fenics Mesh XDMF writer for FEM workbench
 
 from .importToolsFem import \
     get_FemMeshObjectDimension,\
@@ -30,14 +37,6 @@ from .importToolsFem import \
 from xml.etree import ElementTree as ET  # parsing xml files and exporting
 import numpy as np
 
-
-__title__ = "FreeCAD Fenics XDMF mesh writer"
-__author__ = "Johannes Hartung"
-__url__ = "http://www.freecadweb.org"
-
-## @package exportFenicsXDMF
-#  \ingroup FEM
-#  \brief FreeCAD Fenics Mesh XDMF writer for FEM workbench
 
 ENCODING_ASCII = "ASCII"
 ENCODING_HDF5 = "HDF5"

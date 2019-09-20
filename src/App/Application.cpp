@@ -139,6 +139,7 @@ using namespace boost::program_options;
 #include <App/CMakeScript.h>
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
+# pragma warning( disable : 4535 )
 # if !defined(_DEBUG) && defined(HAVE_SEH)
 # define FC_SE_TRANSLATOR
 # endif
@@ -149,7 +150,7 @@ using namespace boost::program_options;
 # include <new>
 #endif
 
-FC_LOG_LEVEL_INIT("App",true,true);
+FC_LOG_LEVEL_INIT("App",true,true)
 
 //using Base::GetConsole;
 using namespace Base;

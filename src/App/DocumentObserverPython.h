@@ -111,7 +111,7 @@ private:
     static std::vector<DocumentObserverPython*> _instances;
 
     typedef boost::signals2::connection Connection;
-
+//FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #define FC_PY_DOC_OBSERVER \
     FC_PY_ELEMENT(CreatedDocument,_1) \
     FC_PY_ELEMENT(DeletedDocument,_1) \

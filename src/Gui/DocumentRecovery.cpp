@@ -64,7 +64,7 @@
 #include <QDomDocument>
 #include <boost/interprocess/sync/file_lock.hpp>
 
-FC_LOG_LEVEL_INIT("Gui",true,true);
+FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
 using namespace Gui::Dialog;

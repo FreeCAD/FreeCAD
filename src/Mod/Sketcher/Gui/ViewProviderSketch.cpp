@@ -119,7 +119,7 @@
 #include "TaskSketcherValidation.h"
 #include "CommandConstraints.h"
 
-FC_LOG_LEVEL_INIT("Sketch",true,true);
+FC_LOG_LEVEL_INIT("Sketch",true,true)
 
 // The first is used to point at a SoDatumLabel for some
 // constraints, and at a SoMaterial for others...

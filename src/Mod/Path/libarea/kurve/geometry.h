@@ -531,7 +531,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		if(p.y > pmax.y) pmax.y = p.y;
 		if(p.x < pmin.x) pmin.x = p.x;
 		if(p.y < pmin.y) pmin.y = p.y;
-	};
+	}
 
 	inline void MinMax(const Point3d& p, Point3d& pmin, Point3d& pmax) {
 		if(p.x > pmax.x) pmax.x = p.x;
@@ -540,7 +540,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		if(p.x < pmin.x) pmin.x = p.x;
 		if(p.y < pmin.y) pmin.y = p.y;
 		if(p.z < pmin.z) pmin.z = p.z;
-	};
+	}
 
 
 

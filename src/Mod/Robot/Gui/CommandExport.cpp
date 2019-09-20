@@ -41,7 +41,7 @@
 
 using namespace std;
 
-DEF_STD_CMD_A(CmdRobotExportKukaCompact);
+DEF_STD_CMD_A(CmdRobotExportKukaCompact)
 
 CmdRobotExportKukaCompact::CmdRobotExportKukaCompact()
 	:Command("Robot_ExportKukaCompact")
@@ -103,7 +103,7 @@ bool CmdRobotExportKukaCompact::isActive(void)
 // #####################################################################################################
 
 
-DEF_STD_CMD_A(CmdRobotExportKukaFull);
+DEF_STD_CMD_A(CmdRobotExportKukaFull)
 
 CmdRobotExportKukaFull::CmdRobotExportKukaFull()
 	:Command("Robot_ExportKukaFull")

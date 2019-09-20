@@ -21,9 +21,9 @@
 #include <App/Expression.h>
 #include <App/PropertyLinks.h>
 
-FC_LOG_LEVEL_INIT("Completer",true,true);
+FC_LOG_LEVEL_INIT("Completer",true,true)
 
-Q_DECLARE_METATYPE(App::ObjectIdentifier);
+Q_DECLARE_METATYPE(App::ObjectIdentifier)
 
 using namespace App;
 using namespace Gui;

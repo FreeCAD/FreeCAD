@@ -43,7 +43,7 @@ using namespace App;
 // Property
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence);
+TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence)
 
 //**************************************************************************
 // Construction/Destruction
@@ -271,4 +271,4 @@ void PropertyListsBase::_setPyObject(PyObject *value) {
 // PropertyLists
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLists , App::Property);
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLists , App::Property)

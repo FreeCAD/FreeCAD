@@ -41,7 +41,7 @@ using namespace WebGui;
 // CmdWebOpenWebsite
 //===========================================================================
 
-DEF_STD_CMD(CmdWebOpenWebsite);
+DEF_STD_CMD(CmdWebOpenWebsite)
 
 CmdWebOpenWebsite::CmdWebOpenWebsite()
   : Command("Web_OpenWebsite")
@@ -67,7 +67,7 @@ void CmdWebOpenWebsite::activated(int iMsg)
 // CmdWebBrowserBack
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserBack);
+DEF_STD_CMD_A(CmdWebBrowserBack)
 
 CmdWebBrowserBack::CmdWebBrowserBack()
   : Command("Web_BrowserBack")
@@ -96,7 +96,7 @@ bool CmdWebBrowserBack::isActive(void)
 // CmdWebBrowserNext
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserNext);
+DEF_STD_CMD_A(CmdWebBrowserNext)
 
 CmdWebBrowserNext::CmdWebBrowserNext()
   : Command("Web_BrowserNext")
@@ -125,7 +125,7 @@ bool CmdWebBrowserNext::isActive(void)
 // CmdWebBrowserRefresh
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserRefresh);
+DEF_STD_CMD_A(CmdWebBrowserRefresh)
 
 CmdWebBrowserRefresh::CmdWebBrowserRefresh()
   : Command("Web_BrowserRefresh")
@@ -153,7 +153,7 @@ bool CmdWebBrowserRefresh::isActive(void)
 // CmdWebBrowserStop
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserStop);
+DEF_STD_CMD_A(CmdWebBrowserStop)
 
 CmdWebBrowserStop::CmdWebBrowserStop()
 	:Command("Web_BrowserStop")
@@ -183,7 +183,7 @@ bool CmdWebBrowserStop::isActive(void)
 // CmdWebBrowserZoomIn
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserZoomIn);
+DEF_STD_CMD_A(CmdWebBrowserZoomIn)
 
 CmdWebBrowserZoomIn::CmdWebBrowserZoomIn()
   : Command("Web_BrowserZoomIn")
@@ -212,7 +212,7 @@ bool CmdWebBrowserZoomIn::isActive(void)
 // CmdWebBrowserZoomOut
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserZoomOut);
+DEF_STD_CMD_A(CmdWebBrowserZoomOut)
 
 CmdWebBrowserZoomOut::CmdWebBrowserZoomOut()
   : Command("Web_BrowserZoomOut")
@@ -241,7 +241,7 @@ bool CmdWebBrowserZoomOut::isActive(void)
 // CmdWebBrowserSetUrl
 //===========================================================================
 
-DEF_STD_CMD_A(CmdWebBrowserSetURL);
+DEF_STD_CMD_A(CmdWebBrowserSetURL)
 
 CmdWebBrowserSetURL::CmdWebBrowserSetURL()
   : Command("Web_BrowserSetURL")

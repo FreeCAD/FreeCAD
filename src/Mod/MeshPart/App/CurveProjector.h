@@ -39,7 +39,7 @@ namespace MeshCore
 class MeshKernel;
 class MeshGeomFacet;
 class MeshFacetGrid;
-};
+}
 
 using MeshCore::MeshKernel;
 using MeshCore::MeshGeomFacet;

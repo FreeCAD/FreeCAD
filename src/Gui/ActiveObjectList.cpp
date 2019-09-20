@@ -36,7 +36,7 @@
 #include <Gui/ViewProviderDocumentObject.h>
 #include "Tree.h"
 
-FC_LOG_LEVEL_INIT("MDIView",true,true);
+FC_LOG_LEVEL_INIT("MDIView",true,true)
 
 using namespace Gui;
 

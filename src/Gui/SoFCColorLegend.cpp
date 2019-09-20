@@ -40,7 +40,7 @@
 
 using namespace Gui;
 
-SO_NODE_SOURCE(SoFCColorLegend);
+SO_NODE_SOURCE(SoFCColorLegend)
 
 /*!
   Constructor.

@@ -72,7 +72,7 @@ double round(double r) {
 }
 #endif
 
-PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject);
+PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject)
 
 Constraint::Constraint()
 {

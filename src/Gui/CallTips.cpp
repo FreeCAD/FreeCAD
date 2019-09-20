@@ -47,7 +47,7 @@
 #include <Gui/DocumentPy.h>
 #include "CallTips.h"
 
-Q_DECLARE_METATYPE( Gui::CallTip ); //< allows use of QVariant
+Q_DECLARE_METATYPE( Gui::CallTip ) //< allows use of QVariant
 
 namespace Gui
 {
