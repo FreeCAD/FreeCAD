@@ -139,16 +139,22 @@ class GmshTools():
         self.gmsh_bin = ""
         self.error = False
 
-    def create_mesh(self):
+    def update_mesh_data(self):
         self.start_logs()
         self.get_dimension()
-        self.get_tmp_file_paths()
-        self.get_gmsh_command()
         self.get_group_data()
         self.get_region_data()
         self.get_boundary_layer_data()
+
+    def write_gmsh_input_files(self):
         self.write_part_file()
         self.write_geo()
+
+    def create_mesh(self):
+        self.update_mesh_data()
+        self.get_tmp_file_paths()
+        self.get_gmsh_command()
+        self.write_gmsh_input_files()
         error = self.run_gmsh_with_geo()
         self.read_and_set_new_mesh()
         return error
@@ -214,8 +220,12 @@ class GmshTools():
             if femutils.check_working_dir(self.working_dir) is not True:
                 if create is True:
                     FreeCAD.Console.PrintMessage(
-                        "Dir given as parameter \'{}\' doesn't exist.\n".format(self.working_dir)
+                        "Dir given as parameter \'{}\' doesn't exist, "
+                        "but parameter to create it is set to True. "
+                        "Dir will be created.\n".format(self.working_dir)
                     )
+                    from os import mkdir
+                    mkdir(param_working_dir)
                 else:
                     FreeCAD.Console.PrintError(
                         "Dir given as parameter \'{}\' doesn't exist "
@@ -236,8 +246,7 @@ class GmshTools():
                 "Dir \'{}\' doesn't exist or cannot be created.\n"
                 .format(self.working_dir)
             )
-            from femsolver.run import _getTempDir
-            self.working_dir = _getTempDir(self.mesh_obj)
+            self.working_dir = femutils.get_temp_dir(self.mesh_obj)
             FreeCAD.Console.PrintMessage(
                 "Dir \'{}\' will be used instead.\n"
                 .format(self.working_dir)
@@ -819,23 +828,56 @@ class GmshTools():
 
 """
 # simple example how to use the class GmshTools
-
 import Part, ObjectsFem
-
 doc = App.ActiveDocument
+
 box_obj = doc.addObject("Part::Box", "Box")
 doc.recompute()
+box_obj.ViewObject.Visibility = False
 
 femmesh_obj = ObjectsFem.makeMeshGmsh(doc, box_obj.Name + "_Mesh")
 femmesh_obj.Part = box_obj
 doc.recompute()
-box_obj.ViewObject.Visibility = False
 
 from femmesh.gmshtools import GmshTools as gt
 gmsh_mesh = gt(femmesh_obj)
 error = gmsh_mesh.create_mesh()
 print(error)
 doc.recompute()
+
+"""
+
+
+"""
+# more sophisticated example which changes the mesh size
+import Part, ObjectsFem
+doc = App.ActiveDocument
+
+box_obj = doc.addObject("Part::Box", "Box")
+doc.recompute()
+box_obj.ViewObject.Visibility = False
+
+from femmesh.gmshtools import GmshTools
+max_mesh_sizes = [0.5, 1, 2, 3, 5, 10]
+for len in max_mesh_sizes:
+    quantity_len = "{}".format(len)
+    print("\n\n Start length = {}".format(quantity_len))
+    femmesh_obj = ObjectsFem.makeMeshGmsh(doc, box_obj.Name + "_Mesh")
+    femmesh_obj.Part = box_obj
+    femmesh_obj.CharacteristicLengthMax = "{}".format(quantity_len)
+    femmesh_obj.CharacteristicLengthMin = "{}".format(quantity_len)
+    doc.recompute()
+    gm = GmshTools(femmesh_obj)
+    gm.update_mesh_data()
+    # set the tmp file path to some user path including the length
+    gm.get_tmp_file_paths("/tmp/fcgm_" + str(len), True)
+    gm.get_gmsh_command()
+    gm.write_gmsh_input_files()
+    error = gm.run_gmsh_with_geo()
+    print(error)
+    gm.read_and_set_new_mesh()
+    doc.recompute()
+    print("Done length = {}".format(quantity_len))
 
 """
 

@@ -56,7 +56,7 @@ unsigned long MeshPointArray::GetOrAddIndex (const MeshPoint &rclPoint)
   if ((ulIndex = Get(rclPoint)) == ULONG_MAX)
   {
     push_back(rclPoint);
-    return (unsigned long)(size() - 1);
+    return static_cast<unsigned long>(size() - 1);
   }
   else
     return ulIndex;
