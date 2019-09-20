@@ -34,6 +34,7 @@
 #include "Elements.h"
 #include "Algorithm.h"
 #include "tritritest.h"
+#include "Utilities.h"
 
 using namespace MeshCore;
 using namespace Wm4;
@@ -526,9 +527,9 @@ bool MeshGeomFacet::IsDegenerated(float epsilon) const
     // (u*u)*(v*v)-(u*v)*(u*v) < max(eps*(u*u),eps*(v*v)).
     //
     // BTW (u*u)*(v*v)-(u*v)*(u*v) is the same as (uxv)*(uxv).
-    Base::Vector3d p1(this->_aclPoints[0].x,this->_aclPoints[0].y,this->_aclPoints[0].z);
-    Base::Vector3d p2(this->_aclPoints[1].x,this->_aclPoints[1].y,this->_aclPoints[1].z);
-    Base::Vector3d p3(this->_aclPoints[2].x,this->_aclPoints[2].y,this->_aclPoints[2].z);
+    Base::Vector3d p1 = Base::convertTo<Base::Vector3d>(this->_aclPoints[0]);
+    Base::Vector3d p2 = Base::convertTo<Base::Vector3d>(this->_aclPoints[1]);
+    Base::Vector3d p3 = Base::convertTo<Base::Vector3d>(this->_aclPoints[2]);
 
     Base::Vector3d u = p2 - p1;
     Base::Vector3d v = p3 - p1;
@@ -1012,10 +1013,10 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
 
 bool MeshGeomFacet::IsPointOf (const Base::Vector3f &P) const
 {
-    Base::Vector3d p1(this->_aclPoints[0].x,this->_aclPoints[0].y,this->_aclPoints[0].z);
-    Base::Vector3d p2(this->_aclPoints[1].x,this->_aclPoints[1].y,this->_aclPoints[1].z);
-    Base::Vector3d p3(this->_aclPoints[2].x,this->_aclPoints[2].y,this->_aclPoints[2].z);
-    Base::Vector3d p4(P.x,P.y,P.z);
+    Base::Vector3d p1 = Base::convertTo<Base::Vector3d>(this->_aclPoints[0]);
+    Base::Vector3d p2 = Base::convertTo<Base::Vector3d>(this->_aclPoints[1]);
+    Base::Vector3d p3 = Base::convertTo<Base::Vector3d>(this->_aclPoints[2]);
+    Base::Vector3d p4 = Base::convertTo<Base::Vector3d>(P);
 
     Base::Vector3d u = p2 - p1;
     Base::Vector3d v = p3 - p1;
