@@ -60,6 +60,7 @@
 #include "SoAxisCrossKit.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "ViewParams.h"
 #include "WaitCursor.h"
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderGeometryObject.h"
@@ -3389,6 +3390,50 @@ public:
 };
 
 
+//======================================================================
+// Std_SelBoundingBox
+//===========================================================================
+DEF_STD_CMD_AC(StdCmdSelBoundingBox);
+
+StdCmdSelBoundingBox::StdCmdSelBoundingBox()
+  :Command("Std_SelBoundingBox")
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("&Bounding box");
+  sToolTipText  = QT_TR_NOOP("Show selection bounding box");
+  sWhatsThis    = "Std_SelBack";
+  sStatusTip    = QT_TR_NOOP("Show selection bounding box");
+  sPixmap       = "sel-bbox";
+  eType         = Alter3DView;
+}
+
+void StdCmdSelBoundingBox::activated(int iMsg)
+{
+    bool checked = !!iMsg;
+    if(checked != ViewParams::instance()->getShowSelectionBoundingBox()) {
+        ViewParams::instance()->setShowSelectionBoundingBox(checked);
+        if(_pcAction)
+            _pcAction->setChecked(checked,true);
+    }
+}
+
+bool StdCmdSelBoundingBox::isActive(void)
+{
+    if(_pcAction) {
+        bool checked = _pcAction->isChecked();
+        if(checked != ViewParams::instance()->getShowSelectionBoundingBox())
+            _pcAction->setChecked(!checked,true);
+    }
+    return true;
+}
+
+Action * StdCmdSelBoundingBox::createAction(void)
+{
+    Action *pcAction = Command::createAction();
+    pcAction->setCheckable(true);
+    return pcAction;
+}
+
 //===========================================================================
 // Instantiation
 //===========================================================================
@@ -3462,6 +3507,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdAxisCross());
     rcCmdMgr.addCommand(new CmdViewMeasureClearAll());
     rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
+    rcCmdMgr.addCommand(new StdCmdSelBoundingBox());
     rcCmdMgr.addCommand(new StdCmdSelBack());
     rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
