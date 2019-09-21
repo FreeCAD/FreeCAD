@@ -1470,6 +1470,8 @@ if(MSVC)
         if(FREECAD_COPY_DEPEND_DIRS_TO_BUILD)
             message(STATUS "=======================================\n"
                 "Copying libpack dependency directories to build directory for Windows MSVC build.\n")
+            file(COPY ${FREECAD_LIBPACK_DIR}/bin/QtWebEngineProcess.exe DESTINATION ${CMAKE_BINARY_DIR}/bin)
+            file(COPY ${FREECAD_LIBPACK_DIR}/bin/qt.conf DESTINATION ${CMAKE_BINARY_DIR}/bin)
             file(COPY ${FREECAD_LIBPACK_DIR}/plugins/platforms DESTINATION ${CMAKE_BINARY_DIR}/bin)
             file(COPY ${FREECAD_LIBPACK_DIR}/plugins/imageformats DESTINATION ${CMAKE_BINARY_DIR}/bin)
             file(COPY ${FREECAD_LIBPACK_DIR}/plugins/iconengines DESTINATION ${CMAKE_BINARY_DIR}/bin)
