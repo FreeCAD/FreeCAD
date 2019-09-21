@@ -3369,7 +3369,13 @@ QWidget* PropertyFileItem::createEditor(QWidget* parent, const QObject* receiver
 
 void PropertyFileItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
+    const App::Property* prop = getFirstProperty();
+    const App::PropertyFile* propFile = static_cast<const App::PropertyFile*>(prop);
+    std::string filter = propFile->getFilter();
     Gui::FileChooser *fc = qobject_cast<Gui::FileChooser*>(editor);
+    if (!filter.empty()) {
+        fc->setFilter(Base::Tools::fromStdString(filter));
+    }
     fc->setFileName(data.toString());
 }
 

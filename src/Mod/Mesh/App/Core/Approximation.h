@@ -160,14 +160,6 @@ public:
 
 protected:
     /**
-     * Converts point from Wm4::Vector3 to Base::Vector3f.
-     */
-    static void Convert( const Wm4::Vector3<double>&, Base::Vector3f&);
-    /**
-     * Converts point from Base::Vector3f to Wm4::Vector3.
-     */
-    static void Convert( const Base::Vector3f&, Wm4::Vector3<double>&);
-    /**
      * Creates a vector of Wm4::Vector3 elements.
      */
     void GetMgcVectorArray( std::vector< Wm4::Vector3<double> >& rcPts ) const;
