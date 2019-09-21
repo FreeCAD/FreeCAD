@@ -4489,6 +4489,7 @@ class WireToBSpline(Modifier):
                                 n = Draft.makeWire(self.Points, self.closed, self.pl)
                             if n:
                                 Draft.formatObject(n,self.obj)
+                                self.doc.recompute()
                         else:
                             self.finish()
 
