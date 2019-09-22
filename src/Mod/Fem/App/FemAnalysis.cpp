@@ -48,21 +48,6 @@ FemAnalysis::~FemAnalysis()
 {
 }
 
-short FemAnalysis::mustExecute(void) const
-{
-    return 0;
-}
-
-PyObject *FemAnalysis::getPyObject()
-{
-    return App::DocumentObjectGroup::getPyObject();
-}
-
-void FemAnalysis::onChanged(const Property* prop)
-{
-    App::DocumentObjectGroup::onChanged(prop);
-}
-
 void FemAnalysis::handleChangedPropertyName(Base::XMLReader &reader,
                                             const char * TypeName,
                                             const char *PropName)
