@@ -304,6 +304,8 @@ bool ViewProviderPoints::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Transform)
         return ViewProviderGeometryObject::setEdit(ModNum);
+    else if (ModNum == ViewProvider::Cutting)
+        return true;
     return false;
 }
 
