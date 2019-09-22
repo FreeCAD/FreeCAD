@@ -134,6 +134,8 @@ public:
     }
     virtual void forceUpdate(bool enable = true) override;
 
+    virtual bool allowOverride(const App::DocumentObject &) const override;
+
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*) override;

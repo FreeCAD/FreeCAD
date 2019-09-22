@@ -621,44 +621,52 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
     if (!pcProvider) {
         //Base::Console().Log("Document::slotNewObject() called\n");
         std::string cName = Obj.getViewProviderNameStored();
-        if (cName.empty()) {
-            // handle document object with no view provider specified
-            Base::Console().Log("%s has no view provider specified\n", Obj.getTypeId().getName());
-            return;
+        for(;;) {
+            if (cName.empty()) {
+                // handle document object with no view provider specified
+                FC_LOG(Obj.getFullName() << " has no view provider specified");
+                return;
+            }
+            Base::BaseClass* base = static_cast<Base::BaseClass*>(
+                    Base::Type::createInstanceByName(cName.c_str(),true));
+            pcProvider = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(base);
+            if (!pcProvider) {
+                // type not derived from ViewProviderDocumentObject!!!
+                FC_ERR("Invalid view provider type '" << cName << "' for " << Obj.getFullName());
+                delete base;
+                return;
+            } else if (cName!=Obj.getViewProviderName() && !pcProvider->allowOverride(Obj)) {
+                FC_WARN("View provider type '" << cName << "' does not support " << Obj.getFullName());
+                delete base;
+                pcProvider = 0;
+                cName = Obj.getViewProviderName();
+            } else
+                break;
         }
 
         setModified(true);
-        Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(cName.c_str(),true));
-        if (base) {
-            // type not derived from ViewProviderDocumentObject!!!
-            assert(base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId()));
-            pcProvider = static_cast<ViewProviderDocumentObject*>(base);
-            d->_ViewProviderMap[&Obj] = pcProvider;
-            d->_CoinMap[pcProvider->getRoot()] = pcProvider;
-            pcProvider->setStatus(Gui::ViewStatus::TouchDocument, d->_changeViewTouchDocument);
+        d->_ViewProviderMap[&Obj] = pcProvider;
+        d->_CoinMap[pcProvider->getRoot()] = pcProvider;
+        pcProvider->setStatus(Gui::ViewStatus::TouchDocument, d->_changeViewTouchDocument);
 
-            try {
-                // if successfully created set the right name and calculate the view
-                //FIXME: Consider to change argument of attach() to const pointer
-                pcProvider->attach(const_cast<App::DocumentObject*>(&Obj));
-                pcProvider->updateView();
-                pcProvider->setActiveMode();
-            }
-            catch(const Base::MemoryException& e){
-                FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
-            }
-            catch(Base::Exception &e){
-                e.ReportException();
-            }
+        try {
+            // if successfully created set the right name and calculate the view
+            //FIXME: Consider to change argument of attach() to const pointer
+            pcProvider->attach(const_cast<App::DocumentObject*>(&Obj));
+            pcProvider->updateView();
+            pcProvider->setActiveMode();
+        }
+        catch(const Base::MemoryException& e){
+            FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
+        }
+        catch(Base::Exception &e){
+            e.ReportException();
+        }
 #ifndef FC_DEBUG
-            catch(...){
-                FC_ERR("Unknown exception in Feature " << Obj.getFullName() << " thrown");
-            }
+        catch(...){
+            FC_ERR("Unknown exception in Feature " << Obj.getFullName() << " thrown");
+        }
 #endif
-        }
-        else {
-            FC_WARN("no view provider for the object " << cName << " found");
-        }
     }else{
         try {
             pcProvider->reattach(const_cast<App::DocumentObject*>(&Obj));

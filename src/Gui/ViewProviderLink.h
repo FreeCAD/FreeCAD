@@ -265,6 +265,10 @@ public:
     virtual ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=0, bool recursive=false) const override;
 
+    virtual bool allowOverride(const App::DocumentObject &) const override {
+        return true;
+    }
+
 protected:
     bool setEdit(int ModNum) override;
     void setEditViewer(View3DInventorViewer*, int ModNum) override;

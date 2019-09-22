@@ -114,21 +114,13 @@ public:
      * This function is introduced to allow Python feature override its view provider.
      * The default implementation just returns \ref getViewProviderName().
      *
-     * If this method is reimplemented in sub-classes then also reimplement \ref
-     * allowOverrideViewProviderName() accordingly.
+     * The core will only accept the overridden view provider if it returns
+     * true when calling Gui::ViewProviderDocumentObject::allowOverride(obj).
+     * If not, the view provider will be reverted to the one returned from \ref
+     * getViewProviderName().
      */
     virtual const char *getViewProviderNameOverride() const {
         return getViewProviderName();
-    }
-    /**
-     * The function indicates whether the object type allows to define a view provider type
-     * different than the standard type. The default implementation returns false.
-     * The function can be overriden by Python feature to return true where the type can be
-     * retrieved from its proxy object.
-     * \sa getViewProviderNameOverride()
-     */
-    virtual bool allowOverrideViewProviderName() const {
-        return false;
     }
     /// Constructor
     DocumentObject(void);
