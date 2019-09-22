@@ -139,6 +139,14 @@ public:
 
     virtual std::string getFullName() const override;
 
+    /** Allow this class to be used as an override for the original view provider of the given object
+     *
+     * @sa App::DocumentObject::getViewProviderNameOverride()
+     */
+    virtual bool allowOverride(const App::DocumentObject &) const {
+        return false;
+    }
+
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.

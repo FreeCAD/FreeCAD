@@ -467,6 +467,12 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     ViewProviderGeometryObject::onChanged(prop);
 }
 
+bool ViewProviderPartExt::allowOverride(const App::DocumentObject &) const {
+    // Many derived view providers still uses static_cast to get object
+    // pointer, so check for exact type here.
+    return getTypeId() == ViewProviderPartExt::getClassTypeId();
+}
+
 void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
