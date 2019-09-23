@@ -330,17 +330,17 @@
           </item>
           <item>
            <property name="text">
-            <string>ISO Levelled</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>ASME Regular</string>
+            <string>ISO Referencing</string>
            </property>
           </item>
           <item>
            <property name="text">
             <string>ASME Inlined</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ASME Referencing</string>
            </property>
           </item>
          </widget>
