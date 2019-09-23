@@ -124,20 +124,17 @@ bool TaskSectionView::calcValues()
 
     if (ui->pb_Up->isChecked()) {
         sectionDir = "Up";
-        sectionProjDir = m_section->getSectionVector(sectionDir);
     } else if (ui->pb_Down->isChecked()) {
         sectionDir = "Down";
-        sectionProjDir = m_section->getSectionVector(sectionDir);
     } else if (ui->pb_Left->isChecked()) {
         sectionDir = "Left";
-        sectionProjDir = m_section->getSectionVector(sectionDir);
     } else if (ui->pb_Right->isChecked()) {
         sectionDir = "Right";
-        sectionProjDir = m_section->getSectionVector(sectionDir);
     } else {
         Base::Console().Message("Select a direction\n");
         result = false;
     }
+    sectionProjDir = m_section->getSectionVector(sectionDir);
 
     sectionNormal = sectionProjDir;
     if (result) {
