@@ -97,6 +97,7 @@ DrawViewDimension::DrawViewDimension(void)
     References2D.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(References3D,(0,0),"",(App::PropertyType)(App::Prop_None),"3D Geometry References");
     References3D.setScope(App::LinkScope::Global);
+
     ADD_PROPERTY_TYPE(FormatSpec,("") , "Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
     ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format",(App::PropertyType)(App::Prop_None),"Value overridden by user");
 
@@ -104,8 +105,10 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY(Type,((long)0));
     MeasureType.setEnums(MeasureTypeEnums);
     ADD_PROPERTY(MeasureType, ((long)1));                             //Projected (or True) measurement
+    ADD_PROPERTY_TYPE(TheoreticalExact,(false),"",(App::PropertyType)(App::Prop_None),"Set for theoretical exact (basic) dimension");
     ADD_PROPERTY_TYPE(OverTolerance ,(0.0),"",App::Prop_None,"+ Tolerance value");
     ADD_PROPERTY_TYPE(UnderTolerance ,(0.0),"",App::Prop_None,"- Tolerance value");
+    ADD_PROPERTY_TYPE(Inverted,(false),"",(App::PropertyType)(App::Prop_None),"The dimensional value is displayed inverted");
 
     //hide the properties the user can't edit in the property editor
 //    References2D.setStatus(App::Property::Hidden,true);
@@ -509,7 +512,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     return DrawView::execute();
 }
 
-std::string  DrawViewDimension::getFormatedValue(bool obtuse)
+std::string  DrawViewDimension::getFormatedValue()
 {
 //    Base::Console().Message("DVD::getFormatedValue()\n");
     std::string result;
@@ -518,7 +521,7 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
     }
 
     QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
-    double val = std::abs(getDimValue());    //internal units!
+    double val = getDimValue();
     
     bool angularMeasure = false;
     Base::Quantity qVal;
@@ -527,9 +530,6 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
          (Type.isValue("Angle3Pt")) ) {
         angularMeasure = true;
         qVal.setUnit(Base::Unit::Angle);
-        if (obtuse) {
-            qVal.setValue(fabs(360.0 - val));
-        }
     } else {
         qVal.setUnit(Base::Unit::Length);
     }
@@ -712,6 +712,17 @@ double DrawViewDimension::getDimValue()
             result = legAngle;
         }
     }
+
+    result = fabs(result);
+    if (Inverted.getValue()) {
+        if (Type.isValue("Angle") || Type.isValue("Angle3Pt")) {
+            result = 360 - result;
+        }
+        else {
+            result = -result;
+        }
+    }
+
     return result;
 }
 
