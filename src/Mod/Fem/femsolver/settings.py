@@ -158,12 +158,11 @@ def get_custom_dir():
 
 def get_dir_setting():
     param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
-    if param_group.GetBool("UseTempDirectory"):
-        return TEMPORARY
-    elif param_group.GetBool("UseBesideDirectory"):
+    if param_group.GetBool("UseBesideDirectory"):
         return BESIDE
     elif param_group.GetBool("UseCustomDirectory"):
         return CUSTOM
+    return TEMPORARY
 
 
 ##  @}
