@@ -158,6 +158,8 @@ class TechDrawExport DrawUtil {
         static void countEdges(const char* label, const TopoDS_Shape& s);
         static const char* printBool(bool b);
         static QString qbaToDebug(const QByteArray& line);
+        static void dumpCS(const char* text, gp_Ax2 CS);
+
 };
 
 } //end namespace TechDraw
