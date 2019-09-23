@@ -124,15 +124,15 @@ def _isPathValid(m, path):
     setting = settings.get_dir_setting()
     if path is not None:
         return t is None and m.directory == path
-    if setting == settings.BESIDE:
-        if t == settings.BESIDE:
+    if setting == settings.DirSetting.BESIDE:
+        if t == settings.DirSetting.BESIDE:
             base = os.path.split(m.directory.rstrip("/"))[0]
             return base == femutils.get_beside_base(m.solver)
         return False
-    if setting == settings.TEMPORARY:
-        return t == settings.TEMPORARY
-    if setting == settings.CUSTOM:
-        if t == settings.CUSTOM:
+    if setting == settings.DirSetting.TEMPORARY:
+        return t == settings.DirSetting.TEMPORARY
+    if setting == settings.DirSetting.CUSTOM:
+        if t == settings.DirSetting.CUSTOM:
             firstBase = os.path.split(m.directory.rstrip("/"))[0]
             customBase = os.path.split(firstBase)[0]
             return customBase == femutils.get_custom_base(m.solver)
@@ -393,17 +393,11 @@ class _DocObserver(object):
     def _deleteMachine(self, obj):
         m = _machines[obj]
         t = _dirTypes[m.directory]
-
-        def delegate():
-            m.join()
-            if t == settings.TEMPORARY:
-                shutil.rmtree(m.directory)
-            del _dirTypes[m.directory]
-            del _machines[obj]
         m.abort()
-        thread = threading.Thread(target=delegate)
-        thread.daemon = False
-        thread.start()
+        if t == settings.DirSetting.TEMPORARY:
+            shutil.rmtree(m.directory)
+        del _machines[obj]
+        del _dirTypes[m.directory]
 
     def _checkEquation(self, obj):
         for o in obj.Document.Objects:
@@ -455,6 +449,5 @@ class _DocObserver(object):
             if femutils.is_derived_from(obj, t):
                 return True
         return False
-
 
 ##  @}
