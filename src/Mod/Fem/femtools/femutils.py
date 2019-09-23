@@ -22,7 +22,7 @@
 # ***************************************************************************
 """ Collection of functions for the Fem module.
 
-This module contains function for managing a analysis and all the differnet
+This module contains function for managing a analysis and all the different
 types of objects it contains, helper for executing a simulation, function for
 extracting relevant parts of geometry and a few unrelated function useful at
 various places in the Fem module.
@@ -103,7 +103,7 @@ def get_member(analysis, t):
 
     Search *analysis* for members of type *t*. This method checks the custom
     python typesytem (BaseType class property) used by the Fem module if
-    possible. If the object doens't use the python typesystem the usual
+    possible. If the object does not use the python typesystem the usual
     isDerivedFrom from the C++ dynamic type system is used.
 
     :param analysis: only objects part of this analysis are considered
@@ -170,8 +170,8 @@ def get_several_member(analysis, t):
      which is empty.
 
     :note:
-     Undefined behaviour if the type of the references of one object arn't all
-     the same.
+     Undefined behaviour if the type of the references of one object are not
+     all the same.
 
     :note:
      Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
@@ -408,7 +408,7 @@ def getSelectedFace(selectionex):
     """ Return selected face if exactly one face is selected.
 
     :returns:
-     The selcted face as a ``Part::TopoShape`` if exactly one face is selected.
+     The selected face as a ``Part::TopoShape`` if exactly one face is selected.
      Otherwise return ``None``.
 
     :param selectionex:
@@ -446,11 +446,11 @@ def get_refshape_type(fem_doc_object):
 
     :returns:
      A string representing the shape type ("Vertex", "Edge", "Face" or
-     "Solid"). If *fem_doc_object* isn't a contraint ``""`` is returned.
+     "Solid"). If *fem_doc_object* isn't a constraint ``""`` is returned.
 
     :note:
-     Undefined behaviour if the type of the references of one object arn't all
-     the same.
+     Undefined behaviour if the type of the references of one object are
+     not all the same.
 
     :note:
      Undefined behaviour if constraint contains no references (empty list).
