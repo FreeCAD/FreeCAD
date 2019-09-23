@@ -135,7 +135,7 @@ class Writer(object):
                     _ELMERGRID_OFORMAT,
                     unvPath,
                     "-out", self.directory]
-            subprocess.call(args)
+            subprocess.call(args, stdout=subprocess.DEVNULL)
 
     def _writeStartinfo(self):
         path = os.path.join(self.directory, _STARTINFO_NAME)
