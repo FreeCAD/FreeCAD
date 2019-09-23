@@ -31,6 +31,7 @@ __url__ = "http://www.freecadweb.org"
 
 import os
 import FreeCAD
+from FreeCAD import Console
 
 # ************************************************************************************************
 # ********* generic FreeCAD import and export methods ********************************************
@@ -78,11 +79,11 @@ def export(
 ):
     "called when freecad exports a file"
     if len(objectslist) != 1:
-        FreeCAD.Console.PrintError("This exporter can only export one object.\n")
+        Console.PrintError("This exporter can only export one object.\n")
         return
     obj = objectslist[0]
     if not obj.isDerivedFrom("Fem::FemMeshObject"):
-        FreeCAD.Console.PrintError("No FEM mesh object selected.\n")
+        Console.PrintError("No FEM mesh object selected.\n")
         return
     femnodes_mesh = obj.FemMesh.Nodes
     import femmesh.meshtools as FemMeshTools
@@ -179,7 +180,7 @@ def read_z88_mesh(
     kflag = int(mesh_info[4])
     # for non rotational elements ist --> kflag = 0 --> cartesian, kflag = 1 polar coordinates
     if kflag:
-        FreeCAD.Console.PrintError(
+        Console.PrintError(
             "KFLAG = 1, Rotational coordinates not supported at the moment\n"
         )
         return {}
@@ -188,15 +189,15 @@ def read_z88_mesh(
     elemts_first_line = nodes_last_line + 1
     elements_last_line = elemts_first_line - 1 + elements_count * 2
 
-    FreeCAD.Console.PrintLog(nodes_count)
+    Console.PrintLog(nodes_count)
+    Console.PrintLog("\n")
+    Console.PrintLog(elements_count)
     FreeCAD.Console.PrintLog("\n")
-    FreeCAD.Console.PrintLog(elements_count)
-    FreeCAD.Console.PrintLog("\n")
-    FreeCAD.Console.PrintLog(nodes_last_line)
-    FreeCAD.Console.PrintLog("\n")
-    FreeCAD.Console.PrintLog(elemts_first_line)
-    FreeCAD.Console.PrintLog("\n")
-    FreeCAD.Console.PrintLog(elements_last_line)
+    Console.PrintLog(nodes_last_line)
+    Console.PrintLog("\n")
+    Console.PrintLog(elemts_first_line)
+    Console.PrintLog("\n")
+    Console.PrintLog(elements_last_line)
 
     z88_mesh_file.seek(0)  # go back to the beginning of the file
     for no, line in enumerate(z88_mesh_file):
@@ -226,55 +227,55 @@ def read_z88_mesh(
                 # not supported elements
                 if z88_element_type == 8:
                     # torus8
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Z88 Element No. 8, torus8\n"
                     )
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Rotational elements are not supported at the moment\n"
                     )
                     return {}
                 elif z88_element_type == 12:
                     # torus12
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Z88 Element No. 12, torus12\n"
                     )
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Rotational elements are not supported at the moment\n"
                     )
                     return {}
                 elif z88_element_type == 15:
                     # torus6
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Z88 Element No. 15, torus6\n"
                     )
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Rotational elements are not supported at the moment\n"
                     )
                     return {}
                 elif z88_element_type == 19:
                     # platte16
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Z88 Element No. 19, platte16\n"
                     )
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Not supported at the moment\n"
                     )
                     return {}
                 elif z88_element_type == 21:
                     # schale16, mixture made from hexa8 and hexa20 (thickness is linear)
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Z88 Element No. 21, schale16\n"
                     )
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Not supported at the moment\n"
                     )
                     return {}
                 elif z88_element_type == 22:
                     # schale12, mixtrue made from prism6 and prism15 (thickness is linear)
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Z88 Element No. 22, schale12\n"
                     )
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Not supported at the moment\n"
                     )
                     return {}
@@ -392,13 +393,13 @@ def read_z88_mesh(
                 # unknown elements
                 # some examples have -1 for some teaching reasons to show some other stuff
                 else:
-                    FreeCAD.Console.PrintError("Unknown element\n")
+                    Console.PrintError("Unknown element\n")
                     return {}
 
     for n in nodes:
-        FreeCAD.Console.PrintLog(str(n) + "  " + str(nodes[n]) + "\n")
+        Console.PrintLog(str(n) + "  " + str(nodes[n]) + "\n")
     for e in elements_tria6:
-        FreeCAD.Console.PrintLog(str(e) + "  " + str(elements_tria6[e]) + "\n")
+        Console.PrintLog(str(e) + "  " + str(elements_tria6[e]) + "\n")
     FreeCAD.Console.PrintLog("\n")
 
     z88_mesh_file.close()
@@ -429,7 +430,7 @@ def write(
     fem_mesh: a FemMesh"""
 
     if not fem_mesh.isDerivedFrom("Fem::FemMesh"):
-        FreeCAD.Console.PrintError("Not a FemMesh was given as parameter.\n")
+        Console.PrintError("Not a FemMesh was given as parameter.\n")
         return
     femnodes_mesh = fem_mesh.Nodes
     import femmesh.meshtools as FemMeshTools
@@ -461,7 +462,7 @@ def write_z88_mesh_to_file(
     ):
         node_dof = 6  # schalenelemente
     else:
-        FreeCAD.Console.PrintError("Error: wrong z88_element_type.\n")
+        Console.PrintError("Error: wrong z88_element_type.\n")
         return
     node_count = len(femnodes_mesh)
     element_count = len(femelement_table)
@@ -545,7 +546,7 @@ def write_z88_mesh_to_file(
                 )
             )
         else:
-            FreeCAD.Console.PrintError(
+            Console.PrintError(
                 "Writing of Z88 elementtype {0} not supported.\n".format(z88_element_type)
             )
             # TODO support schale12 (made from prism15) and schale16 (made from hexa20)
@@ -559,14 +560,14 @@ def get_z88_element_type(
 ):
     import femmesh.meshtools as FemMeshTools
     if not femmesh:
-        FreeCAD.Console.PrintMessage("Error: No femmesh!\n")
+        Console.PrintError("Error: No femmesh!")
     if not femelement_table:
-        FreeCAD.Console.PrintMessage("We need to get the femelement_table first!\n")
+        Console.PrintError("We need to get the femelement_table first!")
         femelement_table = FemMeshTools.get_femelement_table(femmesh)
     # in some cases lowest key in femelement_table is not [1]
     for elem in sorted(femelement_table):
         elem_length = len(femelement_table[elem])
-        FreeCAD.Console.PrintLog("node count of first element: " + str(elem_length) + "\n")
+        Console.PrintLog("node count of first element: " + str(elem_length) + "\n")
         break  # break after the first elem
     if FemMeshTools.is_solid_femmesh(femmesh):
         if femmesh.TetraCount == femmesh.VolumeCount:
@@ -575,43 +576,43 @@ def get_z88_element_type(
             elif elem_length == 10:
                 return 16
             else:
-                FreeCAD.Console.PrintMessage("Tetra with neither 4 nor 10 nodes.\n")
+                Console.PrintMessage("Tetra with neither 4 nor 10 nodes.\n")
         elif femmesh.HexaCount == femmesh.VolumeCount:
             if elem_length == 8:
                 return 1
             elif elem_length == 20:
                 return 10
             else:
-                FreeCAD.Console.PrintMessage("Hexa with neither 8 nor 20 nodes.\n")
+                Console.PrintError("Hexa with neither 8 nor 20 nodes.\n")
                 return 0
         else:
-            FreeCAD.Console.PrintMessage("no tetra, no hexa or Mixed Volume Elements.\n")
+            Console.PrintError("no tetra, no hexa or Mixed Volume Elements.\n")
     elif FemMeshTools.is_face_femmesh(femmesh):
         if femmesh.TriangleCount == femmesh.FaceCount:
             if elem_length == 3:
-                FreeCAD.Console.PrintMessage("tria3mesh, not supported by Z88.\n")
+                Console.PrintError("tria3mesh, not supported by Z88.\n")
                 return 0
             elif elem_length == 6:
                 return 24
             else:
-                FreeCAD.Console.PrintMessage("Tria with neither 3 nor 6 nodes.\n")
+                Console.PrintError("Tria with neither 3 nor 6 nodes.\n")
                 return 0
         elif femmesh.QuadrangleCount == femmesh.FaceCount:
             if elem_length == 4:
-                FreeCAD.Console.PrintMessage("quad4mesh, not supported by Z88.\n")
+                Console.PrintError("quad4mesh, not supported by Z88.\n")
                 return 0
             elif elem_length == 8:
                 return 23
             else:
-                FreeCAD.Console.PrintMessage("Quad with neither 4 nor 8 nodes.\n")
+                Console.PrintError("Quad with neither 4 nor 8 nodes.\n")
                 return 0
         else:
-            FreeCAD.Console.PrintMessage("no tria, no quad\n")
+            Console.PrintError("no tria, no quad\n")
             return 0
     elif FemMeshTools.is_edge_femmesh(femmesh):
-        FreeCAD.Console.PrintMessage("Edge femmesh will be exported as 3D truss element nr 4.\n")
+        Console.PrintMessage("Edge femmesh will be exported as 3D truss element nr 4.\n")
         return 4
     else:
-        FreeCAD.Console.PrintMessage("Neither edge nor face nor solid femmesh.\n")
+        Console.PrintError("Neither edge nor face nor solid femmesh.\n")
         return 0
     return 0

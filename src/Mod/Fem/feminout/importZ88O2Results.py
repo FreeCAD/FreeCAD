@@ -29,6 +29,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD Z88 Disp Reader for FEM workbench
 
 import FreeCAD
+from FreeCAD import Console
 import os
 
 
@@ -99,7 +100,7 @@ def import_z88_disp(
             )
             result_mesh_object.FemMesh = femmesh
         else:
-            FreeCAD.Console.PrintError("Z88 mesh file z88i1.txt not found!")
+            Console.PrintError("Z88 mesh file z88i1.txt not found!")
 
         # create result obj
         for result_set in disp_read["Results"]:
@@ -118,7 +119,7 @@ def import_z88_disp(
             FreeCAD.ActiveDocument.recompute()
 
     else:
-        FreeCAD.Console.PrintError(
+        Console.PrintError(
             "Problem on Z88 result file import. No nodes found in Z88 result file.\n"
         )
     return res_obj
@@ -145,7 +146,6 @@ def read_z88_disp(
 
         if lno >= 6:
             # disp line
-            # print(linelist)
             node_no = int(linelist[0])
             mode_disp_x = float(linelist[1])
             mode_disp_y = float(linelist[2])
@@ -160,7 +160,7 @@ def read_z88_disp(
     results.append(mode_results)
 
     for r in results[0]["disp"]:
-        FreeCAD.Console.PrintLog("{} --> {}\n".format(r, results[0]["disp"][r]))
+        Console.PrintLog("{} --> {}\n".format(r, results[0]["disp"][r]))
 
     z88_disp_file.close()
     return {"Nodes": nodes, "Results": results}
