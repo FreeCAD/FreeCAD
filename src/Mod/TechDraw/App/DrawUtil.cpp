@@ -1060,4 +1060,17 @@ QString DrawUtil::qbaToDebug(const QByteArray & line)
     return s;
 }
 
+void DrawUtil::dumpCS(const char* text,
+                      gp_Ax2 CS)
+{
+    gp_Dir baseAxis = CS.Direction();
+    gp_Dir baseX    = CS.XDirection();
+    gp_Dir baseY    = CS.YDirection();
+    Base::Console().Message("DU::dumpCSDVS - %s Axis: %s X: %s Y: %s\n", text,
+                            DrawUtil::formatVector(baseAxis).c_str(),
+                            DrawUtil::formatVector(baseX).c_str(),
+                            DrawUtil::formatVector(baseY).c_str());
+}
+
+
 //==================================
