@@ -36,7 +36,7 @@ from os.path import join
 
 def get_fem_test_home_dir(
 ):
-    return join(FreeCAD.getHomePath(), "Mod", "Fem", "femtest", "testfiles")
+    return join(FreeCAD.getHomePath(), "Mod", "Fem", "femtest", "data")
 
 
 def get_fem_test_tmp_dir(
