@@ -40,7 +40,7 @@ namespace Fem {
  *  used to specify a simulation are children of this class. The base class
  *  essentially does two things: Most importantely it has a property @ref
  *  Constraint::References which is a list of all sub objects the constraint
- *  applys to. Defining it in the base class exposes a common interface to code
+ *  applies to. Defining it in the base class exposes a common interface to code
  *  using different constraints.
  *
  *  The second purpose of @ref Constraint is to support the redering to the
@@ -146,7 +146,7 @@ public:
      *  This is just used to make code more understandable. Other versions
      *  (overloads) of this function do useful calculations based on faces or
      *  edges. Used by @ref getPoints if no useful shape information is
-     *  avaliable.
+     *  available.
      *
      * @return always the integer 1
      */
@@ -167,7 +167,7 @@ protected:
      * @brief Triggers @ref onChanged to update View Provider.
      *
      * @note
-     *  This should not be nessesary and is properly a bug in the View Provider
+     *  This should not be necessary and is properly a bug in the View Provider
      *  of FemConstraint.
      */
     virtual void onDocumentRestored();
@@ -203,7 +203,7 @@ protected:
      *
      * @return
      *  If the calculation of points, normals and scale was successful it
-     *  returns true. If an error occured and the data couldn't be extracted
+     *  returns true. If an error occurred and the data couldn't be extracted
      *  properly false is returned.
      */
     bool getPoints(
@@ -215,8 +215,8 @@ protected:
      * @brief Extract properties of cylindrical face.
      *
      * @note
-     *  This method is very specific and doesn't requre access to member
-     *  variables. It should be rewritten at a different palce.
+     *  This method is very specific and doesn't require access to member
+     *  variables. It should be rewritten at a different place.
      */
     bool getCylinder(
             double& radius, double& height,
@@ -226,8 +226,8 @@ protected:
      * @brief Calculate point of cylidrical face where to render widget.
      *
      * @note
-     *  This method is very specific and doesn't requre access to member
-     *  variables. It should be rewritten at a different palce.
+     *  This method is very specific and doesn't require access to member
+     *  variables. It should be rewritten at a different place.
      */
     Base::Vector3d getBasePoint(const Base::Vector3d& base, const Base::Vector3d& axis,
                                 const App::PropertyLinkSub &location, const double& dist);
@@ -235,8 +235,8 @@ protected:
      * @brief Get normal vector of point calculated by @ref getBasePoint.
      *
      * @note
-     *  This method is very specific and doesn't requre access to member
-     *  variables. It should be rewritten at a different palce.
+     *  This method is very specific and doesn't require access to member
+     *  variables. It should be rewritten at a different place.
      */
     const Base::Vector3d getDirection(const App::PropertyLinkSub &direction);
 };
