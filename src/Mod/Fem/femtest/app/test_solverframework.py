@@ -27,8 +27,8 @@ import FreeCAD
 import ObjectsFem
 import femsolver.run
 import unittest
-from . import utilstest as testtools
-from .utilstest import fcc_print
+from . import support_utils as testtools
+from .support_utils import fcc_print
 
 from os.path import join
 
@@ -127,8 +127,8 @@ class TestSolverFrameWork(unittest.TestCase):
         analysis.addObject(pressure_constraint)
 
         fcc_print("Checking FEM new mesh...")
-        from .testfiles.ccx.cube_mesh import create_nodes_cube
-        from .testfiles.ccx.cube_mesh import create_elements_cube
+        from ..data.ccx.cube_mesh import create_nodes_cube
+        from ..data.ccx.cube_mesh import create_elements_cube
         mesh = Fem.FemMesh()
         ret = create_nodes_cube(mesh)
         self.assertTrue(ret, "Import of mesh nodes failed")

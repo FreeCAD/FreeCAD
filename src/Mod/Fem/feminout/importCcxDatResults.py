@@ -29,6 +29,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD Calculix DAT reader for FEM workbench
 
 import FreeCAD
+from FreeCAD import Console
 import os
 
 
@@ -71,7 +72,6 @@ def import_dat(
     Analysis=None
 ):
     r = readResult(filename)
-    # print("Results {}".format(r))
     return r
 
 
@@ -79,7 +79,7 @@ def import_dat(
 def readResult(
     dat_input
 ):
-    FreeCAD.Console.PrintMessage("Read ccx results from dat file: {}\n".format(dat_input))
+    Console.PrintMessage("Read ccx results from dat file: {}\n".format(dat_input))
     dat_file = pyopen(dat_input, "r")
     eigenvalue_output_section_found = False
     mode_reading = False
