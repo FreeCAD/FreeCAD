@@ -18,13 +18,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+""" Execute Solver and obtain Reports and Results.
+
+Integral part of the Solver Framework which contains components responsible for
+executing the solver in the background. Also provides an asynchronous
+communication system with the solver running in the background. The purpose of
+this module is to be as generic as possible. It can execute every solver
+supported by the fem workbench. The threading and communication support is
+mainly implemented by the :mod:`femsolver.task` and :mod:`femsolver.signal`
+modules.
+"""
 
 __title__ = "FreeCAD FEM solver run"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
-
-## \addtogroup FEM
-#  @{
 
 import os
 import os.path
@@ -54,6 +61,35 @@ _dirTypes = {}
 
 
 def run_fem_solver(solver, working_dir=None):
+    """ Execute *solver* of the solver framwork.
+
+    Uses :meth:`getMachine <femsolver.solverbase.Proxy.getMachine>` to obtain a
+    :class:`Machine` instance of the solver. It than executes the Machine with
+    using the ``RESULTS`` target (see :class:`Machine` for infos about
+    different targets). This method is blocking, it waits for the solver to
+    finished before returning. Be aware of :class:`Machine` caching when using
+    the function.
+
+    :param solver:
+        A document object which must be a famework complient solver. This means
+        that it should be derived from the document object provided by
+        :mod:`femsolver.solverbase` and implement all required methods
+        correctely. Of particular importance is :meth:`getMachine
+        <femsolver.solverbase.Proxy.getMachine>` as it is used by this method
+        the get the :class:`Machine` used to execute the solver.
+
+    :param working_dir:
+        If specified it overwrites the automatic and user configurable working
+        directory management of the Solver framework. Should always be a
+        absolute path because the location of the binary is not consistent
+        among platforms. If ``None`` the automatic working directory management
+        is used.
+
+    :note:
+        There is some legacy code to execute the old Calculix solver
+        (pre-framework) which behaives differently because it doesn't use a
+        :class:`Machine`.
+    """
 
     if solver.Proxy.Type == "Fem::FemSolverCalculixCcxTools":
         App.Console.PrintMessage("CalxuliX ccx tools solver!\n")
@@ -112,6 +148,19 @@ def run_fem_solver(solver, working_dir=None):
 
 
 def getMachine(solver, path=None):
+    """ Get or create :class:`Machine` using caching mechanism.
+
+    :param solver:
+        A document object which must be a famework complient solver. This means
+        that it should be derived from the document object provided by
+        :mod:`femsolver.solverbase` and implement all required methods
+        correctely. Of particular importance is :meth:`getMachine
+        <femsolver.solverbase.Proxy.getMachine>` as it is used by this method
+        to create a new :class:`Machine` on cache miss.
+
+    :param path:
+        A valid filesystem path which shall be associetad with the machine.
+    """
     _DocObserver.attach()
     m = _machines.get(solver)
     if m is None or not _isPathValid(m, path):
@@ -450,4 +499,3 @@ class _DocObserver(object):
                 return True
         return False
 
-##  @}
