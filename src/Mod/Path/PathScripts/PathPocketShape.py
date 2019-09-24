@@ -21,15 +21,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# *                                                                         *
-# *   Additional modifications and contributions beginning 2019             *
-# *   Focus: 4th-axis integration                                           *
-# *   by Russell Johnson  <russ4262@gmail.com>                              *
-# *                                                                         *
-# ***************************************************************************
-
-# SCRIPT NOTES:
-# - Need test models for testing vertical faces scenarios.
 
 import FreeCAD
 import Part
@@ -49,8 +40,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2017"
-__scriptVersion__ = "2h testing"
-__lastModified__ = "2019-06-30 17:19 CST"
+__scriptVersion__ = "2i usable"
+__lastModified__ = "2019-09-07 08:32 CST"
 
 LOGLEVEL = False
 
@@ -59,6 +50,7 @@ if LOGLEVEL:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -361,9 +353,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     msg += translate('Path', "\n<br>Pocket is based on extruded surface.")
                     msg += translate('Path', "\n<br>Bottom of pocket might be non-planar and/or not normal to spindle axis.")
                     msg += translate('Path', "\n<br>\n<br><i>3D pocket bottom is NOT available in this operation</i>.")
-                    PathLog.info(msg)
-                    title = translate('Path', 'Depth Warning')
-                    self.guiMessage(title, msg, False)
+                    PathLog.warning(msg)
+                    # title = translate('Path', 'Depth Warning')
+                    # self.guiMessage(title, msg, False)
                 else:
                     PathLog.error(translate("Path", "Failed to create a planar face from edges in {}.".format(sub)))
             else:
@@ -519,9 +511,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             face.translate(FreeCAD.Vector(0, 0, vFinDep - face.BoundBox.ZMin))
                             self.horiz.append(face)
                             msg = translate('Path', 'Verify final depth of pocket shaped by vertical faces.')
-                            PathLog.error(msg)
-                            title = translate('Path', 'Depth Warning')
-                            self.guiMessage(title, msg, False)
+                            PathLog.warning(msg)
+                            # title = translate('Path', 'Depth Warning')
+                            # self.guiMessage(title, msg, False)
 
                 # add faces for extensions
                 self.exts = [] # pylint: disable=attribute-defined-outside-init
