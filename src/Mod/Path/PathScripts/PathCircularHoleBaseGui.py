@@ -29,6 +29,10 @@ import PathScripts.PathOpGui as PathOpGui
 
 from PySide import QtCore, QtGui
 
+import sys
+if sys.version_info.major >= 3:
+    xrange = range
+
 __title__ = "Base for Circular Hole based operations' UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"

@@ -35,6 +35,10 @@ import PathScripts.PathOp as PathOp
 
 from PySide import QtCore
 
+import sys
+if sys.version_info.major >= 3:
+    xrange = range
+
 __title__ = "Path Surface Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
