@@ -197,6 +197,10 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     }
 
     App::DocumentObject* base = BaseView.getValue();
+    if (base == nullptr) {
+        return new App::DocumentObjectExecReturn("BaseView object not found");
+    }
+
     if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
 
