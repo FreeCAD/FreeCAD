@@ -412,6 +412,20 @@ bool MeshObject::load(const char* file, MeshCore::Material* mat)
         return false;
 
     swapKernel(kernel, aReader.GetGroupNames());
+
+    if (mat && mat->binding == MeshCore::MeshIO::PER_FACE) {
+        MeshCore::MeshIO::Format format = MeshCore::MeshOutput::GetFormat(file);
+
+        if (format == MeshCore::MeshIO::OBJ) {
+            Base::FileInfo fi(file);
+            std::string fn = fi.dirPath() + "/" + mat->library;
+            fi.setFile(fn);
+            Base::ifstream str(fi, std::ios::in | std::ios::binary);
+            aReader.LoadMTL(str);
+            str.close();
+        }
+    }
+
     return true;
 }
 
