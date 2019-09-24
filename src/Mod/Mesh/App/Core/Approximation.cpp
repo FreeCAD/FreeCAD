@@ -74,19 +74,19 @@ void Approximation::AddPoint(const Base::Vector3f &rcVector)
 
 void Approximation::AddPoints(const std::vector<Base::Vector3f> &points)
 {
-    std::copy(points.begin(), points.end(), _vPoints.end());
+    std::copy(points.begin(), points.end(), std::back_inserter(_vPoints));
     _bIsFitted = false;
 }
 
 void Approximation::AddPoints(const std::set<Base::Vector3f> &points)
 {
-    std::copy(points.begin(), points.end(), _vPoints.end());
+    std::copy(points.begin(), points.end(), std::back_inserter(_vPoints));
     _bIsFitted = false;
 }
 
 void Approximation::AddPoints(const std::list<Base::Vector3f> &points)
 {
-    std::copy(points.begin(), points.end(), _vPoints.end());
+    std::copy(points.begin(), points.end(), std::back_inserter(_vPoints));
     _bIsFitted = false;
 }
 
