@@ -368,7 +368,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         pLineColor->diffuseColor.setValue(c.r,c.g,c.b);
     }
     else if (prop == &Coloring) {
-        tryColorPerVertex(Coloring.getValue());
+        tryColorPerVertexOrFace(Coloring.getValue());
     }
     else {
         // Set the inverse color for open edges
@@ -538,7 +538,7 @@ App::PropertyColorList* ViewProviderMesh::getColorProperty() const
     return 0; // no such property found
 }
 
-void ViewProviderMesh::tryColorPerVertex(bool on)
+void ViewProviderMesh::tryColorPerVertexOrFace(bool on)
 {
     if (on) {
         App::PropertyColorList* colors = getColorProperty();
@@ -546,9 +546,13 @@ void ViewProviderMesh::tryColorPerVertex(bool on)
             const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
             const Mesh::MeshObject& mesh = meshProp.getValue();
             int numPoints = static_cast<int>(mesh.countPoints());
+            int numFacets = static_cast<int>(mesh.countFacets());
 
             if (colors->getSize() == numPoints) {
                 setColorPerVertex(colors);
+            }
+            else if (colors->getSize() == numFacets) {
+                setColorPerFace(colors);
             }
         }
     }
@@ -564,6 +568,22 @@ void ViewProviderMesh::setColorPerVertex(const App::PropertyColorList* prop)
     pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
     const std::vector<App::Color>& val = prop->getValues();
 
+    pcShapeMaterial->diffuseColor.setNum(val.size());
+    SbColor* col = pcShapeMaterial->diffuseColor.startEditing();
+
+    std::size_t i=0;
+    for (std::vector<App::Color>::const_iterator it = val.begin(); it != val.end(); ++it) {
+        col[i++].setValue(it->r, it->g, it->b);
+    }
+
+    pcShapeMaterial->diffuseColor.finishEditing();
+}
+
+void ViewProviderMesh::setColorPerFace(const App::PropertyColorList* prop)
+{
+    pcMatBinding->value = SoMaterialBinding::PER_FACE;
+    const std::vector<App::Color>& val = prop->getValues();
+    
     pcShapeMaterial->diffuseColor.setNum(val.size());
     SbColor* col = pcShapeMaterial->diffuseColor.startEditing();
 
@@ -1785,6 +1805,23 @@ void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
             }
 
             prop->setValues(valid_colors);
+        }
+    }
+    else if (prop && prop->getSize() == static_cast<int>(kernel->countPoints())) {
+        // switch off coloring mode
+        Coloring.setValue(false);
+
+        std::vector<bool> validFacets(kernel->countFacets(), true);
+        for (auto it : facets)
+            validFacets[it] = false;
+
+        const std::vector<App::Color>& colors = prop->getValues();
+        std::vector<App::Color> valid_colors;
+        valid_colors.reserve(colors.size());
+        std::size_t numColors = colors.size();
+        for (std::size_t index = 0; index < numColors; index++) {
+            if (validFacets[index])
+                valid_colors.push_back(colors[index]);
         }
     }
 
