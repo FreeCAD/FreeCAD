@@ -22,11 +22,11 @@
 """ Query FEM specific settings including solver settings.
 
 Query settings from the hierarchically organized settings/parameter system of
-FreeCAD related to the FEM module. The collection of independed functions use
+FreeCAD related to the FEM module. The collection of independent functions use
 the settings system as a backend and expose a easy to use interface for other
 modules of the FEM module.
 
-Functions quering solver specific settings always take a solver name as a
+Functions querying solver specific settings always take a solver name as a
 string to identify the solver in question. At the moment the following solvers
 are supported:
 
@@ -146,30 +146,30 @@ def get_dir_setting():
 
 class _SolverDlg(object):
     """ Internal query logic for solver specific settings.
-    
+
     Each instance queries settings for one specific solver (e.g. Elmer) common
-    among all solvers. To clearify: There are a few settings that are useful
+    among all solvers. To clarify: There are a few settings that are useful
     for every solver (e.g. where to find the solver binary) but the value and
     the FreeCAD parameter path is different for each one. A instance of this
     class contains all the solver specific paths needed. The settings can be
     queried via the methods which use those path members to query the value for
     the specific solver.
-    
+
     :ivar default:
         Default binary name as a string preferably without a prefix path to
         make it more generic (e.g. "ccx"). This only works if the binary can be
         found via the PATH environment variable on linux or similar mechanisms
         on other operating systems. Used if nothing else is specified by the
         user.
-    
+
     :ivar param_path:
         Parent param path (FreeCADs settings/parameter system) that contains
         all settings for the specific solver.
-    
+
     :ivar use_default:
         Param path identifying the "use_default" setting. Only specifie the
         last part as the *param_path* is prepended to this value.
-    
+
     :ivar custom_path:
         Param path identifying the "custom_path" setting. Only specifie the
         last part as the *param_path* is prepended to this value.
