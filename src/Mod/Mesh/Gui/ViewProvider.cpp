@@ -1787,6 +1787,8 @@ void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
 
     // get the colour property if there
     App::PropertyColorList* prop = getColorProperty();
+    bool ok = Coloring.getValue();
+
     if (prop && prop->getSize() == static_cast<int>(kernel->countPoints())) {
         std::vector<unsigned long> pointDegree;
         unsigned long invalid = kernel->getPointDegree(facets, pointDegree);
@@ -1807,7 +1809,7 @@ void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
             prop->setValues(valid_colors);
         }
     }
-    else if (prop && prop->getSize() == static_cast<int>(kernel->countPoints())) {
+    else if (prop && prop->getSize() == static_cast<int>(kernel->countFacets())) {
         // switch off coloring mode
         Coloring.setValue(false);
 
@@ -1823,12 +1825,16 @@ void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
             if (validFacets[index])
                 valid_colors.push_back(colors[index]);
         }
+
+        prop->setValues(valid_colors);
     }
 
     //Remove the facets from the mesh and open a transaction object for the undo/redo stuff
     kernel->deleteFacets(facets);
     meshProp.finishEditing();
     pcObject->purgeTouched();
+
+    Coloring.setValue(ok);
 }
 
 void ViewProviderMesh::selectFacet(unsigned long facet)
