@@ -28,12 +28,12 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh XDMF reader for FEM workbench
 
-import FreeCAD
+from FreeCAD import Console
 
 
 def read_fenics_mesh_xdmf(xdmffilename):
 
-    FreeCAD.Console.PrintMessage("Not operational, yet\n")
+    Console.PrintMessage("Not operational, yet\n")
 
     return {
         "Nodes": {},

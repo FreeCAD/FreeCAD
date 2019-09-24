@@ -25,7 +25,7 @@
 
 import FreeCAD
 import unittest
-from .utilstest import fcc_print
+from .support_utils import fcc_print
 
 from os.path import join
 
