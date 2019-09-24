@@ -22,11 +22,11 @@
 """ Query FEM specific settings including solver settings.
 
 Query settings from the hierarchically organized settings/parameter system of
-FreeCAD related to the FEM module. The collection of independed functions use
+FreeCAD related to the FEM module. The collection of independent functions use
 the settings system as a backend and expose a easy to use interface for other
 modules of the FEM module.
 
-Functions quering solver specific settings always take a solver name as a
+Functions querying solver specific settings always take a solver name as a
 string to identify the solver in question. At the moment the following solvers
 are supported:
 
@@ -148,7 +148,7 @@ class _SolverDlg(object):
     """ Internal query logic for solver specific settings.
     
     Each instance queries settings for one specific solver (e.g. Elmer) common
-    among all solvers. To clearify: There are a few settings that are useful
+    among all solvers. To clarify: There are a few settings that are useful
     for every solver (e.g. where to find the solver binary) but the value and
     the FreeCAD parameter path is different for each one. A instance of this
     class contains all the solver specific paths needed. The settings can be
