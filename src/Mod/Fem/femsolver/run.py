@@ -35,7 +35,7 @@ __url__ = "http://www.freecadweb.org"
 
 import os
 import os.path
-import threading
+# import threading  # not used ATM
 import shutil
 
 import FreeCAD as App
@@ -498,4 +498,3 @@ class _DocObserver(object):
             if femutils.is_derived_from(obj, t):
                 return True
         return False
-
