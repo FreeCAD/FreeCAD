@@ -281,6 +281,8 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
 /** Loads an OBJ file. */
 bool MeshInput::LoadOBJ (std::istream &rstrIn)
 {
+    boost::regex rx_m("^mtllib\\s+([\\x21-\\x7E]+)\\s*$");
+    boost::regex rx_u("^usemtl\\s+([\\x21-\\x7E]+)\\s*$");
     boost::regex rx_g("^g\\s+([\\x21-\\x7E]+)\\s*$");
     boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
@@ -323,6 +325,8 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
     MeshIO::Binding rgb_value = MeshIO::OVERALL;
     bool new_segment = true;
     std::string groupName;
+    std::string materialName;
+    unsigned long countMaterialFacets = 0;
 
     while (std::getline(rstrIn, line)) {
         // when a group name comes don't make it lower case
@@ -368,6 +372,17 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             new_segment = true;
             groupName = Base::Tools::escapedUnicodeToUtf8(what[1].first);
         }
+        else if (boost::regex_match(line.c_str(), what, rx_m)) {
+            if (_material)
+                _material->library = Base::Tools::escapedUnicodeToUtf8(what[1].first);
+        }
+        else if (boost::regex_match(line.c_str(), what, rx_u)) {
+            if (!materialName.empty()) {
+                _materialNames.push_back(std::make_pair(materialName, countMaterialFacets));
+            }
+            materialName = Base::Tools::escapedUnicodeToUtf8(what[1].first);
+            countMaterialFacets = 0;
+        }
         else if (boost::regex_match(line.c_str(), what, rx_f3)) {
             // starts a new segment
             if (new_segment) {
@@ -389,6 +404,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             item.SetVertices(i1,i2,i3);
             item.SetProperty(segment);
             meshFacets.push_back(item);
+            countMaterialFacets++;
         }
         else if (boost::regex_match(line.c_str(), what, rx_f4)) {
             // starts a new segment
@@ -414,11 +430,18 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             item.SetVertices(i1,i2,i3);
             item.SetProperty(segment);
             meshFacets.push_back(item);
+            countMaterialFacets++;
 
             item.SetVertices(i3,i4,i1);
             item.SetProperty(segment);
             meshFacets.push_back(item);
+            countMaterialFacets++;
         }
+    }
+
+    // Add the last added material name
+    if (!materialName.empty()) {
+        _materialNames.push_back(std::make_pair(materialName, countMaterialFacets));
     }
 
     // now get back the colors from the vertex property
@@ -435,10 +458,18 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             }
         }
     }
+    else if (!materialName.empty()) {
+        // At this point the materials from the .mtl file are not known and will be read-in by the calling instance
+        // but the color list is pre-filled with a default value
+        if (_material) {
+            _material->binding = MeshIO::PER_FACE;
+            _material->diffuseColor.resize(meshFacets.size(), App::Color(0.8f, 0.8f, 0.8f));
+        }
+    }
 
     this->_rclMesh.Clear(); // remove all data before
 
-    MeshCleanup meshCleanup(meshPoints,meshFacets);
+    MeshCleanup meshCleanup(meshPoints, meshFacets);
     if (_material)
         meshCleanup.SetMaterial(_material);
     meshCleanup.RemoveInvalids();
@@ -447,6 +478,62 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
     this->_rclMesh.Adopt(meshPoints,meshFacets);
 
     return true;
+}
+
+bool MeshInput::LoadMTL (std::istream &rstrIn)
+{
+    boost::regex rx_n("^newmtl\\s+([\\x21-\\x7E]+)\\s*$");
+    boost::regex rx_Kd("^\\s*Kd\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
+    boost::cmatch what;
+
+    std::string line;
+
+    if (!_material)
+        return false;
+
+    if (!rstrIn || rstrIn.bad() == true)
+        return false;
+
+    std::streambuf* buf = rstrIn.rdbuf();
+    if (!buf)
+        return false;
+
+    std::map<std::string, App::Color> materials;
+    std::string materialName;
+    std::vector<App::Color> diffuseColor;
+
+    while (std::getline(rstrIn, line)) {
+        if (boost::regex_match(line.c_str(), what, rx_n)) {
+            materialName = Base::Tools::escapedUnicodeToUtf8(what[1].first);
+        }
+        else if (boost::regex_match(line.c_str(), what, rx_Kd)) {
+            float r = static_cast<float>(std::atof(what[1].first));
+            float g = static_cast<float>(std::atof(what[4].first));
+            float b = static_cast<float>(std::atof(what[7].first));
+            materials[materialName] = App::Color(r,g,b);
+        }
+    }
+
+    for (auto it = _materialNames.begin(); it != _materialNames.end(); ++it) {
+        auto jt = materials.find(it->first);
+        if (jt != materials.end()) {
+            std::vector<App::Color> mat(it->second, jt->second);
+            diffuseColor.insert(diffuseColor.end(), mat.begin(), mat.end());
+        }
+    }
+
+    if (diffuseColor.size() == _material->diffuseColor.size()) {
+        _material->binding = MeshIO::PER_FACE;
+        _material->diffuseColor.swap(diffuseColor);
+        return true;
+    }
+    else {
+        _material->binding = MeshIO::OVERALL;
+        _material->diffuseColor.clear();
+        return false;
+    }
 }
 
 /** Loads an SMF file. */
@@ -2170,14 +2257,15 @@ bool MeshOutput::SaveMTL(std::ostream &out) const
     if (_material) {
         if (_material->binding == MeshIO::PER_FACE) {
 
-            out.precision(6);
-            out.setf(std::ios::fixed | std::ios::showpoint);
-            out << "# Created by FreeCAD <http://www.freecadweb.org>: 'None'" << std::endl;
-            out << "# Material Count: " << _material->diffuseColor.size() << std::endl;
-
             std::vector<App::Color> Kd = _material->diffuseColor;
             std::sort(Kd.begin(), Kd.end(), Color_Less());
             Kd.erase(std::unique(Kd.begin(), Kd.end()), Kd.end());
+
+            out.precision(6);
+            out.setf(std::ios::fixed | std::ios::showpoint);
+            out << "# Created by FreeCAD <http://www.freecadweb.org>: 'None'" << std::endl;
+            out << "# Material Count: " << Kd.size() << std::endl;
+
             for (std::size_t i=0; i<Kd.size(); i++) {
                 out << std::endl;
                 out << "newmtl material_" << i << std::endl;

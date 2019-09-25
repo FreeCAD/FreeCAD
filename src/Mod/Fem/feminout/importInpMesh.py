@@ -30,6 +30,7 @@ __date__ = "04/08/2016"
 #  \brief FreeCAD INP file reader for FEM workbench
 
 import FreeCAD
+from FreeCAD import Console
 import os
 
 
@@ -211,7 +212,7 @@ def read_inp(file_name):
         elif line[:5].upper() == "*STEP":
             model_definition = False
     if error_seg3 is True:  # to print "not supported"
-        FreeCAD.Console.PrintError("Error: seg3 (3-node beam element type) not supported, yet.\n")
+        Console.PrintError("Error: seg3 (3-node beam element type) not supported, yet.\n")
     f.close()
 
     # switch from the CalculiX node numbering to the FreeCAD node numbering

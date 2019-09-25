@@ -32,6 +32,7 @@ __url__ = "http://www.freecadweb.org"
 
 import os
 import FreeCAD
+from FreeCAD import Console
 import Fem
 
 
@@ -71,26 +72,26 @@ def export(
 ):
     "called when freecad exports an object to vtk"
     if len(objectslist) > 1:  # the case of no selected obj is caught by FreeCAD already
-        FreeCAD.Console.PrintError(
+        Console.PrintError(
             "This exporter can only export one object at once\n"
         )
         return
 
     obj = objectslist[0]
     if obj.isDerivedFrom("Fem::FemPostPipeline"):
-        FreeCAD.Console.PrintError(
-            "Export of a VTK post object to vtk is not yet implemented !\n"
+        Console.PrintError(
+            "Export of a VTK post object to vtk is not yet implemented!\n"
         )
         return
     elif obj.isDerivedFrom("Fem::FemMeshObject"):
-        FreeCAD.Console.PrintError(
+        Console.PrintError(
             "Use export to FEM mesh formats to export a FEM mesh object to vtk!\n"
         )
         return
     elif obj.isDerivedFrom("Fem::FemResultObject"):
         Fem.writeResult(filename, obj)
     else:
-        FreeCAD.Console.PrintError(
+        Console.PrintError(
             "Selected object is not supported by export to VTK.\n"
         )
         return
@@ -119,7 +120,7 @@ def importVtk(
         # FreeCAD result object
         importVtkFCResult(filename, object_name)
     else:
-        FreeCAD.Console.PrintError(
+        Console.PrintError(
             "Error, wrong parameter in VTK import pref: {}\n"
             .format(object_type)
         )

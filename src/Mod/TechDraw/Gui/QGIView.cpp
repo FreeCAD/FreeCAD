@@ -699,6 +699,12 @@ int QGIView::calculateFontPixelSize(double sizeInMillimetres)
     return (int) (Rez::guiX(sizeInMillimetres) + 0.5);
 }
 
+int QGIView::calculateFontPixelWidth(const QFont &font)
+{
+    // Return the width of digit 0, most likely the most wide digit
+    return QFontMetrics(font).width(QChar::fromLatin1('0'));
+}
+
 const double QGIView::DefaultFontSizeInMM = 5.0;
 
 void QGIView::dumpRect(char* text, QRectF r) {

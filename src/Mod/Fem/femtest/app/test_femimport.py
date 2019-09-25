@@ -26,7 +26,7 @@
 import unittest
 
 import FreeCAD
-from femtest.utilstest import fcc_print
+from .support_utils import fcc_print
 
 
 class TestFemImport(unittest.TestCase):
