@@ -130,7 +130,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      <property name="minimumSize">
       <size>
        <width>12</width>
-       <height>12</height>
+       <height>60</height>
       </size>
      </property>
      <property name="toolTip">
