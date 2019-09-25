@@ -46,6 +46,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
     femexamples/meshes/mesh_canticcx_tetra10.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
+    femexamples/meshes/mesh_multimaterial_twoboxes.py
     femexamples/meshes/mesh_thermomech_spine.py
 )
 
@@ -167,7 +168,6 @@ SET(FemTestsCcx_SRCS
     femtest/data/ccx/cube_static.FCStd
     femtest/data/ccx/cube.FCStd
     femtest/data/ccx/multimat.inp
-    femtest/data/ccx/multimat_mesh.py
     femtest/data/ccx/spine_thermomech.inp
     femtest/data/ccx/spine_thermomech.dat
     femtest/data/ccx/spine_thermomech.frd
