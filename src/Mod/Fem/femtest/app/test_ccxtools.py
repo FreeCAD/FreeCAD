@@ -28,8 +28,8 @@ from femtools import ccxtools
 import FreeCAD
 import ObjectsFem
 import unittest
-from . import utilstest as testtools
-from .utilstest import fcc_print
+from . import support_utils as testtools
+from .support_utils import fcc_print
 
 from os.path import join
 
@@ -167,8 +167,8 @@ class TestCcxTools(unittest.TestCase):
         analysis.addObject(pressure_constraint)
 
         fcc_print("Checking FEM new mesh...")
-        from .testfiles.ccx.cube_mesh import create_nodes_cube
-        from .testfiles.ccx.cube_mesh import create_elements_cube
+        from ..data.ccx.cube_mesh import create_nodes_cube
+        from ..data.ccx.cube_mesh import create_elements_cube
         mesh = Fem.FemMesh()
         ret = create_nodes_cube(mesh)
         self.assertTrue(
@@ -380,7 +380,7 @@ class TestCcxTools(unittest.TestCase):
         analysis.addObject(pressure_constraint)
 
         mesh = Fem.FemMesh()
-        import femtest.testfiles.ccx.multimat_mesh as multimatmesh
+        import femtest.data.ccx.multimat_mesh as multimatmesh
         multimatmesh.create_nodes(mesh)
         multimatmesh.create_elements(mesh)
         mesh_object = self.active_doc.addObject("Fem::FemMeshObject", self.mesh_name)
@@ -481,8 +481,8 @@ class TestCcxTools(unittest.TestCase):
         analysis.addObject(material_object)
 
         fcc_print("Checking FEM new mesh...")
-        from .testfiles.ccx.cube_mesh import create_nodes_cube
-        from .testfiles.ccx.cube_mesh import create_elements_cube
+        from ..data.ccx.cube_mesh import create_nodes_cube
+        from ..data.ccx.cube_mesh import create_elements_cube
         mesh = Fem.FemMesh()
         ret = create_nodes_cube(mesh)
         self.assertTrue(ret, "Import of mesh nodes failed")
@@ -704,8 +704,8 @@ class TestCcxTools(unittest.TestCase):
         analysis.addObject(heatflux_constraint)
 
         fcc_print("Checking FEM new mesh...")
-        from .testfiles.ccx.spine_mesh import create_nodes_spine
-        from .testfiles.ccx.spine_mesh import create_elements_spine
+        from ..data.ccx.spine_mesh import create_nodes_spine
+        from ..data.ccx.spine_mesh import create_elements_spine
         mesh = Fem.FemMesh()
         ret = create_nodes_spine(mesh)
         self.assertTrue(
@@ -1106,8 +1106,8 @@ class TestCcxTools(unittest.TestCase):
         analysis.addObject(Flow1d_self_weight)
 
         fcc_print("Checking FEM new mesh...")
-        from .testfiles.ccx.Flow1D_mesh import create_nodes_Flow1D
-        from .testfiles.ccx.Flow1D_mesh import create_elements_Flow1D
+        from ..data.ccx.Flow1D_mesh import create_nodes_Flow1D
+        from ..data.ccx.Flow1D_mesh import create_elements_Flow1D
         mesh = Fem.FemMesh()
         ret = create_nodes_Flow1D(mesh)
         self.assertTrue(ret, "Import of mesh nodes failed")

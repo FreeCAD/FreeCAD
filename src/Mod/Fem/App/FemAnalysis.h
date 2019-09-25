@@ -34,15 +34,15 @@ namespace Fem {
  * @brief Container of objects relevant to one simulation.
  * 
  * @details
- *  A Analysis contains all objects nessesary for a complete specification
+ *  A Analysis contains all objects necessary for a complete specification
  *  of a simulation. After computing it also contains the result of the
- *  simulation. The Analysis object is just a container. It is not reponsible
+ *  simulation. The Analysis object is just a container. It is not responsible
  *  for anything else like executing the simulation.
  *
  *  The Analysis class is essentially a App::DocumentObjectGroup. It handles
  *  all the container stuff. The difference is that the Analysis document
  *  object uses a different ViewProvider, has a Uid property and does some
- *  compability handling via handleChangedPropertyName.
+ *  compatibility handling via handleChangedPropertyName.
  *
  *  This implies that it is not checked which objects are put into the
  *  Analsis object. Every document object of FreeCAD can be part of a
@@ -73,7 +73,7 @@ public:
 
 protected:
     /**
-     * @brief Retain compability with old "Member" property.
+     * @brief Retain compatibility with old "Member" property.
      *
      * @details
      *  In an older version of FreeCAD FemAnalysis handles it's member itself

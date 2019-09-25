@@ -1,5 +1,5 @@
 ﻿/***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 J�rgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -44,7 +44,10 @@
 using namespace TechDrawGui;
 
 const char *ViewProviderDimension::StandardAndStyleEnums[]=
-    { "ISO Oriented", "ISO Levelled", "ASME Regular", "ASME Inlined", NULL };
+    { "ISO Oriented", "ISO Referencing", "ASME Inlined", "ASME Referencing", NULL };
+
+const char *ViewProviderDimension::RenderingExtentEnums[]=
+    { "None", "Minimal", "Confined", "Reduced", "Normal", "Expanded", NULL };
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDimension, TechDrawGui::ViewProviderDrawingView)
 
@@ -83,11 +86,12 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(Color,(fcColor),group,App::Prop_None,"The color of the Dimension");
 
     int standardStyle = hGrp->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
-    ADD_PROPERTY_TYPE(StandardAndStyle, (standardStyle), group, App::Prop_None, "Specify the standard according to which this dimension is drawn");
+    ADD_PROPERTY_TYPE(StandardAndStyle, (standardStyle), group, App::Prop_None, "Specifies the standard according to which this dimension is drawn");
     StandardAndStyle.setEnums(StandardAndStyleEnums);
 
-    ADD_PROPERTY_TYPE(ExtendToCenter, (true),  group, App::Prop_None,"Prolong the leader line right upto the center point");
-    ADD_PROPERTY_TYPE(FlipArrowheads, (false), group, App::Prop_None,"Reverse the normal direction of arrowheads on dimline");
+    ADD_PROPERTY_TYPE(RenderingExtent, (REND_EXTENT_NORMAL),  group, App::Prop_None,"Select the rendering mode by space requirements");
+    RenderingExtent.setEnums(RenderingExtentEnums);
+    ADD_PROPERTY_TYPE(FlipArrowheads, (false), group, App::Prop_None,"Reverts the usual direction of dimension line terminators");
 }
 
 ViewProviderDimension::~ViewProviderDimension()
@@ -139,7 +143,7 @@ void ViewProviderDimension::onChanged(const App::Property* p)
         (p == &Fontsize) ||
         (p == &LineWidth) ||
         (p == &StandardAndStyle) ||
-        (p == &ExtendToCenter) ||
+        (p == &RenderingExtent) ||
         (p == &FlipArrowheads))
  {
         QGIView* qgiv = getQView();

@@ -190,8 +190,9 @@ protected:
     void highlightSegments();
     void setHighlightedSegments(bool);
     App::PropertyColorList* getColorProperty() const;
-    void tryColorPerVertex(bool);
+    void tryColorPerVertexOrFace(bool);
     void setColorPerVertex(const App::PropertyColorList*);
+    void setColorPerFace(const App::PropertyColorList*);
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;

@@ -97,6 +97,9 @@ public:
     App::PropertyLinkSubList       References2D;                       //Points to Projection SubFeatures
     App::PropertyLinkSubList       References3D;                       //Points to 3D Geometry SubFeatures
     App::PropertyEnumeration       Type;                               //DistanceX,DistanceY,Diameter, etc
+
+    App::PropertyBool              TheoreticalExact;
+    App::PropertyBool              Inverted;
     App::PropertyString            FormatSpec;
     App::PropertyBool              Arbitrary;
     App::PropertyFloat             OverTolerance;
@@ -120,7 +123,7 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void);
 
-    virtual std::string getFormatedValue(bool obtuse = false);
+    virtual std::string getFormatedValue();
     virtual double getDimValue();
     DrawViewPart* getViewPart() const;
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!
