@@ -78,6 +78,7 @@ def run_all():
     run_ccx_cantilevernodeload()
     run_ccx_cantileverprescribeddisplacement()
     run_rcwall2d()
+    run_thermomech_spine()
 
 
 def run_ccx_cantileverfaceload(solver=None, base_name=None):
@@ -136,6 +137,20 @@ def run_rcwall2d(solver=None, base_name=None):
     return doc
 
 
+def run_thermomech_spine(solver=None, base_name=None):
+
+    from femexamples.thermomech_spine import setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = "Thermomech_Spine"
+        if solver is not None:
+            base_name += "_" + solver
+    run_analysis(doc, base_name)
+
+    return doc
+
+
 """
 from femexamples.manager import *
 
@@ -150,5 +165,7 @@ doc = run_ccx_cantilevernodeload("ccxtools")
 doc = run_ccx_cantilevernodeload("z88")
 
 doc = run_rcwall2d()
+
+doc = run_thermomech_spine()
 
 """
