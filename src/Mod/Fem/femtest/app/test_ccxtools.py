@@ -288,106 +288,13 @@ class TestCcxTools(unittest.TestCase):
     ):
         fcc_print("--------------- Start of FEM ccxtools multiple material test ---------------")
 
-        # create a CompSolid of two Boxes extract the CompSolid
-        # we are able to remesh if needed
-        boxlow = self.active_doc.addObject("Part::Box", "BoxLower")
-        boxupp = self.active_doc.addObject("Part::Box", "BoxUpper")
-        boxupp.Placement.Base = (0, 0, 10)
+        # set up the simple multimat example
+        from femexamples import multimaterial_twoboxes
+        multimaterial_twoboxes.setup(self.active_doc, "ccxtools")
 
-        # for BooleanFragments Occt >=6.9 is needed
-        """
-        import BOPTools.SplitFeatures
-        bf = BOPTools.SplitFeatures.makeBooleanFragments(name="BooleanFragments")
-        bf.Objects = [boxlow, boxupp]
-        bf.Mode = "CompSolid"
-        self.active_doc.recompute()
-        bf.Proxy.execute(bf)
-        bf.purgeTouched()
-        for obj in bf.ViewObject.Proxy.claimChildren():
-            obj.ViewObject.hide()
-        self.active_doc.recompute()
-        import CompoundTools.CompoundFilter
-        cf = CompoundTools.CompoundFilter.makeCompoundFilter(name="MultiMatCompSolid")
-        cf.Base = bf
-        cf.FilterType = "window-volume"
-        cf.Proxy.execute(cf)
-        cf.purgeTouched()
-        cf.Base.ViewObject.hide()
-        """
-        self.active_doc.recompute()
-        if FreeCAD.GuiUp:
-            import FreeCADGui
-            FreeCADGui.ActiveDocument.activeView().viewAxonometric()
-            FreeCADGui.SendMsgToActiveView("ViewFit")
+        analysis = self.active_doc.Analysis
+        solver_object = self.active_doc.CalculiXccxTools
 
-        analysis = ObjectsFem.makeAnalysis(
-            self.active_doc,
-            "Analysis"
-        )
-        solver_object = ObjectsFem.makeSolverCalculixCcxTools(
-            self.active_doc,
-            "CalculiXccxTools"
-        )
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
-        analysis.addObject(solver_object)
-
-        material_object_low = ObjectsFem.makeMaterialSolid(
-            self.active_doc,
-            "MechanicalMaterialLow"
-        )
-        mat = material_object_low.Material
-        mat["Name"] = "Aluminium-Generic"
-        mat["YoungsModulus"] = "70000 MPa"
-        mat["PoissonRatio"] = "0.35"
-        mat["Density"] = "2700  kg/m^3"
-        material_object_low.Material = mat
-        material_object_low.References = [(boxlow, "Solid1")]
-        analysis.addObject(material_object_low)
-
-        material_object_upp = ObjectsFem.makeMaterialSolid(
-            self.active_doc,
-            "MechanicalMaterialUpp"
-        )
-        mat = material_object_upp.Material
-        mat["Name"] = "Steel-Generic"
-        mat["YoungsModulus"] = "200000 MPa"
-        mat["PoissonRatio"] = "0.30"
-        mat["Density"] = "7980 kg/m^3"
-        material_object_upp.Material = mat
-        material_object_upp.References = [(boxupp, "Solid1")]
-        analysis.addObject(material_object_upp)
-
-        fixed_constraint = self.active_doc.addObject(
-            "Fem::ConstraintFixed",
-            "ConstraintFixed"
-        )
-        # fixed_constraint.References = [(cf, "Face3")]
-        fixed_constraint.References = [(boxlow, "Face5")]
-        analysis.addObject(fixed_constraint)
-
-        pressure_constraint = self.active_doc.addObject(
-            "Fem::ConstraintPressure",
-            "ConstraintPressure"
-        )
-        # pressure_constraint.References = [(cf, "Face9")]
-        pressure_constraint.References = [(boxupp, "Face6")]
-        pressure_constraint.Pressure = 1000.0
-        pressure_constraint.Reversed = False
-        analysis.addObject(pressure_constraint)
-
-        mesh = Fem.FemMesh()
-        import femtest.data.ccx.multimat_mesh as multimatmesh
-        multimatmesh.create_nodes(mesh)
-        multimatmesh.create_elements(mesh)
-        mesh_object = self.active_doc.addObject("Fem::FemMeshObject", self.mesh_name)
-        mesh_object.FemMesh = mesh
-        analysis.addObject(mesh_object)
-
-        self.active_doc.recompute()
         static_multiplemat_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
             "FEM_ccx_multimat/"

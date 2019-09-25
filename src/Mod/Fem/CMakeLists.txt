@@ -37,6 +37,7 @@ SET(FemExamples_SRCS
     femexamples/__init__.py
     femexamples/ccx_cantilever_std.py
     femexamples/manager.py
+    femexamples/multimaterial_twoboxes.py
     femexamples/rc_wall_2d.py
     femexamples/thermomech_spine.py
 )
