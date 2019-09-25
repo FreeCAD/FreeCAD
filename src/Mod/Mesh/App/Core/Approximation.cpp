@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <cstdlib>
+# include <iterator> 
 #endif
 
 #include "Approximation.h"
