@@ -35,7 +35,7 @@ __url__ = "http://www.freecadweb.org"
 
 import os
 import os.path
-import threading
+# import threading  # not used ATM
 import shutil
 
 import FreeCAD as App
@@ -61,7 +61,7 @@ _dirTypes = {}
 
 
 def run_fem_solver(solver, working_dir=None):
-    """ Execute *solver* of the solver framwork.
+    """ Execute *solver* of the solver framework.
 
     Uses :meth:`getMachine <femsolver.solverbase.Proxy.getMachine>` to obtain a
     :class:`Machine` instance of the solver. It than executes the Machine with
@@ -71,7 +71,7 @@ def run_fem_solver(solver, working_dir=None):
     the function.
 
     :param solver:
-        A document object which must be a famework complient solver. This means
+        A document object which must be a framework compliant solver. This means
         that it should be derived from the document object provided by
         :mod:`femsolver.solverbase` and implement all required methods
         correctely. Of particular importance is :meth:`getMachine
@@ -151,7 +151,7 @@ def getMachine(solver, path=None):
     """ Get or create :class:`Machine` using caching mechanism.
 
     :param solver:
-        A document object which must be a famework complient solver. This means
+        A document object which must be a framework compliant solver. This means
         that it should be derived from the document object provided by
         :mod:`femsolver.solverbase` and implement all required methods
         correctely. Of particular importance is :meth:`getMachine
@@ -498,4 +498,3 @@ class _DocObserver(object):
             if femutils.is_derived_from(obj, t):
                 return True
         return False
-
