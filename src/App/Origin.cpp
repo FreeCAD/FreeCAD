@@ -51,6 +51,8 @@ const char* Origin::PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
 Origin::Origin(void) {
     ADD_PROPERTY_TYPE ( OriginFeatures, (0), 0, App::Prop_Hidden,
             "Axis and baseplanes controlled by the origin" );
+
+    setStatus(App::NoAutoExpand,true);
 }
 
 

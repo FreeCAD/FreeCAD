@@ -271,7 +271,14 @@ public:
     void updateSelection(QTreeWidgetItem *, bool unselect=false);
     void updateSelection();
     void updateItemSelection(DocumentObjectItem *);
-    void selectItems(bool sync);
+
+    enum SelectionReason {
+        SR_SELECT, // only select, no expansion
+        SR_EXPAND, // select and expand but respect ObjectStatus::NoAutoExpand
+        SR_FORCE_EXPAND, // select and force expansion
+    };
+    void selectItems(SelectionReason reason=SR_SELECT);
+
     void testStatus(void);
     void setData(int column, int role, const QVariant & value);
     void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);

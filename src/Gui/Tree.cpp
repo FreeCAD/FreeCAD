@@ -2431,7 +2431,7 @@ void TreeWidget::onUpdateStatus(void)
         currentDocItem = 0;
         for(auto &v : DocumentMap) {
             v.second->setSelected(false);
-            v.second->selectItems(false);
+            v.second->selectItems();
         }
         this->blockConnection(false);
     }
@@ -2559,7 +2559,7 @@ void TreeWidget::scrollItemToTop()
             auto it = tree->DocumentMap.find(doc);
             if (it != tree->DocumentMap.end()) {
                 bool lock = tree->blockConnection(true);
-                it->second->selectItems(true);
+                it->second->selectItems(DocumentItem::SR_FORCE_EXPAND);
                 tree->blockConnection(lock);
             }
         } else {
@@ -2571,7 +2571,7 @@ void TreeWidget::scrollItemToTop()
                 auto doc = docItem->document()->getDocument();
                 if(Gui::Selection().hasSelection(doc->getName())) {
                     tree->currentDocItem = docItem;
-                    docItem->selectItems(true);
+                    docItem->selectItems(DocumentItem::SR_FORCE_EXPAND);
                     tree->currentDocItem = 0;
                     break;
                 }
@@ -2791,7 +2791,7 @@ void TreeWidget::onSelectTimer() {
         for(auto &v : DocumentMap) {
             v.second->setSelected(false);
             currentDocItem = v.second;
-            v.second->selectItems(syncSelect);
+            v.second->selectItems(syncSelect?DocumentItem::SR_EXPAND:DocumentItem::SR_SELECT);
             currentDocItem = 0;
         }
     }else{
@@ -4190,13 +4190,16 @@ DocumentObjectItem *DocumentItem::findItem(
     return res;
 }
 
-void DocumentItem::selectItems(bool sync) {
+void DocumentItem::selectItems(SelectionReason reason) {
     const auto &sels = Selection().getSelection(pDocument->getDocument()->getName(),false);
+
+    bool sync = reason==SR_SELECT?false:true;
+
     for(const auto &sel : sels)
         findItemByObject(sync,sel.pObject,sel.SubName,true);
 
-    DocumentObjectItem *first = 0;
-    DocumentObjectItem *last = 0;
+    DocumentObjectItem *newSelect = 0;
+    DocumentObjectItem *oldSelect = 0;
 
     FOREACH_ITEM_ALL(item)
         if(item->selected == 1) {
@@ -4206,26 +4209,36 @@ void DocumentItem::selectItems(bool sync) {
             item->mySubs.clear();
             item->setSelected(false);
         }else if(item->selected) {
-            if(item->selected == 2) {
-                // This means newly selected
-                if(!first)
-                    first = item;
-                if(sync)
-                    showItem(item,false,true);
+            if(sync) {
+                if(item->selected==2 && showItem(item,false,reason==SR_FORCE_EXPAND)) {
+                    // This means newly selected and can auto expand
+                    if(!newSelect)
+                        newSelect = item;
+                }
+                if(!newSelect && !oldSelect && !item->isHidden()) {
+                    bool visible = true;
+                    for(auto parent=item->parent();parent;parent=parent->parent()) {
+                        if(!parent->isExpanded() || parent->isHidden()) {
+                            visible = false;
+                            break;
+                        }
+                    }
+                    if(visible)
+                        oldSelect = item;
+                }
             }
             item->selected = 1;
             item->setSelected(true);
-            last = item;
         }
     END_FOREACH_ITEM;
 
     if(sync) {
-        if(!first)
-            first = last;
+        if(!newSelect)
+            newSelect = oldSelect;
         else
-            getTree()->syncView(first->object());
-        if(first) 
-            getTree()->scrollToItem(first);
+            getTree()->syncView(newSelect->object());
+        if(newSelect) 
+            getTree()->scrollToItem(newSelect);
     }
 }
 
@@ -4301,12 +4314,19 @@ bool DocumentItem::showItem(DocumentObjectItem *item, bool select, bool force) {
         item->setHidden(false);
     }
     
-    if(parent->type()==TreeWidget::ObjectType && 
-       !showItem(static_cast<DocumentObjectItem*>(parent),false))
-        return false;
+    if(parent->type()==TreeWidget::ObjectType) { 
+        if(!showItem(static_cast<DocumentObjectItem*>(parent),false))
+            return false;
+        auto pitem = static_cast<DocumentObjectItem*>(parent);
+        if(force || !pitem->object()->getObject()->testStatus(App::NoAutoExpand))
+            parent->setExpanded(true);
+        else if(!select)
+            return false;
+    }else
+        parent->setExpanded(true);
 
-    parent->setExpanded(true);
-    if(select) item->setSelected(true);
+    if(select)
+        item->setSelected(true);
     return true;
 }
 
