@@ -112,7 +112,7 @@ class Draft_SelectPlane:
         self.taskd.form.buttonPrevious.clicked.connect(self.onClickPrevious)
         self.taskd.form.fieldGridSpacing.textEdited.connect(self.onSetGridSize)
         self.taskd.form.fieldGridMainLine.valueChanged.connect(self.onSetMainline)
-        self.taskd.form.fieldSnapRadius.valueChanged.connect(self.onSetSnapRadius)        
+        self.taskd.form.fieldSnapRadius.valueChanged.connect(self.onSetSnapRadius)
 
         # try to find a WP from the current selection
         if self.handle():
