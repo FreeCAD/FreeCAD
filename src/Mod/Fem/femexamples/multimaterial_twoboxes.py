@@ -144,7 +144,7 @@ def setup(doc=None, solver="ccxtools"):
 
     # mesh
     # from femexamples.meshes.mesh_thermomech_spine import create_nodes, create_elements
-    from  femtest.data.ccx.multimat_mesh import create_nodes, create_elements
+    from  femexamples.meshes.mesh_multimaterial_twoboxes import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
