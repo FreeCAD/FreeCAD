@@ -2934,6 +2934,10 @@ void PropertyXLink::setValue(App::DocumentObject *lValue,
         unlink();
         docInfo = info;
     }
+    if(docInfo)
+        filePath = docInfo->filePath();
+    else
+        filePath.clear();
     _pcLink=lValue;
     if(docInfo && docInfo->pcDoc)
         stamp=docInfo->pcDoc->LastModifiedDate.getValue();
@@ -2977,6 +2981,10 @@ void PropertyXLink::setValue(std::string &&filename, std::string &&name,
         unlink();
         docInfo = info;
     }
+    if(docInfo)
+        filePath = docInfo->filePath();
+    else
+        filePath.clear();
     if(docInfo && docInfo->pcDoc)
         stamp=docInfo->pcDoc->LastModifiedDate.getValue();
     objectName = std::move(name);
