@@ -79,6 +79,7 @@ def run_all():
     run_ccx_cantileverfaceload()
     run_ccx_cantilevernodeload()
     run_ccx_cantileverprescribeddisplacement()
+    run_multimaterial_twoboxes()
     run_rcwall2d()
     run_thermomech_flow1d()
     run_thermomech_spine()
@@ -170,7 +171,7 @@ def run_multimaterial_twoboxes(solver=None, base_name=None):
 
 def run_rcwall2d(solver=None, base_name=None):
 
-    from .rc_wall_2d import setup_rcwall2d as setup
+    from .rc_wall_2d import setup as setup
     doc = setup()
 
     if base_name is None:
@@ -212,25 +213,23 @@ def run_thermomech_spine(solver=None, base_name=None):
 
 """
 from femexamples.manager import *
-
 run_all()
 
+from femexamples.manager import *
 doc = run_boxanalysisstatic()
 doc = run_boxanalysisfrequency()
-
 doc = run_ccx_cantileverfaceload()
 doc = run_ccx_cantilevernodeload()
 doc = run_ccx_cantileverprescribeddisplacement()
+doc = run_multimaterial_twoboxes()
+doc = run_rcwall2d()
+doc = run_thermomech_flow1d()
+doc = run_thermomech_spine()
+
 
 doc = run_ccx_cantilevernodeload("calculix")
 doc = run_ccx_cantilevernodeload("ccxtools")
 doc = run_ccx_cantilevernodeload("z88")
 
-doc = run_multimaterial_twoboxes()
-
-doc = run_rcwall2d()
-
-doc = run_thermomech_flow1d()
-doc = run_thermomech_spine()
 
 """
