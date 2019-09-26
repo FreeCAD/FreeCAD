@@ -1,5 +1,5 @@
 ﻿/***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 J�rgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -49,13 +49,20 @@ public:
     App::PropertyFloat       LineWidth;
     App::PropertyColor       Color;
 
-    static const int STD_STYLE_ISO_ORIENTED   = 0;
-    static const int STD_STYLE_ISO_LEVELLED   = 1;
-    static const int STD_STYLE_ASME_REGULAR   = 2;
-    static const int STD_STYLE_ASME_INLINED   = 3;
-
+    static const int STD_STYLE_ISO_ORIENTED     = 0;
+    static const int STD_STYLE_ISO_REFERENCING  = 1;
+    static const int STD_STYLE_ASME_INLINED     = 2;
+    static const int STD_STYLE_ASME_REFERENCING = 3;
     App::PropertyEnumeration StandardAndStyle;
-    App::PropertyBool        ExtendToCenter;
+
+    static const int REND_EXTENT_NONE     = 0;
+    static const int REND_EXTENT_MINIMAL  = 1;
+    static const int REND_EXTENT_CONFINED = 2;
+    static const int REND_EXTENT_REDUCED  = 3;
+    static const int REND_EXTENT_NORMAL   = 4;
+    static const int REND_EXTENT_EXPANDED = 5;
+    App::PropertyEnumeration RenderingExtent;
+
     App::PropertyBool        FlipArrowheads;
 
     virtual void attach(App::DocumentObject *);
@@ -71,6 +78,7 @@ public:
 private:
 
     static const char *StandardAndStyleEnums[];
+    static const char *RenderingExtentEnums[];
 
 };
 
