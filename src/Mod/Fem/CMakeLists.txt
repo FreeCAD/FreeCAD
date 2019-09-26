@@ -39,6 +39,7 @@ SET(FemExamples_SRCS
     femexamples/manager.py
     femexamples/multimaterial_twoboxes.py
     femexamples/rc_wall_2d.py
+    femexamples/thermomech_flow1d.py
     femexamples/thermomech_spine.py
 )
 
