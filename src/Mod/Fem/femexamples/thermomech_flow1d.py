@@ -122,114 +122,114 @@ def setup(doc=None, solver="ccxtools"):
     mat["ThermalConductivity"] = "0.591 W/m/K"
     material_object.Material = mat
 
-    Flow1d_inlet = analysis.addObject(
+    inlet = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
     )[0]
-    Flow1d_inlet.SectionType = "Liquid"
-    Flow1d_inlet.LiquidSectionType = "PIPE INLET"
-    Flow1d_inlet.InletPressure = 0.1
-    Flow1d_inlet.References = [(line, "Edge1")]
+    inlet.SectionType = "Liquid"
+    inlet.LiquidSectionType = "PIPE INLET"
+    inlet.InletPressure = 0.1
+    inlet.References = [(line, "Edge1")]
 
-    Flow1d_entrance = analysis.addObject(
+    entrance = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
     )[0]
-    Flow1d_entrance.SectionType = "Liquid"
-    Flow1d_entrance.LiquidSectionType = "PIPE ENTRANCE"
-    Flow1d_entrance.EntrancePipeArea = 31416.00
-    Flow1d_entrance.EntranceArea = 25133.00
-    Flow1d_entrance.References = [(line, "Edge2")]
+    entrance.SectionType = "Liquid"
+    entrance.LiquidSectionType = "PIPE ENTRANCE"
+    entrance.EntrancePipeArea = 31416.00
+    entrance.EntranceArea = 25133.00
+    entrance.References = [(line, "Edge2")]
 
-    Flow1d_manning = analysis.addObject(
+    manning1 = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
     )[0]
-    Flow1d_manning.SectionType = "Liquid"
-    Flow1d_manning.LiquidSectionType = "PIPE MANNING"
-    Flow1d_manning.ManningArea = 31416
-    Flow1d_manning.ManningRadius = 50
-    Flow1d_manning.ManningCoefficient = 0.002
-    Flow1d_manning.References = [(line, "Edge3"), (line, "Edge5")]
+    manning1.SectionType = "Liquid"
+    manning1.LiquidSectionType = "PIPE MANNING"
+    manning1.ManningArea = 31416
+    manning1.ManningRadius = 50
+    manning1.ManningCoefficient = 0.002
+    manning1.References = [(line, "Edge3"), (line, "Edge5")]
 
-    Flow1d_bend = analysis.addObject(
+    bend = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
     )[0]
-    Flow1d_bend.SectionType = "Liquid"
-    Flow1d_bend.LiquidSectionType = "PIPE BEND"
-    Flow1d_bend.BendPipeArea = 31416
-    Flow1d_bend.BendRadiusDiameter = 1.5
-    Flow1d_bend.BendAngle = 45
-    Flow1d_bend.BendLossCoefficient = 0.4
-    Flow1d_bend.References = [(line, "Edge4")]
+    bend.SectionType = "Liquid"
+    bend.LiquidSectionType = "PIPE BEND"
+    bend.BendPipeArea = 31416
+    bend.BendRadiusDiameter = 1.5
+    bend.BendAngle = 45
+    bend.BendLossCoefficient = 0.4
+    bend.References = [(line, "Edge4")]
 
-    Flow1d_enlargement = analysis.addObject(
+    enlargement1 = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
     )[0]
-    Flow1d_enlargement.SectionType = "Liquid"
-    Flow1d_enlargement.LiquidSectionType = "PIPE ENLARGEMENT"
-    Flow1d_enlargement.EnlargeArea1 = 31416.00
-    Flow1d_enlargement.EnlargeArea2 = 70686.00
-    Flow1d_enlargement.References = [(line, "Edge6")]
+    enlargement1.SectionType = "Liquid"
+    enlargement1.LiquidSectionType = "PIPE ENLARGEMENT"
+    enlargement1.EnlargeArea1 = 31416.00
+    enlargement1.EnlargeArea2 = 70686.00
+    enlargement1.References = [(line, "Edge6")]
 
-    Flow1d_manning1 = analysis.addObject(
+    manning2 = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
     )[0]
-    Flow1d_manning1.SectionType = "Liquid"
-    Flow1d_manning1.LiquidSectionType = "PIPE MANNING"
-    Flow1d_manning1.ManningArea = 70686.00
-    Flow1d_manning1.ManningRadius = 75
-    Flow1d_manning1.ManningCoefficient = 0.002
-    Flow1d_manning1.References = [(line, "Edge7")]
+    manning2.SectionType = "Liquid"
+    manning2.LiquidSectionType = "PIPE MANNING"
+    manning2.ManningArea = 70686.00
+    manning2.ManningRadius = 75
+    manning2.ManningCoefficient = 0.002
+    manning2.References = [(line, "Edge7")]
 
-    Flow1d_contraction = analysis.addObject(
+    contraction = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
     )[0]
-    Flow1d_contraction.SectionType = "Liquid"
-    Flow1d_contraction.LiquidSectionType = "PIPE CONTRACTION"
-    Flow1d_contraction.ContractArea1 = 70686
-    Flow1d_contraction.ContractArea2 = 17671
-    Flow1d_contraction.References = [(line, "Edge8")]
+    contraction.SectionType = "Liquid"
+    contraction.LiquidSectionType = "PIPE CONTRACTION"
+    contraction.ContractArea1 = 70686
+    contraction.ContractArea2 = 17671
+    contraction.References = [(line, "Edge8")]
 
-    Flow1d_manning2 = analysis.addObject(
+    manning3 = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
     )[0]
-    Flow1d_manning2.SectionType = "Liquid"
-    Flow1d_manning2.LiquidSectionType = "PIPE MANNING"
-    Flow1d_manning2.ManningArea = 17671.00
-    Flow1d_manning2.ManningRadius = 37.5
-    Flow1d_manning2.ManningCoefficient = 0.002
-    Flow1d_manning2.References = [(line, "Edge11"), (line, "Edge9")]
+    manning3.SectionType = "Liquid"
+    manning3.LiquidSectionType = "PIPE MANNING"
+    manning3.ManningArea = 17671.00
+    manning3.ManningRadius = 37.5
+    manning3.ManningCoefficient = 0.002
+    manning3.References = [(line, "Edge11"), (line, "Edge9")]
 
-    Flow1d_gate_valve = analysis.addObject(
+    gate_valve = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
     )[0]
-    Flow1d_gate_valve.SectionType = "Liquid"
-    Flow1d_gate_valve.LiquidSectionType = "PIPE GATE VALVE"
-    Flow1d_gate_valve.GateValvePipeArea = 17671
-    Flow1d_gate_valve.GateValveClosingCoeff = 0.5
-    Flow1d_gate_valve.References = [(line, "Edge10")]
+    gate_valve.SectionType = "Liquid"
+    gate_valve.LiquidSectionType = "PIPE GATE VALVE"
+    gate_valve.GateValvePipeArea = 17671
+    gate_valve.GateValveClosingCoeff = 0.5
+    gate_valve.References = [(line, "Edge10")]
 
-    Flow1d_enlargement1 = analysis.addObject(
+    enlargement2 = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
     )[0]
-    Flow1d_enlargement1.SectionType = "Liquid"
-    Flow1d_enlargement1.LiquidSectionType = "PIPE ENLARGEMENT"
-    Flow1d_enlargement1.EnlargeArea1 = 17671
-    Flow1d_enlargement1.EnlargeArea2 = 1e12
-    Flow1d_enlargement1.References = [(line, "Edge12")]
+    enlargement2.SectionType = "Liquid"
+    enlargement2.LiquidSectionType = "PIPE ENLARGEMENT"
+    enlargement2.EnlargeArea1 = 17671
+    enlargement2.EnlargeArea2 = 1e12
+    enlargement2.References = [(line, "Edge12")]
 
-    Flow1d_outlet = analysis.addObject(
+    outlet = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
     )[0]
-    Flow1d_outlet.SectionType = "Liquid"
-    Flow1d_outlet.LiquidSectionType = "PIPE OUTLET"
-    Flow1d_outlet.OutletPressure = 0.1
-    Flow1d_outlet.References = [(line, "Edge13")]
+    outlet.SectionType = "Liquid"
+    outlet.LiquidSectionType = "PIPE OUTLET"
+    outlet.OutletPressure = 0.1
+    outlet.References = [(line, "Edge13")]
 
-    Flow1d_self_weight = analysis.addObject(
+    self_weight = analysis.addObject(
         ObjectsFem.makeConstraintSelfWeight(doc, "ConstraintSelfWeight")
     )[0]
-    Flow1d_self_weight.Gravity_x = 0.0
-    Flow1d_self_weight.Gravity_y = 0.0
-    Flow1d_self_weight.Gravity_z = -1.0
+    self_weight.Gravity_x = 0.0
+    self_weight.Gravity_y = 0.0
+    self_weight.Gravity_z = -1.0
 
     # mesh
     from .meshes.mesh_thermomech_flow1d import create_nodes, create_elements
