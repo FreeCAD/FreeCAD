@@ -78,6 +78,7 @@ def run_all():
     run_ccx_cantilevernodeload()
     run_ccx_cantileverprescribeddisplacement()
     run_rcwall2d()
+    run_thermomech_flow1d()
     run_thermomech_spine()
 
 
@@ -151,6 +152,20 @@ def run_rcwall2d(solver=None, base_name=None):
     return doc
 
 
+def run_thermomech_flow1d(solver=None, base_name=None):
+
+    from .thermomech_flow1d import setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = "Thermomech_Spine"
+        if solver is not None:
+            base_name += "_" + solver
+    run_analysis(doc, base_name)
+
+    return doc
+
+
 def run_thermomech_spine(solver=None, base_name=None):
 
     from .thermomech_spine import setup
@@ -182,6 +197,7 @@ doc = run_multimaterial_twoboxes()
 
 doc = run_rcwall2d()
 
+doc = run_thermomech_flow1d()
 doc = run_thermomech_spine()
 
 """
