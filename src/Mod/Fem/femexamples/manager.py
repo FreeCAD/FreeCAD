@@ -74,12 +74,42 @@ def run_analysis(doc, base_name, filepath=""):
 
 
 def run_all():
+    run_boxanalysisstatic()
+    run_boxanalysisfrequency()
     run_ccx_cantileverfaceload()
     run_ccx_cantilevernodeload()
     run_ccx_cantileverprescribeddisplacement()
     run_rcwall2d()
     run_thermomech_flow1d()
     run_thermomech_spine()
+
+
+def run_boxanalysisstatic(solver=None, base_name=None):
+
+    from .boxanalysis import setup_static as setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = "Box_Static_Analysis"
+        if solver is not None:
+            base_name += "_" + solver
+    run_analysis(doc, base_name)
+
+    return doc
+
+
+def run_boxanalysisfrequency(solver=None, base_name=None):
+
+    from .boxanalysis import setup_frequency as setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = "Box_Frequency_Analysis"
+        if solver is not None:
+            base_name += "_" + solver
+    run_analysis(doc, base_name)
+
+    return doc
 
 
 def run_ccx_cantileverfaceload(solver=None, base_name=None):
@@ -184,6 +214,9 @@ def run_thermomech_spine(solver=None, base_name=None):
 from femexamples.manager import *
 
 run_all()
+
+doc = run_boxanalysisstatic()
+doc = run_boxanalysisfrequency()
 
 doc = run_ccx_cantileverfaceload()
 doc = run_ccx_cantilevernodeload()
