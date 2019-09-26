@@ -192,6 +192,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 {
+//    Base::Console().Message("DVS::execute() - %s \n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -530,6 +531,14 @@ bool DrawViewSection::isReallyInBox (const Base::Vector3d v, const Base::BoundBo
 bool DrawViewSection::isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const
 {
     return !bb.IsOut(p);
+}
+
+void DrawViewSection::setNormalFromBase(const std::string sectionName)
+{
+//    Base::Console().Message("DVS::setNormalFromBase(%s)\n", sectionName.c_str());
+    Base::Vector3d normal = getSectionVector(sectionName);
+    Direction.setValue(normal);
+    SectionNormal.setValue(normal);
 }
 
 //! calculate the section Normal/Projection Direction given section name
