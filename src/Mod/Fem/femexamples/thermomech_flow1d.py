@@ -232,9 +232,7 @@ def setup(doc=None, solver="ccxtools"):
     Flow1d_self_weight.Gravity_z = -1.0
 
     # mesh
-    # from femexamples.meshes.mesh_thermomech_spine import create_nodes, create_elements
-    from femtest.data.ccx.Flow1D_mesh import create_nodes_Flow1D as create_nodes
-    from femtest.data.ccx.Flow1D_mesh import create_elements_Flow1D as create_elements
+    from .meshes.mesh_thermomech_flow1d import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
