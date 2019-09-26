@@ -66,9 +66,7 @@ def setup_base(doc=None, solver="ccxtools"):
     material_object.Material = mat
 
     # mesh
-    # from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
-    from femtest.data.ccx.cube_mesh import create_nodes_cube as create_nodes
-    from femtest.data.ccx.cube_mesh import create_elements_cube as create_elements
+    from .meshes.mesh_boxanalysis import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

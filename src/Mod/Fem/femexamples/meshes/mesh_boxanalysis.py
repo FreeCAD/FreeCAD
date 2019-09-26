@@ -1,4 +1,4 @@
-def create_nodes_cube(femmesh):
+def create_nodes(femmesh):
     # nodes
     femmesh.addNode(0.0, 0.0, 0.0, 1)
     femmesh.addNode(0.0, 0.0, 10.0, 2)
@@ -283,7 +283,7 @@ def create_nodes_cube(femmesh):
     return True
 
 
-def create_elements_cube(femmesh):
+def create_elements(femmesh):
     # elements
     femmesh.addVolume([98, 95, 47, 196, 103, 198, 197, 199, 200, 201], 1)
     femmesh.addVolume([121, 147, 145, 196, 203, 161, 202, 204, 205, 206], 2)
