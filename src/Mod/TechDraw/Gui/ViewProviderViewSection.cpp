@@ -37,6 +37,17 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
+
+#include "TaskSectionView.h"
+
 #include "ViewProviderViewSection.h"
 
 using namespace TechDrawGui;
@@ -123,6 +134,40 @@ void ViewProviderViewSection::updateGraphic(void)
         qgiv->updateView(true);
     }
 }
+
+bool ViewProviderViewSection::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default ) {
+        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
+            return false;
+        }
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+        Gui::Control().showDialog(new TaskDlgSectionView(getViewObject()));
+        return true;
+    } else {
+        return ViewProviderDrawingView::setEdit(ModNum);
+    }
+    return true;
+}
+
+void ViewProviderViewSection::unsetEdit(int ModNum)
+{
+    Q_UNUSED(ModNum);
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderDrawingView::unsetEdit(ModNum);
+    }
+}
+
+bool ViewProviderViewSection::doubleClicked(void)
+{
+    setEdit(ViewProvider::Default);
+    return true;
+}
+
 
 void ViewProviderViewSection::getParameters(void)
 {

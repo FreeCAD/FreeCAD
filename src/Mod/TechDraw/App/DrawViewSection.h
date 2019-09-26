@@ -87,6 +87,8 @@ public:
     std::vector<TechDraw::Face*> getFaceGeometry();
 
     Base::Vector3d getSectionVector (const std::string sectionName);
+    void setNormalFromBase(const std::string sectionName);
+
     gp_Ax2 rotateCSCardinal(gp_Ax2 oldCS, int cardinal); 
     gp_Ax2 rotateCSArbitrary(gp_Ax2 oldCS,
                              Base::Vector3d axis,
