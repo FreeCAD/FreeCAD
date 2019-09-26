@@ -35,6 +35,7 @@ SET(FemCommands_SRCS
 
 SET(FemExamples_SRCS
     femexamples/__init__.py
+    femexamples/boxanalysis.py
     femexamples/ccx_cantilever_std.py
     femexamples/manager.py
     femexamples/multimaterial_twoboxes.py
