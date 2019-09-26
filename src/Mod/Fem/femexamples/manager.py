@@ -83,7 +83,7 @@ def run_all():
 
 def run_ccx_cantileverfaceload(solver=None, base_name=None):
 
-    from femexamples.ccx_cantilever_std import setup_cantileverfaceload as setup
+    from .ccx_cantilever_std import setup_cantileverfaceload as setup
     doc = setup()
 
     if base_name is None:
@@ -97,7 +97,7 @@ def run_ccx_cantileverfaceload(solver=None, base_name=None):
 
 def run_ccx_cantilevernodeload(solver=None, base_name=None):
 
-    from femexamples.ccx_cantilever_std import setup_cantilevernodeload as setup
+    from .ccx_cantilever_std import setup_cantilevernodeload as setup
     doc = setup()
 
     if base_name is None:
@@ -111,7 +111,7 @@ def run_ccx_cantilevernodeload(solver=None, base_name=None):
 
 def run_ccx_cantileverprescribeddisplacement(solver=None, base_name=None):
 
-    from femexamples.ccx_cantilever_std import setup_cantileverprescribeddisplacement as setup
+    from .ccx_cantilever_std import setup_cantileverprescribeddisplacement as setup
     doc = setup()
 
     if base_name is None:
@@ -125,7 +125,7 @@ def run_ccx_cantileverprescribeddisplacement(solver=None, base_name=None):
 
 def run_multimaterial_twoboxes(solver=None, base_name=None):
 
-    from femexamples.multimaterial_twoboxes import setup
+    from .multimaterial_twoboxes import setup
     doc = setup()
 
     if base_name is None:
@@ -139,7 +139,7 @@ def run_multimaterial_twoboxes(solver=None, base_name=None):
 
 def run_rcwall2d(solver=None, base_name=None):
 
-    from femexamples.rc_wall_2d import setup_rcwall2d as setup
+    from .rc_wall_2d import setup_rcwall2d as setup
     doc = setup()
 
     if base_name is None:
@@ -153,7 +153,7 @@ def run_rcwall2d(solver=None, base_name=None):
 
 def run_thermomech_spine(solver=None, base_name=None):
 
-    from femexamples.thermomech_spine import setup
+    from .thermomech_spine import setup
     doc = setup()
 
     if base_name is None:

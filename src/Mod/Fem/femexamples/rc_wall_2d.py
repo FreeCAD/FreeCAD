@@ -35,7 +35,7 @@ def init_doc(doc=None):
     return doc
 
 
-def setup_rcwall2d(doc=None, solver="ccxtools"):
+def setup(doc=None, solver="ccxtools"):
     # setup reinfoced wall in 2D
 
     if doc is None:
@@ -64,6 +64,12 @@ def setup_rcwall2d(doc=None, solver="ccxtools"):
     l8 = ln(v8, v1)
     rcwall = doc.addObject("Part::Feature", "FIB_Wall")
     rcwall.Shape = Part.Face(Part.Wire([l1, l2, l3, l4, l5, l6, l7, l8]))
+    doc.recompute()
+
+    if FreeCAD.GuiUp:
+        import FreeCADGui
+        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -74,21 +80,17 @@ def setup_rcwall2d(doc=None, solver="ccxtools"):
         solver = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-        solver.AnalysisType = "static"
-        solver.GeometricalNonlinearity = "linear"
-        solver.ThermoMechSteadyState = False
-        solver.MatrixSolverType = "default"
-        solver.IterationsControlParameterTimeUse = False
     elif solver == "ccxtools":
         solver = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
+        solver.WorkingDir = u""
+    if solver == "calculix" or solver == "ccxtools":
         solver.AnalysisType = "static"
         solver.GeometricalNonlinearity = "linear"
         solver.ThermoMechSteadyState = False
         solver.MatrixSolverType = "default"
         solver.IterationsControlParameterTimeUse = False
-        solver.WorkingDir = u""
 
     # shell thickness
     thickness = analysis.addObject(
@@ -139,7 +141,7 @@ def setup_rcwall2d(doc=None, solver="ccxtools"):
     displacement_constraint.zFix = True
 
     # mesh
-    from femexamples.meshes.mesh_rc_wall_2d_tria6 import create_nodes, create_elements
+    from .meshes.mesh_rc_wall_2d_tria6 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -158,6 +160,6 @@ def setup_rcwall2d(doc=None, solver="ccxtools"):
 
 """
 from femexamples import rc_wall_2d as rc
-rc.setup_rcwall2d()
+rc.setup()
 
 """

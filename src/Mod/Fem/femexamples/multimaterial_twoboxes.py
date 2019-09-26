@@ -84,21 +84,17 @@ def setup(doc=None, solver="ccxtools"):
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
     elif solver == "ccxtools":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
+        solver_object.WorkingDir = u""
+    if solver == "calculix" or solver == "ccxtools":
         solver_object.AnalysisType = "static"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = "default"
         solver_object.IterationsControlParameterTimeUse = False
-        solver_object.WorkingDir = u""
 
     # material
     material_object_low = analysis.addObject(
@@ -143,8 +139,7 @@ def setup(doc=None, solver="ccxtools"):
     pressure_constraint.Reversed = False
 
     # mesh
-    # from femexamples.meshes.mesh_thermomech_spine import create_nodes, create_elements
-    from  femexamples.meshes.mesh_multimaterial_twoboxes import create_nodes, create_elements
+    from .meshes.mesh_multimaterial_twoboxes import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -162,7 +157,7 @@ def setup(doc=None, solver="ccxtools"):
 
 
 """
-from femexamples import multimaterial_simple as multimat
-multimat.setup()
+from femexamples import multimaterial_twoboxes as twoboxes
+twoboxes.setup()
 
 """
