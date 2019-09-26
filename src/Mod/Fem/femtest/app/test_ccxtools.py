@@ -73,7 +73,7 @@ class TestCcxTools(unittest.TestCase):
     def test_1_static_analysis(
         self
     ):
-        fcc_print("--------------- Start of FEM tests ---------------")
+        fcc_print("\n--------------- Start of FEM ccxtools static analysis test ---------------")
 
         box = self.active_doc.addObject("Part::Box", "Box")
 
@@ -280,13 +280,14 @@ class TestCcxTools(unittest.TestCase):
         static_save_fc_file = static_analysis_dir + static_base_name + ".FCStd"
         fcc_print("Save FreeCAD file for static analysis to {}...".format(static_save_fc_file))
         self.active_doc.saveAs(static_save_fc_file)
-        fcc_print("--------------- End of FEM tests static and analysis ---------------")
+
+        fcc_print("--------------- End of FEM ccxtools static analysis test -------------------")
 
     # ********************************************************************************************
     def test_2_static_multiple_material(
         self
     ):
-        fcc_print("--------------- Start of FEM ccxtools multiple material test ---------------")
+        fcc_print("\n--------------- Start of FEM ccxtools multiple material test -------------")
 
         # set up the simple multimat example
         from femexamples import multimaterial_twoboxes
@@ -331,13 +332,14 @@ class TestCcxTools(unittest.TestCase):
         static_save_fc_file = static_multiplemat_dir + static_base_name + ".FCStd"
         fcc_print("Save FreeCAD file for static analysis to {}...".format(static_save_fc_file))
         self.active_doc.saveAs(static_save_fc_file)
-        fcc_print("--------------- End of FEM ccxtools multiple material test ---------------")
+
+        fcc_print("--------------- End of FEM ccxtools multiple material test -----------------")
 
     # ********************************************************************************************
     def test_3_freq_analysis(
         self
     ):
-        fcc_print("--------------- Start of FEM tests ---------------")
+        fcc_print("\n--------------- Start of FEM ccxtools frequency analysis test ------------")
 
         self.active_doc.addObject("Part::Box", "Box")
 
@@ -493,14 +495,15 @@ class TestCcxTools(unittest.TestCase):
             .format(frequency_save_fc_file)
         )
         self.active_doc.saveAs(frequency_save_fc_file)
-        fcc_print("--------------- End of FEM tests frequency analysis ---------------")
+
+        fcc_print("--------------- End of FEM ccxtools frequency analysis test ----------------")
 
     # ********************************************************************************************
     def test_4_thermomech_analysis(
         self
     ):
 
-        fcc_print("--------------- Start of FEM tests ---------------")
+        fcc_print("\n--------------- Start of FEM ccxtools thermomechanical analysis test -----")
 
         # set up the thermomech example
         from femexamples.thermomech_spine import setup as thermomech
@@ -600,13 +603,13 @@ class TestCcxTools(unittest.TestCase):
         )
         self.active_doc.saveAs(thermomech_save_fc_file)
 
-        fcc_print("--------------- End of FEM tests thermomech analysis ---------------")
+        fcc_print("--------------- End of FEM ccxtools thermomechanical analysis test ---------")
 
     # ********************************************************************************************
     def test_5_Flow1D_thermomech_analysis(
         self
     ):
-        fcc_print("--------------- Start of 1D Flow FEM tests ---------------")
+        fcc_print("\n--------------- Start of FEM ccxtools Flow1D analysis test ---------------")
 
         # set up the thermomech flow1d example
         from femexamples.thermomech_flow1d import setup as flow1d
@@ -708,7 +711,7 @@ class TestCcxTools(unittest.TestCase):
         )
         self.active_doc.saveAs(Flow1D_thermomech_save_fc_file)
 
-        fcc_print("--------------- End of FEM tests FLow 1D thermomech analysis ---------------")
+        fcc_print("--------------- End of FEM ccxtools Flow1D analysis test -------------------")
 
     # ********************************************************************************************
     def tearDown(
