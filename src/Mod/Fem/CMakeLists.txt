@@ -48,6 +48,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_canticcx_tetra10.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
     femexamples/meshes/mesh_multimaterial_twoboxes.py
+    femexamples/meshes/mesh_thermomech_flow1d.py
     femexamples/meshes/mesh_thermomech_spine.py
 )
 
@@ -174,7 +175,6 @@ SET(FemTestsCcx_SRCS
     femtest/data/ccx/spine_thermomech.frd
     femtest/data/ccx/spine_thermomech_expected_values
     femtest/data/ccx/spine_thermomech.FCStd
-    femtest/data/ccx/Flow1D_mesh.py
     femtest/data/ccx/Flow1D_thermomech.inp
     femtest/data/ccx/Flow1D_thermomech.dat
     femtest/data/ccx/Flow1D_thermomech.frd
