@@ -79,6 +79,8 @@ class TestCcxTools(unittest.TestCase):
 
         analysis = self.active_doc.Analysis
         solver_object = self.active_doc.CalculiXccxTools
+        fcc_print("Analysis {}".format(type(analysis)))
+        fcc_print("Analysis {}".format(analysis.TypeId))
 
         static_analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
@@ -86,6 +88,8 @@ class TestCcxTools(unittest.TestCase):
         )
         fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
         fea.update_objects()
+        fcc_print("fea Analysis {}".format(type(fea.analysis)))
+        fcc_print("fea Analysis {}".format(fea.analysis.TypeId))
 
         fcc_print("Setting up working directory {}".format(static_analysis_dir))
         fea.setup_working_dir(static_analysis_dir)
