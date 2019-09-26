@@ -23,10 +23,8 @@
 # *                                                                         *
 # ***************************************************************************/
 
-import Fem
 from femtools import ccxtools
 import FreeCAD
-import ObjectsFem
 import unittest
 from . import support_utils as testtools
 from .support_utils import fcc_print
@@ -75,123 +73,12 @@ class TestCcxTools(unittest.TestCase):
     ):
         fcc_print("\n--------------- Start of FEM ccxtools static analysis test ---------------")
 
-        box = self.active_doc.addObject("Part::Box", "Box")
+        # set up the static analysis example
+        from femexamples import boxanalysis as box
+        box.setup_static(self.active_doc, "ccxtools")
 
-        fcc_print("Checking FEM new analysis...")
-        analysis = ObjectsFem.makeAnalysis(
-            self.active_doc,
-            "Analysis"
-        )
-        self.assertTrue(
-            analysis,
-            "FemTest of new analysis failed"
-        )
-
-        fcc_print("Checking FEM new solver...")
-        solver_object = ObjectsFem.makeSolverCalculixCcxTools(
-            self.active_doc,
-            "CalculiX"
-        )
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
-        solver_object.EigenmodesCount = 10
-        solver_object.EigenmodeHighLimit = 1000000.0
-        solver_object.EigenmodeLowLimit = 0.0
-        self.assertTrue(
-            solver_object,
-            "FemTest of new solver failed"
-        )
-        analysis.addObject(solver_object)
-
-        fcc_print("Checking FEM new material...")
-        material_object = ObjectsFem.makeMaterialSolid(
-            self.active_doc,
-            "MechanicalMaterial"
-        )
-        mat = material_object.Material
-        mat["Name"] = "Steel-Generic"
-        mat["YoungsModulus"] = "200000 MPa"
-        mat["PoissonRatio"] = "0.30"
-        mat["Density"] = "7900 kg/m^3"
-        material_object.Material = mat
-        self.assertTrue(
-            material_object,
-            "FemTest of new material failed"
-        )
-        analysis.addObject(material_object)
-
-        fcc_print("Checking FEM new fixed constraint...")
-        fixed_constraint = self.active_doc.addObject(
-            "Fem::ConstraintFixed",
-            "FemConstraintFixed"
-        )
-        fixed_constraint.References = [(box, "Face1")]
-        self.assertTrue(
-            fixed_constraint,
-            "FemTest of new fixed constraint failed"
-        )
-        analysis.addObject(fixed_constraint)
-
-        fcc_print("Checking FEM new force constraint...")
-        force_constraint = self.active_doc.addObject(
-            "Fem::ConstraintForce",
-            "FemConstraintForce"
-        )
-        force_constraint.References = [(box, "Face6")]
-        force_constraint.Force = 40000.0
-        force_constraint.Direction = (box, ["Edge5"])
-        self.active_doc.recompute()
-        force_constraint.Reversed = True
-        self.active_doc.recompute()
-        self.assertTrue(
-            force_constraint,
-            "FemTest of new force constraint failed"
-        )
-        analysis.addObject(force_constraint)
-
-        fcc_print("Checking FEM new pressure constraint...")
-        pressure_constraint = self.active_doc.addObject(
-            "Fem::ConstraintPressure",
-            "FemConstraintPressure"
-        )
-        pressure_constraint.References = [(box, "Face2")]
-        pressure_constraint.Pressure = 1000.0
-        pressure_constraint.Reversed = False
-        self.assertTrue(
-            pressure_constraint,
-            "FemTest of new pressure constraint failed"
-        )
-        analysis.addObject(pressure_constraint)
-
-        fcc_print("Checking FEM new mesh...")
-        from ..data.ccx.cube_mesh import create_nodes_cube
-        from ..data.ccx.cube_mesh import create_elements_cube
-        mesh = Fem.FemMesh()
-        ret = create_nodes_cube(mesh)
-        self.assertTrue(
-            ret,
-            "Import of mesh nodes failed"
-        )
-        ret = create_elements_cube(mesh)
-        self.assertTrue(
-            ret,
-            "Import of mesh volumes failed"
-        )
-        mesh_object = self.active_doc.addObject(
-            "Fem::FemMeshObject",
-            self.mesh_name
-        )
-        mesh_object.FemMesh = mesh
-        self.assertTrue(
-            mesh,
-            "FemTest of new mesh failed"
-        )
-        analysis.addObject(mesh_object)
-
-        self.active_doc.recompute()
+        analysis = self.active_doc.Analysis
+        solver_object = self.active_doc.CalculiXccxTools
 
         static_analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
@@ -341,71 +228,12 @@ class TestCcxTools(unittest.TestCase):
     ):
         fcc_print("\n--------------- Start of FEM ccxtools frequency analysis test ------------")
 
-        self.active_doc.addObject("Part::Box", "Box")
+        # set up the static analysis example
+        from femexamples import boxanalysis as box
+        box.setup_frequency(self.active_doc, "ccxtools")
 
-        fcc_print("Checking FEM new analysis...")
-        analysis = ObjectsFem.makeAnalysis(
-            self.active_doc,
-            "Analysis"
-        )
-        self.assertTrue(
-            analysis,
-            "FemTest of new analysis failed"
-        )
-
-        fcc_print("Checking FEM new solver...")
-        solver_object = ObjectsFem.makeSolverCalculixCcxTools(
-            self.active_doc,
-            "CalculiX"
-        )
-        solver_object.AnalysisType = "frequency"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
-        solver_object.EigenmodesCount = 10
-        solver_object.EigenmodeHighLimit = 1000000.0
-        solver_object.EigenmodeLowLimit = 0.01
-        self.assertTrue(
-            solver_object,
-            "FemTest of new solver failed"
-        )
-        analysis.addObject(solver_object)
-
-        fcc_print("Checking FEM new material...")
-        material_object = ObjectsFem.makeMaterialSolid(
-            self.active_doc,
-            "MechanicalMaterial"
-        )
-        mat = material_object.Material
-        mat["Name"] = "Steel-Generic"
-        mat["YoungsModulus"] = "200000 MPa"
-        mat["PoissonRatio"] = "0.30"
-        mat["Density"] = "7900 kg/m^3"
-        material_object.Material = mat
-        self.assertTrue(
-            material_object,
-            "FemTest of new material failed"
-        )
-        analysis.addObject(material_object)
-
-        fcc_print("Checking FEM new mesh...")
-        from ..data.ccx.cube_mesh import create_nodes_cube
-        from ..data.ccx.cube_mesh import create_elements_cube
-        mesh = Fem.FemMesh()
-        ret = create_nodes_cube(mesh)
-        self.assertTrue(ret, "Import of mesh nodes failed")
-        ret = create_elements_cube(mesh)
-        self.assertTrue(ret, "Import of mesh volumes failed")
-        mesh_object = self.active_doc.addObject(
-            "Fem::FemMeshObject",
-            self.mesh_name
-        )
-        mesh_object.FemMesh = mesh
-        self.assertTrue(mesh, "FemTest of new mesh failed")
-        analysis.addObject(mesh_object)
-
-        self.active_doc.recompute()
+        analysis = self.active_doc.Analysis
+        solver_object = self.active_doc.CalculiXccxTools
 
         frequency_analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
