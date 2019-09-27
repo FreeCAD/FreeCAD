@@ -209,6 +209,20 @@ private:
 
                 pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
             }
+            else if (mat.binding == MeshCore::MeshIO::PER_FACE && 
+                     mat.diffuseColor.size() == mesh.countFacets()) {
+                FeatureCustom *pcFeature = new FeatureCustom();
+                pcFeature->Label.setValue(file.fileNamePure().c_str());
+                pcFeature->Mesh.swapMesh(mesh);
+                App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                    (pcFeature->addDynamicProperty("App::PropertyColorList", "FaceColors"));
+                if (prop) {
+                    prop->setValues(mat.diffuseColor);
+                }
+                pcFeature->purgeTouched();
+
+                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
+            }
             else {
                 Mesh::Feature *pcFeature = static_cast<Mesh::Feature *>
                     (pcDoc->addObject("Mesh::Feature", file.fileNamePure().c_str()));
@@ -267,6 +281,20 @@ private:
                 pcFeature->Mesh.swapMesh(mesh);
                 App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
                     (pcFeature->addDynamicProperty("App::PropertyColorList", "VertexColors"));
+                if (prop) {
+                    prop->setValues(mat.diffuseColor);
+                }
+                pcFeature->purgeTouched();
+
+                pcDoc->addObject(pcFeature, file.fileNamePure().c_str());
+            }
+            else if (mat.binding == MeshCore::MeshIO::PER_FACE && 
+                     mat.diffuseColor.size() == mesh.countFacets()) {
+                FeatureCustom *pcFeature = new FeatureCustom();
+                pcFeature->Label.setValue(file.fileNamePure().c_str());
+                pcFeature->Mesh.swapMesh(mesh);
+                App::PropertyColorList* prop = static_cast<App::PropertyColorList*>
+                    (pcFeature->addDynamicProperty("App::PropertyColorList", "FaceColors"));
                 if (prop) {
                     prop->setValues(mat.diffuseColor);
                 }

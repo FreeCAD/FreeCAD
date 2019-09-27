@@ -1,4 +1,4 @@
-def create_nodes_spine(femmesh):
+def create_nodes(femmesh):
     # nodes
     femmesh.addNode(203.2, 25.4, 0.0, 1)
     femmesh.addNode(203.2, 25.4, 25.4, 2)
@@ -48,7 +48,7 @@ def create_nodes_spine(femmesh):
     return True
 
 
-def create_elements_spine(femmesh):
+def create_elements(femmesh):
     # elements
     femmesh.addVolume([6, 5, 12, 11, 26, 33, 43, 37, 20, 34], 1)
     femmesh.addVolume([12, 9, 11, 2, 44, 39, 34, 45, 15, 38], 2)
