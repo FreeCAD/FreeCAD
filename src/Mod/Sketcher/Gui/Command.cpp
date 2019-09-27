@@ -39,7 +39,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/SelectionFilter.h>
 
 #include <Mod/Sketcher/App/SketchObjectSF.h>
