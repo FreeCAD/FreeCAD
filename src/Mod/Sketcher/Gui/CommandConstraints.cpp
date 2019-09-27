@@ -38,7 +38,7 @@
 #include <Gui/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
 
