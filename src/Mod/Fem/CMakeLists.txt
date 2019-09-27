@@ -35,18 +35,22 @@ SET(FemCommands_SRCS
 
 SET(FemExamples_SRCS
     femexamples/__init__.py
+    femexamples/boxanalysis.py
     femexamples/ccx_cantilever_std.py
     femexamples/manager.py
     femexamples/multimaterial_twoboxes.py
     femexamples/rc_wall_2d.py
+    femexamples/thermomech_flow1d.py
     femexamples/thermomech_spine.py
 )
 
 SET(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
+    femexamples/meshes/mesh_boxanalysis.py
     femexamples/meshes/mesh_canticcx_tetra10.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
     femexamples/meshes/mesh_multimaterial_twoboxes.py
+    femexamples/meshes/mesh_thermomech_flow1d.py
     femexamples/meshes/mesh_thermomech_spine.py
 )
 
@@ -155,7 +159,6 @@ SET(FemTestsFiles_SRCS
 
 SET(FemTestsCcx_SRCS
     femtest/data/ccx/__init__.py
-    femtest/data/ccx/cube_mesh.py
     femtest/data/ccx/cube_frequency.inp
     femtest/data/ccx/cube_frequency.dat
     femtest/data/ccx/cube_frequency.frd
@@ -173,7 +176,6 @@ SET(FemTestsCcx_SRCS
     femtest/data/ccx/spine_thermomech.frd
     femtest/data/ccx/spine_thermomech_expected_values
     femtest/data/ccx/spine_thermomech.FCStd
-    femtest/data/ccx/Flow1D_mesh.py
     femtest/data/ccx/Flow1D_thermomech.inp
     femtest/data/ccx/Flow1D_thermomech.dat
     femtest/data/ccx/Flow1D_thermomech.frd

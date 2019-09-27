@@ -46,6 +46,12 @@ def setup(doc=None, solver="ccxtools"):
     box_obj.Height = 25.4
     box_obj.Width = 25.4
     box_obj.Length = 203.2
+    doc.recompute()
+
+    if FreeCAD.GuiUp:
+        import FreeCADGui
+        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -56,26 +62,21 @@ def setup(doc=None, solver="ccxtools"):
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-        solver_object.AnalysisType = "thermomech"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = True
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsThermoMechMaximum = 2000
-        solver_object.IterationsControlParameterTimeUse = True
     elif solver == "ccxtools":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
+        solver_object.WorkingDir = u""
+    # should be possible with elmer too
+    # elif solver == "elmer":
+    #     analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
+    if solver == "calculix" or solver == "ccxtools":
         solver_object.AnalysisType = "thermomech"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = True
         solver_object.MatrixSolverType = "default"
         solver_object.IterationsThermoMechMaximum = 2000
         solver_object.IterationsControlParameterTimeUse = True
-        solver_object.WorkingDir = u""
-    # should be possible with elmer too
-    # elif solver == "elmer":
-    #     analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
 
     # material
     material_object = analysis.addObject(
@@ -124,7 +125,7 @@ def setup(doc=None, solver="ccxtools"):
     heatflux_constraint.FilmCoef = 5.678
 
     # mesh
-    from femexamples.meshes.mesh_thermomech_spine import create_nodes, create_elements
+    from .meshes.mesh_thermomech_spine import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -142,7 +143,7 @@ def setup(doc=None, solver="ccxtools"):
 
 
 """
-from femexamples import thermomech_bar as thermo
-thermo.setup()
+from femexamples import thermomech_spine as spine
+spine.setup()
 
 """
