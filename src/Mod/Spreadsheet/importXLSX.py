@@ -57,6 +57,7 @@ known issues:
 import zipfile
 import xml.dom.minidom
 import FreeCAD as App
+import sys
 
 try: import FreeCADGui
 except ValueError: gui = False
@@ -371,7 +372,10 @@ def handleCells(cellList, actCellSheet, sList):
           if cellType == 'n':
             actCellSheet.set(ref, theValue)
           if cellType == 's':
-            actCellSheet.set(ref, (sList[int(theValue)]).encode('utf8'))
+            if sys.version_info.major >= 3:
+                actCellSheet.set(ref, (sList[int(theValue)]))
+            else:
+                actCellSheet.set(ref, (sList[int(theValue)]).encode('utf8'))
 
 
 def handleWorkBook(theBook, sheetDict, Doc):
