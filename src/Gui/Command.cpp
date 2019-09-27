@@ -1418,7 +1418,7 @@ void PythonGroupCommand::activated(int iMsg)
         // text change. The net effect is that the GUI won't change by user
         // inovking command through runCommandByName()
 #if 0
-        // Since the default icon is reset when enabing/disabling the command we have
+        // Since the default icon is reset when enabling/disabling the command we have
         // to explicitly set the icon of the used command.
         pcAction->setIcon(a[iMsg]->icon());
 #endif

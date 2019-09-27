@@ -36,7 +36,7 @@ namespace Fem {
  * @brief Base class of all Constraint Objects of the Fem module.
  *
  * @details
- *  @ref Constraint isn't intended to be used directely. Actual Constraints
+ *  @ref Constraint isn't intended to be used directly. Actual Constraints
  *  used to specify a simulation are children of this class. The base class
  *  essentially does two things: Most importantely it has a property @ref
  *  Constraint::References which is a list of all sub objects the constraint
@@ -185,7 +185,7 @@ protected:
      *  index in normals[i].
      *
      * @param[out] points
-     *  For each vertex a point equal to the location of that vertix is pushed
+     *  For each vertex a point equal to the location of that vertex is pushed
      *  into the points vector. For each edge at least to points, the beginning
      *  and the end of the edge, are pushed into the vector. Depending on the
      *  length of the edge more points may be added in between. For each face a

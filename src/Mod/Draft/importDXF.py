@@ -1889,7 +1889,7 @@ def attribs(insert):
     Returns
     -------
     list
-        It returns a list with the entitites that have `'attrib'` data,
+        It returns a list with the entities that have `'attrib'` data,
         until `'seqend'` is found.
 
         It returns an empty list `[]`, if DXF code 66 ("Entities follow")

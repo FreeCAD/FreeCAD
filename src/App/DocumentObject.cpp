@@ -361,7 +361,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
 
 #else
 // The original algorithm is highly inefficient in some special case.
-// Considering an object is linked by every other objects. After exculding this
+// Considering an object is linked by every other objects. After excluding this
 // object, there is another object linked by every other of the remaining
 // objects, and so on.  The vector 'result' above will be of magnitude n^2.
 // Even if we replace the vector with a set, we still need to visit that amount
@@ -1197,4 +1197,3 @@ void DocumentObject::onPropertyStatusChanged(const Property &prop, unsigned long
     if(!Document::isAnyRestoring() && getNameInDocument() && getDocument())
         getDocument()->signalChangePropertyEditor(*getDocument(),prop);
 }
-

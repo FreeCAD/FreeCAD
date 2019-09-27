@@ -706,7 +706,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     if(isMainDoc)
         pDoc->createView(View3DInventor::getClassTypeId());
     // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
-    // unpredicatable way. At least it seems that with Qt5 we don't need this any more.
+    // unpredictable way. At least it seems that with Qt5 we don't need this any more.
 #if QT_VERSION < 0x050000
     // qApp->processEvents(); // make sure to show the window stuff on the right place
 #endif

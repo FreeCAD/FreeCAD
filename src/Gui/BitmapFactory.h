@@ -112,7 +112,7 @@ public:
      */
     QPixmap merge(const QPixmap& p1, const QPixmap& p2, bool vertical) const;
     /** Merges the two pixmaps  \a p1 and \a p2 to one pixmap.
-     * The position of the smaller pimxap \a p2 is drawn into the given
+     * The position of the smaller pixmap \a p2 is drawn into the given
      * position \a pos of the bigger pixmap \a p1. This method does not
      * resize the resulting pixmap.
      */
