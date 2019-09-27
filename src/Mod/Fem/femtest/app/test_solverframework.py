@@ -65,10 +65,10 @@ class TestSolverFrameWork(unittest.TestCase):
         ))
 
     # ********************************************************************************************
-    def test_solver_framework(
+    def test_solver_calculix(
         self
     ):
-        fcc_print("\n--------------- Start of FEM tests  solver frame work ---------------")
+        fcc_print("\n--------------- Start of FEM tests solver framework solver CalculiX ------")
 
         # set up the static analysis example
         from femexamples import boxanalysis as box
@@ -105,6 +105,20 @@ class TestSolverFrameWork(unittest.TestCase):
         fcc_print("Comparing {} to {}".format(infile_given, inpfile_totest))
         ret = testtools.compare_inp_files(infile_given, inpfile_totest)
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
+
+        save_fc_file = solverframework_analysis_dir + static_base_name + ".FCStd"
+        fcc_print("Save FreeCAD file for static2 analysis to {}...".format(save_fc_file))
+        self.active_doc.saveAs(save_fc_file)
+
+        fcc_print("\n--------------- End of FEM tests solver framework solver CalculiX --------")
+
+    # ********************************************************************************************
+    def test_solver_elmer(
+        self
+    ):
+        fcc_print("\n--------------- Start of FEM tests solver framework solver Elmer ------")
+
+        # TODO set up example 
 
         '''
         # use solver frame work elmer solver
@@ -174,11 +188,7 @@ class TestSolverFrameWork(unittest.TestCase):
         self.assertFalse(ret, "GMSH geo write file test failed.\n{}".format(ret))
         '''
 
-        save_fc_file = solverframework_analysis_dir + static_base_name + ".FCStd"
-        fcc_print("Save FreeCAD file for static2 analysis to {}...".format(save_fc_file))
-        self.active_doc.saveAs(save_fc_file)
-
-        fcc_print("--------------- End of FEM tests solver frame work ---------------")
+        fcc_print("\n--------------- End of FEM tests solver framework solver Elmer --------")
 
     # ********************************************************************************************
     def tearDown(
