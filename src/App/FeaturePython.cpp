@@ -371,23 +371,26 @@ PyObject *FeaturePythonImp::getPyObject(void)
     return new FeaturePythonPyT<DocumentObjectPy>(object);
 }
 
-int FeaturePythonImp::hasChildElement() const {
-    _FC_PY_CALL_CHECK(hasChildElement,return(-1));
+FeaturePythonImp::ValueT
+FeaturePythonImp::hasChildElement() const
+{
+    _FC_PY_CALL_CHECK(hasChildElement,return(NotImplemented));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         Py::Boolean ok(Base::pyCall(py_hasChildElement.ptr(),args.ptr()));
-        return static_cast<bool>(ok) ? 1 : 0;
+        return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
             PyErr_Clear();
-            return -1;
+            return NotImplemented;
         }
+
         Base::PyException e; // extract the Python error text
         e.ReportException();
-        return 0;
+        return Rejected;
     }
 }
 
@@ -454,43 +457,48 @@ std::string FeaturePythonImp::getViewProviderName()
     return std::string();
 }
 
-int FeaturePythonImp::canLinkProperties() const {
-    _FC_PY_CALL_CHECK(canLinkProperties,return(-1));
+FeaturePythonImp::ValueT
+FeaturePythonImp::canLinkProperties() const
+{
+    _FC_PY_CALL_CHECK(canLinkProperties,return(NotImplemented));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         Py::Boolean ok(Base::pyCall(py_canLinkProperties.ptr(),args.ptr()));
-        return ok?1:0;
+        return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
             PyErr_Clear();
-            return -1;
+            return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
         e.ReportException();
-        return 0;
+        return Rejected;
     }
 }
 
-int FeaturePythonImp::allowDuplicateLabel() const {
-    _FC_PY_CALL_CHECK(allowDuplicateLabel,return(-1));
+FeaturePythonImp::ValueT
+FeaturePythonImp::allowDuplicateLabel() const
+{
+    _FC_PY_CALL_CHECK(allowDuplicateLabel,return(NotImplemented));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         Py::Boolean ok(Base::pyCall(py_allowDuplicateLabel.ptr(),args.ptr()));
-        return ok?1:0;
+        return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
             PyErr_Clear();
-            return -1;
+            return NotImplemented;
         }
+
         Base::PyException e; // extract the Python error text
         e.ReportException();
-        return 0;
+        return Rejected;
     }
 }
 
@@ -514,10 +522,12 @@ int FeaturePythonImp::canLoadPartial() const {
     }
 }
 
-int FeaturePythonImp::redirectSubName(std::ostringstream &ss,
-        App::DocumentObject *topParent, App::DocumentObject *child) const 
+FeaturePythonImp::ValueT
+FeaturePythonImp::redirectSubName(std::ostringstream &ss,
+                                  App::DocumentObject *topParent,
+                                  App::DocumentObject *child) const 
 {
-    FC_PY_CALL_CHECK(redirectSubName);
+    _FC_PY_CALL_CHECK(redirectSubName,return(NotImplemented));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(4);
@@ -526,20 +536,21 @@ int FeaturePythonImp::redirectSubName(std::ostringstream &ss,
         args.setItem(2,topParent?Py::Object(topParent->getPyObject(),true):Py::Object());
         args.setItem(3,child?Py::Object(child->getPyObject(),true):Py::Object());
         Py::Object ret(Base::pyCall(py_redirectSubName.ptr(),args.ptr()));
-        if(ret.isNone())
-            return 0;
+        if (ret.isNone())
+            return Rejected;
         ss.str("");
         ss << ret.as_string();
-        return 1;
+        return Accepted;
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
             PyErr_Clear();
-            return -1;
+            return NotImplemented;
         }
+
         Base::PyException e; // extract the Python error text
         e.ReportException();
-        return 0;
+        return Rejected;
     }
 }
 
