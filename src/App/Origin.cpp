@@ -93,7 +93,7 @@ App::Plane *Origin::getPlane( const char *role ) const {
         return static_cast<App::Plane *> (feat);
     } else {
         std::stringstream err;
-        err << "Origin \"" << getFullName () << "\" comtains bad Plane object for role \""
+        err << "Origin \"" << getFullName () << "\" contains bad Plane object for role \""
             << role << '"';
         throw Base::RuntimeError ( err.str().c_str () );
     }

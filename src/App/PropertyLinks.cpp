@@ -2428,14 +2428,14 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inLis
 // DocInfo
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// Key on aboslute path. 
+// Key on absolute path.
 // Because of possible symbolic links, multiple entry may refer to the same
 // file. We use QFileInfo::canonicalPath to resolve that.
 typedef std::map<QString,DocInfoPtr> DocInfoMap;
 DocInfoMap _DocInfoMap;
 
 class App::DocInfo : 
-    public std::enable_shared_from_this<App::DocInfo> 
+    public std::enable_shared_from_this<App::DocInfo>
 {
 public:
     typedef boost::signals2::scoped_connection Connection;
@@ -3099,7 +3099,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         std::string _path;
         if(exporting) {
             // Here means we are exporting the owner but not exporting the
-            // linked object.  Try to use aboslute file path for easy transition
+            // linked object.  Try to use absolute file path for easy transition
             // into document at different directory
             if(docInfo) 
                 _path = docInfo->filePath();

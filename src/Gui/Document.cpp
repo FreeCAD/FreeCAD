@@ -991,7 +991,7 @@ bool Document::save(void)
             if(docs.size()>1) {
                 int ret = QMessageBox::question(getMainWindow(),
                         QObject::tr("Save dependent files"),
-                        QObject::tr("The file contain external depencencies. "
+                        QObject::tr("The file contains external dependencies. "
                         "Do you want to save the dependent files, too?"),
                         QMessageBox::Yes,QMessageBox::No);
                 if (ret != QMessageBox::Yes) {
@@ -2239,4 +2239,3 @@ void Document::slotChangePropertyEditor(const App::Document &doc, const App::Pro
         setModified(true);
     }
 }
-

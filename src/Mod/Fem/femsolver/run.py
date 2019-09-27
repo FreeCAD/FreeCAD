@@ -74,7 +74,7 @@ def run_fem_solver(solver, working_dir=None):
         A document object which must be a framework compliant solver. This means
         that it should be derived from the document object provided by
         :mod:`femsolver.solverbase` and implement all required methods
-        correctely. Of particular importance is :meth:`getMachine
+        correctly. Of particular importance is :meth:`getMachine
         <femsolver.solverbase.Proxy.getMachine>` as it is used by this method
         the get the :class:`Machine` used to execute the solver.
 
@@ -154,7 +154,7 @@ def getMachine(solver, path=None):
         A document object which must be a framework compliant solver. This means
         that it should be derived from the document object provided by
         :mod:`femsolver.solverbase` and implement all required methods
-        correctely. Of particular importance is :meth:`getMachine
+        correctly. Of particular importance is :meth:`getMachine
         <femsolver.solverbase.Proxy.getMachine>` as it is used by this method
         to create a new :class:`Machine` on cache miss.
 

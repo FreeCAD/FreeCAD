@@ -761,7 +761,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
         else {
             auto objs = getElementListValue();
 
-            // preseve element properties in ourself
+            // preserve element properties in ourself
             std::vector<Base::Placement> placements;
             placements.reserve(objs.size());
             std::vector<Base::Vector3d> scales;
