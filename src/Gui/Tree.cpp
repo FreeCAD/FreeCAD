@@ -2708,7 +2708,7 @@ void TreeWidget::onItemSelectionChanged ()
         if(TreeParams::Instance()->RecordSelection())
             Gui::Selection().selStackPush();
 
-        // This special handling to deal with possible discrepency of
+        // This special handling to deal with possible discrepancy of
         // Gui.Selection and Tree view selection because of newly added
         // DocumentObject::redirectSubName()
         Selection().clearCompleteSelection();
@@ -4883,4 +4883,3 @@ TreeWidget *DocumentObjectItem::getTree() const{
 }
 
 #include "moc_Tree.cpp"
-

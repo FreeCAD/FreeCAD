@@ -133,7 +133,7 @@ using namespace boost;
 using namespace boost::program_options;
 
 
-// scriptings (scripts are build in but can be overridden by command line option)
+// scriptings (scripts are built-in but can be overridden by command line option)
 #include <App/InitScript.h>
 #include <App/TestScript.h>
 #include <App/CMakeScript.h>
@@ -2241,7 +2241,7 @@ void Application::LoadParameters(void)
 
 #if defined(_MSC_VER)
 // fix weird error while linking boost (all versions of VC)
-// VS2010: http://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
+// VS2010: https://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
 namespace boost { namespace program_options { std::string arg="arg"; } }
 #if (defined (BOOST_VERSION) && (BOOST_VERSION >= 104100))
 namespace boost { namespace program_options {
@@ -2931,7 +2931,7 @@ std::string Application::FindHomePath(const char* sCall)
     binPath += L"bin";
     SetDllDirectoryW(binPath.c_str());
 
-    // http://stackoverflow.com/questions/5625884/conversion-of-stdwstring-to-qstring-throws-linker-error
+    // https://stackoverflow.com/questions/5625884/conversion-of-stdwstring-to-qstring-throws-linker-error
 #ifdef _MSC_VER
     QString str = QString::fromUtf16(reinterpret_cast<const ushort *>(homePath.c_str()));
 #else

@@ -1545,7 +1545,7 @@ void CmdSketcherCompCopy::activated(int iMsg)
     if (iMsg<0 || iMsg>2)
         return;
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();

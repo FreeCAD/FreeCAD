@@ -587,7 +587,7 @@ void Gui::GuiNativeEvent::On3dmouseInput()
 			motionData[axis] *= mouseData2Rotation;
 		}
 
-		// Now that the data has had the filters and sensitivty settings applied
+		// Now that the data has had the filters and sensitivity settings applied
 		// calculate the displacements since the last view update
 		for (int axis = 0; axis < 6; axis++) {
 			motionData[axis] *= dwElapsedTime;

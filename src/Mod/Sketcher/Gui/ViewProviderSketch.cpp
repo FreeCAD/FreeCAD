@@ -4339,7 +4339,7 @@ Restart:
                 continue;
             }
 
-            // distinquish different constraint types to build up
+            // distinguish different constraint types to build up
             switch (Constr->Type) {
                 case Block:
                 case Horizontal: // write the new position of the Horizontal constraint Same as vertical position.
