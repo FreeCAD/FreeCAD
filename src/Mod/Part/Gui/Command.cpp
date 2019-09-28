@@ -40,6 +40,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObserver.h>
@@ -1012,6 +1013,8 @@ void CmdPartImport::activated(int iMsg)
         Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
+
+        fn = Base::Tools::escapeEncodeFilename(fn);
         openCommand("Import Part");
         if (select == filter[1] ||
             select == filter[3]) {

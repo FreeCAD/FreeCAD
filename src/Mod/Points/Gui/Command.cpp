@@ -32,6 +32,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -81,9 +82,7 @@ void CmdPointsImport::activated(int iMsg)
         return;
 
     if (!fn.isEmpty()) {
-        QFileInfo fi;
-        fi.setFile(fn);
-
+        fn = Base::Tools::escapeEncodeFilename(fn);
         Gui::Document* doc = getActiveGuiDocument();
         openCommand("Import points");
         addModule(Command::App, "Points");
@@ -131,6 +130,7 @@ void CmdPointsExport::activated(int iMsg)
             break;
 
         if (!fn.isEmpty()) {
+            fn = Base::Tools::escapeEncodeFilename(fn);
             doCommand(Command::Doc, "Points.export([App.ActiveDocument.%s], \"%s\")",
                       (*it)->getNameInDocument(), fn.toUtf8().data());
         }
