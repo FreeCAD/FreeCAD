@@ -78,10 +78,6 @@ FC_LOG_LEVEL_INIT("Tree",false,true,true)
 
 using namespace Gui;
 
-#define TREEVIEW_PARAM "User parameter:BaseApp/Preferences/TreeView"
-#define GET_TREEVIEW_PARAM(_name) \
-    ParameterGrp::handle _name = App::GetApplication().GetParameterGroupByPath(TREEVIEW_PARAM)
-
 /////////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<QPixmap>  TreeWidget::documentPixmap;
@@ -93,65 +89,57 @@ const int TreeWidget::ObjectType = 1001;
 bool _DragEventFilter;
 
 TreeParams::TreeParams() {
-    GET_TREEVIEW_PARAM(hGrp);
-    handle = hGrp;
+    handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     handle->Attach(this);
 
-#define FC_TREEPARAM_INIT(_name,_type,_Type,_default) \
-    _##_name = handle->Get##_Type(#_name,_default);
 
 #undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF FC_TREEPARAM_INIT
+#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
+    _##_name = handle->Get##_Type(#_name,_default);
+
     FC_TREEPARAM_DEFS
 }
 
-#define FC_TREEPARAM_SET_FUNC(_name,_type,_Type,_default) \
+
+#undef FC_TREEPARAM_DEF
+#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
 void TreeParams::set##_name(_type value) {\
     if(_##_name != value) {\
         handle->Set##_Type(#_name,value);\
     }\
 }
 
-#undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF FC_TREEPARAM_SET_FUNC
 FC_TREEPARAM_DEFS
 
 void TreeParams::OnChange(Base::Subject<const char*> &, const char* sReason) {
-#define FC_TREEPARAM_CHANGE(_name,_type,_Type,_default) \
+
+#undef FC_TREEPARAM_DEF
+#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
+    if(strcmp(sReason,#_name)==0) {\
+        _##_name = handle->Get##_Type(#_name,_default);\
+        return;\
+    }
+
+#undef FC_TREEPARAM_DEF2
+#define FC_TREEPARAM_DEF2(_name,_type,_Type,_default) \
     if(strcmp(sReason,#_name)==0) {\
         _##_name = handle->Get##_Type(#_name,_default);\
         on##_name##Changed();\
         return;\
     }
 
-#undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF FC_TREEPARAM_CHANGE
     FC_TREEPARAM_DEFS
 }
 
-void TreeParams::onPreSelectionChanged() {}
-
 void TreeParams::onSyncSelectionChanged() {
-    if(!FC_TREEPARAM(SyncSelection) || !Gui::Selection().hasSelection())
+    if(!TreeParams::Instance()->SyncSelection() || !Gui::Selection().hasSelection())
         return;
     TreeWidget::scrollItemToTop();
 }
 
-void TreeParams::onSyncViewChanged() {}
-void TreeParams::onSyncPlacementChanged() {}
-void TreeParams::onRecordSelectionChanged() {}
-void TreeParams::onRecomputeOnDropChanged() {}
-void TreeParams::onKeepRootOrderChanged() {}
-void TreeParams::onTreeActiveAutoExpandChanged() {}
-
 void TreeParams::onDocumentModeChanged() {
     App::GetApplication().setActiveDocument(App::GetApplication().getActiveDocument());
 }
-
-void TreeParams::onStatusTimeoutChanged() {}
-void TreeParams::onSelectionTimeoutChanged() {}
-void TreeParams::onPreSelectionTimeoutChanged() {}
-void TreeParams::onPreSelectionDelayChanged() {}
 
 TreeParams *TreeParams::Instance() {
     static TreeParams *instance;
@@ -775,7 +763,7 @@ void TreeWidget::_updateStatus(bool delay) {
             onUpdateStatus();
         return;
     }
-    int timeout = FC_TREEPARAM(StatusTimeout);
+    int timeout = TreeParams::Instance()->StatusTimeout();
     if (timeout<0)
         timeout = 1;
     FC_LOG("delay update status");
@@ -921,7 +909,7 @@ void TreeWidget::showEvent(QShowEvent *ev) {
 #if 0
     TREE_TRACE("attaching selection observer");
     this->attachSelection();
-    int timeout = FC_TREEPARAM(SelectionTimeout);
+    int timeout = TreeParams::Instance()->SelectionTimeout();
     if(timeout<=0)
         timeout = 1;
     selectTimer->start(timeout);
@@ -1610,7 +1598,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     targetParent->getNameInDocument());
         }
 
-        bool syncPlacement = FC_TREEPARAM(SyncPlacement) && targetItemObj->isGroup();
+        bool syncPlacement = TreeParams::Instance()->SyncPlacement() && targetItemObj->isGroup();
 
         bool setSelection = true;
         std::vector<std::pair<App::DocumentObject*,std::string> > droppedObjects;
@@ -1923,7 +1911,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
         std::vector<ItemInfo2> infos;
         infos.reserve(items.size());
-        bool syncPlacement = FC_TREEPARAM(SyncPlacement);
+        bool syncPlacement = TreeParams::Instance()->SyncPlacement();
 
         // check if items can be dragged
         for(auto &v : items) {
@@ -2104,7 +2092,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
         }
     }
 
-    if(touched && FC_TREEPARAM(RecomputeOnDrop))
+    if(touched && TreeParams::Instance()->RecomputeOnDrop())
         thisDoc->recompute();
 }
 
@@ -2223,7 +2211,7 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     auto jt = DocumentMap.find(&Doc);
     if (jt == DocumentMap.end())
         return; // signal is emitted before the item gets created
-    int displayMode = FC_TREEPARAM(DocumentMode);
+    int displayMode = TreeParams::Instance()->DocumentMode();
     for (auto it = DocumentMap.begin();
          it != DocumentMap.end(); ++it)
     {
@@ -2460,33 +2448,33 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
         DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
         objItem->displayStatusInfo();
 
-        if(FC_TREEPARAM(PreSelection)) {
-            int timeout = FC_TREEPARAM(PreSelectionDelay);
+        if(TreeParams::Instance()->PreSelection()) {
+            int timeout = TreeParams::Instance()->PreSelectionDelay();
             if(timeout < 0)
                 timeout = 1;
             if(preselectTime.elapsed() < timeout)
                 onPreSelectTimer();
             else{
-                timeout = FC_TREEPARAM(PreSelectionTimeout);
+                timeout = TreeParams::Instance()->PreSelectionTimeout();
                 if(timeout < 0)
                     timeout = 1;
                 preselectTimer->start(timeout);
                 Selection().rmvPreselect();
             }
         }
-    } else if(FC_TREEPARAM(PreSelection))
+    } else if(TreeParams::Instance()->PreSelection())
         Selection().rmvPreselect();
 }
 
 void TreeWidget::leaveEvent(QEvent *) {
-    if(!updateBlocked && FC_TREEPARAM(PreSelection)) {
+    if(!updateBlocked && TreeParams::Instance()->PreSelection()) {
         preselectTimer->stop();
         Selection().rmvPreselect();
     }
 }
 
 void TreeWidget::onPreSelectTimer() {
-    if(!FC_TREEPARAM(PreSelection))
+    if(!TreeParams::Instance()->PreSelection())
         return;
     auto item = itemAt(viewport()->mapFromGlobal(QCursor::pos()));
     if(!item || item->type()!=TreeWidget::ObjectType) 
@@ -2636,7 +2624,7 @@ void TreeWidget::setupText() {
 }
 
 void TreeWidget::syncView(ViewProviderDocumentObject *vp) {
-    if(currentDocItem && FC_TREEPARAM(SyncView)) {
+    if(currentDocItem && TreeParams::Instance()->SyncView()) {
         bool focus = hasFocus();
         currentDocItem->document()->setActiveView(vp);
         if(focus)
@@ -2717,7 +2705,7 @@ void TreeWidget::onItemSelectionChanged ()
     }
 
     if(selItems.size()<=1) {
-        if(FC_TREEPARAM(RecordSelection))
+        if(TreeParams::Instance()->RecordSelection())
             Gui::Selection().selStackPush();
 
         // This special handling to deal with possible discrepency of
@@ -2730,7 +2718,7 @@ void TreeWidget::onItemSelectionChanged ()
                 item = static_cast<DocumentObjectItem*>(selItems.front());
             else if(selItems.front()->type() == DocumentType) {
                 auto ditem = static_cast<DocumentItem*>(selItems.front());
-                if(FC_TREEPARAM(SyncView)) {
+                if(TreeParams::Instance()->SyncView()) {
                     bool focus = hasFocus();
                     ditem->document()->setActiveView();
                     if(focus)
@@ -2745,7 +2733,7 @@ void TreeWidget::onItemSelectionChanged ()
             v.second->clearSelection(item);
             currentDocItem = 0;
         }
-        if(FC_TREEPARAM(RecordSelection))
+        if(TreeParams::Instance()->RecordSelection())
             Gui::Selection().selStackPush();
     }else{
         for (auto pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
@@ -2753,7 +2741,7 @@ void TreeWidget::onItemSelectionChanged ()
             pos->second->updateSelection(pos->second);
             currentDocItem = 0;
         }
-        if(FC_TREEPARAM(RecordSelection))
+        if(TreeParams::Instance()->RecordSelection())
             Gui::Selection().selStackPush(true,true);
     }
 
@@ -2764,7 +2752,7 @@ void TreeWidget::onSelectTimer() {
 
     _updateStatus(false);
 
-    bool syncSelect = FC_TREEPARAM(SyncSelection);
+    bool syncSelect = TreeParams::Instance()->SyncSelection();
     bool locked = this->blockConnection(true);
     if(Selection().hasSelection()) {
         for(auto &v : DocumentMap) {
@@ -2790,7 +2778,7 @@ void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
     case SelectionChanges::RmvSelection:
     case SelectionChanges::SetSelection:
     case SelectionChanges::ClrSelection: {
-        int timeout = FC_TREEPARAM(SelectionTimeout);
+        int timeout = TreeParams::Instance()->SelectionTimeout();
         if(timeout<=0)
             timeout = 1;
         selectTimer->start(timeout);
@@ -2809,8 +2797,9 @@ TreePanel::TreePanel(const char *name, QWidget* parent)
   : QWidget(parent)
 {
     this->treeWidget = new TreeWidget(name, this);
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
-    this->treeWidget->setIndentation(hGrp->GetInt("Indentation", this->treeWidget->indentation()));
+    int indent = TreeParams::Instance()->Indentation();
+    if(indent)
+        this->treeWidget->setIndentation(indent);
 
     QVBoxLayout* pLayout = new QVBoxLayout(this);
     pLayout->setSpacing(0);
@@ -2902,8 +2891,9 @@ TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
     setWindowTitle(tr("Tree view"));
     this->treeWidget = new TreeWidget("TreeView",this);
     this->treeWidget->setRootIsDecorated(false);
-    GET_TREEVIEW_PARAM(hGrp);
-    this->treeWidget->setIndentation(hGrp->GetInt("Indentation", this->treeWidget->indentation()));
+    int indent = TreeParams::Instance()->Indentation();
+    if(indent)
+        this->treeWidget->setIndentation(indent);
 
     QGridLayout* pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
@@ -3433,7 +3423,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
 }
 
 int DocumentItem::findRootIndex(App::DocumentObject *childObj) {
-    if(!FC_TREEPARAM(KeepRootOrder) || !childObj || !childObj->getNameInDocument())
+    if(!TreeParams::Instance()->KeepRootOrder() || !childObj || !childObj->getNameInDocument())
         return -1;
 
     // object id is monotonically increasing, so use this as a hint to insert
@@ -3781,6 +3771,7 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
                 }else if(topParent!=parent)
                     continue;
                 showItem(item,false,true);
+                item->setExpanded(true);
             }
             break;
         case Gui::CollapseItem:

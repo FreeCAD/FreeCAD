@@ -110,6 +110,8 @@ public:
     bool LoadBinarySTL (std::istream &rstrIn);
     /** Loads an OBJ Mesh file. */
     bool LoadOBJ (std::istream &rstrIn);
+    /** Loads the materials of an OBJ file. */
+    bool LoadMTL (std::istream &rstrIn);
     /** Loads an SMF Mesh file. */
     bool LoadSMF (std::istream &rstrIn);
     /** Loads an OFF Mesh file. */
@@ -131,6 +133,7 @@ protected:
     MeshKernel &_rclMesh;   /**< reference to mesh data structure */
     Material* _material;
     std::vector<std::string> _groupNames;
+    std::vector<std::pair<std::string, unsigned long> > _materialNames;
 };
 
 /**

@@ -45,6 +45,12 @@ def setup_cantileverbase(doc=None, solver="ccxtools"):
     box_obj = doc.addObject("Part::Box", "Box")
     box_obj.Height = box_obj.Width = 1000
     box_obj.Length = 8000
+    doc.recompute()
+
+    if FreeCAD.GuiUp:
+        import FreeCADGui
+        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -55,25 +61,21 @@ def setup_cantileverbase(doc=None, solver="ccxtools"):
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
     elif solver == "ccxtools":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
         solver_object.WorkingDir = u""
     elif solver == "elmer":
         analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
     elif solver == "z88":
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
+    if solver == "calculix" or solver == "ccxtools":
+        solver_object.AnalysisType = "static"
+        solver_object.GeometricalNonlinearity = "linear"
+        solver_object.ThermoMechSteadyState = False
+        solver_object.MatrixSolverType = "default"
+        solver_object.IterationsControlParameterTimeUse = False
 
     # material
     material_object = analysis.addObject(
@@ -94,7 +96,7 @@ def setup_cantileverbase(doc=None, solver="ccxtools"):
     fixed_constraint.References = [(doc.Box, "Face1")]
 
     # mesh
-    from femexamples.meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
+    from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

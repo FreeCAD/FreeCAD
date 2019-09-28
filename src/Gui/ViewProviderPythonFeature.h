@@ -54,19 +54,19 @@ public:
 
     // Returns the icon
     QIcon getIcon() const;
-    std::vector<App::DocumentObject*> claimChildren(std::vector<App::DocumentObject*>&&) const;
-    bool useNewSelectionModel() const;
+    bool claimChildren(std::vector<App::DocumentObject*>&) const;
+    ValueT useNewSelectionModel() const;
     ValueT getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
-    std::string getElement(const SoDetail *det) const;
-    SoDetail* getDetail(const char*) const;
+    bool getElement(const SoDetail *det, std::string &) const;
+    bool getDetail(const char*, SoDetail *&det) const;
     ValueT getDetailPath(const char *name, SoFullPath *path, bool append, SoDetail *&det) const;
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
     ValueT setEdit(int ModNum);
     ValueT unsetEdit(int ModNum);
-    bool setEditViewer(View3DInventorViewer*, int ModNum);
-    bool unsetEditViewer(View3DInventorViewer*);
+    ValueT setEditViewer(View3DInventorViewer*, int ModNum);
+    ValueT unsetEditViewer(View3DInventorViewer*);
     ValueT doubleClicked(void);
-    void setupContextMenu(QMenu* menu);
+    bool setupContextMenu(QMenu* menu);
 
     /** @name Update data methods*/
     //@{
@@ -75,16 +75,16 @@ public:
     void onChanged(const App::Property* prop);
     void startRestoring();
     void finishRestoring();
-    bool onDelete(const std::vector<std::string> & sub);
+    ValueT onDelete(const std::vector<std::string> & sub);
     ValueT canDelete(App::DocumentObject *obj) const;
     //@}
 
     /** @name Display methods */
     //@{
     /// Returns true if the icon must always appear enabled in the tree view
-    bool isShow() const;
+    ValueT isShow() const;
     /// get the default display mode
-    const char* getDefaultDisplayMode() const;
+    bool getDefaultDisplayMode(std::string &mode) const;
     /// returns a list of all possible modes
     std::vector<std::string> getDisplayModes(void) const;
     /// set the display mode
@@ -113,14 +113,15 @@ public:
     ValueT canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *, 
             const char *,const std::vector<std::string> &elements) const;
     /** Add an object with full quanlified name to the view provider by drag and drop */
-    ValueT dropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
+    bool dropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
             const char *, const std::vector<std::string> &elements, std::string &ret);
     ValueT replaceObject(App::DocumentObject *, App::DocumentObject *);
     //@}
 
-    ViewProviderDocumentObject *getLinkedViewProvider(bool recursive) const;
+    bool getLinkedViewProvider(ViewProviderDocumentObject *&res, 
+            std::string *subname, bool recursive) const;
 
-    bool canAddToSceneGraph() const;
+    ValueT canAddToSceneGraph() const;
 
     bool getDropPrefix(std::string &prefix) const;
 
@@ -214,7 +215,10 @@ public:
     }
 
     std::vector<App::DocumentObject*> claimChildren() const override {
-        return imp->claimChildren(ViewProviderT::claimChildren());
+        std::vector<App::DocumentObject *> res;
+        if(!imp->claimChildren(res))
+            return ViewProviderT::claimChildren();
+        return res;
     }
 
     /** @name Nodes */
@@ -234,7 +238,14 @@ public:
     /** @name Selection handling */
     //@{
     virtual bool useNewSelectionModel() const override {
-        return imp->useNewSelectionModel();
+        switch(imp->useNewSelectionModel()) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::useNewSelectionModel();
+        }
     }
     virtual bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const override {
         auto ret = imp->getElementPicked(pp,subname);
@@ -245,13 +256,15 @@ public:
         return false;
     }
     virtual std::string getElement(const SoDetail *det) const override {
-        std::string name = imp->getElement(det);
-        if (!name.empty()) return name;
-        return ViewProviderT::getElement(det);
+        std::string name;
+        if(!imp->getElement(det,name))
+            return ViewProviderT::getElement(det);
+        return name;
     }
     virtual SoDetail* getDetail(const char* name) const override {
-        SoDetail* det = imp->getDetail(name);
-        if (det) return det;
+        SoDetail *det = 0;
+        if(!imp->getDetail(name,det))
+            return det;
         return ViewProviderT::getDetail(name);
     }
     virtual bool getDetailPath(const char *name, SoFullPath *path, bool append,SoDetail *&det) const override {
@@ -280,9 +293,14 @@ public:
         ViewProviderT::getTaskViewContent(c);
     }
     virtual bool onDelete(const std::vector<std::string> & sub) override {
-        bool ok = imp->onDelete(sub);
-        if (!ok) return ok;
-        return ViewProviderT::onDelete(sub);
+        switch(imp->onDelete(sub)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::onDelete(sub);
+        }
     }
     virtual bool canDelete(App::DocumentObject *obj) const override {
         switch(imp->canDelete(obj)) {
@@ -405,13 +423,8 @@ public:
     {
         App::AutoTransaction committer;
         std::string ret;
-        switch (imp->dropObjectEx(obj,owner,subname,elements,ret)) {
-        case ViewProviderPythonFeatureImp::NotImplemented:
+        if(!imp->dropObjectEx(obj,owner,subname,elements,ret))
             ret = ViewProviderT::dropObjectEx(obj,owner,subname,elements);
-            break;
-        default:
-            break;
-        }
         return ret;
     }
     //@}
@@ -420,13 +433,21 @@ public:
     //@{
     /// Returns true if the icon must always appear enabled in the tree view
     virtual bool isShow() const override {
-        bool ok = imp->isShow();
-        if (ok) return ok;
-        return ViewProviderT::isShow();
+        switch(imp->isShow()) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::isShow();
+        }
     }
     /// get the default display mode
     virtual const char* getDefaultDisplayMode() const override {
-        return imp->getDefaultDisplayMode();
+        defaultMode.clear();
+        if(imp->getDefaultDisplayMode(defaultMode))
+            return defaultMode.c_str();
+        return ViewProviderT::getDefaultDisplayMode();
     }
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const override {
@@ -459,7 +480,14 @@ public:
     }
 
     virtual bool canAddToSceneGraph() const override {
-        return ViewProviderT::canAddToSceneGraph() && imp->canAddToSceneGraph();
+        switch(imp->canAddToSceneGraph()) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canAddToSceneGraph();
+        }
     }
 
 protected:
@@ -540,28 +568,19 @@ protected:
         }
     }
 
-//FIXME: ViewProviderPythonFeatureT hides overloaded virtual functions
-#if defined(__clang__)
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Woverloaded-virtual"
-#endif
-
-    virtual ViewProviderDocumentObject *getLinkedViewProvider(bool recursive=false) const {
-        auto res = imp->getLinkedViewProvider(recursive);
-        if(!res)
-            res = ViewProviderT::getLinkedViewProvider();
+    virtual ViewProviderDocumentObject *getLinkedViewProvider(
+            std::string *subname=0, bool recursive=false) const override{
+        ViewProviderDocumentObject *res = 0;
+        if(!imp->getLinkedViewProvider(res, subname, recursive))
+            res = ViewProviderT::getLinkedViewProvider(subname,recursive);
         return res;
     }
-
-#if defined(__clang__)
-# pragma clang diagnostic pop
-#endif
 
 public:
     virtual void setupContextMenu(QMenu* menu, QObject* recipient, const char* member) override
     {
-        ViewProviderT::setupContextMenu(menu, recipient, member);
-        imp->setupContextMenu(menu);
+        if(!imp->setupContextMenu(menu))
+            ViewProviderT::setupContextMenu(menu, recipient, member);
     }
 
 protected:
@@ -586,6 +605,7 @@ protected:
 private:
     ViewProviderPythonFeatureImp* imp;
     App::PropertyPythonObject Proxy;
+    mutable std::string defaultMode;
     std::string viewerMode;
     bool _attached;
 };
