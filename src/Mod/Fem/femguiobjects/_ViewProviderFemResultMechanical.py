@@ -112,7 +112,7 @@ class _ViewProviderFemResultMechanical:
             for obj in self.claimChildren():
                 obj.ViewObject.show()
         except Exception as err:
-            FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
+            FreeCAD.Console.PrintError("Error in onDelete: {0} \n".format(err))
         return True
 
 
