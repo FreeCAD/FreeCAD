@@ -2394,7 +2394,7 @@ bool ViewProviderLink::initDraggingPlacement() {
 
     dragCtx->preTransform = doc->getEditingTransform();
     auto plaMat = pla.toMatrix();
-    plaMat.inverse();
+    plaMat.inverseGauss();
     dragCtx->preTransform *= plaMat;
 
     dragCtx->bbox = linkView->getBoundBox();
@@ -2402,7 +2402,7 @@ bool ViewProviderLink::initDraggingPlacement() {
             dragCtx->bbox.GetCenter(),Base::Rotation());
     dragCtx->initialPlacement = pla * offset;
     dragCtx->mat = offset.toMatrix();
-    dragCtx->mat.inverse();
+    dragCtx->mat.inverseGauss();
     return true;
 }
 
