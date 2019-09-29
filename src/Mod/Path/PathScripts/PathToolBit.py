@@ -57,9 +57,7 @@ def updateConstraint(sketch, name, value):
     for i, constraint in enumerate(sketch.Constraints):
         if constraint.Name.split(';')[0] == name:
             constr = None
-            if constraint.Type in ['DistanceX', 'DistanceY', 'Distance', 'Radius']:
-                constr = Sketcher.Constraint(constraint.Type, constraint.First, value)
-            elif constraint.Type in ['Angle']:
+            if constraint.Type in ['DistanceX', 'DistanceY', 'Distance', 'Radius', 'Angle']:
                 constr = Sketcher.Constraint(constraint.Type, constraint.First, constraint.FirstPos, constraint.Second, constraint.SecondPos, value)
             else:
                 print(constraint.Name, constraint.Type)
@@ -118,13 +116,14 @@ class ToolBit(object):
         #    self._updateBitShape(obj, [prop])
 
     def _updateBitShape(self, obj, properties=None):
-        if not properties:
-            properties = self.bitPropertyNames(obj)
-        for prop in properties:
-            for sketch in [o for o in obj.BitBody.Group if o.TypeId == 'Sketcher::SketchObject']:
-                PathLog.track(obj.Label, sketch.Label, prop)
-                updateConstraint(sketch, prop, obj.getPropertyByName(prop))
-        self._copyBitShape(obj)
+        if not obj.BitBody is None:
+            if not properties:
+                properties = self.bitPropertyNames(obj)
+            for prop in properties:
+                for sketch in [o for o in obj.BitBody.Group if o.TypeId == 'Sketcher::SketchObject']:
+                    PathLog.track(obj.Label, sketch.Label, prop)
+                    updateConstraint(sketch, prop, obj.getPropertyByName(prop))
+            self._copyBitShape(obj)
 
     def _copyBitShape(self, obj):
         obj.Document.recompute()
@@ -159,6 +158,17 @@ class ToolBit(object):
         self._copyBitShape(obj)
         for prop in self.bitPropertyNames(obj):
             obj.removeProperty(prop)
+
+    def loadBitBody(self, obj):
+        self._removeBitBody(obj)
+        (doc, opened) = self._loadBitBody(obj)
+        obj.BitBody = obj.Document.copyObject(doc.RootObjects[0], True)
+        if opened:
+            FreeCAD.closeDocument(doc.Name)
+        self._updateBitShape(obj)
+
+    def unloadBitBody(self, obj):
+        self._removeBitBody(obj)
 
     def _setupBitFromTemplate(self, obj, path=None):
         (doc, docOpened) = self._loadBitBody(obj, path)

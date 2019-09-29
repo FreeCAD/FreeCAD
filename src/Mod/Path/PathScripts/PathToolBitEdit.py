@@ -54,6 +54,7 @@ class ToolBitEditor:
         self.tool = tool
         if not tool.BitTemplate:
             self.tool.BitTemplate = 'src/Mod/Path/Tools/Template/endmill-straight.fcstd'
+        self.tool.Proxy.loadBitBody(self.tool)
         self.setupTool(self.tool)
 
     def setupTool(self, tool):
@@ -79,8 +80,10 @@ class ToolBitEditor:
 
     def accept(self):
         self.refresh()
+        self.tool.Proxy.unloadBitBody(self.tool)
 
     def reject(self):
+        self.tool.Proxy.unloadBitBody(self.tool)
         pass
 
     def updateUI(self):
