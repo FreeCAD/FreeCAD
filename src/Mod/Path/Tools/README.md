@@ -1,12 +1,17 @@
 # Tools
 
-Each tool is stored as a JSON file which has the template's path and values for all named constaints of the template.
+Each tool is stored as a JSON file which has the template's path and values for all named constraints of the template.
 It also includes all additional parameters and their values.
 
+Storing a tool as a JSON file sounds great but eliminates the option of an accurate thumbnail. On the other hand,
+storing each tool as a `*.fcstd` file requires more space and does not allow for generating tools. If one has an
+extensive tool aresenal they might want to script the generation of tools which is easily done for a `*.json` file but
+practically impossible for `*.fcstd` files.
+
 When a tool is instantiated in a job the PDN body is created from the template and the constraints are set according
-to the values from the JSON file. All additional parameters are created as properties on the object. This provides a
-body with the correct shape and dimensions which can be used to generate a point cloud or mesh for advanced algorithms
-(and potentially simulation).
+to the values from the JSON file. All additional parameters are created as properties on the object. This provides the
+the correct shape and dimensions which can be used to generate a point cloud or mesh for advanced algorithms (and
+potentially simulation).
 
 # Tool Libraries
 
@@ -54,16 +59,16 @@ TechDraw's templates.
    see below for details.
 1. Each template has its own set of parameters, fill them with the tool's values.
 1. Select additional parameters
-1. Save the tool under the name that makes sense to you
+1. Save the tool under path/file that makes sense to you
 
 
 ## How to create a new tool bit Template
 
-A tool bit template represents the physical shape of a tool. It does not completely desribe the bit, for that some
+A tool bit template represents the physical shape of a tool. It does not completely desribe the bit - for that some
 additional parameters are needed which will be added when an actual bit is parametrized from the template.
 
 1. Create a new FreeCAD document
-1. Open the `PartDesign` workbench, create a body and give the body the name you want to show up in the bit selection.
+1. Open the `PartDesign` workbench, create a body and give the body a label you want to show up in the bit selection.
 1. Create a sketch in the XZ plane and draw half the profile of the bit.
    * Put the top center of the bit on the origin (0,0)
 1. For any constraint serving as a parameter for the tool (like overall Length) create a named constraint
