@@ -443,11 +443,11 @@ PyObject * RotationPy::number_power_handler (PyObject* self, PyObject* other, Py
         return new RotationPy(Rotation());
 
     if(b < 0) {
-        b = 1+b;
+        b = -b;
         a.invert();
     }
     auto res = a;
-    for(;b;--b)
+    for(--b;b;--b)
         res *= a;
     return new RotationPy(res);
 }
