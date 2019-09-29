@@ -30,6 +30,8 @@
 # pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Console.h>
 #include "Base/Exception.h"
 #include <Base/Interpreter.h>
@@ -39,6 +41,10 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyUnits.h>
 #include <Base/QuantityPy.h>
+#include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
+#include <Base/RotationPy.h>
+#include <Base/VectorPy.h>
 #include <QStringList>
 #include <string>
 #include <sstream>
@@ -1771,6 +1777,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case TRUNC:
     case CEIL:
     case FLOOR:
+    case MINVERT:
         if (args.size() != 1)
             EXPR_THROW("Invalid number of arguments: exactly one required.");
         break;
@@ -1791,6 +1798,8 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case COUNT:
     case MIN:
     case MAX:
+    case CREATE:
+    case MSCALE:
         if (args.size() == 0)
             EXPR_THROW("Invalid number of arguments: at least one required.");
         break;
@@ -2039,10 +2048,86 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         for(auto &arg : args)
             tuple.setItem(i++,arg->getPyValue());
         return tuple;
+    } else if (f == MSCALE) {
+        if(args.size() < 2)
+            _EXPR_THROW("Function requires at least two arguments.",expr);
+        Py::Object pymat = args[0]->getPyValue();
+        Py::Object pyscale;
+        if(PyObject_TypeCheck(pymat.ptr(),&Base::MatrixPy::Type)) {
+            if(args.size() == 2) {
+                Py::Object obj = args[1]->getPyValue();
+                if(obj.isSequence() && PySequence_Size(obj.ptr())==3)
+                    pyscale = Py::Tuple(Py::Sequence(obj));
+            } else if(args.size() == 4) {
+                Py::Tuple tuple(3);
+                tuple.setItem(0,args[1]->getPyValue());
+                tuple.setItem(1,args[2]->getPyValue());
+                tuple.setItem(2,args[3]->getPyValue());
+                pyscale = tuple;
+            }
+        }
+        if(!pyscale.isNone()) {
+            Base::Vector3d vec;
+            if (!PyArg_ParseTuple(pyscale.ptr(), "ddd", &vec.x,&vec.y,&vec.z))
+                PyErr_Clear();
+            else {
+                auto mat = static_cast<Base::MatrixPy*>(pymat.ptr())->value();
+                mat.scale(vec);
+                return Py::Object(new Base::MatrixPy(mat));
+            }
+        }
+        _EXPR_THROW("Function requires arguments to be either "
+                "(matrix,vector) or (matrix,number,number,number).", expr);
     }
 
     if(args.empty())
         _EXPR_THROW("Function requires at least one argument.",expr);
+
+    if (f == MINVERT) {
+        Py::Object pyobj = args[0]->getPyValue();
+        Py::Tuple args;
+        if (PyObject_TypeCheck(pyobj.ptr(),&Base::MatrixPy::Type)) {
+            auto m = static_cast<Base::MatrixPy*>(pyobj.ptr())->value();
+            if (fabs(m.determinant()) <= DBL_EPSILON)
+                _EXPR_THROW("Cannot invert singular matrix.",expr);
+            m.inverseGauss();
+            return Py::Object(new Base::MatrixPy(m));
+
+        } else if (PyObject_TypeCheck(pyobj.ptr(),&Base::PlacementPy::Type)) {
+            const auto &pla = *static_cast<Base::PlacementPy*>(pyobj.ptr())->getPlacementPtr();
+            return Py::Object(new Base::PlacementPy(pla.inverse()));
+
+        } else if (PyObject_TypeCheck(pyobj.ptr(),&Base::RotationPy::Type)) {
+            const auto &rot = *static_cast<Base::RotationPy*>(pyobj.ptr())->getRotationPtr();
+            return Py::Object(new Base::RotationPy(rot.inverse()));
+        }
+         _EXPR_THROW("Function requires the first argument to be either Matrix, Placement or Rotation.",expr);
+
+    } else if (f == CREATE) {
+        Py::Object pytype = args[0]->getPyValue();
+        if(!pytype.isString())
+            _EXPR_THROW("Function requires the first argument to be a string.",expr);
+        std::string type(pytype.as_string());
+        Py::Object res;
+        if(boost::iequals(type,"matrix")) 
+            res = Py::Object(new Base::MatrixPy(Base::Matrix4D()));
+        else if(boost::iequals(type,"vector"))
+            res = Py::Object(new Base::VectorPy(Base::Vector3d()));
+        else if(boost::iequals(type,"placement"))
+            res = Py::Object(new Base::PlacementPy(Base::Placement()));
+        else if(boost::iequals(type,"rotation"))
+            res = Py::Object(new Base::RotationPy(Base::Rotation()));
+        else
+            _EXPR_THROW("Unknown type '" << type << "'.",expr);
+        if(args.size()>1) {
+            Py::Tuple tuple(args.size()-1);
+            for(unsigned i=1;i<args.size();++i)
+                tuple.setItem(i-1,args[i]->getPyValue());
+            Py::Dict dict;
+            PyObjectBase::__PyInit(res.ptr(),tuple.ptr(),dict.ptr());
+        }
+        return res;
+    }
 
     Py::Object e1 = args[0]->getPyValue();
     Quantity v1 = pyToQuantity(e1,expr,"Invalid first argument.");
@@ -2368,6 +2453,12 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "list("; break;;
     case TUPLE:
         ss << "tuple("; break;;
+    case MSCALE:
+        ss << "mscale("; break;;
+    case MINVERT:
+        ss << "minvert("; break;;
+    case CREATE:
+        ss << "create("; break;;
     default:
         assert(0);
     }
@@ -3184,6 +3275,9 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["cath"] = FunctionExpression::CATH;
         registered_functions["list"] = FunctionExpression::LIST;
         registered_functions["tuple"] = FunctionExpression::TUPLE;
+        registered_functions["mscale"] = FunctionExpression::MSCALE;
+        registered_functions["minvert"] = FunctionExpression::MINVERT;
+        registered_functions["create"] = FunctionExpression::CREATE;
 
         // Aggregates
         registered_functions["sum"] = FunctionExpression::SUM;
