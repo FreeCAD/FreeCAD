@@ -182,11 +182,17 @@ PyObject * MatrixPy::number_power_handler (PyObject* self, PyObject* other, PyOb
         return new MatrixPy(Matrix4D());
 
     if(b < 0) {
-        b = 1+b;
-        a.inverse();
+        if (fabs(a.determinant()) > DBL_EPSILON)
+            a.inverseGauss();
+        else {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot invert singular matrix");
+            return 0;
+        }
+        b = -b;
     }
+
     auto res = a;
-    for(;b;--b)
+    for(--b;b;--b)
         res *= a;
     return new MatrixPy(res);
 }
