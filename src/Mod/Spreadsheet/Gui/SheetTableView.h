@@ -34,7 +34,9 @@ namespace SpreadsheetGui {
 class SheetViewHeader : public QHeaderView {
     Q_OBJECT
 public:
-    SheetViewHeader(Qt::Orientation o) : QHeaderView(o) {
+    SheetViewHeader(QTableView *owner, Qt::Orientation o) 
+        : QHeaderView(o),owner(owner) 
+    {
 #if QT_VERSION >= 0x050000
         setSectionsClickable(true);
 #else
@@ -45,6 +47,9 @@ Q_SIGNALS:
     void resizeFinished();
 protected:
     void mouseReleaseEvent(QMouseEvent * event);
+    bool viewportEvent(QEvent *e);
+private:
+    QTableView *owner;
 };
 
 class SheetTableView : public QTableView
