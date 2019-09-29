@@ -143,6 +143,7 @@ class PathWorkbench (Workbench):
 
     def ContextMenu(self, recipient):
         import PathScripts
+        menuAppended = False
         if len(FreeCADGui.Selection.getSelection()) == 1:
             obj = FreeCADGui.Selection.getSelection()[0]
             if obj.isDerivedFrom("Path::Feature"):
@@ -153,8 +154,10 @@ class PathWorkbench (Workbench):
                     self.appendContextMenu("", ["Refresh_Path"])
                 if "Job" in selectedName:
                     self.appendContextMenu("", ["Path_ExportTemplate"])
+                menuAppended = True
             if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
                 self.appendContextMenu("", ["Path_OperationCopy", "Path_OpActiveToggle"])
+                menuAppended = True
             if obj.isDerivedFrom("Path::Feature"):
                 if "Profile" in selectedName or "Contour" in selectedName or "Dressup" in selectedName:
                     self.appendContextMenu("", "Separator")
@@ -162,6 +165,9 @@ class PathWorkbench (Workbench):
                     #self.appendContextMenu("", ["Set_EndPoint"])
                     for cmd in self.dressupcmds:
                         self.appendContextMenu("", [cmd])
+                    menuAppended = True
+        if menuAppended:
+            self.appendContextMenu("", "Separator")
 
 Gui.addWorkbench(PathWorkbench())
 
