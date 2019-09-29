@@ -136,9 +136,6 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      <property name="toolTip">
       <string>To change, drag and drop a geometry type to top or bottom</string>
      </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustToContents</enum>
-     </property>
      <property name="dragEnabled">
       <bool>true</bool>
      </property>

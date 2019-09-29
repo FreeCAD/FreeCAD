@@ -46,6 +46,10 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
 {
     ui->setupUi(this);
 
+#if QT_VERSION >= 0x050200
+    ui->renderingOrder->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+#endif
+
     // connecting the needed signals
     connect(ui->checkBoxShowGrid, SIGNAL(toggled(bool)),
             this, SLOT(onToggleGridView(bool)));
