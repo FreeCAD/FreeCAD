@@ -264,12 +264,17 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
             if (prop != 0) {
                 if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId()))) {
                     field << cell->getFormattedQuantity();
-                } else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId())))
+                } else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId()))) {
                     field << cell->getFormattedQuantity();
-                else if (prop->isDerivedFrom((App::PropertyString::getClassTypeId())))
+                } else if (prop->isDerivedFrom((App::PropertyInteger::getClassTypeId()))) {
+                    field << cell->getFormattedQuantity();
+                } else if (prop->isDerivedFrom((App::PropertyString::getClassTypeId()))) {
                     field << static_cast<App::PropertyString*>(prop)->getValue();
-                else
-                    assert(0);
+                } else {
+                    Base::Console().Error("DVSS: Unknown property type\n");
+                    celltext = "???";
+//                    assert(0);
+                }
                 celltext = field.str();
             }
             // get colors, style, alignment and span
