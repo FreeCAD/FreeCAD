@@ -85,7 +85,7 @@ public:
     void setSpans(int rows, int columns);
     bool getSpans(int & rows, int & columns) const;
 
-    void setException(const std::string & e);
+    void setException(const std::string & e, bool silent=false);
 
     void clearException();
 
