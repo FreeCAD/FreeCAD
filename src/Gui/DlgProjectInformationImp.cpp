@@ -61,12 +61,12 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
 
     QList<QByteArray> rawLicenses; rawLicenses
         << "All rights reserved"
-        << "CreativeCommons Attribution"
-        << "CreativeCommons Attribution-ShareAlike"
-        << "CreativeCommons Attribution-NoDerivatives"
-        << "CreativeCommons Attribution-NonCommercial"
-        << "CreativeCommons Attribution-NonCommercial-ShareAlike"
-        << "CreativeCommons Attribution-NonCommercial-NoDerivatives"
+        << "Creative Commons Attribution"
+        << "Creative Commons Attribution-ShareAlike"
+        << "Creative Commons Attribution-NoDerivatives"
+        << "Creative Commons Attribution-NonCommercial"
+        << "Creative Commons Attribution-NonCommercial-ShareAlike"
+        << "Creative Commons Attribution-NonCommercial-NoDerivatives"
         << "Public Domain"
         << "FreeArt"
         << "Other";
