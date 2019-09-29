@@ -103,10 +103,16 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
 
     m_arrow1 = new QGIArrow();
     addToGroup(m_arrow1);
+    m_arrow1->setNormalColor(getNormalColor());
+    m_arrow1->setFillColor(getNormalColor());
+    m_arrow1->setPrettyNormal();
     m_arrow1->setPos(0.0,0.0);
     m_arrow1->hide();
     m_arrow2 = new QGIArrow();
     addToGroup(m_arrow2);
+    m_arrow2->setNormalColor(getNormalColor());
+    m_arrow2->setFillColor(getNormalColor());
+    m_arrow2->setPrettyNormal();
     m_arrow2->setPos(0.0, 0.0);
     m_arrow2->hide();
 
@@ -363,7 +369,7 @@ void QGILeaderLine::draw()
         return;
     }
 
-    m_line->setFill(Qt::NoBrush);
+    m_line->setFillStyle(Qt::NoBrush);
     m_line->setStyle(m_lineStyle);
     double scaler = 1.0;
     m_line->setWidth(scaler * m_lineWidth);
@@ -455,7 +461,7 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
         m_arrow1->setDirMode(true);
         m_arrow1->setDirection(stdX);
         m_arrow1->setNormalColor(m_lineColor);
-
+        m_arrow1->setFillColor(m_lineColor);
         if (pathPoints.size() > 1) {
             auto it = pathPoints.begin();
             QPointF s = (*it);
@@ -477,6 +483,7 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
         m_arrow2->setDirMode(true);
         m_arrow2->setDirection(-stdX);
         m_arrow2->setNormalColor(m_lineColor);
+        m_arrow2->setFillColor(getNormalColor());
         if (pathPoints.size() > 1) {
             auto itr = pathPoints.rbegin();
             QPointF s = (*itr);
