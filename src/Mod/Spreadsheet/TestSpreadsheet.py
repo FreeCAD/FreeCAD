@@ -833,6 +833,142 @@ class SpreadsheetCases(unittest.TestCase):
         # Close second document
         FreeCAD.closeDocument(doc2.Name)
 
+    def testMatrix(self):
+        ''' Test Matrix/Vector/Placement/Rotation operations'''
+
+        sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
+
+        mat = FreeCAD.Matrix()
+        mat.scale(2,1,2)
+        imat = mat.inverse()
+
+        vec = FreeCAD.Vector(2,1,2)
+
+        rot = FreeCAD.Rotation(FreeCAD.Vector(0,1,0),45)
+        irot = rot.inverted()
+
+        pla = FreeCAD.Placement(vec,rot)
+        ipla = pla.inverse()
+
+        sheet.set('A1', '=create(<<vector>>, 2, 1, 2)')
+
+        # different ways of calling mscale()
+        sheet.set('B1', '=mscale(create(<<matrix>>), A1)')
+        sheet.set('C1', '=mscale(create(<<matrix>>), tuple(2, 1, 2))')
+        sheet.set('A2', '=mscale(create(<<matrix>>), 2, 1, 2)')
+
+        # test matrix power operation
+        sheet.set('B2', '=A2^-2')
+        sheet.set('C2', '=A2^-1')
+        sheet.set('D2', '=A2^0')
+        sheet.set('E2', '=A2^1')
+        sheet.set('F2', '=A2^2')
+        sheet.set('G2', '=create(<<matrix>>, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)')
+        sheet.set('H2', '=G2^-1')
+
+        sheet.set('A3', '=create(<<rotation>>, create(<<vector>>, 0, 1, 0), 45)')
+
+        # test rotation power operation
+        sheet.set('B3', '=A3^-2')
+        sheet.set('C3', '=A3^-1')
+        sheet.set('D3', '=A3^0')
+        sheet.set('E3', '=A3^1')
+        sheet.set('F3', '=A3^2')
+
+        sheet.set('A4', '=create(<<placement>>, A1, A3)')
+
+        # test placement power operation
+        sheet.set('B4', '=A4^-2')
+        sheet.set('C4', '=A4^-1')
+        sheet.set('D4', '=A4^0')
+        sheet.set('E4', '=A4^1')
+        sheet.set('F4', '=A4^2')
+
+        # vector transformation with mixing matrix and placement and rotation
+        sheet.set('A5', '=A2*A3*A4*A1')
+        sheet.set('B5', '=B2*B4*B3*A1')
+        sheet.set('C5', '=C3*C2*C4*A1')
+        sheet.set('D5', '=D3*D4*D2*A1')
+        sheet.set('E5', '=E4*E2*E3*A1')
+        sheet.set('F5', '=F3*F4*F2*A1')
+
+        # inverse of the above transformation with power -1 and minvert()
+        sheet.set('A6', '=A4^-1 * minvert(A3) * A2^-1 * A5')
+        sheet.set('B6', '=minvert(B3) * B4^-1 * minvert(B2) * B5')
+        sheet.set('C6', '=C4^-1 * C2^-1 * C3^-1 * C5')
+        sheet.set('D6', '=minvert(D4*D2) * minvert(D3) * D5')
+        sheet.set('E6', '=(E2 * E3)^-1 * E4^-1 * E5')
+        sheet.set('F6', '=(F3*F4*F2)^-1 * F5')
+
+        self.doc.recompute()
+
+        self.assertEqual(sheet.A1,vec)
+
+        self.assertEqual(sheet.B1,mat)
+        self.assertEqual(sheet.C1,mat)
+        self.assertEqual(sheet.A2,mat)
+
+        self.assertEqual(sheet.B2,imat*imat)
+        self.assertEqual(sheet.B2,mat**-2)
+        self.assertEqual(sheet.C2,imat)
+        self.assertEqual(sheet.C2,mat**-1)
+        self.assertEqual(sheet.D2,FreeCAD.Matrix())
+        self.assertEqual(sheet.D2,mat**0)
+        self.assertEqual(sheet.E2,mat)
+        self.assertEqual(sheet.E2,mat**1)
+        self.assertEqual(sheet.F2,mat*mat)
+        self.assertEqual(sheet.F2,mat**2)
+
+        self.assertTrue(sheet.H2.startswith(u'ERR: Cannot invert singular matrix'))
+
+        self.assertEqual(sheet.A3,rot)
+
+        self.assertEqual(sheet.B3,irot*irot)
+        self.assertEqual(sheet.B3,rot**-2)
+        self.assertEqual(sheet.C3,irot)
+        self.assertEqual(sheet.C3,rot**-1)
+        self.assertEqual(sheet.D3,FreeCAD.Rotation())
+        self.assertEqual(sheet.D3,rot**0)
+        self.assertEqual(sheet.E3,rot)
+        self.assertEqual(sheet.E3,rot**1)
+        self.assertEqual(sheet.F3,rot*rot)
+        self.assertEqual(sheet.F3,rot**2)
+
+        self.assertEqual(sheet.A4,pla)
+
+        self.assertEqual(sheet.B4,ipla*ipla)
+        self.assertEqual(sheet.B4,pla**-2)
+        self.assertEqual(sheet.C4,ipla)
+        self.assertEqual(sheet.C4,pla**-1)
+        self.assertEqual(sheet.D4,FreeCAD.Placement())
+        self.assertEqual(sheet.D4,pla**0)
+        self.assertEqual(sheet.E4,pla)
+        self.assertEqual(sheet.E4,pla**1)
+        self.assertEqual(sheet.F4,pla*pla)
+        self.assertEqual(sheet.F4,pla**2)
+
+        tol = 1e-10
+
+        self.assertLess(sheet.A5.distanceToPoint(
+            sheet.A2.multiply(sheet.A3.Matrix).multiply(sheet.A4.Matrix).multVec(vec)),tol)
+        self.assertLess(sheet.B5.distanceToPoint(
+            sheet.B2.multiply(sheet.B4.Matrix).multiply(sheet.B3.Matrix).multVec(vec)),tol)
+        self.assertLess(sheet.C5.distanceToPoint(
+            sheet.C3.Matrix.multiply(sheet.C2).multiply(sheet.C4.Matrix).multVec(vec)),tol)
+        self.assertLess(sheet.D5.distanceToPoint(
+            sheet.D3.Matrix.multiply(sheet.D4.Matrix).multiply(sheet.D2).multVec(vec)),tol)
+        self.assertLess(sheet.E5.distanceToPoint(
+            sheet.E4.Matrix.multiply(sheet.E2).multiply(sheet.E3.Matrix).multVec(vec)),tol)
+        self.assertLess(sheet.F5.distanceToPoint(
+            sheet.F3.Matrix.multiply(sheet.F4.Matrix).multiply(sheet.F2).multVec(vec)),tol)
+
+        self.assertLess(sheet.A6.distanceToPoint(vec),tol)
+        self.assertLess(sheet.B6.distanceToPoint(vec),tol)
+        self.assertLess(sheet.C6.distanceToPoint(vec),tol)
+        self.assertLess(sheet.D6.distanceToPoint(vec),tol)
+        self.assertLess(sheet.E6.distanceToPoint(vec),tol)
+        self.assertLess(sheet.F6.distanceToPoint(vec),tol)
+
     def testIssue3128(self):
         """ Regression test for issue 3128; mod should work with arbitrary units for both arguments """
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
