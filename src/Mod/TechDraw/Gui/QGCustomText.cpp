@@ -168,6 +168,13 @@ void QGCustomText::setPrettySel() {
     update();
 }
 
+void QGCustomText::setColor(QColor c)
+{
+    m_colNormal = c;
+    m_colCurrent = c;
+    QGraphicsTextItem::setDefaultTextColor(c);
+ }
+
 void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;

@@ -156,6 +156,8 @@ void QGIDatumLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     hasHover = true;
     if (!isSelected()) {
         setPrettyPre();
+    } else {
+        setPrettySel();
     }
     QGraphicsItem::hoverEnterEvent(event);
 }
@@ -170,7 +172,10 @@ void QGIDatumLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     hasHover = false;
     if (!isSelected()) {
         setPrettyNormal();
+    } else {
+        setPrettySel();
     }
+
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
@@ -339,10 +344,20 @@ QGIViewDimension::QGIViewDimension() :
 
     dimLines = new QGIDimLines();
     addToGroup(dimLines);
+    dimLines->setNormalColor(getNormalColor());
+    dimLines->setPrettyNormal();
+
     aHead1 = new QGIArrow();
     addToGroup(aHead1);
+    aHead1->setNormalColor(getNormalColor());
+    aHead1->setFillColor(getNormalColor());
+    aHead1->setPrettyNormal();
+
     aHead2 = new QGIArrow();
     addToGroup(aHead2);
+    aHead2->setNormalColor(getNormalColor());
+    aHead2->setFillColor(getNormalColor());
+    aHead2->setPrettyNormal();
 
     datumLabel->setZValue(ZVALUE::DIMENSION);
     dimLines->setZValue(ZVALUE::DIMENSION);
