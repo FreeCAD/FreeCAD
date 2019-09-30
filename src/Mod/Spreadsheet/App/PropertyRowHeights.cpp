@@ -56,7 +56,7 @@ App::Property *PropertyRowHeights::Copy() const
 
 void PropertyRowHeights::Paste(const Property &from)
 {
-    setValues(static_cast<const PropertyRowHeights&>(from).getValues());
+    setValues(dynamic_cast<const PropertyRowHeights&>(from).getValues());
 }
 
 void PropertyRowHeights::setValues(const std::map<int,int> &values) {
