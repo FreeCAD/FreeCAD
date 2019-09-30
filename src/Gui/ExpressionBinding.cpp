@@ -233,8 +233,12 @@ bool ExpressionBinding::apply()
     /* Skip updating read-only properties */
     if (prop->isReadOnly())
         return true;
-    
-    return apply(Gui::Command::getObjectCmd(docObj) + "." + getPath().toEscapedString());
+
+    std::string _path = getPath().toEscapedString();
+    const char *path = _path.c_str();
+    if(path[0] == '.')
+        ++path;
+    return apply(Gui::Command::getObjectCmd(docObj) + "." + path);
 }
 
 void ExpressionBinding::expressionChange(const ObjectIdentifier& id) {
