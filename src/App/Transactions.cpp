@@ -292,7 +292,7 @@ void TransactionObject::applyNew(Document & /*Doc*/, TransactionalObject * /*pcO
 {
 }
 
-void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj, bool Forward)
+void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj, bool /* Forward */)
 {
     if (status == New || status == Chn) {
         // Property change order is not preserved, as it is recursive in nature
@@ -333,17 +333,29 @@ void TransactionObject::applyChn(Document & /*Doc*/, TransactionalObject *pcObj,
                     prop->setStatusValue(data.property->getStatus());
                 }
             }
-            // Because we now allow undo/redo dynamic property adding/removing,
-            // we have to enforce property type checking before calling Copy/Paste.
-            if(data.propertyType != prop->getTypeId()) {
-                FC_WARN("Cannot " << (Forward?"redo":"undo") 
-                        << " change of property " << prop->getName()
-                        << " because of type change: "
-                        << data.propertyType.getName()
-                        << " -> " << prop->getTypeId().getName());
-                continue;
-            }
-            prop->Paste(*data.property);
+
+            // Many properties do not bother implement Copy() and accepts
+            // derived types just fine in Paste(). So we do not enforce type
+            // matching here. But instead, strengthen type checking in all
+            // Paste() implementation.
+            //
+            // if(data.propertyType != prop->getTypeId()) {
+            //     FC_WARN("Cannot " << (Forward?"redo":"undo")
+            //             << " change of property " << prop->getName()
+            //             << " because of type change: "
+            //             << data.propertyType.getName()
+            //             << " -> " << prop->getTypeId().getName());
+            //     continue;
+            // }
+            try {
+                prop->Paste(*data.property);
+            } catch (Base::Exception &e) {
+                e.ReportException();
+                FC_ERR("exception while restoring " << prop->getFullName() << ": " << e.what());
+            } catch (std::exception &e) {
+                FC_ERR("exception while restoring " << prop->getFullName() << ": " << e.what());
+            } catch (...)
+            {}
         }
     }
 }

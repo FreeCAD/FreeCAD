@@ -63,7 +63,7 @@ App::Property *PropertyColumnWidths::Copy() const
 
 void PropertyColumnWidths::Paste(const App::Property &from)
 {
-    setValues(static_cast<const PropertyColumnWidths&>(from).getValues());
+    setValues(dynamic_cast<const PropertyColumnWidths&>(from).getValues());
 }
 
 void PropertyColumnWidths::setValues(const std::map<int,int> &values) {
