@@ -10,6 +10,7 @@
 		Namespace="Base" 
 		Constructor="true"
         Delete="true"
+		NumberProtocol="true"
         RichCompare="true"
 		FatherNamespace="Base">
 	<Documentation>
@@ -112,5 +113,17 @@ Placement(Base, Axis, Angle) -- define position and rotation
 			</Documentation>
 			<Parameter Name="Rotation" Type="Object" />
 		</Attribute>
+		<Attribute Name="Matrix" ReadOnly="false">
+			<Documentation>
+                <UserDocu>Set/get matrix representation of this placement</UserDocu>
+			</Documentation>
+			<Parameter Name="Matrix" Type="Object" />
+		</Attribute>
+        <ClassDeclarations>public:
+            PlacementPy(const Placement &amp; pla, PyTypeObject *T = &amp;Type)
+            :PyObjectBase(new Placement(pla),T){}
+            Placement value() const
+            { return *(getPlacementPtr()); }
+        </ClassDeclarations>
 	</PythonExport>
 </GenerateModel>

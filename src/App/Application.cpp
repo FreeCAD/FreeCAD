@@ -108,7 +108,7 @@
 #include "Origin.h"
 #include "MaterialObject.h"
 #include "TextDocument.h"
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include "Transactions.h"
 #include <App/MaterialPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -1750,7 +1750,6 @@ void Application::initTypes(void)
     App ::ConditionalExpression     ::init();
     App ::StringExpression          ::init();
     App ::FunctionExpression        ::init();
-    App ::BooleanExpression         ::init();
     App ::RangeExpression           ::init();
     App ::PyObjectExpression        ::init();
 

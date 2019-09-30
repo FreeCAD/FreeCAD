@@ -43,6 +43,7 @@
 #include "Utils.h"
 #include <PropertySheetPy.h>
 #include <App/ExpressionVisitors.h>
+#include <App/ExpressionParser.h>
 FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 
 using namespace App;

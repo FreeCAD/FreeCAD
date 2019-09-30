@@ -505,6 +505,8 @@ void Application::open(const char* FileName, const char* Module)
     Base::FileInfo File(FileName);
     string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
+
     // if the active document is empty and not modified, close it
     // in case of an automatically created empty document at startup
     App::Document* act = App::GetApplication().getActiveDocument();
@@ -556,6 +558,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     Base::FileInfo File(FileName);
     std::string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
     if (Module != 0) {
         try {
@@ -613,6 +616,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
     Base::FileInfo File(FileName);
     std::string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
     if (Module != 0) {
         try {

@@ -44,7 +44,7 @@
 #include <Base/Tools.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 
 #include "Command.h"
 #include "Widgets.h"

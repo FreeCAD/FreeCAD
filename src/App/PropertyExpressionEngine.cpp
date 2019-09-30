@@ -553,8 +553,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
         App::any value;
         try {
             // Evaluate expression
-            std::unique_ptr<Expression> e(expressions[*it].expression->eval());
-            value = e->getValueAsAny();
+            value = expressions[*it].expression->getValueAsAny();
             if(option == ExecuteOnRestore && prop->testStatus(Property::EvalOnRestore)) {
                 if(isAnyEqual(value, prop->getPathValue(*it)))
                     continue;
