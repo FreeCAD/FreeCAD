@@ -111,6 +111,29 @@ void PropertyItem::reset()
     childItems.clear();
 }
 
+void PropertyItem::onChange()
+{
+    if(hasExpression()) {
+        for(auto child : childItems) {
+            if(child && child->hasExpression())
+                child->setExpression(boost::shared_ptr<App::Expression>());
+        }
+        for(auto item=parentItem;item;item=item->parentItem) {
+            if(item->hasExpression())
+                item->setExpression(boost::shared_ptr<App::Expression>());
+        }
+    }
+}
+
+bool PropertyItem::hasAnyExpression() const
+{
+    if(ExpressionBinding::hasExpression())
+        return true;
+    if(parentItem)
+        return parentItem->hasExpression();
+    return false;
+}
+
 void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
 {
     //if we have a single property we can bind it for expression handling
@@ -581,7 +604,7 @@ bool PropertyItem::setData (const QVariant& value)
     // property or delegates again to its parent...
     if (propertyItems.empty()) {
         PropertyItem* parent = this->parent();
-        if (!parent || !parent->parent())
+        if (!parent || !parent->parent() || hasAnyExpression())
             return false;
         parent->setProperty(qPrintable(objectName()),value);
         return true;
