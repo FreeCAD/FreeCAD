@@ -546,9 +546,12 @@ QVariant PropertyItem::data(int column, int role) const
             else if (role == Qt::DisplayRole) {
                 QVariant val = parent->property(qPrintable(objectName()));
                 return toString(val);
-
-            }
-            else
+            } 
+            else if( role == Qt::TextColorRole) {
+                if(hasExpression())
+                    return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
+                return QVariant();
+            } else
                 return QVariant();
         }
         if (role == Qt::EditRole)
