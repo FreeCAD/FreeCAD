@@ -145,10 +145,20 @@ class TaskPanel:
         self.editor.setupUI()
 
 def Create(name = 'ToolBit'):
-    '''Create(name = 'ToolBit') ... creates a new tool bit'''
+    '''Create(name = 'ToolBit') ... creates a new tool bit.
+    It is assumed the tool will be edited immediately so the internal bit body is still attached.'''
     FreeCAD.ActiveDocument.openTransaction(translate("PathToolBit", "Create ToolBit"))
     tool = PathToolBit.Create(name)
     PathIconViewProvider.Attach(tool.ViewObject, name)
+    FreeCAD.ActiveDocument.commitTransaction()
+    return tool
+
+def CreateFrom(path, name = 'ToolBit'):
+    '''CreateFrom(path, name = 'ToolBit') ... creates an instance of a tool stored in path'''
+    FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Create ToolBit instance'))
+    tool = PathToolBit.CreateFrom(path, name)
+    PathIconViewProvider.Attach(tool.ViewObject, name)
+    FreeCAD.ActiveDocument.commitTransaction()
     return tool
 
 PathIconViewProvider.RegisterViewProvider('ToolBit', ViewProvider)

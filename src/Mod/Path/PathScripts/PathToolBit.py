@@ -30,6 +30,7 @@ import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathUtil as PathUtil
 import PySide
 import Sketcher
+import json
 import math
 import zipfile
 
@@ -82,6 +83,7 @@ class ToolBit(object):
         self.obj = obj
         obj.addProperty('App::PropertyFile',       'BitTemplate', 'Base', translate('PathToolBit', 'Template for bit shape'))
         obj.addProperty('App::PropertyLink',       'BitBody',     'Base', translate('PathToolBit', 'The parametrized body representing the tool bit'))
+        obj.addProperty('App::PropertyFile',       'File',        'Base', translate('PathToolBit', 'The file of the tool'))
         if templateFile is not None:
             obj.BitTemplate = templateFile
             self._setupBitFromTemplate(obj)
@@ -103,6 +105,7 @@ class ToolBit(object):
     def onDocumentRestored(self, obj):
         obj.setEditorMode('BitTemplate', 1)
         obj.setEditorMode('BitBody', 2)
+        obj.setEditorMode('File', 1)
         obj.setEditorMode('Shape', 2)
 
         for prop in self.bitPropertyNames(obj):
@@ -159,13 +162,15 @@ class ToolBit(object):
         for prop in self.bitPropertyNames(obj):
             obj.removeProperty(prop)
 
-    def loadBitBody(self, obj):
-        self._removeBitBody(obj)
-        (doc, opened) = self._loadBitBody(obj)
-        obj.BitBody = obj.Document.copyObject(doc.RootObjects[0], True)
-        if opened:
-            FreeCAD.closeDocument(doc.Name)
-        self._updateBitShape(obj)
+    def loadBitBody(self, obj, force=False):
+        if force or not obj.BitBody:
+            if force:
+                self._removeBitBody(obj)
+            (doc, opened) = self._loadBitBody(obj)
+            obj.BitBody = obj.Document.copyObject(doc.RootObjects[0], True)
+            if opened:
+                FreeCAD.closeDocument(doc.Name)
+            self._updateBitShape(obj)
 
     def unloadBitBody(self, obj):
         self._removeBitBody(obj)
@@ -211,6 +216,40 @@ class ToolBit(object):
         else:
             return None
 
+    def saveToFile(self, obj, path, setFile=True):
+        try:
+            data = {}
+            data['version'] = 1
+            data['name'] = obj.Label
+            data['template'] = obj.BitTemplate
+            params = {}
+            for prop in self.bitPropertyNames(obj):
+                params[prop] = PathUtil.getProperty(obj, prop).UserString
+            data['parameter'] = params
+            with open(path, 'w') as fp:
+                json.dump(data, fp, indent='  ')
+            if setFile:
+                obj.File = path
+            return True
+        except (OSError, IOError) as e:
+            PathLog.error("Could not save tool %s to %s (%s)" % (obj.Label, path, e))
+            raise
+
+def CreateFrom(path, name = 'ToolBit'):
+    try:
+        with open(path, 'r') as fp:
+            data = json.load(fp)
+        obj = Create(name, data['template'])
+        obj.Label = data['name']
+        params = data['parameter']
+        for prop in params:
+            PathUtil.setProperty(obj, prop, params[prop])
+        obj.Proxy._updateBitShape(obj)
+        obj.Proxy.unloadBitBody(obj)
+        return obj
+    except (OSError, IOError) as e:
+        PathLog.error("%s not a valid tool file (%s)" % (path, e))
+        raise
 
 def Create(name = 'ToolBit', templateFile=None):
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', name)
