@@ -5899,6 +5899,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     assert(edit);
 
     edit->EditRoot = new SoSeparator;
+    edit->EditRoot->ref();
     edit->EditRoot->setName("Sketch_EditRoot");
     pcRoot->addChild(edit->EditRoot);
     edit->EditRoot->renderCaching = SoSeparator::OFF ;
@@ -6087,6 +6088,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
         Gui::coinRemoveAllChildren(edit->EditRoot);
         pcRoot->removeChild(edit->EditRoot);
+        edit->EditRoot->unref();
 
         delete edit;
         edit = 0;
