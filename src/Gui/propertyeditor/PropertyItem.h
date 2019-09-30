@@ -165,6 +165,8 @@ public:
     int row() const;
     void reset();
 
+    bool hasAnyExpression() const;
+
 protected:
     PropertyItem();
 
@@ -176,6 +178,9 @@ protected:
     virtual void setValue(const QVariant&);
     virtual void initialize();
     QString pythonIdentifier(const App::Property*) const;
+
+    //gets called when the bound expression is changed
+    virtual void onChange();
 
 protected:
     QString propName;
