@@ -55,6 +55,11 @@
                 <UserDocu>Register an expression for a property</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="evalExpression">
+            <Documentation>
+                <UserDocu>Evaluate an expression</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="recompute">
             <Documentation>
                 <UserDocu>recompute(recursive=False): Recomputes this object</UserDocu>
