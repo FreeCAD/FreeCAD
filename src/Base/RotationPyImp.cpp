@@ -320,6 +320,13 @@ void RotationPy::setQ(Py::Tuple arg)
     this->getRotationPtr()->setValue(q0,q1,q2,q3);
 }
 
+Py::Object RotationPy::getRawAxis(void) const
+{
+    Base::Vector3d axis; double angle;
+    this->getRotationPtr()->getRawValue(axis, angle);
+    return Py::Vector(axis);
+}
+
 Py::Object RotationPy::getAxis(void) const
 {
     Base::Vector3d axis; double angle;
