@@ -1470,9 +1470,10 @@ Property *PropertySpreadsheetQuantity::Copy() const
 
 void PropertySpreadsheetQuantity::Paste(const Property &from)
 {
+    const auto &src = dynamic_cast<const PropertySpreadsheetQuantity&>(from);
     aboutToSetValue();
-    _dValue = static_cast<const PropertySpreadsheetQuantity*>(&from)->_dValue;
-    _Unit = static_cast<const PropertySpreadsheetQuantity*>(&from)->_Unit;
+    _dValue = src._dValue;
+    _Unit = src._Unit;
     hasSetValue();
 }
 
