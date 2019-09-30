@@ -110,6 +110,12 @@
 			</Documentation>
 			<Parameter Name="Axis" Type="Object" />
 		</Attribute>
+		<Attribute Name="RawAxis" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The rotation axis without normalization</UserDocu>
+			</Documentation>
+			<Parameter Name="RawAxis" Type="Object" />
+		</Attribute>
 		<Attribute Name="Angle" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The rotation angle of the quaternion</UserDocu>
