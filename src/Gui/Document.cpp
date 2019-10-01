@@ -1627,6 +1627,13 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
         view3D->setWindowIcon(oldview->windowIcon());
         view3D->resize(oldview->size());
 
+        // FIXME: Add parameter to define behaviour by the calling instance
+        // View provider editing
+        if (d->_editViewProvider) {
+            firstView->getViewer()->resetEditingViewProvider();
+            view3D->getViewer()->setEditingViewProvider(d->_editViewProvider, d->_editMode);
+        }
+
         return view3D;
     }
 
