@@ -1627,6 +1627,13 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
         view3D->setWindowIcon(oldview->windowIcon());
         view3D->resize(oldview->size());
 
+        // FIXME: Add parameter to define behaviour by the calling instance
+        // View provider editing
+        if (d->_editViewProvider) {
+            firstView->getViewer()->resetEditingViewProvider();
+            view3D->getViewer()->setEditingViewProvider(d->_editViewProvider, d->_editMode);
+        }
+
         return view3D;
     }
 
@@ -1787,7 +1794,11 @@ bool Document::canClose (bool checkModify, bool checkLink)
         if (!Gui::Control().isAllowedAlterDocument()) {
             std::string name = Gui::Control().activeDialog()->getDocumentName();
             if (name == this->getDocument()->getName()) {
-                if (this->getInEdit())
+                // getInEdit() only checks if the currently active MDI view is
+                // a 3D view and that it is in edit mode. However, when closing a
+                // document then the edit mode must be reset independent of the
+                // active view.
+                if (d->_editViewProvider)
                     this->_resetEdit();
             }
         }
