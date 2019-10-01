@@ -1787,7 +1787,11 @@ bool Document::canClose (bool checkModify, bool checkLink)
         if (!Gui::Control().isAllowedAlterDocument()) {
             std::string name = Gui::Control().activeDialog()->getDocumentName();
             if (name == this->getDocument()->getName()) {
-                if (this->getInEdit())
+                // getInEdit() only checks if the currently active MDI view is
+                // a 3D view and that it is in edit mode. However, when closing a
+                // document then the edit mode must be reset independent of the
+                // active view.
+                if (d->_editViewProvider)
                     this->_resetEdit();
             }
         }
