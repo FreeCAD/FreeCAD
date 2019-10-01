@@ -720,14 +720,16 @@ void Application::slotDeleteDocument(const App::Document& Doc)
         return;
     }
 
+    // Inside beforeDelete() a view provider may finish editing mode
+    // and therefore can alter the selection.
+    doc->second->beforeDelete();
+
     // We must clear the selection here to notify all observers.
     // And because of possible cross document link, better clear all selection
     // to be safe
     Gui::Selection().clearCompleteSelection();
     doc->second->signalDeleteDocument(*doc->second);
     signalDeleteDocument(*doc->second);
-
-    doc->second->beforeDelete();
 
     // If the active document gets destructed we must set it to 0. If there are further existing documents then the
     // view that becomes active sets the active document again. So, we needn't worry about this.
