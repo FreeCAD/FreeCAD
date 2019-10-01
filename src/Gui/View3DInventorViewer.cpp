@@ -608,6 +608,14 @@ View3DInventorViewer::~View3DInventorViewer()
     // to prevent following OpenGL error message: "Texture is not valid in the current context. Texture has not been destroyed"
     aboutToDestroyGLContext();
 
+    // It can happen that a document has several MDI views and when the about to be
+    // closed 3D view is in edit mode the corresponding view provider must be restored
+    // because otherwise it might be left in a broken state
+    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=39720
+    if (restoreEditingRoot) {
+        resetEditingRoot(false);
+    }
+
     // cleanup
     this->backgroundroot->unref();
     this->backgroundroot = 0;
