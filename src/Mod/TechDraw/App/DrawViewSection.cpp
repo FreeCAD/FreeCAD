@@ -192,11 +192,16 @@ void DrawViewSection::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 {
+//    Base::Console().Message("DVS::execute() - %s \n", getNameInDocument());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
 
     App::DocumentObject* base = BaseView.getValue();
+    if (base == nullptr) {
+        return new App::DocumentObjectExecReturn("BaseView object not found");
+    }
+
     if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
 
@@ -270,13 +275,14 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
     m_cutShape = rawShape;
     gp_Pnt inputCenter;
+    gp_Ax2 viewAxis;
     try {
         inputCenter = TechDraw::findCentroid(rawShape,
-                                                     Direction.getValue());
+                                             Direction.getValue());    //??
         TopoDS_Shape mirroredShape = TechDraw::mirrorShape(rawShape,
                                                     inputCenter,
                                                     getScale());
-        gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+        viewAxis = getSectionCS(SectionDirection.getValueAsString());
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
             mirroredShape = TechDraw::rotateShape(mirroredShape,
                                                           viewAxis,
@@ -298,7 +304,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         TopoDS_Shape mirroredSection = TechDraw::mirrorShape(sectionCompound,
                                                                      inputCenter,
                                                                      getScale());
-        gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+//        gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
             mirroredSection = TechDraw::rotateShape(mirroredSection,
                                                             viewAxis,
@@ -415,12 +421,13 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
                                      gp_Pnt faceCenter,
                                      const Base::Vector3d &direction)
 {
+    (void) direction;
     if(face.IsNull()) {
         throw Base::ValueError("DrawViewSection::projectFace - input Face is NULL");
     }
 
     Base::Vector3d origin(faceCenter.X(),faceCenter.Y(),faceCenter.Z());
-    gp_Ax2 viewAxis = getViewAxis(origin,direction);
+    gp_Ax2 viewAxis = getSectionCS(SectionDirection.getValueAsString());
 
     HLRBRep_Algo *brep_hlr = new HLRBRep_Algo();
     brep_hlr->Add(face);
@@ -526,18 +533,23 @@ bool DrawViewSection::isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const
     return !bb.IsOut(p);
 }
 
-//! calculate the section Normal/Projection Direction given baseView projection direction and section name
+void DrawViewSection::setNormalFromBase(const std::string sectionName)
+{
+//    Base::Console().Message("DVS::setNormalFromBase(%s)\n", sectionName.c_str());
+    Base::Vector3d normal = getSectionVector(sectionName);
+    Direction.setValue(normal);
+    SectionNormal.setValue(normal);
+}
+
+//! calculate the section Normal/Projection Direction given section name
+//TODO: this should take base view rotation into account.
 Base::Vector3d DrawViewSection::getSectionVector (const std::string sectionName)
 {
+//    Base::Console().Message("DVS::getSectionVector(%s) - %s\n", sectionName.c_str(), getNameInDocument());
     Base::Vector3d result;
     Base::Vector3d stdX(1.0,0.0,0.0);
     Base::Vector3d stdY(0.0,1.0,0.0);
     Base::Vector3d stdZ(0.0,0.0,1.0);
-
-    double adjustAngle = 0.0;
-    if (getBaseDPGI() != nullptr) {
-        adjustAngle = getBaseDPGI()->getRotateAngle();
-    }
 
     Base::Vector3d view = getBaseDVP()->Direction.getValue();
     view.Normalize();
@@ -575,8 +587,101 @@ Base::Vector3d DrawViewSection::getSectionVector (const std::string sectionName)
         Base::Console().Log("Error - DVS::getSectionVector - bad sectionName: %s\n",sectionName.c_str());
         result = stdZ;
     }
-    Base::Vector3d adjResult = DrawUtil::vecRotate(result,adjustAngle,view);
-    return adjResult;
+    return result;
+}
+
+//! calculate the section Projection CS given section direction name
+gp_Ax2 DrawViewSection::getSectionCS (const std::string dirName)
+{
+    Base::Vector3d view = getBaseDVP()->Direction.getValue();
+    view.Normalize();
+
+    Base::Vector3d sectionOrg = SectionOrigin.getValue();
+    gp_Ax2 baseCS = getBaseDVP()->getViewAxis(sectionOrg,
+                                              view);
+
+    // cardinal: 0 - left, 1 - right, 2 - up, 3 - down
+    int cardinal = 0;
+    if (dirName == "Up") {
+        cardinal = 2;
+    } else if (dirName == "Down") {
+        cardinal = 3;
+    } else if (dirName == "Left") {
+        cardinal = 0;
+    } else if (dirName == "Right") {
+        cardinal = 1;
+    }
+    gp_Ax2 newCS = rotateCSCardinal(baseCS, cardinal);
+    return newCS;
+}
+
+
+//TODO: this should be able to handle arbitrary rotation of the CS
+//TODO: this is useful beyond DVS. move to GO or DU or ???
+//      or at least static in DVS. doesn't depend on DVS object
+gp_Ax2 DrawViewSection::rotateCSCardinal(gp_Ax2 oldCS, int cardinal) 
+{
+    // cardinal: 0 - left, 1 - right, 2 - up, 3 - down
+    // as in DVS::SectionDirection
+    gp_Pnt oldOrg  = oldCS.Location();
+    gp_Dir oldMain = oldCS.Direction();
+    gp_Dir oldX    = oldCS.XDirection();
+    
+    gp_Ax1 rotAxis;
+    gp_Dir crossed;
+    gp_Ax2 newCS;
+    double angle;
+
+    //Note: cardinal refers to the the motion of the viewer's head. When the head turns to 
+    // the left, the "Direction" moves to the right!  When the viewer's head moves to look up,
+    // the "Direction" moves down!
+
+    switch (cardinal) {
+        case 0:         //right
+            crossed = oldMain.Crossed(oldX);
+            rotAxis = gp_Ax1(oldOrg, crossed);
+            angle = 90.0 * M_PI / 180.0;
+            newCS = oldCS.Rotated(rotAxis, angle);
+            break;
+        case 1:         //left
+            crossed = oldMain.Crossed(oldX);
+            rotAxis = gp_Ax1(oldOrg, crossed);
+            angle = -90.0 * M_PI / 180.0;
+            newCS = oldCS.Rotated(rotAxis, angle);
+            break;
+        case 2:         // head looks up, so Direction(projection normal) points down
+            rotAxis = gp_Ax1(oldOrg, oldX);        
+            angle = -90.0 * M_PI / 180.0;
+            newCS = oldCS.Rotated(rotAxis, angle);
+            break;
+        case 3:         //down
+            rotAxis = gp_Ax1(oldOrg, oldX);  //one of these should be -oldX?
+            angle = 90.0 * M_PI / 180.0;
+            newCS = oldCS.Rotated(rotAxis, angle);
+            break;
+        default:
+            newCS = oldCS;
+            break;
+    }
+
+    return newCS;
+}
+
+gp_Ax2 DrawViewSection::rotateCSArbitrary(gp_Ax2 oldCS,
+                                          Base::Vector3d axis,
+                                          double degAngle) 
+{
+    gp_Ax2 newCS;
+
+    gp_Pnt oldOrg  = oldCS.Location();
+
+    gp_Dir gAxis(axis.x, axis.y, axis.z);
+    gp_Ax1 rotAxis = gp_Ax1(oldOrg, gAxis);
+
+    double radAngle = degAngle * M_PI / 180.0;
+
+    newCS = oldCS.Rotated(rotAxis, radAngle);
+    return newCS;
 }
 
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
