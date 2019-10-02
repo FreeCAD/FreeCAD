@@ -22,9 +22,9 @@
         <file>icons/Part_ExplodeCompound.svg</file>
         <file>icons/Part_Export.svg</file>
         <file>icons/Part_Extrude.svg</file>
-        <file>icons/PartFeature.svg</file>
-        <file>icons/PartFeature.xpm</file>
-        <file>icons/PartFeatureImport.xpm</file>
+        <file>icons/Part_Feature.svg</file>
+        <file>icons/Part_Feature.xpm</file>
+        <file>icons/Part_FeatureImport.xpm</file>
         <file>icons/Part_Fillet.svg</file>
         <file>icons/Part_Fuse.svg</file>
         <file>icons/Part_Helix_Parametric.svg</file>
