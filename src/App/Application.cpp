@@ -2057,6 +2057,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                 std::vector<std::string> mods = App::GetApplication().getImportModules(ext.c_str());
                 if (!mods.empty()) {
                     std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.filePath().c_str());
+                    escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
+
                     Base::Interpreter().loadModule(mods.front().c_str());
                     Base::Interpreter().runStringArg("import %s",mods.front().c_str());
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
@@ -2107,6 +2109,8 @@ void Application::processCmdLineFiles(void)
     std::map<std::string,std::string>::const_iterator it = cfg.find("SaveFile");
     if (it != cfg.end()) {
         std::string output = it->second;
+        output = Base::Tools::escapeEncodeFilename(output);
+
         Base::FileInfo fi(output);
         std::string ext = fi.extension();
         try {

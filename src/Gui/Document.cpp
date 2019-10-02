@@ -1043,6 +1043,7 @@ bool Document::saveAs(void)
         try {
             Gui::WaitCursor wc;
             std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(fn.toUtf8());
+            escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
             Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(u\"%s\")"
                                            , DocName, escapedstr.c_str());
             setModified(false);
@@ -1116,15 +1117,13 @@ bool Document::saveCopy(void)
                                              QString::fromUtf8(getDocument()->FileName.getValue()), 
                                              QObject::tr("%1 document (*.FCStd)").arg(exe));
     if (!fn.isEmpty()) {
-        QFileInfo fi;
-        fi.setFile(fn);
-
         const char * DocName = App::GetApplication().getDocumentName(getDocument());
 
         // save as new file name
         Gui::WaitCursor wc;
+        QString pyfn = Base::Tools::escapeEncodeFilename(fn);
         Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveCopy(\"%s\")"
-                                       , DocName, (const char*)fn.toUtf8());
+                                       , DocName, (const char*)pyfn.toUtf8());
 
         return true;
     }
