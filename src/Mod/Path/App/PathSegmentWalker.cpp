@@ -21,6 +21,7 @@
  *                                                                         *
  ***************************************************************************
  */
+#include "PreCompiled.h"
 #include "PathSegmentWalker.h"
 
 #include <App/Application.h>

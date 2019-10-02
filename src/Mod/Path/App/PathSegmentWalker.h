@@ -33,7 +33,7 @@ namespace Path
  * PathSegmentVisitor is the companion class to PathSegmentWalker. Its members are called
  * with the segmented points of each command.
  */
-class PathSegmentVisitor
+class PathExport PathSegmentVisitor
 {
   public:
     virtual ~PathSegmentVisitor();
@@ -53,7 +53,7 @@ class PathSegmentVisitor
  * appropriate member of the provided PathSegmentVisitor.
  * All non-movement commands are processed accordingly if they affect the movement commands.
  */
-class PathSegmentWalker
+class PathExport PathSegmentWalker
 {
 public:
     PathSegmentWalker(const Toolpath &tp_);
