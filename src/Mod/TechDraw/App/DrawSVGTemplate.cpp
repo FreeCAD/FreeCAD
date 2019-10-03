@@ -50,6 +50,7 @@
 
 #include <QDebug>
 
+#include "DrawUtil.h"
 #include "DrawPage.h"
 #include "DrawSVGTemplate.h"
 
@@ -289,7 +290,6 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
         Base::Console().Log("DrawSVGTemplate::getEditableTextsFromTemplate() can't read template %s!\n", Template.getValue());
         return editables;
     }
-
 
     QDomDocument templateDocument;
     if (!templateDocument.setContent(&templateFile)) {
