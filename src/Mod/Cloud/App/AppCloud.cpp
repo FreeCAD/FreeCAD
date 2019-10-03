@@ -242,7 +242,7 @@ void Cloud::CloudWriter::createBucket()
                 digest_str.c_str());
                 chunk = curl_slist_append(chunk, header_data);
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
-                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+//                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
                 sprintf(header_data,"%s:%s/%s/", this->Url,this->TcpPort,
                                                     this->Bucket);
                 curl_easy_setopt(curl, CURLOPT_URL, header_data);
@@ -616,7 +616,7 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
                 sprintf(header_data,"%s:%s/%s/%s", this->Url,this->TcpPort,
                                                     this->Bucket,entry->FileName);
                 curl_easy_setopt(curl, CURLOPT_URL, header_data);
-                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
+//                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
                 // curl read a file not a memory buffer (it shall be able to do it)
@@ -746,7 +746,7 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
                 digest_str.c_str());
                 chunk = curl_slist_append(chunk, header_data);
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
-                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+//                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
                 sprintf(header_data,"%s:%s/%s/%s", this->Url,this->TcpPort,
                                                     this->Bucket,FileName);
                 curl_easy_setopt(curl, CURLOPT_URL, header_data);
