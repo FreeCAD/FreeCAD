@@ -284,18 +284,18 @@ Cloud::CloudWriter::CloudWriter(const char* Url, const char* AccessKey, const ch
         this->TcpPort=TcpPort;
         this->Bucket=Bucket;
         this->FileName="";
-        // Amazon S3 and Swift require the timezone to be define to
-        // GMT. As to simplify the conversion this is performed through the TZ
+        // Amazon S3 and Swift require the timezone to be define to GMT.
+        // As to simplify the conversion this is performed through the TZ
         // environment variable and a call to localtime as to convert output of gettimeofday
 #if defined(FC_OS_WIN32)
         _putenv("TZ=GMT");
 #else
         setenv("TZ","GMT",1);
 #endif
-	// We must check that the bucket exist or not. If not we have to create it
-	// We must request the bucketlist if we receive an error 404 it means that it doesn't exist 
-	// other option the content list is empty
-	// That piece of code is the same than the Reader except we do not interpret it !
+	// We must check that the bucket exists or not. If not, we have to create it.
+	// We must request the bucketlist if we receive a 404 error. This means that it
+    // doesn't exist. The other option is that the content list is empty.
+	// This piece of code is the same as the Reader except we do not interpret it !
 #if defined(FC_OS_WIN32)
 #else
         gettimeofday(&tv,NULL);
