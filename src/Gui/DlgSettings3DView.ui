@@ -132,10 +132,19 @@ will be shown at the lower left in opened files</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_useVBO">
         <property name="toolTip">
-         <string>Vertex Buffer Objects (VBO) will be used</string>
+         <string>If checked, Vertex Buffer Objects (VBO) will be used.
+A VBO is an OpenGL feature that provides methods for uploading
+vertex data (position, normal vector, color, etc.) to the video device.
+VBOs offer substantial performance gains because the data resides
+in the video device memory rather than the system memory and so it
+can be rendered directly by the video device. 
+
+<b>Note</b>: Sometimes this feature may lead to a host of different issues ranging
+from graphical anomalies to GPU crash bugs. Remember to report this setting
+is enabled when seeking support on the FreeCAD forums.</string>
         </property>
         <property name="text">
-         <string>Use OpenGL vertex buffer object</string>
+         <string>Use OpenGL VBO (Vertex Buffer Object)</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>UseVBO</cstring>
@@ -209,6 +218,10 @@ will be shown at the lower left in opened files</string>
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>List the mouse button configs for each chosen navigation setting.
+Select a set and then press the button to view said configurations.</string>
           </property>
           <property name="text">
            <string>Mouse...</string>
@@ -316,7 +329,7 @@ Turntable: the part will be rotated around the z-axis.</string>
         <item row="3" column="1">
          <widget class="QComboBox" name="comboNewDocView">
           <property name="toolTip">
-           <string>Camera orientation for new documents </string>
+           <string>Camera orientation for new documents</string>
           </property>
          </widget>
         </item>
@@ -330,7 +343,8 @@ Turntable: the part will be rotated around the z-axis.</string>
         <item row="4" column="1">
          <widget class="PrefUnitSpinBox" name="qspinNewDocScale" native="true">
           <property name="toolTip">
-           <string>Sets camera zoom for new documents. The value is the diameter of the sphere to fit on the screen.</string>
+           <string>Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</string>
           </property>
           <property name="unit" stdset="0">
            <string>mm</string>
