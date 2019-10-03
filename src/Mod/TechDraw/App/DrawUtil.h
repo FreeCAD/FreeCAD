@@ -56,6 +56,9 @@
 
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
 
+#define SVG_NS_URI         "http://www.w3.org/2000/svg"
+#define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+
 namespace TechDraw
 {
 
