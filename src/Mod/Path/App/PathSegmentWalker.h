@@ -21,7 +21,7 @@
  *                                                                         *
  ***************************************************************************
  */
-#include "PreCompiled.h"
+#include <Base/Vector3D.h>
 #include <Mod/Path/App/Path.h>
 
 #include <deque>
