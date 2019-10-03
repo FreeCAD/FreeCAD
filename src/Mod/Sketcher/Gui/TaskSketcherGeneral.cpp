@@ -45,6 +45,9 @@ SketcherGeneralWidget::SketcherGeneralWidget(QWidget *parent)
   : QWidget(parent), ui(new Ui_TaskSketcherGeneral)
 {
     ui->setupUi(this);
+#if QT_VERSION >= 0x050200
+    ui->renderingOrder->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+#endif
 
     // connecting the needed signals
     connect(ui->checkBoxShowGrid, SIGNAL(toggled(bool)),
