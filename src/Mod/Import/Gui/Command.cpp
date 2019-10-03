@@ -26,7 +26,7 @@
 #endif
 
 #include <Base/Exception.h>
-#include <base/Tools.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
