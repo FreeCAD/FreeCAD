@@ -193,7 +193,7 @@ struct DocumentP
         static std::random_device _RD;
         static std::mt19937 _RGEN(_RD());
         static std::uniform_int_distribution<> _RDIST(0,5000);
-        // Set some random offset to reduce likelihood of ID collison when
+        // Set some random offset to reduce likelihood of ID collision when
         // copying shape from other document. It is probably better to randomize
         // on each object ID.
         lastObjectId = _RDIST(_RGEN); 
@@ -4129,7 +4129,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     if(objs.empty()) 
         return 0;
     // Some object may delete its children if deleted, so we collect the IDs
-    // or all depdending objects for safety reason.
+    // or all depending objects for safety reason.
     std::vector<int> ids;
     ids.reserve(deps.size());
     for(auto o : deps)

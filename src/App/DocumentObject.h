@@ -123,7 +123,7 @@ public:
     /**
      * The function indicates whether the object type allows to define a view provider type
      * different than the standard type. The default implementation returns false.
-     * The function can be overriden by Python feature to return true where the type can be
+     * The function can be overridden by Python feature to return true where the type can be
      * retrieved from its proxy object.
      * \sa getViewProviderNameOverride()
      */
@@ -623,7 +623,7 @@ private:
     // accessed by App::Document to record and restore the correct view provider type
     std::string _pcViewProviderName;
 
-    // unique identifier (ammong a document) of this object.
+    // unique identifier (among a document) of this object.
     long _Id;
     
 private:

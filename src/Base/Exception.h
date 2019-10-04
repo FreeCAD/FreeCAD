@@ -256,7 +256,7 @@ public:
   virtual const char* what() const throw() override;
   /// Report generation
   virtual void ReportException (void) const override;
-  /// Get file name for use with tranlatable message
+  /// Get file name for use with translatable message
   std::string getFileName() const;
   /// returns a Python dictionary containing the exception data
   virtual PyObject * getPyObject(void) override;
@@ -801,4 +801,3 @@ private:
 } //namespace Base
 
 #endif // BASE_EXCEPTION_H
-

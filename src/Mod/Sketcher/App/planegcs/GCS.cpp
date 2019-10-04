@@ -4067,7 +4067,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
         }
 
         // Last (NumParams-rank) rows of Q construct the dependent part of J
-        // in conjuntion with the R matrix
+        // in conjunction with the R matrix
         // Last (NumParams-rank) cols of Q never contribute as R is zero after the rank
         /*std::set<int> associatedParamCols;
         for(int i = rank; i < paramsNum; i++) {

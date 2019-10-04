@@ -252,6 +252,7 @@ void CmdRaytracingWriteView::activated(int)
     if (fn.isEmpty())
         return;
     std::string cFullName = (const char*)fn.toUtf8();
+    cFullName = strToPython(cFullName);
 
 
     // get all objects of the active document
@@ -556,6 +557,7 @@ void CmdRaytracingExportProject::activated(int)
 
         doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].FeatName);
         std::string fname = (const char*)fn.toUtf8();
+        fname = strToPython(fname);
 #if PY_MAJOR_VERSION < 3
         doCommand(Doc,"OutFile = open(unicode('%s','utf-8'),'w')",fname.c_str());
 #else
