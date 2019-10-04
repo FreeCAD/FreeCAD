@@ -447,6 +447,7 @@ TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol(void)
                            symbolName.c_str(), altWeldText.c_str());
 
     std::string tailText = Base::Tools::toStdString(ui->leTailText->text());
+    tailText = Base::Tools::escapeEncodeString(tailText);
     Command::doCommand(Command::Doc,"App.activeDocument().%s.TailText = '%s'",
                            symbolName.c_str(), tailText.c_str());
 
@@ -481,6 +482,7 @@ void TaskWeldingSymbol::updateWeldingSymbol(void)
                            symbolName.c_str(), altWeldText.c_str());
 
     std::string tailText = Base::Tools::toStdString(ui->leTailText->text());
+    tailText = Base::Tools::escapeEncodeString(tailText);
     Command::doCommand(Command::Doc,"App.activeDocument().%s.TailText = '%s'",
                            symbolName.c_str(), tailText.c_str());
 }
@@ -490,10 +492,14 @@ std::vector<App::DocumentObject*> TaskWeldingSymbol::createTiles(void)
 //    Base::Console().Message("TWS::createTiles()\n");
     std::vector<App::DocumentObject*> tileFeats;
     std::string tileType("TechDraw::DrawTileWeld");
-    
+
     collectArrowData();
     if (m_arrowOut.toBeSaved) {
         std::string tileName = m_leadFeat->getDocument()->getUniqueObjectName("DrawTileWeld");
+        std::string symbolPath = Base::Tools::escapeEncodeString(m_arrowOut.symbolPath);
+        std::string leftText = Base::Tools::escapeEncodeString(m_arrowOut.leftText);
+        std::string rightText = Base::Tools::escapeEncodeString(m_arrowOut.rightText);
+        std::string centerText = Base::Tools::escapeEncodeString(m_arrowOut.centerText);
         Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
                    tileType.c_str(),tileName.c_str());
         Command::doCommand(Command::Doc,"App.activeDocument().%s.TileRow = %d",
@@ -501,13 +507,13 @@ std::vector<App::DocumentObject*> TaskWeldingSymbol::createTiles(void)
         Command::doCommand(Command::Doc,"App.activeDocument().%s.TileColumn = %d",
                        tileName.c_str(), m_arrowOut.col);
         Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = '%s'",
-                       tileName.c_str(), m_arrowOut.symbolPath.c_str());
+                       tileName.c_str(), symbolPath.c_str());
         Command::doCommand(Command::Doc,"App.activeDocument().%s.LeftText = '%s'",
-                       tileName.c_str(), m_arrowOut.leftText.c_str());
+                       tileName.c_str(), leftText.c_str());
         Command::doCommand(Command::Doc,"App.activeDocument().%s.RightText = '%s'",
-                       tileName.c_str(), m_arrowOut.rightText.c_str());
+                       tileName.c_str(), rightText.c_str());
         Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
-                       tileName.c_str(), m_arrowOut.centerText.c_str());
+                       tileName.c_str(), centerText.c_str());
         App::DocumentObject* newTile = m_leadFeat->getDocument()->getObject(tileName.c_str());
         if (newTile == nullptr) {
             throw Base::RuntimeError("TaskWeldingSymbol - new tile object not found");
@@ -530,16 +536,20 @@ std::vector<App::DocumentObject*> TaskWeldingSymbol::createTiles(void)
                 Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = ''",
                            tileName.c_str());
             } else {
+                std::string symbolPath = Base::Tools::escapeEncodeString(m_otherOut.symbolPath);
                 Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = '%s'",
-                           tileName.c_str(), m_otherOut.symbolPath.c_str());
+                           tileName.c_str(), symbolPath.c_str());
             }
 
+            std::string leftText = Base::Tools::escapeEncodeString(m_otherOut.leftText);
+            std::string rightText = Base::Tools::escapeEncodeString(m_otherOut.rightText);
+            std::string centerText = Base::Tools::escapeEncodeString(m_otherOut.centerText);
             Command::doCommand(Command::Doc,"App.activeDocument().%s.LeftText = '%s'",
-                           tileName.c_str(), m_otherOut.leftText.c_str());
+                           tileName.c_str(), leftText.c_str());
             Command::doCommand(Command::Doc,"App.activeDocument().%s.RightText = '%s'",
-                           tileName.c_str(), m_otherOut.rightText.c_str());
+                           tileName.c_str(), rightText.c_str());
             Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
-                           tileName.c_str(), m_otherOut.centerText.c_str());
+                           tileName.c_str(), centerText.c_str());
             App::DocumentObject* newTile = m_leadFeat->getDocument()->getObject(tileName.c_str());
             if (newTile == nullptr) {
                 throw Base::RuntimeError("TaskWeldingSymbol - new tile object not found");
@@ -584,16 +594,20 @@ std::vector<App::DocumentObject*> TaskWeldingSymbol::updateTiles(void)
             Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = ''",
                        tileName.c_str());
         } else {
+            std::string symbolPath = Base::Tools::escapeEncodeString(m_arrowOut.symbolPath);
             Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = '%s'",
-                       tileName.c_str(), m_arrowOut.symbolPath.c_str());
+                       tileName.c_str(), symbolPath.c_str());
         }
-        
+
+        std::string leftText = Base::Tools::escapeEncodeString(m_arrowOut.leftText);
+        std::string rightText = Base::Tools::escapeEncodeString(m_arrowOut.rightText);
+        std::string centerText = Base::Tools::escapeEncodeString(m_arrowOut.centerText);
         Command::doCommand(Command::Doc,"App.activeDocument().%s.LeftText = '%s'",
-                       tileName.c_str(), m_arrowOut.leftText.c_str());
+                       tileName.c_str(), leftText.c_str());
         Command::doCommand(Command::Doc,"App.activeDocument().%s.RightText = '%s'",
-                       tileName.c_str(), m_arrowOut.rightText.c_str());
+                       tileName.c_str(), rightText.c_str());
         Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
-                       tileName.c_str(), m_arrowOut.centerText.c_str());
+                       tileName.c_str(), centerText.c_str());
     }
 
     if (m_otherDirty) {
@@ -627,16 +641,20 @@ std::vector<App::DocumentObject*> TaskWeldingSymbol::updateTiles(void)
                 Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = ''",
                            tileName.c_str());
             } else {
+                std::string symbolPath = Base::Tools::escapeEncodeString(m_otherOut.symbolPath);
                 Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = '%s'",
-                           tileName.c_str(), m_otherOut.symbolPath.c_str());
+                           tileName.c_str(), symbolPath.c_str());
             }
 
+            std::string leftText = Base::Tools::escapeEncodeString(m_otherOut.leftText);
+            std::string rightText = Base::Tools::escapeEncodeString(m_otherOut.rightText);
+            std::string centerText = Base::Tools::escapeEncodeString(m_otherOut.centerText);
             Command::doCommand(Command::Doc,"App.activeDocument().%s.LeftText = '%s'",
-                           tileName.c_str(), m_otherOut.leftText.c_str());
+                           tileName.c_str(), leftText.c_str());
             Command::doCommand(Command::Doc,"App.activeDocument().%s.RightText = '%s'",
-                           tileName.c_str(), m_otherOut.rightText.c_str());
+                           tileName.c_str(), rightText.c_str());
             Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
-                           tileName.c_str(), m_otherOut.centerText.c_str());
+                           tileName.c_str(), centerText.c_str());
         }
     }
 

@@ -182,7 +182,7 @@ def _getMetacontainerChildren(container, isrightcontainer_func):
 
 def isAContainer(obj, links_too = False):
     '''isAContainer(obj, links_too): returns True if obj is an object container, such as 
-    Group, Part, Body. The important characterisic of an object being a 
+    Group, Part, Body. The important characteristic of an object being a 
     container is that it can be activated to receive new objects. Documents 
     are considered containers, too.
     If links_too, App::Link objects are considered containers, too. Then, container tree 

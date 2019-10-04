@@ -29,6 +29,7 @@
 #include "PathPy.h"
 #include "PathPy.cpp"
 
+#include "Base/BoundBoxPy.h"
 #include "Base/GeometryPyCXX.h"
 #include "CommandPy.h"
 
@@ -126,6 +127,11 @@ Py::Float PathPy::getLength(void) const
 Py::Long PathPy::getSize(void) const
 {
     return Py::Long((long)getToolpathPtr()->getSize());
+}
+
+Py::Object PathPy::getBoundBox(void) const
+{
+    return Py::BoundingBox(getToolpathPtr()->getBoundBox());
 }
 
 // specific methods

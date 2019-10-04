@@ -680,7 +680,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         return true;
     }
 
-    // Hierarchy acending
+    // Hierarchy ascending
     //
     // If the clicked subelement is already selected, check if there is an
     // upper hierarchy, and select that hierarchy instead. 

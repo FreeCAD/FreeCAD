@@ -135,6 +135,7 @@ TechDraw::DrawViewSymbol* TaskActiveView::createActiveView(void)
     tempFile.close();
 
     std::string fileSpec = Base::Tools::toStdString(tempFile.fileName());
+    fileSpec = Base::Tools::escapeEncodeFilename(fileSpec);
 
     //double estScale = 
     Grabber3d::copyActiveViewToSvgFile(appDoc, fileSpec,

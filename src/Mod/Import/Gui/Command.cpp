@@ -26,6 +26,7 @@
 #endif
 
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
@@ -63,6 +64,7 @@ void FCCmdImportReadBREP::activated(int iMsg)
         return;
     }
 
+    fn = Base::Tools::escapeEncodeFilename(fn);
     doCommand(Doc,"TopoShape = Import.ReadBREP(\"%s\")",(const char*)fn.toUtf8());
     commitCommand();
 }
@@ -97,6 +99,7 @@ void ImportStep::activated(int iMsg)
     if (!fn.isEmpty()) {
         openCommand("Part ImportSTEP Create");
         doCommand(Doc,"f = App.document().addObject(\"ImportStep\",\"ImportStep\")");
+        fn = Base::Tools::escapeEncodeFilename(fn);
         doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toUtf8());
         commitCommand();
         updateActive();
@@ -136,6 +139,7 @@ void ImportIges::activated(int iMsg)
     if (!fn.isEmpty()) {
         openCommand("ImportIGES Create");
         doCommand(Doc,"f = App.document().addObject(\"ImportIges\",\"ImportIges\")");
+        fn = Base::Tools::escapeEncodeFilename(fn);
         doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toUtf8());
         commitCommand();
         updateActive();
