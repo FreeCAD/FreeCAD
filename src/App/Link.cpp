@@ -520,26 +520,48 @@ bool LinkBaseExtension::extensionGetSubObject(DocumentObject *&ret, const char *
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
 {
     ret = 0;
-    if(mat) *mat *= getTransform(transform);
     auto obj = getContainer();
     if(!subname || !subname[0]) {
         ret = const_cast<DocumentObject*>(obj);
+        Base::Matrix4D _mat;
+        if(mat) {
+            // 'mat' here is used as an output to return the accumulated
+            // transformation up until this object. Since 'subname' is empty
+            // here, it means the we are at the end of the hierarchy. We shall
+            // not include scale in the output transformation.
+            //
+            // Think of it this way, the transformation along object hierarchy
+            // is public, while transformation through linkage is private to
+            // link itself.
+            if(transform) {
+                if(getLinkPlacementProperty())
+                    *mat *= getLinkPlacementValue().toMatrix();
+                else if(getPlacementProperty())
+                    *mat *= getPlacementValue().toMatrix();
+            }
+            _mat = *mat;
+        }
+
         if(pyObj && !_getElementCountValue() 
                 && _getElementListValue().empty() && mySubElements.size()<=1) 
         {
-            Base::Matrix4D matNext;
-            if(mat) matNext = *mat;
-            auto linked = getTrueLinkedObject(false,mat?&matNext:0,depth);
+            // Scale will be included here
+            if(getScaleProperty() || getScaleVectorProperty()) {
+                Base::Matrix4D s;
+                s.scale(getScaleVector());
+                _mat *= s;
+            }
+            auto linked = getTrueLinkedObject(false,&_mat,depth);
             if(linked && linked!=obj) {
-                if(mat) *mat = matNext;
-                linked->getSubObject(
-                        mySubElements.empty()?0:mySubElements.front().c_str(),
-                        pyObj,mat,false,depth+1);
+                linked->getSubObject(mySubElements.empty()?0:mySubElements.front().c_str(),
+                                     pyObj,&_mat,false,depth+1);
                 checkGeoElementMap(obj,linked,pyObj,0);
             }
         }
         return true;
     }
+
+    if(mat) *mat *= getTransform(transform);
 
     DocumentObject *element = 0;
     bool isElement = false;
