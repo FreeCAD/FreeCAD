@@ -66,36 +66,10 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
 }
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(void) const {
-
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    const std::vector<App::DocumentObject*> &model = group->Group.getValues ();
-    std::set<App::DocumentObject*> outSet; //< set of objects not to claim (childrens of childrens)
-
-    // search for objects handled (claimed) by the features
-    for (auto obj: model) {
-        //stuff in another geofeaturegroup is not in the model anyway
-        if (!obj || obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) { continue; }
-        
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider ( obj );
-        if (!vp || vp == getExtendedViewProvider()) { continue; }
-
-        auto children = vp->claimChildren();
-        std::remove_copy ( children.begin (), children.end (), std::inserter (outSet, outSet.begin () ), nullptr);
-    }
-
-    // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
-    std::vector<App::DocumentObject*> Result;
-    for(auto obj : model) {
-        if(!obj || !obj->getNameInDocument())
-            continue;
-        if(outSet.count(obj)) 
-            obj->setStatus(App::ObjectStatus::GeoExcluded,true);
-        else {
-            obj->setStatus(App::ObjectStatus::GeoExcluded,false);
-            Result.push_back(obj);
-        }
-    }
-    return Result;
+    buildExport();
+    auto objs = group->_ExportChildren.getValues();
+    children.insert(children.end(), objs.begin(), objs.end());
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* pcObject)
@@ -125,13 +99,71 @@ std::vector<std::string> ViewProviderGeoFeatureGroupExtension::extensionGetDispl
 
 void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Property* prop)
 {
-    auto obj = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    if (obj && prop == &obj->placement()) {
-        getExtendedViewProvider()->setTransformation ( obj->placement().getValue().toMatrix() );
+    auto group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    if(group) {
+        if (prop == &group->Group) {
+
+            buildExport();
+
+        } else if(prop == &group->placement()) 
+            getExtendedViewProvider()->setTransformation ( group->placement().getValue().toMatrix() );
     }
-    else {
-        ViewProviderGroupExtension::extensionUpdateData ( prop );
+    ViewProviderGroupExtension::extensionUpdateData ( prop );
+}
+
+static void filterLinksByScope(const App::DocumentObject *obj, std::vector<App::DocumentObject *> &children)
+{
+    if(!obj || !obj->getNameInDocument())
+        return;
+
+    std::vector<App::Property*> list;
+    obj->getPropertyList(list);
+    std::set<App::DocumentObject *> links;
+    for(auto prop : list) {
+        auto link = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+        if(link && link->getScope()!=App::LinkScope::Global)
+            link->getLinkedObjects(std::inserter(links,links.end()),true);
     }
+    for(auto it=children.begin();it!=children.end();) {
+        if(!links.count(*it))
+            it = children.erase(it);
+        else
+            ++it;
+    }
+}
+
+void ViewProviderGeoFeatureGroupExtension::buildExport() const {
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    if(!group)
+        return;
+
+    auto model = group->Group.getValues ();
+    std::set<App::DocumentObject*> outSet; //< set of objects not to claim (childrens of childrens)
+
+    // search for objects handled (claimed) by the features
+    for (auto obj: model) {
+        //stuff in another geofeaturegroup is not in the model anyway
+        if (!obj || obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) { continue; }
+
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider ( obj );
+        if (!vp || vp == getExtendedViewProvider()) { continue; }
+
+        auto children = vp->claimChildren();
+        filterLinksByScope(obj,children);
+        outSet.insert(children.begin(),children.end());
+    }
+
+    // remove the otherwise handled objects, preserving their order so the order in the TreeWidget is correct
+    for(auto it=model.begin();it!=model.end();) {
+        auto obj = *it;
+        if(!obj || !obj->getNameInDocument() || outSet.count(obj))
+            it = model.erase(it);
+        else
+            ++it;
+    }
+
+    if(group->_ExportChildren.getSize()!=(int)model.size())
+        group->_ExportChildren.setValues(std::move(model));
 }
 
 namespace Gui {

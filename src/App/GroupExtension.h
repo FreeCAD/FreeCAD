@@ -117,6 +117,8 @@ public:
 
     virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
 
+    virtual int extensionIsElementVisible(const char *element) const override;
+
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
 
     std::vector<DocumentObject*> getAllChildren() const;
@@ -125,6 +127,22 @@ public:
     /// Properties
     PropertyLinkList Group;
     PropertyBool _GroupTouched;
+
+    enum ExportModeValue {
+        EXPORT_DISABLED,
+        EXPORT_BY_VISIBILITY,
+        EXPORT_BY_CHILD_QUERY,
+        EXPORT_BOTH,
+    };
+    PropertyEnumeration ExportMode;
+
+protected:
+
+    virtual const PropertyLinkList& getExportGroupProperty() const {
+        return Group;
+    }
+
+    bool queryChildExport(App::DocumentObject *obj) const;
 
 private:
     void removeObjectFromDocument(DocumentObject*);

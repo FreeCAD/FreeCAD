@@ -35,6 +35,8 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
+FC_LOG_LEVEL_INIT("App",true,true);
+
 using namespace App;
 
 EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
@@ -47,10 +49,47 @@ GroupExtension::GroupExtension()
 
     EXTENSION_ADD_PROPERTY_TYPE(_GroupTouched, (false), "Base", 
             PropertyType(Prop_Hidden|Prop_Transient),0);
+
+    static const char *ExportModeEnum[] = {"Disabled", "By Visibility", "Child Query", "Both", 0};
+    ExportMode.setEnums(ExportModeEnum);
+    ExportMode.setStatus(Property::Hidden,true);
+    EXTENSION_ADD_PROPERTY_TYPE(ExportMode,(EXPORT_DISABLED),"Base",(App::PropertyType)(Prop_None),
+            "Disabled: do not export any child.\n\n"
+            "By Visibility: export all children with their current visibility. Note, depending\n"
+            "on your exporter setting, invisible object may or may not be exported.\n\n"
+            "Child Query: export only children whose property 'Enable Export' is set to True.\n"
+            "and export them as visible object regardless of their actual visibility.\n\n"
+            "Both: same as 'Child Query' but with their current visibility.");
+
 }
 
 GroupExtension::~GroupExtension()
 {
+}
+
+bool GroupExtension::queryChildExport(App::DocumentObject *obj) const {
+    if(!obj || !obj->getNameInDocument())
+        return false;
+    switch(ExportMode.getValue()) {
+    case EXPORT_DISABLED:
+        return false;
+    case EXPORT_BY_VISIBILITY:
+        return true;
+    default:
+        break;
+    }
+    auto prop = obj->getPropertyByName("Group_EnableExport");
+    if(prop && prop->getContainer()==obj) {
+        if(!prop->isDerivedFrom(PropertyBool::getClassTypeId())) {
+            if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("Unexpected property type of " <<  prop->getFullName());
+            return true;
+        }
+        return static_cast<PropertyBool*>(prop)->getValue();
+    }
+    prop = obj->addDynamicProperty("App::PropertyBool","Group_EnableExport","Group");
+    static_cast<App::PropertyBool*>(prop)->setValue(true);
+    return true;
 }
 
 DocumentObject* GroupExtension::addObject(const char* sType, const char* pObjectName)
@@ -72,16 +111,17 @@ std::vector<DocumentObject*> GroupExtension::addObject(DocumentObject* obj)
 
 std::vector< DocumentObject* > GroupExtension::addObjects(std::vector< DocumentObject* > objs) {
     
+    auto owner = getExtendedObject();
+    auto inSet = owner->getInListEx(true);
+    inSet.insert(owner);
+
     std::vector<DocumentObject*> added;
     std::vector<DocumentObject*> grp = Group.getValues();
     for(auto obj : objs) {
             
-        if(!allowObject(obj))
+        if(inSet.count(obj) || !allowObject(obj) || hasObject(obj))
             continue;
         
-        if (hasObject(obj))
-            continue;
-            
         //only one group per object. Note that it is allowed to be in a group and geofeaturegroup. However,
         //getGroupOfObject() returns only normal groups, no GeoFeatureGroups. Hence this works.
         auto *group = App::GroupExtension::getGroupOfObject(obj);
@@ -103,6 +143,7 @@ std::vector< DocumentObject* > GroupExtension::addObjects(std::vector< DocumentO
         added.push_back(obj);
     }
     
+    Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
     Group.setValues(grp);
     
     return added;
@@ -137,6 +178,7 @@ std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< Docume
     
     newGrp.erase(end, newGrp.end());
     if (grp.size() != newGrp.size()) {
+        Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
         Group.setValues (newGrp);
     }
     
@@ -314,26 +356,37 @@ PyObject* GroupExtension::getExtensionPyObject(void) {
 
 void GroupExtension::extensionOnChanged(const Property* p) {
 
+    auto owner = getExtendedObject();
+
     //objects are only allowed in a single group. Note that this check must only be done for normal
     //groups, not any derived classes
     if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId())
         && p == &Group && !Group.testStatus(Property::User3)) 
     {
-        if(!getExtendedObject()->isRestoring() &&
-           !getExtendedObject()->getDocument()->isPerformingTransaction()) {
+        if(!owner->isRestoring() && !owner->getDocument()->isPerformingTransaction()) {
             
             bool error = false;
-            auto corrected = Group.getValues();
-            for(auto obj : Group.getValues()) {
+            auto children = Group.getValues();
+            std::unordered_set<App::DocumentObject*> objSet;
+            for(auto it=children.begin(),itNext=it;it!=children.end();it=itNext) {
+                itNext++;
+                auto obj = *it;
+                if(!obj || !obj->getNameInDocument() || !objSet.insert(obj).second) {
+                    error = true;
+                    itNext = children.erase(it);
+                    continue;
+                }
 
                 //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
                 //would return anyone of it and hence it is possible that we miss an error. We need a custom check
                 auto list = obj->getInList();
                 for (auto in : list) {
-                    if(in->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false) &&
-                        in != getExtendedObject()) {
+                    if(in!=owner && in->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false)) {
                         error = true;
-                        corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
+                        itNext = children.erase(it);
+                        FC_WARN("Remove " << obj->getFullName() <<  " from " 
+                                << owner->getFullName() << " because of multiple owner groups");
+                        break;
                     }
                 }
             }
@@ -341,19 +394,24 @@ void GroupExtension::extensionOnChanged(const Property* p) {
             //if an error was found we need to correct the values and inform the user
             if(error) {
                 Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
-                Group.setValues(corrected);
-                throw Base::RuntimeError("Object can only be in a single Group");
+                Group.setValues(children);
+
+                // Since we are auto correcting, just issue a warning
+                //
+                // throw Base::RuntimeError("Object can only be in a single Group");
+                FC_WARN("Auto correct group member for " << owner->getFullName());
             }
         }
     }
 
-    if(p == &Group) {
+    if(p == &getExportGroupProperty() || p == &ExportMode) {
         _Conns.clear();
-        for(auto obj : Group.getValue()) {
-            if(obj && obj->getNameInDocument()) {
-                _Conns[obj] = obj->signalChanged.connect(boost::bind(
-                            &GroupExtension::slotChildChanged,this,_1,_2));
-            }
+        for(auto obj : getExportGroupProperty().getValues()) {
+            if(!obj || !obj->getNameInDocument())
+                continue;
+            queryChildExport(obj);
+            _Conns.push_back(obj->Visibility.signalChanged.connect(boost::bind(
+                            &GroupExtension::slotChildChanged,this,_1)));
         }
     }
 
@@ -393,12 +451,23 @@ bool GroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *sub
     return ret->getSubObject(dot+1,pyObj,mat,true,depth+1);
 }
 
-bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int) const {
-    for(auto obj : Group.getValues()) {
-        if(obj && obj->getNameInDocument())
-            ret.push_back(std::string(obj->getNameInDocument())+'.');
+bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int reason) const {
+    if(reason == DocumentObject::GS_DEFAULT && ExportMode.getValue() == EXPORT_DISABLED)
+        return true;
+
+    for(auto obj : getExportGroupProperty().getValues()) {
+        if(obj && obj->getNameInDocument()) {
+            if(reason!=DocumentObject::GS_DEFAULT || queryChildExport(obj))
+                ret.push_back(std::string(obj->getNameInDocument())+'.');
+        }
     }
     return true;
+}
+
+int GroupExtension::extensionIsElementVisible(const char *) const {
+    if(ExportMode.getValue() == EXPORT_BY_CHILD_QUERY)
+        return 1;
+    return -1;
 }
 
 App::DocumentObjectExecReturn *GroupExtension::extensionExecute(void) {

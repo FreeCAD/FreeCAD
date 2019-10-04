@@ -54,6 +54,9 @@ class AppExport GeoFeatureGroupExtension : public App::GroupExtension
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::GeoFeatureGroupExtension);
 
 public:
+    PropertyBool QueryChildExport;
+    PropertyLinkList _ExportChildren;
+
     PropertyPlacement& placement();
     
     virtual void initExtension(ExtensionContainer* obj) override;
@@ -100,8 +103,6 @@ public:
     virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override;
 
-    virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
-    
     virtual std::vector< DocumentObject* > addObjects(std::vector< DocumentObject* > obj) override;
     virtual std::vector< DocumentObject* > removeObjects(std::vector< DocumentObject* > obj) override;
     
@@ -111,14 +112,28 @@ public:
     static std::vector<App::DocumentObject*> getCSRelevantLinks(const App::DocumentObject* obj);
     /// Checks if the links of the given object comply with all GeoFeatureGroup requirements, that means
     /// if normal links are only within the parent GeoFeatureGroup. 
-    static bool areLinksValid(const App::DocumentObject* obj);
+    static bool areLinksValid(const App::DocumentObject* obj, bool silent=true);
     /// Checks if the given link complies with all GeoFeatureGroup requirements, that means
     /// if normal links are only within the parent GeoFeatureGroup. 
-    static bool isLinkValid(App::Property* link);
+    static bool isLinkValid(App::Property* link, bool silent=true);
     //Returns all objects that are wrongly linked from this object, meaning which are out of scope of the 
     //links of obj
     static void getInvalidLinkObjects(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
+
+    /** Filter children by link scope
+     * @param obj: the object
+     * @param children: input as the children of the object, output by filtering out any child that is not
+     *                  linked by the given scoped
+     * @param scope: filtering link scope
+     */
+    static void filterLinksByScope(const App::DocumentObject *obj, std::vector<App::DocumentObject *> &children,
+            LinkScope scope = LinkScope::Local);
     
+protected:
+    virtual const PropertyLinkList& getExportGroupProperty() const override {
+        return _ExportChildren;
+    }
+
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);
     static std::vector<App::DocumentObject*> getScopedObjectsFromLinks(const App::DocumentObject*, LinkScope scope = LinkScope::Local);
@@ -135,7 +150,6 @@ private:
     
     static void recursiveCSRelevantLinks(const App::DocumentObject* obj,
                                          std::vector<App::DocumentObject*>& vec);
- 
 };
 
 typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFeatureGroupExtensionPython;
