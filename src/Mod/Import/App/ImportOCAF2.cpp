@@ -1263,12 +1263,16 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         }
         int vis = -1;
         if(parent) {
-            if(groupLinks.size() 
-                && parent->getExtensionByType<App::GroupExtension>(true,false))
-            {
-                vis = groupLinks.back()->isElementVisible(childName.c_str());
-            }else
-                vis = parent->isElementVisible(childName.c_str());
+            vis = parent->isElementVisible(childName.c_str());
+            if(groupLinks.size()) {
+                auto group = parent->getExtensionByType<App::GroupExtension>(true,false);
+                if(group) {
+                    if(group->ExportMode.getValue()==App::GroupExtension::EXPORT_BY_CHILD_QUERY)
+                        vis = 1;
+                    else
+                        vis = groupLinks.back()->isElementVisible(childName.c_str());
+                }
+            }
         }
 
         if(vis < 0)

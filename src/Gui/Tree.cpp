@@ -773,7 +773,7 @@ void TreeWidget::_updateStatus(bool delay) {
     int timeout = TreeParams::Instance()->StatusTimeout();
     if (timeout<0)
         timeout = 1;
-    FC_LOG("delay update status");
+    FC_TRACE("delay update status");
     statusTimer->start(timeout);
 }
 
@@ -4477,7 +4477,8 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
         auto parent = parentItem->object()->getObject();
         auto ext = parent->getExtensionByType<App::GroupExtension>(true,false);
         if(!ext) 
-            visible = parent->isElementVisible(pObject->getNameInDocument());
+            visible = parent->hasChildElement()?
+                parent->isElementVisible(pObject->getNameInDocument()):-1;
         else {
             // We are dealing with a plain group. It has special handling when
             // linked, which allows it to have indpenedent visibility control.
@@ -4485,8 +4486,10 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
             // it.
             for(auto pp=parentItem->getParentItem();pp;pp=pp->getParentItem()) {
                 auto obj = pp->object()->getObject();
-                if(!obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)) {
-                    visible = pp->object()->getObject()->isElementVisible(pObject->getNameInDocument());
+                if(!obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)
+                        && obj->hasChildElement()) 
+                {
+                    visible = obj->isElementVisible(pObject->getNameInDocument());
                     break;
                 }
             }
@@ -4792,7 +4795,7 @@ int DocumentObjectItem::isGroup() const {
             auto pobj = parent->object()->getObject();
             if(pobj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false))
                 continue;
-            if(pobj->isElementVisible(obj->getNameInDocument())>=0)
+            if(pobj->hasChildElement() && pobj->isElementVisible(obj->getNameInDocument())>=0)
                 return LinkGroup;
         }
     }

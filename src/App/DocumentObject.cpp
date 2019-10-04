@@ -97,10 +97,8 @@ DocumentObject::~DocumentObject(void)
 App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
     //check if the links are valid before making the recompute
-    if(!GeoFeatureGroupExtension::areLinksValid(this)) {
-#if 1
-        Base::Console().Warning("%s / %s: Links go out of the allowed scope\n", getTypeId().getName(), getNameInDocument());
-#else
+    if(!GeoFeatureGroupExtension::areLinksValid(this,false)) {
+#if 0
         return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
 #endif
     }

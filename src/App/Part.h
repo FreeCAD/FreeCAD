@@ -66,13 +66,8 @@ public:
     App::PropertyString  LicenseURL;
     //@}
 
-    /** @name Visual properties */
-    //@{
-    /** Base color of the Item
-    If the transparency value is 1.0
-    the color or the next hirachy is used
-    */
-    App::PropertyColor Color;
+    // Private property holding object link for color override
+    App::PropertyLinkSubHidden ColoredElements;
     //@}
 
     /// Constructor
