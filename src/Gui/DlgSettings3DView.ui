@@ -134,10 +134,10 @@ will be shown at the lower left in opened files</string>
         <property name="toolTip">
          <string>If checked, Vertex Buffer Objects (VBO) will be used.
 A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the video device.
+vertex data (position, normal vector, color, etc.) to the graphics card.
 VBOs offer substantial performance gains because the data resides
-in the video device memory rather than the system memory and so it
-can be rendered directly by the video device. 
+in the graphics memory rather than the system memory and so it
+can be rendered directly by GPU. 
 
 <b>Note</b>: Sometimes this feature may lead to a host of different issues ranging
 from graphical anomalies to GPU crash bugs. Remember to report this setting
