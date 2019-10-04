@@ -167,7 +167,7 @@ is enabled when seeking support on the FreeCAD forums.</string>
          <widget class="QComboBox" name="renderCache">
            <property name="toolTip">
             <string>'Render Caching' is another way to say 'Rendering Acceleration'.
-There are 3 options availble to achieve this: 
+There are 3 options available to achieve this: 
 1) 'Auto' (default), let Coin3D decide where to cache.
 2) 'Distributed', manually turn on cache for all view provider root node.
 3) 'Centralized', manually turn off cache in all nodes of all view provider, and
