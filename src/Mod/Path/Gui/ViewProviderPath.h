@@ -72,7 +72,6 @@ public:
     void setDisplayMode(const char* ModeName);
     std::vector<std::string> getDisplayModes() const;
     void updateData(const App::Property*);
-    void recomputeBoundingBox();
     virtual QIcon getIcon() const;
 
     virtual bool useNewSelectionModel(void) const;
@@ -84,6 +83,8 @@ public:
     void hideSelection();
 
     virtual void showBoundingBox(bool show);
+    virtual Base::BoundBox3d getBoundingBox(
+            const char *subname=0, bool transform=true, Gui::MDIView *view=0) const;
 
     friend class PathSelectionObserver;
 

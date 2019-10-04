@@ -52,6 +52,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "Window.h"
+#include "ViewParams.h"
 
 #include <Base/Console.h>
 #include <Base/Placement.h>
@@ -75,7 +76,8 @@ PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDragger)
 const App::PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
 
 ViewProviderGeometryObject::ViewProviderGeometryObject()
-    : pcBoundSwitch(0)
+    : pcBoundingBox(0)
+    , pcBoundSwitch(0)
     , pcBoundColor(0)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -111,20 +113,18 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     //ShapeMaterial.touch(); materials are rarely used, so better to initialize with default shape color
     ShapeColor.touch();
 
-    pcBoundingBox = new Gui::SoFCBoundingBox;
-    pcBoundingBox->ref();
-
-    pcBoundColor = new SoBaseColor();
-    pcBoundColor->ref();
-
     sPixmap = "Feature";
 }
 
 ViewProviderGeometryObject::~ViewProviderGeometryObject()
 {
     pcShapeMaterial->unref();
-    pcBoundingBox->unref();
-    pcBoundColor->unref();
+    if(pcBoundingBox)
+        pcBoundingBox->unref();
+    if(pcBoundSwitch)
+        pcBoundSwitch->unref();
+    if(pcBoundColor)
+        pcBoundColor->unref();
 }
 
 void ViewProviderGeometryObject::onChanged(const App::Property* prop)
@@ -180,24 +180,23 @@ void ViewProviderGeometryObject::attach(App::DocumentObject *pcObj)
 
 void ViewProviderGeometryObject::updateData(const App::Property* prop)
 {
-    if (prop->isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
-        Base::BoundBox3d box = static_cast<const App::PropertyComplexGeoData*>(prop)->getBoundingBox();
-        pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
-        pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
-    }
-    else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
-        App::GeoFeature* geometry = dynamic_cast<App::GeoFeature*>(getObject());
-        if (geometry && prop == &geometry->Placement) {
-            const App::PropertyComplexGeoData* data = geometry->getPropertyOfGeometry();
-            if (data) {
-                Base::BoundBox3d box = data->getBoundingBox();
-                pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
-                pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
-            }
-        }
+    if (pcBoundingBox) {
+       if(prop->isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())
+               || prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()))
+       {
+           updateBoundingBox();
+       }
     }
 
     ViewProviderDragger::updateData(prop);
+}
+
+void ViewProviderGeometryObject::updateBoundingBox() {
+    if(pcBoundingBox) {
+        Base::BoundBox3d box = getBoundingBox();
+        pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
+        pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
+    }
 }
 
 SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos, const View3DInventorViewer& viewer,bool pickAll) const
@@ -241,9 +240,7 @@ SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos, co
 
 unsigned long ViewProviderGeometryObject::getBoundColor() const
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long bbcol = hGrp->GetUnsigned("BoundingBoxColor",4294967295UL); // white (255,255,255)
-    return bbcol;
+    return ViewParams::instance()->getBoundingBoxColor();
 }
 
 void ViewProviderGeometryObject::showBoundingBox(bool show)
@@ -254,15 +251,25 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
         r = ((bbcol >> 24) & 0xff) / 255.0; g = ((bbcol >> 16) & 0xff) / 255.0; b = ((bbcol >> 8) & 0xff) / 255.0;
 
         pcBoundSwitch = new SoSwitch();
+        pcBoundSwitch->ref();
         SoSeparator* pBoundingSep = new SoSeparator();
         SoDrawStyle* lineStyle = new SoDrawStyle;
         lineStyle->lineWidth = 2.0f;
         pBoundingSep->addChild(lineStyle);
 
+        if(!pcBoundColor) {
+            pcBoundColor = new SoBaseColor;
+            pcBoundColor->ref();
+        }
         pcBoundColor->rgb.setValue(r, g, b);
         pBoundingSep->addChild(pcBoundColor);
 
         pBoundingSep->addChild(new SoResetTransform());
+
+        if(!pcBoundingBox) {
+            pcBoundingBox = new SoFCBoundingBox;
+            pcBoundingBox->ref();
+        }
         pBoundingSep->addChild(pcBoundingBox);
         pcBoundingBox->coordsOn.setValue(false);
         pcBoundingBox->dimensionsOn.setValue(true);

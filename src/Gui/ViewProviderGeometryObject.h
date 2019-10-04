@@ -93,9 +93,12 @@ protected:
     void setSelectable(bool Selectable=true);
 
     virtual unsigned long getBoundColor() const;
+    void updateBoundingBox();
 
 protected:
     SoMaterial       * pcShapeMaterial;
+
+private:
     SoFCBoundingBox  * pcBoundingBox;
     SoSwitch         * pcBoundSwitch;
     SoBaseColor      * pcBoundColor;

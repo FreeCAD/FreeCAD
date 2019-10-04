@@ -634,7 +634,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
             for(unsigned int i=0;i<markers.size();i++)
                 pcMarkerCoords->point.set1Value(i,markers[i].x,markers[i].y,markers[i].z);
 
-            recomputeBoundingBox();
+            updateBoundingBox();
         }
     }
 
@@ -680,33 +680,26 @@ void ViewProviderPath::updateVisual(bool rebuild) {
     NormalColor.touch();
 }
 
-void ViewProviderPath::recomputeBoundingBox()
+Base::BoundBox3d ViewProviderPath::getBoundingBox(
+        const char *, bool transform, Gui::MDIView *) const 
 {
     // update the boundbox
-    double MinX,MinY,MinZ,MaxX,MaxY,MaxZ;
-    MinX = 999999999.0;
-    MinY = 999999999.0;
-    MinZ = 999999999.0;
-    MaxX = -999999999.0;
-    MaxY = -999999999.0;
-    MaxZ = -999999999.0;
-    Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
-    Base::Placement pl = *(&pcPathObj->Placement.getValue());
+    Base::Placement pl;
+    if(transform) {
+        Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
+        pl = *(&pcPathObj->Placement.getValue());
+    }
+    Base::BoundBox3d bbox;
     Base::Vector3d pt;
     for (int i=1;i<pcLineCoords->point.getNum();i++) {
         pt.x = pcLineCoords->point[i].getValue()[0];
         pt.y = pcLineCoords->point[i].getValue()[1];
         pt.z = pcLineCoords->point[i].getValue()[2];
-        pl.multVec(pt,pt);
-        if (pt.x < MinX)  MinX = pt.x;
-        if (pt.y < MinY)  MinY = pt.y;
-        if (pt.z < MinZ)  MinZ = pt.z;
-        if (pt.x > MaxX)  MaxX = pt.x;
-        if (pt.y > MaxY)  MaxY = pt.y;
-        if (pt.z > MaxZ)  MaxZ = pt.z;
+        if(transform)
+            pl.multVec(pt,pt);
+        bbox.Add(pt);
     }
-    pcBoundingBox->minBounds.setValue(MinX, MinY, MinZ);
-    pcBoundingBox->maxBounds.setValue(MaxX, MaxY, MaxZ);
+    return bbox;
 }
 
 QIcon ViewProviderPath::getIcon() const
