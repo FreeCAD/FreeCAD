@@ -43,6 +43,7 @@
 
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
+#include <Base/Tools.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -595,7 +596,11 @@ bool TreeWidget::isObjectShowable(App::DocumentObject *obj) {
     return true;
 }
 
+static bool _DisableCheckTopParent;
+
 void TreeWidget::checkTopParent(App::DocumentObject *&obj, std::string &subname) {
+    if(_DisableCheckTopParent)
+        return;
     if(Instances.size() && obj && obj->getNameInDocument()) {
         auto tree = *Instances.begin();
         auto it = tree->DocumentMap.find(Application::Instance->getDocument(obj->getDocument()));
@@ -1664,8 +1669,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
             {
                 // check if items can be dragged
                 auto parentItem = item->getParentItem();
-                if(parentItem 
-                        && parentItem->object()->canDragObjects() 
+                if(!parentItem)
+                    info.dragging = true;
+                else if(parentItem->object()->canDragObjects() 
                         && parentItem->object()->canDragObject(item->object()->getObject()))
                 {
                     info.dragging = true;
@@ -1898,7 +1904,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                                     sobj->getPropertyByName("Placement"));
                         if(propPlacement) {
                             newMat *= propPlacement->getValue().inverse().toMatrix();
-                            newMat.inverse();
+                            newMat.inverseGauss();
                             Base::Placement pla(newMat*mat);
                             propPlacement->setValueIfChanged(pla);
                         }
@@ -1906,6 +1912,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }
                 droppedObjects.emplace_back(dropParent,dropName);
             }
+            Base::FlagToggler<> guard(_DisableCheckTopParent);
             if(setSelection && droppedObjects.size()) {
                 Selection().selStackPush();
                 Selection().clearCompleteSelection();
@@ -2098,6 +2105,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }
             }
             touched = true;
+            Base::FlagToggler<> guard(_DisableCheckTopParent);
             Selection().setSelection(thisDoc->getName(),droppedObjs);
 
         } catch (const Base::Exception& e) {
