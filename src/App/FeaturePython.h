@@ -55,6 +55,7 @@ public:
     void onDocumentRestored();
     std::string getViewProviderName();
     PyObject *getPyObject(void);
+    void setupObject() {}
 
     bool getSubObject(App::DocumentObject *&ret, const char *subname, PyObject **pyObj, 
             Base::Matrix4D *mat, bool transform, int depth) const;
@@ -340,6 +341,10 @@ protected:
     virtual void onDocumentRestored() override {
         imp->onDocumentRestored();
         FeatureT::onDocumentRestored();
+    }
+    virtual void setupObject() override {
+        FeatureT::setupObject();
+        imp->setupObject();
     }
 
 private:

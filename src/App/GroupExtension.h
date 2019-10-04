@@ -105,6 +105,11 @@ public:
      * like GeoFeatureGroups or OriginGroups. To retrieve those please use their appropriate functions
      */
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
+    /** Returns any group that contains GroupExtension that owns a given object.
+     * If both a non geo group and a geo group contains the given object, this
+     * function will return the non geo group.
+     */
+    static DocumentObject* getAnyGroupOfObject(const DocumentObject* obj);
     //@}
     
     virtual PyObject* getExtensionPyObject(void) override;
@@ -116,6 +121,12 @@ public:
 
     virtual bool extensionGetSubObjects(std::vector<std::string> &ret, int reason) const override;
 
+    void enableSelectionSubObjects(bool enable) {
+        _enableSubObjects = enable;
+    }
+
+    virtual int extensionIsElementVisible(const char *element) const override;
+
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
 
     std::vector<DocumentObject*> getAllChildren() const;
@@ -125,6 +136,42 @@ public:
     PropertyLinkList Group;
     PropertyBool _GroupTouched;
 
+    enum ExportModeValue {
+        ExportDisabled,
+        ExportByVisibility,
+        ExportByChildQuery,
+        ExportBoth,
+    };
+    PropertyEnumeration ExportMode;
+
+    /// Helper class to temporary enable old group visibility toggling behavior
+    struct AppExport ToggleNestedVisibility {
+        ToggleNestedVisibility();
+        ~ ToggleNestedVisibility();
+    };
+
+    /** Return the link list property for holding the children for export
+     * @param reason: specify the reason for export. @sa App::DocumentObject::GSReason
+     */
+    virtual const PropertyLinkList& getExportGroupProperty(int reason) const {
+        (void)reason;
+        return Group;
+    }
+
+    virtual bool getChildDefaultExport(App::DocumentObject *obj) const {
+       (void)obj;
+       return true;
+    }
+    
+    bool queryChildExport(App::DocumentObject *obj) const;
+    bool toggleChildExport(App::DocumentObject *obj, bool toggleGroup = true);
+    static PropertyBool *getChildExportProperty(App::DocumentObject *obj,
+                                                bool force = false,
+                                                bool defvalue = false);
+
+protected:
+    void initSetup();
+
 private:
     void removeObjectFromDocument(DocumentObject*);
     //this version if has object stores the already searched objects to prevent infinite recursion
@@ -132,8 +179,12 @@ private:
     bool recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, std::vector<const GroupExtension*> history) const;
 
     // for tracking children visibility
-    void slotChildChanged(const App::DocumentObject&, const App::Property&);
-    std::unordered_map<const App::DocumentObject*, boost::signals2::scoped_connection> _Conns;
+    void slotChildChanged(const App::Property&);
+    std::vector<boost::signals2::scoped_connection> _Conns;
+
+    bool _togglingVisibility = false;
+
+    bool _enableSubObjects = true;
 };
 
 

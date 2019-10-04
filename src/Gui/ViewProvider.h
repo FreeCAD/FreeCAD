@@ -427,6 +427,7 @@ public:
                    Transform,
                    Cutting,
                    Color,
+                   ExportInGroup,
     };
 protected:
     /// is called by the document when the provider goes in edit mode

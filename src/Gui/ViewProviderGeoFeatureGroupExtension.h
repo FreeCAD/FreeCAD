@@ -60,6 +60,9 @@ public:
     virtual void extensionUpdateData(const App::Property*) override;
 
 protected:
+    void buildExport() const;
+
+protected:
     SoGroup *pcGroupChildren;
 };
 

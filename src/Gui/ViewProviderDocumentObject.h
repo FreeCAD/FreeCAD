@@ -155,10 +155,14 @@ public:
     void setShowable(bool enable);
     bool isShowable() const;
 
+    virtual void setupContextMenu(QMenu*, QObject*, const char*) override;
+
     /** Start the edit mode with ViewProvider::Default */
     void startDefaultEditMode();
 
 protected:
+    virtual bool setEdit(int ModNum) override;
+
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.
       an image view, an SVG view or something else.

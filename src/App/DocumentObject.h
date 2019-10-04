@@ -61,7 +61,6 @@ enum ObjectStatus {
     PendingRecompute = 11, // set by Document, indicating the object is in recomputation queue
     ObjImporting = 13, // Mark the object as importing
     NoTouch = 14, // no touch on any property change
-    GeoExcluded = 15, // mark as a member but not claimed by GeoFeatureGroup
     Expand = 16, // indicate the object's tree item expansion status
     NoAutoExpand = 17, // disable tree item auto expand on selection for this object
     PendingTransactionUpdate = 18, // mark that the object expects a call to onUndoRedoFinished() after transaction is finished.

@@ -35,6 +35,8 @@
 
 #include <App/Document.h>
 #include <App/Origin.h>
+#include <App/ComplexGeoData.h>
+#include <App/AutoTransaction.h>
 #include <Base/Tools.h>
 
 #include "ViewProviderDocumentObjectPy.h"
@@ -711,4 +713,53 @@ std::string ViewProviderDocumentObject::getFullName() const {
     if(pcObject)
         return pcObject->getFullName() + ".ViewObject";
     return std::string("?");
+}
+
+bool ViewProviderDocumentObject::setEdit(int ModNum)
+{
+    if (ModNum == ExportInGroup) {
+        auto group = App::GroupExtension::getAnyGroupOfObject(getObject());
+        if (group) {
+            auto ext = group->getExtensionByType<App::GroupExtension>(true);
+            if (ext) {
+                std::string name(QT_TRANSLATE_NOOP("Command", "Toggle export "));
+                name += getObject()->Label.getValue();
+                App::AutoTransaction committer(name.c_str());
+                try {
+                    ext->toggleChildExport(getObject(), true);
+                } catch (Base::Exception &e) {
+                    e.ReportException();
+                }
+            }
+        }
+        return false;
+    }
+    return ViewProvider::setEdit(ModNum);
+}
+
+void ViewProviderDocumentObject::setupContextMenu(QMenu* menu, QObject* receiver, const char* method)
+{
+    ViewProvider::setupContextMenu(menu, receiver, method);
+
+    // Show export menu action if this object is part of a group that is
+    // exporting its children, but not exporting by visibility.
+    if (App::GroupExtension::getChildExportProperty(getObject())) {
+        auto group = App::GroupExtension::getGroupOfObject(getObject());
+        if (group) {
+            auto ext = group->getExtensionByType<App::GroupExtension>(true);
+            if (ext && ext->ExportMode.getValue() != App::GroupExtension::ExportByVisibility) {
+                bool found = false;
+                for (auto action : menu->actions()) {
+                    if (action->data().toInt() == ExportInGroup) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    QAction *act = menu->addAction(QObject::tr("Toggle export"), receiver, method);
+                    act->setData(QVariant((int)ExportInGroup));
+                }
+            }
+        }
+    }
 }

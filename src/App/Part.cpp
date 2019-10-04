@@ -54,10 +54,13 @@ Part::Part(void)
     // license stuff (leave them empty to avoid confusion with imported 3rd party STEP/IGES files)
     ADD_PROPERTY_TYPE(License, (""), 0, App::Prop_None, "License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL, (""), 0, App::Prop_None, "URL to the license text/contract");
-    // color and appearance
-    ADD_PROPERTY(Color, (1.0, 1.0, 1.0, 1.0)); // set transparent -> not used
 
-    GroupExtension::initExtension(this);
+    ADD_PROPERTY_TYPE(ColoredElements, (0), 0, (PropertyType)(Prop_ReadOnly|Prop_Hidden), "");
+
+    OriginGroupExtension::initExtension(this);
+
+    ExportMode.setStatus(Property::Hidden,false);
+    ExportMode.setValue(ExportByVisibility);
 }
 
 Part::~Part(void)

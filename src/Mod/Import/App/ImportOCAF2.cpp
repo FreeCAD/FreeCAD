@@ -1380,12 +1380,15 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         }
         int vis = -1;
         if(parentGrp) {
-            if(groupLinks.size() 
-                && parentGrp->getExtensionByType<App::GroupExtension>(true,false))
-            {
-                vis = groupLinks.back()->isElementVisible(childName.c_str());
-            }else
-                vis = parentGrp->isElementVisible(childName.c_str());
+            vis = parentGrp->isElementVisible(childName.c_str());
+            if(groupLinks.size()) {
+                if (auto group = App::GeoFeatureGroupExtension::getNonGeoGroup(parentGrp)) {
+                    if(group->ExportMode.getValue() == App::GroupExtension::ExportByVisibility)
+                        vis = 1;
+                    else
+                        vis = groupLinks.back()->isElementVisible(childName.c_str());
+                }
+            }
         }
 
         if(vis < 0)
