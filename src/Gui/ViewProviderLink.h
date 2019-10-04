@@ -87,6 +87,9 @@ public:
 
     bool isLinked() const;
 
+    // Return true for group, array, or link to group
+    bool isLikeGroup() const;
+
     SoFCSelectionRoot *getLinkRoot() const {return pcLinkRoot;}
 
     QIcon getLinkedIcon(QPixmap overlay) const;

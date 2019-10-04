@@ -1144,6 +1144,10 @@ void LinkView::resetRoot() {
         pcLinkRoot->addChild(pcDrawStyle);
 }
 
+bool LinkView::isLikeGroup() const {
+    return getSize() || (!hasSubs() && linkInfo && linkInfo->pcChildGroup);
+}
+
 void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
         const boost::dynamic_bitset<> &vis, SnapshotType type) 
 {
@@ -2529,7 +2533,10 @@ bool ViewProviderLink::setEdit(int ModNum)
 void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
     if (ModNum == ViewProvider::Color) {
-        Gui::Control().showDialog(new TaskElementColors(this));
+        auto ext = getLinkExtension();
+        if(!ext)
+            return;
+        Gui::Control().showDialog(new TaskElementColors(this, !linkView->isLikeGroup()));
         return;
     }
 
