@@ -1247,13 +1247,18 @@ def makeBlock(objectslist):
 def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Array",useLink=False):
     """makeArray(object,xvector,yvector,xnum,ynum,[name]) for rectangular array, or
     makeArray(object,xvector,yvector,zvector,xnum,ynum,znum,[name]) for rectangular array, or
-    makeArray(object,center,totalangle,totalnum,[name]) for polar array: Creates an array
-    of the given object
+    makeArray(object,center,totalangle,totalnum,[name]) for polar array, or
+    makeArray(object,rdistance,tdistance,zvector,ncircles,znum,symmetry,[name]) for circular array: 
+    Creates an array of the given object
     with, in case of rectangular array, xnum of iterations in the x direction
     at xvector distance between iterations, same for y direction with yvector and ynum,
-    same for z direction with zvector and znum. In case of polar array, center is a vector,
-    totalangle is the angle to cover (in degrees) and totalnum is the number of objects,
-    including the original. The result is a parametric Draft Array."""
+    same for z direction with zvector and znum. In case of polar array, center is a vector, 
+    totalangle is the angle to cover (in degrees) and totalnum is the number of objects, 
+    including the original. In case of a circular array, rdistance is the distance of the 
+    circles, tdistance is the distance within circles, znum the number of iterations in 
+    z-direction at zvector distance, ncircles the number of circles and symmetry the number 
+    of symmetry-axis of the distribution. The result is a parametric Draft Array.
+    """
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -1265,13 +1270,22 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
         _Array(obj)
     obj.Base = baseobject
     if arg6:
-        obj.ArrayType = "ortho"
-        obj.IntervalX = arg1
-        obj.IntervalY = arg2
-        obj.IntervalZ = arg3
-        obj.NumberX = arg4
-        obj.NumberY = arg5
-        obj.NumberZ = arg6
+        if isinstance(arg1, (int, float)):
+            obj.ArrayType = "circular"
+            obj.RadialDistance = arg1
+            obj.TangentialDistance = arg2
+            obj.IntervalZ = arg3
+            obj.NumberCircles = arg4
+            obj.NumberZ = arg5
+            obj.Symmetry = arg6
+        else:
+            obj.ArrayType = "ortho"
+            obj.IntervalX = arg1
+            obj.IntervalY = arg2
+            obj.IntervalZ = arg3
+            obj.NumberX = arg4
+            obj.NumberY = arg5
+            obj.NumberZ = arg6
     elif arg4:
         obj.ArrayType = "ortho"
         obj.IntervalX = arg1
@@ -5815,6 +5829,10 @@ class _Array(_DraftLink):
         obj.addProperty("App::PropertyVectorDistance","IntervalAxis","Draft",QT_TRANSLATE_NOOP("App::Property","Distance and orientation of intervals in Axis direction"))
         obj.addProperty("App::PropertyVectorDistance","Center","Draft",QT_TRANSLATE_NOOP("App::Property","Center point"))
         obj.addProperty("App::PropertyAngle","Angle","Draft",QT_TRANSLATE_NOOP("App::Property","Angle to cover with copies"))
+        obj.addProperty("App::PropertyDistance","RadialDistance","Draft",QT_TRANSLATE_NOOP("App::Property","Distance between copies in a circle"))
+        obj.addProperty("App::PropertyDistance","TangentialDistance","Draft",QT_TRANSLATE_NOOP("App::Property","Distance between circles"))
+        obj.addProperty("App::PropertyInteger","NumberCircles","Draft",QT_TRANSLATE_NOOP("App::Property","number of circles"))
+        obj.addProperty("App::PropertyInteger","Symmetry","Draft",QT_TRANSLATE_NOOP("App::Property","number of circles"))
         obj.addProperty("App::PropertyBool","Fuse","Draft",QT_TRANSLATE_NOOP("App::Property","Specifies if copies must be fused (slower)"))
         obj.Fuse = False
         if self.useLink:
@@ -5823,7 +5841,7 @@ class _Array(_DraftLink):
                     QT_TRANSLATE_NOOP("App::Property","Show array element as children object"))
             obj.ExpandArray = False
 
-        obj.ArrayType = ['ortho','polar']
+        obj.ArrayType = ['ortho','polar','circular']
         obj.NumberX = 1
         obj.NumberY = 1
         obj.NumberZ = 1
@@ -5833,6 +5851,10 @@ class _Array(_DraftLink):
         obj.IntervalZ = Vector(0,0,1)
         obj.Angle = 360
         obj.Axis = Vector(0,0,1)
+        obj.RadialDistance = 1.0
+        obj.TangentialDistance = 1.0
+        obj.NumberCircles = 2
+        obj.Symmetry = 1
 
         _DraftLink.attach(self,obj)
 
@@ -5847,6 +5869,9 @@ class _Array(_DraftLink):
             if obj.ArrayType == "ortho":
                 pls = self.rectArray(obj.Base.Placement,obj.IntervalX,obj.IntervalY,
                                     obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
+            elif obj.ArrayType == "circular":
+                pls = self.circArray(obj.Base.Placement,obj.RadialDistance,obj.TangentialDistance,obj.IntervalZ,
+                                     obj.NumberCircles,obj.NumberZ,obj.Symmetry)
             else:
                 av = obj.IntervalAxis if hasattr(obj,"IntervalAxis") else None
                 pls = self.polarArray(obj.Base.Placement,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av)
@@ -5876,6 +5901,33 @@ class _Array(_DraftLink):
                         npl = pl.copy()
                         npl.translate(currentzvector)
                         base.append(npl)
+        return base
+
+    def circArray(self,pl,rdist,tdist,zvector,cnum,znum,sym):
+        import Part
+        sym = max(1, sym)
+        base = [pl.copy()]
+        for zcount in range(max(1, znum)):
+            currentzvector=Vector(zvector).multiply(zcount)
+            if zcount != 0:
+                npl = pl.copy()
+                npl.translate(currentzvector)
+                base.append(npl)
+            for xcount in range(1, cnum):
+                rc = xcount*rdist
+                c = 2*rc*math.pi
+                n = math.floor(c/tdist)
+                n = math.floor(n/sym)*sym
+                if n == 0: continue
+                a = 2*math.pi/n
+                for ycount in range(0, n):
+                    px = math.cos(ycount*a)*rc
+                    py = math.sin(ycount*a)*rc
+                    t = FreeCAD.Vector(px, py, 0)
+                    npl = pl.copy()
+                    npl.translate(t)
+                    npl.translate(currentzvector)
+                    base.append(npl)
         return base
 
     def polarArray(self,pl,center,angle,num,axis,axisvector):
