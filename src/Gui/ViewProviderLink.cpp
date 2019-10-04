@@ -51,6 +51,7 @@
 #include <Base/PlacementPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/BoundBoxPy.h>
+#include <Base/Tools.h>
 #include <App/ComplexGeoData.h>
 #include <App/GeoFeature.h>
 #include "Application.h"
@@ -2323,8 +2324,13 @@ bool ViewProviderLink::doubleClicked() {
 void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     auto ext = getLinkExtension();
-    if(linkEdit(ext)) 
+    if(linkEdit(ext)) {
         linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
+    } else if(ext->getPlacementProperty() || ext->getLinkPlacementProperty()) {
+        QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
+        act->setData(QVariant((int)ViewProvider::Transform));
+    }
+
     if(ext && ext->getColoredElementsProperty()) {
         bool found = false;
         for(auto action : menu->actions()) {
@@ -2392,20 +2398,33 @@ bool ViewProviderLink::initDraggingPlacement() {
 
     dragCtx.reset(new DraggerContext);
 
+    dragCtx->preTransform = doc->getEditingTransform();
+
     const auto &pla = ext->getPlacementProperty()?
         ext->getPlacementValue():ext->getLinkPlacementValue();
 
-    dragCtx->preTransform = doc->getEditingTransform();
-    auto plaMat = pla.toMatrix();
-    plaMat.inverse();
-    dragCtx->preTransform *= plaMat;
+    // Cancel out our our transformation from the editing transform, because
+    // the dragger is meant to change our transformation.
+    dragCtx->preTransform *= pla.inverse().toMatrix();
 
-    dragCtx->bbox = linkView->getBoundBox();
-    const auto &offset = Base::Placement(
-            dragCtx->bbox.GetCenter(),Base::Rotation());
-    dragCtx->initialPlacement = pla * offset;
-    dragCtx->mat = offset.toMatrix();
-    dragCtx->mat.inverse();
+    dragCtx->bbox = getBoundingBox(0,false);
+    // The returned bounding box is before out own transform, but we still need
+    // to scale it to get the correct center.
+    auto scale = ext->getScaleVector();
+    dragCtx->bbox.ScaleX(scale.x);
+    dragCtx->bbox.ScaleY(scale.y);
+    dragCtx->bbox.ScaleZ(scale.z);
+    auto offset = dragCtx->bbox.GetCenter();
+
+    // This determins the initial placement of the dragger. We place it at the
+    // center of our bounding box.
+    dragCtx->initialPlacement = pla * Base::Placement(offset, Base::Rotation());
+
+    // dragCtx->mat is to transform the dragger placement to our own placement.
+    // Since the dragger is placed at the center, we set the transformation by
+    // moving the same amount in reverse direction.
+    dragCtx->mat.move(Vector3d() - offset);
+    
     return true;
 }
 
@@ -2419,7 +2438,15 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
         return inherited::startEditing(mode);
     }
 
+    static thread_local bool _pendingTransform;
+    static thread_local Base::Matrix4D  _editingTransform;
+
+    auto doc = Application::Instance->editDocument();
+
     if(mode==ViewProvider::Transform) {
+        if(_pendingTransform && doc)
+            doc->setEditingTransform(_editingTransform);
+            
         if(!initDraggingPlacement())
             return 0;
         if(useCenterballDragger)
@@ -2445,7 +2472,6 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
     // and set color. We need to find a better place to declare this constant.
     mode &= ~0x8000;
 
-    auto doc = Application::Instance->editDocument();
     if(!doc) {
         FC_ERR("no editing document");
         return 0;
@@ -2465,8 +2491,12 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
         FC_ERR("no linked viewprovider");
         return 0;
     }
-    // amend the editing transformation with the link transformation
+    // Amend the editing transformation with the link transformation.
+    // But save it first in case the linked object reroute the editing request
+    // back to us.
+    _editingTransform = doc->getEditingTransform();
     doc->setEditingTransform(doc->getEditingTransform()*mat);
+    Base::FlagToggler<> guard(_pendingTransform);
     return vpd->startEditing(mode);
 }
 
@@ -2534,7 +2564,15 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
             viewer->setupEditingRoot(group,&dragCtx->preTransform);
         }else{
             SoFCCSysDragger* dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-            dragger->draggerSize.setValue(0.05f);
+            auto doc = Application::Instance->editDocument();
+            if(doc) {
+                Base::Vector3d v0, v1(1,0,0);
+                doc->getEditingTransform().multVec(v0,v0);
+                doc->getEditingTransform().multVec(v1,v1);
+                // Compensate for possible scaling
+                dragger->draggerSize.setValue(0.05f / (v1-v0).Length());
+            } else
+                dragger->draggerSize.setValue(0.05f);
             dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
             viewer->setupEditingRoot(pcDragger,&dragCtx->preTransform);
 
