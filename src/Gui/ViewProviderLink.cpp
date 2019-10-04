@@ -2732,6 +2732,25 @@ PyObject *ViewProviderLink::getPyLinkView() {
 }
 
 std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char *subname) const {
+    std::map<std::string, App::Color> colors;
+    auto ext = getLinkExtension();
+    if(!ext || ! ext->getColoredElementsProperty())
+        return colors;
+    const auto &mat = ShapeMaterial.getValue();
+    return getElementColorsFrom(*this,subname,*ext->getColoredElementsProperty(),
+            OverrideColorList, OverrideMaterial.getValue(), &mat, ext->getElementCountValue());
+
+}
+
+std::map<std::string, App::Color> ViewProviderLink::getElementColorsFrom(
+            const ViewProviderDocumentObject &vp,
+            const char *subname,
+            const App::PropertyLinkSub &coloredElements,
+            const App::PropertyColorList &colorList,
+            bool overrideMaterial,
+            const App::Material *shapeMaterial,
+            int element_count)
+{
     bool isPrefix = true;
     if(!subname)
         subname = "";
@@ -2739,18 +2758,20 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         auto len = strlen(subname);
         isPrefix = !len || subname[len-1]=='.';
     }
+
+    if(!shapeMaterial)
+        overrideMaterial = false;
+
+    const auto &subs = coloredElements.getShadowSubs();
+    int size = colorList.getSize();
+
     std::map<std::string, App::Color> colors;
-    auto ext = getLinkExtension();
-    if(!ext || ! ext->getColoredElementsProperty())
-        return colors;
-    const auto &subs = ext->getColoredElementsProperty()->getShadowSubs();
-    int size = OverrideColorList.getSize();
 
     std::string wildcard(subname);
     if(wildcard == "Face" || wildcard == "Face*" || wildcard.empty()) {
-        if(wildcard.size()==4 || OverrideMaterial.getValue()) {
-            App::Color c = ShapeMaterial.getValue().diffuseColor;
-            c.a = ShapeMaterial.getValue().transparency;
+        if(wildcard.size()==4 || overrideMaterial) {
+            App::Color c = shapeMaterial->diffuseColor;
+            c.a = shapeMaterial->transparency;
             colors["Face"] = c;
             if(wildcard.size()==4)
                 return colors;
@@ -2778,38 +2799,53 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
                 ++pos;
             const char *element = sub.second.c_str()+pos;
             if(boost::starts_with(element,wildcard))
-                colors[sub.second] = OverrideColorList[i];
+                colors[sub.second] = colorList[i];
             else if(!element[0] && wildcard=="Face")
-                colors[sub.second.substr(0,element-sub.second.c_str())+wildcard] = OverrideColorList[i];
+                colors[sub.second.substr(0,element-sub.second.c_str())+wildcard] = colorList[i];
+        }
+
+        bool overridden = false;
+        if(wildcard!=ViewProvider::hiddenMarker() && overrideMaterial) {
+            auto color = shapeMaterial->diffuseColor;
+            color.a = shapeMaterial->transparency;
+            colors.emplace(wildcard,color);
+            overridden = true;
         }
 
         // In case of multi-level linking, we recursively call into each level,
         // and merge the colors
-        auto vp = this;
+        auto vpd = &vp;
         while(1) {
-            if(wildcard!=ViewProvider::hiddenMarker() && vp->OverrideMaterial.getValue()) {
-                auto color = ShapeMaterial.getValue().diffuseColor;
-                color.a = ShapeMaterial.getValue().transparency;
-                colors.emplace(wildcard,color);
-            }
-            auto link = vp->getObject()->getLinkedObject(false);
-            if(!link || link==vp->getObject())
+            if(!vpd->getObject())
+                break;
+            auto link = vpd->getObject()->getLinkedObject(false);
+            if(!link || link==vpd->getObject())
                 break;
             auto next = freecad_dynamic_cast<ViewProviderLink>(
                     Application::Instance->getViewProvider(link));
             if(!next)
                 break;
+            if(!overridden && wildcard!=ViewProvider::hiddenMarker() && next->OverrideMaterial.getValue()) {
+                auto color = next->ShapeMaterial.getValue().diffuseColor;
+                color.a = next->ShapeMaterial.getValue().transparency;
+                colors.emplace(wildcard,color);
+                overridden = true;
+            }
             for(auto &v : next->getElementColors(subname))
                 colors.insert(v);
-            vp = next;
+            vpd = next;
         }
+
         if(wildcard!=ViewProvider::hiddenMarker()) {
             // Get collapsed array color override.
-            auto ext = vp->getLinkExtension();
-            if(ext->_getElementCountValue() && !ext->_getShowElementValue()) {
-                const auto &overrides = vp->OverrideMaterialList.getValues();
+            const App::LinkBaseExtension *ext=0;
+            auto vpLink = freecad_dynamic_cast<ViewProviderLink>(&vp);
+            if(vpLink)
+                ext = vpLink->getLinkExtension();
+            if(ext && ext->_getElementCountValue() && !ext->_getShowElementValue()) {
+                const auto &overrides = vpLink->OverrideMaterialList.getValues();
                 int i=-1;
-                for(auto &mat : vp->MaterialList.getValues()) {
+                for(auto &mat : vpLink->MaterialList.getValues()) {
                     if(++i>=(int)overrides.size())
                         break;
                     if(!overrides[i])
@@ -2823,24 +2859,22 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         return colors;
     }
 
-    int element_count = ext->getElementCountValue();
-
     for(auto &sub : subs) {
         if(++i >= size)
             break;
 
         int offset = 0;
 
-        if(sub.second.size() && element_count && !std::isdigit(sub.second[0])) {
+        if(sub.second.size() && element_count>0 && !std::isdigit(sub.second[0])) {
             // For checking and expanding color override of array base
             if(!subname[0]) {
                 std::ostringstream ss;
                 ss << "0." << sub.second;
-                if(getObject()->getSubObject(ss.str().c_str())) {
+                if(vp.getObject()->getSubObject(ss.str().c_str())) {
                     for(int j=0;j<element_count;++j) {
                         ss.str("");
                         ss << j << '.' << sub.second;
-                        colors.emplace(ss.str(),OverrideColorList[i]);
+                        colors.emplace(ss.str(),colorList[i]);
                     }
                     continue;
                 }
@@ -2859,9 +2893,9 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
             continue;
 
         if(offset) 
-            colors.emplace(std::string(subname,offset)+sub.second, OverrideColorList[i]);
+            colors.emplace(std::string(subname,offset)+sub.second, colorList[i]);
         else
-            colors[sub.second] = OverrideColorList[i];
+            colors[sub.second] = colorList[i];
     }
 
     if(!subname[0])
@@ -2875,11 +2909,11 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     std::map<std::string, App::Color> ret;
     for(auto &v : colors) {
         const char *pos = 0;
-        auto sobj = getObject()->resolve(v.first.c_str(),0,0,&pos);
+        auto sobj = vp.getObject()->resolve(v.first.c_str(),0,0,&pos);
         if(!sobj || !pos)
             continue;
         auto link = sobj->getLinkedObject(true);
-        if(!link || link==getObject())
+        if(!link || link==vp.getObject())
             continue;
         auto vp = Application::Instance->getViewProvider(sobj->getLinkedObject(true));
         if(!vp)
@@ -2900,10 +2934,24 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
     auto ext = getLinkExtension();
     if(!ext || ! ext->getColoredElementsProperty())
         return;
+    setElementColorsTo(*this,colorMap,*ext->getColoredElementsProperty(),
+            OverrideColorList, &OverrideMaterial, &ShapeMaterial, ext->getElementCountValue());
+}
+
+void ViewProviderLink::setElementColorsTo(
+        ViewProviderDocumentObject &vp,
+        const std::map<std::string, App::Color> &colorMap,
+        App::PropertyLinkSub &coloredElements,
+        App::PropertyColorList &colorList,
+        App::PropertyBool *overrideMaterial,
+        App::PropertyMaterial *shapeMaterial,
+        int element_count)
+{
+    if(!vp.getObject())
+        return;
 
     // For checking and collapsing array element color
     std::map<std::string,std::map<int,App::Color> > subMap;
-    int element_count = ext->getElementCountValue();
 
     std::vector<std::string> subs;
     std::vector<App::Color> colors;
@@ -2916,7 +2964,7 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
             continue;
         }
         
-        if(element_count && v.first.size() && std::isdigit(v.first[0])) {
+        if(element_count>0 && v.first.size() && std::isdigit(v.first[0])) {
             // In case of array, check if there are override of the same
             // sub-element for every array element. And collapse those overrides
             // into one without the index.
@@ -2949,42 +2997,49 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
             colors.push_back(colorInfo.second);
         }
     }
-
-    auto prop = ext->getColoredElementsProperty();
-    if(subs!=prop->getSubValues() || colors!=OverrideColorList.getValues()) {
-        prop->setStatus(App::Property::User3,true);
-        prop->setValue(getObject(),subs);
-        prop->setStatus(App::Property::User3,false);
-        OverrideColorList.setValues(colors);
+    if(subs!=coloredElements.getSubValues() || colors!=colorList.getValues()) {
+        coloredElements.setStatus(App::Property::User3,true);
+        coloredElements.setValue(vp.getObject(),subs);
+        coloredElements.setStatus(App::Property::User3,false);
+        colorList.setValues(colors);
     }
-    if(hasFaceColor) {
-        auto mat = ShapeMaterial.getValue();
+    if(hasFaceColor && shapeMaterial) {
+        auto mat = shapeMaterial->getValue();
         mat.diffuseColor = faceColor;
         mat.transparency = faceColor.a;
-        ShapeMaterial.setStatus(App::Property::User3,true);
-        ShapeMaterial.setValue(mat);
-        ShapeMaterial.setStatus(App::Property::User3,false);
+        shapeMaterial->setStatus(App::Property::User3,true);
+        shapeMaterial->setValue(mat);
+        shapeMaterial->setStatus(App::Property::User3,false);
     }
-    OverrideMaterial.setValue(hasFaceColor);
+    if(overrideMaterial)
+        overrideMaterial->setValue(hasFaceColor);
 }
 
 void ViewProviderLink::applyColors() {
     auto ext = getLinkExtension();
     if(!ext || ! ext->getColoredElementsProperty())
         return;
+    applyColorsTo(*this);
+}
+
+void ViewProviderLink::applyColorsTo(ViewProviderDocumentObject &vp) {
+    auto obj = vp.getObject();
+    auto root = vp.getRoot();
+    if(!obj || !root)
+        return;
 
     SoSelectionElementAction action(SoSelectionElementAction::Color,true);
     // reset color and visibility first
-    action.apply(linkView->getLinkRoot());
+    action.apply(root);
 
     std::map<std::string, std::map<std::string,App::Color> > colorMap;
     std::set<std::string> hideList;
-    auto colors = getElementColors();
+    auto colors = vp.getElementColors();
     colors.erase("Face");
     for(auto &v : colors) {
         const char *subname = v.first.c_str();
         const char *element = 0;
-        auto sobj = getObject()->resolve(subname,0,0,&element);
+        auto sobj = obj->resolve(subname,0,0,&element);
         if(!sobj || !element)
             continue;
         if(ViewProvider::hiddenMarker() == element)
@@ -2998,12 +3053,12 @@ void ViewProviderLink::applyColors() {
     for(auto &v : colorMap) {
         action.swapColors(v.second);
         if(v.first.empty()) {
-            action.apply(linkView->getLinkRoot());
+            action.apply(root);
             continue;
         }
         SoDetail *det=0;
         path.truncate(0);
-        if(getDetailPath(v.first.c_str(), &path, false, det))
+        if(vp.getDetailPath(v.first.c_str(), &path, false, det))
             action.apply(&path);
         delete det;
     }
@@ -3012,7 +3067,7 @@ void ViewProviderLink::applyColors() {
     for(auto &sub : hideList) {
         SoDetail *det=0;
         path.truncate(0);
-        if(sub.size() && getDetailPath(sub.c_str(), &path, false, det))
+        if(sub.size() && vp.getDetailPath(sub.c_str(), &path, false, det))
             action.apply(&path);
         delete det;
     }

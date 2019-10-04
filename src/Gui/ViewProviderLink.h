@@ -254,6 +254,26 @@ public:
     std::map<std::string, App::Color> getElementColors(const char *subname=0) const override;
     void setElementColors(const std::map<std::string, App::Color> &colors) override;
 
+    static std::map<std::string,App::Color> getElementColorsFrom(
+            const ViewProviderDocumentObject &vp,
+            const char *subname,
+            const App::PropertyLinkSub &coloredElements,
+            const App::PropertyColorList &colorList,
+            bool overrideMaterial,
+            const App::Material *shapeMaterial,
+            int elementCount = 0);
+
+    static void setElementColorsTo(
+            ViewProviderDocumentObject &vp,
+            const std::map<std::string, App::Color> &colors,
+            App::PropertyLinkSub &coloredElements,
+            App::PropertyColorList &colorList,
+            App::PropertyBool *overrideMaterial,
+            App::PropertyMaterial *shapeMaterial,
+            int elementCount = 0);
+
+    static void applyColorsTo(ViewProviderDocumentObject &vp);
+
     void setOverrideMode(const std::string &mode) override;
 
     virtual void onBeforeChange(const App::Property*) override;

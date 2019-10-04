@@ -32,12 +32,16 @@
 
 namespace Gui {
 
-class GuiExport ViewProviderPart : public ViewProviderDragger,
+class GuiExport ViewProviderPart : public ViewProviderGeometryObject,
                                    public ViewProviderOriginGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderPart);
+    typedef ViewProviderGeometryObject inherited;
 
 public:
+    App::PropertyColorList OverrideColorList;
+    App::PropertyBool OverrideMaterial;
+
     /// constructor.
     ViewProviderPart();
     /// destructor.
@@ -46,9 +50,20 @@ public:
     virtual bool doubleClicked(void) override;
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
+    virtual std::map<std::string, App::Color> getElementColors(const char *subname=0) const override;
+    virtual void setElementColors(const std::map<std::string, App::Color> &colors) override;
+
+protected:
+    App::PropertyLinkSub *getColoredElementsProperty() const;
+    void applyColors();
+
 protected:
     /// get called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop) override;
+    virtual void updateData(const App::Property*) override;
+
+    virtual bool setEdit(int ModNum) override;
+    virtual void setEditViewer(View3DInventorViewer*, int ModNum) override;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;
