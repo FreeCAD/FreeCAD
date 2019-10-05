@@ -74,6 +74,7 @@ public:
     virtual ~ImportOCAF2();
     App::DocumentObject* loadShapes();
     void setMerge(bool enable) { merge=enable;};
+    void setUseLegacyImporter(bool enable) { useLegacyImporter=enable; }
     void setUseLinkGroup(bool enable) { useLinkGroup=enable; }
     void setBaseName(bool enable) { useBaseName=enable; }
     void setImportHiddenObject(bool enable) {importHidden=enable;}
@@ -147,6 +148,7 @@ private:
     Handle(XCAFDoc_ColorTool) aColorTool;
     bool merge;
     std::string default_name;
+    bool useLegacyImporter;
     bool useLinkGroup;
     bool useBaseName;
     bool importHidden;
