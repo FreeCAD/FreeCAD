@@ -152,7 +152,8 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
     merge = hGrp->GetBool("ReadShapeCompoundMode", true);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
-    useLinkGroup = hGrp->GetBool("UseLinkGroup",true);
+    useLinkGroup = !hGrp->GetBool("UseAppPart",false);
+    useLegacyImporter = hGrp->GetBool("UseLegacyImporter",false);
     useBaseName = hGrp->GetBool("UseBaseName",true);
     importHidden = hGrp->GetBool("ImportHiddenObject",true);
     reduceObjects = hGrp->GetBool("ReduceObjects",true);
@@ -171,11 +172,6 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
 
     defaultEdgeColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL));
     defaultEdgeColor.a = 0;
-
-    if(useLinkGroup) {
-        // Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
-        aShapeTool->SetAutoNaming(Standard_False);
-    }
 }
 
 ImportOCAF2::~ImportOCAF2()
@@ -497,7 +493,6 @@ bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape
         myCollapsedObjects.emplace(info.obj,info.propPlacement);
         return true;
     }
-    auto group = static_cast<App::LinkGroup*>(doc->addObject("App::LinkGroup","LinkGroup"));
     for(auto &child : children)  {
         if(child->getDocument()!=doc) {
             auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
@@ -511,11 +506,23 @@ bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape
         }
         // child->Visibility.setValue(false);
     }
-    // group->Visibility.setValue(false);
-    group->ElementList.setValues(children);
-    group->VisibilityList.setValue(visibilities);
+    App::DocumentObject *group;
+    if(!useLinkGroup) {
+        auto part = static_cast<App::Part*>(doc->addObject("App::Part","Part"));
+        group = part;
+        int i=0;
+        for(auto child : children)
+            child->Visibility.setValue(visibilities[i++]);
+        part->addObjects(children);
+        info.propPlacement = &part->Placement;
+    } else {
+        auto linkGroup = static_cast<App::LinkGroup*>(doc->addObject("App::LinkGroup","LinkGroup"));
+        group = linkGroup;
+        linkGroup->ElementList.setValues(children);
+        linkGroup->VisibilityList.setValue(visibilities);
+        info.propPlacement = &linkGroup->Placement;
+    }
     info.obj = group;
-    info.propPlacement = &group->Placement;
     if(getColor(shape,info,false,true)) {
         if(info.hasFaceColor)
             applyLinkColor(group,-1,info.faceColor);
@@ -525,12 +532,15 @@ bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape
 
 App::DocumentObject* ImportOCAF2::loadShapes()
 {
-    if(!useLinkGroup) {
+    if(useLegacyImporter) {
         ImportLegacy legacy(*this);
         legacy.setMerge(merge);
         legacy.loadShapes();
         return 0;
     }
+
+    // Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
+    aShapeTool->SetAutoNaming(Standard_False);
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         dumpLabels(pDoc->Main(),aShapeTool,aColorTool);
@@ -685,8 +695,8 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         return it->second.obj;
 
     std::map<std::string,App::Color> shuoColors;
-    if(!useLinkGroup)
-        getSHUOColors(label,shuoColors,false);
+    // if(!useLinkGroup)
+    //     getSHUOColors(label,shuoColors,false);
 
     auto info = it->second;
     getColor(shape,info,true);
