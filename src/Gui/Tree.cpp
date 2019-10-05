@@ -246,8 +246,8 @@ public:
     std::set<App::DocumentObject*> childSet;
     bool removeChildrenFromRoot;
     bool itemHidden;
-    std::string label;
-    std::string label2;
+    QString label;
+    QString label2;
 
     typedef boost::signals2::scoped_connection Connection;
 
@@ -268,8 +268,6 @@ public:
 
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
         itemHidden = !viewObject->showInTree();
-        label = viewObject->getObject()->Label.getValue();
-        label2 = viewObject->getObject()->Label2.getValue();
     }
 
     const char *getTreeName() const {
@@ -3101,10 +3099,16 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
             pdata = std::make_shared<DocumentObjectData>(
                     this, const_cast<ViewProviderDocumentObject*>(&obj));
             auto &entry = getTree()->ObjectTable[obj.getObject()];
-            if(entry.size())
-                pdata->updateChildren(*entry.begin());
-            else
+            if(entry.size()) {
+                auto firstData = *entry.begin();
+                pdata->label = firstData->label;
+                pdata->label2 = firstData->label2;
+                pdata->updateChildren(firstData);
+            } else {
+                pdata->label = QString::fromUtf8(obj.getObject()->Label.getValue());
+                pdata->label2 = QString::fromUtf8(obj.getObject()->Label2.getValue());
                 pdata->updateChildren(true);
+            }
             entry.insert(pdata);
         }else if(pdata->rootItem && parent==NULL) {
             Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
@@ -3125,9 +3129,9 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     else
         parent->insertChild(index,item);
     assert(item->parent() == parent);
-    item->setText(0, QString::fromUtf8(data->label.c_str()));
+    item->setText(0, data->label);
     if(data->label2.size())
-        item->setText(1, QString::fromUtf8(data->label2.c_str()));
+        item->setText(1, data->label2);
     if(!obj.showInTree() && !showHidden())
         item->setHidden(true);
     item->testStatus(true);
@@ -3520,28 +3524,26 @@ void TreeWidget::slotChangeObject(
         return;
 
     if(&prop == &obj->Label) {
-        const char *label = obj->Label.getValue();
+        QString label = QString::fromUtf8(obj->Label.getValue());
         auto firstData = *itEntry->second.begin();
         if(firstData->label != label) {
             for(auto data : itEntry->second) {
                 data->label = label;
-                auto displayName = QString::fromUtf8(label);
                 for(auto item : data->items)
-                    item->setText(0, displayName);
+                    item->setText(0, label);
             }
         }
         return;
     }
 
     if(&prop == &obj->Label2) {
-        const char *label = obj->Label2.getValue();
+        QString label = QString::fromUtf8(obj->Label2.getValue());
         auto firstData = *itEntry->second.begin();
         if(firstData->label2 != label) {
             for(auto data : itEntry->second) {
                 data->label2 = label;
-                auto displayName = QString::fromUtf8(label);
                 for(auto item : data->items)
-                    item->setText(1, displayName);
+                    item->setText(1, label);
             }
         }
         return;
