@@ -42,6 +42,7 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, None)
 
 import io
+import sys
 
 try:
     import FreeCAD
@@ -77,7 +78,7 @@ def searchforopenscadexe():
                 stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         stdout,stderr = p1.communicate(ascript)
         if p1.returncode == 0:
-            opathl=stdout.split('\n')
+            opathl = stdout.decode().split('\n') if sys.version[0] == '3' else stdout.split('\n')
             if len(opathl) >=1:
                 return opathl[0]+'Contents/MacOS/OpenSCAD'
         #test the default path
