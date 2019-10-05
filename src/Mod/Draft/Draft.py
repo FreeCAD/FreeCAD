@@ -1248,15 +1248,15 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
     """makeArray(object,xvector,yvector,xnum,ynum,[name]) for rectangular array, or
     makeArray(object,xvector,yvector,zvector,xnum,ynum,znum,[name]) for rectangular array, or
     makeArray(object,center,totalangle,totalnum,[name]) for polar array, or
-    makeArray(object,rdistance,tdistance,zvector,ncircles,znum,symmetry,[name]) for circular array: 
+    makeArray(object,rdistance,tdistance,axis,center,ncircles,symmetry,[name]) for circular array:
     Creates an array of the given object
     with, in case of rectangular array, xnum of iterations in the x direction
     at xvector distance between iterations, same for y direction with yvector and ynum,
     same for z direction with zvector and znum. In case of polar array, center is a vector, 
     totalangle is the angle to cover (in degrees) and totalnum is the number of objects, 
     including the original. In case of a circular array, rdistance is the distance of the 
-    circles, tdistance is the distance within circles, znum the number of iterations in 
-    z-direction at zvector distance, ncircles the number of circles and symmetry the number 
+    circles, tdistance is the distance within circles, axis the rotation-axes, center the
+    center of rotation, ncircles the number of circles and symmetry the number
     of symmetry-axis of the distribution. The result is a parametric Draft Array.
     """
 
@@ -1274,9 +1274,9 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
             obj.ArrayType = "circular"
             obj.RadialDistance = arg1
             obj.TangentialDistance = arg2
-            obj.IntervalZ = arg3
-            obj.NumberCircles = arg4
-            obj.NumberZ = arg5
+            obj.Axis = arg3
+            obj.Center = arg4
+            obj.NumberCircles = arg5
             obj.Symmetry = arg6
         else:
             obj.ArrayType = "ortho"
@@ -5870,8 +5870,8 @@ class _Array(_DraftLink):
                 pls = self.rectArray(obj.Base.Placement,obj.IntervalX,obj.IntervalY,
                                     obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
             elif obj.ArrayType == "circular":
-                pls = self.circArray(obj.Base.Placement,obj.RadialDistance,obj.TangentialDistance,obj.IntervalZ,
-                                     obj.NumberCircles,obj.NumberZ,obj.Symmetry)
+                pls = self.circArray(obj.Base.Placement,obj.RadialDistance,obj.TangentialDistance,
+                                     obj.Axis,obj.Center,obj.NumberCircles,obj.Symmetry)
             else:
                 av = obj.IntervalAxis if hasattr(obj,"IntervalAxis") else None
                 pls = self.polarArray(obj.Base.Placement,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av)
@@ -5903,31 +5903,26 @@ class _Array(_DraftLink):
                         base.append(npl)
         return base
 
-    def circArray(self,pl,rdist,tdist,zvector,cnum,znum,sym):
+    def circArray(self,pl,rdist,tdist,axis,center,cnum,sym):
         import Part
         sym = max(1, sym)
+        lead = (0,1,0)
+        if axis.x == 0 and axis.z == 0: lead = (1,0,0)
+        direction = axis.cross(Vector(lead)).normalize()
         base = [pl.copy()]
-        for zcount in range(max(1, znum)):
-            currentzvector=Vector(zvector).multiply(zcount)
-            if zcount != 0:
+        for xcount in range(1, cnum):
+            rc = xcount*rdist
+            c = 2*rc*math.pi
+            n = math.floor(c/tdist)
+            n = math.floor(n/sym)*sym
+            if n == 0: continue
+            angle = 360/n
+            for ycount in range(0, n):
                 npl = pl.copy()
-                npl.translate(currentzvector)
+                trans = FreeCAD.Vector(direction).multiply(rc)
+                npl.translate(trans)
+                npl.rotate(npl.Rotation.inverted().multVec(center-trans), axis, ycount*angle)
                 base.append(npl)
-            for xcount in range(1, cnum):
-                rc = xcount*rdist
-                c = 2*rc*math.pi
-                n = math.floor(c/tdist)
-                n = math.floor(n/sym)*sym
-                if n == 0: continue
-                a = 2*math.pi/n
-                for ycount in range(0, n):
-                    px = math.cos(ycount*a)*rc
-                    py = math.sin(ycount*a)*rc
-                    t = FreeCAD.Vector(px, py, 0)
-                    npl = pl.copy()
-                    npl.translate(t)
-                    npl.translate(currentzvector)
-                    base.append(npl)
         return base
 
     def polarArray(self,pl,center,angle,num,axis,axisvector):
