@@ -2565,15 +2565,7 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
             viewer->setupEditingRoot(group,&dragCtx->preTransform);
         }else{
             SoFCCSysDragger* dragger = static_cast<SoFCCSysDragger*>(pcDragger.get());
-            auto doc = Application::Instance->editDocument();
-            if(doc) {
-                Base::Vector3d v0, v1(1,0,0);
-                doc->getEditingTransform().multVec(v0,v0);
-                doc->getEditingTransform().multVec(v1,v1);
-                // Compensate for possible scaling
-                dragger->draggerSize.setValue(0.05f / (v1-v0).Length());
-            } else
-                dragger->draggerSize.setValue(0.05f);
+            dragger->draggerSize.setValue(0.05f);
             dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
             viewer->setupEditingRoot(pcDragger,&dragCtx->preTransform);
 
