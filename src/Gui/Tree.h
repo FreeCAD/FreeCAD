@@ -524,7 +524,7 @@ public:
     FC_TREEPARAM_DEF(PreSelection,bool,Bool,true) \
     FC_TREEPARAM_DEF(SyncPlacement,bool,Bool,false) \
     FC_TREEPARAM_DEF(RecordSelection,bool,Bool,true) \
-    FC_TREEPARAM_DEF2(DocumentMode,int,Int,1) \
+    FC_TREEPARAM_DEF2(DocumentMode,int,Int,2) \
     FC_TREEPARAM_DEF(StatusTimeout,int,Int,100) \
     FC_TREEPARAM_DEF(SelectionTimeout,int,Int,100) \
     FC_TREEPARAM_DEF(PreSelectionTimeout,int,Int,500) \
