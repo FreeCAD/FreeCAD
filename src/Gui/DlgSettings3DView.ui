@@ -139,7 +139,7 @@ VBOs offer substantial performance gains because the data resides
 in the graphics memory rather than the system memory and so it
 can be rendered directly by GPU. 
 
-<b>Note</b>: Sometimes this feature may lead to a host of different issues ranging
+Note: Sometimes this feature may lead to a host of different issues ranging
 from graphical anomalies to GPU crash bugs. Remember to report this setting
 is enabled when seeking support on the FreeCAD forums.</string>
         </property>
