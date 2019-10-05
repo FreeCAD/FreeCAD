@@ -350,7 +350,7 @@ private:
         if(!vp)
             return;
         (void)colors;
-        // vp->setElementColors(colors);
+        vp->setElementColors(colors);
     }
 };
 
@@ -403,9 +403,10 @@ private:
         PyObject *merge = Py_None;
         PyObject *useLinkGroup = Py_None;
         int mode = -1;
-        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode",nullptr};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOOi", 
-                    kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup,&mode))
+        PyObject *legacy = Py_None;
+        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode","legacy",nullptr};
+        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOOiO", 
+                    kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup,&mode,&legacy))
             throw Py::Exception();
 
         std::string Utf8Name = std::string(Name);
@@ -523,6 +524,8 @@ private:
                 ocaf.setImportHiddenObject(PyObject_IsTrue(importHidden));
             if(useLinkGroup!=Py_None)
                 ocaf.setUseLinkGroup(PyObject_IsTrue(useLinkGroup));
+            if(legacy!=Py_None)
+                ocaf.setUseLegacyImporter(PyObject_IsTrue(legacy));
             ocaf.setMode(mode);
             auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);

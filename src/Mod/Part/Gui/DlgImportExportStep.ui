@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>445</width>
-    <height>699</height>
+    <height>665</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -164,8 +164,7 @@ it inside the Placement property.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxMergeCompound">
         <property name="toolTip">
-         <string>If checked, no Compound merge will be done
-during file reading (slower but higher details).</string>
+         <string>If this is checked, no Compound merge will be done during file reading (slower but higher details).</string>
         </property>
         <property name="text">
          <string>Enable STEP Compound merge</string>
@@ -182,15 +181,31 @@ during file reading (slower but higher details).</string>
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="checkBoxUseLinkGroup">
+       <widget class="Gui::PrefCheckBox" name="checkBoxLegacyImporter">
         <property name="toolTip">
-         <string>Select this to use App::LinkGroup as group container, or else use App::Part.</string>
+         <string>Use legacy STEP importer that does not support linked instance.</string>
         </property>
         <property name="text">
-         <string>Use LinkGroup</string>
+         <string>Use legacy importer</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Import</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>UseLinkGroup</cstring>
+         <string>UseLegacyImporter</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxUseLinkGroup">
+        <property name="toolTip">
+         <string>Select this to use App::Part as group container, or else use App::LinkGroup.</string>
+        </property>
+        <property name="text">
+         <string>Use Part container</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseAppPart</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Import</cstring>

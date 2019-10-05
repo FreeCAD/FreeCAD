@@ -268,7 +268,7 @@ public:
             App::PropertyMaterial *shapeMaterial,
             int elementCount = 0);
 
-    static void applyColorsTo(ViewProviderDocumentObject &vp);
+    static bool applyColorsTo(ViewProviderDocumentObject &vp, bool prevOverride);
 
     void setOverrideMode(const std::string &mode) override;
 
@@ -335,6 +335,7 @@ protected:
     bool hasSubName;
     bool hasSubElement;
     bool useCenterballDragger;
+    bool prevColorOverride = false;
 
     struct DraggerContext{
         Base::Matrix4D preTransform;

@@ -3254,8 +3254,8 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColorsFrom(
     }
     std::map<std::string, App::Color> ret;
     for(const auto &v : colors) {
-        const char *pos = 0;
-        auto sobj = getObject()->resolve(v.first.c_str(),nullptr,nullptr,&pos);
+        const char *pos = nullptr;
+        auto sobj = vp.getObject()->resolve(v.first.c_str(),nullptr,nullptr,&pos);
         if(!sobj || !pos)
             continue;
         auto link = sobj->getLinkedObject(true);
@@ -3365,14 +3365,16 @@ void ViewProviderLink::applyColors() {
     auto ext = getLinkExtension();
     if(!ext || ! ext->getColoredElementsProperty())
         return;
-    applyColorsTo(*this);
+    prevColorOverride = applyColorsTo(*this, prevColorOverride);
 }
 
-void ViewProviderLink::applyColorsTo(ViewProviderDocumentObject &vp) {
+bool ViewProviderLink::applyColorsTo(ViewProviderDocumentObject &vp, bool prevOverride) {
     auto obj = vp.getObject();
+    if (!obj || !obj->getDocument() || obj->getDocument()->testStatus(App::Document::Restoring))
+        return prevOverride;
     auto node = vp.getModeSwitch();
     if(!obj || !node)
-        return;
+        return prevOverride;
 
     SoSelectionElementAction action(SoSelectionElementAction::Color,true);
     // reset color and visibility first
@@ -3385,7 +3387,7 @@ void ViewProviderLink::applyColorsTo(ViewProviderDocumentObject &vp) {
     for(const auto &v : colors) {
         const char *subname = v.first.c_str();
         const char *element = nullptr;
-        auto sobj = getObject()->resolve(subname,nullptr,nullptr,&element);
+        auto sobj = obj->resolve(subname,nullptr,nullptr,&element);
         if(!sobj || !element)
             continue;
         if(ViewProvider::hiddenMarker() == element)
@@ -3399,13 +3401,16 @@ void ViewProviderLink::applyColorsTo(ViewProviderDocumentObject &vp) {
     for(auto &v : colorMap) {
         action.swapColors(v.second);
         if(v.first.empty()) {
+            prevOverride = true;
             action.apply(node);
             continue;
         }
         SoDetail *det=nullptr;
         path.truncate(0);
-        if(vp.getDetailPath(v.first.c_str(), &path, false, det))
+        if(vp.getDetailPath(v.first.c_str(), &path, false, det)) {
+            prevOverride = true;
             action.apply(&path);
+        }
         delete det;
     }
 
@@ -3413,11 +3418,14 @@ void ViewProviderLink::applyColorsTo(ViewProviderDocumentObject &vp) {
     for(const auto &sub : hideList) {
         SoDetail *det=nullptr;
         path.truncate(0);
-        if(sub.size() && vp.getDetailPath(sub.c_str(), &path, false, det))
+        if(sub.size() && vp.getDetailPath(sub.c_str(), &path, false, det)) {
+            prevOverride = true;
             action.apply(&path);
+        }
         delete det;
     }
     path.unrefNoDelete();
+    return prevOverride;
 }
 
 void ViewProviderLink::setOverrideMode(const std::string &mode) {
