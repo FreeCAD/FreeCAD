@@ -953,6 +953,8 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     }
 
     QTextStream stream( &outFile );
+    stream.setGenerateByteOrderMark(true);
+
     stream << exportDoc.toString();
     outFile.close();
 }
