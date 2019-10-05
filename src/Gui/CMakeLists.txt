@@ -285,7 +285,7 @@ set(Gui_MOC_HDRS
     DlgMacroExecuteImp.h
     DlgMacroRecordImp.h
     DlgRunExternal.h
-    DlgEditFileIncludeProptertyExternal.h
+    DlgEditFileIncludePropertyExternal.h
     DlgMaterialPropertiesImp.h
     DlgOnlineHelpImp.h
     DlgParameterImp.h
@@ -496,7 +496,7 @@ SET(Dialog_CPP_SRCS
     DlgInputDialogImp.cpp
     DlgMacroExecuteImp.cpp
     DlgRunExternal.cpp
-    DlgEditFileIncludeProptertyExternal.cpp
+    DlgEditFileIncludePropertyExternal.cpp
     DlgMacroRecordImp.cpp
     DlgMaterialPropertiesImp.cpp
     DlgParameterImp.cpp
@@ -532,7 +532,7 @@ SET(Dialog_HPP_SRCS
     DlgInputDialogImp.h
     DlgMacroExecuteImp.h
     DlgRunExternal.h
-    DlgEditFileIncludeProptertyExternal.h
+    DlgEditFileIncludePropertyExternal.h
     DlgMacroRecordImp.h
     DlgMaterialPropertiesImp.h
     DlgParameterImp.h
@@ -1349,4 +1349,3 @@ else(WIN32)
     INSTALL(FILES Icons/freecad.xpm DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pixmaps)
     INSTALL(FILES Icons/freecad-doc.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/mimetypes RENAME application-x-extension-fcstd.svg)
 endif(WIN32)
-

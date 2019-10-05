@@ -119,30 +119,271 @@ Py::Object Cloud::Module::sCloudRestore(const Py::Tuple& args)
     return Py::None();
 }
 
+struct data_buffer
+{
+        const char *ptr;
+        size_t remaining_size;
+};
+
+static size_t read_callback(void *ptr, size_t size, size_t nmemb, void *stream)
+{
+
+  struct data_buffer *local_ptr = (struct data_buffer *)stream;
+  size_t data_to_transfer = size * nmemb;
+
+  if(local_ptr->remaining_size) {
+    // copy as much as possible from the source to the destination
+    size_t copy_this_much = local_ptr->remaining_size;
+    if(copy_this_much > data_to_transfer)
+      copy_this_much = data_to_transfer;
+    memcpy(ptr, local_ptr->ptr, copy_this_much);
+
+    local_ptr->ptr += copy_this_much;
+    local_ptr->remaining_size -= copy_this_much;
+    return copy_this_much;
+  }
+
+  return 0;
+}
+
+void Cloud::CloudWriter::checkXML(DOMNode* node) {
+     if (node) {
+           switch (node->getNodeType()) {
+           case DOMNode::ELEMENT_NODE:
+                checkElement(static_cast<DOMElement*>(node));
+                break;
+           case DOMNode::TEXT_NODE:
+                checkText(static_cast<DOMText*>(node));
+                break;
+           default:
+                break;
+           }
+           DOMNode* child = node->getFirstChild();
+           while (child) {
+                DOMNode* next = child->getNextSibling();
+                checkXML(child);
+                child = next;
+           }
+     }
+}
+
+void Cloud::CloudWriter::checkElement(DOMElement* element) {
+     char* name = XMLString::transcode(element->getTagName());
+     if ( strcmp(name, "Code") == 0 )
+        print=1;
+     XMLString::release(&name);
+
+}
+
+void Cloud::CloudWriter::checkText(DOMText* text) {
+
+     XMLCh* buffer = new XMLCh[XMLString::stringLen(text->getData()) + 1];
+     XMLString::copyString(buffer, text->getData());
+     XMLString::trim(buffer);
+     char* content=XMLString::transcode(buffer);
+     delete[] buffer;
+     if ( print )
+     {
+		strcpy(errorCode,content);
+     }
+     print=0;
+     XMLString::release(&content);
+}
+
+
+void Cloud::CloudWriter::createBucket()
+{
+	printf("CREATING BUCKET %s\n", this->Bucket);
+        struct timeval tv;
+        struct tm *tm;
+        char date_formatted[256];
+        char StringToSign[1024];
+        unsigned char *digest;
+
+        CURL *curl;
+        CURLcode res;
+
+        struct data_buffer curl_buffer;
+
+#if defined(FC_OS_WIN32)
+#else
+        gettimeofday(&tv,NULL);
+        tm = localtime(&tv.tv_sec);
+        strftime(date_formatted,256,"%a, %d %b %Y %T %z", tm);
+#endif
+
+        // CHANGEME
+        sprintf(StringToSign,"PUT\n\napplication/xml\n%s\n/%s/", date_formatted, this->Bucket);
+
+        // We have to use HMAC encoding and SHA1
+        digest=HMAC(EVP_sha1(),this->SecretKey,strlen(this->SecretKey),
+                (const unsigned char *)&StringToSign,strlen(StringToSign),NULL,NULL);
+
+        // Let's build the Header and call to curl
+        curl_global_init(CURL_GLOBAL_ALL);
+        curl = curl_easy_init();
+        if ( curl )
+        {
+                struct curl_slist *chunk = NULL;
+                char header_data[1024];
+                // Let's build our own header
+                std::string strUrl(this->Url);
+                eraseSubStr(strUrl,"http://");
+                eraseSubStr(strUrl,"https://");
+
+                sprintf(header_data,"Host: %s", strUrl.c_str());
+                chunk = curl_slist_append(chunk, header_data);
+                sprintf(header_data,"Date: %s", date_formatted);
+                chunk = curl_slist_append(chunk, header_data);
+                chunk = curl_slist_append(chunk, "Content-Type: application/xml");
+                std::string digest_str;
+                digest_str=Base::base64_encode(digest,strlen((const char *)digest));
+                sprintf(header_data,"Authorization: AWS %s:%s", this->AccessKey,
+                digest_str.c_str());
+                chunk = curl_slist_append(chunk, header_data);
+                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
+//                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+                sprintf(header_data,"%s:%s/%s/", this->Url,this->TcpPort,
+                                                    this->Bucket);
+                curl_easy_setopt(curl, CURLOPT_URL, header_data);
+                curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+                curl_easy_setopt(curl, CURLOPT_PUT, 1L);
+                // curl read a file not a memory buffer (it shall be able to do it)
+                curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
+
+                curl_buffer.ptr = NULL;
+                curl_buffer.remaining_size = (size_t) 0;
+
+                curl_easy_setopt(curl, CURLOPT_READDATA, &curl_buffer);
+
+                curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE,
+                     (curl_off_t)0);
+                res = curl_easy_perform(curl);
+                if(res != CURLE_OK)
+                      fprintf(stderr, "curl_easy_perform() failed: %s\n",
+                        curl_easy_strerror(res));
+                curl_easy_cleanup(curl);
+        }
+}
 
 Cloud::CloudWriter::CloudWriter(const char* Url, const char* AccessKey, const char* SecretKey, const char* TcpPort, const char* Bucket)
 {
+        struct timeval tv;
+        struct tm *tm;
+        char date_formatted[256];
+        char StringToSign[1024];
+        unsigned char *digest;
+        CURL *curl;
+        CURLcode res;
+
+        std::string s;
+
         this->Url=Url;
         this->AccessKey=AccessKey;
         this->SecretKey=SecretKey;
         this->TcpPort=TcpPort;
         this->Bucket=Bucket;
         this->FileName="";
-        // Amazon S3 and Swift require the timezone to be define to
-        // GMT. As to simplify the conversion this is performed through the TZ
+        // Amazon S3 and Swift require the timezone to be define to GMT.
+        // As to simplify the conversion this is performed through the TZ
         // environment variable and a call to localtime as to convert output of gettimeofday
 #if defined(FC_OS_WIN32)
         _putenv("TZ=GMT");
 #else
         setenv("TZ","GMT",1);
 #endif
+	// We must check that the bucket exists or not. If not, we have to create it.
+	// We must request the bucketlist if we receive a 404 error. This means that it
+    // doesn't exist. The other option is that the content list is empty.
+	// This piece of code is the same as the Reader except we do not interpret it !
+#if defined(FC_OS_WIN32)
+#else
+        gettimeofday(&tv,NULL);
+        tm = localtime(&tv.tv_sec);
+        strftime(date_formatted,256,"%a, %d %b %Y %T %z", tm);
+#endif
+
+        sprintf(StringToSign,"GET\n\napplication/xml\n%s\n/%s/", date_formatted, this->Bucket);
+
+        // We have to use HMAC encoding and SHA1
+        digest=HMAC(EVP_sha1(),this->SecretKey,strlen(this->SecretKey),
+                (const unsigned char *)&StringToSign,strlen(StringToSign),NULL,NULL);
+
+        // Let's build the Header and call to curl
+        curl_global_init(CURL_GLOBAL_ALL);
+        curl = curl_easy_init();
+        if ( curl )
+        {
+                struct curl_slist *chunk = NULL;
+                char header_data[1024];
+                // Let's build our own header
+                std::string strUrl(this->Url);
+                eraseSubStr(strUrl,"http://");
+                eraseSubStr(strUrl,"https://");
+
+                sprintf(header_data,"Host: %s:%s", strUrl.c_str(),
+                                                   this->TcpPort);
+                chunk = curl_slist_append(chunk, header_data);
+                sprintf(header_data,"Date: %s", date_formatted);
+                chunk = curl_slist_append(chunk, header_data);
+                chunk = curl_slist_append(chunk, "Content-Type: application/xml");
+                std::string digest_str;
+                digest_str=Base::base64_encode(digest,strlen((const char *)digest));
+                sprintf(header_data,"Authorization: AWS %s:%s", this->AccessKey,
+                digest_str.c_str());
+                chunk = curl_slist_append(chunk, header_data);
+                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
+                sprintf(header_data,"%s:%s/%s/", this->Url,this->TcpPort,
+                                                    this->Bucket);
+                curl_easy_setopt(curl, CURLOPT_URL, header_data);
+                curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
+                curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
+                // curl read a file not a memory buffer (it shall be able to do it)
+                res = curl_easy_perform(curl);
+                if(res != CURLE_OK)
+                      fprintf(stderr, "curl_easy_perform() failed: %s\n",
+                        curl_easy_strerror(res));
+                curl_easy_cleanup(curl);
+
+
+                std::stringstream input(s);
+
+                try { XMLPlatformUtils::Initialize(); }
+                        catch (const XMLException& toCatch) {
+                            char* message = XMLString::transcode(toCatch.getMessage());
+                            cout << "Error during initialization! :\n"
+                                 << message << "\n";
+                     XMLString::release(&message);
+                     return ;
+                }
+
+                XercesDOMParser* parser = new XercesDOMParser();
+                parser->setValidationScheme(XercesDOMParser::Val_Always);
+                parser->setDoNamespaces(true);
+
+                xercesc::MemBufInputSource myxml_buf((const XMLByte *const)s.c_str(), s.size(),
+                                     "myxml (in memory)");
+
+                parser->parse(myxml_buf);
+                auto* dom=parser->getDocument();
+		// Is there an Error entry into the document ?
+		// if yes then we must create the Bucket
+                checkXML(dom);
+		if ( strcmp(errorCode,"NoSuchBucket") == 0 )
+		{
+			// we must create the Bucket using a PUT request
+			createBucket();
+		}
+	
+	}
+
 }
 
 Cloud::CloudWriter::~CloudWriter()
 {
 }
 
-size_t CurlWrite_CallbackFunc_StdString(void *contents, size_t size, size_t nmemb, std::string *s)
+size_t Cloud::CurlWrite_CallbackFunc_StdString(void *contents, size_t size, size_t nmemb, std::string *s)
 {
     size_t newLength = size*nmemb;
     try
@@ -211,12 +452,6 @@ void Cloud::CloudReader::checkXML(DOMNode* node) {
 
 
 
-struct data_buffer
-{
-        const char *ptr;
-        size_t remaining_size;
-};
-
 Cloud::CloudReader::~CloudReader()
 {
 }
@@ -273,7 +508,11 @@ Cloud::CloudReader::CloudReader(const char* Url, const char* AccessKey, const ch
                 struct curl_slist *chunk = NULL;
                 char header_data[1024];
                 // Let's build our own header
-                sprintf(header_data,"Host: %s:%s", strtok((char *)this->Url,"http://"),
+		std::string strUrl(this->Url);
+                eraseSubStr(strUrl,"http://");
+                eraseSubStr(strUrl,"https://");
+
+                sprintf(header_data,"Host: %s:%s", strUrl.c_str(),
                                                    this->TcpPort);
                 chunk = curl_slist_append(chunk, header_data);
                 sprintf(header_data,"Date: %s", date_formatted);
@@ -359,7 +598,10 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
                 struct curl_slist *chunk = NULL;
                 char header_data[1024];
                 // Let's build our own header
-                sprintf(header_data,"Host: %s:%s", strtok((char *)this->Url,"http://"),
+		std::string strUrl(this->Url);
+                eraseSubStr(strUrl,"http://");
+                eraseSubStr(strUrl,"https://");
+                sprintf(header_data,"Host: %s:%s", strUrl.c_str(),
                                                    this->TcpPort);
                 chunk = curl_slist_append(chunk, header_data);
                 sprintf(header_data,"Date: %s", date_formatted);
@@ -374,7 +616,7 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
                 sprintf(header_data,"%s:%s/%s/%s", this->Url,this->TcpPort,
                                                     this->Bucket,entry->FileName);
                 curl_easy_setopt(curl, CURLOPT_URL, header_data);
-                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
+//                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
                 curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
                 // curl read a file not a memory buffer (it shall be able to do it)
@@ -426,6 +668,14 @@ int Cloud::CloudReader::isTouched(std::string FileName)
         return(0);
 }
 
+void Cloud::eraseSubStr(std::string & Str, const std::string & toErase)
+{
+	size_t pos = Str.find(toErase);
+	if (pos != std::string::npos)
+	{
+		Str.erase(pos, toErase.length());
+	}
+}
 
 
 void Cloud::CloudWriter::putNextEntry(const char* file)
@@ -442,27 +692,6 @@ void Cloud::CloudWriter::putNextEntry(const char* file)
 bool Cloud::CloudWriter::shouldWrite(const std::string& , const Base::Persistence *) const
 {
     return true;
-}
-
-static size_t read_callback(void *ptr, size_t size, size_t nmemb, void *stream)
-{
-
-  struct data_buffer *local_ptr = (struct data_buffer *)stream;
-  size_t data_to_transfer = size * nmemb;
-
-  if(local_ptr->remaining_size) {
-    // copy as much as possible from the source to the destination 
-    size_t copy_this_much = local_ptr->remaining_size;
-    if(copy_this_much > data_to_transfer)
-      copy_this_much = data_to_transfer;
-    memcpy(ptr, local_ptr->ptr, copy_this_much);
-
-    local_ptr->ptr += copy_this_much;
-    local_ptr->remaining_size -= copy_this_much;
-    return copy_this_much;
-  }
-
-  return 0;
 }
 
 void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long size)
@@ -501,7 +730,11 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
                 struct curl_slist *chunk = NULL;
                 char header_data[1024];
                 // Let's build our own header
-                sprintf(header_data,"Host: %s:%s", strtok((char *)this->Url,"http://"),
+		std::string strUrl(this->Url);
+		eraseSubStr(strUrl,"http://");
+		eraseSubStr(strUrl,"https://");
+				
+                sprintf(header_data,"Host: %s:%s", strUrl.c_str(),
                                                    this->TcpPort);
                 chunk = curl_slist_append(chunk, header_data);
                 sprintf(header_data,"Date: %s", date_formatted);
@@ -513,7 +746,7 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
                 digest_str.c_str());
                 chunk = curl_slist_append(chunk, header_data);
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
-                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+//                curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
                 sprintf(header_data,"%s:%s/%s/%s", this->Url,this->TcpPort,
                                                     this->Bucket,FileName);
                 curl_easy_setopt(curl, CURLOPT_URL, header_data);

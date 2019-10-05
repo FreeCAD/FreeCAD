@@ -1522,27 +1522,27 @@ Document::Document(const char *name)
             licenseUrl = "http://en.wikipedia.org/wiki/All_rights_reserved";
             break;
         case 1:
-            license = "CreativeCommons Attribution";
+            license = "Creative Commons Attribution";
             licenseUrl = "http://creativecommons.org/licenses/by/4.0/";
             break;
         case 2:
-            license = "CreativeCommons Attribution-ShareAlike";
+            license = "Creative Commons Attribution-ShareAlike";
             licenseUrl = "http://creativecommons.org/licenses/by-sa/4.0/";
             break;
         case 3:
-            license = "CreativeCommons Attribution-NoDerivatives";
+            license = "Creative Commons Attribution-NoDerivatives";
             licenseUrl = "http://creativecommons.org/licenses/by-nd/4.0/";
             break;
         case 4:
-            license = "CreativeCommons Attribution-NonCommercial";
+            license = "Creative Commons Attribution-NonCommercial";
             licenseUrl = "http://creativecommons.org/licenses/by-nc/4.0/";
             break;
         case 5:
-            license = "CreativeCommons Attribution-NonCommercial-ShareAlike";
+            license = "Creative Commons Attribution-NonCommercial-ShareAlike";
             licenseUrl = "http://creativecommons.org/licenses/by-nc-sa/4.0/";
             break;
         case 6:
-            license = "CreativeCommons Attribution-NonCommercial-NoDerivatives";
+            license = "Creative Commons Attribution-NonCommercial-NoDerivatives";
             licenseUrl = "http://creativecommons.org/licenses/by-nc-nd/4.0/";
             break;
         case 7:

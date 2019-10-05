@@ -99,7 +99,7 @@
 #include <Gui/MenuManager.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/SoFCBoundingBox.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
