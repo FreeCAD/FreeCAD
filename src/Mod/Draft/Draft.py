@@ -366,9 +366,10 @@ def dimDash(p1, p2):
 def shapify(obj):
     """shapify(object): transforms a parametric shape object into
     non-parametric and returns the new object"""
-    if not (obj.isDerivedFrom("Part::Feature")): return None
-    if not "Shape" in obj.PropertiesList: return None
-    shape = obj.Shape
+    try:
+        shape = obj.Shape
+    except Exception:
+        return None
     if len(shape.Faces) == 1:
         name = "Face"
     elif len(shape.Solids) == 1:
@@ -840,6 +841,7 @@ def makeDimension(p1,p2,p3=None,p4=None):
             p3 = p1.add(p3)
     elif isinstance(p2,int) and isinstance(p3,int):
         l = []
+        idx = (p2,p3)
         l.append((p1,"Vertex"+str(p2+1)))
         l.append((p1,"Vertex"+str(p3+1)))
         obj.LinkedGeometry = l
@@ -1198,7 +1200,7 @@ def makeCopy(obj,force=None,reparent=False):
             newobj.addGeometry(geo)
         for con in obj.Constraints:
             newobj.addConstraint(con)
-    elif obj.isDerivedFrom("Part::Feature"):
+    elif hasattr(obj, 'Shape'):
         newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",getRealName(obj.Name))
         newobj.Shape = obj.Shape
     else:
@@ -1592,7 +1594,7 @@ def move(objectslist,vector,copy=False):
             newobj.X = v.x
             newobj.Y = v.y
             newobj.Z = v.z
-        elif (obj.isDerivedFrom("Part::Feature")):
+        elif hasattr(obj,'Shape'):
             if copy:
                 newobj = makeCopy(obj)
             else:
@@ -1773,7 +1775,7 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
             newobj = makeCopy(obj)
         else:
             newobj = obj
-        if (obj.isDerivedFrom("Part::Feature")):
+        if hasattr(obj,'Shape'):
             shape = obj.Shape.copy()
             shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
             newobj.Shape = shape
@@ -1875,7 +1877,7 @@ def scale(objectslist,scale=Vector(1,1,1),center=Vector(0,0,0),copy=False):
             newobj = makeCopy(obj)
         else:
             newobj = obj
-        if obj.isDerivedFrom("Part::Feature"):
+        if hasattr(obj,'Shape'):
             scaled_shape = obj.Shape.copy()
             m = FreeCAD.Matrix()
             m.move(obj.Placement.Base.negative())
@@ -1886,7 +1888,7 @@ def scale(objectslist,scale=Vector(1,1,1),center=Vector(0,0,0),copy=False):
             scaled_shape = scaled_shape.transformGeometry(m)
         if getType(obj) == "Rectangle":
             p = []
-            for v in scaled_shape.Vertexes: 
+            for v in scaled_shape.Vertexes:
                 p.append(v.Point)
             pl = obj.Placement.copy()
             pl.Base = p[0]
@@ -1906,7 +1908,7 @@ def scale(objectslist,scale=Vector(1,1,1),center=Vector(0,0,0),copy=False):
         elif getType(obj) == "Wire" or getType(obj) == "BSpline":
             for index, point in enumerate(newobj.Points):
                 scaleVertex(newobj, index, scale, center)
-        elif (obj.isDerivedFrom("Part::Feature")):
+        elif hasattr(obj,'Shape'):
             newobj.Shape = scaled_shape
         elif (obj.TypeId == "App::Annotation"):
             factor = scale.y * obj.ViewObject.FontSize
@@ -2118,7 +2120,7 @@ def draftify(objectslist,makeblock=False,delete=True):
         objectslist = [objectslist]
     newobjlist = []
     for obj in objectslist:
-        if obj.isDerivedFrom('Part::Feature'):
+        if hasattr(obj,'Shape'):
             for cluster in Part.getSortedClusters(obj.Shape.Edges):
                 w = Part.Wire(cluster)
                 if DraftGeomUtils.hasCurves(w):
@@ -2187,7 +2189,7 @@ def getDXF(obj,direction=None):
             result += "7\nSTANDARD\n"
             count += 1
 
-    elif obj.isDerivedFrom("Part::Feature"):
+    elif hasattr(obj,'Shape'):
         # TODO do this the Draft way, for ex. using polylines and rectangles
         import Drawing
         if not direction:
@@ -2350,7 +2352,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     for obj in objectslist:
         if isinstance(obj,Part.Shape):
             shape = obj
-        elif not obj.isDerivedFrom("Part::Feature"):
+        elif not hasattr(obj,'Shape'):
             FreeCAD.Console.PrintError(translate("draft","not shape found"))
             return None
         else:
@@ -2484,7 +2486,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                 nobj.addGeometry(bsp)
                 nobj.exposeInternalGeometry(nobj.GeometryCount-1)
                 ok = True
-        elif tp == 'Shape' or obj.isDerivedFrom("Part::Feature"):
+        elif tp == 'Shape' or hasattr(obj,'Shape'):
             shape = obj if tp == 'Shape' else obj.Shape
 
             if not DraftGeomUtils.isPlanar(shape):
@@ -2562,7 +2564,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                                                 newedge,norm,make_arc=True))
             ok = True
         formatObject(nobj,obj)
-        if ok and delete and obj.isDerivedFrom("Part::Feature"):
+        if ok and delete and hasattr(obj,'Shape'):
             doc = obj.Document
             def delObj(obj):
                 if obj.InList:
@@ -3107,7 +3109,7 @@ def upgrade(objects,delete=False,force=None):
     for ob in objects:
         if ob.TypeId == "App::DocumentObjectGroup":
             groups.append(ob)
-        elif ob.isDerivedFrom("Part::Feature"):
+        elif hasattr(ob,'Shape'):
             parts.append(ob)
             faces.extend(ob.Shape.Faces)
             wires.extend(ob.Shape.Wires)
@@ -3390,7 +3392,7 @@ def downgrade(objects,delete=False,force=None):
     result = None
 
     for o in objects:
-        if o.isDerivedFrom("Part::Feature"):
+        if hasattr(o, 'Shape'):
             for s in o.Shape.Solids:
                 solids.append(s)
             for f in o.Shape.Faces:
@@ -3420,14 +3422,14 @@ def downgrade(objects,delete=False,force=None):
                 FreeCAD.Console.PrintMessage(translate("draft", "Found 1 block: exploding it")+"\n")
 
         # we have one multi-solids compound object: extract its solids
-        elif (len(objects) == 1) and (getType(objects[0]) == "Part") and (len(solids) > 1):
+        elif (len(objects) == 1) and hasattr(objects[0],'Shape') and (len(solids) > 1):
             result = splitCompounds(objects)
             #print(result)
             if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found 1 multi-solids compound: exploding it")+"\n")
 
         # special case, we have one parametric object: we "de-parametrize" it
-        elif (len(objects) == 1) and (objects[0].isDerivedFrom("Part::Feature")) and ("Base" in objects[0].PropertiesList):
+        elif (len(objects) == 1) and hasattr(objects[0],'Shape') and hasattr(objects[0], 'Base'):
             result = shapify(objects[0])
             if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found 1 parametric object: breaking its dependencies")+"\n")
@@ -4876,7 +4878,7 @@ class _Wire(_DraftObject):
                         shape = Part.Face(shape)
                 obj.Shape = shape
         elif obj.Base and obj.Tool:
-            if obj.Base.isDerivedFrom("Part::Feature") and obj.Tool.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape') and hasattr(obj.Tool,'Shape'):
                 if (not obj.Base.Shape.isNull()) and (not obj.Tool.Shape.isNull()):
                     sh1 = obj.Base.Shape.copy()
                     sh2 = obj.Tool.Shape.copy()
@@ -5532,7 +5534,7 @@ class _Shape2DView(_DraftObject):
                                     shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).extend(o.Shape.Solids)
                                 else:
                                     shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).append(o.Shape.copy())
-                            elif o.isDerivedFrom("Part::Feature"):
+                            elif hasattr(o,'Shape'):
                                 if onlysolids:
                                     shapes.extend(o.Shape.Solids)
                                 else:
@@ -5549,7 +5551,7 @@ class _Shape2DView(_DraftObject):
                                 shapes.append(v1)
                     else:
                         for o in objs:
-                            if o.isDerivedFrom("Part::Feature"):
+                            if hasattr(o,'Shape'):
                                 if onlysolids:
                                     shapes.extend(o.Shape.Solids)
                                 else:
@@ -5610,7 +5612,7 @@ class _Shape2DView(_DraftObject):
                 shapes = []
                 objs = getGroupContents(obj.Base)
                 for o in objs:
-                    if o.isDerivedFrom("Part::Feature"):
+                    if hasattr(o,'Shape'):
                         if o.Shape:
                             if not o.Shape.isNull():
                                 shapes.append(o.Shape)
@@ -5619,7 +5621,7 @@ class _Shape2DView(_DraftObject):
                     comp = Part.makeCompound(shapes)
                     obj.Shape = self.getProjected(obj,comp,obj.Projection)
 
-            elif obj.Base.isDerivedFrom("Part::Feature"):
+            elif hasattr(obj.Base,'Shape'):
                 if not DraftVecUtils.isNull(obj.Projection):
                     if obj.ProjectionMode == "Solid":
                         obj.Shape = self.getProjected(obj,obj.Base.Shape,obj.Projection)
@@ -6715,19 +6717,19 @@ class DraftLabel:
                         p = obj.Target[0].Shape.Vertexes[int(obj.Target[1][0][6:])-1].Point
                 obj.Text = [FreeCAD.Units.Quantity(x,FreeCAD.Units.Length).UserString for x in tuple(p)]
             elif obj.LabelType == "Length":
-                if obj.Target[0].isDerivedFrom("Part::Feature"):
+                if hasattr(obj.Target[0],'Shape'):
                     if hasattr(obj.Target[0].Shape,"Length"):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Length,FreeCAD.Units.Length).UserString]
                     if obj.Target[1] and ("Edge" in obj.Target[1][0]):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Edges[int(obj.Target[1][0][4:])-1].Length,FreeCAD.Units.Length).UserString]
             elif obj.LabelType == "Area":
-                if obj.Target[0].isDerivedFrom("Part::Feature"):
+                if hasattr(obj.Target[0],'Shape'):
                     if hasattr(obj.Target[0].Shape,"Area"):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Area,FreeCAD.Units.Area).UserString.replace("^2","²")]
                     if obj.Target[1] and ("Face" in obj.Target[1][0]):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Faces[int(obj.Target[1][0][4:])-1].Area,FreeCAD.Units.Area).UserString]
             elif obj.LabelType == "Volume":
-                if obj.Target[0].isDerivedFrom("Part::Feature"):
+                if hasattr(obj.Target[0],'Shape'):
                     if hasattr(obj.Target[0].Shape,"Volume"):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Volume,FreeCAD.Units.Volume).UserString.replace("^3","³")]
 
