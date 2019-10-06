@@ -33,7 +33,7 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -168,5 +168,3 @@ void CreateSketcherCommandsAlterGeo(void)
 
     rcCmdMgr.addCommand(new CmdSketcherToggleConstruction());
 }
-
-

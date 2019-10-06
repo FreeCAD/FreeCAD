@@ -28,7 +28,7 @@
 
 #include "Application.h"
 #include "MainWindow.h"
-#include "DlgEditFileIncludeProptertyExternal.h"
+#include "DlgEditFileIncludePropertyExternal.h"
 #include "FileDialog.h"
 
 
@@ -82,5 +82,4 @@ int DlgEditFileIncludePropertyExternal::Do(void)
     return ret;
 }
 
-#include "moc_DlgEditFileIncludeProptertyExternal.cpp"
-
+#include "moc_DlgEditFileIncludePropertyExternal.cpp"
