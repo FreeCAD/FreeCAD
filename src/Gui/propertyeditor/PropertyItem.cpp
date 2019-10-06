@@ -2289,7 +2289,7 @@ QVariant PropertyStringListItem::value(const App::Property* prop) const
     QStringList list;
     const std::vector<std::string>& value = ((App::PropertyStringList*)prop)->getValues();
     for ( std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt ) {
-        list << QString::fromUtf8(jt->c_str());
+        list << QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(*jt).c_str());
     }
 
     return QVariant(list);
