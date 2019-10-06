@@ -4354,31 +4354,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         return mode
 
     def getIcon(self):
-        return """
-            /* XPM */
-            static char * dim_xpm[] = {
-            "16 16 4 1",
-            "   c None",
-            ".  c #000000",
-            "+  c #FFFF00",
-            "@  c #FFFFFF",
-            "                ",
-            "                ",
-            "     .    .     ",
-            "    ..    ..    ",
-            "   .+.    .+.   ",
-            "  .++.    .++.  ",
-            " .+++. .. .+++. ",
-            ".++++. .. .++++.",
-            " .+++. .. .+++. ",
-            "  .++.    .++.  ",
-            "   .+.    .+.   ",
-            "    ..    ..    ",
-            "     .    .     ",
-            "                ",
-            "                ",
-            "                "};
-            """
+        return ":/icons/Draft_Dimension_Tree.svg"
 
     def __getstate__(self):
         return self.Object.ViewObject.DisplayMode
@@ -4694,31 +4670,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             return ["2D","3D"][getParam("dimstyle",0)]
 
     def getIcon(self):
-        return """
-                        /* XPM */
-                        static char * dim_xpm[] = {
-                        "16 16 4 1",
-                        "   c None",
-                        ".  c #000000",
-                        "+  c #FFFF00",
-                        "@  c #FFFFFF",
-                        "                ",
-                        "                ",
-                        "     .    .     ",
-                        "    ..    ..    ",
-                        "   .+.    .+.   ",
-                        "  .++.    .++.  ",
-                        " .+++. .. .+++. ",
-                        ".++++. .. .++++.",
-                        " .+++. .. .+++. ",
-                        "  .++.    .++.  ",
-                        "   .+.    .+.   ",
-                        "    ..    ..    ",
-                        "     .    .     ",
-                        "                ",
-                        "                ",
-                        "                "};
-                        """
+        return ":/icons/Draft_Dimension_Tree.svg"
 
     def __getstate__(self):
         return self.Object.ViewObject.DisplayMode
