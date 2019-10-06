@@ -39,6 +39,7 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 #include "QDomNodeModel.h"
 #include "DrawUtil.h"
@@ -102,7 +103,7 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
                 while (!queryResult.next().isNull())
                 {
                     QDomElement tspanElement = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
-                    editables.push_back(tspanElement.text().toStdString());
+                    editables.push_back(Base::Tools::escapedUnicodeFromUtf8(tspanElement.text().toStdString().c_str()));
                 }
             }
             else {
@@ -162,7 +163,8 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
                 }
 
                 // Finally append text node with editable replacement as the only <tspan> descendant
-                tspanElement.appendChild(symbolDocument.createTextNode(QString::fromUtf8(editText[count].c_str())));
+                tspanElement.appendChild(symbolDocument.createTextNode(
+                                 QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(editText[count]).c_str())));
                 ++count;
             }
 
