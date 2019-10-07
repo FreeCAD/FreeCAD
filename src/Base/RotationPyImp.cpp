@@ -270,6 +270,15 @@ PyObject* RotationPy::toEuler(PyObject * args)
     return Py::new_reference_to(tuple);
 }
 
+PyObject* RotationPy::toMatrix(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    Base::Matrix4D mat;
+    getRotationPtr()->getValue(mat);
+    return new MatrixPy(new Matrix4D(mat));
+}
+
 PyObject* RotationPy::isSame(PyObject *args)
 {
     PyObject *rot;
