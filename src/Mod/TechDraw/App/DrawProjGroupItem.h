@@ -84,6 +84,7 @@ public:
 protected:
     void onChanged(const App::Property* prop) override;
     virtual bool isLocked(void) const override;
+    virtual bool showLock(void) const override;
 
 private:
     static const char* TypeEnums[];

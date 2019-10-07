@@ -92,6 +92,7 @@ public:
     void requestPaint(void);
     virtual void handleXYLock(void);
     virtual bool isLocked(void) const;
+    virtual bool showLock(void) const;
 
     std::vector<TechDraw::DrawLeaderLine*> getLeaders(void) const;
 
