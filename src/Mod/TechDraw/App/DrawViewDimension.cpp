@@ -512,7 +512,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     return DrawView::execute();
 }
 
-std::string  DrawViewDimension::getFormatedValue()
+std::string  DrawViewDimension::getFormatedValue(int partial)
 {
 //    Base::Console().Message("DVD::getFormatedValue()\n");
     std::string result;
@@ -522,7 +522,9 @@ std::string  DrawViewDimension::getFormatedValue()
 
     QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
     double val = getDimValue();
-    
+    QString specVal;
+    QString userUnits;
+
     bool angularMeasure = false;
     Base::Quantity qVal;
     qVal.setValue(val);
@@ -575,7 +577,7 @@ std::string  DrawViewDimension::getFormatedValue()
         QLocale loc;
         double userValNum = loc.toDouble(userVal);
 
-        QString userUnits;
+//        QString userUnits;
         int pos = 0;
         if ((pos = rxUnits.indexIn(userStr, 0)) != -1)  {
             userUnits = rxUnits.cap(0);                                       //entire capture - non numerics at end of userString
@@ -584,7 +586,8 @@ std::string  DrawViewDimension::getFormatedValue()
         //find the %x.y tag in FormatSpec
         QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec 
         QString match;
-        QString specVal = userVal;                                             //sensible default
+//        QString specVal = userVal;                                             //sensible default
+        specVal = userVal;                                             //sensible default
         pos = 0;
         if ((pos = rxFormat.indexIn(specStr, 0)) != -1)  {
             match = rxFormat.cap(0);                                          //entire capture of rx
@@ -627,7 +630,26 @@ std::string  DrawViewDimension::getFormatedValue()
         }
     }
 
-    return specStr.toUtf8().constData();
+    //specVal - qstring with formatted numeric value
+    //userUnits - qstring with unit abbrev
+    //specStr  - number + units
+    //partial = 0 --> the whole dimension string number + units )the "user string"
+    result = specStr.toUtf8().constData();
+    if (partial == 1)  {                            //just the number
+        result = Base::Tools::toStdString(specVal);
+    } else if (partial == 2) {                       //just the unit
+        if (showUnits()) {
+            if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
+                QRegExp space(QString::fromUtf8("\\s"));
+                userUnits.remove(space);
+            }
+            result = Base::Tools::toStdString(userUnits);
+        } else {
+            result = "";
+        }
+    }
+
+    return result;
 }
 
 //!NOTE: this returns the Dimension value in internal units (ie mm)!!!!
