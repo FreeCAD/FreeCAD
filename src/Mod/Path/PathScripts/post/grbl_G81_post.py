@@ -393,7 +393,7 @@ def drill_translate(outstring, cmd, params):
     RETRACT_Z = CURRENT_Z
 
   # Recupere les valeurs des autres parametres
-  drill_Speed = params['F']
+  drill_Speed = params['F'] * SPEED_MULTIPLIER
   if cmd == 'G83':
     drill_Step = params['Q']
   elif cmd == 'G82':
