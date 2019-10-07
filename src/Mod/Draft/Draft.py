@@ -1209,7 +1209,7 @@ def makeCopy(obj,force=None,reparent=False):
     for p in obj.PropertiesList:
         if not p in ["Proxy"]:
             if p in newobj.PropertiesList:
-                if not newobj.getEditorMode(p):
+                if newobj.getEditorMode(p) != 1: # don't set read-only props
                     try:
                         setattr(newobj,p,obj.getPropertyByName(p))
                     except AttributeError:
