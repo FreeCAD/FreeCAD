@@ -502,7 +502,8 @@ void QGIView::drawBorder()
 
     double lockX = frameArea.left();
     double lockY = frameArea.bottom() - m_lockHeight;
-    if (feat->isLocked()) {
+    if (feat->isLocked() &&
+        feat->showLock()) {
         m_lock->setZValue(ZVALUE::LOCK);
         m_lock->setPos(lockX,lockY);
         m_lock->show();
