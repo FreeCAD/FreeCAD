@@ -730,10 +730,7 @@ class _Structure(ArchComponent.Component):
         height = obj.Height.Value
         normal = None
         if not height:
-            for p in obj.InList:
-                if Draft.getType(p) in ["Floor","BuildingPart"]:
-                    if p.Height.Value:
-                        height = p.Height.Value
+            height = self.getParentHeight(obj)
         base = None
         placement = None
         if obj.Base:
