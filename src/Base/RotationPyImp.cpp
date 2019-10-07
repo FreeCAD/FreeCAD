@@ -441,19 +441,16 @@ PyObject * RotationPy::number_power_handler (PyObject* self, PyObject* other, Py
     }
 
     Rotation a = static_cast<RotationPy*>(self)->value();
-
     long b = Py::Int(other);
-    if(!b)
-        return new RotationPy(Rotation());
 
-    if(b < 0) {
-        b = -b;
-        a.invert();
-    }
-    auto res = a;
-    for(--b;b;--b)
-        res *= a;
-    return new RotationPy(res);
+    Vector3d axis;
+    double rfAngle;
+
+    a.getRawValue(axis, rfAngle);
+    rfAngle *= b;
+    a.setValue(axis, rfAngle);
+
+    return new RotationPy(a);
 }
 
 PyObject* RotationPy::number_add_handler(PyObject * /*self*/, PyObject * /*other*/)
