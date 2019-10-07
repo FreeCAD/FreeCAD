@@ -212,14 +212,15 @@ this according to your screen size or personal taste</string>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="treeMode"/>
-            <property name="toolTip">
-             <string>Tree View Mode provides the option the option to
+            <widget class="QComboBox" name="treeMode">
+             <property name="toolTip">
+              <string>Tree View Mode provides the option the option to
 customize the properties panel. The options are:
 1. 'Combiview'
 2. 'TreeView + PropertyView
 3. 'Both'</string>
-            </property>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
