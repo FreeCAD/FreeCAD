@@ -98,6 +98,7 @@ class PathWorkbench (Workbench):
 
             try:
                 import ocl # pylint: disable=unused-variable
+                from PathScripts import PathSurfaceGui
                 threedopcmdlist.append("Path_Surface")
                 threedcmdgroup = ['Path_3dTools']
                 FreeCADGui.addCommand('Path_3dTools', PathCommandGroup(threedopcmdlist, QtCore.QT_TRANSLATE_NOOP("Path",'3D Operations')))
