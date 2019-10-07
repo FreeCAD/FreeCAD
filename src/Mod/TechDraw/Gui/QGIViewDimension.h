@@ -76,6 +76,7 @@ public:
     QFont getFont(void) { return m_dimText->font(); }
     void setDimString(QString t);
     void setDimString(QString t, qreal maxWidth);
+    void setUnitString(QString t);
     void setTolString();
     void setPrettySel(void);
     void setPrettyPre(void);
@@ -115,6 +116,7 @@ protected:
 
     QGCustomText* m_dimText;
     QGCustomText* m_tolText;
+    QGCustomText* m_unitText;
     int getPrecision(void);
     QColor m_colNormal;
     bool m_ctrl;
