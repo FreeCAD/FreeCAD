@@ -1711,15 +1711,22 @@ QPixmap ViewProviderLink::getOverlayPixmap() const {
 void ViewProviderLink::onChanged(const App::Property* prop) {
     if(prop==&ChildViewProvider) {
         childVp = freecad_dynamic_cast<ViewProviderDocumentObject>(ChildViewProvider.getObject().get());
-        if(childVp) {
-            childVp->setPropertyPrefix("ChildViewProvider.");
-            childVp->Visibility.setValue(getObject()->Visibility.getValue());
-            childVp->attach(getObject());
-            childVp->updateView();
-            childVp->setActiveMode();
-            if(pcModeSwitch->getNumChildren()>1){
-                childVpLink = LinkInfo::get(childVp,0);
-                pcModeSwitch->replaceChild(1,childVpLink->getSnapshot(LinkView::SnapshotTransform));
+        if(childVp && getObject()) {
+            if(strcmp(childVp->getTypeId().getName(),getObject()->getViewProviderName())!=0
+                    && !childVp->allowOverride(*getObject()))
+            {
+                FC_ERR("Child view provider type '" << childVp->getTypeId().getName()
+                        << "' does not support " << getObject()->getFullName());
+            } else {
+                childVp->setPropertyPrefix("ChildViewProvider.");
+                childVp->Visibility.setValue(getObject()->Visibility.getValue());
+                childVp->attach(getObject());
+                childVp->updateView();
+                childVp->setActiveMode();
+                if(pcModeSwitch->getNumChildren()>1){
+                    childVpLink = LinkInfo::get(childVp,0);
+                    pcModeSwitch->replaceChild(1,childVpLink->getSnapshot(LinkView::SnapshotTransform));
+                }
             }
         }
     }else if(!isRestoring()) {
