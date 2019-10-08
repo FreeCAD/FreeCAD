@@ -138,7 +138,7 @@ def setup(doc=None, solvertype="ccxtools"):
     pressure_constraint.Reversed = True
 
     # mesh
-    from .meshes.mesh_platewithhole import create_nodes, create_elements
+    from .meshes.mesh_platewithhole_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
