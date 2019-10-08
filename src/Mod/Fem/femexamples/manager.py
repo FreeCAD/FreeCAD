@@ -96,6 +96,7 @@ def run_boxanalysisstatic(solver=None, base_name=None):
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
+    doc.recompute()
 
     return doc
 
@@ -110,6 +111,7 @@ def run_boxanalysisfrequency(solver=None, base_name=None):
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
+    doc.recompute()
 
     return doc
 
@@ -124,6 +126,7 @@ def run_ccx_cantileverfaceload(solver=None, base_name=None):
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
+    doc.recompute()
 
     return doc
 
@@ -138,6 +141,7 @@ def run_ccx_cantilevernodeload(solver=None, base_name=None):
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
+    doc.recompute()
 
     return doc
 
@@ -152,6 +156,7 @@ def run_ccx_cantileverprescribeddisplacement(solver=None, base_name=None):
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
+    doc.recompute()
 
     return doc
 
@@ -166,6 +171,7 @@ def run_material_multiple_twoboxes(solver=None, base_name=None):
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
+    doc.recompute()
 
     return doc
 
@@ -180,6 +186,7 @@ def run_material_nl_platewithhole(solver=None, base_name=None):
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
+    doc.recompute()
 
     return doc
 
@@ -194,6 +201,7 @@ def run_rcwall2d(solver=None, base_name=None):
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
+    doc.recompute()
 
     return doc
 
@@ -208,6 +216,7 @@ def run_thermomech_flow1d(solver=None, base_name=None):
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
+    doc.recompute()
 
     return doc
 
@@ -222,6 +231,7 @@ def run_thermomech_spine(solver=None, base_name=None):
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
+    doc.recompute()
 
     return doc
 
