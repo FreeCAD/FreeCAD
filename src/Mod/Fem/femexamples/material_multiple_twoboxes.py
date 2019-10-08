@@ -139,7 +139,7 @@ def setup(doc=None, solver="ccxtools"):
     pressure_constraint.Reversed = False
 
     # mesh
-    from .meshes.mesh_multimaterial_twoboxes import create_nodes, create_elements
+    from .meshes.mesh_boxes_2_vertikal_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -157,7 +157,7 @@ def setup(doc=None, solver="ccxtools"):
 
 
 """
-from femexamples import multimaterial_twoboxes as twoboxes
+from femexamples import material_multiple_twoboxes as twoboxes
 twoboxes.setup()
 
 """
