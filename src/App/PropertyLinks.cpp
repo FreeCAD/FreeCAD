@@ -1934,7 +1934,7 @@ PyObject *PropertyLinkSubList::getPyObject(void)
 #endif
     for (unsigned int i = 0; i<count; i++) {
         Py::Tuple tup(2);
-        tup[0] = Py::Object(_lValueList[i]->getPyObject());
+        tup[0] = Py::asObject(_lValueList[i]->getPyObject());
         std::string subItem;
         if (_lSubList.size() > i)
             subItem = _lSubList[i];

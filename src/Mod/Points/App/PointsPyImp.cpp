@@ -237,7 +237,7 @@ Py::List PointsPy::getPoints(void) const
     Py::List PointList;
     const PointKernel* points = getPointKernelPtr();
     for (PointKernel::const_point_iterator it = points->begin(); it != points->end(); ++it) {
-        PointList.append(Py::Object(new Base::VectorPy(*it)));
+        PointList.append(Py::asObject(new Base::VectorPy(*it)));
     }
     return PointList;
 }

@@ -140,7 +140,7 @@ void Robot6AxisPy::setAxis6(Py::Float arg)
 
 Py::Object Robot6AxisPy::getTcp(void) const
 {
-	return Py::Object(new Base::PlacementPy(new Base::Placement(getRobot6AxisPtr()->getTcp())));
+	return Py::asObject(new Base::PlacementPy(new Base::Placement(getRobot6AxisPtr()->getTcp())));
 }
 
 void Robot6AxisPy::setTcp(Py::Object value)

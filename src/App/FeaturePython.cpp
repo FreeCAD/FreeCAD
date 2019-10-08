@@ -236,7 +236,7 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
         args.setItem(2,Py::Int(pyObj?2:1));
         Base::MatrixPy *pyMat = new Base::MatrixPy(new Base::Matrix4D);
         if(_mat) *pyMat->getMatrixPtr() = *_mat;
-        args.setItem(3,Py::Object(pyMat));
+        args.setItem(3,Py::asObject(pyMat));
         args.setItem(4,Py::Boolean(transform));
         args.setItem(5,Py::Int(depth));
 
@@ -326,7 +326,7 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
         args.setItem(1,Py::Boolean(recurse));
         Base::MatrixPy *pyMat = new Base::MatrixPy(new Base::Matrix4D);
         if(_mat) *pyMat->getMatrixPtr() = *_mat;
-        args.setItem(2,Py::Object(pyMat));
+        args.setItem(2,Py::asObject(pyMat));
         args.setItem(3,Py::Boolean(transform));
         args.setItem(4,Py::Int(depth));
 
