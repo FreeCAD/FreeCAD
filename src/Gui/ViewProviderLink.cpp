@@ -41,6 +41,7 @@
 # include <Inventor/nodes/SoCube.h>
 # include <Inventor/sensors/SoNodeSensor.h>
 #endif
+#include <cctype>
 #include <atomic>
 #include <QApplication>
 #include <QFileInfo>
