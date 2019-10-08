@@ -394,7 +394,7 @@ Py::Object DocumentPy::getDocument(void) const
 }
 
 Py::Object DocumentPy::getEditingTransform(void) const {
-    return Py::Object(new Base::MatrixPy(new Base::Matrix4D(
+    return Py::asObject(new Base::MatrixPy(new Base::Matrix4D(
                     getDocumentPtr()->getEditingTransform())));
 }
 

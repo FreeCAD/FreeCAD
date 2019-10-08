@@ -508,7 +508,7 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
             }
             Py::Tuple rret(retType==1?2:3);
             rret.setItem(0,ret[0].obj);
-            rret.setItem(1,Py::Object(new Base::MatrixPy(ret[0].mat)));
+            rret.setItem(1,Py::asObject(new Base::MatrixPy(ret[0].mat)));
             if(retType!=1)
                 rret.setItem(2,ret[0].pyObj);
             return Py::new_reference_to(rret);
@@ -534,7 +534,7 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
             } else {
                 Py::Tuple rret(retType==1?2:3);
                 rret.setItem(0,ret[i].obj);
-                rret.setItem(1,Py::Object(new Base::MatrixPy(ret[i].mat)));
+                rret.setItem(1,Py::asObject(new Base::MatrixPy(ret[i].mat)));
                 if(retType!=1)
                     rret.setItem(2,ret[i].pyObj);
                 tuple.setItem(i,rret);
@@ -601,7 +601,7 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
         if(mat) {
             Py::Tuple ret(2);
             ret.setItem(0,pyObj);
-            ret.setItem(1,Py::Object(new Base::MatrixPy(*mat)));
+            ret.setItem(1,Py::asObject(new Base::MatrixPy(*mat)));
             return Py::new_reference_to(ret);
         }
         return Py::new_reference_to(pyObj);
