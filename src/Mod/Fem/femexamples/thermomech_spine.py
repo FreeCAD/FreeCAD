@@ -124,7 +124,7 @@ def setup(doc=None, solvertype="ccxtools"):
     heatflux_constraint.FilmCoef = 5.678
 
     # mesh
-    from .meshes.mesh_thermomech_spine import create_nodes, create_elements
+    from .meshes.mesh_thermomech_spine_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

@@ -66,7 +66,7 @@ def setup_base(doc=None, solvertype="ccxtools"):
     material_object.Material = mat
 
     # mesh
-    from .meshes.mesh_boxanalysis import create_nodes, create_elements
+    from .meshes.mesh_boxanalysis_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
