@@ -91,7 +91,6 @@ def setup_static(doc=None, solvertype="ccxtools"):
     analysis = doc.Analysis
 
     # solver
-    # TODO How to pass multiple solver for one analysis in one doc
     if solvertype == "calculix":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
@@ -146,7 +145,6 @@ def setup_frequency(doc=None, solvertype="ccxtools"):
     analysis = doc.Analysis
 
     # solver
-    # TODO How to pass multiple solver for one analysis in one doc
     if solvertype == "calculix":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
