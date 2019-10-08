@@ -38,8 +38,8 @@ SET(FemExamples_SRCS
     femexamples/boxanalysis.py
     femexamples/ccx_cantilever_std.py
     femexamples/manager.py
+    femexamples/material_multiple_twoboxes.py
     femexamples/material_nl_platewithhole.py
-    femexamples/multimaterial_twoboxes.py
     femexamples/rc_wall_2d.py
     femexamples/thermomech_flow1d.py
     femexamples/thermomech_spine.py
@@ -48,9 +48,9 @@ SET(FemExamples_SRCS
 SET(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
     femexamples/meshes/mesh_boxanalysis.py
+    femexamples/meshes/mesh_boxes_2_vertikal_tetra10.py
     femexamples/meshes/mesh_canticcx_tetra10.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
-    femexamples/meshes/mesh_multimaterial_twoboxes.py
     femexamples/meshes/mesh_platewithhole.py
     femexamples/meshes/mesh_thermomech_flow1d.py
     femexamples/meshes/mesh_thermomech_spine.py
