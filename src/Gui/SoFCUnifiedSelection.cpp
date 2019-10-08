@@ -1081,10 +1081,10 @@ SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode)
     :SoFCSeparator(trackCacheMode)
 {
     SO_NODE_CONSTRUCTOR(SoFCSelectionRoot);
-    SO_NODE_ADD_FIELD(selectionStyle,(FULL));
-    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, FULL);
-    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, BOX);
-    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, PASSTHROUGH);
+    SO_NODE_ADD_FIELD(selectionStyle,(Full));
+    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Full);
+    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Box);
+    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, PassThrough);
     SO_NODE_SET_SF_ENUM_TYPE(selectionStyle, SelectStyles);
 }
 
@@ -1286,11 +1286,12 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
     auto state = action->getState();
     SelContextPtr ctx = getRenderContext<SelContext>(this);
     int style = selectionStyle.getValue();
-    if((style==SoFCSelectionRoot::BOX || ViewParams::instance()->getShowSelectionBoundingBox())
+    if((style==SoFCSelectionRoot::Box || ViewParams::instance()->getShowSelectionBoundingBox())
        && ctx && !ctx->hideAll && (ctx->selAll || ctx->hlAll)) 
     {
-        if(style==SoFCSelectionRoot::PASSTHROUGH)
-            style = SoFCSelectionRoot::BOX;
+        if (style==SoFCSelectionRoot::PassThrough) {
+            style = SoFCSelectionRoot::Box;
+        }
         else {
             renderBBox(action,this,ctx->hlAll?ctx->hlColor:ctx->selColor);
             return true;
@@ -1308,7 +1309,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
     bool colorPushed = false;
     if(!ShapeColorNode && overrideColor && 
         !SoOverrideElement::getDiffuseColorOverride(state) &&
-        (style==SoFCSelectionRoot::BOX || !ctx || (!ctx->selAll && !ctx->hideAll))) 
+        (style==SoFCSelectionRoot::Box || !ctx || (!ctx->selAll && !ctx->hideAll)))
     {
         ShapeColorNode = this;
         colorPushed = true;
@@ -1339,7 +1340,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
         if((selPushed = ctx->selAll)) {
             SelColorStack.push_back(ctx->selColor);
 
-            if(style != SoFCSelectionRoot::BOX) {
+            if(style != SoFCSelectionRoot::Box) {
                 state->push();
                 auto &color = SelColorStack.back();
                 SoLazyElement::setEmissive(state, &color);
@@ -1365,7 +1366,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
         if(selPushed) {
             SelColorStack.pop_back();
 
-            if(style != SoFCSelectionRoot::BOX)
+            if(style != SoFCSelectionRoot::Box)
                 state->pop();
         }
         if(hlPushed)
@@ -1748,7 +1749,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
                     if(!path->getNode(i)->isOfType(SoFCSelectionRoot::getClassTypeId()))
                         continue;
                     auto node = static_cast<SoFCSelectionRoot*>(path->getNode(i));
-                    if(node->selectionStyle.getValue()==SoFCSelectionRoot::BOX) {
+                    if(node->selectionStyle.getValue()==SoFCSelectionRoot::Box) {
                         bbox = true;
                         break;
                     }

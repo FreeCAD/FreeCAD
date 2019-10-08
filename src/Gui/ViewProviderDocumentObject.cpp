@@ -189,7 +189,7 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
     else if (prop == &SelectionStyle) {
         if(getRoot()->isOfType(SoFCSelectionRoot::getClassTypeId())) {
             static_cast<SoFCSelectionRoot*>(getRoot())->selectionStyle = SelectionStyle.getValue()
-                ?SoFCSelectionRoot::BOX:SoFCSelectionRoot::FULL;
+                ? SoFCSelectionRoot::Box : SoFCSelectionRoot::Full;
         }
     }
 
