@@ -923,16 +923,17 @@ class SpreadsheetCases(unittest.TestCase):
 
         self.assertEqual(sheet.A3,rot)
 
-        self.assertEqual(sheet.B3,irot*irot)
-        self.assertEqual(sheet.B3,rot**-2)
-        self.assertEqual(sheet.C3,irot)
-        self.assertEqual(sheet.C3,rot**-1)
-        self.assertEqual(sheet.D3,FreeCAD.Rotation())
-        self.assertEqual(sheet.D3,rot**0)
-        self.assertEqual(sheet.E3,rot)
-        self.assertEqual(sheet.E3,rot**1)
-        self.assertEqual(sheet.F3,rot*rot)
-        self.assertEqual(sheet.F3,rot**2)
+        rtol = 1e-12
+        self.assertTrue(sheet.B3.isSame(irot*irot,rtol))
+        self.assertTrue(sheet.B3.isSame(rot**-2,rtol))
+        self.assertTrue(sheet.C3.isSame(irot,rtol))
+        self.assertTrue(sheet.C3.isSame(rot**-1,rtol))
+        self.assertTrue(sheet.D3.isSame(FreeCAD.Rotation(),rtol))
+        self.assertTrue(sheet.D3.isSame(rot**0,rtol))
+        self.assertTrue(sheet.E3.isSame(rot,rtol))
+        self.assertTrue(sheet.E3.isSame(rot**1,rtol))
+        self.assertTrue(sheet.F3.isSame(rot*rot,rtol))
+        self.assertTrue(sheet.F3.isSame(rot**2,rtol))
 
         self.assertEqual(sheet.A4,pla)
 
