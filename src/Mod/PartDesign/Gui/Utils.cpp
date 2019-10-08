@@ -61,24 +61,30 @@ using namespace Attacher;
 
 namespace PartDesignGui {
 
-bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
+bool setEdit(App::DocumentObject *obj, App::DocumentObject *container, const char *key) {
     if(!obj || !obj->getNameInDocument()) {
         FC_ERR("invalid object");
         return false;
     }
-    if(body == 0) {
-        body = getBodyFor(obj, false);
-        if(!body) {
-            FC_ERR("no body found");
-            return false;
+    if(!container) {
+        if (std::strcmp(key, PDBODYKEY)==0) {
+            container = getBodyFor(obj, false);
+            if(!container) 
+                return false;
+        } else if (std::strcmp(key,PARTKEY)==0) {
+            container = getPartFor(obj, false);
+            if(!container)
+                return false;
         }
     }
     auto *activeView = Gui::Application::Instance->activeView();
-    if(!activeView) return false;
+    if(!activeView)
+        return false;
+
     App::DocumentObject *parent = 0;
     std::string subname;
-    auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,&parent,&subname);
-    if(activeBody != body) {
+    auto active = activeView->getActiveObject<App::DocumentObject*>(key,&parent,&subname);
+    if(container && active!=container) {
         parent = obj;
         subname.clear();
     }else{
@@ -201,10 +207,10 @@ PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot,
     return nullptr;
 }
 
-App::Part* getActivePart() {
+App::Part* getActivePart(App::DocumentObject **topParent, std::string *subname) {
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
     if ( activeView ) {
-        return activeView->getActiveObject<App::Part*> (PARTKEY);
+        return activeView->getActiveObject<App::Part*> (PARTKEY,topParent,subname);
     } else {
         return 0;
     }

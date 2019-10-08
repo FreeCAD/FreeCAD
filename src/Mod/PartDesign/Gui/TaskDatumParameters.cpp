@@ -113,7 +113,7 @@ bool TaskDlgDatumParameters::accept() {
 
     Part::Datum* pcDatum = static_cast<Part::Datum*>(ViewProvider->getObject());
     auto pcActiveBody = PartDesignGui::getBodyFor(pcDatum, false);
-    auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+    auto pcActivePart = PartDesignGui::getPartFor(pcDatum, false);
     std::vector<App::DocumentObject*> copies;
 
     //see if we are able to assign a mode
@@ -136,13 +136,16 @@ bool TaskDlgDatumParameters::accept() {
     //see what to do with external references
     //check the prerequisites for the selected objects
     //the user has to decide which option we should take if external references are used
-    bool extReference = false;
+    std::set<App::DocumentObject*> externals;
     for (App::DocumentObject* obj : pcDatum->Support.getValues()) {
-        if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
-            extReference = true;
+        if (pcActiveBody) {
+            if(!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
+                externals.insert(obj);
+        } else if (pcActivePart && !pcActivePart->hasObject(obj) && !pcActivePart->getOrigin()->hasObject(obj))
+            externals.insert(obj);
     }
 
-    if(extReference) {
+    if(externals.size()) {
         // TODO: rewrite this to be shared with CmdPartDesignNewSketch::activated() (2015-10-20, Fat-Zer)
         QDialog dia(Gui::getMainWindow());
         PartDesignGui::Ui_DlgReference dlg;
@@ -157,7 +160,7 @@ bool TaskDlgDatumParameters::accept() {
             std::vector<std::string> subs = pcDatum->Support.getSubValues();
             int index = 0;
             for (App::DocumentObject* obj : pcDatum->Support.getValues()) {
-                if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
+                if (externals.count(obj)) {
                     auto* copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, subs[index], dlg.radioIndependent->isChecked());
                     if (copy) {
                         copyObjects.push_back(copy);

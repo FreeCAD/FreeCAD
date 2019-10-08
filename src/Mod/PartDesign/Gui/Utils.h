@@ -23,6 +23,8 @@
 #ifndef UTILS_H_CS5LK2ZQ
 #define UTILS_H_CS5LK2ZQ
 
+#include <Gui/ActiveObjectList.h>
+
 /** \file PartDesign/Gui/Utils.h
  *  This file contains some utility function used over PartDesignGui module
  */
@@ -44,7 +46,7 @@ namespace Sketcher {
 namespace PartDesignGui {
 
 /// Activate edit mode of the given object
-bool setEdit(App::DocumentObject *obj, PartDesign::Body *body = 0);
+bool setEdit(App::DocumentObject *obj, App::DocumentObject *container=0, const char *key=PDBODYKEY);
 
 /// Return active body or show a warning message
 PartDesign::Body *getBody(bool messageIfNot, bool autoActivate=true, bool assertModern=true,
@@ -65,7 +67,7 @@ PartDesign::Body *getBodyFor(const App::DocumentObject*, bool messageIfNot,
                              App::DocumentObject **topParent=0, std::string *subname=0);
 
 App::Part        *getPartFor(const App::DocumentObject*, bool messageIfNot);
-App::Part        *getActivePart();
+App::Part        *getActivePart(App::DocumentObject **topParent=0, std::string *subname=0);
 
 /// Fix sketch support after moving a free sketch into a body
 void fixSketchSupport(Sketcher::SketchObject* sketch);

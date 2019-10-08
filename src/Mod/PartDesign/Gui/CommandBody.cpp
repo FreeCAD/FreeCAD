@@ -217,6 +217,12 @@ void CmdPartDesignBody::activated(int iMsg)
                     bodyName.c_str(), baseFeature->getNameInDocument());
         }
     }
+
+    if (actPart) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
+                 actPart->getNameInDocument(), bodyName.c_str());
+    }
+
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
     doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
                                  "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
@@ -225,10 +231,6 @@ void CmdPartDesignBody::activated(int iMsg)
     // Make the "Create sketch" prompt appear in the task panel
     doCommand(Gui,"Gui.Selection.clearSelection()");
     doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", bodyName.c_str());
-    if (actPart) {
-        doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
-                 actPart->getNameInDocument(), bodyName.c_str());
-    }
 
     // check if a proxy object has been created for the base feature inside the body
     if (baseFeature) {

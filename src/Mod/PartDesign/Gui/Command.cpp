@@ -41,6 +41,7 @@
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
 #include <App/Part.h>
+#include <App/AutoTransaction.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -108,42 +109,57 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             std::string tmp = std::string("Edit ")+name;
             cmd.openCommand(tmp.c_str());
             PartDesignGui::setEdit(support.getValue(),pcActiveBody);
-        } else if (pcActiveBody) {
+            return;
+        } 
 
-            // TODO Check how this will work outside of a body (2015-10-20, Fat-Zer)
-            std::string FeatName = cmd.getUniqueObjectName(name.c_str(), pcActiveBody);
+        App::DocumentObject *pcActiveContainer;
+        if(pcActiveBody)
+            pcActiveContainer = pcActiveBody;
+        else
+            pcActiveContainer = PartDesignGui::getActivePart();
+        
+        std::string FeatName;
+        App::Document *doc = 0;
 
-            std::string tmp = std::string("Create ")+name;
+        FeatName = cmd.getUniqueObjectName(name.c_str(), pcActiveContainer);
 
-            cmd.openCommand(tmp.c_str());
-            FCMD_OBJ_CMD(pcActiveBody,"newObject('" << fullTypeName << "','" << FeatName << "')");
+        std::string tmp = std::string("Create ")+name;
 
-            // remove the body from links in case it's selected as
-            // otherwise a cyclic dependency will be created
-            support.removeValue(pcActiveBody);
+        cmd.openCommand(tmp.c_str());
 
-            auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-            if(!Feat) return;
-
-            //test if current selection fits a mode.
-            if (support.getSize() > 0) {
-                Part::AttachExtension* pcDatum = Feat->getExtensionByType<Part::AttachExtension>();
-                pcDatum->attacher().setReferences(support);
-                SuggestResult sugr;
-                pcDatum->attacher().suggestMapModes(sugr);
-                if (sugr.message == Attacher::SuggestResult::srOK) {
-                    //fits some mode. Populate support property.
-                    FCMD_OBJ_CMD(Feat,"Support = " << support.getPyReprString());
-                    FCMD_OBJ_CMD(Feat,"MapMode = '" << AttachEngine::getModeName(sugr.bestFitMode) << "'");
-                } else {
-                    QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit selected objects. Select something else."));
-                }
-            }
-            cmd.doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
-            PartDesignGui::setEdit(Feat,pcActiveBody);
+        if(pcActiveContainer) {
+            Gui::cmdAppObject(pcActiveContainer, std::ostringstream()
+                    << "newObject('" << fullTypeName << "','" << FeatName << "')");
+            doc = pcActiveContainer->getDocument();
         } else {
-            QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"), QObject::tr("There is no active body. Please make a body active before inserting a datum entity."));
+            Gui::cmdAppDocument(App::GetApplication().getActiveDocument(), std::ostringstream()
+                    << "addObject('" << fullTypeName << "','" << FeatName << "')");
         }
+
+        support.removeValue(pcActiveContainer);
+
+        auto Feat = doc->getObject(FeatName.c_str());
+        if(!Feat) return;
+
+        //test if current selection fits a mode.
+        if (support.getSize() > 0) {
+            Part::AttachExtension* pcDatum = Feat->getExtensionByType<Part::AttachExtension>();
+            pcDatum->attacher().references.Paste(support);
+            SuggestResult sugr;
+            pcDatum->attacher().suggestMapModes(sugr);
+            if (sugr.message == Attacher::SuggestResult::srOK) {
+                //fits some mode. Populate support property.
+                Gui::cmdAppObject(Feat, std::ostringstream() << "Support = " << support.getPyReprString());
+                Gui::cmdAppObject(Feat, std::ostringstream() << "MapMode = '" << AttachEngine::getModeName(sugr.bestFitMode) << "'");
+            } else {
+                QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit selected objects. Select something else."));
+            }
+        }
+        cmd.doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
+
+        if(pcActiveContainer)
+            PartDesignGui::setEdit(Feat,pcActiveContainer,pcActiveBody?PDBODYKEY:PARTKEY);
+
     } catch (Base::Exception &e) {
         QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QString::fromLatin1(e.what()));
     } catch (Standard_Failure &e) {
@@ -861,6 +877,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
             Gui::Selection().clearSelection();
             Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, quitter));
+            App::AutoTransaction::setEnable(false);
         }
     }
 }
