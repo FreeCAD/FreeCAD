@@ -26,6 +26,7 @@ import FreeCAD
 import ObjectsFem
 import Fem
 
+
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
 
@@ -36,16 +37,44 @@ def init_doc(doc=None):
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup model
+    """ Nonlinear material example, plate with hole.
+
+    https://forum.freecadweb.org/viewtopic.php?f=24&t=31997&start=30
+    https://forum.freecadweb.org/viewtopic.php?t=33974&start=90
+    https://forum.freecadweb.org/viewtopic.php?t=35893
+
+    plate: 400x200x10 mm
+    hole: diameter 100 mm (half cross section)
+    load: 130 MPa tension
+    linear material: Steel, E = 210000 MPa, my = 0.3
+    nonlinear material: '240.0, 0.0' to '270.0, 0.025'
+    TODO nonlinear material: give more information, use values from harry
+    TODO compare results with example from HarryvL
+
+    """
 
     if doc is None:
         doc = init_doc()
 
     # part
-    box_obj = doc.addObject("Part::Box", "Box")
-    box_obj.Height = 25.4
-    box_obj.Width = 25.4
-    box_obj.Length = 203.2
+    import Part
+    from FreeCAD import Vector as vec
+    from Part import makeLine as ln
+    from Part import makeCircle as ci
+
+    v1 = vec(-200, -100, 0)
+    v2 = vec(200, -100, 0)
+    v3 = vec(200, 100, 0)
+    v4 = vec(-200, 100, 0)
+    l1 = ln(v1, v2)
+    l2 = ln(v2, v3)
+    l3 = ln(v3, v4)
+    l4 = ln(v4, v1)
+    v5 = vec(0, 0, 0)
+    c1 = ci(50, v5)
+    face = Part.makeFace([Part.Wire([l1, l2, l3, l4]), c1], "Part::FaceMakerBullseye")
+    partfem = doc.addObject("Part::Feature", "Hole_Plate")
+    partfem.Shape = face.extrude(vec(0, 0, 10))
     doc.recompute()
 
     if FreeCAD.GuiUp:
@@ -58,73 +87,58 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # solver
     if solvertype == "calculix":
-        solver_object = analysis.addObject(
+        solver = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
     elif solvertype == "ccxtools":
-        solver_object = analysis.addObject(
+        solver = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
-        solver_object.WorkingDir = u""
-    # should be possible with elmer too
-    # elif solvertype == "elmer":
-    #     analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
+        solver.WorkingDir = u""
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.AnalysisType = "thermomech"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = True
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsThermoMechMaximum = 2000
-        solver_object.IterationsControlParameterTimeUse = True
+        solver.AnalysisType = "static"
+        solver.GeometricalNonlinearity = "linear"
+        solver.ThermoMechSteadyState = False
+        solver.MatrixSolverType = "default"
+        solver.IterationsControlParameterTimeUse = False
+        solver.GeometricalNonlinearity = 'nonlinear'
+        solver.MaterialNonlinearity = 'nonlinear'
 
-    # material
-    material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
+    # linear material
+    matprop = {}
+    matprop["Name"] = "CalculiX-Steel"
+    matprop["YoungsModulus"] = "210000 MPa"
+    matprop["PoissonRatio"] = "0.30"
+    matprop["Density"] = "7900 kg/m^3"
+    material = analysis.addObject(
+        ObjectsFem.makeMaterialSolid(doc, "Material_lin")
     )[0]
-    mat = material_object.Material
-    mat["Name"] = "Steel-Generic"
-    mat["YoungsModulus"] = "200000 MPa"
-    mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
-    mat["ThermalConductivity"] = "43.27 W/m/K"  # SvdW: Change to Ansys model values
-    mat["ThermalExpansionCoefficient"] = "12 um/m/K"
-    mat["SpecificHeat"] = "500 J/kg/K"  # SvdW: Change to Ansys model values
-    material_object.Material = mat
+    material.Material = matprop
+
+    # nonlinear material
+    nonlinear_material = analysis.addObject(
+        ObjectsFem.makeMaterialMechanicalNonlinear(doc, material, "Material_nonlin")
+    )[0]
+    nonlinear_material.YieldPoint1 = '240.0, 0.0'
+    nonlinear_material.YieldPoint2 = '270.0, 0.025'
+    # check solver attributes, Nonlinearity needs to be set to nonlinear
 
     # fixed_constraint
     fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, "FemConstraintFixed")
+        ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     )[0]
-    fixed_constraint.References = [(box_obj, "Face1")]
+    fixed_constraint.References = [(partfem, "Face4")]
 
-    # initialtemperature_constraint
-    initialtemperature_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintInitialTemperature(doc, "FemConstraintInitialTemperature")
+    # force constraint
+    pressure_constraint = doc.Analysis.addObject(
+        ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
     )[0]
-    initialtemperature_constraint.initialTemperature = 300.0
-
-    # temperature_constraint
-    temperature_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintTemperature(doc, "FemConstraintTemperature")
-    )[0]
-    temperature_constraint.References = [(box_obj, "Face1")]
-    temperature_constraint.Temperature = 310.93
-
-    # heatflux_constraint
-    heatflux_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintHeatflux(doc, "FemConstraintHeatflux")
-    )[0]
-    heatflux_constraint.References = [
-        (box_obj, "Face3"),
-        (box_obj, "Face4"),
-        (box_obj, "Face5"),
-        (box_obj, "Face6")
-    ]
-    heatflux_constraint.AmbientTemp = 255.3722
-    heatflux_constraint.FilmCoef = 5.678
+    pressure_constraint.References = [(partfem, "Face2")]
+    pressure_constraint.Pressure = 130.0
+    pressure_constraint.Reversed = True
 
     # mesh
-    from .meshes.mesh_thermomech_spine import create_nodes, create_elements
+    from .meshes.mesh_platewithhole import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -142,7 +156,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
 
 """
-from femexamples import thermomech_spine as spine
-spine.setup()
+from femexamples import material_nl_platewithhole as nlmat
+nlmat.setup()
 
 """

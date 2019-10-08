@@ -35,7 +35,7 @@ def init_doc(doc=None):
     return doc
 
 
-def setup(doc=None, solver="ccxtools"):
+def setup(doc=None, solvertype="ccxtools"):
     # setup reinfoced wall in 2D
 
     if doc is None:
@@ -75,17 +75,16 @@ def setup(doc=None, solver="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    # TODO How to pass multiple solver for one analysis in one doc
-    if solver == "calculix":
+    if solvertype == "calculix":
         solver = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-    elif solver == "ccxtools":
+    elif solvertype == "ccxtools":
         solver = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver.WorkingDir = u""
-    if solver == "calculix" or solver == "ccxtools":
+    if solvertype == "calculix" or solvertype == "ccxtools":
         solver.AnalysisType = "static"
         solver.GeometricalNonlinearity = "linear"
         solver.ThermoMechSteadyState = False
