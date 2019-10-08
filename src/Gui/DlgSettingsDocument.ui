@@ -542,32 +542,32 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
         </item>
         <item>
          <property name="text">
-          <string>CreativeCommons Attribution</string>
+          <string>Creative Commons Attribution</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>CreativeCommons Attribution-ShareAlike</string>
+          <string>Creative Commons Attribution-ShareAlike</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>CreativeCommons Attribution-NoDerivatives</string>
+          <string>Creative Commons Attribution-NoDerivatives</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>CreativeCommons Attribution-NonCommercial</string>
+          <string>Creative Commons Attribution-NonCommercial</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>CreativeCommons Attribution-NonCommercial-ShareAlike</string>
+          <string>Creative Commons Attribution-NonCommercial-ShareAlike</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>CreativeCommons Attribution-NonCommercial-NoDerivatives</string>
+          <string>Creative Commons Attribution-NonCommercial-NoDerivatives</string>
          </property>
         </item>
         <item>

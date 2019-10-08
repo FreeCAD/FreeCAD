@@ -49,6 +49,7 @@
 #include "MDIViewPage.h"
 
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Base/gzstream.h>
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
@@ -924,6 +925,7 @@ void MDIViewPage::saveDXF(std::string fileName)
 {
     TechDraw::DrawPage* page = m_vpPage->getDrawPage();
     std::string PageName = page->getNameInDocument();
+    fileName = Base::Tools::escapeEncodeFilename(fileName);
     Gui::Command::openCommand("Save page to dxf");
     Gui::Command::doCommand(Gui::Command::Doc,"import TechDraw");
     Gui::Command::doCommand(Gui::Command::Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",

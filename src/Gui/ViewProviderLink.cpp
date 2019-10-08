@@ -1711,15 +1711,22 @@ QPixmap ViewProviderLink::getOverlayPixmap() const {
 void ViewProviderLink::onChanged(const App::Property* prop) {
     if(prop==&ChildViewProvider) {
         childVp = freecad_dynamic_cast<ViewProviderDocumentObject>(ChildViewProvider.getObject().get());
-        if(childVp) {
-            childVp->setPropertyPrefix("ChildViewProvider.");
-            childVp->Visibility.setValue(getObject()->Visibility.getValue());
-            childVp->attach(getObject());
-            childVp->updateView();
-            childVp->setActiveMode();
-            if(pcModeSwitch->getNumChildren()>1){
-                childVpLink = LinkInfo::get(childVp,0);
-                pcModeSwitch->replaceChild(1,childVpLink->getSnapshot(LinkView::SnapshotTransform));
+        if(childVp && getObject()) {
+            if(strcmp(childVp->getTypeId().getName(),getObject()->getViewProviderName())!=0
+                    && !childVp->allowOverride(*getObject()))
+            {
+                FC_ERR("Child view provider type '" << childVp->getTypeId().getName()
+                        << "' does not support " << getObject()->getFullName());
+            } else {
+                childVp->setPropertyPrefix("ChildViewProvider.");
+                childVp->Visibility.setValue(getObject()->Visibility.getValue());
+                childVp->attach(getObject());
+                childVp->updateView();
+                childVp->setActiveMode();
+                if(pcModeSwitch->getNumChildren()>1){
+                    childVpLink = LinkInfo::get(childVp,0);
+                    pcModeSwitch->replaceChild(1,childVpLink->getSnapshot(LinkView::SnapshotTransform));
+                }
             }
         }
     }else if(!isRestoring()) {
@@ -2394,7 +2401,7 @@ bool ViewProviderLink::initDraggingPlacement() {
 
     dragCtx->preTransform = doc->getEditingTransform();
     auto plaMat = pla.toMatrix();
-    plaMat.inverse();
+    plaMat.inverseGauss();
     dragCtx->preTransform *= plaMat;
 
     dragCtx->bbox = linkView->getBoundBox();
@@ -2402,7 +2409,7 @@ bool ViewProviderLink::initDraggingPlacement() {
             dragCtx->bbox.GetCenter(),Base::Rotation());
     dragCtx->initialPlacement = pla * offset;
     dragCtx->mat = offset.toMatrix();
-    dragCtx->mat.inverse();
+    dragCtx->mat.inverseGauss();
     return true;
 }
 

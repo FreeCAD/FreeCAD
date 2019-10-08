@@ -224,9 +224,9 @@ App::Property *PropertySheet::Copy(void) const
 
 void PropertySheet::Paste(const Property &from)
 {
-    AtomicPropertyChange signaller(*this);
+    const PropertySheet &froms = dynamic_cast<const PropertySheet&>(from);
 
-    const PropertySheet * froms = static_cast<const PropertySheet*>(&from);
+    AtomicPropertyChange signaller(*this);
 
     std::map<CellAddress, Cell* >::iterator icurr = data.begin();
 
@@ -236,8 +236,8 @@ void PropertySheet::Paste(const Property &from)
         ++icurr;
     }
 
-    std::map<CellAddress, Cell* >::const_iterator ifrom = froms->data.begin();
-    while (ifrom != froms->data.end()) {
+    std::map<CellAddress, Cell* >::const_iterator ifrom = froms.data.begin();
+    while (ifrom != froms.data.end()) {
         std::map<CellAddress, Cell* >::iterator i = data.find(ifrom->first);
 
         if (i != data.end()) {
@@ -269,7 +269,7 @@ void PropertySheet::Paste(const Property &from)
             ++icurr;
     }
 
-    mergedCells = froms->mergedCells;
+    mergedCells = froms.mergedCells;
     signaller.tryInvoke();
 }
 

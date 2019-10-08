@@ -268,7 +268,7 @@ def get_pref_working_dir(solver_obj):
      If user setting is set to BESIDE and the document isn't saved.
 
     :note:
-     Not working correctely for most cases because this circumvents directory
+     Not working correctly for most cases because this circumvents directory
      caching of the solver framework. For solver use getMachine from run.py
      instead.
     """

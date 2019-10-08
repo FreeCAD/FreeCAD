@@ -269,6 +269,9 @@ public:
         CATH,
         LIST,
         TUPLE,
+        MSCALE, // matrix scale by vector
+        MINVERT, // invert matrix/placement/rotation
+        CREATE, // create new object of a given type
 
         // Aggregates
         AGGREGATES,

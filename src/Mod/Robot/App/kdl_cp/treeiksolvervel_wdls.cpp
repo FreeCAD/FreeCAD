@@ -89,9 +89,9 @@ namespace KDL {
         Wq_V.noalias() = Wq * V;
         
         // tmp = (Si*Wy*U'*y),
-        for (Eigen::Index i = 0; i < J.cols(); i++) {
+        for (auto i = 0; i < J.cols(); i++) {
             double sum = 0.0;
-            for (Eigen::Index j = 0; j < J.rows(); j++) {
+            for (auto j = 0; j < J.rows(); j++) {
                 if (i < Wy_t.rows())
                     sum += U(j, i) * Wy_t(j);
                 else

@@ -145,24 +145,6 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
     if (PyObject_TypeCheck(self, &(VectorPy::Type))) {
         Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
 
-        if (PyObject_TypeCheck(other, &MatrixPy::Type)) {
-            Base::Matrix4D b = static_cast<MatrixPy*>(other)->value();
-            b.scale(a);
-            return new MatrixPy(b);
-        }
-
-        if (PyObject_TypeCheck(other, &PlacementPy::Type)) {
-            Base::Placement b = static_cast<PlacementPy*>(other)->value();
-            Vector3d res;
-            b.multVec(a,res);
-            return new VectorPy(res);
-        }
-
-        if (PyObject_TypeCheck(other, &RotationPy::Type)) {
-            Base::Rotation b = static_cast<RotationPy*>(other)->value();
-            return new VectorPy(b.multVec(a));
-        }
-
         if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
             Base::Vector3d b = static_cast<VectorPy*>(other)->value();
             Py::Float mult(a * b);

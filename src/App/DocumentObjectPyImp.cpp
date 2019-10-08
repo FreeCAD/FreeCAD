@@ -368,6 +368,20 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     Py_Return;
 }
 
+PyObject*  DocumentObjectPy::evalExpression(PyObject * args)
+{
+    const char *expr;
+    if (!PyArg_ParseTuple(args, "s", &expr))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+
+    PY_TRY {
+        boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), expr));
+        if(shared_expr)
+            return Py::new_reference_to(shared_expr->getPyValue());
+        Py_Return;
+    } PY_CATCH
+}
+
 PyObject*  DocumentObjectPy::recompute(PyObject *args)
 {
     PyObject *recursive=Py_False;

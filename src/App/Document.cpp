@@ -193,7 +193,7 @@ struct DocumentP
         static std::random_device _RD;
         static std::mt19937 _RGEN(_RD());
         static std::uniform_int_distribution<> _RDIST(0,5000);
-        // Set some random offset to reduce likelihood of ID collison when
+        // Set some random offset to reduce likelihood of ID collision when
         // copying shape from other document. It is probably better to randomize
         // on each object ID.
         lastObjectId = _RDIST(_RGEN); 
@@ -1522,27 +1522,27 @@ Document::Document(const char *name)
             licenseUrl = "http://en.wikipedia.org/wiki/All_rights_reserved";
             break;
         case 1:
-            license = "CreativeCommons Attribution";
+            license = "Creative Commons Attribution";
             licenseUrl = "http://creativecommons.org/licenses/by/4.0/";
             break;
         case 2:
-            license = "CreativeCommons Attribution-ShareAlike";
+            license = "Creative Commons Attribution-ShareAlike";
             licenseUrl = "http://creativecommons.org/licenses/by-sa/4.0/";
             break;
         case 3:
-            license = "CreativeCommons Attribution-NoDerivatives";
+            license = "Creative Commons Attribution-NoDerivatives";
             licenseUrl = "http://creativecommons.org/licenses/by-nd/4.0/";
             break;
         case 4:
-            license = "CreativeCommons Attribution-NonCommercial";
+            license = "Creative Commons Attribution-NonCommercial";
             licenseUrl = "http://creativecommons.org/licenses/by-nc/4.0/";
             break;
         case 5:
-            license = "CreativeCommons Attribution-NonCommercial-ShareAlike";
+            license = "Creative Commons Attribution-NonCommercial-ShareAlike";
             licenseUrl = "http://creativecommons.org/licenses/by-nc-sa/4.0/";
             break;
         case 6:
-            license = "CreativeCommons Attribution-NonCommercial-NoDerivatives";
+            license = "Creative Commons Attribution-NonCommercial-NoDerivatives";
             licenseUrl = "http://creativecommons.org/licenses/by-nc-nd/4.0/";
             break;
         case 7:
@@ -3540,17 +3540,8 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
     pcObject->setStatus(ObjectStatus::PartialObject, isPartial);
 
-    // If an object does not allow to override its view provider then ignore any
-    // input of the Document.xml or from Python as this information could be wrong.
-    // In this case the default type from getViewProviderName() is used.
-    if (pcObject->allowOverrideViewProviderName()) {
-        if (!viewType || viewType[0] == '\0') {
-            viewType = pcObject->getViewProviderNameOverride();
-        }
-    }
-    else {
-        viewType = pcObject->getViewProviderName();
-    }
+    if (!viewType || viewType[0] == '\0')
+        viewType = pcObject->getViewProviderNameOverride();
 
     if (viewType && viewType[0] != '\0')
         pcObject->_pcViewProviderName = viewType;
@@ -3644,16 +3635,8 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
         // mark the object as new (i.e. set status bit 2) and send the signal
         pcObject->setStatus(ObjectStatus::New, true);
 
-        // If an object does not allow to override its view provider then use
-        // getViewProviderName() instead.
-        if (pcObject->allowOverrideViewProviderName()) {
-            const char *viewType = pcObject->getViewProviderNameOverride();
-            pcObject->_pcViewProviderName = viewType ? viewType : "";
-        }
-        else {
-            const char *viewType = pcObject->getViewProviderName();
-            pcObject->_pcViewProviderName = viewType ? viewType : "";
-        }
+        const char *viewType = pcObject->getViewProviderNameOverride();
+        pcObject->_pcViewProviderName = viewType ? viewType : "";
 
         signalNewObject(*pcObject);
 
@@ -3711,16 +3694,8 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
     // mark the object as new (i.e. set status bit 2) and send the signal
     pcObject->setStatus(ObjectStatus::New, true);
 
-    // If an object does not allow to override its view provider then use
-    // getViewProviderName() instead.
-    if (pcObject->allowOverrideViewProviderName()) {
-        const char *viewType = pcObject->getViewProviderNameOverride();
-        pcObject->_pcViewProviderName = viewType ? viewType : "";
-    }
-    else {
-        const char *viewType = pcObject->getViewProviderName();
-        pcObject->_pcViewProviderName = viewType ? viewType : "";
-    }
+    const char *viewType = pcObject->getViewProviderNameOverride();
+    pcObject->_pcViewProviderName = viewType ? viewType : "";
 
     signalNewObject(*pcObject);
 
@@ -3751,16 +3726,8 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
             d->activeUndoTransaction->addObjectDel(pcObject);
     }
 
-    // If an object does not allow to override its view provider then use
-    // getViewProviderName() instead.
-    if (pcObject->allowOverrideViewProviderName()) {
-        const char *viewType = pcObject->getViewProviderNameOverride();
-        pcObject->_pcViewProviderName = viewType ? viewType : "";
-    }
-    else {
-        const char *viewType = pcObject->getViewProviderName();
-        pcObject->_pcViewProviderName = viewType ? viewType : "";
-    }
+    const char *viewType = pcObject->getViewProviderNameOverride();
+    pcObject->_pcViewProviderName = viewType ? viewType : "";
 
     // send the signal
     signalNewObject(*pcObject);
@@ -4129,7 +4096,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     if(objs.empty()) 
         return 0;
     // Some object may delete its children if deleted, so we collect the IDs
-    // or all depdending objects for safety reason.
+    // or all depending objects for safety reason.
     std::vector<int> ids;
     ids.reserve(deps.size());
     for(auto o : deps)

@@ -270,6 +270,15 @@ PyObject* RotationPy::toEuler(PyObject * args)
     return Py::new_reference_to(tuple);
 }
 
+PyObject* RotationPy::toMatrix(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    Base::Matrix4D mat;
+    getRotationPtr()->getValue(mat);
+    return new MatrixPy(new Matrix4D(mat));
+}
+
 PyObject* RotationPy::isSame(PyObject *args)
 {
     PyObject *rot;
@@ -318,6 +327,13 @@ void RotationPy::setQ(Py::Tuple arg)
     double q2 = (double)Py::Float(arg.getItem(2));
     double q3 = (double)Py::Float(arg.getItem(3));
     this->getRotationPtr()->setValue(q0,q1,q2,q3);
+}
+
+Py::Object RotationPy::getRawAxis(void) const
+{
+    Base::Vector3d axis; double angle;
+    this->getRotationPtr()->getRawValue(axis, angle);
+    return Py::Vector(axis);
 }
 
 Py::Object RotationPy::getAxis(void) const
@@ -434,19 +450,16 @@ PyObject * RotationPy::number_power_handler (PyObject* self, PyObject* other, Py
     }
 
     Rotation a = static_cast<RotationPy*>(self)->value();
-
     long b = Py::Int(other);
-    if(!b)
-        return new RotationPy(Rotation());
 
-    if(b < 0) {
-        b = 1+b;
-        a.invert();
-    }
-    auto res = a;
-    for(;b;--b)
-        res *= a;
-    return new RotationPy(res);
+    Vector3d axis;
+    double rfAngle;
+
+    a.getRawValue(axis, rfAngle);
+    rfAngle *= b;
+    a.setValue(axis, rfAngle);
+
+    return new RotationPy(a);
 }
 
 PyObject* RotationPy::number_add_handler(PyObject * /*self*/, PyObject * /*other*/)
