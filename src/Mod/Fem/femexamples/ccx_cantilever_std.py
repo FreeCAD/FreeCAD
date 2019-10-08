@@ -35,7 +35,7 @@ def init_doc(doc=None):
     return doc
 
 
-def setup_cantileverbase(doc=None, solver="ccxtools"):
+def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever base model
 
     if doc is None:
@@ -56,21 +56,20 @@ def setup_cantileverbase(doc=None, solver="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    # TODO How to pass multiple solver for one analysis in one doc
-    if solver == "calculix":
+    if solvertype == "calculix":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-    elif solver == "ccxtools":
+    elif solvertype == "ccxtools":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
-    elif solver == "elmer":
+    elif solvertype == "elmer":
         analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
-    elif solver == "z88":
+    elif solvertype == "z88":
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
-    if solver == "calculix" or solver == "ccxtools":
+    if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.AnalysisType = "static"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False
@@ -113,10 +112,10 @@ def setup_cantileverbase(doc=None, solver="ccxtools"):
     return doc
 
 
-def setup_cantileverfaceload(doc=None, solver="ccxtools"):
+def setup_cantileverfaceload(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever, apply 9 MN on surface of front end face
 
-    doc = setup_cantileverbase(doc, solver)
+    doc = setup_cantileverbase(doc, solvertype)
 
     # force_constraint
     force_constraint = doc.Analysis.addObject(
@@ -131,10 +130,10 @@ def setup_cantileverfaceload(doc=None, solver="ccxtools"):
     return doc
 
 
-def setup_cantilevernodeload(doc=None, solver="ccxtools"):
+def setup_cantilevernodeload(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever, apply 9 MN on the 4 nodes of the front end face
 
-    doc = setup_cantileverbase(doc, solver)
+    doc = setup_cantileverbase(doc, solvertype)
 
     # force_constraint
     force_constraint = doc.Analysis.addObject(
@@ -155,11 +154,11 @@ def setup_cantilevernodeload(doc=None, solver="ccxtools"):
     return doc
 
 
-def setup_cantileverprescribeddisplacement(doc=None, solver="ccxtools"):
+def setup_cantileverprescribeddisplacement(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever
     # apply a prescribed displacement of 250 mm in -z on the front end face
 
-    doc = setup_cantileverbase(doc, solver)
+    doc = setup_cantileverbase(doc, solvertype)
 
     # displacement_constraint
     displacement_constraint = doc.Analysis.addObject(
