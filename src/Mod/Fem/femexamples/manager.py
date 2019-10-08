@@ -73,19 +73,6 @@ def run_analysis(doc, base_name, filepath=""):
     doc.save()
 
 
-def run_all():
-    run_boxanalysisstatic()
-    run_boxanalysisfrequency()
-    run_ccx_cantileverfaceload()
-    run_ccx_cantilevernodeload()
-    run_ccx_cantileverprescribeddisplacement()
-    run_material_nl_platewithhole()
-    run_material_multiple_twoboxes()
-    run_rcwall2d()
-    run_thermomech_flow1d()
-    run_thermomech_spine()
-
-
 def run_boxanalysisstatic(solver=None, base_name=None):
 
     from .boxanalysis import setup_static as setup
@@ -236,6 +223,19 @@ def run_thermomech_spine(solver=None, base_name=None):
     return doc
 
 
+def run_all():
+    run_boxanalysisstatic()
+    run_boxanalysisfrequency()
+    run_ccx_cantileverfaceload()
+    run_ccx_cantilevernodeload()
+    run_ccx_cantileverprescribeddisplacement()
+    run_material_nl_platewithhole()
+    run_material_multiple_twoboxes()
+    run_rcwall2d()
+    run_thermomech_flow1d()
+    run_thermomech_spine()
+
+
 """
 from femexamples.manager import *
 run_all()
@@ -246,8 +246,8 @@ doc = run_boxanalysisfrequency()
 doc = run_ccx_cantileverfaceload()
 doc = run_ccx_cantilevernodeload()
 doc = run_ccx_cantileverprescribeddisplacement()
-doc = run_material_multiple_twoboxes()
 doc = run_material_nl_platewithhole()
+doc = run_material_multiple_twoboxes()
 doc = run_rcwall2d()
 doc = run_thermomech_flow1d()
 doc = run_thermomech_spine()
