@@ -154,7 +154,7 @@ Py::List TrajectoryPy::getWaypoints(void) const
 {
     Py::List list;
     for(unsigned int i = 0; i < getTrajectoryPtr()->getSize(); i++)
-        list.append(Py::Object(new Robot::WaypointPy(new Robot::Waypoint(getTrajectoryPtr()->getWaypoint(i)))));
+        list.append(Py::asObject(new Robot::WaypointPy(new Robot::Waypoint(getTrajectoryPtr()->getWaypoint(i)))));
 
     return list;
 }

@@ -435,7 +435,7 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
     else if (isAnyPyObject(value))
         return __pyObjectFromAny(value);
     if (is_type(value,typeid(Quantity)))
-        return Py::Object(new QuantityPy(new Quantity(cast<Quantity>(value))));
+        return Py::asObject(new QuantityPy(new Quantity(cast<Quantity>(value))));
     else if (is_type(value,typeid(double)))
         return Py::Float(cast<double>(value));
     else if (is_type(value,typeid(float)))
@@ -543,7 +543,7 @@ static inline Quantity pyToQuantity(const Py::Object &pyobj,
 
 Py::Object pyFromQuantity(const Quantity &quantity) {
     if(!quantity.getUnit().isEmpty())
-        return Py::Object(new QuantityPy(new Quantity(quantity)));
+        return Py::asObject(new QuantityPy(new Quantity(quantity)));
     double v = quantity.getValue();
     long l;
     int i;
@@ -2073,7 +2073,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             else {
                 auto mat = static_cast<Base::MatrixPy*>(pymat.ptr())->value();
                 mat.scale(vec);
-                return Py::Object(new Base::MatrixPy(mat));
+                return Py::asObject(new Base::MatrixPy(mat));
             }
         }
         _EXPR_THROW("Function requires arguments to be either "
@@ -2091,15 +2091,15 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             if (fabs(m.determinant()) <= DBL_EPSILON)
                 _EXPR_THROW("Cannot invert singular matrix.",expr);
             m.inverseGauss();
-            return Py::Object(new Base::MatrixPy(m));
+            return Py::asObject(new Base::MatrixPy(m));
 
         } else if (PyObject_TypeCheck(pyobj.ptr(),&Base::PlacementPy::Type)) {
             const auto &pla = *static_cast<Base::PlacementPy*>(pyobj.ptr())->getPlacementPtr();
-            return Py::Object(new Base::PlacementPy(pla.inverse()));
+            return Py::asObject(new Base::PlacementPy(pla.inverse()));
 
         } else if (PyObject_TypeCheck(pyobj.ptr(),&Base::RotationPy::Type)) {
             const auto &rot = *static_cast<Base::RotationPy*>(pyobj.ptr())->getRotationPtr();
-            return Py::Object(new Base::RotationPy(rot.inverse()));
+            return Py::asObject(new Base::RotationPy(rot.inverse()));
         }
          _EXPR_THROW("Function requires the first argument to be either Matrix, Placement or Rotation.",expr);
 
@@ -2110,13 +2110,13 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         std::string type(pytype.as_string());
         Py::Object res;
         if(boost::iequals(type,"matrix")) 
-            res = Py::Object(new Base::MatrixPy(Base::Matrix4D()));
+            res = Py::asObject(new Base::MatrixPy(Base::Matrix4D()));
         else if(boost::iequals(type,"vector"))
-            res = Py::Object(new Base::VectorPy(Base::Vector3d()));
+            res = Py::asObject(new Base::VectorPy(Base::Vector3d()));
         else if(boost::iequals(type,"placement"))
-            res = Py::Object(new Base::PlacementPy(Base::Placement()));
+            res = Py::asObject(new Base::PlacementPy(Base::Placement()));
         else if(boost::iequals(type,"rotation"))
-            res = Py::Object(new Base::RotationPy(Base::Rotation()));
+            res = Py::asObject(new Base::RotationPy(Base::Rotation()));
         else
             _EXPR_THROW("Unknown type '" << type << "'.",expr);
         if(args.size()>1) {
@@ -2342,7 +2342,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         _EXPR_THROW("Unknown function: " << f,expr);
     }
 
-    return Py::Object(new QuantityPy(new Quantity(scaler * output, unit)));
+    return Py::asObject(new QuantityPy(new Quantity(scaler * output, unit)));
 }
 
 Py::Object FunctionExpression::_getPyValue() const {
