@@ -3122,8 +3122,6 @@ StdCmdSelForward::StdCmdSelForward()
   sPixmap       = "sel-forward";
   sAccel        = "S, F";
   eType         = AlterSelection;
-
-
 }
 
 void StdCmdSelForward::activated(int iMsg)
