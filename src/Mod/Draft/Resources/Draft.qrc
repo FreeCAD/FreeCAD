@@ -16,6 +16,7 @@
         <file>icons/Draft_BezTanNode.svg</file>
         <file>icons/Draft_BSpline.svg</file>
         <file>icons/Draft_Circle.svg</file>
+        <file>icons/Draft_CircularArray.svg</file>
         <file>icons/Draft_Clone.svg</file>
         <file>icons/Draft_Construction.svg</file>
         <file>icons/Draft_CubicBezCurve.svg</file>
@@ -149,6 +150,7 @@
         <file>ui/preferences-dxf.ui</file>
         <file>ui/preferences-oca.ui</file>
         <file>ui/preferences-svg.ui</file>
+        <file>ui/TaskPanel_CircularArray.ui</file>
         <file>ui/TaskPanel_PolarArray.ui</file>
         <file>ui/TaskSelectPlane.ui</file>
         <file>ui/TaskShapeString.ui</file>
