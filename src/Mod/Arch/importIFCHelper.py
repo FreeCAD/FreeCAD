@@ -473,7 +473,7 @@ def getIfcProperties(ifcfile, pid, psets, d):
                     if hasattr(e.NominalValue,'Unit'):
                         if e.NominalValue.Unit:
                             pvalue += e.NominalValue.Unit
-                    d[pname+";;"+psetname] = ptype+";;"+pvalue
+                    d[pname] = psetname+";;"+ptype+";;"+pvalue
                 # print("adding property: ",pname,ptype,pvalue," pset ",psetname)
     return d
 
