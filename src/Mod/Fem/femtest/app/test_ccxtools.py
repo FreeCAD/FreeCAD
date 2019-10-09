@@ -181,8 +181,8 @@ class TestCcxTools(unittest.TestCase):
         fcc_print("\n--------------- Start of FEM ccxtools multiple material test -------------")
 
         # set up the simple multimat example
-        from femexamples import multimaterial_twoboxes
-        multimaterial_twoboxes.setup(self.active_doc, "ccxtools")
+        from femexamples import material_multiple_twoboxes
+        material_multiple_twoboxes.setup(self.active_doc, "ccxtools")
 
         analysis = self.active_doc.Analysis
         solver_object = self.active_doc.CalculiXccxTools
