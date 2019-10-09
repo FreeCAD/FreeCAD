@@ -66,6 +66,7 @@ class DraftWorkbench(Workbench):
         try:
             import os, Draft_rc, DraftTools, DraftGui, DraftFillet
             from DraftTools import translate
+            from draftguitools import gui_circulararray
             from draftguitools import gui_polararray
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
@@ -87,7 +88,7 @@ class DraftWorkbench(Workbench):
                         "Draft_WireToBSpline", "Draft_AddPoint",
                         "Draft_DelPoint", "Draft_Shape2DView",
                         "Draft_Draft2Sketch", "Draft_Array", "Draft_LinkArray",
-                        "Draft_PolarArray",
+                        "Draft_PolarArray", "Draft_CircularArray",
                         "Draft_PathArray", "Draft_PathLinkArray", "Draft_PointArray", "Draft_Clone",
                         "Draft_Drawing", "Draft_Mirror", "Draft_Stretch"]
         self.treecmdList = ["Draft_ApplyStyle", "Draft_ToggleDisplayMode",
