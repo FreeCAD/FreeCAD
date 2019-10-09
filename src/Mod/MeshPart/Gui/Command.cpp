@@ -42,6 +42,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include "Tessellation.h"
+#include "CrossSections.h"
 #include "TaskCurveOnMesh.h"
 
 using namespace std;
@@ -263,6 +264,45 @@ bool CmdMeshPartSection::isActive(void)
     return true;
 }
 
+//===========================================================================
+// MeshPart_CrossSections
+//===========================================================================
+DEF_STD_CMD_A(CmdMeshPartCrossSections)
+
+CmdMeshPartCrossSections::CmdMeshPartCrossSections()
+  :Command("MeshPart_CrossSections")
+{
+    sAppModule    = "MeshPart";
+    sGroup        = QT_TR_NOOP("MeshPart");
+    sMenuText     = QT_TR_NOOP("Cross-sections...");
+    sToolTipText  = QT_TR_NOOP("Cross-sections");
+    sWhatsThis    = "MeshPart_CrossSections";
+    sStatusTip    = sToolTipText;
+  //sPixmap       = "MeshPart_CrossSections";
+}
+
+void CmdMeshPartCrossSections::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg) {
+        std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType
+            (Mesh::Feature::getClassTypeId());
+        Base::BoundBox3d bbox;
+        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
+            bbox.Add(static_cast<Mesh::Feature*>(*it)->Mesh.getBoundingBox());
+        }
+        dlg = new MeshPartGui::TaskCrossSections(bbox);
+    }
+    Gui::Control().showDialog(dlg);
+}
+
+bool CmdMeshPartCrossSections::isActive(void)
+{
+    return (Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0 &&
+            !Gui::Control().activeDialog());
+}
+
 DEF_STD_CMD_A(CmdMeshPartCurveOnMesh)
 
 CmdMeshPartCurveOnMesh::CmdMeshPartCurveOnMesh()
@@ -307,5 +347,6 @@ void CreateMeshPartCommands(void)
     rcCmdMgr.addCommand(new CmdMeshPartMesher());
     rcCmdMgr.addCommand(new CmdMeshPartTrimByPlane());
     rcCmdMgr.addCommand(new CmdMeshPartSection());
+    rcCmdMgr.addCommand(new CmdMeshPartCrossSections());
     rcCmdMgr.addCommand(new CmdMeshPartCurveOnMesh());
 }

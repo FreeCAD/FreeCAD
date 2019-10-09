@@ -34,6 +34,7 @@
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/PropertyUnits.h>
+#include <App/ExpressionParser.h>
 #include <App/DocumentObject.h>
 #include "ExpressionCompleter.h"
 #include "Command.h"

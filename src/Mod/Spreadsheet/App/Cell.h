@@ -85,7 +85,7 @@ public:
     void setSpans(int rows, int columns);
     bool getSpans(int & rows, int & columns) const;
 
-    void setException(const std::string & e);
+    void setException(const std::string & e, bool silent=false);
 
     void clearException();
 
@@ -121,6 +121,8 @@ public:
     void visit(App::ExpressionVisitor & v);
 
     App::CellAddress getAddress() const { return address; }
+
+    std::string getFormattedQuantity(void);
 
     /* Alignment */
     static const int ALIGNMENT_LEFT;

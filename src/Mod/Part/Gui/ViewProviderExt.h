@@ -129,10 +129,18 @@ public:
     void unsetHighlightedPoints();
     //@}
 
+    /** @name Color mangement methods 
+     */
+    //@{
+    virtual std::map<std::string,App::Color> getElementColors(const char *element=0) const override;
+    //@}
+
     virtual bool isUpdateForced() const override {
         return forceUpdateCount>0;
     }
     virtual void forceUpdate(bool enable = true) override;
+
+    virtual bool allowOverride(const App::DocumentObject &) const override;
 
     /** @name Edit methods */
     //@{

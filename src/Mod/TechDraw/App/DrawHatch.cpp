@@ -75,9 +75,13 @@ DrawHatch::DrawHatch(void)
         patternFileName = QString::fromStdString(defaultFileName);
     }
     QFileInfo tfi(patternFileName);
-        if (tfi.isReadable()) {
-            HatchPattern.setValue(patternFileName.toUtf8().constData());
-        }
+    if (tfi.isReadable()) {
+        HatchPattern.setValue(patternFileName.toUtf8().constData());
+    }
+    
+    std::string svgFilter("Svg files (*.svg *.SVG);;All files (*)");
+    HatchPattern.setFilter(svgFilter);
+
 }
 
 DrawHatch::~DrawHatch()

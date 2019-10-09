@@ -1939,7 +1939,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
 
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
 
-        // TODO Wjat that function supposed to do? (2015-08-05, Fat-Zer)
+        // TODO What is this function supposed to do? (2015-08-05, Fat-Zer)
         func(Feat, features);
 
         // Set the tip of the body

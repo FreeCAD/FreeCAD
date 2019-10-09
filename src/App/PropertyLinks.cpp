@@ -1934,7 +1934,7 @@ PyObject *PropertyLinkSubList::getPyObject(void)
 #endif
     for (unsigned int i = 0; i<count; i++) {
         Py::Tuple tup(2);
-        tup[0] = Py::Object(_lValueList[i]->getPyObject());
+        tup[0] = Py::asObject(_lValueList[i]->getPyObject());
         std::string subItem;
         if (_lSubList.size() > i)
             subItem = _lSubList[i];
@@ -2428,14 +2428,14 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inLis
 // DocInfo
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// Key on aboslute path. 
+// Key on absolute path.
 // Because of possible symbolic links, multiple entry may refer to the same
 // file. We use QFileInfo::canonicalPath to resolve that.
 typedef std::map<QString,DocInfoPtr> DocInfoMap;
 DocInfoMap _DocInfoMap;
 
 class App::DocInfo : 
-    public std::enable_shared_from_this<App::DocInfo> 
+    public std::enable_shared_from_this<App::DocInfo>
 {
 public:
     typedef boost::signals2::scoped_connection Connection;
@@ -2826,11 +2826,11 @@ void PropertyXLink::setSubName(const char *subname)
     if(subname && subname[0])
         subs.emplace_back(subname);
     aboutToSetValue();
-    _setSubValues(std::move(subs));
+    setSubValues(std::move(subs));
     hasSetValue();
 }
 
-void PropertyXLink::_setSubValues(std::vector<std::string> &&subs, 
+void PropertyXLink::setSubValues(std::vector<std::string> &&subs, 
         std::vector<ShadowSub> &&shadows)
 {
     _SubList = std::move(subs);
@@ -2851,7 +2851,7 @@ void PropertyXLink::setValue(App::DocumentObject * lValue, const char *subname)
     std::vector<std::string> subs;
     if(subname && subname[0])
         subs.emplace_back(subname);
-    _setValue(lValue,std::move(subs));
+    setValue(lValue,std::move(subs));
 }
 
 void PropertyXLink::restoreLink(App::DocumentObject *lValue) {
@@ -2884,7 +2884,7 @@ void PropertyXLink::restoreLink(App::DocumentObject *lValue) {
     }
 }
 
-void PropertyXLink::_setValue(App::DocumentObject *lValue, 
+void PropertyXLink::setValue(App::DocumentObject *lValue, 
         std::vector<std::string> &&subs, std::vector<ShadowSub> &&shadows)
 {
     if(_pcLink==lValue && _SubList==subs)
@@ -2934,19 +2934,23 @@ void PropertyXLink::_setValue(App::DocumentObject *lValue,
         unlink();
         docInfo = info;
     }
+    if(docInfo)
+        filePath = docInfo->filePath();
+    else
+        filePath.clear();
     _pcLink=lValue;
     if(docInfo && docInfo->pcDoc)
         stamp=docInfo->pcDoc->LastModifiedDate.getValue();
     objectName = std::move(name);
-    _setSubValues(std::move(subs),std::move(shadows));
+    setSubValues(std::move(subs),std::move(shadows));
     hasSetValue();
 }
 
-void PropertyXLink::_setValue(std::string &&filename, std::string &&name, 
+void PropertyXLink::setValue(std::string &&filename, std::string &&name, 
         std::vector<std::string> &&subs, std::vector<ShadowSub> &&shadows)
 {
     if(name.empty()) {
-        _setValue(0,std::move(subs),std::move(shadows));
+        setValue(0,std::move(subs),std::move(shadows));
         return;
     }
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
@@ -2963,7 +2967,7 @@ void PropertyXLink::_setValue(std::string &&filename, std::string &&name,
         pObject = owner->getDocument()->getObject(name.c_str());
 
     if(pObject) {
-        _setValue(pObject,std::move(subs),std::move(shadows));
+        setValue(pObject,std::move(subs),std::move(shadows));
         return;
     }
     setFlag(LinkDetached,false);
@@ -2977,11 +2981,21 @@ void PropertyXLink::_setValue(std::string &&filename, std::string &&name,
         unlink();
         docInfo = info;
     }
+    if(docInfo)
+        filePath = docInfo->filePath();
+    else
+        filePath.clear();
     if(docInfo && docInfo->pcDoc)
         stamp=docInfo->pcDoc->LastModifiedDate.getValue();
     objectName = std::move(name);
-    _setSubValues(std::move(subs),std::move(shadows));
+    setSubValues(std::move(subs),std::move(shadows));
     hasSetValue();
+}
+
+void PropertyXLink::setValue(App::DocumentObject *link,
+        const std::vector<std::string> &subs, std::vector<ShadowSub> &&shadows)
+{
+    setValue(link,std::vector<std::string>(subs),std::move(shadows));
 }
 
 App::Document *PropertyXLink::getDocument() const {
@@ -3099,7 +3113,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         std::string _path;
         if(exporting) {
             // Here means we are exporting the owner but not exporting the
-            // linked object.  Try to use aboslute file path for easy transition
+            // linked object.  Try to use absolute file path for easy transition
             // into document at different directory
             if(docInfo) 
                 _path = docInfo->filePath();
@@ -3258,9 +3272,9 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
 
     if(file.size() || (!object && name.size())) {
         this->stamp = stamp;
-        _setValue(std::move(file),std::move(name),std::move(subs),std::move(shadows));
+        setValue(std::move(file),std::move(name),std::move(subs),std::move(shadows));
     }else
-        _setValue(object,std::move(subs),std::move(shadows));
+        setValue(object,std::move(subs),std::move(shadows));
     _mapped = std::move(mapped);
 }
 
@@ -3356,9 +3370,9 @@ void PropertyXLink::Paste(const Property &from)
             FC_WARN("Object '" << other.docName << '#' << other.objectName << "' not found");
             return;
         }
-        _setValue(obj,std::vector<std::string>(other._SubList));
+        setValue(obj,std::vector<std::string>(other._SubList));
     } else
-        _setValue(std::string(other.filePath),std::string(other.objectName),
+        setValue(std::string(other.filePath),std::string(other.objectName),
                 std::vector<std::string>(other._SubList));
     setFlag(LinkAllowPartial,other.testFlag(LinkAllowPartial));
 }
@@ -3446,33 +3460,35 @@ void PropertyXLink::setPyObject(PyObject *value) {
         Py::Sequence seq(value);
         if(seq.size()!=2) 
             throw Base::ValueError("Expect input sequence of size 2");
-        std::string subname;
-        PyObject *pyObj = seq[0].ptr();
-        PyObject *pySub = seq[1].ptr();
-        if(pyObj == Py_None) {
+        std::vector<std::string> subs;
+        Py::Object pyObj(seq[0].ptr());
+        Py::Object pySub(seq[1].ptr());
+        if(pyObj.isNone()) {
             setValue(0);
             return;
-        } else if(!PyObject_TypeCheck(pyObj, &DocumentObjectPy::Type))
+        } else if(!PyObject_TypeCheck(pyObj.ptr(), &DocumentObjectPy::Type))
             throw Base::TypeError("Expect the first element to be of 'DocumentObject'");
-        if (PyUnicode_Check(pySub)) {
-#if PY_MAJOR_VERSION >= 3
-            subname = PyUnicode_AsUTF8(pySub);
-#else
-            PyObject* unicode = PyUnicode_AsUTF8String(pySub);
-            subname = PyString_AsString(unicode);
-            Py_DECREF(unicode);
-        }else if (PyString_Check(pySub)) {
-            subname = PyString_AsString(pySub);
-#endif
+        if(pySub.isString()) 
+            subs.push_back(pySub.as_string());
+        else if(pySub.isSequence()) {
+            Py::Sequence seq(pySub);
+            subs.reserve(seq.size());
+            for(size_t i=0;i<seq.size();++i) {
+                Py::Object sub(seq[i]);
+                if(!sub.isString())
+                    throw Base::TypeError("Expect only string inside second argument");
+                subs.push_back(sub.as_string());
+            }
         }else
-            throw Base::TypeError("Expect the second element to be a string");
-        setValue(static_cast<DocumentObjectPy*>(pyObj)->getDocumentObjectPtr(), subname.c_str());
+            throw Base::TypeError("Expect the second element to be a string or sequence of string");
+        setValue(static_cast<DocumentObjectPy*>(pyObj.ptr())->getDocumentObjectPtr(), std::move(subs));
     } else if(PyObject_TypeCheck(value, &(DocumentObjectPy::Type))) {
         setValue(static_cast<DocumentObjectPy*>(value)->getDocumentObjectPtr());
     } else if (Py_None == value) {
         setValue(0);
     } else {
-        throw Base::TypeError("type must be 'DocumentObject', 'None', or '(DocumentObject, SubName)");
+        throw Base::TypeError("type must be 'DocumentObject', 'None', or '(DocumentObject, SubName)' or "
+                "'DocumentObject, [SubName..])");
     }
 }
 
@@ -3501,7 +3517,7 @@ bool PropertyXLink::adjustLink(const std::set<App::DocumentObject*> &inList) {
     auto subs = _SubList;
     auto link = adjustLinkSubs(this,inList,_pcLink,subs); 
     if(link) {
-        _setValue(link,std::move(subs));
+        setValue(link,std::move(subs));
         return true;
     }
     return false;
@@ -3560,26 +3576,6 @@ PropertyXLinkSub::PropertyXLinkSub(bool allowPartial, PropertyLinkBase *parent)
 PropertyXLinkSub::~PropertyXLinkSub() {
 }
 
-void PropertyXLinkSub::setValue(App::DocumentObject *link,
-        const std::vector<std::string> &subs, std::vector<ShadowSub> &&shadows)
-{
-    _setValue(link,std::vector<std::string>(subs),std::move(shadows));
-}
-
-void PropertyXLinkSub::setValue(App::DocumentObject *link,
-        std::vector<std::string> &&subs, std::vector<ShadowSub> &&shadows)
-{
-    _setValue(link,std::move(subs),std::move(shadows));
-}
-
-void PropertyXLinkSub::setSubValues(std::vector<std::string> &&subs, 
-        std::vector<ShadowSub> &&shadows)
-{
-    aboutToSetValue();
-    _setSubValues(std::move(subs),std::move(shadows));
-    hasSetValue();
-}
-
 PropertyXLink *PropertyXLinkSub::createInstance() const{
     return new PropertyXLinkSub();
 }
@@ -3613,43 +3609,6 @@ PyObject *PropertyXLinkSub::getPyObject(void)
         list[i] = Py::String(_SubList[i]);
     tup[1] = list;
     return Py::new_reference_to(tup);
-}
-
-void PropertyXLinkSub::setPyObject(PyObject *value) {
-    if(PySequence_Check(value)) {
-        Py::Sequence seq(value);
-        if(seq.size()!=2) 
-            throw Base::ValueError("Expect input sequence of size 2");
-        std::vector<std::string> subs;
-        Py::Object pyObj(seq[0].ptr());
-        Py::Object pySub(seq[1].ptr());
-        if(pyObj.isNone()) {
-            setValue(0);
-            return;
-        } else if(!PyObject_TypeCheck(pyObj.ptr(), &DocumentObjectPy::Type))
-            throw Base::TypeError("Expect the first element to be of 'DocumentObject'");
-        if(pySub.isString()) 
-            subs.push_back(pySub.as_string());
-        else if(pySub.isSequence()) {
-            Py::Sequence seq(pySub);
-            subs.reserve(seq.size());
-            for(size_t i=0;i<seq.size();++i) {
-                Py::Object sub(seq[i]);
-                if(!sub.isString())
-                    throw Base::TypeError("Expect only string inside second argument");
-                subs.push_back(sub.as_string());
-            }
-        }else
-            throw Base::TypeError("Expect the second element to be a string or sequence of string");
-        setValue(static_cast<DocumentObjectPy*>(pyObj.ptr())->getDocumentObjectPtr(), std::move(subs));
-    } else if(PyObject_TypeCheck(value, &(DocumentObjectPy::Type))) {
-        setValue(static_cast<DocumentObjectPy*>(value)->getDocumentObjectPtr());
-    } else if (Py_None == value) {
-        setValue(0);
-    } else {
-        throw Base::TypeError("type must be 'DocumentObject', 'None', or '(DocumentObject, SubName)' or "
-                "'DocumentObject, [SubName..])");
-    }
 }
 
 //**************************************************************************

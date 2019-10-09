@@ -46,7 +46,7 @@
  * @endcode
  *
  * Translates to command (assuming doc's name is 'DocName', and
- * and objName constrains value 'ObjName'):
+ * and objName contains value 'ObjName'):
  * @code{.py}
  *       Gui.getDocument('DocName').getObject('ObjName')
  * @endcode
@@ -608,6 +608,39 @@ private:
     static bool _blockCmd;
     /// For storing the current command trigger source
     TriggerSource _trigger = TriggerNone;
+};
+
+/** Class to help implement a group command
+ *
+ * To use this class, simply add children command in the constructor of your
+ * derived class by calling addCommand();
+ */
+class GuiExport GroupCommand : public Command {
+public:
+    /// Constructor
+    GroupCommand(const char *name);
+
+    /** Add child command
+     * @param cmd: child command. Pass null pointer to add a separator.
+     * @param reg: whether to register the command with CommandManager
+     * @return Return the command index.
+     */
+    int addCommand(Command *cmd = 0, bool reg=true);
+    /** Add child command
+     * @param cmd: child command name.
+     * @return Return the found command, or NULL if not found.
+     */
+    Command *addCommand(const char *cmdName);
+
+protected:
+    virtual void activated(int iMsg);
+    virtual Gui::Action * createAction(void);
+    virtual void languageChange();
+
+    void setup(Action *);
+
+protected:
+    std::vector<std::pair<Command*,size_t> > cmds;
 };
 
 /** The Python command class

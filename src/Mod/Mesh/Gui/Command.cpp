@@ -457,10 +457,8 @@ void CmdMeshImport::activated(int)
     QStringList fn = Gui::FileDialog::getOpenFileNames(Gui::getMainWindow(),
         QObject::tr("Import mesh"), QString(), filter.join(QLatin1String(";;")));
     for (QStringList::Iterator it = fn.begin(); it != fn.end(); ++it) {
-        QFileInfo fi;
-        fi.setFile(*it);
-
         std::string unicodepath = Base::Tools::escapedUnicodeFromUtf8((*it).toUtf8().data());
+        unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
         openCommand("Import Mesh");
         doCommand(Doc,"import Mesh");
         doCommand(Doc,"Mesh.insert(u\"%s\")",
@@ -1047,6 +1045,31 @@ bool CmdMeshSectionByPlane::isActive(void)
         return false;
 
     return true;
+}
+
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdMeshCrossSections)
+
+CmdMeshCrossSections::CmdMeshCrossSections()
+  : Command("Mesh_CrossSections")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Cross-sections...");
+    sToolTipText  = QT_TR_NOOP("Cross-sections");
+    sStatusTip    = QT_TR_NOOP("Cross-sections");
+}
+
+void CmdMeshCrossSections::activated(int)
+{
+    doCommand(Doc,"import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_CrossSections')\n");
+}
+
+bool CmdMeshCrossSections::isActive(void)
+{
+    return (Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0 &&
+            !Gui::Control().activeDialog());
 }
 
 //--------------------------------------------------------------------------------------
@@ -1769,6 +1792,7 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshPolyTrim());
     rcCmdMgr.addCommand(new CmdMeshTrimByPlane());
     rcCmdMgr.addCommand(new CmdMeshSectionByPlane());
+    rcCmdMgr.addCommand(new CmdMeshCrossSections());
     rcCmdMgr.addCommand(new CmdMeshEvaluation());
     rcCmdMgr.addCommand(new CmdMeshEvaluateFacet());
     rcCmdMgr.addCommand(new CmdMeshEvaluateSolid());

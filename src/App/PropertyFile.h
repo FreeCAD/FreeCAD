@@ -52,9 +52,15 @@ class AppExport PropertyFile : public PropertyString
 public:
     PropertyFile(void);
     virtual ~PropertyFile();
-    
+
     virtual const char* getEditorName(void) const
     { return "Gui::PropertyEditor::PropertyFileItem"; }
+
+    virtual void setFilter(const std::string filter);
+    virtual std::string getFilter(void) const;
+
+private:
+    std::string m_filter;
 };
 
 /** File include properties

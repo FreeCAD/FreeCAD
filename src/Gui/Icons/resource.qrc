@@ -84,6 +84,7 @@
         <file>sel-back.svg</file>
         <file>sel-forward.svg</file>
         <file>sel-instance.svg</file>
+        <file>sel-bbox.svg</file>
         <file>help-browser.svg</file>
         <file>preferences-system.svg</file>
         <file>process-stop.svg</file>
@@ -241,6 +242,7 @@
         <file>sel-back.svg</file>
         <file>sel-forward.svg</file>
         <file>sel-instance.svg</file>
+        <file>sel-bbox.svg</file>
         <file>help-browser.svg</file>
         <file>preferences-system.svg</file>
         <file>window-new.svg</file>

@@ -31,6 +31,7 @@ import sys
 import subprocess
 
 import FreeCAD
+from FreeCAD import Console
 import Fem
 from FreeCAD import Units
 from . import meshtools
@@ -73,7 +74,7 @@ class GmshTools():
         elif self.order == "2nd":
             self.order = "2"
         else:
-            print("Error in order")
+            Console.PrintError("Error in order\n")
 
         # dimension
         self.dimension = self.mesh_obj.ElementDimension
@@ -160,15 +161,15 @@ class GmshTools():
         return error
 
     def start_logs(self):
-        print("\nGmsh FEM mesh run is being started.")
-        print("  Part to mesh: Name --> {},  Label --> {}, ShapeType --> {}".format(
+        Console.PrintLog("\nGmsh FEM mesh run is being started.\n")
+        Console.PrintLog("  Part to mesh: Name --> {},  Label --> {}, ShapeType --> {}\n".format(
             self.part_obj.Name,
             self.part_obj.Label,
             self.part_obj.Shape.ShapeType
         ))
-        print("  CharacteristicLengthMax: {}".format(self.clmax))
-        print("  CharacteristicLengthMin: {}".format(self.clmin))
-        print("  ElementOrder: {}".format(self.order))
+        Console.PrintLog("  CharacteristicLengthMax: {}\n".format(self.clmax))
+        Console.PrintLog("  CharacteristicLengthMin: {}\n".format(self.clmin))
+        Console.PrintLog("  ElementOrder: {}\n".format(self.order))
 
     def get_dimension(self):
         # Dimension
@@ -188,18 +189,18 @@ class GmshTools():
                 self.dimension = "1"
             elif shty == "Vertex":
                 # print("Found: " + shty)
-                FreeCAD.Console.PrintError("You can not mesh a Vertex.\n")
+                Console.PrintError("You can not mesh a Vertex.\n")
                 self.dimension = "0"
             elif shty == "Compound":
                 # print("  Found a " + shty)
-                FreeCAD.Console.PrintLog(
+                Console.PrintLog(
                     "  Found a Compound. Since it could contain"
                     "any kind of shape dimension 3 is used.\n"
                 )
                 self.dimension = "3"  # dimension 3 works for 2D and 1d shapes as well
             else:
                 self.dimension = "0"
-                FreeCAD.Console.PrintError(
+                Console.PrintError(
                     "Could not retrieve Dimension from shape type. Please choose dimension."
                 )
         elif self.dimension == "3D":
@@ -209,8 +210,8 @@ class GmshTools():
         elif self.dimension == "1D":
             self.dimension = "1"
         else:
-            print("Error in dimension")
-        print("  ElementDimension: " + self.dimension)
+            Console.PrintError("Error in dimension\n")
+        Console.PrintMessage("  ElementDimension: " + self.dimension + "\n")
 
     def get_tmp_file_paths(self, param_working_dir=None, create=False):
         self.working_dir = ""
@@ -219,7 +220,7 @@ class GmshTools():
             self.working_dir = param_working_dir
             if femutils.check_working_dir(self.working_dir) is not True:
                 if create is True:
-                    FreeCAD.Console.PrintMessage(
+                    Console.PrintMessage(
                         "Dir given as parameter \'{}\' doesn't exist, "
                         "but parameter to create it is set to True. "
                         "Dir will be created.\n".format(self.working_dir)
@@ -227,13 +228,13 @@ class GmshTools():
                     from os import mkdir
                     mkdir(param_working_dir)
                 else:
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "Dir given as parameter \'{}\' doesn't exist "
                         "and create parameter is set to False.\n"
                         .format(self.working_dir)
                     )
                     self.working_dir = femutils.get_pref_working_dir(self.mesh_obj)
-                    FreeCAD.Console.PrintMessage(
+                    Console.PrintMessage(
                         "Dir \'{}\' will be used instead.\n"
                         .format(self.working_dir)
                     )
@@ -242,12 +243,12 @@ class GmshTools():
 
         # check working_dir exist, if not use a tmp dir and inform the user
         if femutils.check_working_dir(self.working_dir) is not True:
-            FreeCAD.Console.PrintError(
+            Console.PrintError(
                 "Dir \'{}\' doesn't exist or cannot be created.\n"
                 .format(self.working_dir)
             )
             self.working_dir = femutils.get_temp_dir(self.mesh_obj)
-            FreeCAD.Console.PrintMessage(
+            Console.PrintMessage(
                 "Dir \'{}\' will be used instead.\n"
                 .format(self.working_dir)
             )
@@ -259,9 +260,9 @@ class GmshTools():
         self.temp_file_geometry = join(self.working_dir, _geometry_name + ".brep")  # geometry file
         self.temp_file_mesh = join(self.working_dir, self.mesh_name + ".unv")  # mesh file
         self.temp_file_geo = join(self.working_dir, "shape2mesh.geo")  # Gmsh input file
-        print("  " + self.temp_file_geometry)
-        print("  " + self.temp_file_mesh)
-        print("  " + self.temp_file_geo)
+        Console.PrintMessage("  " + self.temp_file_geometry + "\n")
+        Console.PrintMessage("  " + self.temp_file_mesh + "\n")
+        Console.PrintMessage("  " + self.temp_file_geo + "\n")
 
     def get_gmsh_command(self):
         from platform import system
@@ -288,7 +289,7 @@ class GmshTools():
                         "Please install Gmsh or set path to binary "
                         "in FEM preferences tab Gmsh.\n"
                     )
-                    FreeCAD.Console.PrintError(error_message)
+                    Console.PrintError(error_message)
                     raise Exception(error_message)
                 self.gmsh_bin = gmsh_path
             else:
@@ -296,7 +297,7 @@ class GmshTools():
                     "No standard location implemented for your operating system. "
                     "Set GMHS binary path in FEM preferences.\n"
                 )
-                FreeCAD.Console.PrintError(error_message)
+                Console.PrintError(error_message)
                 raise Exception(error_message)
         else:
             if not self.gmsh_bin:
@@ -310,7 +311,7 @@ class GmshTools():
                     self.gmsh_bin = FreeCAD.getHomePath() + "bin/gmsh.exe"
                 else:
                     self.gmsh_bin = "gmsh"
-        print("  " + self.gmsh_bin)
+        Console.PrintMessage("  " + self.gmsh_bin + "\n")
 
     def get_group_data(self):
         # TODO: solids, faces, edges and vertexes don't seem to work together in one group,
@@ -321,21 +322,21 @@ class GmshTools():
             # print("  No mesh group objects.")
             pass
         else:
-            print("  Mesh group objects, we need to get the elements.")
+            Console.PrintMessage("  Mesh group objects, we need to get the elements.\n")
             for mg in self.mesh_obj.MeshGroupList:
                 new_group_elements = meshtools.get_mesh_group_elements(mg, self.part_obj)
                 for ge in new_group_elements:
                     if ge not in self.group_elements:
                         self.group_elements[ge] = new_group_elements[ge]
                     else:
-                        FreeCAD.Console.PrintError("  A group with this name exists already.\n")
+                        Console.PrintError("  A group with this name exists already.\n")
 
         # group meshing for analysis
         analysis_group_meshing = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/General"
         ).GetBool("AnalysisGroupMeshing", False)
         if self.analysis and analysis_group_meshing:
-            print("  Group meshing for analysis.")
+            Console.PrintMessage("  Group meshing for analysis.\n")
             self.group_nodes_export = True
             new_group_elements = meshtools.get_analysis_group_elements(
                 self.analysis,
@@ -345,12 +346,12 @@ class GmshTools():
                 if ge not in self.group_elements:
                     self.group_elements[ge] = new_group_elements[ge]
                 else:
-                    FreeCAD.Console.PrintError("  A group with this name exists already.\n")
+                    Console.PrintError("  A group with this name exists already.\n")
         else:
-            print("  No Group meshing for analysis.")
+            Console.PrintMessage("  No Group meshing for analysis.\n")
 
         if self.group_elements:
-            print("  {}".format(self.group_elements))
+            Console.PrintMessage("  {}\n".format(self.group_elements))
 
     def get_region_data(self):
         # mesh regions
@@ -358,7 +359,7 @@ class GmshTools():
             # print("  No mesh regions.")
             pass
         else:
-            print("  Mesh regions, we need to get the elements.")
+            Console.PrintMessage('  Mesh regions, we need to get the elements.\n')
             # by the use of MeshRegion object and a BooleanSplitCompound
             # there could be problems with node numbers see
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
@@ -377,7 +378,7 @@ class GmshTools():
                             "It is strongly recommended to extract the shape to mesh "
                             "from the Compound and use this one."
                         )
-                        FreeCAD.Console.PrintError(error_message + "\n")
+                        Console.PrintError(error_message + "\n")
                         # TODO: no gui popup because FreeCAD will be in a endless output loop
                         #       as long as the pop up is on --> maybe find a better solution for
                         #       either of both --> thus the pop up is in task panel
@@ -394,7 +395,7 @@ class GmshTools():
                             # if not try to find the element in the shape to mesh
                             search_ele_in_shape_to_mesh = False
                             if not self.part_obj.Shape.isSame(sub[0].Shape):
-                                FreeCAD.Console.PrintLog(
+                                Console.PrintLog(
                                     "  One element of the meshregion {} is "
                                     "not an element of the Part to mesh.\n"
                                     "But we are going to try to find it in "
@@ -416,7 +417,7 @@ class GmshTools():
                                     if found_element:
                                         elems = found_element
                                     else:
-                                        FreeCAD.Console.PrintError(
+                                        Console.PrintError(
                                             "One element of the meshregion {} could not be found "
                                             "in the Part to mesh. It will be ignored.\n"
                                             .format(mr_obj.Name)
@@ -427,19 +428,19 @@ class GmshTools():
                                         mr_obj.CharacteristicLength
                                     ).Value
                                 else:
-                                    FreeCAD.Console.PrintError(
+                                    Console.PrintError(
                                         "The element {} of the meshregion {} has "
                                         "been added to another mesh region.\n"
                                         .format(elems, mr_obj.Name)
                                     )
                     else:
-                        FreeCAD.Console.PrintError(
+                        Console.PrintError(
                             "The meshregion: {} is not used to create the mesh "
                             "because the reference list is empty.\n"
                             .format(mr_obj.Name)
                         )
                 else:
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "The meshregion: {} is not used to create the "
                         "mesh because the CharacteristicLength is 0.0 mm.\n"
                         .format(mr_obj.Name)
@@ -449,8 +450,8 @@ class GmshTools():
                 ele_shape = meshtools.get_element(self.part_obj, eleml)
                 ele_vertexes = meshtools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
                 self.ele_node_map[eleml] = ele_vertexes
-            print("  {}".format(self.ele_length_map))
-            print("  {}".format(self.ele_node_map))
+            Console.PrintMessage("  {}\n".format(self.ele_length_map))
+            Console.PrintMessage("  {}\n".format(self.ele_node_map))
 
     def get_boundary_layer_data(self):
         # mesh boundary layer
@@ -462,7 +463,7 @@ class GmshTools():
             # print("  No mesh boundary layer setting document object.")
             pass
         else:
-            print("  Mesh boundary layers, we need to get the elements.")
+            Console.PrintMessage("  Mesh boundary layers, we need to get the elements.\n")
             if self.part_obj.Shape.ShapeType == "Compound":
                 # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
                 # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
@@ -471,7 +472,7 @@ class GmshTools():
                     "It is strongly recommended to extract the shape to mesh "
                     "from the Compound and use this one."
                 )
-                FreeCAD.Console.PrintError(err + "\n")
+                Console.PrintError(err + "\n")
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
                     if mr_obj.References:
@@ -483,7 +484,7 @@ class GmshTools():
                             # if not try to find the element in the shape to mesh
                             search_ele_in_shape_to_mesh = False
                             if not self.part_obj.Shape.isSame(sub[0].Shape):
-                                FreeCAD.Console.PrintLog(
+                                Console.PrintLog(
                                     "  One element of the mesh boundary layer {} is "
                                     "not an element of the Part to mesh.\n"
                                     "But we are going to try to find it in "
@@ -505,7 +506,7 @@ class GmshTools():
                                     if found_element:  # also
                                         elems = found_element
                                     else:
-                                        FreeCAD.Console.PrintError(
+                                        Console.PrintError(
                                             "One element of the mesh boundary layer {} could "
                                             "not be found in the Part to mesh. "
                                             "It will be ignored.\n"
@@ -518,7 +519,7 @@ class GmshTools():
                                     belem_list.append(elems)
                                     self.bl_boundary_list.append(elems)
                                 else:
-                                    FreeCAD.Console.PrintError(
+                                    Console.PrintError(
                                         "The element {} of the mesh boundary "
                                         "layer {} has been added "
                                         "to another mesh boundary layer.\n"
@@ -550,23 +551,23 @@ class GmshTools():
                         elif self.dimension == "3":
                             setting["FacesList"] = belem_list
                         else:
-                            FreeCAD.Console.PrintError(
+                            Console.PrintError(
                                 "boundary layer is only supported for 2D and 3D mesh"
                             )
                         self.bl_setting_list.append(setting)
                     else:
-                        FreeCAD.Console.PrintError(
+                        Console.PrintError(
                             "The mesh boundary layer: {} is not used to create "
                             "the mesh because the reference list is empty.\n"
                             .format(mr_obj.Name)
                         )
                 else:
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "The mesh boundary layer: {} is not used to create "
                         "the mesh because the min thickness is 0.0 mm.\n"
                         .format(mr_obj.Name)
                     )
-            print("  {}".format(self.bl_setting_list))
+            Console.PrintMessage("  {}\n".format(self.bl_setting_list))
 
     def write_groups(self, geo):
         if self.group_elements:
@@ -612,7 +613,7 @@ class GmshTools():
         # currently single body is supported
         if len(self.bl_setting_list):
             geo.write("// boundary layer setting\n")
-            print("  Start to write boundary layer setup")
+            Console.PrintMessage("  Start to write boundary layer setup\n")
             field_number = 1
             for item in self.bl_setting_list:
                 prefix = "Field[" + str(field_number) + "]"
@@ -629,13 +630,13 @@ class GmshTools():
                     else:
                         line = prefix + "." + str(k) + " = " + str(v) + ";\n"
                         geo.write(line)
-                    print(line)
+                    Console.PrintMessage("{}\n".format(line))
                 geo.write("BoundaryLayer Field = " + str(field_number) + ";\n")
                 geo.write("// end of this boundary layer setup \n")
                 field_number += 1
             geo.write("\n")
             geo.flush()
-            print("  finished in boundary layer setup")
+            Console.PrintMessage("  finished in boundary layer setup\n")
         else:
             # print("  no boundary layer setup is found for this mesh")
             geo.write("// no boundary layer settings for this mesh\n")
@@ -811,7 +812,7 @@ class GmshTools():
             # print(error)
         except:
             error = "Error executing: {}\n".format(" ".join(comandlist))
-            FreeCAD.Console.PrintError(error)
+            Console.PrintError(error)
             self.error = True
         return error
 
@@ -819,9 +820,9 @@ class GmshTools():
         if not self.error:
             fem_mesh = Fem.read(self.temp_file_mesh)
             self.mesh_obj.FemMesh = fem_mesh
-            FreeCAD.Console.PrintMessage("  The Part should have a pretty new FEM mesh!\n")
+            Console.PrintMessage("  The Part should have a pretty new FEM mesh!\n")
         else:
-            FreeCAD.Console.PrintError("No mesh was created.\n")
+            Console.PrintError("No mesh was created.\n")
 
 ##  @}
 

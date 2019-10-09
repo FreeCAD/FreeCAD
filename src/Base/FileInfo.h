@@ -99,9 +99,9 @@ public:
     bool isReadable () const;
     /// Checks if the file exist and is writable
     bool isWritable () const;
-    /// Tries to set the file permisson
+    /// Tries to set the file permission
     bool setPermissions (Permissions);
-    /// Checks if it is a file (not a direrctory)
+    /// Checks if it is a file (not a directory)
     bool isFile () const;
     /// Checks if it is a directory (not a file)
     bool isDir () const;
@@ -148,4 +148,3 @@ protected:
 
 
 #endif // BASE_FILEINFO_H
-

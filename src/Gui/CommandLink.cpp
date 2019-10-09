@@ -36,6 +36,7 @@
 #include "Document.h"
 #include "Selection.h"
 #include "WaitCursor.h"
+#include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
 
 #include <Base/Console.h>
@@ -266,7 +267,7 @@ StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
   : Command("Std_LinkMakeRelative")
 {
     sGroup        = QT_TR_NOOP("Link");
-    sMenuText     = QT_TR_NOOP("Make relative link");
+    sMenuText     = QT_TR_NOOP("Make sub-link");
     sToolTipText  = QT_TR_NOOP("Create a sub-object or sub-element link");
     sWhatsThis    = "Std_LinkMakeRelative";
     sStatusTip    = sToolTipText;
@@ -284,25 +285,46 @@ void StdCmdLinkMakeRelative::activated(int) {
         FC_ERR("no active document");
         return;
     }
-    Command::openCommand("Make relative link");
+    Command::openCommand("Make sub-link");
     try {
-        std::vector<std::string> newNames;
+        std::map<std::pair<App::DocumentObject*,std::string>,
+                 std::pair<App::DocumentObject*, std::vector<std::string> > > linkInfo;
         for(auto &sel : Selection().getCompleteSelection(0)) {
-            std::string name = doc->getUniqueObjectName("Link");
-            FCMD_DOC_CMD(doc,"addObject('App::Link','" << name << "').setLink("
-                    << getObjectCmd(sel.pObject) << ",'" << sel.SubName << "')");
-            auto link = doc->getObject(name.c_str());
-            FCMD_OBJ_CMD(link,"LinkTransform = True");
-            setLinkLabel(sel.pResolvedObject,doc->getName(),name.c_str());
-
-            newNames.push_back(std::move(name));
+            if(!sel.pObject || !sel.pObject->getNameInDocument())
+                continue;
+            auto key = std::make_pair(sel.pObject,
+                    Data::ComplexGeoData::noElementName(sel.SubName));
+            auto element = Data::ComplexGeoData::findElementName(sel.SubName);
+            auto &info = linkInfo[key];
+            info.first = sel.pResolvedObject;
+            if(element && element[0])
+                info.second.emplace_back(element);
         }
+
         Selection().selStackPush();
         Selection().clearCompleteSelection();
-        for(auto &name : newNames)
-            Selection().addSelection(doc->getName(),name.c_str());
-        Selection().selStackPush();
 
+        for(auto &v : linkInfo) {
+            auto &key = v.first;
+            auto &info = v.second;
+
+            std::string name = doc->getUniqueObjectName("Link");
+
+            std::ostringstream ss;
+            ss << '[';
+            for(auto &s : info.second)
+                ss << "'" << s << "',";
+            ss << ']';
+            FCMD_DOC_CMD(doc,"addObject('App::Link','" << name << "').setLink("
+                    << getObjectCmd(key.first) << ",'" << key.second 
+                    << "'," << ss.str() << ")");
+            auto link = doc->getObject(name.c_str());
+            FCMD_OBJ_CMD(link,"LinkTransform = True");
+            setLinkLabel(info.first,doc->getName(),name.c_str());
+
+            Selection().addSelection(doc->getName(),name.c_str());
+        }
+        Selection().selStackPush();
         Command::commitCommand();
     } catch (const Base::Exception& e) {
         Command::abortCommand();
@@ -609,6 +631,7 @@ void StdCmdLinkImportAll::activated(int) {
     }
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 DEF_STD_CMD_A(StdCmdLinkSelectLinked)
@@ -617,8 +640,8 @@ StdCmdLinkSelectLinked::StdCmdLinkSelectLinked()
   : Command("Std_LinkSelectLinked")
 {
     sGroup        = QT_TR_NOOP("Link");
-    sMenuText     = QT_TR_NOOP("Select linked object");
-    sToolTipText  = QT_TR_NOOP("Select the linked object");
+    sMenuText     = QT_TR_NOOP("Go to linked object");
+    sToolTipText  = QT_TR_NOOP("Select the linked object and switch to its owner document");
     sWhatsThis    = "Std_LinkSelectLinked";
     sStatusTip    = sToolTipText;
     eType         = AlterSelection;
@@ -639,8 +662,25 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
         return 0;
 
     auto linkedVp = vp->getLinkedViewProvider(subname,finalLink);
-    if(!linkedVp || linkedVp==vp)
-        return 0;
+    if(!linkedVp || linkedVp==vp) {
+        if(sobj->getDocument()==sels[0].pObject->getDocument())
+            return 0;
+        for(const char *dot=strchr(sels[0].SubName,'.');dot;dot=strchr(dot+1,'.')) {
+            std::string sub(sels[0].SubName,dot+1-sels[0].SubName);
+            auto obj = sels[0].pObject->getSubObject(sub.c_str());
+            if(!obj)
+                break;
+            obj = obj->getLinkedObject(true);
+            if(obj->getDocument()!=sels[0].pObject->getDocument()) {
+                if(finalLink)
+                    return sobj==obj?0:sobj;
+                if(subname) 
+                    *subname = std::string(dot+1);
+                return obj;
+            }
+        }
+        return finalLink?0:sobj;
+    }
 
     if(finalLink && linkedVp == vp->getLinkedViewProvider())
         return 0;
@@ -727,8 +767,8 @@ StdCmdLinkSelectLinkedFinal::StdCmdLinkSelectLinkedFinal()
   : Command("Std_LinkSelectLinkedFinal")
 {
     sGroup        = QT_TR_NOOP("Link");
-    sMenuText     = QT_TR_NOOP("Select the deepest linked object");
-    sToolTipText  = QT_TR_NOOP("Select the deepest linked object");
+    sMenuText     = QT_TR_NOOP("Go to the deepest linked object");
+    sToolTipText  = QT_TR_NOOP("Select the deepest linked object and switch to its owner document");
     sWhatsThis    = "Std_LinkSelectLinkedFinal";
     sStatusTip    = sToolTipText;
     eType         = AlterSelection;
@@ -788,6 +828,61 @@ void StdCmdLinkSelectAllLinks::activated(int)
     Selection().selStackPush();
 }
 
+
+//======================================================================
+// Std_LinkSelectActions
+//===========================================================================
+
+class StdCmdLinkSelectActions : public GroupCommand
+{
+public:
+    StdCmdLinkSelectActions()
+        : GroupCommand("Std_LinkSelectActions")
+    {
+        sGroup        = QT_TR_NOOP("View");
+        sMenuText     = QT_TR_NOOP("Link navigation");
+        sToolTipText  = QT_TR_NOOP("Link navigation actions");
+        sWhatsThis    = "Std_LinkSelectActions";
+        sStatusTip    = QT_TR_NOOP("Link navigation actions");
+        eType         = AlterSelection;
+        bCanLog       = false;
+
+        addCommand(new StdCmdLinkSelectLinked());
+        addCommand(new StdCmdLinkSelectLinkedFinal());
+        addCommand(new StdCmdLinkSelectAllLinks());
+    }
+
+    virtual const char* className() const {return "StdCmdLinkSelectActions";}
+};
+
+//======================================================================
+// Std_LinkActions
+//===========================================================================
+
+class StdCmdLinkActions : public GroupCommand
+{
+public:
+    StdCmdLinkActions()
+        : GroupCommand("Std_LinkActions")
+    {
+        sGroup        = QT_TR_NOOP("View");
+        sMenuText     = QT_TR_NOOP("Link actions");
+        sToolTipText  = QT_TR_NOOP("Link actions");
+        sWhatsThis    = "Std_LinkActions";
+        sStatusTip    = QT_TR_NOOP("Link actions");
+        eType         = AlterDoc;
+        bCanLog       = false;
+
+        addCommand(new StdCmdLinkMakeRelative());
+        addCommand(new StdCmdLinkReplace());
+        addCommand(new StdCmdLinkUnlink());
+        addCommand(new StdCmdLinkImport());
+        addCommand(new StdCmdLinkImportAll());
+    }
+
+    virtual const char* className() const {return "StdCmdLinkActions";}
+};
+
 //===========================================================================
 // Instantiation
 //===========================================================================
@@ -798,16 +893,11 @@ namespace Gui {
 void CreateLinkCommands(void)
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
-    rcCmdMgr.addCommand(new StdCmdLinkSelectLinked());
-    rcCmdMgr.addCommand(new StdCmdLinkSelectLinkedFinal());
-    rcCmdMgr.addCommand(new StdCmdLinkSelectAllLinks());
     rcCmdMgr.addCommand(new StdCmdLinkMake());
-    rcCmdMgr.addCommand(new StdCmdLinkMakeRelative());
+    rcCmdMgr.addCommand(new StdCmdLinkActions());
     rcCmdMgr.addCommand(new StdCmdLinkMakeGroup());
-    rcCmdMgr.addCommand(new StdCmdLinkReplace());
-    rcCmdMgr.addCommand(new StdCmdLinkUnlink());
-    rcCmdMgr.addCommand(new StdCmdLinkImport());
-    rcCmdMgr.addCommand(new StdCmdLinkImportAll());
+    rcCmdMgr.addCommand(new StdCmdLinkSelectActions());
+
 }
 
 } // namespace Gui

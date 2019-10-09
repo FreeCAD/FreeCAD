@@ -40,6 +40,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObserver.h>
@@ -567,7 +568,7 @@ void CmdPartCompJoinFeatures::activated(int iMsg)
     else
         return;
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
@@ -675,7 +676,7 @@ void CmdPartCompSplitFeatures::activated(int iMsg)
     else
         return;
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
@@ -795,7 +796,7 @@ void CmdPartCompCompoundTools::activated(int iMsg)
     else
         return;
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
@@ -1012,6 +1013,8 @@ void CmdPartImport::activated(int iMsg)
         Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
+
+        fn = Base::Tools::escapeEncodeFilename(fn);
         openCommand("Import Part");
         if (select == filter[1] ||
             select == filter[3]) {
@@ -1736,7 +1739,7 @@ void CmdPartCompOffset::activated(int iMsg)
     else
         return;
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();

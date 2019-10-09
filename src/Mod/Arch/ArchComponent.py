@@ -269,6 +269,22 @@ class Component(ArchIFC.IfcProduct):
                 ilist2.append(o)
         return ilist2
 
+    def getParentHeight(self,obj):
+        
+        "gets a height value from a host BuildingPart"
+        
+        for parent in obj.InList:
+            if Draft.getType(parent) in ["Floor","BuildingPart"]:
+                if obj in parent.Group:
+                    if parent.Height.Value:
+                        return parent.Height.Value
+        # not found? get one level higher
+        for parent in obj.InList:
+            if hasattr(parent,"Group"):
+                if obj in parent.Group:
+                    return self.getParentHeight(parent)
+        return 0
+
     def clone(self,obj):
 
         "if this object is a clone, sets the shape. Returns True if this is the case"

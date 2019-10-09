@@ -49,7 +49,15 @@
 
 #include "LineGroup.h"
 
+
+#ifndef M_2PI
+    #define M_2PI ((M_PI)*2.0)
+#endif
+
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
+
+#define SVG_NS_URI         "http://www.w3.org/2000/svg"
+#define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
 
 namespace TechDraw
 {
@@ -103,6 +111,47 @@ class TechDrawExport DrawUtil {
         static App::Color pyTupleToColor(PyObject* pColor);
         static PyObject* colorToPyTuple(App::Color color);
 
+        // Supplementary mathematical functions
+        static int sgn(double x);
+        static double sqr(double x);
+        static void angleNormalize(double &fi);
+        static double angleComposition(double fi, double delta);
+        static double angleDifference(double fi1, double fi2, bool reflex = false);
+
+        // Interval marking functions
+        static unsigned int intervalMerge(std::vector<std::pair<double, bool>> &marking,
+                                          double boundary, bool wraps);
+        static void intervalMarkLinear(std::vector<std::pair<double, bool>> &marking,
+                                       double start, double length, bool value);
+        static void intervalMarkCircular(std::vector<std::pair<double, bool>> &marking,
+                                         double start, double length, bool value);
+
+        // Supplementary 2D analytic geometry functions
+        static int findRootForValue(double Ax2, double Bxy, double Cy2, double Dx, double Ey, double F,
+                                    double value, bool findX, double roots[]);
+        static bool mergeBoundedPoint(const Base::Vector2d &point, const Base::BoundBox2d &boundary,
+                                      std::vector<Base::Vector2d> &storage);
+
+        static void findConicRectangleIntersections(double conicAx2, double conicBxy, double conicCy2,
+                                                    double conicDx, double conicEy, double conicF,
+                                                    const Base::BoundBox2d &rectangle,
+                                                    std::vector<Base::Vector2d> &intersections);
+        static void findLineRectangleIntersections(const Base::Vector2d &linePoint, double lineAngle,
+                                                   const Base::BoundBox2d &rectangle,
+                                                   std::vector<Base::Vector2d> &intersections);
+        static void findCircleRectangleIntersections(const Base::Vector2d &circleCenter, double circleRadius,
+                                                     const Base::BoundBox2d &rectangle,
+                                                     std::vector<Base::Vector2d> &intersections);
+
+        static void findLineSegmentRectangleIntersections(const Base::Vector2d &linePoint, double lineAngle,
+                                                          double segmentBasePosition, double segmentLength,
+                                                          const Base::BoundBox2d &rectangle,
+                                                          std::vector<Base::Vector2d> &intersections);
+        static void findCircularArcRectangleIntersections(const Base::Vector2d &circleCenter, double circleRadius,
+                                                          double arcBaseAngle, double arcRotation,
+                                                          const Base::BoundBox2d &rectangle,
+                                                          std::vector<Base::Vector2d> &intersections);
+
         //debugging routines
         static void dumpVertexes(const char* text, const TopoDS_Shape& s);
         static void dumpEdge(char* label, int i, TopoDS_Edge e);
@@ -112,6 +161,8 @@ class TechDrawExport DrawUtil {
         static void countEdges(const char* label, const TopoDS_Shape& s);
         static const char* printBool(bool b);
         static QString qbaToDebug(const QByteArray& line);
+        static void dumpCS(const char* text, gp_Ax2 CS);
+
 };
 
 } //end namespace TechDraw

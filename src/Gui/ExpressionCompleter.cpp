@@ -18,7 +18,7 @@
 #include <App/DocumentObserver.h>
 #include <App/ObjectIdentifier.h>
 #include "ExpressionCompleter.h"
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <App/PropertyLinks.h>
 
 FC_LOG_LEVEL_INIT("Completer",true,true)

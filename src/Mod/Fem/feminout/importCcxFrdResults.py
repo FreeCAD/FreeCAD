@@ -31,6 +31,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD Calculix FRD Reader for FEM workbench
 
 import FreeCAD
+from FreeCAD import Console
 import os
 
 
@@ -66,18 +67,14 @@ def insert(
 def importFrd(
     filename,
     analysis=None,
-    result_name_prefix=None
+    result_name_prefix=""
 ):
     from . import importToolsFem
     import ObjectsFem
-    if result_name_prefix is None:
-        result_name_prefix = ""
+
     m = read_frd_result(filename)
     result_mesh_object = None
     if len(m["Nodes"]) > 0:
-        if analysis:
-            analysis_object = analysis
-
         mesh = importToolsFem.make_femmesh(m)
         result_mesh_object = ObjectsFem.makeMeshResult(
             FreeCAD.ActiveDocument,
@@ -88,7 +85,7 @@ def importFrd(
         nodenumbers_for_compacted_mesh = []
 
         number_of_increments = len(m["Results"])
-        FreeCAD.Console.PrintLog(
+        Console.PrintLog(
             "Increments: " + str(number_of_increments) + "\n"
         )
         if len(m["Results"]) > 0:
@@ -119,7 +116,7 @@ def importFrd(
                 res_obj.Mesh = result_mesh_object
                 res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
                 if analysis:
-                    analysis_object.addObject(res_obj)
+                    analysis.addObject(res_obj)
 
                 # complementary result object calculations
                 import femresult.resulttools as restools
@@ -175,18 +172,18 @@ def importFrd(
                 "or if CalculiX returned no results because "
                 "of nonpositive jacobian determinant in at least one element.\n"
             )
-            FreeCAD.Console.PrintMessage(error_message)
+            Console.PrintMessage(error_message)
             if analysis:
-                analysis_object.addObject(result_mesh_object)
+                analysis.addObject(result_mesh_object)
 
         if FreeCAD.GuiUp:
             if analysis:
                 import FemGui
-                FemGui.setActiveAnalysis(analysis_object)
+                FemGui.setActiveAnalysis(analysis)
             FreeCAD.ActiveDocument.recompute()
 
     else:
-        FreeCAD.Console.PrintError(
+        Console.PrintError(
             "Problem on frd file import. No nodes found in frd file.\n"
         )
     return res_obj
@@ -197,14 +194,14 @@ def importFrd(
 def read_frd_result(
     frd_input
 ):
-    FreeCAD.Console.PrintMessage(
+    Console.PrintMessage(
         "Read ccx results from frd file: {}\n"
         .format(frd_input)
     )
     inout_nodes = []
     inout_nodes_file = frd_input.rsplit(".", 1)[0] + "_inout_nodes.txt"
     if os.path.exists(inout_nodes_file):
-        FreeCAD.Console.PrintMessage(
+        Console.PrintMessage(
             "Read special 1DFlow nodes data form: {}\n".format(inout_nodes_file)
         )
         f = pyopen(inout_nodes_file, "r")
@@ -213,7 +210,7 @@ def read_frd_result(
             a = line.split(",")
             inout_nodes.append(a)
         f.close()
-        FreeCAD.Console.PrintMessage("{}\n".format(inout_nodes))
+        Console.PrintMessage("{}\n".format(inout_nodes))
     frd_file = pyopen(frd_input, "r")
     nodes = {}
     elements_hexa8 = {}
@@ -370,7 +367,6 @@ def read_frd_result(
                     nd8, nd5, nd6, nd7, nd4, nd1, nd2, nd3, nd20, nd17,
                     nd18, nd19, nd12, nd9, nd10, nd11, nd16, nd13, nd14, nd15
                 )
-                # print(elements_hexa20[elem])
             elif elemType == 5 and input_continues is False:
                 # first line
                 # C3D15 Calculix --> penta15 FreeCAD
@@ -719,11 +715,11 @@ def read_frd_result(
     if not inout_nodes:
         if results:
             if "mflow" in results[0] or "npressure" in results[0]:
-                FreeCAD.Console.PrintError(
+                Console.PrintError(
                     "We have mflow or npressure, but no inout_nodes file.\n"
                 )
     if not nodes:
-        FreeCAD.Console.PrintError("FEM: No nodes found in Frd file.\n")
+        Console.PrintError("FEM: No nodes found in Frd file.\n")
 
     return {
         "Nodes": nodes,

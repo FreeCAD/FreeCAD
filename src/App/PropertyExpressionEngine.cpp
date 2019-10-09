@@ -147,17 +147,17 @@ void PropertyExpressionEngine::hasSetValue()
 
 void PropertyExpressionEngine::Paste(const Property &from)
 {
-    const PropertyExpressionEngine * fromee = static_cast<const PropertyExpressionEngine*>(&from);
+    const PropertyExpressionEngine &fromee = dynamic_cast<const PropertyExpressionEngine&>(from);
 
     AtomicPropertyChange signaller(*this);
 
     expressions.clear();
-    for(auto &e : fromee->expressions) {
+    for(auto &e : fromee.expressions) {
         expressions[e.first] = ExpressionInfo(
                 boost::shared_ptr<Expression>(e.second.expression->copy()));
         expressionChanged(e.first);
     }
-    validator = fromee->validator;
+    validator = fromee.validator;
     signaller.tryInvoke();
 }
 
@@ -553,8 +553,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
         App::any value;
         try {
             // Evaluate expression
-            std::unique_ptr<Expression> e(expressions[*it].expression->eval());
-            value = e->getValueAsAny();
+            value = expressions[*it].expression->getValueAsAny();
             if(option == ExecuteOnRestore && prop->testStatus(Property::EvalOnRestore)) {
                 if(isAnyEqual(value, prop->getPathValue(*it)))
                     continue;

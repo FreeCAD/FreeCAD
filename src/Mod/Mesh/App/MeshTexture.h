@@ -36,8 +36,8 @@ namespace Mesh
 
 /*! The MeshTexture class.
   This algorithm is useful to update the material after a mesh has been modified
-  by removing points or facets. It can't be used if the coordinates of points have
-  changed or if new points have been added.
+  by removing points or facets. If the coordinates of points have changed or if
+  new points have been added then a pre-defined color will be set.
   @author Werner Mayer
  */
 class MeshExport MeshTexture
@@ -48,8 +48,15 @@ public:
      */
     MeshTexture(const Mesh::MeshObject& mesh, const MeshCore::Material &material);
     /*!
-      The \a mesh must be a sub-set of the mesh passed to the constructor. This means
-      that points or facets can be removed but neither changed nor new points added.
+     Find common points or facets of this to the original mesh. For points or facets
+     that don't match \a defaultColor will be used instead, otherwise the color of the
+     original material is used.
+     */
+    void apply(const Mesh::MeshObject& mesh, const App::Color& defaultColor, MeshCore::Material &material);
+    /*!
+     Find common points or facets of this to the original mesh and use the color of the original material.
+     If for a point of \a mesh no matching point of the original mesh can be found the texture mapping will
+     fail.
      */
     void apply(const Mesh::MeshObject& mesh, MeshCore::Material &material);
 

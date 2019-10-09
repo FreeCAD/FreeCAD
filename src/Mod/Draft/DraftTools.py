@@ -785,7 +785,7 @@ class BezCurve(Line):
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create BezCurve"),
                             ['points = '+pts,
-                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',Degree='+str(self.degree)+')',
+                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',degree='+str(self.degree)+')',
                              'Draft.autogroup(bez)'])
             except:
                 print("Draft: error delaying commit")
@@ -948,7 +948,7 @@ class CubicBezCurve(Line):
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create BezCurve"),
                             ['points = '+pts,
-                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',Degree='+str(self.degree)+')',
+                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+',degree='+str(self.degree)+')',
                              'Draft.autogroup(bez)',
                              'FreeCAD.ActiveDocument.recompute()'])
             except:
@@ -4489,6 +4489,7 @@ class WireToBSpline(Modifier):
                                 n = Draft.makeWire(self.Points, self.closed, self.pl)
                             if n:
                                 Draft.formatObject(n,self.obj)
+                                self.doc.recompute()
                         else:
                             self.finish()
 
@@ -5652,7 +5653,7 @@ FreeCADGui.addCommand('Draft_Polygon',Polygon())
 FreeCADGui.addCommand('Draft_BSpline',BSpline())
 class CommandBezierGroup:
     def GetCommands(self):
-        return tuple(['Draft_BezCurve','Draft_CubicBezCurve'])
+        return tuple(['Draft_CubicBezCurve', 'Draft_BezCurve'])
     def GetResources(self):
         return { 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BezierTools",'Bezier tools'),
                  'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezierTools",'Bezier tools')

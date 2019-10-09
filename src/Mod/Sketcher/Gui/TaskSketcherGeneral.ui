@@ -122,7 +122,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
    <item>
     <widget class="QListWidget" name="renderingOrder">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+      <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -130,7 +130,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      <property name="minimumSize">
       <size>
        <width>12</width>
-       <height>12</height>
+       <height>60</height>
       </size>
      </property>
      <property name="toolTip">
@@ -141,6 +141,9 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
      </property>
      <property name="dragDropMode">
       <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+     <property name="resizeMode">
+      <enum>QListView::Fixed</enum>
      </property>
      <property name="sortingEnabled">
       <bool>false</bool>

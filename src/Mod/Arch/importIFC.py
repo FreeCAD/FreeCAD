@@ -648,6 +648,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                 for freecadtype,ifctypes in typesmap.items():
                     if ptype in ifctypes:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
+                        if preferences['DEBUG']: print(": "+obj.Label+" ",end="")
                         if ptype == "IfcBuildingStorey":
                             if product.Elevation:
                                 obj.Placement.Base.z = product.Elevation * ifcscale
@@ -667,6 +668,13 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                     a = obj.IfcData
                     a["IfcUID"] = str(guid)
                     obj.IfcData = a
+            elif pid in additions:
+                # no baseobj but in additions, thus we make a BuildingPart container
+                obj = getattr(Arch,"makeBuildingPart")(name=name)
+                if preferences['DEBUG']: print(": "+obj.Label+" ",end="")
+            else:
+                if preferences['DEBUG']: print(": skipped.")
+                continue
 
         elif (preferences['MERGE_MODE_ARCH'] == 2 and archobj) or (preferences['MERGE_MODE_STRUCT'] == 1 and not archobj):
 
@@ -676,12 +684,20 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                 for freecadtype,ifctypes in typesmap.items():
                     if ptype in ifctypes:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
+                        if preferences['DEBUG']: print(": "+obj.Label+" ",end="")
                         if ptype == "IfcBuildingStorey":
                             if product.Elevation:
                                 obj.Placement.Base.z = product.Elevation * ifcscale
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
+            elif pid in additions:
+                # no baseobj but in additions, thus we make a BuildingPart container
+                obj = getattr(Arch,"makeBuildingPart")(name=name)
+                if preferences['DEBUG']: print(": "+obj.Label+" ",end="")
+            else:
+                if preferences['DEBUG']: print(": skipped.")
+                continue
 
         if preferences['DEBUG']: print("")  # newline for debug prints, print for a new object should be on a new line
 
@@ -947,6 +963,8 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
 
         for host,children in additions.items():
             if host not in objects.keys():
+                # print(host, 'not used')
+                # print(ifcfile[host])
                 continue
             cobs = []
             for child in children:

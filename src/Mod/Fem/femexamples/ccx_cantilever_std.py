@@ -35,7 +35,7 @@ def init_doc(doc=None):
     return doc
 
 
-def setup_cantileverbase(doc=None, solver="ccxtools"):
+def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever base model
 
     if doc is None:
@@ -45,35 +45,36 @@ def setup_cantileverbase(doc=None, solver="ccxtools"):
     box_obj = doc.addObject("Part::Box", "Box")
     box_obj.Height = box_obj.Width = 1000
     box_obj.Length = 8000
+    doc.recompute()
+
+    if FreeCAD.GuiUp:
+        import FreeCADGui
+        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    # TODO How to pass multiple solver for one analysis in one doc
-    if solver == "calculix":
+    if solvertype == "calculix":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-        solver_object.AnalysisType = "static"
-        solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
-    elif solver == "ccxtools":
+    elif solvertype == "ccxtools":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
+        solver_object.WorkingDir = u""
+    elif solvertype == "elmer":
+        analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
+    elif solvertype == "z88":
+        analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
+    if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.AnalysisType = "static"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = "default"
         solver_object.IterationsControlParameterTimeUse = False
-        solver_object.WorkingDir = u""
-    elif solver == "elmer":
-        analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
-    elif solver == "z88":
-        analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
 
     # material
     material_object = analysis.addObject(
@@ -94,7 +95,7 @@ def setup_cantileverbase(doc=None, solver="ccxtools"):
     fixed_constraint.References = [(doc.Box, "Face1")]
 
     # mesh
-    from femexamples.meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
+    from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -111,10 +112,10 @@ def setup_cantileverbase(doc=None, solver="ccxtools"):
     return doc
 
 
-def setup_cantileverfaceload(doc=None, solver="ccxtools"):
+def setup_cantileverfaceload(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever, apply 9 MN on surface of front end face
 
-    doc = setup_cantileverbase(doc, solver)
+    doc = setup_cantileverbase(doc, solvertype)
 
     # force_constraint
     force_constraint = doc.Analysis.addObject(
@@ -129,10 +130,10 @@ def setup_cantileverfaceload(doc=None, solver="ccxtools"):
     return doc
 
 
-def setup_cantilevernodeload(doc=None, solver="ccxtools"):
+def setup_cantilevernodeload(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever, apply 9 MN on the 4 nodes of the front end face
 
-    doc = setup_cantileverbase(doc, solver)
+    doc = setup_cantileverbase(doc, solvertype)
 
     # force_constraint
     force_constraint = doc.Analysis.addObject(
@@ -153,11 +154,11 @@ def setup_cantilevernodeload(doc=None, solver="ccxtools"):
     return doc
 
 
-def setup_cantileverprescribeddisplacement(doc=None, solver="ccxtools"):
+def setup_cantileverprescribeddisplacement(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever
     # apply a prescribed displacement of 250 mm in -z on the front end face
 
-    doc = setup_cantileverbase(doc, solver)
+    doc = setup_cantileverbase(doc, solvertype)
 
     # displacement_constraint
     displacement_constraint = doc.Analysis.addObject(

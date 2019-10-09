@@ -39,7 +39,7 @@
 #include "Document.h"
 #include "DocumentObject.h"
 #include "ObjectIdentifier.h"
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
 #include <Base/QuantityPy.h>

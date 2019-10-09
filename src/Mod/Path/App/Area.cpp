@@ -883,8 +883,8 @@ struct WireJoiner {
                     if(vit->pt().SquareDistance(pt[i]) > tol)
                         break;
                     auto &vinfo = *vit;
-                    // yse, we push ourself, too, because other edges require
-                    // this info in the adjcent list. We'll do filtering later.
+                    // yes, we push ourself too, because other edges require
+                    // this info in the adjacent list. We'll do filtering later.
                     adjacentList.push_back(vinfo);
                     ++info.iEnd[i];
                 }
@@ -3416,4 +3416,3 @@ void Area::setDefaultParams(const AreaStaticParams &params){
 const AreaStaticParams &Area::getDefaultParams() {
     return s_params;
 }
-

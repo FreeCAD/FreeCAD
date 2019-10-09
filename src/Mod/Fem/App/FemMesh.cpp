@@ -1179,7 +1179,7 @@ void FemMesh::readAbaqus(const std::string &FileName)
     /*
     Python command to read Abaqus inp mesh file from test suite:
     from feminout.importInpMesh import read as read_inp
-    femmesh = read_inp(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/mesh/tetra10_mesh.inp')
+    femmesh = read_inp(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/mesh/tetra10_mesh.inp')
     */
 
     PyObject* module = PyImport_ImportModule("feminout.importInpMesh");
@@ -1215,7 +1215,7 @@ void FemMesh::readZ88(const std::string &FileName)
     /*
     Python command to read Z88 mesh file from test suite:
     from feminout.importZ88Mesh import read as read_z88
-    femmesh = read_z88(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/mesh/tetra10_mesh.z88')
+    femmesh = read_z88(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/mesh/tetra10_mesh.z88')
     */
 
     PyObject* module = PyImport_ImportModule("feminout.importZ88Mesh");

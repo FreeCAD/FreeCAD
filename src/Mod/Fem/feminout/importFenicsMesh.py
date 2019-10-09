@@ -31,6 +31,7 @@ __url__ = "http://www.freecadweb.org"
 import os
 
 import FreeCAD
+from FreeCAD import Console
 from . import importToolsFem
 from . import readFenicsXML
 from . import writeFenicsXML
@@ -122,7 +123,7 @@ if FreeCAD.GuiUp:
                     default_value = int(self.form.tableGroups.item(r, 3).text())
                     marked_value = int(self.form.tableGroups.item(r, 4).text())
                 except ValueError:
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "ERROR: value conversion failed "
                         "in table to dict: assuming 0 for default, "
                         "1 for marked.\n"
@@ -165,22 +166,22 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
     of (marked_value (default=1), default_value (default=0))
     """
     if len(objectslist) != 1:
-        FreeCAD.Console.PrintError(
+        Console.PrintError(
             "This exporter can only export one object.\n")
         return
     obj = objectslist[0]
     if not obj.isDerivedFrom("Fem::FemMeshObject"):
-        FreeCAD.Console.PrintError("No FEM mesh object selected.\n")
+        Console.PrintError("No FEM mesh object selected.\n")
         return
 
     if fileString != "":
         fileName, fileExtension = os.path.splitext(fileString)
         if fileExtension.lower() == ".xml":
-            FreeCAD.Console.PrintWarning(
+            Console.PrintWarning(
                 "XML is not designed to save higher order elements.\n")
-            FreeCAD.Console.PrintWarning(
+            Console.PrintWarning(
                 "Reducing order for second order mesh.\n")
-            FreeCAD.Console.PrintWarning("Tri6 -> Tri3, Tet10 -> Tet4, etc.\n")
+            Console.PrintWarning("Tri6 -> Tri3, Tet10 -> Tet4, etc.\n")
             writeFenicsXML.write_fenics_mesh_xml(obj, fileString)
         elif fileExtension.lower() == ".xdmf":
             mesh_groups = importToolsFem.get_FemMeshObjectMeshGroups(obj)

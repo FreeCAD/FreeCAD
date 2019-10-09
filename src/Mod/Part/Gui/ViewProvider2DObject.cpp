@@ -80,7 +80,7 @@ ViewProvider2DObject::ViewProvider2DObject()
 
     pcRoot->addChild(GridRoot);
 
-    sPixmap = "PartFeatureImport";
+    sPixmap = "Tree_Part2D";
 }
 
 ViewProvider2DObject::~ViewProvider2DObject()
