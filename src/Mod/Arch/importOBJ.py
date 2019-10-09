@@ -248,7 +248,7 @@ def export(exportList,filename,colors=None):
                 if not mat[0] in done:
                     outfile.write("newmtl " + mat[0] + "\n")
                     outfile.write("Kd " + str(mat[1][0]) + " " + str(mat[1][1]) + " " + str(mat[1][2]) + "\n")
-                    outfile.write("d " + str(mat[2]) + "\n")
+                    outfile.write("Tr " + str(mat[2]/100) + "\n")
                     done.append(mat[0])
             else:
                 if not mat.Name in done:
