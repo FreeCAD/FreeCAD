@@ -1207,9 +1207,9 @@ def makeCopy(obj,force=None,reparent=False):
         print("Error: Object type cannot be copied")
         return None
     for p in obj.PropertiesList:
-        if not p in ["Proxy"]:
+        if not p in ["Proxy","ExpressionEngine"]:
             if p in newobj.PropertiesList:
-                if newobj.getEditorMode(p) != 1: # don't set read-only props
+                if not "ReadOnly" in newobj.getEditorMode(p):
                     try:
                         setattr(newobj,p,obj.getPropertyByName(p))
                     except AttributeError:
@@ -3977,6 +3977,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyBool","FlipArrows","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension arrows 180 degrees"))
         obj.addProperty("App::PropertyBool","FlipText","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension text 180 degrees"))
         obj.addProperty("App::PropertyBool","ShowUnit","Draft",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
+        obj.addProperty("App::PropertyBool","ShowLine","Draft",QT_TRANSLATE_NOOP("App::Property","Shows the dimension line and arrows"))
         obj.addProperty("App::PropertyVectorDistance","TextPosition","Draft",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
         obj.addProperty("App::PropertyString","Override","Draft",QT_TRANSLATE_NOOP("App::Property","Text override. Use $dim to insert the dimension length"))
         obj.addProperty("App::PropertyString","UnitOverride","Draft",QT_TRANSLATE_NOOP("App::Property","A unit to express the measurement. Leave blank for system default"))
@@ -3991,6 +3992,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.ExtOvershoot = getParam("extovershoot",0)
         obj.Decimals = getParam("dimPrecision",2)
         obj.ShowUnit = getParam("showUnit",True)
+        obj.ShowLine = True
         _ViewProviderDraft.__init__(self,obj)
 
     def attach(self, vobj):
@@ -4033,20 +4035,26 @@ class _ViewProviderDimension(_ViewProviderDraft):
         self.node = coin.SoGroup()
         self.node.addChild(self.color)
         self.node.addChild(self.drawstyle)
-        self.node.addChild(self.coords)
-        self.node.addChild(self.line)
-        self.node.addChild(self.marks)
-        self.node.addChild(self.marksDimOvershoot)
-        self.node.addChild(self.marksExtOvershoot)
+        self.lineswitch2 = coin.SoSwitch()
+        self.lineswitch2.whichChild = -3
+        self.node.addChild(self.lineswitch2)
+        self.lineswitch2.addChild(self.coords)
+        self.lineswitch2.addChild(self.line)
+        self.lineswitch2.addChild(self.marks)
+        self.lineswitch2.addChild(self.marksDimOvershoot)
+        self.lineswitch2.addChild(self.marksExtOvershoot)
         self.node.addChild(label)
         self.node3d = coin.SoGroup()
         self.node3d.addChild(self.color)
         self.node3d.addChild(self.drawstyle)
-        self.node3d.addChild(self.coords)
-        self.node3d.addChild(self.line)
-        self.node3d.addChild(self.marks)
-        self.node3d.addChild(self.marksDimOvershoot)
-        self.node3d.addChild(self.marksExtOvershoot)
+        self.lineswitch3 = coin.SoSwitch()
+        self.lineswitch3.whichChild = -3
+        self.node3d.addChild(self.lineswitch3)
+        self.lineswitch3.addChild(self.coords)
+        self.lineswitch3.addChild(self.line)
+        self.lineswitch3.addChild(self.marks)
+        self.lineswitch3.addChild(self.marksDimOvershoot)
+        self.lineswitch3.addChild(self.marksExtOvershoot)
         self.node3d.addChild(label3d)
         vobj.addDisplayMode(self.node,"2D")
         vobj.addDisplayMode(self.node3d,"3D")
@@ -4351,6 +4359,13 @@ class _ViewProviderDimension(_ViewProviderDraft):
             self.node.insertChild(self.marksExtOvershoot,2)
             self.node3d.insertChild(self.marksExtOvershoot,2)
             vobj.Object.touch()
+        elif (prop == "ShowLine") and hasattr(vobj,"ShowLine"):
+            if vobj.ShowLine:
+                self.lineswitch2.whichChild = -3
+                self.lineswitch3.whichChild = -3
+            else:
+                self.lineswitch2.whichChild = -1
+                self.lineswitch3.whichChild = -1
         else:
             self.updateData(vobj.Object,"Start")
 

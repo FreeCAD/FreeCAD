@@ -425,7 +425,7 @@ PyObject*  MeshPy::crossSections(PyObject *args)
         for (MeshObject::TPolylines::const_iterator jt = it->begin(); jt != it->end(); ++jt) {
             Py::List polyline;
             for (std::vector<Base::Vector3f>::const_iterator kt = jt->begin(); kt != jt->end(); ++kt) {
-                polyline.append(Py::Object(new Base::VectorPy(*kt)));
+                polyline.append(Py::asObject(new Base::VectorPy(*kt)));
             }
             section.append(polyline);
         }
@@ -1989,7 +1989,7 @@ Py::Tuple MeshPy::getTopology(void) const
     Py::List vertex;
     for (std::vector<Base::Vector3d>::const_iterator it = Points.begin();
         it != Points.end(); ++it)
-        vertex.append(Py::Object(new Base::VectorPy(*it)));
+        vertex.append(Py::asObject(new Base::VectorPy(*it)));
     tuple.setItem(0, vertex);
     Py::List facet;
     for (std::vector<Data::ComplexGeoData::Facet>::const_iterator

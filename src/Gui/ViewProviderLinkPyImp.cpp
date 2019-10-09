@@ -45,7 +45,7 @@ std::string ViewProviderLinkPy::representation(void) const
 }
 
 Py::Object ViewProviderLinkPy::getDraggingPlacement() const {
-    return Py::Object(new Base::PlacementPy(new Base::Placement(
+    return Py::asObject(new Base::PlacementPy(new Base::Placement(
                     getViewProviderLinkPtr()->currentDraggingPlacement())));
 }
 

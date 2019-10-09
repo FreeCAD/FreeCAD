@@ -56,6 +56,8 @@ protected:
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void doAction(SoAction* action); 
 
+    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+
 private:
     typedef Gui::SoFCSelectionContext SelContext;
     typedef Gui::SoFCSelectionContextPtr SelContextPtr;

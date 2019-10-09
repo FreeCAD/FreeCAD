@@ -108,8 +108,7 @@ protected:
     PythonDebugger* pyDebugger;
     Base::Reference<ParameterGrp> params;  // link to the Macro parameter group
     long totalLines;
-    std::string pendingLine;
-    LineType pendingType;
+    std::vector<std::pair<LineType,std::string> > pendingLine;
 
     friend struct ApplicationP;
 };

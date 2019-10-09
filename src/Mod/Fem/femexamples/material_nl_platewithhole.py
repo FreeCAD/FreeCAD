@@ -26,6 +26,7 @@ import FreeCAD
 import ObjectsFem
 import Fem
 
+
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
 
@@ -36,34 +37,44 @@ def init_doc(doc=None):
 
 
 def setup(doc=None, solvertype="ccxtools"):
-    # setup reinfoced wall in 2D
+    """ Nonlinear material example, plate with hole.
+
+    https://forum.freecadweb.org/viewtopic.php?f=24&t=31997&start=30
+    https://forum.freecadweb.org/viewtopic.php?t=33974&start=90
+    https://forum.freecadweb.org/viewtopic.php?t=35893
+
+    plate: 400x200x10 mm
+    hole: diameter 100 mm (half cross section)
+    load: 130 MPa tension
+    linear material: Steel, E = 210000 MPa, my = 0.3
+    nonlinear material: '240.0, 0.0' to '270.0, 0.025'
+    TODO nonlinear material: give more information, use values from harry
+    TODO compare results with example from HarryvL
+
+    """
 
     if doc is None:
         doc = init_doc()
 
     # part
-    from FreeCAD import Vector as vec
     import Part
+    from FreeCAD import Vector as vec
     from Part import makeLine as ln
+    from Part import makeCircle as ci
 
-    v1 = vec(0, -2000, 0)
-    v2 = vec(500, -2000, 0)
-    v3 = vec(500, 0, 0)
-    v4 = vec(3500, 0, 0)
-    v5 = vec(3500, -2000, 0)
-    v6 = vec(4000, -2000, 0)
-    v7 = vec(4000, 2000, 0)
-    v8 = vec(0, 2000, 0)
+    v1 = vec(-200, -100, 0)
+    v2 = vec(200, -100, 0)
+    v3 = vec(200, 100, 0)
+    v4 = vec(-200, 100, 0)
     l1 = ln(v1, v2)
     l2 = ln(v2, v3)
     l3 = ln(v3, v4)
-    l4 = ln(v4, v5)
-    l5 = ln(v5, v6)
-    l6 = ln(v6, v7)
-    l7 = ln(v7, v8)
-    l8 = ln(v8, v1)
-    rcwall = doc.addObject("Part::Feature", "FIB_Wall")
-    rcwall.Shape = Part.Face(Part.Wire([l1, l2, l3, l4, l5, l6, l7, l8]))
+    l4 = ln(v4, v1)
+    v5 = vec(0, 0, 0)
+    c1 = ci(50, v5)
+    face = Part.makeFace([Part.Wire([l1, l2, l3, l4]), c1], "Part::FaceMakerBullseye")
+    partfem = doc.addObject("Part::Feature", "Hole_Plate")
+    partfem.Shape = face.extrude(vec(0, 0, 10))
     doc.recompute()
 
     if FreeCAD.GuiUp:
@@ -90,57 +101,44 @@ def setup(doc=None, solvertype="ccxtools"):
         solver.ThermoMechSteadyState = False
         solver.MatrixSolverType = "default"
         solver.IterationsControlParameterTimeUse = False
+        solver.GeometricalNonlinearity = 'nonlinear'
+        solver.MaterialNonlinearity = 'nonlinear'
 
-    # shell thickness
-    thickness = analysis.addObject(
-        ObjectsFem.makeElementGeometry2D(doc, 0, "ShellThickness")
+    # linear material
+    matprop = {}
+    matprop["Name"] = "CalculiX-Steel"
+    matprop["YoungsModulus"] = "210000 MPa"
+    matprop["PoissonRatio"] = "0.30"
+    matprop["Density"] = "7900 kg/m^3"
+    material = analysis.addObject(
+        ObjectsFem.makeMaterialSolid(doc, "Material_lin")
     )[0]
-    thickness.Thickness = 150.0
+    material.Material = matprop
 
-    # material
-    matrixprop = {}
-    matrixprop["Name"] = "Concrete-EN-C35/45"
-    matrixprop["YoungsModulus"] = "32000 MPa"
-    matrixprop["PoissonRatio"] = "0.17"
-    matrixprop["CompressiveStrength"] = "15.75 MPa"
-    # make some hint on the possible angle units in material system
-    matrixprop["AngleOfFriction"] = "30 deg"
-    matrixprop["Density"] = "2500 kg/m^3"
-    reinfoprop = {}
-    reinfoprop["Name"] = "Reinforcement-FIB-B500"
-    reinfoprop["YieldStrength"] = "315 MPa"
-    # not an official FreeCAD material property
-    reinfoprop["ReinforcementRatio"] = "0.0"
-    material_reinforced = analysis.addObject(
-        ObjectsFem.makeMaterialReinforced(doc, "MaterialReinforced")
+    # nonlinear material
+    nonlinear_material = analysis.addObject(
+        ObjectsFem.makeMaterialMechanicalNonlinear(doc, material, "Material_nonlin")
     )[0]
-    material_reinforced.Material = matrixprop
-    material_reinforced.Reinforcement = reinfoprop
+    nonlinear_material.YieldPoint1 = '240.0, 0.0'
+    nonlinear_material.YieldPoint2 = '270.0, 0.025'
+    # check solver attributes, Nonlinearity needs to be set to nonlinear
 
     # fixed_constraint
     fixed_constraint = analysis.addObject(
-        ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
+        ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     )[0]
-    fixed_constraint.References = [(rcwall, "Edge1"), (rcwall, "Edge5")]
+    fixed_constraint.References = [(partfem, "Face4")]
 
     # force constraint
-    force_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
+    pressure_constraint = doc.Analysis.addObject(
+        ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
     )[0]
-    force_constraint.References = [(rcwall, "Edge7")]
-    force_constraint.Force = 1000000.0
-    force_constraint.Direction = (rcwall, ["Edge8"])
-    force_constraint.Reversed = False
-
-    # displacement_constraint
-    displacement_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
-    )[0]
-    displacement_constraint.References = [(rcwall, "Face1")]
-    displacement_constraint.zFix = True
+    pressure_constraint.References = [(partfem, "Face2")]
+    pressure_constraint.Pressure = 130.0
+    pressure_constraint.Reversed = True
 
     # mesh
-    from .meshes.mesh_rc_wall_2d_tria6 import create_nodes, create_elements
+    from .meshes.mesh_platewithhole_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -158,7 +156,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
 
 """
-from femexamples import rc_wall_2d as rc
-rc.setup()
+from femexamples import material_nl_platewithhole as nlmat
+nlmat.setup()
 
 """

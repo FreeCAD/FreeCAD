@@ -104,7 +104,15 @@ ViewProvider::ViewProvider()
 {
     setStatus(UpdateData, true);
 
-    pcRoot = new SoFCSeparator;
+
+    // SoFCSeparater and SoFCSelectionRoot can both track render cache setting.
+    // We change to SoFCSelectionRoot so that we can dynamically change full
+    // selection mode (full highlight vs. boundbox). Note that comparing to
+    // SoFCSeparater, there are some small overhead with SoFCSelectionRoot for
+    // selection context tracking.
+    //
+    // pcRoot = new SoFCSeparator(true);
+    pcRoot = new SoFCSelectionRoot(true);
     pcRoot->ref();
     pcModeSwitch = new SoSwitch();
     pcModeSwitch->ref();

@@ -35,7 +35,7 @@ def init_doc(doc=None):
     return doc
 
 
-def setup(doc=None, solver="ccxtools"):
+def setup(doc=None, solvertype="ccxtools"):
     # setup model
 
     if doc is None:
@@ -79,17 +79,16 @@ def setup(doc=None, solver="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    # TODO How to pass multiple solver for one analysis in one doc
-    if solver == "calculix":
+    if solvertype == "calculix":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-    elif solver == "ccxtools":
+    elif solvertype == "ccxtools":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
-    if solver == "calculix" or solver == "ccxtools":
+    if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.AnalysisType = "static"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False
@@ -139,7 +138,7 @@ def setup(doc=None, solver="ccxtools"):
     pressure_constraint.Reversed = False
 
     # mesh
-    from .meshes.mesh_multimaterial_twoboxes import create_nodes, create_elements
+    from .meshes.mesh_boxes_2_vertikal_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -157,7 +156,7 @@ def setup(doc=None, solver="ccxtools"):
 
 
 """
-from femexamples import multimaterial_twoboxes as twoboxes
+from femexamples import material_multiple_twoboxes as twoboxes
 twoboxes.setup()
 
 """

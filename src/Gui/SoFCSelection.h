@@ -122,7 +122,7 @@ protected:
 private:
     static int getPriority(const SoPickedPoint*);
     static void turnoffcurrent(SoAction * action);
-    void setOverride(SoGLRenderAction * action, SelContextPtr);
+    bool setOverride(SoGLRenderAction * action, SelContextPtr);
     SbBool isHighlighted(SoAction *action);
     SbBool preRender(SoGLRenderAction *act, GLint &oldDepthFunc);
     const SoPickedPoint* getPickedPoint(SoHandleEventAction*) const;

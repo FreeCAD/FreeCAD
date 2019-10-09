@@ -35,7 +35,7 @@ def init_doc(doc=None):
     return doc
 
 
-def setup_base(doc=None, solver="ccxtools"):
+def setup_base(doc=None, solvertype="ccxtools"):
     # setup box base model
 
     if doc is None:
@@ -66,7 +66,7 @@ def setup_base(doc=None, solver="ccxtools"):
     material_object.Material = mat
 
     # mesh
-    from .meshes.mesh_boxanalysis import create_nodes, create_elements
+    from .meshes.mesh_boxanalysis_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
@@ -83,29 +83,28 @@ def setup_base(doc=None, solver="ccxtools"):
     return doc
 
 
-def setup_static(doc=None, solver="ccxtools"):
+def setup_static(doc=None, solvertype="ccxtools"):
     # setup box static, add a fixed, force and a pressure constraint
 
-    doc = setup_base(doc, solver)
+    doc = setup_base(doc, solvertype)
     box_obj = doc.Box
     analysis = doc.Analysis
 
     # solver
-    # TODO How to pass multiple solver for one analysis in one doc
-    if solver == "calculix":
+    if solvertype == "calculix":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-    elif solver == "ccxtools":
+    elif solvertype == "ccxtools":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
-    elif solver == "elmer":
+    elif solvertype == "elmer":
         analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
-    elif solver == "z88":
+    elif solvertype == "z88":
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
-    if solver == "calculix" or solver == "ccxtools":
+    if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.AnalysisType = "static"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False
@@ -139,24 +138,23 @@ def setup_static(doc=None, solver="ccxtools"):
     return doc
 
 
-def setup_frequency(doc=None, solver="ccxtools"):
+def setup_frequency(doc=None, solvertype="ccxtools"):
     # setup box frequency, change solver attributes
 
-    doc = setup_base(doc, solver)
+    doc = setup_base(doc, solvertype)
     analysis = doc.Analysis
 
     # solver
-    # TODO How to pass multiple solver for one analysis in one doc
-    if solver == "calculix":
+    if solvertype == "calculix":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-    elif solver == "ccxtools":
+    elif solvertype == "ccxtools":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
-    if solver == "calculix" or solver == "ccxtools":
+    if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.AnalysisType = "frequency"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False

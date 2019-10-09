@@ -90,7 +90,7 @@ Py::List PathPy::getCommands(void) const
 {
     Py::List list;
     for(unsigned int i = 0; i < getToolpathPtr()->getSize(); i++)
-        list.append(Py::Object(new Path::CommandPy(new Path::Command(getToolpathPtr()->getCommand(i)))));
+        list.append(Py::asObject(new Path::CommandPy(new Path::Command(getToolpathPtr()->getCommand(i)))));
     return list;
 }
 

@@ -668,6 +668,10 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                     a = obj.IfcData
                     a["IfcUID"] = str(guid)
                     obj.IfcData = a
+            elif pid in additions:
+                # no baseobj but in additions, thus we make a BuildingPart container
+                obj = getattr(Arch,"makeBuildingPart")(name=name)
+                if preferences['DEBUG']: print(": "+obj.Label+" ",end="")
             else:
                 if preferences['DEBUG']: print(": skipped.")
                 continue
@@ -687,6 +691,10 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
+            elif pid in additions:
+                # no baseobj but in additions, thus we make a BuildingPart container
+                obj = getattr(Arch,"makeBuildingPart")(name=name)
+                if preferences['DEBUG']: print(": "+obj.Label+" ",end="")
             else:
                 if preferences['DEBUG']: print(": skipped.")
                 continue
@@ -955,6 +963,8 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
 
         for host,children in additions.items():
             if host not in objects.keys():
+                # print(host, 'not used')
+                # print(ifcfile[host])
                 continue
             cobs = []
             for child in children:

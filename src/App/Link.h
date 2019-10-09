@@ -87,10 +87,6 @@ public:
 #define LINK_PARAM_OBJECT(...) \
     (LinkedObject, App::DocumentObject*, App::PropertyLink, 0, "Linked object", ##__VA_ARGS__)
 
-#define LINK_PARAM_SUB_ELEMENT(...) \
-    (SubElements, std::vector<std::string>, App::PropertyStringList, std::vector<std::string>(), \
-     "Non-object Sub-element list of the linked object, e.g. Face1", ##__VA_ARGS__)
-
 #define LINK_PARAM_TRANSFORM(...) \
     (LinkTransform, bool, App::PropertyBool, false, \
       "Set to false to override linked object's placement", ##__VA_ARGS__)
@@ -145,7 +141,6 @@ public:
     LINK_PARAM(PLACEMENT)\
     LINK_PARAM(LINK_PLACEMENT)\
     LINK_PARAM(OBJECT)\
-    LINK_PARAM(SUB_ELEMENT)\
     LINK_PARAM(TRANSFORM)\
     LINK_PARAM(SCALE)\
     LINK_PARAM(SCALE_VECTOR)\
@@ -209,7 +204,7 @@ public:
         return static_cast<LINK_PPTYPE(_param) *>(prop);\
     }\
 
-    // defines get##Name() and get##Name##Property() accessor
+    // defines get##Name##Property() and get##Name##Value() accessor
     BOOST_PP_SEQ_FOR_EACH(LINK_PROP_GET,_,LINK_PARAMS)
 
     PropertyLinkList *_getElementListProperty() const;
@@ -239,9 +234,10 @@ public:
         parseSubName();
         return mySubName.size()?mySubName.c_str():0;
     }
-    const char *getSubElement() const { 
+
+    const std::vector<std::string> &getSubElements() const {
         parseSubName();
-        return mySubElement.size()?mySubElement.c_str():0;
+        return mySubElements;
     }
 
     bool extensionGetSubObject(DocumentObject *&ret, const char *subname, 
@@ -288,6 +284,8 @@ public:
     void cacheChildLabel(int enable=-1) const;
 
 protected:
+    void _handleChangedPropertyName(Base::XMLReader &reader, 
+            const char * TypeName, const char *PropName);
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
     void syncElementList();
@@ -300,16 +298,18 @@ protected:
 protected:
     std::vector<Property *> props;
     std::unordered_set<const App::DocumentObject*> myHiddenElements;
-    mutable std::string mySubElement;
+    mutable std::vector<std::string> mySubElements;
     mutable std::string mySubName;
 
     std::unordered_map<const App::DocumentObject*, 
         boost::signals2::scoped_connection> plainGroupConns;
 
+    long myOwner;
+
     mutable std::unordered_map<std::string,int> myLabelCache; // for label based subname lookup
     mutable bool enableLabelCache;
 
-    long myOwner;
+    bool hasOldSubElement;
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -405,6 +405,7 @@ public:
 
 #define LINK_PARAMS_EXT \
     LINK_PARAM_EXT(SCALE)\
+    LINK_PARAM_EXT_ATYPE(SCALE_VECTOR,App::Prop_Hidden)\
     LINK_PARAM_EXT(SCALES)\
     LINK_PARAM_EXT(VISIBILITIES)\
     LINK_PARAM_EXT(PLACEMENTS)\
@@ -439,10 +440,9 @@ public:
     LINK_PARAM_EXT(TRANSFORM)\
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
-    LINK_PARAM_EXT(SUB_ELEMENT)\
     LINK_PARAM_EXT(SHOW_ELEMENT)\
     LINK_PARAM_EXT_TYPE(COUNT,App::PropertyIntegerConstraint)\
-    LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)
+    LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
 
     LINK_PROPS_DEFINE(LINK_PARAMS_LINK)
 
@@ -455,6 +455,12 @@ public:
     void onDocumentRestored() override {
         LINK_PROPS_SET(LINK_PARAMS_LINK);
         inherited::onDocumentRestored();
+    }
+
+    void handleChangedPropertyName(Base::XMLReader &reader, 
+            const char * TypeName, const char *PropName) override
+    {
+        _handleChangedPropertyName(reader,TypeName,PropName);
     }
 
     bool canLinkProperties() const override;
@@ -471,11 +477,11 @@ public:
 
 #define LINK_PARAMS_ELEMENT \
     LINK_PARAM_EXT(SCALE)\
+    LINK_PARAM_EXT_ATYPE(SCALE_VECTOR,App::Prop_Hidden)\
     LINK_PARAM_EXT_TYPE(OBJECT, App::PropertyXLink)\
     LINK_PARAM_EXT(TRANSFORM) \
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
-    LINK_PARAM_EXT(SUB_ELEMENT)
 
     // defines the actual properties
     LINK_PROPS_DEFINE(LINK_PARAMS_ELEMENT)
@@ -491,6 +497,12 @@ public:
     }
 
     bool canDelete() const;
+
+    void handleChangedPropertyName(Base::XMLReader &reader, 
+            const char * TypeName, const char *PropName) override
+    {
+        _handleChangedPropertyName(reader,TypeName,PropName);
+    }
 };
 
 typedef App::FeaturePythonT<LinkElement> LinkElementPython;

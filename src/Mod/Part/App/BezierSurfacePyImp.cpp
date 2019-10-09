@@ -510,7 +510,7 @@ PyObject* BezierSurfacePy::getPoles(PyObject *args)
             Py::List row;
             for (Standard_Integer j=p.LowerCol(); j<=p.UpperCol(); j++) {
                 const gp_Pnt& pole = p(i,j);
-                row.append(Py::Object(new Base::VectorPy(
+                row.append(Py::asObject(new Base::VectorPy(
                     Base::Vector3d(pole.X(),pole.Y(),pole.Z()))));
             }
             poles.append(row);

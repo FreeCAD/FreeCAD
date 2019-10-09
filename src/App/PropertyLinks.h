@@ -1055,6 +1055,18 @@ public:
     void setValue(App::DocumentObject *) override;
     void setValue(App::DocumentObject *, const char *subname);
 
+    void setValue(std::string &&filePath, std::string &&objectName, std::vector<std::string> &&SubList,
+            std::vector<ShadowSub> &&ShadowSubList = {});
+
+    void setValue(App::DocumentObject *,std::vector<std::string> &&SubList,
+            std::vector<ShadowSub> &&ShadowSubList = {});
+
+    void setValue(App::DocumentObject *,const std::vector<std::string> &SubList, 
+            std::vector<ShadowSub > &&ShadowSubList={});
+
+    void setSubValues(std::vector<std::string> &&SubList,
+            std::vector<ShadowSub> &&ShadowSubList = {});
+
     const char *getSubName(bool newStyle=true) const;
     void setSubName(const char *subname);
     
@@ -1102,11 +1114,6 @@ public:
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
-    // The following APIs are provided to be compatible with PropertyLinkSub.
-    // Note that although PropertyXLink is capable of holding multiple subnames,
-    // there no public APIs allowing user to set more that one subname. Multiple
-    // subname adding API is published in PropertyXLinkSub.
-
     const std::vector<std::string>& getSubValues(void) const {
         return _SubList;
     }
@@ -1123,15 +1130,6 @@ protected:
     void detach();
 
     void restoreLink(App::DocumentObject *);
-
-    void _setSubValues(std::vector<std::string> &&SubList,
-            std::vector<ShadowSub> &&ShadowSubList = {});
-
-    void _setValue(std::string &&filePath, std::string &&objectName, std::vector<std::string> &&SubList,
-            std::vector<ShadowSub> &&ShadowSubList = {});
-
-    void _setValue(App::DocumentObject *,std::vector<std::string> &&SubList,
-            std::vector<ShadowSub> &&ShadowSubList = {});
 
     virtual PropertyXLink *createInstance() const;
 
@@ -1168,21 +1166,9 @@ public:
 
     virtual ~PropertyXLinkSub();
 
-    using PropertyXLink::setValue;
-
-    void setValue(App::DocumentObject *,const std::vector<std::string> &SubList, 
-            std::vector<ShadowSub > &&ShadowSubList={});
-
-    void setValue(App::DocumentObject *,std::vector<std::string> &&SubList,
-            std::vector<ShadowSub > &&ShadowSubList={});
-
-    void setSubValues(std::vector<std::string> &&SubList,
-            std::vector<ShadowSub> &&ShadowSubList={});
-
     virtual bool upgrade(Base::XMLReader &reader, const char *typeName) override;
 
     virtual PyObject *getPyObject(void) override;
-    virtual void setPyObject(PyObject *) override;
 
 protected:
     virtual PropertyXLink *createInstance() const override;
