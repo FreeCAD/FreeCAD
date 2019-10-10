@@ -142,6 +142,10 @@ void TreeParams::onDocumentModeChanged() {
     App::GetApplication().setActiveDocument(App::GetApplication().getActiveDocument());
 }
 
+void TreeParams::onResizableColumnChanged() {
+    TreeWidget::setupResizableColumn();
+}
+
 TreeParams *TreeParams::Instance() {
     static TreeParams *instance;
     if(!instance)
@@ -400,12 +404,17 @@ QWidget* TreeWidgetEditDelegate::createEditor(
     App::GetApplication().setActiveTransaction(str.str().c_str());
     FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
 
-    ExpLineEdit *le = new ExpLineEdit(parent);
-    le->setFrame(false);
-    le->setReadOnly(prop.isReadOnly());
-    le->bind(App::ObjectIdentifier(prop));
-    le->setAutoApply(true);
-    return le;
+    QLineEdit *editor;
+    if(TreeParams::Instance()->LabelExpression()) {
+        ExpLineEdit *le = new ExpLineEdit(parent);
+        le->setAutoApply(true);
+        le->setFrame(false);
+        le->bind(App::ObjectIdentifier(prop));
+        editor = le;
+    } else 
+        editor = new QLineEdit(parent);
+    editor->setReadOnly(prop.isReadOnly());
+    return editor;
 }
 
 // ---------------------------------------------------------------------------
@@ -498,12 +507,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     connectChangedViewObj = Application::Instance->signalChangedObject.connect(
             boost::bind(&TreeWidget::slotChangedViewObject, this, _1,_2));
 
-    // make sure to show a horizontal scrollbar if needed
-#if QT_VERSION >= 0x050000
-    this->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-#else
-    this->header()->setResizeMode(0, QHeaderView::ResizeToContents);
-#endif
+    setupResizableColumn(this);
     this->header()->setStretchLastSection(false);
 
     // Add the first main label
@@ -950,8 +954,8 @@ void TreeWidget::onCreateGroup()
 void TreeWidget::onRelabelObject()
 {
     QTreeWidgetItem* item = currentItem();
-    if (item)
-        editItem(item);
+    if (item) 
+        editItem(item, item->type()==ObjectType?currentColumn():0);
 }
 
 void TreeWidget::onStartEditing()
@@ -1093,6 +1097,22 @@ TreeWidget *TreeWidget::instance() {
             return inst;
     }
     return res;
+}
+
+void TreeWidget::setupResizableColumn(TreeWidget *tree) {
+    auto mode = TreeParams::Instance()->ResizableColumn()?
+        QHeaderView::Interactive : QHeaderView::ResizeToContents;
+    for(auto inst : Instances) {
+        if(!tree || tree==inst) {
+#if QT_VERSION >= 0x050000
+            inst->header()->setSectionResizeMode(0, mode);
+            inst->header()->setSectionResizeMode(1, mode);
+#else
+            inst->header()->setResizeMode(0, mode);
+            inst->header()->setResizeMode(1, mode);
+#endif
+        }
+    }
 }
 
 std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document *doc)

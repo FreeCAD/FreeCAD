@@ -3320,6 +3320,22 @@ StdTreeRecordSelection::StdTreeRecordSelection()
 }
 
 //===========================================================================
+// Std_TreeResizableColumn
+//===========================================================================
+TREEVIEW_CMD_DEF(ResizableColumn)
+
+StdTreeResizableColumn::StdTreeResizableColumn()
+  : Command("Std_TreeResizableColumn")
+{
+    sGroup       = QT_TR_NOOP("TreeView");
+    sMenuText    = QT_TR_NOOP("Resizable column");
+    sToolTipText = QT_TR_NOOP("Make treeview column resizable");
+    sStatusTip   = sToolTipText;
+    sWhatsThis   = "Std_TreeResizableColumn";
+    eType        = NoDefaultAction;
+}
+
+//===========================================================================
 // Std_TreeDrag
 //===========================================================================
 DEF_STD_CMD(StdTreeDrag)
@@ -3372,6 +3388,10 @@ public:
         addCommand(new StdTreeSyncPlacement());
         addCommand(new StdTreePreSelection());
         addCommand(new StdTreeRecordSelection());
+
+        addCommand();
+
+        addCommand(new StdTreeResizableColumn());
 
         addCommand();
 
@@ -3509,7 +3529,6 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdSelBack());
     rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
-
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     if(hGrp->GetASCII("GestureRollFwdCommand").empty())

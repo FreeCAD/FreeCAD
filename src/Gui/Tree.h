@@ -79,6 +79,8 @@ public:
     TreeWidget(const char *name, QWidget* parent=0);
     ~TreeWidget();
 
+    static void setupResizableColumn(TreeWidget *tree=0);
+
     static void scrollItemToTop();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     void selectLinkedObject(App::DocumentObject *linked); 
@@ -535,6 +537,8 @@ public:
     FC_TREEPARAM_DEF(KeepRootOrder,bool,Bool,true) \
     FC_TREEPARAM_DEF(TreeActiveAutoExpand,bool,Bool,true) \
     FC_TREEPARAM_DEF(Indentation,int,Int,0) \
+    FC_TREEPARAM_DEF2(ResizableColumn,bool,Bool,false) \
+    FC_TREEPARAM_DEF(LabelExpression,bool,Bool,false) \
 
 #undef FC_TREEPARAM_DEF
 #define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
