@@ -304,6 +304,11 @@ class CommandAddonManager:
                 # kill existing show worker (might still be busy loading images...)
                 if self.show_worker:
                     self.show_worker.exit()
+                    self.show_worker.stopImageLoading()
+                    # wait until the thread stops
+                    while True:
+                        if self.show_worker.isFinished():
+                            break
             self.show_worker = ShowWorker(self.repos, idx)
             self.show_worker.info_label.connect(self.show_information)
             self.show_worker.addon_repos.connect(self.update_repos)
