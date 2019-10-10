@@ -372,9 +372,29 @@ void Command::setupCheckable(int iMsg) {
 
 }
 
+void Command::onInvoke(int index) {
+    if(index>=0 && triggerSource()==TriggerChildAction) {
+        Gui::ActionGroup* group = qobject_cast<Gui::ActionGroup*>(_pcAction);
+        if(group) {
+            auto actions = group->actions();
+            if(index < actions.size()) {
+                auto a = actions[index];
+                if(a) {
+                    group->setIcon(a->icon());
+                    group->setToolTip(a->toolTip());
+                }
+                group->setProperty("defaultAction", QVariant(index));
+            }
+        }
+    }
+}
+
 void Command::invoke(int i, TriggerSource trigger)
 {
     CommandTrigger cmdTrigger(_trigger,trigger);
+
+    onInvoke(i);
+
     if(displayText.empty()) {
         displayText = getMenuText();
         boost::replace_all(displayText,"&","");
@@ -988,20 +1008,37 @@ Action * GroupCommand::createAction(void) {
     pcAction->setExclusive(false);
     pcAction->setCheckable(true);
 
+    int idx = -1;
+
+    int i=-1;
     for(auto &v : cmds) {
+        ++i;
         if(!v.first)
             pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
-        else
+        else {
             v.first->addToGroup(pcAction);
+            if(idx<0 && !(v.first->getType() & NoDefaultAction))
+                idx = i;
+        }
     }
 
-    pcAction->setProperty("defaultAction", QVariant(0));
+    pcAction->setProperty("defaultAction", QVariant(idx));
     setup(pcAction);
+    if(idx >= 0)
+        pcAction->setChecked(cmds[idx].first->getAction()->isChecked(),true);
     return pcAction;
 }
 
-void GroupCommand::activated(int iMsg)
-{
+bool GroupCommand::isActive() {
+    if(_pcAction && triggerSource() == TriggerNone) {
+        int idx = _pcAction->property("defaultAction").toInt();
+        if(idx >= 0) 
+            _pcAction->setChecked(cmds[idx].first->getAction()->isChecked(),true);
+    }
+    return true;
+}
+
+void GroupCommand::onInvoke(int iMsg) {
     if(iMsg<0 || iMsg>=(int)cmds.size())
         return;
 
@@ -1009,13 +1046,29 @@ void GroupCommand::activated(int iMsg)
     if(!v.first)
         return;
 
-    if(triggerSource()!=TriggerChildAction)
-        v.first->invoke(0);
-
     Action* cmdAction = v.first->getAction();
-    if(_pcAction && cmdAction) {
+    if(!(v.first->getType() & NoDefaultAction) && _pcAction && cmdAction) {
         _pcAction->setProperty("defaultAction", QVariant((int)v.second));
         setup(_pcAction);
+    }
+}
+
+void GroupCommand::activated(int iMsg)
+{
+    if(iMsg<0 || iMsg>=(int)cmds.size() || !_pcAction)
+        return;
+
+    auto &v = cmds[iMsg];
+    if(!v.first)
+        return;
+
+    if(_pcAction) {
+        if(triggerSource()==TriggerChildAction) {
+            if(!(v.first->getType() & NoDefaultAction)) {
+                _pcAction->setChecked(v.first->getAction()->isChecked(),true);
+            }
+        } else
+            v.first->invoke(_pcAction->isChecked());
     }
 }
 
@@ -1026,13 +1079,11 @@ void GroupCommand::languageChange() {
 
 void GroupCommand::setup(Action *pcAction) {
 
-    pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
-    
     int idx = pcAction->property("defaultAction").toInt();
     if(idx>=0 && idx<(int)cmds.size() && cmds[idx].first) {
         auto cmd = cmds[idx].first;
+        pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
         pcAction->setIcon(BitmapFactory().iconFromTheme(cmd->getPixmap()));
-        pcAction->setChecked(cmd->getAction()->isChecked(),true);
         const char *context = dynamic_cast<PythonCommand*>(cmd) ? cmd->getName() : cmd->className();
         const char *tooltip = cmd->getToolTipText();
         const char *statustip = cmd->getStatusTip();
@@ -1040,7 +1091,12 @@ void GroupCommand::setup(Action *pcAction) {
             statustip = tooltip;
         pcAction->setToolTip(QCoreApplication::translate(context,tooltip));
         pcAction->setStatusTip(QCoreApplication::translate(context,statustip));
+    } else {
+        applyCommandData(this->className(), pcAction);
+        if (sPixmap)
+            pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
     }
+    
 }
 
 //===========================================================================
