@@ -335,8 +335,9 @@ void ActionGroup::onActivated ()
     _pcCmd->invoke(this->property("defaultAction").toInt(), Command::TriggerAction);
 }
 
-void ActionGroup::onToggled(bool)
+void ActionGroup::onToggled(bool checked)
 {
+    (void)checked;
     onActivated();
 } 
 
@@ -364,9 +365,14 @@ void ActionGroup::onActivated (QAction* a)
         }
     }
 #endif
+
+    // The following logic is moved to Command::onInvoke()
+#if 0
     this->setIcon(a->icon());
     this->setToolTip(a->toolTip());
     this->setProperty("defaultAction", QVariant(index));
+#endif
+
     _pcCmd->invoke(index, Command::TriggerChildAction);
 }
 

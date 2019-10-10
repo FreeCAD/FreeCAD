@@ -327,6 +327,8 @@ protected:
     virtual void activated(int iMsg)=0;
     /// Creates the used Action
     virtual Action * createAction(void);
+    /// Called before invoking
+    virtual void onInvoke(int iMsg);
     /// Applies the menu text, tool and status tip to the passed action object
     void applyCommandData(const char* context, Action* );
     const char* keySequenceToAccel(int) const;
@@ -564,6 +566,10 @@ public:
     /// Get the name of the grouping of the command
     const char* getGroupName() const { return sGroup; }
     void setGroupName(const char*);
+    /** Return the type of the command
+     * @sa CmdType
+     */
+    int getType() const { return eType; }
     //@}
     
     
@@ -591,6 +597,7 @@ protected:
         AlterSelection = 4,  /**< Command change the Selection */
         ForEdit        = 8,  /**< Command is in a special edit mode active */
         NoTransaction  = 16, /**< Do not setup auto transaction */
+        NoDefaultAction  = 32, /**< Do not set as default action if included in a group command */
     };
 
     /** @name Attributes 
@@ -641,6 +648,8 @@ protected:
     virtual void activated(int iMsg);
     virtual Gui::Action * createAction(void);
     virtual void languageChange();
+    virtual void onInvoke(int iMsg);
+    virtual bool isActive(void);
 
     void setup(Action *);
 
