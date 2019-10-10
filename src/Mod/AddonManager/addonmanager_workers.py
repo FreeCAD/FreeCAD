@@ -407,13 +407,20 @@ class ShowWorker(QtCore.QThread):
 
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
+        self.mustLoadImages = True
         l = self.loadImages( message, self.repos[self.idx][1], self.repos[self.idx][0])
         if l:
             self.info_label.emit( l )
         self.stop = True
 
+    def stopImageLoading(self):
+
+        "this stops the image loading process and allow the thread to terminate earlier"
+
+        self.mustLoadImages = False
+
     def loadImages(self,message,url,wbName):
-        
+
         "checks if the given page contains images and downloads them"
 
         # QTextBrowser cannot display online images. So we download them
@@ -427,6 +434,8 @@ class ShowWorker(QtCore.QThread):
             if not os.path.exists(store):
                 os.makedirs(store)
             for path in imagepaths:
+                if not self.mustLoadImages:
+                    return None
                 origpath = path
                 if "?" in path:
                     # remove everything after the ?
