@@ -816,10 +816,7 @@ class _Wall(ArchComponent.Component):
 
         height = obj.Height.Value
         if not height:
-            for p in obj.InList:
-                if Draft.getType(p) in ["Floor","BuildingPart"]:
-                    if p.Height.Value:
-                        height = p.Height.Value
+            height = self.getParentHeight(obj)
         if not height:
             return None
         if obj.Normal == Vector(0,0,0):

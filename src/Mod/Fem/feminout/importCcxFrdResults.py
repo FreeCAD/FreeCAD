@@ -33,7 +33,6 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 from FreeCAD import Console
 import os
-import Fem
 
 
 # ********* generic FreeCAD import and export methods *********

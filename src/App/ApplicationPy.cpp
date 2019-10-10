@@ -103,22 +103,24 @@ PyMethodDef Application::Methods[] = {
      "* If no module is given it will be determined by the file extension.\n"
      "* If more than one module can load a file the first one one will be taken.\n"
      "* If no module exists to load the file an exception will be raised."},
-    {"open",   (PyCFunction) Application::sOpenDocument, METH_VARARGS,
+    {"open",   (PyCFunction) Application::sOpenDocument, METH_VARARGS|METH_KEYWORDS,
      "See openDocument(string)"},
-    {"openDocument",   (PyCFunction) Application::sOpenDocument, METH_VARARGS,
-     "openDocument(string) -> object\n\n"
-     "Create a document and load the project file into the document.\n"
-     "The string argument must point to an existing file. If the file doesn't exist\n"
-     "or the file cannot be loaded an I/O exception is thrown. In this case the\n"
-     "document is kept alive."},
+    {"openDocument",   (PyCFunction) Application::sOpenDocument, METH_VARARGS|METH_KEYWORDS,
+     "openDocument(filepath,hidden=False) -> object\n"
+     "Create a document and load the project file into the document.\n\n"
+     "filepath: file path to an existing file. If the file doesn't exist\n"
+     "          or the file cannot be loaded an I/O exception is thrown.\n"
+     "          In this case the document is kept alive.\n"
+     "hidden: whether to hide document 3D view."},
 //  {"saveDocument",   (PyCFunction) Application::sSaveDocument, METH_VARARGS,
 //   "saveDocument(string) -- Save the document to a file."},
 //  {"saveDocumentAs", (PyCFunction) Application::sSaveDocumentAs, METH_VARARGS},
-    {"newDocument",    (PyCFunction) Application::sNewDocument, METH_VARARGS,
-     "newDocument([string]) -> object\n\n"
-     "Create a new document with a given name.\n"
-     "The document name must be unique which\n"
-     "is checked automatically."},
+    {"newDocument",    (PyCFunction) Application::sNewDocument, METH_VARARGS|METH_KEYWORDS,
+     "newDocument(name, label=None, hidden=False) -> object\n"
+     "Create a new document with a given name.\n\n"
+     "name: unique document name which is checked automatically.\n"
+     "label: optional user changable label for the document.\n"
+     "hidden: whether to hide document 3D view."},
     {"closeDocument",  (PyCFunction) Application::sCloseDocument, METH_VARARGS,
      "closeDocument(string) -> None\n\n"
      "Close the document with a given name."},
@@ -234,16 +236,19 @@ PyObject* Application::sIsRestoring(PyObject * /*self*/, PyObject *args) {
     return Py::new_reference_to(Py::Boolean(GetApplication().isRestoring()));
 }
 
-PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args)
+PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args, PyObject *kwd)
 {
     char* Name;
-    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
+    PyObject *hidden = Py_False;
+    static char *kwlist[] = {"name","hidden",0};
+    if (!PyArg_ParseTupleAndKeywords(args, kwd, "et|O", kwlist,
+                "utf-8", &Name, &hidden))
         return NULL;
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
     try {
         // return new document
-        return (GetApplication().openDocument(EncodedName.c_str())->getPyObject());
+        return (GetApplication().openDocument(EncodedName.c_str(),!PyObject_IsTrue(hidden))->getPyObject());
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_IOError, e.what());
@@ -256,15 +261,18 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args)
     }
 }
 
-PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args)
+PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObject *kwd)
 {
     char *docName = 0;
     char *usrName = 0;
-    if (!PyArg_ParseTuple(args, "|etet", "utf-8", &docName, "utf-8", &usrName))
+    PyObject *hidden = Py_False;
+    static char *kwlist[] = {"name","label","hidden",0};
+    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|etetO", kwlist,
+                "utf-8", &docName, "utf-8", &usrName, &hidden))
         return NULL;
 
     PY_TRY {
-        App::Document* doc = GetApplication().newDocument(docName, usrName);
+        App::Document* doc = GetApplication().newDocument(docName, usrName,!PyObject_IsTrue(hidden));
         PyMem_Free(docName);
         PyMem_Free(usrName);
         return doc->getPyObject();

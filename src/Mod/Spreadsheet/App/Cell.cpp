@@ -585,9 +585,9 @@ bool Cell::getSpans(int &rows, int &columns) const
     return isUsed(SPANS_SET);
 }
 
-void Cell::setException(const std::string &e)
+void Cell::setException(const std::string &e, bool silent)
 {
-    if(e.size() && owner && owner->sheet()) {
+    if(!silent && e.size() && owner && owner->sheet()) {
         FC_ERR(owner->sheet()->getFullName() << '.' 
                 << address.toString() << ": " << e);
     }

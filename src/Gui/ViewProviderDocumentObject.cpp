@@ -57,6 +57,7 @@
 #include "TaskView/TaskAppearance.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
+#include "SoFCUnifiedSelection.h"
 #include "Tree.h"
 #include <Gui/ViewProviderDocumentObjectPy.h>
 
@@ -74,6 +75,10 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
     ADD_PROPERTY(DisplayMode,((long)0));
     ADD_PROPERTY(Visibility,(true));
     ADD_PROPERTY(ShowInTree,(true));
+
+    ADD_PROPERTY(SelectionStyle,((long)0));
+    static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
+    SelectionStyle.setEnums(SelectionStyleEnum);
 
     static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",NULL};
     ADD_PROPERTY(OnTopWhenSelected,((long int)0));
@@ -178,8 +183,18 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             Visibility.getValue() ? show() : hide();
             Visibility.setStatus(App::Property::User2, false);
         }
-        if(getObject() && getObject()->Visibility.getValue()!=Visibility.getValue())
+        if (!Visibility.testStatus(App::Property::User1)
+                && getObject() 
+                && getObject()->Visibility.getValue()!=Visibility.getValue())
+        {
             getObject()->Visibility.setValue(Visibility.getValue());
+        }
+    }
+    else if (prop == &SelectionStyle) {
+        if(getRoot()->isOfType(SoFCSelectionRoot::getClassTypeId())) {
+            static_cast<SoFCSelectionRoot*>(getRoot())->selectionStyle = SelectionStyle.getValue()
+                ? SoFCSelectionRoot::Box : SoFCSelectionRoot::Full;
+        }
     }
 
     if (pcDocument && !pcDocument->isModified() && testStatus(Gui::ViewStatus::TouchDocument)) {
@@ -227,6 +242,9 @@ void ViewProviderDocumentObject::updateView()
         return;
 
     Base::ObjectStatusLocker<ViewStatus,ViewProviderDocumentObject> lock(ViewStatus::UpdatingView,this);
+
+    // Disable object visibility syncing
+    Base::ObjectStatusLocker<App::Property::Status,App::Property> lock2(App::Property::User1, &Visibility);
 
     std::map<std::string, App::Property*> Map;
     pcObject->getPropertyMap(Map);
@@ -287,8 +305,12 @@ void ViewProviderDocumentObject::update(const App::Property* prop)
     if(prop == &getObject()->Visibility) {
         if(!isRestoring() && Visibility.getValue()!=getObject()->Visibility.getValue())
             Visibility.setValue(!Visibility.getValue());
-    }else
+    } else {
+        // Disable object visibility syncing
+        Base::ObjectStatusLocker<App::Property::Status,App::Property>
+            guard(App::Property::User1, &Visibility);
         ViewProvider::update(prop);
+    }
 }
 
 Gui::Document* ViewProviderDocumentObject::getDocument() const

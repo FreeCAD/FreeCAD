@@ -194,6 +194,9 @@
          </property>
          <item row="0" column="0">
           <widget class="Gui::PrefFileChooser" name="MacroPath">
+           <property name="toolTip">
+            <string>The directory in which the application will search for macros</string>
+           </property>
            <property name="mode">
             <enum>Gui::FileChooser::Directory</enum>
            </property>

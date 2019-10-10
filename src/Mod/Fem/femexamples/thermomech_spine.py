@@ -35,7 +35,7 @@ def init_doc(doc=None):
     return doc
 
 
-def setup(doc=None, solver="ccxtools"):
+def setup(doc=None, solvertype="ccxtools"):
     # setup model
 
     if doc is None:
@@ -57,20 +57,19 @@ def setup(doc=None, solver="ccxtools"):
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
     # solver
-    # TODO How to pass multiple solver for one analysis in one doc
-    if solver == "calculix":
+    if solvertype == "calculix":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-    elif solver == "ccxtools":
+    elif solvertype == "ccxtools":
         solver_object = analysis.addObject(
             ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
         solver_object.WorkingDir = u""
     # should be possible with elmer too
-    # elif solver == "elmer":
+    # elif solvertype == "elmer":
     #     analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
-    if solver == "calculix" or solver == "ccxtools":
+    if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.AnalysisType = "thermomech"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = True
@@ -125,7 +124,7 @@ def setup(doc=None, solver="ccxtools"):
     heatflux_constraint.FilmCoef = 5.678
 
     # mesh
-    from .meshes.mesh_thermomech_spine import create_nodes, create_elements
+    from .meshes.mesh_thermomech_spine_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

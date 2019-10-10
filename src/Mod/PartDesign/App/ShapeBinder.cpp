@@ -361,14 +361,14 @@ void SubShapeBinder::update() {
                         first = false;
                     } else {
                         // The remaining support will cancel the Placement
-                        mat.inverse();
+                        mat.inverseGauss();
                         res.first->second = mat;
                     }
                 }else{
                     // For newer SubShapeBinder, the Placement property is free
                     // to use by the user to add additional offset to the
                     // binding object
-                    mat.inverse();
+                    mat.inverseGauss();
                     res.first->second = Placement.getValue().toMatrix()*mat;
                 }
             }

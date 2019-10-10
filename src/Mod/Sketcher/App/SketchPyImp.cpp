@@ -200,7 +200,7 @@ Py::Tuple SketchPy::getGeometries(void) const
 
 Py::Object SketchPy::getShape(void) const
 {
-    return Py::Object(new TopoShapePy(new TopoShape(getSketchPtr()->toShape())));
+    return Py::asObject(new TopoShapePy(new TopoShape(getSketchPtr()->toShape())));
 }
 
 

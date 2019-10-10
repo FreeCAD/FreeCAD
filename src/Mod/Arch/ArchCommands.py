@@ -275,6 +275,8 @@ def setAsSubcomponent(obj):
             color = getDefaultColor("Construction")
             if hasattr(obj.ViewObject,"LineColor"):
                 obj.ViewObject.LineColor = color
+            if hasattr(obj.ViewObject, "PointColor"):
+                obj.ViewObject.PointColor = color
             if hasattr(obj.ViewObject,"ShapeColor"):
                 obj.ViewObject.ShapeColor = color
             if hasattr(obj.ViewObject,"Transparency"):

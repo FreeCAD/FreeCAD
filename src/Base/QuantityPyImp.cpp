@@ -560,7 +560,7 @@ void QuantityPy::setValue(Py::Float arg)
 
 Py::Object QuantityPy::getUnit(void) const
 {
-    return Py::Object(new UnitPy(new Unit(getQuantityPtr()->getUnit())));
+    return Py::asObject(new UnitPy(new Unit(getQuantityPtr()->getUnit())));
 }
 
 void QuantityPy::setUnit(Py::Object arg)

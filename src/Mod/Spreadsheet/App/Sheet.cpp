@@ -858,15 +858,15 @@ DocumentObjectExecReturn *Sheet::execute(void)
             FC_LOG(addr.toString());
             recomputeCell(addr);
         }
-    } catch (std::exception&) {
+    } catch (std::exception &) {
         for(auto &v : VertexList) {
             Cell * cell = cells.getValue(v.first);
             // Mark as erroneous
-            cellErrors.insert(v.first);
-            if (cell)
-                cell->setException("Pending computation due to cyclic dependency");
-            updateProperty(v.first);
-            updateAlias(v.first);
+            if(cell)  {
+                cellErrors.insert(v.first);
+                cell->setException("Pending computation due to cyclic dependency",true);
+                cellUpdated(v.first);
+            }
         }
 
         // Try to be more user friendly by finding individual loops
@@ -912,10 +912,10 @@ DocumentObjectExecReturn *Sheet::execute(void)
             } catch (std::exception&) {
                 // Cycle detected; flag all with errors
                 std::ostringstream ss;
-                ss << "Cyclic dependency" << std::endl;
+                ss << "Cyclic dependency";
                 int count = 0;
                 for(auto &v : VertexList) {
-                    if(count==20)
+                    if(count++%20 == 0)
                         ss << std::endl;
                     else
                         ss << ", ";
@@ -924,8 +924,10 @@ DocumentObjectExecReturn *Sheet::execute(void)
                 std::string msg = ss.str();
                 for(auto &v : VertexList) {
                     Cell * cell = cells.getValue(v.first);
-                    if (cell)
-                        cell->setException(msg.c_str());
+                    if (cell) {
+                        cell->setException(msg.c_str(),true);
+                        cellUpdated(v.first);
+                    }
                 }
             }
         }
@@ -1468,9 +1470,10 @@ Property *PropertySpreadsheetQuantity::Copy() const
 
 void PropertySpreadsheetQuantity::Paste(const Property &from)
 {
+    const auto &src = dynamic_cast<const PropertySpreadsheetQuantity&>(from);
     aboutToSetValue();
-    _dValue = static_cast<const PropertySpreadsheetQuantity*>(&from)->_dValue;
-    _Unit = static_cast<const PropertySpreadsheetQuantity*>(&from)->_Unit;
+    _dValue = src._dValue;
+    _Unit = src._Unit;
     hasSetValue();
 }
 

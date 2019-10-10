@@ -310,11 +310,7 @@ TopoShape::TopoShape(const TopoShape& shape)
 
 std::vector<const char*> TopoShape::getElementTypes(void) const
 {
-    std::vector<const char*> temp(3);
-    temp.push_back("Vertex");
-    temp.push_back("Edge");
-    temp.push_back("Face");
-
+    static const std::vector<const char*> temp = {"Face","Edge","Vertex"};
     return temp;
 }
 

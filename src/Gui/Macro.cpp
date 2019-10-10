@@ -172,47 +172,57 @@ void MacroManager::addLine(LineType Type, const char* sLine, bool pending)
     if(pending) {
         if(!sLine)
             pendingLine.clear();
-        else {
-            pendingType = Type;
-            pendingLine = sLine;
-        }
+        else 
+            pendingLine.emplace_back(Type,sLine);
         return;
     }
     if(!sLine)
         return;
-    if(pendingLine.size() && pendingLine.c_str()!=sLine) {
-        addLine(pendingType,pendingLine.c_str());
-        pendingLine.clear();
+
+    if(pendingLine.size()) {
+        if(Type == Cmt) {
+            pendingLine.emplace_back(Type,sLine);
+            return;
+        }
+        decltype(pendingLine) lines;
+        lines.swap(pendingLine);
+        for(auto &v : lines)
+            addLine(v.first,v.second.c_str());
     }
 
-    ++totalLines;
-    if (this->openMacro) {
-        bool comment = false;
-        if (Type == Gui) {
-            if (this->recordGui && this->guiAsComment)
-                comment = true;
-            else if (!this->recordGui)
-                return; // ignore Gui commands
-        }
-        else if (Type == Cmt) {
+    if(Type != Cmt)
+        ++totalLines;
+
+    bool comment = (Type == Cmt);
+    bool record = this->openMacro;
+
+    if (record && Type == Gui) {
+        if (this->recordGui && this->guiAsComment)
             comment = true;
-        }
-
-        QStringList lines = QString::fromLatin1(sLine).split(QLatin1String("\n"));
-        if (comment) {
-            for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it)
-                it->prepend(QLatin1String("#"));
-        }
-        this->macroInProgress.append(lines);
+        else if (!this->recordGui)
+            record = false;
     }
+
+    QStringList lines = QString::fromUtf8(sLine).split(QLatin1String("\n"));
+    if (comment) {
+        for (auto &line : lines) {
+            if(!line.startsWith(QLatin1String("#")))
+                line.prepend(QLatin1String("# "));
+        }
+    }
+
+    if(record)
+        this->macroInProgress.append(lines);
 
     if (this->scriptToPyConsole) {
         // search for the Python console
         if (!this->pyConsole)
             this->pyConsole = Gui::getMainWindow()->findChild<Gui::PythonConsole*>();
         // Python console found?
-        if (this->pyConsole)
-            this->pyConsole->printStatement(QString::fromUtf8(sLine));
+        if (this->pyConsole) {
+            for(auto &line : lines)
+                this->pyConsole->printStatement(line);
+        }
     }
 }
 

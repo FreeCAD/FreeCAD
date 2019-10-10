@@ -2095,7 +2095,7 @@ private:
         if(retType==0)
             return sret;
 
-        return Py::TupleN(sret,Py::Object(new Base::MatrixPy(new Base::Matrix4D(mat))),
+        return Py::TupleN(sret,Py::asObject(new Base::MatrixPy(new Base::Matrix4D(mat))),
                 subObj?Py::Object(subObj->getPyObject(),true):Py::Object());
     }
 
