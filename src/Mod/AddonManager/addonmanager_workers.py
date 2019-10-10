@@ -39,14 +39,22 @@ from addonmanager_macro import Macro
 #  \ingroup ADDONMANAGER
 #  \brief Multithread workers for the addon manager
 
-MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
-OBSOLETE = ["assembly2","drawing_dimensioning","cura_engine"] # These addons will print an additional message informing the user
+# Blacklisted addons
+MACROS_BLACKLIST = ["BOLTS",
+                    "WorkFeatures",
+                    "how to install",
+                    "PartsLibrary",
+                    "FCGear"]
+
+# These addons will print an additional message informing the user
+OBSOLETE =         ["assembly2",
+                    "drawing_dimensioning",
+                    "cura_engine"]
+
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
 
-
 """Multithread workers for the Addon Manager"""
-
 
 
 class UpdateWorker(QtCore.QThread):
@@ -278,7 +286,7 @@ class FillMacroListWorker(QtCore.QThread):
         """Retrieve macros from the wiki
 
         Read the wiki and emit a signal for each found macro.
-        Reads only the page https://www.freecadweb.org/wiki/Macros_recipes.
+        Reads only the page https://www.freecadweb.org/wiki/Macros_recipes
         """
 
         self.info_label_signal.emit("Downloading list of macros from the FreeCAD wiki...")
