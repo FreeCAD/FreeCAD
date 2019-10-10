@@ -103,7 +103,7 @@ PyMethodDef Application::Methods[] = {
      "* If no module is given it will be determined by the file extension.\n"
      "* If more than one module can load a file the first one one will be taken.\n"
      "* If no module exists to load the file an exception will be raised."},
-    {"open",   (PyCFunction) Application::sOpenDocument, METH_VARARGS,
+    {"open",   (PyCFunction) Application::sOpenDocument, METH_VARARGS|METH_KEYWORDS,
      "See openDocument(string)"},
     {"openDocument",   (PyCFunction) Application::sOpenDocument, METH_VARARGS|METH_KEYWORDS,
      "openDocument(filepath,hidden=False) -> object\n"

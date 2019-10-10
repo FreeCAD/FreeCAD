@@ -84,7 +84,12 @@ class UpdateWorker(QtCore.QThread):
         # querying official addons
         for l in p:
             #name = re.findall("data-skip-pjax=\"true\">(.*?)<",l)[0]
-            name = re.findall("title=\"(.*?) @",l)[0]
+            res = re.findall("title=\"(.*?) @",l)
+            if res:
+                name = res[0]
+            else:
+                print("AddonMananger: Debug: couldn't find title in",l)
+                continue
             self.info_label.emit(name)
             #url = re.findall("title=\"(.*?) @",l)[0]
             url = utils.getRepoUrl(l)
