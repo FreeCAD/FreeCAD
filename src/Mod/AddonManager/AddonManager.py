@@ -86,7 +86,7 @@ class CommandAddonManager:
 
         import FreeCADGui
         from PySide import QtGui
-        
+
         # create the dialog
         self.dialog = FreeCADGui.PySideUic.loadUi(os.path.join(os.path.dirname(__file__),"AddonManager.ui"))
 
@@ -143,7 +143,7 @@ class CommandAddonManager:
         self.dialog.tabWidget.currentChanged.connect(self.switchtab)
         self.dialog.listMacros.currentRowChanged.connect(self.show_macro)
         self.dialog.buttonConfigure.clicked.connect(self.show_config)
-        
+
         # allow to open links in browser
         self.dialog.description.setOpenLinks(True)
         self.dialog.description.setOpenExternalLinks(True)
@@ -236,17 +236,17 @@ class CommandAddonManager:
             self.check_worker.start()
 
     def apply_updates(self):
-        
+
         """apply all available updates"""
-        
+
         if self.doUpdate:
             self.install(self.doUpdate)
             self.dialog.buttonUpdateAll.setEnabled(False)
 
     def enable_updates(self,num):
-        
+
         """enables the update button"""
-        
+
         if num:
             self.dialog.buttonUpdateAll.setText(translate("AddonsInstaller","Apply")+" "+str(num)+" "+translate("AddonsInstaller","update(s)"))
             self.dialog.buttonUpdateAll.setEnabled(True)
@@ -260,16 +260,24 @@ class CommandAddonManager:
 
         from PySide import QtGui
         self.repos.append(addon_repo)
-        import AddonManager_rc
-        addonicon = QtGui.QIcon(":/icons/" + addon_repo[0] + "_workbench_icon.svg")
-        if addonicon.isNull():
-            addonicon = QtGui.QIcon(":/icons/document-package.svg")
+        addonicon = self.get_icon(addon_repo[0])
         if addon_repo[2] > 0:
             item = QtGui.QListWidgetItem(addonicon,str(addon_repo[0]) + str(" ("+translate("AddonsInstaller","Installed")+")"))
             item.setForeground(QtGui.QBrush(QtGui.QColor(0,182,41)))
             self.dialog.listWorkbenches.addItem(item)
         else:
             self.dialog.listWorkbenches.addItem(QtGui.QListWidgetItem(addonicon,str(addon_repo[0])))
+
+    def get_icon(self,repo):
+
+        """returns an icon for a repo"""
+
+        import AddonManager_rc
+        from PySide import QtGui
+        addonicon = QtGui.QIcon(":/icons/" + repo + "_workbench_icon.svg")
+        if addonicon.isNull():
+            addonicon = QtGui.QIcon(":/icons/document-package.svg")
+        return addonicon
 
     def show_information(self, label):
 
@@ -500,7 +508,7 @@ class CommandAddonManager:
 
     def update_status(self,soft=False):
 
-        """Updates the list of workbenches/macros. If soft is true, items 
+        """Updates the list of workbenches/macros. If soft is true, items
         are not recreated (and therefore display text isn't triggered)"
         """
 
@@ -523,7 +531,7 @@ class CommandAddonManager:
                     self.dialog.listWorkbenches.item(i).setText(txt+ext)
                 else:
                     self.dialog.listWorkbenches.item(i).setText(txt)
-                    self.dialog.listWorkbenches.item(i).setIcon(QtGui.QIcon(":/icons/document-package.svg"))
+                    self.dialog.listWorkbenches.item(i).setIcon(self.get_icon(txt))
             for i in range(self.dialog.listMacros.count()):
                 txt = self.dialog.listMacros.item(i).text().strip()
                 if txt.endswith(" ("+translate("AddonsInstaller","Installed")+")"):
@@ -534,7 +542,7 @@ class CommandAddonManager:
                     self.dialog.listMacros.item(i).setText(txt+ext)
                 else:
                     self.dialog.listMacros.item(i).setText(txt)
-                    self.dialog.listMacros.item(i).setIcon(QtGui.QIcon(":/icons/document-package.svg"))
+                    self.dialog.listMacros.item(i).setIcon(QtGui.QIcon(":/icons/document-python.svg"))
         else:
             self.dialog.listWorkbenches.clear()
             self.dialog.listMacros.clear()
@@ -581,7 +589,7 @@ class CommandAddonManager:
         self.config.move(self.dialog.frameGeometry().topLeft() + self.dialog.rect().center() - self.config.rect().center())
 
         ret = self.config.exec_()
-        
+
         if ret:
             # OK button has been pressed
             pref.SetBool("AutoCheck",self.config.checkUpdates.isChecked())
