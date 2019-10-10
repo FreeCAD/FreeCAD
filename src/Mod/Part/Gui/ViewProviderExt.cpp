@@ -97,6 +97,8 @@
 # include <QMenu>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -467,6 +469,12 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     ViewProviderGeometryObject::onChanged(prop);
 }
 
+bool ViewProviderPartExt::allowOverride(const App::DocumentObject &) const {
+    // Many derived view providers still uses static_cast to get object
+    // pointer, so check for exact type here.
+    return getTypeId() == ViewProviderPartExt::getClassTypeId();
+}
+
 void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
@@ -486,6 +494,12 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
         pcWireframeRoot->renderCaching =
         pcPointsRoot->renderCaching =
         wireframe->renderCaching = SoSeparator::OFF;
+
+    pcNormalRoot->boundingBoxCaching =
+        pcFlatRoot->boundingBoxCaching =
+        pcWireframeRoot->boundingBoxCaching =
+        pcPointsRoot->boundingBoxCaching =
+        wireframe->boundingBoxCaching = SoSeparator::OFF;
 
     // enable two-side rendering
     pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
@@ -731,6 +745,91 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
         pcShapeMaterial->specularColor.setValue(colors[0].specularColor.r, colors[0].specularColor.g, colors[0].specularColor.b);
         pcShapeMaterial->emissiveColor.setValue(colors[0].emissiveColor.r, colors[0].emissiveColor.g, colors[0].emissiveColor.b);
     }
+}
+
+std::map<std::string,App::Color> ViewProviderPartExt::getElementColors(const char *element) const {
+    std::map<std::string,App::Color> ret;
+
+    if(!element || !element[0]) {
+        auto color = ShapeColor.getValue();
+        color.a = Transparency.getValue()/100.0f;
+        ret["Face"] = color;
+        ret["Edge"] = LineColor.getValue();
+        ret["Vertex"] = PointColor.getValue();
+        return ret;
+    }
+
+    if(boost::starts_with(element,"Face")) {
+        auto size = DiffuseColor.getSize();
+        if(element[4]=='*') {
+            auto color = ShapeColor.getValue();
+            color.a = Transparency.getValue()/100.0f;
+            bool singleColor = true;
+            for(int i=0;i<size;++i) {
+                if(DiffuseColor[i]!=color)
+                    ret[std::string(element,4)+std::to_string(i+1)] = DiffuseColor[i];
+                singleColor = singleColor && DiffuseColor[0]==DiffuseColor[i];
+            }
+            if(size && singleColor) {
+                color = DiffuseColor[0];
+                ret.clear();
+            }
+            ret["Face"] = color;
+        }else{
+            int idx = atoi(element+4);
+            if(idx>0 && idx<=size)
+                ret[element] = DiffuseColor[idx-1];
+            else
+                ret[element] = ShapeColor.getValue();
+            if(size==1)
+                ret[element].a = Transparency.getValue()/100.0f;
+        }
+    } else if (boost::starts_with(element,"Edge")) {
+        auto size = LineColorArray.getSize();
+        if(element[4]=='*') {
+            auto color = LineColor.getValue();
+            bool singleColor = true;
+            for(int i=0;i<size;++i) {
+                if(LineColorArray[i]!=color)
+                    ret[std::string(element,4)+std::to_string(i+1)] = LineColorArray[i];
+                singleColor = singleColor && LineColorArray[0]==LineColorArray[i];
+            }
+            if(singleColor && size) {
+                color = LineColorArray[0];
+                ret.clear();
+            }
+            ret["Edge"] = color;
+        }else{
+            int idx = atoi(element+4);
+            if(idx>0 && idx<=size)
+                ret[element] = LineColorArray[idx-1];
+            else
+                ret[element] = LineColor.getValue();
+        }
+    } else if (boost::starts_with(element,"Vertex")) {
+        auto size = PointColorArray.getSize();
+        if(element[5]=='*') {
+            auto color = PointColor.getValue();
+            bool singleColor = true;
+            for(int i=0;i<size;++i) {
+                if(PointColorArray[i]!=color)
+                    ret[std::string(element,5)+std::to_string(i+1)] = PointColorArray[i];
+                singleColor = singleColor && PointColorArray[0]==PointColorArray[i];
+            }
+            if(singleColor && size) {
+                color = PointColorArray[0];
+                ret.clear();
+            }
+            ret["Vertex"] = color;
+        }else{
+            int idx = atoi(element+5);
+            if(idx>0 && idx<=size)
+                ret[element] = PointColorArray[idx-1];
+            else
+                ret[element] = PointColor.getValue();
+        }
+    }
+    return ret;
 }
 
 void ViewProviderPartExt::unsetHighlightedFaces()

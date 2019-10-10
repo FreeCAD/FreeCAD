@@ -42,6 +42,12 @@ class Property;
 class AppExport FeaturePythonImp
 {
 public:
+    enum ValueT {
+        NotImplemented = 0, // not handled
+        Accepted = 1, // handled and accepted
+        Rejected = 2  // handled and rejected
+    };
+
     FeaturePythonImp(App::DocumentObject*);
     ~FeaturePythonImp();
 
@@ -51,7 +57,6 @@ public:
     bool onBeforeChangeLabel(std::string &newLabel);
     void onChanged(const Property* prop);
     void onDocumentRestored();
-    bool allowOverrideViewProviderName() const;
     std::string getViewProviderName();
     PyObject *getPyObject(void);
 
@@ -61,19 +66,20 @@ public:
     bool getSubObjects(std::vector<std::string> &ret, int reason) const;
 
     bool getLinkedObject(App::DocumentObject *&ret, bool recurse, 
-            Base::Matrix4D *mat, bool transform, int depth) const;
+                         Base::Matrix4D *mat, bool transform, int depth) const;
 
-    int canLinkProperties() const;
+    ValueT canLinkProperties() const;
 
-    int allowDuplicateLabel() const;
+    ValueT allowDuplicateLabel() const;
 
-    bool redirectSubName(std::ostringstream &ss,
-            App::DocumentObject *topParent, App::DocumentObject *child) const;
+    ValueT redirectSubName(std::ostringstream &ss,
+                           App::DocumentObject *topParent,
+                           App::DocumentObject *child) const;
 
     int canLoadPartial() const;
 
     /// return true to activate tree view group object handling
-    int hasChildElement() const;
+    ValueT hasChildElement() const;
     /// Get sub-element visibility
     int isElementVisible(const char *) const;
     /// Set sub-element visibility
@@ -193,9 +199,6 @@ public:
         }
         return DocumentObject::StdReturn;
     }
-    virtual bool allowOverrideViewProviderName() const {
-        return imp->allowOverrideViewProviderName();
-    }
     virtual const char* getViewProviderNameOverride(void) const override {
         viewProviderName = imp->getViewProviderName();
         if(viewProviderName.size())
@@ -235,10 +238,14 @@ public:
 
     /// return true to activate tree view group object handling
     virtual bool hasChildElement() const override {
-        int ret = imp->hasChildElement();
-        if(ret<0) 
+        switch (imp->hasChildElement()) {
+        case FeaturePythonImp::Accepted:
+            return true;
+        case FeaturePythonImp::Rejected:
+            return false;
+        default:
             return FeatureT::hasChildElement();
-        return ret?true:false;
+        }
     }
     /// Get sub-element visibility
     virtual int isElementVisible(const char *element) const override {
@@ -256,24 +263,38 @@ public:
     }
 
     virtual bool canLinkProperties() const override {
-        int ret = imp->canLinkProperties();
-        if(ret < 0)
+        switch (imp->canLinkProperties()) {
+        case FeaturePythonImp::Accepted:
+            return true;
+        case FeaturePythonImp::Rejected:
+            return false;
+        default:
             return FeatureT::canLinkProperties();
-        return ret?true:false;
+        }
     }
 
     virtual bool allowDuplicateLabel() const override {
-        int ret = imp->allowDuplicateLabel();
-        if(ret < 0)
+        switch (imp->allowDuplicateLabel()) {
+        case FeaturePythonImp::Accepted:
+            return true;
+        case FeaturePythonImp::Rejected:
+            return false;
+        default:
             return FeatureT::allowDuplicateLabel();
-        return ret?true:false;
+        }
     }
 
     virtual bool redirectSubName(std::ostringstream &ss,
             App::DocumentObject *topParent, App::DocumentObject *child) const override 
     {
-        return imp->redirectSubName(ss,topParent,child) ||
-            FeatureT::redirectSubName(ss,topParent,child);
+        switch (imp->redirectSubName(ss,topParent,child)) {
+        case FeaturePythonImp::Accepted:
+            return true;
+        case FeaturePythonImp::Rejected:
+            return false;
+        default:
+            return FeatureT::redirectSubName(ss, topParent, child);
+        }
     }
 
     virtual int canLoadPartial() const override {

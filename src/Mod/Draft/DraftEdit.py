@@ -65,7 +65,7 @@ class Edit():
 
         # settings
         self.maxObjects = 1
-        self.pick_radius = 30 # TODO: set pick radius according to user preferences
+        self.pick_radius = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetFloat("PickRadius")
 
         # preview
         self.ghost = None

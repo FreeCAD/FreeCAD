@@ -38,7 +38,7 @@
 #include <Base/UnitsApi.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include "Sheet.h"
 #include <iomanip>
 
@@ -585,9 +585,9 @@ bool Cell::getSpans(int &rows, int &columns) const
     return isUsed(SPANS_SET);
 }
 
-void Cell::setException(const std::string &e)
+void Cell::setException(const std::string &e, bool silent)
 {
-    if(e.size() && owner && owner->sheet()) {
+    if(!silent && e.size() && owner && owner->sheet()) {
         FC_ERR(owner->sheet()->getFullName() << '.' 
                 << address.toString() << ": " << e);
     }
@@ -992,18 +992,23 @@ std::string Cell::getFormattedQuantity(void)
             }
         }
 
-    } else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()) ||
-              prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
-        double rawVal;
-        if(prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-            rawVal = static_cast<const App::PropertyFloat*>(prop)->getValue();
-        } else {
-            rawVal = static_cast<const App::PropertyInteger*>(prop)->getValue();
-        }
+    } else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())){
+        double rawVal = static_cast<const App::PropertyFloat*>(prop)->getValue();
         DisplayUnit du;
         bool hasDisplayUnit = getDisplayUnit(du);
         double duScale = du.scaler;
         qFormatted = QLocale::system().toString(rawVal,'f',Base::UnitsApi::getDecimals());
+        if (hasDisplayUnit) {
+            QString number = QLocale::system().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
+            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+        }
+    } else if (prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        double rawVal = static_cast<const App::PropertyInteger*>(prop)->getValue();
+        DisplayUnit du;
+        bool hasDisplayUnit = getDisplayUnit(du);
+        double duScale = du.scaler;
+        int iRawVal = std::round(rawVal);
+        qFormatted = QLocale::system().toString(iRawVal);
         if (hasDisplayUnit) {
             QString number = QLocale::system().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
             qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);

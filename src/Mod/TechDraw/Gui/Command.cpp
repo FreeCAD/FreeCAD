@@ -30,6 +30,7 @@
 
 #include <vector>
 
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -201,6 +202,7 @@ void CmdTechDrawNewPage::activated(int iMsg)
 
         //why is "Template" property set twice? -wf
         // once to set DrawSVGTemplate.Template to OS template file name
+        templateFileName = Base::Tools::escapeEncodeFilename(templateFileName);
         doCommand(Doc,"App.activeDocument().%s.Template = \"%s\"",TemplateName.c_str(), templateFileName.toUtf8().constData());
         // once to set Page.Template to DrawSVGTemplate.Name
         doCommand(Doc,"App.activeDocument().%s.Template = App.activeDocument().%s",PageName.c_str(),TemplateName.c_str());
@@ -393,27 +395,27 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
         return;
     }
     TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*baseObj.begin());
-    std::string BaseName = dvp->getNameInDocument();
-    std::string PageName = page->getNameInDocument();
-    double baseScale = dvp->getScale();
+//    std::string BaseName = dvp->getNameInDocument();
+//    std::string PageName = page->getNameInDocument();
+//    double baseScale = dvp->getScale();
 
-    Gui::WaitCursor wc;
-    openCommand("Create view");
-    std::string FeatName = getUniqueObjectName("Section");
+//    Gui::WaitCursor wc;
+//    openCommand("Create view");
+//    std::string FeatName = getUniqueObjectName("Section");
 
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSection','%s')",FeatName.c_str());
+//    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSection','%s')",FeatName.c_str());
 
-    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
-    TechDraw::DrawViewSection* dsv = dynamic_cast<TechDraw::DrawViewSection *>(docObj);
-    if (!dsv) {
-        throw Base::TypeError("CmdTechDrawNewViewSection DVS not found\n");
-    }
-    dsv->Source.setValues(dvp->Source.getValues());
-    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.ScaleType = App.activeDocument().%s.ScaleType",FeatName.c_str(),BaseName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Scale = %0.6f",FeatName.c_str(),baseScale);
-    Gui::Control().showDialog(new TaskDlgSectionView(dvp,dsv));
+//    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
+//    TechDraw::DrawViewSection* dsv = dynamic_cast<TechDraw::DrawViewSection *>(docObj);
+//    if (!dsv) {
+//        throw Base::TypeError("CmdTechDrawNewViewSection DVS not found\n");
+//    }
+//    dsv->Source.setValues(dvp->Source.getValues());
+//    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
+//    doCommand(Doc,"App.activeDocument().%s.ScaleType = App.activeDocument().%s.ScaleType",FeatName.c_str(),BaseName.c_str());
+//    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+//    doCommand(Doc,"App.activeDocument().%s.Scale = %0.6f",FeatName.c_str(),baseScale);
+    Gui::Control().showDialog(new TaskDlgSectionView(dvp));
 
     updateActive();             //ok here since dialog doesn't call doc.recompute()
     commitCommand();
@@ -974,6 +976,7 @@ void CmdTechDrawSymbol::activated(int iMsg)
     if (!filename.isEmpty())
     {
         std::string FeatName = getUniqueObjectName("Symbol");
+        filename = Base::Tools::escapeEncodeFilename(filename);
         openCommand("Create Symbol");
 #if PY_MAJOR_VERSION < 3
         doCommand(Doc,"f = open(unicode(\"%s\",'utf-8'),'r')",(const char*)filename.toUtf8());
@@ -1256,6 +1259,7 @@ void CmdTechDrawExportPageDxf::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
     openCommand("Save page to dxf");
     doCommand(Doc,"import TechDraw");
+    fileName = Base::Tools::escapeEncodeFilename(fileName);
     doCommand(Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",PageName.c_str(),(const char*)fileName.toUtf8());
     commitCommand();
 }

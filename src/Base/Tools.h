@@ -285,6 +285,11 @@ struct BaseExport Tools
     static std::string escapedUnicodeFromUtf8(const char *s);
     static std::string escapedUnicodeToUtf8(const std::string& s);
 
+    static QString escapeEncodeString(const QString& s);
+    static std::string escapeEncodeString(const std::string& s);
+    static QString escapeEncodeFilename(const QString& s);
+    static std::string escapeEncodeFilename(const std::string& s);
+
     /**
      * @brief toStdString Convert a QString into a UTF-8 encoded std::string.
      * @param s String to convert.

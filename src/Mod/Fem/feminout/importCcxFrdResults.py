@@ -67,18 +67,14 @@ def insert(
 def importFrd(
     filename,
     analysis=None,
-    result_name_prefix=None
+    result_name_prefix=""
 ):
     from . import importToolsFem
     import ObjectsFem
-    if result_name_prefix is None:
-        result_name_prefix = ""
+
     m = read_frd_result(filename)
     result_mesh_object = None
     if len(m["Nodes"]) > 0:
-        if analysis:
-            analysis_object = analysis
-
         mesh = importToolsFem.make_femmesh(m)
         result_mesh_object = ObjectsFem.makeMeshResult(
             FreeCAD.ActiveDocument,
@@ -120,7 +116,7 @@ def importFrd(
                 res_obj.Mesh = result_mesh_object
                 res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
                 if analysis:
-                    analysis_object.addObject(res_obj)
+                    analysis.addObject(res_obj)
 
                 # complementary result object calculations
                 import femresult.resulttools as restools
@@ -178,12 +174,12 @@ def importFrd(
             )
             Console.PrintMessage(error_message)
             if analysis:
-                analysis_object.addObject(result_mesh_object)
+                analysis.addObject(result_mesh_object)
 
         if FreeCAD.GuiUp:
             if analysis:
                 import FemGui
-                FemGui.setActiveAnalysis(analysis_object)
+                FemGui.setActiveAnalysis(analysis)
             FreeCAD.ActiveDocument.recompute()
 
     else:

@@ -39,6 +39,7 @@ class Bnd_Box;
 class gp_Pln;
 class gp_Pnt;
 class TopoDS_Face;
+class gp_Ax2;
 
 namespace TechDraw
 {
@@ -84,7 +85,16 @@ public:
 
 public:
     std::vector<TechDraw::Face*> getFaceGeometry();
+
     Base::Vector3d getSectionVector (const std::string sectionName);
+    void setNormalFromBase(const std::string sectionName);
+
+    gp_Ax2 rotateCSCardinal(gp_Ax2 oldCS, int cardinal); 
+    gp_Ax2 rotateCSArbitrary(gp_Ax2 oldCS,
+                             Base::Vector3d axis,
+                             double degAngle) ;
+    gp_Ax2 getSectionCS (const std::string dirName);
+
     TechDraw::DrawViewPart* getBaseDVP();
     TechDraw::DrawProjGroupItem* getBaseDPGI();
     virtual void unsetupObject();

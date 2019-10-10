@@ -69,8 +69,8 @@
 
 #include <Gui/Language/Translator.h>
 
-#include "Resources/icons/PartFeature.xpm"
-#include "Resources/icons/PartFeatureImport.xpm"
+// #include "Resources/icons/Part_Feature.xpm"
+// #include "Resources/icons/Part_FeatureImport.xpm"
 
 // use a different name to CreateCommand()
 void CreatePartCommands(void);
@@ -224,9 +224,9 @@ PyMOD_INIT_FUNC(PartGui)
     loadPartResource();
 
     // register bitmaps
-    Gui::BitmapFactoryInst& rclBmpFactory = Gui::BitmapFactory();
-    rclBmpFactory.addXPM("PartFeature",(const char**) PartFeature_xpm);
-    rclBmpFactory.addXPM("PartFeatureImport",(const char**) PartFeatureImport_xpm);
+    // Gui::BitmapFactoryInst& rclBmpFactory = Gui::BitmapFactory();
+    // rclBmpFactory.addXPM("Part_Feature",(const char**) PartFeature_xpm);
+    // rclBmpFactory.addXPM("Part_FeatureImport",(const char**) PartFeatureImport_xpm);
 
     PyMOD_Return(partGuiModule);
 }

@@ -268,16 +268,16 @@ def get_pref_working_dir(solver_obj):
      If user setting is set to BESIDE and the document isn't saved.
 
     :note:
-     Not working correctely for most cases because this circumvents directory
+     Not working correctly for most cases because this circumvents directory
      caching of the solver framework. For solver use getMachine from run.py
      instead.
     """
     dir_setting = settings.get_dir_setting()
-    if dir_setting == settings.TEMPORARY:
+    if dir_setting == settings.DirSetting.TEMPORARY:
         setting_working_dir = get_temp_dir(solver_obj)
-    elif dir_setting == settings.BESIDE:
+    elif dir_setting == settings.DirSetting.BESIDE:
         setting_working_dir = get_beside_dir(solver_obj)
-    elif dir_setting == settings.CUSTOM:
+    elif dir_setting == settings.DirSetting.CUSTOM:
         setting_working_dir = get_custom_dir(solver_obj)
     else:
         setting_working_dir = ""

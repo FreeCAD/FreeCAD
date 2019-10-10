@@ -95,6 +95,8 @@
         <file>icons/Sketcher_CreateOctagon_Constr.svg</file>
         <file>icons/Sketcher_CreatePentagon.svg</file>
         <file>icons/Sketcher_CreatePentagon_Constr.svg</file>
+        <file>icons/Sketcher_Create_Periodic_BSpline.svg</file>
+        <file>icons/Sketcher_Create_Periodic_BSpline_Constr.svg</file>
         <file>icons/Sketcher_CreatePoint.svg</file>
         <file>icons/Sketcher_CreatePolyline.svg</file>
         <file>icons/Sketcher_CreatePolyline_Constr.svg</file>
@@ -109,8 +111,6 @@
         <file>icons/Sketcher_CreateText.svg</file>
         <file>icons/Sketcher_CreateTriangle.svg</file>
         <file>icons/Sketcher_CreateTriangle_Constr.svg</file>
-        <file>icons/Sketcher_Create_Periodic_BSpline.svg</file>
-        <file>icons/Sketcher_Create_Periodic_BSpline_Constr.svg</file>
         <file>icons/Sketcher_DraftLine.svg</file>
         <file>icons/Sketcher_EditSketch.svg</file>
         <file>icons/Sketcher_Element_Arc_Edge.svg</file>

@@ -144,8 +144,8 @@ PyMethodDef Application::Methods[] = {
   {"listCommands",               (PyCFunction) Application::sListCommands, METH_VARARGS,
    "listCommands() -> list of strings\n\n"
    "Returns a list of all commands known to FreeCAD."},
-  {"updateCommands()",        (PyCFunction) Application::sUpdateCommands, METH_VARARGS,
-   "updateCommands()\n\n"
+  {"updateCommands",        (PyCFunction) Application::sUpdateCommands, METH_VARARGS,
+   "updateCommands\n\n"
    "Update all command active status"},
   {"SendMsgToActiveView",     (PyCFunction) Application::sSendActiveView, METH_VARARGS,
    "deprecated -- use class View"},

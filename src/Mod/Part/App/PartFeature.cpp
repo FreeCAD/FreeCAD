@@ -369,7 +369,10 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
     }
 
     auto link = owner->getExtensionByType<App::LinkBaseExtension>(true);
-    if(owner!=linked && (!link || !link->_ChildCache.getSize())) {
+    if(owner!=linked 
+            && (!link || (!link->_ChildCache.getSize() 
+                            && link->getSubElements().size()<=1))) 
+    {
         // if there is a linked object, and there is no child cache (which is used
         // for special handling of plain group), obtain shape from the linked object
         shape = Feature::getTopoShape(linked,0,false,0,0,false,false);
@@ -405,25 +408,28 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         for(auto &sub : owner->getSubObjects()) {
             if(sub.empty()) continue;
             int visible;
-            if(sub[sub.size()-1] != '.')
-                sub += '.';
             std::string childName;
             App::DocumentObject *parent=0;
             Base::Matrix4D mat;
-            auto subObj = owner->resolve(sub.c_str(), &parent, &childName,0,0,&mat,false);
-            if(!parent || !subObj)
-                continue;
-            if(linkStack.size() 
-                && parent->getExtensionByType<App::GroupExtension>(true,false))
-            {
-                visible = linkStack.back()->isElementVisible(childName.c_str());
-            }else
-                visible = parent->isElementVisible(childName.c_str());
+            App::DocumentObject *subObj=0;
+            if(sub.find('.')==std::string::npos)
+                visible = 1;
+            else {
+                subObj = owner->resolve(sub.c_str(), &parent, &childName,0,0,&mat,false);
+                if(!parent || !subObj)
+                    continue;
+                if(linkStack.size() 
+                    && parent->getExtensionByType<App::GroupExtension>(true,false))
+                {
+                    visible = linkStack.back()->isElementVisible(childName.c_str());
+                }else
+                    visible = parent->isElementVisible(childName.c_str());
+            }
             if(visible==0)
                 continue;
             TopoShape shape;
-            if(baseShape.isNull()) {
-                shape = _getTopoShape(owner,sub.c_str(),false,0,&subObj,false,false,linkStack);
+            if(!subObj || baseShape.isNull()) {
+                shape = _getTopoShape(owner,sub.c_str(),true,0,&subObj,false,false,linkStack);
                 if(shape.isNull())
                     continue;
                 if(visible<0 && subObj && !subObj->Visibility.getValue())

@@ -53,7 +53,7 @@ from importIFCHelper import decode
 
 if open.__module__ in ['__builtin__','io']:
     pyopen = open
-    # pyopen is use in exporter to open a file in Arch
+    # pyopen is used in exporter to open a file in Arch
 
 
 # ************************************************************************************************

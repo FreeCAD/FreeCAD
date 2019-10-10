@@ -466,7 +466,7 @@ PyObject* BSplineCurvePy::getPoles(PyObject * args)
             gp_Pnt pnt = p(i);
             Base::VectorPy* vec = new Base::VectorPy(Base::Vector3d(
                 pnt.X(), pnt.Y(), pnt.Z()));
-            poles.append(Py::Object(vec));
+            poles.append(Py::asObject(vec));
         }
         return Py::new_reference_to(poles);
     }

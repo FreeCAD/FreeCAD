@@ -62,6 +62,7 @@ public:
     App::PropertyBool Visibility;
     App::PropertyBool ShowInTree;
     App::PropertyEnumeration OnTopWhenSelected;
+    App::PropertyEnumeration SelectionStyle;
 
     virtual void attach(App::DocumentObject *pcObject);
     virtual void reattach(App::DocumentObject *);
@@ -138,6 +139,14 @@ public:
             std::string *subname=0, bool recursive=false) const;
 
     virtual std::string getFullName() const override;
+
+    /** Allow this class to be used as an override for the original view provider of the given object
+     *
+     * @sa App::DocumentObject::getViewProviderNameOverride()
+     */
+    virtual bool allowOverride(const App::DocumentObject &) const {
+        return false;
+    }
 
 protected:
     /*! Get the active mdi view of the document this view provider is part of.

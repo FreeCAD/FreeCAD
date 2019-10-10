@@ -90,6 +90,8 @@ void SymbolChooser::onOKClicked(bool b)
     Q_UNUSED(b);
 //    Base::Console().Message("SC::OnOKClicked()\n");
     QListWidgetItem* sourceItem = ui->lwSymbols->currentItem();
+    if (!sourceItem)
+        return;
     QString targetText = sourceItem->text();
     m_symbolPath = m_symbolDir + 
                    targetText +

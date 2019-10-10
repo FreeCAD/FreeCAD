@@ -578,7 +578,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     MenuItem* view = new MenuItem( menuBar );
     view->setCommand("&View");
     *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Std_MainFullscreen" << "Separator"
-          << stdviews << "Std_FreezeViews" << "Std_DrawStyle" << "Separator" << view3d << zoom
+          << stdviews << "Std_FreezeViews" << "Std_DrawStyle" << "Std_SelBoundingBox"
+          << "Separator" << view3d << zoom
           << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
           << "Std_TextureMapping" 
 #ifdef BUILD_VR
@@ -658,16 +659,17 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // View
     ToolBarItem* view = new ToolBarItem( root );
     view->setCommand("View");
-    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" 
+    *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << "Std_SelBoundingBox"
+          << "Separator" << "Std_SelBack" << "Std_SelForward" << "Std_LinkSelectActions"
           << "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric" << "Separator" << "Std_ViewFront"
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
           << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
-    
+
     // Structure
     ToolBarItem* structure = new ToolBarItem( root );
     structure->setCommand("Structure");
-    *structure << "Std_Part" << "Std_Group" << "Std_LinkMake" << "Std_LinkMakeRelative";
-          
+    *structure << "Std_Part" << "Std_Group" << "Std_LinkMake" << "Std_LinkActions";
+
     return root;
 }
 

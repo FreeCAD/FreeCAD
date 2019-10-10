@@ -38,7 +38,7 @@
 #include <Gui/SelectionFilter.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
 
@@ -5884,7 +5884,7 @@ void CmdSketcherCompConstrainRadDia::activated(int iMsg)
     else
         return;
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();

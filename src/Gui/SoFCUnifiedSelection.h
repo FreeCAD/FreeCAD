@@ -30,7 +30,6 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoLightModel.h>
-#include <Inventor/lists/SoPathList.h>
 #include "View3DInventorViewer.h"
 #include "SoFCSelectionContext.h"
 #include <list>
@@ -71,8 +70,6 @@ public:
 
     const char* getFileFormatName(void) const;
     void write(SoWriteAction * action);
-    int getNumSelected(void) const;
-    const SoPathList* getList(void) const;
 
     SoSFColor colorHighlight;
     SoSFColor colorSelection;
@@ -89,8 +86,6 @@ public:
     //virtual void GLRenderInPath(SoGLRenderAction * action);
     //static  void turnOffCurrentHighlight(SoGLRenderAction * action);
 
-    bool checkSelectionStyle(int type, ViewProvider *vp);
-
     static bool hasHighlight();
 
     friend class View3DInventorViewer;
@@ -99,21 +94,6 @@ protected:
     virtual ~SoFCUnifiedSelection();
     //virtual void redrawHighlighted(SoAction * act, SbBool flag);
     //virtual SbBool readInstance(SoInput *  in, unsigned short  flags); 
-
-    /** @name Nodes selection.
-     * The SoBoxSelectionRenderAction uses these nodes to draw a
-     * bounding box.
-     */
-    //@{
-    void addPath(SoPath * path);
-    void removePath(const int which);
-    SoPath * copyFromThis(const SoPath * path) const;
-    SoPath * searchNode(SoNode * node) const;
-    int findPath(const SoPath * path) const;
-    void select(SoNode * node);
-    void deselect(const SoPath * path);
-    void deselect(SoNode * node);
-    //@}
 
 private:
     //static void turnoffcurrent(SoAction * action);
@@ -141,7 +121,6 @@ private:
 
     static SoFullPath * currenthighlight;
     SoFullPath * detailPath;
-    SoPathList selectionList;
 
     SbBool setPreSelection;
 
@@ -167,6 +146,8 @@ public:
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void GLRender(SoGLRenderAction * action);
     virtual void GLRenderInPath(SoGLRenderAction * action);
+
+    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
 protected:
     virtual ~SoFCPathAnnotation();
@@ -304,7 +285,17 @@ public:
         return findActionContext(action,node,false,true).second!=0;
     }
 
+    template<class T>
+    static std::shared_ptr<T> getSecondaryActionContext(SoAction *action, SoNode *node) {
+        auto it = ActionStacks.find(action);
+        if(it == ActionStacks.end())
+            return std::shared_ptr<T>();
+        return std::dynamic_pointer_cast<T>(getNodeContext2(it->second,node,T::merge));
+    }
+
     static void checkSelection(bool &sel, SbColor &selColor, bool &hl, SbColor &hlColor);
+
+    static void moveActionStack(SoAction *from, SoAction *to, bool erase);
 
     static SoNode *getCurrentRoot(bool front, SoNode *def);
 
@@ -326,10 +317,18 @@ public:
         overrideColor = false;
     }
 
+    enum SelectStyles {
+        Full, Box, PassThrough
+    };
+    SoSFEnum selectionStyle;
+
+    static bool renderBBox(SoGLRenderAction *action, SoNode *node, SbColor color);
+
 protected:
     virtual ~SoFCSelectionRoot();
 
     void renderPrivate(SoGLRenderAction *, bool inPath);
+    bool _renderPrivate(SoGLRenderAction *, bool inPath);
 
     class Stack : public std::vector<SoFCSelectionRoot*> {
     public:
@@ -346,7 +345,6 @@ protected:
 
     static Stack SelStack;
     static std::unordered_map<SoAction*,Stack> ActionStacks;
-
     struct StackComp {
         bool operator()(const Stack &a, const Stack &b) const;
     };

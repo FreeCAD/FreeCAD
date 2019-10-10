@@ -28,7 +28,10 @@
 
 namespace Gui {
 
-/** Convenient class to obtain view provider related parameters */
+/** Convenient class to obtain view provider related parameters 
+ *
+ * The parameters are under group "User parameter:BaseApp/Preferences/View"
+ */
 class GuiExport ViewParams: public ParameterGrp::ObserverType {
 public:
     ViewParams();
@@ -55,6 +58,7 @@ public:
     FC_VIEW_PARAM(DefaultShapeLineWidth,int,Int,2) \
     FC_VIEW_PARAM(CoinCycleCheck,bool,Bool,true) \
     FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument,bool,Bool,true) \
+    FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \

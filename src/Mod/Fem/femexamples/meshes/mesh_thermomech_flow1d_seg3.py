@@ -1,4 +1,4 @@
-def create_nodes_Flow1D(femmesh):
+def create_nodes(femmesh):
     # nodes
     femmesh.addNode(0, 0, 50, 1)
     femmesh.addNode(0, 0, -50, 2)
@@ -31,7 +31,7 @@ def create_nodes_Flow1D(femmesh):
     return True
 
 
-def create_elements_Flow1D(femmesh):
+def create_elements(femmesh):
     # elements
     femmesh.addEdge([1, 2, 15], 1)
     femmesh.addEdge([2, 3, 16], 2)

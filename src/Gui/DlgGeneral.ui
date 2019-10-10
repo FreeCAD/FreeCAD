@@ -189,7 +189,8 @@ See the FreeCAD Wiki for details about the image.</string>
            <item>
             <widget class="QComboBox" name="toolbarIconSize">
              <property name="toolTip">
-              <string>Size for the toolbar icons</string>
+              <string>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</string>
              </property>
             </widget>
            </item>
@@ -211,7 +212,15 @@ See the FreeCAD Wiki for details about the image.</string>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="treeMode"/>
+            <widget class="QComboBox" name="treeMode">
+             <property name="toolTip">
+              <string>Tree View Mode provides the option the option to
+customize the properties panel. The options are:
+1. 'Combiview'
+2. 'TreeView + PropertyView
+3. 'Both'</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -233,7 +242,9 @@ See the FreeCAD Wiki for details about the image.</string>
          <item row="2" column="0">
           <widget class="Gui::PrefCheckBox" name="SplashScreen">
            <property name="toolTip">
-            <string>Splash screen is shown when starting the application</string>
+            <string>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</string>
            </property>
            <property name="text">
             <string>Enable splash screen at start up</string>
@@ -267,7 +278,8 @@ See the FreeCAD Wiki for details about the image.</string>
            <item row="0" column="1">
             <widget class="QComboBox" name="AutoloadModuleCombo">
              <property name="toolTip">
-              <string>What workbench will be used after starting the application</string>
+              <string>Choose which workbench will be activated and shown
+after FreeCAD launches</string>
              </property>
             </widget>
            </item>

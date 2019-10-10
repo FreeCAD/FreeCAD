@@ -655,7 +655,7 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
         Gui::View3DInventorViewer* view = _view->getViewer(viewIndex);
         if (!view)
             throw Py::IndexError("Index out of range");
-        return Py::Object(view->getPyObject());
+        return Py::asObject(view->getPyObject());
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -674,7 +674,7 @@ Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)
     if (viewIndex >= _view->getSize() || viewIndex < 0)
         throw Py::IndexError("Index out of range");
     PyObject* viewer = _view->getViewer(viewIndex)->getPyObject();
-    return Py::Object(viewer);
+    return Py::asObject(viewer);
 }
 
 int AbstractSplitViewPy::sequence_length()

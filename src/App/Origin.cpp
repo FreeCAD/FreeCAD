@@ -51,6 +51,8 @@ const char* Origin::PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
 Origin::Origin(void) {
     ADD_PROPERTY_TYPE ( OriginFeatures, (0), 0, App::Prop_Hidden,
             "Axis and baseplanes controlled by the origin" );
+
+    setStatus(App::NoAutoExpand,true);
 }
 
 
@@ -93,7 +95,7 @@ App::Plane *Origin::getPlane( const char *role ) const {
         return static_cast<App::Plane *> (feat);
     } else {
         std::stringstream err;
-        err << "Origin \"" << getFullName () << "\" comtains bad Plane object for role \""
+        err << "Origin \"" << getFullName () << "\" contains bad Plane object for role \""
             << role << '"';
         throw Base::RuntimeError ( err.str().c_str () );
     }

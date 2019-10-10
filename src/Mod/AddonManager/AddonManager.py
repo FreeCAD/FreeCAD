@@ -558,7 +558,7 @@ class CommandAddonManager:
         from PySide import QtGui
         for i in range(self.dialog.listWorkbenches.count()):
             w = self.dialog.listWorkbenches.item(i)
-            if w.text().startswith(str(repo)):
+            if (w.text() == str(repo)) or w.text().startswith(str(repo)+" "):
                 w.setText(str(repo) + str(" ("+translate("AddonsInstaller","Update available")+")"))
                 w.setForeground(QtGui.QBrush(QtGui.QColor(182,90,0)))
                 if not repo in self.doUpdate:

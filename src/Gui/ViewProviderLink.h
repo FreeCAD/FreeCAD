@@ -222,9 +222,9 @@ public:
     bool canDropObjects() const override;
     bool canDragAndDropObject(App::DocumentObject*) const override;
     bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
-            const char *subname, const std::vector<std::string> &elements) const override;
+            const char *subname, const std::vector<std::string> &subElements) const override;
     std::string dropObjectEx(App::DocumentObject*, App::DocumentObject*, 
-            const char *subname, const std::vector<std::string> &elements) override;
+            const char *subname, const std::vector<std::string> &subElements) override;
 
     bool onDelete(const std::vector<std::string> &) override;
     bool canDelete(App::DocumentObject* obj) const override;
@@ -264,6 +264,10 @@ public:
 
     virtual ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=0, bool recursive=false) const override;
+
+    virtual bool allowOverride(const App::DocumentObject &) const override {
+        return true;
+    }
 
 protected:
     bool setEdit(int ModNum) override;

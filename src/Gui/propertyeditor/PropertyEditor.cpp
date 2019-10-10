@@ -155,6 +155,20 @@ void PropertyEditor::commitData (QWidget * editor)
 void PropertyEditor::editorDestroyed (QObject * editor)
 {
     QTreeView::editorDestroyed(editor);
+
+    // When editing expression through context menu, the editor (ExpLineEditor)
+    // deletes itself when finished, so it won't trigger closeEditor signal. We
+    // must handle it here to perform auto update.
+    if (autoupdate) {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (doc) {
+            if (!doc->isTransactionEmpty()) {
+                if (doc->isTouched())
+                    doc->recompute();
+            }
+        }
+        App::GetApplication().closeActiveTransaction();
+    }
 }
 
 void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelIndex & previous )
@@ -561,6 +575,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
             closePersistentEditor(contextIndex);
             Base::FlagToggler<> flag(binding);
             edit(contextIndex,AllEditTriggers,0);
+            setupTransaction(contextIndex);
         }
         break;
     case MA_AddProp: {
