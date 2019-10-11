@@ -401,25 +401,29 @@ class ShowWorker(QtCore.QThread):
                         gitrepo.fetch()
                         if "git pull" in gitrepo.status():
                             upd = True
+            # If there is an update pending, lets user know via the UI
             if upd:
-                message = "<strong style=\"background: #B65A00;\">" + translate("AddonsInstaller", "An update is available for this addon.") 
-                message += "</strong><br>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+                message = "<div style=\"width: 100%;text-align: center;background: #75AFFD;\"><br/><strong style=\"background: #397FF7;color: #FFFFFF;\">" + translate("AddonsInstaller", "An update is available for this addon.") 
+                message += "</strong><br/></div><hr/>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+            # If there isn't, indicate that this addon is already installed
             else:
-                message = "<strong style=\"background: #00B629;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" 
+                message = "<div style=\"width: 100%;text-align: center;background: #C1FEB2;\"><br/><strong style=\"background: #00B629;color: #FFFFFF;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br/></div><hr/>" 
                 message += desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+            # Let the user know the install path for this addon
             message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
             self.repos[self.idx][2] = 2 # mark as already installed AND already checked for updates
             self.addon_repos.emit(self.repos)
         elif self.repos[self.idx][2] == 2:
-            message = "<strong style=\"background: #00B629;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>"
+            message = "<div style=\"width: 100%;text-align: center;background: #C1FEB2;\"><br/><strong style=\"background: #00B629;color: #FFFFFF;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br></div><hr/>"
             message += desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
             message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
         else:
             message = desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
 
+        # If the Addon is obsolete, let the user know through the Addon UI
         if self.repos[self.idx][0] in OBSOLETE:
-            message = " <strong style=\"background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"
-            message += translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/><br/>" + message
+            message = " <div style=\"width: 100%; text-align:center; background: #FFB3B3;\"><strong style=\"color: #FFFFFF; background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"
+            message += translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/></div><hr/>" + message
 
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
