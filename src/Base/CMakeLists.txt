@@ -238,6 +238,7 @@ SET(FreeCADBase_CPP_SRCS
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
     Debugger.cpp
+    DualQuaternion.cpp
     Exception.cpp
     ExceptionFactory.cpp
     Factory.cpp
@@ -306,6 +307,8 @@ SET(FreeCADBase_HPP_SRCS
     Converter.h
     CoordinateSystem.h
     Debugger.h
+    DualNumber.h
+    DualQuaternion.h
     Exception.h
     ExceptionFactory.h
     Factory.h
