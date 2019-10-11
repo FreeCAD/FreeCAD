@@ -2459,7 +2459,7 @@ class ShapeStringTaskPanel:
 
         self.stringText = translate("draft","Default")
         self.task.leString.setText(self.stringText)
-        self.platWinDialog(1)
+        self.platWinDialog(True)
         self.task.fcFontFile.setFileName(Draft.getParam("FontFile",""))
         self.fileSpec = Draft.getParam("FontFile","")
         self.point = FreeCAD.Vector(0.0,0.0,0.0)
@@ -2534,7 +2534,7 @@ class ShapeStringTaskPanel:
     def platWinDialog(self, OnOff):
         tDialog = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Dialog")
         if platform.system() == 'Windows':
-            if OnOff == 1:
+            if OnOff:
                 return tDialog.SetBool("DontUseNativeDialog", True)
             else:
                 return tDialog.SetBool("DontUseNativeDialog", False)
@@ -2545,7 +2545,7 @@ class ShapeStringTaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Snapper.off()
         self.sourceCmd.creator.finish(self.sourceCmd)
-        self.platWinDialog(0)
+        self.platWinDialog(False)
         return True
 
     def reject(self):
@@ -2553,7 +2553,7 @@ class ShapeStringTaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Snapper.off()
         self.sourceCmd.creator.finish(self.sourceCmd)
-        self.platWinDialog(0)
+        self.platWinDialog(False)
         return True
 
 if not hasattr(FreeCADGui,"draftToolBar"):
