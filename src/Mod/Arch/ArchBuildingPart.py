@@ -332,6 +332,8 @@ class BuildingPart(ArchIFC.IfcProduct):
         ArchIFC.IfcProduct.setProperties(self, obj)
 
         pl = obj.PropertiesList
+        if not "HeightPropagate" in pl:
+            obj.addProperty("App::PropertyBool","HeightPropagate","Children",QT_TRANSLATE_NOOP("App::Property","If true, the height value propagates to children objects"))
         if not "Height" in pl:
             obj.addProperty("App::PropertyLength","Height","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
         if not "LevelOffset" in pl:
@@ -376,7 +378,7 @@ class BuildingPart(ArchIFC.IfcProduct):
             self.svgcache = None
             self.shapecache = None
 
-        if (prop == "Height") and obj.Height.Value:
+        if (prop == "Height" or prop == "HeightPropagate") and obj.Height.Value:
             self.touchChildren(obj)
 
         elif prop == "Placement":
@@ -463,9 +465,10 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         for child in obj.Group:
             if Draft.getType(child) in ["Wall","Structure"]:
-                if not child.Height.Value:
-                    print("Executing ",child.Label)
-                    child.Proxy.execute(child)
+                if obj.HeightPropagate:
+                    if not child.Height.Value:
+                        print("Executing ",child.Label)
+                        child.Proxy.execute(child)
             elif Draft.getType(child) in ["Group"]:
                 self.touchChildren(child)
 
