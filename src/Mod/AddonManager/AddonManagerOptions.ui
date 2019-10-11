@@ -19,10 +19,10 @@
      <property name="toolTip">
       <string>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
-(this requires the python-git package installed on your system)</string>
+(this requires the GitPython package installed on your system)</string>
      </property>
      <property name="text">
-      <string>Automatically check for updates at start (requires python-git)</string>
+      <string>Automatically check for updates at start (requires GitPython)</string>
      </property>
     </widget>
    </item>
