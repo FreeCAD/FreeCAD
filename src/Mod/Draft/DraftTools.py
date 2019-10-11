@@ -2366,7 +2366,8 @@ class Move(Modifier):
 
     def Activated(self):
         self.name = translate("draft","Move", utf8_decode=True)
-        Modifier.Activated(self, self.name, is_subtool=isinstance(FreeCAD.activeDraftCommand, EditImproved))
+        Modifier.Activated(self, self.name,
+                           is_subtool=isinstance(FreeCAD.activeDraftCommand, SubelementModify))
         if not self.ui:
             return
         self.ghosts = []
@@ -4269,8 +4270,8 @@ class ToggleDisplayMode():
                 if "Flat Lines" in obj.ViewObject.listDisplayModes():
                     obj.ViewObject.DisplayMode = "Flat Lines"
 
-class EditImproved(Modifier):
-    """The Draft_Edit_Improved FreeCAD command definition"""
+class SubelementModify(Modifier):
+    """The Draft_SubelementModify FreeCAD command definition"""
 
     def __init__(self):
         self.is_running = False
@@ -4278,16 +4279,18 @@ class EditImproved(Modifier):
         self.original_view_settings = {}
 
     def GetResources(self):
-        return {'Pixmap'  : 'Draft_Edit',
+        return {'Pixmap'  : 'Draft_SubelementModify',
                 'Accel' : "D, E",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit_Improved", "Edit Improved"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit_Improved", "Edits the selected objects")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SubelementModify", "Subelement modify"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_SubelementModify",
+                                                    "Allows editing the subelements "
+                                                    "of the selected objects with other modification tools")}
 
     def Activated(self):
         if self.is_running:
             return self.finish()
         self.is_running = True
-        Modifier.Activated(self,"Edit_Improved")
+        Modifier.Activated(self, "SubelementModify")
         self.get_selection()
 
     def proceed(self):
@@ -5680,7 +5683,7 @@ FreeCADGui.addCommand('Draft_Downgrade',Downgrade())
 FreeCADGui.addCommand('Draft_Trimex',Trimex())
 FreeCADGui.addCommand('Draft_Scale',Scale())
 FreeCADGui.addCommand('Draft_Drawing',Drawing())
-FreeCADGui.addCommand('Draft_Edit_Improved',EditImproved())
+FreeCADGui.addCommand('Draft_SubelementModify', SubelementModify())
 FreeCADGui.addCommand('Draft_AddPoint',AddPoint())
 FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
 FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())

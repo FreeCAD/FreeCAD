@@ -73,14 +73,14 @@ def getIndices(obj,shape,offsetv,offsetvn):
             try:
                 if not isinstance(e.Curve,Part.LineSegment):
                     if not curves:
-			myshape = obj.Shape.copy(False)
-			myshape.Placement=obj.getGlobalPlacement()
+                        myshape = obj.Shape.copy(False)
+                        myshape.Placement=obj.getGlobalPlacement()
                         mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                         FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                         break
             except: # unimplemented curve type
-		myshape = obj.Shape.copy(False)
-		myshape.Placement=obj.getGlobalPlacement()
+                myshape = obj.Shape.copy(False)
+                myshape.Placement=obj.getGlobalPlacement()
                 mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                 FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                 break

@@ -27,6 +27,7 @@
 
 #ifndef _PreComp_
 #   include <assert.h>
+#   include <memory>
 #   include <xercesc/util/PlatformUtils.hpp>
 #   include <xercesc/util/XercesVersion.hpp>
 #   include <xercesc/dom/DOM.hpp>
@@ -157,6 +158,34 @@ private:
 
     unsigned long fWhatToShow;
 
+};
+#else
+class DOMPrintFilter : public DOMLSSerializerFilter
+{
+public:
+
+    /** @name Constructors */
+    DOMPrintFilter(ShowType whatToShow = DOMNodeFilter::SHOW_ALL);
+    //@{
+
+    /** @name Destructors */
+    ~DOMPrintFilter() {}
+    //@{
+
+    /** @ interface from DOMWriterFilter */
+    virtual FilterAction acceptNode(const XERCES_CPP_NAMESPACE_QUALIFIER DOMNode*) const;
+    //@{
+
+    virtual ShowType getWhatToShow() const {
+        return fWhatToShow;
+    }
+
+private:
+    // unimplemented copy ctor and assignment operator
+    DOMPrintFilter(const DOMPrintFilter&);
+    DOMPrintFilter & operator = (const DOMPrintFilter&);
+
+   ShowType fWhatToShow;
 };
 #endif
 class DOMPrintErrorHandler : public DOMErrorHandler
@@ -1054,7 +1083,7 @@ ParameterManager::ParameterManager()
 
     gSplitCdataSections    = true;
     gDiscardDefaultContent = true;
-    gUseFilter             = false;
+    gUseFilter             = true;
     gFormatPrettyPrint     = true;
 }
 
@@ -1339,6 +1368,8 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
     }
 #else
     try {
+        std::unique_ptr<DOMPrintFilter>   myFilter;
+
         // get a serializer, an instance of DOMWriter
         XMLCh tempStr[100];
         XMLString::transcode("LS", tempStr, 99);
@@ -1356,11 +1387,20 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
         if (_pDocument) {
             DOMLSOutput *theOutput = ((DOMImplementationLS*)impl)->createLSOutput();
             theOutput->setEncoding(gOutputEncoding);
+
+            if (gUseFilter) {
+                myFilter.reset(new DOMPrintFilter(DOMNodeFilter::SHOW_ELEMENT   |
+                                                  DOMNodeFilter::SHOW_ATTRIBUTE |
+                                                  DOMNodeFilter::SHOW_DOCUMENT_TYPE
+                                                  ));
+                theSerializer->setFilter(myFilter.get());
+            }
+
             theOutput->setByteStream(pFormatTarget);
             theSerializer->write(_pDocument, theOutput);
         }
 
-        delete theSerializer;
+        theSerializer->release();
     }
     catch (XMLException& e) {
         std::cerr << "An error occurred during creation of output transcoder. Msg is:"
@@ -1496,6 +1536,56 @@ short DOMPrintFilter::acceptNode(const DOMNode* node) const
     }
     case DOMNode::DOCUMENT_NODE: {
         // same as DOCUMENT_NODE
+        return DOMNodeFilter::FILTER_REJECT;  // no effect
+        break;
+    }
+    default : {
+        return DOMNodeFilter::FILTER_ACCEPT;
+        break;
+    }
+    }
+
+    return DOMNodeFilter::FILTER_ACCEPT;
+}
+#else
+DOMPrintFilter::DOMPrintFilter(ShowType whatToShow)
+    : fWhatToShow(whatToShow)
+{
+}
+
+DOMPrintFilter::FilterAction DOMPrintFilter::acceptNode(const DOMNode* node) const
+{
+    if (XMLString::compareString(node->getNodeName(), XStr("FCParameters").unicodeForm()) == 0) {
+        // This node is supposed to have a single FCParamGroup and two text nodes.
+        // Over time it can happen that the text nodes collect extra newlines.
+        const DOMNodeList*  children =  node->getChildNodes();
+        for (XMLSize_t i=0; i<children->getLength(); i++) {
+            DOMNode* child = children->item(i);
+            if (child->getNodeType() == DOMNode::TEXT_NODE) {
+                child->setNodeValue(XStr("\n").unicodeForm());
+            }
+        }
+    }
+
+    switch (node->getNodeType()) {
+    case DOMNode::ELEMENT_NODE: {
+        return DOMNodeFilter::FILTER_ACCEPT;
+
+        break;
+    }
+    case DOMNode::COMMENT_NODE: {
+        return DOMNodeFilter::FILTER_ACCEPT;
+        break;
+    }
+    case DOMNode::TEXT_NODE: {
+        return DOMNodeFilter::FILTER_ACCEPT;
+        break;
+    }
+    case DOMNode::DOCUMENT_TYPE_NODE: {
+        return DOMNodeFilter::FILTER_REJECT;  // no effect
+        break;
+    }
+    case DOMNode::DOCUMENT_NODE: {
         return DOMNodeFilter::FILTER_REJECT;  // no effect
         break;
     }

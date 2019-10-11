@@ -73,6 +73,14 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="slerp" Const="true">
+			<Documentation>
+				<UserDocu>
+					slerp(Rotation, Float) -> Rotation
+					Spherical linear interpolation of this and a given rotation. The float must be in the range of 0 and 1
+				</UserDocu>
+			</Documentation>
+		</Methode>
         <Methode Name="toEuler" Const="true">
 			<Documentation>
 				<UserDocu>
