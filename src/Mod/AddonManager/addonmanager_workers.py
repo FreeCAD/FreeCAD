@@ -423,7 +423,7 @@ class ShowWorker(QtCore.QThread):
         # If the Addon is obsolete, let the user know through the Addon UI
         if self.repos[self.idx][0] in OBSOLETE:
             message = " <div style=\"width: 100%; text-align:center; background: #FFB3B3;\"><strong style=\"color: #FFFFFF; background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"
-            message += translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/></div><hr/>" + message
+            message += translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/></div><hr/>" + desc
 
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
