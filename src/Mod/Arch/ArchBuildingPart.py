@@ -469,7 +469,7 @@ class BuildingPart(ArchIFC.IfcProduct):
                 if not child.Height.Value:
                     print("Executing ",child.Label)
                     child.Proxy.execute(child)
-            elif ((Draft.getType(child) in ["Group"]) or (Draft.getType(child) in ["BuildingPart"])):
+            elif Draft.getType(child) in ["Group","BuildingPart"]:
                 self.touchChildren(child)
 
 
