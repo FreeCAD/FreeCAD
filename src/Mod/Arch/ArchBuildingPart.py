@@ -332,10 +332,11 @@ class BuildingPart(ArchIFC.IfcProduct):
         ArchIFC.IfcProduct.setProperties(self, obj)
 
         pl = obj.PropertiesList
-        if not "HeightPropagate" in pl:
-            obj.addProperty("App::PropertyBool","HeightPropagate","Children",QT_TRANSLATE_NOOP("App::Property","If true, the height value propagates to children objects"))
         if not "Height" in pl:
             obj.addProperty("App::PropertyLength","Height","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
+        if not "HeightPropagate" in pl:
+            obj.addProperty("App::PropertyBool","HeightPropagate","Children",QT_TRANSLATE_NOOP("App::Property","If true, the height value propagates to contained objects"))
+            obj.HeightPropagate = True
         if not "LevelOffset" in pl:
             obj.addProperty("App::PropertyLength","LevelOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The level of the (0,0,0) point of this level"))
         if not "Area" in pl:
@@ -465,11 +466,10 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         for child in obj.Group:
             if Draft.getType(child) in ["Wall","Structure"]:
-                if obj.HeightPropagate:
-                    if not child.Height.Value:
-                        print("Executing ",child.Label)
-                        child.Proxy.execute(child)
-            elif Draft.getType(child) in ["Group"]:
+                if not child.Height.Value:
+                    print("Executing ",child.Label)
+                    child.Proxy.execute(child)
+            elif ((Draft.getType(child) in ["Group"]) or (Draft.getType(child) in ["BuildingPart"])):
                 self.touchChildren(child)
 
 
