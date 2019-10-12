@@ -114,6 +114,18 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="slerp" Const="true">
+			<Documentation>
+				<UserDocu>
+					slerp(placement2, t, shorten = True): interpolate between self and placement2.
+                    This function performs independent interpolation of rotation and movement.
+                    Result of such interpolation might be not what application expects, thus this
+                    tool might be considered for simple cases or for interpolating between small intervals.
+                    
+                    For more complex cases you better use the advanced sclerp() function.
+				</UserDocu>
+			</Documentation>
+		</Methode>
         <Methode Name="isIdentity" Const="true">
 			<Documentation>
 				<UserDocu>
