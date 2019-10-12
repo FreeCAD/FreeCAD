@@ -105,7 +105,7 @@ Placement(Base, Axis, Angle) -- define position and rotation
         <Methode Name="sclerp" Const="true">
 			<Documentation>
 				<UserDocu>
-					sclerp(t, placement2, shorten = True): interpolate between self and placement2.
+                    sclerp(placement2, t, shorten = True): interpolate between self and placement2.
                     Interpolation is a continuous motion along a helical path, made of equal transforms if discretized.
                     t = 0.0 - return self. t = 1.0 - return placement2. t can also be outside of 0..1 range, for extrapolation.
                     If quaternions of rotations of the two placements differ in sign, the interpolation will 
