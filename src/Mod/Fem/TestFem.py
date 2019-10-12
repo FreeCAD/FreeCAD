@@ -153,7 +153,8 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_stress_principal_reinforced"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_rho"
 ./bin/FreeCADCmd --run-test "femtest.app.test_result.TestResult.test_disp_abs"
-./bin/FreeCADCmd --run-test "femtest.app.test_solverframework.TestSolverFrameWork.test_solver_framework"
+./bin/FreeCADCmd --run-test "femtest.app.test_solverframework.TestSolverFrameWork.test_solver_calculix"
+./bin/FreeCADCmd --run-test "femtest.app.test_solverframework.TestSolverFrameWork.test_solver_elmer"
 
 
 # to get all command to start FreeCAD from build dir on Linux
@@ -252,7 +253,10 @@ import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_result.TestResult.test_disp_abs"))
 
 import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_solverframework.TestSolverFrameWork.test_solver_framework"))
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_solverframework.TestSolverFrameWork.test_solver_calculix"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_solverframework.TestSolverFrameWork.test_solver_elmer"))
 
 
 # open files from FEM test suite source code

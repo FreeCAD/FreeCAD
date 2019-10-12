@@ -74,17 +74,6 @@ class Draft_SelectPlane:
             p = FreeCAD.DraftWorkingPlane
             self.states.append([p.u, p.v, p.axis, p.position])
 
-        # try to find a WP from the current selection
-        if self.handle():
-            return
-
-        # try other method
-        if FreeCAD.DraftWorkingPlane.alignToSelection():
-            FreeCADGui.Selection.clearSelection()
-            self.display(FreeCAD.DraftWorkingPlane.axis)
-            self.finish()
-            return
-
         m = translate("draft", "Pick a face, 3 vertices or a WP Proxy to define the drawing plane")
         FreeCAD.Console.PrintMessage(m+"\n")
 
@@ -125,6 +114,17 @@ class Draft_SelectPlane:
         self.taskd.form.fieldGridMainLine.valueChanged.connect(self.onSetMainline)
         self.taskd.form.fieldSnapRadius.valueChanged.connect(self.onSetSnapRadius)
 
+        # try to find a WP from the current selection
+        if self.handle():
+            return
+
+        # try other method
+        if FreeCAD.DraftWorkingPlane.alignToSelection():
+            FreeCADGui.Selection.clearSelection()
+            self.display(FreeCAD.DraftWorkingPlane.axis)
+            self.finish()
+            return
+        
         # rock 'n roll!
         FreeCADGui.Control.showDialog(self.taskd)
         self.call = self.view.addEventCallback("SoEvent", self.action)
@@ -239,7 +239,7 @@ class Draft_SelectPlane:
             elif sel.HasSubObjects:
                 if len(sel.SubElementNames) == 1:
                     if "Face" in sel.SubElementNames[0]:
-                        FreeCAD.DraftWorkingPlane.alignToFace(sel.SubObjects[0], self.taskd.form.fieldOffset.Value)
+                        FreeCAD.DraftWorkingPlane.alignToFace(sel.SubObjects[0], self.getOffset())
                         self.display(FreeCAD.DraftWorkingPlane.axis)
                         return True
                     elif sel.SubElementNames[0] == "Plane":
@@ -253,13 +253,13 @@ class Draft_SelectPlane:
                         FreeCAD.DraftWorkingPlane.alignTo3Points(sel.SubObjects[0].Point,
                                                                  sel.SubObjects[1].Point,
                                                                  sel.SubObjects[2].Point,
-                                                                 self.taskd.form.fieldOffset.Value)
+                                                                 self.getOffset())
                         self.display(FreeCAD.DraftWorkingPlane.axis)
                         return True
             elif sel.Object.isDerivedFrom("Part::Feature"):
                 if sel.Object.Shape:
                     if len(sel.Object.Shape.Faces) == 1:
-                        FreeCAD.DraftWorkingPlane.alignToFace(sel.Object.Shape.Faces[0], self.taskd.form.fieldOffset.Value)
+                        FreeCAD.DraftWorkingPlane.alignToFace(sel.Object.Shape.Faces[0], self.getOffset())
                         self.display(FreeCAD.DraftWorkingPlane.axis)
                         return True
         elif sel:
@@ -273,7 +273,7 @@ class Draft_SelectPlane:
                 FreeCAD.DraftWorkingPlane.alignTo3Points(subs[0].Point,
                                                          subs[1].Point,
                                                          subs[2].Point,
-                                                         self.taskd.form.fieldOffset.Value)
+                                                         self.getOffset())
                 self.display(FreeCAD.DraftWorkingPlane.axis)
                 return True
         return False

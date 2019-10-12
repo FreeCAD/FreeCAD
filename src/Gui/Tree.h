@@ -272,7 +272,14 @@ public:
     void updateSelection(QTreeWidgetItem *, bool unselect=false);
     void updateSelection();
     void updateItemSelection(DocumentObjectItem *);
-    void selectItems(bool sync);
+
+    enum SelectionReason {
+        SR_SELECT, // only select, no expansion
+        SR_EXPAND, // select and expand but respect ObjectStatus::NoAutoExpand
+        SR_FORCE_EXPAND, // select and force expansion
+    };
+    void selectItems(SelectionReason reason=SR_SELECT);
+
     void testStatus(void);
     void setData(int column, int role, const QVariant & value) override;
     void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
@@ -488,7 +495,23 @@ public:
 };
 
 
-/// Helper class to read/write tree view options
+/** Helper class to read/write tree view options
+ *
+ * The parameters are stored under group "User parameter:BaseApp/Preferences/TreeView".
+ * Call TreeParams::Instance()->ParamName/setParamName() to get/set parameter.
+ * To add a new parameter, add a new line under FC_TREEPARAM_DEFS using macro
+ *
+ * @code
+ *      FC_TREEPARAM_DEF(parameter_name, c_type, parameter_type, default_value)
+ * @endcode
+ *
+ * If there is special handling on parameter change, use FC_TREEPARAM_DEF2()
+ * instead, and add a function with the following signature in Tree.cpp,
+ *
+ * @code
+ *      void TreeParams:on<ParamName>Changed()
+ * @endcode
+ */
 class GuiExport TreeParams : public ParameterGrp::ObserverType {
 public:
     TreeParams();
@@ -496,12 +519,12 @@ public:
     static TreeParams *Instance();
 
 #define FC_TREEPARAM_DEFS \
-    FC_TREEPARAM_DEF(SyncSelection,bool,Bool,true) \
+    FC_TREEPARAM_DEF2(SyncSelection,bool,Bool,true) \
     FC_TREEPARAM_DEF(SyncView,bool,Bool,true) \
     FC_TREEPARAM_DEF(PreSelection,bool,Bool,true) \
     FC_TREEPARAM_DEF(SyncPlacement,bool,Bool,false) \
     FC_TREEPARAM_DEF(RecordSelection,bool,Bool,true) \
-    FC_TREEPARAM_DEF(DocumentMode,int,Int,1) \
+    FC_TREEPARAM_DEF2(DocumentMode,int,Int,2) \
     FC_TREEPARAM_DEF(StatusTimeout,int,Int,100) \
     FC_TREEPARAM_DEF(SelectionTimeout,int,Int,100) \
     FC_TREEPARAM_DEF(PreSelectionTimeout,int,Int,500) \
@@ -509,30 +532,33 @@ public:
     FC_TREEPARAM_DEF(RecomputeOnDrop,bool,Bool,true) \
     FC_TREEPARAM_DEF(KeepRootOrder,bool,Bool,true) \
     FC_TREEPARAM_DEF(TreeActiveAutoExpand,bool,Bool,true) \
-
-#define FC_TREEPARAM_FUNCS(_name,_type,_Type,_default) \
-    _type _name() const {return _##_name;} \
-    void set##_name(_type);\
-    void on##_name##Changed();
+    FC_TREEPARAM_DEF(Indentation,int,Int,0) \
 
 #undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF FC_TREEPARAM_FUNCS
+#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
+    _type _name() const {return _##_name;} \
+    void set##_name(_type);\
+
+#undef FC_TREEPARAM_DEF2
+#define FC_TREEPARAM_DEF2(_name,_type,_Type,_default) \
+    FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
+    void on##_name##Changed();\
+
     FC_TREEPARAM_DEFS
 
 private:
 
-#define FC_TREEPARAM_DECLARE(_name,_type,_Type,_default) \
+#undef FC_TREEPARAM_DEF
+#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
     _type _##_name;
 
-#undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF FC_TREEPARAM_DECLARE
+#undef FC_TREEPARAM_DEF2
+#define FC_TREEPARAM_DEF2 FC_TREEPARAM_DEF
+
     FC_TREEPARAM_DEFS
 
     ParameterGrp::handle handle;
 };
-
-#define FC_TREEPARAM(_name) (Gui::TreeParams::Instance()->_name())
-#define FC_TREEPARAM_SET(_name,_v) Gui::TreeParams::Instance()->set##_name(_v)
 
 }
 

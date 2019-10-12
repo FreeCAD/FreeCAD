@@ -40,7 +40,7 @@ class SoFCBoundingBox;
 class View3DInventorViewer;
 
 /**
- * The base class for all view providers that display geometric data, like mesh, point cloudes and shapes.
+ * The base class for all view providers that display geometric data, like mesh, point clouds and shapes.
  * @author Werner Mayer
  */
 class GuiExport ViewProviderGeometryObject : public ViewProviderDragger
@@ -106,4 +106,3 @@ protected:
 
 
 #endif // GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
-

@@ -621,44 +621,52 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
     if (!pcProvider) {
         //Base::Console().Log("Document::slotNewObject() called\n");
         std::string cName = Obj.getViewProviderNameStored();
-        if (cName.empty()) {
-            // handle document object with no view provider specified
-            Base::Console().Log("%s has no view provider specified\n", Obj.getTypeId().getName());
-            return;
+        for(;;) {
+            if (cName.empty()) {
+                // handle document object with no view provider specified
+                FC_LOG(Obj.getFullName() << " has no view provider specified");
+                return;
+            }
+            Base::BaseClass* base = static_cast<Base::BaseClass*>(
+                    Base::Type::createInstanceByName(cName.c_str(),true));
+            pcProvider = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(base);
+            if (!pcProvider) {
+                // type not derived from ViewProviderDocumentObject!!!
+                FC_ERR("Invalid view provider type '" << cName << "' for " << Obj.getFullName());
+                delete base;
+                return;
+            } else if (cName!=Obj.getViewProviderName() && !pcProvider->allowOverride(Obj)) {
+                FC_WARN("View provider type '" << cName << "' does not support " << Obj.getFullName());
+                delete base;
+                pcProvider = 0;
+                cName = Obj.getViewProviderName();
+            } else
+                break;
         }
 
         setModified(true);
-        Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(cName.c_str(),true));
-        if (base) {
-            // type not derived from ViewProviderDocumentObject!!!
-            assert(base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId()));
-            pcProvider = static_cast<ViewProviderDocumentObject*>(base);
-            d->_ViewProviderMap[&Obj] = pcProvider;
-            d->_CoinMap[pcProvider->getRoot()] = pcProvider;
-            pcProvider->setStatus(Gui::ViewStatus::TouchDocument, d->_changeViewTouchDocument);
+        d->_ViewProviderMap[&Obj] = pcProvider;
+        d->_CoinMap[pcProvider->getRoot()] = pcProvider;
+        pcProvider->setStatus(Gui::ViewStatus::TouchDocument, d->_changeViewTouchDocument);
 
-            try {
-                // if successfully created set the right name and calculate the view
-                //FIXME: Consider to change argument of attach() to const pointer
-                pcProvider->attach(const_cast<App::DocumentObject*>(&Obj));
-                pcProvider->updateView();
-                pcProvider->setActiveMode();
-            }
-            catch(const Base::MemoryException& e){
-                FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
-            }
-            catch(Base::Exception &e){
-                e.ReportException();
-            }
+        try {
+            // if successfully created set the right name and calculate the view
+            //FIXME: Consider to change argument of attach() to const pointer
+            pcProvider->attach(const_cast<App::DocumentObject*>(&Obj));
+            pcProvider->updateView();
+            pcProvider->setActiveMode();
+        }
+        catch(const Base::MemoryException& e){
+            FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
+        }
+        catch(Base::Exception &e){
+            e.ReportException();
+        }
 #ifndef FC_DEBUG
-            catch(...){
-                FC_ERR("Unknown exception in Feature " << Obj.getFullName() << " thrown");
-            }
+        catch(...){
+            FC_ERR("Unknown exception in Feature " << Obj.getFullName() << " thrown");
+        }
 #endif
-        }
-        else {
-            FC_WARN("no view provider for the object " << cName << " found");
-        }
     }else{
         try {
             pcProvider->reattach(const_cast<App::DocumentObject*>(&Obj));
@@ -991,7 +999,7 @@ bool Document::save(void)
             if(docs.size()>1) {
                 int ret = QMessageBox::question(getMainWindow(),
                         QObject::tr("Save dependent files"),
-                        QObject::tr("The file contain external depencencies. "
+                        QObject::tr("The file contains external dependencies. "
                         "Do you want to save the dependent files, too?"),
                         QMessageBox::Yes,QMessageBox::No);
                 if (ret != QMessageBox::Yes) {
@@ -1043,6 +1051,7 @@ bool Document::saveAs(void)
         try {
             Gui::WaitCursor wc;
             std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(fn.toUtf8());
+            escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
             Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(u\"%s\")"
                                            , DocName, escapedstr.c_str());
             setModified(false);
@@ -1116,15 +1125,13 @@ bool Document::saveCopy(void)
                                              QString::fromUtf8(getDocument()->FileName.getValue()), 
                                              QObject::tr("%1 document (*.FCStd)").arg(exe));
     if (!fn.isEmpty()) {
-        QFileInfo fi;
-        fi.setFile(fn);
-
         const char * DocName = App::GetApplication().getDocumentName(getDocument());
 
         // save as new file name
         Gui::WaitCursor wc;
+        QString pyfn = Base::Tools::escapeEncodeFilename(fn);
         Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveCopy(\"%s\")"
-                                       , DocName, (const char*)fn.toUtf8());
+                                       , DocName, (const char*)pyfn.toUtf8());
 
         return true;
     }
@@ -1627,6 +1634,13 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
         view3D->setWindowIcon(oldview->windowIcon());
         view3D->resize(oldview->size());
 
+        // FIXME: Add parameter to define behaviour by the calling instance
+        // View provider editing
+        if (d->_editViewProvider) {
+            firstView->getViewer()->resetEditingViewProvider();
+            view3D->getViewer()->setEditingViewProvider(d->_editViewProvider, d->_editMode);
+        }
+
         return view3D;
     }
 
@@ -1787,7 +1801,11 @@ bool Document::canClose (bool checkModify, bool checkLink)
         if (!Gui::Control().isAllowedAlterDocument()) {
             std::string name = Gui::Control().activeDialog()->getDocumentName();
             if (name == this->getDocument()->getName()) {
-                if (this->getInEdit())
+                // getInEdit() only checks if the currently active MDI view is
+                // a 3D view and that it is in edit mode. However, when closing a
+                // document then the edit mode must be reset independent of the
+                // active view.
+                if (d->_editViewProvider)
                     this->_resetEdit();
             }
         }
@@ -2229,4 +2247,3 @@ void Document::slotChangePropertyEditor(const App::Document &doc, const App::Pro
         setModified(true);
     }
 }
-

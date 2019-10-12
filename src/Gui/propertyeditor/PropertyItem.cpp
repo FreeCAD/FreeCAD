@@ -37,6 +37,8 @@
 # include <QtGlobal>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -109,6 +111,29 @@ void PropertyItem::reset()
 {
     qDeleteAll(childItems);
     childItems.clear();
+}
+
+void PropertyItem::onChange()
+{
+    if(hasExpression()) {
+        for(auto child : childItems) {
+            if(child && child->hasExpression())
+                child->setExpression(boost::shared_ptr<App::Expression>());
+        }
+        for(auto item=parentItem;item;item=item->parentItem) {
+            if(item->hasExpression())
+                item->setExpression(boost::shared_ptr<App::Expression>());
+        }
+    }
+}
+
+bool PropertyItem::hasAnyExpression() const
+{
+    if(ExpressionBinding::hasExpression())
+        return true;
+    if(parentItem)
+        return parentItem->hasExpression();
+    return false;
 }
 
 void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
@@ -546,9 +571,12 @@ QVariant PropertyItem::data(int column, int role) const
             else if (role == Qt::DisplayRole) {
                 QVariant val = parent->property(qPrintable(objectName()));
                 return toString(val);
-
-            }
-            else
+            } 
+            else if( role == Qt::TextColorRole) {
+                if(hasExpression())
+                    return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
+                return QVariant();
+            } else
                 return QVariant();
         }
         if (role == Qt::EditRole)
@@ -578,7 +606,7 @@ bool PropertyItem::setData (const QVariant& value)
     // property or delegates again to its parent...
     if (propertyItems.empty()) {
         PropertyItem* parent = this->parent();
-        if (!parent || !parent->parent())
+        if (!parent || !parent->parent() || hasAnyExpression())
             return false;
         parent->setProperty(qPrintable(objectName()),value);
         return true;
@@ -2289,7 +2317,7 @@ QVariant PropertyStringListItem::value(const App::Property* prop) const
     QStringList list;
     const std::vector<std::string>& value = ((App::PropertyStringList*)prop)->getValues();
     for ( std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt ) {
-        list << QString::fromUtf8(jt->c_str());
+        list << QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(*jt).c_str());
     }
 
     return QVariant(list);
@@ -3502,8 +3530,7 @@ void LinkSelection::select()
 {
     Gui::Selection().clearSelection();
     Gui::Selection().addSelection((const char*)link[0].toLatin1(),
-                                  (const char*)link[1].toLatin1(),
-                                  link.size()>=6?(const char*)link[5].toUtf8():0);
+                                  (const char*)link[1].toLatin1());
     this->deleteLater();
 }
 
@@ -3642,18 +3669,46 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
             objName = _objName.c_str();
         }
 
-        if(xlink && xlink->getSubName(false)[0]) {
-            auto subObj = obj->getSubObject(xlink->getSubName(false));
-            if(subObj)
-                list << QString::fromLatin1("%1 (%2.%3)").
-                    arg(QString::fromUtf8(subObj->Label.getValue()),
-                        QString::fromLatin1(objName),
-                        QString::fromUtf8(xlink->getSubName(false)));
-            else
-                list << QString::fromLatin1("%1.%2").
-                    arg(QString::fromLatin1(objName),
-                        QString::fromUtf8(xlink->getSubName(false)));
-        }else if(objName!=obj->Label.getValue()) {
+        if(xlink && xlink->getSubValues().size()) {
+            int count = 0;
+            std::stringstream ss;
+            ss << objName << ' ';
+
+            std::string prevSub;
+            for(const auto &sub : xlink->getSubValues(false)) {
+                if(++count > 3)
+                    break;
+
+                if(count>1)
+                    ss << ',';
+                else
+                    ss << '(';
+
+                auto element = Data::ComplexGeoData::findElementName(sub.c_str());
+                if(prevSub.size()==(std::size_t)(element-sub.c_str()) 
+                        && boost::starts_with(sub,prevSub))
+                {
+                    ss << element;
+                    continue;
+                }
+
+                prevSub.clear();
+
+                if(element && element[0])
+                    prevSub = sub.substr(0,element-sub.c_str());
+
+                if(count > 1)
+                    ss << ' ';
+                ss << sub;
+            }
+            if(count) {
+                if(count>3)
+                    ss << "...";
+                ss << ')';
+            }
+            list << QString::fromUtf8(ss.str().c_str());
+
+        }else if(obj->Label.getStrValue() != objName) {
             list << QString::fromLatin1("%1 (%2)").
                     arg(QString::fromUtf8(obj->Label.getValue()),
                         QString::fromLatin1(objName));

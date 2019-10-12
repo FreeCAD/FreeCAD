@@ -60,6 +60,9 @@ protected:
         const SoPrimitiveVertex *v1,
         const SoPrimitiveVertex *v2,
         SoPickedPoint *pp);
+
+    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+
 private:
     struct SelContext;
     typedef std::shared_ptr<SelContext> SelContextPtr;

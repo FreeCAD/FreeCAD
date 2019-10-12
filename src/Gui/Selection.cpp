@@ -1334,25 +1334,52 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
     }
 }
 
-void SelectionSingleton::setVisible(int visible) {
+struct SelInfo {
+    std::string DocName;
+    std::string FeatName;
+    std::string SubName;
+    SelInfo(const std::string &docName,
+            const std::string &featName,
+            const std::string &subName)
+        :DocName(docName)
+        ,FeatName(featName)
+        ,SubName(subName)
+    {}
+};
+
+void SelectionSingleton::setVisible(VisibleState vis) {
     std::set<std::pair<App::DocumentObject*,App::DocumentObject*> > filter;
-    if(visible<0) 
-        visible = -1;
-    else if(visible>0)
+    int visible;
+    switch(vis) {
+    case VisShow:
         visible = 1;
+        break;
+    case VisToggle:
+        visible = -1;
+        break;
+    default:
+        visible = 0;
+    }
+
+    // Copy the selection in case it changes during this function
+    std::vector<SelInfo> sels;
+    sels.reserve(_SelList.size());
     for(auto &sel : _SelList) {
-        //Note: if selection is changed while processing this list, the contents of _SelList will be 
-        //changed during loop execution.  This may cause crash here when a "non-entry" is processed.
-//        if (_SelList.size() == 0) {
-//            Base::Console().Log("Gui::SS::setVisible - _SelList altered during loop - break!\n");
-//            break;
-//        }
         if(sel.DocName.empty() || sel.FeatName.empty() || !sel.pObject) 
             continue;
+        sels.emplace_back(sel.DocName,sel.FeatName,sel.SubName);
+    }
+
+    for(auto &sel : sels) {
+        App::Document *doc = App::GetApplication().getDocument(sel.DocName.c_str());
+        if(!doc) continue;
+        App::DocumentObject *obj = doc->getObject(sel.FeatName.c_str());
+        if(!obj) continue;
+
         // get parent object
         App::DocumentObject *parent = 0;
         std::string elementName;
-        auto obj = sel.pObject->resolve(sel.SubName.c_str(),&parent,&elementName);
+        obj = obj->resolve(sel.SubName.c_str(),&parent,&elementName);
         if(!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
             continue;
         // try call parent object's setElementVisible
@@ -2233,11 +2260,25 @@ PyObject *SelectionSingleton::sSetVisible(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         int vis;
-        if(visible == Py_None)
+        if(visible == Py_None) {
             vis = -1;
-        else 
+        }
+#if PY_MAJOR_VERSION < 3
+        else if(PyInt_Check(visible)) {
+            vis = PyInt_AsLong(visible);
+        }
+#else
+        else if(PyLong_Check(visible)) {
+            vis = PyLong_AsLong(visible);
+        }
+#endif
+        else {
             vis = PyObject_IsTrue(visible)?1:0;
-        Selection().setVisible(vis);
+        }
+        if(vis<0)
+            Selection().setVisible(VisToggle);
+        else
+            Selection().setVisible(vis==0?VisHide:VisShow);
     } PY_CATCH;
 
     Py_Return;

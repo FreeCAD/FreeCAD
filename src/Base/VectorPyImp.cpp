@@ -32,6 +32,8 @@
 // inclusion of the generated files (generated out of VectorPy.xml)
 #include "GeometryPyCXX.h"
 #include "VectorPy.h"
+#include "MatrixPy.h"
+#include "RotationPy.h"
 #include "VectorPy.cpp"
 
 using namespace Base;
@@ -142,11 +144,13 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
 {
     if (PyObject_TypeCheck(self, &(VectorPy::Type))) {
         Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
+
         if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
             Base::Vector3d b = static_cast<VectorPy*>(other)->value();
             Py::Float mult(a * b);
             return Py::new_reference_to(mult);
         }
+
         else if (PyFloat_Check(other)) {
             double b = PyFloat_AsDouble(other);
             return new VectorPy(a * b);
@@ -162,7 +166,7 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
             return new VectorPy(a * (double)b);
         }
         else {
-            PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
+            PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
             return 0;
         }
     }
@@ -704,6 +708,14 @@ PyObject * VectorPy::number_divide_handler (PyObject* self, PyObject* other)
 
 PyObject * VectorPy::number_remainder_handler (PyObject* self, PyObject* other)
 {
+    if (PyObject_TypeCheck(self, &(VectorPy::Type)) &&
+        PyObject_TypeCheck(other, &(VectorPy::Type)))
+    {
+        Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
+        Base::Vector3d b = static_cast<VectorPy*>(other) ->value();
+        return new VectorPy(a % b);
+    }
+
     PyErr_Format(PyExc_TypeError, "unsupported operand type(s) for %%: '%s' and '%s'",
                  Py_TYPE(self)->tp_name, Py_TYPE(other)->tp_name);
     return 0;

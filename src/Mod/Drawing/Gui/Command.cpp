@@ -22,6 +22,7 @@
 
 #include <vector>
 
+#include <Base/Tools.h>
 #include <App/PropertyGeo.h>
 
 #include <Gui/Action.h>
@@ -72,6 +73,7 @@ void CmdDrawingOpen::activated(int iMsg)
         QString::fromLatin1("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable Vector Graphic")));
     if (!filename.isEmpty())
     {
+        filename = Base::Tools::escapeEncodeFilename(filename);
         // load the file with the module
         Command::doCommand(Command::Gui, "import Drawing, DrawingGui");
 #if PY_MAJOR_VERSION < 3
@@ -108,9 +110,10 @@ void CmdDrawingNewPage::activated(int iMsg)
 
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {
+        QString filename = Base::Tools::escapeEncodeFilename(tfi.filePath());
         openCommand("Create page");
         doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
+        doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)filename.toUtf8());
         doCommand(Doc,"App.activeDocument().recompute()");
         doCommand(Doc,"Gui.activeDocument().getObject('%s').show()",FeatName.c_str());
         commitCommand();
@@ -595,6 +598,7 @@ void CmdDrawingSymbol::activated(int iMsg)
     {
         std::string PageName = pages.front()->getNameInDocument();
         std::string FeatName = getUniqueObjectName("Symbol");
+        filename = Base::Tools::escapeEncodeFilename(filename);
         openCommand("Create Symbol");
         doCommand(Doc,"import Drawing");
 #if PY_MAJOR_VERSION < 3
@@ -657,6 +661,7 @@ void CmdDrawingExportPage::activated(int iMsg)
 
         doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].FeatName);
         std::string fname = (const char*)fn.toUtf8();
+        fname = Base::Tools::escapeEncodeFilename(fname);
 #if PY_MAJOR_VERSION < 3
         doCommand(Doc,"OutFile = open(unicode(\"%s\",'utf-8'),'w')",fname.c_str());
 #else

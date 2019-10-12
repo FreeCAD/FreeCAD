@@ -56,6 +56,9 @@
 
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
 
+#define SVG_NS_URI         "http://www.w3.org/2000/svg"
+#define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+
 namespace TechDraw
 {
 
@@ -158,6 +161,8 @@ class TechDrawExport DrawUtil {
         static void countEdges(const char* label, const TopoDS_Shape& s);
         static const char* printBool(bool b);
         static QString qbaToDebug(const QByteArray& line);
+        static void dumpCS(const char* text, gp_Ax2 CS);
+
 };
 
 } //end namespace TechDraw

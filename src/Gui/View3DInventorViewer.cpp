@@ -506,11 +506,15 @@ void View3DInventorViewer::init()
     pcOnTopMaterial->setOverride(true);
     pcGroupOnTop->addChild(pcOnTopMaterial);
 
-    pcGroupOnTopSel = new SoFCSelectionRoot;
+    auto selRoot = new SoFCSelectionRoot;
+    selRoot->selectionStyle = SoFCSelectionRoot::PassThrough;
+    pcGroupOnTopSel = selRoot;
     pcGroupOnTopSel->setName("GroupOnTopSel");
     pcGroupOnTopSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopSel);
-    pcGroupOnTopPreSel = new SoFCSelectionRoot;
+    selRoot = new SoFCSelectionRoot;
+    selRoot->selectionStyle = SoFCSelectionRoot::PassThrough;
+    pcGroupOnTopPreSel = selRoot;
     pcGroupOnTopPreSel->setName("GroupOnTopPreSel");
     pcGroupOnTopPreSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopPreSel);
@@ -607,6 +611,14 @@ View3DInventorViewer::~View3DInventorViewer()
 {
     // to prevent following OpenGL error message: "Texture is not valid in the current context. Texture has not been destroyed"
     aboutToDestroyGLContext();
+
+    // It can happen that a document has several MDI views and when the about to be
+    // closed 3D view is in edit mode the corresponding view provider must be restored
+    // because otherwise it might be left in a broken state
+    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=39720
+    if (restoreEditingRoot) {
+        resetEditingRoot(false);
+    }
 
     // cleanup
     this->backgroundroot->unref();
@@ -797,9 +809,12 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     // onTop==2 means on top only if whole object is selected,
     // onTop==3 means on top only if some sub-element is selected
     // onTop==1 means either
-    onTop = Gui::Selection().needPickedList() 
-            || vp->OnTopWhenSelected.getValue() 
-            || svp->OnTopWhenSelected.getValue();
+    if(Gui::Selection().needPickedList())
+        onTop = 1;
+    else if(vp->OnTopWhenSelected.getValue())
+        onTop = vp->OnTopWhenSelected.getValue();
+    else
+        onTop = svp->OnTopWhenSelected.getValue();
     if(Reason.Type == SelectionChanges::SetPreselect) {
         SoHighlightElementAction action;
         action.setHighlighted(true);

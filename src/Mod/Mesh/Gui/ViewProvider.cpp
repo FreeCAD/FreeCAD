@@ -315,7 +315,7 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
     }
 
     if (hGrp->GetBool("ShowBoundingBox", false))
-        pcHighlight->style = Gui::SoFCSelection::BOX;
+        SelectionStyle.setValue(1);
 
     Coloring.setStatus(App::Property::Hidden, true);
 }
@@ -369,6 +369,10 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
     }
     else if (prop == &Coloring) {
         tryColorPerVertexOrFace(Coloring.getValue());
+    }
+    else if (prop == &SelectionStyle) {
+        pcHighlight->style = SelectionStyle.getValue()
+            ?Gui::SoFCSelection::BOX:Gui::SoFCSelection::EMISSIVE;
     }
     else {
         // Set the inverse color for open edges

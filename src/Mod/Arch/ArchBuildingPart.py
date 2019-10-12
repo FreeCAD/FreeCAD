@@ -377,11 +377,7 @@ class BuildingPart(ArchIFC.IfcProduct):
             self.shapecache = None
 
         if (prop == "Height") and obj.Height.Value:
-            for child in obj.Group:
-                if Draft.getType(child) in ["Wall","Structure"]:
-                    if not child.Height.Value:
-                        print("Executing ",child.Label)
-                        child.Proxy.execute(child)
+            self.touchChildren(obj)
 
         elif prop == "Placement":
             if hasattr(self,"oldPlacement"):
@@ -461,6 +457,17 @@ class BuildingPart(ArchIFC.IfcProduct):
                     g.append(o)
         return g
 
+    def touchChildren(self,obj):
+        
+        "Touches all descendents where applicable"
+
+        for child in obj.Group:
+            if Draft.getType(child) in ["Wall","Structure"]:
+                if not child.Height.Value:
+                    print("Executing ",child.Label)
+                    child.Proxy.execute(child)
+            elif Draft.getType(child) in ["Group"]:
+                self.touchChildren(child)
 
 
 class ViewProviderBuildingPart:

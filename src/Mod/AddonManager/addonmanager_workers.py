@@ -84,7 +84,12 @@ class UpdateWorker(QtCore.QThread):
         # querying official addons
         for l in p:
             #name = re.findall("data-skip-pjax=\"true\">(.*?)<",l)[0]
-            name = re.findall("title=\"(.*?) @",l)[0]
+            res = re.findall("title=\"(.*?) @",l)
+            if res:
+                name = res[0]
+            else:
+                print("AddonMananger: Debug: couldn't find title in",l)
+                continue
             self.info_label.emit(name)
             #url = re.findall("title=\"(.*?) @",l)[0]
             url = utils.getRepoUrl(l)
@@ -389,26 +394,41 @@ class ShowWorker(QtCore.QThread):
                         if "git pull" in gitrepo.status():
                             upd = True
             if upd:
-                message = "<strong style=\"background: #B65A00;\">" + translate("AddonsInstaller", "An update is available for this addon.") + "</strong><br>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+                message = "<strong style=\"background: #B65A00;\">" + translate("AddonsInstaller", "An update is available for this addon.") 
+                message += "</strong><br>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
             else:
-                message = "<strong style=\"background: #00B629;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+                message = "<strong style=\"background: #00B629;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" 
+                message += desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+            message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + repo[0]
             self.repos[self.idx][2] = 2 # mark as already installed AND already checked for updates
             self.addon_repos.emit(self.repos)
+        elif self.repos[self.idx][2] == 2:
+            message = "<strong style=\"background: #00B629;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>"
+            message += desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+            message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
         else:
             message = desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
 
         if self.repos[self.idx][0] in OBSOLETE:
-            message = " <strong style=\"background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"+translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/><br/>" + message
+            message = " <strong style=\"background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"
+            message += translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/><br/>" + message
 
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
+        self.mustLoadImages = True
         l = self.loadImages( message, self.repos[self.idx][1], self.repos[self.idx][0])
         if l:
             self.info_label.emit( l )
         self.stop = True
 
+    def stopImageLoading(self):
+
+        "this stops the image loading process and allow the thread to terminate earlier"
+
+        self.mustLoadImages = False
+
     def loadImages(self,message,url,wbName):
-        
+
         "checks if the given page contains images and downloads them"
 
         # QTextBrowser cannot display online images. So we download them
@@ -422,6 +442,8 @@ class ShowWorker(QtCore.QThread):
             if not os.path.exists(store):
                 os.makedirs(store)
             for path in imagepaths:
+                if not self.mustLoadImages:
+                    return None
                 origpath = path
                 if "?" in path:
                     # remove everything after the ?

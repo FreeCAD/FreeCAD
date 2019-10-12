@@ -32,6 +32,7 @@
 
 #include <QGraphicsView>
 
+# include <Base/Tools.h>
 # include <App/DocumentObject.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
@@ -408,6 +409,7 @@ void CmdTechDrawImage::activated(int iMsg)
     if (!fileName.isEmpty())
     {
         std::string FeatName = getUniqueObjectName("Image");
+        fileName = Base::Tools::escapeEncodeFilename(fileName);
         openCommand("Create Image");
         doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewImage','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),fileName.toUtf8().constData());

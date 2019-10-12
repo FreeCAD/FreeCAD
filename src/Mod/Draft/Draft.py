@@ -366,9 +366,10 @@ def dimDash(p1, p2):
 def shapify(obj):
     """shapify(object): transforms a parametric shape object into
     non-parametric and returns the new object"""
-    if not (obj.isDerivedFrom("Part::Feature")): return None
-    if not "Shape" in obj.PropertiesList: return None
-    shape = obj.Shape
+    try:
+        shape = obj.Shape
+    except Exception:
+        return None
     if len(shape.Faces) == 1:
         name = "Face"
     elif len(shape.Solids) == 1:
@@ -840,6 +841,7 @@ def makeDimension(p1,p2,p3=None,p4=None):
             p3 = p1.add(p3)
     elif isinstance(p2,int) and isinstance(p3,int):
         l = []
+        idx = (p2,p3)
         l.append((p1,"Vertex"+str(p2+1)))
         l.append((p1,"Vertex"+str(p3+1)))
         obj.LinkedGeometry = l
@@ -1053,7 +1055,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
 
     return obj
 
-def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,Degree=None):
+def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,degree=None):
     """makeBezCurve(pointslist,[closed],[placement]): Creates a Bezier Curve object
     from the given list of vectors.   Instead of a pointslist, you can also pass a Part Wire."""
     if not FreeCAD.ActiveDocument:
@@ -1070,12 +1072,12 @@ def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,D
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
     _BezCurve(obj)
     obj.Points = pointslist
-    if Degree:
-        obj.Degree = Degree
+    if degree:
+        obj.Degree = degree
     else:
         import Part
-        obj.Degree = min((len(pointslist)-(1 * (not closed))),\
-            Part.BezierCurve().MaxDegree)
+        obj.Degree = min((len(pointslist)-(1 * (not closed))),
+                         Part.BezierCurve().MaxDegree)
     obj.Closed = closed
     obj.Support = support
     if face != None:
@@ -1198,16 +1200,16 @@ def makeCopy(obj,force=None,reparent=False):
             newobj.addGeometry(geo)
         for con in obj.Constraints:
             newobj.addConstraint(con)
-    elif obj.isDerivedFrom("Part::Feature"):
+    elif hasattr(obj, 'Shape'):
         newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",getRealName(obj.Name))
         newobj.Shape = obj.Shape
     else:
         print("Error: Object type cannot be copied")
         return None
     for p in obj.PropertiesList:
-        if not p in ["Proxy"]:
+        if not p in ["Proxy","ExpressionEngine"]:
             if p in newobj.PropertiesList:
-                if not newobj.getEditorMode(p):
+                if not "ReadOnly" in newobj.getEditorMode(p):
                     try:
                         setattr(newobj,p,obj.getPropertyByName(p))
                     except AttributeError:
@@ -1247,13 +1249,18 @@ def makeBlock(objectslist):
 def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Array",useLink=False):
     """makeArray(object,xvector,yvector,xnum,ynum,[name]) for rectangular array, or
     makeArray(object,xvector,yvector,zvector,xnum,ynum,znum,[name]) for rectangular array, or
-    makeArray(object,center,totalangle,totalnum,[name]) for polar array: Creates an array
-    of the given object
+    makeArray(object,center,totalangle,totalnum,[name]) for polar array, or
+    makeArray(object,rdistance,tdistance,axis,center,ncircles,symmetry,[name]) for circular array:
+    Creates an array of the given object
     with, in case of rectangular array, xnum of iterations in the x direction
     at xvector distance between iterations, same for y direction with yvector and ynum,
-    same for z direction with zvector and znum. In case of polar array, center is a vector,
-    totalangle is the angle to cover (in degrees) and totalnum is the number of objects,
-    including the original. The result is a parametric Draft Array."""
+    same for z direction with zvector and znum. In case of polar array, center is a vector, 
+    totalangle is the angle to cover (in degrees) and totalnum is the number of objects, 
+    including the original. In case of a circular array, rdistance is the distance of the 
+    circles, tdistance is the distance within circles, axis the rotation-axes, center the
+    center of rotation, ncircles the number of circles and symmetry the number
+    of symmetry-axis of the distribution. The result is a parametric Draft Array.
+    """
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
@@ -1265,13 +1272,22 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
         _Array(obj)
     obj.Base = baseobject
     if arg6:
-        obj.ArrayType = "ortho"
-        obj.IntervalX = arg1
-        obj.IntervalY = arg2
-        obj.IntervalZ = arg3
-        obj.NumberX = arg4
-        obj.NumberY = arg5
-        obj.NumberZ = arg6
+        if isinstance(arg1, (int, float)):
+            obj.ArrayType = "circular"
+            obj.RadialDistance = arg1
+            obj.TangentialDistance = arg2
+            obj.Axis = arg3
+            obj.Center = arg4
+            obj.NumberCircles = arg5
+            obj.Symmetry = arg6
+        else:
+            obj.ArrayType = "ortho"
+            obj.IntervalX = arg1
+            obj.IntervalY = arg2
+            obj.IntervalZ = arg3
+            obj.NumberX = arg4
+            obj.NumberY = arg5
+            obj.NumberZ = arg6
     elif arg4:
         obj.ArrayType = "ortho"
         obj.IntervalX = arg1
@@ -1592,7 +1608,7 @@ def move(objectslist,vector,copy=False):
             newobj.X = v.x
             newobj.Y = v.y
             newobj.Z = v.z
-        elif (obj.isDerivedFrom("Part::Feature")):
+        elif hasattr(obj,'Shape'):
             if copy:
                 newobj = makeCopy(obj)
             else:
@@ -1773,7 +1789,7 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
             newobj = makeCopy(obj)
         else:
             newobj = obj
-        if (obj.isDerivedFrom("Part::Feature")):
+        if hasattr(obj,'Shape'):
             shape = obj.Shape.copy()
             shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
             newobj.Shape = shape
@@ -1875,7 +1891,7 @@ def scale(objectslist,scale=Vector(1,1,1),center=Vector(0,0,0),copy=False):
             newobj = makeCopy(obj)
         else:
             newobj = obj
-        if obj.isDerivedFrom("Part::Feature"):
+        if hasattr(obj,'Shape'):
             scaled_shape = obj.Shape.copy()
             m = FreeCAD.Matrix()
             m.move(obj.Placement.Base.negative())
@@ -1886,7 +1902,7 @@ def scale(objectslist,scale=Vector(1,1,1),center=Vector(0,0,0),copy=False):
             scaled_shape = scaled_shape.transformGeometry(m)
         if getType(obj) == "Rectangle":
             p = []
-            for v in scaled_shape.Vertexes: 
+            for v in scaled_shape.Vertexes:
                 p.append(v.Point)
             pl = obj.Placement.copy()
             pl.Base = p[0]
@@ -1906,7 +1922,7 @@ def scale(objectslist,scale=Vector(1,1,1),center=Vector(0,0,0),copy=False):
         elif getType(obj) == "Wire" or getType(obj) == "BSpline":
             for index, point in enumerate(newobj.Points):
                 scaleVertex(newobj, index, scale, center)
-        elif (obj.isDerivedFrom("Part::Feature")):
+        elif hasattr(obj,'Shape'):
             newobj.Shape = scaled_shape
         elif (obj.TypeId == "App::Annotation"):
             factor = scale.y * obj.ViewObject.FontSize
@@ -2118,7 +2134,7 @@ def draftify(objectslist,makeblock=False,delete=True):
         objectslist = [objectslist]
     newobjlist = []
     for obj in objectslist:
-        if obj.isDerivedFrom('Part::Feature'):
+        if hasattr(obj,'Shape'):
             for cluster in Part.getSortedClusters(obj.Shape.Edges):
                 w = Part.Wire(cluster)
                 if DraftGeomUtils.hasCurves(w):
@@ -2187,7 +2203,7 @@ def getDXF(obj,direction=None):
             result += "7\nSTANDARD\n"
             count += 1
 
-    elif obj.isDerivedFrom("Part::Feature"):
+    elif hasattr(obj,'Shape'):
         # TODO do this the Draft way, for ex. using polylines and rectangles
         import Drawing
         if not direction:
@@ -2350,7 +2366,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     for obj in objectslist:
         if isinstance(obj,Part.Shape):
             shape = obj
-        elif not obj.isDerivedFrom("Part::Feature"):
+        elif not hasattr(obj,'Shape'):
             FreeCAD.Console.PrintError(translate("draft","not shape found"))
             return None
         else:
@@ -2484,7 +2500,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                 nobj.addGeometry(bsp)
                 nobj.exposeInternalGeometry(nobj.GeometryCount-1)
                 ok = True
-        elif tp == 'Shape' or obj.isDerivedFrom("Part::Feature"):
+        elif tp == 'Shape' or hasattr(obj,'Shape'):
             shape = obj if tp == 'Shape' else obj.Shape
 
             if not DraftGeomUtils.isPlanar(shape):
@@ -2562,7 +2578,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
                                                 newedge,norm,make_arc=True))
             ok = True
         formatObject(nobj,obj)
-        if ok and delete and obj.isDerivedFrom("Part::Feature"):
+        if ok and delete and hasattr(obj,'Shape'):
             doc = obj.Document
             def delObj(obj):
                 if obj.InList:
@@ -3107,7 +3123,7 @@ def upgrade(objects,delete=False,force=None):
     for ob in objects:
         if ob.TypeId == "App::DocumentObjectGroup":
             groups.append(ob)
-        elif ob.isDerivedFrom("Part::Feature"):
+        elif hasattr(ob,'Shape'):
             parts.append(ob)
             faces.extend(ob.Shape.Faces)
             wires.extend(ob.Shape.Wires)
@@ -3390,7 +3406,7 @@ def downgrade(objects,delete=False,force=None):
     result = None
 
     for o in objects:
-        if o.isDerivedFrom("Part::Feature"):
+        if hasattr(o, 'Shape'):
             for s in o.Shape.Solids:
                 solids.append(s)
             for f in o.Shape.Faces:
@@ -3420,14 +3436,14 @@ def downgrade(objects,delete=False,force=None):
                 FreeCAD.Console.PrintMessage(translate("draft", "Found 1 block: exploding it")+"\n")
 
         # we have one multi-solids compound object: extract its solids
-        elif (len(objects) == 1) and (getType(objects[0]) == "Part") and (len(solids) > 1):
+        elif (len(objects) == 1) and hasattr(objects[0],'Shape') and (len(solids) > 1):
             result = splitCompounds(objects)
             #print(result)
             if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found 1 multi-solids compound: exploding it")+"\n")
 
         # special case, we have one parametric object: we "de-parametrize" it
-        elif (len(objects) == 1) and (objects[0].isDerivedFrom("Part::Feature")) and ("Base" in objects[0].PropertiesList):
+        elif (len(objects) == 1) and hasattr(objects[0],'Shape') and hasattr(objects[0], 'Base'):
             result = shapify(objects[0])
             if result:
                 FreeCAD.Console.PrintMessage(translate("draft", "Found 1 parametric object: breaking its dependencies")+"\n")
@@ -3961,6 +3977,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyBool","FlipArrows","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension arrows 180 degrees"))
         obj.addProperty("App::PropertyBool","FlipText","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension text 180 degrees"))
         obj.addProperty("App::PropertyBool","ShowUnit","Draft",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
+        obj.addProperty("App::PropertyBool","ShowLine","Draft",QT_TRANSLATE_NOOP("App::Property","Shows the dimension line and arrows"))
         obj.addProperty("App::PropertyVectorDistance","TextPosition","Draft",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
         obj.addProperty("App::PropertyString","Override","Draft",QT_TRANSLATE_NOOP("App::Property","Text override. Use $dim to insert the dimension length"))
         obj.addProperty("App::PropertyString","UnitOverride","Draft",QT_TRANSLATE_NOOP("App::Property","A unit to express the measurement. Leave blank for system default"))
@@ -3975,6 +3992,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.ExtOvershoot = getParam("extovershoot",0)
         obj.Decimals = getParam("dimPrecision",2)
         obj.ShowUnit = getParam("showUnit",True)
+        obj.ShowLine = True
         _ViewProviderDraft.__init__(self,obj)
 
     def attach(self, vobj):
@@ -4017,20 +4035,26 @@ class _ViewProviderDimension(_ViewProviderDraft):
         self.node = coin.SoGroup()
         self.node.addChild(self.color)
         self.node.addChild(self.drawstyle)
-        self.node.addChild(self.coords)
-        self.node.addChild(self.line)
-        self.node.addChild(self.marks)
-        self.node.addChild(self.marksDimOvershoot)
-        self.node.addChild(self.marksExtOvershoot)
+        self.lineswitch2 = coin.SoSwitch()
+        self.lineswitch2.whichChild = -3
+        self.node.addChild(self.lineswitch2)
+        self.lineswitch2.addChild(self.coords)
+        self.lineswitch2.addChild(self.line)
+        self.lineswitch2.addChild(self.marks)
+        self.lineswitch2.addChild(self.marksDimOvershoot)
+        self.lineswitch2.addChild(self.marksExtOvershoot)
         self.node.addChild(label)
         self.node3d = coin.SoGroup()
         self.node3d.addChild(self.color)
         self.node3d.addChild(self.drawstyle)
-        self.node3d.addChild(self.coords)
-        self.node3d.addChild(self.line)
-        self.node3d.addChild(self.marks)
-        self.node3d.addChild(self.marksDimOvershoot)
-        self.node3d.addChild(self.marksExtOvershoot)
+        self.lineswitch3 = coin.SoSwitch()
+        self.lineswitch3.whichChild = -3
+        self.node3d.addChild(self.lineswitch3)
+        self.lineswitch3.addChild(self.coords)
+        self.lineswitch3.addChild(self.line)
+        self.lineswitch3.addChild(self.marks)
+        self.lineswitch3.addChild(self.marksDimOvershoot)
+        self.lineswitch3.addChild(self.marksExtOvershoot)
         self.node3d.addChild(label3d)
         vobj.addDisplayMode(self.node,"2D")
         vobj.addDisplayMode(self.node3d,"3D")
@@ -4335,6 +4359,13 @@ class _ViewProviderDimension(_ViewProviderDraft):
             self.node.insertChild(self.marksExtOvershoot,2)
             self.node3d.insertChild(self.marksExtOvershoot,2)
             vobj.Object.touch()
+        elif (prop == "ShowLine") and hasattr(vobj,"ShowLine"):
+            if vobj.ShowLine:
+                self.lineswitch2.whichChild = -3
+                self.lineswitch3.whichChild = -3
+            else:
+                self.lineswitch2.whichChild = -1
+                self.lineswitch3.whichChild = -1
         else:
             self.updateData(vobj.Object,"Start")
 
@@ -4354,31 +4385,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         return mode
 
     def getIcon(self):
-        return """
-            /* XPM */
-            static char * dim_xpm[] = {
-            "16 16 4 1",
-            "   c None",
-            ".  c #000000",
-            "+  c #FFFF00",
-            "@  c #FFFFFF",
-            "                ",
-            "                ",
-            "     .    .     ",
-            "    ..    ..    ",
-            "   .+.    .+.   ",
-            "  .++.    .++.  ",
-            " .+++. .. .+++. ",
-            ".++++. .. .++++.",
-            " .+++. .. .+++. ",
-            "  .++.    .++.  ",
-            "   .+.    .+.   ",
-            "    ..    ..    ",
-            "     .    .     ",
-            "                ",
-            "                ",
-            "                "};
-            """
+        return ":/icons/Draft_Dimension_Tree.svg"
 
     def __getstate__(self):
         return self.Object.ViewObject.DisplayMode
@@ -4694,31 +4701,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             return ["2D","3D"][getParam("dimstyle",0)]
 
     def getIcon(self):
-        return """
-                        /* XPM */
-                        static char * dim_xpm[] = {
-                        "16 16 4 1",
-                        "   c None",
-                        ".  c #000000",
-                        "+  c #FFFF00",
-                        "@  c #FFFFFF",
-                        "                ",
-                        "                ",
-                        "     .    .     ",
-                        "    ..    ..    ",
-                        "   .+.    .+.   ",
-                        "  .++.    .++.  ",
-                        " .+++. .. .+++. ",
-                        ".++++. .. .++++.",
-                        " .+++. .. .+++. ",
-                        "  .++.    .++.  ",
-                        "   .+.    .+.   ",
-                        "    ..    ..    ",
-                        "     .    .     ",
-                        "                ",
-                        "                ",
-                        "                "};
-                        """
+        return ":/icons/Draft_Dimension_Tree.svg"
 
     def __getstate__(self):
         return self.Object.ViewObject.DisplayMode
@@ -4924,7 +4907,7 @@ class _Wire(_DraftObject):
                         shape = Part.Face(shape)
                 obj.Shape = shape
         elif obj.Base and obj.Tool:
-            if obj.Base.isDerivedFrom("Part::Feature") and obj.Tool.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape') and hasattr(obj.Tool,'Shape'):
                 if (not obj.Base.Shape.isNull()) and (not obj.Tool.Shape.isNull()):
                     sh1 = obj.Base.Shape.copy()
                     sh2 = obj.Tool.Shape.copy()
@@ -5580,7 +5563,7 @@ class _Shape2DView(_DraftObject):
                                     shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).extend(o.Shape.Solids)
                                 else:
                                     shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).append(o.Shape.copy())
-                            elif o.isDerivedFrom("Part::Feature"):
+                            elif hasattr(o,'Shape'):
                                 if onlysolids:
                                     shapes.extend(o.Shape.Solids)
                                 else:
@@ -5597,7 +5580,7 @@ class _Shape2DView(_DraftObject):
                                 shapes.append(v1)
                     else:
                         for o in objs:
-                            if o.isDerivedFrom("Part::Feature"):
+                            if hasattr(o,'Shape'):
                                 if onlysolids:
                                     shapes.extend(o.Shape.Solids)
                                 else:
@@ -5658,7 +5641,7 @@ class _Shape2DView(_DraftObject):
                 shapes = []
                 objs = getGroupContents(obj.Base)
                 for o in objs:
-                    if o.isDerivedFrom("Part::Feature"):
+                    if hasattr(o,'Shape'):
                         if o.Shape:
                             if not o.Shape.isNull():
                                 shapes.append(o.Shape)
@@ -5667,7 +5650,7 @@ class _Shape2DView(_DraftObject):
                     comp = Part.makeCompound(shapes)
                     obj.Shape = self.getProjected(obj,comp,obj.Projection)
 
-            elif obj.Base.isDerivedFrom("Part::Feature"):
+            elif hasattr(obj.Base,'Shape'):
                 if not DraftVecUtils.isNull(obj.Projection):
                     if obj.ProjectionMode == "Solid":
                         obj.Shape = self.getProjected(obj,obj.Base.Shape,obj.Projection)
@@ -5815,6 +5798,10 @@ class _Array(_DraftLink):
         obj.addProperty("App::PropertyVectorDistance","IntervalAxis","Draft",QT_TRANSLATE_NOOP("App::Property","Distance and orientation of intervals in Axis direction"))
         obj.addProperty("App::PropertyVectorDistance","Center","Draft",QT_TRANSLATE_NOOP("App::Property","Center point"))
         obj.addProperty("App::PropertyAngle","Angle","Draft",QT_TRANSLATE_NOOP("App::Property","Angle to cover with copies"))
+        obj.addProperty("App::PropertyDistance","RadialDistance","Draft",QT_TRANSLATE_NOOP("App::Property","Distance between copies in a circle"))
+        obj.addProperty("App::PropertyDistance","TangentialDistance","Draft",QT_TRANSLATE_NOOP("App::Property","Distance between circles"))
+        obj.addProperty("App::PropertyInteger","NumberCircles","Draft",QT_TRANSLATE_NOOP("App::Property","number of circles"))
+        obj.addProperty("App::PropertyInteger","Symmetry","Draft",QT_TRANSLATE_NOOP("App::Property","number of circles"))
         obj.addProperty("App::PropertyBool","Fuse","Draft",QT_TRANSLATE_NOOP("App::Property","Specifies if copies must be fused (slower)"))
         obj.Fuse = False
         if self.useLink:
@@ -5823,7 +5810,7 @@ class _Array(_DraftLink):
                     QT_TRANSLATE_NOOP("App::Property","Show array element as children object"))
             obj.ExpandArray = False
 
-        obj.ArrayType = ['ortho','polar']
+        obj.ArrayType = ['ortho','polar','circular']
         obj.NumberX = 1
         obj.NumberY = 1
         obj.NumberZ = 1
@@ -5833,6 +5820,10 @@ class _Array(_DraftLink):
         obj.IntervalZ = Vector(0,0,1)
         obj.Angle = 360
         obj.Axis = Vector(0,0,1)
+        obj.RadialDistance = 1.0
+        obj.TangentialDistance = 1.0
+        obj.NumberCircles = 2
+        obj.Symmetry = 1
 
         _DraftLink.attach(self,obj)
 
@@ -5847,6 +5838,9 @@ class _Array(_DraftLink):
             if obj.ArrayType == "ortho":
                 pls = self.rectArray(obj.Base.Placement,obj.IntervalX,obj.IntervalY,
                                     obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
+            elif obj.ArrayType == "circular":
+                pls = self.circArray(obj.Base.Placement,obj.RadialDistance,obj.TangentialDistance,
+                                     obj.Axis,obj.Center,obj.NumberCircles,obj.Symmetry)
             else:
                 av = obj.IntervalAxis if hasattr(obj,"IntervalAxis") else None
                 pls = self.polarArray(obj.Base.Placement,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av)
@@ -5876,6 +5870,28 @@ class _Array(_DraftLink):
                         npl = pl.copy()
                         npl.translate(currentzvector)
                         base.append(npl)
+        return base
+
+    def circArray(self,pl,rdist,tdist,axis,center,cnum,sym):
+        import Part
+        sym = max(1, sym)
+        lead = (0,1,0)
+        if axis.x == 0 and axis.z == 0: lead = (1,0,0)
+        direction = axis.cross(Vector(lead)).normalize()
+        base = [pl.copy()]
+        for xcount in range(1, cnum):
+            rc = xcount*rdist
+            c = 2*rc*math.pi
+            n = math.floor(c/tdist)
+            n = math.floor(n/sym)*sym
+            if n == 0: continue
+            angle = 360/n
+            for ycount in range(0, n):
+                npl = pl.copy()
+                trans = FreeCAD.Vector(direction).multiply(rc)
+                npl.translate(trans)
+                npl.rotate(npl.Rotation.inverted().multVec(center-trans), axis, ycount*angle)
+                base.append(npl)
         return base
 
     def polarArray(self,pl,center,angle,num,axis,axisvector):
@@ -6763,19 +6779,19 @@ class DraftLabel:
                         p = obj.Target[0].Shape.Vertexes[int(obj.Target[1][0][6:])-1].Point
                 obj.Text = [FreeCAD.Units.Quantity(x,FreeCAD.Units.Length).UserString for x in tuple(p)]
             elif obj.LabelType == "Length":
-                if obj.Target[0].isDerivedFrom("Part::Feature"):
+                if hasattr(obj.Target[0],'Shape'):
                     if hasattr(obj.Target[0].Shape,"Length"):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Length,FreeCAD.Units.Length).UserString]
                     if obj.Target[1] and ("Edge" in obj.Target[1][0]):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Edges[int(obj.Target[1][0][4:])-1].Length,FreeCAD.Units.Length).UserString]
             elif obj.LabelType == "Area":
-                if obj.Target[0].isDerivedFrom("Part::Feature"):
+                if hasattr(obj.Target[0],'Shape'):
                     if hasattr(obj.Target[0].Shape,"Area"):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Area,FreeCAD.Units.Area).UserString.replace("^2","²")]
                     if obj.Target[1] and ("Face" in obj.Target[1][0]):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Faces[int(obj.Target[1][0][4:])-1].Area,FreeCAD.Units.Area).UserString]
             elif obj.LabelType == "Volume":
-                if obj.Target[0].isDerivedFrom("Part::Feature"):
+                if hasattr(obj.Target[0],'Shape'):
                     if hasattr(obj.Target[0].Shape,"Volume"):
                         obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Volume,FreeCAD.Units.Volume).UserString.replace("^3","³")]
 

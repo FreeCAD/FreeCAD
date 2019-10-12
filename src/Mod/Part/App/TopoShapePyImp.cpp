@@ -1920,7 +1920,7 @@ PyObject* TopoShapePy::tessellate(PyObject *args)
         Py::List vertex;
         for (std::vector<Base::Vector3d>::const_iterator it = Points.begin();
             it != Points.end(); ++it)
-            vertex.append(Py::Object(new Base::VectorPy(*it)));
+            vertex.append(Py::asObject(new Base::VectorPy(*it)));
         tuple.setItem(0, vertex);
         Py::List facet;
         for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
@@ -2841,7 +2841,7 @@ Py::Object TopoShapePy::getLocation(void) const
     mat[2][1] = trf.Value(3,2);
     mat[2][2] = trf.Value(3,3);
     mat[2][3] = trf.Value(3,4);
-    return Py::Object(new Base::MatrixPy(mat));
+    return Py::asObject(new Base::MatrixPy(mat));
 }
 
 void TopoShapePy::setLocation(Py::Object o)

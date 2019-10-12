@@ -35,6 +35,7 @@
 #include <App/Document.h>
 #include <App/DynamicProperty.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/ExpressionParser.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Placement.h>
@@ -691,7 +692,11 @@ void Sheet::updateProperty(CellAddress key)
         auto number = freecad_dynamic_cast<NumberExpression>(output.get());
         if(number) {
             long l;
-            if (!number->getUnit().isEmpty())
+            auto constant = freecad_dynamic_cast<ConstantExpression>(output.get());
+            if(constant && !constant->isNumber()) {
+                Base::PyGILStateLocker lock;
+                setObjectProperty(key, constant->getPyValue());
+            } else if (!number->getUnit().isEmpty())
                 setQuantityProperty(key, number->getValue(), number->getUnit());
             else if(number->isInteger(&l))
                 setIntegerProperty(key,l);
@@ -705,7 +710,7 @@ void Sheet::updateProperty(CellAddress key)
                 Base::PyGILStateLocker lock;
                 auto py_expr = freecad_dynamic_cast<PyObjectExpression>(output.get());
                 if(py_expr) 
-                    setObjectProperty(key, py_expr->getPyObject());
+                    setObjectProperty(key, py_expr->getPyValue());
                 else
                     setObjectProperty(key, Py::Object());
             }
@@ -853,15 +858,15 @@ DocumentObjectExecReturn *Sheet::execute(void)
             FC_LOG(addr.toString());
             recomputeCell(addr);
         }
-    } catch (std::exception&) {
+    } catch (std::exception &) {
         for(auto &v : VertexList) {
             Cell * cell = cells.getValue(v.first);
             // Mark as erroneous
-            cellErrors.insert(v.first);
-            if (cell)
-                cell->setException("Pending computation due to cyclic dependency");
-            updateProperty(v.first);
-            updateAlias(v.first);
+            if(cell)  {
+                cellErrors.insert(v.first);
+                cell->setException("Pending computation due to cyclic dependency",true);
+                cellUpdated(v.first);
+            }
         }
 
         // Try to be more user friendly by finding individual loops
@@ -907,10 +912,10 @@ DocumentObjectExecReturn *Sheet::execute(void)
             } catch (std::exception&) {
                 // Cycle detected; flag all with errors
                 std::ostringstream ss;
-                ss << "Cyclic dependency" << std::endl;
+                ss << "Cyclic dependency";
                 int count = 0;
                 for(auto &v : VertexList) {
-                    if(count==20)
+                    if(count++%20 == 0)
                         ss << std::endl;
                     else
                         ss << ", ";
@@ -919,8 +924,10 @@ DocumentObjectExecReturn *Sheet::execute(void)
                 std::string msg = ss.str();
                 for(auto &v : VertexList) {
                     Cell * cell = cells.getValue(v.first);
-                    if (cell)
-                        cell->setException(msg.c_str());
+                    if (cell) {
+                        cell->setException(msg.c_str(),true);
+                        cellUpdated(v.first);
+                    }
                 }
             }
         }
@@ -1463,9 +1470,10 @@ Property *PropertySpreadsheetQuantity::Copy() const
 
 void PropertySpreadsheetQuantity::Paste(const Property &from)
 {
+    const auto &src = dynamic_cast<const PropertySpreadsheetQuantity&>(from);
     aboutToSetValue();
-    _dValue = static_cast<const PropertySpreadsheetQuantity*>(&from)->_dValue;
-    _Unit = static_cast<const PropertySpreadsheetQuantity*>(&from)->_Unit;
+    _dValue = src._dValue;
+    _Unit = src._Unit;
     hasSetValue();
 }
 

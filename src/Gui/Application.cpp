@@ -505,6 +505,8 @@ void Application::open(const char* FileName, const char* Module)
     Base::FileInfo File(FileName);
     string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
+
     // if the active document is empty and not modified, close it
     // in case of an automatically created empty document at startup
     App::Document* act = App::GetApplication().getActiveDocument();
@@ -556,6 +558,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     Base::FileInfo File(FileName);
     std::string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
     if (Module != 0) {
         try {
@@ -613,6 +616,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
     Base::FileInfo File(FileName);
     std::string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
     if (Module != 0) {
         try {
@@ -702,7 +706,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     if(isMainDoc)
         pDoc->createView(View3DInventor::getClassTypeId());
     // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
-    // unpredicatable way. At least it seems that with Qt5 we don't need this any more.
+    // unpredictable way. At least it seems that with Qt5 we don't need this any more.
 #if QT_VERSION < 0x050000
     // qApp->processEvents(); // make sure to show the window stuff on the right place
 #endif
@@ -716,14 +720,16 @@ void Application::slotDeleteDocument(const App::Document& Doc)
         return;
     }
 
+    // Inside beforeDelete() a view provider may finish editing mode
+    // and therefore can alter the selection.
+    doc->second->beforeDelete();
+
     // We must clear the selection here to notify all observers.
     // And because of possible cross document link, better clear all selection
     // to be safe
     Gui::Selection().clearCompleteSelection();
     doc->second->signalDeleteDocument(*doc->second);
     signalDeleteDocument(*doc->second);
-
-    doc->second->beforeDelete();
 
     // If the active document gets destructed we must set it to 0. If there are further existing documents then the
     // view that becomes active sets the active document again. So, we needn't worry about this.

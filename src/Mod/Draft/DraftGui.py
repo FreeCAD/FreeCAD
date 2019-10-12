@@ -39,7 +39,7 @@ Report to Draft.py for info
 """
 
 import six
-
+import platform
 import FreeCAD, FreeCADGui, os, Draft, sys, traceback, DraftVecUtils, math
 
 try:
@@ -2459,6 +2459,7 @@ class ShapeStringTaskPanel:
 
         self.stringText = translate("draft","Default")
         self.task.leString.setText(self.stringText)
+        self.platWinDialog(1)
         self.task.fcFontFile.setFileName(Draft.getParam("FontFile",""))
         self.fileSpec = Draft.getParam("FontFile","")
         self.point = FreeCAD.Vector(0.0,0.0,0.0)
@@ -2530,12 +2531,21 @@ class ShapeStringTaskPanel:
         except Exception as e:
             FreeCAD.Console.PrintError("Draft_ShapeString: error delaying commit\n")
 
+    def platWinDialog(self, OnOff):
+        tDialog = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Dialog")
+        if platform.system() == 'Windows':
+            if OnOff == 1:
+                return tDialog.SetBool("DontUseNativeDialog", True)
+            else:
+                return tDialog.SetBool("DontUseNativeDialog", False)
+
     def accept(self):
         self.createObject();
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Snapper.off()
         self.sourceCmd.creator.finish(self.sourceCmd)
+        self.platWinDialog(0)
         return True
 
     def reject(self):
@@ -2543,6 +2553,7 @@ class ShapeStringTaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Snapper.off()
         self.sourceCmd.creator.finish(self.sourceCmd)
+        self.platWinDialog(0)
         return True
 
 if not hasattr(FreeCADGui,"draftToolBar"):

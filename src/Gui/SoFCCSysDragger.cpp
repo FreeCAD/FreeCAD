@@ -39,6 +39,7 @@
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 
 #include <Inventor/SbRotation.h>
 
@@ -638,6 +639,8 @@ void SoFCCSysDragger::initClass()
 }
 
 SoFCCSysDragger::SoFCCSysDragger()
+    :axisScale(1.0f,1.0f,1.0f)
+    ,scaleInited(false)
 {
     SO_KIT_CONSTRUCTOR(SoFCCSysDragger);
 
@@ -939,6 +942,44 @@ void SoFCCSysDragger::cameraCB(void *data, SoSensor *)
         sudoThis->idleSensor.schedule();
 }
 
+void SoFCCSysDragger::GLRender(SoGLRenderAction * action)
+{
+    if(!scaleInited) {
+        scaleInited = true;
+        updateDraggerCache(action->getCurPath());
+        updateAxisScale();
+    }
+
+    inherited::GLRender(action);
+}
+
+void SoFCCSysDragger::updateAxisScale() {
+    SbMatrix localToWorld = getLocalToWorldMatrix();
+    SbVec3f origin;
+    localToWorld.multVecMatrix(SbVec3f(0.0, 0.0, 0.0), origin);
+    SbVec3f vx,vy,vz;
+    localToWorld.multVecMatrix(SbVec3f(1.0f, 0.0f, 0.0f), vx);
+    localToWorld.multVecMatrix(SbVec3f(0.0f, 1.0f, 0.0f), vy);
+    localToWorld.multVecMatrix(SbVec3f(0.0f, 0.0f, 1.0f), vz);
+    float x = std::max((vx-origin).length(),1e-7f);
+    float y = std::max((vy-origin).length(),1e-7f);
+    float z = std::max((vz-origin).length(),1e-7f);
+    if(!axisScale.equals(SbVec3f(x,y,z),1e-7f)) {
+        axisScale.setValue(x,y,z);
+        idleCB(this,&idleSensor);
+    }
+}
+
+void SoFCCSysDragger::handleEvent(SoHandleEventAction * action)
+{
+    this->ref();
+
+    inherited::handleEvent(action);
+    updateAxisScale();
+
+    this->unref();
+}
+
 void SoFCCSysDragger::idleCB(void *data, SoSensor *)
 {
     SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(data);
@@ -953,7 +994,9 @@ void SoFCCSysDragger::idleCB(void *data, SoSensor *)
         SbViewVolume viewVolume = camera->getViewVolume();
         float radius = sudoThis->draggerSize.getValue() / 2.0;
         float localScale = viewVolume.getWorldToScreenScale(origin, radius);
-        SbVec3f scaleVector(localScale, localScale, localScale);
+        float sx,sy,sz;
+        sudoThis->axisScale.getValue(sx,sy,sz);
+        SbVec3f scaleVector(localScale/sx, localScale/sy, localScale/sz);
         SoScale *localScaleNode = SO_GET_ANY_PART(sudoThis, "scaleNode", SoScale);
         localScaleNode->scaleFactor.setValue(scaleVector);
         sudoThis->autoScaleResult.setValue(localScale);

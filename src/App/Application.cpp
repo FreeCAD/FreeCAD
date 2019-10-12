@@ -108,7 +108,7 @@
 #include "Origin.h"
 #include "MaterialObject.h"
 #include "TextDocument.h"
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include "Transactions.h"
 #include <App/MaterialPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -133,7 +133,7 @@ using namespace boost;
 using namespace boost::program_options;
 
 
-// scriptings (scripts are build in but can be overridden by command line option)
+// scriptings (scripts are built-in but can be overridden by command line option)
 #include <App/InitScript.h>
 #include <App/TestScript.h>
 #include <App/CMakeScript.h>
@@ -1750,7 +1750,6 @@ void Application::initTypes(void)
     App ::ConditionalExpression     ::init();
     App ::StringExpression          ::init();
     App ::FunctionExpression        ::init();
-    App ::BooleanExpression         ::init();
     App ::RangeExpression           ::init();
     App ::PyObjectExpression        ::init();
 
@@ -2058,6 +2057,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                 std::vector<std::string> mods = App::GetApplication().getImportModules(ext.c_str());
                 if (!mods.empty()) {
                     std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.filePath().c_str());
+                    escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
+
                     Base::Interpreter().loadModule(mods.front().c_str());
                     Base::Interpreter().runStringArg("import %s",mods.front().c_str());
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
@@ -2108,6 +2109,8 @@ void Application::processCmdLineFiles(void)
     std::map<std::string,std::string>::const_iterator it = cfg.find("SaveFile");
     if (it != cfg.end()) {
         std::string output = it->second;
+        output = Base::Tools::escapeEncodeFilename(output);
+
         Base::FileInfo fi(output);
         std::string ext = fi.extension();
         try {
@@ -2238,7 +2241,7 @@ void Application::LoadParameters(void)
 
 #if defined(_MSC_VER)
 // fix weird error while linking boost (all versions of VC)
-// VS2010: http://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
+// VS2010: https://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
 namespace boost { namespace program_options { std::string arg="arg"; } }
 #if (defined (BOOST_VERSION) && (BOOST_VERSION >= 104100))
 namespace boost { namespace program_options {
@@ -2453,7 +2456,7 @@ void Application::ParseOptions(int ac, char ** av)
     if (vm.count("help")) {
         std::stringstream str;
         str << mConfig["ExeName"] << endl << endl;
-        str << "For detailed description see http://www.freecadweb.org" << endl<<endl;
+        str << "For a detailed description see https://www.freecadweb.org/wiki/Start_up_and_Configuration" << endl<<endl;
         str << "Usage: " << mConfig["ExeName"] << " [options] File1 File2 ..." << endl << endl;
         str << visible << endl;
         throw Base::ProgramInformation(str.str());
@@ -2928,7 +2931,7 @@ std::string Application::FindHomePath(const char* sCall)
     binPath += L"bin";
     SetDllDirectoryW(binPath.c_str());
 
-    // http://stackoverflow.com/questions/5625884/conversion-of-stdwstring-to-qstring-throws-linker-error
+    // https://stackoverflow.com/questions/5625884/conversion-of-stdwstring-to-qstring-throws-linker-error
 #ifdef _MSC_VER
     QString str = QString::fromUtf16(reinterpret_cast<const ushort *>(homePath.c_str()));
 #else
@@ -2941,4 +2944,3 @@ std::string Application::FindHomePath(const char* sCall)
 #else
 # error "std::string Application::FindHomePath(const char*) not implemented"
 #endif
-

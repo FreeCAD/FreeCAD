@@ -233,7 +233,7 @@ protected:
   /// get called before the value is changed
   virtual void onBeforeChange(const Property* /*prop*/){}
 
-  //void hasChanged(Propterty* prop);
+  //void hasChanged(Property* prop);
   static const  PropertyData * getPropertyDataPtr(void); 
   virtual const PropertyData& getPropertyData(void) const; 
 

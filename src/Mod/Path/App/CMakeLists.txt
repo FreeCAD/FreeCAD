@@ -88,6 +88,8 @@ SET(Path_SRCS
     ParamsHelper.h
     FeatureArea.cpp
     FeatureArea.h
+    PathSegmentWalker.h
+    PathSegmentWalker.cpp
     ${Mod_SRCS}
     ${Python_SRCS}
 )
