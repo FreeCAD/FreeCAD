@@ -276,8 +276,9 @@ class Component(ArchIFC.IfcProduct):
         for parent in obj.InList:
             if Draft.getType(parent) in ["Floor","BuildingPart"]:
                 if obj in parent.Group:
-                    if parent.Height.Value:
-                        return parent.Height.Value
+                    if parent.HeightPropagate:
+                        if parent.Height.Value:
+                            return parent.Height.Value
         # not found? get one level higher
         for parent in obj.InList:
             if hasattr(parent,"Group"):
