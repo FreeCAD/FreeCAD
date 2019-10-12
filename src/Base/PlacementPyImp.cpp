@@ -245,7 +245,7 @@ PyObject* PlacementPy::sclerp(PyObject* args)
     PyObject* pyplm2;
     double t;
     PyObject* shorten = Py_True;
-    if (!PyArg_ParseTuple(args, "dO!|O!", &t, &(PlacementPy::Type), &pyplm2, &(PyBool_Type), &shorten))
+    if (!PyArg_ParseTuple(args, "O!d|O!", &(PlacementPy::Type), &pyplm2, &t, &(PyBool_Type), &shorten))
         return nullptr;
     Base::Placement plm2 = static_cast<Base::PlacementPy*>(pyplm2)->value();
     Base::Placement ret = Base::Placement::sclerp(*getPlacementPtr(), plm2, t, PyObject_IsTrue(shorten));
