@@ -252,6 +252,17 @@ PyObject* PlacementPy::sclerp(PyObject* args)
     return new PlacementPy(new Placement(ret));
 }
 
+PyObject* PlacementPy::slerp(PyObject* args)
+{
+    PyObject* pyplm2;
+    double t;
+    if (!PyArg_ParseTuple(args, "O!d", &(PlacementPy::Type), &pyplm2, &t))
+        return nullptr;
+    Base::Placement plm2 = static_cast<Base::PlacementPy*>(pyplm2)->value();
+    Base::Placement ret = Base::Placement::slerp(*getPlacementPtr(), plm2, t);
+    return new PlacementPy(new Placement(ret));
+}
+
 PyObject* PlacementPy::isIdentity(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
