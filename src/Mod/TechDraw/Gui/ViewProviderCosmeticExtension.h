@@ -37,7 +37,7 @@ public:
     ViewProviderCosmeticExtension(void);
     virtual ~ViewProviderCosmeticExtension() = default;
 
-    virtual QIcon extensionMergeGreyableOverlayIcons(const QIcon & orig) const override;
+    virtual void extensionMergeGreyableOverlayIcons(QIcon & orig) const override;
 
     virtual void extensionUpdateData(const App::Property*) override;
 

@@ -151,6 +151,9 @@ public:
       */
     virtual std::vector<App::DocumentObject*> claimChildren3D(void) const;
 
+    /// Called by Gui::Document to update the scene graph of the calimed children 3D
+    virtual bool handleChildren3D(const std::vector<App::DocumentObject*> &children);
+
     /** @name Selection handling
       * This group of methods do the selection handling.
       * Here you can define how the selection for your ViewProfider
@@ -519,7 +522,7 @@ public:
     /// Returns a list of added display mask modes
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
-    int getDefaultMode() const;
+    int getDefaultMode(bool noOverride=false) const;
     //@}
 
     virtual void setRenderCacheMode(int);

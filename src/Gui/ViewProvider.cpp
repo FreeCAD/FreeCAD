@@ -319,28 +319,24 @@ QIcon ViewProvider::getIcon(void) const
 
 QIcon ViewProvider::mergeGreyableOverlayIcons (const QIcon & orig) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-
     QIcon overlayedIcon = orig;
-
-    for (Gui::ViewProviderExtension* ext : vector) {
+    foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
         if (!ext->ignoreOverlayIcon())
-            overlayedIcon = ext->extensionMergeGreyableOverlayIcons(overlayedIcon);
-    }
+            ext->extensionMergeGreyableOverlayIcons(overlayedIcon);
+        return true;
+    });
 
     return overlayedIcon;
 }
 
 QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-
     QIcon overlayedIcon = orig;
-
-    for (Gui::ViewProviderExtension* ext : vector) {
+    foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
         if (!ext->ignoreOverlayIcon())
-            overlayedIcon = ext->extensionMergeColorfullOverlayIcons(overlayedIcon);
-    }
+            ext->extensionMergeColorfullOverlayIcons(overlayedIcon);
+        return true;
+    });
 
     return overlayedIcon;
 }
@@ -426,9 +422,7 @@ void ViewProvider::setDisplayMode(const char* ModeName)
     _sCurrentMode = ModeName;
 
     //infom the exteensions
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
-        ext->extensionSetDisplayMode(ModeName);
+    callExtension(&ViewProviderExtension::extensionSetDisplayMode,ModeName);
 }
 
 const char* ViewProvider::getDefaultDisplayMode() const {
@@ -439,11 +433,7 @@ const char* ViewProvider::getDefaultDisplayMode() const {
 vector<std::string> ViewProvider::getDisplayModes(void) const {
 
     std::vector< std::string > modes;
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
-        auto extModes = ext->extensionGetDisplayModes();
-        modes.insert( modes.end(), extModes.begin(), extModes.end() );
-    }
+    callExtension(&ViewProviderExtension::extensionGetDisplayModes, modes);
     return modes;
 }
 
@@ -454,27 +444,27 @@ std::string ViewProvider::getActiveDisplayMode(void) const
 
 void ViewProvider::hide(void)
 {
-    auto exts = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-
-    if(pcModeSwitch->whichChild.getValue() >= 0) {
+    int which = pcModeSwitch->whichChild.getValue();
+    if(which >= 0)
         pcModeSwitch->whichChild = -1;
-        for(auto ext : exts)
-            ext->extensionModeSwitchChange();
-    }
 
-    //tell extensions that we hide
-    for (Gui::ViewProviderExtension* ext : exts)
+    foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
+        if(which >= 0)
+            ext->extensionModeSwitchChange();
         ext->extensionHide();
+        return false;
+    });
 }
 
 void ViewProvider::show(void)
 {
+    if (isRestoring())
+        return;
+
     setModeSwitch();
 
     //tell extensions that we show
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
-        ext->extensionShow();
+    callExtension(&ViewProviderExtension::extensionShow);
 }
 
 bool ViewProvider::isShow(void) const
@@ -507,10 +497,8 @@ void ViewProvider::setOverrideMode(const std::string &mode)
     }
     if (pcModeSwitch->whichChild.getValue() != -1)
         setModeSwitch();
-    else {
-        for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
-            ext->extensionModeSwitchChange();
-    }
+    else
+        callExtension(&ViewProviderExtension::extensionModeSwitchChange);
 }
 
 const string ViewProvider::getOverrideMode() {
@@ -520,25 +508,30 @@ const string ViewProvider::getOverrideMode() {
 
 void ViewProvider::setModeSwitch()
 {
+    if (isRestoring())
+        return;
+
+    int mode;
     if (viewOverrideMode == -1)
-        pcModeSwitch->whichChild = _iActualMode;
+        mode = _iActualMode;
     else if (viewOverrideMode < pcModeSwitch->getNumChildren())
-        pcModeSwitch->whichChild = viewOverrideMode;
+        mode = viewOverrideMode;
     else
         return;
-    for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
-        ext->extensionModeSwitchChange();
+    if(mode != pcModeSwitch->whichChild.getValue()) {
+        pcModeSwitch->whichChild = mode;
+        callExtension(&ViewProviderExtension::extensionModeSwitchChange);
+    }
 }
 
 void ViewProvider::setDefaultMode(int val)
 {
     _iActualMode = val;
-    for(auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>())
-        ext->extensionModeSwitchChange();
+    setModeSwitch();
 }
 
-int ViewProvider::getDefaultMode() const {
-    return viewOverrideMode>=0?viewOverrideMode:_iActualMode;
+int ViewProvider::getDefaultMode(bool noOverride) const {
+    return (!noOverride && viewOverrideMode>=0)?viewOverrideMode:_iActualMode;
 }
 
 void ViewProvider::onBeforeChange(const App::Property* prop)
@@ -695,10 +688,10 @@ void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* 
 bool ViewProvider::onDelete(const vector< string >& subNames)
 {
     bool del = true;
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
+    foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
         del &= ext->extensionOnDelete(subNames);
-
+        return false;
+    });
     return del;
 }
 
@@ -709,123 +702,96 @@ bool ViewProvider::canDelete(App::DocumentObject*) const
 
 bool ViewProvider::canDragObject(App::DocumentObject* obj) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
-        if (ext->extensionCanDragObject(obj))
-            return true;
-    }
-
-    return false;
+    return queryExtension(&ViewProviderExtension::extensionCanDragObject,obj);
 }
 
 bool ViewProvider::canDragObjects() const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
-        if (ext->extensionCanDragObjects())
-            return true;
-    }
-
-    return false;
+    return queryExtension(&ViewProviderExtension::extensionCanDragObjects);
 }
 
 void ViewProvider::dragObject(App::DocumentObject* obj)
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
+    int res = false;
+    foreachExtension<ViewProviderExtension>([&res,obj](ViewProviderExtension *ext) {
         if (ext->extensionCanDragObject(obj)) {
             ext->extensionDragObject(obj);
-            return;
+            res = true;
+            return true;
         }
-    }
-
-    throw Base::RuntimeError("ViewProvider::dragObject: no extension for dragging given object available.");
+        return false;
+    });
+    if(!res)
+        throw Base::RuntimeError("ViewProvider::dragObject: no extension for dragging given object available.");
 }
 
 bool ViewProvider::canDropObject(App::DocumentObject* obj) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-#if FC_DEBUG
-    Base::Console().Log("Check extensions for drop\n");
-#endif
-    for (Gui::ViewProviderExtension* ext : vector){
-#if FC_DEBUG
-        Base::Console().Log("Check extensions %s\n", ext->name().c_str());
-#endif
-        if (ext->extensionCanDropObject(obj))
-            return true;
-    }
-
-    return false;
+    return queryExtension(&ViewProviderExtension::extensionCanDropObject,obj);
 }
 
 bool ViewProvider::canDropObjects() const {
-
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        if(ext->extensionCanDropObjects())
-            return true;
-
-    return false;
+    return queryExtension(&ViewProviderExtension::extensionCanDropObjects);
 }
 
 bool ViewProvider::canDragAndDropObject(App::DocumentObject* obj) const {
-
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector){
-        if(!ext->extensionCanDragAndDropObject(obj))
-            return false;
-    }
-
-    return true;
+    return queryExtension(&ViewProviderExtension::extensionCanDragAndDropObject,obj);
 }
 
 void ViewProvider::dropObject(App::DocumentObject* obj) {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
+    int res = false;
+    foreachExtension<ViewProviderExtension>([&res,obj](ViewProviderExtension *ext) {
         if (ext->extensionCanDropObject(obj)) {
             ext->extensionDropObject(obj);
-            return;
+            res = true;
+            return true;
         }
-    }
+        return false;
+    });
 
-    throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
+    if(!res)
+        throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
 bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
         const char *subname, const std::vector<std::string> &elements) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector){
-        if(ext->extensionCanDropObjectEx(obj,owner,subname, elements))
-            return true;
-    }
+    if(queryExtension(&ViewProviderExtension::extensionCanDropObjectEx,obj,owner,subname,elements))
+        return true;
     return canDropObject(obj);
 }
 
 std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
         const char *subname, const std::vector<std::string> &elements)
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionCanDropObjectEx(obj, owner, subname, elements))
-            return ext->extensionDropObjectEx(obj, owner, subname, elements);
-    }
-    dropObject(obj);
-    return std::string();
+    std::string name;
+    bool res = false;
+    foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
+        if(ext->extensionCanDropObjectEx(obj, owner, subname, elements)) {
+            res = true;
+            name = ext->extensionDropObjectEx(obj, owner, subname, elements);
+            return true;
+        }
+        return false;
+    });
+
+    if(!res)
+        dropObject(obj);
+    return name;
 }
 
 int ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
+    int res = -1;
+    foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
         if (ext->extensionCanDropObject(newValue)) {
-            int ret = ext->extensionReplaceObject(oldValue, newValue);
-            if(ret>=0)
-                return !!ret;
+            res = ext->extensionReplaceObject(oldValue, newValue);
+            if(res>=0)
+                return true;
         }
-    }
-    return -1;
+        return false;
+    });
+    return res;
 }
 
 void ViewProvider::Restore(Base::XMLReader& reader) {
@@ -842,76 +808,61 @@ void ViewProvider::Restore(Base::XMLReader& reader) {
 
 void ViewProvider::updateData(const App::Property* prop)
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
-        ext->extensionUpdateData(prop);
+    callExtension(&ViewProviderExtension::extensionUpdateData,prop);
 }
 
 SoSeparator* ViewProvider::getBackRoot(void) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
-        auto* node = ext->extensionGetBackRoot();
-        if (node)
-            return node;
-    }
-    return nullptr;
+    SoSeparator *node = 0;
+    foreachExtension<ViewProviderExtension>([&node](ViewProviderExtension *ext) {
+        node = ext->extensionGetBackRoot();
+        return node?true:false;
+    });
+    return node;
 }
 
 SoGroup* ViewProvider::getChildRoot(void) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
-        auto* node = ext->extensionGetChildRoot();
-        if (node)
-            return node;
-    }
-    return nullptr;
+    SoGroup *node = 0;
+    foreachExtension<ViewProviderExtension>([&node](ViewProviderExtension *ext) {
+        node = ext->extensionGetChildRoot();
+        return node?true:false;
+    });
+    return node;
 }
 
 SoSeparator* ViewProvider::getFrontRoot(void) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
-        auto* node = ext->extensionGetFrontRoot();
-        if (node)
-            return node;
-    }
-    return nullptr;
+    SoSeparator *node = 0;
+    foreachExtension<ViewProviderExtension>([&node](ViewProviderExtension *ext) {
+        node = ext->extensionGetFrontRoot();
+        return node?true:false;
+    });
+    return node;
 }
 
 std::vector< App::DocumentObject* > ViewProvider::claimChildren(void) const
 {
     std::vector< App::DocumentObject* > vec;
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
-        std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren();
-        if (!nvec.empty())
-            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));
-    }
+    callExtension(&ViewProviderExtension::extensionClaimChildren,vec);
     return vec;
 }
 
 std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const
 {
     std::vector< App::DocumentObject* > vec;
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
-        std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren3D();
-        if (!nvec.empty())
-            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));
-    }
+    callExtension(&ViewProviderExtension::extensionClaimChildren3D,vec);
     return vec;
 }
+
+bool ViewProvider::handleChildren3D(const std::vector<App::DocumentObject*> &children) {
+    return queryExtension(&ViewProviderExtension::extensionHandleChildren3D,children);
+}
+
 bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
-    if(!isSelectable())
-        return false;
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionGetElementPicked(pp,subname))
-            return true;
-    }
-    subname = getElement(pp?pp->getDetail():nullptr);
+    if(!isSelectable()) return false;
+    if(!queryExtension(&ViewProviderExtension::extensionGetElementPicked,pp,subname))
+        subname = getElement(pp?pp->getDetail():nullptr);
     return true;
 }
 
@@ -927,12 +878,8 @@ bool ViewProvider::getDetailPath(const char *subname, SoFullPath *pPath, bool ap
         pPath->append(pcRoot);
         pPath->append(pcModeSwitch);
     }
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionGetDetailPath(subname,pPath,det))
-            return true;
-    }
-    det = getDetail(subname);
+    if(!queryExtension(&ViewProviderExtension::extensionGetDetailPath,subname,pPath,det))
+        det = getDetail(subname);
     return true;
 }
 
@@ -989,9 +936,7 @@ bool ViewProvider::useNewSelectionModel() const {
 }
 
 void ViewProvider::beforeDelete() {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        ext->extensionBeforeDelete();
+    callExtension(&ViewProviderExtension::extensionBeforeDelete);
 }
 
 void ViewProvider::setRenderCacheMode(int mode) {
