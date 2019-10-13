@@ -105,16 +105,12 @@ void ViewProviderDocumentObject::getTaskViewContent(std::vector<Gui::TaskView::T
 void ViewProviderDocumentObject::startRestoring()
 {
     hide();
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        ext->extensionStartRestoring();
+    callExtension(&ViewProviderExtension::extensionStartRestoring);
 }
 
 void ViewProviderDocumentObject::finishRestoring()
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        ext->extensionFinishRestoring();
+    callExtension(&ViewProviderExtension::extensionFinishRestoring);
 }
 
 bool ViewProviderDocumentObject::isAttachedToDocument() const
@@ -287,15 +283,11 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
         DisplayMode.setValue(defmode);
 
     //attach the extensions
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
-        ext->extensionAttach(pcObj);
+    callExtension(&ViewProviderExtension::extensionAttach,pcObj);
 }
 
 void ViewProviderDocumentObject::reattach(App::DocumentObject *pcObj) {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
-        ext->extensionReattach(pcObj);
+    callExtension(&ViewProviderExtension::extensionReattach,pcObj);
 }
 
 void ViewProviderDocumentObject::update(const App::Property* prop)
@@ -430,11 +422,8 @@ PyObject* ViewProviderDocumentObject::getPyObject()
 bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
         const char *subname, const std::vector<std::string> &elements) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector){
-        if(ext->extensionCanDropObjectEx(obj,owner,subname,elements))
-            return true;
-    }
+    if(queryExtension(&ViewProviderExtension::extensionCanDropObjectEx,obj,owner,subname,elements))
+        return true;
     if(obj && obj->getDocument()!=getObject()->getDocument())
         return false;
     return canDropObject(obj);
@@ -507,18 +496,14 @@ bool ViewProviderDocumentObject::showInTree() const {
 bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
 {
     if(!isSelectable()) return false;
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        if(ext->extensionGetElementPicked(pp,subname))
-            return true;
+    if(queryExtension(&ViewProviderExtension::extensionGetElementPicked,pp,subname))
+        return true;
 
     auto childRoot = getChildRoot();
-    int idx;
-    if(!childRoot || 
-       (idx=pcModeSwitch->whichChild.getValue())<0 ||
-       pcModeSwitch->getChild(idx)!=childRoot)
-    {
-        return ViewProvider::getElementPicked(pp,subname);
+    int idx = getDefaultMode();
+    if(!childRoot || pcModeSwitch->getChild(idx)!=childRoot) {
+        subname = getElement(pp?pp->getDetail():0);
+        return true;
     }
 
     SoPath* path = pp->getPath();
@@ -538,36 +523,51 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::
     return true;
 }
 
-bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *path, bool append, SoDetail *&det) const
+bool ViewProviderDocumentObject::getDetailPath(
+        const char *subname, SoFullPath *path, bool append, SoDetail *&det) const
 {
+    if(pcRoot->findChild(pcModeSwitch) < 0) {
+        // this is possible in case of editing, where the switch node
+        // of the linked view object is temporarily removed from its root
+        // if(append)
+        //     pPath->append(pcRoot);
+        return false;
+    }
+
     auto len = path->getLength();
     if(!append && len>=2)
         len -= 2;
-    if(ViewProvider::getDetailPath(subname,path,append,det)) {
-        if(det || !subname || !*subname)
-            return true;
+
+    if(append) {
+        path->append(pcRoot);
+        path->append(pcModeSwitch);
+    }
+    if(queryExtension(&ViewProviderExtension::extensionGetDetailPath,subname,path,det))
+        return true;
+
+    const char *dot = 0;
+    if(Data::ComplexGeoData::isMappedElement(subname) || (dot=strchr(subname,'.')) == 0) {
+        det = getDetail(subname);
+        return true;
     }
 
-    if(det) {
-        delete det;
-        det = 0;
-    }
-
-    const char *dot = strchr(subname,'.');
-    if(!dot) return false;
     auto obj = getObject();
     if(!obj || !obj->getNameInDocument()) return false;
     auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
-    if(!sobj) return false;
+    if(!sobj || !sobj->Visibility.getValue()) return false;
     auto vp = Application::Instance->getViewProvider(sobj);
     if(!vp) return false;
 
     auto childRoot = getChildRoot();
-    if(!childRoot) 
+    if(!childRoot) {
+        // If no child root, then this view provider does not stack children
+        // view provider under its own root, so we pop till before the root
+        // node of this view provider.
         path->truncate(len);
-    else {
-        auto idx = pcModeSwitch->whichChild.getValue();
-        if(idx < 0 || pcModeSwitch->getChild(idx)!=childRoot)
+    } else {
+        // Do not account for our own visibility, we maybe called by a Link
+        // that has independent visibility
+        if(pcModeSwitch->getChild(getDefaultMode())!=childRoot)
             return false;
         path->append(childRoot);
     }

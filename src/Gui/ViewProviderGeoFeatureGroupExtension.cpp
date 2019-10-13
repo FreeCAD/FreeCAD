@@ -53,19 +53,21 @@ ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
     pcGroupChildren = 0;
 }
 
-
-std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D(void) const {
+void ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D(
+        std::vector<App::DocumentObject*> &children) const 
+{
 
     //all object in the group must be claimed in 3D, as we are a coordinate system for all of them
     auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
     if (ext) {
-        auto objs = ext->Group.getValues();
-        return objs;
+        const auto &objs = ext->Group.getValues();
+        children.insert(children.end(),objs.begin(),objs.end());
     }
-    return std::vector<App::DocumentObject*>();
 }
 
-std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(void) const {
+void ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(
+        std::vector<App::DocumentObject *> &children) const 
+{
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
     buildExport();
     auto objs = group->_ExportChildren.getValues();
@@ -86,15 +88,13 @@ void ViewProviderGeoFeatureGroupExtension::extensionSetDisplayMode(const char* M
     ViewProviderGroupExtension::extensionSetDisplayMode( ModeName );
 }
 
-std::vector<std::string> ViewProviderGeoFeatureGroupExtension::extensionGetDisplayModes(void) const
+void ViewProviderGeoFeatureGroupExtension::extensionGetDisplayModes(std::vector<std::string> &StrList) const
 {
     // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderGroupExtension::extensionGetDisplayModes();
+    ViewProviderGroupExtension::extensionGetDisplayModes(StrList);
 
     // add your own modes
     StrList.push_back("Group");
-
-    return StrList;
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Property* prop)

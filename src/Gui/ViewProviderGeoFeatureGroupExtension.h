@@ -41,12 +41,12 @@ public:
     ViewProviderGeoFeatureGroupExtension(void);
     virtual ~ViewProviderGeoFeatureGroupExtension();
 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void)const override;
-    virtual std::vector< App::DocumentObject* > extensionClaimChildren(void) const override;
+    virtual void extensionClaimChildren3D(std::vector< App::DocumentObject* > &) const override;
+    virtual void extensionClaimChildren(std::vector< App::DocumentObject* > &) const override;
     virtual SoGroup* extensionGetChildRoot(void) const override {return pcGroupChildren;};
     virtual void extensionAttach(App::DocumentObject* pcObject) override;
     virtual void extensionSetDisplayMode(const char* ModeName) override;
-    virtual std::vector<std::string> extensionGetDisplayModes(void) const override;
+    virtual void extensionGetDisplayModes(std::vector<std::string> &) const override;
 
     /// Show the object in the view: suppresses behavior of DocumentObjectGroup
     virtual void extensionShow(void) override {
