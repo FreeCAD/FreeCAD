@@ -1769,7 +1769,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "second argumeht defines the document name. If no document name is given the\n"
      "currently active document is used"},
     {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, METH_VARARGS,
-     "getSelection(docName=None,resolve=True,single=False) -- Return a list of selected objects\n"
+     "getSelection(docName=None,resolve=1,single=False) -- Return a list of selected objects\n"
      "\ndocName - document name. None means the active document, and '*' means all document"
      "\nresolve - whether to resolve the subname references."
      "\n          0: do not resolve, 1: resolve, 2: resolve with element map"
@@ -1780,7 +1780,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {"enablePickedList",      (PyCFunction) SelectionSingleton::sEnablePickedList, METH_VARARGS,
      "enablePickedList(boolean) -- Enable/disable pick list"},
     {"getCompleteSelection", (PyCFunction) SelectionSingleton::sGetCompleteSelection, METH_VARARGS,
-     "getCompleteSelection(resolve=True) -- Return a list of selected objects of all documents."},
+     "getCompleteSelection(resolve=1) -- Return a list of selected objects of all documents."},
     {"getSelectionEx",         (PyCFunction) SelectionSingleton::sGetSelectionEx, METH_VARARGS,
      "getSelectionEx(docName=None,resolve=1, single=False) -- Return a list of SelectionObjects\n"
      "\ndocName - document name. None means the active document, and '*' means all document"
@@ -1791,11 +1791,11 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {"getSelectionObject",  (PyCFunction) SelectionSingleton::sGetSelectionObject, METH_VARARGS,
      "getSelectionObject(doc,obj,sub,(x,y,z)) -- Return a SelectionObject"},
     {"addObserver",         (PyCFunction) SelectionSingleton::sAddSelObserver, METH_VARARGS,
-     "addObserver(Object, resolve=True) -- Install an observer\n"},
+     "addObserver(Object, resolve=1) -- Install an observer\n"},
     {"removeObserver",      (PyCFunction) SelectionSingleton::sRemSelObserver, METH_VARARGS,
      "removeObserver(Object) -- Uninstall an observer\n"},
     {"addSelectionGate",      (PyCFunction) SelectionSingleton::sAddSelectionGate, METH_VARARGS,
-     "addSelectionGate(String|Filter|Gate, resolve=True) -- activate the selection gate.\n"
+     "addSelectionGate(String|Filter|Gate, resolve=1) -- activate the selection gate.\n"
      "The selection gate will prohibit all selections which do not match\n"
      "the given selection filter string.\n"
      " Examples strings are:\n"
