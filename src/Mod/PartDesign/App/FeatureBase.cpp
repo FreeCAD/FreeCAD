@@ -65,8 +65,8 @@ App::DocumentObjectExecReturn* FeatureBase::execute(void) {
     if(!BaseFeature.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
         return new App::DocumentObjectExecReturn("BaseFeature must be a Part::Feature");
     
-    auto shape = static_cast<Part::Feature*>(BaseFeature.getValue())->Shape.getValue();
-    if(shape.IsNull())
+    auto shape = Part::Feature::getTopoShape(BaseFeature.getValue());
+    if(shape.isNull())
         return new App::DocumentObjectExecReturn("BaseFeature has a empty shape");
     
     Shape.setValue(shape);
