@@ -28,7 +28,10 @@
 #include <App/GeoFeatureGroupExtension.h>
 
 #include "ViewProviderGeoFeatureGroupExtension.h"
-#include "ViewProviderDocumentObject.h"
+#include "ViewProviderLink.h"
+#include "ViewParams.h"
+#include "View3DInventor.h"
+#include "Command.h"
 #include "Application.h"
 #include "SoFCUnifiedSelection.h"
 
@@ -38,15 +41,24 @@ using namespace Gui;
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGeoFeatureGroupExtension, Gui::ViewProviderGroupExtension)
 
 ViewProviderGeoFeatureGroupExtension::ViewProviderGeoFeatureGroupExtension()
+    :linkView(0)
 {
     initExtensionType(ViewProviderGeoFeatureGroupExtension::getExtensionClassTypeId());
 
-    pcGroupChildren = new SoFCSelectionRoot;
+    if(ViewParams::instance()->getLinkChildrenDirect()) {
+        linkView = new LinkView;
+        pcGroupChildren = linkView->getLinkRoot();
+    } else 
+        pcGroupChildren = new SoFCSelectionRoot;
+
     pcGroupChildren->ref();
 }
 
 ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
 {
+    if(linkView)
+        linkView->setInvalid();
+
     pcGroupChildren->unref();
     pcGroupChildren = nullptr;
 }
@@ -67,15 +79,15 @@ void ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(
         std::vector<App::DocumentObject *> &children) const 
 {
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    buildExport();
     auto objs = group->_ExportChildren.getValues();
     children.insert(children.end(), objs.begin(), objs.end());
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionFinishRestoring()
 {
-    // setup GeoExlcuded flag for children
-    extensionClaimChildren();
+    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    if (!group->_ExportChildren.getSize())
+        buildExport();
     ViewProviderGroupExtension::extensionFinishRestoring();
 }
 
@@ -83,6 +95,60 @@ void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* 
 {
     ViewProviderGroupExtension::extensionAttach(pcObject);
     getExtendedViewProvider()->addDisplayMaskMode(pcGroupChildren, "Group");
+}
+
+void ViewProviderGeoFeatureGroupExtension::slotPlainGroupChanged(
+        const App::DocumentObject &obj, const App::Property &prop) 
+{
+    auto group = obj.getExtensionByType<App::GroupExtension>(true,false);
+    if(group && &prop == &group->Group) {
+        auto owner = getExtendedViewProvider();
+        if(owner && linkView)
+            linkView->setChildren(owner->claimChildren3D());
+    }
+}
+
+bool ViewProviderGeoFeatureGroupExtension::extensionHandleChildren3D(
+        const std::vector<App::DocumentObject*> &children) 
+{
+    getExtendedViewProvider();
+    if(linkView) {
+        buildChildren3D();
+        return true;
+    }
+    return false;
+}
+
+void ViewProviderGeoFeatureGroupExtension::buildChildren3D() {
+    if(!linkView)
+        return;
+
+    auto children = getExtendedViewProvider()->claimChildren3D();
+#if 0
+    for(auto it=children.begin();it!=children.end();) {
+        if(App::GroupExtension::getGroupOfObject(*it))
+            it = children.erase(it);
+        else
+            ++it;
+    }
+#endif
+    linkView->setChildren(children);
+} 
+
+bool ViewProviderGeoFeatureGroupExtension::extensionGetElementPicked(
+        const SoPickedPoint *pp, std::string &element) const 
+{
+    if(linkView) 
+        return linkView->linkGetElementPicked(pp,element);
+    return false;
+}
+
+bool ViewProviderGeoFeatureGroupExtension::extensionGetDetailPath(
+        const char *subname, SoFullPath *path, SoDetail *&det) const 
+{
+    if(linkView)
+        return linkView->linkGetDetailPath(subname,path,det);
+    return false;
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionSetDisplayMode(const char* ModeName)
@@ -104,12 +170,32 @@ void ViewProviderGeoFeatureGroupExtension::extensionGetDisplayModes(std::vector<
 
 void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Property* prop)
 {
-    auto group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    auto obj = getExtendedViewProvider()->getObject();
+    auto group = obj->getExtensionByType<App::GeoFeatureGroupExtension>();
     if(group) {
-        if (prop == &group->Group) {
+        if (prop == &group->_GroupTouched) {
+            if (!obj->getDocument()->testStatus(App::Document::Restoring))
+                buildExport();
+        } else if (prop == &group->Group) {
 
-            buildExport();
+            if (!obj->getDocument()->testStatus(App::Document::Restoring))
+                buildExport();
 
+            impl->conns.clear();
+            if(linkView) {
+                for(auto obj : group->Group.getValues()) {
+                    // check for plain group
+                    if(!obj || !obj->getNameInDocument())
+                        continue;
+                    auto ext = App::GeoFeatureGroupExtension::getNonGeoGroup(obj);
+                    if(!ext)
+                        continue;
+                    impl->conns.push_back(
+                            ext->Group.signalChanged.connect([=](const App::Property &){
+                                this->buildChildren3D();
+                        }));
+                }
+            }
         } else if(prop == &group->placement()) 
             getExtendedViewProvider()->setTransformation ( group->placement().getValue().toMatrix() );
     }
@@ -138,8 +224,12 @@ static void filterLinksByScope(const App::DocumentObject *obj, std::vector<App::
 }
 
 void ViewProviderGeoFeatureGroupExtension::buildExport() const {
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    App::DocumentObject * obj = getExtendedViewProvider()->getObject();
+    auto* group = obj->getExtensionByType<App::GeoFeatureGroupExtension>();
     if(!group)
+        return;
+
+    if(obj->testStatus(App::PendingRecompute) && !obj->isRecomputing())
         return;
 
     auto model = group->Group.getValues ();
@@ -147,8 +237,7 @@ void ViewProviderGeoFeatureGroupExtension::buildExport() const {
 
     // search for objects handled (claimed) by the features
     for (auto obj: model) {
-        //stuff in another geofeaturegroup is not in the model anyway
-        if (!obj || obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) { continue; }
+        if (!obj || !shouldCheckExport(obj)) { continue; }
 
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider ( obj );
         if (!vp || vp == getExtendedViewProvider()) { continue; }
@@ -167,8 +256,97 @@ void ViewProviderGeoFeatureGroupExtension::buildExport() const {
             ++it;
     }
 
-    if(group->_ExportChildren.getSize()!=(int)model.size())
+    if(group->_ExportChildren.getValues()!=model)
         group->_ExportChildren.setValues(std::move(model));
+}
+
+bool ViewProviderGeoFeatureGroupExtension::shouldCheckExport(App::DocumentObject *obj) const
+{
+    //By default, do not check geofeaturegroup children for export exclusion,
+    //because stuff in another geofeaturegroup is normally not in the model
+    return !obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId());
+}
+
+void ViewProviderGeoFeatureGroupExtension::extensionModeSwitchChange(void)
+{
+    auto vp = getExtendedViewProvider();
+    if (auto obj = vp->getObject()) {
+        auto ext = obj->getExtensionByType<App::GeoFeatureGroupExtension>();
+        int mode = vp->getDefaultMode(true);
+        ext->enableSelectionSubObjects(
+                mode >= 0 && pcGroupChildren == vp->getModeSwitch()->getChild(mode));
+    }
+}
+
+bool ViewProviderGeoFeatureGroupExtension::needUpdateChildren(App::DocumentObject *obj)
+{
+    bool found = false;
+    for (auto o : obj->getInList()) {
+        auto geogroup = o->getExtensionByType<App::GeoFeatureGroupExtension>(true);
+        if (geogroup) {
+            auto vp = Application::Instance->getViewProvider(o);
+            if (vp) {
+                auto ext = vp->getExtensionByType<ViewProviderGeoFeatureGroupExtension>(true);
+                if (ext)
+                    ext->buildExport();
+            }
+            return true;
+        }
+        if (!found && o->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
+            found = true;
+    }
+    return found;
+}
+
+
+int ViewProviderGeoFeatureGroupExtension::extensionReplaceObject(
+        App::DocumentObject* oldValue, App::DocumentObject* newValue)
+{
+    auto owner = getExtendedViewProvider()->getObject();
+    auto group = owner->getExtensionByType<App::GeoFeatureGroupExtension>();
+    if(!group)
+        return 0;
+
+    if(group->_ExportChildren.find(oldValue->getNameInDocument()) != oldValue)
+        return 0;
+
+    auto children = group->_ExportChildren.getValues();
+    for(auto &child : children) {
+        if(child == oldValue)
+            child = newValue;
+    }
+
+    std::vector<std::pair<App::DocumentObjectT, std::unique_ptr<App::Property> > > propChanges;
+
+    // Global search for affected links
+    for(auto doc : App::GetApplication().getDocuments()) {
+        for(auto o : doc->getObjects()) {
+            if(o == owner)
+                continue;
+            std::vector<App::Property*> props;
+            o->getPropertyList(props);
+            for(auto prop : props) {
+                auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+                if(!linkProp)
+                    continue;
+                std::unique_ptr<App::Property> copy(
+                        linkProp->CopyOnLinkReplace(owner,oldValue,newValue));
+                if(!copy)
+                    continue;
+                propChanges.emplace_back(App::DocumentObjectT(prop),std::move(copy));
+            }
+        }
+    }
+
+    group->Group.setValues({});
+    group->addObjects(children);
+
+    for(auto &v : propChanges) {
+        auto prop = v.first.getProperty();
+        if(prop)
+            prop->Paste(*v.second.get());
+    }
+    return 1;
 }
 
 namespace Gui {

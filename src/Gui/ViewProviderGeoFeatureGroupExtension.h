@@ -31,6 +31,8 @@
 namespace Gui
 {
 
+class LinkView;
+
 class GuiExport ViewProviderGeoFeatureGroupExtension : public ViewProviderGroupExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderGeoFeatureGroupExtension);
@@ -57,13 +59,31 @@ public:
         ViewProviderExtension::extensionHide();
     }
 
+    virtual void extensionFinishRestoring() override;
+
+    virtual bool extensionGetElementPicked(const SoPickedPoint *, std::string &) const override;
+    virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const override;
+    virtual bool extensionHandleChildren3D(const std::vector<App::DocumentObject*> &) override;
+
     virtual void extensionUpdateData(const App::Property*) override;
 
+    virtual void extensionModeSwitchChange(void) override;
+
+    static bool needUpdateChildren(App::DocumentObject *obj);
 protected:
     void buildExport() const;
+    virtual void buildChildren3D();
+    virtual bool shouldCheckExport(App::DocumentObject *) const;
 
 protected:
     SoGroup *pcGroupChildren;
+
+private:
+    // for tracking plain group member change
+    void slotPlainGroupChanged(const App::DocumentObject&, const App::Property&);
+
+    std::vector<boost::signals2::scoped_connection> plainGroupConns;
+    LinkView *linkView;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderGeoFeatureGroupExtension> ViewProviderGeoFeatureGroupExtensionPython;

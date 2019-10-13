@@ -202,7 +202,18 @@ void ViewProviderPart::setElementColors(const std::map<std::string, App::Color> 
 }
 
 void ViewProviderPart::applyColors() {
-    ViewProviderLink::applyColorsTo(*this);
+    prevColorOverride = ViewProviderLink::applyColorsTo(*this, prevColorOverride);
+}
+
+void ViewProviderPart::buildChildren3D() {
+    ViewProviderGeoFeatureGroupExtension::buildChildren3D();
+    if(getObject() && !getObject()->isRestoring())
+        applyColors();
+}
+
+void ViewProviderPart::finishRestoring() {
+    inherited::finishRestoring();
+    applyColors();
 }
 
 // Python feature -----------------------------------------------------------------------

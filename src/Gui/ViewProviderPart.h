@@ -55,9 +55,12 @@ public:
     virtual std::map<std::string, App::Color> getElementColors(const char *subname=0) const override;
     virtual void setElementColors(const std::map<std::string, App::Color> &colors) override;
 
+    virtual void finishRestoring() override;
+
 protected:
     App::PropertyLinkSub *getColoredElementsProperty() const;
     void applyColors();
+    virtual void buildChildren3D() override;
 
 protected:
     /// get called by the container whenever a property has been changed
@@ -69,6 +72,9 @@ protected:
 
     virtual bool setEdit(int ModNum) override;
     virtual void setEditViewer(View3DInventorViewer*, int ModNum) override;
+
+private:
+    bool prevColorOverride = false;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;
