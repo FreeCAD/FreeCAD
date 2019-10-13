@@ -1755,7 +1755,7 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension *dimension, View
         else if (standardStyle == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
             // Text must remain horizontal, but it may split the leader line
             double lineAngle = (labelCenter - curveCenter).Angle();
-            Base::Vector2d lineDirection(Base::Vector2d::FromPolar(1.0, lineAngle));
+          //Base::Vector2d lineDirection(Base::Vector2d::FromPolar(1.0, lineAngle));
 
             drawDimensionLine(diameterPath, curveCenter + Base::Vector2d::FromPolar(curveRadius, lineAngle), lineAngle,
                               -curveRadius*2.0, (labelCenter - curveCenter).Length() - curveRadius,
