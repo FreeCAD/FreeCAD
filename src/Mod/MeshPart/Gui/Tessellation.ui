@@ -15,21 +15,6 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_7">
    <item row="0" column="0">
-    <widget class="QTreeWidget" name="treeWidget">
-     <property name="toolTip">
-      <string>Select a shape to be meshed</string>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::ExtendedSelection</enum>
-     </property>
-     <column>
-      <property name="text">
-       <string>Shapes</string>
-      </property>
-     </column>
-    </widget>
-   </item>
-   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBoxMeshingOptions">
      <property name="title">
       <string>Meshing options</string>
@@ -448,9 +433,6 @@ A value in the range of 0.2-10.</string>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>treeWidget</tabstop>
- </tabstops>
  <resources/>
  <connections>
   <connection>

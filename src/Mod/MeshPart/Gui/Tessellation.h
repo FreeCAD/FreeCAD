@@ -27,6 +27,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <App/DocumentObserver.h>
 #include <memory>
 
 class QButtonGroup;
@@ -47,7 +48,7 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    void findShapes();
+    std::list<App::DocumentObjectT> findShapes();
 
 private Q_SLOTS:
     void meshingMethod(int id);
