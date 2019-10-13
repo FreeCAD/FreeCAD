@@ -69,7 +69,7 @@ struct AppExport Expression::Component {
   */
 
 class  AppExport UnitExpression : public Expression {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     UnitExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & _quantity = Base::Quantity(), const std::string & _unitStr = std::string());
 
@@ -109,7 +109,7 @@ private:
   */
 
 class AppExport NumberExpression : public UnitExpression {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     NumberExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & quantity = Base::Quantity());
 
@@ -125,7 +125,7 @@ protected:
 };
 
 class AppExport ConstantExpression : public NumberExpression {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     ConstantExpression(const App::DocumentObject *_owner = 0, 
             const char *_name = "", 
@@ -150,7 +150,7 @@ protected:
   */
 
 class AppExport OperatorExpression : public UnitExpression {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     enum Operator {
         NONE,
@@ -207,7 +207,7 @@ protected:
 };
 
 class AppExport ConditionalExpression : public Expression {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     ConditionalExpression(const App::DocumentObject *_owner = 0, Expression * _condition = 0,Expression * _trueExpr = 0,  Expression * _falseExpr = 0);
 
@@ -220,7 +220,7 @@ public:
     virtual int priority() const override;
 
 protected:
-    virtual Expression * _copy() const;
+    virtual Expression * _copy() const override;
     virtual void _visit(ExpressionVisitor & v) override;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
     virtual Py::Object _getPyValue() const override;
@@ -238,7 +238,7 @@ protected:
   */
 
 class AppExport FunctionExpression : public UnitExpression {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     enum Function {
         NONE,
@@ -317,7 +317,7 @@ protected:
   */
 
 class AppExport VariableExpression : public UnitExpression {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     VariableExpression(const App::DocumentObject *_owner = 0, ObjectIdentifier _var = ObjectIdentifier());
 
@@ -366,7 +366,7 @@ protected:
 //////////////////////////////////////////////////////////////////////
 
 class AppExport PyObjectExpression : public Expression {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PyObjectExpression(const App::DocumentObject *_owner=0, PyObject *pyobj=0, bool owned=false)
@@ -396,7 +396,7 @@ protected:
   */
 
 class AppExport StringExpression : public Expression {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     StringExpression(const App::DocumentObject *_owner = 0, const std::string & _text = std::string());
     ~StringExpression();
@@ -416,7 +416,7 @@ private:
 };
 
 class AppExport RangeExpression : public App::Expression {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     RangeExpression(const App::DocumentObject * _owner = 0, const std::string & begin = std::string(), const std::string & end = std::string());
 
