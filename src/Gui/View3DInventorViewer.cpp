@@ -971,12 +971,14 @@ SbBool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
 /// adds an ViewProvider to the view, e.g. from a feature
 void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
 {
+    if(!_ViewProviderSet.insert(pcProvider).second)
+        return;
+
     SoSeparator* root = pcProvider->getRoot();
 
     if (root) {
         if(pcProvider->canAddToSceneGraph())
             pcViewProviderRoot->addChild(root);
-        _ViewProviderMap[root] = pcProvider;
     }
 
     SoSeparator* fore = pcProvider->getFrontRoot();
@@ -988,7 +990,6 @@ void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
         backgroundroot->addChild(back);
 
     pcProvider->setOverrideMode(this->getOverrideMode());
-    _ViewProviderSet.insert(pcProvider);
 }
 
 void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
@@ -996,13 +997,17 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     if (this->editViewProvider == pcProvider)
         resetEditingViewProvider();
 
+    auto it = _ViewProviderSet.find(pcProvider);
+    if(it == _ViewProviderSet.end())
+        return;
+    _ViewProviderSet.erase(it);
+
     SoSeparator* root = pcProvider->getRoot();
 
     if (root) {
         int index = pcViewProviderRoot->findChild(root);
         if(index>=0)
             pcViewProviderRoot->removeChild(index);
-        _ViewProviderMap.erase(root);
     }
 
     SoSeparator* fore = pcProvider->getFrontRoot();
@@ -1012,8 +1017,6 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     SoSeparator* back = pcProvider->getBackRoot();
     if (back)
         backgroundroot->removeChild(back);
-
-    _ViewProviderSet.erase(pcProvider);
 }
 
 void View3DInventorViewer::setEditingTransform(const Base::Matrix4D &mat) {
@@ -1452,7 +1455,6 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
     inherited::setSceneGraph(root);
     if (!root) {
         _ViewProviderSet.clear();
-        _ViewProviderMap.clear();
         editViewProvider = 0;
     }
 
@@ -3490,33 +3492,15 @@ void View3DInventorViewer::removeEventCallback(SoType eventtype, SoEventCallback
 
 ViewProvider* View3DInventorViewer::getViewProviderByPath(SoPath* path) const
 {
-    for (int i = 0; i < path->getLength(); i++) {
-        SoNode* node = path->getNode(i);
-
-        if (node->isOfType(SoSeparator::getClassTypeId())) {
-            auto it = _ViewProviderMap.find(static_cast<SoSeparator*>(node));
-            if (it != _ViewProviderMap.end()) {
-                return it->second;
-            }
-        }
-    }
+    if(guiDocument)
+        return guiDocument->getViewProviderByPathFromHead(path);
     return 0;
 }
 
 ViewProvider* View3DInventorViewer::getViewProviderByPathFromTail(SoPath* path) const
 {
-    // Make sure I'm the lowest LocHL in the pick path!
-    for (int i = 0; i < path->getLength(); i++) {
-        SoNode* node = path->getNodeFromTail(i);
-
-        if (node->isOfType(SoSeparator::getClassTypeId())) {
-            std::map<SoSeparator*,ViewProvider*>::const_iterator it = _ViewProviderMap.find(static_cast<SoSeparator*>(node));
-            if (it != _ViewProviderMap.end()) {
-                return it->second;
-            }
-        }
-    }
-
+    if(guiDocument)
+        return guiDocument->getViewProviderByPathFromTail(path);
     return 0;
 }
 
