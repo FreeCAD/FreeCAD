@@ -372,6 +372,7 @@ class ShowWorker(QtCore.QThread):
                 desc = "Unable to retrieve addon description"
             self.repos[self.idx].append(desc)
             self.addon_repos.emit(self.repos)
+        # Addon is installed so lets check if it has an update
         if self.repos[self.idx][2] == 1:
             upd = False
             # checking for updates
