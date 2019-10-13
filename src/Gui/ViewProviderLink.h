@@ -114,27 +114,40 @@ public:
 
     static void setTransform(SoTransform *pcTransform, const Base::Matrix4D &mat);
 
+    /// Types of snapshot to override linked root node:
     enum SnapshotType {
-        //three type of snapshot to override linked root node:
         
-        //override transform and visibility
+        /// override transform and visibility
         SnapshotTransform = 0,
-        //override visibility
+        /// override visibility
         SnapshotVisible = 1,
-        //override none (for child objects of a container)
+        /// override none (for child objects of a container)
         SnapshotChild = 2,
 
+        /// marks the end of valid snapshot type
         SnapshotMax,
 
-        //special type for sub object linking
+        /// special type for sub object linking
         SnapshotContainer = -1,
-        // sub object linking with transform override
+        /// sub object linking with transform override
         SnapshotContainerTransform = -2,
     };
     void setNodeType(SnapshotType type, bool sublink=true);
 
+    /** Create a node tree of a given set of children objects
+     *
+     * @param children: children objects
+     *
+     * @param vis: visibilities of the given children. If it has less elements
+     * than the input children, they are considered visible by default
+     *
+     * @param type: the node snapshot type of the children object. If this type
+     * is SnapshotMax, then the child root node is used directly, and argument
+     * \c vis is ignored.
+     */
     void setChildren(const std::vector<App::DocumentObject*> &children,
-            const boost::dynamic_bitset<> &vis, SnapshotType type=SnapshotVisible); 
+            const boost::dynamic_bitset<> &vis=boost::dynamic_bitset<>(),
+            SnapshotType type=SnapshotMax); 
 
     bool linkGetDetailPath(const char *, SoFullPath *, SoDetail *&) const;
     bool linkGetElementPicked(const SoPickedPoint *, std::string &) const;
@@ -178,6 +191,7 @@ protected:
     class Element;
     std::vector<std::unique_ptr<Element> > nodeArray;
     std::unordered_map<SoNode*,int> nodeMap;
+    mutable std::unordered_map<std::string,int> nameMap;
 
     Py::Object PythonObject;
 };
