@@ -833,6 +833,18 @@ unsigned int PropertyLinkList::getMemSize(void) const
 }
 
 DocumentObject *PropertyLinkList::find(const std::string &name, int *pindex) const {
+    if(_lValueList.size() <= 10) {
+        for(int i=0;i<(int)_lValueList.size();++i) {
+            auto obj = _lValueList[i];
+            if(obj && obj->getNameInDocument() && name==obj->getNameInDocument()) {
+                if(pindex)
+                    *pindex = i;
+                return obj;
+            }
+        }
+        return 0;
+    }
+    
     if(_nameMap.empty() || _nameMap.size()>_lValueList.size()) {
         _nameMap.clear();
         for(int i=0;i<(int)_lValueList.size();++i) {
