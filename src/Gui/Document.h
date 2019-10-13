@@ -212,6 +212,24 @@ public:
     std::list<MDIView*> getMDIViews() const;
     /// returns a list of all MDI views of a certain type
     std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
+    /// return all non-passive views
+    const std::list<BaseView*> &getViews() const;
+    /// convenience function to iterate views of a give type
+    template<class T, class F>
+    void foreachView(F f) const {
+        for(auto view : getViews()) {            
+            if(view->isDerivedFrom(T::getClassTypeId()))
+                f(static_cast<T*>(view));
+        }
+    }
+    /// convenience function to iterate views of a give type
+    template<class F>
+    void foreachView(Base::Type typeId, F f) const {
+        for(auto view : getViews()) {            
+            if(view->isDerivedFrom(typeId))
+                f(view);
+        }
+    }
     //@}
 
     MDIView *setActiveView(ViewProviderDocumentObject *vp=0, Base::Type typeId = Base::Type());

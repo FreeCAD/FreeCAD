@@ -105,6 +105,7 @@ struct DocumentP
     std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
+    std::unordered_map<const ViewProvider*,std::vector<App::DocumentObject*> > _ChildrenMap;
 
     typedef boost::signals2::connection Connection;
     Connection connectNewObject;
@@ -1818,6 +1819,10 @@ bool Document::canClose (bool checkModify, bool checkLink)
     return ok;
 }
 
+const std::list<BaseView*> &Document::getViews() const {
+    return d->baseViews;
+}
+
 std::list<MDIView*> Document::getMDIViews() const
 {
     std::list<MDIView*> views;
@@ -2009,12 +2014,13 @@ Gui::MDIView* Document::getViewOfViewProvider(Gui::ViewProvider* vp) const
 
 Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) const
 {
+    (void)vp;
     std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
     for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
         View3DInventor* view = static_cast<View3DInventor*>(*it);
         View3DInventorViewer* viewer = view->getViewer();
         // there is only one 3d view which is in edit mode
-        if (viewer->hasViewProvider(vp) && viewer->isEditingViewProvider())
+        if (viewer->isEditingViewProvider())
             return *it;
     }
 
@@ -2170,62 +2176,83 @@ PyObject* Document::getPyObject(void)
 
 void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
 {
-    // check for children
-    if (viewProvider && viewProvider->getChildRoot()) {
-        std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
-        SoGroup* childGroup =  viewProvider->getChildRoot();
+    if(!viewProvider)
+        return;
+    SoGroup* childGroup =  viewProvider->getChildRoot();
+    if(!childGroup)
+        return;
 
-        // size not the same -> build up the list new
-        if (deleting || childGroup->getNumChildren() != static_cast<int>(children.size())) {
+    std::vector<App::DocumentObject*> children, *childCache;
 
-            std::set<ViewProviderDocumentObject*> oldChildren;
-            for(int i=0,count=childGroup->getNumChildren();i<count;++i) {
-                auto it = d->_CoinMap.find(static_cast<SoSeparator*>(childGroup->getChild(i)));
-                if(it == d->_CoinMap.end()) continue;
-                oldChildren.insert(it->second);
-            }
+    if(deleting) {
+        // When we are deleting this view provider, do not call
+        // claimChildren3D(), but fetch the last claimed result from cache.
+        auto it = d->_ChildrenMap.find(viewProvider);
+        if(it != d->_ChildrenMap.end()) {
+            childCache = &children;
+            children = std::move(it->second);
+            d->_ChildrenMap.erase(it);
+        }
+    } else {
+        // If not deleting, check if children have changed
+        children = viewProvider->claimChildren3D();
+        childCache = &d->_ChildrenMap[viewProvider];
+        if(children == *childCache)
+            return;
+    }
 
+    // Obtained the old view provider
+    std::set<ViewProviderDocumentObject*> oldChildren;
+    for(auto child : *childCache) {
+        auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getViewProvider(child));
+        if(vp)
+            oldChildren.insert(vp);
+    }
+
+    if(deleting) 
+        Gui::coinRemoveAllChildren(childGroup);
+    else {
+
+        bool handled = viewProvider->handleChildren3D(children);
+        if(!handled)
             Gui::coinRemoveAllChildren(childGroup);
 
-            if(!deleting) {
-                for (std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it) {
-                    ViewProvider* ChildViewProvider = getViewProvider(*it);
-                    if (ChildViewProvider) {
-                        auto itOld = oldChildren.find(static_cast<ViewProviderDocumentObject*>(ChildViewProvider));
-                        if(itOld!=oldChildren.end()) oldChildren.erase(itOld);
+        for(auto it=children.begin();it!=children.end();) {
+            auto child = *it;
+            auto* vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getViewProvider(child));
+            if(!vp || !vp->getRoot()) {
+                it = children.erase(it);
+                continue;
+            }
+            ++it;
 
-                        SoSeparator* childRootNode =  ChildViewProvider->getRoot();
-                        childGroup->addChild(childRootNode);
-
-                        // cycling to all views of the document to remove the viewprovider from the viewer itself
-                        for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
-                            View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
-                            if (activeView && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
-                                // @Note hasViewProvider()
-                                // remove the viewprovider serves the purpose of detaching the inventor nodes from the
-                                // top level root in the viewer. However, if some of the children were grouped beneath the object
-                                // earlier they are not anymore part of the toplevel inventor node. we need to check for that.
-                                activeView->getViewer()->removeViewProvider(ChildViewProvider);
-                            }
-                        }
-                    }
-                }
+            if(!handled) {
+                // If the view provider does not handle its own children, we do it by
+                // simply adding the child root node to child group node.
+                childGroup->addChild(vp->getRoot());
             }
 
-            // add the remaining old children back to toplevel invertor node
-            for(auto vpd : oldChildren) {
-                auto obj = vpd->getObject();
-                if(!obj || !obj->getNameInDocument())
-                    continue;
+            oldChildren.erase(vp);
 
-                for (BaseView* view : d->baseViews) {
-                    View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
-                    if (activeView && !activeView->getViewer()->hasViewProvider(vpd))
-                        activeView->getViewer()->addViewProvider(vpd);
-                }
-            }
+            foreachView<View3DInventor>([=](View3DInventor* view){
+                // remove the viewprovider serves the purpose of detaching the inventor nodes from the
+                // top level root in the viewer. However, if some of the children were grouped beneath the object
+                // earlier they are not anymore part of the toplevel inventor node. we need to check for that.
+                view->getViewer()->removeViewProvider(vp);
+            });
         }
-    } 
+
+        *childCache = std::move(children);
+    }
+
+    // add the remaining old children back to toplevel invertor node
+    foreachView<View3DInventor>([&](View3DInventor *view) {
+        for(auto vpd : oldChildren) {
+            auto obj = vpd->getObject();
+            if(obj && obj->getNameInDocument())
+                view->getViewer()->addViewProvider(vpd);
+        }
+    });
 }
 
 void Document::toggleInSceneGraph(ViewProvider *vp) {
