@@ -40,8 +40,8 @@ public:
     ViewProviderOriginGroupExtension(void);
     virtual ~ViewProviderOriginGroupExtension();
 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void)const override;
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void)const override;
+    virtual void extensionClaimChildren(std::vector<App::DocumentObject*> &)const override;
+    virtual void extensionClaimChildren3D(std::vector<App::DocumentObject*> &)const override;
 
     virtual void extensionAttach(App::DocumentObject *pcObject) override;
     virtual void extensionUpdateData(const App::Property* prop) override;
@@ -53,8 +53,7 @@ protected:
     void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
 
 private:
-    std::vector<App::DocumentObject*> constructChildren (
-            const std::vector<App::DocumentObject*> &children ) const;
+    void constructChildren ( std::vector<App::DocumentObject*> &children ) const;
 
     boost::signals2::connection connectChangedObjectApp;
     boost::signals2::connection connectChangedObjectGui;

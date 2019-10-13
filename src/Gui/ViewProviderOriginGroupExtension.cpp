@@ -58,33 +58,30 @@ ViewProviderOriginGroupExtension::~ViewProviderOriginGroupExtension()
     connectChangedObjectGui.disconnect();
 }
 
-std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::constructChildren (
-        const std::vector<App::DocumentObject*> &children ) const
+void ViewProviderOriginGroupExtension::constructChildren (
+        std::vector<App::DocumentObject*> &children ) const
 {
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
     if(!group)
-        return children;
+        return;
     
     App::DocumentObject *originObj = group->Origin.getValue();
 
     // Origin must be first
     if (originObj) {
-        std::vector<App::DocumentObject*> rv;
-        rv.push_back (originObj);
-        std::copy (children.begin(), children.end(), std::back_inserter (rv));
-        return rv;
-    } else { // Generally shouldn't happen but must be handled in case origin is lost
-        return children;
+        children.insert(children.begin(),originObj);
     }
 }
 
 
-std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::extensionClaimChildren () const {
-    return constructChildren ( ViewProviderGeoFeatureGroupExtension::extensionClaimChildren () );
+void ViewProviderOriginGroupExtension::extensionClaimChildren (std::vector<App::DocumentObject *> &children) const {
+    ViewProviderGeoFeatureGroupExtension::extensionClaimChildren (children);
+    constructChildren ( children );
 }
 
-std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::extensionClaimChildren3D () const {
-    return constructChildren ( ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D () );
+void ViewProviderOriginGroupExtension::extensionClaimChildren3D (std::vector<App::DocumentObject *> &children) const {
+    ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D (children);
+    constructChildren ( children );
 }
 
 void ViewProviderOriginGroupExtension::extensionAttach(App::DocumentObject *pcObject) {

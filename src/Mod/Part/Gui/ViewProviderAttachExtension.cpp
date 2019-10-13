@@ -45,10 +45,8 @@ ViewProviderAttachExtension::ViewProviderAttachExtension()
     initExtensionType(ViewProviderAttachExtension::getExtensionClassTypeId());
 }
 
-QIcon ViewProviderAttachExtension::extensionMergeOverlayIcons(const QIcon & orig) const
+void ViewProviderAttachExtension::extensionMergeOverlayIcons(QIcon &icon) const
 {
-    QIcon mergedicon = orig;
-
     if (getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
 
         auto* attach = getExtendedViewProvider()->getObject()->getExtensionByType<Part::AttachExtension>();
@@ -76,12 +74,10 @@ QIcon ViewProviderAttachExtension::extensionMergeOverlayIcons(const QIcon & orig
 
                     px = QPixmap(feature_detached_xpm);
 
-                    mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomLeft);
+                    icon = Gui::BitmapFactoryInst::mergePixmap(icon, px, Gui::BitmapFactoryInst::BottomLeft);
             }
         }
     }
-
-    return mergedicon;
 }
 
 void ViewProviderAttachExtension::extensionUpdateData(const App::Property* prop)
