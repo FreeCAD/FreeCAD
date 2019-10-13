@@ -1607,9 +1607,13 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
     }
     if(!selList)
         selList = &_SelList;
+
+    if(!pSubName)
+        pSubName = "";
+
     for (auto &s : *selList) {
         if (s.DocName==pDocName && s.FeatName==sel.FeatName) {
-            if(!pSubName || s.SubName==pSubName)
+            if(s.SubName==pSubName)
                 return 1;
             if(resolve>1 && boost::starts_with(s.SubName,prefix))
                 return 1;
@@ -1619,7 +1623,7 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
         for(auto &s : *selList) {
             if(s.pResolvedObject != sel.pResolvedObject)
                 continue;
-            if(!pSubName) 
+            if(!pSubName[0]) 
                 return 1;
             if(s.elementName.first.size()) {
                 if(s.elementName.first == sel.elementName.first)
