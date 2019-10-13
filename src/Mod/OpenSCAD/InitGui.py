@@ -47,11 +47,11 @@ class OpenSCADWorkbench ( Workbench ):
         import OpenSCAD_rc,OpenSCADCommands
         commands=['OpenSCAD_ReplaceObject','OpenSCAD_RemoveSubtree',\
             'OpenSCAD_RefineShapeFeature',\
-            'OpenSCAD_IncreaseToleranceFeature', 'OpenSCAD_Edgestofaces', \
+            'OpenSCAD_IncreaseToleranceFeature', 'OpenSCAD_Edgestofaces',\
             'OpenSCAD_ExpandPlacements','OpenSCAD_ExplodeGroup']
         toolbarcommands=['OpenSCAD_ReplaceObject','OpenSCAD_RemoveSubtree',\
-            'OpenSCAD_ExplodeGroup','OpenSCAD_RefineShapeFeature']
-            #'OpenSCAD_IncreaseToleranceFeature' #icon still missing
+            'OpenSCAD_ExplodeGroup','OpenSCAD_RefineShapeFeature',\
+            'OpenSCAD_IncreaseToleranceFeature']
         import PartGui
         parttoolbarcommands = ['Part_CheckGeometry',"Part_Primitives",\
             "Part_Builder",'Part_Cut','Part_Fuse','Part_Common',\
