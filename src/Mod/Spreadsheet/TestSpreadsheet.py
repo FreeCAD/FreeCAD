@@ -835,6 +835,13 @@ class SpreadsheetCases(unittest.TestCase):
 
     def testMatrix(self):
         ''' Test Matrix/Vector/Placement/Rotation operations'''
+        
+        def plm_equal(plm1, plm2):
+            from math import sqrt
+            qpair = zip(plm1.Rotation.Q, plm2.Rotation.Q)
+            qdiff1 = sqrt(sum([(v1 - v2)**2 for v1,v2 in qpair]))
+            qdiff2 = sqrt(sum([(v1 + v2)**2 for v1,v2 in qpair]))
+            return (plm1.Base-plm2.Base).Length < 1e-7 and (qdiff1 < 1e-12 or dqiff2 < 1e-12)
 
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
 
@@ -937,16 +944,16 @@ class SpreadsheetCases(unittest.TestCase):
 
         self.assertEqual(sheet.A4,pla)
 
-        self.assertEqual(sheet.B4,ipla*ipla)
-        self.assertEqual(sheet.B4,pla**-2)
-        self.assertEqual(sheet.C4,ipla)
-        self.assertEqual(sheet.C4,pla**-1)
-        self.assertEqual(sheet.D4,FreeCAD.Placement())
-        self.assertEqual(sheet.D4,pla**0)
-        self.assertEqual(sheet.E4,pla)
-        self.assertEqual(sheet.E4,pla**1)
-        self.assertEqual(sheet.F4,pla*pla)
-        self.assertEqual(sheet.F4,pla**2)
+        self.assertTrue(plm_equal(sheet.B4,ipla*ipla))
+        self.assertTrue(plm_equal(sheet.B4,pla**-2))
+        self.assertTrue(plm_equal(sheet.C4,ipla))
+        self.assertTrue(plm_equal(sheet.C4,pla**-1))
+        self.assertTrue(plm_equal(sheet.D4,FreeCAD.Placement()))
+        self.assertTrue(plm_equal(sheet.D4,pla**0))
+        self.assertTrue(plm_equal(sheet.E4,pla))
+        self.assertTrue(plm_equal(sheet.E4,pla**1))
+        self.assertTrue(plm_equal(sheet.F4,pla*pla))
+        self.assertTrue(plm_equal(sheet.F4,pla**2))
 
         tol = 1e-10
 

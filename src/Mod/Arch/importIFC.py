@@ -1041,13 +1041,22 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                         axes.append(o)
             if axes:
                 name = "Grid"
+                grid_placement = None
                 if annotation.Name:
                     name = annotation.Name
                     if six.PY2:
                         name = name.encode("utf8")
+                if annotation.ObjectPlacement:
+                    # https://forum.freecadweb.org/viewtopic.php?f=39&t=40027
+                    grid_placement = importIFCHelper.getPlacement(
+                        annotation.ObjectPlacement,
+                        scaling=1
+                    )
                 if preferences['PREFIX_NUMBERS']:
                     name = "ID" + str(aid) + " " + name
                 anno = Arch.makeAxisSystem(axes,name)
+                if grid_placement:
+                    anno.Placement = grid_placement
             print(" axis")
         else:
             name = "Annotation"
