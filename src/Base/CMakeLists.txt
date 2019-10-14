@@ -89,6 +89,7 @@ generate_from_xml(PlacementPy)
 generate_from_xml(AxisPy)
 generate_from_xml(UnitPy)
 generate_from_xml(QuantityPy)
+generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
 
 if(SWIG_FOUND)
     # Create the file swigpyrun.hh and then compare with the file swigpyrun.h.
@@ -254,6 +255,7 @@ SET(FreeCADBase_CPP_SRCS
     Matrix.cpp
     MatrixPyImp.cpp
     MemDebug.cpp
+    Parameter.xsd
     Parameter.cpp
     ParameterPy.cpp
     Persistence.cpp

@@ -266,6 +266,7 @@ void DlgParameterImp::onChangeParameterSet(int index)
     if (!rcParMngr)
         return;
 
+    rcParMngr->CheckDocument();
     ui->buttonSaveToDisk->setEnabled(rcParMngr->HasSerializer());
 
     // remove all labels
