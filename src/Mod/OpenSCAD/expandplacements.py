@@ -99,7 +99,7 @@ def expandplacements(obj,placement):
     elif obj.isDerivedFrom('Part::Mirroring'):
         import OpenSCADUtils
         mm  = OpenSCADUtils.mirror2mat(obj.Normal,obj.Base)
-        #todo: set the base to 0,0,0
+        #TODO: set the base to 0,0,0
         innerp=FreeCAD.Placement(mm * ownplacement.toMatrix() *mm)
         expandplacements(obj.Source,innerp)
         obj.Placement=FreeCAD.Placement()
