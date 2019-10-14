@@ -210,6 +210,7 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector
 }
 
 void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
+    auto owner = getExtendedObject();
 
     //objects are only allowed in a single GeoFeatureGroup
     if(p == &Group && !Group.testStatus(Property::User3)) {
@@ -306,6 +307,14 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
                 FC_WARN("Auto correct group member for " << owner->getFullName());
             }
         }
+
+        // Skip handling in parent class GroupExtension
+        return;
+    }
+
+    if(p == &owner->Visibility) {
+        // Skip visibility handling in parent class GroupExtension
+        return;
     }
 
     App::GroupExtension::extensionOnChanged(p);

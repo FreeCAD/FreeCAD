@@ -24,10 +24,17 @@
 #include "PreCompiled.h"
 
 #include <Base/Tools.h>
+#include <Base/Console.h>
 
+#include <App/ComplexGeoData.h>
+#include "Application.h"
+#include "DocumentObjectGroup.h"
+#include "DocumentObjectGroupPy.h"
+#include "GroupExtensionPy.h"
 #include "Document.h"
 #include "GeoFeatureGroupExtension.h"
 #include "GroupExtensionPy.h"
+#include "Link.h"
 
 
 FC_LOG_LEVEL_INIT("App",true,true);
@@ -409,11 +416,9 @@ void GroupExtension::extensionOnChanged(const Property* p) {
 
     //objects are only allowed in a single group. Note that this check must only be done for normal
     //groups, not any derived classes
-    if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId())
-        && p == &Group && !Group.testStatus(Property::User3)) 
-    {
+    if(p == &Group && !Group.testStatus(Property::User3)) {
+
         if(!owner->isRestoring() && !owner->getDocument()->isPerformingTransaction()) {
-            
             bool error = false;
             auto children = Group.getValues();
             std::unordered_set<App::DocumentObject*> objSet;
@@ -467,6 +472,40 @@ void GroupExtension::extensionOnChanged(const Property* p) {
                 _Conns.push_back(groupTouched->signalChanged.connect(boost::bind(
                                 &GroupExtension::slotChildChanged,this,bp::_1)));
         }
+    } else if(p == &owner->Visibility) {
+        if(!_togglingVisibility 
+                && !owner->getDocument()->testStatus(Document::Restoring)
+                && !owner->getDocument()->isPerformingTransaction())
+        {
+            bool touched = false;
+            bool vis = owner->Visibility.getValue();
+            Base::FlagToggler<> guard(_togglingVisibility);
+            for(auto obj : Group.getValues()) {
+                if(obj && obj->getNameInDocument() && obj->Visibility.getValue()!=vis) {
+                    touched = true;
+                    obj->Visibility.setValue(vis);
+                }
+                if(vis) 
+                    ++visCount;
+            }
+
+            if(hiddenChildren && vis && !visCount) {
+                // In case all children is invisible, and the group itself is
+                // made visible. Set all children as visible.
+                for(auto obj : Group.getValues()) {
+                    if(!obj || !obj->getNameInDocument())
+                        continue;
+                    obj->Visibility.setValue(true);
+                }
+            }
+            if(touched) {
+                Base::ObjectStatusLocker<Property::Status, Property> guard(Property::Output, &_GroupTouched);
+                // Temporary set the Property::Output on _GroupTouched, so that
+                // it does not touch the owner object, but still signal
+                // Part::Feature shape cache update.
+                _GroupTouched.touch();
+            }
+        }
     }
 
     App::Extension::extensionOnChanged(p);
@@ -486,22 +525,25 @@ void GroupExtension::slotChildChanged(const Property &prop) {
             Base::ObjectStatusLocker<Property::Status, Property> guard(Property::Output, &_GroupTouched);
             // Temporary set the Property::Output on _GroupTouched, so that it
             // does not touch the owner object, but can still inform of
-            // children visibility changes
             _GroupTouched.touch();
         }
 
-        auto owner = getExtendedObject();
-        auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
-                                owner->getPropertyByName("HiddenChildren"));
-        if(hiddenChildren && hiddenChildren->getContainer()==owner) {
-            std::map<std::string,std::string> hc;
-            for(auto obj : Group.getValues()) {
-                if(!obj || !obj->getNameInDocument())
-                    continue;
-                if(!obj->Visibility.getValue()) 
-                    hc.emplace(obj->getNameInDocument(),"");
+        if(strcmp(prop.getName(), "Visibility")==0) {
+            auto owner = getExtendedObject();
+            auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
+                                    owner->getPropertyByName("HiddenChildren"));
+            if(hiddenChildren && hiddenChildren->getContainer()==owner) {
+                std::map<std::string,std::string> hc;
+                for(auto obj : Group.getValues()) {
+                    if(!obj || !obj->getNameInDocument())
+                        continue;
+                    if(!obj->Visibility.getValue()) 
+                        hc.emplace(obj->getNameInDocument(),"");
+                    else
+                        hc.erase(obj->getNameInDocument());
+                }
+                hiddenChildren->setValues(std::move(hc));
             }
-            hiddenChildren->setValues(std::move(hc));
         }
     }
 }
@@ -550,10 +592,47 @@ bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int r
     return true;
 }
 
-int GroupExtension::extensionIsElementVisible(const char *) const {
-    if(ExportMode.getValue() == EXPORT_BY_CHILD_QUERY)
-        return 1;
-    return -1;
+int GroupExtension::extensionIsElementVisible(const char *element) const {
+    auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
+            getExtendedObject()->getPropertyByName("HiddenChildren"));
+    if(!hiddenChildren || hiddenChildren->getContainer()!=getExtendedObject())
+        return -1;
+    return hiddenChildren->getValue(element)?0:1;
+}
+
+void GroupExtension::onExtendedDocumentRestored() {
+    if(_GroupVersion.getValue()==0) {
+        initSetup();
+        auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
+                getExtendedObject()->getPropertyByName("HiddenChildren"));
+        if(hiddenChildren && hiddenChildren->getContainer()==getExtendedObject()) {
+            std::map<std::string,std::string> hc;
+            for(auto child : Group.getValue()) {
+                if(child && child->getNameInDocument() && !child->Visibility.getValue())
+                    hc.emplace(child->getNameInDocument(),"");
+            }
+            hiddenChildren->setValues(std::move(hc));
+        }
+    }
+}
+
+void GroupExtension::initSetup() {
+    _GroupVersion.setValue(1);
+    if(!this->extensionIsDerivedFrom(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+        auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preference/Group");
+        if(hGrp->GetBool("KeepHiddenChildren",true)) {
+            auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
+                    getExtendedObject()->getPropertyByName("HiddenChildren"));
+            if(!hiddenChildren || hiddenChildren->getContainer()!=getExtendedObject())
+                getExtendedObject()->addDynamicProperty("App::PropertyMap", 
+                        "HiddenChildren", "Group",0,Prop_Output,true,true);
+        }
+    }
+}
+
+void GroupExtension::onExtendedSetupObject() {
+    initSetup();
+>>>>>>> 06d82a8613... vis
 }
 
 App::DocumentObjectExecReturn *GroupExtension::extensionExecute(void) {
