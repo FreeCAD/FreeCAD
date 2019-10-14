@@ -38,7 +38,9 @@ class OpenSCADWorkbench ( Workbench ):
     def __init__(self):
         self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/OpenSCAD/Resources/icons/OpenSCADWorkbench.svg"
         self.__class__.MenuText = "OpenSCAD"
-        self.__class__.ToolTip = "OpenSCAD workbench"
+        self.__class__.ToolTip = "OpenSCAD is an application for creating solid 3D CAD." + '\n' +
+                                 "FreeCAD utizes OpenSCAD's capability as a script-only based modeller that uses its own description language" + '\n' +
+                                 "Note: the Mesh workbench heavily uses the boolean operations of this workbench because they are quite robust"
 
     def Initialize(self):
         def QT_TRANSLATE_NOOP(scope, text):
