@@ -47,13 +47,7 @@ public:
     virtual bool extensionCanDropObject(App::DocumentObject*) const override;
     virtual void extensionDropObject(App::DocumentObject*) override;   
  
-    virtual void extensionHide(void) override;
-    virtual void extensionShow(void) override;
-
     virtual bool extensionOnDelete(const std::vector<std::string> &) override;
-
-private:
-    bool guard;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension> ViewProviderGroupExtensionPython;

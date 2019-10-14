@@ -360,11 +360,9 @@ void GroupExtension::extensionOnChanged(const Property* p) {
 
     //objects are only allowed in a single group. Note that this check must only be done for normal
     //groups, not any derived classes
-    if((this->getExtensionTypeId() == GroupExtension::getExtensionClassTypeId())
-        && p == &Group && !Group.testStatus(Property::User3)) 
-    {
+    if(p == &Group && !Group.testStatus(Property::User3)) {
+
         if(!owner->isRestoring() && !owner->getDocument()->isPerformingTransaction()) {
-            
             bool error = false;
             auto children = Group.getValues();
             std::unordered_set<App::DocumentObject*> objSet;
@@ -413,13 +411,35 @@ void GroupExtension::extensionOnChanged(const Property* p) {
             _Conns.push_back(obj->Visibility.signalChanged.connect(boost::bind(
                             &GroupExtension::slotChildChanged,this,_1)));
         }
+    } else if(p == &owner->Visibility) {
+        if(!_togglingVisibility 
+                && !owner->isRestoring() 
+                && !owner->getDocument()->isPerformingTransaction())
+        {
+            bool touched = false;
+            bool vis = owner->Visibility.getValue();
+            Base::FlagToggler<> guard(_togglingVisibility);
+            for(auto obj : Group.getValues()) {
+                if(obj && obj->getNameInDocument() && obj->Visibility.getValue()!=vis) {
+                    touched = true;
+                    obj->Visibility.setValue(vis);
+                }
+            }
+            if(touched) {
+                Base::ObjectStatusLocker<Property::Status, Property> guard(Property::Output, &_GroupTouched);
+                // Temporary set the Property::Output on _GroupTouched, so that
+                // it does not touch the owner object, but still signal
+                // Part::Feature shape cache update.
+                _GroupTouched.touch();
+            }
+        }
     }
 
     App::Extension::extensionOnChanged(p);
 }
 
 void GroupExtension::slotChildChanged(const DocumentObject &obj, const Property &prop) {
-    if(&prop == &obj.Visibility)
+    if(&prop == &obj.Visibility && !_togglingVisibility)
         _GroupTouched.touch();
 }
 
