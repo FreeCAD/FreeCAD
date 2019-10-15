@@ -2881,6 +2881,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColorsFrom(
 
     std::map<std::string, App::Color> colors;
 
+    std::string _subname;
     std::string wildcard(subname);
     if(wildcard == "Face" || wildcard == "Face*" || wildcard.empty()) {
         if(wildcard.size()==4 || overrideMaterial) {
@@ -2898,7 +2899,13 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColorsFrom(
         wildcard.resize(5);
     else if(wildcard == ViewProvider::hiddenMarker()+"*")
         wildcard.resize(ViewProvider::hiddenMarker().size());
-    else
+    else if(wildcard.back() == '*') {
+        _subname = std::move(wildcard);
+        _subname.resize(_subname.size()-1);
+        subname = _subname.c_str();
+        isPrefix = true;
+        wildcard.clear();
+    } else
         wildcard.clear();
 
     int i=-1;
@@ -3032,6 +3039,8 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColorsFrom(
         auto vp = Application::Instance->getViewProvider(sobj->getLinkedObject(true));
         if(!vp)
             continue;
+        // In case the topo name is gone, query the shape owner so it can
+        // return some suggested elements
         for(auto &v2 : vp->getElementColors(!pos[0]?"Face":pos)) {
             std::string name;
             if(pos[0])
