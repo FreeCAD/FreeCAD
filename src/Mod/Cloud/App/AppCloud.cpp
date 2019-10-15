@@ -209,16 +209,11 @@ void Cloud::CloudWriter::createBucket()
         if ( curl )
         {
                 struct curl_slist *chunk = NULL;
-                char header_data[1024];
 		char Url[256];
                 // Let's build our own header
                 std::string strUrl(this->Url);
                 eraseSubStr(strUrl,"http://");
                 eraseSubStr(strUrl,"https://");
-
-                sprintf(header_data,"%s:%s/%s/", this->Url,this->TcpPort,
-                                                    this->Bucket);
-                curl_easy_setopt(curl, CURLOPT_URL, header_data);
 
                 chunk = Cloud::BuildHeaderAmzS3v2( strUrl.c_str(), this->TcpPort, this->AccessKey, RequestData);
 
@@ -696,8 +691,8 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
 
                 // Lets build the Url for our Curl call
 
-                sprintf(Url,"%s:%s/%s/", this->Url,this->TcpPort,
-                                                    this->Bucket);
+                sprintf(Url,"%s:%s/%s/%s", this->Url,this->TcpPort,
+                                                    this->Bucket,FileName);
                 curl_easy_setopt(curl, CURLOPT_URL, Url);
 
 				
