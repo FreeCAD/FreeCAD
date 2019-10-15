@@ -47,8 +47,17 @@ XERCES_CPP_NAMESPACE_END
 
 namespace Cloud {
 
+struct AmzData {
+	std::string digest;
+	char dateFormatted[256];
+	char ContentType[256];
+	char Host[256];
+};
+
 void eraseSubStr(std::string & Str, const std::string & toErase);
 size_t CurlWrite_CallbackFunc_StdString(void *contents, size_t size, size_t nmemb, std::string *s);
+struct AmzData *ComputeDigestAmzS3v2(char *operation, char *data_type, const char *target, const char *Secret);
+struct curl_slist *BuildHeaderAmzS3v2(const char *Url, const char *TcpPort, const char *PublicKey, struct AmzData *Data);
 
 class CloudAppExport CloudReader
 {
