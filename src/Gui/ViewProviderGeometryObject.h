@@ -60,7 +60,6 @@ public:
     App::PropertyMaterial ShapeMaterial;
     App::PropertyBool BoundingBox;
     App::PropertyBool Selectable;
-    App::PropertyEnumeration SelectionStyle;
 
     /**
      * Attaches the document object to this view provider.
