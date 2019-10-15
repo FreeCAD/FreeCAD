@@ -94,7 +94,7 @@ Tessellation::Tessellation(QWidget* parent)
     ui->radioButtonNetgen->setChecked(true);
 #endif
 
-    Gui::Command::doCommand(Gui::Command::Doc, "import Mesh");
+    Gui::Command::doCommand(Gui::Command::Doc, "import Mesh, Part, PartGui");
     try {
         Gui::Command::doCommand(Gui::Command::Doc, "import MeshPart");
     }
@@ -182,63 +182,56 @@ void Tessellation::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-std::list<App::DocumentObjectT> Tessellation::findShapes()
-{
-    std::list<App::DocumentObjectT> shapeObjects;
-    App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) return shapeObjects;
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
-    if (!activeGui) return shapeObjects;
+namespace MeshPartGui {
+struct ShapeInfo {
+    App::DocumentObjectT obj;
+    std::string subname;
 
-    this->document = QString::fromLatin1(activeDoc->getName());
-    std::vector<Part::Feature*> objs = activeDoc->getObjectsOfType<Part::Feature>();
-
-    double edgeLen = 0;
-    for (std::vector<Part::Feature*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        const TopoDS_Shape& shape = (*it)->Shape.getValue();
-        if (shape.IsNull()) continue;
-        bool hasfaces = false;
-        TopExp_Explorer xp(shape,TopAbs_FACE);
-        while (xp.More()) {
-            hasfaces = true;
-            break;
-        }
-
-        if (hasfaces) {
-            Base::BoundBox3d bbox = (*it)->Shape.getBoundingBox();
-            edgeLen = std::max<double>(edgeLen, bbox.LengthX());
-            edgeLen = std::max<double>(edgeLen, bbox.LengthY());
-            edgeLen = std::max<double>(edgeLen, bbox.LengthZ());
-
-            if (Gui::Selection().isSelected(*it)) {
-                App::DocumentObjectT objT(*it);
-                shapeObjects.push_back(objT);
-            }
-        }
-    }
-
-    ui->spinMaximumEdgeLength->setValue(edgeLen/10);
-    return shapeObjects;
+    ShapeInfo(const App::DocumentObject *o, const char *s)
+        : obj(o), subname(s)
+    {}
+};
 }
 
 bool Tessellation::accept()
 {
-    std::list<App::DocumentObjectT> shapeObjects = findShapes();
+    std::list<ShapeInfo> shapeObjects;
+    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    if (!activeDoc) {
+        QMessageBox::critical(this, windowTitle(), tr("No active document"));
+        return false;
+    }
+
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
+    if (!activeGui) {
+        QMessageBox::critical(this, windowTitle(), tr("No active document"));
+        return false;
+    }
+
+    this->document = QString::fromLatin1(activeDoc->getName());
+
+    double edgeLen = 0;
+    for (auto &sel : Gui::Selection().getSelection("*",0)) {
+        auto shape = Part::Feature::getTopoShape(sel.pObject,sel.SubName);
+        if (shape.hasSubShape(TopAbs_FACE)) {
+            Base::BoundBox3d bbox = shape.getBoundBox();
+            edgeLen = std::max<double>(edgeLen, bbox.LengthX());
+            edgeLen = std::max<double>(edgeLen, bbox.LengthY());
+            edgeLen = std::max<double>(edgeLen, bbox.LengthZ());
+            shapeObjects.emplace_back(sel.pObject,sel.SubName);
+        }
+    }
+
+    ui->spinMaximumEdgeLength->setValue(edgeLen/10);
+
     if (shapeObjects.empty()) {
         QMessageBox::critical(this, windowTitle(),
             tr("Select a shape for meshing, first."));
         return false;
     }
 
-    App::Document* activeDoc = App::GetApplication().getDocument((const char*)this->document.toLatin1());
-    if (!activeDoc) {
-        QMessageBox::critical(this, windowTitle(),
-            tr("No such document '%1'.").arg(this->document));
-        return false;
-    }
-
     try {
-        QString shape, label;
+        QString objname, label, subname;
         Gui::WaitCursor wc;
 
         int method = buttonGroup->checkedId();
@@ -256,59 +249,60 @@ bool Tessellation::accept()
         }
 
         activeDoc->openTransaction("Meshing");
-        for (std::list<App::DocumentObjectT>::iterator it = shapeObjects.begin(); it != shapeObjects.end(); ++it) {
-            shape = QString::fromLatin1(it->getObjectName().c_str());
-            label = QString::fromUtf8(it->getObjectLabel().c_str());
+        for (auto &info : shapeObjects) {
+            subname = QString::fromLatin1(info.subname.c_str());
+            objname = QString::fromLatin1(info.obj.getObjectName().c_str());
 
-            QString cmd;
+            auto obj = info.obj.getObject();
+            if (!obj)
+                continue;
+            auto sobj = obj->getSubObject(info.subname.c_str());
+            if (!sobj)
+                continue;
+            sobj = sobj->getLinkedObject(true);
+            if (!sobj)
+                continue;
+            label = QString::fromUtf8(sobj->Label.getValue());
+            auto svp = Base::freecad_dynamic_cast<PartGui::ViewProviderPartExt>(
+                    Gui::Application::Instance->getViewProvider(sobj));
+
+            QString param;
             if (method == 0) { // Standard
                 double devFace = ui->spinSurfaceDeviation->value().getValue();
                 double devAngle = ui->spinAngularDeviation->value().getValue();
                 devAngle = Base::toRadians<double>(devAngle);
                 bool relative = ui->relativeDeviation->isChecked();
-                QString param = QString::fromLatin1("Shape=__shape__, "
-                                                    "LinearDeflection=%1, "
-                                                    "AngularDeflection=%2, "
-                                                    "Relative=%3")
+                param = QString::fromLatin1("Shape=__shape__, "
+                                            "LinearDeflection=%1, "
+                                            "AngularDeflection=%2, "
+                                            "Relative=%3")
                     .arg(devFace)
                     .arg(devAngle)
                     .arg(relative ? QString::fromLatin1("True") : QString::fromLatin1("False"));
                 if (ui->meshShapeColors->isChecked())
                     param += QString::fromLatin1(",Segments=True");
-                if (ui->groupsFaceColors->isChecked())
-                    param += QString::fromLatin1(",GroupColors=__doc__.getObject(\"%1\").ViewObject.DiffuseColor")
-                            .arg(shape);
-                cmd = QString::fromLatin1(
-                    "__doc__=FreeCAD.getDocument(\"%1\")\n"
-                    "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                    "__part__=__doc__.getObject(\"%2\")\n"
-                    "__shape__=__part__.Shape.copy(False)\n"
-                    "__shape__.Placement=__part__.getGlobalPlacement()\n"
-                    "__mesh__.Mesh=MeshPart.meshFromShape(%3)\n"
-                    "__mesh__.Label=\"%4 (Meshed)\"\n"
-                    "del __doc__, __mesh__, __part__, __shape__\n")
-                    .arg(this->document)
-                    .arg(shape)
-                    .arg(param)
-                    .arg(label);
+                if (ui->groupsFaceColors->isChecked() && svp) {
+                    // TODO: currently, we can only retrieve part feature
+                    // color. The problem is that if the feature is linked,
+                    // there are potentially many places where the color can
+                    // get overriden.
+                    //
+                    // With topo naming feature merged, it will be possible to
+                    // infer more accurate colors from just the shape names,
+                    // with static function,
+                    //
+                    // PartGui::ViewProviderPartExt::getShapeColors().
+                    //
+                    param += QString::fromLatin1(",GroupColors=Gui.getDocument('%1').getObject('%2').DiffuseColor")
+                            .arg(QString::fromLatin1(sobj->getDocument()->getName()),
+                                 QString::fromLatin1(sobj->getNameInDocument()));
+                }
             }
             else if (method == 1) { // Mefisto
                 double maxEdge = ui->spinMaximumEdgeLength->value().getValue();
                 if (!ui->spinMaximumEdgeLength->isEnabled())
                     maxEdge = 0;
-                cmd = QString::fromLatin1(
-                    "__doc__=FreeCAD.getDocument(\"%1\")\n"
-                    "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                    "__part__=__doc__.getObject(\"%2\")\n"
-                    "__shape__=__part__.Shape.copy(False)\n"
-                    "__shape__.Placement=__part__.getGlobalPlacement()\n"
-                    "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__shape__,MaxLength=%3)\n"
-                    "__mesh__.Label=\"%4 (Meshed)\"\n"
-                    "del __doc__, __mesh__, __part__, __shape__\n")
-                    .arg(this->document)
-                    .arg(shape)
-                    .arg(maxEdge)
-                    .arg(label);
+                param = QString::fromLatin1("Shape=__shape__,MaxLength=%1").arg(maxEdge);
             }
             else if (method == 2) { // Netgen
                 int fineness = ui->comboFineness->currentIndex();
@@ -319,46 +313,39 @@ bool Tessellation::accept()
                 bool optimize = ui->checkOptimizeSurface->isChecked();
                 bool allowquad = ui->checkQuadDominated->isChecked();
                 if (fineness < 5) {
-                    cmd = QString::fromLatin1(
-                        "__doc__=FreeCAD.getDocument(\"%1\")\n"
-                        "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                        "__part__=__doc__.getObject(\"%2\")\n"
-                        "__shape__=__part__.Shape.copy(False)\n"
-                        "__shape__.Placement=__part__.getGlobalPlacement()\n"
-                        "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__shape__,"
-                        "Fineness=%3,SecondOrder=%4,Optimize=%5,AllowQuad=%6)\n"
-                        "__mesh__.Label=\"%7 (Meshed)\"\n"
-                        "del __doc__, __mesh__, __part__, __shape__\n")
-                        .arg(this->document)
-                        .arg(shape)
+                    param = QString::fromLatin1("Shape=__shape__,"
+                        "Fineness=%1,SecondOrder=%2,Optimize=%3,AllowQuad=%4")
                         .arg(fineness)
                         .arg(secondOrder ? 1 : 0)
                         .arg(optimize ? 1 : 0)
-                        .arg(allowquad ? 1 : 0)
-                        .arg(label);
+                        .arg(allowquad ? 1 : 0);
                 }
                 else {
-                    cmd = QString::fromLatin1(
-                        "__doc__=FreeCAD.getDocument(\"%1\")\n"
-                        "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                        "__part__=__doc__.getObject(\"%2\")\n"
-                        "__shape__=__part__.Shape.copy(False)\n"
-                        "__shape__.Placement=__part__.getGlobalPlacement()\n"
-                        "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__shape__,"
-                        "GrowthRate=%3,SegPerEdge=%4,SegPerRadius=%5,SecondOrder=%6,Optimize=%7,AllowQuad=%8)\n"
-                        "__mesh__.Label=\"%9 (Meshed)\"\n"
-                        "del __doc__, __mesh__, __part__, __shape__\n")
-                        .arg(this->document)
-                        .arg(shape)
+                    param = QString::fromLatin1("Shape=__shape__,"
+                        "GrowthRate=%1,SegPerEdge=%2,SegPerRadius=%3,SecondOrder=%4,Optimize=%5,AllowQuad=%6")
                         .arg(growthRate)
                         .arg(nbSegPerEdge)
                         .arg(nbSegPerRadius)
                         .arg(secondOrder ? 1 : 0)
                         .arg(optimize ? 1 : 0)
-                        .arg(allowquad ? 1 : 0)
-                        .arg(label);
+                        .arg(allowquad ? 1 : 0);
                 }
             }
+
+            QString cmd = QString::fromLatin1(
+                "__doc__=FreeCAD.getDocument(\"%1\")\n"
+                "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
+                "__part__=__doc__.getObject(\"%2\")\n"
+                "__shape__=Part.getShape(__part__,\"%3\")\n"
+                "__mesh__.Mesh=MeshPart.meshFromShape(%4)\n"
+                "__mesh__.Label=\"%5 (Meshed)\"\n"
+                "del __doc__, __mesh__, __part__, __shape__\n")
+                .arg(this->document)
+                .arg(objname)
+                .arg(subname)
+                .arg(param)
+                .arg(label);
+
             Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
 
             // if Standard mesher is used and face colors should be applied
@@ -366,12 +353,9 @@ bool Tessellation::accept()
                 if (ui->meshShapeColors->isChecked()) {
                     Gui::ViewProvider* vpm = Gui::Application::Instance->getViewProvider
                             (activeDoc->getActiveObject());
-                    Gui::ViewProvider* vpp = Gui::Application::Instance->getViewProvider
-                            (activeDoc->getObject(shape.toLatin1()));
                     MeshGui::ViewProviderMesh* vpmesh = dynamic_cast<MeshGui::ViewProviderMesh*>(vpm);
-                    PartGui::ViewProviderPart* vppart = dynamic_cast<PartGui::ViewProviderPart*>(vpp);
-                    if (vpmesh && vppart) {
-                        std::vector<App::Color> diff_col = vppart->DiffuseColor.getValues();
+                    if (vpmesh && svp) {
+                        std::vector<App::Color> diff_col = svp->DiffuseColor.getValues();
                         if (ui->groupsFaceColors->isChecked()) {
                             // unique colors
                             std::set<uint32_t> col_set;
