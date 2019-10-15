@@ -28,6 +28,8 @@
 
 #include <openssl/hmac.h>
 #include <openssl/pem.h>
+#include <openssl/md5.h>
+
 #include <curl/curl.h>
 
 #include <App/Application.h>
@@ -201,7 +203,7 @@ void Cloud::CloudWriter::createBucket()
 
 	char path[1024];
         sprintf(path, "/%s/", this->Bucket);
-        RequestData = Cloud::ComputeDigestAmzS3v2("PUT", "application/xml", path, this->SecretKey);
+        RequestData = Cloud::ComputeDigestAmzS3v2("PUT", "application/xml", path, this->SecretKey, NULL, 0);
 
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
@@ -245,7 +247,7 @@ void Cloud::CloudWriter::createBucket()
         }
 }
 
-struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_type, const char *target, const char *Secret)
+struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_type, const char *target, const char *Secret, const char *ptr, long size)
 {
 	struct AmzData *returnData;
         struct timeval tv;
@@ -275,7 +277,19 @@ struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_t
         tm = localtime(&tv.tv_sec);
         strftime(date_formatted,256,"%a, %d %b %Y %T %z", tm);
 #endif
-	sprintf(StringToSign,"%s\n\n%s\n%s\n%s", operation, data_type, date_formatted, target);
+	returnData->MD5=NULL;
+	if ( strcmp(operation,"PUT") == 0 )
+	{
+		if (  ptr != NULL )
+		{
+	                returnData->MD5=Cloud::MD5Sum(ptr,size);
+			sprintf(StringToSign,"%s\n%s\n%s\n%s\n%s", operation, returnData->MD5, data_type, date_formatted, target);
+		}
+		else
+			sprintf(StringToSign,"%s\n\n%s\n%s\n%s", operation, data_type, date_formatted, target);
+	}
+	else
+		sprintf(StringToSign,"%s\n\n%s\n%s\n%s", operation, data_type, date_formatted, target);
 	// We have to use HMAC encoding and SHA1
         digest=HMAC(EVP_sha1(),Secret,strlen(Secret),
                 (const unsigned char *)&StringToSign,strlen(StringToSign),NULL,NULL);
@@ -283,6 +297,18 @@ struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_t
 	strcpy(returnData->dateFormatted,date_formatted);
 	return returnData;
 	
+}
+
+char *Cloud::MD5Sum(const char *ptr, long size)
+{
+	char *output;
+	std::string local;
+	unsigned char result[MD5_DIGEST_LENGTH];
+	output=(char *)malloc(2*MD5_DIGEST_LENGTH*sizeof(char)+1);
+        MD5((unsigned char*) ptr, size, result);
+	local= Base::base64_encode(result,MD5_DIGEST_LENGTH);
+	strcpy(output,local.c_str());
+	return(output);
 }
 
 struct curl_slist *Cloud::BuildHeaderAmzS3v2(const char *Url, const char *TcpPort, const char *PublicKey, struct Cloud::AmzData *Data)
@@ -304,6 +330,16 @@ struct curl_slist *Cloud::BuildHeaderAmzS3v2(const char *Url, const char *TcpPor
 
 	sprintf(header_data,"Content-Type:%s", Data->ContentType);
 	chunk = curl_slist_append(chunk, header_data);
+
+	// If ptr is not null we must compute the MD5-Sum as to validate later the ETag
+	// and add the MD5-Content: entry to the header
+	if ( Data->MD5 != NULL )
+	{
+		sprintf(header_data,"Content-MD5: %s", Data->MD5);
+		chunk = curl_slist_append(chunk, header_data);
+		// We don't need it anymore we can free it
+		free((void *)Data->MD5);
+	}
 
 	// build the Auth entry
 
@@ -330,7 +366,7 @@ Cloud::CloudWriter::CloudWriter(const char* Url, const char* AccessKey, const ch
         this->FileName="";
 	char path[1024];
 	sprintf(path,"/%s/", this->Bucket);
-	RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/xml", path, this->SecretKey);
+	RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/xml", path, this->SecretKey, NULL, 0);
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
@@ -491,7 +527,7 @@ Cloud::CloudReader::CloudReader(const char* Url, const char* AccessKey, const ch
 
 	char path[1024];
         sprintf(path,"/%s/", this->Bucket);
-        RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/xml", path, this->SecretKey);
+        RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/xml", path, this->SecretKey, NULL, 0);
 
 
         // Let's build the Header and call to curl
@@ -561,7 +597,7 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
         // We must get the directory content
 	char path[1024];
 	sprintf(path, "/%s/%s", this->Bucket, entry->FileName);
-        RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/octet-stream", path, this->SecretKey);
+        RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/octet-stream", path, this->SecretKey, NULL, 0);
 
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
@@ -670,7 +706,7 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
 
 	char path[1024];
         sprintf(path, "/%s/%s", this->Bucket, FileName);
-        RequestData = Cloud::ComputeDigestAmzS3v2("PUT", "application/octet-stream", path, this->SecretKey);
+        RequestData = Cloud::ComputeDigestAmzS3v2("PUT", "application/octet-stream", path, this->SecretKey, data, size);
 
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
