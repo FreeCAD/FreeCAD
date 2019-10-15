@@ -68,13 +68,13 @@ class CommandAddonManager:
 
     def Activated(self):
 
-        # display first use dialog if needed
-
+        # display first use dialog if needed, query user.cfg
+        #
         from PySide import QtGui
-        readWarning = FreeCAD.ParamGet('User parameter:Plugins/addonsRepository').GetBool('readWarning',False)
+        readWarning = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Addons').GetBool('readWarning',False)
         if not readWarning:
             if QtGui.QMessageBox.warning(None,"FreeCAD",translate("AddonsInstaller", "The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!"), QtGui.QMessageBox.Cancel | QtGui.QMessageBox.Ok) != QtGui.QMessageBox.StandardButton.Cancel:
-                FreeCAD.ParamGet('User parameter:Plugins/addonsRepository').SetBool('readWarning',True)
+                FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Addons').SetBool('readWarning',True)
                 readWarning = True
 
         if readWarning:
