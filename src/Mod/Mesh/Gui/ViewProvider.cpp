@@ -474,7 +474,7 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     pcFlatWireRoot->addChild(pShapeHints);
     pcFlatWireRoot->addChild(pcShapeMaterial);
     pcFlatWireRoot->addChild(pcMatBinding);
-    pcFlatWireRoot->addChild(pcShapeGroup);
+    pcFlatWireRoot->addChild(pcHighlight);
     addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
 
     if (getColorProperty()) {
