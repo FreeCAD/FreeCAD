@@ -654,7 +654,8 @@ void QGIViewPart::removePrimitives()
     for (auto& c:children) {
          QGIPrimPath* prim = dynamic_cast<QGIPrimPath*>(c);
          if (prim) {
-            removeFromGroup(prim);
+            prim->hide();
+//            removeFromGroup(prim);
             scene()->removeItem(prim);
             delete prim;
          }
@@ -672,11 +673,13 @@ void QGIViewPart::removeDecorations()
          QGIDecoration* decor = dynamic_cast<QGIDecoration*>(c);
          QGIMatting* mat = dynamic_cast<QGIMatting*>(c);
          if (decor) {
-            removeFromGroup(decor);
+            decor->hide();
+//            removeFromGroup(decor);
             scene()->removeItem(decor);
             delete decor;
          } else if (mat) {
-            removeFromGroup(mat);
+            mat->hide();
+//            removeFromGroup(mat);
             scene()->removeItem(mat);
             delete mat;
          }
