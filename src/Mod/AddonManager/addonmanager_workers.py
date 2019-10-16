@@ -407,7 +407,7 @@ class ShowWorker(QtCore.QThread):
             else:
                 message = "<strong style=\"background: #00B629;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" 
                 message += desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
-            message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + repo[0]
+            message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
             self.repos[self.idx][2] = 2 # mark as already installed AND already checked for updates
             self.addon_repos.emit(self.repos)
         elif self.repos[self.idx][2] == 2:
