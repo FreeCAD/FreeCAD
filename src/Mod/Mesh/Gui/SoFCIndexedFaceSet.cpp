@@ -70,8 +70,8 @@ using namespace MeshGui;
 
 class MeshRenderer::Private {
 public:
-    Gui::OpenGLBuffer vertices;
-    Gui::OpenGLBuffer indices;
+    Gui::OpenGLMultiBuffer vertices;
+    Gui::OpenGLMultiBuffer indices;
     const SbColor * pcolors;
     SoMaterialBindingElement::Binding matbinding;
     bool initialized;
@@ -84,6 +84,8 @@ public:
         std::vector<float>& vertex, std::vector<int32_t>& index);
     void renderFacesGLArray(SoGLRenderAction*);
     void renderCoordsGLArray(SoGLRenderAction *);
+    void update();
+    bool needUpdate(SoGLRenderAction *);
 
 private:
     void renderGLArray(SoGLRenderAction *, GLenum);
@@ -115,13 +117,7 @@ bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *action) const
         init = true;
     }
 
-    if (!vboAvailable)
-        return false;
-
-    // if no buffer is created we must pass here in order to create it afterwards
-    if (!indices.isCreated())
-        return true;
-    return indices.getBoundContext() == action->getCacheContext();
+    return vboAvailable;
 }
 
 void MeshRenderer::Private::generateGLArrays(SoGLRenderAction* action,
@@ -135,11 +131,9 @@ void MeshRenderer::Private::generateGLArrays(SoGLRenderAction* action,
     vertices.setCurrentContext(action->getCacheContext());
     indices.setCurrentContext(action->getCacheContext());
 
-    if (!initialized) {
-        vertices.create();
-        indices.create();
-        initialized = true;
-    }
+    initialized = true;
+    vertices.create();
+    indices.create();
 
     vertices.bind();
     vertices.allocate(&(vertex[0]),
@@ -196,6 +190,18 @@ void MeshRenderer::Private::renderCoordsGLArray(SoGLRenderAction *action)
 {
     renderGLArray(action, GL_POINTS);
 }
+
+void MeshRenderer::Private::update()
+{
+    vertices.destroy();
+    indices.destroy();
+}
+
+bool MeshRenderer::Private::needUpdate(SoGLRenderAction *action)
+{
+    return !vertices.isCreated(action->getCacheContext()) ||
+           !indices.isCreated(action->getCacheContext());
+}
 #elif defined RENDER_GLARRAYS
 class MeshRenderer::Private {
 public:
@@ -216,6 +222,13 @@ public:
         std::vector<float>& vertex, std::vector<int32_t>& index);
     void renderFacesGLArray(SoGLRenderAction *action);
     void renderCoordsGLArray(SoGLRenderAction *action);
+    void update()
+    {
+    }
+    bool needUpdate(SoGLRenderAction *)
+    {
+        return false;
+    }
 };
 
 bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *) const
@@ -323,6 +336,13 @@ public:
     void renderCoordsGLArray(SoGLRenderAction *)
     {
     }
+    void update()
+    {
+    }
+    bool needUpdate(SoGLRenderAction *)
+    {
+        return false;
+    }
 };
 #endif
 
@@ -334,6 +354,16 @@ MeshRenderer::MeshRenderer()
 MeshRenderer::~MeshRenderer()
 {
     delete p;
+}
+
+void MeshRenderer::update()
+{
+    p->update();
+}
+
+bool MeshRenderer::needUpdate(SoGLRenderAction *action)
+{
+    return p->needUpdate(action);
 }
 
 void MeshRenderer::generateGLArrays(SoGLRenderAction* action, SoMaterialBindingElement::Binding matbind,
@@ -499,6 +529,10 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
     if (useVBO) {
         if (updateGLArray.getValue()) {
             updateGLArray.setValue(false);
+            render.update();
+            generateGLArrays(action);
+        }
+        else if (render.needUpdate(action)) {
             generateGLArrays(action);
         }
 
