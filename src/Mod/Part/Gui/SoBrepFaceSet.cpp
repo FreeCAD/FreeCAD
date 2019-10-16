@@ -1452,7 +1452,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     }
 
     if ((buf.vertex_array_size != (sizeof(float) * num_indices * 10)) ||
-        (buf.index_array_size != (sizeof(GLuint) * num_indices * 3))) {
+        (buf.index_array_size != (sizeof(GLuint) * num_indices))) {
         if ((buf.vertex_array_size != 0 ) && ( buf.index_array_size != 0))
             buf.updateVbo = true;
     }
@@ -1478,9 +1478,9 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
         glDeleteBuffersARB(2, buf.myvbo);
         glGenBuffersARB(2, buf.myvbo);
         vertex_array = ( float * ) malloc ( sizeof(float) * num_indices * 10 );
-        index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices * 3 );
+        index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices );
         buf.vertex_array_size = sizeof(float) * num_indices * 10;
-        buf.index_array_size = sizeof(GLuint) * num_indices * 3;
+        buf.index_array_size = sizeof(GLuint) * num_indices;
         this->vbomap[contextId] = buf;
         this->indice_array = 0;
 
