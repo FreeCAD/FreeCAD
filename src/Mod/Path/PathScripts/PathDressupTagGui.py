@@ -191,6 +191,18 @@ class PathDressupTagTaskPanel:
         self.Disabled = self.obj.Disabled
         self.updateTagsView()
 
+    def copyNewTags(self):
+        sel = self.form.cbSource.currentText()
+        tags = [o for o in FreeCAD.ActiveDocument.Objects if sel == o.Label]
+        if 1 == len(tags):
+            if not self.obj.Proxy.copyTags(self.obj, tags[0]):
+                self.obj.Proxy.execute(self.obj)
+            self.Positions = self.obj.Positions
+            self.Disabled = self.obj.Disabled
+            self.updateTagsView()
+        else:
+            PathLog.error(translate('Path_DressupTag', 'Cannot copy tags - internal error')+'\n')
+
     def updateModel(self):
         self.getFields()
         self.updateTagsView()
@@ -278,6 +290,15 @@ class PathDressupTagTaskPanel:
             self.form.pbGenerate.clicked.connect(self.generateNewTags)
         else:
             self.form.cbTagGeneration.setEnabled(False)
+
+        enableCopy = False
+        for tags in sorted([o.Label for o in FreeCAD.ActiveDocument.Objects if 'DressupTag' in o.Name]):
+            if tags != self.obj.Label:
+                enableCopy = True
+                self.form.cbSource.addItem(tags)
+        if enableCopy:
+            self.form.gbCopy.setEnabled(True)
+            self.form.pbCopy.clicked.connect(self.copyNewTags)
 
         self.form.lwTags.itemChanged.connect(self.whenTagsViewChanged)
         self.form.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
