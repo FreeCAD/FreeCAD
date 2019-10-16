@@ -24,6 +24,7 @@
 #ifndef GUI_GLBUFFER_H
 #define GUI_GLBUFFER_H
 
+#include <map>
 #include <Inventor/C/glue/gl.h>
 
 namespace Gui {
@@ -38,7 +39,7 @@ public:
 
     void setCurrentContext(uint32_t ctx);
     bool create();
-    bool isCreated() const;
+    bool isCreated(uint32_t ctx) const;
 
     void destroy();
     void allocate(const void *data, int count);
@@ -53,9 +54,13 @@ private:
     static void buffer_delete(void * closure, uint32_t contextid);
 
     GLenum target;
-    GLuint bufferId;
-    uint32_t context;
+
+    // map context to buffer id
+    std::map<uint32_t, GLuint> bufs;
+
     uint32_t currentContext;
+    GLuint *currentBuf;
+
     const cc_glglue* glue;
 };
 
