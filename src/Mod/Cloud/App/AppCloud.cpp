@@ -255,6 +255,7 @@ struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_t
         char date_formatted[256];
 	char StringToSign[1024];
 	unsigned char *digest;
+	unsigned int HMACLength;
         // Amazon S3 and Swift require the timezone to be define to GMT.
         // As to simplify the conversion this is performed through the TZ
         // environment variable and a call to localtime as to convert output of gettimeofday
@@ -292,8 +293,8 @@ struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_t
 		sprintf(StringToSign,"%s\n\n%s\n%s\n%s", operation, data_type, date_formatted, target);
 	// We have to use HMAC encoding and SHA1
         digest=HMAC(EVP_sha1(),Secret,strlen(Secret),
-                (const unsigned char *)&StringToSign,strlen(StringToSign),NULL,NULL);
-	returnData->digest = Base::base64_encode(digest,strlen((const char *)digest));
+                (const unsigned char *)&StringToSign,strlen(StringToSign),NULL,&HMACLength);
+	returnData->digest = Base::base64_encode(digest,HMACLength);
 	strcpy(returnData->dateFormatted,date_formatted);
 	return returnData;
 	
