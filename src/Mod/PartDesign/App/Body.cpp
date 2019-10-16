@@ -60,6 +60,7 @@ Body::Body() {
     ADD_PROPERTY_TYPE(SingleSolid,(true),"Base",(App::PropertyType)(App::Prop_None),
             "Enforce single solid on each feature");
     _GroupTouched.setStatus(App::Property::Output,true);
+    BaseFeature.setScope(App::LinkScope::Global);
 }
 
 /*
@@ -144,6 +145,9 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
     if (rvIt != features.rend()) { // the solid found in model list
         return *rvIt;
     }
+
+    if(BaseFeature.getValue() && BaseFeature.getValue()!=start)
+        return BaseFeature.getValue();
     
     return nullptr;
 }
@@ -278,8 +282,11 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
         for(auto obj : Group.getValues()) {
             if(obj->Visibility.getValue() 
                     && obj!=feature 
-                    && obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+                    && (obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())
+                            || obj == BaseFeature.getValue()))
+            {
                 obj->Visibility.setValue(false);
+            }
         }
     }
     
@@ -465,9 +472,10 @@ void Body::onChanged (const App::Property* prop) {
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
 
             if (BaseFeature.getValue()) {
-
                 //setup the FeatureBase if needed
-                if (!first || !first->isDerivedFrom(FeatureBase::getClassTypeId())) {
+                if (!first || (!first->isDerivedFrom(FeatureBase::getClassTypeId())
+                                && !first->isDerivedFrom(SubShapeBinder::getClassTypeId())))
+                {
                     bf = static_cast<FeatureBase*>(getDocument()->addObject("PartDesign::FeatureBase", "BaseFeature"));
                     insertObject(bf, first, false);
 
@@ -475,7 +483,7 @@ void Body::onChanged (const App::Property* prop) {
                         Tip.setValue(bf);
                 }
                 else {
-                    bf = static_cast<FeatureBase*>(first);
+                    bf = Base::freecad_dynamic_cast<FeatureBase>(first);
                 }
             }
 
@@ -486,8 +494,8 @@ void Body::onChanged (const App::Property* prop) {
 
             //if the FeatureBase was deleted we set the BaseFeature link to nullptr
             if (BaseFeature.getValue() &&
-               (Group.getValues().empty() || !Group.getValues().front()->isDerivedFrom(FeatureBase::getClassTypeId()))) {
-                    BaseFeature.setValue(nullptr);
+               (Group.getValues().empty() || Group.getValues().front()!=BaseFeature.getValue())) {
+                BaseFeature.setValue(nullptr);
             }
         }
         else if( prop == &SingleSolid ) {

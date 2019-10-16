@@ -104,111 +104,115 @@ void CmdPartDesignBody::activated(int iMsg)
     if (PartDesignGui::assureLegacyWorkflow(getDocument()))
         return;
 
-    App::Part *actPart = PartDesignGui::getActivePart ();
-    App::Part* partOfBaseFeature = nullptr;
+    auto activeDoc = App::GetApplication().getActiveDocument();
+    if(!activeDoc)
+        return;
 
-    std::vector<App::DocumentObject*> features =
-        getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    App::Part *actPart = PartDesignGui::getActivePart ();
+
     App::DocumentObject* baseFeature = nullptr;
-    bool viewAll = features.empty();
+    bool viewAll;
     bool addtogroup = false;
 
+    openCommand("Add a Body");
 
-    if (!features.empty()) {
-        if (features.size() == 1) {
-            baseFeature = features[0];
-            if ( baseFeature->isDerivedFrom ( PartDesign::Feature::getClassTypeId() ) &&
-                    PartDesign::Body::findBodyOf ( baseFeature ) ) {
-                // Prevent creating bodies based on features already belonging to other bodies
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                        QObject::tr("Body can't be based on a PartDesign feature."));
-                baseFeature = nullptr;
+    std::string support;
+    std::string supportNames;
+    const auto &sels = Gui::Selection().getSelection("*",0);
+    if(sels.empty()) {
+        viewAll = true;
+    } else {
+        int count = 0;
+        int numSolids = 0;
+        int numShells = 0;
+        std::ostringstream ss;
+        std::ostringstream ss2;
+        ss << '[';
+        for(auto &sel : sels) {
+            App::DocumentObject *owner = 0;
+            auto shape = Part::Feature::getTopoShape(sel.pObject, sel.SubName, true,0,&owner,false);
+            if(!owner || shape.isNull())
+                continue;
+            auto part = App::Part::getPartOfObject(owner);
+            if(!count // first object
+                    && owner->getDocument() == activeDoc // not an external object
+                    && owner == sel.pObject // not a sub-object
+                    && owner == owner->getLinkedObject(true) // not a link
+                    && !owner->isDerivedFrom(PartDesign::Body::getClassTypeId()) // not a body
+                    && !PartDesign::Body::findBodyOf(owner) // not in a body
+                    && (!part || part == actPart)) // not in a App::Part, or inside the active part
+            {
+                // Then we may use it directly as base feature
+                baseFeature = owner;
             }
-            else if (PartDesign::Body::findBodyOf ( baseFeature )){
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                        QObject::tr("%1 already belongs to a body, can't use it as base feature for another body.")
-                                     .arg(QString::fromUtf8(baseFeature->Label.getValue())));
-                baseFeature = nullptr;
-            }
-            else if ( baseFeature->isDerivedFrom ( Part::BodyBase::getClassTypeId() ) )  {
-                // Prevent creating bodies based on bodies
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                        QObject::tr("Body can't be based on another body."));
-                baseFeature = nullptr;
-            }
-            else {
-                partOfBaseFeature = App::Part::getPartOfObject(baseFeature);
-                if (partOfBaseFeature != 0  &&  partOfBaseFeature != actPart){
-                    //prevent cross-part mess
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                            QObject::tr("Base feature (%1) belongs to other part.")
-                                         .arg(QString::fromUtf8(baseFeature->Label.getValue())));
-                    baseFeature = nullptr;
-                }
-                else if (baseFeature->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
-                    // Add sketcher to the body's group property
-                    addtogroup = true;
-                }
-                // if a standard Part feature (not a PartDesign feature) is selected then check
-                // the number of solids/shells
-                else if (!baseFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
-                    const TopoDS_Shape& shape = static_cast<Part::Feature*>(baseFeature)->Shape.getValue();
-                    if (!shape.IsNull()) {
-                        int numSolids = 0;
-                        int numShells = 0;
-                        for (TopExp_Explorer xp(shape, TopAbs_SOLID); xp.More(); xp.Next()) {
-                            numSolids++;
-                        }
-                        for (TopExp_Explorer xp(shape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
-                            numShells++;
-                        }
+            ++count;
+            int cnt = shape.countSubShapes(TopAbs_SOLID);
+            if(cnt)
+                numSolids += cnt;
+            else
+                numShells += shape.countSubShapes(TopAbs_SHELL);
+            ss << '(' << getObjectCmd(sel.pObject) << ",'" << sel.SubName << "'), ";
 
-                        QString warning;
-                        if (numSolids > 1 && numShells == 0) {
-                            warning = QObject::tr("The selected shape consists of multiple solids.\n"
-                                                  "This may lead to unexpected results.");
-                        }
-                        else if (numShells > 1 && numSolids == 0) {
-                            warning = QObject::tr("The selected shape consists of multiple shells.\n"
-                                                  "This may lead to unexpected results.");
-                        }
-                        else if (numShells == 1 && numSolids == 0) {
-                            warning = QObject::tr("The selected shape consists of only a shell.\n"
-                                                  "This may lead to unexpected results.");
-                        }
-                        else if (numSolids + numShells > 1) {
-                            warning = QObject::tr("The selected shape consists of multiple solids or shells.\n"
-                                                  "This may lead to unexpected results.");
-                        }
-
-                        if (!warning.isEmpty()) {
-                            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Base feature"), warning);
-                        }
-                    }
-                }
-            }
-
-        } else {
+            if(sel.pObject->getDocument() != activeDoc)
+                ss2 << '\n' << sel.pObject->getFullName();
+            else
+                ss2 << '\n' << sel.pObject->getNameInDocument();
+            if(sel.SubName && sel.SubName[0])
+                ss2 << '.' << sel.SubName;
+            if(owner->Label.getStrValue() != sel.pObject->getNameInDocument())
+                ss2 << " (" << owner->Label.getValue() << ")";
+        }
+        if(!count) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                QObject::tr("Body may be based on no more than one feature."));
+                QObject::tr("No shape found in the selection."));
             return;
         }
+        ss << "]";
+
+        QString warning;
+        if (numSolids > 1 && numShells == 0) {
+            warning = QObject::tr("The selected shape consists of multiple solids.\n"
+                    "This may lead to unexpected results.");
+        }
+        else if (numShells > 1 && numSolids == 0) {
+            warning = QObject::tr("The selected shape consists of multiple shells.\n"
+                    "This may lead to unexpected results.");
+        }
+        else if (numShells == 1 && numSolids == 0) {
+            warning = QObject::tr("The selected shape consists of only a shell.\n"
+                    "This may lead to unexpected results.");
+        }
+        else if (numSolids + numShells > 1) {
+            warning = QObject::tr("The selected shape consists of multiple solids or shells.\n"
+                    "This may lead to unexpected results.");
+        }
+        if (!warning.isEmpty()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Base feature"), warning);
+        }
+
+        if(!baseFeature || count>1) {
+            support = ss.str();
+            baseFeature = 0;
+        }
+        supportNames = ss2.str();
     }
 
-
-    openCommand("Add a Body");
+    if(supportNames.size()) {
+        auto res = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Base feature"),
+                QObject::tr("You are about to use the following feature as base for the new body. "
+                            "Do you want to continue?\n")
+                    + QString::fromUtf8(supportNames.c_str()),
+                QMessageBox::Yes,QMessageBox::No);
+        if(res != QMessageBox::Yes)
+            return;
+    }
 
     std::string bodyName = getUniqueObjectName("Body");
 
     // add the Body feature itself, and make it active
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", bodyName.c_str());
     if (baseFeature) {
-        if (partOfBaseFeature){
-            //withdraw base feature from Part, otherwise visibility mandess results
-            doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                    partOfBaseFeature->getNameInDocument(), baseFeature->getNameInDocument());
-        }
-        if (addtogroup) {
+        if (baseFeature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             doCommand(Doc,"App.activeDocument().%s.Group = [App.activeDocument().%s]",
                     bodyName.c_str(), baseFeature->getNameInDocument());
         }
@@ -295,6 +299,20 @@ void CmdPartDesignBody::activated(int iMsg)
                         Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, quitter));
                     }
                 }
+            }
+        }
+    } else if (support.size()) {
+        std::string name = getUniqueObjectName("BaseFeature");
+        doCommand(Doc,"App.ActiveDocument.addObject('PartDesign::SubShapeBinder','%s')", name.c_str());
+
+        baseFeature = App::GetApplication().getActiveDocument()->getObject(name.c_str());
+        if(baseFeature) {
+            auto body = activeDoc->getObject(bodyName.c_str());
+            if(body) {
+                FCMD_OBJ_CMD(body,"addObject(" << getObjectCmd(baseFeature) << ")");
+                FCMD_OBJ_CMD(body,"BaseFeature = " << getObjectCmd(baseFeature));
+                FCMD_OBJ_CMD(baseFeature,"Fuse = True");
+                FCMD_OBJ_CMD(baseFeature,"Support = " << support);
             }
         }
     }

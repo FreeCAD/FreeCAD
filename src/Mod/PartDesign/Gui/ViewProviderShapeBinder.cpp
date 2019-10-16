@@ -33,6 +33,7 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>

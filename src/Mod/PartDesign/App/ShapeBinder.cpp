@@ -41,6 +41,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include "ShapeBinder.h"
@@ -286,7 +287,6 @@ SubShapeBinder::SubShapeBinder()
 {
     ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_Hidden|App::Prop_None),
             "Support of the geometry");
-    Support.setStatus(App::Property::Immutable,true);
     ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fused linked solid shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face for linked wires");
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
@@ -704,8 +704,15 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
             connRecomputedObj = contextDoc->signalRecomputedObject.connect(
                     boost::bind(&SubShapeBinder::slotRecomputedObject, this, _1));
         }
-    }else if(!isRestoring()) {
+    }else if(!isRestoring() && !getDocument()->isPerformingTransaction()) {
         if(prop == &Support) {
+            if(!Support.testStatus(App::Property::User3)) {
+                std::map<App::DocumentObject *, std::vector<std::string> > values;
+                for(auto &link : Support.getSubListValues()) 
+                    values.emplace(link.getValue(),link.getSubValues());
+                setLinks(std::move(values),true);
+                return;
+            }
             clearCopiedObjects();
             setupCopyOnChange();
             if(Support.getSubListValues().size()) {
@@ -716,15 +723,22 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
         }else if(prop == &BindCopyOnChange) {
             setupCopyOnChange();
         }else if(prop == &BindMode) {
-           if(BindMode.getValue() == 2)
-               Support.setValue(0);
-           else if(BindMode.getValue() == 0)
+           if(BindMode.getValue() == 0)
                update();
            checkPropertyStatus();
         }else if(prop == &PartialLoad) {
            checkPropertyStatus();
-        }else if(prop && !prop->testStatus(App::Property::User3))
+        }else if(prop && !prop->testStatus(App::Property::User3)) {
             checkCopyOnChange(*prop);
+        }
+
+        if(prop == &BindMode || prop == &Support) {
+            if(BindMode.getValue()==2 && Support.getSubListValues().size()) {
+                Base::ObjectStatusLocker<App::Property::Status, App::Property>
+                    guard(App::Property::User3, &Support);
+                Support.setValue(0);
+            }
+        }
     }
     inherited::onChanged(prop);
 }
@@ -756,10 +770,13 @@ void SubShapeBinder::checkPropertyStatus() {
 
 void SubShapeBinder::setLinks(std::map<App::DocumentObject *, std::vector<std::string> >&&values, bool reset)
 {
+    Base::ObjectStatusLocker<App::Property::Status, App::Property>
+        guard(App::Property::User3, &Support);
+
     if(values.empty()) {
         if(reset) {
-            Support.setValue(0);
             Shape.setValue(Part::TopoShape());
+            Support.setValue(0);
         }
         return;
     }

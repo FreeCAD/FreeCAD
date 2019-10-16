@@ -43,7 +43,7 @@
 #include <App/Part.h>
 #include <App/AutoTransaction.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
@@ -144,7 +144,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
         //test if current selection fits a mode.
         if (support.getSize() > 0) {
             Part::AttachExtension* pcDatum = Feat->getExtensionByType<Part::AttachExtension>();
-            pcDatum->attacher().references.Paste(support);
+            pcDatum->attacher().setReferences(support);
             SuggestResult sugr;
             pcDatum->attacher().suggestMapModes(sugr);
             if (sugr.message == Attacher::SuggestResult::srOK) {
