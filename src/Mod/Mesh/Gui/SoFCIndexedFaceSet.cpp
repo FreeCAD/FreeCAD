@@ -164,8 +164,9 @@ void MeshRenderer::Private::renderGLArray(SoGLRenderAction *action, GLenum mode)
     vertices.setCurrentContext(action->getCacheContext());
     indices.setCurrentContext(action->getCacheContext());
 
-    glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
 
     vertices.bind();
     indices.bind();
@@ -181,8 +182,9 @@ void MeshRenderer::Private::renderGLArray(SoGLRenderAction *action, GLenum mode)
     vertices.release();
     indices.release();
 
-    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
