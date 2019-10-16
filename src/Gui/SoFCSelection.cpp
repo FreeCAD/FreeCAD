@@ -991,7 +991,9 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
         SoLazyElement::setEmissive(state, &ctx->highlightColor);
     SoOverrideElement::setEmissiveColorOverride(state, this, true);
 
-    if(mystyle == SoFCSelection::EMISSIVE_DIFFUSE) {
+    if(SoLazyElement::getLightModel(state)==SoLazyElement::BASE_COLOR
+            || mystyle == SoFCSelection::EMISSIVE_DIFFUSE) 
+    {
         if(!preselected)
             SoLazyElement::setDiffuse(state, this,1, &ctx->selectionColor,&colorpacker);
         else
