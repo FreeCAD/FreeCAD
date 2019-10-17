@@ -123,7 +123,9 @@ public:
 
     std::vector<DocumentObject*> getAllChildren() const;
     void getAllChildren(std::vector<DocumentObject*> &, std::set<DocumentObject*> &) const;
-    
+
+    void checkParentGroup();
+
     /// Properties
     PropertyLinkList Group;
     PropertyBool _GroupTouched;
@@ -151,9 +153,11 @@ private:
     bool recursiveHasObject(const DocumentObject* obj, const GroupExtension* group, std::vector<const GroupExtension*> history) const;
 
     // for tracking children visibility
-    void slotChildChanged(const App::DocumentObject&, const App::Property&);
-    std::unordered_map<const App::DocumentObject*, boost::signals2::scoped_connection> _Conns;
+    void slotChildChanged(const App::Property&);
+    std::vector<boost::signals2::scoped_connection> _Conns;
+
     bool _togglingVisibility = false;
+    bool _checkParentGroup = false;
 };
 
 

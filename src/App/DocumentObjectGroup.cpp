@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #endif
 
+#include "Application.h"
 #include "DocumentObjectGroup.h"
 #include "DocumentObjectGroupPy.h"
 #include "Document.h"
@@ -59,6 +60,13 @@ PyObject *DocumentObjectGroup::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
+void DocumentObjectGroup::setupObject() {
+    auto hGrp = GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preference/Group");
+    if(hGrp->GetBool("KeepHiddenChildren",true)) {
+        addDynamicProperty("App::PropertyMap", 
+                "HiddenChildren", "Group",0,Prop_Output,true,true);
+    }
+}
 
 // Python feature ---------------------------------------------------------
 

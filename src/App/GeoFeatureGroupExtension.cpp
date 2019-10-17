@@ -239,8 +239,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
 
                 //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
                 //would return anyone of it and hence it is possible that we miss an error. We need a custom check
-                auto list = obj->getInList();
-                for (auto in : list) {
+                for (auto in : obj->getInList()) {
                     if(in == owner)
                         continue;
                     auto parent = in->getExtensionByType<GeoFeatureGroupExtension>(true);
@@ -341,28 +340,6 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLin
     //it is important to remove all nullptrs
     // result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
-}
-
-void GeoFeatureGroupExtension::filterLinksByScope(
-        const App::DocumentObject *obj, std::vector<App::DocumentObject *> &children, LinkScope scope)
-{
-    if(!obj || !obj->getNameInDocument())
-        return;
-
-    std::vector<App::Property*> list;
-    obj->getPropertyList(list);
-    std::set<App::DocumentObject *> links;
-    for(auto prop : list) {
-        auto link = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
-        if(link && link->getScope()==scope)
-            link->getLinkedObjects(std::inserter(links,links.end()));
-    }
-    for(auto it=children.begin();it!=children.end();) {
-        if(!links.count(*it))
-            it = children.erase(it);
-        else
-            ++it;
-    }
 }
 
 void GeoFeatureGroupExtension::getCSOutList(const App::DocumentObject* obj,

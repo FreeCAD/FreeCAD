@@ -119,15 +119,6 @@ public:
     //Returns all objects that are wrongly linked from this object, meaning which are out of scope of the 
     //links of obj
     static void getInvalidLinkObjects(const App::DocumentObject* obj, std::vector<App::DocumentObject*>& vec);
-
-    /** Filter children by link scope
-     * @param obj: the object
-     * @param children: input as the children of the object, output by filtering out any child that is not
-     *                  linked by the given scoped
-     * @param scope: filtering link scope
-     */
-    static void filterLinksByScope(const App::DocumentObject *obj, std::vector<App::DocumentObject *> &children,
-            LinkScope scope = LinkScope::Local);
     
 protected:
     virtual const PropertyLinkList& getExportGroupProperty() const override {
