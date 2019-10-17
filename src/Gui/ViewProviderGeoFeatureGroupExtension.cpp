@@ -38,10 +38,14 @@
 
 using namespace Gui;
 
+struct ViewProviderGeoFeatureGroupExtension::Private {
+    std::vector<boost::signals2::scoped_connection> conns;
+};
+
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGeoFeatureGroupExtension, Gui::ViewProviderGroupExtension)
 
 ViewProviderGeoFeatureGroupExtension::ViewProviderGeoFeatureGroupExtension()
-    :linkView(0)
+    :impl(new Private), linkView(0)
 {
     initExtensionType(ViewProviderGeoFeatureGroupExtension::getExtensionClassTypeId());
 
@@ -58,6 +62,8 @@ ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
 {
     if(linkView)
         linkView->setInvalid();
+
+    impl.reset();
 
     pcGroupChildren->unref();
     pcGroupChildren = nullptr;
@@ -95,17 +101,6 @@ void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* 
 {
     ViewProviderGroupExtension::extensionAttach(pcObject);
     getExtendedViewProvider()->addDisplayMaskMode(pcGroupChildren, "Group");
-}
-
-void ViewProviderGeoFeatureGroupExtension::slotPlainGroupChanged(
-        const App::DocumentObject &obj, const App::Property &prop) 
-{
-    auto group = obj.getExtensionByType<App::GroupExtension>(true,false);
-    if(group && &prop == &group->Group) {
-        auto owner = getExtendedViewProvider();
-        if(owner && linkView)
-            linkView->setChildren(owner->claimChildren3D());
-    }
 }
 
 bool ViewProviderGeoFeatureGroupExtension::extensionHandleChildren3D(

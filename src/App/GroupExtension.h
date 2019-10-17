@@ -131,7 +131,9 @@ public:
 
     std::vector<DocumentObject*> getAllChildren() const;
     void getAllChildren(std::vector<DocumentObject*> &, std::set<DocumentObject*> &) const;
-    
+
+    void checkParentGroup();
+
     /// Properties
     PropertyLinkList Group;
     PropertyBool _GroupTouched;

@@ -79,10 +79,8 @@ protected:
     SoGroup *pcGroupChildren;
 
 private:
-    // for tracking plain group member change
-    void slotPlainGroupChanged(const App::DocumentObject&, const App::Property&);
-
-    std::vector<boost::signals2::scoped_connection> plainGroupConns;
+    struct Private;
+    std::unique_ptr<Private> impl;
     LinkView *linkView;
 };
 
