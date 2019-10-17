@@ -3770,6 +3770,12 @@ public:
             double endAngle = atanh( (((endPoint.y-centerPoint.y)*cos(phi)-(endPoint.x-centerPoint.x)*sin(phi))*a) /
                                          (((endPoint.x-centerPoint.x)*cos(phi)+(endPoint.y-centerPoint.y)*sin(phi))*b)  );
 
+            if (boost::math::isnan(startAngle) || boost::math::isnan(endAngle)) {
+                sketchgui->purgeHandler();
+                Base::Console().Error("Cannot create arc of hyperbola from invalid angles, try again!\n");
+                return false;
+            }
+
 
             bool isOriginalArcCCW=true;
 
