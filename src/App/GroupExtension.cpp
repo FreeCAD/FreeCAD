@@ -363,37 +363,26 @@ void GroupExtension::extensionOnChanged(const Property* p) {
     if(p == &Group && !Group.testStatus(Property::User3)) {
 
         if(!owner->isRestoring() && !owner->getDocument()->isPerformingTransaction()) {
-            bool error = false;
-            auto children = Group.getValues();
+
             std::unordered_set<App::DocumentObject*> objSet;
-            for(auto it=children.begin(),itNext=it;it!=children.end();it=itNext) {
-                itNext++;
-                auto obj = *it;
-                if(!obj || !obj->getNameInDocument() || !objSet.insert(obj).second) {
-                    error = true;
-                    itNext = children.erase(it);
-                    continue;
-                }
+
+            int error = Group.removeIf( [&](App::DocumentObject *obj) {
+                if(!obj || !obj->getNameInDocument() || !objSet.insert(obj).second)
+                    return true;
 
                 //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
                 //would return anyone of it and hence it is possible that we miss an error. We need a custom check
-                auto list = obj->getInList();
-                for (auto in : list) {
+                for(auto in : obj->getInList()) {
                     if(in!=owner && in->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false)) {
-                        error = true;
-                        itNext = children.erase(it);
                         FC_WARN("Remove " << obj->getFullName() <<  " from " 
                                 << owner->getFullName() << " because of multiple owner groups");
-                        break;
+                        return true;
                     }
                 }
-            }
+                return false;
+            });
 
-            //if an error was found we need to correct the values and inform the user
             if(error) {
-                Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
-                Group.setValues(children);
-
                 // Since we are auto correcting, just issue a warning
                 //
                 // throw Base::RuntimeError("Object can only be in a single Group");
@@ -419,18 +408,45 @@ void GroupExtension::extensionOnChanged(const Property* p) {
             bool touched = false;
             bool vis = owner->Visibility.getValue();
             Base::FlagToggler<> guard(_togglingVisibility);
+
+            auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(owner->getPropertyByName("HiddenChildren"));
+            if(hiddenChildren && hiddenChildren->getContainer()!=owner)
+                hiddenChildren = 0;
+            std::map<std::string,std::string> hc;
+
             for(auto obj : Group.getValues()) {
-                if(obj && obj->getNameInDocument() && obj->Visibility.getValue()!=vis) {
-                    touched = true;
-                    obj->Visibility.setValue(vis);
-                }
+                if(!obj || !obj->getNameInDocument())
+                    continue;
+                if(obj->Visibility.getValue()!=vis) {
+                    if(vis && hiddenChildren && hiddenChildren->getValue(obj->getNameInDocument()))
+                        continue;
+                    if(!_checkParentGroup) {
+                        touched = true;
+                        obj->Visibility.setValue(vis);
+                    }
+                } else if (!vis && hiddenChildren)
+                    hc.emplace(obj->getNameInDocument(),"");
             }
+
+            if(!vis && hiddenChildren) {
+                // If all children are invisible, do not keep the record, so
+                // that next time this group is shown, all its children will be
+                // shown.
+                if(hc.size() == Group.getValues().size())
+                    hc.clear();
+                hiddenChildren->setValues(std::move(hc));
+            }
+
             if(touched) {
-                Base::ObjectStatusLocker<Property::Status, Property> guard(Property::Output, &_GroupTouched);
-                // Temporary set the Property::Output on _GroupTouched, so that
-                // it does not touch the owner object, but still signal
-                // Part::Feature shape cache update.
-                _GroupTouched.touch();
+                if(_GroupTouched.testStatus(Property::Output))
+                    _GroupTouched.touch();
+                else {
+                    Base::ObjectStatusLocker<Property::Status, Property> guard(Property::Output, &_GroupTouched);
+                    // Temporary set the Property::Output on _GroupTouched, so that
+                    // it does not touch the owner object, but still signal
+                    // Part::Feature shape cache update.
+                    _GroupTouched.touch();
+                }
             }
         }
     }
@@ -438,9 +454,41 @@ void GroupExtension::extensionOnChanged(const Property* p) {
     App::Extension::extensionOnChanged(p);
 }
 
-void GroupExtension::slotChildChanged(const DocumentObject &obj, const Property &prop) {
-    if(&prop == &obj.Visibility && !_togglingVisibility)
-        _GroupTouched.touch();
+void GroupExtension::slotChildChanged(const Property &prop) {
+    auto obj = static_cast<DocumentObject*>(prop.getContainer());
+    if(obj && !_togglingVisibility 
+           && !obj->isRestoring() 
+           && !obj->getDocument()->isPerformingTransaction())
+    {
+        if(ExportMode.getValue() == EXPORT_BY_VISIBILITY
+                || _GroupTouched.testStatus(Property::Output))
+        {
+            _GroupTouched.touch();
+        } else {
+            Base::ObjectStatusLocker<Property::Status, Property> guard(Property::Output, &_GroupTouched);
+            // Temporary set the Property::Output on _GroupTouched, so that it
+            // does not touch the owner object, but can still inform of
+            // children visibility changes
+            _GroupTouched.touch();
+        }
+
+        auto owner = getExtendedObject();
+        if(!owner->Visibility.getValue()) {
+            auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(owner->getPropertyByName("HiddenChildren"));
+            if(hiddenChildren && hiddenChildren->getContainer()==owner) {
+                std::map<std::string,std::string> hc;
+                for(auto obj : Group.getValues()) {
+                    if(!obj || !obj->getNameInDocument())
+                        continue;
+                    if(!obj->Visibility.getValue()) 
+                        hc.emplace(obj->getNameInDocument(),"");
+                }
+                if(hc.size() == Group.getValues().size())
+                    hc.clear();
+                hiddenChildren->setValues(std::move(hc));
+            }
+        }
+    }
 }
 
 bool GroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,

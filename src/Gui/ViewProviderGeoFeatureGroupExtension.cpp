@@ -92,17 +92,6 @@ void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* 
     getExtendedViewProvider()->addDisplayMaskMode(pcGroupChildren, "Group");
 }
 
-void ViewProviderGeoFeatureGroupExtension::slotPlainGroupChanged(
-        const App::DocumentObject &obj, const App::Property &prop) 
-{
-    auto group = obj.getExtensionByType<App::GroupExtension>(true,false);
-    if(group && &prop == &group->Group) {
-        auto owner = getExtendedViewProvider();
-        if(owner && linkView)
-            linkView->setChildren(owner->claimChildren3D());
-    }
-}
-
 bool ViewProviderGeoFeatureGroupExtension::extensionHandleChildren3D(
         const std::vector<App::DocumentObject*> &children) 
 {
@@ -155,6 +144,25 @@ void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Proper
 
             buildExport();
 
+            plainGroupConns.clear();
+            if(linkView) {
+                for(auto obj : group->Group.getValues()) {
+                    // check for plain group
+                    if(!obj || !obj->getNameInDocument())
+                        continue;
+                    auto ext = obj->getExtensionByType<App::GroupExtension>(true,false);
+                    if(!ext)
+                        continue;
+                    // To inform GroupExtension to disable toggling children visibility
+                    ext->checkParentGroup();
+                    plainGroupConns.push_back(
+                            ext->Group.signalChanged.connect([=](const App::Property &){
+                                auto owner = this->getExtendedViewProvider();
+                                if(owner && this->linkView)
+                                    this->linkView->setChildren(owner->claimChildren3D());
+                            }));
+                }
+            }
         } else if(prop == &group->placement()) 
             getExtendedViewProvider()->setTransformation ( group->placement().getValue().toMatrix() );
     }

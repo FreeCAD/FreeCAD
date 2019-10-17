@@ -147,6 +147,7 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
         }
         break;
     case PropElementList:
+        getElementListProperty()->setScope(LinkScope::Global);
         getElementListProperty()->setStatus(Property::Hidden,true);
         // fall through
     case PropLinkedObject:
@@ -729,65 +730,39 @@ void LinkBaseExtension::parseSubName() const {
     }
 }
 
-void LinkBaseExtension::slotChangedPlainGroup(const App::DocumentObject &obj, const App::Property &prop) {
-    auto group = obj.getExtensionByType<GroupExtension>(true,false);
-    if(group && &prop == &group->Group)
-        updateGroup();
-}
-
 void LinkBaseExtension::updateGroup() {
     std::vector<GroupExtension*> groups;
-    std::unordered_set<const App::DocumentObject*> groupSet;
     auto group = linkedPlainGroup();
     if(group) {
         groups.push_back(group);
-        groupSet.insert(group->getExtendedObject());
     }else{
         for(auto o : getElementListProperty()->getValues()) {
             if(!o || !o->getNameInDocument())
                 continue;
             auto ext = o->getExtensionByType<GroupExtension>(true,false);
-            if(ext) {
+            if(ext) 
                 groups.push_back(ext);
-                groupSet.insert(o);
-            }
         }
     }
     std::vector<App::DocumentObject*> children;
+    plainGroupConns.clear();
     if(groups.size()) {
         children = getElementListValue();
         std::set<DocumentObject*> childSet(children.begin(),children.end());
         for(auto ext : groups) {
-            auto group = ext->getExtendedObject();
-            auto &conn = plainGroupConns[group];
-            if(!conn.connected()) {
-                FC_LOG("new group connection " << getExtendedObject()->getFullName() 
-                        << " -> " << group->getFullName());
-                conn = group->signalChanged.connect(
-                        boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,_1,_2));
-            }
+            plainGroupConns.push_back(ext->Group.signalChanged.connect(
+                        boost::bind(&LinkBaseExtension::updateGroup,this)));
             std::size_t count = children.size();
             ext->getAllChildren(children,childSet);
             for(;count<children.size();++count) {
                 auto child = children[count];
-                if(!child->getExtensionByType<GroupExtension>(true,false))
+                auto childGroup = child->getExtensionByType<GroupExtension>(true,false);
+                if(!childGroup)
                     continue;
-                groupSet.insert(child);
-                auto &conn = plainGroupConns[child];
-                if(!conn.connected()) {
-                    FC_LOG("new group connection " << getExtendedObject()->getFullName() 
-                            << " -> " << child->getFullName());
-                    conn = child->signalChanged.connect(
-                            boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,_1,_2));
-                }
+                plainGroupConns.push_back(childGroup->Group.signalChanged.connect(
+                            boost::bind(&LinkBaseExtension::updateGroup,this)));
             }
         }
-    }
-    for(auto it=plainGroupConns.begin();it!=plainGroupConns.end();) {
-        if(!groupSet.count(it->first))
-            it = plainGroupConns.erase(it);
-        else
-            ++it;
     }
     if(children != _ChildCache.getValues())
         _ChildCache.setValue(children);
