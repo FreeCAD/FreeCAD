@@ -20,8 +20,29 @@ SET(Draft_tests
     drafttests/test_airfoildat.py
 )
 
+SET(Draft_objects
+    draftobjects/__init__.py
+)
+
+SET(Draft_view_providers
+    draftviewproviders/__init__.py
+)
+
+SET(Draft_GUI_tools
+    draftguitools/__init__.py
+    draftguitools/gui_base.py
+)
+
+SET(Draft_task_panels
+    drafttaskpanels/__init__.py
+)
+
 SET(Draft_SRCS
     ${Draft_tests}
+    ${Draft_objects}
+    ${Draft_view_providers}
+    ${Draft_GUI_tools}
+    ${Draft_task_panels}
     Init.py
     InitGui.py
     Draft.py
