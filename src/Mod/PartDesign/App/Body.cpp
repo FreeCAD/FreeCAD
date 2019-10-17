@@ -510,6 +510,16 @@ std::vector<std::string> Body::getSubObjects(int reason) const {
 App::DocumentObject *Body::getSubObject(const char *subname, 
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
+#if 1
+    return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
+#else
+    // The following code returns Body shape only if there is at least one
+    // child visible in the body (when show through, not show tip). The
+    // original intention is to sync visual to shape returned by
+    // Part.getShape() when the body is included in some other group. But this
+    // interfere with direct modeling using body shape. Therefore it is
+    // disabled here.
+
     if(!pyObj || showTip ||
        (subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')))
         return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
@@ -525,6 +535,7 @@ App::DocumentObject *Body::getSubObject(const char *subname,
     if(pmat && transform)
         *pmat *= Placement.getValue().toMatrix();
     return const_cast<Body*>(this);
+#endif
 }
 
 void Body::onDocumentRestored()
