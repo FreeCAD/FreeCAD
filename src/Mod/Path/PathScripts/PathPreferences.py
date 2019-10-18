@@ -41,6 +41,10 @@ PostProcessorBlacklist    = "PostProcessorBlacklist"
 PostProcessorOutputFile   = "PostProcessorOutputFile"
 PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 
+LastPathToolBit           = "LastPathToolBit"
+LastPathToolLibrary       = "LastPathToolLibrary"
+LastPathToolTemplate      = "LastPathToolTemplate"
+
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance       = "GeometryTolerance"
 LibAreaCurveAccuracy    = "LibAreaCurveAccuarcy"
@@ -52,14 +56,16 @@ def preferences():
     return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
 
 def pathScriptsSourcePath():
-    return FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
+    return os.path.join(FreeCAD.getHomePath(), "Mod/Path/PathScripts/")
 
-def pathScriptsPostSourcePath():
-    return pathScriptsSourcePath() + ("/post/")
+def pathDefaultToolsPath(sub=None):
+    if sub:
+        return os.path.join(FreeCAD.getHomePath(), "Mod/Path/Tools/", sub)
+    return os.path.join(FreeCAD.getHomePath(), "Mod/Path/Tools/")
 
 def allAvailablePostProcessors():
     allposts = []
-    for path in searchPaths():
+    for path in searchPathsPost():
         posts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in glob.glob(path + '/*_post.py')]
         allposts.extend(posts)
     allposts.sort()
@@ -108,8 +114,36 @@ def searchPaths():
     if p:
         paths.append(p)
     paths.append(macroFilePath())
-    paths.append(pathScriptsPostSourcePath())
+    return paths
+
+def searchPathsPost():
+    paths = []
+    p = defaultFilePath()
+    if p:
+        paths.append(p)
+    paths.append(macroFilePath())
+    paths.append(os.path.join(pathScriptsSourcePath(), "post/"))
     paths.append(pathScriptsSourcePath())
+    return paths
+
+def searchPathsTool(sub='Bit'):
+    paths = []
+
+    if 'Bit' == sub:
+        paths.append(lastPathToolBit())
+    if 'Library' == sub:
+        paths.append(lastPathToolLibrary())
+    if 'Template' == sub:
+        paths.append(lastPathToolTemplate())
+
+    def appendPath(p, sub):
+        if p:
+            paths.append(os.path.join(p, 'Tools', sub))
+            paths.append(os.path.join(p, sub))
+            paths.append(p)
+    appendPath(defaultFilePath(), sub)
+    appendPath(macroFilePath(), sub)
+    appendPath(os.path.join(FreeCAD.getHomePath(), "Mod/Path/"), sub)
     return paths
 
 def defaultJobTemplate():
@@ -165,3 +199,19 @@ def setDefaultTaskPanelLayout(style):
 
 def experimentalFeaturesEnabled():
     return preferences().GetBool(EnableExperimentalFeatures, False)
+
+def lastPathToolBit():
+    return preferences().GetString(LastPathToolBit, pathDefaultToolsPath('Bit'))
+def setLastPathToolBit(path):
+    return preferences().SetString(LastPathToolBit, path)
+
+def lastPathToolLibrary():
+    return preferences().GetString(LastPathToolLibrary, pathDefaultToolsPath('Library'))
+def setLastPathToolLibrary(path):
+    return preferences().SetString(LastPathToolLibrary, path)
+
+def lastPathToolTemplate():
+    return preferences().GetString(LastPathToolTemplate, pathDefaultToolsPath('Template'))
+def setLastPathToolTemplate(path):
+    return preferences().SetString(LastPathToolTemplate, path)
+

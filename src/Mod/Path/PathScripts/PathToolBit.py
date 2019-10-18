@@ -26,12 +26,14 @@ import FreeCAD
 import Part
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathUtil as PathUtil
 import PySide
 import Sketcher
 import json
 import math
+import os
 import zipfile
 
 __title__ = "Tool bits."
@@ -53,6 +55,28 @@ ParameterTypeConstraint = {
         'Radius':       'App::PropertyLength'
         }
 
+
+def _findTool(path, typ):
+    if os.path.exists(path):
+        return path
+
+    def searchFor(pname, fname):
+        if fname:
+            for p in PathPreferences.searchPathsTool(typ):
+                f = os.path.join(p, fname)
+                if os.path.exists(f):
+                    return f
+        if pname and '/' != pname:
+            ppname, pfname = os.path.split(pname)
+            ffname = os.path.join(pfname, fname) if fname else pfname
+            return searchFor(ppname, ffname)
+        return None
+
+    return searchFor(path, '')
+
+def findTemplate(path):
+    '''findTemplate(path) ... search for path, full and partially in all known template directories.'''
+    return _findTool(path, 'Template')
 
 def updateConstraint(sketch, name, value):
     for i, constraint in enumerate(sketch.Constraints):
@@ -136,16 +160,18 @@ class ToolBit(object):
             obj.Shape = Part.Shape()
 
     def _loadBitBody(self, obj, path=None):
-        if not path:
-            path = obj.BitTemplate
+        p = path if path else obj.BitTemplate
         docOpened = False
         doc = None
         for d in FreeCAD.listDocuments():
-            if FreeCAD.getDocument(d).FileName == path:
+            if FreeCAD.getDocument(d).FileName == p:
                 doc = FreeCAD.getDocument(d)
                 break
         if doc is None:
-            doc = FreeCAD.open(path)
+            p = findTemplate(p)
+            if not path and p != obj.BitTemplate:
+                obj.BitTemplate = p
+            doc = FreeCAD.open(p)
             docOpened = True
         return (doc, docOpened)
 

@@ -136,6 +136,17 @@ SET(PathScripts_post_SRCS
     PathScripts/post/smoothie_post.py
 )
 
+SET(Tools_Bit_SRCS
+)
+
+SET(Tools_Library_SRCS
+)
+
+SET(Tools_Template_SRCS
+    Tools/Template/drill-straight.fcstd
+    Tools/Template/endmill-straight.fcstd
+    Tools/Template/v-bit.fcstd
+)
 
 SET(PathTests_SRCS
     PathTests/__init__.py
@@ -181,6 +192,9 @@ SET(Path_Images
 SET(all_files
     ${PathScripts_SRCS}
     ${PathScripts_post_SRCS}
+    ${Tools_Bit_SRCS}
+    ${Tools_Library_SRCS}
+    ${Tools_Template_SRCS}
     ${Path_Images}
 )
 
@@ -219,6 +233,27 @@ INSTALL(
         ${PathScripts_post_SRCS}
     DESTINATION
         Mod/Path/PathScripts/post
+)
+
+INSTALL(
+    FILES
+        ${Tools_Bit_SRCS}
+    DESTINATION
+        Mod/Path/Tools/Bit
+)
+
+INSTALL(
+    FILES
+        ${Tools_Library_SRCS}
+    DESTINATION
+        Mod/Path/Tools/Library
+)
+
+INSTALL(
+    FILES
+        ${Tools_Template_SRCS}
+    DESTINATION
+        Mod/Path/Tools/Template
 )
 
 INSTALL(
