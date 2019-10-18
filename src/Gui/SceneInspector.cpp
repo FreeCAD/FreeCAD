@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoIndexedShape.h>
 # include <QHeaderView>
 # include <QTextStream>
 #endif
@@ -33,6 +34,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
+#include "SoFCUnifiedSelection.h"
 #include "Document.h"
 #include "Application.h"
 #include <App/Document.h>
@@ -90,10 +92,49 @@ void SceneModel::setNode(SoNode* node)
     setNode(this->index(0, 0), node);
 }
 
-void SceneModel::setNode(QModelIndex index, SoNode* node)
+void SceneModel::setNode(QModelIndex index, SoNode* node, bool expand)
 {
     this->setData(index, QVariant(QString::fromLatin1(node->getTypeId().getName())));
-    if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
+    QHash<SoNode*, QString>::iterator it = nodeNames.find(node);
+    QString name;
+    QTextStream stream(&name);
+    stream << node << ", ";
+    if(node->isOfType(SoSwitch::getClassTypeId())) {
+        auto pcSwitch = static_cast<SoSwitch*>(node);
+        stream << pcSwitch->whichChild.getValue() << ", ";
+        if(node->isOfType(SoFCSwitch::getClassTypeId())) {
+            auto pathNode = static_cast<SoFCSwitch*>(node);
+            stream << pathNode->defaultChild.getValue() << ", "
+                << pathNode->overrideSwitch.getValue() << ", ";
+        }
+    } else if (node->isOfType(SoSeparator::getClassTypeId())) {
+        auto pcSeparator = static_cast<SoSeparator*>(node);
+        stream << pcSeparator->renderCaching.getValue() << ", ";
+    } else if (node->isOfType(SoIndexedShape::getClassTypeId())) {
+        auto shape = static_cast<SoIndexedShape*>(node);
+        stream << shape->coordIndex.getNum() << ", ";
+    }
+    if (it != nodeNames.end())
+        stream << it.value();
+    else
+        stream << node->getName();
+    this->setData(this->index(index.row(), 1, index.parent()), QVariant(name));
+
+    if(!expand)
+        return;
+
+    if (node->getTypeId().isDerivedFrom(SoFCPathAnnotation::getClassTypeId())) {
+        auto path = static_cast<SoFCPathAnnotation*>(node)->getPath();
+        if(path && path->getLength()) {
+            // insert SoGroup icon
+            this->insertColumns(0,2,index);
+            this->insertRows(0,path->getLength(), index);
+            for (int i=0; i<path->getLength();i++) {
+                SoNode* child = path->getNode(i);
+                setNode(this->index(i, 0, index), child, i==path->getLength()-1);
+            }
+        }
+    } else if (node->getTypeId().isDerivedFrom(SoGroup::getClassTypeId())) {
         SoGroup *group = static_cast<SoGroup*>(node);
         // insert SoGroup icon
         this->insertColumns(0,2,index);
@@ -101,23 +142,6 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
         for (int i=0; i<group->getNumChildren();i++) {
             SoNode* child = group->getChild(i);
             setNode(this->index(i, 0, index), child);
-
-            QHash<SoNode*, QString>::iterator it = nodeNames.find(child);
-            QString name;
-            QTextStream stream(&name);
-            stream << child << ", ";
-            if(child->isOfType(SoSwitch::getClassTypeId())) {
-                auto pcSwitch = static_cast<SoSwitch*>(child);
-                stream << pcSwitch->whichChild.getValue() << ", ";
-            } else if (child->isOfType(SoSeparator::getClassTypeId())) {
-                auto pcSeparator = static_cast<SoSeparator*>(child);
-                stream << pcSeparator->renderCaching.getValue() << ", ";
-            }
-            if (it != nodeNames.end())
-                stream << it.value();
-            else
-                stream << child->getName();
-            this->setData(this->index(i, 1, index), QVariant(name));
         }
     }
     // insert icon
@@ -159,8 +183,8 @@ void DlgInspector::setDocument(Gui::Document* doc)
     View3DInventor* view = qobject_cast<View3DInventor*>(doc->getActiveView());
     if (view) {
         View3DInventorViewer* viewer = view->getViewer();
-        setNode(viewer->getSceneGraph());
-        ui->treeView->expandToDepth(3);
+        setNode(viewer->getSoRenderManager()->getSceneGraph());
+        ui->treeView->expandToDepth(4);
     }
 }
 
@@ -171,10 +195,12 @@ void DlgInspector::setNode(SoNode* node)
     
     QHeaderView* header = ui->treeView->header();
 #if QT_VERSION >= 0x050000
-    header->setSectionResizeMode(0, QHeaderView::Stretch);
+    header->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    header->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     header->setSectionsMovable(false);
 #else
-    header->setResizeMode(0, QHeaderView::Stretch);
+    header->setResizeMode(0, QHeaderView::ResizeToContents);
+    header->setResizeMode(1, QHeaderView::ResizeToContents);
     header->setMovable(false);
 #endif
 }
@@ -196,7 +222,7 @@ void DlgInspector::setNodeNames(Gui::Document* doc)
         for (std::vector<std::string>::iterator jt = modes.begin(); jt != modes.end(); ++jt) {
             SoNode* node = vp->getDisplayMaskMode(jt->c_str());
             if (node) {
-                nodeNames[node] = QString::fromStdString(*jt);
+                nodeNames[node] = QString::fromStdString(std::string("DisplayMode(")+*jt+")");
             }
         }
     }
@@ -223,8 +249,8 @@ void DlgInspector::on_refreshButton_clicked()
         View3DInventor* view = qobject_cast<View3DInventor*>(doc->getActiveView());
         if (view) {
             View3DInventorViewer* viewer = view->getViewer();
-            setNode(viewer->getSceneGraph());
-            ui->treeView->expandToDepth(3);
+            setNode(viewer->getSoRenderManager()->getSceneGraph());
+            ui->treeView->expandToDepth(4);
         }
     }
     else {
