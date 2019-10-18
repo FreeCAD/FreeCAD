@@ -2946,6 +2946,7 @@ StdCmdSceneInspector::StdCmdSceneInspector()
     sWhatsThis    = "Std_SceneInspector";
     sStatusTip    = QT_TR_NOOP("Scene inspector");
     eType         = Alter3DView;
+    sAccel        = "T, I";
 }
 
 void StdCmdSceneInspector::activated(int iMsg)
@@ -3208,34 +3209,65 @@ StdTreeCollapseDocument::StdTreeCollapseDocument()
 }
 
 //===========================================================================
+// StdCmdCheckableOption
+//===========================================================================
+
+class StdCmdCheckableOption : public Gui::Command
+{
+public:
+    StdCmdCheckableOption(const char *name)
+        :Command(name)
+    {}
+
+protected: 
+    virtual void activated(int iMsg) {
+        auto checked = !!iMsg;
+        setOption(checked);
+        if(_pcAction) _pcAction->setChecked(checked,true);
+    }
+
+    virtual bool isActive(void) {
+        bool checked = getOption();
+        if(_pcAction && _pcAction->isChecked()!=checked)
+            _pcAction->setChecked(checked,true);
+        return true;
+    }
+
+    virtual Gui::Action * createAction(void) {
+        Action *pcAction = Command::createAction();
+        pcAction->setCheckable(true);
+        pcAction->setIcon(QIcon());
+        _pcAction = pcAction;
+        isActive();
+        return pcAction;
+    }
+
+    virtual bool getOption() const = 0;
+    virtual void setOption(bool checked) = 0;
+};
+
+#define TREEVIEW_CMD_DEF(_name) \
+class StdTree##_name : public StdCmdCheckableOption \
+{\
+public:\
+    StdTree##_name();\
+    virtual const char* className() const\
+    { return "StdTree" #_name; }\
+protected: \
+    virtual void setOption(bool checked) {\
+        TreeParams::Instance()->set##_name(checked);\
+    }\
+    virtual bool getOption(void) const {\
+        return TreeParams::Instance()->_name();\
+    }\
+};\
+StdTree##_name::StdTree##_name():StdCmdCheckableOption("Std_Tree" #_name)
+
+//===========================================================================
 // Std_TreeSyncView
 //===========================================================================
-#define TREEVIEW_CMD_DEF(_name) \
-DEF_STD_CMD_AC(StdTree##_name) \
-void StdTree##_name::activated(int){ \
-    auto checked = !TreeParams::Instance()->_name();\
-    TreeParams::Instance()->set##_name(checked);\
-    if(_pcAction) _pcAction->setChecked(checked,true);\
-}\
-Action * StdTree##_name::createAction(void) {\
-    Action *pcAction = Command::createAction();\
-    pcAction->setCheckable(true);\
-    pcAction->setIcon(QIcon());\
-    _pcAction = pcAction;\
-    isActive();\
-    return pcAction;\
-}\
-bool StdTree##_name::isActive() {\
-    bool checked = TreeParams::Instance()->_name();\
-    if(_pcAction && _pcAction->isChecked()!=checked)\
-        _pcAction->setChecked(checked,true);\
-    return true;\
-}
-        
-TREEVIEW_CMD_DEF(SyncView)
 
-StdTreeSyncView::StdTreeSyncView()
-  : Command("Std_TreeSyncView")
+TREEVIEW_CMD_DEF(SyncView)
 {
     sGroup       = QT_TR_NOOP("TreeView");
     sMenuText    = QT_TR_NOOP("Sync view");
@@ -3251,9 +3283,6 @@ StdTreeSyncView::StdTreeSyncView()
 // Std_TreeSyncSelection
 //===========================================================================
 TREEVIEW_CMD_DEF(SyncSelection)
-
-StdTreeSyncSelection::StdTreeSyncSelection()
-  : Command("Std_TreeSyncSelection")
 {
     sGroup       = QT_TR_NOOP("TreeView");
     sMenuText    = QT_TR_NOOP("Sync selection");
@@ -3269,9 +3298,6 @@ StdTreeSyncSelection::StdTreeSyncSelection()
 // Std_TreeSyncPlacement
 //===========================================================================
 TREEVIEW_CMD_DEF(SyncPlacement)
-
-StdTreeSyncPlacement::StdTreeSyncPlacement()
-  : Command("Std_TreeSyncPlacement")
 {
     sGroup       = QT_TR_NOOP("TreeView");
     sMenuText    = QT_TR_NOOP("Sync placement");
@@ -3287,9 +3313,6 @@ StdTreeSyncPlacement::StdTreeSyncPlacement()
 // Std_TreePreSelection
 //===========================================================================
 TREEVIEW_CMD_DEF(PreSelection)
-
-StdTreePreSelection::StdTreePreSelection()
-  : Command("Std_TreePreSelection")
 {
     sGroup       = QT_TR_NOOP("TreeView");
     sMenuText    = QT_TR_NOOP("Pre-selection");
@@ -3305,9 +3328,6 @@ StdTreePreSelection::StdTreePreSelection()
 // Std_TreeRecordSelection
 //===========================================================================
 TREEVIEW_CMD_DEF(RecordSelection)
-
-StdTreeRecordSelection::StdTreeRecordSelection()
-  : Command("Std_TreeRecordSelection")
 {
     sGroup       = QT_TR_NOOP("TreeView");
     sMenuText    = QT_TR_NOOP("Record selection");
@@ -3323,9 +3343,6 @@ StdTreeRecordSelection::StdTreeRecordSelection()
 // Std_TreeResizableColumn
 //===========================================================================
 TREEVIEW_CMD_DEF(ResizableColumn)
-
-StdTreeResizableColumn::StdTreeResizableColumn()
-  : Command("Std_TreeResizableColumn")
 {
     sGroup       = QT_TR_NOOP("TreeView");
     sMenuText    = QT_TR_NOOP("Resizable column");
@@ -3408,49 +3425,89 @@ public:
 };
 
 
+#define VIEW_CMD_DEF(_name,_option) \
+class StdCmd##_name : public StdCmdCheckableOption \
+{\
+public:\
+    StdCmd##_name();\
+    virtual const char* className() const\
+    { return "StdCmd" #_name; }\
+protected: \
+    virtual void setOption(bool checked) {\
+        ViewParams::instance()->set##_option(checked);\
+    }\
+    virtual bool getOption(void) const {\
+        return ViewParams::instance()->get##_option();\
+    }\
+};\
+StdCmd##_name::StdCmd##_name():StdCmdCheckableOption("Std_" #_name)
+
 //======================================================================
 // Std_SelBoundingBox
-//===========================================================================
-DEF_STD_CMD_AC(StdCmdSelBoundingBox)
-
-StdCmdSelBoundingBox::StdCmdSelBoundingBox()
-  :Command("Std_SelBoundingBox")
+//======================================================================
+VIEW_CMD_DEF(SelBoundingBox, ShowSelectionBoundingBox)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("&Bounding box");
   sToolTipText  = QT_TR_NOOP("Show selection bounding box");
-  sWhatsThis    = "Std_SelBack";
+  sWhatsThis    = "Std_SelBoundingBox";
   sStatusTip    = QT_TR_NOOP("Show selection bounding box");
   sPixmap       = "sel-bbox";
   eType         = Alter3DView;
 }
 
-void StdCmdSelBoundingBox::activated(int iMsg)
+//======================================================================
+// Std_SelOnTop
+//======================================================================
+VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
 {
-    bool checked = !!iMsg;
-    if(checked != ViewParams::instance()->getShowSelectionBoundingBox()) {
-        ViewParams::instance()->setShowSelectionBoundingBox(checked);
-        if(_pcAction)
-            _pcAction->setChecked(checked,true);
-    }
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("&Selection on top");
+  sToolTipText  = QT_TR_NOOP("Show selection always on top");
+  sWhatsThis    = "Std_SelOnTop";
+  sStatusTip    = QT_TR_NOOP("Show selection always on top");
+  sPixmap       = "sel-on-top";
+  eType         = Alter3DView;
 }
 
-bool StdCmdSelBoundingBox::isActive(void)
+//======================================================================
+// Std_PreselEdgeOnly
+//======================================================================
+VIEW_CMD_DEF(PreselEdgeOnly, ShowHighlightEdgeOnly)
 {
-    if(_pcAction) {
-        bool checked = _pcAction->isChecked();
-        if(checked != ViewParams::instance()->getShowSelectionBoundingBox())
-            _pcAction->setChecked(!checked,true);
-    }
-    return true;
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("&Highlight edge only");
+  sToolTipText  = QT_TR_NOOP("Show pre-selection highlight edge only");
+  sWhatsThis    = "Std_PreselEdgeOnly";
+  sStatusTip    = sToolTipText;
+  sPixmap       = "presel-edge-only";
+  eType         = Alter3DView;
 }
 
-Action * StdCmdSelBoundingBox::createAction(void)
+
+//////////////////////////////////////////////////////////
+
+class StdCmdSelOptions : public GroupCommand
 {
-    Action *pcAction = Command::createAction();
-    pcAction->setCheckable(true);
-    return pcAction;
-}
+public:
+    StdCmdSelOptions()
+        :GroupCommand("Std_SelOptions")
+    {
+        sGroup        = QT_TR_NOOP("View");
+        sMenuText     = QT_TR_NOOP("Selection options");
+        sToolTipText  = QT_TR_NOOP("Selection behavior options");
+        sWhatsThis    = "Std_SelOptions";
+        sStatusTip    = sToolTipText;
+        eType         = 0;
+        bCanLog       = false;
+
+        addCommand(new StdCmdSelBoundingBox());
+        addCommand(new StdCmdSelOnTop());
+        addCommand(new StdCmdPreselEdgeOnly());
+        addCommand(new StdTreePreSelection());
+    };
+    virtual const char* className() const {return "StdCmdSelOptions";}
+};
 
 //===========================================================================
 // Instantiation
@@ -3525,7 +3582,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdAxisCross());
     rcCmdMgr.addCommand(new CmdViewMeasureClearAll());
     rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
-    rcCmdMgr.addCommand(new StdCmdSelBoundingBox());
+    rcCmdMgr.addCommand(new StdCmdSelOptions());
     rcCmdMgr.addCommand(new StdCmdSelBack());
     rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
