@@ -412,7 +412,7 @@ void ParameterGroup::onDeleteSelectedItem()
             int index = parent->indexOfChild(sel);
             parent->takeChild(index);
 
-            std::string groupName = sel->text(0).toLatin1();
+            std::string groupName = sel->text(0).toLatin1().toStdString();
             // must delete the tree item here because it and its children still
             // hold a reference to the parameter group
             delete sel;
