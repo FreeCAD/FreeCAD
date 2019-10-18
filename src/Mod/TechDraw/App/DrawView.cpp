@@ -153,6 +153,11 @@ bool DrawView::isLocked(void) const
     return LockPosition.getValue();
 }
 
+bool DrawView::showLock(void) const
+{
+    return true;
+}
+
 //override this for View inside a group (ex DPGI in DPG)
 void DrawView::handleXYLock(void) 
 {

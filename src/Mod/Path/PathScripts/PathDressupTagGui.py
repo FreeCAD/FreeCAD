@@ -229,7 +229,7 @@ class PathDressupTagTaskPanel:
             self.Positions.append(FreeCAD.Vector(point.x, point.y, 0))
             self.updateTagsView()
         else:
-            print("ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0))
+            PathLog.notice("ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0))
 
     def addNewTag(self):
         self.tags = self.getTags(True)

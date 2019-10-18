@@ -553,7 +553,9 @@ class _Wall(ArchComponent.Component):
             obj.addProperty("App::PropertyInteger","Face","Wall",QT_TRANSLATE_NOOP("App::Property","The face number of the base object used to build this wall"))
         if not "Offset" in lp:
             obj.addProperty("App::PropertyDistance","Offset","Wall",QT_TRANSLATE_NOOP("App::Property","The offset between this wall and its baseline (only for left and right alignments)"))
-
+        if not "Refine" in lp:
+            obj.addProperty("App::PropertyEnumeration","Refine","Wall",QT_TRANSLATE_NOOP("App::Property","Select whether or not and the method to remove splitter of the Wall. Currently Draft removeSplitter and Part removeSplitter available but may not work on complex sketch."))
+            obj.Refine = ['No','DraftRemoveSplitter','PartRemoveSplitter']
         if not "MakeBlocks" in lp:
             obj.addProperty("App::PropertyBool","MakeBlocks","Blocks",QT_TRANSLATE_NOOP("App::Property","Enable this to make the wall generate blocks"))
         if not "BlockLength" in lp:
@@ -963,10 +965,12 @@ class _Wall(ArchComponent.Component):
                                             baseface.append(f)
                                     else:
                                         baseface = baseface.fuse(f)
-                                        # baseface = baseface.removeSplitter()
-                                        s = DraftGeomUtils.removeSplitter(baseface)
-                                        if s:
-                                            baseface = s
+                                        if obj.Refine == 'DraftRemoveSplitter':
+                                            s = DraftGeomUtils.removeSplitter(baseface)
+                                            if s:
+                                                baseface = s
+                                        elif obj.Refine == 'PartRemoveSplitter':
+                                            baseface = baseface.removeSplitter()
                                 else:
                                     if layers:
                                         if layers[i] >= 0:

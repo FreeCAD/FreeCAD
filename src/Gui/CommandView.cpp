@@ -3391,7 +3391,7 @@ public:
 //======================================================================
 // Std_SelBoundingBox
 //===========================================================================
-DEF_STD_CMD_AC(StdCmdSelBoundingBox);
+DEF_STD_CMD_AC(StdCmdSelBoundingBox)
 
 StdCmdSelBoundingBox::StdCmdSelBoundingBox()
   :Command("Std_SelBoundingBox")

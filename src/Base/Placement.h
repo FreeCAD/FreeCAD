@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef BASE_PLACEMENT_H
 #define BASE_PLACEMENT_H
 
@@ -29,9 +28,9 @@
 #include "Matrix.h"
 
 
-
 namespace Base {
 
+class DualQuat;
 
 /**
  * The Placement class.
@@ -45,11 +44,18 @@ public:
     Placement(const Base::Matrix4D& matrix);
     Placement(const Vector3d& Pos, const Rotation &Rot);
     Placement(const Vector3d& Pos, const Rotation &Rot, const Vector3d& Cnt);
+
+    /** specialty constructors */
+    //@{
+    static Placement fromDualQuaternion(DualQuat qq);
+    //@}
+
     /// Destruction
     ~Placement () {}
 
     Matrix4D toMatrix(void) const;
     void fromMatrix(const Matrix4D& m);
+    DualQuat toDualQuaternion() const;
     const Vector3d& getPosition(void) const {return _pos;}
     const Rotation& getRotation(void) const {return _rot;}
     void setPosition(const Vector3d& Pos){_pos=Pos;}
@@ -67,11 +73,13 @@ public:
     bool operator == (const Placement&) const;
     bool operator != (const Placement&) const;
     Placement& operator = (const Placement&);
+    Placement pow(double t, bool shorten = true) const;
 
     void multVec(const Vector3d & src, Vector3d & dst) const;
     //@}
 
     static Placement slerp(const Placement & p0, const Placement & p1, double t);
+    static Placement sclerp(const Placement & p0, const Placement & p1, double t, bool shorten = true);
 
 protected:
     Vector3<double> _pos;

@@ -123,7 +123,7 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void);
 
-    virtual std::string getFormatedValue();
+    virtual std::string getFormatedValue(int partial = 0);
     virtual double getDimValue();
     DrawViewPart* getViewPart() const;
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!

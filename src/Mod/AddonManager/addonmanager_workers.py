@@ -39,14 +39,22 @@ from addonmanager_macro import Macro
 #  \ingroup ADDONMANAGER
 #  \brief Multithread workers for the addon manager
 
-MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
-OBSOLETE = ["assembly2","drawing_dimensioning","cura_engine"] # These addons will print an additional message informing the user
+# Blacklisted addons
+MACROS_BLACKLIST = ["BOLTS",
+                    "WorkFeatures",
+                    "how to install",
+                    "PartsLibrary",
+                    "FCGear"]
+
+# These addons will print an additional message informing the user
+OBSOLETE =         ["assembly2",
+                    "drawing_dimensioning",
+                    "cura_engine"]
+
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
 
-
 """Multithread workers for the Addon Manager"""
-
 
 
 class UpdateWorker(QtCore.QThread):
@@ -278,7 +286,7 @@ class FillMacroListWorker(QtCore.QThread):
         """Retrieve macros from the wiki
 
         Read the wiki and emit a signal for each found macro.
-        Reads only the page https://www.freecadweb.org/wiki/Macros_recipes.
+        Reads only the page https://www.freecadweb.org/wiki/Macros_recipes
         """
 
         self.info_label_signal.emit("Downloading list of macros from the FreeCAD wiki...")
@@ -394,26 +402,41 @@ class ShowWorker(QtCore.QThread):
                         if "git pull" in gitrepo.status():
                             upd = True
             if upd:
-                message = "<strong style=\"background: #B65A00;\">" + translate("AddonsInstaller", "An update is available for this addon.") + "</strong><br>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+                message = "<strong style=\"background: #B65A00;\">" + translate("AddonsInstaller", "An update is available for this addon.") 
+                message += "</strong><br>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
             else:
-                message = "<strong style=\"background: #00B629;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+                message = "<strong style=\"background: #00B629;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" 
+                message += desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+            message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
             self.repos[self.idx][2] = 2 # mark as already installed AND already checked for updates
             self.addon_repos.emit(self.repos)
+        elif self.repos[self.idx][2] == 2:
+            message = "<strong style=\"background: #00B629;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>"
+            message += desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+            message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
         else:
             message = desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
 
         if self.repos[self.idx][0] in OBSOLETE:
-            message = " <strong style=\"background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"+translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/><br/>" + message
+            message = " <strong style=\"background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"
+            message += translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/><br/>" + message
 
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
+        self.mustLoadImages = True
         l = self.loadImages( message, self.repos[self.idx][1], self.repos[self.idx][0])
         if l:
             self.info_label.emit( l )
         self.stop = True
 
+    def stopImageLoading(self):
+
+        "this stops the image loading process and allow the thread to terminate earlier"
+
+        self.mustLoadImages = False
+
     def loadImages(self,message,url,wbName):
-        
+
         "checks if the given page contains images and downloads them"
 
         # QTextBrowser cannot display online images. So we download them
@@ -427,6 +450,8 @@ class ShowWorker(QtCore.QThread):
             if not os.path.exists(store):
                 os.makedirs(store)
             for path in imagepaths:
+                if not self.mustLoadImages:
+                    return None
                 origpath = path
                 if "?" in path:
                     # remove everything after the ?

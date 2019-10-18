@@ -256,6 +256,18 @@ PyObject* RotationPy::multVec(PyObject * args)
     return new VectorPy(new Vector3d(vec));
 }
 
+PyObject* RotationPy::slerp(PyObject * args)
+{
+    PyObject *rot;
+    double t;
+    if (!PyArg_ParseTuple(args, "O!d", &(RotationPy::Type), &rot, &t))
+        return 0;
+    Rotation *rot0 = this->getRotationPtr();
+    Rotation *rot1 = static_cast<RotationPy*>(rot)->getRotationPtr();
+    Rotation sl = Rotation::slerp(*rot0, *rot1, t);
+    return new RotationPy(new Rotation(sl));
+}
+
 PyObject* RotationPy::toEuler(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))

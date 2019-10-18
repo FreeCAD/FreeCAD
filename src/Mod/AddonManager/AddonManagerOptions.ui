@@ -17,10 +17,12 @@
    <item>
     <widget class="QCheckBox" name="checkUpdates">
      <property name="toolTip">
-      <string>If this option is checked, when launching the Addon Manager, installed addons will be checked for available updates (requires the python-git package installed on your system)</string>
+      <string>If this option is selected, when launching the Addon Manager,
+installed addons will be checked for available updates
+(this requires the GitPython package installed on your system)</string>
      </property>
      <property name="text">
-      <string>Automatically check for updates at start (requires python-git)</string>
+      <string>Automatically check for updates at start (requires GitPython)</string>
      </property>
     </widget>
    </item>
@@ -34,7 +36,8 @@
    <item>
     <widget class="QTextEdit" name="customRepositories">
      <property name="toolTip">
-      <string>You can use this window to specify additional addon repositories to be scanned for available addons</string>
+      <string>You can use this window to specify additional addon repositories
+sto be scanned for available addons</string>
      </property>
     </widget>
    </item>

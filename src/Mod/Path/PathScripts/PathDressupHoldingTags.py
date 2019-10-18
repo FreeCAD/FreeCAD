@@ -739,21 +739,25 @@ class ObjectTagDressup:
         obj.addProperty("App::PropertyIntegerList", "Disabled", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "IDs of disabled holding tags"))
         obj.addProperty("App::PropertyInteger", "SegmentationFactor", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Factor determining the # of segments used to approximate rounded tags."))
 
+        self.__setstate__(obj)
+
         obj.Proxy = self
         obj.Base = base
-
-        self.obj = obj
-        self.solids = []
-        self.tags = []
-        self.pathData = None
-        self.toolRadius = None
-        self.mappers = []
 
     def __getstate__(self):
         return None
 
     def __setstate__(self, state):
+        self.obj = state
+        self.solids = []
+        self.tags = []
+        self.pathData = None
+        self.toolRadius = None
+        self.mappers = []
         return None
+
+    def onDocumentRestored(self, obj):
+        self.obj = obj
 
     def supportsTagGeneration(self, obj):
         if not self.pathData:

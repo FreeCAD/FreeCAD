@@ -39,7 +39,7 @@ namespace Gui {
 
 class GuiExport TextDocumentEditorView : public MDIView {
     Q_OBJECT
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     TextDocumentEditorView(

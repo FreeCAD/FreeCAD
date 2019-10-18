@@ -399,6 +399,11 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 if plane.axis.getAngle(angle.Axis) < 0.001:
                     angle = angle.Angle
                 elif abs(plane.axis.getAngle(angle.Axis)-math.pi) < 0.001:
+                    if abs(angle.Angle) > 0.1:
+                        angle = -angle.Angle
+                    else:
+                        angle = angle.Angle
+                elif abs(plane.axis.getAngle(angle.Axis)-math.pi/2) < 0.001:
                     return "" # text is perpendicular to view, so it shouldn't appear
                 else:
                     angle = 0 #TODO maybe there is something better to do here?
@@ -501,8 +506,15 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     angle = -DraftVecUtils.angle(getProj(rv, plane))
                     #angle = -DraftVecUtils.angle(p3.sub(p2))
 
+                    svg = ''
+                    nolines = False
+                    if hasattr(obj.ViewObject,"ShowLine"):
+                         if not obj.ViewObject.ShowLine:
+                             nolines = True
+
                     # drawing lines
-                    svg = '<path '
+                    if not nolines:
+                        svg += '<path '
                     if obj.ViewObject.DisplayMode == "2D":
                         tangle = angle
                         if tangle > math.pi/2:
@@ -515,51 +527,54 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                             if abs(tangle+math.radians(rotation)) < 0.0001:
                                 tangle += math.pi
                                 tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
-                        svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-                        svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-                        svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-                        svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
+                        if not nolines:
+                            svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                            svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                            svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                            svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
                     else:
                         tangle = 0
                         if rotation != 0:
                             tangle = -math.radians(rotation)
                         tbase = tbase.add(Vector(0,-2.0/scale,0))
-                        svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-                        svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-                        svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
-                        svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
-                        svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-                        svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
+                        if not nolines:
+                            svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                            svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                            svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
+                            svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
+                            svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                            svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
 
-                    svg += 'fill="none" stroke="'
-                    svg += stroke + '" '
-                    svg += 'stroke-width="' + str(linewidth) + ' px" '
-                    svg += 'style="stroke-width:'+ str(linewidth)
-                    svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
-                    svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
-                    svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
-                    svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
-                    svg += '/>\n'
+                    if not nolines:
+                        svg += 'fill="none" stroke="'
+                        svg += stroke + '" '
+                        svg += 'stroke-width="' + str(linewidth) + ' px" '
+                        svg += 'style="stroke-width:'+ str(linewidth)
+                        svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
+                        svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
+                        svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
+                        svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
+                        svg += '/>\n'
 
-                    # drawing dimension and extension lines overshoots
-                    if hasattr(obj.ViewObject,"DimOvershoot") and obj.ViewObject.DimOvershoot.Value:
-                        shootsize = obj.ViewObject.DimOvershoot.Value/pointratio
-                        svg += getOvershoot(p2,shootsize,stroke,linewidth,angle)
-                        svg += getOvershoot(p3,shootsize,stroke,linewidth,angle+math.pi)
-                    if hasattr(obj.ViewObject,"ExtOvershoot") and obj.ViewObject.ExtOvershoot.Value:
-                        shootsize = obj.ViewObject.ExtOvershoot.Value/pointratio
-                        shootangle = -DraftVecUtils.angle(p1.sub(p2))
-                        svg += getOvershoot(p2,shootsize,stroke,linewidth,shootangle)
-                        svg += getOvershoot(p3,shootsize,stroke,linewidth,shootangle)
+                        # drawing dimension and extension lines overshoots
+                        if hasattr(obj.ViewObject,"DimOvershoot") and obj.ViewObject.DimOvershoot.Value:
+                            shootsize = obj.ViewObject.DimOvershoot.Value/pointratio
+                            svg += getOvershoot(p2,shootsize,stroke,linewidth,angle)
+                            svg += getOvershoot(p3,shootsize,stroke,linewidth,angle+math.pi)
+                        if hasattr(obj.ViewObject,"ExtOvershoot") and obj.ViewObject.ExtOvershoot.Value:
+                            shootsize = obj.ViewObject.ExtOvershoot.Value/pointratio
+                            shootangle = -DraftVecUtils.angle(p1.sub(p2))
+                            svg += getOvershoot(p2,shootsize,stroke,linewidth,shootangle)
+                            svg += getOvershoot(p3,shootsize,stroke,linewidth,shootangle)
 
-                    # drawing arrows
-                    if hasattr(obj.ViewObject,"ArrowType"):
-                        arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
-                        if hasattr(obj.ViewObject,"FlipArrows"):
-                            if obj.ViewObject.FlipArrows:
-                                angle = angle+math.pi
-                        svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
-                        svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle+math.pi)
+                        # drawing arrows
+                        if hasattr(obj.ViewObject,"ArrowType"):
+                            arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
+                            if hasattr(obj.ViewObject,"FlipArrows"):
+                                if obj.ViewObject.FlipArrows:
+                                    angle = angle+math.pi
+                            svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
+                            svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle+math.pi)
 
                     # drawing text
                     svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)

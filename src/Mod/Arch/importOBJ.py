@@ -73,14 +73,14 @@ def getIndices(obj,shape,offsetv,offsetvn):
             try:
                 if not isinstance(e.Curve,Part.LineSegment):
                     if not curves:
-			myshape = obj.Shape.copy(False)
-			myshape.Placement=obj.getGlobalPlacement()
+                        myshape = obj.Shape.copy(False)
+                        myshape.Placement=obj.getGlobalPlacement()
                         mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                         FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                         break
             except: # unimplemented curve type
-		myshape = obj.Shape.copy(False)
-		myshape.Placement=obj.getGlobalPlacement()
+                myshape = obj.Shape.copy(False)
+                myshape.Placement=obj.getGlobalPlacement()
                 mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                 FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                 break
@@ -248,7 +248,7 @@ def export(exportList,filename,colors=None):
                 if not mat[0] in done:
                     outfile.write("newmtl " + mat[0] + "\n")
                     outfile.write("Kd " + str(mat[1][0]) + " " + str(mat[1][1]) + " " + str(mat[1][2]) + "\n")
-                    outfile.write("d " + str(mat[2]) + "\n")
+                    outfile.write("Tr " + str(mat[2]/100) + "\n")
                     done.append(mat[0])
             else:
                 if not mat.Name in done:

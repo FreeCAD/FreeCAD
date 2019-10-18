@@ -27,6 +27,7 @@
 
 #ifndef _PreComp_
 #   include <assert.h>
+#   include <memory>
 #   include <xercesc/util/PlatformUtils.hpp>
 #   include <xercesc/util/XercesVersion.hpp>
 #   include <xercesc/dom/DOM.hpp>
@@ -38,6 +39,8 @@
 #   include <xercesc/framework/StdOutFormatTarget.hpp>
 #   include <xercesc/framework/LocalFileFormatTarget.hpp>
 #   include <xercesc/framework/LocalFileInputSource.hpp>
+#   include <xercesc/framework/MemBufFormatTarget.hpp>
+#   include <xercesc/framework/MemBufInputSource.hpp>
 #   include <xercesc/parsers/XercesDOMParser.hpp>
 #   include <xercesc/util/XMLUni.hpp>
 #   include <xercesc/util/XMLUniDefs.hpp>
@@ -61,6 +64,7 @@
 #endif
 
 #include "Parameter.h"
+#include "Parameter.inl"
 #include "Exception.h"
 #include "Console.h"
 
@@ -157,6 +161,34 @@ private:
 
     unsigned long fWhatToShow;
 
+};
+#else
+class DOMPrintFilter : public DOMLSSerializerFilter
+{
+public:
+
+    /** @name Constructors */
+    DOMPrintFilter(ShowType whatToShow = DOMNodeFilter::SHOW_ALL);
+    //@{
+
+    /** @name Destructors */
+    ~DOMPrintFilter() {}
+    //@{
+
+    /** @ interface from DOMWriterFilter */
+    virtual FilterAction acceptNode(const XERCES_CPP_NAMESPACE_QUALIFIER DOMNode*) const;
+    //@{
+
+    virtual ShowType getWhatToShow() const {
+        return fWhatToShow;
+    }
+
+private:
+    // unimplemented copy ctor and assignment operator
+    DOMPrintFilter(const DOMPrintFilter&);
+    DOMPrintFilter & operator = (const DOMPrintFilter&);
+
+   ShowType fWhatToShow;
 };
 #endif
 class DOMPrintErrorHandler : public DOMErrorHandler
@@ -1054,7 +1086,7 @@ ParameterManager::ParameterManager()
 
     gSplitCdataSections    = true;
     gDiscardDefaultContent = true;
-    gUseFilter             = false;
+    gUseFilter             = true;
     gFormatPrettyPrint     = true;
 }
 
@@ -1339,6 +1371,9 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
     }
 #else
     try {
+        std::unique_ptr<DOMPrintFilter>   myFilter;
+        std::unique_ptr<DOMErrorHandler>  myErrorHandler;
+
         // get a serializer, an instance of DOMWriter
         XMLCh tempStr[100];
         XMLString::transcode("LS", tempStr, 99);
@@ -1347,8 +1382,7 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
 
         // set user specified end of line sequence and output encoding
         theSerializer->setNewLine(gMyEOLSequence);
-        DOMConfiguration* config = theSerializer->getDomConfig();
-        config->setParameter(XStr("format-pretty-print").unicodeForm(),true);
+
 
         //
         // do the serialization through DOMWriter::writeNode();
@@ -1356,11 +1390,37 @@ void  ParameterManager::SaveDocument(XMLFormatTarget* pFormatTarget) const
         if (_pDocument) {
             DOMLSOutput *theOutput = ((DOMImplementationLS*)impl)->createLSOutput();
             theOutput->setEncoding(gOutputEncoding);
+
+            if (gUseFilter) {
+                myFilter.reset(new DOMPrintFilter(DOMNodeFilter::SHOW_ELEMENT   |
+                                                  DOMNodeFilter::SHOW_ATTRIBUTE |
+                                                  DOMNodeFilter::SHOW_DOCUMENT_TYPE
+                                                  ));
+                theSerializer->setFilter(myFilter.get());
+            }
+
+            // plug in user's own error handler
+            myErrorHandler.reset(new DOMPrintErrorHandler());
+            DOMConfiguration* config = theSerializer->getDomConfig();
+            config->setParameter(XMLUni::fgDOMErrorHandler, myErrorHandler.get());
+
+            // set feature if the serializer supports the feature/mode
+            if (config->canSetParameter(XMLUni::fgDOMWRTSplitCdataSections, gSplitCdataSections))
+                config->setParameter(XMLUni::fgDOMWRTSplitCdataSections, gSplitCdataSections);
+
+            if (config->canSetParameter(XMLUni::fgDOMWRTDiscardDefaultContent, gDiscardDefaultContent))
+                config->setParameter(XMLUni::fgDOMWRTDiscardDefaultContent, gDiscardDefaultContent);
+
+            if (config->canSetParameter(XMLUni::fgDOMWRTFormatPrettyPrint, gFormatPrettyPrint))
+                config->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, gFormatPrettyPrint);
+
             theOutput->setByteStream(pFormatTarget);
             theSerializer->write(_pDocument, theOutput);
+
+            theOutput->release();
         }
 
-        delete theSerializer;
+        theSerializer->release();
     }
     catch (XMLException& e) {
         std::cerr << "An error occurred during creation of output transcoder. Msg is:"
@@ -1389,7 +1449,59 @@ void  ParameterManager::CreateDocument(void)
 
 void  ParameterManager::CheckDocument() const
 {
+    if (!_pDocument)
+        return;
 
+    try {
+        //
+        // Plug in a format target to receive the resultant
+        // XML stream from the serializer.
+        //
+        // LocalFileFormatTarget prints the resultant XML stream
+        // to a file once it receives any thing from the serializer.
+        //
+        MemBufFormatTarget myFormTarget;
+        SaveDocument(&myFormTarget);
+
+        // Either use the file saved on disk or write the current XML into a buffer in memory
+        // const char* xmlFile = "...";
+        MemBufInputSource xmlFile(myFormTarget.getRawBuffer(), myFormTarget.getLen(), "(memory)");
+
+        // Either load the XSD file from disk or use the built-in string
+        // const char* xsdFile = "...";
+        std::string xsdStr(xmlSchemeString);
+        MemBufInputSource xsdFile(reinterpret_cast<const XMLByte*>(xsdStr.c_str()), xsdStr.size(), "Parameter.xsd");
+
+        // See http://apache-xml-project.6118.n7.nabble.com/validating-xml-with-xsd-schema-td17515.html
+        //
+        XercesDOMParser parser;
+        Grammar* grammar = parser.loadGrammar(xsdFile, Grammar::SchemaGrammarType, true);
+        if (!grammar) {
+            Base::Console().Error("Grammar file cannot be loaded.\n");
+            return;
+        }
+
+        parser.setExternalNoNamespaceSchemaLocation("Parameter.xsd");
+        //parser.setExitOnFirstFatalError(true);
+        //parser.setValidationConstraintFatal(true);
+        parser.cacheGrammarFromParse(true);
+        parser.setValidationScheme(XercesDOMParser::Val_Auto);
+        parser.setDoNamespaces(true);
+        parser.setDoSchema(true);
+
+        DOMTreeErrorReporter errHandler;
+        parser.setErrorHandler(&errHandler);
+        parser.parse(xmlFile);
+
+        if (parser.getErrorCount() > 0) {
+            Base::Console().Error("Unexpected XML structure detected: %d errors\n", parser.getErrorCount());
+        }
+    }
+    catch (XMLException& e) {
+        std::cerr << "An error occurred while checking document. Msg is:"
+        << std::endl
+        << StrX(e.getMessage()) << std::endl;
+    }
 }
 
 
@@ -1496,6 +1608,56 @@ short DOMPrintFilter::acceptNode(const DOMNode* node) const
     }
     case DOMNode::DOCUMENT_NODE: {
         // same as DOCUMENT_NODE
+        return DOMNodeFilter::FILTER_REJECT;  // no effect
+        break;
+    }
+    default : {
+        return DOMNodeFilter::FILTER_ACCEPT;
+        break;
+    }
+    }
+
+    return DOMNodeFilter::FILTER_ACCEPT;
+}
+#else
+DOMPrintFilter::DOMPrintFilter(ShowType whatToShow)
+    : fWhatToShow(whatToShow)
+{
+}
+
+DOMPrintFilter::FilterAction DOMPrintFilter::acceptNode(const DOMNode* node) const
+{
+    if (XMLString::compareString(node->getNodeName(), XStr("FCParameters").unicodeForm()) == 0) {
+        // This node is supposed to have a single FCParamGroup and two text nodes.
+        // Over time it can happen that the text nodes collect extra newlines.
+        const DOMNodeList*  children =  node->getChildNodes();
+        for (XMLSize_t i=0; i<children->getLength(); i++) {
+            DOMNode* child = children->item(i);
+            if (child->getNodeType() == DOMNode::TEXT_NODE) {
+                child->setNodeValue(XStr("\n").unicodeForm());
+            }
+        }
+    }
+
+    switch (node->getNodeType()) {
+    case DOMNode::ELEMENT_NODE: {
+        return DOMNodeFilter::FILTER_ACCEPT;
+
+        break;
+    }
+    case DOMNode::COMMENT_NODE: {
+        return DOMNodeFilter::FILTER_ACCEPT;
+        break;
+    }
+    case DOMNode::TEXT_NODE: {
+        return DOMNodeFilter::FILTER_ACCEPT;
+        break;
+    }
+    case DOMNode::DOCUMENT_TYPE_NODE: {
+        return DOMNodeFilter::FILTER_REJECT;  // no effect
+        break;
+    }
+    case DOMNode::DOCUMENT_NODE: {
         return DOMNodeFilter::FILTER_REJECT;  // no effect
         break;
     }

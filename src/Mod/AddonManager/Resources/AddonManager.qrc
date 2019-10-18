@@ -4,6 +4,7 @@
         <file>icons/A2plus_workbench_icon.svg</file>
         <file>icons/AirPlaneDesign_workbench_icon.svg</file>
         <file>icons/ArchTextures_workbench_icon.svg</file>
+        <file>icons/Assembly4_workbench_icon.svg</file>
         <file>icons/BCFPlugin_workbench_icon.svg</file>
         <file>icons/BIMBots_workbench_icon.svg</file>
         <file>icons/BIM_workbench_icon.svg</file>
@@ -14,6 +15,7 @@
         <file>icons/CurvedShapes_workbench_icon.svg</file>
         <file>icons/Curves_workbench_icon.svg</file>
         <file>icons/Defeaturing_workbench_icon.svg</file>
+        <file>icons/DesignSPHysics_workbench_icon.svg</file>
         <file>icons/dodo_workbench_icon.svg</file>
         <file>icons/DynamicData_workbench_icon.svg</file>
         <file>icons/EM_workbench_icon.svg</file>

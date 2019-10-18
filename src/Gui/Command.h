@@ -449,7 +449,7 @@ public:
      *
      * @sa Command::_doCommand()
      */
-#define doCommand(_type,_cmd,...) _doCommand(__FILE__,__LINE__,_type,_cmd,##__VA_ARGS__)
+#define doCommand(_type,...) _doCommand(__FILE__,__LINE__,_type,##__VA_ARGS__)
 
     /** Run a command with printf like formatter
      *

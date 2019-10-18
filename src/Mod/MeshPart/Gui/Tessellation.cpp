@@ -105,7 +105,6 @@ Tessellation::Tessellation(QWidget* parent)
     }
 
     meshingMethod(buttonGroup->checkedId());
-    findShapes();
 }
 
 Tessellation::~Tessellation()
@@ -183,18 +182,18 @@ void Tessellation::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-void Tessellation::findShapes()
+std::list<App::DocumentObjectT> Tessellation::findShapes()
 {
+    std::list<App::DocumentObjectT> shapeObjects;
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) return;
+    if (!activeDoc) return shapeObjects;
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
-    if (!activeGui) return;
+    if (!activeGui) return shapeObjects;
 
     this->document = QString::fromLatin1(activeDoc->getName());
     std::vector<Part::Feature*> objs = activeDoc->getObjectsOfType<Part::Feature>();
 
     double edgeLen = 0;
-    bool foundSelection = false;
     for (std::vector<Part::Feature*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
         const TopoDS_Shape& shape = (*it)->Shape.getValue();
         if (shape.IsNull()) continue;
@@ -210,31 +209,22 @@ void Tessellation::findShapes()
             edgeLen = std::max<double>(edgeLen, bbox.LengthX());
             edgeLen = std::max<double>(edgeLen, bbox.LengthY());
             edgeLen = std::max<double>(edgeLen, bbox.LengthZ());
-            QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromLatin1((*it)->getNameInDocument());
-            
-            QTreeWidgetItem* child = new QTreeWidgetItem();
-            child->setText(0, label);
-            child->setToolTip(0, label);
-            child->setData(0, Qt::UserRole, name);
-            Gui::ViewProvider* vp = activeGui->getViewProvider(*it);
-            if (vp) child->setIcon(0, vp->getIcon());
-            ui->treeWidget->addTopLevelItem(child);
+
             if (Gui::Selection().isSelected(*it)) {
-                child->setSelected(true);
-                foundSelection = true;
+                App::DocumentObjectT objT(*it);
+                shapeObjects.push_back(objT);
             }
         }
     }
 
     ui->spinMaximumEdgeLength->setValue(edgeLen/10);
-    if (foundSelection)
-        ui->treeWidget->hide();
+    return shapeObjects;
 }
 
 bool Tessellation::accept()
 {
-    if (ui->treeWidget->selectedItems().isEmpty()) {
+    std::list<App::DocumentObjectT> shapeObjects = findShapes();
+    if (shapeObjects.empty()) {
         QMessageBox::critical(this, windowTitle(),
             tr("Select a shape for meshing, first."));
         return false;
@@ -266,11 +256,9 @@ bool Tessellation::accept()
         }
 
         activeDoc->openTransaction("Meshing");
-        QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
-        std::vector<Part::Feature*> shapes = Gui::Selection().getObjectsOfType<Part::Feature>();
-        for (QList<QTreeWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
-            shape = (*it)->data(0, Qt::UserRole).toString();
-            label = (*it)->text(0);
+        for (std::list<App::DocumentObjectT>::iterator it = shapeObjects.begin(); it != shapeObjects.end(); ++it) {
+            shape = QString::fromLatin1(it->getObjectName().c_str());
+            label = QString::fromUtf8(it->getObjectLabel().c_str());
 
             QString cmd;
             if (method == 0) { // Standard
