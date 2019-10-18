@@ -108,6 +108,7 @@
 
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
+#include "ViewParams.h"
 #include "SoFCBackgroundGradient.h"
 #include "SoFCColorBar.h"
 #include "SoFCColorLegend.h"
@@ -942,7 +943,8 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     // onTop==2 means on top only if whole object is selected,
     // onTop==3 means on top only if some sub-element is selected
     // onTop==1 means either
-    if(Gui::Selection().needPickedList())
+    if(Gui::Selection().needPickedList()
+            || ViewParams::instance()->getShowSelectionOnTop())
         onTop = 1;
     else if(vp->OnTopWhenSelected.getValue())
         onTop = vp->OnTopWhenSelected.getValue();
