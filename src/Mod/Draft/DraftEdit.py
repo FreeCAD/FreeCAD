@@ -41,6 +41,20 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
     from PySide.QtCore import QT_TRANSLATE_NOOP
     from DraftTools import translate
+    
+    COLORS = {
+        "default": FreeCADGui.draftToolBar.getDefaultColor("snap"),
+        "black":  (0., 0., 0.),
+        "white":  (1., 1., 1.),
+        "grey":   (.5, .5, .5),
+        "red":    (1., 0., 0.),
+        "green":  (0., 1., 0.),
+        "blue":   (0., 0., 1.),
+        "yellow": (1., 1., 0.),
+        "cyan":   (0., 1., 1.),
+        "magenta":(1., 0., 1.)
+    }
+
 
 class Edit():
 
@@ -49,6 +63,7 @@ class Edit():
     def __init__(self):
         self.running = False
         self.trackers = {'object':[]}
+        self.overNode = None # preselected node with mouseover
         self.obj = None
         self.editing = None
 
@@ -271,8 +286,18 @@ class Edit():
         if self.editing != None:
             self.updateTrackerAndGhost(event)
         else:
-            # TODO add preselection color change for trackers
-            pass
+            # look for a node in mouse position and highlight it
+            pos = event.getPosition()
+            node = self.getEditNode(pos)
+            ep = self.getEditNodeIndex(node)
+            if ep != None: 
+                if self.overNode != None: self.overNode.setColor(COLORS["default"])
+                self.trackers[str(node.objectName.getValue())][ep].setColor(COLORS["red"])
+                self.overNode = self.trackers[str(node.objectName.getValue())][ep]
+            else:
+                if self.overNode != None:
+                    self.overNode.setColor(COLORS["default"])
+                    self.overNode = None
 
     def startEditing(self, event):
         "start editing selected EditNode"

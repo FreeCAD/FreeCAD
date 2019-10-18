@@ -22,7 +22,7 @@
 
 __title__="FreeCAD OpenSCAD Workbench - replace object function"
 __author__ = "Sebastian Hoogen"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = ["https://www.freecadweb.org"]
 
 '''
 This functions allows to replace an object in the feature hierarchy

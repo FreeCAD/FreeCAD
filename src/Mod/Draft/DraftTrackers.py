@@ -709,11 +709,11 @@ class editTracker(Tracker):
     """A node edit tracker"""
     def __init__(self,pos=Vector(0,0,0),name=None,idx=0,objcol=None,\
             marker=FreeCADGui.getMarkerIndex("quad", 9),inactive=False):
-        color = coin.SoBaseColor()
+        self.color = coin.SoBaseColor()
         if objcol:
-            color.rgb = objcol[:3]
+            self.color.rgb = objcol[:3]
         else:
-            color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
+            self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
         self.marker = coin.SoMarkerSet() # this is the marker symbol
         self.marker.markerIndex = marker
         self.coords = coin.SoCoordinate3() # this is the coordinate
@@ -729,7 +729,7 @@ class editTracker(Tracker):
                 selnode.subElementName.setValue("EditNode"+str(idx))
         node = coin.SoAnnotation()
         selnode.addChild(self.coords)
-        selnode.addChild(color)
+        selnode.addChild(self.color)
         selnode.addChild(self.marker)
         node.addChild(selnode)
         ontop = not inactive
@@ -745,6 +745,12 @@ class editTracker(Tracker):
 
     def move(self,delta):
         self.set(self.get().add(delta))
+
+    def setColor(self,color):
+        if color:
+            self.color.rgb = color
+        else:
+            self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
 
 class PlaneTracker(Tracker):
     """A working plane tracker"""
