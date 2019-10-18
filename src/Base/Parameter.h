@@ -236,6 +236,7 @@ protected:
     ~ParameterGrp();
     /// helper function for GetGroup
     Base::Reference<ParameterGrp> _GetGroup(const char* Name);
+    bool ShouldRemove() const;
 
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode *Prev, const char* Type) const;
 

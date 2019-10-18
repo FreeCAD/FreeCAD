@@ -891,33 +891,55 @@ void ParameterGrp::Clear(void)
     std::vector<DOMNode*> vecNodes;
 
     // checking on references
-    std::map <std::string ,Base::Reference<ParameterGrp> >::iterator It1;
-    for (It1 = _GroupMap.begin();It1!=_GroupMap.end();++It1) {
-        if (It1->second.getRefCount() > 1)
-            Console().Warning("ParameterGrp::Clear(): Group clear with active references");
+    std::vector<std::string> removeGrp;
+    for (auto it = _GroupMap.begin();it!=_GroupMap.end();++it) {
+        // If a group is referenced by some observer then do not remove it
+        // but clear it
+        if (!it->second->ShouldRemove()) {
+            it->second->Clear();
+        }
+        else {
+            removeGrp.push_back(it->first);
+        }
     }
 
     // remove group handles
-    _GroupMap.clear();
+    for (auto it : removeGrp) {
+        auto pos = _GroupMap.find(it);
+        vecNodes.push_back(pos->second->_pGroupNode);
+        _GroupMap.erase(pos->first);
+    }
 
-    // searching all nodes
-    for (DOMNode *clChild = _pGroupNode->getFirstChild(); clChild != 0;  clChild = clChild->getNextSibling()) {
-        vecNodes.push_back(clChild);
+    // searching all non-group nodes
+    for (DOMNode *child = _pGroupNode->getFirstChild(); child != 0;  child = child->getNextSibling()) {
+        if (XMLString::compareString(child->getNodeName(), XStr("FCParamGroup").unicodeForm()) != 0)
+            vecNodes.push_back(child);
     }
 
     // deleting the nodes
-    DOMNode* pcTemp;
-    for (std::vector<DOMNode*>::iterator It=vecNodes.begin();It!=vecNodes.end();++It) {
-        pcTemp = _pGroupNode->removeChild(*It);
-        //delete pcTemp;
-        pcTemp->release();
+    for (auto it = vecNodes.begin(); it != vecNodes.end(); ++it) {
+        DOMNode *child = _pGroupNode->removeChild(*it);
+        child->release();
     }
+
     // trigger observer
     Notify("");
 }
 
 //**************************************************************************
 // Access methods
+
+bool ParameterGrp::ShouldRemove() const
+{
+    if (this->getRefCount() > 1)
+        return false;
+    for (auto it : _GroupMap) {
+        bool ok = it.second->ShouldRemove();
+        if (!ok)
+            return false;
+    }
+    return true;
+}
 
 XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ParameterGrp::FindElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name) const
 {
