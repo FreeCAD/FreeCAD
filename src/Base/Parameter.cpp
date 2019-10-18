@@ -787,22 +787,6 @@ std::vector<std::pair<std::string,std::string> > ParameterGrp::GetASCIIMap(const
 //**************************************************************************
 // Access methods
 
-void ParameterGrp::RemoveGrp(const char* Name)
-{
-    // remove group handle
-    _GroupMap.erase(Name);
-
-    // check if Element in group
-    DOMElement *pcElem = FindElement(_pGroupNode,"FCParamGroup",Name);
-    // if not return
-    if (!pcElem)
-        return;
-    else
-        _pGroupNode->removeChild(pcElem);
-    // trigger observer
-    Notify(Name);
-}
-
 void ParameterGrp::RemoveASCII(const char* Name)
 {
     // check if Element in group
@@ -810,11 +794,12 @@ void ParameterGrp::RemoveASCII(const char* Name)
     // if not return
     if (!pcElem)
         return;
-    else
-        _pGroupNode->removeChild(pcElem);
+
+    DOMNode* node = _pGroupNode->removeChild(pcElem);
+    node->release();
+
     // trigger observer
     Notify(Name);
-
 }
 
 void ParameterGrp::RemoveBool(const char* Name)
@@ -824,8 +809,9 @@ void ParameterGrp::RemoveBool(const char* Name)
     // if not return
     if (!pcElem)
         return;
-    else
-        _pGroupNode->removeChild(pcElem);
+
+    DOMNode* node = _pGroupNode->removeChild(pcElem);
+    node->release();
 
     // trigger observer
     Notify(Name);
@@ -851,8 +837,9 @@ void ParameterGrp::RemoveFloat(const char* Name)
     // if not return
     if (!pcElem)
         return;
-    else
-        _pGroupNode->removeChild(pcElem);
+
+    DOMNode* node = _pGroupNode->removeChild(pcElem);
+    node->release();
 
     // trigger observer
     Notify(Name);
@@ -865,8 +852,9 @@ void ParameterGrp::RemoveInt(const char* Name)
     // if not return
     if (!pcElem)
         return;
-    else
-        _pGroupNode->removeChild(pcElem);
+
+    DOMNode* node = _pGroupNode->removeChild(pcElem);
+    node->release();
 
     // trigger observer
     Notify(Name);
@@ -879,8 +867,38 @@ void ParameterGrp::RemoveUnsigned(const char* Name)
     // if not return
     if (!pcElem)
         return;
-    else
-        _pGroupNode->removeChild(pcElem);
+
+    DOMNode* node = _pGroupNode->removeChild(pcElem);
+    node->release();
+
+    // trigger observer
+    Notify(Name);
+}
+
+void ParameterGrp::RemoveGrp(const char* Name)
+{
+    auto it = _GroupMap.find(Name);
+    if (it == _GroupMap.end())
+        return;
+
+    // if this or any of its children is referenced by an observer
+    // it cannot be deleted
+    if (!it->second->ShouldRemove()) {
+        it->second->Clear();
+    }
+    else {
+        // check if Element in group
+        DOMElement *pcElem = FindElement(_pGroupNode,"FCParamGroup",Name);
+        // if not return
+        if (!pcElem)
+            return;
+
+        // remove group handle
+        _GroupMap.erase(Name);
+
+        DOMNode* node = _pGroupNode->removeChild(pcElem);
+        node->release();
+    }
 
     // trigger observer
     Notify(Name);
