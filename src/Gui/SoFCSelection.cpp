@@ -74,8 +74,12 @@
 
 using namespace Gui;
 
-SoFullPath * Gui::SoFCSelection::currenthighlight = NULL;
+struct SoFCSelection::SelContext: Gui::SoFCSelectionContext {
+    SoColorPacker packer;
+    SoColorPacker packer2;
+};
 
+SoFullPath * Gui::SoFCSelection::currenthighlight = NULL;
 
 // *************************************************************************
 
@@ -995,9 +999,9 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
             || mystyle == SoFCSelection::EMISSIVE_DIFFUSE) 
     {
         if(!preselected)
-            SoLazyElement::setDiffuse(state, this,1, &ctx->selectionColor,&colorpacker);
+            SoLazyElement::setDiffuse(state, this,1, &ctx->selectionColor,&ctx->packer);
         else
-            SoLazyElement::setDiffuse(state, this,1, &ctx->highlightColor,&colorpacker);
+            SoLazyElement::setDiffuse(state, this,1, &ctx->highlightColor,&ctx->packer2);
         SoOverrideElement::setDiffuseColorOverride(state, this, true);
     }
 

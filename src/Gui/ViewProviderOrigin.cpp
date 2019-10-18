@@ -49,6 +49,7 @@
 #include "Tree.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "SoFCUnifiedSelection.h"
 
 #include "Base/Console.h"
 
@@ -70,6 +71,10 @@ ViewProviderOrigin::ViewProviderOrigin()
 
     sPixmap = "Std_CoordinateSystem";
     Visibility.setValue(false);
+
+    // Do not override visibility of origin group
+    if(pcModeSwitch->isOfType(SoFCSwitch::getClassTypeId())) 
+        static_cast<SoFCSwitch*>(pcModeSwitch)->defaultChild = -1;
 
     pcGroupChildren = new SoGroup();
     pcGroupChildren->ref();

@@ -114,7 +114,7 @@ ViewProvider::ViewProvider()
     // pcRoot = new SoFCSeparator(true);
     pcRoot = new SoFCSelectionRoot(true);
     pcRoot->ref();
-    pcModeSwitch = new SoSwitch();
+    pcModeSwitch = new SoFCSwitch();
     pcModeSwitch->ref();
     pcTransform  = new SoTransform();
     pcTransform->ref();
@@ -476,23 +476,27 @@ const string ViewProvider::getOverrideMode() {
 
 void ViewProvider::setModeSwitch()
 {
+    int mode;
     if (viewOverrideMode == -1)
-        pcModeSwitch->whichChild = _iActualMode;
+        mode = _iActualMode;
     else if (viewOverrideMode < pcModeSwitch->getNumChildren())
-        pcModeSwitch->whichChild = viewOverrideMode;
+        mode = viewOverrideMode;
     else
         return;
-    callExtension(&ViewProviderExtension::extensionModeSwitchChange);
+    if(mode != pcModeSwitch->whichChild.getValue()) {
+        pcModeSwitch->whichChild = mode;
+        callExtension(&ViewProviderExtension::extensionModeSwitchChange);
+    }
 }
 
 void ViewProvider::setDefaultMode(int val)
 {
     _iActualMode = val;
-    callExtension(&ViewProviderExtension::extensionModeSwitchChange);
+    setModeSwitch();
 }
 
-int ViewProvider::getDefaultMode() const {
-    return viewOverrideMode>=0?viewOverrideMode:_iActualMode;
+int ViewProvider::getDefaultMode(bool noOverride) const {
+    return (!noOverride && viewOverrideMode>=0)?viewOverrideMode:_iActualMode;
 }
 
 void ViewProvider::onChanged(const App::Property* prop)
@@ -905,17 +909,11 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
     View3DInventorViewer* viewer = iview->getViewer();
     SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
 
-    auto mode = pcModeSwitch->whichChild.getValue();
-    if(mode < 0)
-        pcModeSwitch->whichChild = getDefaultMode();
-
     SoTempPath path(20);
     path.ref();
     if(subname && subname[0]) {
         SoDetail *det=0;
         if(!getDetailPath(subname,&path,true,det)) {
-            if(mode < 0)
-                pcModeSwitch->whichChild = mode;
             path.unrefNoDelete();
             return Base::BoundBox3d();
         }
@@ -928,12 +926,12 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
         resetPath.append(pcModeSwitch);
         bboxAction.setResetPath(&resetPath,true,SoGetBoundingBoxAction::TRANSFORM);
     }
-    if(path.getLength())
-        bboxAction.apply(&path);
-    else
-        bboxAction.apply(pcRoot);
-    if(mode < 0)
-        pcModeSwitch->whichChild = mode;
+    if(!path.getLength()) {
+        path.append(pcRoot);
+        path.append(pcModeSwitch);
+    }
+    SoFCSwitch::switchDefault(&bboxAction);
+    bboxAction.apply(&path);
     resetPath.unrefNoDelete();
     path.unrefNoDelete();
     auto bbox = bboxAction.getBoundingBox();

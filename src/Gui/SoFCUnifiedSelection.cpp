@@ -109,7 +109,7 @@ SO_NODE_SOURCE(SoFCUnifiedSelection)
 /*!
   Constructor.
 */
-SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
+SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0), pcViewer(0), pcOnTopPickAction(0)
 {
     SO_NODE_CONSTRUCTOR(SoFCUnifiedSelection);
 
@@ -131,6 +131,14 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
     setPreSelection = false;
     preSelection = -1;
     useNewSelection = ViewParams::instance()->getUseNewSelection();
+
+    preselTime = SbTime::getTimeOfDay();
+    preselTimer.setData(this);
+    preselTimer.setFunction([](void *data, SoSensor*){
+        reinterpret_cast<SoFCUnifiedSelection*>(data)->onPreselectTimer();
+    });
+
+    pcOnTopPickAction = new SoRayPickAction(SbViewportRegion());
 }
 
 /*!
@@ -148,6 +156,8 @@ SoFCUnifiedSelection::~SoFCUnifiedSelection()
         detailPath->unref();
         detailPath = NULL;
     }
+
+    delete pcOnTopPickAction;
 }
 
 // doc from parent
@@ -226,27 +236,60 @@ int SoFCUnifiedSelection::getPriority(const SoPickedPoint* p)
     return 0;
 }
 
-std::vector<SoFCUnifiedSelection::PickedInfo> 
-SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick) const
+struct SoFCUnifiedSelection::PickedInfo {
+    std::unique_ptr<SoPickedPoint> ppCopy;
+    const SoPickedPoint *pp;
+    ViewProviderDocumentObject *vpd;
+    std::string element;
+
+    PickedInfo()
+        :pp(0),vpd(0)
+    {}
+
+    PickedInfo(PickedInfo &&other)
+        :ppCopy(std::move(other.ppCopy))
+        ,pp(other.pp)
+        ,vpd(other.vpd)
+        ,element(std::move(other.element))
+    {}
+
+    PickedInfo &operator=(PickedInfo &&other) {
+        ppCopy = std::move(other.ppCopy);
+        pp = other.pp;
+        vpd = other.vpd;
+        element = std::move(other.element);
+        return *this;
+    }
+
+    void copy() {
+        ppCopy.reset(pp->copy());
+        pp = ppCopy.get();
+    }
+
+};
+
+void SoFCUnifiedSelection::getPickedList(std::vector<PickedInfo> &ret,
+        const SoPickedPointList &points, bool singlePick, bool copy,
+        std::set<std::pair<ViewProvider*,std::string> > &filter) const
 {
     ViewProvider *last_vp = 0;
-    std::vector<PickedInfo> ret;
-    const SoPickedPointList & points = action->getPickedPointList();
     for(int i=0,count=points.getLength();i<count;++i) {
         PickedInfo info;
         info.pp = points[i];
         info.vpd = 0;
         ViewProvider *vp = 0;
         SoFullPath *path = static_cast<SoFullPath *>(info.pp->getPath());
-        if (this->pcDocument && path && path->containsPath(action->getCurPath())) {
+        if (this->pcDocument && path) {
             vp = this->pcDocument->getViewProviderByPathFromHead(path);
             if(singlePick && last_vp && last_vp!=vp)
-                return ret;
+                return;
         }
         if(!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
             if(!singlePick) continue;
-            if(ret.empty())
-                ret.push_back(info);
+            if(ret.empty()) {
+                if(copy) info.copy();
+                ret.push_back(std::move(info));
+            }
             break;
         }
         info.vpd = static_cast<ViewProviderDocumentObject*>(vp);
@@ -254,7 +297,8 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
             if(!singlePick) continue;
             if(ret.empty()) {
                 info.vpd = 0;
-                ret.push_back(info);
+                if(copy) info.copy();
+                ret.push_back(std::move(info));
             }
             break;
         }
@@ -263,10 +307,66 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
 
         if(singlePick) 
             last_vp = vp;
-        ret.push_back(info);
+        else if(!filter.emplace(info.vpd,info.element).second)
+            continue;
+        
+        if(copy) info.copy();
+        ret.push_back(std::move(info));
     }
+}
 
-    if(ret.size()<=1) return ret;
+
+std::vector<SoFCUnifiedSelection::PickedInfo> 
+SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick) const
+{
+    std::vector<PickedInfo> ret;
+    std::set<std::pair<ViewProvider*,std::string> > filter;
+
+    SoPath *path = pcViewer->getGroupOnTopPath();
+    int pathLength = path->getLength();
+    if(!pathLength || !path->getNodeFromTail(0)->isOfType(SoGroup::getClassTypeId()))
+        return;
+
+    SoGroup *group = static_cast<SoGroup*>(path->getNodeFromTail(0));
+
+    SoRayPickAction *action = pcOnTopPickAction;
+    action->setViewportRegion(viewport);
+    action->setPoint(pos);
+    action->setPickAll(true);
+    action->setRadius(ViewParams::instance()->getPickRadius());
+
+    SoPickStyleElement::set(action->getState(),SoPickStyleElement::SHAPE);
+    SoOverrideElement::setPickStyleOverride(action->getState(),0,true);
+
+    for(int i=0,count=group->getNumChildren();i<count;++i) {
+        auto child = group->getChild(i);
+        if(!child->isOfType(SoFCPathAnnotation::getClassTypeId()))
+            continue;
+        static_cast<SoFCPathAnnotation*>(child)->doPick(path,action);
+        getPickedInfo(ret,action->getPickedPointList(),singlePick,true,filter);
+        action->reset();
+        if(singlePick && ret.size()>=1)
+            break;
+    }
+    path->truncate(pathLength);
+}
+
+std::vector<SoFCUnifiedSelection::PickedInfo> 
+SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick) const
+{
+    std::vector<PickedInfo> ret;
+    std::set<std::pair<ViewProvider*,std::string> > filter;
+
+    getPickedInfoOnTop(ret, action->getViewportRegion(),
+            action->getEvent()->getPosition(), singlePick, filter);
+
+    if(ret.empty() || !singlePick)
+        getPickedList(ret,action->getPickedPointList(),singlePick,false,filter);
+    else if(ret.size()==1)
+        return ret;
+
+    if(ret.size()<=1)
+        return ret;
 
     // To identify the picking of lines in a concave area we have to 
     // get all intersection points. If we have two or more intersection
@@ -292,12 +392,23 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
     }
 
     if(singlePick) {
-        std::vector<PickedInfo> sret(itPicked,itPicked+1);
+        std::vector<PickedInfo> sret(1);
+        sret[0] = std::move(*itPicked);
         return sret;
     }
-    if(itPicked != ret.begin())
-        std::swap(*itPicked, *ret.begin());
+    if(itPicked != ret.begin()) {
+        PickedInfo tmp(std::move(*itPicked));
+        *itPicked = std::move(*ret.begin());
+        *ret.begin() = std::move(tmp);
+    }
     return ret;
+}
+
+SoPickedPoint *SoFCUnifiedSelection::getPickedPoint(SoHandleEventAction *action) const {
+    auto res = getPickedList(action,true);
+    if(res.size() && res[0].pp)
+        return res[0].pp->copy();
+    return 0;
 }
 
 void SoFCUnifiedSelection::doAction(SoAction *action)
@@ -460,6 +571,29 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
     inherited::doAction( action );
 }
 
+void SoFCUnifiedSelection::onPreselectTimer() {
+    preselTimer.unschedule();
+
+    std::vector<PickedInfo> infos;
+    std::set<std::pair<ViewProvider*,std::string> > filter;
+    getPickedInfoOnTop(infos, preselViewport, preselPos, true, filter);
+
+    SoRayPickAction action(preselViewport);
+    if(infos.empty()) {
+        action.setPoint(preselPos);
+        action.setPickAll(true);
+        action.setRadius(ViewParams::instance()->getPickRadius());
+        action.apply(pcViewer->getSoRenderManager()->getSceneGraph());
+        getPickedInfo(infos,action.getPickedPointList(),true,false,filter);
+    }
+    postProcessPickedList(infos,true);
+    if(infos.size())
+        setHighlight(infos[0]);
+    else
+        setHighlight(PickedInfo());
+    
+}
+
 bool SoFCUnifiedSelection::setHighlight(const PickedInfo &info) {
     if(!info.pp)
         return setHighlight(0,0,0,0,0.0,0.0,0.0);
@@ -508,6 +642,9 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         }
     }
 
+    if(!highlighted)
+        this->preSelection = 0;
+
     if(currenthighlight) {
         SoHighlightElementAction action;
         action.setHighlighted(highlighted);
@@ -521,10 +658,11 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         }
         this->touch();
     }
+
     return highlighted;
 }
 
-bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bool ctrlDown) {
+bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bool ctrlDown, bool shiftDown) {
     if(infos.empty() || !infos[0].vpd) return false;
 
     std::vector<SelectionSingleton::SelObj> sels;
@@ -563,7 +701,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
     static char buf[513];
 
-    if (ctrlDown) {
+    if (ctrlDown && !shiftDown) {
         if(Gui::Selection().isSelected(docname,objname,info.element.c_str(),0))
             Gui::Selection().rmvSelection(docname,objname,info.element.c_str(),&sels);
         else {
@@ -603,7 +741,9 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     FC_TRACE("select " << (subSelected?subSelected:"'null'") << ", " << 
             objectName << ", " << subName);
     std::string newElement;
-    if(subSelected) {
+    if(subSelected && ((ctrlDown && shiftDown)
+                        || Data::ComplexGeoData::hasElementName(subSelected)))
+    {
         newElement = Data::ComplexGeoData::newElementName(subSelected);
         subSelected = newElement.c_str();
         std::string nextsub;
@@ -727,18 +867,25 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         // down extremely the system on really big data sets. In this case we just check for a picked point if the data
         // set has been selected.
         if (mymode == AUTO || mymode == ON) {
-            // check to see if the mouse is over our geometry...
-            auto infos = this->getPickedList(action,true);
-            if(infos.size()) 
-                setHighlight(infos[0]);
-            else {
-                setHighlight(PickedInfo());
-                if (this->preSelection > 0) {
-                    this->preSelection = 0;
-                    // touch() makes sure to call GLRenderBelowPath so that the cursor can be updated
-                    // because only from there the SoGLWidgetElement delivers the OpenGL window
-                    this->touch();
+            double delay = ViewParams::instance()->getPreSelectionDelay();
+            // Rate limit picking action
+            if(delay>0.0 && (SbTime::getTimeOfDay()-preselTime).getValue()<delay) {
+                preselPos = action->getEvent()->getPosition();
+                preselViewport = action->getViewportRegion();
+                if(!preselTimer.isScheduled()) {
+                    preselTimer.setInterval(delay);
+                    preselTimer.schedule();
                 }
+            } else {
+                if(preselTimer.isScheduled())
+                    preselTimer.unschedule();
+                // check to see if the mouse is over our geometry...
+                auto infos = this->getPickedList(action,true);
+                if(infos.size()) 
+                    setHighlight(infos[0]);
+                else
+                    setHighlight(PickedInfo());
+                preselTime = SbTime::getTimeOfDay();
             }
         }
     }
@@ -749,7 +896,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
             // check to see if the mouse is over a geometry...
             auto infos = this->getPickedList(action,!Selection().needPickedList());
-            if(setSelection(infos,event->wasCtrlDown()))
+            if(setSelection(infos,event->wasCtrlDown(),event->wasShiftDown()))
                 action->setHandled();
         } // mouse release
     }
@@ -1000,6 +1147,245 @@ bool SoFCSelectionRoot::StackComp::operator()(const Stack &a, const Stack &b) co
     }
     return false;
 }
+
+// ---------------------------------------------------------------------------------
+SO_NODE_SOURCE(SoFCSwitch)
+
+SoFCSwitch::SoFCSwitch()
+{
+    SO_NODE_CONSTRUCTOR(SoFCSwitch);
+    SO_NODE_ADD_FIELD(defaultChild,  (0));
+    SO_NODE_ADD_FIELD(overrideSwitch,(OverrideNone));
+    SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideNone);
+    SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideDefault);
+    SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideVisible);
+    SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideReset);
+    SO_NODE_SET_SF_ENUM_TYPE(overrideSwitch, OverrideSwitch);
+}
+
+// switch to defaultChild when invisible
+#define FC_SWITCH_DEFAULT (0x10000000)
+#define FC_SWITCH_VISIBLE (0x20000000)
+#define FC_SWITCH_RESET   (0x30000000)
+#define FC_SWITCH_MASK    (0xF0000000)
+
+void SoFCSwitch::switchOverride(SoAction *action, OverrideSwitch o) {
+    if(action) {
+        int which;
+        switch(o) {
+        case OverrideDefault:
+            which = FC_SWITCH_DEFAULT;
+            break;
+        case OverrideVisible:
+            which = FC_SWITCH_VISIBLE;
+            break;
+        default:
+            which = SO_SWITCH_NONE;
+        }
+        SoSwitchElement::set(action->getState(),which);
+    }
+}
+
+struct SwitchInfo {
+    CoinPtr<SoPath> path;
+    int idx;
+
+    SwitchInfo(SoPath *p)
+        :path(p),idx(-1)
+    {
+        if(next()<0)
+            path.reset();
+    }
+
+    int next() {
+        if(!path)
+            return -1;
+        int count = path->getLength();
+        if(idx>=count)
+            return -1;
+        for(++idx;idx<count;++idx) {
+            if(path->getNode(idx)->isOfType(SoFCSwitch::getClassTypeId()))
+                break;
+        }
+        return idx<count?idx:-1;
+    }
+};
+
+static thread_local std::deque<SwitchInfo> _SwitchStack;
+static thread_local std::deque<SoFCSwitch::TraverseState> _SwitchTraverseStack;
+
+bool SoFCSwitch::testTraverseState(TraverseStateFlag flag) {
+    if(_SwitchTraverseStack.size())
+        return _SwitchTraverseStack.back().test((std::size_t)flag);
+    return false;
+}
+
+void SoFCSwitch::doAction(SoAction *action) {
+    auto state = action->getState();
+
+    uint32_t mask = ((uint32_t)SoSwitchElement::get(state)) & FC_SWITCH_MASK;
+    int idx = -1;
+
+    switch(overrideSwitch.getValue()) {
+    case OverrideDefault:
+        if(mask != FC_SWITCH_VISIBLE)
+            mask = FC_SWITCH_DEFAULT;
+        break;
+    default:
+        break;
+    }
+
+    if((mask!=FC_SWITCH_DEFAULT && mask!=FC_SWITCH_VISIBLE)
+            || (action->isOfType(SoCallbackAction::getClassTypeId()) &&
+                ((SoCallbackAction *)action)->isCallbackAll()))
+    {
+        inherited::doAction(action);
+        return;
+    }
+
+    int numindices = 0;
+    const int * indices = 0;
+    SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
+
+    if(_SwitchStack.size() && _SwitchStack.back().path) {
+        auto &info = _SwitchStack.back();
+        if(info.path->getNode(info.idx) == this) {
+            // We are traversing inside a path from some parent SoFCPathAnnotation.
+            // We shall override the switch index according to the path inside
+            if(info.idx+1<info.path->getLength()) 
+                idx = info.path->getIndex(info.idx+1);
+
+            int nodeIdx = info.idx;
+            if(info.next()<0) {
+                if(nodeIdx+1==info.path->getLength())
+                    idx = this->defaultChild.getValue();
+                // We are the last SoFCSwitch node inside the path, reset the
+                // path so we do not override visibility below. We will still
+                // override switch if the node is visible.
+                info.path.reset();
+            }
+        }
+    } else if (numindices == 1) {
+        // this means we applying the action to a path, and we are traversing in the middle of it.
+        idx = indices[0];
+    } else if (action->getWhatAppliedTo() == SoAction::PATH) {
+        auto path = action->getPathAppliedTo();
+        if(path && path->getLength() && path->getNodeFromTail(0) == this)
+            idx = this->defaultChild.getValue();
+    }
+
+    if(idx<0 && idx!=SO_SWITCH_ALL) {
+        if((mask==FC_SWITCH_VISIBLE || whichChild.getValue()!=SO_SWITCH_NONE)
+                && this->defaultChild.getValue()!=SO_SWITCH_NONE)
+        {
+            idx = this->defaultChild.getValue();
+        } else
+            idx = this->whichChild.getValue();
+    }
+
+    if(idx!=SO_SWITCH_ALL && (idx<0 || idx>=this->getNumChildren())) {
+        inherited::doAction(action);
+        return;
+    }
+
+    switch(overrideSwitch.getValue()) {
+    case OverrideVisible:
+        // OverrideVisible is only applicable to children
+        mask = FC_SWITCH_VISIBLE;
+        break;
+    case OverrideReset:
+        if(_SwitchStack.empty() || !_SwitchStack.back().path)
+            mask = FC_SWITCH_RESET;
+        break;
+    default:
+        break;
+    }
+    uint32_t uidx = (uint32_t)idx;
+    SoSwitchElement::set(state, (int32_t)(mask|(uidx & ~FC_SWITCH_MASK)));
+
+    TraverseState tstate(0);
+    if(_SwitchTraverseStack.size()) {
+        tstate = _SwitchTraverseStack.back();
+        tstate.reset(TraverseAlternative);
+    } else
+        tstate.set(TraverseOverride);
+
+    if(whichChild.getValue() == SO_SWITCH_NONE)
+        tstate.set(TraverseInvisible);
+    else if(whichChild.getValue()!=idx) 
+        tstate.set(TraverseAlternative);
+
+    if(!_SwitchTraverseStack.size() || _SwitchTraverseStack.back()!=tstate)
+        _SwitchTraverseStack.push_back(tstate);
+    else
+        tstate.reset();
+
+    if(idx == SO_SWITCH_ALL) {
+        if (pathcode == SoAction::IN_PATH)
+            this->children->traverseInPath(action, numindices, indices);
+        else
+            this->children->traverse(action);
+    } else if (pathcode == SoAction::IN_PATH) {
+        // traverse only if one path matches idx
+        for (int i = 0; i < numindices; i++) {
+            if (indices[i] == idx) {
+                this->children->traverse(action, idx);
+                break;
+            }
+        }
+    } else
+        this->children->traverse(action, idx);
+
+    if(tstate.to_ulong())
+        _SwitchTraverseStack.pop_back();
+}
+
+void SoFCSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
+{
+    if(cb)
+        cb();
+    doAction(action);
+}
+
+void SoFCSwitch::search(SoSearchAction * action)
+{
+    SoNode::search(action);
+    if (action->isFound()) return;
+
+    if (action->isSearchingAll()) {
+        this->children->traverse(action);
+    }
+    else {
+        doAction(action);
+    }
+}
+
+void SoFCSwitch::callback(SoCallbackAction *action)
+{
+    doAction(action);
+}
+
+void SoFCSwitch::pick(SoPickAction *action)
+{
+    doAction((SoAction*)action);
+}
+
+void SoFCSwitch::handleEvent(SoHandleEventAction *action)
+{
+    doAction(action);
+}
+
+void SoFCSwitch::initClass(void)
+{
+    SO_NODE_INIT_CLASS(SoFCSwitch,SoSwitch,"FCSwitch");
+}
+
+void SoFCSwitch::finish()
+{
+    atexit_cleanup();
+}
+
+
 // ---------------------------------------------------------------------------------
 SoSeparator::CacheEnabled SoFCSeparator::CacheMode = SoSeparator::AUTO;
 SO_NODE_SOURCE(SoFCSeparator)
@@ -1039,7 +1425,6 @@ void SoFCSeparator::finish()
 typedef struct {
     SoGetBoundingBoxAction * bboxaction;
     SoCube *cube;
-    SoColorPacker *packer;
 } SoFCBBoxRenderInfo;
 
 static void so_bbox_construct_data(void * closure)
@@ -1047,7 +1432,6 @@ static void so_bbox_construct_data(void * closure)
     SoFCBBoxRenderInfo * data = (SoFCBBoxRenderInfo*) closure;
     data->bboxaction = NULL;
     data->cube = NULL;
-    data->packer = NULL;
 }
 
 static void so_bbox_destruct_data(void * closure)
@@ -1056,7 +1440,6 @@ static void so_bbox_destruct_data(void * closure)
     delete data->bboxaction;
     if(data->cube)
         data->cube->unref();
-    delete data->packer;
 }
 
 static SbStorage * so_bbox_storage = NULL;
@@ -1206,7 +1589,26 @@ std::pair<bool,SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionContex
     return res;
 }
 
-bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, SbColor color) 
+void SoFCSelectionRoot::setupSelectionLineRendering(
+        SoState *state, SoNode *node, const uint32_t &color)
+{
+    float width = SoLineWidthElement::get(state);
+    if(width < 1.0)
+        width = 1.0;
+
+    if(Gui::ViewParams::instance()->getSelectionLineThicken()>1.0)
+        width *= Gui::ViewParams::instance()->getSelectionLineThicken();
+
+    SoLineWidthElement::set(state,width);
+
+    SoLightModelElement::set(state,SoLightModelElement::BASE_COLOR);
+    SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
+
+    SoLazyElement::setPacked(state, node, 1, &color, false);
+}
+
+bool SoFCSelectionRoot::renderBBox(
+        SoGLRenderAction *action, SoNode *node, SbColor color) 
 {
     auto data = (SoFCBBoxRenderInfo*) so_bbox_storage->get();
     if (data->bboxaction == NULL) {
@@ -1215,28 +1617,29 @@ bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, SbCol
         data->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion());
         data->cube = new SoCube;
         data->cube->ref();
-        data->packer = new SoColorPacker;
     }
+
+    auto state = action->getState();
+
+    if(!action->isRenderingDelayedPaths()
+            && ViewParams::instance()->getShowSelectionOnTop())
+        return false;
 
     SbBox3f bbox;
     data->bboxaction->setViewportRegion(action->getViewportRegion());
+    SoSwitchElement::set(data->bboxaction->getState(), SoSwitchElement::get(action->getState()));
     data->bboxaction->apply(node);
     bbox = data->bboxaction->getBoundingBox();
     if(bbox.isEmpty())
         return false;
 
-    auto state = action->getState();
-
     state->push();
 
-    SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
-    SoLazyElement::setEmissive(state, &color);
-    SoLazyElement::setDiffuse(state, node,1, &color, data->packer);
-    SoDrawStyleElement::set(state, node, SoDrawStyleElement::LINES);
-    SoLineWidthElement::set(state, node, 1.0f);
+    uint32_t packed = color.getPackedValue(0.0);
+    setupSelectionLineRendering(state,node,packed);
 
-    const static float trans = 0.0;
-    SoLazyElement::setTransparency(state, node, 1, &trans, data->packer);
+    SoDrawStyleElement::set(state,SoDrawStyleElement::LINES);
+    SoLineWidthElement::set(state,ViewParams::instance()->getSelectionBBoxLineWidth());
 
     float x, y, z;
     bbox.getSize(x, y, z);
@@ -1249,6 +1652,9 @@ bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, SbCol
     SoMaterialBundle mb(action);
     mb.sendFirst();
 
+    FCDepthFunc guard;
+    if(!action->isRenderingDelayedPaths())
+        guard.set(GL_LEQUAL);
     data->cube->GLRender(action);
 
     state->pop();
@@ -1268,34 +1674,44 @@ void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, bool inPath) {
         }
         return;
     }
+    auto state = action->getState();
+    bool pushed = false;
     SelStack.push_back(this);
-    if(_renderPrivate(action,inPath)) {
+    if(_renderPrivate(action,inPath,pushed)) {
         if(inPath)
             SoSeparator::GLRenderInPath(action);
         else
             SoSeparator::GLRenderBelowPath(action);
     }
+    if(pushed)
+        state->pop();
     SelStack.pop_back();
     SelStack.nodeSet.erase(this);
 }
 
-bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
+bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, bool &pushed) {
     auto ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(SelStack,this,SelContext::merge));
     if(ctx2 && ctx2->hideAll)
         return false;
 
     auto state = action->getState();
     SelContextPtr ctx = getRenderContext<SelContext>(this);
+
     int style = selectionStyle.getValue();
     if((style==SoFCSelectionRoot::Box || ViewParams::instance()->getShowSelectionBoundingBox())
        && ctx && !ctx->hideAll && (ctx->selAll || ctx->hlAll)) 
     {
         if (style==SoFCSelectionRoot::PassThrough) {
             style = SoFCSelectionRoot::Box;
-        }
-        else {
+        } else {
+            if(!SoFCSwitch::testTraverseState(SoFCSwitch::TraverseInvisible)) {
+                if(inPath)
+                    SoSeparator::GLRenderInPath(action);
+                else
+                    SoSeparator::GLRenderBelowPath(action);
+            }
             renderBBox(action,this,ctx->hlAll?ctx->hlColor:ctx->selColor);
-            return true;
+            return false;
         }
     }
 
@@ -1314,7 +1730,10 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
     {
         ShapeColorNode = this;
         colorPushed = true;
-        state->push();
+        if(!pushed) {
+            pushed = true;
+            state->push();
+        }
         auto &packer = ShapeColorNode->shapeColorPacker;
         auto &trans = ShapeColorNode->transOverride;
         auto &color = ShapeColorNode->colorOverride;
@@ -1338,46 +1757,45 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
     } else {
         bool selPushed;
         bool hlPushed;
-        if((selPushed = ctx->selAll)) {
-            SelColorStack.push_back(ctx->selColor);
-
-            if(style != SoFCSelectionRoot::Box) {
-                state->push();
-                auto &color = SelColorStack.back();
-                SoLazyElement::setEmissive(state, &color);
-                SoOverrideElement::setEmissiveColorOverride(state,this,true);
-                if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
-                    auto &packer = shapeColorPacker;
-                    SoLazyElement::setDiffuse(state, this, 1, &color, &packer);
-                    SoOverrideElement::setDiffuseColorOverride(state,this,true);
-                    SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::OVERALL);
-                    SoOverrideElement::setMaterialBindingOverride(state,this,true);
-                }
-            }
-        }
-
         if((hlPushed = ctx->hlAll)) 
             HlColorStack.push_back(ctx->hlColor);
+        if((selPushed = ctx->selAll))
+            SelColorStack.push_back(ctx->selColor);
+
+        if(!ViewParams::instance()->getShowSelectionOnTop() 
+                && selPushed
+                && style != SoFCSelectionRoot::Box)
+        {
+            if(!pushed) {
+                pushed = true;
+                state->push();
+            }
+            // Setting color override here is essential for proper caching
+            auto &color = SelColorStack.back();
+            SoLazyElement::setEmissive(state, &color);
+            SoOverrideElement::setEmissiveColorOverride(state,this,true);
+            if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
+                auto &packer = shapeColorPacker;
+                SoLazyElement::setDiffuse(state, this, 1, &color, &packer);
+                SoOverrideElement::setDiffuseColorOverride(state,this,true);
+                SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::OVERALL);
+                SoOverrideElement::setMaterialBindingOverride(state,this,true);
+            }
+        }
 
         if(inPath)
             SoSeparator::GLRenderInPath(action);
         else
             SoSeparator::GLRenderBelowPath(action);
 
-        if(selPushed) {
+        if(selPushed) 
             SelColorStack.pop_back();
-
-            if(style != SoFCSelectionRoot::Box)
-                state->pop();
-        }
         if(hlPushed)
             HlColorStack.pop_back();
     }
 
-    if(colorPushed) {
+    if(colorPushed) 
         ShapeColorNode = 0;
-        state->pop();
-    }
 
     return false;
 }
@@ -1557,6 +1975,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
 
     if(action->isOfType(SoSelectionElementAction::getClassTypeId())) {
         auto selAction = static_cast<SoSelectionElementAction*>(action);
+
         if(selAction->isSecondary()) {
             if(selAction->getType() == SoSelectionElementAction::Show ||
                (selAction->getType() == SoSelectionElementAction::Color && 
@@ -1668,6 +2087,48 @@ int SoFCSelectionRoot::SelContext::merge(int status, SoFCSelectionContextBasePtr
 
 /////////////////////////////////////////////////////////////////////////////
 
+FCDepthFunc::FCDepthFunc(int32_t f)
+    :func(0),changed(false),dtest(false)
+{
+    set(f);
+}
+
+FCDepthFunc::FCDepthFunc()
+    :func(0),changed(false),dtest(false)
+{}
+
+FCDepthFunc::~FCDepthFunc() {
+    restore();
+}
+
+void FCDepthFunc::restore() {
+    if(func && changed) {
+        changed = false;
+        glDepthFunc(func);
+    }
+    if(dtest) {
+        dtest = false;
+        glDisable(GL_DEPTH_TEST);
+    }
+}
+    
+void FCDepthFunc::set(int32_t f) {
+    int32_t oldFunc;
+    glGetIntegerv(GL_DEPTH_FUNC, &oldFunc);
+    if(!func)
+        func = oldFunc;
+    if(oldFunc!=f) {
+        changed = true;
+        glDepthFunc(f);
+    }
+    if(!dtest && !glIsEnabled(GL_DEPTH_TEST)) {
+        dtest = true;
+        glEnable(GL_DEPTH_TEST);
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
 SO_NODE_SOURCE(SoFCPathAnnotation)
 
 SoFCPathAnnotation::SoFCPathAnnotation()
@@ -1675,14 +2136,15 @@ SoFCPathAnnotation::SoFCPathAnnotation()
     SO_NODE_CONSTRUCTOR(SoFCPathAnnotation);
     path = 0;
     tmpPath = 0;
-    det = 0;
+    det = false;
+    this->renderCaching = SoSeparator::OFF;
+    this->boundingBoxCaching = SoSeparator::OFF;
 }
 
 SoFCPathAnnotation::~SoFCPathAnnotation()
 {
     if(path) path->unref();
     if(tmpPath) tmpPath->unref();
-    delete det;
 }
 
 void SoFCPathAnnotation::finish() 
@@ -1734,12 +2196,17 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
         }
     }
 
-    SoState * state = action->getState();
-    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-
     if (action->isRenderingDelayedPaths()) {
-        SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
-        if (zbenabled) glDisable(GL_DEPTH_TEST);
+        GLboolean dtest = glIsEnabled(GL_DEPTH_TEST);
+        if(dtest)
+            glDisable(GL_DEPTH_TEST);
+
+        // SoFCSelectionRoot will trigger switching override for all lower
+        // hierarchy SoFCSwitch nodes. This means all lower hierarchy
+        // children will made visible. This could cause slow down in
+        // rendering. Our goal here is to only override switches within the
+        // configured path, and turn off visibility override below the path
+        _SwitchStack.emplace_back(path);
 
         if(det)
             inherited::GLRenderInPath(action);
@@ -1756,24 +2223,26 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
                     }
                 }
             }
+
             if(!bbox)
                 inherited::GLRenderInPath(action);
             else {
                 bool sel = false;
                 bool hl = false;
+                float trans;
                 SbColor selColor,hlColor;
                 SoFCSelectionRoot::checkSelection(sel,selColor,hl,hlColor);
-                if(sel || hl)
-                    SoFCSelectionRoot::renderBBox(action,this,hl?hlColor:selColor);
-                else
-                    inherited::GLRenderInPath(action);
+                if(!sel && !hl)
+                    selColor.setPackedValue(ViewParams::instance()->getSelectionColor(),trans);
+                SoFCSelectionRoot::renderBBox(action,this,hl?hlColor:selColor);
             }
         }
 
-        if (zbenabled) glEnable(GL_DEPTH_TEST);
+        _SwitchStack.pop_back();
+        if(dtest)
+            glEnable(GL_DEPTH_TEST);
 
     } else {
-        SoCacheElement::invalidate(action->getState());
         auto curPath = action->getCurPath();
         SoPath *newPath = new SoPath(curPath->getLength()+path->getLength());
         newPath->append(curPath);
@@ -1787,11 +2256,8 @@ void SoFCPathAnnotation::GLRenderInPath(SoGLRenderAction * action)
     GLRenderBelowPath(action);
 }
 
-void SoFCPathAnnotation::setDetail(SoDetail *d) {
-    if(d!=det) {
-        delete det;
-        det = d;
-    }
+void SoFCPathAnnotation::setDetail(bool d) {
+    det = d;
 }
 
 void SoFCPathAnnotation::setPath(SoPath *newPath) {
@@ -1819,12 +2285,38 @@ void SoFCPathAnnotation::setPath(SoPath *newPath) {
 void SoFCPathAnnotation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
     if(path) {
-        SoGetBoundingBoxAction bboxAction(action->getViewportRegion());
-        SoFCSelectionRoot::moveActionStack(action,&bboxAction,false);
-        bboxAction.apply(path);
-        SoFCSelectionRoot::moveActionStack(&bboxAction,action,true);
-        auto bbox = bboxAction.getBoundingBox();
+        _SwitchStack.emplace_back(path);
+        // TODO: it is better to use SbStorage
+        static thread_local SoGetBoundingBoxAction *bboxAction = 0;
+        if(!bboxAction)
+            bboxAction = new SoGetBoundingBoxAction(SbViewportRegion());
+        bboxAction->setViewportRegion(action->getViewportRegion());
+        SoFCSelectionRoot::moveActionStack(action,bboxAction,false);
+        SoSwitchElement::set(bboxAction->getState(),SoSwitchElement::get(action->getState()));
+        bboxAction->apply(path);
+        SoFCSelectionRoot::moveActionStack(bboxAction,action,true);
+        auto bbox = bboxAction->getBoundingBox();
         if(!bbox.isEmpty())
             action->extendBy(bbox);
+        _SwitchStack.pop_back();
     }
+}
+
+void SoFCPathAnnotation::doPick(SoPath *curPath, SoRayPickAction *action) {
+    if(path) {
+        _SwitchStack.emplace_back(path);
+        int length = curPath->getLength();
+        curPath->append(this);
+        curPath->append(path);
+        action->apply(curPath);
+        curPath->truncate(length);
+        _SwitchStack.pop_back();
+    }
+}
+void SoFCPathAnnotation::doAction(SoAction *action) {
+    if(path)
+        _SwitchStack.emplace_back(path);
+    inherited::doAction(action);
+    if(path)
+        _SwitchStack.pop_back();
 }

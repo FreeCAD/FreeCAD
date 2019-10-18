@@ -67,6 +67,10 @@ GroupExtension::~GroupExtension()
 {
 }
 
+void GroupExtension::checkParentGroup() {
+    _checkParentGroup = true;
+}
+
 bool GroupExtension::queryChildExport(App::DocumentObject *obj) const {
     if(!obj || !obj->getNameInDocument())
         return false;
@@ -407,11 +411,20 @@ void GroupExtension::extensionOnChanged(const Property* p) {
         {
             bool touched = false;
             bool vis = owner->Visibility.getValue();
-            Base::FlagToggler<> guard(_togglingVisibility);
 
-            auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(owner->getPropertyByName("HiddenChildren"));
+            // _checkParentGroup is used by GeoFeatureExtensionGroup (actually
+            // its view provider) to inform us that we should not toggle
+            // children visibility here.
+            _checkParentGroup = _checkParentGroup 
+                && GeoFeatureGroupExtension::getGroupOfObject(owner);
+
+            auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
+                    owner->getPropertyByName("HiddenChildren"));
             if(hiddenChildren && hiddenChildren->getContainer()!=owner)
                 hiddenChildren = 0;
+
+            Base::FlagToggler<> guard(_togglingVisibility);
+
             std::map<std::string,std::string> hc;
 
             for(auto obj : Group.getValues()) {

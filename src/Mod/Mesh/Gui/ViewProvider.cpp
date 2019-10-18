@@ -470,12 +470,12 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     pcWireSep->addChild(pcHighlight);
 
     SoGroup* pcFlatWireRoot = new SoGroup();
-    pcFlatWireRoot->addChild(pcWireSep);
     pcFlatWireRoot->addChild(offset);
     pcFlatWireRoot->addChild(pShapeHints);
     pcFlatWireRoot->addChild(pcShapeMaterial);
     pcFlatWireRoot->addChild(pcMatBinding);
     pcFlatWireRoot->addChild(pcShapeGroup);
+    pcFlatWireRoot->addChild(pcWireSep);
     addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
 
     if (getColorProperty()) {

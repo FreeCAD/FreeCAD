@@ -28,6 +28,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <unordered_map>
 
 #include <Base/Type.h>
 #include <Base/Placement.h>
@@ -46,6 +47,7 @@ class SoTransform;
 class SoText2;
 
 class SoSeparator;
+class SoDetail;
 class SoShapeHints;
 class SoMaterial;
 class SoRotationXYZ;
@@ -67,10 +69,17 @@ class ViewProvider;
 class SoFCBackgroundGradient;
 class NavigationStyle;
 class SoFCUnifiedSelection;
+class SoFCSelectionRoot;
+class SoFCSwitch;
+class SoFCPathAnnotation;
+class SoSelectionElementAction;
+class SoHighlightElementAction;
+class SoFCPathAnnotation;
 class Document;
 class GLGraphicsItem;
 class SoShapeScale;
 class ViewerEventFilter;
+class LinkView;
 
 /** GUI view into a 3D scene provided by View3DInventor
  *
@@ -261,7 +270,7 @@ public:
     // calls a PickAction on the scene graph
     bool pickPoint(const SbVec2s& pos,SbVec3f &point,SbVec3f &norm) const;
     SoPickedPoint* pickPoint(const SbVec2s& pos) const;
-    const SoPickedPoint* getPickedPoint(SoEventCallback * n) const;
+    SoPickedPoint* getPickedPoint(SoEventCallback * n) const;
     SbBool pubSeekToPoint(const SbVec2s& pos);
     void pubSeekToPoint(const SbVec3f& pos);
     //@}
@@ -378,6 +387,8 @@ public:
 
     virtual PyObject *getPyObject(void);
 
+    SoPath *getGroupOnTopPath() {return pcGroupOnTopPath;}
+
 protected:
     GLenum getInternalTextureFormat() const;
     void renderScene();
@@ -434,11 +445,25 @@ private:
 
     SoSeparator * pcViewProviderRoot;
 
-    SoGroup * pcGroupOnTop;
-    SoGroup * pcGroupOnTopSel;
-    SoGroup * pcGroupOnTopPreSel;
-    std::map<std::string,SoNode*> objectsOnTop;
-    std::map<std::string,SoNode*> objectsOnTopPreSel;
+    SoFCSwitch        * pcGroupOnTopSwitch;
+    SoFCSelectionRoot * pcGroupOnTopSel;
+    SoFCSelectionRoot * pcGroupOnTopPreSel;
+    SoPath            * pcGroupOnTopPath;
+
+    struct OnTopInfo {
+        SoFCPathAnnotation *node;
+        std::unordered_map<std::string, SoDetail*> elements;
+
+        OnTopInfo();
+        OnTopInfo(OnTopInfo &&other);
+        ~OnTopInfo();
+    };
+
+    std::unordered_map<std::string,OnTopInfo> objectsOnTopSel;
+    std::unordered_map<std::string,OnTopInfo> objectsOnTopPreSel;
+
+    SoSelectionElementAction *selAction;
+    SoHighlightElementAction *preselAction;
 
     SoSeparator * pcEditingRoot;
     SoTransform * pcEditingTransform;
@@ -474,7 +499,7 @@ private:
 
     std::string overrideMode;
     Gui::Document* guiDocument = nullptr;
-    
+
     ViewerEventFilter* viewerEventFilter;
     
     PyObject *_viewerPy;

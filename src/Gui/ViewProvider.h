@@ -502,7 +502,7 @@ public:
     /// Returns a list of added display mask modes
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
-    int getDefaultMode() const;
+    int getDefaultMode(bool noOverride=false) const;
     //@}
     
     virtual void setRenderCacheMode(int);

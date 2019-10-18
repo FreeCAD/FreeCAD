@@ -59,9 +59,13 @@
 # include <Inventor/elements/SoCacheElement.h>
 #endif
 
+#include <Inventor/elements/SoLinePatternElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+
 #include "SoBrepEdgeSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
+#include <Gui/ViewParams.h>
 
 using namespace PartGui;
 
@@ -83,16 +87,36 @@ SoBrepEdgeSet::SoBrepEdgeSet()
     SO_NODE_CONSTRUCTOR(SoBrepEdgeSet);
 }
 
-void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
-{
+bool SoBrepEdgeSet::isSelected(SelContextPtr ctx) {
+    if(ctx) 
+        return ctx->isSelected();
+    for(auto node : siblings) {
+        auto sctx = Gui::SoFCSelectionRoot::getRenderContext<Gui::SoFCSelectionContext>(node);
+        if(sctx && sctx->isSelected())
+            return true;
+    }
+    return false;
+}
+
+void SoBrepEdgeSet::setSiblings(std::vector<SoNode*> &&s) {
+    // No need to ref() here, because we only use the pointer as keys to lookup
+    // selection context
+    siblings = std::move(s);
+}
+
+void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
+
     auto state = action->getState();
-    selCounter.checkRenderCache(state);
+    selCounter.checkCache(state);
 
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
-    if(ctx2 && ctx2->selectionIndex.empty())
+    if(ctx2 && ctx2->selectionIndex.empty()) {
+        SoCacheElement::invalidate(state);
         return;
+    }
     if(selContext2->checkGlobal(ctx)) {
+        SoCacheElement::invalidate(state);
         if(selContext2->isSelectAll()) {
             selContext2->sl.clear();
             selContext2->sl.push_back(-1);
@@ -106,57 +130,99 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
         ctx = selContext2;
     }
 
-    if(ctx && ctx->highlightIndex==INT_MAX) {
-        if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
-            if(ctx2) {
-                ctx2->selectionColor = ctx->highlightColor;
-                renderSelection(action,ctx2); 
-            } else
-                renderHighlight(action,ctx);
-        }else{
-            if(!action->isRenderingDelayedPaths())
-                renderSelection(action,ctx); 
-            if(ctx2) {
-                ctx2->selectionColor = ctx->highlightColor;
-                renderSelection(action,ctx2); 
-            } else
-                renderHighlight(action,ctx);
-            if(action->isRenderingDelayedPaths())
-                renderSelection(action,ctx); 
-        }
+    Gui::FCDepthFunc depthGuard;
+    if(!action->isRenderingDelayedPaths())
+        depthGuard.set(GL_LEQUAL);
+
+    if(ctx && ctx->isHighlightAll()) {
+        if(ctx2) {
+            ctx2->selectionColor = ctx->highlightColor;
+            renderSelection(action,ctx2); 
+        } else
+            renderHighlight(action,ctx);
         return;
     }
 
-    if(!action->isRenderingDelayedPaths())
-        renderHighlight(action,ctx);
-    if(ctx && ctx->selectionIndex.size()) {
-        if(ctx->isSelectAll()) {
-            if(ctx2) {
-                ctx2->selectionColor = ctx->selectionColor;
-                renderSelection(action,ctx2); 
-            }else if(ctx->isSelectAll())
-                renderSelection(action,ctx); 
-            if(action->isRenderingDelayedPaths())
-                renderHighlight(action,ctx);
+    int pass = 2;
+
+    if(!ctx2 && Gui::ViewParams::instance()->getShowSelectionOnTop()
+             && (!ctx || !ctx->isSelectAll())
+             && !Gui::ViewParams::instance()->getShowSelectionBoundingBox()) 
+    {
+        // If we are rendering on top, we shall perform a two pass rendering.
+        // The first pass keep depth test disabled (default in on top
+        // rendering), and default transparency override, with an optional
+        // selection line pattern (default 0xff00). This pass is for rendering
+        // hidden lines.
+        //
+        // The second pass renables depth test, and set depth function to
+        // GL_LEQUAL to render the outline.
+        if(action->isRenderingDelayedPaths())
+            pass = 0;
+        else if (isSelected(ctx)) {
+            // If we are selected but not rendering inside the group on top.
+            // Just skip the rendering
             return;
         }
-        if(!action->isRenderingDelayedPaths())
-            renderSelection(action,ctx); 
     }
-    if(ctx2 && ctx2->selectionIndex.size())
-        renderSelection(action,ctx2,false);
-    else
-        inherited::GLRender(action);
 
-    // Workaround for #0000433
+    SoColorPacker packer;
+    float trans = 0.0;
+    int oldPattern = 0;
+    float oldWidth = 0.0;
+
+    for(;pass<=2;++pass) {
+        if(pass==0) {
+            int pattern = Gui::ViewParams::instance()->getSelectionLinePattern();
+            if(pattern) {
+                oldPattern = SoLinePatternElement::get(state);
+                SoLinePatternElement::set(state, pattern);
+            }
+            float width = Gui::ViewParams::instance()->getSelectionHiddenLineWidth();
+            if(width>0.0) {
+                oldWidth = SoLineWidthElement::get(state);
+                SoLineWidthElement::set(state,width);
+            }
+        } else if(pass==1) {
+            depthGuard.set(GL_LEQUAL);
+            if(oldPattern)
+                SoLinePatternElement::set(state, oldPattern);
+            if(oldWidth>0.0)
+                SoLineWidthElement::set(state, oldWidth);
+            if(!Gui::SoFCSwitch::testTraverseState(Gui::SoFCSwitch::TraverseInvisible)) {
+                // If we are visible, disable transparency to get a solid
+                // outline, or else on top rendering will have some default
+                // transprency, which will give a fainted appearance that is
+                // ideal of drawing hidden line, or indicating we are invisible
+                // (but forced to shown by on top rendering)
+                SoLazyElement::setTransparency(state,this,1,&trans,&packer);
+            }
+            pass = 2;
+        }
+
+        if(ctx && ctx->selectionIndex.size()) {
+            if(ctx->isSelectAll()) {
+                if(ctx2) {
+                    ctx2->selectionColor = ctx->selectionColor;
+                    renderSelection(action,ctx2); 
+                }else if(ctx->isSelectAll())
+                    renderSelection(action,ctx); 
+                renderHighlight(action,ctx);
+                continue;
+            }
+        }
+        if(ctx2 && ctx2->selectionIndex.size())
+            renderSelection(action,ctx2,false);
+        else
+            inherited::GLRender(action);
+
+        // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
-    if(!action->isRenderingDelayedPaths())
-        renderHighlight(action,ctx);
-    if(ctx && ctx->selectionIndex.size())
-        renderSelection(action,ctx);
-    if(action->isRenderingDelayedPaths())
+        if(ctx && ctx->selectionIndex.size())
+            renderSelection(action,ctx);
         renderHighlight(action,ctx);
 //#endif
+    }
 }
 
 void SoBrepEdgeSet::GLRenderBelowPath(SoGLRenderAction * action)
@@ -165,6 +231,9 @@ void SoBrepEdgeSet::GLRenderBelowPath(SoGLRenderAction * action)
 }
 
 void SoBrepEdgeSet::getBoundingBox(SoGetBoundingBoxAction * action) {
+
+    auto state = action->getState();
+    selCounter.checkCache(state);
 
     SelContextPtr ctx2 = Gui::SoFCSelectionRoot::getSecondaryActionContext<SelContext>(action,this);
     if(!ctx2 || (ctx2->sl.size()==1 && ctx2->sl[0]<0)) {
@@ -175,7 +244,6 @@ void SoBrepEdgeSet::getBoundingBox(SoGetBoundingBoxAction * action) {
     if(ctx2->sl.empty())
         return;
 
-    auto state = action->getState();
     auto coords = SoCoordinateElement::getInstance(state);
     const SbVec3f *coords3d = coords->getArrayPtr3();
 
@@ -229,11 +297,10 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 
     SoState * state = action->getState();
     state->push();
-  //SoLineWidthElement::set(state, this, 4.0f);
 
-    SoLazyElement::setEmissive(state, &ctx->highlightColor);
-    packedColor = ctx->highlightColor.getPackedValue(0.0);
-    SoLazyElement::setPacked(state, this,1, &packedColor,false);
+    uint32_t color = ctx->highlightColor.getPackedValue(0.0);
+    Gui::SoFCSelectionRoot::setupSelectionLineRendering(state,this,color);
+    SoLinePatternElement::set(state, this, 0xFFFF);
 
     const SoCoordinateElement * coords;
     const SbVec3f * normals;
@@ -271,13 +338,11 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
 {
     SoState * state = action->getState();
+    uint32_t color;
     if(push){
         state->push();
-        //SoLineWidthElement::set(state, this, 4.0f);
-
-        SoLazyElement::setEmissive(state, &ctx->selectionColor);
-        packedColor = ctx->selectionColor.getPackedValue(0.0);
-        SoLazyElement::setPacked(state, this,1, &packedColor,false);
+        color = ctx->selectionColor.getPackedValue(0.0);
+        Gui::SoFCSelectionRoot::setupSelectionLineRendering(state,this,color);
     }
 
     const SoCoordinateElement * coords;

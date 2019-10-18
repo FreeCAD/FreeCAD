@@ -292,6 +292,10 @@ ViewProviderPartExt::ViewProviderPartExt()
     nodeset = new SoBrepPointSet();
     nodeset->ref();
 
+    faceset->setSiblings({lineset,nodeset});
+    lineset->setSiblings({faceset,nodeset});
+    nodeset->setSiblings({faceset,lineset});
+
     pcFaceBind = new SoMaterialBinding();
     pcFaceBind->ref();
 
@@ -325,6 +329,13 @@ ViewProviderPartExt::ViewProviderPartExt()
 
     sPixmap = "Tree_Part";
     loadParameter();
+
+    if(pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId())) {
+        static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->setBBoxCallback([this] {
+            if(VisualTouched)
+                this->updateVisual();
+        });
+    }
 }
 
 ViewProviderPartExt::~ViewProviderPartExt()
@@ -495,12 +506,6 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
         pcPointsRoot->renderCaching =
         wireframe->renderCaching = SoSeparator::OFF;
 
-    pcNormalRoot->boundingBoxCaching =
-        pcFlatRoot->boundingBoxCaching =
-        pcWireframeRoot->boundingBoxCaching =
-        pcPointsRoot->boundingBoxCaching =
-        wireframe->boundingBoxCaching = SoSeparator::OFF;
-
     // enable two-side rendering
     pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
@@ -517,10 +522,10 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     wireframe->addChild(lineset);
 
     // normal viewing with edges and points
-    pcNormalRoot->addChild(pcPointsRoot);
-    pcNormalRoot->addChild(wireframe);
     pcNormalRoot->addChild(offset);
     pcNormalRoot->addChild(pcFlatRoot);
+    pcNormalRoot->addChild(wireframe);
+    pcNormalRoot->addChild(pcPointsRoot);
 
     // just faces with no edges or points
     pcFlatRoot->addChild(pShapeHints);

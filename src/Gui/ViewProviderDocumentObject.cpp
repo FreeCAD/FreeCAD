@@ -495,31 +495,31 @@ bool ViewProviderDocumentObject::showInTree() const {
 
 bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
 {
-    if(!isSelectable()) return false;
     if(queryExtension(&ViewProviderExtension::extensionGetElementPicked,pp,subname))
         return true;
 
+    SoPath* path = pp->getPath();
+    int idx = -1;
     auto childRoot = getChildRoot();
-    int idx = getDefaultMode();
-    if(!childRoot || pcModeSwitch->getChild(idx)!=childRoot) {
+    if(childRoot) 
+        idx = path->findNode(childRoot);
+    if(idx < 0) {
         subname = getElement(pp?pp->getDetail():0);
         return true;
     }
 
-    SoPath* path = pp->getPath();
-    idx = path->findNode(childRoot);
-    if(idx<0 || idx+1>=path->getLength())
-        return false;
-    auto vp = getDocument()->getViewProvider(path->getNode(idx+1));
-    if(!vp) return false;
-    auto obj = vp->getObject();
-    if(!obj || !obj->getNameInDocument())
-        return false;
-    std::ostringstream str;
-    str << obj->getNameInDocument() << '.';
-    if(vp->getElementPicked(pp,subname))
-        str << subname;
-    subname = str.str();
+    if(idx+1<path->getLength()) {
+        auto vp = getDocument()->getViewProvider(path->getNode(idx+1));
+        if(!vp) return false;
+        auto obj = vp->getObject();
+        if(!obj || !obj->getNameInDocument())
+            return false;
+        std::ostringstream str;
+        str << obj->getNameInDocument() << '.';
+        if(vp->getElementPicked(pp,subname))
+            str << subname;
+        subname = str.str();
+    }
     return true;
 }
 
@@ -554,31 +554,37 @@ bool ViewProviderDocumentObject::getDetailPath(
     auto obj = getObject();
     if(!obj || !obj->getNameInDocument()) return false;
     auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
-    if(!sobj || !sobj->Visibility.getValue()) return false;
+    if(!sobj || !sobj->getNameInDocument()) return false;
     auto vp = Application::Instance->getViewProvider(sobj);
     if(!vp) return false;
 
     auto childRoot = getChildRoot();
-    if(!childRoot) {
-        // If no child root, then this view provider does not stack children
-        // view provider under its own root, so we pop till before the root
-        // node of this view provider.
-        path->truncate(len);
-    } else {
-        // Do not account for our own visibility, we maybe called by a Link
-        // that has independent visibility
-        if(pcModeSwitch->getChild(getDefaultMode())!=childRoot)
+    for(;;) {
+        if(!childRoot) {
+            // If no child root, then this view provider does not stack children
+            // view provider under its own root, so we pop till before the root
+            // node of this view provider.
+            path->truncate(len);
+        } else {
+            // Do not account for our own visibility, we maybe called by a Link
+            // that has independent visibility. Just make sure the child root node
+            // is indeed a child of mode switch.
+            if(pcModeSwitch->findChild(childRoot)<0)
+                return false;
+            path->append(childRoot);
+        }
+        if(path->getLength()) {
+            SoNode * tail = path->getTail();
+            const SoChildList * children = tail->getChildren();
+            if(children && children->find(vp->getRoot())>=0)
+                return vp->getDetailPath(dot+1,path,true,det);
+        }
+        if(childRoot) {
+            // Can't find under child root, try again without it
+            childRoot = 0;
+        } else
             return false;
-        path->append(childRoot);
     }
-    bool ret = false;
-    if(path->getLength()) {
-        SoNode * tail = path->getTail();
-        const SoChildList * children = tail->getChildren();
-        if(children && children->find(vp->getRoot())>=0)
-            ret = vp->getDetailPath(dot+1,path,true,det);
-    }
-    return ret;
 }
 
 void ViewProviderDocumentObject::onPropertyStatusChanged(

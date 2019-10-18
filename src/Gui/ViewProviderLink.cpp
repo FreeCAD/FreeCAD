@@ -255,32 +255,51 @@ public:
         childSensor.detach();
         transformSensor.detach();
         for(auto &node : pcSnapshots) {
-            if(node)
+            if(node) {
                 coinRemoveAllChildren(node);
+                node.reset();
+            }
         }
         for(auto &node : pcSwitches) {
-            if(node)
+            if(node) {
                 coinRemoveAllChildren(node);
+                node.reset();
+            }
         }
         pcLinkedSwitch.reset();
         if(pcChildGroup) {
             coinRemoveAllChildren(pcChildGroup);
             pcChildGroup.reset();
         }
+        nodeMap.clear();
         pcLinked = 0;
         connChangeIcon.disconnect();
     }
 
     void updateSwitch(SoSwitch *node=0) {
         if(!isLinked() || !pcLinkedSwitch) return;
-        int index = pcLinkedSwitch->whichChild.getValue();
+        int defIndex = -1;
+        int overrideSwitch = -1;
+        if(pcLinkedSwitch->isOfType(SoFCSwitch::getClassTypeId())) {
+            defIndex = static_cast<SoFCSwitch*>(pcLinkedSwitch.get())->defaultChild.getValue();
+            overrideSwitch = static_cast<SoFCSwitch*>(pcLinkedSwitch.get())->overrideSwitch.getValue();
+        }
         for(size_t i=0;i<pcSwitches.size();++i) {
             if(!pcSwitches[i] || (node && node!=pcSwitches[i])) 
                 continue;
+
+            if(pcSwitches[i]->isOfType(SoFCSwitch::getClassTypeId())) {
+                auto node = static_cast<SoFCSwitch*>(pcSwitches[i].get());
+                if(node->defaultChild.getValue() != defIndex)
+                    node->defaultChild.setValue(defIndex);
+                if(node->overrideSwitch.getValue() != overrideSwitch)
+                    node->overrideSwitch.setValue(overrideSwitch);
+            }
+
             int count = pcSwitches[i]->getNumChildren();
-            if((index<0 && i==LinkView::SnapshotChild) || !count)
+            if((!pcLinked->Visibility.getValue() && i==LinkView::SnapshotChild) || !count)
                 pcSwitches[i]->whichChild = -1;
-            else if(count>pcLinked->getDefaultMode())
+            else if(count>pcLinked->getDefaultMode() && pcLinked->getDefaultMode()>0)
                 pcSwitches[i]->whichChild = pcLinked->getDefaultMode();
             else
                 pcSwitches[i]->whichChild = 0;
@@ -369,16 +388,17 @@ public:
             if(!update) return pcSnapshot;
         }else{
             if(ViewParams::instance()->getUseSelectionRoot())
-                pcSnapshot = new SoFCSelectionRoot;
-            else
+                pcSnapshot = new SoFCSelectionRoot(true);
+            else {
                 pcSnapshot = new SoSeparator;
-            pcSnapshot->boundingBoxCaching = SoSeparator::OFF;
-            pcSnapshot->renderCaching = SoSeparator::OFF;
+                pcSnapshot->boundingBoxCaching = SoSeparator::OFF;
+                pcSnapshot->renderCaching = SoSeparator::OFF;
+            }
             std::ostringstream ss;
             ss << pcLinked->getObject()->getNameInDocument() 
                 << "(" << type << ')';
             pcSnapshot->setName(ss.str().c_str());
-            pcModeSwitch = new SoSwitch;
+            pcModeSwitch = new SoFCSwitch;
         }
 
         pcLinkedSwitch.reset();
@@ -431,6 +451,8 @@ public:
                 else
                     pcModeSwitch->addChild(child);
             }
+            if(pcChildGroup && !childRoot)
+                pcModeSwitch->addChild(pcChildGroup);
         }
         updateSwitch(pcUpdateSwitch);
         return pcSnapshot;
@@ -447,8 +469,7 @@ public:
         if(!isLinked() || pcLinked->isRestoring()) 
             return;
         
-        if(!ViewParams::instance()->getLinkChildrenDirect())
-            updateChildren();
+        updateChildren();
 
         for(size_t i=0;i<pcSnapshots.size();++i) 
             if(pcSnapshots[i]) 
@@ -456,28 +477,37 @@ public:
     }
 
     void updateChildren() {
-        if(!isLinked()) 
-            return;
-
-        if(!pcLinked->getChildRoot()) {
-            childSensor.detach();
-            if(pcChildGroup)
-                coinRemoveAllChildren(pcChildGroup);
-            return;
+        if(isLinked()) {
+            if(!pcLinked->getChildRoot()) {
+                if(pcLinked->getObject()->hasExtension(
+                        App::GroupExtension::getExtensionClassTypeId(),false))
+                {
+                    childSensor.detach();
+                    _updateChildren(pcLinked->claimChildren());
+                    return;
+                }
+            } else if (!ViewParams::instance()->getLinkChildrenDirect()) {
+                if(childSensor.getAttachedNode() != pcLinked->getChildRoot()) {
+                    childSensor.detach();
+                    childSensor.attach(pcLinked->getChildRoot());
+                }
+                _updateChildren(pcLinked->claimChildren3D());
+                return;
+            }
         }
+        coinRemoveAllChildren(pcChildGroup);
+        childSensor.detach();
+        nodeMap.clear();
+    }
 
-        if(childSensor.getAttachedNode() != pcLinked->getChildRoot()) {
-            childSensor.detach();
-            childSensor.attach(pcLinked->getChildRoot());
-        }
+    void _updateChildren(const std::vector<App::DocumentObject *> &children) {
         if(!pcChildGroup)
             pcChildGroup = new SoGroup;
         else
             coinRemoveAllChildren(pcChildGroup);
 
         NodeMap nodeMap;
-
-        for(auto child : pcLinked->claimChildren3D()) {
+        for(auto child : children) {
             Pointer info = get(child,0);
             if(!info) continue;
             SoNode *node = info->getSnapshot(LinkView::SnapshotChild);
@@ -500,22 +530,20 @@ public:
         if(addname) 
             str << getLinkedName() <<'.';
         
+        SoPath *path = pp->getPath();
         auto pcSwitch = type!=LinkView::SnapshotMax?pcSwitches[type]:0;
-        if(pcChildGroup && pcSwitch && pcSwitch->whichChild.getValue()>=0 && 
-            pcSwitch->getChild(pcSwitch->whichChild.getValue())==pcChildGroup)
-        {
-            SoPath *path = pp->getPath();
+        if(pcSwitch && pcChildGroup) {
             int index = path->findNode(pcChildGroup);
-            if(index<=0) return false;
-            auto it = nodeMap.find(path->getNode(index+1));
-            if(it==nodeMap.end()) return false;
-            return it->second->getElementPicked(true,LinkView::SnapshotChild,pp,str);
-        }else{
-            std::string subname;
-            if(!pcLinked->getElementPicked(pp,subname))
-                return false;
-            str<<subname;
+            if(index>=0) {
+                auto it = nodeMap.find(path->getNode(index+1));
+                if(it==nodeMap.end()) return false;
+                return it->second->getElementPicked(true,LinkView::SnapshotChild,pp,str);
+            }
         }
+        std::string subname;
+        if(!pcLinked->getElementPicked(pp,subname))
+            return false;
+        str<<subname;
         return true;
     }
 
@@ -570,11 +598,9 @@ public:
         if(*subname == 0) return true;
 
         auto pcSwitch = pcSwitches[type];
-        if(!pcChildGroup || !pcSwitch || pcSwitch->whichChild.getValue()<0 ||
-            pcSwitch->getChild(pcSwitch->whichChild.getValue())!=pcChildGroup)
-        {
+        if(!pcChildGroup || !pcSwitch || Data::ComplexGeoData::isElementName(subname)) 
             return pcLinked->getDetailPath(subname,path,false,det);
-        }
+
         if(path){
             appendPath(path,pcChildGroup);
             if(pcLinked->getChildRoot())
@@ -827,28 +853,24 @@ public:
     CoinPtr<SoSwitch> pcSwitch;
     CoinPtr<SoSeparator> pcRoot;
     CoinPtr<SoTransform> pcTransform;
+    int nodeType;
     int groupIndex = -1;
     bool isGroup = false;
 
     friend LinkView;
 
     Element(LinkView &handle):handle(handle) {
-        if(handle.childType!=LinkView::SnapshotMax) {
-            pcRoot = new SoFCSelectionRoot(true);
-            pcSwitch = new SoSwitch;
-            pcSwitch->addChild(pcRoot);
-            pcSwitch->whichChild = 0;
-        }
+        nodeType = handle.childType;
     }
 
     ~Element() {
-        unlink();
         auto root = handle.getLinkRoot();
-        if(root) {
+        if(pcRoot && root) {
             int idx = root->findChild(pcRoot);
             if(idx>=0)
                 root->removeChild(idx);
         }
+        unlink();
     }
 
     SoNode *getTopNode() {
@@ -858,11 +880,10 @@ public:
         return pcRoot;
     }
 
-    void appendToPath(SoPath *path, const char *subname=0) {
-        if(pcSwitch) {
+    void appendToPath(SoPath *path) {
+        if(pcSwitch) 
             appendPath(path,pcSwitch);
-            appendPath(path,pcRoot);
-        } else if (pcRoot && (isGroup || (subname && !subname[0])))
+        if (pcRoot && isGroup)
             appendPath(path,pcRoot);
     }
 
@@ -889,24 +910,38 @@ public:
 
         isGroup = obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false);
 
-        if(handle.childType != LinkView::SnapshotMax) {
-            if(!pcSwitch) {
-                pcRoot = new SoFCSelectionRoot(true);
-                pcSwitch = new SoSwitch;
-                pcSwitch->addChild(pcRoot);
-                pcSwitch->whichChild = 0;
-            }
-            if(!isGroup)
-                pcRoot->addChild(linkInfo->getSnapshot(handle.childType));
-            pcRoot->setName(obj->getFullName().c_str());
-        } else {
+        nodeType = handle.childType;
+        if(nodeType == LinkView::SnapshotMax) {
             pcSwitch.reset();
-            if(isGroup) {
-                pcRoot = new SoFCSelectionRoot(true);
-                pcRoot->setName(obj->getFullName().c_str());
-            } else
+            if (!isGroup) 
                 pcRoot = linkInfo->pcLinked->getRoot();
+            else {
+                nodeType = SnapshotChild;
+                pcRoot = linkInfo->getSnapshot(nodeType);
+                isGroup = false;
+            }
+            return;
         }
+
+        if(!pcSwitch) 
+            pcSwitch = new SoFCSwitch;
+        else
+            coinRemoveAllChildren(pcSwitch);
+
+        if(isGroup && linkInfo->pcLinked->getDefaultMode()>=0)
+            isGroup = false;
+
+        if(!isGroup) 
+            pcRoot = linkInfo->getSnapshot(nodeType);
+        else {
+            if(!pcRoot)
+                pcRoot = new SoFCSelectionRoot(true);
+            else
+                coinRemoveAllChildren(pcRoot);
+            pcRoot->setName(obj->getFullName().c_str());
+        }
+        pcSwitch->addChild(pcRoot);
+        pcSwitch->whichChild = 0;
     }
 
     bool isLinked() const{
@@ -1183,11 +1218,15 @@ void LinkView::setSize(int _size) {
         nodeArray.push_back(std::unique_ptr<Element>(new Element(*this)));
         auto &info = *nodeArray.back();
         info.pcTransform = new SoTransform;
+        info.pcSwitch = new SoSwitch;
+        info.pcRoot = new SoFCSelectionRoot;
         info.pcRoot->addChild(info.pcTransform);
+        info.pcSwitch->addChild(info.pcRoot);
+        info.pcSwitch->whichChild = 0;
         if(pcLinkedRoot)
             info.pcRoot->addChild(pcLinkedRoot);
-        pcLinkRoot->addChild(info.getTopNode());
-        nodeMap.emplace(info.getTopNode(),(int)nodeArray.size()-1);
+        pcLinkRoot->addChild(info.pcSwitch);
+        nodeMap.emplace(info.pcSwitch,(int)nodeArray.size()-1);
     }
 }
 
@@ -1257,8 +1296,10 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
     nodeMap.clear();
     for(size_t i=0;i<nodeArray.size();++i) {
         auto &info = *nodeArray[i];
+        if(!info.isLinked())
+            continue;
         nodeMap.emplace(info.getTopNode(),i);
-        if(info.isLinked() && groups.size()) {
+        if(groups.size()) {
             auto iter = groups.find(App::GroupExtension::getGroupOfObject(
                             info.linkInfo->pcLinked->getObject()));
             if(iter != groups.end()) {
@@ -1478,7 +1519,7 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
             return false;
         auto node = path->getNode(idx+1);
         auto it = nodeMap.find(node);
-        if(it == nodeMap.end() || !isElementVisible(it->second))
+        if(it == nodeMap.end())
             return false;
         int nodeIdx = it->second;
         ++idx;
@@ -1491,7 +1532,7 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
             if(idx>=path->getLength())
                 return false;
             auto iter = nodeMap.find(path->getNode(idx));
-            if(iter == nodeMap.end() || !isElementVisible(iter->second))
+            if(iter == nodeMap.end())
                 return false;
             nodeIdx = iter->second;
         }
@@ -1616,18 +1657,23 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
         if(info.groupIndex>=0 && !getGroupHierarchy(info.groupIndex,path))
             return false;
 
-        info.appendToPath(path,subname);
+        info.appendToPath(path);
 
-        if(*subname == 0) 
+        if(info.isGroup && *subname == 0) 
             return true;
 
         if(info.isLinked()) {
-            if(childType == SnapshotMax)
+            // Here means we are in group mode
+            if(info.pcRoot == info.linkInfo->pcLinked->getRoot())
                 info.linkInfo->pcLinked->getDetailPath(subname,path,true,det);
             else
-                info.linkInfo->getDetail(false,childType,subname,det,path);
+                info.linkInfo->getDetail(false,info.nodeType,subname,det,path);
             return true;
         }
+        // if not info.isLinked(), then we are in array mode
+
+        if (info.pcRoot)
+            appendPathSafe(path, info.pcRoot);
     }
     if(isLinked()) {
         if(nodeType >= 0) {
@@ -2356,7 +2402,6 @@ bool ViewProviderLink::canDragAndDropObject(App::DocumentObject* obj) const {
 }
 
 bool ViewProviderLink::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
-    if(!isSelectable()) return false;
     auto ext = getLinkExtension();
     if(!ext) return false;
     if(childVpLink && childVp) {
@@ -2392,7 +2437,7 @@ bool ViewProviderLink::getDetailPath(
         appendPath(pPath,pcRoot);
         appendPath(pPath,pcModeSwitch);
     }
-    if(childVpLink && getDefaultMode()==1) {
+    if(childVpLink && !Data::ComplexGeoData::isElementName(subname)) {
         if(childVpLink->getDetail(false,LinkView::SnapshotTransform,subname,det,pPath))
             return true;
         pPath->truncate(len);

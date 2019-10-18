@@ -110,7 +110,7 @@ public:
 protected:
     virtual ~SoFCSelection();
 
-    typedef SoFCSelectionContext SelContext;
+    struct SelContext;
     typedef std::shared_ptr<SelContext> SelContextPtr;
     SelContextPtr selContext;
     SelContextPtr selContext2;
