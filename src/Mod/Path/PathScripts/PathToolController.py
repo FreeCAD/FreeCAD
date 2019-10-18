@@ -61,21 +61,24 @@ class ToolControllerTemplate:
     VertRapid    = 'vrapid'
 
 class ToolController:
-    def __init__(self, obj, tool=1):
-        PathLog.track('tool: {}'.format(tool))
 
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The active tool"))
+    def __init__(self, obj, cTool=False):
+        PathLog.track('tool: {}'.format(cTool))
+
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The active tool"))
         obj.ToolNumber = (0, 0, 10000, 1)
-        obj.addProperty("Path::PropertyTool", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool used by this controller"))
+        if cTool:
+            obj.addProperty("Path::PropertyTool", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
+        else:
+            obj.addProperty("App::PropertyLink", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
 
-        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The speed of the cutting spindle in RPM"))
-        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"))
+        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The speed of the cutting spindle in RPM"))
+        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Direction of spindle rotation"))
         obj.SpindleDir = ['Forward', 'Reverse']
-        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("App::Property", "Feed rate for vertical moves in Z"))
-        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("App::Property", "Feed rate for horizontal moves"))
-        obj.addProperty("App::PropertySpeed", "VertRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid rate for vertical moves in Z"))
-        obj.addProperty("App::PropertySpeed", "HorizRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid rate for horizontal moves"))
-        obj.Proxy = self
+        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Feed rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Feed rate for horizontal moves"))
+        obj.addProperty("App::PropertySpeed", "VertRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Rapid rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Rapid rate for horizontal moves"))
         obj.setEditorMode('Placement', 2)
 
     def onDocumentRestored(self, obj):
@@ -157,15 +160,17 @@ class ToolController:
         PathLog.track()
         return obj.Tool
 
-
+    def usesLegacyTool(self, obj):
+        '''returns True if the tool being controlled is a legacy tool'''
+        return isinstance(obj.Tool, Path.Tool)
 
 def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
     PathLog.track(tool, toolNumber)
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Label = name
+    obj.Proxy = ToolController(obj, tool is None or isinstance(tool, Path.Tool))
 
-    ToolController(obj)
     if FreeCAD.GuiUp and assignViewProvider:
         ViewProvider(obj.ViewObject)
 
@@ -176,6 +181,7 @@ def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=Tr
         tool.CuttingEdgeHeight = 15.0
         tool.ToolType = "EndMill"
         tool.Material = "HighSpeedSteel"
+
     obj.Tool = tool
     obj.ToolNumber = toolNumber
     return obj
@@ -184,12 +190,8 @@ def FromTemplate(template, assignViewProvider=True):
     PathLog.track()
 
     name = template.get(ToolControllerTemplate.Name, ToolControllerTemplate.Label)
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    tc  = ToolController(obj)
-    if FreeCAD.GuiUp and assignViewProvider:
-        ViewProvider(obj.ViewObject)
-
-    tc.setFromTemplate(obj, template)
+    obj = Create(name, assignViewProvider=True)
+    obj.Proxy.setFromTemplate(obj, template)
 
     return obj
 
