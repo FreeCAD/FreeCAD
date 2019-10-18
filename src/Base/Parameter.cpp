@@ -443,10 +443,12 @@ void  ParameterGrp::SetBool(const char* Name, bool bValue)
 {
     // find or create the Element
     DOMElement *pcElem = FindOrCreateElement(_pGroupNode,"FCBool",Name);
-    // and set the value
-    pcElem->setAttribute(XStr("Value").unicodeForm(), XStr(bValue?"1":"0").unicodeForm());
-    // trigger observer
-    Notify(Name);
+    if (pcElem) {
+        // and set the value
+        pcElem->setAttribute(XStr("Value").unicodeForm(), XStr(bValue?"1":"0").unicodeForm());
+        // trigger observer
+        Notify(Name);
+    }
 }
 
 std::vector<bool> ParameterGrp::GetBools(const char * sFilter) const
@@ -508,11 +510,13 @@ void  ParameterGrp::SetInt(const char* Name, long lValue)
     char cBuf[256];
     // find or create the Element
     DOMElement *pcElem = FindOrCreateElement(_pGroupNode,"FCInt",Name);
-    // and set the value
-    sprintf(cBuf,"%li",lValue);
-    pcElem->setAttribute(XStr("Value").unicodeForm(), XStr(cBuf).unicodeForm());
-    // trigger observer
-    Notify(Name);
+    if (pcElem) {
+        // and set the value
+        sprintf(cBuf,"%li",lValue);
+        pcElem->setAttribute(XStr("Value").unicodeForm(), XStr(cBuf).unicodeForm());
+        // trigger observer
+        Notify(Name);
+    }
 }
 
 std::vector<long> ParameterGrp::GetInts(const char * sFilter) const
@@ -569,11 +573,13 @@ void  ParameterGrp::SetUnsigned(const char* Name, unsigned long lValue)
     char cBuf[256];
     // find or create the Element
     DOMElement *pcElem = FindOrCreateElement(_pGroupNode,"FCUInt",Name);
-    // and set the value
-    sprintf(cBuf,"%lu",lValue);
-    pcElem->setAttribute(XStr("Value").unicodeForm(), XStr(cBuf).unicodeForm());
-    // trigger observer
-    Notify(Name);
+    if (pcElem) {
+        // and set the value
+        sprintf(cBuf,"%lu",lValue);
+        pcElem->setAttribute(XStr("Value").unicodeForm(), XStr(cBuf).unicodeForm());
+        // trigger observer
+        Notify(Name);
+    }
 }
 
 std::vector<unsigned long> ParameterGrp::GetUnsigneds(const char * sFilter) const
@@ -630,11 +636,13 @@ void  ParameterGrp::SetFloat(const char* Name, double dValue)
     char cBuf[256];
     // find or create the Element
     DOMElement *pcElem = FindOrCreateElement(_pGroupNode,"FCFloat",Name);
-    // and set the value
-    sprintf(cBuf,"%.12f",dValue); // use %.12f instead of %f to handle values < 1.0e-6
-    pcElem->setAttribute(XStr("Value").unicodeForm(), XStr(cBuf).unicodeForm());
-    // trigger observer
-    Notify(Name);
+    if (pcElem) {
+        // and set the value
+        sprintf(cBuf,"%.12f",dValue); // use %.12f instead of %f to handle values < 1.0e-6
+        pcElem->setAttribute(XStr("Value").unicodeForm(), XStr(cBuf).unicodeForm());
+        // trigger observer
+        Notify(Name);
+    }
 }
 
 std::vector<double> ParameterGrp::GetFloats(const char * sFilter) const
@@ -694,19 +702,20 @@ void  ParameterGrp::SetASCII(const char* Name, const char *sValue)
 {
     // find or create the Element
     DOMElement *pcElem = FindOrCreateElement(_pGroupNode,"FCText",Name);
-    // and set the value
-    DOMNode *pcElem2 = pcElem->getFirstChild();
-    if (!pcElem2) {
-        XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument *pDocument = _pGroupNode->getOwnerDocument();
-        DOMText *pText = pDocument->createTextNode(XUTF8Str(sValue).unicodeForm());
-        pcElem->appendChild(pText);
+    if (pcElem) {
+        // and set the value
+        DOMNode *pcElem2 = pcElem->getFirstChild();
+        if (!pcElem2) {
+            XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument *pDocument = _pGroupNode->getOwnerDocument();
+            DOMText *pText = pDocument->createTextNode(XUTF8Str(sValue).unicodeForm());
+            pcElem->appendChild(pText);
+        }
+        else {
+            pcElem2->setNodeValue(XUTF8Str(sValue).unicodeForm());
+        }
+        // trigger observer
+        Notify(Name);
     }
-    else {
-        pcElem2->setNodeValue(XUTF8Str(sValue).unicodeForm());
-    }
-    // trigger observer
-    Notify(Name);
-
 }
 
 std::string ParameterGrp::GetASCII(const char* Name, const char * pPreset) const
@@ -883,9 +892,11 @@ void ParameterGrp::Clear(void)
 
     // checking on references
     std::map <std::string ,Base::Reference<ParameterGrp> >::iterator It1;
-    for (It1 = _GroupMap.begin();It1!=_GroupMap.end();++It1)
+    for (It1 = _GroupMap.begin();It1!=_GroupMap.end();++It1) {
         if (It1->second.getRefCount() > 1)
             Console().Warning("ParameterGrp::Clear(): Group clear with active references");
+    }
+
     // remove group handles
     _GroupMap.clear();
 
@@ -902,7 +913,7 @@ void ParameterGrp::Clear(void)
         pcTemp->release();
     }
     // trigger observer
-    Notify(0);
+    Notify("");
 }
 
 //**************************************************************************
@@ -910,6 +921,11 @@ void ParameterGrp::Clear(void)
 
 XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ParameterGrp::FindElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name) const
 {
+    if (XMLString::compareString(Start->getNodeName(), XStr("FCParamGroup").unicodeForm()) != 0 &&
+        XMLString::compareString(Start->getNodeName(), XStr("FCParameters").unicodeForm()) != 0) {
+        Base::Console().Warning("FindElement: %s cannot have the element %s of type %s\n", StrX(Start->getNodeName()).c_str(), Name, Type);
+        return nullptr;
+    }
     for (DOMNode *clChild = Start->getFirstChild(); clChild != 0;  clChild = clChild->getNextSibling()) {
         if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
             // the right node Type
@@ -932,7 +948,8 @@ XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ParameterGrp::FindElement(XERCES_CPP_
 XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ParameterGrp::FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode *Prev, const char* Type) const
 {
     DOMNode *clChild = Prev;
-    if (!clChild) return 0l;
+    if (!clChild)
+        return nullptr;
 
     while ((clChild = clChild->getNextSibling())!=0) {
         if (clChild->getNodeType() == DOMNode::ELEMENT_NODE) {
@@ -949,14 +966,20 @@ XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ParameterGrp::FindOrCreateElement(XER
 {
     // first try to find it
     DOMElement *pcElem = FindElement(Start,Type,Name);
+    if (pcElem)
+        return pcElem;
 
-    if (!pcElem) {
-        XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument *pDocument = _pGroupNode->getOwnerDocument();
-
-        pcElem = pDocument->createElement(XStr(Type).unicodeForm());
-        pcElem-> setAttribute(XStr("Name").unicodeForm(), XStr(Name).unicodeForm());
-        Start->appendChild(pcElem);
+    if (XMLString::compareString(Start->getNodeName(), XStr("FCParamGroup").unicodeForm()) != 0 &&
+        XMLString::compareString(Start->getNodeName(), XStr("FCParameters").unicodeForm()) != 0) {
+        Base::Console().Warning("FindOrCreateElement: %s cannot have the element %s of type %s\n", StrX(Start->getNodeName()).c_str(), Name, Type);
+        return nullptr;
     }
+
+    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument *pDocument = _pGroupNode->getOwnerDocument();
+
+    pcElem = pDocument->createElement(XStr(Type).unicodeForm());
+    pcElem-> setAttribute(XStr("Name").unicodeForm(), XStr(Name).unicodeForm());
+    Start->appendChild(pcElem);
 
     return pcElem;
 }

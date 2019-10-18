@@ -93,7 +93,7 @@ class ParameterManager;
  *  kind of preferences and so on.
  *  @see ParameterManager
  */
-class  BaseExport ParameterGrp	: public Base::Handled,public Base::Subject <const char*>
+class  BaseExport ParameterGrp : public Base::Handled,public Base::Subject <const char*>
 {
 
 
