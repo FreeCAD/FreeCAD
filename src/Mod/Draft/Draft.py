@@ -322,6 +322,11 @@ from draftobjects.wpproxy import WorkingPlaneProxy
 if FreeCAD.GuiUp:
     from draftviewproviders.view_wpproxy import ViewProviderWorkingPlaneProxy
 
+from draftmake.make_fillet import make_fillet
+from draftobjects.fillet import Fillet
+if FreeCAD.GuiUp:
+    from draftviewproviders.view_fillet import ViewProviderFillet
+
 #---------------------------------------------------------------------------
 # Draft annotation objects
 #---------------------------------------------------------------------------
