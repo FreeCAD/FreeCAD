@@ -81,7 +81,7 @@ using namespace Base;
 
 //**************************************************************************
 //**************************************************************************
-// privat classes declaration:
+// private classes declaration:
 // - DOMTreeErrorReporter
 // - StrX
 // - DOMPrintFilter
