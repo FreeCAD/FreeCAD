@@ -65,6 +65,16 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
         menuText[text] = *it;
     }
 
+    {   // add special workbench to selection
+        QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
+        QString key = QString::fromLatin1("<last>");
+        QString value = QString::fromLatin1("$LastModule");
+        if (px.isNull())
+            ui->AutoloadModuleCombo->addItem(key, QVariant(value));
+        else
+            ui->AutoloadModuleCombo->addItem(px, key, QVariant(value));
+    }
+
     for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it) {
         QPixmap px = Application::Instance->workbenchIcon(it.value());
         if (px.isNull())

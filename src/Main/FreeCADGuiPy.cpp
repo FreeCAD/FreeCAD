@@ -298,15 +298,26 @@ QWidget* setupMainWindow()
         // Activate the correct workbench
         std::string start = App::Application::Config()["StartWorkbench"];
         Base::Console().Log("Init: Activating default workbench %s\n", start.c_str());
-        start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+        std::string autoload = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                                GetASCII("AutoloadModule", start.c_str());
+        if ("$LastModule" == autoload) {
+            start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                                   GetASCII("LastModule", start.c_str());
+        } else {
+            start = autoload;
+        }
         // if the auto workbench is not visible then force to use the default workbech
         // and replace the wrong entry in the parameters
         QStringList wb = Gui::Application::Instance->workbenches();
         if (!wb.contains(QString::fromLatin1(start.c_str()))) {
             start = App::Application::Config()["StartWorkbench"];
-            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                                  SetASCII("AutoloadModule", start.c_str());
+            if ("$LastModule" == autoload) {
+                App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                                      SetASCII("LastModule", start.c_str());
+            } else {
+                App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                                      SetASCII("AutoloadModule", start.c_str());
+            }
         }
 
         Gui::Application::Instance->activateWorkbench(start.c_str());
