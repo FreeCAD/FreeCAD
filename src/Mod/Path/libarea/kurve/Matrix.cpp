@@ -29,10 +29,10 @@ namespace geoff_geometry {
 		this->IsMirrored();
 	}
 
-	Matrix::Matrix( const Matrix& m)
-	{
-		*this = m;
-	}
+	//Matrix::Matrix( const Matrix& m)
+	//{
+		//*this = m;
+	//}
 
 	bool Matrix::operator==(const Matrix &m)const{
 		// m1 == m2
