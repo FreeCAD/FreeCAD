@@ -567,6 +567,8 @@ def postStart():
 
     # switch workbench
     wb = param.GetString("AutoloadModule","")
+    if "$LastModule" == wb:
+        wb = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetString("LastModule","")
     if wb:
         # don't switch workbenches if we are not in Start anymore
         if FreeCADGui.activeWorkbench() and (FreeCADGui.activeWorkbench().name() == "StartWorkbench"):
