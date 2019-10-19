@@ -257,7 +257,7 @@ class Int128
     }
 
 
-    Int128(const Int128 &val): lo(val.lo), hi(val.hi){}
+    //Int128(const Int128 &val): lo(val.lo), hi(val.hi){}
 
     Int128(const long64& _hi, const ulong64& _lo): lo(_lo), hi(_hi){}
     
