@@ -103,6 +103,7 @@ public:
     static Unit Area;
     static Unit Volume;
     static Unit TimeSpan;
+    static Unit Frequency;
     static Unit Velocity;
     static Unit Acceleration;
     static Unit Temperature;
