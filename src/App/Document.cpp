@@ -1176,12 +1176,12 @@ void Document::commitTransaction() {
 
 void Document::_commitTransaction(bool notify)
 {
-    if(isPerformingTransaction() || d->committing) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-            FC_WARN("Cannot commit transaction while transacting");
-        return;
-    }
     if (d->activeUndoTransaction) {
+        if(isPerformingTransaction() || d->committing) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("Cannot commit transaction while transacting");
+            return;
+        }
         Base::FlagToggler<> flag(d->committing);
         Application::TransactionSignaller signaller(false,true);
         int id = d->activeUndoTransaction->getID();
@@ -1212,12 +1212,12 @@ void Document::abortTransaction() {
 
 void Document::_abortTransaction()
 {
-    if(isPerformingTransaction() || d->committing) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-            FC_WARN("Cannot abort transaction while transacting");
-    }
-
     if (d->activeUndoTransaction) {
+        if(isPerformingTransaction() || d->committing) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("Cannot abort transaction while transacting");
+        }
+
         Base::FlagToggler<bool> flag(d->rollback);
         Application::TransactionSignaller signaller(true,true);
 
