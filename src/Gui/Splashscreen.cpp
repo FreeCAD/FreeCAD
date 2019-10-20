@@ -112,12 +112,13 @@ public:
     }
     void SendLog(const std::string& msg, Base::LogStyle level) override
     {
-        (void) level; // to eliminate unused parameter warning
-
 #ifdef FC_DEBUG
         Log(msg.c_str());
+        Q_UNUSED(level)
 #else
-        Q_UNUSED(msg.c_str());
+        if (level == Base::LogStyle::Log) {
+            Log(msg.c_str());
+        }
 #endif
     }
     void Log (const char * s)
