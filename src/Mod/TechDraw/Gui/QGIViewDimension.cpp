@@ -538,21 +538,26 @@ void QGIViewDimension::updateDim()
     if ( vp == nullptr ) {
         return;
     }
- 
+
 //    QString labelText = QString::fromUtf8(dim->getFormatedValue().c_str());
     //want this split into value and unit
     QString labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number
     QString unitText  = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
-    
+    QString arbText = QString::fromUtf8(dim->FormatSpec.getValue());
+
     QFont font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
     font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
     datumLabel->setFont(font);
 
     prepareGeometryChange();
-    datumLabel->setDimString(labelText);
-    datumLabel->setTolString();
-    datumLabel->setUnitString(unitText);
+    if (dim->Arbitrary.getValue()) {
+        datumLabel->setDimString(arbText);
+    } else {
+        datumLabel->setDimString(labelText);
+        datumLabel->setTolString();
+        datumLabel->setUnitString(unitText);
+    }
     datumLabel->setPosFromCenter(datumLabel->X(),datumLabel->Y());
 
     datumLabel->setFramed(dim->TheoreticalExact.getValue());
