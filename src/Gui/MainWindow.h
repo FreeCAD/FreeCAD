@@ -345,7 +345,7 @@ public:
     void SendLog(const std::string& msg, Base::LogStyle level) override;
 
     /// name of the observer
-    const char *Name(void){return "StatusBar";}
+    const char *Name(void) override {return "StatusBar";}
 
     friend class MainWindow;
 private:

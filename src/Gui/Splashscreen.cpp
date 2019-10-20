@@ -106,7 +106,7 @@ public:
     {
         Base::Console().DetachObserver(this);
     }
-    const char* Name()
+    const char* Name() override
     {
         return "SplashObserver";
     }
