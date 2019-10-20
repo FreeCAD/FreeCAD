@@ -145,6 +145,7 @@ protected:
     //! copy boiler plate file
     std::string getPlateFile(std::string fileSpec);
     void setDataDir(std::string s) { m_dataDir = s; }
+    std::string getHandle(void);
     std::string getEntityHandle(void);
     std::string getLayerHandle(void);
     std::string getBlockHandle(void);
@@ -152,6 +153,7 @@ protected:
 
     std::string m_optionSource;
     int m_version;
+    int m_handle;
     int m_entityHandle;
     int m_layerHandle;
     int m_blockHandle;

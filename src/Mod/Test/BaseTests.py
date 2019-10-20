@@ -113,8 +113,8 @@ class ParameterTestCase(unittest.TestCase):
         self.failUnless(self.TestPar.HasGroup("44"),"Test on created group failed")
         # check on Deletion
         self.TestPar.RemGroup("44")
-        self.failUnless(not self.TestPar.HasGroup("44"),"Test on delete group failed")
-        Temp =0
+        self.failUnless(self.TestPar.HasGroup("44"),"A referenced group must not be deleted")
+        Temp = 0
 
         #check on special conditions
     def testInt(self):
