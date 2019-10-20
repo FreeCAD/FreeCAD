@@ -928,7 +928,7 @@ public:
 
                 arcRadius = (onSketchPos - EditCurve[0]).Length()/(2.0*sin(theta));
 
-                // At this point we need a unit normal vector pointing torwards
+                // At this point we need a unit normal vector pointing towards
                 // the center of the arc we are drawing. Derivation of the formula
                 // used here can be found at http://people.richland.edu/james/lecture/m116/matrices/area.html
                 double x1 = EditCurve[0].x;

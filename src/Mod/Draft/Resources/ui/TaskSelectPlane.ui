@@ -124,7 +124,7 @@
    <item>
     <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>Or select a single vertex to move the current working plane without changing its orienatation. Then, press the button below</string>
+      <string>Or select a single vertex to move the current working plane without changing its orientation. Then, press the button below</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

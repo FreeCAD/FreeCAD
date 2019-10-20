@@ -128,7 +128,7 @@ Base::DualQuat Base::DualQuat::pow(double t, bool shorten) const
      *
      * * Dual quaternions are implemented as a collection of dual numbers,
      * rather than a collection of two quaternions like it is done in suggested
-     * inplementation in the paper.
+     * implementation in the paper.
      *
      * * acos replaced with atan2 for improved angle accuracy for small angles
      *

@@ -599,7 +599,7 @@ void MeshAlgorithm::SplitBoundaryLoops( std::list<std::vector<unsigned long> >& 
         it != aBorders.end(); ++it) {
         bool split=false;
         for (std::vector<unsigned long>::iterator jt = it->begin(); jt != it->end(); ++jt) {
-            // two (ore more) boundaries meet in one non-manifold point
+            // two (or more) boundaries meet in one non-manifold point
             if (openPointDegree[*jt] > 2) {
                 split = true;
                 break;

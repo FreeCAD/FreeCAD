@@ -19,7 +19,7 @@
 configLinkProperty(key=val,...): property configuration
 configLinkProperty(key,...): property configuration with default name
 
-This methode is here to impelement what I called Property Design
+This methode is here to implement what I called Property Design
 Pattern. The extension operates on a predefined set of properties,
 but it relies on the extended object to supply the actual property by
 calling this methode. You can choose a sub set of functionality of
