@@ -95,7 +95,7 @@ QByteArray PrefWidget::paramGrpPath() const
 }
 
 /** 
- * This method is called if one ore more values in the parameter settings are changed 
+ * This method is called if one or more values in the parameter settings are changed 
  * where getParamGrp() points to. 
  * Note: This method is called for each parameter inside the parameter group. So
  * you have to filter out the appropriate parameter with the name \a sReason.

@@ -350,7 +350,7 @@ void ViewProviderRobotObject::setAxisTo(float A1,float A2,float A3,float A4,floa
     Robot::RobotObject* robObj = static_cast<Robot::RobotObject*>(pcObject);
 
 	if(Axis1Node)
-        // FIXME Uggly hack for the wrong transformation of the Kuka 500 robot VRML the minus sign on Axis 1
+        // FIXME Ugly hack for the wrong transformation of the Kuka 500 robot VRML the minus sign on Axis 1
 		Axis1Node->rotation.setValue(SbVec3f(0.0,1.0,0.0),A1*(M_PI/180));
 	if(Axis2Node)
 		Axis2Node->rotation.setValue(SbVec3f(0.0,1.0,0.0),A2*(M_PI/180));
@@ -391,4 +391,3 @@ void ViewProviderRobotObject::DraggerMotionCallback(SoDragger *dragger)
     Base::Vector3d pos(translation[0],translation[1],translation[2]);
     robObj->Tcp.setValue(Base::Placement(pos,rot));
 }
-

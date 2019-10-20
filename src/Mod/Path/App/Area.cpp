@@ -1768,7 +1768,7 @@ TopoDS_Shape Area::getShape(int index) {
 
     FC_TIME_INIT(t);
 
-    // do offset first, then pocket the inner most offsetted shape
+    // do offset first, then pocket the inner most offset shape
     std::list<shared_ptr<CArea> > areas;
     makeOffset(areas,PARAM_FIELDS(AREA_MY,AREA_PARAMS_OFFSET));
 

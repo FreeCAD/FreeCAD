@@ -457,13 +457,13 @@ public:
     /** Resolve a link reference that is relative to this object reference
      *
      * @param subname: on input, this is the subname reference to the object
-     * that is to be assigned a link. On output, the reference may be offsetted
-     * to be rid off any common parent.
+     * that is to be assigned a link. On output, the reference may be offset
+     * to be rid of any common parent.
      * @param link: on input, this is the top parent of the link reference. On
      * output, it may be altered to one of its child to be rid off any common
      * parent.
      * @param linkSub: on input, this the subname of the link reference. On
-     * output, it may be offsetted to be rid off any common parent.
+     * output, it may be offset to be rid off any common parent.
      *
      * @return The corrected top parent of the object that is to be assigned the
      * link. If the output 'subname' is empty, then return the object itself.

@@ -1192,7 +1192,7 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None):
     offsetWire(wire,vector,[bind]): offsets the given wire along the
     given vector. The vector will be applied at the first vertex of
     the wire. If bind is True (and the shape is open), the original
-    wire and the offsetted one are bound by 2 edges, forming a face.
+    wire and the offset one are bound by 2 edges, forming a face.
 
         If widthList is provided (values only, not lengths - i.e. no unit),
         each value will be used to offset each corresponding edge in the wire

@@ -3758,7 +3758,7 @@ void Document::removeObject(const char* sName)
         return;
 
     if (pos->second->testStatus(ObjectStatus::PendingRecompute)) {
-        // TODO: shall we allow removal if there is active udno transaction?
+        // TODO: shall we allow removal if there is active undo transaction?
         FC_LOG("pending remove of " << sName << " after recomputing document " << getName());
         pos->second->setStatus(ObjectStatus::PendingRemove,true);
         return;
