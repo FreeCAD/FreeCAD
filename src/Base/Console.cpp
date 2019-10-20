@@ -893,7 +893,7 @@ int RedirectStdOutput::overflow(int c)
 int RedirectStdOutput::sync()
 {
     // Print as log as this might be verbose
-    if (!buffer.empty()) {
+    if (!buffer.empty() && buffer.back() == '\n') {
         Base::Console().Log("%s", buffer.c_str());
         buffer.clear();
     }
@@ -915,7 +915,7 @@ int RedirectStdLog::overflow(int c)
 int RedirectStdLog::sync()
 {
     // Print as log as this might be verbose
-    if (!buffer.empty()) {
+    if (!buffer.empty() && buffer.back() == '\n') {
         Base::Console().Log("%s", buffer.c_str());
         buffer.clear();
     }
@@ -936,7 +936,7 @@ int RedirectStdError::overflow(int c)
 
 int RedirectStdError::sync()
 {
-    if (!buffer.empty()) {
+    if (!buffer.empty() && buffer.back() == '\n') {
         Base::Console().Error("%s", buffer.c_str());
         buffer.clear();
     }
