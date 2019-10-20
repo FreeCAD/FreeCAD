@@ -34,7 +34,7 @@ are supported:
     - ElmerSolver
     - Z88
 
-To query settings about those solver the solver name must be given exactely in
+To query settings about those solver the solver name must be given exactly in
 the form written in the list above. To make the solver recognize settings for a
 new solver have a look at :class:`_SolverDlg`.
 """

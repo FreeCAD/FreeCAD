@@ -33,7 +33,7 @@ set(FREECAD_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}")
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
 
-# include local  modules
+# include local modules
 include(AddFileDependencies)
 include(cMake/FreeCadMacros.cmake)
 # include helper functions/macros

@@ -61,7 +61,7 @@ def findVert(aVertex,aList):
     return None
 
 def getIndices(obj,shape,offsetv,offsetvn):
-    "returns a list with 2 lists: vertices and face indexes, offsetted with the given amount"
+    "returns a list with 2 lists: vertices and face indexes, offset with the given amount"
     vlist = []
     vnlist = []
     elist = []

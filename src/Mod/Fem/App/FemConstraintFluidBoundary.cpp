@@ -70,7 +70,7 @@ ConstraintFluidBoundary::ConstraintFluidBoundary()
                       "Basic boundary type like inlet, wall, outlet,etc");
     BoundaryType.setEnums(BoundaryTypes);
     ADD_PROPERTY_TYPE(Subtype,(1),"FluidBoundary",(App::PropertyType)(App::Prop_None),
-                      "Subtype defines more specific boudnary types");
+                      "Subtype defines more specific boundary types");
     Subtype.setEnums(WallSubtypes);
     ADD_PROPERTY_TYPE(BoundaryValue,(0.0),"FluidBoundary",(App::PropertyType)(App::Prop_None),
                       "Scaler value for the specific value subtype, like pressure, velocity magnitude");

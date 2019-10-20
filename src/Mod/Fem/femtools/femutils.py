@@ -195,7 +195,7 @@ def get_mesh_to_solve(analysis):
 
     :returns:
      A tuple ``(object, message)``. If and only if the analysis contains
-     exactely one mesh object the first value of the tuple is the mesh document
+     exactly one mesh object the first value of the tuple is the mesh document
      object. Otherwise the first value is ``None`` and the second value is a
      error message indicating what went wrong.
     """
@@ -235,7 +235,7 @@ def is_of_type(obj, ty):
 
     :returns:
      ``True`` if *obj* is of type *ty*, ``False`` otherwise. Type must match
-     exactely: Derived objects are not considered to be of type of one of their
+     exactly: Derived objects are not considered to be of type of one of their
      super classes.
     """
     return type_of_obj(obj) == ty
