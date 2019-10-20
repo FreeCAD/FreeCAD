@@ -1,3 +1,21 @@
+#------------------------------ OpenSSL and CURL -------------------------
+if (APPLE)
+    set(OPENSSL_ROOT_DIR ${HOMEBREW_PREFIX}/Cellar/openssl/*)
+endif(APPLE)
+if (UNIX)
+    find_package(PkgConfig REQUIRED)
+    pkg_search_module(OPENSSL REQUIRED openssl)
+else()
+    find_package(OPENSSL REQUIRED)
+endif(UNIX)
+if(OPENSSL_FOUND)
+    message(STATUS "openssl-${OPENSSL_VERSION} has been found\n")
+endif(OPENSSL_FOUND)
+    find_package(CURL REQUIRED)
+if(CURL_FOUND)
+    message(STATUS "CURL has been found\n")
+endif(CURL_FOUND)
+# ------------------------------------------------------------------------
 
 add_subdirectory(App)
 if(BUILD_GUI)
