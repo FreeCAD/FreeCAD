@@ -514,13 +514,13 @@ namespace Base {
             static const unsigned int BufferSize = 4024;
             // exported functions goes here +++++++++++++++++++++++++++++++++++++++
             /// Prints a Message
-            virtual void Message ( const char * pMsg, ... ) ;
+            virtual void Message ( const char * pMsg, ... );
             /// Prints a warning Message
-            virtual void Warning ( const char * pMsg, ... ) ;
+            virtual void Warning ( const char * pMsg, ... );
             /// Prints a error Message
-            virtual void Error   ( const char * pMsg, ... ) ;
+            virtual void Error   ( const char * pMsg, ... );
             /// Prints a log Message
-            virtual void Log     ( const char * pMsg, ... ) ;
+            virtual void Log     ( const char * pMsg, ... );
 
             // observer processing 
             void NotifyMessage(const char *sMsg);
@@ -676,7 +676,7 @@ public:
     ~ConsoleObserverFile() override;
 
     void SendLog(const std::string& message, LogStyle level) override;
-    const char* Name(void){return "File";}
+    const char* Name(void) override {return "File";}
 
 protected:
     Base::ofstream cFileStream;
@@ -691,7 +691,7 @@ public:
     ConsoleObserverStd();
     ~ConsoleObserverStd() override;
     void SendLog(const std::string& message, LogStyle level) override;
-    const char* Name(void){return "Console";}
+    const char* Name(void) override {return "Console";}
 protected:
     bool useColorStderr;
 private:
