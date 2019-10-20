@@ -756,7 +756,7 @@ ConsoleObserverFile::~ConsoleObserverFile()
 
 void ConsoleObserverFile::SendLog(const std::string& msg, LogStyle level)
 {
-    std::string prefix = "";
+    std::string prefix;
     switch(level){
         case LogStyle::Warning:
             prefix = "Wrn: ";
@@ -771,10 +771,9 @@ void ConsoleObserverFile::SendLog(const std::string& msg, LogStyle level)
             prefix = "Log: ";
             break;
     }
-    if (prefix.empty() == false){
-        cFileStream << prefix << msg;
-        cFileStream.flush();
-    }
+
+    cFileStream << prefix << msg;
+    cFileStream.flush();
 }
 
 ConsoleObserverStd::ConsoleObserverStd() :
