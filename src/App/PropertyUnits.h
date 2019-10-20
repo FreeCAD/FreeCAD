@@ -175,6 +175,18 @@ public:
     virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyAngleItem"; }
 };
 
+/** Frequency property
+ * This is a property for representing frequency. It is basically a float
+ * property. On the Gui it has a quantity like 1/s or Hz.
+ */
+class AppExport PropertyFrequency: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyFrequency(void);
+    virtual ~PropertyFrequency(){}
+};
+
 /** Speed property
  * This is a property for representing speed. It is basically a float
  * property. On the Gui it has a quantity like m/s or km/h.

@@ -1631,6 +1631,7 @@ void Application::initTypes(void)
     App ::PropertyLength            ::init();
     App ::PropertyArea              ::init();
     App ::PropertyVolume            ::init();
+    App ::PropertyFrequency         ::init();
     App ::PropertySpeed             ::init();
     App ::PropertyAcceleration      ::init();
     App ::PropertyForce             ::init();
