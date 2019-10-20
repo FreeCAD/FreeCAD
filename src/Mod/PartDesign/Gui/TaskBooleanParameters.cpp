@@ -31,7 +31,9 @@
 
 #include "ui_TaskBooleanParameters.h"
 #include "TaskBooleanParameters.h"
+#include "Utils.h"
 #include <App/Application.h>
+#include <App/DocumentObserver.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -43,6 +45,7 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
+#include <Mod/PartDesign/App/ShapeBinder.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
@@ -55,23 +58,59 @@ using namespace Gui;
 TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"),tr("Boolean parameters"),true, parent),BooleanView(BooleanView)
 {
-    selectionMode = none;
-
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui = new Ui_TaskBooleanParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->buttonBodyAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonBodyAdd(bool)));
-    connect(ui->buttonBodyRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonBodyRemove(bool)));
+    connect(ui->buttonAdd, SIGNAL(clicked(bool)),
+            this, SLOT(onButtonAdd()));
+    connect(ui->buttonRemove, SIGNAL(clicked(bool)),
+            this, SLOT(onButtonRemove()));
     connect(ui->comboType, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onTypeChanged(int)));
 
     this->groupLayout()->addWidget(proxy);
+    
+#if QT_VERSION >= 0x040200
+    ui->listWidgetBodies->setMouseTracking(true); // needed for itemEntered() to work
+#endif
+    connect(ui->listWidgetBodies, SIGNAL(itemEntered(QListWidgetItem*)), 
+            this, SLOT(preselect(QListWidgetItem*)));
+    ui->listWidgetBodies->installEventFilter(this); // for leaveEvent
 
+    connect(ui->listWidgetBodies, SIGNAL(itemSelectionChanged()), 
+            this, SLOT(onItemSelection()));
+
+    undoConn = App::GetApplication().signalUndo.connect(boost::bind(&TaskBooleanParameters::populate,this));
+    redoConn = App::GetApplication().signalRedo.connect(boost::bind(&TaskBooleanParameters::populate,this));
+
+    populate();
+
+    // Create context menu
+    QAction* action = new QAction(tr("Remove"), this);
+    action->setShortcut(QString::fromLatin1("Del"));
+    ui->listWidgetBodies->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onButtonRemove()));
+    ui->listWidgetBodies->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    auto hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    ui->checkboxDeleteOnRemove->setChecked(hGrp->GetBool("BooleanDeleteOnRemove",true));
+
+    connect(ui->checkboxDeleteOnRemove, SIGNAL(toggled(bool)), 
+            this, SLOT(onDeleteOnRemove(bool)));
+}
+
+void TaskBooleanParameters::onDeleteOnRemove(bool checked) {
+    auto hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    hGrp->SetBool("BooleanDeleteOnRemove",checked);
+}
+
+void TaskBooleanParameters::populate() {
+    ui->listWidgetBodies->clear();
     PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
     std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator it = bodies.begin(); it != bodies.end(); ++it) {
@@ -79,151 +118,199 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
         item->setText(QString::fromUtf8((*it)->Label.getValue()));
         item->setData(Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
     }
-
-    // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QString::fromLatin1("Del"));
-    ui->listWidgetBodies->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onBodyDeleted()));
-    ui->listWidgetBodies->setContextMenuPolicy(Qt::ActionsContextMenu);
-
     int index = pcBoolean->Type.getValue();
     ui->comboType->setCurrentIndex(index);
 }
 
-void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
-{
-    if (selectionMode == none)
+bool TaskBooleanParameters::eventFilter(QObject *watched, QEvent *event) {
+    if(watched == ui->listWidgetBodies && event->type()==QEvent::Leave)
+        Gui::Selection().rmvPreselect();
+    return false;
+}
+
+App::DocumentObject *TaskBooleanParameters::getInEdit(std::string &subname) {
+    auto gdoc = Gui::Application::Instance->editDocument();
+    if(!gdoc)
+        return 0;
+
+    ViewProviderDocumentObject *parent = 0;
+    auto vp = gdoc->getInEdit(&parent,&subname);
+    if(!parent || vp!=BooleanView)
+        return 0;
+
+    return parent->getObject();
+}
+
+void TaskBooleanParameters::preselect(QListWidgetItem *item) {
+    std::string subname;
+    auto parent = getInEdit(subname);
+    if(!parent)
+        return;
+    QString name = item->data(Qt::UserRole).toString();
+    subname += name.toLatin1().constData();
+    subname += ".";
+
+    Gui::Selection().setPreselect(parent->getDocument()->getName(),
+            parent->getNameInDocument(),subname.c_str(),0,0,0,2);
+}
+
+void TaskBooleanParameters::onItemSelection() {
+    std::string subname;
+    auto parent = getInEdit(subname);
+    if(!parent)
         return;
 
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        if (strcmp(msg.pDocName, BooleanView->getObject()->getDocument()->getName()) != 0)
-            return;
+    Gui::Selection().clearCompleteSelection();
+    std::vector<std::string> subs;
+    for(auto item : ui->listWidgetBodies->selectedItems()) {
+        QString name = item->data(Qt::UserRole).toString();
+        subs.emplace_back(subname + name.toLatin1().constData() + ".");
+    }
 
-        // get the selected object
-        PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
-        std::string body(msg.pObjectName);
-        if (body.empty())
-            return;
-        App::DocumentObject* pcBody = pcBoolean->getDocument()->getObject(body.c_str());
-        if (pcBody == NULL)
-            return;
+    Gui::Selection().addSelections(parent->getDocument()->getName(),
+            parent->getNameInDocument(),subs);
+}
 
-        // if the selected object is not a body then get the body it is part of
-        if (!pcBody->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-            pcBody = PartDesign::Body::findBodyOf(pcBody);
-            if (pcBody == NULL)
+void TaskBooleanParameters::syncSelection() {
+    if(ui->listWidgetBodies->signalsBlocked())
+        return;
+    std::string subname;
+    auto parent = getInEdit(subname);
+    if(!parent)
+        return;
+    bool blocked = ui->listWidgetBodies->blockSignals(true);
+    for(int i=0,count=ui->listWidgetBodies->count();i<count;++i) {
+        auto item = ui->listWidgetBodies->item(i);
+        QString name = item->data(Qt::UserRole).toString();
+        std::string sub = subname + name.toLatin1().constData() + ".";
+        bool selected = item->isSelected();
+        if(selected != Gui::Selection().isSelected(parent,sub.c_str(),0))
+            item->setSelected(!selected);
+    }
+    ui->listWidgetBodies->blockSignals(blocked);
+}
+
+void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    switch(msg.Type) {
+    case Gui::SelectionChanges::ClrSelection: {
+        bool blocked = ui->listWidgetBodies->blockSignals(true);
+        ui->listWidgetBodies->clearSelection();
+        ui->listWidgetBodies->blockSignals(blocked);
+        break;
+    }
+    case Gui::SelectionChanges::SetSelection:
+    case Gui::SelectionChanges::RmvSelection:
+    case Gui::SelectionChanges::AddSelection:
+        syncSelection();
+        break;
+    default:
+        return;
+    }
+
+    ui->buttonAdd->setEnabled(Gui::Selection().hasSelection());
+    ui->buttonRemove->setEnabled(ui->listWidgetBodies->selectionModel()->hasSelection());
+}
+
+void TaskBooleanParameters::onButtonAdd()
+{
+    std::string subname;
+    auto parent = getInEdit(subname);
+    if(!parent) {
+        QMessageBox::warning(this, tr("Boolean: invalid state"), 
+                tr("No editing object found. Please restart thit task panel"));
+        return;
+    }
+
+    PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+    auto inset = pcBoolean->getInListEx(true);
+    auto sels = Gui::Selection().getCompleteSelection(0);
+    if(sels.empty())
+        return;
+
+    auto group = App::GroupExtension::getGroupOfObject(pcBoolean);
+    if(!group)
+        group = App::GeoFeatureGroupExtension::getGroupOfObject(pcBoolean);
+    if(!group) {
+        QMessageBox::warning(this, tr("Boolean: Invalid state"), 
+                tr("Invalid boolean object"));
+        return;
+    }
+
+    auto prop = Base::freecad_dynamic_cast<App::PropertyLinkList>(
+            group->getPropertyByName("Group"));
+    if(!prop) {
+        QMessageBox::warning(this, tr("Boolean: Invalid state"), 
+                tr("Invalid owner of boolean object"));
+        return;
+    }
+    const auto &objs = prop->getValues();
+    std::set<App::DocumentObject *> objset(objs.begin(),objs.end());
+
+    std::map<App::DocumentObject*, std::vector<std::string> > supports;
+    for(auto &sel : sels) {
+        auto objs = sel.pObject->getSubObjectList(sel.SubName);
+        if(objs.empty())
+            continue;
+        std::size_t idx = 0;
+        for(;idx<objs.size();++idx) {
+            if(!inset.count((objs[idx])))
+                break;
+        }
+        if(idx == objs.size()) {
+            QMessageBox::warning(this, tr("Boolean: Input error"), 
+                    tr("Cyclic reference to ") + QString::fromUtf8(objs.back()->Label.getValue()));
+            return;
+        }
+        std::ostringstream ss;
+        for(auto i=idx;i<objs.size();++i) {
+            if(objset.count(objs[i])) {
+                QMessageBox::warning(this, tr("Boolean: Input error"), 
+                        tr("Invalid selection of ") + QString::fromUtf8(objs.back()->Label.getValue()));
                 return;
-            body = pcBody->getNameInDocument();
-        }
-
-        std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
-
-        if (selectionMode == bodyAdd) {
-            if (std::find(bodies.begin(), bodies.end(), pcBody) == bodies.end()) {
-                bodies.push_back(pcBody);
-                pcBoolean->Group.setValues(std::vector<App::DocumentObject*>());
-                pcBoolean->addObjects(bodies);
-
-                QListWidgetItem* item = new QListWidgetItem(ui->listWidgetBodies);
-                item->setText(QString::fromUtf8(pcBody->Label.getValue()));
-                item->setData(Qt::UserRole, QString::fromLatin1(pcBody->getNameInDocument()));
-
-                pcBoolean->getDocument()->recomputeFeature(pcBoolean);
-                ui->buttonBodyAdd->setChecked(false);
-                exitSelectionMode();
-
-                // Hide the bodies
-                if (bodies.size() == 1) {
-                    // Hide base body and added body
-                    Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                                Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
-                    if (vp != NULL)
-                        vp->hide();
-                    vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                                                    Gui::Application::Instance->getViewProvider(bodies.front()));
-                    if (vp != NULL)
-                        vp->hide();
-                    BooleanView->show();
-                } else {
-                    // Hide newly added body
-                    Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                                Gui::Application::Instance->getViewProvider(bodies.back()));
-                    if (vp != NULL)
-                        vp->hide();
-                }
             }
+            if(i!=idx)
+                ss << objs[i]->getNameInDocument() << '.';
         }
-        else if (selectionMode == bodyRemove) {
-            std::vector<App::DocumentObject*>::iterator b = std::find(bodies.begin(), bodies.end(), pcBody);
-            if (b != bodies.end()) {
-                bodies.erase(b);
-                pcBoolean->setObjects(bodies);
-
-                QString internalName = QString::fromStdString(body);
-                for (int row = 0; row < ui->listWidgetBodies->count(); row++) {
-                    QListWidgetItem* item = ui->listWidgetBodies->item(row);
-                    QString name = item->data(Qt::UserRole).toString();
-                    if (name == internalName) {
-                        ui->listWidgetBodies->takeItem(row);
-                        delete item;
-                        break;
-                    }
-                }
-
-                pcBoolean->getDocument()->recomputeFeature(pcBoolean);
-                ui->buttonBodyRemove->setChecked(false);
-                exitSelectionMode();
-
-                // Make bodies visible again
-                Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                            Gui::Application::Instance->getViewProvider(pcBody));
-                if (vp != NULL)
-                    vp->show();
-                if (bodies.size() == 0) {
-                    Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                                Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
-                    if (vp != NULL)
-                        vp->show();
-                    BooleanView->hide();
-                }
-            }
-        }
+        supports[objs[idx]].emplace_back(ss.str());
     }
+
+    setupTransaction();
+
+    auto doc = pcBoolean->getDocument();
+    PartDesign::SubShapeBinder *ref = 0;
+    try {
+        ref = static_cast<PartDesign::SubShapeBinder*>(
+                doc->addObject("PartDesign::SubShapeBinder","Reference"));
+        ref->Fuse.setValue(true);
+        ref->setLinks(std::move(supports),true);
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        QMessageBox::warning(this, tr("Boolean: Input error"), 
+                tr("Failed to add reference: ") + QString::fromUtf8(e.what()));
+        if(ref)
+            doc->removeObject(ref->getNameInDocument());
+        return;
+    }
+
+    pcBoolean->addObject(ref);
+    pcBoolean->recomputeFeature(true);
+    populate();
 }
 
-void TaskBooleanParameters::onButtonBodyAdd(bool checked)
-{
-    if (checked) {
-        PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
-        Gui::Document* doc = BooleanView->getDocument();
-        BooleanView->hide();
-        if (pcBoolean->Group.getValues().empty() && pcBoolean->BaseFeature.getValue())
-            doc->setHide(pcBoolean->BaseFeature.getValue()->getNameInDocument());
-        selectionMode = bodyAdd;
-        Gui::Selection().clearSelection();
-    } else {
-        exitSelectionMode();
-    }
-}
-
-void TaskBooleanParameters::onButtonBodyRemove(bool checked)
-{
-    if (checked) {
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc != NULL)
-            BooleanView->show();
-        selectionMode = bodyRemove;
-        Gui::Selection().clearSelection();
-    } else {
-        exitSelectionMode();
-    }
+void TaskBooleanParameters::setupTransaction() {
+    const char *name = App::GetApplication().getActiveTransaction();
+    std::string n("Edit ");
+    n += BooleanView->getObject()->Label.getValue();
+    if(!name || n != name)
+        App::GetApplication().setActiveTransaction(n.c_str());
 }
 
 void TaskBooleanParameters::onTypeChanged(int index)
 {
     PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
 
+    setupTransaction();
     switch (index) {
         case 0: pcBoolean->Type.setValue("Fuse"); break;
         case 1: pcBoolean->Type.setValue("Cut"); break;
@@ -231,7 +318,7 @@ void TaskBooleanParameters::onTypeChanged(int index)
         default: pcBoolean->Type.setValue("Fuse");
     }
 
-    pcBoolean->getDocument()->recomputeFeature(pcBoolean);
+    pcBoolean->recomputeFeature(true);
 }
 
 const std::vector<std::string> TaskBooleanParameters::getBodies(void) const
@@ -247,40 +334,33 @@ int TaskBooleanParameters::getType(void) const
     return ui->comboType->currentIndex();
 }
 
-void TaskBooleanParameters::onBodyDeleted(void)
+void TaskBooleanParameters::onButtonRemove()
 {
+    std::set<std::string> names;
+    for(auto item : ui->listWidgetBodies->selectedItems()) 
+        names.insert(item->data(Qt::UserRole).toString().toStdString());
+
+    bool remove = ui->checkboxDeleteOnRemove->isChecked();
+    std::vector<std::string> removed;
+
     PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
-    std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
-    int index = ui->listWidgetBodies->currentRow();
-    if (index < 0 && (size_t) index > bodies.size())
-        return;
-
-    App::DocumentObject* body = bodies[index];
-    QString internalName = ui->listWidgetBodies->item(index)->data(Qt::UserRole).toString();
-    for (auto it = bodies.begin(); it != bodies.end(); ++it) {
-        if (internalName == QLatin1String((*it)->getNameInDocument())) {
-            body = *it;
-            bodies.erase(it);
-            break;
-        }
+    auto group = pcBoolean->Group.getValues();
+    for(auto it=group.begin();it!=group.end();) {
+        auto obj = *it;
+        if(names.count(obj->getNameInDocument())) {
+            if(remove && !obj->isDerivedFrom(PartDesign::Body::getClassTypeId()))
+                removed.push_back(obj->getNameInDocument());
+            it = group.erase(it);
+        } else
+            ++it;
     }
-
-    ui->listWidgetBodies->model()->removeRow(index);
-    pcBoolean->setObjects(bodies);
-    pcBoolean->getDocument()->recomputeFeature(pcBoolean);
-
-    // Make bodies visible again
-    Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                Gui::Application::Instance->getViewProvider(body));
-    if (vp != NULL)
-        vp->show();
-    if (bodies.empty()) {
-        Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                    Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
-        if (vp != NULL)
-            vp->show();
-        BooleanView->hide();
-    }
+    Gui::Selection().clearSelection();
+    setupTransaction();
+    pcBoolean->Group.setValues(group);
+    for(auto &name : removed) 
+        pcBoolean->getDocument()->removeObject(name.c_str());
+    pcBoolean->recomputeFeature(true);
+    populate();
 }
 
 TaskBooleanParameters::~TaskBooleanParameters()
@@ -297,14 +377,6 @@ void TaskBooleanParameters::changeEvent(QEvent *e)
         ui->retranslateUi(proxy);
         ui->comboType->setCurrentIndex(index);
     }
-}
-
-void TaskBooleanParameters::exitSelectionMode()
-{
-    selectionMode = none;
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc != NULL)
-        doc->setShow(BooleanView->getObject()->getNameInDocument());
 }
 
 //**************************************************************************
@@ -344,28 +416,15 @@ bool TaskDlgBooleanParameters::accept()
     auto obj = BooleanView->getObject();
     if(!obj || !obj->getNameInDocument())
         return false;
-    BooleanView->Visibility.setValue(true);
 
-    try {
-        std::vector<std::string> bodies = parameter->getBodies();
-        if (bodies.empty()) {
-            QMessageBox::warning(parameter, tr("Empty body list"),
-                                 tr("The body list cannot be empty"));
-            return false;
-        }
-        std::stringstream str;
-        str << Gui::Command::getObjectCmd(obj) << ".setObjects( [";
-        for (std::vector<std::string>::const_iterator it = bodies.begin(); it != bodies.end(); ++it)
-            str << "App.getDocument('" << obj->getDocument()->getName() << "').getObject('" << *it << "'),";
-        str << "])";
-        Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
-    }
-    catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Boolean: Accept: Input error"), QString::fromLatin1(e.what()));
+    std::vector<std::string> bodies = parameter->getBodies();
+    if (bodies.empty()) {
+        QMessageBox::warning(parameter, tr("Empty body list"),
+                                tr("The body list cannot be empty"));
         return false;
     }
-
-    FCMD_OBJ_CMD(obj,"Type = " << parameter->getType());
+    parameter->setupTransaction();
+    BooleanView->Visibility.setValue(true);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     Gui::Command::commitCommand();
@@ -375,23 +434,9 @@ bool TaskDlgBooleanParameters::accept()
 
 bool TaskDlgBooleanParameters::reject()
 {
-    // Show the bodies again
-    PartDesign::Boolean* obj = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc != NULL) {
-        if (obj->BaseFeature.getValue() != NULL) {
-            doc->setShow(obj->BaseFeature.getValue()->getNameInDocument());
-            std::vector<App::DocumentObject*> bodies = obj->Group.getValues();
-            for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
-                doc->setShow((*b)->getNameInDocument());
-        }
-    }
-
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-
-
     return true;
 }
 

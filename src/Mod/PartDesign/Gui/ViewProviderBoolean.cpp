@@ -117,20 +117,6 @@ bool ViewProviderBoolean::setEdit(int ModNum)
     }
 }
 
-bool ViewProviderBoolean::onDelete(const std::vector<std::string> &s)
-{
-    PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(getObject());
-
-    // if abort command deleted the object the bodies are visible again
-    std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
-        if (*b && Gui::Application::Instance->getViewProvider(*b))
-        Gui::Application::Instance->getViewProvider(*b)->show();
-    }
-
-    return ViewProvider::onDelete(s);
-}
-
 void ViewProviderBoolean::attach(App::DocumentObject* obj) {
     PartGui::ViewProviderPartExt::attach(obj);
 

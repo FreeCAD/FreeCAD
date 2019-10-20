@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>209</width>
-    <height>185</height>
+    <width>266</width>
+    <height>231</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,26 +17,27 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QToolButton" name="buttonBodyAdd">
+      <widget class="QPushButton" name="buttonAdd">
        <property name="text">
-        <string>Add body</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
+        <string>Add</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="buttonBodyRemove">
+      <widget class="QPushButton" name="buttonRemove">
        <property name="text">
-        <string>Remove body</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
+        <string>Remove</string>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkboxDeleteOnRemove">
+     <property name="text">
+      <string>Delete tool features on remove</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QListWidget" name="listWidgetBodies"/>

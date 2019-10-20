@@ -47,7 +47,6 @@ public:
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    virtual bool onDelete(const std::vector<std::string> &) override;
     virtual void attach(App::DocumentObject*) override;
     virtual void onChanged(const App::Property* prop) override;
 

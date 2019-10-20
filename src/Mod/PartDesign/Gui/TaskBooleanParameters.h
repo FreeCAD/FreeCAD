@@ -29,9 +29,11 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+#include <boost/signals2.hpp>
 #include "ViewProviderBoolean.h"
 
 class Ui_TaskBooleanParameters;
+class QListWidgetItem;
 
 namespace App {
 class Property;
@@ -55,16 +57,22 @@ public:
     const std::vector<std::string> getBodies(void) const;
     int getType(void) const;
 
+    virtual bool eventFilter(QObject*, QEvent*);
+    void setupTransaction();
+    void populate();
+
 private Q_SLOTS:
-    void onButtonBodyAdd(const bool checked);
-    void onButtonBodyRemove(const bool checked);
-    void onBodyDeleted(void);
+    void onButtonAdd();
+    void onButtonRemove();
+    void onDeleteOnRemove(bool);
     void onTypeChanged(int index);
+    void preselect(QListWidgetItem*);
+    void onItemSelection();
 
 protected:
-    void exitSelectionMode();
+    void syncSelection();
+    App::DocumentObject *getInEdit(std::string &subname);
 
-protected:
     void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
@@ -72,9 +80,8 @@ private:
     QWidget* proxy;
     Ui_TaskBooleanParameters* ui;
     ViewProviderBoolean *BooleanView;
-
-    enum selectionModes { none, bodyAdd, bodyRemove };
-    selectionModes selectionMode;
+    boost::signals2::scoped_connection undoConn;
+    boost::signals2::scoped_connection redoConn;
 
 };
 
