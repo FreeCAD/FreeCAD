@@ -521,6 +521,9 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
     }
 
     QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
+    QString specStrCopy = specStr;
+    QString formatPrefix;
+    QString formatSuffix;
     double val = getDimValue();
     QString specVal;
     QString userUnits;
@@ -536,11 +539,11 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
         qVal.setUnit(Base::Unit::Length);
     }
 
-    QString userStr = qVal.getUserString();                           // this handles mm to inch/km/parsec etc
-                                                                      // and decimal positions but won't give more than
-                                                                      // Global_Decimals precision
-                                                                      // really should be able to ask units for value
-                                                                      // in appropriate UoM!!
+    QString userStr = qVal.getUserString();            // this handles mm to inch/km/parsec etc
+                                                       // and decimal positions but won't give more than
+                                                       // Global_Decimals precision
+                                                       // really should be able to ask units for value
+                                                       // in appropriate UoM!!
 
     //units api: get schema to figure out if this is multi-value schema(Imperial1, ImperialBuilding, etc)
     //if it is multi-unit schema, don't even try to use Alt Decimals or format per format spec
@@ -569,10 +572,10 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
         }
     } else {
 //handle single value schemes
-        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
+        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));             //space + any non digits at end of string
 
         QString userVal = userStr;
-        userVal.remove(rxUnits);                                          //getUserString(defaultDecimals) without units
+        userVal.remove(rxUnits);                                  //getUserString(defaultDecimals) without units
 
         QLocale loc;
         double userValNum = loc.toDouble(userVal);
@@ -580,7 +583,7 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
 //        QString userUnits;
         int pos = 0;
         if ((pos = rxUnits.indexIn(userStr, 0)) != -1)  {
-            userUnits = rxUnits.cap(0);                                       //entire capture - non numerics at end of userString
+            userUnits = rxUnits.cap(0);                      //entire capture - non numerics at end of userString
         }
 
         //find the %x.y tag in FormatSpec
@@ -597,8 +600,11 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
             QString qs2;
             specVal = qs2.sprintf(Base::Tools::toStdString(match).c_str(),userValNum);
     #endif
+        formatPrefix = specStrCopy.left(pos);
+        formatSuffix = specStrCopy.right(specStrCopy.size() - pos - match.size());
         } else {       //printf format not found!
-            Base::Console().Warning("Warning - no numeric format in formatSpec - %s\n",getNameInDocument());
+            Base::Console().Warning("Warning - no numeric format in formatSpec %s - %s\n",
+                                    qPrintable(specStr), getNameInDocument());
             return Base::Tools::toStdString(specStr);
         }
 
@@ -634,9 +640,14 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
     //userUnits - qstring with unit abbrev
     //specStr  - number + units
     //partial = 0 --> the whole dimension string number + units )the "user string"
+    std::string ssPrefix = Base::Tools::toStdString(formatPrefix);
+    std::string ssSuffix = Base::Tools::toStdString(formatSuffix);
     result = specStr.toUtf8().constData();
-    if (partial == 1)  {                            //just the number
-        result = Base::Tools::toStdString(specVal);
+    if (partial == 1)  {                            //just the number (+prefix & suffix)
+//        result = Base::Tools::toStdString(specVal);
+        result = ssPrefix +
+                 Base::Tools::toStdString(specVal) +
+                 ssSuffix;
     } else if (partial == 2) {                       //just the unit
         if (showUnits()) {
             if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
