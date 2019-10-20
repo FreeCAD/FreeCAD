@@ -525,7 +525,7 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().NotifyMessage(string);            // process message
+            Instance().Message("%s",string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -571,7 +571,7 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().NotifyWarning(string);            // process message
+            Instance().Warning("%s",string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -617,7 +617,7 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().NotifyError(string);            // process message
+            Instance().Error("%s",string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -663,7 +663,7 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().NotifyLog(string);            // process message
+            Instance().Log("%s",string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
