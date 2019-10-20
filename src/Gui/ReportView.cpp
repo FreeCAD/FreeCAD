@@ -384,7 +384,7 @@ void ReportOutput::restoreFont()
 void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
 {
     ReportHighlighter::Paragraph style = ReportHighlighter::LogText;
-    switch(level){
+    switch (level) {
         case Base::LogStyle::Warning:
             style = ReportHighlighter::Warning;
             break;
@@ -398,12 +398,17 @@ void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
             style = ReportHighlighter::LogText;
             break;
     }
-    // This truncates messages that are too long
+
     QString qMsg = QString::fromUtf8(msg.c_str());
-    if(messageSize > 0 && qMsg.size()>messageSize) {
-        qMsg.truncate(messageSize);
-        qMsg += QString::fromLatin1("...\n");
+
+    // This truncates log messages that are too long
+    if (style == ReportHighlighter::LogText) {
+        if (messageSize > 0 && qMsg.size()>messageSize) {
+            qMsg.truncate(messageSize);
+            qMsg += QString::fromLatin1("...\n");
+        }
     }
+
     // Send the event to itself to allow thread-safety. Qt will delete it when done.
     CustomReportEvent* ev = new CustomReportEvent(style, qMsg);
     QApplication::postEvent(this, ev);
