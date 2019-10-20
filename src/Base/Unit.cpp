@@ -433,6 +433,7 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::Angle                       )       return QString::fromLatin1("Angle");
     if(*this == Unit::Density                     )       return QString::fromLatin1("Density");
     if(*this == Unit::TimeSpan                    )       return QString::fromLatin1("TimeSpan");
+    if(*this == Unit::Frequency                   )       return QString::fromLatin1("Frequency");
     if(*this == Unit::Velocity                    )       return QString::fromLatin1("Velocity");
     if(*this == Unit::Acceleration                )       return QString::fromLatin1("Acceleration");
     if(*this == Unit::Temperature                 )       return QString::fromLatin1("Temperature");
@@ -470,6 +471,7 @@ Unit Unit::AngleOfFriction (0,0,0,0,0,0,0,1);
 Unit Unit::Density(-3,1);
 
 Unit Unit::TimeSpan(0,0,1);
+Unit Unit::Frequency(0,0,-1);
 Unit Unit::Velocity(1,0,-1);
 Unit Unit::Acceleration(1,0,-2);
 Unit Unit::Temperature(0,0,0,0,1);

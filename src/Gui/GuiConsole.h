@@ -40,21 +40,15 @@ namespace Gui {
  *  @see FCConsole
  *  \author Jürgen Riegel
  */
-class GuiExport GUIConsole :public Base::ConsoleObserver
+class GuiExport GUIConsole :public Base::ILogger
 {
 public:
   /// Constructor
   GUIConsole(void);
   /// Destructor
   virtual ~GUIConsole(void);
-  //@{
-    /** Observer implementation */
-  virtual void Warning(const char *sWarn);
-  virtual void Message(const char *sMsg);
-  virtual void Error  (const char *sErr);
-  virtual void Log    (const char *sErr);
-  const char* Name(void){return "GUIConsole";}
-  //@}
+  void SendLog(const std::string& msg, Base::LogStyle level) override;
+  const char* Name(void) override {return "GUIConsole";}
 
 protected:
   static const unsigned int s_nMaxLines;

@@ -381,36 +381,36 @@ void ReportOutput::restoreFont()
     setFont(serifFont);
 }
 
-void ReportOutput::Warning(const char * s)
+void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
 {
-    // Send the event to itself to allow thread-safety. Qt will delete it when done.
-    CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::Warning, QString::fromUtf8(s));
-    QApplication::postEvent(this, ev);
-}
-
-void ReportOutput::Message(const char * s)
-{
-    // Send the event to itself to allow thread-safety. Qt will delete it when done.
-    CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::Message, QString::fromUtf8(s));
-    QApplication::postEvent(this, ev);
-}
-
-void ReportOutput::Error  (const char * s)
-{
-    // Send the event to itself to allow thread-safety. Qt will delete it when done.
-    CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::Error, QString::fromUtf8(s));
-    QApplication::postEvent(this, ev);
-}
-
-void ReportOutput::Log (const char * s)
-{
-    QString msg = QString::fromUtf8(s);
-    if(messageSize>0 && msg.size()>messageSize) {
-        msg.truncate(messageSize);
-        msg += QString::fromLatin1("...\n");
+    ReportHighlighter::Paragraph style = ReportHighlighter::LogText;
+    switch (level) {
+        case Base::LogStyle::Warning:
+            style = ReportHighlighter::Warning;
+            break;
+        case Base::LogStyle::Message:
+            style = ReportHighlighter::Message;
+            break;
+        case Base::LogStyle::Error:
+            style = ReportHighlighter::Error;
+            break;
+        case Base::LogStyle::Log:
+            style = ReportHighlighter::LogText;
+            break;
     }
+
+    QString qMsg = QString::fromUtf8(msg.c_str());
+
+    // This truncates log messages that are too long
+    if (style == ReportHighlighter::LogText) {
+        if (messageSize > 0 && qMsg.size()>messageSize) {
+            qMsg.truncate(messageSize);
+            qMsg += QString::fromLatin1("...\n");
+        }
+    }
+
     // Send the event to itself to allow thread-safety. Qt will delete it when done.
-    CustomReportEvent* ev = new CustomReportEvent(ReportHighlighter::LogText, msg);
+    CustomReportEvent* ev = new CustomReportEvent(style, qMsg);
     QApplication::postEvent(this, ev);
 }
 

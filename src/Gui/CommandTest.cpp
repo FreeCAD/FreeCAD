@@ -667,7 +667,7 @@ CmdTestConsoleOutput::CmdTestConsoleOutput()
 }
 
 namespace Gui {
-class TestConsoleObserver : public Base::ConsoleObserver
+class TestConsoleObserver : public Base::ILogger
 {
     QMutex mutex;
 public:
@@ -675,25 +675,24 @@ public:
     TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0)
     {
     }
-    virtual void Warning(const char * msg)
-    {
+    void SendLog(const std::string& msg, Base::LogStyle level){
+
         QMutexLocker ml(&mutex);
-        matchWrn += strcmp(msg, "Write a warning to the console output.\n");
-    }
-    virtual void Message(const char * msg)
-    {
-        QMutexLocker ml(&mutex);
-        matchMsg += strcmp(msg, "Write a message to the console output.\n");
-    }
-    virtual void Error(const char * msg)
-    {
-        QMutexLocker ml(&mutex);
-        matchErr += strcmp(msg, "Write an error to the console output.\n");
-    }
-    virtual void Log(const char * msg)
-    {
-        QMutexLocker ml(&mutex);
-        matchLog += strcmp(msg, "Write a log to the console output.\n");
+
+        switch(level){
+            case Base::LogStyle::Warning:
+                matchWrn += strcmp(msg.c_str(), "Write a warning to the console output.\n");
+                break;
+            case Base::LogStyle::Message:
+                matchMsg += strcmp(msg.c_str(), "Write a message to the console output.\n");
+                break;
+            case Base::LogStyle::Error:
+                matchErr += strcmp(msg.c_str(), "Write an error to the console output.\n");
+                break;
+            case Base::LogStyle::Log:
+                matchLog += strcmp(msg.c_str(), "Write a log to the console output.\n");
+                break;
+        }
     }
 };
 

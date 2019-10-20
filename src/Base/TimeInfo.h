@@ -66,7 +66,7 @@ public:
     uint64_t getSeconds(void) const; 
     unsigned short  getMiliseconds(void) const; 
 
-    void operator =  (const TimeInfo &time); 
+    //void operator =  (const TimeInfo &time); 
     bool operator == (const TimeInfo &time) const;
     bool operator != (const TimeInfo &time) const;
 
@@ -106,11 +106,11 @@ TimeInfo::operator != (const TimeInfo &time) const
     return (timebuffer.time != time.timebuffer.time || timebuffer.millitm != time.timebuffer.millitm);
 }
 
-inline void
-TimeInfo::operator = (const TimeInfo &time) 
-{
-    timebuffer = time.timebuffer;
-}
+//inline void
+//TimeInfo::operator = (const TimeInfo &time) 
+//{
+    //timebuffer = time.timebuffer;
+//}
 
 inline bool
 TimeInfo::operator == (const TimeInfo &time) const

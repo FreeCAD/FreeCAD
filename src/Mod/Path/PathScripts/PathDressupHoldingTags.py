@@ -36,13 +36,8 @@ from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
 from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule()
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule()
 
 failures = []
 
@@ -144,7 +139,7 @@ class Tag:
             self.isSquare = True
             self.solid = Part.makeCylinder(r1, height)
             radius = min(min(self.radius, r1), self.height)
-            PathLog.debug("Part.makeCone(%f, %f)" % (r1, height))
+            PathLog.debug("Part.makeCylinder(%f, %f)" % (r1, height))
         elif self.angle > 0.0 and height > 0.0:
             # cone
             rad = math.radians(self.angle)
@@ -609,9 +604,9 @@ class PathData:
         else:
             tagDistance = self.baseWire.Length / (count if count else 4)
 
-        W = width if width else self.defaultTagWidth()
+        W = width  if width  else self.defaultTagWidth()
         H = height if height else self.defaultTagHeight()
-        A = angle if angle else self.defaultTagAngle()
+        A = angle  if angle  else self.defaultTagAngle()
         R = radius if radius else self.defaultTagRadius()
 
         # start assigning tags on the longest segment
@@ -661,6 +656,31 @@ class PathData:
                     tag = edge.Curve.value((j+0.5) * distance)
                     tags.append(Tag(j, tag.x, tag.y, W, H, A, R, True))
 
+        return tags
+
+    def copyTags(self, obj, fromObj, width, height, angle, radius):
+        print("copyTags(%s, %s, %.2f, %.2f, %.2f, %.2f" % (obj.Label, fromObj.Label, width, height, angle, radius))
+        W = width  if width  else self.defaultTagWidth()
+        H = height if height else self.defaultTagHeight()
+        A = angle  if angle  else self.defaultTagAngle()
+        R = radius if radius else self.defaultTagRadius()
+
+        tags = []
+        j = 0
+        for i, pos in enumerate(fromObj.Positions):
+            print("tag[%d]" % i)
+            if not i in fromObj.Disabled:
+                dist = self.baseWire.distToShape(Part.Vertex(FreeCAD.Vector(pos.x, pos.y, self.minZ)))
+                if dist[0] < W:
+                    print("tag[%d/%d]: (%.2f, %.2f, %.2f)" % (i, j, pos.x, pos.y, self.minZ))
+                    at = dist[1][0][0]
+                    tags.append(Tag(j, at.x, at.y,  W, H, A, R, True))
+                    j += 1
+                else:
+                    PathLog.warning("Tag[%d] (%.2f, %.2f, %.2f) is too far away to copy: %.2f (%.2f)" % (i, pos.x, pos.y, self.minZ, dist[0], W))
+            else:
+                PathLog.info("tag[%d]: not enabled, skipping" % i)
+        print("copied %d tags" % len(tags))
         return tags
 
     def processEdge(self, index, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict):
@@ -780,6 +800,18 @@ class ObjectTagDressup:
             obj.Positions = []
             obj.Disabled = []
             return False
+
+    def copyTags(self, obj, fromObj):
+        obj.Width  = fromObj.Width
+        obj.Height = fromObj.Height
+        obj.Angle  = fromObj.Angle
+        obj.Radius = fromObj.Radius
+        obj.SegmentationFactor = fromObj.SegmentationFactor
+
+        self.tags = self.pathData.copyTags(obj, fromObj, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius.Value)
+        obj.Positions = [tag.originAt(self.pathData.minZ) for tag in self.tags]
+        obj.Disabled = []
+        return False
 
     def isValidTagStartIntersection(self, edge, i):
         if PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
