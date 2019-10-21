@@ -45,29 +45,27 @@ macro(SetupShibokenAndPyside)
 
         # pyside2 changed it's cmake files, this is the dance we have
         # to dance to be compatible with the old (<5.12) and the new versions (>=5.12)
-        if(NOT SHIBOKEN_LIBRARY AND TARGET Shiboken2::libshiboken)
-                get_property(SHIBOKEN_LIBRARY TARGET Shiboken2::libshiboken PROPERTY IMPORTED_LOCATION_RELEASE)
+        if(NOT SHIBOKEN_INCLUDE_DIR AND TARGET Shiboken2::libshiboken)
                 get_property(SHIBOKEN_INCLUDE_DIR TARGET Shiboken2::libshiboken PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-        endif(NOT SHIBOKEN_LIBRARY AND TARGET Shiboken2::libshiboken)
+        endif(NOT SHIBOKEN_INCLUDE_DIR AND TARGET Shiboken2::libshiboken)
 
-        if(NOT SHIBOKEN_LIBRARY AND NOT SHIBOKEN_INCLUDE_DIR)
+        if(NOT SHIBOKEN_INCLUDE_DIR)
             message("====================\n"
                     "shiboken2 not found.\n"
                     "====================\n")
-        endif(NOT SHIBOKEN_LIBRARY AND NOT SHIBOKEN_INCLUDE_DIR)
+        endif(NOT SHIBOKEN_INCLUDE_DIR)
 
         find_package(PySide2 QUIET)# REQUIRED
 
-        if(NOT PYSIDE_LIBRARY AND TARGET PySide2::pyside2)
-                get_property(PYSIDE_LIBRARY TARGET PySide2::pyside2 PROPERTY IMPORTED_LOCATION_RELEASE)
+        if(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide2::pyside2)
                 get_property(PYSIDE_INCLUDE_DIR TARGET PySide2::pyside2 PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-        endif(NOT PYSIDE_LIBRARY AND TARGET PySide2::pyside2)
+        endif(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide2::pyside2)
 
-        if(NOT PYSIDE_LIBRARY AND NOT PYSIDE_INCLUDE_DIR)
+        if(NOT PYSIDE_INCLUDE_DIR)
             message("==================\n"
                     "PySide2 not found.\n"
                     "==================\n")
-        endif(NOT PYSIDE_LIBRARY AND NOT PYSIDE_INCLUDE_DIR)
+        endif(NOT PYSIDE_INCLUDE_DIR)
 
         find_package(PySide2Tools QUIET) #REQUIRED # PySide2 utilities (pyside2-uic & pyside2-rcc)
         if(NOT PYSIDE2_TOOLS_FOUND)
