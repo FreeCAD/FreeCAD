@@ -726,6 +726,7 @@ App.Units.AngleOfFriction  = App.Units.Unit(0,0,0,0,0,0,0,1)
 App.Units.Density       = App.Units.Unit(-3,1)
 
 App.Units.TimeSpan      = App.Units.Unit(0,0,1) 
+App.Units.Frequency     = App.Units.Unit(0,0,-1)
 App.Units.Velocity      = App.Units.Unit(1,0,-1) 
 App.Units.Acceleration  = App.Units.Unit(1,0,-2) 
 App.Units.Temperature   = App.Units.Unit(0,0,0,0,1) 

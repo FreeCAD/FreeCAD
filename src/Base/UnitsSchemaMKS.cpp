@@ -186,6 +186,24 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         unitString = QString::fromLatin1("W/m^2");
         factor = 1.0;
     }
+    else if (unit == Unit::Frequency) {
+        if (UnitValue < 1000.0) {
+            unitString = QString::fromLatin1("Hz");
+            factor = 1.0;
+        }
+        else if (UnitValue < 1000000.0) {
+            unitString = QString::fromLatin1("kHz");
+            factor = 1000.0;
+        }
+        else if (UnitValue < 1000000000.0) {
+            unitString = QString::fromLatin1("MHz");
+            factor = 1000000.0;
+        }
+        else {
+            unitString = QString::fromLatin1("GHz");
+            factor = 1000000000.0;
+        }
+    }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("m/s");
         factor = 1000.0;
