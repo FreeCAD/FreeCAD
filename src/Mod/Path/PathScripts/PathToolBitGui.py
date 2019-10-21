@@ -67,7 +67,7 @@ class ViewProvider(object):
             pixmap = QtGui.QPixmap()
             pixmap.loadFromData(png, "PNG")
             return QtGui.QIcon(pixmap)
-        return ':/icons/Path-ToolChange.svg'
+        return ':/icons/Path-ToolBit.svg'
 
     def __getstate__(self):
         return None
@@ -80,13 +80,20 @@ class ViewProvider(object):
         # pylint: disable=unused-argument
         return 'Default'
 
-    def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
+    def _openTaskPanel(self, vobj, deleteOnReject):
         PathLog.track()
-        self.taskPanel = TaskPanel(vobj)
+        self.taskPanel = TaskPanel(vobj, deleteOnReject)
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(self.taskPanel)
         self.taskPanel.setupUi()
+
+    def setCreate(self, vobj):
+        PathLog.track()
+        self._openTaskPanel(vobj, True)
+
+    def setEdit(self, vobj, mode=0):
+        # pylint: disable=unused-argument
+        self._openTaskPanel(vobj, False)
         return True
 
     def unsetEdit(self, vobj, mode):
@@ -106,18 +113,24 @@ class ViewProvider(object):
 class TaskPanel:
     '''TaskPanel for the SetupSheet - if it is being edited directly.'''
 
-    def __init__(self, vobj):
+    def __init__(self, vobj, deleteOnReject):
         PathLog.track(vobj.Object.Label)
         self.vobj = vobj
         self.obj = vobj.Object
         self.editor = PathToolBitEdit.ToolBitEditor(self.obj)
         self.form = self.editor.form
+        self.deleteOnReject = deleteOnReject
         FreeCAD.ActiveDocument.openTransaction(translate("PathToolBit", "Edit ToolBit"))
 
     def reject(self):
-        self.editor.reject()
         FreeCAD.ActiveDocument.abortTransaction()
+        self.editor.reject()
         FreeCADGui.Control.closeDialog()
+        if self.deleteOnReject:
+            FreeCAD.ActiveDocument.openTransaction(translate("PathToolBit", "Uncreate ToolBit"))
+            self.editor.reject()
+            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
     def accept(self):

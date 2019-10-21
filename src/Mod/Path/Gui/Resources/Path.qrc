@@ -48,9 +48,10 @@
         <file>icons/Path-Speed.svg</file>
         <file>icons/Path-Stock.svg</file>
         <file>icons/Path-Stop.svg</file>
+        <file>icons/Path-ToolBit.svg</file>
         <file>icons/Path-ToolChange.svg</file>
         <file>icons/Path-ToolController.svg</file>
-	<file>icons/Path-ToolDuplicate.svg</file>
+	      <file>icons/Path-ToolDuplicate.svg</file>
         <file>icons/Path-Toolpath.svg</file>
         <file>icons/Path-ToolTable.svg</file>
         <file>icons/Path-Area.svg</file>
