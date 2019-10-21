@@ -23,6 +23,10 @@
 # ***************************************************************************
 
 import FreeCAD
+import FreeCADGui
+import PathScripts
+import os
+
 from PySide import QtCore
 
 class CommandToolBitCreate:
@@ -35,8 +39,8 @@ class CommandToolBitCreate:
 
     def GetResources(self):
         return {'Pixmap': 'Path-ToolBit',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Tool", "Create Tool"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Job", "Creates a new ToolBit object")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Create Tool"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Creates a new ToolBit object")}
 
     def IsActive(self):
         return FreeCAD.ActiveDocument is not None
@@ -46,8 +50,64 @@ class CommandToolBitCreate:
         obj = PathToolBitGui.Create()
         obj.ViewObject.Proxy.setCreate(obj.ViewObject)
 
+class CommandToolBitSave:
+    '''
+    Command used to save an existing Tool to a file.
+    '''
+
+    def __init__(self, saveAs):
+        self.saveAs = saveAs
+
+    def GetResources(self):
+        if self.saveAs:
+            menuTxt = QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Save Tool as...")
+        else:
+            menuTxt = QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Save Tool")
+        return {'Pixmap': 'Path-ToolBit',
+                'MenuText': menuTxt,
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolBit", "Save an existing ToolBit object to a file")}
+
+    def selectedTool(self):
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if 1 == len(sel) and isinstance(sel[0].Object.Proxy, PathScripts.PathToolBit.ToolBit):
+            return sel[0].Object
+        return None
+
+    def IsActive(self):
+        tool = self.selectedTool()
+        if tool:
+            if tool.File:
+                return True
+            return self.saveAs
+        return False
+
+    def Activated(self):
+        from PySide import QtGui
+        tool = self.selectedTool()
+        if tool:
+            path = None
+            if not tool.File or self.saveAs:
+                if tool.File:
+                    fname = tool.File
+                else:
+                    fname = os.path.join(PathScripts.PathPreferences.lastPathToolBit(), tool.Label + '.fctb')
+                foo = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), "Tool", fname, "*.fctb")
+                if foo:
+                    path = foo[0]
+            else:
+                path = tool.File
+
+            if path:
+                if not path.endswith('.fctb'):
+                    path += '.fctb'
+                tool.Proxy.saveToFile(tool, path)
+                PathScripts.PathPreferences.setLastPathToolBit(os.path.dirname(path))
+
 if FreeCAD.GuiUp:
-    import FreeCADGui
     FreeCADGui.addCommand('Path_ToolBitCreate', CommandToolBitCreate())
+    FreeCADGui.addCommand('Path_ToolBitSave',   CommandToolBitSave(False))
+    FreeCADGui.addCommand('Path_ToolBitSaveAs', CommandToolBitSave(True))
+
+CommandList = ['Path_ToolBitCreate', 'Path_ToolBitSave', 'Path_ToolBitSaveAs']
 
 FreeCAD.Console.PrintLog("Loading PathToolBitCmd... done\n")

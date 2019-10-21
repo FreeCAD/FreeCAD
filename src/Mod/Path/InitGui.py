@@ -113,7 +113,7 @@ class PathWorkbench (Workbench):
         if extracmdlist:
             self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist)
 
-        self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], projcmdlist +["Path_ExportTemplate", "Path_ToolBitCreate", "Separator"] + toolcmdlist +["Separator"] + twodopcmdlist + engravecmdlist +["Separator"] +threedopcmdlist +["Separator"])
+        self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], projcmdlist +["Path_ExportTemplate", "Separator"] + PathToolBitCmd.CommandList + ["Separator"] + toolcmdlist +["Separator"] + twodopcmdlist + engravecmdlist +["Separator"] +threedopcmdlist +["Separator"])
         self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(
             "Path", "Path Dressup")], dressupcmdlist)
         self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(
@@ -156,7 +156,7 @@ class PathWorkbench (Workbench):
                 if "Job" in selectedName:
                     self.appendContextMenu("", ["Path_ExportTemplate"])
                 menuAppended = True
-            if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
+            if isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp):
                 self.appendContextMenu("", ["Path_OperationCopy", "Path_OpActiveToggle"])
                 menuAppended = True
             if obj.isDerivedFrom("Path::Feature"):
@@ -167,6 +167,9 @@ class PathWorkbench (Workbench):
                     for cmd in self.dressupcmds:
                         self.appendContextMenu("", [cmd])
                     menuAppended = True
+            if isinstance(obj.Proxy, PathScripts.PathToolBit.ToolBit):
+                self.appendContextMenu("", ["Path_ToolBitSave", "Path_ToolBitSaveAs"])
+                menuAppended = True
         if menuAppended:
             self.appendContextMenu("", "Separator")
 
