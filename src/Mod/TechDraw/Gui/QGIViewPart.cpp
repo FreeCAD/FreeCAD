@@ -297,6 +297,7 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double
 
 void QGIViewPart::updateView(bool update)
 {
+//    Base::Console().Message("QGIVP::updateView()\n");
     auto start = std::chrono::high_resolution_clock::now();
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if( viewPart == nullptr ) {
@@ -307,11 +308,10 @@ void QGIViewPart::updateView(bool update)
         return;
     }
 
-    QGIView::updateView(update);
-
     if (update ) {
         draw();
     }
+    QGIView::updateView(update);
 
     auto end   = std::chrono::high_resolution_clock::now();
     auto diff  = end - start;
@@ -320,13 +320,13 @@ void QGIViewPart::updateView(bool update)
 }
 
 void QGIViewPart::draw() {
+//    Base::Console().Message("QGIVP::draw()\n");
     if (!isVisible()) {
         return;
     }
 
     drawViewPart();
     drawMatting();
-    QGIView::draw();
     //this is old C/L
     drawCenterLines(true);   //have to draw centerlines after border to get size correct.
     drawAllSectionLines();   //same for section lines
@@ -334,7 +334,7 @@ void QGIViewPart::draw() {
 
 void QGIViewPart::drawViewPart()
 {
-//    Base::Console().Message("QGIVP::dvp()\n");
+//    Base::Console().Message("QGIVP::DVP()\n");
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if ( viewPart == nullptr ) {
         return;
@@ -519,7 +519,6 @@ void QGIViewPart::drawViewPart()
 
     bool showVertices = true;
     bool showCenterMarks = true;
-//    bool usePolygonHLR = viewPart->CoarseView.getValue();
     if (getFrameState()) {              //frames are on
         if (viewPart->CoarseView.getValue()) {
             showVertices = false;
@@ -655,7 +654,6 @@ void QGIViewPart::removePrimitives()
          QGIPrimPath* prim = dynamic_cast<QGIPrimPath*>(c);
          if (prim) {
             prim->hide();
-//            removeFromGroup(prim);
             scene()->removeItem(prim);
             delete prim;
          }
@@ -674,12 +672,10 @@ void QGIViewPart::removeDecorations()
          QGIMatting* mat = dynamic_cast<QGIMatting*>(c);
          if (decor) {
             decor->hide();
-//            removeFromGroup(decor);
             scene()->removeItem(decor);
             delete decor;
          } else if (mat) {
             mat->hide();
-//            removeFromGroup(mat);
             scene()->removeItem(mat);
             delete mat;
          }
