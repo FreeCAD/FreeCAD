@@ -1126,8 +1126,8 @@ def isReallyClosed(wire):
     # aboveWire.isClosed() == True, but Wire[-1] are the 3rd vertex for the rectangle
     # - use Edges[i].Vertexes[0/1] instead
     length = len(wire.Edges)
-    v1 = wire.Edges[0].Vertexes[0].Point					#v1 = wire.Vertexes[0].Point
-    v2 = wire.Edges[length-1].Vertexes[1].Point					#v2 = wire.Vertexes[-1].Point
+    v1 = wire.Edges[0].Vertexes[0].Point  #v1 = wire.Vertexes[0].Point
+    v2 = wire.Edges[length-1].Vertexes[1].Point  #v2 = wire.Vertexes[-1].Point
     if DraftVecUtils.equals(v1,v2): return True
     return False
 
