@@ -71,7 +71,6 @@ void cleanupSWIG_T(const char* TypeName)
         return;
 
     PyObject *module, *dict;
-    PyInterpreterState *interp = PyThreadState_GET()->interp;
     PyObject *modules = PyImport_GetModuleDict();
     module = PyDict_GetItemString(modules, "__builtin__");
     if (module != NULL && PyModule_Check(module)) {
