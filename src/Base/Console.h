@@ -35,6 +35,8 @@
 #include <cstring>
 #include <sstream>
 #include <chrono>
+#include <utility> // for std::forward
+#include <map>
 
 //**************************************************************************
 // Logging levels
@@ -362,17 +364,17 @@
 
 #define _FC_PRINT(_instance,_l,_func,_msg) __FC_PRINT(_instance,_l,_func,_msg,__FILE__,__LINE__)
 
-#define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,NotifyMessage,_msg)
-#define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,NotifyWarning,_msg)
-#define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,NotifyError,_msg)
-#define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,NotifyLog,_msg)
-#define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,NotifyLog,_msg)
+#define FC_MSG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,Message,_msg)
+#define FC_WARN(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,Warning,_msg)
+#define FC_ERR(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,Error,_msg)
+#define FC_LOG(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,Log,_msg)
+#define FC_TRACE(_msg) _FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,Log,_msg)
 
-#define _FC_MSG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,NotifyMessage,_msg,_file,_line)
-#define _FC_WARN(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,NotifyWarning,_msg,_file,_line)
-#define _FC_ERR(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,NotifyError,_msg,_file,_line)
-#define _FC_LOG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,NotifyLog,_msg,_file,_line)
-#define _FC_TRACE(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,NotifyLog,_msg,_file,_line)
+#define _FC_MSG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_MSG,Message,_msg,_file,_line)
+#define _FC_WARN(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_WARN,Warning,_msg,_file,_line)
+#define _FC_ERR(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_ERR,Error,_msg,_file,_line)
+#define _FC_LOG(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_LOG,Log,_msg,_file,_line)
+#define _FC_TRACE(_file,_line,_msg) __FC_PRINT(FC_LOG_INSTANCE,FC_LOGLEVEL_TRACE,Log,_msg,_file,_line)
 
 #define FC_XYZ(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
 #define FC_xy(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
@@ -460,6 +462,8 @@ namespace Base {
 #endif
 
     /** Used to identify log level*/
+    //TODO: Rename to LogLevel - first need to figure out if we can get rid of or rename
+    //the LogLevel class...
     enum class LogStyle{
         Warning,
         Message,
@@ -477,24 +481,31 @@ namespace Base {
     class BaseExport ILogger
     {
         public:
-            ILogger()
-                :bErr(true),bMsg(true),bLog(true),bWrn(true){};
+            ILogger(std::string name);
             virtual ~ILogger() = 0;
 
             /** Used to send a Log message at the given level. 
              */
             virtual void SendLog(const std::string& msg, LogStyle level) = 0;
 
-            virtual const char *Name(void){return 0L;}
-            bool bErr,bMsg,bLog,bWrn;
+            /// Returns `true` if the given LogStyle should be displayed.
+            bool LevelStatus(LogStyle level) const;
+            /// Used to switch the given LogStyle on/off
+            void SetLevelStatus(LogStyle level, bool val=true);
+
+            /// Returns the name of the ILogger in question.
+            const std::string& Name() const;
+
+        private:
+            const std::string loggerName;
+            std::map<LogStyle, bool> activeLevels;
     };
 
 
-    /** The console class
-     *  This class manage all the stdio stuff. This includes
-     *  Messages, Warnings, Log entries and Errors. The incoming
-     *  Messages are distributed with the FCConsoleObserver. The
-     *  FCConsole class itself makes no IO, it's more like a manager.
+    /** The Console class
+     *  This Singleton manages a set of ILogger. Any ILogger that is registered with this
+     *  Singleton, via the RegisterLogger method, will be called as necessary by the
+     *  Notify methods
      *  \par
      *  ConsoleSingleton is a singleton! That means you can access the only
      *  instance of the class from every where in c++ by simply using:
@@ -512,21 +523,19 @@ namespace Base {
 
         public:
             static const unsigned int BufferSize = 4024;
-            // exported functions goes here +++++++++++++++++++++++++++++++++++++++
-            /// Prints a Message
-            virtual void Message ( const char * pMsg, ... );
-            /// Prints a warning Message
-            virtual void Warning ( const char * pMsg, ... );
-            /// Prints a error Message
-            virtual void Error   ( const char * pMsg, ... );
-            /// Prints a log Message
-            virtual void Log     ( const char * pMsg, ... );
-
-            // observer processing 
-            void NotifyMessage(const char *sMsg);
-            void NotifyWarning(const char *sMsg);
-            void NotifyError  (const char *sMsg);
-            void NotifyLog    (const char *sMsg);
+            /**@{*/
+            /** These methods will send messages at the appropriate Log Level They accept
+             *  sprintf-type syntax for substituting variables.
+             */
+            template<typename ...Args>
+            void Message(const std::string& message, Args... args);
+            template<typename ...Args>
+            void Warning(const std::string& message, Args... args);
+            template<typename ...Args>
+            void Error(const std::string& message, Args... args);
+            template<typename ...Args>
+            void Log(const std::string& message, Args... args);
+            /**@}*/
 
             /// Delivers a time/date string 
             const char* Time(void);
@@ -534,6 +543,7 @@ namespace Base {
             void AttachObserver(ILogger *pcObserver);
             /// Detaches an Observer from FCConsole
             void DetachObserver(ILogger *pcObserver);
+
             /// enumaration for the console modes
             enum ConsoleMode{
                 Verbose = 1,	// suppress Log messages
@@ -554,10 +564,12 @@ namespace Base {
             void SetConsoleMode(ConsoleMode m);
             /// Change mode
             void UnsetConsoleMode(ConsoleMode m);
+
             /// Enables or disables message types of a certain console observer
             ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool b);
             /// Enables or disables message types of a certain console observer
             bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
+
             void SetConnectionMode(ConnectionMode mode);
 
             int *GetLogLevel(const char *tag, bool create=true);
@@ -574,7 +586,7 @@ namespace Base {
             static ConsoleSingleton &Instance(void);
 
             // retrieval of an observer by name
-            ILogger *Get(const char *Name) const;
+            ILogger *Get(const std::string& target) const;
 
             static PyMethodDef    Methods[];
 
@@ -603,6 +615,10 @@ namespace Base {
             // singleton
             static void Destruct(void);
             static ConsoleSingleton *_pcSingleton;
+            // This is used to avoid code duplication in Message, Error, Warning, etc...
+            // methods
+            template<typename...Args>
+            void DelegateMessage(const std::string& message, LogStyle level, Args&&... args);
 
             // observer list
             std::set<ILogger * > _aclObservers;
@@ -676,7 +692,6 @@ public:
     ~ConsoleObserverFile() override;
 
     void SendLog(const std::string& message, LogStyle level) override;
-    const char* Name(void) override {return "File";}
 
 protected:
     Base::ofstream cFileStream;
@@ -691,7 +706,6 @@ public:
     ConsoleObserverStd();
     ~ConsoleObserverStd() override;
     void SendLog(const std::string& message, LogStyle level) override;
-    const char* Name(void) override {return "Console";}
 protected:
     bool useColorStderr;
 private:
@@ -740,5 +754,114 @@ private:
     std::string buffer;
 };
 
+//---------------- Template methods must be implemented in the header -----------------
 
+/** Prints a Message
+ *  This method issues a Message.
+ *  Messages are used to show some non vital information. That means when
+ *  FreeCAD is running in GUI mode a Message appears on the status bar.
+ *  In console mode a message is printed to the console.
+ *  \par
+ *  You can use a printf like interface like:
+ *  \code
+ *  Console().Message("Doing something important %d times\n",i);
+ *  \endcode
+ *  @see Warning
+ *  @see Error
+ *  @see Log
+ */
+template<typename... Args>
+void ConsoleSingleton::Message(const std::string& message, Args... args)
+{
+    this->DelegateMessage(message, LogStyle::Message, std::forward<Args>(args)...);
+}
+
+/** Prints a Message
+ *  This method issues a Warning.
+ *  Messages are used to get the users attention. That means when
+ *  FreeCAD is in GUI mode a Message Box pops up. In console
+ *  mode a colored message is returned to the console! Don't use this carelessly.
+ *  For information purposes the 'Log' or 'Message' methods are more appropriate.
+ *  \par
+ *  You can use a printf like interface like:
+ *  \code
+ *  Console().Warning("Some defects in %s, loading anyway\n",str);
+ *  \endcode
+ *  @see Message
+ *  @see Error
+ *  @see Log
+ */
+template<typename... Args>
+void ConsoleSingleton::Warning(const std::string& message, Args... args)
+{
+    this->DelegateMessage(message, LogStyle::Warning, std::forward<Args>(args)...);
+}
+
+/** Prints a Message
+ *  This method issues an Error which makes some execution impossible.
+ *  Errors are used to get the users attention. That means when FreeCAD
+ *  is running in GUI mode an Error Message Box pops up. In console
+ *  mode a colored message is printed to the console! Don't use this carelessly.
+ *  For information purposes the 'Log' or 'Message' methods are more appropriate.
+ *  \par
+ *  You can use a printf like interface like:
+ *  \code
+ *  Console().Error("Something really bad in %s happened\n",str);
+ *  \endcode
+ *  @see Message
+ *  @see Warning
+ *  @see Log
+ */
+template<typename... Args>
+void ConsoleSingleton::Error(const std::string& message, Args... args)
+{
+    this->DelegateMessage(message, LogStyle::Error, std::forward<Args>(args)...);
+}
+
+/** Prints a Message
+ *  This method is appropriate for development and tracking purposes.
+ *  It can be used to track execution of algorithms and functions.
+ *  The normal user doesn't need to see it, it's more for developers
+ *  and experienced users. So in normal user mode the logging is switched off.
+ *  \par
+ *  You can use a printf-like interface for example:
+ *  \code
+ *  Console().Log("Execute part %d in algorithm %s\n",i,str);
+ *  \endcode
+ *  @see Message
+ *  @see Warning
+ *  @see Error
+ */
+template<typename... Args>
+void ConsoleSingleton::Log(const std::string& message, Args... args)
+{
+    if (_bVerbose)
+    {
+        this->DelegateMessage(message, LogStyle::Log, std::forward<Args>(args)...);
+    }
+}
+
+template<typename...Args>
+void ConsoleSingleton::DelegateMessage(const std::string& message, LogStyle level, Args&&... args)
+{
+    // In order to support sprintf-style syntax, we need to first determine what size the
+    // resultant string will be.
+    auto size = std::snprintf(nullptr, 0, message.c_str(), std::forward<Args>(args)...);
+    // Next we create a string with the appropriate amount of memory reserved. Note that
+    // we add the terminating character.
+    std::string output(size+1, '\0');
+    // Now we can use sprintf as usual
+    std::sprintf(&output[0], message.c_str(), std::forward<Args>(args)...);
+
+
+    // Now, delegate the message to each of our observers, as appropriate.
+    for(ILogger* logger : _aclObservers)
+    {
+        if(logger->LevelStatus(level))
+        {
+            logger->SendLog(output, level);
+
+        }
+    }
+}
 } // namespace Base

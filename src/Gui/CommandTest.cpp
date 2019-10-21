@@ -672,7 +672,7 @@ class TestConsoleObserver : public Base::ILogger
     QMutex mutex;
 public:
     int matchMsg, matchWrn, matchErr, matchLog;
-    TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0)
+    TestConsoleObserver() : ILogger("_JUST_A_TEST"), matchMsg(0), matchWrn(0), matchErr(0), matchLog(0)
     {
     }
     void SendLog(const std::string& msg, Base::LogStyle level){

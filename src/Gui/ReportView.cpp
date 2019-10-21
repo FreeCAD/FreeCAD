@@ -335,9 +335,14 @@ PyObject* ReportOutput::Data::replace_stderr = 0;
  *  name 'name' and widget flags set to 'f' 
  */
 ReportOutput::ReportOutput(QWidget* parent)
-  : QTextEdit(parent), WindowParameter("OutputWindow"), d(new Data), gotoEnd(false)
+  : QTextEdit(parent), 
+    WindowParameter("OutputWindow"), 
+    ILogger("ReportOutput"), 
+    d(new Data), 
+    gotoEnd(false)
+
 {
-    bLog = false;
+    this->SetLevelStatus(Base::LogStyle::Log, false);
     reportHl = new ReportHighlighter(this);
 
     restoreFont();
@@ -384,7 +389,7 @@ void ReportOutput::restoreFont()
 void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
 {
     ReportHighlighter::Paragraph style = ReportHighlighter::LogText;
-    switch (level) {
+    switch(level){
         case Base::LogStyle::Warning:
             style = ReportHighlighter::Warning;
             break;
@@ -398,17 +403,12 @@ void ReportOutput::SendLog(const std::string& msg, Base::LogStyle level)
             style = ReportHighlighter::LogText;
             break;
     }
-
+    // This truncates messages that are too long
     QString qMsg = QString::fromUtf8(msg.c_str());
-
-    // This truncates log messages that are too long
-    if (style == ReportHighlighter::LogText) {
-        if (messageSize > 0 && qMsg.size()>messageSize) {
-            qMsg.truncate(messageSize);
-            qMsg += QString::fromLatin1("...\n");
-        }
+    if(messageSize > 0 && qMsg.size()>messageSize) {
+        qMsg.truncate(messageSize);
+        qMsg += QString::fromLatin1("...\n");
     }
-
     // Send the event to itself to allow thread-safety. Qt will delete it when done.
     CustomReportEvent* ev = new CustomReportEvent(style, qMsg);
     QApplication::postEvent(this, ev);
@@ -455,15 +455,15 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
     QMenu* submenu = new QMenu( menu );
     QAction* logAct = submenu->addAction(tr("Logging"), this, SLOT(onToggleLogging()));
     logAct->setCheckable(true);
-    logAct->setChecked(bLog);
+    logAct->setChecked(this->LevelStatus(Base::LogStyle::Log));
 
     QAction* wrnAct = submenu->addAction(tr("Warning"), this, SLOT(onToggleWarning()));
     wrnAct->setCheckable(true);
-    wrnAct->setChecked(bWrn);
+    wrnAct->setChecked(this->LevelStatus(Base::LogStyle::Warning));
 
     QAction* errAct = submenu->addAction(tr("Error"), this, SLOT(onToggleError()));
     errAct->setCheckable(true);
-    errAct->setChecked(bErr);
+    errAct->setChecked(this->LevelStatus(Base::LogStyle::Error));
 
     submenu->addSeparator();
 
@@ -511,23 +511,23 @@ void ReportOutput::onSaveAs()
 
 bool ReportOutput::isError() const
 {
-    return bErr;
+    return this->LevelStatus(Base::LogStyle::Error);
 }
 
 bool ReportOutput::isWarning() const
 {
-    return bWrn;
+    return this->LevelStatus(Base::LogStyle::Warning);
 }
 
 bool ReportOutput::isLogging() const
 {
-    return bLog;
+    return this->LevelStatus(Base::LogStyle::Log);
 }
 
 void ReportOutput::onToggleError()
 {
-    bErr = bErr ? false : true;
-    getWindowParameter()->SetBool( "checkError", bErr );
+    bool val = this->LevelStatus(Base::LogStyle::Error) ? false : true;
+    getWindowParameter()->SetBool( "checkError", val );
 }
 
 void ReportOutput::onToggleShowReportViewOnWarningOrError(){
@@ -536,14 +536,15 @@ void ReportOutput::onToggleShowReportViewOnWarningOrError(){
 }
 void ReportOutput::onToggleWarning()
 {
-    bWrn = bWrn ? false : true;
-    getWindowParameter()->SetBool( "checkWarning", bWrn );
+    bool val = this->LevelStatus(Base::LogStyle::Warning) ? false : true;
+    getWindowParameter()->SetBool( "checkWarning", val );
 }
 
 void ReportOutput::onToggleLogging()
 {
-    bLog = bLog ? false : true;
-    getWindowParameter()->SetBool( "checkLogging", bLog );
+    bool val = this->LevelStatus(Base::LogStyle::Log) ? false : true;
+    this->SetLevelStatus(Base::LogStyle::Log, val);
+    getWindowParameter()->SetBool( "checkLogging", val );
 }
 
 void ReportOutput::onToggleRedirectPythonStdout()
@@ -588,13 +589,16 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
 {
     ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
     if (strcmp(sReason, "checkLogging") == 0) {
-        bLog = rclGrp.GetBool( sReason, bLog );
+        bool val = rclGrp.GetBool(sReason, this->LevelStatus(Base::LogStyle::Log));
+        this->SetLevelStatus(Base::LogStyle::Log, val);
     }
     else if (strcmp(sReason, "checkWarning") == 0) {
-        bWrn = rclGrp.GetBool( sReason, bWrn );
+        bool val = rclGrp.GetBool(sReason, this->LevelStatus(Base::LogStyle::Warning));
+        this->SetLevelStatus(Base::LogStyle::Warning, val);
     }
     else if (strcmp(sReason, "checkError") == 0) {
-        bErr = rclGrp.GetBool( sReason, bErr );
+        bool val = rclGrp.GetBool(sReason, this->LevelStatus(Base::LogStyle::Error));
+        this->SetLevelStatus(Base::LogStyle::Error, val);
     }
     else if (strcmp(sReason, "colorText") == 0) {
         unsigned long col = rclGrp.GetUnsigned( sReason );

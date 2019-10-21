@@ -67,7 +67,10 @@ class SplashObserver : public Base::ILogger
 {
 public:
     SplashObserver(QSplashScreen* splasher=0)
-      : splash(splasher), alignment(Qt::AlignBottom|Qt::AlignLeft), textColor(Qt::black)
+      : ILogger("SplashObserver"),
+        splash(splasher), 
+        alignment(Qt::AlignBottom|Qt::AlignLeft), 
+        textColor(Qt::black)
     {
         Base::Console().AttachObserver(this);
 
@@ -106,19 +109,14 @@ public:
     {
         Base::Console().DetachObserver(this);
     }
-    const char* Name() override
-    {
-        return "SplashObserver";
-    }
     void SendLog(const std::string& msg, Base::LogStyle level) override
     {
+        (void) level; // to eliminate unused parameter warning
+
 #ifdef FC_DEBUG
         Log(msg.c_str());
-        Q_UNUSED(level)
 #else
-        if (level == Base::LogStyle::Log) {
-            Log(msg.c_str());
-        }
+        Q_UNUSED(msg.c_str());
 #endif
     }
     void Log (const char * s)

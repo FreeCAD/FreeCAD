@@ -50,6 +50,7 @@ unsigned int       GUIConsole::s_nRefCount = 0;
  *  Not needed in Linux!
  */
 GUIConsole::GUIConsole (void)
+    : ILogger("GUIConsole")
 {
   if (!s_nRefCount++)
   {
@@ -110,7 +111,7 @@ void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
 #else /* FC_OS_LINUX */
 
 // safely ignore GUIConsole::s_nMaxLines and  GUIConsole::s_nRefCount
-GUIConsole::GUIConsole (void) {}
+GUIConsole::GUIConsole (void) : ILogger("GuiConsole") {}
 GUIConsole::~GUIConsole (void) {}
 void GUIConsole::SendLog(const std::string& msg, Base::LogStyle level)
 {

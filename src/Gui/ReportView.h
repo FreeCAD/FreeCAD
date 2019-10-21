@@ -137,9 +137,6 @@ public:
 
     void SendLog(const std::string& msg, Base::LogStyle level) override;
 
-    /// returns the name for observer handling
-    const char* Name(void) override {return "ReportOutput";}
-
     /** Restore the default font settings. */
     void restoreFont ();
 

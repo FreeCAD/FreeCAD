@@ -83,16 +83,16 @@ public:
             ConsoleEvent* ce = static_cast<ConsoleEvent*>(ev);
             switch (ce->msgtype) {
             case ConsoleSingleton::MsgType_Txt:
-                Console().NotifyMessage(ce->msg.c_str());
+                Console().Message(ce->msg);
                 break;
             case ConsoleSingleton::MsgType_Log:
-                Console().NotifyLog(ce->msg.c_str());
+                Console().Log(ce->msg);
                 break;
             case ConsoleSingleton::MsgType_Wrn:
-                Console().NotifyWarning(ce->msg.c_str());
+                Console().Warning(ce->msg);
                 break;
             case ConsoleSingleton::MsgType_Err:
-                Console().NotifyError(ce->msg.c_str());
+                Console().Error(ce->msg);
                 break;
             }
         }
@@ -167,7 +167,7 @@ void ConsoleSingleton::UnsetConsoleMode(ConsoleMode m)
  * @code
  * // switch off warnings and error messages
  * ConsoleMsgFlags ret = Base::Console().SetEnabledMsgType("myObs",
- *                       Base:ConsoleSingleton::MsgType_Wrn|Base::ConsoleSingleton::MsgType_Err, false);
+ *                       Base::ConsoleSingleton::MsgType_Wrn|Base::ConsoleSingleton::MsgType_Err, false);
  * // do something without notifying observer myObs
  * ...
  * // restore the former configuration again
@@ -182,26 +182,22 @@ ConsoleMsgFlags ConsoleSingleton::SetEnabledMsgType(const char* sObs, ConsoleMsg
     if ( pObs ){
         ConsoleMsgFlags flags=0;
 
-        if ( type&MsgType_Err ){
-            if ( pObs->bErr != b )
-                flags |= MsgType_Err;
-            pObs->bErr = b;
+        std::vector<std::pair<ConsoleMsgFlags, LogStyle>> pairs(
+                {{MsgType_Err, LogStyle::Error}, 
+                 {MsgType_Wrn, LogStyle::Warning}, 
+                 {MsgType_Txt, LogStyle::Message}, 
+                 {MsgType_Log, LogStyle::Log}});
+        for (auto data : pairs)
+        {
+            ConsoleMsgFlags flag = data.first;
+            LogStyle level = data.second;
+            if (type & flag){
+                if (pObs->LevelStatus(level) != b)
+                    flags |= flag;
+                pObs->SetLevelStatus(level, b);
+            }
         }
-        if ( type&MsgType_Wrn ){
-            if ( pObs->bWrn != b )
-                flags |= MsgType_Wrn;
-            pObs->bWrn = b;
-        }
-        if ( type&MsgType_Txt ){
-            if ( pObs->bMsg != b )
-                flags |= MsgType_Txt;
-            pObs->bMsg = b;
-        }
-        if ( type&MsgType_Log ){
-            if ( pObs->bLog != b )
-                flags |= MsgType_Log;
-            pObs->bLog = b;
-        }
+
         return flags;
     }
     else {
@@ -215,13 +211,13 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
     if (pObs) {
         switch (type) {
         case MsgType_Txt:
-            return pObs->bMsg;
+            return pObs->LevelStatus(LogStyle::Message);
         case MsgType_Log:
-            return pObs->bLog;
+            return pObs->LevelStatus(LogStyle::Log);
         case MsgType_Wrn:
-            return pObs->bWrn;
+            return pObs->LevelStatus(LogStyle::Warning);
         case MsgType_Err:
-            return pObs->bErr;
+            return pObs->LevelStatus(LogStyle::Error);
         default:
             return false;
         }
@@ -234,107 +230,6 @@ bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType
 void ConsoleSingleton::SetConnectionMode(ConnectionMode mode)
 {
     connectionMode = mode;
-}
-
-/** Prints a Message
- *  This method issues a Message.
- *  Messages are used to show some non vital information. That means when
- *  FreeCAD is running in GUI mode a Message appears on the status bar.
- *  In console mode a message is printed to the console.
- *  \par
- *  You can use a printf like interface like:
- *  \code
- *  Console().Message("Doing something important %d times\n",i);
- *  \endcode
- *  @see Warning
- *  @see Error
- *  @see Log
- */
-void ConsoleSingleton::Message( const char *pMsg, ... )
-{
-#define FC_CONSOLE_FMT(_type,_type2) \
-    char format[BufferSize];\
-    format[sizeof(format)-4] = '.';\
-    format[sizeof(format)-3] = '.';\
-    format[sizeof(format)-2] = '\n';\
-    format[sizeof(format)-1] = 0;\
-    const unsigned int format_len = sizeof(format)-4;\
-    va_list namelessVars;\
-    va_start(namelessVars, pMsg);\
-    vsnprintf(format, format_len, pMsg, namelessVars);\
-    format[sizeof(format)-5] = '.';\
-    va_end(namelessVars);\
-    if (connectionMode == Direct)\
-        Notify##_type(format);\
-    else\
-        QCoreApplication::postEvent(ConsoleOutput::getInstance(), new ConsoleEvent(MsgType_##_type2, format));
-
-    FC_CONSOLE_FMT(Message,Txt);
-}
-
-/** Prints a Message
- *  This method issues a Warning.
- *  Messages are used to get the users attention. That means when
- *  FreeCAD is in GUI mode a Message Box pops up. In console
- *  mode a colored message is returned to the console! Don't use this carelessly.
- *  For information purposes the 'Log' or 'Message' methods are more appropriate.
- *  \par
- *  You can use a printf like interface like:
- *  \code
- *  Console().Warning("Some defects in %s, loading anyway\n",str);
- *  \endcode
- *  @see Message
- *  @see Error
- *  @see Log
- */
-void ConsoleSingleton::Warning( const char *pMsg, ... )
-{
-    FC_CONSOLE_FMT(Warning,Wrn);
-}
-
-/** Prints a Message
- *  This method issues an Error which makes some execution impossible.
- *  Errors are used to get the users attention. That means when FreeCAD
- *  is running in GUI mode an Error Message Box pops up. In console
- *  mode a colored message is printed to the console! Don't use this carelessly.
- *  For information purposes the 'Log' or 'Message' methods are more appropriate.
- *  \par
- *  You can use a printf like interface like:
- *  \code
- *  Console().Error("Something really bad in %s happened\n",str);
- *  \endcode
- *  @see Message
- *  @see Warning
- *  @see Log
- */
-void ConsoleSingleton::Error( const char *pMsg, ... )
-{
-    FC_CONSOLE_FMT(Error,Err);
-}
-
-
-/** Prints a Message
- *  This method is appropriate for development and tracking purposes.
- *  It can be used to track execution of algorithms and functions.
- *  The normal user doesn't need to see it, it's more for developers
- *  and experienced users. So in normal user mode the logging is switched off.
- *  \par
- *  You can use a printf-like interface for example:
- *  \code
- *  Console().Log("Execute part %d in algorithm %s\n",i,str);
- *  \endcode
- *  @see Message
- *  @see Warning
- *  @see Error
- */
-
-
-void ConsoleSingleton::Log( const char *pMsg, ... )
-{
-    if (_bVerbose)
-    {
-        FC_CONSOLE_FMT(Log,Log);
-    }
 }
 
 /** Delivers the time/date
@@ -357,6 +252,30 @@ const char* ConsoleSingleton::Time(void)
 
 //**************************************************************************
 // Observer stuff
+ILogger::ILogger(std::string name)
+    : loggerName(name), 
+      activeLevels({
+              {LogStyle::Message, true},
+              {LogStyle::Error, true},
+              {LogStyle::Warning, true},
+              {LogStyle::Log, true}
+              })
+{}
+
+bool ILogger::LevelStatus(LogStyle level) const
+{
+    return activeLevels.at(level);
+}
+
+void ILogger::SetLevelStatus(LogStyle level, bool val)
+{
+    activeLevels[level] = val;
+}
+
+const std::string& ILogger::Name() const
+{
+    return loggerName;
+}
 
 /** Attaches an Observer to Console
  *  Use this method to attach a ILogger derived class to
@@ -382,45 +301,14 @@ void ConsoleSingleton::DetachObserver(ILogger *pcObserver)
     _aclObservers.erase(pcObserver);
 }
 
-void ConsoleSingleton::NotifyMessage(const char *sMsg)
+ILogger *ConsoleSingleton::Get(const std::string& target) const
 {
-    for(std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
-        if((*Iter)->bMsg)
-            (*Iter)->SendLog(sMsg, LogStyle::Message);   // send string to the listener
-    }
-}
-
-void ConsoleSingleton::NotifyWarning(const char *sMsg)
-{
-    for(std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
-        if((*Iter)->bWrn)
-            (*Iter)->SendLog(sMsg, LogStyle::Warning);   // send string to the listener
-    }
-}
-
-void ConsoleSingleton::NotifyError(const char *sMsg)
-{
-    for(std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
-        if((*Iter)->bErr)
-            (*Iter)->SendLog(sMsg, LogStyle::Error);   // send string to the listener
-    }
-}
-
-void ConsoleSingleton::NotifyLog(const char *sMsg)
-{
-    for(std::set<ILogger * >::iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
-        if((*Iter)->bLog)
-            (*Iter)->SendLog(sMsg, LogStyle::Log);   // send string to the listener
-    }
-}
-
-ILogger *ConsoleSingleton::Get(const char *Name) const
-{
-    const char* OName;
-    for(std::set<ILogger * >::const_iterator Iter=_aclObservers.begin();Iter!=_aclObservers.end();++Iter) {
-        OName = (*Iter)->Name();   // get the name
-        if(OName && strcmp(OName,Name) == 0)
-            return *Iter;
+    for(ILogger* logger : _aclObservers)
+    {
+        if (logger->Name() == target)
+        {
+            return logger;
+        }
     }
     return 0;
 }
@@ -525,7 +413,7 @@ PyObject *ConsoleSingleton::sPyMessage(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().Message("%s",string);            // process message
+            Instance().Message(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -571,7 +459,7 @@ PyObject *ConsoleSingleton::sPyWarning(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().Warning("%s",string);            // process message
+            Instance().Warning(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -617,7 +505,7 @@ PyObject *ConsoleSingleton::sPyError(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().Error("%s",string);            // process message
+            Instance().Error(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -663,7 +551,7 @@ PyObject *ConsoleSingleton::sPyLog(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         if (string)
-            Instance().Log("%s",string);            // process message
+            Instance().Log(string);            // process message
     } PY_CATCH;
 
     Py_XDECREF(unicode);
@@ -688,15 +576,20 @@ PyObject *ConsoleSingleton::sPyGetStatus(PyObject * /*self*/, PyObject *args)
             return Py_None;
         }
 
+        LogStyle check;
         if(strcmp(pstr2,"Log") == 0)
-            b = pObs->bLog;
+            check = LogStyle::Log;
         else if(strcmp(pstr2,"Wrn") == 0)
-            b = pObs->bWrn;
+            check = LogStyle::Warning;
         else if(strcmp(pstr2,"Msg") == 0)
-            b = pObs->bMsg;
+            check = LogStyle::Message;
         else if(strcmp(pstr2,"Err") == 0)
-            b = pObs->bErr;
-
+            check = LogStyle::Error;
+        else{
+            PyErr_SetString(PyExc_ValueError, "Must be one of: Log, Wrn, Msg, or Err");
+            return NULL;
+        }
+        b = pObs->LevelStatus(check);
         return Py_BuildValue("i",b?1:0);
     }PY_CATCH;
 }
@@ -713,16 +606,19 @@ PyObject *ConsoleSingleton::sPySetStatus(PyObject * /*self*/, PyObject *args)
         ILogger *pObs = Instance().Get(pstr1);
         if(pObs)
         {
+            LogStyle target;
             if(strcmp(pstr2,"Log") == 0)
-                pObs->bLog = (Bool==0)?false:true;
+                target = LogStyle::Log;
             else if(strcmp(pstr2,"Wrn") == 0)
-                pObs->bWrn = (Bool==0)?false:true;
+                target = LogStyle::Warning;
             else if(strcmp(pstr2,"Msg") == 0)
-                pObs->bMsg = (Bool==0)?false:true;
+                target = LogStyle::Message;
             else if(strcmp(pstr2,"Err") == 0)
-                pObs->bErr = (Bool==0)?false:true;
+                target = LogStyle::Error;
             else
                 Py_Error(Base::BaseExceptionFreeCADError,"Unknown Message Type (use Log, Err, Msg or Wrn)");
+
+            pObs->SetLevelStatus(target, Bool);
 
             Py_INCREF(Py_None);
             return Py_None;
@@ -740,7 +636,7 @@ Base::ILogger::~ILogger()
 {}
 
 ConsoleObserverFile::ConsoleObserverFile(const char *sFileName)
-  : cFileStream(Base::FileInfo(sFileName)) // can be in UTF8
+  : ILogger("File"), cFileStream(Base::FileInfo(sFileName)) // can be in UTF8
 {
     if (!cFileStream.is_open())
         Console().Warning("Cannot open log file '%s'.\n", sFileName);
@@ -756,7 +652,7 @@ ConsoleObserverFile::~ConsoleObserverFile()
 
 void ConsoleObserverFile::SendLog(const std::string& msg, LogStyle level)
 {
-    std::string prefix;
+    std::string prefix = "";
     switch(level){
         case LogStyle::Warning:
             prefix = "Wrn: ";
@@ -771,12 +667,14 @@ void ConsoleObserverFile::SendLog(const std::string& msg, LogStyle level)
             prefix = "Log: ";
             break;
     }
-
-    cFileStream << prefix << msg;
-    cFileStream.flush();
+    if (prefix.empty() == false){
+        cFileStream << prefix << msg;
+        cFileStream.flush();
+    }
 }
 
 ConsoleObserverStd::ConsoleObserverStd() :
+    ILogger("Console"),
 #   if defined(FC_OS_WIN32)
     useColorStderr(true)
 #   elif defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
@@ -785,7 +683,7 @@ ConsoleObserverStd::ConsoleObserverStd() :
     useColorStderr(false)
 #   endif
 {
-    bLog = false;
+    this->SetLevelStatus(LogStyle::Log, false);
 }
 
 ConsoleObserverStd::~ConsoleObserverStd()
@@ -893,7 +791,7 @@ int RedirectStdOutput::overflow(int c)
 int RedirectStdOutput::sync()
 {
     // Print as log as this might be verbose
-    if (!buffer.empty() && buffer.back() == '\n') {
+    if (!buffer.empty()) {
         Base::Console().Log("%s", buffer.c_str());
         buffer.clear();
     }
@@ -915,7 +813,7 @@ int RedirectStdLog::overflow(int c)
 int RedirectStdLog::sync()
 {
     // Print as log as this might be verbose
-    if (!buffer.empty() && buffer.back() == '\n') {
+    if (!buffer.empty()) {
         Base::Console().Log("%s", buffer.c_str());
         buffer.clear();
     }
@@ -936,7 +834,7 @@ int RedirectStdError::overflow(int c)
 
 int RedirectStdError::sync()
 {
-    if (!buffer.empty() && buffer.back() == '\n') {
+    if (!buffer.empty()) {
         Base::Console().Error("%s", buffer.c_str());
         buffer.clear();
     }

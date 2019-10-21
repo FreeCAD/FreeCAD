@@ -1935,7 +1935,7 @@ void MainWindow::customEvent(QEvent* e)
 // ----------------------------------------------------------
 
 StatusBarObserver::StatusBarObserver()
-  : WindowParameter("OutputWindow")
+  : WindowParameter("OutputWindow"), ILogger("StatusBar")
 {
     msg = QString::fromLatin1("#statusBar{color: #000000}"); // black
     wrn = QString::fromLatin1("#statusBar{color: #ffaa00}"); // orange
