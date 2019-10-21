@@ -180,15 +180,15 @@ if(SHIBOKEN_INCLUDE_DIR)
     include_directories(
         ${SHIBOKEN_INCLUDE_DIR}
     )
-    if (TARGET Shiboken2::libshiboken)
-        list(APPEND FreeCADGui_LIBS
-            Shiboken2::libshiboken
-        )
-    else(TARGET Shiboken2::libshiboken)
+    #if (TARGET Shiboken2::libshiboken)
+    #    list(APPEND FreeCADGui_LIBS
+    #        Shiboken2::libshiboken
+    #    )
+    #else(TARGET Shiboken2::libshiboken)
         list(APPEND FreeCADGui_LIBS
             ${SHIBOKEN_LIBRARY}
         )
-    endif(TARGET Shiboken2::libshiboken)
+    #endif(TARGET Shiboken2::libshiboken)
 endif(SHIBOKEN_INCLUDE_DIR)
 
 if(PYSIDE_INCLUDE_DIR)
@@ -197,15 +197,15 @@ if(PYSIDE_INCLUDE_DIR)
         ${PYSIDE_INCLUDE_DIR}/QtCore
         ${PYSIDE_INCLUDE_DIR}/QtGui
     )
-    if (TARGET PySide2::pyside2)
-        list(APPEND FreeCADGui_LIBS
-            PySide2::pyside2
-        )
-    else(TARGET PySide2::pyside2)
+    #if (TARGET PySide2::pyside2)
+    #    list(APPEND FreeCADGui_LIBS
+    #        PySide2::pyside2
+    #    )
+    #else(TARGET PySide2::pyside2)
         list(APPEND FreeCADGui_LIBS
             ${PYSIDE_LIBRARY}
         )
-    endif(TARGET PySide2::pyside2)
+    #endif(TARGET PySide2::pyside2)
     if (BUILD_QT5)
         include_directories(
             ${PYSIDE_INCLUDE_DIR}/QtWidgets

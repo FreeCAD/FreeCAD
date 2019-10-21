@@ -188,6 +188,11 @@ public:
 
     static Quantity Liter;
 
+    static Quantity Hertz;
+    static Quantity KiloHertz;
+    static Quantity MegaHertz;
+    static Quantity GigaHertz;
+
     static Quantity MicroGram;
     static Quantity MilliGram;
     static Quantity Gram;
