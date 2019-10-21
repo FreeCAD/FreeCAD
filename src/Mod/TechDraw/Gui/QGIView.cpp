@@ -242,6 +242,7 @@ void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
+    //TODO: this should be done in itemChange
     if(!m_locked) {
         if (!isInnerView()) {
             double tempX = x(),
@@ -337,13 +338,6 @@ void QGIView::updateView(bool update)
         setFlag(QGraphicsItem::ItemIsMovable, true);
     }
 
-    if (getViewObject()->X.isTouched() ||                   //change in feat position
-        getViewObject()->Y.isTouched()) {
-        double featX = Rez::guiX(getViewObject()->X.getValue());
-        double featY = Rez::guiX(getViewObject()->Y.getValue());
-        setPosition(featX,featY);
-    }
-
     double appRotation = getViewObject()->Rotation.getValue();
     double guiRotation = rotation();
     if (!TechDraw::DrawUtil::fpCompare(appRotation,guiRotation)) {
@@ -412,6 +406,13 @@ void QGIView::toggleCache(bool state)
 
 void QGIView::draw()
 {
+//    Base::Console().Message("QGIV::draw()\n");
+    double x, y;
+    if (getViewObject() != nullptr) {
+        x = Rez::guiX(getViewObject()->X.getValue());
+        y = Rez::guiX(getViewObject()->Y.getValue());
+        setPosition(x, y);
+    }
     if (isVisible()) {
         drawBorder();
         show();

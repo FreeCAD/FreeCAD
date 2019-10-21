@@ -471,43 +471,6 @@ bool CmdTechDrawToggleFrame::isActive(void)
     return (havePage && haveView);
 }
 
-//===========================================================================
-// TechDraw_Redraw
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawRedraw)
-
-CmdTechDrawRedraw::CmdTechDrawRedraw()
-  : Command("TechDraw_Redraw")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Redraw a page");
-    sToolTipText    = QT_TR_NOOP("Redraw a page");
-    sWhatsThis      = "TechDraw_Redraw";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-forceredraw";
-}
-
-void CmdTechDrawRedraw::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    Gui::WaitCursor wc;
-
-    page->forceRedraw(true);
-    page->updateAllViews();
-    page->forceRedraw(false);
-}
-
-bool CmdTechDrawRedraw::isActive(void)
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    return (havePage);
-}
 
 void CreateTechDrawCommandsDecorate(void)
 {
@@ -517,7 +480,6 @@ void CreateTechDrawCommandsDecorate(void)
     rcCmdMgr.addCommand(new CmdTechDrawNewGeomHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
-    rcCmdMgr.addCommand(new CmdTechDrawRedraw());
 //    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
 //    rcCmdMgr.addCommand(new CmdTechDrawRichAnno());
 }

@@ -127,7 +127,7 @@ public:
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
     std::vector<TechDraw::DrawViewBalloon*> getBalloons() const;
 
-    const std::vector<TechDraw::Vertex *> & getVertexGeometry() const;
+    const std::vector<TechDraw::Vertex *> getVertexGeometry() const;
     const std::vector<TechDraw::BaseGeom  *> & getEdgeGeometry() const;
     const std::vector<TechDraw::BaseGeom  *> getVisibleFaceEdges() const;
     const std::vector<TechDraw::Face *> & getFaceGeometry() const;
@@ -210,7 +210,7 @@ protected:
     TechDraw::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
-    void onChanged(const App::Property* prop) override;
+    virtual void onChanged(const App::Property* prop) override;
     virtual void unsetupObject() override;
 
     virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis);

@@ -74,9 +74,11 @@ DrawProjGroup::DrawProjGroup(void)
     
     
     ProjectionType.setEnums(ProjectionTypeEnums);
-    ADD_PROPERTY(ProjectionType, ((long)getDefProjConv()));
+    ADD_PROPERTY_TYPE(ProjectionType, ((long)getDefProjConv()), group, 
+                                App::Prop_None, "First or Third Angle projection");
 
-    ADD_PROPERTY_TYPE(AutoDistribute ,(autoDist),agroup,App::Prop_None,"Distribute Views Automatically or Manually");
+    ADD_PROPERTY_TYPE(AutoDistribute ,(autoDist),agroup,
+                                App::Prop_None,"Distribute Views Automatically or Manually");
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
     Rotation.setStatus(App::Property::Hidden,true);   //DPG does not rotate
@@ -108,8 +110,13 @@ void DrawProjGroup::onChanged(const App::Property* prop)
 //            }
         }
         if (prop == &Scale) {
-            updateChildren();
+            updateChildrenScale();
         }
+
+        if (prop == &ProjectionType) {
+            updateChildrenEnforce();
+        }
+
         if (prop == &Source) {
             updateChildrenSource();
         }
@@ -168,17 +175,8 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
         //no anchor yet.  nothing to do.
         return DrawViewCollection::execute();
     }
-    
-//    for (auto& v: Views.getValues()) {          //is this needed here? Up to DPGI to keep up to date. 
-//        v->recomputeFeature();
-//    }
 
-    for (auto& item: getViewsAsDPGI()) {
-        bool touched = item->isTouched();
-        item->autoPosition();
-        if(!touched)
-            item->purgeTouched();
-    }
+    autoPositionChildren();
 
     return DrawViewCollection::execute();
 }
@@ -853,16 +851,42 @@ void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
         }
 }
 
-/*! 
- * tell children DPGIs that parent DPG has changed Scale
- */
-void DrawProjGroup::updateChildren(void)
+void DrawProjGroup::recomputeChildren(void)
+{
+//    Base::Console().Message("DPG::recomputeChildren()\n");
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if (view == nullptr) {
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        } else {
+            view->recomputeFeature();
+        }
+    }
+}
+
+void DrawProjGroup::autoPositionChildren(void)
 {
     for( const auto it : Views.getValues() ) {
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
         if (view == nullptr) {
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        } else {
+            view->autoPosition();
+        }
+    }
+}
+
+/*! 
+ * tell children DPGIs that parent DPG has changed Scale
+ */
+void DrawProjGroup::updateChildrenScale(void)
+{
+//    Base::Console().Message("DPG::updateChildrenScale\n");
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if (view == nullptr) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Log("PROBLEM - DPG::updateChildren - non DPGI entry in Views! %s\n",
+            Base::Console().Log("PROBLEM - DPG::updateChildrenScale - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         } else  if(view->Scale.getValue()!=Scale.getValue()) {
@@ -902,6 +926,21 @@ void DrawProjGroup::updateChildrenLock(void)
             Base::Console().Log("PROBLEM - DPG::updateChildrenLock - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        }
+    }
+}
+
+void DrawProjGroup::updateChildrenEnforce(void)
+{
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if (view == nullptr) {
+            //if an element in Views is not a DPGI, something really bad has happened somewhere
+            Base::Console().Log("PROBLEM - DPG::updateChildrenEnforce - non DPGI entry in Views! %s\n",
+                                    getNameInDocument());
+            throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
+        } else {
+            view->enforceRecompute();
         }
     }
 }
