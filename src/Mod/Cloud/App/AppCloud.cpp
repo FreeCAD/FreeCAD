@@ -399,7 +399,7 @@ Cloud::CloudWriter::CloudWriter(const char* Url, const char* AccessKey, const ch
                         curl_easy_strerror(res));
                 curl_easy_cleanup(curl);
 		free( RequestData);
-		// Let's dump temporarly for debug purpose of s3v4 implementation
+		// Lets dump temporarily for debug purposes of s3v4 implementation
 
                 std::stringstream input(s);
 
@@ -422,7 +422,7 @@ Cloud::CloudWriter::CloudWriter(const char* Url, const char* AccessKey, const ch
                 parser->parse(myxml_buf);
                 auto* dom=parser->getDocument();
 		// Is there an Error entry into the document ?
-		// if yes then we must create the Bucket
+		// if yes, then we must create the Bucket
                 checkXML(dom);
 		if ( strcmp(errorCode,"NoSuchBucket") == 0 )
 		{
@@ -760,7 +760,7 @@ void Cloud::CloudWriter::writeFiles(void)
 {
 
     // use a while loop because it is possible that while
-    // processing the files new ones can be added
+    // processing the files, new ones can be added
     std::string tmp="";
     char *cstr;
     size_t index = 0;
@@ -874,7 +874,7 @@ bool Cloud::Module::cloudRestore (const char *BucketName)
 
     Document* doc = GetApplication().getActiveDocument();
     // clean up if the document is not empty
-    // !TODO mind exceptions while restoring!
+    // !TODO: mind exceptions while restoring!
 
     doc->clearUndos();
 

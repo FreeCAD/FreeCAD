@@ -163,7 +163,7 @@ private:
   std::set<MeshPoint>       _cutPoints;
   /** all edges */
   std::map<Edge, EdgeInfo>  _edges;
-  /** map from facet index to his cutted points (mesh 1 and mesh 2) Key: Facet-Index  Value: List of iterators of set<MeshPoint> */
+  /** map from facet index to its cut points (mesh 1 and mesh 2) Key: Facet-Index  Value: List of iterators of set<MeshPoint> */
   std::map<unsigned long, std::list<std::set<MeshPoint>::iterator> > _facet2points[2];
   /** Facets collected from region growing */
   std::vector<MeshGeomFacet> _facetsOf[2];
@@ -172,7 +172,7 @@ private:
 
   /** Cut mesh 1 with mesh 2 */
   void Cut (std::set<unsigned long>& facetsNotCuttingEdge0, std::set<unsigned long>& facetsCuttingEdge1);
-  /** Trianglute each facets cutted with his cutting points */
+  /** Trianglute each facets cut with its cutting points */
   void TriangulateMesh (const MeshKernel &cutMesh, int side);
   /** search facets for adding (with region growing) */
   void CollectFacets (int side, float mult);

@@ -759,7 +759,7 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
 
     if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
         // MovePreselect is likely going to slow down large scene rendering.
-        // Disable it fow now.
+        // Disable it for now.
 #if 0
         if(hx!=x || hy!=y || hz!=z) {
             hx = x;
@@ -2344,4 +2344,3 @@ PyObject *SelectionSingleton::sGetSelectionFromStack(PyObject * /*self*/, PyObje
         return Py::new_reference_to(list);
     } PY_CATCH;
 }
-

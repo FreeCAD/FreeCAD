@@ -355,8 +355,9 @@ class _Rebar(ArchComponent.Component):
             if obj.CustomSpacing:
                 spacinglist = strprocessOfCustomSpacing(obj.CustomSpacing)
                 influenceArea = sum(spacinglist) - spacinglist[0] / 2 - spacinglist[-1] / 2
-        if (obj.OffsetStart.Value + obj.OffsetEnd.Value) > size:
-            return
+        # Drop this check to solve issue as discussed here: https://github.com/FreeCAD/FreeCAD/pull/2550
+        # if (obj.OffsetStart.Value + obj.OffsetEnd.Value) > size:
+        #        return
         # all tests ok!
         if hasattr(obj, "Length"):
             length = getLengthOfRebar(obj)

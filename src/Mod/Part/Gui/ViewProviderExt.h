@@ -129,7 +129,7 @@ public:
     void unsetHighlightedPoints();
     //@}
 
-    /** @name Color mangement methods 
+    /** @name Color management methods 
      */
     //@{
     virtual std::map<std::string,App::Color> getElementColors(const char *element=0) const override;
@@ -192,4 +192,3 @@ private:
 }
 
 #endif // PARTGUI_VIEWPROVIDERPARTEXT_H
-
