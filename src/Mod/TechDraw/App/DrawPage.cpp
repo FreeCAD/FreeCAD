@@ -130,6 +130,7 @@ void DrawPage::onChanged(const App::Property* prop)
             //would be nice if this message was displayed immediately instead of after the recomputeFeature
             Base::Console().Message("Rebuilding Views for: %s/%s\n",getNameInDocument(),Label.getValue());
             updateAllViews();
+            purgeTouched();
         }
     } else if (prop == &Template) {
         if (!isRestoring() &&
@@ -176,6 +177,16 @@ App::DocumentObjectExecReturn *DrawPage::execute(void)
 // this is now irrelevant, b/c DP::execute doesn't do anything. 
 short DrawPage::mustExecute() const
 {
+    short result = 0;
+    if (!isRestoring()) {
+        result  =  (Views.isTouched()  ||
+                    Scale.isTouched()  ||
+                    ProjectionType.isTouched() ||
+                    Template.isTouched());
+        if (result) {
+            return result;
+        }
+    }
     return App::DocumentObject::mustExecute();
 }
 
@@ -331,17 +342,27 @@ void DrawPage::onDocumentRestored()
     App::DocumentObject::onDocumentRestored();
 }
 
+void DrawPage::redrawCommand()
+{
+//    Base::Console().Message("DP::redrawCommand()\n");
+    forceRedraw(true);
+    updateAllViews();
+    forceRedraw(false);
+}
 //should really be called "updateMostViews".  can still be problems to due execution order.
 void DrawPage::updateAllViews()
 {
+//    Base::Console().Message("DP::updateAllViews()\n");
     std::vector<App::DocumentObject*> featViews = getAllViews();
-    std::vector<App::DocumentObject*>::const_iterator it = featViews.begin();
+    std::vector<App::DocumentObject*>::iterator it = featViews.begin();
     //first, make sure all the Parts have been executed so GeometryObjects exist
     for(; it != featViews.end(); ++it) {
         TechDraw::DrawViewPart *part = dynamic_cast<TechDraw::DrawViewPart *>(*it);
-        if (part != nullptr &&
-            !part->hasGeometry()) {
+        TechDraw::DrawViewCollection *collect = dynamic_cast<TechDraw::DrawViewCollection*>(*it);
+        if (part != nullptr) {
             part->recomputeFeature();
+        } else if (collect != nullptr) {
+            collect->recomputeFeature();
         }
     }
     //second, make sure all the Dimensions have been executed so Measurements have References
@@ -448,6 +469,7 @@ void DrawPage::handleChangedPropertyType(
     }
 }
 
+//allow/prevent drawing updates for all Pages
 bool DrawPage::GlobalUpdateDrawings(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -456,6 +478,7 @@ bool DrawPage::GlobalUpdateDrawings(void)
     return result;
 }
 
+//allow/prevent a single page to update despite GlobalUpdateDrawings setting
 bool DrawPage::AllowPageOverride(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()

@@ -144,7 +144,8 @@ void DrawViewDetail::onChanged(const App::Property* prop)
         if ((prop == &Reference)  ||
            (prop == &Radius)     ||
            (prop == &AnchorPoint))  {
-            BaseView.getValue()->touch();    //hack.  sb "update graphics"
+//            BaseView.getValue()->touch();    //hack.  sb "update graphics"
+            enforceRecompute();
         }
 
     }

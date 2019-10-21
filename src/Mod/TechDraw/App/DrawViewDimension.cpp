@@ -93,22 +93,22 @@ enum RefType{
 
 DrawViewDimension::DrawViewDimension(void)
 {
-    ADD_PROPERTY_TYPE(References2D,(0,0),"",(App::PropertyType)(App::Prop_None),"Projected Geometry References");
+    ADD_PROPERTY_TYPE(References2D,(0,0),"",(App::Prop_None),"Projected Geometry References");
     References2D.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(References3D,(0,0),"",(App::PropertyType)(App::Prop_None),"3D Geometry References");
+    ADD_PROPERTY_TYPE(References3D,(0,0),"",(App::Prop_None),"3D Geometry References");
     References3D.setScope(App::LinkScope::Global);
 
-    ADD_PROPERTY_TYPE(FormatSpec,("") , "Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
-    ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format",(App::PropertyType)(App::Prop_None),"Value overridden by user");
+    ADD_PROPERTY_TYPE(FormatSpec,("") , "Format", App::Prop_Output,"Dimension Format");
+    ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format", App::Prop_Output,"Value overridden by user");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
     MeasureType.setEnums(MeasureTypeEnums);
     ADD_PROPERTY(MeasureType, ((long)1));                             //Projected (or True) measurement
-    ADD_PROPERTY_TYPE(TheoreticalExact,(false),"",(App::PropertyType)(App::Prop_None),"Set for theoretical exact (basic) dimension");
-    ADD_PROPERTY_TYPE(OverTolerance ,(0.0),"",App::Prop_None,"+ Tolerance value");
-    ADD_PROPERTY_TYPE(UnderTolerance ,(0.0),"",App::Prop_None,"- Tolerance value");
-    ADD_PROPERTY_TYPE(Inverted,(false),"",(App::PropertyType)(App::Prop_None),"The dimensional value is displayed inverted");
+    ADD_PROPERTY_TYPE(TheoreticalExact,(false),"", App::Prop_Output,"Set for theoretical exact (basic) dimension");
+    ADD_PROPERTY_TYPE(OverTolerance ,(0.0),"", App::Prop_Output,"+ Tolerance value");
+    ADD_PROPERTY_TYPE(UnderTolerance ,(0.0),"", App::Prop_Output,"- Tolerance value");
+    ADD_PROPERTY_TYPE(Inverted,(false),"", App::Prop_Output,"The dimensional value is displayed inverted");
 
     //hide the properties the user can't edit in the property editor
 //    References2D.setStatus(App::Property::Hidden,true);
@@ -160,19 +160,25 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 Base::Console().Warning("%s has no 3D References but is Type: True\n", getNameInDocument());
                 MeasureType.setValue("Projected");
             }
-        }
-        if (prop == &References3D) {                                       //have to rebuild the Measurement object
+        } else if (prop == &References3D) {   //have to rebuild the Measurement object
             clear3DMeasurements();                                                             //Measurement object
             if (!(References3D.getValues()).empty()) {
                 setAll3DMeasurement();
             } else {
-                if (MeasureType.isValue("True")) {                                 //empty 3dRefs, but True
-                    MeasureType.touch();                                          //run MeasureType logic for this case
+                if (MeasureType.isValue("True")) {             //empty 3dRefs, but True
+                    MeasureType.touch();                       //run MeasureType logic for this case
                 }
             }
-        }
-        if (prop == &Type) {
+        } else if (prop == &Type) {                                    //why??
             FormatSpec.setValue(getDefaultFormatSpec().c_str());
+        } else if ( (prop == &FormatSpec) ||
+             (prop == &Arbitrary) ||
+             (prop == &MeasureType) ||
+             (prop == &TheoreticalExact) ||
+             (prop == &OverTolerance) ||
+             (prop == &UnderTolerance) ||
+             (prop == &Inverted) ) {
+//            nothing in particular
         }
     }
 
@@ -191,18 +197,15 @@ short DrawViewDimension::mustExecute() const
 {
     bool result = 0;
     if (!isRestoring()) {
-        result =  (References2D.isTouched() ||
+        result = (References2D.isTouched() ||
                   Type.isTouched() ||
                   FormatSpec.isTouched() ||
-                  MeasureType.isTouched());
-    }
-    if (result) {
-        return result;
-    }
-    
-    auto dvp = getViewPart();
-    if (dvp != nullptr) {
-        result = dvp->isTouched();
+                  Arbitrary.isTouched() ||
+                  MeasureType.isTouched() ||
+                  TheoreticalExact.isTouched() ||
+                  OverTolerance.isTouched() ||
+                  UnderTolerance.isTouched() ||
+                  Inverted.isTouched() );
     }
     if (result) {
         return result;
@@ -572,10 +575,10 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
         }
     } else {
 //handle single value schemes
-        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));             //space + any non digits at end of string
+        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
 
         QString userVal = userStr;
-        userVal.remove(rxUnits);                                  //getUserString(defaultDecimals) without units
+        userVal.remove(rxUnits);                                          //getUserString(defaultDecimals) without units
 
         QLocale loc;
         double userValNum = loc.toDouble(userVal);
@@ -583,7 +586,7 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
 //        QString userUnits;
         int pos = 0;
         if ((pos = rxUnits.indexIn(userStr, 0)) != -1)  {
-            userUnits = rxUnits.cap(0);                      //entire capture - non numerics at end of userString
+            userUnits = rxUnits.cap(0);                                       //entire capture - non numerics at end of userString
         }
 
         //find the %x.y tag in FormatSpec
