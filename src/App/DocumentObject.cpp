@@ -26,6 +26,9 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/range.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Writer.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
@@ -42,6 +45,8 @@
 #include "GeoFeatureGroupExtension.h"
 #include <App/DocumentObjectPy.h>
 #include <boost/bind.hpp>
+
+typedef boost::iterator_range<const char*> CharRange;
 
 FC_LOG_LEVEL_INIT("App",true,true)
 
@@ -741,32 +746,42 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const
 {
     DocumentObject *ret = 0;
-    if(queryExtension(&DocumentObjectExtension::extensionGetSubObject, ret, subname, pyObj, mat, transform, depth))
+    if(queryExtension(&DocumentObjectExtension::extensionGetSubObject, 
+                ret, subname, pyObj, mat, transform, depth))
         return ret;
 
-    std::string name;
     const char *dot=0;
     if(!subname || !(dot=strchr(subname,'.'))) {
         ret = const_cast<DocumentObject*>(this);
     }else if(subname[0]=='$') {
-        name = std::string(subname+1,dot);
+        CharRange name(subname+1,dot);
         for(auto obj : getOutList()) {
-            if(name == obj->Label.getValue()) {
+            if(boost::equals(name, obj->Label.getValue())) {
                 ret = obj;
                 break;
             }
         }
-    }else{
-        name = std::string(subname,dot);
+    } else {
         const auto &outList = getOutList();
-        if(outList.size()!=_outListMap.size()) {
-            _outListMap.clear();
-            for(auto obj : outList)
-                _outListMap[obj->getNameInDocument()] = obj;
+        if(outList.size()<=10) {
+            CharRange name(subname,dot);
+            for(auto obj : outList) {
+                if(obj && obj->getNameInDocument() && boost::equals(name,obj->getNameInDocument())) {
+                    ret = obj;
+                    break;
+                }
+            }
+        } else {
+            if(outList.size()!=_outListMap.size()) {
+                _outListMap.clear();
+                for(auto obj : outList)
+                    _outListMap[obj->getNameInDocument()] = obj;
+            }
+            std::string name(subname,dot);
+            auto it = _outListMap.find(name.c_str());
+            if(it != _outListMap.end())
+                ret = it->second;
         }
-        auto it = _outListMap.find(name.c_str());
-        if(it != _outListMap.end())
-            ret = it->second;
     }
 
     // TODO: By right, normal object's placement does not transform its sub
