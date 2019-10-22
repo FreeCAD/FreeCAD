@@ -138,6 +138,15 @@ SET(PathScripts_post_SRCS
 )
 
 SET(Tools_Bit_SRCS
+  Tools/Bit/t1.fctb
+  Tools/Bit/t2.fctb
+  Tools/Bit/t3.fctb
+  Tools/Bit/t4.fctb
+  Tools/Bit/t5.fctb
+  Tools/Bit/t6.fctb
+  Tools/Bit/t7.fctb
+  Tools/Bit/t8.fctb
+  Tools/Bit/t9.fctb
 )
 
 SET(Tools_Library_SRCS

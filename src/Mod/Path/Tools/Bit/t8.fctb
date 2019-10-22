@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "name": "T8",
+  "template": "src/Mod/Path/Tools/Template/endmill-straight.fcstd",
+  "parameter": {
+    "CuttingEdgeHeight": "30.000 mm",
+    "Diameter": "8.000 mm",
+    "Length": "50.000 mm",
+    "ShankDiameter": "3.000 mm"
+  }
+}
