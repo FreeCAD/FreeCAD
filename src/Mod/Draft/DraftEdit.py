@@ -206,13 +206,13 @@ class Edit():
         viewer = FreeCADGui.ActiveDocument.ActiveView.getViewer()
         self.render_manager = viewer.getSoRenderManager()
         view = FreeCADGui.ActiveDocument.ActiveView
-        if self._keyPressedCB == None:
+        if self._keyPressedCB is None:
             self._keyPressedCB = view.addEventCallbackPivy(
             coin.SoKeyboardEvent.getClassTypeId(), self.keyPressed)
-        if self._mouseMovedCB == None:
+        if self._mouseMovedCB is None:
             self._mouseMovedCB = view.addEventCallbackPivy(
             coin.SoLocation2Event.getClassTypeId(), self.mouseMoved)
-        if self._mousePressedCB == None:
+        if self._mousePressedCB is None:
             self._mousePressedCB = view.addEventCallbackPivy(
             coin.SoMouseButtonEvent.getClassTypeId(), self.mousePressed)
         #FreeCAD.Console.PrintMessage("Draft edit callbacks registered \n")
@@ -245,7 +245,7 @@ class Edit():
             key = event.getKey()
             #FreeCAD.Console.PrintMessage("pressed key : "+str(key)+"\n")
             if key == 65307: # ESC
-                if self.editing == None: self.finish()
+                if self.editing is None: self.finish()
                 else:
                     self.finalizeGhost()
                     self.setEditPoints(self.obj)
@@ -274,17 +274,17 @@ class Edit():
                 pos = event.getPosition()
                 node = self.getEditNode(pos)
                 ep = self.getEditNodeIndex(node)
-                if ep == None: return
+                if ep is None: return
                 doc = FreeCAD.getDocument(str(node.documentName.getValue()))
                 self.obj = doc.getObject(str(node.objectName.getValue()))
-                if self.obj == None: return
+                if self.obj is None: return
                 if self.ui.sharpButton.isChecked():
                     return self.smoothBezPoint(ep, 'Sharp')
                 elif self.ui.tangentButton.isChecked():
                     return self.smoothBezPoint(ep, 'Tangent')
                 elif self.ui.symmetricButton.isChecked():
                     return self.smoothBezPoint(ep, 'Symmetric')
-            if self.editing == None:
+            if self.editing is None:
                 self.startEditing(event)
             else:
                 self.endEditing()
@@ -313,11 +313,11 @@ class Edit():
         pos = event.getPosition()
         node = self.getEditNode(pos)
         ep = self.getEditNodeIndex(node)
-        if ep == None: return
+        if ep is None: return
 
         doc = FreeCAD.getDocument(str(node.documentName.getValue()))
         self.obj = doc.getObject(str(node.objectName.getValue()))
-        if self.obj == None: return
+        if self.obj is None: return
         self.setPlacement(self.obj)
 
         FreeCAD.Console.PrintMessage(str(self.obj.Name)+str(": editing node: n° ")+str(ep)+"\n")
@@ -690,12 +690,12 @@ class Edit():
         node = self.getEditNode(pos)
         ep = self.getEditNodeIndex(node)
 
-        if ep == None: return FreeCAD.Console.PrintWarning(
+        if ep is None: return FreeCAD.Console.PrintWarning(
             translate("draft", "Node not found\n"))
 
         doc = FreeCAD.getDocument(str(node.documentName.getValue()))
         self.obj = doc.getObject(str(node.objectName.getValue()))
-        if self.obj == None: return
+        if self.obj is None: return
         if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
         if len(self.obj.Points) <= 2: return FreeCAD.Console.PrintWarning(
             translate("draft", "Active object must have more than two points/nodes")+"\n")
@@ -917,7 +917,7 @@ class Edit():
     def smoothBezPoint(self, point, style='Symmetric'):
         "called when changing the continuity of a knot"
         style2cont = {'Sharp':0,'Tangent':1,'Symmetric':2}
-        if point == None: return
+        if point is None: return
         if not (Draft.getType(self.obj) == "BezCurve"):return
         pts = self.obj.Points
         deg = self.obj.Degree
