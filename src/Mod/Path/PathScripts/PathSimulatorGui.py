@@ -125,7 +125,7 @@ class PathSimulation:
         # if hasattr(self.operation, "ToolController"):
         #     self.tool = self.operation.ToolController.Tool
         if (self.tool is not None):
-            toolProf = self.CreateToolProfile(self.tool, Vector(0, 1, 0), Vector(0, 0, 0), self.tool.Diameter / 2.0)
+            toolProf = self.CreateToolProfile(self.tool, Vector(0, 1, 0), Vector(0, 0, 0), float(self.tool.Diameter) / 2.0)
             self.cutTool.Shape = Part.makeSolid(toolProf.revolve(Vector(0, 0, 0), Vector(0, 0, 1)))
             self.cutTool.ViewObject.show()
             self.voxSim.SetCurrentTool(self.tool)
@@ -298,7 +298,7 @@ class PathSimulation:
     #     except:
     #         return (None, e1.valueAt(e1.LastParameter))
     #     height = self.height
-    #     rad = tool.Diameter / 2.0 - 0.001 * curpos[2]  # hack to overcome occ bug
+    #     rad = float(tool.Diameter) / 2.0 - 0.001 * curpos[2]  # hack to overcome occ bug
     #     if type(e1.Curve) is Part.Circle and e1.Curve.Radius <= rad:  # hack to overcome occ bug
     #         rad = e1.Curve.Radius - 0.001
     #         # return (None, e1.valueAt(e1.LastParameter))
@@ -350,7 +350,7 @@ class PathSimulation:
         # height = self.height
 
         # hack to overcome occ bugs
-        rad = tool.Diameter / 2.0 - 0.001 * pos[2]
+        rad = float(tool.Diameter) / 2.0 - 0.001 * pos[2]
         # rad = rad + 0.001 * self.icmd
         if type(toolPath.Curve) is Part.Circle and toolPath.Curve.Radius <= rad:
             rad = toolPath.Curve.Radius - 0.01 * (pos[2] + 1)
@@ -386,7 +386,7 @@ class PathSimulation:
     # create radial profile of the tool (90 degrees to the direction of the path)
     def CreateToolProfile(self, tool, dir, pos, rad):
         type = tool.ToolType
-        # rad = tool.Diameter / 2.0 - 0.001 * pos[2] # hack to overcome occ bug
+        # rad = float(tool.Diameter) / 2.0 - 0.001 * pos[2] # hack to overcome occ bug
         xf = dir[0] * rad
         yf = dir[1] * rad
         xp = pos[0]

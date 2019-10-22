@@ -860,10 +860,10 @@ class ObjectDressup:
             self.toolRadius = 5
         else:
             tool = tc.Proxy.getTool(tc)  # PathUtils.getTool(obj, tc.ToolNumber)
-            if not tool or tool.Diameter == 0:
+            if not tool or float(tool.Diameter) == 0:
                 self.toolRadius = 5
             else:
-                self.toolRadius = tool.Diameter / 2
+                self.toolRadius = float(tool.Diameter) / 2
 
         self.shapes = {}
         self.dbg = []

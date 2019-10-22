@@ -142,6 +142,9 @@ class CommandPathToolController(object):
             sel = FreeCADGui.Selection.getSelectionEx()
             if sel and sel[0].Object.Name[:3] == 'Job':
                 return sel[0].Object
+        jobs = [o for o in FreeCAD.ActiveDocument.Objects if o.Name[:3] == 'Job']
+        if 1 == len(jobs):
+            return jobs[0]
         return None
 
     def IsActive(self):
@@ -153,8 +156,9 @@ class CommandPathToolController(object):
         if job:
             tool = PathToolBitGui.ToolBitSelector().getTool()
             if tool:
-                tc = Create(tool)
-                job.addToolController(tc)
+                tc = Create("TC: {}".format(tool.Label), tool)
+                job.Proxy.addToolController(tc)
+                FreeCAD.ActiveDocument.recompute()
 
 class ToolControllerEditor(object):
 
@@ -262,7 +266,7 @@ class TaskPanel:
 
         if self.toolrep:
             tool = self.obj.Tool
-            radius = tool.Diameter / 2
+            radius = float(tool.Diameter) / 2
             length = tool.CuttingEdgeHeight
             t = Part.makeCylinder(radius, length)
             self.toolrep.Shape = t

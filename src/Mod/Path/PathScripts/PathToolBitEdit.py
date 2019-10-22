@@ -124,12 +124,12 @@ class ToolBitEditor:
         path = self.tool.BitTemplate
         if not path:
             path = LastPath
-        foo = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),
+        foo = QtGui.QFileDialog.getOpenFileName(self.form,
                 "Path - Tool Template",
                 path,
-                "*.fcstd")[0]
-        if foo:
-            self.form.templatePath.setText(foo)
+                "*.fcstd")
+        if foo and foo[0]:
+            self.form.templatePath.setText(foo[0])
             self.updateTemplate()
 
     def setupUI(self):

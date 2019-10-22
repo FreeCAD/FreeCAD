@@ -1792,10 +1792,10 @@ class ObjectSurface(PathOp.ObjectOp):
     def setOclCutter(self, obj):
         # Set cutter details
         #  https://www.freecadweb.org/api/dd/dfe/classPath_1_1Tool.html#details
-        diam_1 = obj.ToolController.Tool.Diameter
-        lenOfst = obj.ToolController.Tool.LengthOffset
-        FR = obj.ToolController.Tool.FlatRadius
-        CEH = obj.ToolController.Tool.CuttingEdgeHeight
+        diam_1 = float(obj.ToolController.Tool.Diameter)
+        lenOfst = obj.ToolController.Tool.LengthOffset if hasattr(obj.ToolController.Tool, 'LengthOffset') else 0
+        FR = obj.ToolController.Tool.FlatRadius if hasattr(obj.ToolController.Tool, 'FlatRadius') else 0
+        CEH = obj.ToolController.Tool.CuttingEdgeHeight if hasattr(obj.ToolController.Tool, 'CuttingEdgeHeight') else 0
 
         if obj.ToolController.Tool.ToolType == 'EndMill':
             # Standard End Mill

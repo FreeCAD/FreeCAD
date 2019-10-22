@@ -384,7 +384,7 @@ class ObjectOp(PathOp.ObjectOp):
         if 1 == len(self.model) and self.baseIsArchPanel(obj, self.model[0]):
             panel = self.model[0]
             holeshapes = panel.Proxy.getHoles(panel, transform=True)
-            tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
+            tooldiameter = float(obj.ToolController.Proxy.getTool(obj.ToolController).Diameter)
             for holeNr, hole in enumerate(holeshapes):
                 PathLog.debug('Entering new HoleShape')
                 for wireNr, wire in enumerate(hole.Wires):
@@ -405,7 +405,7 @@ class ObjectOp(PathOp.ObjectOp):
         PathLog.track('obj: {} shape: {}'.format(obj, shape))
         holelist = []
         features = []
-        # tooldiameter = obj.ToolController.Proxy.getTool(obj.ToolController).Diameter
+        # tooldiameter = float(obj.ToolController.Proxy.getTool(obj.ToolController).Diameter)
         tooldiameter = None
         PathLog.debug('search for holes larger than tooldiameter: {}: '.format(tooldiameter))
         if DraftGeomUtils.isPlanar(shape):

@@ -27,6 +27,7 @@ import FreeCADGui
 import PathScripts.PathGui as PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathToolBitEdit as PathToolBitEdit
 import PathScripts.PathUtil as PathUtil
@@ -165,18 +166,18 @@ class ToolBitSelector(object):
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitSelector.ui")
         self.setupUI()
 
-    def getTool(self):
-        selected = None
+    def updateTools(self, selected=None):
+        PathLog.track()
         selItem = None
         self.form.tools.setUpdatesEnabled(False)
-        if self.form.tools.currentItem():
+        if selected is None and self.form.tools.currentItem():
             selected = self.form.tools.currentItem().text()
         self.form.tools.clear()
         for tool in sorted(self.loadedTools(), key=lambda t: t.Label):
             icon = None
             if tool.ViewObject and tool.ViewObject.Proxy:
                 icon = tool.ViewObject.Proxy.getIcon()
-            if icon:
+            if icon and isinstance(icon, QtGui.QIcon):
                 item = QtGui.QListWidgetItem(icon, tool.Label)
             else:
                 item = QtGui.QListWidgetItem(tool.Label)
@@ -188,32 +189,68 @@ class ToolBitSelector(object):
             self.form.tools.setCurrentItem(selItem)
         self.updateSelection()
         self.form.tools.setUpdatesEnabled(True)
+
+    def getTool(self):
+        PathLog.track()
+        self.updateTools()
         res = self.form.exec_()
         if 1 == res and self.form.tools.currentItem():
             return self.form.tools.currentItem().data(self.ToolRole)
         return None
 
     def loadedTools(self):
+        PathLog.track()
         if FreeCAD.ActiveDocument:
             return [o for o in FreeCAD.ActiveDocument.Objects if hasattr(o, 'Proxy') and isinstance(o.Proxy, PathToolBit.ToolBit)]
         return []
 
     def loadTool(self):
-        pass
+        PathLog.track()
+        tool = LoadTool(self.form)
+        if tool:
+            self.updateTools(tool.Label)
 
     def createTool(self):
-        pass
+        PathLog.track()
+        tool = Create()
+
+        def accept():
+            self.editor.accept()
+            self.dialog.done(1)
+            self.updateTools(tool.Label)
+
+        def reject():
+            FreeCAD.ActiveDocument.openTransaction(translate("PathToolBit", "Uncreate ToolBit"))
+            self.editor.reject()
+            self.dialog.done(0)
+            FreeCAD.ActiveDocument.removeObject(tool.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
+
+        self.dialog = QtGui.QDialog(self.form)
+        layout = QtGui.QVBoxLayout(self.dialog)
+        self.editor = PathToolBitEdit.ToolBitEditor(tool, self.dialog)
+        self.editor.setupUI()
+        self.buttons = QtGui.QDialogButtonBox(
+                QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
+                QtCore.Qt.Horizontal, self.dialog)
+        layout.addWidget(self.buttons)
+        self.buttons.accepted.connect(accept)
+        self.buttons.rejected.connect(reject)
+        print(self.dialog.exec_())
 
     def updateSelection(self):
+        PathLog.track()
         if self.form.tools.selectedItems():
             self.form.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(True)
         else:
             self.form.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
 
     def setupUI(self):
+        PathLog.track()
         self.form.toolCreate.clicked.connect(self.createTool)
         self.form.toolLoad.clicked.connect(self.loadTool)
         self.form.tools.itemSelectionChanged.connect(self.updateSelection)
+        self.form.tools.doubleClicked.connect(self.form.accept)
 
 def Create(name = 'ToolBit'):
     '''Create(name = 'ToolBit') ... creates a new tool bit.
@@ -231,5 +268,14 @@ def CreateFrom(path, name = 'ToolBit'):
     PathIconViewProvider.Attach(tool.ViewObject, name)
     FreeCAD.ActiveDocument.commitTransaction()
     return tool
+
+def LoadTool(parent = None):
+    '''LoadTool(parent=None) ... Open a file dialog to load a tool from a file.'''
+    if parent is None:
+        parent = QtGui.QApplication.activeWindow()
+    foo = QtGui.QFileDialog.getOpenFileName(parent, "Tool", PathPreferences.lastPathToolBit(), "*.fctb")
+    if foo and foo[0]:
+        return CreateFrom(foo[0])
+    return None
 
 PathIconViewProvider.RegisterViewProvider('ToolBit', ViewProvider)

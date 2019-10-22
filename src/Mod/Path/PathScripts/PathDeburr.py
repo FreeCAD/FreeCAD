@@ -56,7 +56,7 @@ def toolDepthAndOffset(width, extraDepth, tool):
     toolDepth = 0 if 0 == tan else width / tan
     depth = toolDepth + extraDepth
     toolOffset = tool.FlatRadius
-    extraOffset = tool.Diameter / 2 - width if 180 == angle else extraDepth / tan
+    extraOffset = float(tool.Diameter) / 2 - width if 180 == angle else extraDepth / tan
     offset = toolOffset + extraOffset
     return (depth, offset)
 

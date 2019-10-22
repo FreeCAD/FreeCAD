@@ -126,10 +126,8 @@ class CommandToolBitLoad:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        from PySide import QtGui
-        foo = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), "Tool", PathScripts.PathPreferences.lastPathToolBit(), "*.fctb")
-        if foo:
-            PathScripts.PathToolBitGui.CreateFrom(foo[0])
+        if PathScripts.PathToolBitGui.LoadTool():
+            FreeCAD.ActiveDocument.recompute()
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_ToolBitCreate', CommandToolBitCreate())

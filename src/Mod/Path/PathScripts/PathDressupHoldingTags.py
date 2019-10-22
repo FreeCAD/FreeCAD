@@ -1021,7 +1021,7 @@ class ObjectTagDressup:
             #    traceback.print_exc()
             return None
 
-        self.toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter / 2
+        self.toolRadius = float(PathDressup.toolController(obj.Base).Tool.Diameter) / 2
         self.pathData = pathData
         if generate:
             obj.Height = self.pathData.defaultTagHeight()
