@@ -511,6 +511,25 @@ public:
         guard.tryInvoke();
     }
 
+    template<class F>
+    int removeIf(F f) {
+        ListT vals;
+        int count=0;
+        for(auto it=_lValueList.cbegin();it!=_lValueList.cend();++it) {
+            const T &v = *it;
+            if(f(v)) {
+                if(!count)
+                    vals.insert(vals.end(),_lValueList.cbegin(),it);
+                ++count;
+            } else if (count) {
+                vals.push_back(v);
+            }
+        }
+        if(count)
+            setValues(std::move(vals));
+        return count;
+    }
+
 protected:
 
     void setPyValues(const std::vector<PyObject*> &vals, const std::vector<int> &indices) override 
