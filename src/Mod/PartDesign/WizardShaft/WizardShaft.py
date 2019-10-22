@@ -39,7 +39,7 @@ class TaskWizardShaft:
         # Get active document or create a new one
         # Important because when setting the default data in WizardShaftTable() the
         # updateSketch() slot will be activated and it relies on finding a valid document
-        if self.doc == None:
+        if self.doc is None:
             self.Gui.activateWorkbench("PartDesignWorkbench")
             self.doc = self.App.newDocument()
             # Grab the newly created feature window

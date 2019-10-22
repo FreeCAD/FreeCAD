@@ -101,7 +101,7 @@ class Hole():
 
     def onChanged(self, fp, prop):
         #self.App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        if fp == None or fp.Support == None:
+        if fp is None or fp.Support is None:
             return
 
         if (prop == "HoleType" or prop == "Threaded" or prop == "Counterbore" or prop == "Countersink"
@@ -116,7 +116,7 @@ class Hole():
 
     def executePositionChanged(self, fp):
         "Change the position of the hole"
-        if fp.Support == None:
+        if fp.Support is None:
             return
         plane = self.feature.HoleGroove.Sketch.Support[0]
         # Get support (face)
@@ -134,7 +134,7 @@ class Hole():
             firstLine = None
             for e in wire.Edges:
                 if type(e.Curve) == Part.LineSegment:
-                    if firstLine == None:
+                    if firstLine is None:
                         firstLine = e
                         firstDirection = e.Curve.EndPoint - e.Curve.StartPoint
                     else:
@@ -274,7 +274,7 @@ class Hole():
 
     def executeSketchChanged(self, fp):
         "Change the sketch shape of the hole"
-        if self.feature.HoleGroove == None:
+        if self.feature.HoleGroove is None:
             return
         if fp.HoleType == "Thru":
             # TODO: Make this more stable

@@ -46,7 +46,7 @@ class HoleGui:
 
         # Get active document
         doc = FreeCAD.activeDocument()
-        if doc == None:
+        if doc is None:
             QtGui.QMessageBox.critical(mw, "No document", "A document must be open in order to create a hole feature")
             return
 
@@ -62,7 +62,7 @@ class HoleGui:
 
         # Show feature preview
         body = FreeCADGui.activeView().getActiveObject("pdbody");
-        if body == None:
+        if body is None:
             QtGui.QMessageBox.critical(mw, "No active body", "Please create a body or make a body active")
     
         feature = doc.addObject("Part::FeaturePython","Hole")
