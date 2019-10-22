@@ -68,14 +68,6 @@ public:
     bool isPickable();
     void setPickable(bool val);
 
-    /**
-     * Update the visual size to match the given extents
-     * @note should be reimplemented in the offspings
-     * @note use FreeCAD-specific bbox here to simplify the math in derived classes
-     */
-    virtual void setExtents (Base::BoundBox3d /*bbox*/)
-        { }
-
     /// Update the visual sizes. This overloaded version of the previous function to allow pass coin type
     void setExtents (const SbBox3f &bbox);
 
@@ -89,12 +81,10 @@ public:
 
     /**
      * Computes appropriate bounding box for the given list of objects to be passed to setExtents ()
-     * @param bboxAction  a coin action for traverse the given objects views.
      * @param objs        the list of objects to traverse, due to we traverse the scene graph, the geo children
      *                    will likely be traveresed too.
      */
     static SbBox3f getRelevantBoundBox (
-            SoGetBoundingBoxAction &bboxAction,
             const std::vector <App::DocumentObject *> &objs);
 
     /// Default size used to produce the default bbox
@@ -109,6 +99,14 @@ public:
 protected:
     virtual bool setEdit(int ModNum) override;
     virtual void unsetEdit(int ModNum) override;
+
+    /**
+     * Update the visual size to match the given extents
+     * @note should be reimplemented in the offspings
+     * @note use FreeCAD-specific bbox here to simplify the math in derived classes
+     */
+    virtual void setExtents (Base::BoundBox3d /*bbox*/)
+        { }
 
     /**
      * Guesses the context this datum belongs to and returns appropriate bounding box of all

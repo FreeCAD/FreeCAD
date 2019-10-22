@@ -46,17 +46,10 @@ public:
     virtual void extensionAttach(App::DocumentObject *pcObject) override;
     virtual void extensionUpdateData(const App::Property* prop) override;
     
-    void updateOriginSize();
-
-protected:
-    void slotChangedObjectApp ( const App::DocumentObject& obj );
-    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
+    virtual void updateOriginSize();
 
 private:
     void constructChildren ( std::vector<App::DocumentObject*> &children ) const;
-
-    boost::signals2::connection connectChangedObjectApp;
-    boost::signals2::connection connectChangedObjectGui;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension> ViewProviderOriginGroupExtensionPython;

@@ -193,7 +193,7 @@ std::string ViewProviderDatum::getElement(const SoDetail* detail) const
             element = line_detail->getLineIndex();
         } else if (detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
             const SoFaceDetail* face_detail = static_cast<const SoFaceDetail*>(detail);
-            element = face_detail->getFaceIndex();
+            element = face_detail->getPartIndex();
         } else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
             const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
             element = point_detail->getCoordinateIndex();
@@ -324,6 +324,8 @@ void ViewProviderDatum::updateExtents () {
 }
 
 void ViewProviderDatum::setExtents (const SbBox3f &bbox) {
+    if(bbox.isEmpty())
+        return;
     const SbVec3f & min = bbox.getMin ();
     const SbVec3f & max = bbox.getMax ();
     setExtents ( Base::BoundBox3d ( min.getValue()[0], min.getValue()[1], min.getValue()[2],
@@ -348,52 +350,57 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox () const {
         } else {
             // Fallback to whole document
             objs = this->getObject ()->getDocument ()->getObjects ();
+            for(auto it=objs.begin();it!=objs.end();) {
+                auto obj = *it;
+                if(!obj->Visibility.getValue()
+                        || App::GeoFeatureGroupExtension::getGroupOfObject(obj))
+                {
+                    it = objs.erase(it);
+                    continue;
+                }
+                auto vp = Gui::Application::Instance->getViewProvider(obj);
+                if(!vp || !vp->canAddToSceneGraph()) {
+                    it = objs.erase(it);
+                    continue;
+                }
+                ++it;
+            }
         }
     }
-
-    Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
-    if(view){
-       Gui::View3DInventorViewer* viewer = view->getViewer();
-       SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
-       SbBox3f bbox = getRelevantBoundBox (bboxAction, objs);
-
-       if ( bbox.getVolume () < Precision::Confusion() ) {
-           bbox.extendBy ( defaultBoundBox () );
-       }
-       return bbox;
-    } else {
-       return defaultBoundBox();
-    }
+    return getRelevantBoundBox (objs);
 }
 
 SbBox3f ViewProviderDatum::getRelevantBoundBox (
-        SoGetBoundingBoxAction &bboxAction, const std::vector <App::DocumentObject *> &objs )
+        const std::vector <App::DocumentObject *> &objs )
 {
-    SbBox3f bbox = defaultBoundBox();
+    Base::BoundBox3d bbox;
 
     // Adds the bbox of given feature to the output
     for (auto obj :objs) {
+        if(!obj || !obj->getNameInDocument() ||
+                App::GroupExtension::getGroupOfObject(obj))
+        {
+            // assuming if the object has a group, the group itself will be in
+            // objs, and it shall take care of the bounding box
+            continue;
+        }
+
         ViewProvider *vp = Gui::Application::Instance->getViewProvider(obj);
         if (!vp) { continue; }
         if (!vp->isVisible ()) { continue; }
 
         if (obj->isDerivedFrom (Part::Datum::getClassTypeId() ) ) {
             // Treat datums only as their basepoint
-            // I hope it's ok to take FreeCAD's point here
-            Base::Vector3d basePoint = static_cast<Part::Datum *> ( obj )->getBasePoint ();
-            bbox.extendBy (SbVec3f(basePoint.x, basePoint.y, basePoint.z ));
+            bbox.Add(static_cast<Part::Datum *> ( obj )->getBasePoint ());
         } else {
-            bboxAction.apply ( vp->getRoot () );
-            SbBox3f obj_bbox =  bboxAction.getBoundingBox ();
-
-            if ( obj_bbox.getVolume () < Precision::Infinite () ) {
-                bbox.extendBy ( obj_bbox );
-            }
+            bbox.Add(vp->getBoundingBox());
         }
     }
 
-    // TODO: shrink bbox when all other elements are too small
-    return bbox;
+    if(!bbox.IsValid())
+        return SbBox3f();
+
+    return SbBox3f(bbox.MinX,bbox.MinY,bbox.MinZ,bbox.MaxX,bbox.MaxY,bbox.MaxZ);
 }
 
 SbBox3f ViewProviderDatum::defaultBoundBox () {
