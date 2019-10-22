@@ -422,7 +422,7 @@ def Execute(op,obj):
 
         start = time.time()
 
-        if inputStateChanged or adaptiveResults == None:
+        if inputStateChanged or adaptiveResults is None:
             a2d = area.Adaptive2d()
             a2d.stepOverFactor = 0.01*obj.StepOver
             a2d.toolDiameter = float(op.tool.Diameter)

@@ -198,7 +198,7 @@ class WizardShaftTable:
         self.editedValue = value
 
     def slotEditingFinished(self):
-        if self.editedRow == None:
+        if self.editedRow is None:
             return
         rowName = self.rowDictReverse[self.editedRow]
         if rowName is None:

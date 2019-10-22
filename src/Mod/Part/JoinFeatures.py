@@ -123,7 +123,7 @@ class _ViewProviderPartJoinFeature:
         vobj.Proxy = self
        
     def getIcon(self):
-        if self.Object == None:
+        if self.Object is None:
             return getIconPath("Part_JoinConnect.svg")
         else:
             return getIconPath( {

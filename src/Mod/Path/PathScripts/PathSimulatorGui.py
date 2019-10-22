@@ -486,7 +486,7 @@ class PathSimulation:
     def InvalidOperation(self):
         if len(self.activeOps) == 0:
           return True
-        if (self.tool == None):
+        if (self.tool is None):
           TSError("No tool assigned for the operation")
           return True
         return False

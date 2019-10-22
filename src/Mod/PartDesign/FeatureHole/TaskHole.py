@@ -94,7 +94,7 @@ class TaskHole:
     def setupUi(self):
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskHole")
-        if form == None:
+        if form is None:
             return
         form.tabWidget = form.findChild(QtGui.QTabWidget, "tabWidget")
         # Type
@@ -367,7 +367,7 @@ class TaskHole:
         self.form.spinThreadLength.setValue(self.feature.ThreadLength)
         # Position
         self.form.buttonSupport.setText("Face")
-        if self.feature.Support == None:
+        if self.feature.Support is None:
             # First-time initialization
             selection = FreeCADGui.Selection.getSelectionEx()
             self.feature.Support = (selection[0].Object, selection[0].SubElementNames)

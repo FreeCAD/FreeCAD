@@ -226,13 +226,13 @@ class FormulaTranslator(object):
     if theExpr[0] in sepToken:
       branch = sepToken[theExpr[0]]
       
-      if branch == None:
+      if branch is None:
         keyToken = True
       else:
         #print('There is a branch. look up: ', theExpr[1])
         if (lenExpr > 1) and (theExpr[1] in treeDict[branch]):
           branch = treeDict[branch][theExpr[0]]
-          if branch == None:
+          if branch is None:
             keyToken = True
           else:
             if (lenExpr > 2) and (theExpr[2] in treeDict[branch]):
