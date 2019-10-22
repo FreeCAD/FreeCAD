@@ -408,6 +408,35 @@ bool TopoShape::hasSubShape(const char *Type) const {
     return idx.second>0 && idx.second<=(int)countSubShapes(idx.first);
 }
 
+template<class T>
+static inline std::vector<T> _getSubShapes(const TopoDS_Shape &s, TopAbs_ShapeEnum type) {
+    std::vector<T> shapes;
+    if(s.IsNull())
+        return shapes;
+
+    if(type == TopAbs_SHAPE) {
+        for(TopoDS_Iterator it(s);it.More();it.Next())
+            shapes.emplace_back(it.Value());
+        return shapes;
+    }
+
+    TopTools_IndexedMapOfShape anIndices;
+    TopExp::MapShapes(s, type, anIndices);
+    int count = anIndices.Extent();
+    shapes.reserve(count);
+    for(int i=1;i<=count;++i) 
+        shapes.emplace_back(anIndices.FindKey(i));
+    return shapes;
+}
+
+std::vector<TopoShape> TopoShape::getSubTopoShapes(TopAbs_ShapeEnum type) const {
+    return _getSubShapes<TopoShape>(_Shape,type);
+}
+
+std::vector<TopoDS_Shape> TopoShape::getSubShapes(TopAbs_ShapeEnum type) const {
+    return _getSubShapes<TopoDS_Shape>(_Shape,type);
+}
+
 static std::array<std::string,TopAbs_SHAPE> _ShapeNames;
 
 static void initShapeNameMap() {
