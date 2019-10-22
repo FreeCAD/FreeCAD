@@ -55,6 +55,7 @@
 
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
+#include <Mod/PartDesign/App/FeatureSplit.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
@@ -2451,6 +2452,49 @@ bool CmdPartDesignBoolean::isActive(void)
         return false;
 }
 
+//===========================================================================
+// PartDesign_Split
+//===========================================================================
+
+/* Split commands =======================================================*/
+DEF_STD_CMD_A(CmdPartDesignSplit)
+
+CmdPartDesignSplit::CmdPartDesignSplit()
+  :Command("PartDesign_Split")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Split operation");
+    sToolTipText    = QT_TR_NOOP("Split the previous feature into multiple solids");
+    sWhatsThis      = "PartDesign_Split";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "PartDesign_Split";
+}
+
+void CmdPartDesignSplit::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
+    if (!pcActiveBody) return;
+
+    openCommand("Create Split");
+    std::string FeatName = getUniqueObjectName("Split",pcActiveBody);
+    FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Split','"<<FeatName<<"')");
+    auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+    FCMD_OBJ_CMD(Feat,"Tools = FreeCADGui.Selection.getSelection()");
+    for(auto tool : static_cast<PartDesign::Split*>(Feat)->Tools.getValues())
+        FCMD_OBJ_CMD(tool,"Visibility = False");
+    finishFeature(this, Feat, nullptr, false, true);
+}
+
+bool CmdPartDesignSplit::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
 
 //===========================================================================
 // Initialization
@@ -2492,4 +2536,5 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());
 
     rcCmdMgr.addCommand(new CmdPartDesignBoolean());
+    rcCmdMgr.addCommand(new CmdPartDesignSplit());
 }

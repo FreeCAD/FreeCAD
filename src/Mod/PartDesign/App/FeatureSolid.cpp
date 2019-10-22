@@ -25,20 +25,30 @@
 #ifndef _PreComp_
 #endif
 
-
+#include "Body.h"
+#include "FeatureSolid.h"
+#include <App/Application.h>
+#include <App/Document.h>
 #include "FeatureSolid.h"
 
+using namespace PartDesign;
 
-
-namespace PartDesign {
-
-
-PROPERTY_SOURCE(PartDesign::Solid,PartDesign::Feature)
+PROPERTY_SOURCE(PartDesign::Solid, Part::Feature)
 
 Solid::Solid()
 {
+    ADD_PROPERTY_TYPE(Active,(false),0,App::Prop_None,"Make this solid active in the parent split feature");
+    ADD_PROPERTY_TYPE(Parent,(0),0,(App::PropertyType)(App::Prop_Hidden|App::Prop_ReadOnly),0);
+    Placement.setStatus(App::Property::Hidden,true);
+    Placement.setStatus(App::Property::Immutable,true);
 }
 
-
-
+void Solid::onChanged(const App::Property* prop) {
+    if(!isRestoring()) {
+        if(prop == &Active) {
+            if(Parent.getValue())
+                Parent.getValue()->touch();
+        }
+    }
+    inherited::onChanged(prop);
 }

@@ -52,6 +52,7 @@
 #include "DatumLine.h"
 #include "DatumPoint.h"
 #include "FeatureBoolean.h"
+#include "FeatureSplit.h"
 #include "FeaturePrimitive.h"
 #include "DatumCS.h"
 #include "FeatureThickness.h"
@@ -124,6 +125,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::Point                       ::init();
     PartDesign::CoordinateSystem            ::init();
     PartDesign::Boolean                     ::init();
+    PartDesign::Split                       ::init();
     PartDesign::FeaturePrimitive            ::init();
     PartDesign::Box                         ::init();
     PartDesign::AdditiveBox                 ::init();

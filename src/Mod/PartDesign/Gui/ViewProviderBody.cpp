@@ -45,6 +45,7 @@
 
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/FeatureSolid.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
@@ -494,4 +495,16 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
 
 int ViewProviderBody::replaceObject(App::DocumentObject *, App::DocumentObject *) {
     return 0;
+}
+
+std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void) const {
+    auto children = inherited::claimChildren3D();
+    for(auto it=children.begin();it!=children.end();) {
+        auto obj = *it;
+        if(obj->isDerivedFrom(PartDesign::Solid::getClassTypeId()))
+            it = children.erase(it);
+        else
+            ++it;
+    }
+    return children;
 }

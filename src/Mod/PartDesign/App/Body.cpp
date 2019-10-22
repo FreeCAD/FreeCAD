@@ -38,8 +38,8 @@
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/PartFeature.h>
 
-
 #include "Feature.h"
+#include "FeatureSolid.h"
 #include "FeatureSketchBased.h"
 #include "FeatureTransformed.h"
 #include "DatumPoint.h"
@@ -237,6 +237,7 @@ bool Body::isAllowed(const App::DocumentObject* f)
     // TODO: Should we introduce a PartDesign::FeaturePython class? This should then also return true for isSolidFeature()
     return (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
             f->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
+            f->getTypeId().isDerivedFrom(PartDesign::Solid::getClassTypeId())   ||
             // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
             f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
             f->getTypeId().isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
@@ -456,9 +457,6 @@ App::DocumentObjectExecReturn *Body::execute(void)
 
 void Body::onSettingDocument() {
 
-    if(connection.connected())
-        connection.disconnect();
-
     Part::BodyBase::onSettingDocument();
 }
 
@@ -577,4 +575,13 @@ void Body::onDocumentRestored()
     }
     _GroupTouched.setStatus(App::Property::Output,true);
     DocumentObject::onDocumentRestored();
+}
+
+void Body::addSolidBody(App::DocumentObject *obj) {
+    (void)obj;
+}
+
+bool Body::inSameSolidBody(const App::DocumentObject *obj, const App::DocumentObject *other) {
+    return App::GroupExtension::getGroupOfObject(obj) ==
+            App::GroupExtension::getGroupOfObject(other);
 }

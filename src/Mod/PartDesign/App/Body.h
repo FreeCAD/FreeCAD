@@ -139,6 +139,10 @@ public:
       */
     App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
 
+    void addSolidBody(App::DocumentObject *);
+
+    static bool inSameSolidBody(const App::DocumentObject *, const App::DocumentObject *);
+
 protected:
     virtual void onSettingDocument() override;
 
@@ -153,7 +157,6 @@ protected:
     virtual void onDocumentRestored() override;
 
 private:
-    boost::signals2::scoped_connection connection;
     bool showTip = false;
 };
 

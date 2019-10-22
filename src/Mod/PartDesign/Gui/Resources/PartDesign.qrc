@@ -36,6 +36,9 @@
         <file>icons/PartDesign_PolarPattern.svg</file>
         <file>icons/PartDesign_Revolution.svg</file>
         <file>icons/PartDesign_Scaled.svg</file>
+        <file>icons/PartDesign_Split.svg</file>
+        <file>icons/PartDesign_Solid.svg</file>
+        <file>icons/PartDesign_Solid_Active.svg</file>
         <file>icons/PartDesign_ShapeBinder.svg</file>
         <file>icons/PartDesign_SubShapeBinder.svg</file>
         <file>icons/PartDesign_Subtractive_Box.svg</file>

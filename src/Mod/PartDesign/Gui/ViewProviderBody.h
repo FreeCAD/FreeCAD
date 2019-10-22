@@ -89,11 +89,14 @@ public:
 
     virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) override;
 
+    virtual std::vector<App::DocumentObject*> claimChildren3D(void) const override;
+
 protected:
     /// Copy over all visual properties to the child features
     void unifyVisualProperty(const App::Property* prop);
     /// Set Feature viewprovider into visual body mode
     void setVisualBodyMode(bool bodymode);
+
 private:
     static const char* BodyModeEnum[];
 };

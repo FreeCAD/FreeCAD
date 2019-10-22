@@ -24,29 +24,28 @@
 #ifndef PARTDESIGN_FeatureSolid_H
 #define PARTDESIGN_FeatureSolid_H
 
-#include <App/PropertyStandard.h>
 #include "Feature.h"
 
-class gp_Pnt;
-
-
-/// Base class of all additive features in PartDesign
 namespace PartDesign
 {
 
- /** PartDesign feature
- *   Base class of all PartDesign features.
- *   This kind of features only produce solids or fail.
+/**
+ * Solid feature produced by Split
  */
-class PartDesignExport Solid : public Feature
+class PartDesignExport Solid : public Part::Feature
 {
-    PROPERTY_HEADER(PartDesign::FeatureSolid);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Solid);
+    typedef Part::Feature inherited;
 
 public:
-    Solid();
+    App::PropertyLink Parent;
+    App::PropertyBool Active;
 
-protected:
- 
+    Solid();
+    virtual void onChanged(const App::Property* prop) override;
+    const char* getViewProviderName(void) const override {
+        return "PartDesignGui::ViewProviderSolid";
+    }
 };
 
 } //namespace PartDesign

@@ -508,6 +508,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Thickness"
           << "Separator"
           << "PartDesign_Boolean"
+          << "PartDesign_Split"
           << "Separator"
           //<< "PartDesign_Hole"
           << "PartDesign_InvoluteGear"
@@ -576,7 +577,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Draft"
           << "PartDesign_Thickness"
           << "Separator"
-          << "PartDesign_Boolean";
+          << "PartDesign_Boolean"
+          << "PartDesign_Split";
 
     return root;
 }

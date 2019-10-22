@@ -150,6 +150,10 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderShapeBinder.cpp
     ViewProviderBoolean.cpp
     ViewProviderBoolean.h
+    ViewProviderSolid.cpp
+    ViewProviderSolid.h
+    ViewProviderSplit.cpp
+    ViewProviderSplit.h
     ViewProviderAddSub.cpp
     ViewProviderAddSub.h
     ViewProviderPrimitive.h
