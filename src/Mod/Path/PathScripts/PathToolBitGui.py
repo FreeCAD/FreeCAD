@@ -157,6 +157,64 @@ class TaskPanel:
     def setupUi(self):
         self.editor.setupUI()
 
+
+class ToolBitSelector(object):
+    ToolRole = QtCore.Qt.UserRole + 1
+
+    def __init__(self):
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitSelector.ui")
+        self.setupUI()
+
+    def getTool(self):
+        selected = None
+        selItem = None
+        self.form.tools.setUpdatesEnabled(False)
+        if self.form.tools.currentItem():
+            selected = self.form.tools.currentItem().text()
+        self.form.tools.clear()
+        for tool in sorted(self.loadedTools(), key=lambda t: t.Label):
+            icon = None
+            if tool.ViewObject and tool.ViewObject.Proxy:
+                icon = tool.ViewObject.Proxy.getIcon()
+            if icon:
+                item = QtGui.QListWidgetItem(icon, tool.Label)
+            else:
+                item = QtGui.QListWidgetItem(tool.Label)
+            item.setData(self.ToolRole, tool)
+            if selected == tool.Label:
+                selItem = item
+            self.form.tools.addItem(item)
+        if selItem:
+            self.form.tools.setCurrentItem(selItem)
+        self.updateSelection()
+        self.form.tools.setUpdatesEnabled(True)
+        res = self.form.exec_()
+        if 1 == res and self.form.tools.currentItem():
+            return self.form.tools.currentItem().data(self.ToolRole)
+        return None
+
+    def loadedTools(self):
+        if FreeCAD.ActiveDocument:
+            return [o for o in FreeCAD.ActiveDocument.Objects if hasattr(o, 'Proxy') and isinstance(o.Proxy, PathToolBit.ToolBit)]
+        return []
+
+    def loadTool(self):
+        pass
+
+    def createTool(self):
+        pass
+
+    def updateSelection(self):
+        if self.form.tools.selectedItems():
+            self.form.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(True)
+        else:
+            self.form.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+
+    def setupUI(self):
+        self.form.toolCreate.clicked.connect(self.createTool)
+        self.form.toolLoad.clicked.connect(self.loadTool)
+        self.form.tools.itemSelectionChanged.connect(self.updateSelection)
+
 def Create(name = 'ToolBit'):
     '''Create(name = 'ToolBit') ... creates a new tool bit.
     It is assumed the tool will be edited immediately so the internal bit body is still attached.'''

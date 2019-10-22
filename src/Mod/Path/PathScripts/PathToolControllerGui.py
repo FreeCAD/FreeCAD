@@ -28,6 +28,8 @@ import Part
 import PathScripts
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
+import PathScripts.PathToolBit as PathToolBit
+import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
 
@@ -135,16 +137,24 @@ class CommandPathToolController(object):
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller to the Job"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolController", "Add Tool Controller")}
 
+    def selectedJob(self):
+        if FreeCAD.ActiveDocument:
+            sel = FreeCADGui.Selection.getSelectionEx()
+            if sel and sel[0].Object.Name[:3] == 'Job':
+                return sel[0].Object
+        return None
+
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        return self.selectedJob() is not None
 
     def Activated(self):
         PathLog.track()
-        Create()
+        job = self.selectedJob()
+        if job:
+            tool = PathToolBitGui.ToolBitSelector().getTool()
+            if tool:
+                tc = Create(tool)
+                job.addToolController(tc)
 
 class ToolControllerEditor(object):
 
