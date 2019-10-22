@@ -186,7 +186,7 @@ def makeRailing(stairs):
                     railList.append(lrRail)
                     stair.Additions = railList
 
-    if stairs == None:
+    if stairs is None:
         sel = FreeCADGui.Selection.getSelection()
         sel0 = sel[0]
         stairs = []
