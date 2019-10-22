@@ -806,7 +806,7 @@ def sortEdgesOld(lEdges, aVertex=None):
         return [count]+linstances
 
     if (len(lEdges) < 2):
-        if aVertex == None:
+        if aVertex is None:
             return lEdges
         else:
             result = lookfor(aVertex,lEdges)
@@ -829,7 +829,7 @@ def sortEdgesOld(lEdges, aVertex=None):
                         return lEdges
 
     olEdges = [] # ol stands for ordered list
-    if aVertex == None:
+    if aVertex is None:
         for i in range(len(lEdges)*2) :
             if len(lEdges[i/2].Vertexes) > 1:
                 result = lookfor(lEdges[i/2].Vertexes[i%2],lEdges)
@@ -1073,7 +1073,7 @@ def findPerpendicular(point,edgeslist,force=None):
             edgeslist = edgeslist.Edges
         except:
             return None
-    if (force == None):
+    if (force is None):
         valid = None
         for edge in edgeslist:
             dist = findDistance(point,edge,strict=True)
@@ -2268,12 +2268,12 @@ def getBoundaryAngles(angle,alist):
         lower = None
         for a in alist:
                 if a < angle:
-                        if lower == None:
+                        if lower is None:
                                 lower = a
                         else:
                                 if a > lower:
                                         lower = a
-        if lower == None:
+        if lower is None:
                 lower = 0
                 for a in alist:
                         if a > lower:
@@ -2281,12 +2281,12 @@ def getBoundaryAngles(angle,alist):
         higher = None
         for a in alist:
                 if a > angle:
-                        if higher == None:
+                        if higher is None:
                                 higher = a
                         else:
                                 if a < higher:
                                         higher = a
-        if higher == None:
+        if higher is None:
                 higher = 2*math.pi
                 for a in alist:
                         if a < higher:
