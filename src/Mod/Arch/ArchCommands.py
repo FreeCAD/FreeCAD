@@ -1665,7 +1665,7 @@ class _ToggleSubs:
             if hasattr(obj, "Subtractions"):
                 for sub in obj.Subtractions:
                     if not (Draft.getType(sub) in ["Window","Roof"]):
-                        if mode == None:
+                        if mode is None:
                             # take the first sub as base
                             mode = sub.ViewObject.isVisible()
                         if mode == True:
