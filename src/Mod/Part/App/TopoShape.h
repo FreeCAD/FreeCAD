@@ -153,6 +153,8 @@ public:
     /// get the Topo"sub"Shape with the given name
     TopoDS_Shape getSubShape(const char* Type, bool silent=false) const;
     TopoDS_Shape getSubShape(TopAbs_ShapeEnum type, int idx, bool silent=false) const;
+    std::vector<TopoShape> getSubTopoShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE) const;
+    std::vector<TopoDS_Shape> getSubShapes(TopAbs_ShapeEnum type=TopAbs_SHAPE) const;
     unsigned long countSubShapes(const char* Type) const;
     unsigned long countSubShapes(TopAbs_ShapeEnum type) const;
     bool hasSubShape(const char *Type) const;
