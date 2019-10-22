@@ -35,7 +35,8 @@
 #include "Property.h"
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
-
+#include "Application.h"
+#include "DocumentObject.h"
 
 using namespace App;
 
