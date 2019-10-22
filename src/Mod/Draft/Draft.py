@@ -1744,7 +1744,7 @@ def filterObjectsForModifiers(objects, isCopied=False):
                     FreeCADGui.getMainWindow().showMessage(warningMessage, 0)
             filteredObjects.append(object.Base)
         elif hasattr(object,"Placement") and object.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
-           FreeCAD.Console.PrintError(translate("%s cannot be modified because its placement is readonly.") % obj.Name)
+           FreeCAD.Console.PrintError(translate("Draft","%s cannot be modified because its placement is readonly.") % obj.Name)
            continue
         else:
            filteredObjects.append(object)
@@ -3154,7 +3154,7 @@ def upgrade(objects,delete=False,force=None):
                      "makeShell","makeFaces","draftify","joinFaces","makeSketchFace","makeWires","turnToLine"]:
             result = eval(force)(objects)
         else:
-            FreeCAD.Console.PrintMessage(translate("Upgrade: Unknown force method:")+" "+force)
+            FreeCAD.Console.PrintMessage(translate("Draft","Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
@@ -3422,7 +3422,7 @@ def downgrade(objects,delete=False,force=None):
         if force in ["explode","shapify","subtr","splitFaces","cut2","getWire","splitWires"]:
             result = eval(force)(objects)
         else:
-            FreeCAD.Console.PrintMessage(translate("Upgrade: Unknown force method:")+" "+force)
+            FreeCAD.Console.PrintMessage(translate("Draft","Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
@@ -4850,7 +4850,7 @@ class _Ellipse(_DraftObject):
         import Part
         plm = obj.Placement
         if obj.MajorRadius.Value < obj.MinorRadius.Value:
-            FreeCAD.Console.PrintMessage(translate("Error: Major radius is smaller than the minor radius"))
+            FreeCAD.Console.PrintMessage(translate("Draft","Error: Major radius is smaller than the minor radius"))
             return
         if obj.MajorRadius.Value and obj.MinorRadius.Value:
             ell = Part.Ellipse(Vector(0,0,0),obj.MajorRadius.Value,obj.MinorRadius.Value)
