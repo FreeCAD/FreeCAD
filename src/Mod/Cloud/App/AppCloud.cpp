@@ -218,6 +218,7 @@ void Cloud::CloudWriter::createBucket()
                 eraseSubStr(strUrl,"https://");
 
                 chunk = Cloud::BuildHeaderAmzS3v2( strUrl.c_str(), this->TcpPort, this->AccessKey, RequestData);
+		delete RequestData;
 
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
@@ -259,8 +260,7 @@ struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_t
         // Amazon S3 and Swift require the timezone to be define to GMT.
         // As to simplify the conversion this is performed through the TZ
         // environment variable and a call to localtime as to convert output of gettimeofday
-	returnData = ( struct Cloud::AmzData *) malloc(sizeof(struct Cloud::AmzData));
-
+	returnData = new Cloud::AmzData;
 	strcpy(returnData->ContentType, data_type);
 	
 #if defined(FC_OS_WIN32)
@@ -268,10 +268,6 @@ struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_t
 #else
         setenv("TZ","GMT",1);
 #endif
-        // We must check that the bucket exists or not. If not, we have to create it.
-        // We must request the bucketlist if we receive a 404 error. This means that it
-        // doesn't exist. The other option is that the content list is empty.
-        // This piece of code is the same as the Reader except we do not interpret it !
 #if defined(FC_OS_WIN32)
 #else
         gettimeofday(&tv,NULL);
@@ -381,6 +377,7 @@ Cloud::CloudWriter::CloudWriter(const char* Url, const char* AccessKey, const ch
                 eraseSubStr(strUrl,"https://");
 
 		chunk = Cloud::BuildHeaderAmzS3v2( strUrl.c_str(), this->TcpPort, this->AccessKey, RequestData);
+		delete RequestData;
 
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
@@ -398,7 +395,6 @@ Cloud::CloudWriter::CloudWriter(const char* Url, const char* AccessKey, const ch
                       fprintf(stderr, "curl_easy_perform() failed: %s\n",
                         curl_easy_strerror(res));
                 curl_easy_cleanup(curl);
-		free( RequestData);
 		// Lets dump temporarily for debug purposes of s3v4 implementation
 
                 std::stringstream input(s);
@@ -544,6 +540,7 @@ Cloud::CloudReader::CloudReader(const char* Url, const char* AccessKey, const ch
                 eraseSubStr(strUrl,"https://");
 
                 chunk = Cloud::BuildHeaderAmzS3v2( strUrl.c_str(), this->TcpPort, this->AccessKey, RequestData);
+		delete RequestData;
 
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
@@ -613,6 +610,7 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
                 eraseSubStr(strUrl,"https://");
 
                 chunk = Cloud::BuildHeaderAmzS3v2( strUrl.c_str(), this->TcpPort, this->AccessKey, RequestData);
+		delete RequestData;
 
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
@@ -723,6 +721,7 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
 
 
 		chunk = Cloud::BuildHeaderAmzS3v2( strUrl.c_str(), this->TcpPort, this->AccessKey, RequestData);
+		delete RequestData;
 
                 curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
 
