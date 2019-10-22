@@ -823,7 +823,7 @@ ParameterGroupItem::~ParameterGroupItem()
 
 void ParameterGroupItem::fillUp(void)
 {
-    // filing up groups
+    // filling up groups
     std::vector<Base::Reference<ParameterGrp> > vhcParamGrp = _hcGrp->GetGroups();
 
     setText(0,QString::fromUtf8(_hcGrp->GetGroupName()));

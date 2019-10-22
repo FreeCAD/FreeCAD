@@ -1116,9 +1116,18 @@ def offset(edge,vector,trim=False):
 
 def isReallyClosed(wire):
     "checks if a wire is really closed"
-    if len(wire.Edges) == len(wire.Vertexes): return True
-    v1 = wire.Vertexes[0].Point
-    v2 = wire.Vertexes[-1].Point
+
+    ## TODO yet to find out why not use wire.isClosed() direct, in isReallyClosed(wire)
+
+    # Remark out below - Found not true if a vertex is used again in a wire in sketch ( e.g. wire with shape like 'd', 'b', 'g'... )
+    #if len(wire.Edges) == len(wire.Vertexes): return True
+
+    # Found cases where Wire[-1] are not 'last' vertexes (e.g. Part.Wire( Part.__sortEdges__( <Rectangle Geometries>.toShape() ) )
+    # aboveWire.isClosed() == True, but Wire[-1] are the 3rd vertex for the rectangle
+    # - use Edges[i].Vertexes[0/1] instead
+    length = len(wire.Edges)
+    v1 = wire.Edges[0].Vertexes[0].Point  #v1 = wire.Vertexes[0].Point
+    v2 = wire.Edges[length-1].Vertexes[1].Point  #v2 = wire.Vertexes[-1].Point
     if DraftVecUtils.equals(v1,v2): return True
     return False
 
@@ -1183,7 +1192,7 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None):
     offsetWire(wire,vector,[bind]): offsets the given wire along the
     given vector. The vector will be applied at the first vertex of
     the wire. If bind is True (and the shape is open), the original
-    wire and the offsetted one are bound by 2 edges, forming a face.
+    wire and the offset one are bound by 2 edges, forming a face.
 
         If widthList is provided (values only, not lengths - i.e. no unit),
         each value will be used to offset each corresponding edge in the wire

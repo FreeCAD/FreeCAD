@@ -781,9 +781,9 @@ void QGVPage::saveSvg(QString filename)
 
     const QString docName( QString::fromUtf8(page->getDocument()->getName()) );
     const QString pageName( QString::fromUtf8(page->getNameInDocument()) );
-    QString svgDescription = tr("Drawing page:") + QString::fromUtf8(" ") +
+    QString svgDescription = QString::fromUtf8("Drawing page: ") +
                              pageName +
-                             tr(" exported from FreeCAD document:") + QString::fromUtf8(" ") +
+                             QString::fromUtf8(" exported from FreeCAD document: ") +
                              docName;
 
     QSvgGenerator svgGen;
@@ -802,7 +802,7 @@ void QGVPage::saveSvg(QString filename)
     // the width and height attributes of the <svg> element."  >> but Inkscape won't read it without size info??
     svgGen.setViewBox(QRect(0, 0, pixelWidth, pixelHeight));
 
-    svgGen.setTitle(QObject::tr("FreeCAD SVG Export"));
+    svgGen.setTitle(QString::fromUtf8("FreeCAD SVG Export"));
     svgGen.setDescription(svgDescription);
 
     Gui::Selection().clearSelection();

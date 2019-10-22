@@ -2425,7 +2425,7 @@ bool ViewProviderLink::initDraggingPlacement() {
     dragCtx->bbox.ScaleZ(scale.z);
     auto offset = dragCtx->bbox.GetCenter();
 
-    // This determins the initial placement of the dragger. We place it at the
+    // This determines the initial placement of the dragger. We place it at the
     // center of our bounding box.
     dragCtx->initialPlacement = pla * Base::Placement(offset, Base::Rotation());
 

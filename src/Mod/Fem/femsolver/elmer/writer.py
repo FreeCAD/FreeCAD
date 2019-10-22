@@ -482,7 +482,7 @@ class Writer(object):
                 dimension = "M/L^3"
                 if name.startswith("Edge"):
                     # not tested, but it seems needed
-                    # because denisty does not exist (IMHO, bernd)
+                    # because density does not exist (IMHO, bernd)
                     density = None
                     if density:
                         density.Unit = Units.Unit(-2, 1)

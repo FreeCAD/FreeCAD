@@ -553,7 +553,7 @@ public:
      *
      * If \c resolve is true, then the selection is first resolved before
      * matching its owner document. So in case the selected sub-object is
-     * linked from an extenal document, it may not match the input \c doc.
+     * linked from an external document, it may not match the input \c doc.
      * If \c resolve is false, then the match is only done with the top
      * level parent object.
      */
@@ -602,21 +602,21 @@ public:
      */
     std::vector<Gui::SelectionObject> selStackGet(const char* pDocName=0,int resolve=1,int index=0) const;
 
-    /** Go back selection histroy
+    /** Go back selection history
      *
      * @param count: optional number of steps to go back
      *
      * This function pops the selection stack, and populate the current
-     * selection with the content of the last poped entry
+     * selection with the content of the last pop'd entry
      */
     void selStackGoBack(int count=1);
 
-    /** Go forward selection histroy 
+    /** Go forward selection history 
      *
      * @param count: optional number of steps to go back
      *
      * This function pops the selection stack, and populate the current
-     * selection with the content of the last poped entry
+     * selection with the content of the last pop'd entry
      */
     void selStackGoForward(int count=1);
 

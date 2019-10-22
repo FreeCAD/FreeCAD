@@ -538,31 +538,33 @@ void QGIViewDimension::updateDim()
     if ( vp == nullptr ) {
         return;
     }
-
+ 
 //    QString labelText = QString::fromUtf8(dim->getFormatedValue().c_str());
     //want this split into value and unit
-    QString labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number
-    QString unitText  = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
-    QString arbText = QString::fromUtf8(dim->FormatSpec.getValue());
-
+    QString labelText;
+    QString unitText;
+    if (dim->Arbitrary.getValue()) {
+        labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number pref/spec/suf
+    } else {
+        labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number pref/spec/suf
+        unitText  = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
+    }
+    
     QFont font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
     font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
     datumLabel->setFont(font);
 
     prepareGeometryChange();
-    if (dim->Arbitrary.getValue()) {
-        datumLabel->setDimString(arbText);
-    } else {
-        datumLabel->setDimString(labelText);
-        datumLabel->setTolString();
-        datumLabel->setUnitString(unitText);
-    }
+    datumLabel->setDimString(labelText);
+    datumLabel->setTolString();
+    datumLabel->setUnitString(unitText);
     datumLabel->setPosFromCenter(datumLabel->X(),datumLabel->Y());
 
     datumLabel->setFramed(dim->TheoreticalExact.getValue());
     datumLabel->setLineWidth(m_lineWidth);
 }
+
 //this is for formatting and finding centers, not display
 QString QGIViewDimension::getLabelText(void)
 {

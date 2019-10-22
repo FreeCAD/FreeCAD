@@ -55,6 +55,11 @@ CGRP     '\,'[0-9][0-9][0-9]
 
 "l"        yylval = Quantity::Liter;               return UNIT; // Liter      dm^3
 
+"Hz"       yylval = Quantity::Hertz;               return UNIT; // Hertz
+"kHz"      yylval = Quantity::KiloHertz;           return UNIT; // Kilo Hertz
+"MHz"      yylval = Quantity::MegaHertz;           return UNIT; // Mega Hertz
+"GHz"      yylval = Quantity::GigaHertz;           return UNIT; // Giga Hertz
+
 "ug"       yylval = Quantity::MicroGram;           return UNIT; // micro gram
 "\xC2\xB5g"    yylval = Quantity::MicroGram;           return UNIT; // micro gram
 "mg"       yylval = Quantity::MilliGram;           return UNIT; // milli gram

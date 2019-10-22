@@ -162,7 +162,8 @@ def getPreferences():
         'CREATE_CLONES': p.GetBool("ifcCreateClones",True),
         'IMPORT_PROPERTIES': p.GetBool("ifcImportProperties",False),
         'SPLIT_LAYERS': p.GetBool("ifcSplitLayers",False),
-        'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport",False)
+        'FITVIEW_ONIMPORT': p.GetBool("ifcFitViewOnImport",False),
+        'ALLOW_INVALID': p.GetBool("ifcAllowInvalid",False)
     }
 
     if preferences['MERGE_MODE_ARCH'] > 0:
@@ -403,9 +404,9 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
             shape.importBrepFromString(brep,False)
             shape.scale(1000.0)  # IfcOpenShell always outputs in meters, we convert to mm, the freecad internal unit
 
-            if shape.isNull():
+            if shape.isNull() and (not preferences['ALLOW_INVALID']):
                 if preferences['DEBUG']: print("null shape ",end="")
-            elif not shape.isValid():
+            elif not shape.isValid()  and (not preferences['ALLOW_INVALID']):
                 if preferences['DEBUG']: print("invalid shape ",end="")
             else:
 
