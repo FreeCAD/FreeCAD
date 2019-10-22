@@ -249,7 +249,7 @@ def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=No
     if dim == 'Length':
         q = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
         if not unit:
-            if (decimals == None) and showUnit:
+            if (decimals is None) and showUnit:
                 return q.UserString
             conversion = q.getUserPreferred()[1]
             uom = q.getUserPreferred()[2]
@@ -261,7 +261,7 @@ def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=No
         return FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle).UserString
     else:
         conversion = 1.0
-        if decimals == None:
+        if decimals is None:
             decimals = 2
         uom = "??"
     if not showUnit:
@@ -915,16 +915,16 @@ class DraftToolBar:
         elif self.angleLock.isVisible() and self.angleLock.isChecked():
             self.lengthValue.setFocus()
             self.lengthValue.selectAll()
-        elif f==None or f=="x":
+        elif (f is None) or (f == "x"):
             self.xValue.setFocus()
             self.xValue.selectAll()
-        elif f=="y":
+        elif f == "y":
             self.yValue.setFocus()
             self.yValue.selectAll()
-        elif f=="z":
+        elif f == "z":
             self.zValue.setFocus()
             self.zValue.selectAll()
-        elif f=="radius":
+        elif f == "radius":
             self.radiusValue.setFocus()
             self.radiusValue.selectAll()
 
@@ -1973,7 +1973,7 @@ class DraftToolBar:
         FreeCADGui.runCommand("Draft_AutoGroup")
 
     def setAutoGroup(self,value=None):
-        if value == None:
+        if value is None:
             self.autogroup = None
             self.autoGroupButton.setText("None")
             self.autoGroupButton.setIcon(QtGui.QIcon.fromTheme('Draft_AutoGroup_off',

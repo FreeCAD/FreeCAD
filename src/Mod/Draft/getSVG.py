@@ -842,7 +842,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     wiredEdges.extend(w.Edges)
             if len(wiredEdges) != len(obj.Shape.Edges):
                 for i,e in enumerate(obj.Shape.Edges):
-                    if (DraftGeomUtils.findEdge(e,wiredEdges) == None):
+                    if (DraftGeomUtils.findEdge(e,wiredEdges) is None):
                         svg += getPath([e],pathname='%s_nwe%04d' % \
                                 (obj.Name,i))
         else:
