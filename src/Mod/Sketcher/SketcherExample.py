@@ -10,7 +10,7 @@ EndPoint = 2
 MiddlePoint = 3
 
 # create a document and a Sketch object
-if(App.activeDocument() == None):App.newDocument()
+if(App.activeDocument() is None):App.newDocument()
 
 f = App.activeDocument().addObject("Sketcher::SketchObject","Sketch")
 
@@ -32,5 +32,3 @@ f.Constraints = l
 App.activeDocument().recompute()
 
 f.Geometry
-
-
