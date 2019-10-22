@@ -41,7 +41,7 @@ if FreeCAD.GuiUp:
     from PySide import QtCore
     from PySide.QtCore import QT_TRANSLATE_NOOP
     from DraftTools import translate
-    
+
     COLORS = {
         "default": FreeCADGui.draftToolBar.getDefaultColor("snap"),
         "black":  (0., 0., 0.),
