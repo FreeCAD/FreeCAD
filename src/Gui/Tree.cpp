@@ -3958,11 +3958,14 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
     App::DocumentObject *topParent = 0;
     item->getSubName(str,topParent);
     if(topParent) {
-        if(topParent->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
-            // remove legacy selection, i.e. those without subname
-            Gui::Selection().rmvSelection(obj->getDocument()->getName(),
-                    obj->getNameInDocument(),0);
-        }
+        // No need correction now, it is now handled by SelectionSingleton
+        // through calling of TreeWidget::checkTopParent()
+        //
+        // if(topParent->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+        //     // remove legacy selection, i.e. those without subname
+        //     Gui::Selection().rmvSelection(obj->getDocument()->getName(),
+        //             obj->getNameInDocument(),0);
+        // }
         if(!obj->redirectSubName(str,topParent,0))
             str << obj->getNameInDocument() << '.';
         obj = topParent;
