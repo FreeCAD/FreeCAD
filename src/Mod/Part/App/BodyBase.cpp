@@ -50,17 +50,19 @@ BodyBase::BodyBase()
 
 BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
 {
-    App::Document* doc = f->getDocument();
-    if (doc != NULL) {
-        std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(BodyBase::getClassTypeId());
-        for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
-            BodyBase* body = static_cast<BodyBase*>(*b);
-            if (body->hasObject(f))
-                return body;
-        }
-    }
+    if(!f || !f->getNameInDocument())
+        return 0;
 
-    return NULL;
+    auto prop = Base::freecad_dynamic_cast<App::PropertyLink>(f->getPropertyByName("_Body"));
+    if(prop && prop->getValue() && prop->getValue()->isDerivedFrom(BodyBase::getClassTypeId()))
+        return static_cast<BodyBase*>(prop->getValue());
+
+    for(;;) {
+        auto group = App::GeoFeatureGroupExtension::getGroupOfObject(f);
+        if(!group || group->isDerivedFrom(BodyBase::getClassTypeId()))
+            return static_cast<BodyBase*>(group);
+        f = group;
+    }
 }
 
 bool BodyBase::isAfter(const App::DocumentObject *feature, const App::DocumentObject* target) const {
