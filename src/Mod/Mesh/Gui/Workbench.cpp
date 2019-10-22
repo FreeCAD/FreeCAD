@@ -238,7 +238,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
     mesh->setCommand("Mesh tools");
-    *mesh << "Mesh_Import" << "Mesh_Export" << "Separator" << "Mesh_PolyCut" << "Mesh_VertexCurvature";
+    *mesh << "Mesh_Import" << "Mesh_Export" << "Mesh_FromPartShape" << "Separator" << "Mesh_PolyCut" << "Mesh_VertexCurvature";
     return root;
 }
 
