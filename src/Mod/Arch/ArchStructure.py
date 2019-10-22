@@ -271,10 +271,10 @@ class _CommandStructure:
         "this function is called by the snapper when it has a 3D point"
 
         self.bmode = self.modeb.isChecked()
-        if point == None:
+        if point is None:
             self.tracker.finalize()
             return
-        if self.bmode and (self.bpoint == None):
+        if self.bmode and (self.bpoint is None):
             self.bpoint = point
             FreeCADGui.Snapper.getPoint(last=point,callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
             return

@@ -670,7 +670,7 @@ class _CommandWindow:
         "this function is called by the snapper when it has a 3D point"
 
         self.tracker.finalize()
-        if point == None:
+        if point is None:
             return
         # if something was selected, override the underlying object
         if self.sel:

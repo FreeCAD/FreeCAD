@@ -756,7 +756,7 @@ class _AxisTaskPanel:
         l = []
         for i in range(self.tree.topLevelItemCount()):
             it = self.tree.findItems(str(i+1),QtCore.Qt.MatchExactly,0)[0]
-            if (remove == None) or (remove != i):
+            if (remove is None) or (remove != i):
                 if it.text(1):
                     d.append(float(it.text(1)))
                 else:

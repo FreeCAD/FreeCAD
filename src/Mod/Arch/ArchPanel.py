@@ -196,7 +196,7 @@ class CommandPanel:
         "this function is called by the snapper when it has a 3D point"
 
         self.tracker.finalize()
-        if point == None:
+        if point is None:
             return
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Panel"))
         FreeCADGui.addModule("Arch")
