@@ -54,8 +54,6 @@ ViewProviderOriginGroupExtension::ViewProviderOriginGroupExtension()
 
 ViewProviderOriginGroupExtension::~ViewProviderOriginGroupExtension()
 {
-    connectChangedObjectApp.disconnect();
-    connectChangedObjectGui.disconnect();
 }
 
 void ViewProviderOriginGroupExtension::constructChildren (
@@ -73,7 +71,6 @@ void ViewProviderOriginGroupExtension::constructChildren (
     }
 }
 
-
 void ViewProviderOriginGroupExtension::extensionClaimChildren (std::vector<App::DocumentObject *> &children) const {
     ViewProviderGeoFeatureGroupExtension::extensionClaimChildren (children);
     constructChildren ( children );
@@ -86,48 +83,16 @@ void ViewProviderOriginGroupExtension::extensionClaimChildren3D (std::vector<App
 
 void ViewProviderOriginGroupExtension::extensionAttach(App::DocumentObject *pcObject) {
     ViewProviderGeoFeatureGroupExtension::extensionAttach ( pcObject );
-
-    App::Document *adoc  = pcObject->getDocument ();
-    Gui::Document *gdoc = Gui::Application::Instance->getDocument ( adoc ) ;
-
-    assert ( adoc );
-    assert ( gdoc );
-
-    connectChangedObjectApp = adoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectApp, this, _1) );
-    
-    connectChangedObjectGui = gdoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectGui, this, _1) );
 }
 
 void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property* prop ) {
-    
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
-    if ( group && prop == &group->Group ) {
+    auto propName = prop->getName();
+    if(propName && (strcmp(propName,"_GroupTouched")==0
+                || strcmp(propName,"Group")==0
+                || strcmp(propName,"Shape")==0))
         updateOriginSize();
-    }
 
     ViewProviderGeoFeatureGroupExtension::extensionUpdateData ( prop );
-}
-
-void ViewProviderOriginGroupExtension::slotChangedObjectApp ( const App::DocumentObject& obj) {
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
-    if ( group && group->hasObject (&obj, /*recursive=*/ true ) ) {
-        updateOriginSize ();
-    }
-}
-
-void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& vp) {
-    if ( !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () )) {
-        // Ignore origins to avoid infinite recursion (not likely in a well-formed document, 
-        //          but may happen in documents designed in old versions of assembly branch )
-        auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
-        App::DocumentObject *obj = vp.getObject ();
-
-        if ( group && obj && group->hasObject (obj, /*recursive=*/ true ) ) {
-            updateOriginSize ();
-        }
-    }
 }
 
 void ViewProviderOriginGroupExtension::updateOriginSize () {
@@ -192,7 +157,8 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
 
     for (uint_fast8_t i=0; i<3; i++) {
         size[i] = std::max ( fabs ( max[i] ), fabs ( min[i] ) );
-        if (size[i] < 1e-7) { // TODO replace the magic values (2015-08-31, Fat-Zer)
+
+        if (min[i]>max[i] || size[i] < 1e-7) { // TODO replace the magic values (2015-08-31, Fat-Zer)
             size[i] = ViewProviderOrigin::defaultSize();
         }
     }

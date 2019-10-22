@@ -45,6 +45,8 @@ class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart, p
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderBody)
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderBody);
 
+    typedef PartGui::ViewProviderPart inherited;
+
 public:
     /// constructor
     ViewProviderBody();
@@ -70,7 +72,7 @@ public:
     virtual void onChanged(const App::Property* prop) override;
 
     /// Update the sizes of origin and datums
-    void updateOriginDatumSize ();
+    virtual void updateOriginSize () override;
     
     /**
      * Return the bounding box of visible features
@@ -88,18 +90,12 @@ public:
     virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) override;
 
 protected:
-    void slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop );
-    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj, const App::Property& prop );
-
     /// Copy over all visual properties to the child features
     void unifyVisualProperty(const App::Property* prop);
     /// Set Feature viewprovider into visual body mode
     void setVisualBodyMode(bool bodymode);
 private:
     static const char* BodyModeEnum[];
-
-    boost::signals2::connection connectChangedObjectApp;
-    boost::signals2::connection connectChangedObjectGui;
 };
 
 
