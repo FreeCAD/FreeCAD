@@ -3191,6 +3191,12 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                     // set all dependent object touched to force recompute
                     for (auto inObjIt : obj->getInList())
                         inObjIt->enforceRecompute();
+
+                    // give the object a chance to revert the abover touching,
+                    // because for example, new objects are created with
+                    // object's execute(), and it will be safe to not touch
+                    // those objects.
+                    obj->afterRecompute();
                 }
             }
             // check if all objects are recomputed but still thouched 

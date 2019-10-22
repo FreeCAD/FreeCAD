@@ -564,6 +564,9 @@ protected:
       */
     virtual App::DocumentObjectExecReturn *execute(void);
 
+    /// Called after calling execute() in Document::recompute()
+    virtual void afterRecompute() {}
+
     /** Status bits of the document object
      * The first 8 bits are used for the base system the rest can be used in
      * descendent classes to mark special statuses on the objects.
