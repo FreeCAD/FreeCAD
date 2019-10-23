@@ -179,6 +179,10 @@ public:
     TechDraw::CosmeticVertex* getCosmeticVertexByGeom(int idx) const;
     void clearCosmeticVertexes(void); 
     void addCosmeticVertexesToGeom(void);
+    void add1CosmeticVertexToGeom(int iCV);
+    int convertCosmeticVertexIndex(int idx);
+    int add1CVToGV(int iCV);
+
 
     virtual int addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
     virtual int addCosmeticEdge(TopoDS_Edge e);
@@ -208,6 +212,8 @@ public:
     TechDraw::GeomFormat* getGeomFormatByIndex(int idx) const;
     TechDraw::GeomFormat* getGeomFormatByGeom(int idx) const;
     void clearGeomFormats(void);
+
+    void dumpVerts(std::string text);
 
 protected:
     TechDraw::GeometryObject *geometryObject;
