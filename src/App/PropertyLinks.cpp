@@ -2161,7 +2161,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
     reader.readEndElement("LinkSubList");
 
     // assignment
-    setValues(values,std::move(SubNames),std::move(shadows));
+    setValues(values,SubNames,std::move(shadows));
     _mapped.swap(mapped);
 }
 
@@ -2941,7 +2941,7 @@ void PropertyXLink::setValue(App::DocumentObject *lValue,
     _pcLink=lValue;
     if(docInfo && docInfo->pcDoc)
         stamp=docInfo->pcDoc->LastModifiedDate.getValue();
-    objectName = std::move(name);
+    objectName = name;
     setSubValues(std::move(subs),std::move(shadows));
     hasSetValue();
 }
