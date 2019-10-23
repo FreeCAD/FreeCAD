@@ -23,7 +23,7 @@
 #ifndef TECHDRAW_COSMETIC_H
 #define TECHDRAW_COSMETIC_H
 
-# include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -77,6 +77,7 @@ public:
     std::string toString(void) const;
 /*    bool fromCSV(std::string& lineSpec);*/
     void dump(char* title);
+    Base::Vector3d scaled(double factor);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -87,14 +88,15 @@ public:
     CosmeticVertex* copy(void) const;
     CosmeticVertex* clone(void) const;
 
-    int            linkGeom;             //connection to corresponding "real" Vertex
+    Base::Vector3d permaPoint;           //permanent, unscaled value
+    int            linkGeom;             //connection to corresponding "geom" Vertex
     App::Color     color;
     double         size;
     int            style;
-    bool           visible;
+    bool           visible;              //base class vertex also has visible property
 
     boost::uuids::uuid getTag() const;
-    std::string getTagAsString(void) const;
+    virtual std::string getTagAsString(void) const;
 
 
 protected:

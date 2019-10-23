@@ -53,6 +53,7 @@
 # include <Mod/TechDraw/App/DrawProjGroupItem.h>
 # include <Mod/TechDraw/App/DrawProjGroup.h>
 # include <Mod/TechDraw/App/DrawViewDimension.h>
+# include <Mod/TechDraw/App/DrawDimHelper.h>
 # include <Mod/TechDraw/App/DrawPage.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
 # include <Mod/TechDraw/App/Geometry.h>
@@ -66,6 +67,7 @@
 #include "TaskLinkDim.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 using namespace std;
 
 
@@ -98,6 +100,9 @@ int _isValidEdgeToEdge(Gui::Command* cmd);
 bool _isValidVertexToEdge(Gui::Command* cmd);
 char* _edgeTypeToText(int e);
 //bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs);
+
+void execHExtent(Gui::Command* cmd);
+void execVExtent(Gui::Command* cmd);
 
 
 //NOTE: this is not shown in toolbar and doesn't always work right in the menu.
@@ -1070,6 +1075,270 @@ bool CmdTechDrawLinkDimension::isActive(void)
     return (havePage && haveView && !taskInProgress);
 }
 
+//===========================================================================
+// ExtentGroup
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdTechDrawExtentGrp)
+
+CmdTechDrawExtentGrp::CmdTechDrawExtentGrp()
+  : Command("TechDraw_ExtentGrp")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert Extent Dimension");
+    sToolTipText    = QT_TR_NOOP("Insert Extent Dimension");
+    sWhatsThis      = "TechDraw_ExtentGrp";
+    sStatusTip      = sToolTipText;
+//    eType           = ForEdit;
+}
+
+void CmdTechDrawExtentGrp::activated(int iMsg)
+{
+//    Base::Console().Message("CMD::ExtentGrp - activated(%d)\n", iMsg);
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
+    switch(iMsg) {
+        case 0:
+            execHExtent(this);
+            break;
+        case 1:
+            execVExtent(this);
+            break;
+        default:
+            Base::Console().Message("CMD::ExtGrp - invalid iMsg: %d\n",iMsg);
+    };
+}
+
+Gui::Action * CmdTechDrawExtentGrp::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* p1 = pcAction->addAction(QString());
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_Dimension_HExtent"));
+    p1->setObjectName(QString::fromLatin1("TechDraw_HorizontalExtent"));
+    p1->setWhatsThis(QString::fromLatin1("TechDraw_HorizontalExtent"));
+    QAction* p2 = pcAction->addAction(QString());
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_Dimension_VExtent"));
+    p2->setObjectName(QString::fromLatin1("TechDraw_VerticalExtent"));
+    p2->setWhatsThis(QString::fromLatin1("TechDraw_VerticalExtent"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(p1->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdTechDrawExtentGrp::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* arc1 = a[0];
+    arc1->setText(QApplication::translate("CmdTechDrawExtentGrp","Horizontal Extent"));
+    arc1->setToolTip(QApplication::translate("TechDraw_HorizontalExtent","Insert a Horizontal Extent dimension"));
+    arc1->setStatusTip(arc1->toolTip());
+    QAction* arc2 = a[1];
+    arc2->setText(QApplication::translate("CmdTechDrawExtentGrp","Vertical Extent"));
+    arc2->setToolTip(QApplication::translate("TechDraw_VerticalExtent","Insert a Vertical Extent dimension"));
+    arc2->setStatusTip(arc2->toolTip());
+}
+
+bool CmdTechDrawExtentGrp::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_HorizontalExtent
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawHorizontalExtent)
+
+CmdTechDrawHorizontalExtent::CmdTechDrawHorizontalExtent()
+  : Command("TechDraw_HorizontalExtent")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Add a Horizontal Extent dimension");
+    sToolTipText    = QT_TR_NOOP("Add a Horizontal Extent dimension");
+    sWhatsThis      = "TechDraw_HorizontalExtent";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_Dimension_HExtent";
+}
+
+void CmdTechDrawHorizontalExtent::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    execHExtent(this);
+}
+
+bool CmdTechDrawHorizontalExtent::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
+void execHExtent(Gui::Command* cmd)
+{
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
+    if (!page) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    TechDraw::DrawViewPart* baseFeat = nullptr;
+    if (!selection.empty()) {
+        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+        if( baseFeat == nullptr ) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("No base View in Selection."));
+            return;
+        }
+    } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("Please select a View [and Edges]."));
+            return;
+    }
+
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+ //           baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+            if (SubNames.empty() || SubNames[0].empty()) {
+                SubNames.clear();
+            }
+        }
+    }
+
+    std::vector<std::string> edgeNames;
+    for (auto& s: SubNames) {
+        std::string geomType = DrawUtil::getGeomTypeFromName(s);
+        if (geomType == "Edge") {
+            edgeNames.push_back(s);
+        }
+    }
+
+    DrawDimHelper::makeExtentDim(baseFeat,
+                                 edgeNames,
+                                 0);
+}
+
+//===========================================================================
+// TechDraw_VerticalExtent
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawVerticalExtent)
+
+CmdTechDrawVerticalExtent::CmdTechDrawVerticalExtent()
+  : Command("TechDraw_VerticalExtent")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Add a Vertical Extent dimension");
+    sToolTipText    = QT_TR_NOOP("Add a Vertical Extent dimension");
+    sWhatsThis      = "TechDraw_VerticalExtent";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_Dimension_VExtent";
+}
+
+void CmdTechDrawVerticalExtent::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    execVExtent(this);
+}
+
+bool CmdTechDrawVerticalExtent::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
+void execVExtent(Gui::Command* cmd)
+{
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
+    if (!page) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    TechDraw::DrawViewPart* baseFeat = nullptr;
+    if (!selection.empty()) {
+        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+        if( baseFeat == nullptr ) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("No base View in Selection."));
+            return;
+        }
+    } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("Please select a View [and Edges]."));
+            return;
+    }
+
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    std::vector<std::string> edgeNames;
+    for (auto& s: SubNames) {
+        std::string geomType = DrawUtil::getGeomTypeFromName(s);
+        if (geomType == "Edge") {
+            edgeNames.push_back(s);
+        }
+    }
+
+    DrawDimHelper::makeExtentDim(baseFeat,
+                                 edgeNames,
+                                 1);
+}
+
+//------------------------------------------------------------------------------
 void CreateTechDrawCommandsDims(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1082,6 +1351,9 @@ void CreateTechDrawCommandsDims(void)
     rcCmdMgr.addCommand(new CmdTechDrawNewDistanceYDimension());
     rcCmdMgr.addCommand(new CmdTechDrawNewAngleDimension());
     rcCmdMgr.addCommand(new CmdTechDrawNewAngle3PtDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawExtentGrp());
+    rcCmdMgr.addCommand(new CmdTechDrawVerticalExtent());
+    rcCmdMgr.addCommand(new CmdTechDrawHorizontalExtent());
     rcCmdMgr.addCommand(new CmdTechDrawLinkDimension());
 }
 

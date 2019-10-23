@@ -76,7 +76,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_NewRadiusDimension";
     *draw << "TechDraw_NewDiameterDimension";
     *draw << "TechDraw_NewAngleDimension";
-    *draw << "TechDraw_NewAngle3PtDimension";
+    *draw << "TechDraw_HorizontalExtent";
+    *draw << "TechDraw_VerticalExtent";
     *draw << "TechDraw_LinkDimension";
     *draw << "TechDraw_NewBalloon";
     *draw << "Separator";
@@ -141,6 +142,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *dims << "TechDraw_NewDiameterDimension";
     *dims << "TechDraw_NewAngleDimension";
     *dims << "TechDraw_NewAngle3PtDimension";
+    *dims << "TechDraw_ExtentGrp";
+//    *dims << "TechDraw_HorizontalExtent";
+//    *dims << "TechDraw_VerticalExtent";
     *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_NewBalloon";
 //    *dims << "TechDraw_NewDimension"
@@ -210,6 +214,9 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *dims << "TechDraw_NewDiameterDimension";
     *dims << "TechDraw_NewAngleDimension";
     *dims << "TechDraw_NewAngle3PtDimension";
+    *dims << "TechDraw_ExtentGrp";
+//    *dims << "TechDraw_HorizontalExtent";
+//    *dims << "TechDraw_VerticalExtent";
     *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_NewBalloon";
 //    *dims << "TechDraw_NewDimension";
