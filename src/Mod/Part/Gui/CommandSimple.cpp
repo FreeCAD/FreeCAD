@@ -272,6 +272,7 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
             Gui::Command::copyVisual(newObj, "ShapeColor", v.second);
             Gui::Command::copyVisual(newObj, "LineColor", v.second);
             Gui::Command::copyVisual(newObj, "PointColor", v.second);
+            Gui::Command::copyVisual(newObj, "DiffuseColor", v.second);
         }
     }
     Gui::Command::commitCommand();
