@@ -263,7 +263,7 @@ public:
     }
     virtual SoDetail* getDetail(const char* name) const override {
         SoDetail *det = 0;
-        if(!imp->getDetail(name,det))
+        if(imp->getDetail(name,det))
             return det;
         return ViewProviderT::getDetail(name);
     }

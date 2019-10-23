@@ -340,7 +340,7 @@ public:
     virtual ~StatusBarObserver();
 
     /** Observes its parameter group. */
-    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
     void SendLog(const std::string& msg, Base::LogStyle level) override;
 

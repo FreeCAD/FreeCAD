@@ -133,7 +133,7 @@ public:
     virtual ~ReportOutput();
 
     /** Observes its parameter group. */
-    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
     void SendLog(const std::string& msg, Base::LogStyle level) override;
 
@@ -152,11 +152,11 @@ public:
 
 protected:
     /** For internal use only */
-    void customEvent ( QEvent* ev );
+    void customEvent ( QEvent* ev ) override;
     /** Handles the change of style sheets */
-    void changeEvent(QEvent *);
+    void changeEvent(QEvent *) override;
     /** Pops up the context menu with some extensions */
-    void contextMenuEvent ( QContextMenuEvent* e );
+    void contextMenuEvent ( QContextMenuEvent* e ) override;
 
 public Q_SLOTS:
     /** Save the report messages into a file. */
