@@ -309,6 +309,15 @@ std::string DrawUtil::formatVector(const gp_Dir& v)
     return result;
 }
 
+std::string DrawUtil::formatVector(const gp_Dir2d& v)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << std::fixed << std::setprecision(3) ;
+    builder << " (" << v.X()  << "," << v.Y() <<  ") ";
+    result = builder.str();
+    return result;
+}
 std::string DrawUtil::formatVector(const gp_Vec& v)
 {
     std::string result;
@@ -325,6 +334,16 @@ std::string DrawUtil::formatVector(const gp_Pnt& v)
     std::stringstream builder;
     builder << std::fixed << std::setprecision(3) ;
     builder << " (" << v.X()  << "," << v.Y() << "," << v.Z() << ") ";
+    result = builder.str();
+    return result;
+}
+
+std::string DrawUtil::formatVector(const gp_Pnt2d& v)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << std::fixed << std::setprecision(3) ;
+    builder << " (" << v.X()  << "," << v.Y() << ") ";
     result = builder.str();
     return result;
 }

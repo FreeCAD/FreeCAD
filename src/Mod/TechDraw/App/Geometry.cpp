@@ -353,6 +353,7 @@ std::string BaseGeom::dump()
     std::stringstream ss;
     ss << "BaseGeom: s:(" << start.x << "," << start.y << ") e:(" << end.x << "," << end.y << ") ";
     ss << "type: " << geomType << " class: " << classOfEdge << " viz: " << visible << " rev: " << reversed;
+    ss << "cosmetic: " << cosmetic << " source: " << source() << " iSource: " << sourceIndex();
     return ss.str();
 }
 
@@ -1336,6 +1337,13 @@ Vertex::Vertex(double x, double y)
     cosmeticLink = -1;
 }
 
+Vertex::Vertex(Base::Vector3d v) : Vertex(v.x,v.y)
+{
+//    Base::Console().Message("V::V(%s)\n",
+//                            DrawUtil::formatVector(v).c_str());
+}
+
+
 bool Vertex::isEqual(Vertex* v, double tol)
 {
     bool result = false;
@@ -1387,6 +1395,12 @@ void Vertex::Restore(Base::XMLReader &reader)
 
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(pnt.x, pnt.y, pnt.z));
     occVertex = mkVert.Vertex();
+}
+
+void Vertex::dump()
+{
+    Base::Console().Message("TD::Vertex point: %s vis: %d cosmetic: %d  cosLink: %d\n",
+                            DrawUtil::formatVector(pnt).c_str(), visible, cosmetic, cosmeticLink);
 }
 
 

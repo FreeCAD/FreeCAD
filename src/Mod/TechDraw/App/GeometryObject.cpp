@@ -474,11 +474,13 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     }  //end TopExp
 }
 
+//adds a new GeomVert to list for cv[link]
 int GeometryObject::addCosmeticVertex(Base::Vector3d pos, int link)
 {
     TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
     v->cosmetic = true;
     v->cosmeticLink = link;
+    v->visible = true;
     int idx = vertexGeom.size();
     vertexGeom.push_back(v);
     return idx;
@@ -573,6 +575,7 @@ bool GeometryObject::isWithinArc(double theta, double first,
     }
 }
 
+//note bbx is scaled
 Base::BoundBox3d GeometryObject::calcBoundingBox() const
 {
 //    Base::Console().Message("GO::calcBoundingBox() - edges: %d\n", edgeGeom.size());

@@ -70,7 +70,7 @@
 #include "DrawUtil.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
-
+#include "DrawDimHelper.h"
 
 namespace TechDraw {
 //module level static C++ functions go here
@@ -113,6 +113,16 @@ public:
         add_varargs_method("findCentroid",&Module::findCentroid,
             "vector = findCentroid(shape,direction): finds geometric centroid of shape looking in direction."
         );
+        add_varargs_method("makeExtentDim",&Module::makeExtentDim,
+            "makeExtentDim(DrawViewPart, [edges], direction) -- draw horizontal or vertical extent dimension for edges (or all of DrawViewPart if edge list is empty. direction:  0 - Horizontal, 1 - Vertical."
+        );
+        add_varargs_method("makeDistanceDim",&Module::makeDistanceDim,
+            "makeDistanceDim(DrawViewPart, dimType, fromPoint, toPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 2d View points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."
+        );
+        add_varargs_method("makeDistanceDim3d",&Module::makeDistanceDim3d,
+            "makeDistanceDim(DrawViewPart, dimType, 3dFromPoint, 3dToPoint) -- draw a Length dimension between fromPoint to toPoint.  FromPoint and toPoint are unscaled 3d model points. dimType is one of ['Distance', 'DistanceX', 'DistanceY'."
+        );
+
         initialize("This is a module for making drawings"); // register with Python
     }
     virtual ~Module() {}
@@ -172,7 +182,7 @@ private:
             }
         }
         catch (Standard_Failure& e) {
-    
+
             throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
         }
 
@@ -230,7 +240,7 @@ private:
             }
         }
         catch (Standard_Failure& e) {
-    
+
             throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
         }
 
@@ -294,7 +304,7 @@ private:
             edgeList = DrawProjectSplit::getEdgesForWalker(shape,scale,dir);
         }
         catch (Standard_Failure& e) {
-    
+
             throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
         }
 
@@ -333,14 +343,14 @@ private:
         PyObject *viewObj;
         if (!PyArg_ParseTuple(args.ptr(), "O", &viewObj)) {
             throw Py::TypeError("expected (DrawViewPart)");
-        } 
+        }
         Py::String dxfReturn;
 
         try {
             App::DocumentObject* obj = 0;
             TechDraw::DrawViewPart* dvp = 0;
             Drawing::DXFOutput dxfOut;
-            std::string dxfText; 
+            std::string dxfText;
             std::stringstream ss;
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
@@ -388,7 +398,7 @@ private:
         PyObject *viewObj;
         if (!PyArg_ParseTuple(args.ptr(), "O", &viewObj)) {
             throw Py::TypeError("expected (DrawViewPart)");
-        } 
+        }
         Py::String svgReturn;
         std::string grpHead1 = "<g fill=\"none\" stroke=\"#000000\" stroke-opacity=\"1\" stroke-width=\"";
         std::string grpHead2 = "\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"4\">\n";
@@ -397,7 +407,7 @@ private:
             App::DocumentObject* obj = 0;
             TechDraw::DrawViewPart* dvp = 0;
             Drawing::SVGOutput svgOut;
-            std::string svgText; 
+            std::string svgText;
             std::stringstream ss;
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
@@ -488,7 +498,7 @@ private:
         gp_Trsf xLate;
         xLate.SetTranslation(gp_Vec(dvpX,dvpY,0.0));
         BRepBuilderAPI_Transform mkTrf(s, xLate);
-        s = mkTrf.Shape();                
+        s = mkTrf.Shape();
         writer.exportShape(s);
         s = TechDraw::mirrorShape(go->getVisOutline());
         mkTrf.Perform(s);
@@ -529,7 +539,7 @@ private:
             writer.exportShape(s);
         }
     }
-    
+
     Py::Object writeDXFView(const Py::Tuple& args)
     {
         PyObject *viewObj;
@@ -537,8 +547,8 @@ private:
         PyObject *alignObj = Py_True;
         if (!PyArg_ParseTuple(args.ptr(), "Oet|O", &viewObj, "utf-8",&name,&alignObj)) {
             throw Py::TypeError("expected (view,path");
-        } 
-        
+        }
+
         std::string filePath = std::string(name);
         std::string layerName = "none";
         PyMem_Free(name);
@@ -557,7 +567,7 @@ private:
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
-                
+
                 layerName = dvp->getNameInDocument();
                 writer.setLayerName(layerName);
                 write1ViewDxf(writer,dvp,align);
@@ -578,7 +588,7 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8",&name)) {
             throw Py::TypeError("expected (page,path");
         }
-        
+
         std::string filePath = std::string(name);
         std::string layerName = "none";
         PyMem_Free(name);
@@ -644,9 +654,9 @@ private:
                             Base::Vector3d norm(-dimLine.y,dimLine.x,0.0);
                             norm.Normalize();
                             lineLocn = lineLocn + (norm * gap);
-                            Base::Vector3d extLine1Start = Base::Vector3d(pts.first.x,-pts.first.y,0.0) + 
+                            Base::Vector3d extLine1Start = Base::Vector3d(pts.first.x,-pts.first.y,0.0) +
                                                            Base::Vector3d(parentX,parentY,0.0);
-                            Base::Vector3d extLine2Start = Base::Vector3d(pts.second.x, -pts.second.y, 0.0) + 
+                            Base::Vector3d extLine2Start = Base::Vector3d(pts.second.x, -pts.second.y, 0.0) +
                                                            Base::Vector3d(parentX,parentY,0.0);
                             writer.exportLinearDim(textLocn, lineLocn, extLine1Start, extLine2Start, dimText);
                         } else if (dvd->Type.isValue("Angle")) {
@@ -733,9 +743,118 @@ private:
         return Py::asObject(result);
     }
 
+    Py::Object makeExtentDim(const Py::Tuple& args)
+    {
+        PyObject* pDvp;
+        PyObject* pEdgeList;
+        int direction = 0;  //Horizontal
+        TechDraw::DrawViewPart* dvp = nullptr;
+
+        if (!PyArg_ParseTuple(args.ptr(), "OO!i", &pDvp, &(PyList_Type), &pEdgeList, &direction)) {
+            throw Py::TypeError("expected (DrawViewPart, listofedgesnames, direction");
+        }
+        if (PyObject_TypeCheck(pDvp, &(TechDraw::DrawViewPartPy::Type))) {
+            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
+            dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+        }
+
+        std::vector<std::string> edgeList;
+        try {
+            Py::Sequence list(pEdgeList);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyUnicode_Check((*it).ptr())) {
+                    std::string temp = PyUnicode_AsUTF8((*it).ptr());
+                    edgeList.push_back(temp);
+                }
+            }
+        }
+        catch (Standard_Failure& e) {
+
+            throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
+        }
+
+        DrawDimHelper::makeExtentDim(dvp,
+                                     edgeList,
+                                     direction);
+        return Py::None();
+    }
+
+    Py::Object makeDistanceDim(const Py::Tuple& args)
+    {
+        PyObject* pDvp;
+        PyObject* pDimType;
+        PyObject* pFrom;
+        PyObject* pTo;
+        TechDraw::DrawViewPart* dvp = nullptr;
+        std::string dimType;
+        Base::Vector3d from;
+        Base::Vector3d to;
+
+        if (!PyArg_ParseTuple(args.ptr(), "OOOO", &pDvp, &pDimType, &pFrom, &pTo)) {
+            throw Py::TypeError("expected (DrawViewPart, dimType, from, to");
+        }
+        //TODO: errors for all the type checks
+        if (PyObject_TypeCheck(pDvp, &(TechDraw::DrawViewPartPy::Type))) {
+                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
+                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+        }
+        if (PyUnicode_Check(pDimType)) {
+            dimType = PyUnicode_AsUTF8(pDimType);
+        }
+        if (PyObject_TypeCheck(pFrom, &(Base::VectorPy::Type))) {
+            from = static_cast<Base::VectorPy*>(pFrom)->value();
+        }
+        if (PyObject_TypeCheck(pTo, &(Base::VectorPy::Type))) {
+            to = static_cast<Base::VectorPy*>(pTo)->value();
+        }
+        DrawDimHelper::makeDistDim(dvp,
+                                   dimType,
+                                   from,
+                                   to);
+
+        return Py::None();
+    }
+
+    Py::Object makeDistanceDim3d(const Py::Tuple& args)
+    {
+        PyObject* pDvp;
+        PyObject* pDimType;
+        PyObject* pFrom;
+        PyObject* pTo;
+        TechDraw::DrawViewPart* dvp = nullptr;
+        std::string dimType;
+        Base::Vector3d from;
+        Base::Vector3d to;
+
+        if (!PyArg_ParseTuple(args.ptr(), "OOOO", &pDvp, &pDimType, &pFrom, &pTo)) {
+            throw Py::TypeError("expected (DrawViewPart, dimType, from, to");
+        }
+        //TODO: errors for all the type checks
+        if (PyObject_TypeCheck(pDvp, &(TechDraw::DrawViewPartPy::Type))) {
+                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
+                dvp = static_cast<TechDraw::DrawViewPart*>(obj);
+        }
+        if (PyUnicode_Check(pDimType)) {
+            dimType = PyUnicode_AsUTF8(pDimType);
+        }
+        if (PyObject_TypeCheck(pFrom, &(Base::VectorPy::Type))) {
+            from = static_cast<Base::VectorPy*>(pFrom)->value();
+        }
+        if (PyObject_TypeCheck(pTo, &(Base::VectorPy::Type))) {
+            to = static_cast<Base::VectorPy*>(pTo)->value();
+        }
+        from = DrawUtil::invertY(dvp->projectPoint(from));
+        to   = DrawUtil::invertY(dvp->projectPoint(to));
+        DrawDimHelper::makeDistDim(dvp,
+                                   dimType,
+                                   from,
+                                   to);
+
+        return Py::None();
+    }
  };
 
-PyObject* initModule()
+ PyObject* initModule()
 {
     return (new Module)->module().ptr();
 }

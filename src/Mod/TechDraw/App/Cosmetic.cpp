@@ -140,22 +140,30 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
     App::Color fcColor;
     fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x00000000));
 
+    permaPoint = Base::Vector3d(0.0, 0.0, 0.0);
     linkGeom = -1;
     color = fcColor;
     size  = 3.0;
     style = 1;
     visible = true;
+    //TODO: sort out 2x visible variables
+    Vertex::visible = true;    //yuck
+    cosmetic = true;
+    
 
     createNewTag();
 }
 
 CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::Vertex(cv)
 {
+    permaPoint = cv->permaPoint;
     linkGeom = cv->linkGeom;
     color = cv->color;
     size  = cv->size;
     style = cv->style;
     visible = cv->visible;
+    Vertex::visible = true;    //yuck
+    cosmetic = true;
 
     createNewTag();
 }
@@ -167,12 +175,15 @@ CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
     App::Color fcColor;
     fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0xff000000));
 
+    permaPoint = loc;
     linkGeom = -1;
     color = fcColor;
     //TODO: size = hGrp->getFloat("VertexSize",30.0);
     size  = 30.0;
     style = 1;        //TODO: implement styled vertexes
     visible = true;
+    Vertex::visible = true;    //yuck
+    cosmetic = true;
 
     createNewTag();
 
@@ -181,14 +192,22 @@ CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
 std::string CosmeticVertex::toString(void) const
 {
     std::stringstream ss;
+    ss << permaPoint.x << "," <<
+          permaPoint.y << "," <<
+          permaPoint.z << "," <<
+          " / ";
     ss << point().x << "," <<
           point().y << "," <<
           point().z << "," <<
-
-          linkGeom << "," << 
+          " / " <<
+          linkGeom << "," <<
+          " / " <<
           color.asHexString() << ","  <<
+          " / " <<
           size << "," <<
+          " / " <<
           style << ","  <<
+          " / " <<
           visible;
     return ss.str();
 }
@@ -202,6 +221,11 @@ unsigned int CosmeticVertex::getMemSize (void) const
 void CosmeticVertex::Save(Base::Writer &writer) const
 {
     TechDraw::Vertex::Save(writer);
+    writer.Stream() << writer.ind() << "<PermaPoint "
+                << "X=\"" <<  permaPoint.x <<
+                "\" Y=\"" <<  permaPoint.y <<
+                "\" Z=\"" <<  permaPoint.z <<
+                 "\"/>" << endl;
     writer.Stream() << writer.ind() << "<LinkGeom value=\"" <<  linkGeom << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Color value=\"" <<  color.asHexString() << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Size value=\"" <<  size << "\"/>" << endl;
@@ -213,6 +237,10 @@ void CosmeticVertex::Save(Base::Writer &writer) const
 void CosmeticVertex::Restore(Base::XMLReader &reader)
 {
     TechDraw::Vertex::Restore(reader);
+    reader.readElement("PermaPoint");
+    permaPoint.x = reader.getAttributeAsFloat("X");
+    permaPoint.y = reader.getAttributeAsFloat("Y");
+    permaPoint.z = reader.getAttributeAsFloat("Z");
     reader.readElement("LinkGeom");
     linkGeom = reader.getAttributeAsInteger("value");
     reader.readElement("Color");
@@ -225,6 +253,12 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
     reader.readElement("Visible");
     visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
 }
+
+Base::Vector3d CosmeticVertex::scaled(double factor)
+{
+    pnt = permaPoint * factor;
+    return pnt;
+}    
 
 boost::uuids::uuid CosmeticVertex::getTag() const
 {

@@ -23,6 +23,8 @@
 #ifndef TECHDRAW_GEOMETRY_H
 #define TECHDRAW_GEOMETRY_H
 
+#include <boost/uuid/uuid.hpp>
+
 #include <Base/Tools2D.h>
 #include <Base/Vector3D.h>
 #include <Base/Reader.h>
@@ -281,11 +283,13 @@ class TechDrawExport Vertex
         Vertex();
         Vertex(const Vertex* v);
         Vertex(double x, double y);
-        Vertex(Base::Vector3d v) : Vertex(v.x,v.y) {}
+        Vertex(Base::Vector3d v);
         virtual ~Vertex() {}
 
         virtual void Save(Base::Writer &/*writer*/) const;
         virtual void Restore(Base::XMLReader &/*reader*/);
+        virtual std::string getTagAsString() const { return std::string(); }
+        virtual void dump();
 
         Base::Vector3d pnt;
         ExtractionType extractType;       //obs?
@@ -298,6 +302,8 @@ class TechDrawExport Vertex
         void point(Base::Vector3d v){ pnt = Base::Vector3d(v.x, v.y); }
         bool cosmetic;
         int cosmeticLink;
+        boost::uuids::uuid cosmeticTag;
+
 
         double x() {return pnt.x;}
         double y() {return pnt.y;}
