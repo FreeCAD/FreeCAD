@@ -112,6 +112,11 @@ DrawViewDetail::DrawViewDetail()
 
     getParameters();
     m_fudge = 1.01;
+
+    //hide Properties not relevant to DVDetail
+    Direction.setStatus(App::Property::Hidden,true);
+    Rotation.setStatus(App::Property::Hidden,true);
+
 }
 
 DrawViewDetail::~DrawViewDetail()
@@ -219,21 +224,17 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     TopoDS_Shape myShape = BuilderCopy.Shape();
 
     gp_Pnt gpCenter = TechDraw::findCentroid(myShape,
-                                                     dirDetail);
+                                             dirDetail);
     Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
 
     gp_Ax2 viewAxis;
     gp_Ax2 vaBase;
-    if (dpgi != nullptr) {
-        viewAxis = dpgi->getViewAxis(shapeCenter, dirDetail);
-    } else {
-        viewAxis = dvp->getViewAxis(shapeCenter, dirDetail,false);
-    }
+    viewAxis = dvp->getViewAxis(shapeCenter, dirDetail, true);
 
     myShape = TechDraw::moveShape(myShape,                     //centre on origin
-                                          -shapeCenter);
+                                  -shapeCenter);
     gpCenter = TechDraw::findCentroid(myShape,                 //sb origin!
-                                              dirDetail);
+                                      dirDetail);
     shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
 
     Bnd_Box bbxSource;
@@ -246,7 +247,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     extentNear = shapeCenter + dirDetail * diag * -1.0;
 
     anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);
-    viewAxis = getViewAxis(shapeCenter, dirDetail, false);                //change view axis to (0,0,0)
+    viewAxis = dvp->getViewAxis(shapeCenter, dirDetail, false);                //change view axis to (0,0,0)
     Base::Vector3d offsetCenter3D = DrawUtil::toR3(viewAxis, anchor);     //displacement in R3
     Base::Vector3d stdZ(0.0,0.0,1.0);
     if (DrawUtil::checkParallel(dirDetail,stdZ)) {
@@ -314,14 +315,14 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
                                                     inputCenter,
                                                     scale);
 
-        viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),dirDetail);
+        viewAxis = dvp->getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),dirDetail);
 
         double shapeRotate = dvp->Rotation.getValue();                      //degrees CW?
  
         if (!DrawUtil::fpCompare(shapeRotate,0.0)) {
             mirroredShape = TechDraw::rotateShape(mirroredShape,
-                                                          viewAxis,
-                                                          shapeRotate);
+                                                  viewAxis,
+                                                   shapeRotate);
         }
         inputCenter = TechDraw::findCentroid(mirroredShape,
                                                      dirDetail);
