@@ -33,6 +33,8 @@
         <file>icons/TechDraw_Balloon.svg</file>
         <file>icons/TechDraw_Dimension_Vertical.svg</file>
         <file>icons/TechDraw_Dimension_Link.svg</file>
+        <file>icons/TechDraw_Dimension_HExtent.svg</file>
+        <file>icons/TechDraw_Dimension_VExtent.svg</file>
         <file>icons/preferences-techdraw.svg</file>
         <file>icons/arrowdot.svg</file>
         <file>icons/arrowopendot.svg</file>

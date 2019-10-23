@@ -68,6 +68,7 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
+
 #include <TopTools_IndexedMapOfShape.hxx>
 
 #endif
@@ -119,7 +120,7 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawViewPart, TechDraw::DrawView)
 
-DrawViewPart::DrawViewPart(void) : 
+DrawViewPart::DrawViewPart(void) :
     geometryObject(0)
 {
     static const char *group = "Projection";
@@ -204,6 +205,7 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
     return result;
 }
 
+
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
 //    Base::Console().Message("DVP::execute() - %s\n", Label.getValue());
@@ -239,10 +241,11 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 
     gp_Pnt inputCenter;
     Base::Vector3d stdOrg(0.0,0.0,0.0);
-    
+
     inputCenter = TechDraw::findCentroid(shape,
                                          getViewAxis(stdOrg,Direction.getValue()));
                                                  
+
     shapeCentroid = Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
     TopoDS_Shape mirroredShape;
     mirroredShape = TechDraw::mirrorShape(shape,
@@ -646,7 +649,7 @@ std::vector<TopoDS_Wire> DrawViewPart::getWireForFace(int idx) const
         TopoDS_Wire occwire = EdgeWalker::makeCleanWire(edges);
         result.push_back(occwire);
     }
- 
+
     return result;
 }
 
@@ -722,7 +725,7 @@ gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
                                  const bool flip)  const
 {
     gp_Ax2 viewAxis = TechDraw::getViewAxis(pt,axis,flip);
-     
+
     return viewAxis;
 }
 
@@ -799,7 +802,7 @@ bool DrawViewPart::showSectionEdges(void)
 }
 
 //! remove features that are useless without this DVP
-//! hatches, geomhatches, dimensions,... 
+//! hatches, geomhatches, dimensions,...
 void DrawViewPart::unsetupObject()
 {
     nowUnsetting = true;
@@ -814,7 +817,7 @@ void DrawViewPart::unsetupObject()
         Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
                                           docName.c_str(), viewName.c_str());
     }
-    
+
     // Remove the View's GeomHatches from document
     std::vector<TechDraw::DrawGeomHatch*> gHatches = getGeomHatches();
     std::vector<TechDraw::DrawGeomHatch*>::iterator it2 = gHatches.begin();
@@ -872,7 +875,7 @@ bool DrawViewPart::isIso(void) const
 //********
 //* Cosmetics
 //********
-void DrawViewPart::clearCosmeticVertexes(void) 
+void DrawViewPart::clearCosmeticVertexes(void)
 {
     std::vector<CosmeticVertex*> noVerts;
     CosmeticVertexes.setValues(noVerts);
@@ -881,8 +884,8 @@ void DrawViewPart::clearCosmeticVertexes(void)
 //CosmeticVertex x,y are stored as unscaled, but mirrored values.
 //if you are creating a CV based on calculations of scaled geometry, you need to 
 //unscale x,y before creation.
-//if you are creating a CV based on calculations of mirrored geometry, you need to 
-//mirror again before creation. 
+//if you are creating a CV based on calculations of mirrored geometry, you need to
+//mirror again before creation.
 
 //returns CosmeticVertex index! not geomVertexNumber!
 int DrawViewPart::addCosmeticVertex(Base::Vector3d pos)
@@ -1000,18 +1003,44 @@ TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByGeom(int idx) const
 //add the cosmetic verts to geometry vertex list
 void DrawViewPart::addCosmeticVertexesToGeom(void)
 {
-    int i = 0;
-    const std::vector<TechDraw::CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    int stop = (int) verts.size();
-    for ( ; i < stop; i++) {
-        int idx = geometryObject->addCosmeticVertex((verts.at(i)->point()) * getScale(), i);
-        verts.at(i)->linkGeom = idx;
+//    Base::Console().Message("DVP::addCosmeticVertexesToGeom()\n");
+    int iCV = 0;
+    const std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
+    const std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
+    int stop = (int) cVerts.size();
+    for ( ; iCV < stop; iCV++) {
+        int iGV = geometryObject->addCosmeticVertex(cVerts.at(iCV)->scaled(getScale()), iCV);
+        cVerts.at(iCV)->linkGeom = iGV;
     }
+}
+
+int DrawViewPart::add1CVToGV(int iCV)
+{
+//    Base::Console().Message("DVP::add1CVToGV(%d)\n", iCV);
+    TechDraw::CosmeticVertex* cv = getCosmeticVertexByIndex(iCV);
+    int iGV = geometryObject->addCosmeticVertex(cv->scaled(getScale()), iCV);
+    cv->linkGeom = iGV;
+    return iGV;
+}
+
+//given a CosmeticVertex's index, return the corresponding geometry vertex's index
+int DrawViewPart::convertCosmeticVertexIndex(int iCV)
+{
+//    Base::Console().Message("DVP::convertCosmeticVertexIndex(%d)\n",iCV);
+    int result = -1;
+    if (geometryObject != nullptr) {
+        std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
+        TechDraw::CosmeticVertex* cv = cVerts.at(iCV);
+        int temp = cv->linkGeom;
+        result = temp;
+        //could double check with tag comparison
+    }
+    return result;
 }
 
 //CosmeticEdges -------------------------------------------------------------------
 
-void DrawViewPart::clearCosmeticEdges(void) 
+void DrawViewPart::clearCosmeticEdges(void)
 {
     std::vector<CosmeticEdge*> noEdges;
     std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
@@ -1152,17 +1181,17 @@ void DrawViewPart::addCosmeticEdgesToGeom(void)
     int stop = (int) edges.size();
     for ( ; i < stop; i++) {
         TechDraw::BaseGeom* scaledGeom = edges.at(i)->scaledGeometry(getScale());
-        if (scaledGeom == nullptr) { 
+        if (scaledGeom == nullptr) {
             Base::Console().Error("DVP::addCosmeticEdgesToGeom - scaledGeometry is null\n");
             continue;
         }
-//        int idx = 
+//        int idx =
         (void) geometryObject->addCosmeticEdge(scaledGeom, 1, i);
     }
 }
 
 // CenterLines -----------------------------------------------------------------
-void DrawViewPart::clearCenterLines(void) 
+void DrawViewPart::clearCenterLines(void)
 {
     std::vector<CenterLine*> noLines;
     std::vector<CenterLine*> lines = CenterLines.getValues();
@@ -1257,18 +1286,18 @@ void DrawViewPart::addCenterLinesToGeom(void)
     int stop = (int) lines.size();
     for ( ; i < stop; i++) {
         TechDraw::BaseGeom* scaledGeom = lines.at(i)->scaledGeometry(this);
-        if (scaledGeom == nullptr) { 
+        if (scaledGeom == nullptr) {
             Base::Console().Error("DVP::addCenterLinesToGeom - scaledGeometry is null\n");
             continue;
         }
-//        int idx = 
+//        int idx =
         (void) geometryObject->addCenterLine(scaledGeom, 2, i);
     }
 }
 
 // GeomFormats -----------------------------------------------------------------
 
-void DrawViewPart::clearGeomFormats(void) 
+void DrawViewPart::clearGeomFormats(void)
 {
     std::vector<GeomFormat*> noFormats;
     std::vector<GeomFormat*> fmts = GeomFormats.getValues();
@@ -1321,6 +1350,22 @@ TechDraw::GeomFormat* DrawViewPart::getGeomFormatByGeom(int idx) const
         }
     }
     return result;
+}
+
+//------------------------------------------------------------------------------
+
+void DrawViewPart::dumpVerts(std::string text)
+{
+    if (geometryObject == nullptr) {
+        Base::Console().Message("no verts to dump yet\n");
+        return;
+    }
+    std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
+    Base::Console().Message("%s - dumping %d vertGeoms\n",
+                            text.c_str(), gVerts.size());
+    for (auto& gv: gVerts) {
+        gv->dump();
+    }
 }
 
 void DrawViewPart::onDocumentRestored()
