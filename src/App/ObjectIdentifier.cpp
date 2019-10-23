@@ -1857,7 +1857,7 @@ void ObjectIdentifier::resolveAmbiguity(ResolveResults &result) {
     if(result.resolvedDocumentObject == owner) {
         setDocumentObjectName(owner,false,std::move(subname));
     }else if(result.flags.test(ResolveByIdentifier))
-        setDocumentObjectName(std::move(result.resolvedDocumentObject),true,std::move(subname));
+        setDocumentObjectName(result.resolvedDocumentObject,true,std::move(subname));
     else
         setDocumentObjectName(
                 String(result.resolvedDocumentObject->Label.getStrValue(),true,false),true,std::move(subname));

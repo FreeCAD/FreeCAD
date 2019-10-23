@@ -267,7 +267,7 @@ public:
         documentObjectNameSet = other.documentObjectNameSet;
         localProperty = other.localProperty;
         _cache = std::move(other._cache);
-        _hash = std::move(other._hash);
+        _hash = other._hash;
         return *this;
     }
 
