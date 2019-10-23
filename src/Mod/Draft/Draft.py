@@ -2380,7 +2380,8 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     else:
         nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject", name)
         deletable = nobj
-        nobj.ViewObject.Autoconstraints = False
+        if FreeCAD.GuiUp:
+            nobj.ViewObject.Autoconstraints = False
 
     # Collect constraints and add in one go to improve performance
     constraints = []
