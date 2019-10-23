@@ -297,30 +297,41 @@ void CmdTechDrawNewView::activated(int iMsg)
         return;
     }
     std::string PageName = page->getNameInDocument();
-    auto inlist = page->getInListEx(true);
-    inlist.insert(page);
+//    auto inlist = page->getInListEx(true);           //what is this??
+//    inlist.insert(page);
 
     std::vector<App::DocumentObject*> shapes;
 
     //set projection direction from selected Face
     //use first object with a face selected
-    App::DocumentObject* partObj = 0;
-    std::string subName;
-    for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
+    App::DocumentObject* partObj = nullptr;
+    std::string faceName;
+    int resolve = 1;                                //mystery
+    bool single = false;                            //mystery
+    auto selection = getSelection().getSelectionEx(0,
+                                                   App::DocumentObject::getClassTypeId(),
+                                                   resolve,
+                                                   single);
+    for (auto& sel: selection) {
+//    for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
         auto obj = sel.getObject();
-        if(!obj || inlist.count(obj))
+//        if(!obj || inlist.count(obj))             //??????
+//            continue;
+        if (obj != nullptr) {                       //can this happen?
+            shapes.push_back(obj);
+        }
+        if(partObj != nullptr) {
             continue;
-        shapes.push_back(obj);
-        if(partObj)
-            continue;
-        for(auto &sub : sel.getSubNames()) {
+        }
+        for(auto& sub : sel.getSubNames()) {
             if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
-                subName = sub;
+                faceName = sub;
                 partObj = obj;
                 break;
             }
         }
     }
+
     if ((shapes.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("No Shapes or Groups in this selection"));
@@ -340,8 +351,8 @@ void CmdTechDrawNewView::activated(int iMsg)
     }
     dvp->Source.setValues(shapes);
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-    if (subName.size()) {
-        std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,subName);
+    if (faceName.size()) {
+        std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,faceName);
         projDir = dirs.first;
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
