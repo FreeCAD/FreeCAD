@@ -1835,7 +1835,7 @@ yyreduce:
 
   case 66:
 #line 190 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[-1].expr)->addComponent(std::move((yyvsp[0].component))); (yyval.expr) = (yyvsp[-1].expr); }
+    { (yyvsp[-1].expr)->addComponent((yyvsp[0].component)); (yyval.expr) = (yyvsp[-1].expr); }
 #line 1840 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
