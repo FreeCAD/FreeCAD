@@ -2148,7 +2148,8 @@ def draftify(objectslist,makeblock=False,delete=True):
                 newobjlist.append(nobj)
                 formatObject(nobj,obj)
                 # sketches are always in wireframe mode. In Draft we don't like that!
-                nobj.ViewObject.DisplayMode = "Flat Lines"
+                if FreeCAD.GuiUp:
+                    nobj.ViewObject.DisplayMode = "Flat Lines"
             if delete:
                 FreeCAD.ActiveDocument.removeObject(obj.Name)
 
