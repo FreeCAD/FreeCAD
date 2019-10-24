@@ -6030,7 +6030,8 @@ class _PointArray(_DraftObject):
                         place = pts.Placement
                         nshape.translate(place.Base)
                         nshape.rotate(place.Base, place.Rotation.Axis, place.Rotation.Angle * 180 /  math.pi )
-                    nshape.translate(Base.Vector(pts.X,pts.Y,pts.Z))
+                    else:
+                        nshape.translate(Base.Vector(pts.X,pts.Y,pts.Z))
                     i += 1
                     base.append(nshape)
         obj.Count = i
