@@ -671,7 +671,7 @@ class PathData:
             print("tag[%d]" % i)
             if not i in fromObj.Disabled:
                 dist = self.baseWire.distToShape(Part.Vertex(FreeCAD.Vector(pos.x, pos.y, self.minZ)))
-                if dist[0] < W:
+                if True or dist[0] < W:
                     print("tag[%d/%d]: (%.2f, %.2f, %.2f)" % (i, j, pos.x, pos.y, self.minZ))
                     at = dist[1][0][0]
                     tags.append(Tag(j, at.x, at.y,  W, H, A, R, True))
