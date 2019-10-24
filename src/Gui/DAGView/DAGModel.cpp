@@ -46,6 +46,8 @@
 #include <QAbstractEventDispatcher>
 
 #include <deque>
+#include <memory>
+
 #include <unordered_set>
 
 #include <Base/TimeInfo.h>
@@ -105,8 +107,8 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   //underneath cursor.
   this->setItemIndexMethod(QGraphicsScene::NoIndex);
   
-  theGraph = std::shared_ptr<Graph>(new Graph());
-  graphLink = std::shared_ptr<GraphLinkContainer>(new GraphLinkContainer());
+  theGraph = std::make_shared<Graph>();
+  graphLink = std::make_shared<GraphLinkContainer>();
   setupViewConstants();
   setupFilters();
   
@@ -488,7 +490,7 @@ void Model::updateSlot()
       boost::tie(edge, result) = boost::add_edge(currentVertex, otherVertex, *theGraph);
       if (result)
       {
-        (*theGraph)[edge].connector = std::shared_ptr<QGraphicsPathItem>(new QGraphicsPathItem());
+        (*theGraph)[edge].connector = std::make_shared<QGraphicsPathItem>();
         (*theGraph)[edge].connector->setZValue(0.0);
       }
     }
