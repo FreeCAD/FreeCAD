@@ -265,7 +265,6 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     }
 
     TopoDS_Shape rawShape = mkCut.Shape();
-
 //    BRepTools::Write(myShape, "DVSCopy.brep");            //debug
 //    BRepTools::Write(prism, "DVSTool.brep");              //debug
 //    BRepTools::Write(rawShape, "DVSResult.brep");         //debug
@@ -281,7 +280,6 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     m_cutShape = rawShape;
     m_cutShape = TechDraw::moveShape(m_cutShape,                     //centre on origin
                                   -SectionOrigin.getValue());
-
     gp_Pnt inputCenter;
     gp_Ax2 viewAxis;
     try {
