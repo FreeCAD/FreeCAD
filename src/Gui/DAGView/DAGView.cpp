@@ -26,6 +26,8 @@
 #include <QVBoxLayout>
 #endif
 
+#include <memory>
+
 #include <sstream>
 
 #include <Base/Console.h>
@@ -70,7 +72,7 @@ void View::slotActiveDocument(const Document &documentIn)
   ModelMap::const_iterator it = modelMap.find(&documentIn);
   if (it == modelMap.end())
   {
-    ModelMap::value_type entry(std::make_pair(&documentIn, std::shared_ptr<Model>(new Model(this, documentIn))));
+    ModelMap::value_type entry(std::make_pair(&documentIn, std::make_shared<Model>(this, documentIn)));
     modelMap.insert(entry);
     this->setScene(entry.second.get());
   }
