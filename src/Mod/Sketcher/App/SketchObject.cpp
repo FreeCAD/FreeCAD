@@ -5287,7 +5287,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
 
     // add the new ones
     Objects.push_back(Obj);
-    SubElements.push_back(std::string(SubName));
+    SubElements.emplace_back(SubName);
 
     // set the Link list.
     ExternalGeometry.setValues(Objects,SubElements);

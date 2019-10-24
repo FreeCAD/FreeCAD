@@ -470,14 +470,14 @@ bool Line2CircleIntersect(const IntPoint &c, double radius, const IntPoint &p1, 
 	if (clamp)
 	{
 		if (t1 >= 0.0 && t1 <= 1.0)
-			result.push_back(DoublePoint(p1.X + t1 * dx, p1.Y + t1 * dy));
+			result.emplace_back(p1.X + t1 * dx, p1.Y + t1 * dy);
 		if (t2 >= 0.0 && t2 <= 1.0)
-			result.push_back(DoublePoint(p1.X + t2 * dx, p1.Y + t2 * dy));
+			result.emplace_back(p1.X + t2 * dx, p1.Y + t2 * dy);
 	}
 	else
 	{
-		result.push_back(DoublePoint(p1.X + t2 * dx, p1.Y + t2 * dy));
-		result.push_back(DoublePoint(p1.X + t2 * dx, p1.Y + t2 * dy));
+		result.emplace_back(p1.X + t2 * dx, p1.Y + t2 * dy);
+		result.emplace_back(p1.X + t2 * dx, p1.Y + t2 * dy);
 	}
 	return result.size() > 0;
 }
@@ -617,7 +617,7 @@ void SmoothPaths(Paths &paths, double stepSize, long pointCount, long iterations
 		{
 			if (points.empty())
 			{
-				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
+				points.emplace_back(i, pt);
 				continue;
 			}
 			const auto back=points.back();
@@ -629,7 +629,7 @@ void SmoothPaths(Paths &paths, double stepSize, long pointCount, long iterations
 			if (l < 0.5*stepScaled )
 			{
 				if(points.size()>1) points.pop_back();
-				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
+				points.emplace_back(i, pt);
 				continue;
 			}
 			size_t lastPathIndex = back.first;
@@ -649,9 +649,9 @@ void SmoothPaths(Paths &paths, double stepSize, long pointCount, long iterations
 				if(idx==0 && DistanceSqrd(back.second,ptx)<scale && points.size()>1) points.pop_back();
 
 				if (p < 0.5)
-					points.push_back(pair<size_t /*path index*/, IntPoint>(lastPathIndex, ptx));
+					points.emplace_back(lastPathIndex, ptx);
 				else
-					points.push_back(pair<size_t /*path index*/, IntPoint>(i, ptx));
+					points.emplace_back(i, ptx);
 			}
 		}
 	}
@@ -2137,7 +2137,7 @@ bool Adaptive2d::IsAllowedToCutTrough(const IntPoint &p1, const IntPoint &p2, Cl
 bool Adaptive2d::ResolveLinkPath(const IntPoint &startPoint, const IntPoint &endPoint, ClearedArea &clearedArea, Path &output)
 {
 	vector<pair<IntPoint, IntPoint>> queue;
-	queue.push_back(pair<IntPoint, IntPoint>(startPoint, endPoint));
+	queue.emplace_back(startPoint, endPoint);
 	Path checkPath;
 	double totalLength = 0;
 	double directDistance = sqrt(DistanceSqrd(startPoint, endPoint));
@@ -2262,8 +2262,8 @@ bool Adaptive2d::ResolveLinkPath(const IntPoint &startPoint, const IntPoint &end
 				checkPath.push_back(checkPoint1);
 				if (IsClearPath(checkPath, clearedArea, clearance + 1))
 				{ // check if point clear
-					queue.push_back(pair<IntPoint, IntPoint>(pointPair.first, checkPoint1));
-					queue.push_back(pair<IntPoint, IntPoint>(checkPoint1, pointPair.second));
+					queue.emplace_back(pointPair.first, checkPoint1);
+					queue.emplace_back(checkPoint1, pointPair.second);
 					break;
 				}
 				else
@@ -2273,8 +2273,8 @@ bool Adaptive2d::ResolveLinkPath(const IntPoint &startPoint, const IntPoint &end
 					checkPath.push_back(checkPoint2);
 					if (IsClearPath(checkPath, clearedArea, clearance + 1))
 					{
-						queue.push_back(pair<IntPoint, IntPoint>(pointPair.first, checkPoint2));
-						queue.push_back(pair<IntPoint, IntPoint>(checkPoint2, pointPair.second));
+						queue.emplace_back(pointPair.first, checkPoint2);
+						queue.emplace_back(checkPoint2, pointPair.second);
 						break;
 					}
 				}
@@ -2483,7 +2483,7 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 			linkPath1.first = MotionType::mtCutting;
 			for (const auto &pt : leadOutPath)
 			{
-				linkPath1.second.push_back(DPoint(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor));
+				linkPath1.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
 			}
 			output.AdaptivePaths.push_back(linkPath1);
 
@@ -2492,7 +2492,7 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 			linkPath2.first = linkType;
 			for (const auto &pt : linkPath)
 			{
-				linkPath2.second.push_back(DPoint(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor));
+				linkPath2.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
 			}
 			output.AdaptivePaths.push_back(linkPath2);
 
@@ -2501,7 +2501,7 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 			linkPath3.first = MotionType::mtCutting;
 			for (const auto &pt : leadInPath)
 			{
-				linkPath3.second.push_back(DPoint(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor));
+				linkPath3.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
 			}
 
 			output.AdaptivePaths.push_back(linkPath3);
@@ -2527,8 +2527,8 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 
 			TPath linkPath;
 			linkPath.first = mt;
-			linkPath.second.push_back(DPoint(double(startPoint.X) / scaleFactor, double(startPoint.Y) / scaleFactor));
-			linkPath.second.push_back(DPoint(double(endPoint.X) / scaleFactor, double(endPoint.Y) / scaleFactor));
+			linkPath.second.emplace_back(double(startPoint.X) / scaleFactor, double(startPoint.Y) / scaleFactor);
+			linkPath.second.emplace_back(double(endPoint.X) / scaleFactor, double(endPoint.Y) / scaleFactor);
 			output.AdaptivePaths.push_back(linkPath);
 		}
 	}
@@ -2580,8 +2580,8 @@ void Adaptive2d::AddPathsToProgress(TPaths &progressPaths, Paths paths, MotionTy
 			progressPaths.push_back(TPath());
 			progressPaths.back().first = mt;
 			for (const auto pt : pth)
-				progressPaths.back().second.push_back(DPoint(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor));
-			progressPaths.back().second.push_back(DPoint(double(pth.front().X) / scaleFactor, double(pth.front().Y) / scaleFactor));
+				progressPaths.back().second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
+			progressPaths.back().second.emplace_back(double(pth.front().X) / scaleFactor, double(pth.front().Y) / scaleFactor);
 		}
 	}
 }
@@ -2593,7 +2593,7 @@ void Adaptive2d::AddPathToProgress(TPaths &progressPaths, const Path pth, Motion
 		progressPaths.push_back(TPath());
 		progressPaths.back().first = mt;
 		for (const auto pt : pth)
-			progressPaths.back().second.push_back(DPoint(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor));
+			progressPaths.back().second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
 	}
 }
 
@@ -2922,7 +2922,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 				// append to progress info paths
 				if (progressPaths.size() == 0)
 					progressPaths.push_back(TPath());
-				progressPaths.back().second.push_back(DPoint(double(newToolPos.X) / scaleFactor, double(newToolPos.Y) / scaleFactor));
+				progressPaths.back().second.emplace_back(double(newToolPos.X) / scaleFactor, double(newToolPos.Y) / scaleFactor);
 
 				// append gyro
 				gyro.push_back(newToolDir);
@@ -3069,7 +3069,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 		// show in progress cb
 		for (auto &pt : finShiftedPath)
 		{
-			progressPaths.back().second.push_back(DPoint(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor));
+			progressPaths.back().second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
 		}
 
 		if (!finShiftedPath.empty())

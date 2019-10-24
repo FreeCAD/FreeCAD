@@ -926,7 +926,7 @@ PyObject* BSplineCurvePy::getCardinalSplineTangents(PyObject *args, PyObject *kw
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector v(*it);
             Base::Vector3d pnt = v.toVector();
-            interpPoints.push_back(gp_Pnt(pnt.x,pnt.y,pnt.z));
+            interpPoints.emplace_back(pnt.x,pnt.y,pnt.z);
         }
 
         GeomBSplineCurve* bspline = this->getGeomBSplineCurvePtr();
@@ -948,7 +948,7 @@ PyObject* BSplineCurvePy::getCardinalSplineTangents(PyObject *args, PyObject *kw
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             Py::Vector v(*it);
             Base::Vector3d pnt = v.toVector();
-            interpPoints.push_back(gp_Pnt(pnt.x,pnt.y,pnt.z));
+            interpPoints.emplace_back(pnt.x,pnt.y,pnt.z);
         }
 
         Py::Sequence list2(tgs);

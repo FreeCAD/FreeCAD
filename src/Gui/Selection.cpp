@@ -530,7 +530,7 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(const char* pDocN
                 if(resolve && !temp[it->second]._SubNameSet.insert(subelement).second)
                     continue;
                 temp[it->second].SubNames.push_back(subelement);
-                temp[it->second].SelPoses.push_back(Base::Vector3d(sel.x,sel.y,sel.z));
+                temp[it->second].SelPoses.emplace_back(sel.x,sel.y,sel.z);
             }
         }
         else {
@@ -542,7 +542,7 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(const char* pDocN
             temp.emplace_back(obj);
             if (subelement && *subelement) {
                 temp.back().SubNames.push_back(subelement);
-                temp.back().SelPoses.push_back(Base::Vector3d(sel.x,sel.y,sel.z));
+                temp.back().SelPoses.emplace_back(sel.x,sel.y,sel.z);
                 if(resolve)
                     temp.back()._SubNameSet.insert(subelement);
             }
@@ -617,7 +617,7 @@ int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList &prop)
         const std::vector<std::string> &subnames = selitem.getSubNames();
         if (subnames.size() == 0){//whole object is selected
             objs.push_back(obj);
-            subs.push_back(std::string());
+            subs.emplace_back();
         } else {
             for (std::size_t isub = 0; isub < subnames.size(); isub++) {
                 objs.push_back(obj);
@@ -995,7 +995,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     if(pickedList) {
         _PickedList.clear();
         for(const auto &sel : *pickedList) {
-            _PickedList.push_back(_SelObj());
+            _PickedList.emplace_back();
             auto &s = _PickedList.back();
             s.DocName = sel.DocName;
             s.FeatName = sel.FeatName;
@@ -1276,7 +1276,7 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
     if(pickedList) {
         _PickedList.clear();
         for(const auto &sel : *pickedList) {
-            _PickedList.push_back(_SelObj());
+            _PickedList.emplace_back();
             auto &s = _PickedList.back();
             s.DocName = sel.DocName;
             s.FeatName = sel.FeatName;
@@ -2172,7 +2172,7 @@ PyObject *SelectionSingleton::sGetSelectionObject(PyObject * /*self*/, PyObject 
                 double x = (double)Py::Float(t.getItem(0));
                 double y = (double)Py::Float(t.getItem(1));
                 double z = (double)Py::Float(t.getItem(2));
-                selObj.SelPoses.push_back(Base::Vector3d(x,y,z));
+                selObj.SelPoses.emplace_back(x,y,z);
             }
         }
 

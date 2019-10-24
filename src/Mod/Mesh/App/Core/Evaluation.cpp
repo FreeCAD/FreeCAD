@@ -373,7 +373,7 @@ bool MeshEvalTopology::Evaluate ()
         else {
             if (count > 2) {
                 // Edge that is shared by more than 2 facets
-                nonManifoldList.push_back(std::make_pair(p0, p1));
+                nonManifoldList.emplace_back(p0, p1);
                 nonManifoldFacets.push_back(facets);
             }
 
@@ -681,7 +681,7 @@ void MeshEvalSelfIntersection::GetIntersections(const std::vector<std::pair<unsi
         if (box1 && box2) {
             int ret = cMF1->IntersectWithFacet(*cMF2, pt1, pt2);
             if (ret == 2) {
-                intersection.push_back(std::make_pair(pt1, pt2));
+                intersection.emplace_back(pt1, pt2);
             }
         }
     }
@@ -749,7 +749,7 @@ void MeshEvalSelfIntersection::GetIntersections(std::vector<std::pair<unsigned l
                     facet2 = *cMFI;
                     int ret = facet1.IntersectWithFacet(facet2, pt1, pt2);
                     if (ret == 2) {
-                        intersection.push_back(std::make_pair (*it,*jt));
+                        intersection.emplace_back (*it,*jt);
                     }
                 }
             }

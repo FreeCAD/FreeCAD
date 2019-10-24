@@ -466,7 +466,7 @@ std::vector<Base::Vector2d> Geom2dBSplineCurve::getPoles() const
 
     for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
         const gp_Pnt2d& pnt = p(i);
-        poles.push_back(Base::Vector2d(pnt.X(), pnt.Y()));
+        poles.emplace_back(pnt.X(), pnt.Y());
     }
     return poles;
 }

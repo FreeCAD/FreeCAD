@@ -137,8 +137,8 @@ std::vector<Range> SheetTableView::selectedRanges() const
         std::pair<int, int> ul = (*i).first;
         std::pair<int, int> size = (*i).second;
 
-        result.push_back(Range(ul.first, ul.second,
-                                                   ul.first + size.first - 1, ul.second + size.second - 1));
+        result.emplace_back(ul.first, ul.second,
+                                                   ul.first + size.first - 1, ul.second + size.second - 1);
     }
 
     return result;

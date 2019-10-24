@@ -458,7 +458,7 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
         if (prop < it->_ulProp) {
             prop = it->_ulProp;
             if (!segment.empty()) {
-                this->_segments.push_back(Segment(this,segment,true));
+                this->_segments.emplace_back(this,segment,true);
                 segment.clear();
             }
         }
@@ -468,7 +468,7 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
 
     // if the whole mesh is a single object then don't mark as segment
     if (!segment.empty() && (segment.size() < faces.size())) {
-        this->_segments.push_back(Segment(this,segment,true));
+        this->_segments.emplace_back(this,segment,true);
     }
 
     // apply the group names to the segments
@@ -1213,7 +1213,7 @@ void MeshObject::splitEdges()
             if (!pF->IsFlag(MeshCore::MeshFacet::VISIT) && !rFace.IsFlag(MeshCore::MeshFacet::VISIT)) {
                 pF->SetFlag(MeshCore::MeshFacet::VISIT);
                 rFace.SetFlag(MeshCore::MeshFacet::VISIT);
-                adjacentFacet.push_back(std::make_pair(pF-rFacets.begin(), pF->_aulNeighbours[id]));
+                adjacentFacet.emplace_back(pF-rFacets.begin(), pF->_aulNeighbours[id]);
             }
         }
     }
@@ -1368,7 +1368,7 @@ void MeshObject::removeSelfIntersections(const std::vector<unsigned long>& indic
     for (it = indices.begin(); it != indices.end(); ) {
         unsigned long id1 = *it; ++it;
         unsigned long id2 = *it; ++it;
-        selfIntersections.push_back(std::make_pair(id1,id2));
+        selfIntersections.emplace_back(id1,id2);
     }
 
     if (!selfIntersections.empty()) {
@@ -1747,7 +1747,7 @@ void MeshObject::addSegment(const std::vector<unsigned long>& inds)
             throw Base::IndexError("Index out of range");
     }
 
-    this->_segments.push_back(Segment(this,inds,true));
+    this->_segments.emplace_back(this,inds,true);
 }
 
 const Segment& MeshObject::getSegment(unsigned long index) const
@@ -1810,7 +1810,7 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
 
         const std::vector<MeshCore::MeshSegment>& data = surf->GetSegments();
         for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
-            segm.push_back(Segment(const_cast<MeshObject*>(this), *it, false));
+            segm.emplace_back(const_cast<MeshObject*>(this), *it, false);
         }
     }
 

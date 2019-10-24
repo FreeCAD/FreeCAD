@@ -301,9 +301,9 @@ void CurveProjectorSimple::GetSampledCurves( const TopoDS_Edge& aEdge, std::vect
     for (unsigned long i = 0; i < ulNbOfPoints; i++)
     {
       gp_Pnt gpPt = hCurve->Value(fBegin + (fLen * float(i)) / float(ulNbOfPoints-1));
-      rclPoints.push_back(Base::Vector3f((float)gpPt.X(),
+      rclPoints.emplace_back((float)gpPt.X(),
                                          (float)gpPt.Y(),
-                                         (float)gpPt.Z()));
+                                         (float)gpPt.Z());
     }
 }
 
@@ -670,10 +670,10 @@ void CurveProjectorWithToolMesh::makeToolMesh( const TopoDS_Edge& aEdge,std::vec
       p5 = (*It2).p + ((*It2).n * (-ToolSize));
       p6 = (*It2).p + ((*It2).n *  ToolSize);
 
-      cVAry.push_back(MeshGeomFacet(p3,p2,p6));
-      cVAry.push_back(MeshGeomFacet(p3,p6,p4));
-      cVAry.push_back(MeshGeomFacet(p1,p3,p4));
-      cVAry.push_back(MeshGeomFacet(p1,p4,p5));
+      cVAry.emplace_back(p3,p2,p6);
+      cVAry.emplace_back(p3,p6,p4);
+      cVAry.emplace_back(p1,p3,p4);
+      cVAry.emplace_back(p1,p4,p5);
 
     }
 
@@ -705,7 +705,7 @@ void MeshProjection::discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vect
         Standard_Integer nNbPoints = clDefl.NbPoints();
         for (Standard_Integer i = 1; i <= nNbPoints; i++) {
             gp_Pnt gpPt = clCurve.Value(clDefl.Parameter(i));
-            polyline.push_back( Base::Vector3f( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() ) );
+            polyline.emplace_back( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() );
         }
     }
 
@@ -716,7 +716,7 @@ void MeshProjection::discretize(const TopoDS_Edge& aEdge, std::vector<Base::Vect
             Standard_Integer nNbPoints = clAbsc.NbPoints();
             for (Standard_Integer i = 1; i <= nNbPoints; i++) {
                 gp_Pnt gpPt = clCurve.Value(clAbsc.Parameter(i));
-                polyline.push_back( Base::Vector3f( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() ) );
+                polyline.emplace_back( (float)gpPt.X(), (float)gpPt.Y(), (float)gpPt.Z() );
             }
         }
     }
@@ -951,12 +951,12 @@ void MeshProjection::projectParallelToMesh (const TopoDS_Shape &aShape, const Ba
             Base::Vector3f result;
             unsigned long index;
             if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
-                hitPoints.push_back(std::make_pair(result, index));
+                hitPoints.emplace_back(result, index);
 
                 if (hitPoints.size() > 1) {
                     HitPoint p1 = hitPoints[hitPoints.size()-2];
                     HitPoint p2 = hitPoints[hitPoints.size()-1];
-                    hitPointPairs.push_back(std::make_pair(p1, p2));
+                    hitPointPairs.emplace_back(p1, p2);
                 }
             }
         }
@@ -996,12 +996,12 @@ void MeshProjection::projectParallelToMesh (const std::vector<PolyLine> &aEdges,
             Base::Vector3f result;
             unsigned long index;
             if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
-                hitPoints.push_back(std::make_pair(result, index));
+                hitPoints.emplace_back(result, index);
 
                 if (hitPoints.size() > 1) {
                     HitPoint p1 = hitPoints[hitPoints.size()-2];
                     HitPoint p2 = hitPoints[hitPoints.size()-1];
-                    hitPointPairs.push_back(std::make_pair(p1, p2));
+                    hitPointPairs.emplace_back(p1, p2);
                 }
             }
         }

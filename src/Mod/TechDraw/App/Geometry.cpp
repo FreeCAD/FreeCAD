@@ -242,9 +242,9 @@ std::vector<Base::Vector3d> BaseGeom::findEndPoints()
 
     if (!occEdge.IsNull()) {
         gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
-        result.push_back(Base::Vector3d(p.X(),p.Y(), p.Z()));
+        result.emplace_back(p.X(),p.Y(), p.Z());
         p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
-        result.push_back(Base::Vector3d(p.X(),p.Y(), p.Z()));
+        result.emplace_back(p.X(),p.Y(), p.Z());
     } else {
         //TODO: this should throw something
         Base::Console().Message("Geometry::findEndPoints - OCC edge not found\n");
@@ -306,13 +306,13 @@ std::vector<Base::Vector3d> BaseGeom::getQuads()
     double q3 = u + (3.0 * range / 4.0);
     BRepLProp_CLProps prop(adapt,q1,0,Precision::Confusion());
     const gp_Pnt& p1 = prop.Value();
-    result.push_back(Base::Vector3d(p1.X(),p1.Y(), 0.0));
+    result.emplace_back(p1.X(),p1.Y(), 0.0);
     prop.SetParameter(q2);
     const gp_Pnt& p2 = prop.Value();
-    result.push_back(Base::Vector3d(p2.X(),p2.Y(), 0.0));
+    result.emplace_back(p2.X(),p2.Y(), 0.0);
     prop.SetParameter(q3);
     const gp_Pnt& p3 = prop.Value();
-    result.push_back(Base::Vector3d(p3.X(),p3.Y(), 0.0));
+    result.emplace_back(p3.X(),p3.Y(), 0.0);
     return result;
 }
 
@@ -828,14 +828,14 @@ Generic::Generic(const TopoDS_Edge &e)
     if (!polygon.IsNull()) {
         const TColgp_Array1OfPnt &nodes = polygon->Nodes();
         for (int i = nodes.Lower(); i <= nodes.Upper(); i++){
-            points.push_back(Base::Vector3d(nodes(i).X(), nodes(i).Y(), nodes(i).Z()));
+            points.emplace_back(nodes(i).X(), nodes(i).Y(), nodes(i).Z());
         }
     } else {
         //no polygon representation? approximate with line
         gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
-        points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
+        points.emplace_back(p.X(), p.Y(), p.Z());
         p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
-        points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
+        points.emplace_back(p.X(), p.Y(), p.Z());
     }
 }
 
@@ -1036,7 +1036,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
         tempSegment.degree = bezier->Degree();
         for (int pole = 1; pole <= tempSegment.poles; ++pole) {
             controlPoint = bezier->Pole(pole);
-            tempSegment.pnts.push_back(Base::Vector3d(controlPoint.X(), controlPoint.Y(), controlPoint.Z()));
+            tempSegment.pnts.emplace_back(controlPoint.X(), controlPoint.Y(), controlPoint.Z());
         }
         segments.push_back(tempSegment);
     }
@@ -1306,7 +1306,7 @@ BezierSegment::BezierSegment(const TopoDS_Edge &e)
     }
     for (int i = 1; i <= poles; ++i) {
         gp_Pnt controlPoint = bez->Pole(i);
-        pnts.push_back(Base::Vector3d(controlPoint.X(), controlPoint.Y(), controlPoint.Z()));
+        pnts.emplace_back(controlPoint.X(), controlPoint.Y(), controlPoint.Z());
     }
 }
 
