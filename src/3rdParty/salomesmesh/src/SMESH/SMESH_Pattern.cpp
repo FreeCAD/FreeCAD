@@ -368,7 +368,7 @@ bool SMESH_Pattern::Load (const char* theFileContents)
 
   while ( readLine( fields, lineBeg, clearFields ))
   {
-    myElemPointIDs.push_back( TElemDef() );
+    myElemPointIDs.emplace_back( );
     TElemDef& elemPoints = myElemPointIDs.back();
     for ( fIt = fields.begin(); fIt != fields.end(); fIt++ )
     {
@@ -631,7 +631,7 @@ bool SMESH_Pattern::Load (SMESH_Mesh*        theMesh,
     while ( fIt->more() )
     {
       const SMDS_MeshElement* face = fIt->next();
-      myElemPointIDs.push_back( TElemDef() );
+      myElemPointIDs.emplace_back( );
       TElemDef& elemPoints = myElemPointIDs.back();
       int nbNodes = face->NbCornerNodes();
       for ( int i = 0;i < nbNodes; ++i )
@@ -927,7 +927,7 @@ bool SMESH_Pattern::Load (SMESH_Mesh*        theMesh,
       {
         const SMDS_MeshElement* elem = elemIt->next();
         SMDS_ElemIteratorPtr nIt = elem->nodesIterator();
-        myElemPointIDs.push_back( TElemDef() );
+        myElemPointIDs.emplace_back( );
         TElemDef& elemPoints = myElemPointIDs.back();
         // find point indices corresponding to element nodes
         while ( nIt->more() )
@@ -1558,7 +1558,7 @@ bool SMESH_Pattern::
     set< double >::iterator par1It = params1.begin();
     for ( ; par1It != params1.end(); par1It++ )
     {
-      nodes.push_back( TIsoNode( *par0It, *par1It ) );
+      nodes.emplace_back( *par0It, *par1It );
       isoLine0.push_back( & nodes.back() );
       isoMap[1][ *par1It ].push_back( & nodes.back() );
     }
@@ -1616,7 +1616,7 @@ bool SMESH_Pattern::
           if ( Abs( nodePar - otherPar ) <= toler )
             node = ( nIt == isoLine.end() ) ? isoLine.back() : (*nIt);
           else {
-            nodes.push_back( TIsoNode( initUV.X(), initUV.Y() ) );
+            nodes.emplace_back( initUV.X(), initUV.Y() );
             node = & nodes.back();
             isoLine.insert( nIt, node );
           }
@@ -2366,7 +2366,7 @@ bool SMESH_Pattern::sortSameSizeWires (TListOfEdgesList &                theWire
     setFirstEdge( wire, eID );
 
     // compute eventual UV and fill theEdgesPointsList
-    theEdgesPointsList.push_back( list< TPoint* >() );
+    theEdgesPointsList.emplace_back( );
     list< TPoint* > & edgesPoints = theEdgesPointsList.back();
     for ( eIt = wire.begin(); eIt != wire.end(); eIt++ )
     {
@@ -2433,7 +2433,7 @@ bool SMESH_Pattern::Apply (const TopoDS_Face&   theFace,
 
   // points on edges to be used for UV computation of in-face points
   list< list< TPoint* > > edgesPointsList;
-  edgesPointsList.push_back( list< TPoint* >() );
+  edgesPointsList.emplace_back( );
   list< TPoint* > * edgesPoints = & edgesPointsList.back();
   list< TPoint* >::iterator pIt, pEnd;
 
@@ -2466,7 +2466,7 @@ bool SMESH_Pattern::Apply (const TopoDS_Face&   theFace,
     for ( nbEIt++; nbEIt != nbVertexInWires.end(); nbEIt++ )
     {
       int nbEdges = *nbEIt;
-      wireList.push_back( list< TopoDS_Edge >() );
+      wireList.emplace_back( );
       list< TopoDS_Edge > & wire = wireList.back();
       for ( iE = 0 ; iE < nbEdges; eIt++, iE++ )
       {
@@ -2510,7 +2510,7 @@ bool SMESH_Pattern::Apply (const TopoDS_Face&   theFace,
         setFirstEdge( wire, id1 );
 
         // compute eventual UV and collect on-edge points
-        edgesPointsList.push_back( list< TPoint* >() );
+        edgesPointsList.emplace_back( );
         edgesPoints = & edgesPointsList.back();
         int eID = id1;
         for ( eIt = wire.begin(); eIt != wire.end(); eIt++ )
@@ -2709,7 +2709,7 @@ bool SMESH_Pattern::Apply (const SMDS_MeshFace* theFace,
 
   // points on edges to be used for UV computation of in-face points
   list< list< TPoint* > > edgesPointsList;
-  edgesPointsList.push_back( list< TPoint* >() );
+  edgesPointsList.emplace_back( );
   list< TPoint* > * edgesPoints = & edgesPointsList.back();
   list< TPoint* >::iterator pIt;
 
@@ -2862,7 +2862,7 @@ bool SMESH_Pattern::Apply (SMESH_Mesh*          theMesh,
 
   // points on edges to be used for UV computation of in-face points
   list< list< TPoint* > > edgesPointsList;
-  edgesPointsList.push_back( list< TPoint* >() );
+  edgesPointsList.emplace_back( );
   list< TPoint* > * edgesPoints = & edgesPointsList.back();
   list< TPoint* >::iterator pIt;
 
@@ -3017,7 +3017,7 @@ bool SMESH_Pattern::Apply (SMESH_Mesh*                     theMesh,
     list< TElemDef >::iterator ll = myElemPointIDs.begin();
     for ( ; ll != myElemPointIDs.end(); ++ll )
     {
-      myElemXYZIDs.push_back(TElemDef());
+      myElemXYZIDs.emplace_back();
       TElemDef& xyzIds = myElemXYZIDs.back();
       TElemDef& pIds = *ll;
       for ( TElemDef::iterator id = pIds.begin(); id != pIds.end(); id++ ) {
@@ -3046,12 +3046,12 @@ bool SMESH_Pattern::Apply (SMESH_Mesh*                     theMesh,
         int nId = ( *p - &myPoints[0] ) + ind1;
         myXYZIdToNodeMap[ nId ] = n1;
         list< list< int > >& groups = myIdsOnBoundary[ node1Set ];
-        groups.push_back(list< int > ());
+        groups.emplace_back();
         groups.back().push_back( nId );
       }
       // add the linkSet to the map
       list< list< int > >& groups = myIdsOnBoundary[ linkSet ];
-      groups.push_back(list< int > ());
+      groups.emplace_back();
       list< int >& indList = groups.back();
       // add points to the map excluding the end points
       for ( p++; *p != linkPoints.back(); p++ )
@@ -3124,7 +3124,7 @@ bool SMESH_Pattern::Apply (std::set<const SMDS_MeshVolume*> & theVolumes,
     list< TElemDef >::iterator ll = myElemPointIDs.begin();
     for ( ; ll != myElemPointIDs.end(); ++ll )
     {
-      myElemXYZIDs.push_back(TElemDef());
+      myElemXYZIDs.emplace_back();
       TElemDef& xyzIds = myElemXYZIDs.back();
       TElemDef& pIds = *ll;
       for ( TElemDef::iterator id = pIds.begin(); id != pIds.end(); id++ ) {
@@ -3163,7 +3163,7 @@ bool SMESH_Pattern::Apply (std::set<const SMDS_MeshVolume*> & theVolumes,
       list< TPoint* > & points = getShapePoints( Id );
       list< TPoint* >::iterator p = points.begin();
       list< list< int > >& groups = myIdsOnBoundary[ subNodes ];
-      groups.push_back(list< int > ());
+      groups.emplace_back();
       list< int >& indList = groups.back();
       for ( ; p != points.end(); p++ )
         indList.push_back( pointIndex[ *p ] + ind1 );
@@ -3288,7 +3288,7 @@ bool SMESH_Pattern::Load (SMESH_Mesh*         theMesh,
     SMDS_ElemIteratorPtr elemIt = aSubMesh->GetElements();
     while ( elemIt->more() ) {
       const SMDS_MeshElement* elem = elemIt->next();
-      myElemPointIDs.push_back( TElemDef() );
+      myElemPointIDs.emplace_back( );
       TElemDef& elemPoints = myElemPointIDs.back();
       int nbNodes = elem->NbCornerNodes();
       for ( int i = 0;i < nbNodes; ++i )
@@ -3577,7 +3577,7 @@ void SMESH_Pattern::
 
           // some links of <face> are split;
           // make list of xyz for <face>
-          myPolyElemXYZIDs.push_back(TElemDef());
+          myPolyElemXYZIDs.emplace_back();
           TElemDef & faceNodeIds = myPolyElemXYZIDs.back();
           // loop on links of a <face>
           SMDS_ElemIteratorPtr nIt = face->nodesIterator();
@@ -3696,8 +3696,8 @@ void SMESH_Pattern::
           if ( !volTool.Set( elem ) || !avoidSet.insert( elem ).second )
             continue; // skip faces or refined elements
           // add polyhedron definition
-          myPolyhedronQuantities.push_back(vector<int> ());
-          myPolyElemXYZIDs.push_back(TElemDef());
+          myPolyhedronQuantities.emplace_back();
+          myPolyElemXYZIDs.emplace_back();
           vector<int>& quantity = myPolyhedronQuantities.back();
           TElemDef &   elemDef  = myPolyElemXYZIDs.back();
           // get definitions of new elements on volume faces
@@ -4570,7 +4570,7 @@ bool SMESH_Pattern::findBoundaryPoints()
 
     // 2. chain up boundary points
     list< list< TPoint* > > boundaryList;
-    boundaryList.push_back( list< TPoint* >() );
+    boundaryList.emplace_back( );
     list< TPoint* > * boundary = & boundaryList.back();
 
     TPoint *point1, *point2, *keypoint1;
@@ -4613,7 +4613,7 @@ bool SMESH_Pattern::findBoundaryPoints()
             break; // all boundaries containing key-points are found
 
           // prepare to search for the next boundary
-          boundaryList.push_back( list< TPoint* >() );
+          boundaryList.emplace_back( );
           boundary = & boundaryList.back();
           point2 = keypoint1 = (*keyPointSet.begin());
         }

@@ -624,7 +624,7 @@ static bool checkConformIgnoredAlgos(SMESH_Mesh&               aMesh,
 
     if ( aLocIgnoAlgo ) // algo is hidden by a local algo of upper dim
     {
-      theErrors.push_back( SMESH_Gen::TAlgoStateError() );
+      theErrors.emplace_back( );
       theErrors.back().Set( SMESH_Hypothesis::HYP_HIDDEN_ALGO, algo, false );
       INFOS( "Local <" << algo->GetName() << "> is hidden by local <"
             << aLocIgnoAlgo->GetName() << ">");
@@ -640,7 +640,7 @@ static bool checkConformIgnoredAlgos(SMESH_Mesh&               aMesh,
           ( isGlobal || !aGlobIgnoAlgo->SupportSubmeshes() ))
       {
         // algo is hidden by a global algo
-        theErrors.push_back( SMESH_Gen::TAlgoStateError() );
+        theErrors.emplace_back( );
         theErrors.back().Set( SMESH_Hypothesis::HYP_HIDDEN_ALGO, algo, true );
         INFOS( ( isGlobal ? "Global" : "Local" )
               << " <" << algo->GetName() << "> is hidden by global <"
@@ -656,7 +656,7 @@ static bool checkConformIgnoredAlgos(SMESH_Mesh&               aMesh,
           INFOS( "ERROR: Local <" << algo->GetName() <<
                 "> would produce not conform mesh: "
                 "<Not Conform Mesh Allowed> hypotesis is missing");
-          theErrors.push_back( SMESH_Gen::TAlgoStateError() );
+          theErrors.emplace_back( );
           theErrors.back().Set( SMESH_Hypothesis::HYP_NOTCONFORM, algo, false );
         }
 
@@ -722,7 +722,7 @@ static bool checkMissing(SMESH_Gen*                aGen,
       {
         MESSAGE( "ERROR: " << shapeDim << "D algorithm is missing" );
         ret = false;
-        theErrors.push_back( SMESH_Gen::TAlgoStateError() );
+        theErrors.emplace_back( );
         theErrors.back().Set( SMESH_Hypothesis::HYP_MISSING, shapeDim, true );
       }
     }
@@ -752,7 +752,7 @@ static bool checkMissing(SMESH_Gen*                aGen,
       }
       if (IsGlobalHypothesis)
         globalChecked[ algo->GetDim() ] = true;
-      theErrors.push_back( SMESH_Gen::TAlgoStateError() );
+      theErrors.emplace_back( );
       theErrors.back().Set( errName, algo, IsGlobalHypothesis );
     }
     ret = false;
@@ -942,7 +942,7 @@ bool SMESH_Gen::GetAlgoState(SMESH_Mesh&               theMesh,
 
   if ( !hasAlgo ) {
     ret = false;
-    theErrors.push_back( TAlgoStateError() );
+    theErrors.emplace_back( );
     theErrors.back().Set( SMESH_Hypothesis::HYP_MISSING, theMesh.HasShapeToMesh() ? 1 : 3, true );
   }
 

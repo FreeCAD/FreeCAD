@@ -250,7 +250,7 @@ namespace // INTERNAL STUFF
     for ( ; d != dList.end(); ++d )
       if ( d->_srcMesh == srcMesh )
         return &*d;
-    dList.push_back(_ImportData(srcMesh));
+    dList.emplace_back(srcMesh);
     return &dList.back();
   }
 
@@ -679,7 +679,7 @@ bool StdMeshers_Import_1D::Compute(SMESH_Mesh & theMesh, const TopoDS_Shape & th
       //MESSAGE("_gen->Compute " << n);
       if ( !n ) return false; // very strange
     }
-    vertexNodes.push_back( SMESH_TNodeXYZ( n ));
+    vertexNodes.emplace_back( n );
     //MESSAGE("SMESH_Algo::VertexNode " << n->GetID() << " " << n->X() << " " << n->Y() << " " << n->Z() );
   }
 

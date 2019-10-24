@@ -572,131 +572,131 @@ Driver_Mesh::Status DriverMED_W_SMESHDS_Mesh::Perform()
 #ifdef _ELEMENTS_BY_DIM_
     anEntity = eNOEUD_ELEMENT;
 #endif
-    aTElemTypeDatas.push_back(TElemTypeData(anEntity,
+    aTElemTypeDatas.emplace_back(anEntity,
                                             ePOINT1,
                                             nbElemInfo.Nb0DElements() + nodesOf0D.size(),
-                                            SMDSAbs_0DElement));
+                                            SMDSAbs_0DElement);
 #ifdef _ELEMENTS_BY_DIM_
     anEntity = eSTRUCT_ELEMENT;
 #endif
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eBALL,
                                              nbElemInfo.NbBalls(),
-                                             SMDSAbs_Ball));
+                                             SMDSAbs_Ball);
 #ifdef _ELEMENTS_BY_DIM_
     anEntity = eARETE;
 #endif
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eSEG2,
                                              nbElemInfo.NbEdges( ORDER_LINEAR ),
-                                             SMDSAbs_Edge));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Edge);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eSEG3,
                                              nbElemInfo.NbEdges( ORDER_QUADRATIC ),
-                                             SMDSAbs_Edge));
+                                             SMDSAbs_Edge);
 #ifdef _ELEMENTS_BY_DIM_
     anEntity = eFACE;
 #endif
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eTRIA3,
                                              nbElemInfo.NbTriangles( ORDER_LINEAR ),
-                                             SMDSAbs_Face));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Face);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eTRIA6,
                                              nbElemInfo.NbTriangles( ORDER_QUADRATIC ) -
                                              nbElemInfo.NbBiQuadTriangles(),
-                                             SMDSAbs_Face));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Face);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eTRIA7,
                                              nbElemInfo.NbBiQuadTriangles(),
-                                             SMDSAbs_Face));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Face);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eQUAD4,
                                              nbElemInfo.NbQuadrangles( ORDER_LINEAR ),
-                                             SMDSAbs_Face));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Face);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eQUAD8,
                                              nbElemInfo.NbQuadrangles( ORDER_QUADRATIC ) -
                                              nbElemInfo.NbBiQuadQuadrangles(),
-                                             SMDSAbs_Face));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Face);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eQUAD9,
                                              nbElemInfo.NbBiQuadQuadrangles(),
-                                             SMDSAbs_Face));
+                                             SMDSAbs_Face);
     if ( polyTypesSupported ) {
-      aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+      aTElemTypeDatas.emplace_back(anEntity,
                                                ePOLYGONE,
                                                nbElemInfo.NbPolygons( ORDER_LINEAR ),
-                                               SMDSAbs_Face));
+                                               SMDSAbs_Face);
       // we need one more loop on poly elements to count nb of their nodes
-      aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+      aTElemTypeDatas.emplace_back(anEntity,
                                                ePOLYGONE,
                                                nbElemInfo.NbPolygons( ORDER_LINEAR ),
-                                               SMDSAbs_Face));
-      aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                               SMDSAbs_Face);
+      aTElemTypeDatas.emplace_back(anEntity,
                                                ePOLYGON2,
                                                nbElemInfo.NbPolygons( ORDER_QUADRATIC ),
-                                               SMDSAbs_Face));
+                                               SMDSAbs_Face);
       // we need one more loop on QUAD poly elements to count nb of their nodes
-      aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+      aTElemTypeDatas.emplace_back(anEntity,
                                                ePOLYGON2,
                                                nbElemInfo.NbPolygons( ORDER_QUADRATIC ),
-                                               SMDSAbs_Face));
+                                               SMDSAbs_Face);
     }
 #ifdef _ELEMENTS_BY_DIM_
     anEntity = eMAILLE;
 #endif
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eTETRA4,
                                              nbElemInfo.NbTetras( ORDER_LINEAR ),
-                                             SMDSAbs_Volume));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Volume);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eTETRA10,
                                              nbElemInfo.NbTetras( ORDER_QUADRATIC ),
-                                             SMDSAbs_Volume));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Volume);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              ePYRA5,
                                              nbElemInfo.NbPyramids( ORDER_LINEAR ),
-                                             SMDSAbs_Volume));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Volume);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              ePYRA13,
                                              nbElemInfo.NbPyramids( ORDER_QUADRATIC ),
-                                             SMDSAbs_Volume));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Volume);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              ePENTA6,
                                              nbElemInfo.NbPrisms( ORDER_LINEAR ),
-                                             SMDSAbs_Volume));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Volume);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              ePENTA15,
                                              nbElemInfo.NbPrisms( ORDER_QUADRATIC ),
-                                             SMDSAbs_Volume));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Volume);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eHEXA8,
                                              nbElemInfo.NbHexas( ORDER_LINEAR ),
-                                             SMDSAbs_Volume));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Volume);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eHEXA20,
                                              nbElemInfo.NbHexas( ORDER_QUADRATIC )-
                                              nbElemInfo.NbTriQuadHexas(),
-                                             SMDSAbs_Volume));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Volume);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eHEXA27,
                                              nbElemInfo.NbTriQuadHexas(),
-                                             SMDSAbs_Volume));
-    aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+                                             SMDSAbs_Volume);
+    aTElemTypeDatas.emplace_back(anEntity,
                                              eOCTA12,
                                              nbElemInfo.NbHexPrisms(),
-                                             SMDSAbs_Volume));
+                                             SMDSAbs_Volume);
     if ( polyTypesSupported ) {
-      aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+      aTElemTypeDatas.emplace_back(anEntity,
                                                ePOLYEDRE,
                                                nbElemInfo.NbPolyhedrons(),
-                                               SMDSAbs_Volume));
+                                               SMDSAbs_Volume);
       // we need one more loop on poly elements to count nb of their nodes
-      aTElemTypeDatas.push_back( TElemTypeData(anEntity,
+      aTElemTypeDatas.emplace_back(anEntity,
                                                ePOLYEDRE,
                                                nbElemInfo.NbPolyhedrons(),
-                                               SMDSAbs_Volume));
+                                               SMDSAbs_Volume);
     }
 
     vector< bool > isElemFamMapBuilt( SMDSAbs_NbElementTypes, false );

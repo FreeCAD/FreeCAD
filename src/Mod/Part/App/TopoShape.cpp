@@ -3206,7 +3206,7 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
             p.Transform(loc.Transformation());
             Standard_Real X, Y, Z;
             p.Coord (X, Y, Z);
-            domain.points.push_back(Base::Vector3d(X, Y, Z));
+            domain.points.emplace_back(X, Y, Z);
         }
 
         // copy the triangles
@@ -3424,7 +3424,7 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
     for (TopExp_Explorer xp(_Shape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
         gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp.Current()));
         Points.push_back(Base::convertTo<Base::Vector3d>(p));
-        Normals.push_back(Base::Vector3d(0,0,0));
+        Normals.emplace_back(0,0,0);
     }
 
     // sample inner points of all free edges
@@ -3436,7 +3436,7 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
             for (int i=1; i<=nbPoints; i++) {
                 gp_Pnt p = curve.Value (discretizer.Parameter(i));
                 Points.push_back(Base::convertTo<Base::Vector3d>(p));
-                Normals.push_back(Base::Vector3d(0,0,0));
+                Normals.emplace_back(0,0,0);
             }
         }
     }
@@ -3510,7 +3510,7 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
                         Normals.push_back(Base::convertTo<Base::Vector3d>(normal));
                     }
                     else {
-                        Normals.push_back(Base::Vector3d(0,0,0));
+                        Normals.emplace_back(0,0,0);
                     }
                 }
             }

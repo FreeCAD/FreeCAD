@@ -550,8 +550,7 @@ namespace
             if ( faceToFindEqual->_polyLinks[iL]._nodes[0] == n1 &&
                  faceToFindEqual->_polyLinks[iL]._nodes[1] == n0 )
             {
-              _links.push_back
-                ( _OrientedLink( & faceToFindEqual->_polyLinks[iL], /*reverse=*/true ));
+              _links.emplace_back( & faceToFindEqual->_polyLinks[iL], /*reverse=*/true );
               return;
             }
         }
@@ -559,7 +558,7 @@ namespace
         l._nodes[0] = n0;
         l._nodes[1] = n1;
         _polyLinks.push_back( l );
-        _links.push_back( _OrientedLink( &_polyLinks.back() ));
+        _links.emplace_back( &_polyLinks.back() );
       }
     };
     // --------------------------------------------------------------------------------
@@ -1163,7 +1162,7 @@ namespace
         intersector._intPoints.clear();
         (intersector.*interFunction)( gridLine ); // <- intersection with gridLine
         for ( size_t i = 0; i < intersector._intPoints.size(); ++i )
-          _intersections.push_back( make_pair( &gridLine, intersector._intPoints[i] ));
+          _intersections.emplace_back( &gridLine, intersector._intPoints[i] );
       }
     }
   }
@@ -1557,7 +1556,7 @@ namespace
         link._fIntNodes.resize( link._fIntPoints.size() );
         for ( size_t i = 0; i < link._fIntPoints.size(); ++i )
         {
-          _intNodes.push_back( _Node( 0, link._fIntPoints[i] ));
+          _intNodes.emplace_back( nullptr, link._fIntPoints[i] );
           link._fIntNodes[ i ] = & _intNodes.back();
         }
 
@@ -1620,7 +1619,7 @@ namespace
             equalNode->Add( _eIntPoints[ iP ] );
           }
           else {
-            _intNodes.push_back( _Node( 0, _eIntPoints[ iP ]));
+            _intNodes.emplace_back( nullptr, _eIntPoints[ iP ]);
             quad._eIntNodes.push_back( & _intNodes.back() );
           }
           break;
@@ -1636,7 +1635,7 @@ namespace
           }
           else
           {
-            _intNodes.push_back( _Node( 0, _eIntPoints[ iP ]));
+            _intNodes.emplace_back( nullptr, _eIntPoints[ iP ]);
             for ( int iF = 0; iF < 2; ++iF )
             {
               _Face& quad = _hexQuads[ facets[iF] - SMESH_Block::ID_FirstF ];
@@ -1661,7 +1660,7 @@ namespace
           }
           else
           {
-            _intNodes.push_back( _Node( 0, _eIntPoints[ iP ]));
+            _intNodes.emplace_back( nullptr, _eIntPoints[ iP ]);
             for ( int iF = 0; iF < 3; ++iF )
             {
               _Face& quad = _hexQuads[ facets[iF] - SMESH_Block::ID_FirstF ];
@@ -1687,7 +1686,7 @@ namespace
           }
           else if ( nbFacets == 0 ) {
             if ( _intNodes.empty() || _intNodes.back().EdgeIntPnt() != _eIntPoints[ iP ])
-              _intNodes.push_back( _Node( 0, _eIntPoints[ iP ]));
+              _intNodes.emplace_back( nullptr, _eIntPoints[ iP ]);
             _vIntNodes.push_back( & _intNodes.back() );
           }
         }

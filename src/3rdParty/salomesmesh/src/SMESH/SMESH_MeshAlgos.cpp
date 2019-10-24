@@ -611,7 +611,7 @@ void SMESH_ElementSearcherImpl::findOuterBoundary(const SMDS_MeshElement* outerF
   list < TFaceLink > startLinks;
 
   // load startLinks with the first outerFace
-  startLinks.push_back( TFaceLink( outerFace->GetNode(0), outerFace->GetNode(1), outerFace));
+  startLinks.emplace_back( outerFace->GetNode(0), outerFace->GetNode(1), outerFace);
   _outerFaces.insert( outerFace );
 
   TIDSortedElemSet emptySet;
@@ -674,7 +674,7 @@ void SMESH_ElementSearcherImpl::findOuterBoundary(const SMDS_MeshElement* outerF
       {
         SMESH_TLink link2( outerFace2->GetNode(i), outerFace2->GetNode((i+1)%nbNodes));
         if ( visitedLinks.insert( link2 ).second )
-          startLinks.push_back( TFaceLink( link2.node1(), link2.node2(), outerFace2 ));
+          startLinks.emplace_back( link2.node1(), link2.node2(), outerFace2 );
       }
     }
     startLinks.pop_front();
@@ -891,7 +891,7 @@ TopAbs_State SMESH_ElementSearcherImpl::GetPointState(const gp_Pnt& point)
         continue;
       if ( intersection.IsInQuadric() )
       {
-        tangentInters[ axis ].push_back( TInters( *face, fNorm, true ));
+        tangentInters[ axis ].emplace_back( *face, fNorm, true );
       }
       else if ( ! intersection.IsParallel() && intersection.NbPoints() > 0 )
       {

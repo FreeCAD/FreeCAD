@@ -553,7 +553,7 @@ namespace
       Handle(Geom2d_Curve) c2d = BRep_Tool::CurveOnSurface( edges[ iE ], face, f, l );
       if ( c2d.IsNull() ) return false;
 
-      points.push_back( UVU( c2d->Value( f ), f ));
+      points.emplace_back( c2d->Value( f ), f );
       uvBox.Add( points.back()._uv );
 
       Geom2dAdaptor_Curve c2dAdaptor (c2d, f,l );
@@ -595,11 +595,11 @@ namespace
             for ( int iD = 1; iD < nbDiv; ++iD )
             {
               double uD = points.back()._u + dU;
-              points.push_back( UVU( c2d->Value( uD ), uD ));
+              points.emplace_back( c2d->Value( uD ), uD );
             }
             pPrev = p;
           }
-          points.push_back( UVU( c2d->Value( u ), u ));
+          points.emplace_back( c2d->Value( u ), u );
           uvBox.Add( points.back()._uv );
         }
       // if ( !c3d.IsNull() )
@@ -634,7 +634,7 @@ namespace
       // }
       if ( points.size() < 2 )
       {
-        points.push_back( UVU( c2d->Value( l ), l ));
+        points.emplace_back( c2d->Value( l ), l );
         uvBox.Add( points.back()._uv );
       }
       if ( edges[ iE ].Orientation() == TopAbs_REVERSED )
@@ -702,7 +702,7 @@ namespace
         for ( size_t i = points.size()-1; i >= 1; --i )
         {
           inPoints[ iP++ ] = points[i-1].getInPoint( scale );
-          inSegments.push_back( InSegment( & inPoints[ iP-2 ], & inPoints[ iP-1 ], iE ));
+          inSegments.emplace_back( & inPoints[ iP-2 ], & inPoints[ iP-1 ], iE );
         }
       }
     }
@@ -715,7 +715,7 @@ namespace
         for ( size_t i = 1; i < points.size(); ++i )
         {
           inPoints[ iP++ ] = points[i].getInPoint( scale );
-          inSegments.push_back( InSegment( & inPoints[ iP-2 ], & inPoints[ iP-1 ], iE ));
+          inSegments.emplace_back( & inPoints[ iP-2 ], & inPoints[ iP-1 ], iE );
         }
       }
     }
@@ -932,16 +932,16 @@ namespace
         size_t ip0 = inSeg._p0->index( inPoints );
         if ( inPntChecked[ ip0 ] )
           for ( e = inSeg._p0->_edges.rbegin(); e != inSeg._p0->_edges.rend(); ++e )
-            bndSegs.push_back( BndSeg( &inSeg, *e, inSeg._p0->_param ));
+            bndSegs.emplace_back( &inSeg, *e, inSeg._p0->_param );
         inPntChecked[ ip0 ] = false;
 
         // segments of InSegment's
         const size_t nbMaEdges = inSeg._edges.size();
         switch ( nbMaEdges ) {
         case 0: // "around" circle center
-          bndSegs.push_back( BndSeg( &inSeg, 0, inSeg._p1->_param )); break;
+          bndSegs.emplace_back( &inSeg, nullptr, inSeg._p1->_param ); break;
         case 1:
-          bndSegs.push_back( BndSeg( &inSeg, inSeg._edges.back(), inSeg._p1->_param )); break;
+          bndSegs.emplace_back( &inSeg, inSeg._edges.back(), inSeg._p1->_param ); break;
         default:
           gp_XY inSegDir( inSeg._p1->_a - inSeg._p0->_a,
                           inSeg._p1->_b - inSeg._p0->_b );
@@ -953,15 +953,15 @@ namespace
                         (*e)->vertex0()->y() - inSeg._p0->_b );
             double r = toMA * inSegDir / inSegLen2;
             double u = r * inSeg._p1->_param + ( 1. - r ) * inSeg._p0->_param;
-            bndSegs.push_back( BndSeg( &inSeg, *e, u ));
+            bndSegs.emplace_back( &inSeg, *e, u );
           }
-          bndSegs.push_back( BndSeg( &inSeg, *e, inSeg._p1->_param ));
+          bndSegs.emplace_back( &inSeg, *e, inSeg._p1->_param );
         }
         // segments around 2nd concave point
         size_t ip1 = inSeg._p1->index( inPoints );
         if ( inPntChecked[ ip1 ] )
           for ( e = inSeg._p1->_edges.rbegin(); e != inSeg._p1->_edges.rend(); ++e )
-            bndSegs.push_back( BndSeg( &inSeg, *e, inSeg._p1->_param ));
+            bndSegs.emplace_back( &inSeg, *e, inSeg._p1->_param );
         inPntChecked[ ip1 ] = false;
       }
       if ( !bndSegs.empty() )
@@ -1228,7 +1228,7 @@ namespace
           dInd = bndSegs[ i ]._branchID > 0 ? +1 : -1;
         }
 
-        bndPoints._maEdges.push_back( make_pair( br, ( 1 + edgeInd ) * dInd ));
+        bndPoints._maEdges.emplace_back( br, ( 1 + edgeInd ) * dInd );
 
       } // loop on bndSegs of an EDGE
     } // loop on all bndSegs to construct Boundary

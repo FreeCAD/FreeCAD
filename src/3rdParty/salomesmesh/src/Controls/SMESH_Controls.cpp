@@ -3031,7 +3031,7 @@ void CoplanarFaces::SetMesh( const SMDS_Mesh* theMesh )
     std::set< SMESH_TLink > checkedLinks;
 
     std::list< pair< const SMDS_MeshElement*, gp_Vec > > faceQueue;
-    faceQueue.push_back( make_pair( face, myNorm ));
+    faceQueue.emplace_back( face, myNorm );
     while ( !faceQueue.empty() )
     {
       face   = faceQueue.front().first;
@@ -3054,7 +3054,7 @@ void CoplanarFaces::SetMesh( const SMDS_Mesh* theMesh )
             if (!normOK || myNorm.Angle( norm ) <= radianTol)
             {
               myCoplanarIDs.insert( f->GetID() );
-              faceQueue.push_back( make_pair( f, norm ));
+              faceQueue.emplace_back( f, norm );
             }
           }
         }

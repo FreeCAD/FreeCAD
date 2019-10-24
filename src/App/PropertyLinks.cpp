@@ -1781,7 +1781,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
     if (size == 0) {
         if (lValue) {
             this->_lValueList.push_back(lValue);
-            this->_lSubList.push_back(std::string());
+            this->_lSubList.emplace_back();
         }
     }
     else {
@@ -1893,7 +1893,7 @@ std::vector<PropertyLinkSubList::SubSet> PropertyLinkSubList::getSubListValues(b
             sub = _lSubList[i];
         if (values.size() == 0 || values.back().first != link){
             //new object started, start a new subset.
-            values.push_back(SubSet(link, std::vector<std::string>()));
+            values.emplace_back(link, std::vector<std::string>());
         }
         values.back().second.push_back(sub);
     }

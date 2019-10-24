@@ -485,9 +485,9 @@ std::vector<std::pair<std::string,bool> > ParameterGrp::GetBoolMap(const char * 
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
             if (strcmp(StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str(),"1"))
-                vrValues.push_back(std::make_pair(Name, false));
+                vrValues.emplace_back(Name, false);
             else
-                vrValues.push_back(std::make_pair(Name, true));
+                vrValues.emplace_back(Name, true);
         }
         pcTemp = FindNextElement(pcTemp,"FCBool");
     }
@@ -549,8 +549,8 @@ std::vector<std::pair<std::string,long> > ParameterGrp::GetIntMap(const char * s
         Name = StrX(static_cast<DOMElement*>(pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
-            vrValues.push_back(std::make_pair(Name,
-                               ( atol (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str()))));
+            vrValues.emplace_back(Name,
+                               ( atol (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str())));
         }
         pcTemp = FindNextElement(pcTemp,"FCInt") ;
     }
@@ -612,8 +612,8 @@ std::vector<std::pair<std::string,unsigned long> > ParameterGrp::GetUnsignedMap(
         Name = StrX(static_cast<DOMElement*>(pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
-            vrValues.push_back(std::make_pair(Name,
-                               ( strtoul (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str(),0,10) )));
+            vrValues.emplace_back(Name,
+                               ( strtoul (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str(),0,10) ));
         }
         pcTemp = FindNextElement(pcTemp,"FCUInt");
     }
@@ -675,8 +675,8 @@ std::vector<std::pair<std::string,double> > ParameterGrp::GetFloatMap(const char
         Name = StrX(static_cast<DOMElement*>(pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
-            vrValues.push_back(std::make_pair(Name,
-                               ( atof (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str()))));
+            vrValues.emplace_back(Name,
+                               ( atof (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str())));
         }
         pcTemp = FindNextElement(pcTemp,"FCFloat");
     }
@@ -754,7 +754,7 @@ std::vector<std::string> ParameterGrp::GetASCIIs(const char * sFilter) const
             // retrieve the text element
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
-                vrValues.push_back( std::string(StrXUTF8(pcElem2->getNodeValue()).c_str()) );
+                vrValues.emplace_back(StrXUTF8(pcElem2->getNodeValue()).c_str() );
         }
         pcTemp = FindNextElement(pcTemp,"FCText");
     }
@@ -776,7 +776,7 @@ std::vector<std::pair<std::string,std::string> > ParameterGrp::GetASCIIMap(const
             // retrieve the text element
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
-                vrValues.push_back(std::make_pair(Name, std::string(StrXUTF8(pcElem2->getNodeValue()).c_str())));
+                vrValues.emplace_back(Name, std::string(StrXUTF8(pcElem2->getNodeValue()).c_str()));
         }
         pcTemp = FindNextElement(pcTemp,"FCText");
     }

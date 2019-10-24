@@ -107,7 +107,7 @@ bool DriverMED_W_Field::Set(SMESHDS_Mesh *      mesh,
       nbElems = mesh->GetMeshInfo().NbElements( geom );
       if ( nbElems < 1 ) continue;
 
-      _nbElemsByGeom.push_back( std::make_pair( geom, nbElems + _nbElemsByGeom.back().second ));
+      _nbElemsByGeom.emplace_back( geom, nbElems + _nbElemsByGeom.back().second );
     }
     // add nodes of missing 0D elements on VERTEXes
     if ( _addODOnVertices && _elemType == SMDSAbs_0DElement )
@@ -118,9 +118,9 @@ bool DriverMED_W_Field::Set(SMESHDS_Mesh *      mesh,
       if ( !nodes.empty() )
       {
         if ( _nbElemsByGeom.size() == 1 )
-          _nbElemsByGeom.push_back( std::make_pair( SMDSEntity_0D, 0));
-        _nbElemsByGeom.push_back( std::make_pair( SMDSEntity_Node,
-                                             nodes.size() + _nbElemsByGeom.back().second ));
+          _nbElemsByGeom.emplace_back( SMDSEntity_0D, 0);
+        _nbElemsByGeom.emplace_back( SMDSEntity_Node,
+                                             nodes.size() + _nbElemsByGeom.back().second );
       }
     }
 

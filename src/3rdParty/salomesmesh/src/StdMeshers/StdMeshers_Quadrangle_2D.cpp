@@ -1886,7 +1886,7 @@ bool StdMeshers_Quadrangle_2D::computeQuadPref (SMESH_Mesh &        aMesh,
       }
       // Make Cb quad
       FaceQuadStruct* qCb = new FaceQuadStruct( quad->face, "Cb" );
-      myQuadList.push_back( FaceQuadStruct::Ptr( qCb ));
+      myQuadList.emplace_back( qCb );
       qCb->side.resize(4);
       qCb->side[0] = quad->side[0];
       qCb->side[1] = quad->side[1];
@@ -1895,7 +1895,7 @@ bool StdMeshers_Quadrangle_2D::computeQuadPref (SMESH_Mesh &        aMesh,
       qCb->side[1].to = dmin+1;
       // Make L quad
       FaceQuadStruct* qL = new FaceQuadStruct( quad->face, "L" );
-      myQuadList.push_back( FaceQuadStruct::Ptr( qL ));
+      myQuadList.emplace_back( qL );
       qL->side.resize(4);
       qL->side[0] = sideLCb;
       qL->side[1] = sideLCt;
@@ -2059,7 +2059,7 @@ bool StdMeshers_Quadrangle_2D::computeQuadPref (SMESH_Mesh &        aMesh,
     }
     // Make Cb quad
     FaceQuadStruct* qCb = new FaceQuadStruct( quad->face, "Cb" );
-    myQuadList.push_back( FaceQuadStruct::Ptr( qCb ));
+    myQuadList.emplace_back( qCb );
     qCb->side.resize(4);
     qCb->side[0] = quad->side[0];
     qCb->side[1] = sideRCb;
@@ -2067,7 +2067,7 @@ bool StdMeshers_Quadrangle_2D::computeQuadPref (SMESH_Mesh &        aMesh,
     qCb->side[3] = sideLCb;
     // Make L quad
     FaceQuadStruct* qL = new FaceQuadStruct( quad->face, "L" );
-    myQuadList.push_back( FaceQuadStruct::Ptr( qL ));
+    myQuadList.emplace_back( qL );
     qL->side.resize(4);
     qL->side[0] = sideLCb;
     qL->side[1] = sideLCt;
@@ -2076,7 +2076,7 @@ bool StdMeshers_Quadrangle_2D::computeQuadPref (SMESH_Mesh &        aMesh,
     qL->side[2].to = ( lw + 1 ) * dt + tfrom;
     // Make R quad
     FaceQuadStruct* qR = new FaceQuadStruct( quad->face, "R" );
-    myQuadList.push_back( FaceQuadStruct::Ptr( qR ));
+    myQuadList.emplace_back( qR );
     qR->side.resize(4);
     qR->side[0] = sideRCb;
     qR->side[0].from = lw;
@@ -3957,8 +3957,8 @@ void StdMeshers_Quadrangle_2D::smooth (FaceQuadStruct::Ptr quad)
       const int nextInd = myHelper->WrapIndex( nInd + 1, nbN );
       const SMDS_MeshNode* prevNode = face->GetNode( prevInd );
       const SMDS_MeshNode* nextNode = face->GetNode( nextInd );
-      sNode._triangles.push_back( TTriangle( & smooNoMap[ prevNode ],
-                                             & smooNoMap[ nextNode ]));
+      sNode._triangles.emplace_back( & smooNoMap[ prevNode ],
+                                             & smooNoMap[ nextNode ]);
     }
   }
   // set _uv of smooth nodes on FACE boundary
@@ -4999,7 +4999,7 @@ bool StdMeshers_Quadrangle_2D::addEnforcedNodes()
 int StdMeshers_Quadrangle_2D::splitQuad(FaceQuadStruct::Ptr quad, int I, int J)
 {
   FaceQuadStruct* newQuad = new FaceQuadStruct( quad->face );
-  myQuadList.push_back( FaceQuadStruct::Ptr( newQuad ));
+  myQuadList.emplace_back( newQuad );
 
   vector<UVPtStruct> points;
   if ( I > 0 && I <= quad->iSize-2 )

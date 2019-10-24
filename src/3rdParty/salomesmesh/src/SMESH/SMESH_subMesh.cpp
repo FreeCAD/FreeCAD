@@ -2204,7 +2204,7 @@ void SMESH_subMesh::SetEventListener(EventListener*     listener,
 {
   if ( listener && where ) {
     where->setEventListener( listener, data );
-    _ownListeners.push_back( OwnListenerData( where, listener ));
+    _ownListeners.emplace_back( where, listener );
   }
 }
 

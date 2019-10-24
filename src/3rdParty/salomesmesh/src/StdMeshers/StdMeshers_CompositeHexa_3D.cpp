@@ -1618,7 +1618,7 @@ _FaceSide::_FaceSide(const list<TopoDS_Edge>& edges):
 {
   list<TopoDS_Edge>::const_iterator edge = edges.begin(), eEnd = edges.end();
   for ( ; edge != eEnd; ++edge ) {
-    myChildren.push_back( _FaceSide( *edge ));
+    myChildren.emplace_back( *edge );
     myNbChildren++;
 //     myVertices.insert( myChildren.back().myVertices.begin(),
 //                        myChildren.back().myVertices.end() );

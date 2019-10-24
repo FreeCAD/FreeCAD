@@ -945,7 +945,7 @@ StdMeshers_ViscousLayers::Compute(SMESH_Mesh&         theMesh,
       if ( toMakeN2NMap && !pm->_n2nMapComputed )
         if ( !bulder.MakeN2NMap( pm ))
           return SMESH_ProxyMesh::Ptr();
-      components.push_back( SMESH_ProxyMesh::Ptr( pm ));
+      components.emplace_back( pm );
       pm->myIsDeletable = false; // it will de deleted by boost::shared_ptr
 
       if ( pm->_warning && !pm->_warning->IsOK() )
@@ -1640,7 +1640,7 @@ bool _ViscousBuilder::findSolidsWithLayers()
           _MeshOfSolid* proxyMesh = _ViscousListener::GetSolidMesh( _mesh,
                                                                     allSolids(i),
                                                                     /*toCreate=*/true);
-          _sdVec.push_back( _SolidData( allSolids(i), proxyMesh ));
+          _sdVec.emplace_back( allSolids(i), proxyMesh );
           soData = & _sdVec.back();
           soData->_index = getMeshDS()->ShapeToIndex( allSolids(i));
         }
@@ -1680,7 +1680,7 @@ bool _ViscousBuilder::findFacesWithLayers(const bool onlyWith)
     list< TopoDS_Shape >::iterator hypShape = _sdVec[i]._hypShapes.begin();
     for ( ; hyp != _sdVec[i]._hyps.end(); ++hyp, ++hypShape )
     {
-      ignoreFacesOfHyps.push_back( TFacesOfHyp( set<TGeomID>(), *hyp ));
+      ignoreFacesOfHyps.emplace_back( set<TGeomID>(), *hyp );
       getIgnoreFaces( _sdVec[i]._solid, *hyp, *hypShape, ignoreFacesOfHyps.back().first );
     }
 
@@ -2998,14 +2998,14 @@ bool _ViscousBuilder::setEdgeData(_LayerEdge&         edge,
     if ( eos.SWOLType() == TopAbs_EDGE )
     {
       double u = helper.GetNodeU( TopoDS::Edge( eos._sWOL ), node, 0, &normOK );
-      edge._pos.push_back( gp_XYZ( u, 0, 0 ));
+      edge._pos.emplace_back( u, 0, 0 );
       if ( edge._nodes.size() > 1 )
         getMeshDS()->SetNodeOnEdge( tgtNode, TopoDS::Edge( eos._sWOL ), u );
     }
     else // TopAbs_FACE
     {
       gp_XY uv = helper.GetNodeUV( TopoDS::Face( eos._sWOL ), node, 0, &normOK );
-      edge._pos.push_back( gp_XYZ( uv.X(), uv.Y(), 0));
+      edge._pos.emplace_back( uv.X(), uv.Y(), 0);
       if ( edge._nodes.size() > 1 )
         getMeshDS()->SetNodeOnFace( tgtNode, TopoDS::Face( eos._sWOL ), uv.X(), uv.Y() );
     }
@@ -3445,7 +3445,7 @@ gp_XYZ _LayerEdge::Copy( _LayerEdge&         other,
   if ( eos.SWOLType() == TopAbs_EDGE )
   {
     double u = helper.GetNodeU( TopoDS::Edge( eos._sWOL ), _nodes[0] );
-    _pos.push_back( gp_XYZ( u, 0, 0));
+    _pos.emplace_back( u, 0, 0);
 
     u = helper.GetNodeU( TopoDS::Edge( eos._sWOL ), _nodes.back() );
     lastPos.SetX( u );
@@ -3453,7 +3453,7 @@ gp_XYZ _LayerEdge::Copy( _LayerEdge&         other,
   else // TopAbs_FACE
   {
     gp_XY uv = helper.GetNodeUV( TopoDS::Face( eos._sWOL ), _nodes[0]);
-    _pos.push_back( gp_XYZ( uv.X(), uv.Y(), 0));
+    _pos.emplace_back( uv.X(), uv.Y(), 0);
 
     uv = helper.GetNodeUV( TopoDS::Face( eos._sWOL ), _nodes.back() );
     lastPos.SetX( uv.X() );
@@ -3501,7 +3501,7 @@ void _Simplex::GetSimplices( const SMDS_MeshNode* node,
     const SMDS_MeshNode* nOpp  = f->GetNode( SMESH_MesherHelper::WrapIndex( srcInd+2, nbNodes ));
     if ( dataToCheckOri && dataToCheckOri->_reversedFaceIds.count( shapeInd ))
       std::swap( nPrev, nNext );
-    simplices.push_back( _Simplex( nPrev, nNext, nOpp ));
+    simplices.emplace_back( nPrev, nNext, nOpp );
   }
 
   if ( toSort )

@@ -3885,7 +3885,7 @@ void ClipperOffset::DoOffset(double delta)
     if (node.m_endtype == etClosedLine || node.m_endtype == etClosedPolygon)
       m_normals.push_back(GetUnitNormal(m_srcPoly[len - 1], m_srcPoly[0]));
     else
-      m_normals.push_back(DoublePoint(m_normals[len - 2]));
+      m_normals.emplace_back(m_normals[len - 2]);
 
     if (node.m_endtype == etClosedPolygon)
     {

@@ -418,7 +418,7 @@ namespace
           return error("Non-quadrangle elements in the input mesh");
 
         if ( _allSides.empty() || !_allSides.back()._grid.empty() )
-          _allSides.push_back( _BlockSide() );
+          _allSides.emplace_back( );
 
         _BlockSide& side = _allSides.back();
         if ( !fillSide( side, face, *corner ) )

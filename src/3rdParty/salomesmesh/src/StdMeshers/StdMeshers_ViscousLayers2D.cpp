@@ -1513,7 +1513,7 @@ bool _ViscousBuilder2D::fixCollisions()
                 blockedEdgesList.push_back( &LE1 );
                 if ( L1._advancable && newLen2D > 0 )
                 {
-                  edgeLenLimitList.push_back( make_pair( &LE1, newLen2D ));
+                  edgeLenLimitList.emplace_back( &LE1, newLen2D );
                   blockedEdgesList.push_back( &L2._lEdges[ foundSegs[i]->_indexInLine     ]);
                   blockedEdgesList.push_back( &L2._lEdges[ foundSegs[i]->_indexInLine + 1 ]);
                 }
@@ -1526,8 +1526,8 @@ bool _ViscousBuilder2D::fixCollisions()
                   newLen2D = intersection._param2 / 2;
                   if ( newLen2D > 0 )
                   {
-                    edgeLenLimitList.push_back( make_pair( LE2[0], newLen2D ));
-                    edgeLenLimitList.push_back( make_pair( LE2[1], newLen2D ));
+                    edgeLenLimitList.emplace_back( LE2[0], newLen2D );
+                    edgeLenLimitList.emplace_back( LE2[1], newLen2D );
                   }
                 }
               }
@@ -1567,9 +1567,9 @@ bool _ViscousBuilder2D::fixCollisions()
       if ( newLen2DL > 0 && newLen2DR > 0 )
       {
         if ( newLen2DL < 1.1 * LEL._length2D )
-          edgeLenLimitList.push_back( make_pair( &LEL, newLen2DL ));
+          edgeLenLimitList.emplace_back( &LEL, newLen2DL );
         if ( newLen2DR < 1.1 * LER._length2D )
-          edgeLenLimitList.push_back( make_pair( &LER, newLen2DR ));
+          edgeLenLimitList.emplace_back( &LER, newLen2DR );
       }
     }
   }

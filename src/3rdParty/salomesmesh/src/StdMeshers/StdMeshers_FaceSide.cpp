@@ -389,7 +389,7 @@ const vector<UVPtStruct>& StdMeshers_FaceSide::GetUVPtStruct(bool   isXConst,
               break;
             }
             double normPar = prevNormPar + r * aLenU / myEdgeLength[iE];
-            u2nodeVec.push_back( make_pair( normPar, nodes[i] ));
+            u2nodeVec.emplace_back( normPar, nodes[i] );
           }
         if ( u2nodeVec.empty() )
           for ( size_t i = 0; i < nodes.size(); ++i )
@@ -397,7 +397,7 @@ const vector<UVPtStruct>& StdMeshers_FaceSide::GetUVPtStruct(bool   isXConst,
             double u = eHelper.GetNodeU( myEdge[iE], nodes[i], 0, &paramOK );
             // paramSize is signed so orientation is taken into account
             double normPar = prevNormPar + r * ( u - myFirst[iE] ) / paramSize;
-            u2nodeVec.push_back( make_pair( normPar, nodes[i] ));
+            u2nodeVec.emplace_back( normPar, nodes[i] );
           }
         for ( size_t j = 0; j < u2nodeVec.size(); ++j )
           u2node.insert( u2node.end(), u2nodeVec[j] );

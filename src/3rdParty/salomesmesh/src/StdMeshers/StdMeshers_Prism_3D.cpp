@@ -2563,7 +2563,7 @@ namespace // utils used by StdMeshers_Prism_3D::IsApplicable()
     for ( nbE = nbEdgesInWires.begin(); nbE != nbEdgesInWires.end(); ++nbE )
     {
       for ( iE = 0; iE < *nbE; ++e, ++iE )
-        edges.push_back( EdgeWithNeighbors( *e, iE, *nbE, nbTot ));
+        edges.emplace_back( *e, iE, *nbE, nbTot );
       nbTot += *nbE;
     }
     return edges.size();

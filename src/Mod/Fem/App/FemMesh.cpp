@@ -595,7 +595,7 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
 
             // For curved faces it is possible that a volume contributes more than one face
             if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
-                result.push_back(std::make_pair(vol->GetID(), face->GetID()));
+                result.emplace_back(vol->GetID(), face->GetID());
             }
         }
     }

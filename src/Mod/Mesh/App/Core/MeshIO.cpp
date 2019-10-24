@@ -378,7 +378,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
         }
         else if (boost::regex_match(line.c_str(), what, rx_u)) {
             if (!materialName.empty()) {
-                _materialNames.push_back(std::make_pair(materialName, countMaterialFacets));
+                _materialNames.emplace_back(materialName, countMaterialFacets);
             }
             materialName = Base::Tools::escapedUnicodeToUtf8(what[1].first);
             countMaterialFacets = 0;
@@ -441,7 +441,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
 
     // Add the last added material name
     if (!materialName.empty()) {
-        _materialNames.push_back(std::make_pair(materialName, countMaterialFacets));
+        _materialNames.emplace_back(materialName, countMaterialFacets);
     }
 
     // now get back the colors from the vertex property
@@ -679,7 +679,7 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
                     float fg = static_cast<float>(g)/255.0f;
                     float fb = static_cast<float>(b)/255.0f;
                     float fa = static_cast<float>(a)/255.0f;
-                    _material->diffuseColor.push_back(App::Color(fr, fg, fb, fa));
+                    _material->diffuseColor.emplace_back(fr, fg, fb, fa);
                 }
                 meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
                 cntPoints++;
@@ -893,7 +893,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                 }
 
                 // store the property name and type
-                vertex_props.push_back(std::make_pair(name, number));
+                vertex_props.emplace_back(name, number);
             }
             else if (element == "face") {
                 std::string list, uchr;
@@ -1064,7 +1064,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                 float r = (prop_values["red"]) / 255.0f;
                 float g = (prop_values["green"]) / 255.0f;
                 float b = (prop_values["blue"]) / 255.0f;
-                _material->diffuseColor.push_back(App::Color(r, g, b));
+                _material->diffuseColor.emplace_back(r, g, b);
             }
         }
 
@@ -1146,7 +1146,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                 float r = (prop_values["red"]) / 255.0f;
                 float g = (prop_values["green"]) / 255.0f;
                 float b = (prop_values["blue"]) / 255.0f;
-                _material->diffuseColor.push_back(App::Color(r, g, b));
+                _material->diffuseColor.emplace_back(r, g, b);
             }
         }
 

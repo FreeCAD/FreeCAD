@@ -178,7 +178,7 @@ istream & StdMeshers_QuadrangleParams::LoadFrom(istream & load)
       if ( load >> x &&
            load >> y &&
            load >> z )
-        _enforcedPoints.push_back( gp_Pnt( x,y,z ));
+        _enforcedPoints.emplace_back( x,y,z );
       else
         break;
   }

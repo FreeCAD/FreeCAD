@@ -425,7 +425,7 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
   MeshPointIterator cPIt( _rclMesh );
   aPnts.reserve(_rclMesh.CountPoints());
   for ( cPIt.Init(); cPIt.More(); cPIt.Next() )
-    aPnts.push_back( Wm4::Vector3<float>( cPIt->x, cPIt->y, cPIt->z ) );
+    aPnts.emplace_back( cPIt->x, cPIt->y, cPIt->z );
 
   // get all point connections
   std::vector<int> aIdx;

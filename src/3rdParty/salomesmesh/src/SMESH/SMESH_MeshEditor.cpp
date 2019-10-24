@@ -1248,7 +1248,7 @@ int SMESH_MeshEditor::Reorient2D (TIDSortedElemSet &       theFaces,
           if ( otherFace != theFace)
           {
             facesNearLink.push_back( otherFace );
-            nodeIndsOfFace.push_back( make_pair( nodeInd1, nodeInd2 ));
+            nodeIndsOfFace.emplace_back( nodeInd1, nodeInd2 );
             avoidSet.insert( otherFace );
           }
         if ( facesNearLink.size() > 1 )
@@ -2419,9 +2419,9 @@ void SMESH_MeshEditor::SplitVolumes (const TFacetOfElem & theElems,
               facets.push_back( t012 );
               facets.push_back( t023 );
               for ( int iLast = iCom+4; iLast < iCom+nbNodes; ++iLast )
-                facets.push_back( TTriangleFacet( nInd[ iQ * ( iCom             )],
+                facets.emplace_back( nInd[ iQ * ( iCom             )],
                                                   nInd[ iQ * ((iLast-1)%nbNodes )],
-                                                  nInd[ iQ * ((iLast  )%nbNodes )]));
+                                                  nInd[ iQ * ((iLast  )%nbNodes )]);
               break;
             }
           }
@@ -10244,8 +10244,8 @@ SMESH_MeshEditor::SewSideElements (TIDSortedElemSet&    theSide1,
 
   typedef pair< const SMDS_MeshNode*, const SMDS_MeshNode* > NLink;
   list< NLink > linkList[2];
-  linkList[0].push_back( NLink( theFirstNode1, theSecondNode1 ));
-  linkList[1].push_back( NLink( theFirstNode2, theSecondNode2 ));
+  linkList[0].emplace_back( theFirstNode1, theSecondNode1 );
+  linkList[1].emplace_back( theFirstNode2, theSecondNode2 );
   // loop on links in linkList; find faces by links and append links
   // of the found faces to linkList
   list< NLink >::iterator linkIt[] = { linkList[0].begin(), linkList[1].begin() } ;
@@ -10348,8 +10348,8 @@ SMESH_MeshEditor::SewSideElements (TIDSortedElemSet&    theSide1,
         {
           const SMDS_MeshNode* n1 = fnodes[0][ iNode ];
           const SMDS_MeshNode* n2 = fnodes[0][ iNode + 1];
-          linkList[0].push_back ( NLink( n1, n2 ));
-          linkList[1].push_back ( NLink( nReplaceMap[n1], nReplaceMap[n2] ));
+          linkList[0].emplace_back( n1, n2 );
+          linkList[1].emplace_back( nReplaceMap[n1], nReplaceMap[n2] );
         }
       }
     } // 2 faces found
@@ -10472,8 +10472,8 @@ SMESH_MeshEditor::FindMatchingNodes(set<const SMDS_MeshElement*>& theSide1,
   linkSet.insert( SMESH_TLink( theFirstNode1, theSecondNode1 ));
 
   list< NLink > linkList[2];
-  linkList[0].push_back( NLink( theFirstNode1, theSecondNode1 ));
-  linkList[1].push_back( NLink( theFirstNode2, theSecondNode2 ));
+  linkList[0].emplace_back( theFirstNode1, theSecondNode1 );
+  linkList[1].emplace_back( theFirstNode2, theSecondNode2 );
 
   // loop on links in linkList; find faces by links and append links
   // of the found faces to linkList
@@ -10595,8 +10595,8 @@ SMESH_MeshEditor::FindMatchingNodes(set<const SMDS_MeshElement*>& theSide1,
           MESSAGE ( "Add link 1: " << n1->GetID() << " " << n2->GetID() << " "
                     << " | link 2: " << nReplaceMap[n1]->GetID() << " " << nReplaceMap[n2]->GetID() << " " );
 #endif
-          linkList[0].push_back ( NLink( n1, n2 ));
-          linkList[1].push_back ( NLink( nReplaceMap[n1], nReplaceMap[n2] ));
+          linkList[0].emplace_back( n1, n2 );
+          linkList[1].emplace_back( nReplaceMap[n1], nReplaceMap[n2] );
         }
         n1 = n2;
       }

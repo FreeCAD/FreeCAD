@@ -969,7 +969,7 @@ std::vector<std::pair<ViewProviderDocumentObject*,int> > Document::getViewProvid
         if (node->isOfType(SoSeparator::getClassTypeId())) {
             auto it = d->_CoinMap.find(static_cast<SoSeparator*>(node));
             if(it!=d->_CoinMap.end())
-                ret.push_back(std::make_pair(it->second,i));
+                ret.emplace_back(it->second,i);
         }
     }
     return ret;

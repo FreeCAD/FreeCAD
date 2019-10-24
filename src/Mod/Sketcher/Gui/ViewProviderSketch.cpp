@@ -3556,7 +3556,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
 
     // RootPoint
-    Points.push_back(Base::Vector3d(0.,0.,0.));
+    Points.emplace_back(0.,0.,0.);
 
     for (std::vector<Part::Geometry *>::const_iterator it = geomlist->begin(); it != geomlist->end()-2; ++it, GeoId++) {
         if (GeoId >= intGeoCount)
@@ -3587,11 +3587,11 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             double segment = (2 * M_PI) / countSegments;
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(i*segment);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
             }
 
             gp_Pnt pnt = curve->Value(0);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3607,11 +3607,11 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             double segment = (2 * M_PI) / countSegments;
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(i*segment);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
             }
 
             gp_Pnt pnt = curve->Value(0);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3637,13 +3637,13 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(startangle);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
                 startangle += segment;
             }
 
             // end point
             gp_Pnt pnt = curve->Value(endangle);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3673,13 +3673,13 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(startangle);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
                 startangle += segment;
             }
 
             // end point
             gp_Pnt pnt = curve->Value(endangle);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3709,13 +3709,13 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(startangle);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
                 startangle += segment;
             }
 
             // end point
             gp_Pnt pnt = curve->Value(endangle);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3745,13 +3745,13 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(startangle);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
                 startangle += segment;
             }
 
             // end point
             gp_Pnt pnt = curve->Value(endangle);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3781,13 +3781,13 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(first);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
                 first += segment;
             }
 
             // end point
             gp_Pnt end = curve->Value(last);
-            Coords.push_back(Base::Vector3d(end.X(), end.Y(), end.Z()));
+            Coords.emplace_back(end.X(), end.Y(), end.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);

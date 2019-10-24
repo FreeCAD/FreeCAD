@@ -721,8 +721,8 @@ bool StdMeshers_ProjectionUtils::FindSubShapeAssociation(const TopoDS_Shape& the
       // association of face sub-shapes and neighbour faces
       list< pair < TopoDS_Face, TopoDS_Edge > > FE1, FE2;
       list< pair < TopoDS_Face, TopoDS_Edge > >::iterator fe1, fe2;
-      FE1.push_back( make_pair( TopoDS::Face( F1 ), edge1 ));
-      FE2.push_back( make_pair( TopoDS::Face( F2 ), edge2 ));
+      FE1.emplace_back( TopoDS::Face( F1 ), edge1 );
+      FE2.emplace_back( TopoDS::Face( F2 ), edge2 );
       for ( fe1 = FE1.begin(), fe2 = FE2.begin(); fe1 != FE1.end(); ++fe1, ++fe2 )
       {
         const TopoDS_Face& face1 = fe1->first;
@@ -760,8 +760,8 @@ bool StdMeshers_ProjectionUtils::FindSubShapeAssociation(const TopoDS_Shape& the
               nextFace1.Reverse();
             if ( SMESH_MesherHelper::GetSubShapeOri( nextFace2, *eIt2 ) == eIt2->Orientation() )
               nextFace2.Reverse();
-            FE1.push_back( make_pair( nextFace1, *eIt1 ));
-            FE2.push_back( make_pair( nextFace2, *eIt2 ));
+            FE1.emplace_back( nextFace1, *eIt1 );
+            FE2.emplace_back( nextFace2, *eIt2 );
           }
         }
       }

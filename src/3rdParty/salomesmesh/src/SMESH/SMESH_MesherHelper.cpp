@@ -4255,7 +4255,7 @@ namespace { // Structures used by FixQuadraticElements()
 
       if ( resultChains.size() == nbBndLinks / 2 )
         return _NOT_RECT;
-      resultChains.push_back( TChain() );
+      resultChains.emplace_back( );
       TChain& columnChain = resultChains.back();
 
       TLinkInSet botLink = startLink; // current horizontal link to go up from
@@ -4300,7 +4300,7 @@ namespace { // Structures used by FixQuadraticElements()
             return _MANY_ROWS; // different nb of rows in columns
           if ( resultChains.size() == nbBndLinks / 2 )
             return _NOT_RECT;
-          resultChains.push_back( TChain() );
+          resultChains.emplace_back( );
           rowChains.push_back( & resultChains.back() );
         }
         rowChains[iRow]->push_back( *sideLink );
@@ -4680,7 +4680,7 @@ namespace { // Structures used by FixQuadraticElements()
                   theHelper.GetTLinkNodeMap().find( link );
                 if ( linkIt != theHelper.GetTLinkNodeMap().end() )
                 {
-                  links.push_back( make_pair( linkIt->first, linkIt->second  ));
+                  links.emplace_back( linkIt->first, linkIt->second  );
                   if ( !isDistorted ) {
                     // compare projections of nInSolid and nMedium to face normal
                     gp_Pnt pMedium = SMESH_TNodeXYZ( linkIt->second );
