@@ -709,7 +709,7 @@ void ViewProviderMesh::exportMesh(const char* filename, const char* fmt) const
     mat.diffuseColor.reserve(numColors);
     for (int i=0; i<numColors; i++) {
         const SbColor& c = colors[i];
-        mat.diffuseColor.push_back(App::Color(c[0], c[1], c[2]));
+        mat.diffuseColor.emplace_back(c[0], c[1], c[2]);
     }
 
     Mesh::MeshObject mesh = static_cast<Mesh::Feature*>(getObject())->Mesh.getValue();
@@ -801,12 +801,12 @@ bool ViewProviderMesh::createToolMesh(const std::vector<SbVec2f>& rclPoly, const
 
         if (it+1 < rclPoly.end()) {
             pt1.getValue(fX, fY, fZ);
-            top.push_back( Base::Vector3f(fX, fY, fZ) );
+            top.emplace_back(fX, fY, fZ );
             pt2.getValue(fX, fY, fZ);
-            bottom.push_back( Base::Vector3f(fX, fY, fZ) );
+            bottom.emplace_back(fX, fY, fZ );
             // polygon we need to triangulate (in x,y-plane)
             it->getValue(fX, fY);
-            polygon.push_back( Base::Vector3f(fX, fY, 0.0f) );
+            polygon.emplace_back(fX, fY, 0.0f );
         }
     }
 

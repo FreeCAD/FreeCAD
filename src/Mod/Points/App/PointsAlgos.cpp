@@ -613,7 +613,7 @@ void PlyReader::read(const std::string& filename)
     if (hasData && hasNormal) {
         normals.reserve(numPoints);
         for (std::size_t i=0; i<numPoints; i++) {
-            normals.push_back(Base::Vector3f(data(i,normal_x),data(i,normal_y),data(i,normal_z)));
+            normals.emplace_back(data(i,normal_x),data(i,normal_y),data(i,normal_z));
         }
     }
 
@@ -634,10 +634,10 @@ void PlyReader::read(const std::string& filename)
                 float b = data(i, blue);
                 if (alpha != max_size)
                     a = data(i, alpha);
-                colors.push_back(App::Color(static_cast<float>(r)/255.0f,
+                colors.emplace_back(static_cast<float>(r)/255.0f,
                                             static_cast<float>(g)/255.0f,
                                             static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f));
+                                            static_cast<float>(a)/255.0f);
             }
         }
         else if (types[red] == "float") {
@@ -647,7 +647,7 @@ void PlyReader::read(const std::string& filename)
                 float b = data(i, blue);
                 if (alpha != max_size)
                     a = data(i, alpha);
-                colors.push_back(App::Color(r, g, b, a));
+                colors.emplace_back(r, g, b, a);
             }
         }
     }
@@ -726,7 +726,7 @@ std::size_t PlyReader::readHeader(std::istream& in,
             else {
                 // if another element than 'vertex' comes first then calculate the offset
                 if (numPoints == 0) {
-                    count_props.push_back(std::make_pair(count, 0));
+                    count_props.emplace_back(count, 0);
                 }
                 else {
                     // this happens for elements coming after 'vertex'
@@ -1062,7 +1062,7 @@ void PcdReader::read(const std::string& filename)
     if (hasData && hasNormal) {
         normals.reserve(numPoints);
         for (std::size_t i=0; i<numPoints; i++) {
-            normals.push_back(Base::Vector3f(data(i,normal_x),data(i,normal_y),data(i,normal_z)));
+            normals.emplace_back(data(i,normal_x),data(i,normal_y),data(i,normal_z));
         }
     }
 
@@ -1082,10 +1082,10 @@ void PcdReader::read(const std::string& filename)
                 uint32_t r = (packed >> 16) & 0xff;
                 uint32_t g = (packed >> 8) & 0xff;
                 uint32_t b = packed & 0xff;
-                colors.push_back(App::Color(static_cast<float>(r)/255.0f,
+                colors.emplace_back(static_cast<float>(r)/255.0f,
                                             static_cast<float>(g)/255.0f,
                                             static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f));
+                                            static_cast<float>(a)/255.0f);
             }
         }
         else if (types[rgba] == "F") {
@@ -1102,10 +1102,10 @@ void PcdReader::read(const std::string& filename)
                 uint32_t r = (packed >> 16) & 0xff;
                 uint32_t g = (packed >> 8) & 0xff;
                 uint32_t b = packed & 0xff;
-                colors.push_back(App::Color(static_cast<float>(r)/255.0f,
+                colors.emplace_back(static_cast<float>(r)/255.0f,
                                             static_cast<float>(g)/255.0f,
                                             static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f));
+                                            static_cast<float>(a)/255.0f);
             }
         }
     }

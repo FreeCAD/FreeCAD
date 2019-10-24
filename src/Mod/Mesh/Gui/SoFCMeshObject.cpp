@@ -1046,8 +1046,7 @@ void SoFCMeshObjectShape::stopSelection(SoAction * action, const Mesh::MeshObjec
     GLuint index=0;
     for (GLint ii=0;ii<hits && index<bufSize;ii++) {
         GLint ct = (GLint)selectBuf[index];
-        hit.push_back(std::pair<double,unsigned int>
-            (selectBuf[index+1]/4294967295.0,selectBuf[index+3]));
+        hit.emplace_back(selectBuf[index+1]/4294967295.0,selectBuf[index+3]);
         index = index+ct+3;
     }
 

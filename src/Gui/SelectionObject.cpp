@@ -52,7 +52,7 @@ SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
     TypeName = msg.pTypeName ? msg.pTypeName : "";
     if (msg.pSubName) {
         SubNames.push_back(msg.pSubName);
-        SelPoses.push_back(Base::Vector3d(msg.x, msg.y, msg.z));
+        SelPoses.emplace_back(msg.x, msg.y, msg.z);
     }
 }
 

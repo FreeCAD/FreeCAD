@@ -821,7 +821,7 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
             shapes[i] = &(storage[storage.size()-1]);
         } else {
             Base::Console().Warning("Attacher: linked object %s is unexpected, assuming it has no shape.\n",geof->getNameInDocument());
-            storage.push_back(TopoDS_Shape());
+            storage.emplace_back();
             shapes[i] = &(storage[storage.size()-1]);
         }
 

@@ -130,7 +130,7 @@ const boost::any Property::getPathValue(const ObjectIdentifier &path) const
 
 void Property::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
-    paths.push_back(App::ObjectIdentifier(getContainer(), getName()));
+    paths.emplace_back(getContainer(), getName());
 }
 
 ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const

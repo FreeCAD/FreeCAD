@@ -460,8 +460,8 @@ private:
         float hy = y/2.0f;
 
         std::vector<MeshCore::MeshGeomFacet> TriaList;
-        TriaList.push_back(MeshCore::MeshGeomFacet(Base::Vector3f(-hx, -hy, 0.0),Base::Vector3f(hx, hy, 0.0),Base::Vector3f(-hx, hy, 0.0)));
-        TriaList.push_back(MeshCore::MeshGeomFacet(Base::Vector3f(-hx, -hy, 0.0),Base::Vector3f(hx, -hy, 0.0),Base::Vector3f(hx, hy, 0.0)));
+        TriaList.emplace_back(Base::Vector3f(-hx, -hy, 0.0),Base::Vector3f(hx, hy, 0.0),Base::Vector3f(-hx, hy, 0.0));
+        TriaList.emplace_back(Base::Vector3f(-hx, -hy, 0.0),Base::Vector3f(hx, -hy, 0.0),Base::Vector3f(hx, hy, 0.0));
 
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         mesh->addFacets(TriaList);

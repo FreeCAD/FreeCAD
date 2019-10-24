@@ -248,7 +248,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
                 float r = (float)Py::Float(t.getItem(0));
                 float g = (float)Py::Float(t.getItem(1));
                 float b = (float)Py::Float(t.getItem(2));
-                mat.diffuseColor.push_back(App::Color(r,g,b));
+                mat.diffuseColor.emplace_back(r,g,b);
             }
 
             if (mat.diffuseColor.size() == getMeshObjectPtr()->countPoints())
@@ -288,7 +288,7 @@ PyObject*  MeshPy::write(PyObject *args, PyObject *kwds)
                 float r = (float)Py::Float(t.getItem(0));
                 float g = (float)Py::Float(t.getItem(1));
                 float b = (float)Py::Float(t.getItem(2));
-                mat->diffuseColor.push_back(App::Color(r,g,b));
+                mat->diffuseColor.emplace_back(r,g,b);
             }
 
             if (mat->diffuseColor.size() == getMeshObjectPtr()->countPoints())
@@ -324,7 +324,7 @@ PyObject*  MeshPy::writeInventor(PyObject *args)
     std::vector<Base::Vector3f> coords;
     coords.reserve(mesh->countPoints());
     for (MeshObject::const_point_iterator it = mesh->points_begin(); it != mesh->points_end(); ++it)
-        coords.push_back(Base::Vector3f((float)it->x,(float)it->y,(float)it->z));
+        coords.emplace_back((float)it->x,(float)it->y,(float)it->z);
     indices.reserve(4*faces.size());
     for (MeshCore::MeshFacetArray::_TConstIterator it = faces.begin(); it != faces.end(); ++it) {
         indices.push_back(it->_aulPoints[0]);
@@ -710,7 +710,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
         for (Py::List::iterator it = list_v.begin(); it != list_v.end(); ++it) {
             if ((*it).isType(vType)) {
                 Base::Vector3d v = static_cast<Base::VectorPy*>((*it).ptr())->value();
-                vertices.push_back(Base::Vector3f((float)v.x,(float)v.y,(float)v.z));
+                vertices.emplace_back((float)v.x,(float)v.y,(float)v.z);
             }
         }
 

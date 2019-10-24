@@ -177,7 +177,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         auto multisections = Sections.getValues();
         std::vector<std::vector<TopoDS_Wire>> wiresections;
         for(TopoDS_Wire& wire : wires)
-            wiresections.push_back(std::vector<TopoDS_Wire>(1, wire));
+            wiresections.emplace_back(1, wire);
         //maybe we need a sacling law
         Handle(Law_Function) scalinglaw;
 

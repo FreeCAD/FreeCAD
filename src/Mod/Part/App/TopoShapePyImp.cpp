@@ -228,9 +228,9 @@ PyObject* TopoShapePy::replaceShape(PyObject *args)
             Py::Tuple tuple(*it);
             Py::TopoShape sh1(tuple[0]);
             Py::TopoShape sh2(tuple[1]);
-            shapes.push_back(std::make_pair(
+            shapes.emplace_back(
                 sh1.extensionObject()->getTopoShapePtr()->getShape(),
-                sh2.extensionObject()->getTopoShapePtr()->getShape())
+                sh2.extensionObject()->getTopoShapePtr()->getShape()
             );
         }
         PyTypeObject* type = this->GetType();

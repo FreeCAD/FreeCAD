@@ -648,7 +648,7 @@ bool DelaunayTriangulator::Triangulate()
     std::vector<Wm4::Vector2d> akVertex;
     akVertex.reserve(_points.size());
     for (std::vector<Base::Vector3f>::iterator it = _points.begin(); it != _points.end(); ++it) {
-        akVertex.push_back(Wm4::Vector2d(static_cast<double>(it->x), static_cast<double>(it->y)));
+        akVertex.emplace_back(static_cast<double>(it->x), static_cast<double>(it->y));
     }
 
     Wm4::Delaunay2d del(static_cast<int>(akVertex.size()), &(akVertex[0]), 0.001, false, Wm4::Query::QT_INT64);

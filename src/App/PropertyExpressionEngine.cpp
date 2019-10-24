@@ -245,7 +245,7 @@ void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & pat
                     int s = nodes.size();
                     nodes[cPath] = s;
                 }
-                edges.push_back(std::make_pair(nodes[path], nodes[cPath]));
+                edges.emplace_back(nodes[path], nodes[cPath]);
             }
         }
     }

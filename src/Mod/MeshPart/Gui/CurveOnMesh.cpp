@@ -507,9 +507,9 @@ void CurveOnMeshHandler::approximateEdge(const TopoDS_Edge& edge, double toleran
         pts.reserve(numNodes);
         for (int i=aNodes.Lower(); i<=aNodes.Upper(); i++) {
             const gp_Pnt& p = aNodes.Value(i);
-            pts.push_back(SbVec3f(static_cast<float>(p.X()),
+            pts.emplace_back(static_cast<float>(p.X()),
                                   static_cast<float>(p.Y()),
-                                  static_cast<float>(p.Z())));
+                                  static_cast<float>(p.Z()));
         }
 
         d_ptr->curve->setPoints(pts);

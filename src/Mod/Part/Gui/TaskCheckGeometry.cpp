@@ -747,13 +747,13 @@ void TaskCheckGeometryResults::dispatchError(ResultEntry *entry, const BRepCheck
 
 void TaskCheckGeometryResults::setupFunctionMap()
 {
-    functionMap.push_back(FunctionMapType(TopAbs_SHELL, BRepCheck_NotClosed, goSetupResultShellNotClosed));
-    functionMap.push_back(FunctionMapType(TopAbs_WIRE, BRepCheck_NotClosed, goSetupResultWireNotClosed));
-    functionMap.push_back(FunctionMapType(TopAbs_VERTEX, BRepCheck_InvalidPointOnCurve, goSetupResultInvalidPointCurve));
-    functionMap.push_back(FunctionMapType(TopAbs_FACE, BRepCheck_IntersectingWires, goSetupResultIntersectingWires));
-    functionMap.push_back(FunctionMapType(TopAbs_EDGE, BRepCheck_InvalidCurveOnSurface, goSetupResultInvalidCurveSurface));
-    functionMap.push_back(FunctionMapType(TopAbs_EDGE, BRepCheck_InvalidSameParameterFlag, goSetupResultInvalidSameParameterFlag));
-    functionMap.push_back(FunctionMapType(TopAbs_FACE, BRepCheck_UnorientableShape, goSetupResultUnorientableShapeFace));
+    functionMap.emplace_back(TopAbs_SHELL, BRepCheck_NotClosed, goSetupResultShellNotClosed);
+    functionMap.emplace_back(TopAbs_WIRE, BRepCheck_NotClosed, goSetupResultWireNotClosed);
+    functionMap.emplace_back(TopAbs_VERTEX, BRepCheck_InvalidPointOnCurve, goSetupResultInvalidPointCurve);
+    functionMap.emplace_back(TopAbs_FACE, BRepCheck_IntersectingWires, goSetupResultIntersectingWires);
+    functionMap.emplace_back(TopAbs_EDGE, BRepCheck_InvalidCurveOnSurface, goSetupResultInvalidCurveSurface);
+    functionMap.emplace_back(TopAbs_EDGE, BRepCheck_InvalidSameParameterFlag, goSetupResultInvalidSameParameterFlag);
+    functionMap.emplace_back(TopAbs_FACE, BRepCheck_UnorientableShape, goSetupResultUnorientableShapeFace);
 }
 
 void TaskCheckGeometryResults::currentRowChanged (const QModelIndex &current, const QModelIndex &previous)

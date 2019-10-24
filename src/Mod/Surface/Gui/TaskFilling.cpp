@@ -621,7 +621,7 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             // extend faces and continuities lists if needed
             auto faces = editedObject->BoundaryFaces.getValues();
             if (count == faces.size()) {
-                faces.push_back(std::string());
+                faces.emplace_back();
                 editedObject->BoundaryFaces.setValues(faces);
             }
             auto conts = editedObject->BoundaryOrder.getValues();

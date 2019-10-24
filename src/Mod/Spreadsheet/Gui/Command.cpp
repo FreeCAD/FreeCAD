@@ -812,8 +812,8 @@ void CmdSpreadsheetSetAlias::activated(int iMsg)
             if (selection.size() == 1) {
                 std::vector<Range> range;
 
-                range.push_back(Range(selection[0].row(), selection[0].column(),
-                                      selection[0].row(), selection[0].column()));
+                range.emplace_back(selection[0].row(), selection[0].column(),
+                                      selection[0].row(), selection[0].column());
 
                 std::unique_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, range, sheetView));
 

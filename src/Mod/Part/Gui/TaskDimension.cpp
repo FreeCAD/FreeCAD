@@ -131,7 +131,7 @@ bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &sha
     if (shape.IsNull())
       break;
     shapes.push_back(shape);
-    sels[i].selections.push_back(DimSelections::DimSelection());
+    sels[i].selections.emplace_back();
     auto &sel = sels[i].selections[0];
     ++i;
     sel.documentName = it->DocName;
@@ -841,9 +841,9 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
            sels.back().selections.back().shapeType!=DimSelections::Vertex ||
            sels.back().selections.size()==1) 
         {
-            sels.push_back(PartGui::DimSelections());
+            sels.emplace_back();
         }
-        sels.back().selections.push_back(DimSelections::DimSelection());
+        sels.back().selections.emplace_back();
         auto &sel = sels.back().selections.back();
         sel.documentName = it->DocName;
         sel.objectName = it->FeatName;
@@ -860,7 +860,7 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
       {
 	//need something here for 0 length vector.
 	//create a point half way between to vertices.
-	adapters.push_back(VectorAdapter(currentVertex, lastVertex));
+	adapters.emplace_back(currentVertex, lastVertex);
 	lastVertex = TopoDS_Vertex();
       }
       else
@@ -880,8 +880,8 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
       continue;
     }
 
-    sels.push_back(PartGui::DimSelections());
-    sels.back().selections.push_back(DimSelections::DimSelection());
+    sels.emplace_back();
+    sels.back().selections.emplace_back();
     auto &sel = sels.back().selections.back();
     sel.documentName = it->DocName;
     sel.objectName = it->FeatName;
@@ -908,7 +908,7 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
 	else
 	  edge.Orientation(TopAbs_FORWARD);
       }
-      adapters.push_back(VectorAdapter(edge, pickPoint));
+      adapters.emplace_back(edge, pickPoint);
       continue;
     }
 
@@ -916,7 +916,7 @@ bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapt
     {
       sel.shapeType = DimSelections::Face;
       TopoDS_Face face = TopoDS::Face(shape);
-      adapters.push_back(VectorAdapter(face, pickPoint));
+      adapters.emplace_back(face, pickPoint);
       continue;
     }
   }

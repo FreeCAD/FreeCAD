@@ -108,7 +108,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
 
         std::vector<std::vector<TopoDS_Wire>> wiresections;
         for(TopoDS_Wire& wire : wires)
-            wiresections.push_back(std::vector<TopoDS_Wire>(1, wire));
+            wiresections.emplace_back(1, wire);
 
         for(App::DocumentObject* obj : multisections) {
             if(!obj->isDerivedFrom(Part::Feature::getClassTypeId()))

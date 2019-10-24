@@ -139,7 +139,7 @@ static CArea AreaFromDxf(const char* filepath)
 
 static void append_point(CCurve& c, const Point& p)
 {
-	c.m_vertices.push_back(CVertex(p));
+	c.m_vertices.emplace_back(p);
 }
 
 static boost::python::tuple nearest_point_to_curve(CCurve& c1, const CCurve& c2)

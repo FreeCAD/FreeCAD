@@ -612,7 +612,7 @@ std::vector<Base::Vector3d> ViewProvider::getModelPoints(const SoPickedPoint* pp
     // the default implementation just returns the picked point from the visual representation
     std::vector<Base::Vector3d> pts;
     const SbVec3f& vec = pp->getPoint();
-    pts.push_back(Base::Vector3d(vec[0],vec[1],vec[2]));
+    pts.emplace_back(vec[0],vec[1],vec[2]);
     return pts;
 }
 
