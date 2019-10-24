@@ -53,6 +53,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     draw->setCommand("TechDraw");
     *draw << "TechDraw_NewPageDef";
     *draw << "TechDraw_NewPage";
+    *draw << "TechDraw_Redraw";
     *draw << "Separator";
     *draw << "TechDraw_NewView";
     *draw << "TechDraw_NewActiveView";
@@ -87,7 +88,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_Symbol";
     *draw << "TechDraw_Image";
     *draw << "TechDraw_ToggleFrame";
-    *draw << "TechDraw_Redraw";
     *draw << "Separator";
     *draw << "TechDraw_Annotation";
     *draw << "TechDraw_LeaderLine";
@@ -112,6 +112,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     pages->setCommand("TechDraw Pages");
     *pages << "TechDraw_NewPageDef";
     *pages << "TechDraw_NewPage";
+    *pages << "TechDraw_Redraw";
 
     Gui::ToolBarItem *views = new Gui::ToolBarItem(root);
     views->setCommand("TechDraw Views");
@@ -156,7 +157,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
-    *decor << "TechDraw_Redraw";
 
     Gui::ToolBarItem *anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");
@@ -182,6 +182,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     pages->setCommand("TechDraw Pages");
     *pages << "TechDraw_NewPageDef";
     *pages << "TechDraw_NewPage";
+    *pages << "TechDraw_Redraw";
 
     Gui::ToolBarItem *views = new Gui::ToolBarItem(root);
     views->setCommand("Views");
@@ -225,7 +226,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
-    *decor << "TechDraw_Redraw";
 
     Gui::ToolBarItem *anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");

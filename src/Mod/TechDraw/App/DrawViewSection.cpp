@@ -342,8 +342,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     //add centerlines to geometry edges list
     addCenterLinesToGeom();
 
-    requestPaint();
-    return App::DocumentObject::StdReturn;
+    return DrawView::execute();
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const

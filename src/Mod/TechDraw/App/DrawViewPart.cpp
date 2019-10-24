@@ -133,7 +133,8 @@ DrawViewPart::DrawViewPart(void) :
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Direction ,(0.0,-1.0,0.0),
                       group,App::Prop_None,"Projection direction. The direction you are looking from.");
-    ADD_PROPERTY_TYPE(Perspective ,(false),group,App::Prop_None,"Perspective(true) or Orthographic(false) projection");
+    ADD_PROPERTY_TYPE(Perspective ,(false),group,App::Prop_None,
+                      "Perspective(true) or Orthographic(false) projection");
     ADD_PROPERTY_TYPE(Focus,(defDist),group,App::Prop_None,"Perspective view focus distance");
 
     //properties that control HLR algoaffect Appearance
@@ -149,10 +150,10 @@ DrawViewPart::DrawViewPart(void) :
     ADD_PROPERTY_TYPE(IsoHidden ,(false),sgroup,App::Prop_None,"Hidden Iso u,v lines on/off");
     ADD_PROPERTY_TYPE(IsoCount ,(0),sgroup,App::Prop_None,"Number of isoparameters");
 
-    ADD_PROPERTY_TYPE(CosmeticVertexes ,(0),sgroup,App::Prop_None,"CosmeticVertex Save/Restore");
-    ADD_PROPERTY_TYPE(CosmeticEdges ,(0),sgroup,App::Prop_None,"CosmeticEdge Save/Restore");
-    ADD_PROPERTY_TYPE(CenterLines ,(0),sgroup,App::Prop_None,"Geometry format Save/Restore");
-    ADD_PROPERTY_TYPE(GeomFormats ,(0),sgroup,App::Prop_None,"Geometry format Save/Restore");
+    ADD_PROPERTY_TYPE(CosmeticVertexes ,(0),sgroup,App::Prop_Output,"CosmeticVertex Save/Restore");
+    ADD_PROPERTY_TYPE(CosmeticEdges ,(0),sgroup,App::Prop_Output,"CosmeticEdge Save/Restore");
+    ADD_PROPERTY_TYPE(CenterLines ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
+    ADD_PROPERTY_TYPE(GeomFormats ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
 
     geometryObject = nullptr;
     getRunControl();
@@ -283,7 +284,7 @@ TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
-//    Base::Console().Message("DVP::execute()\n");
+//    Base::Console().Message("DVP::execute() - %s\n", Label.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -323,8 +324,8 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     shapeCentroid = Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
     TopoDS_Shape mirroredShape;
     mirroredShape = TechDraw::mirrorShape(shape,
-                                                  inputCenter,
-                                                  getScale());
+                                          inputCenter,
+                                          getScale());
 
     gp_Ax2 viewAxis = getViewAxis(shapeCentroid,Direction.getValue());
     if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
@@ -361,8 +362,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
-    requestPaint();
-    return App::DocumentObject::StdReturn;
+    return DrawView::execute();
 }
 
 short DrawViewPart::mustExecute() const
@@ -371,8 +371,6 @@ short DrawViewPart::mustExecute() const
     if (!isRestoring()) {
         result  =  (Direction.isTouched()  ||
                     Source.isTouched()  ||
-                    Scale.isTouched() ||
-                    ScaleType.isTouched() ||
                     Perspective.isTouched() ||
                     Focus.isTouched() ||
                     Rotation.isTouched() ||
@@ -646,9 +644,10 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
     return result;
 }
 
-const std::vector<TechDraw::Vertex *> & DrawViewPart::getVertexGeometry() const
+const std::vector<TechDraw::Vertex *> DrawViewPart::getVertexGeometry() const
 {
-    return geometryObject->getVertexGeometry();
+    std::vector<TechDraw::Vertex*> gVerts = geometryObject->getVertexGeometry();
+    return gVerts;
 }
 
 const std::vector<TechDraw::Face *> & DrawViewPart::getFaceGeometry() const
@@ -960,6 +959,13 @@ void DrawViewPart::clearCosmeticVertexes(void)
     CosmeticVertexes.setValues(noVerts);
 }
 
+//CosmeticVertex x,y are stored as unscaled, but mirrored values.
+//if you are creating a CV based on calculations of scaled geometry, you need to 
+//unscale x,y before creation.
+//if you are creating a CV based on calculations of mirrored geometry, you need to 
+//mirror again before creation. 
+
+//returns CosmeticVertex index! not geomVertexNumber!
 int DrawViewPart::addCosmeticVertex(Base::Vector3d pos)
 {
     std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
@@ -1000,6 +1006,7 @@ void DrawViewPart::removeCosmeticVertex(TechDraw::CosmeticVertex* cv)
     }
 }
 
+//this is by CV index, not the index returned by selection
 void DrawViewPart::removeCosmeticVertex(int idx)
 {
     std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
@@ -1048,7 +1055,8 @@ TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByIndex(int idx) const
     return result;
 }
 
-//find the cosmetic vertex corresponding to geometry vertex idx
+// find the cosmetic vertex corresponding to geometry vertex idx
+// used when selecting
 TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByGeom(int idx) const
 {
     CosmeticVertex* result = nullptr;
