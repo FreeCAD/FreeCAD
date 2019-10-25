@@ -193,15 +193,15 @@ def _createMachine(solver, path, testmode):
     setting = settings.get_dir_setting()
     if path is not None:
         _dirTypes[path] = None
-    elif setting == settings.BESIDE:
+    elif setting == settings.DirSetting.BESIDE:
         path = femutils.get_beside_dir(solver)
-        _dirTypes[path] = settings.BESIDE
-    elif setting == settings.TEMPORARY:
+        _dirTypes[path] = settings.DirSetting.BESIDE
+    elif setting == settings.DirSetting.TEMPORARY:
         path = femutils.get_temp_dir(solver)
-        _dirTypes[path] = settings.TEMPORARY
-    elif setting == settings.CUSTOM:
+        _dirTypes[path] = settings.DirSetting.TEMPORARY
+    elif setting == settings.DirSetting.CUSTOM:
         path = femutils.get_custom_dir(solver)
-        _dirTypes[path] = settings.CUSTOM
+        _dirTypes[path] = settings.DirSetting.CUSTOM
     m = solver.Proxy.createMachine(solver, path, testmode)
     oldMachine = _machines.get(solver)
     if oldMachine is not None and _dirTypes.get(oldMachine.directory) is not None:
