@@ -1061,8 +1061,6 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
 
     getMainWindow()->updateActions();
 
-    rmvPreselect(true);
-
     // There is a possibility that some observer removes or clears selection
     // inside signal handler, hence the check here
     return isSelected(temp.DocName.c_str(),temp.FeatName.c_str(), temp.SubName.c_str());
