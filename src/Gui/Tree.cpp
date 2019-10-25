@@ -2701,6 +2701,8 @@ void TreeWidget::onItemSelectionChanged ()
             || updateBlocked)
         return;
 
+    preselectTimer->stop();
+
     _LastSelectedTreeWidget = this;
 
     // block tmp. the connection to avoid to notify us ourself
@@ -3173,20 +3175,17 @@ ViewProviderDocumentObject *DocumentItem::getViewProvider(App::DocumentObject *o
     //
     // return obj && obj->getNameInDocument() && pDocument->isIn(obj);
     //
-    // TODO: is the above isIn() check still necessary? Will
-    // getNameInDocument() check be sufficient?
 
+    // NOTE to the above comments. It is not safe to access obj pointer here.
+    // If an object is created and deleted in the same transaction, or
+    // undo/redo is simply disabled, the deleted object will be deallocated
+    // from memory.  Since we are using timer triggered lazy claimed children
+    // update, there may be invalid pointer inside the children.  We will
+    // instead assume that Gui::Document can correctly perform bookkeeping, and
+    // ask for view provider directly.
 
-    if(!obj || !obj->getNameInDocument()) return 0;
-
-    ViewProvider *vp;
-    if(obj->getDocument() == pDocument->getDocument()) 
-        vp = pDocument->getViewProvider(obj);
-    else 
-        vp = Application::Instance->getViewProvider(obj);
-    if(!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
-        return 0;
-    return static_cast<ViewProviderDocumentObject*>(vp);
+    return Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+            Application::Instance->getViewProvider(obj));
 }
 
 void TreeWidget::slotDeleteDocument(const Gui::Document& Doc)
@@ -3257,14 +3256,34 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         // Check for any child of the deleted object that is not in the tree, and put it
         // under document item.
         for(auto child : data->children) {
-            if(!child || !child->getNameInDocument() || child->getDocument()!=doc)
+            auto vpd = docItem->getViewProvider(child);
+            if(!vpd || child->getDocument()!=doc)
                 continue;
-            docItem->_ParentMap[child].erase(obj);
+
+            auto pit = docItem->_ParentMap.find(child);
+            if(pit!=docItem->_ParentMap.end())
+                pit->second.erase(obj);
+
             auto cit = docItem->ObjectMap.find(child);
             if(cit==docItem->ObjectMap.end() || cit->second->items.empty()) {
-                auto vpd = docItem->getViewProvider(child);
-                if(!vpd) continue;
-                if(docItem->createNewItem(*vpd))
+                // Here means the child object has no corresponding tree item
+                // in this document.
+                bool created = false;
+                if(pit!=docItem->_ParentMap.end()) {
+                    // Because lazying loading, there maybe some parent of this
+                    // child out there didn't populate its tree item. We
+                    // iteratre the parent map to try to put the child into one
+                    // of its parent. 
+                    for(auto parent : pit->second) {
+                        if(docItem->populateObject(parent)) {
+                            created = true;
+                            break;
+                        }
+                    }
+                }
+                // If no parent can be found, create a new item to put the
+                // child in the root.
+                if(!created && docItem->createNewItem(*vpd))
                     needUpdate = true;
             }else {
                 auto childItem = *cit->second->items.begin();
