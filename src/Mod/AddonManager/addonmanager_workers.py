@@ -199,6 +199,7 @@ class CheckWBWorker(QtCore.QThread):
                 #print("Checking for updates for",repo[0])
                 clonedir = moddir + os.sep + repo[0]
                 if os.path.exists(clonedir):
+                    self.repos[self.repos.index(repo)][2] = 2 # mark as already installed AND already checked for updates
                     if not os.path.exists(clonedir + os.sep + '.git'):
                         # Repair addon installed with raw download
                         bare_repo = git.Repo.clone_from(repo[1], clonedir + os.sep + '.git', bare=True)
@@ -223,7 +224,7 @@ class CheckWBWorker(QtCore.QThread):
                         if "git pull" in gitrepo.status():
                             self.mark.emit(repo[0])
                             upds.append(repo[0])
-                self.repos[self.repos.index(repo)][2] = 2 # mark as already installed AND already checked for updates
+                            self.repos[self.repos.index(repo)][2] = 3 # mark as already installed AND already checked for updates AND update available
         self.addon_repos.emit(self.repos)
         self.enable.emit(len(upds))
         self.stop = True
@@ -406,17 +407,22 @@ class ShowWorker(QtCore.QThread):
             if upd:
                 message = "<div style=\"width: 100%;text-align: center;background: #75AFFD;\"><br/><strong style=\"background: #397FF7;color: #FFFFFF;\">" + translate("AddonsInstaller", "An update is available for this addon.") 
                 message += "</strong><br/></div><hr/>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+                self.repos[self.idx][2] = 3 # mark as already installed AND already checked for updates AND update is available
             # If there isn't, indicate that this addon is already installed
             else:
                 message = "<div style=\"width: 100%;text-align: center;background: #C1FEB2;\"><br/><strong style=\"background: #00B629;color: #FFFFFF;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br/></div><hr/>" 
                 message += desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+                self.repos[self.idx][2] = 2 # mark as already installed AND already checked for updates
             # Let the user know the install path for this addon
             message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
-            self.repos[self.idx][2] = 2 # mark as already installed AND already checked for updates
             self.addon_repos.emit(self.repos)
         elif self.repos[self.idx][2] == 2:
             message = "<div style=\"width: 100%;text-align: center;background: #C1FEB2;\"><br/><strong style=\"background: #00B629;color: #FFFFFF;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br></div><hr/>"
             message += desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+            message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
+        elif self.repos[self.idx][2] == 3:
+            message = "<div style=\"width: 100%;text-align: center;background: #75AFFD;\"><br/><strong style=\"background: #397FF7;color: #FFFFFF;\">" + translate("AddonsInstaller", "An update is available for this addon.") 
+            message += "</strong><br/></div><hr/>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
             message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
         else:
             message = desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
