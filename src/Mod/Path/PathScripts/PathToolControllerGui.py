@@ -156,7 +156,8 @@ class CommandPathToolController(object):
         if job:
             tool = PathToolBitGui.ToolBitSelector().getTool()
             if tool:
-                tc = Create("TC: {}".format(tool.Label), tool)
+                toolNr = max([tc.ToolNumber for tc in job.ToolController]) + 1
+                tc = Create("TC: {}".format(tool.Label), tool, toolNr)
                 job.Proxy.addToolController(tc)
                 FreeCAD.ActiveDocument.recompute()
 
