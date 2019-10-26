@@ -45,7 +45,7 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 ```bash
 find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --ignore=E266,W503 --max-line-length=100 []
 ```
-- [LGTM](www.lgtm.com)
+- [LGTM](https://lgtm.com/projects/g/FreeCAD/FreeCAD/latest/files/src/Mod/Fem/)
 - TODO: check pylint
 - Automatic code formatter will not be used for existent code
 - For new code if someone would like to use a code formatter black should be used
