@@ -394,7 +394,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
             // we are basing on some partdesign feature which supposed to belong to some body
             PartDesign::Feature *baseFeat = static_cast <PartDesign::Feature *>( base );
 
-            auto baseFeatSetIt = find ( migrateFeatures.begin (), migrateFeatures.end (), baseFeat );
+            auto baseFeatSetIt = migrateFeatures.find(baseFeat);
 
             if ( baseFeatSetIt != migrateFeatures.end() ) {
                 // base feature is pending for migration, switch to it and continue over
