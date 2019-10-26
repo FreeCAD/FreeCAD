@@ -115,8 +115,8 @@ DrawViewDetail::DrawViewDetail()
     m_fudge = 1.01;
 
     //hide Properties not relevant to DVDetail
-    Direction.setStatus(App::Property::Hidden,true);
-    Rotation.setStatus(App::Property::Hidden,true);
+    Direction.setStatus(App::Property::Hidden,true);   //Should be same as BaseView
+    Rotation.setStatus(App::Property::Hidden,true);    //same as BaseView
 
 }
 
@@ -232,32 +232,34 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     gp_Ax2 vaBase;
     viewAxis = dvp->getViewAxis(shapeCenter, dirDetail, true);
 
-    copyShape = TechDraw::moveShape(copyShape,                     //centre on origin
+    copyShape = TechDraw::moveShape(copyShape,                     //centre shape on origin
                                   -shapeCenter);
     gpCenter = TechDraw::findCentroid(copyShape,                 //sb origin!
                                       dirDetail);
     shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
+    viewAxis = dvp->getViewAxis(shapeCenter, dirDetail, false);                //change view axis to (0,0,0)
+    anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);
+
+    if (dvs != nullptr) {
+        viewAxis = dvs->getSectionCS();                           //this goes through SO
+        gp_Pnt org(0.0, 0.0, 0.0);
+        viewAxis.SetLocation(org);                                //move to origin
+        shapeCenter = Base::Vector3d(0.0, 0.0, 0.0);
+        anchor = Base::Vector3d(anchor.x, anchor.y, 0.0);
+    }
+
+    Base::Vector3d anchorOffset3d = DrawUtil::toR3(viewAxis, anchor);     //anchor displacement in R3
 
     Bnd_Box bbxSource;
     bbxSource.SetGap(0.0);
     BRepBndLib::Add(copyShape, bbxSource);
     double diag = sqrt(bbxSource.SquareExtent());
 
-    Base::Vector3d extentFar,extentNear;
-    extentFar = shapeCenter + dirDetail * diag;
-    extentNear = shapeCenter + dirDetail * diag * -1.0;
+    Base::Vector3d toolPlaneOrigin = anchorOffset3d + dirDetail * diag * -1.0;    //center tool about anchor
+    double extrudeLength = 2.0 * toolPlaneOrigin.Length();
 
-    anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);
-    viewAxis = dvp->getViewAxis(shapeCenter, dirDetail, false);                //change view axis to (0,0,0)
-    Base::Vector3d offsetCenter3D = DrawUtil::toR3(viewAxis, anchor);     //displacement in R3
-    Base::Vector3d stdZ(0.0,0.0,1.0);
-    if (DrawUtil::checkParallel(dirDetail,stdZ)) {
-        extentNear = extentNear + offsetCenter3D;
-    } else {
-        extentNear = extentNear - offsetCenter3D;
-    }
 
-    gp_Pnt gpnt(extentNear.x,extentNear.y,extentNear.z);
+    gp_Pnt gpnt(toolPlaneOrigin.x,toolPlaneOrigin.y,toolPlaneOrigin.z);
     gp_Dir gdir(dirDetail.x,dirDetail.y,dirDetail.z);
     gp_Pln gpln(gpnt,gdir);
     double hideToolRadius = radius * 1.0;
@@ -266,7 +268,8 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     if(aProjFace.IsNull()) {
         return new App::DocumentObjectExecReturn("DrawViewDetail - Projected face is NULL");
     }
-    Base::Vector3d extrudeVec = dirDetail* (extentFar-extentNear).Length();
+
+    Base::Vector3d extrudeVec = dirDetail * extrudeLength;
     gp_Vec extrudeDir(extrudeVec.x,extrudeVec.y,extrudeVec.z);
     TopoDS_Shape tool = BRepPrimAPI_MakePrism(aProjFace, extrudeDir, false, true).Shape();
 
@@ -296,7 +299,6 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     testBox.SetGap(0.0);
     BRepBndLib::Add(detail, testBox);
     if (testBox.IsVoid()) {
-//        Base::Console().Warning("DrawViewDetail - detail area contains no geometry\n");
         TechDraw::GeometryObject* go = getGeometryObject();
         if (go != nullptr) {
             go->clear();
@@ -316,25 +318,29 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     gp_Pnt inputCenter;
     try {
         inputCenter = TechDraw::findCentroid(tool,
-                                                     dirDetail);
+                                             dirDetail);
         TopoDS_Shape mirroredShape = TechDraw::mirrorShape(detail,
-                                                    inputCenter,
-                                                    scale);
-
-        viewAxis = dvp->getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),dirDetail);
+                                                           inputCenter,
+                                                           scale);
+        
+        if (dvs != nullptr) {
+            viewAxis = dvs->getSectionCS();
+            viewAxis.SetLocation(inputCenter);
+        } else {
+            viewAxis = dvp->getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),dirDetail);
+        }
 
         double shapeRotate = dvp->Rotation.getValue();                      //degrees CW?
  
         if (!DrawUtil::fpCompare(shapeRotate,0.0)) {
             mirroredShape = TechDraw::rotateShape(mirroredShape,
                                                   viewAxis,
-                                                   shapeRotate);
+                                                  shapeRotate);
         }
-        inputCenter = TechDraw::findCentroid(mirroredShape,
-                                                     dirDetail);
 
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);
-        geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),Radius.getValue() * scale);      //remove vertices beyond clipradius
+        geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),
+                                        Radius.getValue() * scale);      //remove vertices beyond clipradius
 
 #if MOD_TECHDRAW_HANDLE_FACES
     if (handleFaces()) {
@@ -355,17 +361,14 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         return new App::DocumentObjectExecReturn(e1.GetMessageString());
     }
 
-    //add the cosmetic vertices to the geometry vertices list
     addCosmeticVertexesToGeom();
-    //add the cosmetic Edges to geometry Edges list
     addCosmeticEdgesToGeom();
-    //add centerlines to geometry edges list
     addCenterLinesToGeom();
 
     requestPaint();
     dvp->requestPaint();  //to refresh detail highlight!
 
-    return App::DocumentObject::StdReturn;
+    return DrawView::execute();
 }
 
 double DrawViewDetail::getFudgeRadius()
