@@ -69,9 +69,9 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     //projection group controls these
 //    Direction.setStatus(App::Property::ReadOnly,true);
 //    RotationVector.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::ReadOnly,true);
     ScaleType.setValue("Custom");
-    ScaleType.setStatus(App::Property::ReadOnly,true);
+    Scale.setStatus(App::Property::Hidden,true);
+    ScaleType.setStatus(App::Property::Hidden,true);
 }
 
 DrawProjGroupItem::~DrawProjGroupItem()
