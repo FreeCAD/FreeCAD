@@ -75,13 +75,13 @@ void SketchGeometryExtension::Restore(Base::XMLReader &reader)
 
 std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) const
 {
-    std::unique_ptr<SketchGeometryExtension> cpy = std::make_unique<SketchGeometryExtension>();
+    auto cpy = std::make_unique<SketchGeometryExtension>();
 
     cpy->Id = this->Id;
 
     cpy->setName(this->getName()); // Base Class
 
-    return std::move(cpy);
+    return cpy;
 }
 
 PyObject * SketchGeometryExtension::getPyObject(void)

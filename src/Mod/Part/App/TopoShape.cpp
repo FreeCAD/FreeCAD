@@ -2222,7 +2222,7 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
     TopoDS_Edge edgeOnSurf = BRepBuilderAPI_MakeEdge(segm , surf);
     TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edgeOnSurf);
     BRepLib::BuildCurves3d(wire);
-    return std::move(wire);
+    return wire;
 }
 
 //***********
@@ -2308,7 +2308,7 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
 
     TopoDS_Wire wire = mkWire.Wire();
     BRepLib::BuildCurves3d(wire);
-    return std::move(wire);
+    return wire;
 }
 
 TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
@@ -2928,7 +2928,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         builder.MakeCompound(result);
         for(TopoDS_Shape &sh : shapesToReturn)
             builder.Add(result, sh);
-        return std::move(result);
+        return result;
     }
     else {
         return shapesToReturn[0];
@@ -3175,7 +3175,7 @@ TopoDS_Shape TopoShape::removeSplitter() const
                 builder.Add(comp, xp.Current());
         }
 
-        return std::move(comp);
+        return comp;
     }
 
     return _Shape;
