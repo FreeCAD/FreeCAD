@@ -44,6 +44,7 @@
         <file>icons/Ship_workbench_icon.svg</file>
         <file>icons/timber_workbench_icon.svg</file>
         <file>icons/ThreadProfile_workbench_icon.svg</file>
+        <file>icons/WebTools_workbench_icon.svg</file>
         <file>icons/workfeature_workbench_icon.svg</file>
         <file>icons/yaml-workspace_workbench_icon.svg</file>
         <file>translations/AddonManager_af.qm</file>
