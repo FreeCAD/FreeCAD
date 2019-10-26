@@ -111,7 +111,7 @@ std::string Extension::name() const {
         throw Base::RuntimeError("Extension::name: Extension type not set");
     
     std::string temp(m_extensionType.getName());
-    std::string::size_type pos = temp.find_last_of(":");
+    std::string::size_type pos = temp.find_last_of(':');
 
     if(pos != std::string::npos)
         return temp.substr(pos+1);
