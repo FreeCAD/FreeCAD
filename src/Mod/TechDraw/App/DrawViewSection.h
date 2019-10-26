@@ -94,6 +94,7 @@ public:
                              Base::Vector3d axis,
                              double degAngle) ;
     gp_Ax2 getSectionCS (const std::string dirName);
+    gp_Ax2 getSectionCS ();
 
     TechDraw::DrawViewPart* getBaseDVP();
     TechDraw::DrawProjGroupItem* getBaseDPGI();

@@ -36,7 +36,8 @@
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepAdaptor_Surface.hxx>
-# include <BRep_Builder.hxx>
+#include <BRep_Builder.hxx>
+#include <BRepTools.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Ax3.hxx>
 #include <gp_Pnt.hxx>
@@ -265,6 +266,10 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
     TopoDS_Shape rawShape = mkCut.Shape();
 
+//    BRepTools::Write(myShape, "DVSCopy.brep");            //debug
+//    BRepTools::Write(prism, "DVSTool.brep");              //debug
+//    BRepTools::Write(rawShape, "DVSResult.brep");         //debug
+
     Bnd_Box testBox;
     BRepBndLib::Add(rawShape, testBox);
     testBox.SetGap(0.0);
@@ -274,11 +279,14 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     }
 
     m_cutShape = rawShape;
+    m_cutShape = TechDraw::moveShape(m_cutShape,                     //centre on origin
+                                  -SectionOrigin.getValue());
+
     gp_Pnt inputCenter;
     gp_Ax2 viewAxis;
     try {
         inputCenter = TechDraw::findCentroid(rawShape,
-                                             Direction.getValue());    //??
+                                             Direction.getValue());
         TopoDS_Shape mirroredShape = TechDraw::mirrorShape(rawShape,
                                                     inputCenter,
                                                     getScale());
@@ -288,7 +296,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
                                                           viewAxis,
                                                           Rotation.getValue());
         }
-        geometryObject = buildGeometryObject(mirroredShape,viewAxis);   //this is original shape after cut by section prism
+        geometryObject = buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES
         extractFaces();
@@ -302,9 +310,8 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     try {
         TopoDS_Compound sectionCompound = findSectionPlaneIntersections(rawShape);
         TopoDS_Shape mirroredSection = TechDraw::mirrorShape(sectionCompound,
-                                                                     inputCenter,
-                                                                     getScale());
-//        gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+                                                             inputCenter,
+                                                             getScale());
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
             mirroredSection = TechDraw::rotateShape(mirroredSection,
                                                             viewAxis,
@@ -335,11 +342,8 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn(e2.GetMessageString());
     }
 
-    //add the cosmetic vertices to the geometry vertices list
     addCosmeticVertexesToGeom();
-    //add the cosmetic Edges to geometry Edges list
     addCosmeticEdgesToGeom();
-    //add centerlines to geometry edges list
     addCenterLinesToGeom();
 
     return DrawView::execute();
@@ -587,6 +591,13 @@ Base::Vector3d DrawViewSection::getSectionVector (const std::string sectionName)
         result = stdZ;
     }
     return result;
+}
+
+//returns current section cs
+gp_Ax2 DrawViewSection::getSectionCS(void)
+{
+    std::string dirName = SectionDirection.getValueAsString();
+    return getSectionCS(dirName);
 }
 
 //! calculate the section Projection CS given section direction name
