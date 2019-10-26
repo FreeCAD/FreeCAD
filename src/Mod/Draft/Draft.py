@@ -134,25 +134,25 @@ def getParam(param,default=None):
     t = getParamType(param)
     #print("getting param ",param, " of type ",t, " default: ",str(default))
     if t == "int":
-        if default == None:
+        if default is None:
             default = 0
         if param == "linewidth":
             return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetInt("DefaultShapeLineWidth",default)
         return p.GetInt(param,default)
     elif t == "string":
-        if default == None:
+        if default is None:
             default = ""
         return p.GetString(param,default)
     elif t == "float":
-        if default == None:
+        if default is None:
             default = 0
         return p.GetFloat(param,default)
     elif t == "bool":
-        if default == None:
+        if default is None:
             default = False
         return p.GetBool(param,default)
     elif t == "unsigned":
-        if default == None:
+        if default is None:
             default = 0
         if param == "color":
             return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",default)
@@ -312,7 +312,7 @@ def autogroup(obj):
 
 def dimSymbol(symbol=None,invert=False):
     """returns the current dim symbol from the preferences as a pivy SoMarkerSet"""
-    if symbol == None:
+    if symbol is None:
         symbol = getParam("dimsymbol",0)
     from pivy import coin
     if symbol == 0:
@@ -1744,7 +1744,7 @@ def filterObjectsForModifiers(objects, isCopied=False):
                     FreeCADGui.getMainWindow().showMessage(warningMessage, 0)
             filteredObjects.append(object.Base)
         elif hasattr(object,"Placement") and object.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
-           FreeCAD.Console.PrintError(translate("%s cannot be modified because its placement is readonly.") % obj.Name)
+           FreeCAD.Console.PrintError(translate("Draft","%s cannot be modified because its placement is readonly.") % obj.Name)
            continue
         else:
            filteredObjects.append(object)
@@ -2148,7 +2148,8 @@ def draftify(objectslist,makeblock=False,delete=True):
                 newobjlist.append(nobj)
                 formatObject(nobj,obj)
                 # sketches are always in wireframe mode. In Draft we don't like that!
-                nobj.ViewObject.DisplayMode = "Flat Lines"
+                if FreeCAD.GuiUp:
+                    nobj.ViewObject.DisplayMode = "Flat Lines"
             if delete:
                 FreeCAD.ActiveDocument.removeObject(obj.Name)
 
@@ -2379,7 +2380,8 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
     else:
         nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject", name)
         deletable = nobj
-        nobj.ViewObject.Autoconstraints = False
+        if FreeCAD.GuiUp:
+            nobj.ViewObject.Autoconstraints = False
 
     # Collect constraints and add in one go to improve performance
     constraints = []
@@ -3154,7 +3156,7 @@ def upgrade(objects,delete=False,force=None):
                      "makeShell","makeFaces","draftify","joinFaces","makeSketchFace","makeWires","turnToLine"]:
             result = eval(force)(objects)
         else:
-            FreeCAD.Console.PrintMessage(translate("Upgrade: Unknown force method:")+" "+force)
+            FreeCAD.Console.PrintMessage(translate("Draft","Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
@@ -3422,7 +3424,7 @@ def downgrade(objects,delete=False,force=None):
         if force in ["explode","shapify","subtr","splitFaces","cut2","getWire","splitWires"]:
             result = eval(force)(objects)
         else:
-            FreeCAD.Console.PrintMessage(translate("Upgrade: Unknown force method:")+" "+force)
+            FreeCAD.Console.PrintMessage(translate("Draft","Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
@@ -4558,10 +4560,10 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                 for i in range(arcsegs+1):
                     p = self.circle.valueAt(self.circle.FirstParameter+((self.circle.LastParameter-self.circle.FirstParameter)/arcsegs)*i)
                     if (p.sub(mp)).Length <= spacing:
-                        if cut == None:
+                        if cut is None:
                             cut = i
                     else:
-                        if cut == None:
+                        if cut is None:
                             pts1.append([p.x,p.y,p.z])
                         else:
                             pts2.append([p.x,p.y,p.z])
@@ -4850,7 +4852,7 @@ class _Ellipse(_DraftObject):
         import Part
         plm = obj.Placement
         if obj.MajorRadius.Value < obj.MinorRadius.Value:
-            FreeCAD.Console.PrintMessage(translate("Error: Major radius is smaller than the minor radius"))
+            FreeCAD.Console.PrintMessage(translate("Draft","Error: Major radius is smaller than the minor radius"))
             return
         if obj.MajorRadius.Value and obj.MinorRadius.Value:
             ell = Part.Ellipse(Vector(0,0,0),obj.MajorRadius.Value,obj.MinorRadius.Value)
@@ -6030,7 +6032,8 @@ class _PointArray(_DraftObject):
                         place = pts.Placement
                         nshape.translate(place.Base)
                         nshape.rotate(place.Base, place.Rotation.Axis, place.Rotation.Angle * 180 /  math.pi )
-                    nshape.translate(Base.Vector(pts.X,pts.Y,pts.Z))
+                    else:
+                        nshape.translate(Base.Vector(pts.X,pts.Y,pts.Z))
                     i += 1
                     base.append(nshape)
         obj.Count = i

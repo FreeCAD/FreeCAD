@@ -648,7 +648,7 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     # but this creates artifacts in svg output, triangulation gets visible...
     ldict = {}
     if singleface:
-        for objs in objs:
+        for obj in objs:
             if hasattr(obj,"ViewObject") and hasattr(obj.ViewObject,"Lighting"):
                 ldict[obj.Name] = obj.ViewObject.Lighting
                 obj.ViewObject.Lighting = "One side"

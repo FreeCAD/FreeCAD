@@ -249,7 +249,7 @@ class _CommandWall:
             if Draft.getType(obj) == "Wall":
                 if not obj in self.existing:
                     self.existing.append(obj)
-        if point == None:
+        if point is None:
             self.tracker.finalize()
             return
         self.points.append(point)

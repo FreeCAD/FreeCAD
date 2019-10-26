@@ -594,21 +594,20 @@ Document* Application::openDocument(const char * FileName, bool createView) {
     return 0;
 }
 
-std::vector<Document*> Application::openDocuments(
-        const std::vector<std::string> &filenames, 
-        const std::vector<std::string> *paths, 
-        const std::vector<std::string> *labels, 
-        std::vector<std::string> *errs,
-        bool createView)
+std::vector<Document*> Application::openDocuments(const std::vector<std::string> &filenames,
+                                                  const std::vector<std::string> *paths,
+                                                  const std::vector<std::string> *labels,
+                                                  std::vector<std::string> *errs,
+                                                  bool createView)
 {
-    std::vector<Document*> res(filenames.size(),nullptr);
-    if(filenames.empty())
+    std::vector<Document*> res(filenames.size(), nullptr);
+    if (filenames.empty())
         return res;
 
-    if(errs)
+    if (errs)
         errs->resize(filenames.size());
 
-    DocOpenGuard guard(_isRestoring,signalFinishOpenDocument);
+    DocOpenGuard guard(_isRestoring, signalFinishOpenDocument);
     _pendingDocs.clear();
     _pendingDocsReopen.clear();
     _pendingDocMap.clear();
@@ -618,88 +617,102 @@ std::vector<Document*> Application::openDocuments(
     ParameterGrp::handle hGrp = GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
     _allowPartial = !hGrp->GetBool("NoPartialLoading",false);
 
-    for(auto &name : filenames)
+    for (auto &name : filenames)
         _pendingDocs.push_back(name.c_str());
 
     std::deque<std::pair<Document *, DocTiming> > newDocs;
 
     FC_TIME_INIT(t);
 
-    for(std::size_t count=0;;++count) {
+    for (std::size_t count=0;; ++count) {
         const char *name = _pendingDocs.front();
         _pendingDocs.pop_front();
-        bool isMainDoc = count<filenames.size();
+        bool isMainDoc = count < filenames.size();
+
         try {
             _objCount = -1;
             std::set<std::string> objNames;
-            if(_allowPartial) {
+            if (_allowPartial) {
                 auto it = _pendingDocMap.find(name);
-                if(it!=_pendingDocMap.end())
+                if (it != _pendingDocMap.end())
                     objNames.swap(it->second);
             }
+
             FC_TIME_INIT(t1);
             DocTiming timing;
+
             const char *path = name;
             const char *label = 0;
-            if(isMainDoc) {
-                if(paths && paths->size()>count)
+            if (isMainDoc) {
+                if (paths && paths->size()>count)
                     path = (*paths)[count].c_str();
-                if(labels && labels->size()>count)
+
+                if (labels && labels->size()>count)
                     label = (*labels)[count].c_str();
             }
-            auto doc = openDocumentPrivate(path,name,label,isMainDoc,createView,objNames);
+
+            auto doc = openDocumentPrivate(path, name, label, isMainDoc, createView, objNames);
             FC_DURATION_PLUS(timing.d1,t1);
-            if(doc)
+            if (doc)
                 newDocs.emplace_front(doc,timing);
-            if(isMainDoc)
+
+            if (isMainDoc)
                 res[count] = doc;
             _objCount = -1;
-        }catch(const Base::Exception &e) {
-            if(!errs && isMainDoc) 
+        }
+        catch (const Base::Exception &e) {
+            if (!errs && isMainDoc)
                 throw;
-            if(errs && isMainDoc)
+            if (errs && isMainDoc)
                 (*errs)[count] = e.what();
             else
                 Console().Error("Exception opening file: %s [%s]\n", name, e.what());
-        }catch(const std::exception &e) {
-            if(!errs && isMainDoc) 
+        }
+        catch (const std::exception &e) {
+            if (!errs && isMainDoc)
                 throw;
-            if(errs && isMainDoc)
+            if (errs && isMainDoc)
                 (*errs)[count] = e.what();
             else
                 Console().Error("Exception opening file: %s [%s]\n", name, e.what());
-        }catch(...) {
-            if(errs) {
-                if(isMainDoc)
+        }
+        catch (...) {
+            if (errs) {
+                if (isMainDoc)
                     (*errs)[count] = "unknown error";
-            } else {
+            }
+            else {
                 _pendingDocs.clear();
                 _pendingDocsReopen.clear();
                 _pendingDocMap.clear();
                 throw;
             }
         }
-        if(_pendingDocs.empty()) {
-            if(_pendingDocsReopen.empty())
+
+        if (_pendingDocs.empty()) {
+            if (_pendingDocsReopen.empty())
                 break;
             _allowPartial = false;
             _pendingDocs.swap(_pendingDocsReopen);
         }
     }
+
     _pendingDocs.clear();
     _pendingDocsReopen.clear();
     _pendingDocMap.clear();
 
     Base::SequencerLauncher seq("Postprocessing...", newDocs.size());
-    for(auto &v : newDocs) {
+    for (auto &v : newDocs) {
         FC_TIME_INIT(t1);
         v.first->afterRestore(true);
         FC_DURATION_PLUS(v.second.d2,t1);
         seq.next();
     }
-    setActiveDocument(newDocs.back().first);
 
-    for(auto &v : newDocs) {
+    if (!newDocs.empty())
+        setActiveDocument(newDocs.back().first);
+
+    for (auto &v : newDocs) {
         FC_DURATION_LOG(v.second.d1, v.first->getName() << " restore");
         FC_DURATION_LOG(v.second.d2, v.first->getName() << " postprocess");
     }

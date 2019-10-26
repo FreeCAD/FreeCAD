@@ -513,7 +513,7 @@ class Drawexporter(object):
                     curname=nxtname
                     i+=1
         elif (isDraftPolygon(ob) and ob.ChamferSize.Value == 0 and\
-                ob.FilletRadius.Value == 0 and ob.Support == None) or\
+                ob.FilletRadius.Value == 0 and ob.Support is None) or\
                 ob.TypeId == "Part::Prism" or \
                 ob.TypeId == "Part::RegularPolygon":
             if checksupported: return True # The object is supported

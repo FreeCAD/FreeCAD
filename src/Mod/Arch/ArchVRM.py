@@ -461,7 +461,7 @@ class Renderer:
             if r == 1:
                 l = faces.index(f2)
             elif r == 2:
-                if h == None:
+                if h is None:
                     h = faces.index(f2)
                 else:
                     if faces.index(f2) < h:
@@ -497,7 +497,7 @@ class Renderer:
             if sfaces and (notfoundstack < len(faces)):
                 if DEBUG: print("using ordered stack, notfound = ",notfoundstack)
                 p = self.findPosition(f1,sfaces)
-                if p == None:
+                if p is None:
                     # no position found, we move the face to the end of the pile
                     faces.remove(f1)
                     faces.append(f1)

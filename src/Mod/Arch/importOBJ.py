@@ -21,7 +21,7 @@
 #***************************************************************************
 
 import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, MeshPart, os, sys
-import numpy as np
+# import numpy as np
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
@@ -129,7 +129,7 @@ def getIndices(obj,shape,offsetv,offsetvn):
                         #print(e.Vertexes[0].Point,e.Vertexes[1].Point)
                         v = e.Vertexes[0]
                         ind = findVert(v,shape.Vertexes)
-                        if ind == None:
+                        if ind is None:
                             return None,None,None
                         fi += " " + str(ind + offsetv)
                     flist.append(fi)
@@ -193,7 +193,7 @@ def export(exportList,filename,colors=None):
                         vlist,vnlist,elist,flist = getIndices(obj,obj.Shape,offsetv,offsetvn)
                     elif hasattr(obj,"Mesh") and obj.Mesh:
                         vlist,vnlist, elist,flist = getIndices(obj,obj.Mesh,offsetv,offsetvn)
-                if vlist == None:
+                if vlist is None:
                     FreeCAD.Console.PrintError("Unable to export object "+obj.Label+". Skipping.\n")
                 else:
                     offsetv += len(vlist)

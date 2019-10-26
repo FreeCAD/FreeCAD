@@ -433,7 +433,7 @@ def viewer(scene=None,background=(1.0,1.0,1.0),lightdir=None):
     # Initialize Coin. This returns a main window to use
     from pivy import sogui
     win = sogui.SoGui.init()
-    if win == None:
+    if win is None:
         print("Unable to create a SoGui window")
         return
 

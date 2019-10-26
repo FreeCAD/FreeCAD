@@ -407,7 +407,7 @@ class Snapper:
         winner = None
         fp = point
         for snap in snaps:
-            if (not snap) or (snap[0] == None):
+            if (not snap) or (snap[0] is None):
                 pass
                 #print("debug: Snapper: invalid snap point: ",snaps)
             else:
@@ -1364,7 +1364,7 @@ class Snapper:
     def toggle(self,checked=None):
         "toggles the snap mode"
         if hasattr(self,"toolbarButtons"):
-            if checked == None:
+            if checked is None:
                 self.masterbutton.toggle()
             elif checked:
                 if hasattr(self,"savedButtonStates"):
