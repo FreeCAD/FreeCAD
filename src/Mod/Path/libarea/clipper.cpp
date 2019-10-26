@@ -50,38 +50,38 @@
 
 namespace ClipperLib {
 
-static double const pi = 3.141592653589793238;
-static double const two_pi = pi *2;
-static double const def_arc_tolerance = 0.25;
+static double constexpr pi = 3.141592653589793238;
+static double constexpr two_pi = pi *2;
+static double constexpr def_arc_tolerance = 0.25;
 
 enum Direction { dRightToLeft, dLeftToRight };
 
-static int const Unassigned = -1;  //edge not currently 'owning' a solution
-static int const Skip = -2;        //edge that would otherwise close a path
+static int constexpr Unassigned = -1;  //edge not currently 'owning' a solution
+static int constexpr Skip = -2;        //edge that would otherwise close a path
 
 #define HORIZONTAL (-1.0E+40)
 #define TOLERANCE (1.0e-20)
 #define NEAR_ZERO(val) (((val) > -TOLERANCE) && ((val) < TOLERANCE))
 
 struct TEdge {
-  IntPoint Bot;
-  IntPoint Curr;
-  IntPoint Top;
-  IntPoint Delta;
-  double Dx;
-  PolyType PolyTyp;
-  EdgeSide Side;
-  int WindDelta; //1 or -1 depending on winding direction
-  int WindCnt;
-  int WindCnt2; //winding count of the opposite polytype
-  int OutIdx;
-  TEdge *Next;
-  TEdge *Prev;
-  TEdge *NextInLML;
-  TEdge *NextInAEL;
-  TEdge *PrevInAEL;
-  TEdge *NextInSEL;
-  TEdge *PrevInSEL;
+  IntPoint Bot{0,0};
+  IntPoint Curr{0,0};
+  IntPoint Top{0,0};
+  IntPoint Delta{0,0};
+  double Dx = 0.0;
+  PolyType PolyTyp = ptSubject;
+  EdgeSide Side = esLeft;
+  int WindDelta = 0; //1 or -1 depending on winding direction
+  int WindCnt = 0;
+  int WindCnt2 = 0; //winding count of the opposite polytype
+  int OutIdx = 0;
+  TEdge *Next = nullptr;
+  TEdge *Prev = nullptr;
+  TEdge *NextInLML = nullptr;
+  TEdge *NextInAEL = nullptr;
+  TEdge *PrevInAEL = nullptr;
+  TEdge *NextInSEL = nullptr;
+  TEdge *PrevInSEL = nullptr;
 };
 
 struct IntersectNode {
@@ -715,7 +715,6 @@ void DisposeOutPts(OutPt*& pp)
 
 inline void InitEdge(TEdge* e, TEdge* eNext, TEdge* ePrev, const IntPoint& Pt)
 {
-  std::memset(e, 0, sizeof(TEdge));
   e->Next = eNext;
   e->Prev = ePrev;
   e->Curr = Pt;
