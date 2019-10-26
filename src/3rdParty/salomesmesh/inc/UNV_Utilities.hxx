@@ -99,7 +99,7 @@ namespace UNV{
      * 6th element, to improve speed.
      * We dont expect a "D" earlier
      */
-    const int position = number.find("D",6);
+    const int position = number.find('D',6);
     if(position != std::string::npos){
       number.replace(position, 1, "e"); 
     }

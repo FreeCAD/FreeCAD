@@ -792,7 +792,7 @@ int getSWIGVersionFromModule(const std::string& module)
             Py::String file(mod.getAttr("__file__"));
             std::string filename = (std::string)file;
             // file can have the extension .py or .pyc
-            filename = filename.substr(0, filename.rfind("."));
+            filename = filename.substr(0, filename.rfind('.'));
             filename += ".py";
             boost::regex rx("^# Version ([1-9])\\.([0-9])\\.([0-9]+)");
             boost::cmatch what;

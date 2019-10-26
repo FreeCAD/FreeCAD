@@ -419,7 +419,7 @@ Driver_Mesh::Status DriverUNV_R_SMDS_Mesh::Perform()
             int i = aGrName.find( "\r\n" );
             if (i > 0)
               aGrName.erase (i, 2);
-            i = aGrName.find( "\r" );
+            i = aGrName.find( '\r' );
             if (i > 0)
               aGrName.erase (i, 1);
             myGroupNames.insert(TGroupNamesMap::value_type(aNodesGroup, aGrName));
@@ -449,7 +449,7 @@ Driver_Mesh::Status DriverUNV_R_SMDS_Mesh::Perform()
                     int i = aEdgesGrName.find( "\r\n" );
                     if (i > 0)
                       aEdgesGrName.erase (i, 2);
-                    i = aEdgesGrName.find( "\r" );
+                    i = aEdgesGrName.find( '\r' );
                     if (i > 0)
                       aEdgesGrName.erase (i, 1);
                     myGroupNames.insert(TGroupNamesMap::value_type(aEdgesGroup, aEdgesGrName));
@@ -466,7 +466,7 @@ Driver_Mesh::Status DriverUNV_R_SMDS_Mesh::Perform()
                     int i = aFacesGrName.find( "\r\n" );
                     if (i > 0)
                       aFacesGrName.erase (i, 2);
-                    i = aFacesGrName.find( "\r" );
+                    i = aFacesGrName.find( '\r' );
                     if (i > 0)
                       aFacesGrName.erase (i, 1);
                     myGroupNames.insert(TGroupNamesMap::value_type(aFacesGroup, aFacesGrName));
@@ -483,7 +483,7 @@ Driver_Mesh::Status DriverUNV_R_SMDS_Mesh::Perform()
                     int i = aVolumeGrName.find( "\r\n" );
                     if (i > 0)
                       aVolumeGrName.erase (i, 2);
-                    i = aVolumeGrName.find( "\r" );
+                    i = aVolumeGrName.find( '\r' );
                     if (i > 0)
                       aVolumeGrName.erase (i, 1);
                     myGroupNames.insert(TGroupNamesMap::value_type(aVolumeGroup, aVolumeGrName));

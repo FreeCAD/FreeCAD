@@ -1023,7 +1023,7 @@ void FemMesh::readNastran(const std::string &Filename)
     {
         std::getline(inputfile,line1);
         if (line1.size() == 0) continue;
-        if (!nastran_free_format && line1.find(",")!= std::string::npos)
+        if (!nastran_free_format && line1.find(',')!= std::string::npos)
             nastran_free_format = true;
         if (!nastran_free_format && line1.find("GRID*")!= std::string::npos ) //We found a Grid line
         {

@@ -246,8 +246,8 @@ namespace
 
   GEOMUtils::LevelsList parseWard( const std::string& theData, std::size_t& theCursor )
   {
-    std::size_t indexStart = theData.find( "{", theCursor ) + 1;
-    std::size_t indexEnd = theData.find( "}", indexStart );
+    std::size_t indexStart = theData.find( '{', theCursor ) + 1;
+    std::size_t indexEnd = theData.find( '}', indexStart );
 
     std::string ward = theData.substr( indexStart, indexEnd - indexStart );
     std::stringstream ss(ward);
@@ -1082,8 +1082,8 @@ void GEOMUtils::ConvertStringToTree( const std::string& dependencyStr,
     std::string objectEntry = dependencyStr.substr( cursor, objectIndex - cursor );
     cursor = objectIndex;
 
-    std::size_t upwardIndexBegin = dependencyStr.find("{",cursor) + 1;
-    std::size_t upwardIndexFinish = dependencyStr.find("}",upwardIndexBegin);
+    std::size_t upwardIndexBegin = dependencyStr.find('{',cursor) + 1;
+    std::size_t upwardIndexFinish = dependencyStr.find('}',upwardIndexBegin);
     LevelsList upwardList = parseWard( dependencyStr, cursor );
 
     LevelsList downwardList = parseWard( dependencyStr, cursor );

@@ -1624,7 +1624,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
         if (line.find("GRID*") == 0) {
             assert(0);
         }
-        else if (line.find("*") == 0) {
+        else if (line.find('*') == 0) {
             assert(0);
         }
         // insert the read-in vertex into a map to preserve the order

@@ -261,7 +261,7 @@ void Toolpath::setFromGCode(const std::string instr)
             }
             mode = "comment";
             last = found;
-            found = str.find_first_of(")", found+1);
+            found = str.find_first_of(')', found+1);
         } else if (str[found] == ')') {
             // end of comment
             std::string gcodestr = str.substr(last, found-last+1);
