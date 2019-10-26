@@ -255,7 +255,9 @@ script:
         #cmd.exe /C '"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" amd64 && MSBuild.exe FreeCAD.sln /p:CLToolExe=clcache.exe /p:TrackFileAccess=false /p:CLToolPath=C:\Users\travis\build\FreeCAD\FreeCAD /m:2 /nologo /verbosity:minimal /p:Configuration=Release /p:Platform=x64'
         cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\.travis\build.bat'
         # ls -lahR
-        cp -a ../FreeCADLibs/bin/* bin/
+        # move and replace only FreeCADLibs that don't already exist. Cnange to the Libpack requires to manually delete and rebuild the cache
+        mv -u -a ../FreeCADLibs/bin/* bin/
+        rm -f ../FreeCADLibs
         # show clcache hit stats
         cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
         # run the tests
