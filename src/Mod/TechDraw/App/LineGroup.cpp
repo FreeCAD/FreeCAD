@@ -148,7 +148,7 @@ std::string LineGroup::getRecordFromFile(std::string parmFile, std::string group
              (line.empty()) )  {           //is cr/lf empty?
              continue;
          } else if (nameTag == "*") {
-             commaPos = line.find(",",1);
+             commaPos = line.find(',',1);
              if (commaPos != std::string::npos) {
                   foundName = line.substr(1,commaPos-1);
              } else {

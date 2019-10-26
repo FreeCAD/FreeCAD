@@ -893,7 +893,7 @@ void Model::updateStates()
 std::size_t Model::columnFromMask(const ColumnMask &maskIn)
 {
   std::string maskString = maskIn.to_string();
-  return maskString.size() - maskString.find("1") - 1;
+  return maskString.size() - maskString.find('1') - 1;
 }
 
 RectItem* Model::getRectFromPosition(const QPointF& position)
