@@ -4060,7 +4060,7 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
         // If not independent, must be dependent
         for(int j=0; j < paramsNum; j++) {
-            auto result = std::find(indepParamCols.begin(), indepParamCols.end(), j);
+            auto result = indepParamCols.find(j);
             if(result == indepParamCols.end()) {
                 depParamCols.insert(j);
             }
