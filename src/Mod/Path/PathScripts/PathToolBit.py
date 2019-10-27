@@ -261,10 +261,13 @@ class ToolBit(object):
             PathLog.error("Could not save tool %s to %s (%s)" % (obj.Label, path, e))
             raise
 
+def Declaration(path):
+    with open(path, 'r') as fp:
+        return json.load(fp)
+
 def CreateFrom(path, name = 'ToolBit'):
     try:
-        with open(path, 'r') as fp:
-            data = json.load(fp)
+        data = Declaration(path)
         obj = Create(name, data['template'])
         obj.Label = data['name']
         params = data['parameter']

@@ -163,7 +163,7 @@ class ToolBitSelector(object):
     ToolRole = QtCore.Qt.UserRole + 1
 
     def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitSelector.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(':/panels/ToolBitSelector.ui')
         self.setupUI()
 
     def updateTools(self, selected=None):
@@ -269,13 +269,17 @@ def CreateFrom(path, name = 'ToolBit'):
     FreeCAD.ActiveDocument.commitTransaction()
     return tool
 
-def LoadTool(parent = None):
-    '''LoadTool(parent=None) ... Open a file dialog to load a tool from a file.'''
+def GetToolFile(parent = None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
     foo = QtGui.QFileDialog.getOpenFileName(parent, "Tool", PathPreferences.lastPathToolBit(), "*.fctb")
     if foo and foo[0]:
-        return CreateFrom(foo[0])
+        return foo[0]
     return None
+
+def LoadTool(parent = None):
+    '''LoadTool(parent=None) ... Open a file dialog to load a tool from a file.'''
+    foo = GetToolFile(parent)
+    return CreateFrom(foo) if foo else foo
 
 PathIconViewProvider.RegisterViewProvider('ToolBit', ViewProvider)
