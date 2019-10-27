@@ -126,7 +126,7 @@ class CommandToolBitLoad:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        if PathScripts.PathToolBitGui.LoadTool():
+        if PathScripts.PathToolBitGui.LoadTools():
             FreeCAD.ActiveDocument.recompute()
 
 if FreeCAD.GuiUp:

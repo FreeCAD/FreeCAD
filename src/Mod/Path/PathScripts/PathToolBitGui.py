@@ -31,6 +31,7 @@ import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathToolBitEdit as PathToolBitEdit
 import PathScripts.PathUtil as PathUtil
+import os
 
 from PySide import QtCore, QtGui
 
@@ -66,7 +67,7 @@ class ViewProvider(object):
         png = self.obj.Proxy.getBitThumbnail(self.obj)
         if png:
             pixmap = QtGui.QPixmap()
-            pixmap.loadFromData(png, "PNG")
+            pixmap.loadFromData(png, 'PNG')
             return QtGui.QIcon(pixmap)
         return ':/icons/Path-ToolBit.svg'
 
@@ -121,14 +122,14 @@ class TaskPanel:
         self.editor = PathToolBitEdit.ToolBitEditor(self.obj)
         self.form = self.editor.form
         self.deleteOnReject = deleteOnReject
-        FreeCAD.ActiveDocument.openTransaction(translate("PathToolBit", "Edit ToolBit"))
+        FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Edit ToolBit'))
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
         self.editor.reject()
         FreeCADGui.Control.closeDialog()
         if self.deleteOnReject:
-            FreeCAD.ActiveDocument.openTransaction(translate("PathToolBit", "Uncreate ToolBit"))
+            FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Uncreate ToolBit'))
             self.editor.reject()
             FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             FreeCAD.ActiveDocument.commitTransaction()
@@ -220,7 +221,7 @@ class ToolBitSelector(object):
             self.updateTools(tool.Label)
 
         def reject():
-            FreeCAD.ActiveDocument.openTransaction(translate("PathToolBit", "Uncreate ToolBit"))
+            FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Uncreate ToolBit'))
             self.editor.reject()
             self.dialog.done(0)
             FreeCAD.ActiveDocument.removeObject(tool.Name)
@@ -255,7 +256,7 @@ class ToolBitSelector(object):
 def Create(name = 'ToolBit'):
     '''Create(name = 'ToolBit') ... creates a new tool bit.
     It is assumed the tool will be edited immediately so the internal bit body is still attached.'''
-    FreeCAD.ActiveDocument.openTransaction(translate("PathToolBit", "Create ToolBit"))
+    FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Create ToolBit'))
     tool = PathToolBit.Create(name)
     PathIconViewProvider.Attach(tool.ViewObject, name)
     FreeCAD.ActiveDocument.commitTransaction()
@@ -272,14 +273,29 @@ def CreateFrom(path, name = 'ToolBit'):
 def GetToolFile(parent = None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
-    foo = QtGui.QFileDialog.getOpenFileName(parent, "Tool", PathPreferences.lastPathToolBit(), "*.fctb")
+    foo = QtGui.QFileDialog.getOpenFileName(parent, 'Tool', PathPreferences.lastPathToolBit(), '*.fctb')
     if foo and foo[0]:
+        PathPreferences.setLastPathToolBit(os.path.dirname(foo[0]))
         return foo[0]
     return None
+
+def GetToolFiles(parent = None):
+    if parent is None:
+        parent = QtGui.QApplication.activeWindow()
+    foo = QtGui.QFileDialog.getOpenFileNames(parent, 'Tool', PathPreferences.lastPathToolBit(), '*.fctb')
+    if foo and foo[0]:
+        PathPreferences.setLastPathToolBit(os.path.dirname(foo[0][0]))
+        return foo[0]
+    return []
+
 
 def LoadTool(parent = None):
     '''LoadTool(parent=None) ... Open a file dialog to load a tool from a file.'''
     foo = GetToolFile(parent)
     return CreateFrom(foo) if foo else foo
+
+def LoadTools(parent = None):
+    '''LoadTool(parent=None) ... Open a file dialog to load a tool from a file.'''
+    return [CreateFrom(foo) for foo in GetToolFiles(parent)]
 
 PathIconViewProvider.RegisterViewProvider('ToolBit', ViewProvider)
