@@ -2,7 +2,7 @@
 if (APPLE)
     set(OPENSSL_ROOT_DIR ${HOMEBREW_PREFIX}/Cellar/openssl/*)
 endif(APPLE)
-if (UNIX)
+if (UNIX AND NOT APPLE)
     find_package(PkgConfig REQUIRED)
     pkg_search_module(OPENSSL REQUIRED openssl)
 else()
