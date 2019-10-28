@@ -56,15 +56,23 @@ ParameterTypeConstraint = {
         }
 
 
-def _findTool(path, typ):
+def _findTool(path, typ, dbg=False):
     if os.path.exists(path):
+        if dbg:
+            PathLog.debug("Found {} at {}".format(typ, path))
         return path
 
     def searchFor(pname, fname):
+        if dbg:
+            PathLog.debug("Looking for {}".format(pname))
         if fname:
             for p in PathPreferences.searchPathsTool(typ):
                 f = os.path.join(p, fname)
+                if dbg:
+                    PathLog.debug("  Checking {}".format(f))
                 if os.path.exists(f):
+                    if dbg:
+                        PathLog.debug("  Found {} at {}".format(typ, f))
                     return f
         if pname and '/' != pname:
             ppname, pfname = os.path.split(pname)
@@ -77,6 +85,16 @@ def _findTool(path, typ):
 def findTemplate(path):
     '''findTemplate(path) ... search for path, full and partially in all known template directories.'''
     return _findTool(path, 'Template')
+
+def findBit(path):
+    if path.endswith('.fctb'):
+        return _findTool(path, 'Bit')
+    return _findTool("{}.fctb".format(path), 'Bit')
+
+def findLibrary(path, dbg=False):
+    if path.endswith('.fctl'):
+        return _findTool(path, 'Library', dbg)
+    return _findTool("{}.fctl".format(path), 'Library', dbg)
 
 def updateConstraint(sketch, name, value):
     for i, constraint in enumerate(sketch.Constraints):

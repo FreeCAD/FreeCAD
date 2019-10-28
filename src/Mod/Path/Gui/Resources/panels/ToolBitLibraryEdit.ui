@@ -101,7 +101,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget_2" native="true">
+    <widget class="QWidget" name="toolTableGroup" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="leftMargin">
        <number>0</number>
@@ -111,12 +111,27 @@
       </property>
       <item>
        <widget class="QTableView" name="toolTable">
+        <property name="acceptDrops">
+         <bool>true</bool>
+        </property>
+        <property name="dragEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="dragDropMode">
+         <enum>QAbstractItemView::InternalMove</enum>
+        </property>
+        <property name="defaultDropAction">
+         <enum>Qt::MoveAction</enum>
+        </property>
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectRows</enum>
         </property>
         <property name="sortingEnabled">
          <bool>true</bool>
         </property>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -157,24 +172,9 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="toolUp">
+          <widget class="QPushButton" name="toolEnumerate">
            <property name="text">
-            <string>Up</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../../../../Gui/Icons/resource.qrc">
-             <normaloff>:/icons/button_up.svg</normaloff>:/icons/button_up.svg</iconset>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="toolDown">
-           <property name="text">
-            <string>Down</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../../../../Gui/Icons/resource.qrc">
-             <normaloff>:/icons/button_down.svg</normaloff>:/icons/button_down.svg</iconset>
+            <string>Enumerate</string>
            </property>
           </widget>
          </item>

@@ -25,93 +25,266 @@
 
 import FreeCADGui
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathToolBitGui as PathToolBitGui
 import PySide
-
+import json
 import os
 import traceback
+import uuid
 
 PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 PathLog.trackModule(PathLog.thisModule())
 
-class Delegate(PySide.QtGui.QStyledItemDelegate):
+_UuidRole = PySide.QtCore.Qt.UserRole + 1
+_PathRole = PySide.QtCore.Qt.UserRole + 2
 
-    def createEditor(self, parent, option, index):
-        PathLog.track(index)
+class TableView(PySide.QtGui.QTableView):
+
+    def __init__(self, parent):
+        PySide.QtGui.QTableView.__init__(self, parent)
+        self.setDragEnabled(True)
+        self.setAcceptDrops(True)
+        self.setDropIndicatorShown(True)
+        self.setDragDropMode(PySide.QtGui.QAbstractItemView.InternalMove)
+        self.setDefaultDropAction(PySide.QtCore.Qt.MoveAction)
+        self.setSortingEnabled(True)
+        self.setSelectionBehavior(PySide.QtGui.QAbstractItemView.SelectRows)
+        self.verticalHeader().hide()
+
+    def supportedDropActions(self):
+        return [PySide.QtCore.Qt.CopyAction, PySide.QtCore.Qt.MoveAction]
+
+    def _uuidOfRow(self, row):
+        model = self.model()
+        return model.data(model.index(row, 0), _UuidRole)
+
+    def _rowWithUuid(self, uuid):
+        model = self.model()
+        for row in range(model.rowCount()):
+            if self._uuidOfRow(row) == uuid:
+                return row
         return None
-    def setEditorData(self, widget, index):
-        PathLog.track(index)
-    def setModelData(self, widget, model, index):
-        PathLog.track(index)
-    def updateEditorGeometry(self, widget, option, index):
-        PathLog.track(index)
-        widget.setGeometry(option.rect)
+
+    def _copyTool(self, uuid_, dstRow):
+        model = self.model()
+        items = []
+        model.insertRow(dstRow)
+        srcRow = self._rowWithUuid(uuid_)
+        for col in range(model.columnCount()):
+            srcItem = model.item(srcRow, col)
+
+            model.setData(model.index(dstRow, col), srcItem.data(PySide.QtCore.Qt.EditRole), PySide.QtCore.Qt.EditRole)
+            if col == 0:
+                model.setData(model.index(dstRow, col), srcItem.data(_PathRole), _PathRole)
+                model.setData(model.index(dstRow, col), uuid.uuid4(), _UuidRole)
+            else:
+                model.item(dstRow, col).setEditable(False)
+
+    def _copyTools(self, uuids, dst):
+        for i, uuid in enumerate(uuids):
+            self._copyTool(uuid, dst + i)
+
+    def dropEvent(self, event):
+        PathLog.track()
+        mime = event.mimeData()
+        data = mime.data('application/x-qstandarditemmodeldatalist')
+        stream = PySide.QtCore.QDataStream(data)
+        srcRows = []
+        while not stream.atEnd():
+            row = stream.readInt32()
+            srcRows.append(row)
+            col = stream.readInt32()
+            #PathLog.track(row, col)
+            cnt = stream.readInt32()
+            for i in range(cnt):
+                key = stream.readInt32()
+                val = stream.readQVariant()
+                #PathLog.track('    ', i, key, val, type(val))
+            # I have no idea what these three integers are,
+            # or if they even are three integers,
+            # but it seems to work out this way.
+            i0 = stream.readInt32()
+            i1 = stream.readInt32()
+            i2 = stream.readInt32()
+            #PathLog.track('  ', i0, i1, i2)
+
+        # get the uuids of all srcRows
+        model = self.model()
+        srcUuids = [self._uuidOfRow(row) for row in set(srcRows)]
+        destRow = self.rowAt(event.pos().y())
+
+        self._copyTools(srcUuids, destRow)
+        if PySide.QtCore.Qt.DropAction.MoveAction == event.proposedAction():
+            for uuid in srcUuids:
+                model.removeRow(self._rowWithUuid(uuid))
+
+#class ToolTableModel(PySide.QtGui.QStandardItemModel):
+
 
 class ToolBitLibrary(object):
 
-    def __init__(self):
+    def __init__(self, path=None):
+        self.path = path
         self.form = FreeCADGui.PySideUic.loadUi(':/panels/ToolBitLibraryEdit.ui')
-        #self.form = FreeCADGui.PySideUic.loadUi('src/Mod/Path/Gui/Resources/panels/ToolBitLibraryEdit.ui')
+        self.toolTableView = TableView(self.form.toolTableGroup)
+        self.form.toolTableGroup.layout().replaceWidget(self.form.toolTable, self.toolTableView)
+        self.form.toolTable.hide()
         self.setupUI()
+        self.title = self.form.windowTitle()
+        if path:
+            self.libraryLoad(path)
+
+    def _toolAdd(self, nr, tool, path):
+        toolNr = PySide.QtGui.QStandardItem()
+        toolNr.setData(nr, PySide.QtCore.Qt.EditRole)
+        toolNr.setData(path, _PathRole)
+        toolNr.setData(uuid.uuid4(), _UuidRole)
+
+        toolName = PySide.QtGui.QStandardItem()
+        toolName.setData(tool['name'], PySide.QtCore.Qt.EditRole)
+        toolName.setEditable(False)
+
+        toolTemplate = PySide.QtGui.QStandardItem()
+        toolTemplate.setData(os.path.splitext(os.path.basename(tool['template']))[0], PySide.QtCore.Qt.EditRole)
+        toolTemplate.setEditable(False)
+
+        toolDiameter = PySide.QtGui.QStandardItem()
+        toolDiameter.setData(tool['parameter']['Diameter'], PySide.QtCore.Qt.EditRole)
+        toolDiameter.setEditable(False)
+
+        self.model.appendRow([toolNr, toolName, toolTemplate, toolDiameter])
 
     def toolAdd(self):
         PathLog.track()
         try:
-            foo = PathToolBitGui.GetToolFile(self.form)
-            if foo:
+            nr = 0
+            for row in range(self.model.rowCount()):
+                itemNr = int(self.model.item(row, 0).data(PySide.QtCore.Qt.EditRole))
+                nr = max(nr, itemNr)
+            nr += 1
+
+            for i, foo in enumerate(PathToolBitGui.GetToolFiles(self.form)):
                 tool = PathToolBit.Declaration(foo)
-                nr = 0
-                for row in range(self.model.rowCount()):
-                    itemNr = int(self.model.item(row, 0).data(PySide.QtCore.Qt.EditRole))
-                    nr = max(nr, itemNr)
-
-                toolNr = PySide.QtGui.QStandardItem()
-                toolNr.setData(nr + 1, PySide.QtCore.Qt.EditRole)
-
-                toolName = PySide.QtGui.QStandardItem()
-                toolName.setData(tool['name'], PySide.QtCore.Qt.EditRole)
-                toolName.setEditable(False)
-
-                toolTemplate = PySide.QtGui.QStandardItem()
-                toolTemplate.setData(os.path.splitext(os.path.basename(tool['template']))[0], PySide.QtCore.Qt.EditRole)
-                toolTemplate.setEditable(False)
-
-                toolDiameter = PySide.QtGui.QStandardItem()
-                toolDiameter.setData(tool['parameter']['Diameter'], PySide.QtCore.Qt.EditRole)
-                toolDiameter.setEditable(False)
-
-                self.model.appendRow([toolNr, toolName, toolTemplate, toolDiameter])
-
-                self.form.toolTable.resizeColumnsToContents()
-            else:
-                PathLog.info("no tool")
+                self._toolAdd(nr + i, tool, foo)
+            self.toolTableView.resizeColumnsToContents()
         except:
             PathLog.error('something happened')
             PathLog.error(traceback.print_exc())
 
     def toolDelete(self):
         PathLog.track()
-    def toolUp(self):
+        selectedRows = set([index.row() for index in self.toolTableView.selectedIndexes()])
+        for row in sorted(list(selectedRows), key = lambda r: -r):
+            self.model.removeRows(row, 1)
+
+    def toolEnumerate(self):
         PathLog.track()
-    def toolDown(self):
+        for row in range(self.model.rowCount()):
+            self.model.setData(self.model.index(row, 0), row + 1, PySide.QtCore.Qt.EditRole)
+
+    def toolSelect(self, selected, deselected):
+        self.form.toolDelete.setEnabled(len(self.toolTableView.selectedIndexes()) > 0)
+
+    def open(self, path=None):
+        if path:
+            fullPath = PathToolBit.findLibrary(path)
+            if fullPath:
+                self.libraryLoad(fullPath)
+            else:
+                self.libraryOpen()
+        return self.form.exec_()
+
+    def updateToolbar(self):
+        if self.path:
+            self.form.librarySave.setEnabled(True)
+        else:
+            self.form.librarySave.setEnabled(False)
+
+    def libraryOpen(self):
         PathLog.track()
+        foo = PySide.QtGui.QFileDialog.getOpenFileName(self.form, 'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
+        if foo and foo[0]:
+            path = foo[0]
+            PathPreferences.setLastPathToolLibrary(os.path.dirname(path))
+            self.libraryLoad(path)
+
+    def libraryLoad(self, path):
+        self.toolTableView.setUpdatesEnabled(False)
+        self.model.clear()
+        if path:
+            with open(path) as fp:
+                library = json.load(fp)
+            for nr in library['tools']:
+                bit = PathToolBit.findBit(library['tools'][nr])
+                if bit:
+                    PathLog.track(bit)
+                    tool = PathToolBit.Declaration(bit)
+                    self._toolAdd(nr, tool, bit)
+                else:
+                    PathLog.error("Could not find tool #{}: {}".format(nr, library['tools'][nr]))
+            self.toolTableView.resizeColumnsToContents()
+        self.toolTableView.setUpdatesEnabled(True)
+
+        self.form.setWindowTitle("{} - {}".format(self.title, os.path.basename(path) if path else ''))
+        self.path = path
+        self.updateToolbar()
+
+    def libraryNew(self):
+        self.libraryLoad(None)
+
+    def librarySave(self):
+        library = {}
+        tools = {}
+        library['version'] = 1
+        library['tools'] = tools
+        for row in range(self.model.rowCount()):
+            toolNr   = self.model.data(self.model.index(row, 0), PySide.QtCore.Qt.EditRole)
+            toolPath = self.model.data(self.model.index(row, 0), _PathRole)
+            tools[toolNr] = toolPath
+
+        with open(self.path, 'w') as fp:
+            json.dump(library, fp, sort_keys=True, indent=2)
+
+    def librarySaveAs(self):
+        foo = PySide.QtGui.QFileDialog.getSaveFileName(self.form, 'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
+        if foo and foo[0]:
+            path = foo[0] if foo[0].endswith('.fctl') else "{}.fctl".format(foo[0])
+            PathPreferences.setLastPathToolLibrary(os.path.dirname(path))
+            self.path = path
+            self.librarySave()
+            self.updateToolbar()
 
     def columnNames(self):
         return ['Nr', 'Tool', 'Template', 'Diameter']
 
+    def rowsMoved(self, parent, start, end, dest, row):
+        PathLog.track(parent, start, end, dest, row)
+
+    def rowsAboutToBeMoved(self, srcParent, srcStart, srcEnd, destParent, destRow):
+        PathLog.track(srcParent, srcStart, srcEnd, destParent, destRow)
+
     def setupUI(self):
         PathLog.track('+')
-        self.delegate = Delegate(self.form)
-        self.model = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()), self.form)
+        self.model = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()), self.toolTableView)
         self.model.setHorizontalHeaderLabels(self.columnNames())
+        self.model.rowsAboutToBeMoved.connect(self.rowsAboutToBeMoved)
+        self.model.rowsMoved.connect(self.rowsMoved)
 
-        self.form.toolTable.setModel(self.model)
-        self.form.toolTable.resizeColumnsToContents()
+        self.toolTableView.setModel(self.model)
+        self.toolTableView.resizeColumnsToContents()
+        self.toolTableView.selectionModel().selectionChanged.connect(self.toolSelect)
 
         self.form.toolAdd.clicked.connect(self.toolAdd)
         self.form.toolDelete.clicked.connect(self.toolDelete)
-        self.form.toolUp.clicked.connect(self.toolUp)
-        self.form.toolDown.clicked.connect(self.toolDown)
+        self.form.toolEnumerate.clicked.connect(self.toolEnumerate)
 
+        self.form.libraryNew.clicked.connect(self.libraryNew)
+        self.form.libraryOpen.clicked.connect(self.libraryOpen)
+        self.form.librarySave.clicked.connect(self.librarySave)
+        self.form.librarySaveAs.clicked.connect(self.librarySaveAs)
+
+        self.toolSelect([], [])
+        self.updateToolbar()
         PathLog.track('-')
