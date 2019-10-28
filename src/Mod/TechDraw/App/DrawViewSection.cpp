@@ -70,6 +70,7 @@
 #include <Base/BoundBox.h>
 #include <Base/Exception.h>
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 
@@ -742,18 +743,16 @@ TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI()
 void DrawViewSection::getParameters()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
 
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/patterns/";
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
-    QString patternFileName = QString::fromStdString(hGrp->GetASCII("FileHatch",defaultFileName.c_str()));
-    if (patternFileName.isEmpty()) {
-        patternFileName = QString::fromStdString(defaultFileName);
+    std::string patternFileName = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
+    Base::FileInfo tfi(patternFileName);
+    if (tfi.isReadable()) {
+        FileHatchPattern.setValue(patternFileName);
     }
-    QFileInfo tfi(patternFileName);
-        if (tfi.isReadable()) {
-            FileHatchPattern.setValue(patternFileName.toUtf8().constData());
-        }
+
     std::string patternName = hGrp->GetASCII("PatternName","Diamond");
     NameGeomPattern.setValue(patternName);
 
