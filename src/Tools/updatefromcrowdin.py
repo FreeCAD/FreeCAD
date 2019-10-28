@@ -128,12 +128,12 @@ def updateqrc(qrcpath,lncode):
     for i in range(len(resources)):
         if ".qm" in resources[i]:
             pos = i
-    if pos == None:
+    if pos is None:
         print("No existing .qm file in this resource. Appending to the end position")
         for i in range(len(resources)):
             if "</qresource>" in resources[i]:
                 pos = i-1
-    if pos == None:
+    if pos is None:
         print("ERROR: couldn't add qm files to this resource: " + qrcpath)
         sys.exit()
 
@@ -264,4 +264,3 @@ if __name__ == "__main__":
             print("ERROR: language path for " + ln + " not found!")
         else:
             doLanguage(ln,fmodule)
-

@@ -235,6 +235,43 @@ bool CmdTechDrawNewPage::isActive(void)
 }
 
 //===========================================================================
+// TechDraw_Redraw
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawRedraw)
+
+CmdTechDrawRedraw::CmdTechDrawRedraw()
+  : Command("TechDraw_Redraw")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Redraw a page");
+    sToolTipText    = QT_TR_NOOP("Redraw a page");
+    sWhatsThis      = "TechDraw_Redraw";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-forceredraw";
+}
+
+void CmdTechDrawRedraw::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    Gui::WaitCursor wc;
+
+    page->redrawCommand();
+}
+
+bool CmdTechDrawRedraw::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this,false);
+    return (havePage && haveView);
+}
+
+//===========================================================================
 // TechDraw_NewView
 //===========================================================================
 
@@ -260,30 +297,38 @@ void CmdTechDrawNewView::activated(int iMsg)
         return;
     }
     std::string PageName = page->getNameInDocument();
-    auto inlist = page->getInListEx(true);
-    inlist.insert(page);
-
-    std::vector<App::DocumentObject*> shapes;
 
     //set projection direction from selected Face
     //use first object with a face selected
-    App::DocumentObject* partObj = 0;
-    std::string subName;
-    for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
+    std::vector<App::DocumentObject*> shapes;
+    App::DocumentObject* partObj = nullptr;
+    std::string faceName;
+    int resolve = 1;                                //mystery
+    bool single = false;                            //mystery
+    auto selection = getSelection().getSelectionEx(0,
+                                                   App::DocumentObject::getClassTypeId(),
+                                                   resolve,
+                                                   single);
+    for (auto& sel: selection) {
         auto obj = sel.getObject();
-        if(!obj || inlist.count(obj))
+        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ) {
             continue;
-        shapes.push_back(obj);
-        if(partObj)
+        }
+        if (obj != nullptr) {                       //can this happen?
+            shapes.push_back(obj);
+        }
+        if(partObj != nullptr) {
             continue;
-        for(auto &sub : sel.getSubNames()) {
+        }
+        for(auto& sub : sel.getSubNames()) {
             if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
-                subName = sub;
+                faceName = sub;
                 partObj = obj;
                 break;
             }
         }
     }
+
     if ((shapes.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("No Shapes or Groups in this selection"));
@@ -303,8 +348,8 @@ void CmdTechDrawNewView::activated(int iMsg)
     }
     dvp->Source.setValues(shapes);
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-    if (subName.size()) {
-        std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,subName);
+    if (faceName.size()) {
+        std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,faceName);
         projDir = dirs.first;
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
@@ -527,25 +572,37 @@ void CmdTechDrawProjGroup::activated(int iMsg)
         return;
     }
     std::string PageName = page->getNameInDocument();
-    auto inlist = page->getInListEx(true);
-    inlist.insert(page);
+//    auto inlist = page->getInListEx(true);
+//    inlist.insert(page);
 
     //set projection direction from selected Face
     //use first object with a face selected
-
     std::vector<App::DocumentObject*> shapes;
-    App::DocumentObject* partObj = 0;
-    std::string subName;
-    for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
+    App::DocumentObject* partObj = nullptr;
+    std::string faceName;
+    int resolve = 1;                                //mystery
+    bool single = false;                            //mystery
+    auto selection = getSelection().getSelectionEx(0,
+                                                   App::DocumentObject::getClassTypeId(),
+                                                   resolve,
+                                                   single);
+    for (auto& sel: selection) {
+//    for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
         auto obj = sel.getObject();
-        if(inlist.count(obj))
+        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ) {
             continue;
-        shapes.push_back(obj);
-        if(partObj)
+        }
+//        if(!obj || inlist.count(obj))             //??????
+//            continue;
+        if (obj != nullptr) {                       //can this happen?
+            shapes.push_back(obj);
+        }
+        if(partObj != nullptr) {
             continue;
-        for(auto &sub : sel.getSubNames()) {
+        }
+        for(auto& sub : sel.getSubNames()) {
             if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
-                subName = sub;
+                faceName = sub;
                 partObj = obj;
                 break;
             }
@@ -561,24 +618,26 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     Gui::WaitCursor wc;
 
     openCommand("Create Projection Group");
+
     std::string multiViewName = getUniqueObjectName("ProjGroup");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawProjGroup','%s')",multiViewName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawProjGroup','%s')",
+                        multiViewName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
+                        PageName.c_str(),multiViewName.c_str());
 
     App::DocumentObject *docObj = getDocument()->getObject(multiViewName.c_str());
     auto multiView( static_cast<TechDraw::DrawProjGroup *>(docObj) );
     multiView->Source.setValues(shapes);
     doCommand(Doc,"App.activeDocument().%s.addProjection('Front')",multiViewName.c_str());
 
-    if (subName.size()) {
-        std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,subName);
+    if (faceName.size()) {
+        std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,faceName);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                       multiViewName.c_str(), dirs.first.x,dirs.first.y,dirs.first.z);
         doCommand(Doc,"App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                       multiViewName.c_str(), dirs.second.x,dirs.second.y,dirs.second.z);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
-        doCommand(Doc,"App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
     } else {
         std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
@@ -587,13 +646,14 @@ void CmdTechDrawProjGroup::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                       multiViewName.c_str(), dirs.second.x,dirs.second.y,dirs.second.z);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
-        doCommand(Doc,"App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
     }
-    commitCommand();   //write the undo
+ 
+    doCommand(Doc,"App.activeDocument().%s.Anchor.recompute()", multiViewName.c_str());
+    commitCommand();
+    updateActive();
 
     // create the rest of the desired views
     Gui::Control().showDialog(new TaskDlgProjGroup(multiView,true));
-
 }
 
 bool CmdTechDrawProjGroup::isActive(void)
@@ -1276,6 +1336,7 @@ void CreateTechDrawCommands(void)
 
     rcCmdMgr.addCommand(new CmdTechDrawNewPageDef());
     rcCmdMgr.addCommand(new CmdTechDrawNewPage());
+    rcCmdMgr.addCommand(new CmdTechDrawRedraw());
     rcCmdMgr.addCommand(new CmdTechDrawNewView());
     rcCmdMgr.addCommand(new CmdTechDrawNewActiveView());
     rcCmdMgr.addCommand(new CmdTechDrawNewViewSection());

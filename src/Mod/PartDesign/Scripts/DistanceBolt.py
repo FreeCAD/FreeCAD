@@ -56,10 +56,9 @@ class DistanceBolt:
 
 def makeDistanceBolt():
 	doc = FreeCAD.activeDocument()
-	if doc == None:
+	if doc is None:
 		doc = FreeCAD.newDocument()
 	bolt=doc.addObject("Part::FeaturePython","Distance_Bolt")
 	bolt.Label = "Distance bolt"
 	DistanceBolt(bolt)
 	bolt.ViewObject.Proxy=0
-

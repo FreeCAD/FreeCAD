@@ -28,47 +28,47 @@
 #ifndef _PreComp_
 # include <sstream>
 
-#include <BRep_Tool.hxx>
-#include <BRepGProp.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepAlgoAPI_Fuse.hxx>
-#include <BRepLib.hxx>
-#include <BRepLProp_CurveTool.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-# include <BRep_Builder.hxx>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
-#include <Geom_Curve.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAlgoAPI_Fuse.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRep_Builder.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepGProp.hxx>
+#include <BRepLib.hxx>
+#include <BRepLProp_CLProps.hxx>
+#include <BRepLProp_CurveTool.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <GProp_GProps.hxx>
+#include <Geom_Curve.hxx>
+#include <GeomLib_Tool.hxx>
 #include <gp_Ax2.hxx>
-#include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>
+#include <gp_Pnt.hxx>
+#include <GProp_GProps.hxx>
 #include <gp_XYZ.hxx>
-#include <HLRBRep_Algo.hxx>
 #include <HLRAlgo_Projector.hxx>
-#include <HLRBRep_ShapeBounds.hxx>
+#include <HLRBRep_Algo.hxx>
 #include <HLRBRep_HLRToShape.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
+#include <HLRBRep_ShapeBounds.hxx>
 #include <ShapeExtend_WireData.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeFix_Wire.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopExp.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
-
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
-#include <GeomLib_Tool.hxx>
 
 #endif
 
@@ -87,22 +87,24 @@
 #include <Base/Parameter.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/PropertyTopoShape.h>
 
-#include "DrawUtil.h"
-#include "DrawViewSection.h"
-#include "DrawProjectSplit.h"
-#include "Geometry.h"
-#include "GeometryObject.h"
-#include "DrawViewPart.h"
-#include "DrawHatch.h"
+#include "Cosmetic.h"
 #include "DrawGeomHatch.h"
-#include "DrawViewDimension.h"
+#include "DrawHatch.h"
+#include "DrawPage.h"
+#include "DrawProjectSplit.h"
+#include "DrawUtil.h"
 #include "DrawViewBalloon.h"
 #include "DrawViewDetail.h"
-#include "DrawPage.h"
+#include "DrawViewDimension.h"
+#include "DrawViewPart.h"
+#include "DrawViewSection.h"
 #include "EdgeWalker.h"
+#include "Geometry.h"
+#include "GeometryObject.h"
 #include "LineGroup.h"
-#include "Cosmetic.h"
+#include "ShapeExtractor.h"
 
 #include <Mod/TechDraw/App/DrawViewPartPy.h>  // generated from DrawViewPartPy.xml
 
@@ -133,7 +135,8 @@ DrawViewPart::DrawViewPart(void) :
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Direction ,(0.0,-1.0,0.0),
                       group,App::Prop_None,"Projection direction. The direction you are looking from.");
-    ADD_PROPERTY_TYPE(Perspective ,(false),group,App::Prop_None,"Perspective(true) or Orthographic(false) projection");
+    ADD_PROPERTY_TYPE(Perspective ,(false),group,App::Prop_None,
+                      "Perspective(true) or Orthographic(false) projection");
     ADD_PROPERTY_TYPE(Focus,(defDist),group,App::Prop_None,"Perspective view focus distance");
 
     //properties that control HLR algoaffect Appearance
@@ -149,10 +152,10 @@ DrawViewPart::DrawViewPart(void) :
     ADD_PROPERTY_TYPE(IsoHidden ,(false),sgroup,App::Prop_None,"Hidden Iso u,v lines on/off");
     ADD_PROPERTY_TYPE(IsoCount ,(0),sgroup,App::Prop_None,"Number of isoparameters");
 
-    ADD_PROPERTY_TYPE(CosmeticVertexes ,(0),sgroup,App::Prop_None,"CosmeticVertex Save/Restore");
-    ADD_PROPERTY_TYPE(CosmeticEdges ,(0),sgroup,App::Prop_None,"CosmeticEdge Save/Restore");
-    ADD_PROPERTY_TYPE(CenterLines ,(0),sgroup,App::Prop_None,"Geometry format Save/Restore");
-    ADD_PROPERTY_TYPE(GeomFormats ,(0),sgroup,App::Prop_None,"Geometry format Save/Restore");
+    ADD_PROPERTY_TYPE(CosmeticVertexes ,(0),sgroup,App::Prop_Output,"CosmeticVertex Save/Restore");
+    ADD_PROPERTY_TYPE(CosmeticEdges ,(0),sgroup,App::Prop_Output,"CosmeticEdge Save/Restore");
+    ADD_PROPERTY_TYPE(CenterLines ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
+    ADD_PROPERTY_TYPE(GeomFormats ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
 
     geometryObject = nullptr;
     getRunControl();
@@ -177,113 +180,33 @@ TopoDS_Shape DrawViewPart::getSourceShape(void) const
                                   getNameInDocument());
         }
     } else {
-        std::vector<TopoDS_Shape> sourceShapes;
-        for (auto& l:links) {
-            auto shape = Part::Feature::getShape(l);
-            if(!shape.IsNull())
-                sourceShapes.push_back(shape);
-            else {
-                std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
-                sourceShapes.insert(sourceShapes.end(),shapeList.begin(),shapeList.end());
-            }
-        }
-
-        BRep_Builder builder;
-        TopoDS_Compound comp;
-        builder.MakeCompound(comp);
-        bool found = false;
-        for (auto& s:sourceShapes) {
-            if (s.IsNull()) {
-                continue;    //has no shape
-            }
-            found = true;
-            BRepBuilderAPI_Copy BuilderCopy(s);
-            TopoDS_Shape shape = BuilderCopy.Shape();
-            builder.Add(comp, shape);
-        }
-        //it appears that an empty compound is !IsNull(), so we need to check a different way 
-        //if we added anything to the compound.
-        if (!found) {
-            Base::Console().Error("DVP::getSourceShapes - source shape is empty!\n");
-        } else {
-            result = comp;
-        }
-    }
-    return result;
-}
-
-std::vector<TopoDS_Shape> DrawViewPart::getShapesFromObject(App::DocumentObject* docObj) const
-{
-    std::vector<TopoDS_Shape> result;
-    App::GroupExtension* gex = dynamic_cast<App::GroupExtension*>(docObj);
-    App::Property* gProp = docObj->getPropertyByName("Group");
-    App::Property* sProp = docObj->getPropertyByName("Shape");
-    if (docObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        Part::Feature* pf = static_cast<Part::Feature*>(docObj);
-        Part::TopoShape ts = pf->Shape.getShape();
-        ts.setPlacement(pf->globalPlacement());
-        result.push_back(ts.getShape());
-    } else if (gex != nullptr) {           //is a group extension
-        std::vector<App::DocumentObject*> objs = gex->Group.getValues();
-        std::vector<TopoDS_Shape> shapes;
-        for (auto& d: objs) {
-            shapes = getShapesFromObject(d);
-            if (!shapes.empty()) {
-                result.insert(result.end(),shapes.begin(),shapes.end());
-            }
-        }
-    //the next 2 bits are mostly for Arch module objects
-    } else if (gProp != nullptr) {       //has a Group property
-        App::PropertyLinkList* list = dynamic_cast<App::PropertyLinkList*>(gProp);
-        if (list != nullptr) {
-            std::vector<App::DocumentObject*> objs = list->getValues();
-            std::vector<TopoDS_Shape> shapes;
-            for (auto& d: objs) {
-                shapes = getShapesFromObject(d);
-                if (!shapes.empty()) {
-                    result.insert(result.end(),shapes.begin(),shapes.end());
-                }
-            }
-        } else {
-                Base::Console().Log("DVP::getShapesFromObject - Group is not a PropertyLinkList!\n");
-        }
-    } else if (sProp != nullptr) {       //has a Shape property
-        Part::PropertyPartShape* shape = dynamic_cast<Part::PropertyPartShape*>(sProp);
-        if (shape != nullptr) {
-            TopoDS_Shape occShape = shape->getValue();
-            result.push_back(occShape);
-        } else {
-            Base::Console().Log("DVP::getShapesFromObject - Shape is not a PropertyPartShape!\n");
-        }
+        result = ShapeExtractor::getShapes(links);
     }
     return result;
 }
 
 TopoDS_Shape DrawViewPart::getSourceShapeFused(void) const
 {
-    TopoDS_Shape baseShape = getSourceShape();
-    if (!baseShape.IsNull()) {
-        TopoDS_Iterator it(baseShape);
-        TopoDS_Shape fusedShape = it.Value();
-        it.Next();
-        for (; it.More(); it.Next()) {
-            const TopoDS_Shape& aChild = it.Value();
-            BRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
-            // Let's check if the fusion has been successful
-            if (!mkFuse.IsDone()) {
-                Base::Console().Error("DVP - Fusion failed - %s\n",getNameInDocument());
-                return baseShape;
-            }
-            fusedShape = mkFuse.Shape();
+    TopoDS_Shape result;
+    const std::vector<App::DocumentObject*>& links = Source.getValues();
+    if (links.empty())  {
+        bool isRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+        if (isRestoring) {
+            Base::Console().Warning("DVP::getSourceShape - No Sources (but document is restoring) - %s\n",
+                                getNameInDocument());
+        } else {
+            Base::Console().Error("Error: DVP::getSourceShape - No Source(s) linked. - %s\n",
+                                  getNameInDocument());
         }
-        baseShape = fusedShape;
+    } else {
+        result = ShapeExtractor::getShapesFused(links);
     }
-    return baseShape;
+    return result;
 }
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
-//    Base::Console().Message("DVP::execute()\n");
+//    Base::Console().Message("DVP::execute() - %s\n", Label.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -302,7 +225,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    TopoDS_Shape shape = getSourceShape();          //if shape is null, it is probably(?) obj creation time.
+    TopoDS_Shape shape = getSourceShape();
     if (shape.IsNull()) {
         if (isRestoring) {
             Base::Console().Warning("DVP::execute - source shape is invalid - (but document is restoring) - %s\n",
@@ -318,13 +241,13 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     Base::Vector3d stdOrg(0.0,0.0,0.0);
     
     inputCenter = TechDraw::findCentroid(shape,
-                                                 getViewAxis(stdOrg,Direction.getValue()));
+                                         getViewAxis(stdOrg,Direction.getValue()));
                                                  
     shapeCentroid = Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
     TopoDS_Shape mirroredShape;
     mirroredShape = TechDraw::mirrorShape(shape,
-                                                  inputCenter,
-                                                  getScale());
+                                          inputCenter,
+                                          getScale());
 
     gp_Ax2 viewAxis = getViewAxis(shapeCentroid,Direction.getValue());
     if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
@@ -346,11 +269,8 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         }
     }
 
-    //add the cosmetic vertices to the geometry vertices list
     addCosmeticVertexesToGeom();
-    //add the cosmetic Edges to geometry Edges list
     addCosmeticEdgesToGeom();
-    //add centerlines to geometry edges list
     addCenterLinesToGeom();
 
     auto end   = std::chrono::high_resolution_clock::now();
@@ -361,8 +281,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
-    requestPaint();
-    return App::DocumentObject::StdReturn;
+    return DrawView::execute();
 }
 
 short DrawViewPart::mustExecute() const
@@ -371,8 +290,6 @@ short DrawViewPart::mustExecute() const
     if (!isRestoring()) {
         result  =  (Direction.isTouched()  ||
                     Source.isTouched()  ||
-                    Scale.isTouched() ||
-                    ScaleType.isTouched() ||
                     Perspective.isTouched() ||
                     Focus.isTouched() ||
                     Rotation.isTouched() ||
@@ -646,9 +563,10 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
     return result;
 }
 
-const std::vector<TechDraw::Vertex *> & DrawViewPart::getVertexGeometry() const
+const std::vector<TechDraw::Vertex *> DrawViewPart::getVertexGeometry() const
 {
-    return geometryObject->getVertexGeometry();
+    std::vector<TechDraw::Vertex*> gVerts = geometryObject->getVertexGeometry();
+    return gVerts;
 }
 
 const std::vector<TechDraw::Face *> & DrawViewPart::getFaceGeometry() const
@@ -960,6 +878,13 @@ void DrawViewPart::clearCosmeticVertexes(void)
     CosmeticVertexes.setValues(noVerts);
 }
 
+//CosmeticVertex x,y are stored as unscaled, but mirrored values.
+//if you are creating a CV based on calculations of scaled geometry, you need to 
+//unscale x,y before creation.
+//if you are creating a CV based on calculations of mirrored geometry, you need to 
+//mirror again before creation. 
+
+//returns CosmeticVertex index! not geomVertexNumber!
 int DrawViewPart::addCosmeticVertex(Base::Vector3d pos)
 {
     std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
@@ -1000,6 +925,7 @@ void DrawViewPart::removeCosmeticVertex(TechDraw::CosmeticVertex* cv)
     }
 }
 
+//this is by CV index, not the index returned by selection
 void DrawViewPart::removeCosmeticVertex(int idx)
 {
     std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
@@ -1048,7 +974,8 @@ TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByIndex(int idx) const
     return result;
 }
 
-//find the cosmetic vertex corresponding to geometry vertex idx
+// find the cosmetic vertex corresponding to geometry vertex idx
+// used when selecting
 TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByGeom(int idx) const
 {
     CosmeticVertex* result = nullptr;

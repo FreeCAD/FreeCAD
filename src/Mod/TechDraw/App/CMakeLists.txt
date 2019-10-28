@@ -133,6 +133,8 @@ SET(TechDraw_SRCS
     AppTechDrawPy.cpp
     DrawUtil.cpp
     DrawUtil.h
+    ShapeExtractor.cpp
+    ShapeExtractor.h
     HatchLine.cpp
     HatchLine.h
     PreCompiled.cpp

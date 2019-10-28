@@ -57,7 +57,7 @@ class Epitrochoid:
 
 def makeEpitrochoid():
     doc = FreeCAD.activeDocument()
-    if doc == None:
+    if doc is None:
         doc = FreeCAD.newDocument()
     epitrochoid=doc.addObject("Part::FeaturePython","Epitrochoid") #add object to document
     epitrochoid.Label = "Epitrochoid"

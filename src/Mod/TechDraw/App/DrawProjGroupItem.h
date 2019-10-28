@@ -53,7 +53,7 @@ class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
 public:
     /// Constructor
     DrawProjGroupItem();
-    ~DrawProjGroupItem();
+    virtual ~DrawProjGroupItem();
 
     App::PropertyEnumeration Type;
     App::PropertyVector      RotationVector;
@@ -72,6 +72,7 @@ public:
     //return PyObject as DrawProjGroupItemPy
     virtual PyObject *getPyObject(void) override;
 
+    //this doesn't override for dvp pointer??
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction, 
                                const bool flip=true) const override;

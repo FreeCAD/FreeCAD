@@ -103,6 +103,7 @@ public:
     static bool AllowPageOverride(void);
     void forceRedraw(bool b) { m_forceRedraw = b; }
     bool forceRedraw(void)   { return m_forceRedraw; }
+    void redrawCommand();
 
 protected:
     void onBeforeChange(const App::Property* prop) override;

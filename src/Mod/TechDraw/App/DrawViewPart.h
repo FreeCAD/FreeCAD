@@ -127,7 +127,7 @@ public:
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
     std::vector<TechDraw::DrawViewBalloon*> getBalloons() const;
 
-    const std::vector<TechDraw::Vertex *> & getVertexGeometry() const;
+    const std::vector<TechDraw::Vertex *> getVertexGeometry() const;
     const std::vector<TechDraw::BaseGeom  *> & getEdgeGeometry() const;
     const std::vector<TechDraw::BaseGeom  *> getVisibleFaceEdges() const;
     const std::vector<TechDraw::Face *> & getFaceGeometry() const;
@@ -161,9 +161,12 @@ public:
     
     gp_Pln getProjPlane(void) const;
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
+
     virtual TopoDS_Shape getSourceShape(void) const; 
-    virtual std::vector<TopoDS_Shape> getShapesFromObject(App::DocumentObject* docObj) const; 
+/*    virtual std::vector<TopoDS_Shape> getShapesFromObject(App::DocumentObject* docObj) const; */
     virtual TopoDS_Shape getSourceShapeFused(void) const; 
+/*    std::vector<TopoDS_Shape> extractDrawableShapes(TopoDS_Shape shapeIn) const;*/
+
     bool isIso(void) const;
 
     virtual int addCosmeticVertex(Base::Vector3d pos);
@@ -210,7 +213,7 @@ protected:
     TechDraw::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
-    void onChanged(const App::Property* prop) override;
+    virtual void onChanged(const App::Property* prop) override;
     virtual void unsetupObject() override;
 
     virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis);

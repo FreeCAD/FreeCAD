@@ -69,9 +69,9 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     //projection group controls these
 //    Direction.setStatus(App::Property::ReadOnly,true);
 //    RotationVector.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::ReadOnly,true);
     ScaleType.setValue("Custom");
-    ScaleType.setStatus(App::Property::ReadOnly,true);
+    Scale.setStatus(App::Property::Hidden,true);
+    ScaleType.setStatus(App::Property::Hidden,true);
 }
 
 DrawProjGroupItem::~DrawProjGroupItem()
@@ -133,24 +133,20 @@ bool DrawProjGroupItem::showLock(void) const
 
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 {
+//    Base::Console().Message("DPGI::execute(%s)\n",Label.getValue());
     if (DrawUtil::checkParallel(Direction.getValue(),
                                 RotationVector.getValue())) {
         return new App::DocumentObjectExecReturn("DPGI: Direction and RotationVector are parallel");
     }
 
-    App::DocumentObjectExecReturn * ret = DrawViewPart::execute();
-    if (ret != nullptr) {
-        return ret;
-    } else {
-        autoPosition();
-        delete ret;
-    }
-    return App::DocumentObject::StdReturn;
+    App::DocumentObjectExecReturn* ret = DrawViewPart::execute();
+    autoPosition();
+    return ret;
 }
 
 void DrawProjGroupItem::autoPosition()
 {
-//    Base::Console().Message("DPGI::autoPosition(%s)\n",getNameInDocument());
+//    Base::Console().Message("DPGI::autoPosition(%s)\n",Label.getValue());
     auto pgroup = getPGroup();
     Base::Vector3d newPos;
     if (pgroup != nullptr) {
