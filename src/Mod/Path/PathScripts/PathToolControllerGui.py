@@ -80,6 +80,7 @@ class ViewProvider:
     def onDelete(self, vobj, args=None):
         # pylint: disable=unused-argument
         PathUtil.clearExpressionEngine(vobj.Object)
+        self.vobj.Object.Proxy.onDelete(vobj.Object, args)
         return True
 
     def updateData(self, vobj, prop):

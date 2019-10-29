@@ -84,6 +84,11 @@ class ToolController:
     def onDocumentRestored(self, obj):
         obj.setEditorMode('Placement', 2)
 
+    def onDelete(self, obj, arg2=None):
+        if not self.usesLegacyTool(obj):
+            if len(obj.Tool.InList) == 1:
+                obj.Document.removeObject(obj.Tool.Name)
+
     def setFromTemplate(self, obj, template):
         '''setFromTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''
         PathLog.track(obj.Name, template)
