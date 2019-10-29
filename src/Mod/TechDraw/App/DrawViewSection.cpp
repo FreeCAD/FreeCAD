@@ -350,9 +350,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
 gp_Pln DrawViewSection::getSectionPlane() const
 {
-    Base::Vector3d plnPnt = SectionOrigin.getValue();
-    Base::Vector3d plnNorm = SectionNormal.getValue();
-    gp_Ax2 viewAxis = getViewAxis(plnPnt,plnNorm,false);
+    gp_Ax2 viewAxis = getSectionCS();
     gp_Ax3 viewAxis3(viewAxis);
 
     return gp_Pln(viewAxis3);
@@ -362,6 +360,7 @@ gp_Pln DrawViewSection::getSectionPlane() const
 //! tries to find the intersection of the section plane with the shape giving a collection of planar faces
 TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shape& shape)
 {
+//    Base::Console().Message("DVS::findSectionPlaneIntersections()\n");
     TopoDS_Compound result;
     if(shape.IsNull()){
         Base::Console().Warning("DrawViewSection::getSectionSurface - Sectional View shape is Empty\n");
@@ -593,14 +592,14 @@ Base::Vector3d DrawViewSection::getSectionVector (const std::string sectionName)
 }
 
 //returns current section cs
-gp_Ax2 DrawViewSection::getSectionCS(void)
+gp_Ax2 DrawViewSection::getSectionCS(void) const
 {
     std::string dirName = SectionDirection.getValueAsString();
     return getSectionCS(dirName);
 }
 
 //! calculate the section Projection CS given section direction name
-gp_Ax2 DrawViewSection::getSectionCS (const std::string dirName)
+gp_Ax2 DrawViewSection::getSectionCS (const std::string dirName) const
 {
     Base::Vector3d view = getBaseDVP()->Direction.getValue();
     view.Normalize();
@@ -628,7 +627,7 @@ gp_Ax2 DrawViewSection::getSectionCS (const std::string dirName)
 //TODO: this should be able to handle arbitrary rotation of the CS
 //TODO: this is useful beyond DVS. move to GO or DU or ???
 //      or at least static in DVS. doesn't depend on DVS object
-gp_Ax2 DrawViewSection::rotateCSCardinal(gp_Ax2 oldCS, int cardinal) 
+gp_Ax2 DrawViewSection::rotateCSCardinal(gp_Ax2 oldCS, int cardinal) const
 {
     // cardinal: 0 - left, 1 - right, 2 - up, 3 - down
     // as in DVS::SectionDirection
@@ -678,7 +677,7 @@ gp_Ax2 DrawViewSection::rotateCSCardinal(gp_Ax2 oldCS, int cardinal)
 
 gp_Ax2 DrawViewSection::rotateCSArbitrary(gp_Ax2 oldCS,
                                           Base::Vector3d axis,
-                                          double degAngle) 
+                                          double degAngle) const
 {
     gp_Ax2 newCS;
 
@@ -716,7 +715,7 @@ void DrawViewSection::unsetupObject()
     DrawViewPart::unsetupObject();
 }
 
-TechDraw::DrawViewPart* DrawViewSection::getBaseDVP()
+TechDraw::DrawViewPart* DrawViewSection::getBaseDVP() const
 {
     TechDraw::DrawViewPart* baseDVP = nullptr;
     App::DocumentObject* base = BaseView.getValue();
@@ -728,7 +727,7 @@ TechDraw::DrawViewPart* DrawViewSection::getBaseDVP()
     return baseDVP;
 }
 
-TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI()
+TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
 {
     TechDraw::DrawProjGroupItem* baseDPGI = nullptr;
     App::DocumentObject* base = BaseView.getValue();
