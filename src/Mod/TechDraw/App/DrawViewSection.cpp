@@ -204,14 +204,18 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn("BaseView object not found");
     }
 
-    if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
+    TechDraw::DrawViewPart* dvp = nullptr;
+    if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
-
+    } else {
+        dvp = static_cast<TechDraw::DrawViewPart*>(base);
+    }
+    
     TopoDS_Shape baseShape;
     if (FuseBeforeCut.getValue()) {
-        baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShapeFused();
+        baseShape = dvp->getSourceShapeFused();
     } else {
-        baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShape();
+        baseShape = dvp->getSourceShape();
     }
     
     if (baseShape.IsNull()) {
@@ -302,8 +306,9 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
     }
     catch (Standard_Failure& e1) {
-        Base::Console().Log("LOG - DVS::execute - base shape failed for %s - %s **\n",getNameInDocument(),e1.GetMessageString());
-        return new App::DocumentObjectExecReturn(e1.GetMessageString());
+        Base::Console().Warning("DVS::execute - failed to build base shape %s - %s **\n",
+                                getNameInDocument(),e1.GetMessageString());
+        return DrawView::execute();
     }
 
     try {
@@ -337,14 +342,16 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         sectionFaces = newFaces;
     }
     catch (Standard_Failure& e2) {
-        Base::Console().Log("LOG - DVS::execute - failed building section faces for %s - %s **\n",getNameInDocument(),e2.GetMessageString());
-        return new App::DocumentObjectExecReturn(e2.GetMessageString());
+        Base::Console().Warning("DVS::execute - failed to build section faces for %s - %s **\n",
+                                getNameInDocument(),e2.GetMessageString());
+        return DrawView::execute();
     }
 
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
     addCenterLinesToGeom();
 
+    dvp->requestPaint();  //to refresh section line
     return DrawView::execute();
 }
 
