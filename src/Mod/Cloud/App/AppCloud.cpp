@@ -452,7 +452,15 @@ size_t Cloud::CurlWrite_CallbackFunc_StdString(void *contents, size_t size, size
 void Cloud::CloudReader::checkElement(DOMElement* element) {
      char* name = XMLString::transcode(element->getTagName());
      if ( strcmp(name, "Key") == 0 )
-        print=1;
+        file=1;
+     if ( strcmp(name, "NextContinuationToken") == 0 )
+     {
+	continuation=1;
+     }
+     if ( strcmp(name, "IsTruncated") == 0 )
+     {
+	truncated=1;
+     }
      XMLString::release(&name);
 
 }
@@ -465,13 +473,23 @@ void Cloud::CloudReader::checkText(DOMText* text) {
      struct Cloud::CloudReader::FileEntry *new_entry;
      char* content=XMLString::transcode(buffer);
      delete[] buffer;
-     if ( print )
+     if ( file )
      {
              new_entry=new Cloud::CloudReader::FileEntry;
              strcpy(new_entry->FileName,content);
              Cloud::CloudReader::FileList.push_back(new_entry);
      }
-     print=0;
+     file=0;
+     if ( continuation == 1 ) {
+	     strcpy(Cloud::CloudReader::NextFileName, content);
+             continuation = 0;
+     }
+     if ( truncated == 1 ) {
+	    if ( strncmp(content, "true", 4) != 0 )
+		truncated = 0;
+	    else
+		truncated = 2;
+     }
      XMLString::release(&content);
 }
 
@@ -512,8 +530,7 @@ Cloud::CloudReader::CloudReader(const char* Url, const char* AccessKey, const ch
         struct Cloud::AmzData *RequestData;
         CURL *curl;
         CURLcode res;
-
-        std::string s;
+	bool GetBucketContentList=true;
 
 
         this->Url=Url;
@@ -524,63 +541,84 @@ Cloud::CloudReader::CloudReader(const char* Url, const char* AccessKey, const ch
 
 	char path[1024];
         sprintf(path,"/%s/", this->Bucket);
-        RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/xml", path, this->SecretKey, NULL, 0);
+	
+	Cloud::CloudReader::NextFileName = ( char* ) malloc(sizeof(char)*1024);
+	for ( int i = 0 ; i < 1024 ; i++ )
+		NextFileName[i]='\0';
 
 
         // Let's build the Header and call to curl
         curl_global_init(CURL_GLOBAL_ALL);
-        curl = curl_easy_init();
-        if ( curl )
-        {
-		// Let's build our own header
-                struct curl_slist *chunk = NULL;
-                char Url[256];
-                std::string strUrl(this->Url);
-                eraseSubStr(strUrl,"http://");
-                eraseSubStr(strUrl,"https://");
+	while ( GetBucketContentList )
+	{
+        	std::string s;
+	        RequestData = Cloud::ComputeDigestAmzS3v2("GET", "application/xml", path, this->SecretKey, NULL, 0);
+	        curl = curl_easy_init();
+	        if ( curl )
+	        {
+			// Let's build our own header
+	                struct curl_slist *chunk = NULL;
+	                char Url[256];
+	                std::string strUrl(this->Url);
+	                eraseSubStr(strUrl,"http://");
+	                eraseSubStr(strUrl,"https://");
 
-                chunk = Cloud::BuildHeaderAmzS3v2( strUrl.c_str(), this->TcpPort, this->AccessKey, RequestData);
-		delete RequestData;
+	                chunk = Cloud::BuildHeaderAmzS3v2( strUrl.c_str(), this->TcpPort, this->AccessKey, RequestData);
+			delete RequestData;
 
-                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
+	                curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
+			if ( strlen(NextFileName) == 0 )
+		                sprintf(Url,"%s:%s/%s/?list-type=2", this->Url,this->TcpPort,
+	                                                    this->Bucket);
+			else
+				sprintf(Url,"%s:%s/%s/?list-type=2&continuation-token=%s", this->Url,this->TcpPort,
+							    this->Bucket, NextFileName);
+	                curl_easy_setopt(curl, CURLOPT_URL, Url);
 
-                sprintf(Url,"%s:%s/%s/", this->Url,this->TcpPort,
-                                                    this->Bucket);
-                curl_easy_setopt(curl, CURLOPT_URL, Url);
 
+	                curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
+	                curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
+	                // curl read a file not a memory buffer (it shall be able to do it)
 
-                curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, CurlWrite_CallbackFunc_StdString);
-                curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
-                // curl read a file not a memory buffer (it shall be able to do it)
+	                res = curl_easy_perform(curl);
 
-                res = curl_easy_perform(curl);
-                if(res != CURLE_OK)
-                      fprintf(stderr, "curl_easy_perform() failed: %s\n",
-                        curl_easy_strerror(res));
-                curl_easy_cleanup(curl);
-                std::stringstream input(s);
+			for ( int i = 0 ; i < 1024 ; i++ )
+		                NextFileName[i]='\0';
+	                if(res != CURLE_OK)
+	                      fprintf(stderr, "curl_easy_perform() failed: %s\n",
+	                        curl_easy_strerror(res));
+	                curl_easy_cleanup(curl);
+	                std::stringstream input(s);
 
-                try { XMLPlatformUtils::Initialize(); }
-                        catch (const XMLException& toCatch) {
-                            char* message = XMLString::transcode(toCatch.getMessage());
-                            cout << "Error during initialization! :\n"
-                                 << message << "\n";
-                     XMLString::release(&message);
-                     return ;
-                }
+	                try { XMLPlatformUtils::Initialize(); }
+	                        catch (const XMLException& toCatch) {
+	                            char* message = XMLString::transcode(toCatch.getMessage());
+	                            cout << "Error during initialization! :\n"
+	                                 << message << "\n";
+	                     XMLString::release(&message);
+	                     return ;
+	                }
 
-                XercesDOMParser* parser = new XercesDOMParser();
-                parser->setValidationScheme(XercesDOMParser::Val_Always);
-                parser->setDoNamespaces(true);
+	                XercesDOMParser* parser = new XercesDOMParser();
+	                parser->setValidationScheme(XercesDOMParser::Val_Always);
+	                parser->setDoNamespaces(true);
 
-                xercesc::MemBufInputSource myxml_buf((const XMLByte *const)s.c_str(), s.size(),
-                                     "myxml (in memory)");
+	                xercesc::MemBufInputSource myxml_buf((const XMLByte *const)s.c_str(), s.size(),
+	                                     "myxml (in memory)");
 
-                parser->parse(myxml_buf);
-                auto* dom=parser->getDocument();
-                checkXML(dom);
-                // Dumping the filelist name
-        }
+	                parser->parse(myxml_buf);
+	                auto* dom=parser->getDocument();
+	                checkXML(dom);
+        	}
+		if ( truncated == 0 )
+			GetBucketContentList = false;
+		else
+		{
+			truncated = 0;	
+			continuation = 0;
+			file = 0;
+		}
+	}
 
 }
 
