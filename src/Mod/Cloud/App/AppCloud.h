@@ -66,7 +66,9 @@ class CloudAppExport CloudReader
 public:
     CloudReader(const char* Url, const char* AccessKey, const char* SecretKey, const char* TcpPort, const char* Bucket);
     virtual ~CloudReader();
-    int print=0;
+    int file=0;
+    int continuation=0;
+    int truncated=0;
 
     struct FileEntry
     {
@@ -83,6 +85,7 @@ public:
     int isTouched(std::string FileName);
 protected:
     std::list<Cloud::CloudReader::FileEntry*> FileList;
+    char* NextFileName;
     const char* Url;
     const char* TcpPort;
     const char* AccessKey;
