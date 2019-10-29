@@ -213,6 +213,7 @@ class ToolBitLibrary(object):
     def libraryLoad(self, path):
         self.toolTableView.setUpdatesEnabled(False)
         self.model.clear()
+        self.model.setHorizontalHeaderLabels(self.columnNames())
         if path:
             with open(path) as fp:
                 library = json.load(fp)
@@ -260,18 +261,10 @@ class ToolBitLibrary(object):
     def columnNames(self):
         return ['Nr', 'Tool', 'Template', 'Diameter']
 
-    def rowsMoved(self, parent, start, end, dest, row):
-        PathLog.track(parent, start, end, dest, row)
-
-    def rowsAboutToBeMoved(self, srcParent, srcStart, srcEnd, destParent, destRow):
-        PathLog.track(srcParent, srcStart, srcEnd, destParent, destRow)
-
     def setupUI(self):
         PathLog.track('+')
         self.model = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()), self.toolTableView)
         self.model.setHorizontalHeaderLabels(self.columnNames())
-        self.model.rowsAboutToBeMoved.connect(self.rowsAboutToBeMoved)
-        self.model.rowsMoved.connect(self.rowsMoved)
 
         self.toolTableView.setModel(self.model)
         self.toolTableView.resizeColumnsToContents()
