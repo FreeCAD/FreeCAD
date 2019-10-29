@@ -932,7 +932,7 @@ class PanelCut(Draft._DraftObject):
 
         # setProperties of ArchComponent will be overwritten
         # thus setProperties from ArchComponent will be explicit called to get the properties
-        ArchComponent.ViewProviderComponent.setProperties(self, vobj)
+        ArchComponent.ViewProviderComponent.setProperties(self, obj)
 
         self.setProperties(obj)
 
