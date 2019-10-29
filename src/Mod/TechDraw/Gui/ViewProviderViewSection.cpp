@@ -62,9 +62,11 @@ ViewProviderViewSection::ViewProviderViewSection()
     static const char *sgroup = "Cut Surface";
     static const char *hgroup = "Surface Hatch";
     sPixmap = "TechDraw_Tree_Section";
-    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),sgroup,App::Prop_None,"Show/hide the cut surface");
+    //ShowCutSurface is obsolete - use CutSurfaceDisplay
+    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),sgroup,App::Prop_Hidden,"Show/hide the cut surface");
     ADD_PROPERTY_TYPE(CutSurfaceColor,(0.0,0.0,0.0),sgroup,App::Prop_None,"The color to shade the cut surface");
-    ADD_PROPERTY_TYPE(HatchCutSurface ,(false),hgroup,App::Prop_None,"Hatch the cut surface");
+    //HatchCutSurface is obsolete - use CutSurfaceDisplay
+    ADD_PROPERTY_TYPE(HatchCutSurface ,(false),hgroup,App::Prop_Hidden,"Hatch the cut surface");
     ADD_PROPERTY_TYPE(HatchColor,(0.0,0.0,0.0),hgroup,App::Prop_None,"The color of the hatch pattern");
     ADD_PROPERTY_TYPE(WeightPattern,(0.1),hgroup,App::Prop_None,"GeomHatch pattern line thickness");
 
@@ -99,9 +101,9 @@ std::vector<std::string> ViewProviderViewSection::getDisplayModes(void) const
 void ViewProviderViewSection::onChanged(const App::Property* prop)
 {
     if (prop == &WeightPattern   ||
-        prop == &HatchCutSurface ||
+//        prop == &HatchCutSurface ||
         prop == &HatchColor      ||
-        prop == &ShowCutSurface  ||
+//        prop == &ShowCutSurface  ||
         prop == &CutSurfaceColor ) {
         updateGraphic();   
     }
@@ -113,6 +115,7 @@ void ViewProviderViewSection::onChanged(const App::Property* prop)
 void ViewProviderViewSection::updateData(const App::Property* prop)
 {
     if (prop == &(getViewObject()->FileHatchPattern)   ||
+        prop == &(getViewObject()->CutSurfaceDisplay)    ||
         prop == &(getViewObject()->NameGeomPattern)    ||
         prop == &(getViewObject()->HatchScale)   ) {
         updateGraphic();
