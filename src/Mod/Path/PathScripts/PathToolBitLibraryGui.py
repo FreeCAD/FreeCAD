@@ -40,7 +40,8 @@ PathLog.trackModule(PathLog.thisModule())
 _UuidRole = PySide.QtCore.Qt.UserRole + 1
 _PathRole = PySide.QtCore.Qt.UserRole + 2
 
-class TableView(PySide.QtGui.QTableView):
+class _TableView(PySide.QtGui.QTableView):
+    '''Subclass of QTableView to support rearrange and copying of ToolBits'''
 
     def __init__(self, parent):
         PySide.QtGui.QTableView.__init__(self, parent)
@@ -78,6 +79,8 @@ class TableView(PySide.QtGui.QTableView):
             model.setData(model.index(dstRow, col), srcItem.data(PySide.QtCore.Qt.EditRole), PySide.QtCore.Qt.EditRole)
             if col == 0:
                 model.setData(model.index(dstRow, col), srcItem.data(_PathRole), _PathRole)
+                # Even a clone of a tool gets its own uuid so it can be identified when
+                # rearranging the order or inserting/deleting rows
                 model.setData(model.index(dstRow, col), uuid.uuid4(), _UuidRole)
             else:
                 model.item(dstRow, col).setEditable(False)
@@ -120,15 +123,13 @@ class TableView(PySide.QtGui.QTableView):
             for uuid in srcUuids:
                 model.removeRow(self._rowWithUuid(uuid))
 
-#class ToolTableModel(PySide.QtGui.QStandardItemModel):
-
-
 class ToolBitLibrary(object):
+    '''ToolBitLibrary is the controller for displaying/selecting/creating/editing a collection of ToolBits.'''
 
     def __init__(self, path=None):
         self.path = path
         self.form = FreeCADGui.PySideUic.loadUi(':/panels/ToolBitLibraryEdit.ui')
-        self.toolTableView = TableView(self.form.toolTableGroup)
+        self.toolTableView = _TableView(self.form.toolTableGroup)
         self.form.toolTableGroup.layout().replaceWidget(self.form.toolTable, self.toolTableView)
         self.form.toolTable.hide()
         self.setupUI()
@@ -173,6 +174,18 @@ class ToolBitLibrary(object):
             PathLog.error('something happened')
             PathLog.error(traceback.print_exc())
 
+    def selectedOrAllTools(self):
+        selectedRows = set([index.row() for index in self.toolTableView.selectedIndexes()])
+        if not selectedRows:
+            selectedRows = list(range(self.model.rowCount()))
+        tools = []
+        for row in selectedRows:
+            item = self.model.item(row, 0)
+            toolNr = int(item.data(PySide.QtCore.Qt.EditRole))
+            toolPath = item.data(_PathRole)
+            tools.append((toolNr, PathToolBitGui.CreateFrom(toolPath)))
+        return tools
+
     def toolDelete(self):
         PathLog.track()
         selectedRows = set([index.row() for index in self.toolTableView.selectedIndexes()])
@@ -187,13 +200,17 @@ class ToolBitLibrary(object):
     def toolSelect(self, selected, deselected):
         self.form.toolDelete.setEnabled(len(self.toolTableView.selectedIndexes()) > 0)
 
-    def open(self, path=None):
+    def open(self, path=None, dialog=False):
+        '''open(path=None, dialog=False) ... load library stored in path and bring up ui.
+        Returns 1 if user pressed OK, 0 otherwise.'''
         if path:
             fullPath = PathToolBit.findLibrary(path)
             if fullPath:
                 self.libraryLoad(fullPath)
             else:
                 self.libraryOpen()
+        elif dialog:
+            self.libraryOpen()
         return self.form.exec_()
 
     def updateToolbar(self):

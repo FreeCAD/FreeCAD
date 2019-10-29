@@ -105,6 +105,8 @@ SET(PathScripts_SRCS
     PathScripts/PathToolBitCmd.py
     PathScripts/PathToolBitEdit.py
     PathScripts/PathToolBitGui.py
+    PathScripts/PathToolBitLibraryCmd.py
+    PathScripts/PathToolBitLibraryGui.py
     PathScripts/PathToolController.py
     PathScripts/PathToolControllerGui.py
     PathScripts/PathToolEdit.py
@@ -150,6 +152,7 @@ SET(Tools_Bit_SRCS
 )
 
 SET(Tools_Library_SRCS
+  Tools/Library/endmills.fctl
 )
 
 SET(Tools_Template_SRCS

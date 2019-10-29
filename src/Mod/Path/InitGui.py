@@ -72,6 +72,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathGuiInit
         from PathScripts import PathJobCmd
         from PathScripts import PathToolBitCmd
+        from PathScripts import PathToolBitLibraryCmd
         import PathCommands
         PathGuiInit.Startup()
 
@@ -113,7 +114,7 @@ class PathWorkbench (Workbench):
         if extracmdlist:
             self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist)
 
-        self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], projcmdlist +["Path_ExportTemplate", "Separator"] + PathToolBitCmd.CommandList + ["Path_ToolController", "Separator"] + toolcmdlist +["Separator"] + twodopcmdlist + engravecmdlist +["Separator"] +threedopcmdlist +["Separator"])
+        self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], projcmdlist +["Path_ExportTemplate", "Separator"] + PathToolBitCmd.CommandList + ["Separator"] + PathToolBitLibraryCmd.CommandList + ["Path_ToolController", "Separator"] + toolcmdlist +["Separator"] + twodopcmdlist + engravecmdlist +["Separator"] +threedopcmdlist +["Separator"])
         self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(
             "Path", "Path Dressup")], dressupcmdlist)
         self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(
@@ -154,7 +155,7 @@ class PathWorkbench (Workbench):
                 if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
                 if "Job" in selectedName:
-                    self.appendContextMenu("", ["Path_ExportTemplate"])
+                    self.appendContextMenu("", ["Path_ExportTemplate", "Path_ToolBitLibraryLoad", "Path_ToolController"])
                 menuAppended = True
             if isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp):
                 self.appendContextMenu("", ["Path_OperationCopy", "Path_OpActiveToggle"])
