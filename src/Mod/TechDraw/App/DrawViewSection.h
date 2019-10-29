@@ -66,9 +66,13 @@ public:
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
     App::PropertyEnumeration SectionDirection;
+ 
+    App::PropertyEnumeration CutSurfaceDisplay;        //new v019
     App::PropertyFile   FileHatchPattern;
+    App::PropertyFile   FileGeomPattern;               //new v019
     App::PropertyString NameGeomPattern;
     App::PropertyFloat  HatchScale;
+
     App::PropertyString SectionSymbol;
     App::PropertyBool   FuseBeforeCut;
 
@@ -110,6 +114,7 @@ public:
     TopoDS_Shape getCutShape(void) {return m_cutShape;}
 
     static const char* SectionDirEnums[];
+    static const char* CutSurfaceEnums[];
 
 protected:
     TopoDS_Compound sectionFaces;

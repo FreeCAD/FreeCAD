@@ -96,6 +96,11 @@ const char* DrawViewSection::SectionDirEnums[]= {"Right",
                                             "Down",
                                              NULL};
 
+const char* DrawViewSection::CutSurfaceEnums[]= {"Hide",
+                                            "Color",
+                                            "SvgHatch",
+                                            "PatHatch",
+                                             NULL};
 
 
 //===========================================================================
@@ -118,15 +123,19 @@ DrawViewSection::DrawViewSection()
     ADD_PROPERTY_TYPE(SectionDirection,((long)0),sgroup, App::Prop_None, "Direction in Base View for this Section");
     ADD_PROPERTY_TYPE(FuseBeforeCut ,(false),sgroup,App::Prop_None,"Merge Source(s) into a single shape before cutting");
 
+    CutSurfaceDisplay.setEnums(CutSurfaceEnums);
+    ADD_PROPERTY_TYPE(CutSurfaceDisplay,((long)2),fgroup, App::Prop_None, "Appearance of Cut Surface");
     ADD_PROPERTY_TYPE(FileHatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
+    ADD_PROPERTY_TYPE(FileGeomPattern ,(""),fgroup,App::Prop_None,"The PAT pattern file for geometric hatching");
     ADD_PROPERTY_TYPE(NameGeomPattern ,(""),fgroup,App::Prop_None,"The pattern name for geometric hatching");
     ADD_PROPERTY_TYPE(HatchScale,(1.0),fgroup,App::Prop_None,"Hatch pattern size adjustment");
 
     getParameters();
 
-    std::string hatchFilter("Svg files (*.svg *.SVG);;PAT files (*.pat *.PAT);;All files (*)");
+    std::string hatchFilter("Svg files (*.svg *.SVG);;All files (*)");
     FileHatchPattern.setFilter(hatchFilter);
-
+    hatchFilter = ("PAT files (*.pat *.PAT);;All files (*)");
+    FileGeomPattern.setFilter(hatchFilter);
 }
 
 DrawViewSection::~DrawViewSection()
@@ -158,26 +167,28 @@ void DrawViewSection::onChanged(const App::Property* prop)
                                   " - " +
                                   std::string(SectionSymbol.getValue());
             Label.setValue(lblText);
-        }
-        if (prop == &SectionOrigin) {
+        } else if (prop == &SectionOrigin) {
             App::DocumentObject* base = BaseView.getValue();
             TechDraw::DrawView* dv = dynamic_cast<TechDraw::DrawView*>(base);
             if (dv != nullptr) {
                 dv->requestPaint();
             }
+        } else if (prop == &CutSurfaceDisplay) {
+//            Base::Console().Message("DVS::onChanged(%s)\n",prop->getName());
         }
     }
-    if (prop == &FileHatchPattern    ||
+    if (prop == &FileGeomPattern    ||
         prop == &NameGeomPattern ) {
-        std::string fileSpec = FileHatchPattern.getValue();
+        std::string fileSpec = FileGeomPattern.getValue();
         Base::FileInfo fi(fileSpec);
         std::string ext = fi.extension();
         if ( (ext == "pat") ||
              (ext == "PAT") ) {
-            if ((!FileHatchPattern.isEmpty())  &&
+            if ((!FileGeomPattern.isEmpty())  &&
                 (!NameGeomPattern.isEmpty())) {
                 std::vector<PATLineSpec> specs = 
-                           DrawGeomHatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
+                           DrawGeomHatch::getDecodedSpecsFromFile(FileGeomPattern.getValue(),
+                                                                  NameGeomPattern.getValue());
                 m_lineSets.clear();
                 for (auto& hl: specs) {
                     //hl.dump("hl from section");
@@ -757,6 +768,14 @@ void DrawViewSection::getParameters()
     Base::FileInfo tfi(patternFileName);
     if (tfi.isReadable()) {
         FileHatchPattern.setValue(patternFileName);
+    }
+
+    defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
+    defaultFileName = defaultDir + "FCPAT.pat";
+    patternFileName = hGrp->GetASCII("FilePattern",defaultFileName.c_str());
+    Base::FileInfo tfi2(patternFileName);
+    if (tfi2.isReadable()) {
+        FileGeomPattern.setValue(patternFileName);
     }
 
     std::string patternName = hGrp->GetASCII("PatternName","Diamond");
