@@ -127,6 +127,10 @@ def Create(name = 'Default Tool', tool=None, toolNumber=1):
 
     obj = PathScripts.PathToolController.Create(name, tool, toolNumber)
     ViewProvider(obj.ViewObject)
+    if not obj.Proxy.usesLegacyTool(obj):
+        # ToolBits are visible by default, which is typically not what the user wants
+        if tool and tool.ViewObject and tool.ViewObject.Visibility:
+            tool.ViewObject.Visibility = False
     return obj
 
 
