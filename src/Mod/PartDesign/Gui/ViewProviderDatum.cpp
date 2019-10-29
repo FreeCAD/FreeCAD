@@ -88,6 +88,7 @@ ViewProviderDatum::ViewProviderDatum()
     PartGui::ViewProviderAttachExtension::initExtension(this);
 
     pShapeSep = new SoSeparator();
+    pShapeSep->renderCaching = SoSeparator::OFF;
     pShapeSep->ref();
     pPickStyle = new SoPickStyle();
     pPickStyle->ref();
@@ -149,6 +150,7 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     matBinding->value = SoMaterialBinding::OVERALL;
 
     SoSeparator* sep = new SoSeparator();
+    sep->renderCaching = SoSeparator::OFF;
     sep->addChild(hints);
     sep->addChild(fstyle);
     sep->addChild(pPickStyle);

@@ -463,6 +463,7 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     offset->units = 1.0f;
 
     SoSeparator* pcWireSep = new SoSeparator();
+    pcWireSep->renderCaching = SoSeparator::OFF;
     pcWireSep->addChild(pcLineStyle);
     pcWireSep->addChild(pcLightModel);
     pcWireSep->addChild(binding);
