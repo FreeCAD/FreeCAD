@@ -49,6 +49,9 @@ ViewProviderInventorObject::ViewProviderInventorObject()
     pcBuffer->ref();
     pcFile = new SoSeparator();
     pcFile->ref();
+
+    pcBuffer->renderCaching = SoSeparator::OFF;
+    pcFile->renderCaching = SoSeparator::OFF;
 }
 
 ViewProviderInventorObject::~ViewProviderInventorObject()
