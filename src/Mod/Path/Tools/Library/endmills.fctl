@@ -1,14 +1,41 @@
 {
-  "tools": {
-    "1": "t1",
-    "2": "t2",
-    "3": "t3",
-    "4": "t4",
-    "5": "t5",
-    "6": "t6",
-    "7": "t7",
-    "8": "t8",
-    "9": "t9"
-  },
+  "tools": [
+    {
+      "nr": 1,
+      "path": "/media/sdb/projects/FreeCAD/dev/FreeCAD/src/Mod/Path/Tools/Bit/t1.fctb"
+    },
+    {
+      "nr": 2,
+      "path": "/media/sdb/projects/FreeCAD/dev/FreeCAD/src/Mod/Path/Tools/Bit/t2.fctb"
+    },
+    {
+      "nr": 3,
+      "path": "/media/sdb/projects/FreeCAD/dev/FreeCAD/src/Mod/Path/Tools/Bit/t3.fctb"
+    },
+    {
+      "nr": 4,
+      "path": "/media/sdb/projects/FreeCAD/dev/FreeCAD/src/Mod/Path/Tools/Bit/t4.fctb"
+    },
+    {
+      "nr": 5,
+      "path": "/media/sdb/projects/FreeCAD/dev/FreeCAD/src/Mod/Path/Tools/Bit/t5.fctb"
+    },
+    {
+      "nr": 6,
+      "path": "/media/sdb/projects/FreeCAD/dev/FreeCAD/src/Mod/Path/Tools/Bit/t6.fctb"
+    },
+    {
+      "nr": 7,
+      "path": "/media/sdb/projects/FreeCAD/dev/FreeCAD/src/Mod/Path/Tools/Bit/t7.fctb"
+    },
+    {
+      "nr": 8,
+      "path": "/media/sdb/projects/FreeCAD/dev/FreeCAD/src/Mod/Path/Tools/Bit/t8.fctb"
+    },
+    {
+      "nr": 9,
+      "path": "/media/sdb/projects/FreeCAD/dev/FreeCAD/src/Mod/Path/Tools/Bit/t9.fctb"
+    }
+  ],
   "version": 1
 }

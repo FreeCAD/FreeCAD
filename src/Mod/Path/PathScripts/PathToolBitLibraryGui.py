@@ -216,8 +216,9 @@ class ToolBitLibrary(object):
         if path:
             with open(path) as fp:
                 library = json.load(fp)
-            for nr in library['tools']:
-                bit = PathToolBit.findBit(library['tools'][nr])
+            for toolBit in library['tools']:
+                nr  = toolBit['nr']
+                bit = PathToolBit.findBit(toolBit['path'])
                 if bit:
                     PathLog.track(bit)
                     tool = PathToolBit.Declaration(bit)
@@ -236,13 +237,13 @@ class ToolBitLibrary(object):
 
     def librarySave(self):
         library = {}
-        tools = {}
+        tools = []
         library['version'] = 1
         library['tools'] = tools
         for row in range(self.model.rowCount()):
             toolNr   = self.model.data(self.model.index(row, 0), PySide.QtCore.Qt.EditRole)
             toolPath = self.model.data(self.model.index(row, 0), _PathRole)
-            tools[toolNr] = toolPath
+            tools.append({'nr': toolNr, 'path': toolPath})
 
         with open(self.path, 'w') as fp:
             json.dump(library, fp, sort_keys=True, indent=2)
