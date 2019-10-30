@@ -1024,6 +1024,7 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
     d->activeView = view;
     Application::Instance->viewActivated(view);
+    updateActions(true);
 }
 
 void MainWindow::onWindowsMenuAboutToShow()
@@ -1279,18 +1280,22 @@ void MainWindow::updateActions(bool delay)
     //make it safe to call before the main window is actually created
     if (!instance)
         return;
-    if(!d->activityTimer->isActive())
+
+    if (!d->activityTimer->isActive()) {
         d->activityTimer->start(150);
-    else if(delay) {
-        if(!d->actionUpdateDelay)
-            d->actionUpdateDelay=1;
-    }else
-        d->actionUpdateDelay=-1;
+    }
+    else if (delay) {
+        if (!d->actionUpdateDelay)
+            d->actionUpdateDelay = 1;
+    }
+    else {
+        d->actionUpdateDelay = -1;
+    }
 }
 
 void MainWindow::_updateActions()
 {
-    if (isVisible() && d->actionUpdateDelay<=0) {
+    if (isVisible() && d->actionUpdateDelay <= 0) {
         FC_LOG("update actions");
         d->activityTimer->stop();
         Application::Instance->commandManager().testActive();

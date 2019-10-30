@@ -161,9 +161,12 @@ public:
     
     gp_Pln getProjPlane(void) const;
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
+
     virtual TopoDS_Shape getSourceShape(void) const; 
-    virtual std::vector<TopoDS_Shape> getShapesFromObject(App::DocumentObject* docObj) const; 
+/*    virtual std::vector<TopoDS_Shape> getShapesFromObject(App::DocumentObject* docObj) const; */
     virtual TopoDS_Shape getSourceShapeFused(void) const; 
+/*    std::vector<TopoDS_Shape> extractDrawableShapes(TopoDS_Shape shapeIn) const;*/
+
     bool isIso(void) const;
 
     virtual int addCosmeticVertex(Base::Vector3d pos);

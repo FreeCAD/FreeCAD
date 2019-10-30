@@ -676,6 +676,8 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
             else:
                 if preferences['DEBUG']: print(": skipped.")
                 continue
+            if obj and hasattr(obj, "GlobalId"):
+                obj.GlobalId = guid
 
         elif (preferences['MERGE_MODE_ARCH'] == 2 and archobj) or (preferences['MERGE_MODE_STRUCT'] == 1 and not archobj):
 

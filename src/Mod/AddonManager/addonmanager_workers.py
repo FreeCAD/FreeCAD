@@ -319,8 +319,15 @@ class ShowWorker(QtCore.QThread):
 
     def __init__(self, repos, idx):
 
-        # repos is a list of [name,url,installbit,descr] lists
-        # installbit: 0 = not installed, 1 = installed, 2 = installed and checked for available updates
+        # repos is a list of [name,url,installbit,descr]
+        #   name      : Addon name
+        #   url       : Addon repository location
+        #   installbit: 0 = Addon is not installed
+        #               1 = Addon is installed
+        #               2 = Addon is installed and checked for available updates (none pending)
+        #               3 = Addon is installed and has a pending update
+        #   descr     : Addon description
+
         QtCore.QThread.__init__(self)
         self.repos = repos
         self.idx = idx
