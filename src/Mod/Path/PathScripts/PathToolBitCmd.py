@@ -47,7 +47,7 @@ class CommandToolBitCreate:
 
     def Activated(self):
         import PathScripts.PathToolBitGui as PathToolBitGui
-        obj = PathToolBitGui.Create()
+        obj = PathToolBit.Factory.Create()
         obj.ViewObject.Proxy.setCreate(obj.ViewObject)
 
 class CommandToolBitSave:

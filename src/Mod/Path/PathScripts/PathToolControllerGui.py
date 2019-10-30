@@ -118,7 +118,7 @@ class ViewProvider:
 
     def claimChildren(self):
         obj = self.vobj.Object
-        if not obj.Proxy.usesLegacyTool(obj):
+        if obj and obj.Proxy and not obj.Proxy.usesLegacyTool(obj):
             return [obj.Tool]
         return []
 

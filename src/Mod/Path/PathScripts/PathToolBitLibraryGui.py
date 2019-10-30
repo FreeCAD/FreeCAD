@@ -183,7 +183,7 @@ class ToolBitLibrary(object):
             item = self.model.item(row, 0)
             toolNr = int(item.data(PySide.QtCore.Qt.EditRole))
             toolPath = item.data(_PathRole)
-            tools.append((toolNr, PathToolBitGui.CreateFrom(toolPath)))
+            tools.append((toolNr, PathToolBit.Factory.CreateFrom(toolPath)))
         return tools
 
     def toolDelete(self):

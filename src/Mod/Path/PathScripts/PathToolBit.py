@@ -262,16 +262,8 @@ class ToolBit(object):
 
     def saveToFile(self, obj, path, setFile=True):
         try:
-            data = {}
-            data['version'] = 1
-            data['name'] = obj.Label
-            data['template'] = obj.BitTemplate
-            params = {}
-            for prop in self.bitPropertyNames(obj):
-                params[prop] = PathUtil.getProperty(obj, prop).UserString
-            data['parameter'] = params
             with open(path, 'w') as fp:
-                json.dump(data, fp, indent='  ')
+                json.dump(self.templateAttrs(obj), fp, indent='  ')
             if setFile:
                 obj.File = path
             return True
@@ -279,26 +271,44 @@ class ToolBit(object):
             PathLog.error("Could not save tool %s to %s (%s)" % (obj.Label, path, e))
             raise
 
+    def templateAttrs(self, obj):
+        attrs = {}
+        attrs['version'] = 2 # Path.Tool is version 1
+        attrs['name'] = obj.Label
+        attrs['template'] = obj.BitTemplate
+        params = {}
+        for prop in self.bitPropertyNames(obj):
+            params[prop] = PathUtil.getProperty(obj, prop).UserString
+        attrs['parameter'] = params
+        return attrs
+
 def Declaration(path):
     with open(path, 'r') as fp:
         return json.load(fp)
 
-def CreateFrom(path, name = 'ToolBit'):
-    try:
-        data = Declaration(path)
-        obj = Create(name, data['template'])
-        obj.Label = data['name']
-        params = data['parameter']
+class ToolBitFactory(object):
+
+    def CreateFromAttrs(self, attrs, name='ToolBit'):
+        obj = Factory.Create(name, attrs['template'])
+        obj.Label = attrs['name']
+        params = attrs['parameter']
         for prop in params:
             PathUtil.setProperty(obj, prop, params[prop])
         obj.Proxy._updateBitShape(obj)
         obj.Proxy.unloadBitBody(obj)
         return obj
-    except (OSError, IOError) as e:
-        PathLog.error("%s not a valid tool file (%s)" % (path, e))
-        raise
 
-def Create(name = 'ToolBit', templateFile=None):
-    obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', name)
-    obj.Proxy = ToolBit(obj, templateFile)
-    return obj
+    def CreateFrom(self, path, name='ToolBit'):
+        try:
+            data = Declaration(path)
+            return Factory.CreateFromAttrs(data, name)
+        except (OSError, IOError) as e:
+            PathLog.error("%s not a valid tool file (%s)" % (path, e))
+            raise
+
+    def Create(self, name='ToolBit', templateFile=None):
+        obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj.Proxy = ToolBit(obj, templateFile)
+        return obj
+
+Factory = ToolBitFactory()

@@ -26,6 +26,7 @@
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathToolBit as PathToolBit
 
 from PySide import QtCore
 
@@ -67,11 +68,7 @@ class ToolController:
 
         obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The active tool"))
         obj.ToolNumber = (0, 0, 10000, 1)
-        if cTool:
-            obj.addProperty("Path::PropertyTool", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
-        else:
-            obj.addProperty("App::PropertyLink", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
-
+        self.ensureUseLegacyTool(obj, cTool)
         obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The speed of the cutting spindle in RPM"))
         obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Direction of spindle rotation"))
         obj.SpindleDir = ['Forward', 'Reverse']
@@ -92,31 +89,44 @@ class ToolController:
     def setFromTemplate(self, obj, template):
         '''setFromTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''
         PathLog.track(obj.Name, template)
-        if template.get(ToolControllerTemplate.Version) and 1 == int(template.get(ToolControllerTemplate.Version)):
-            if template.get(ToolControllerTemplate.Label):
-                obj.Label = template.get(ToolControllerTemplate.Label)
-            if template.get(ToolControllerTemplate.VertFeed):
-                obj.VertFeed = template.get(ToolControllerTemplate.VertFeed)
-            if template.get(ToolControllerTemplate.HorizFeed):
-                obj.HorizFeed = template.get(ToolControllerTemplate.HorizFeed)
-            if template.get(ToolControllerTemplate.VertRapid):
-                obj.VertRapid = template.get(ToolControllerTemplate.VertRapid)
-            if template.get(ToolControllerTemplate.HorizRapid):
-                obj.HorizRapid = template.get(ToolControllerTemplate.HorizRapid)
-            if template.get(ToolControllerTemplate.SpindleSpeed):
-                obj.SpindleSpeed = float(template.get(ToolControllerTemplate.SpindleSpeed))
-            if template.get(ToolControllerTemplate.SpindleDir):
-                obj.SpindleDir = template.get(ToolControllerTemplate.SpindleDir)
-            if template.get(ToolControllerTemplate.ToolNumber):
-                obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
-            if template.get(ToolControllerTemplate.Tool):
-                obj.Tool.setFromTemplate(template.get(ToolControllerTemplate.Tool))
-            if template.get(ToolControllerTemplate.Expressions):
-                for exprDef in template.get(ToolControllerTemplate.Expressions):
-                    if exprDef[ToolControllerTemplate.ExprExpr]:
-                        obj.setExpression(exprDef[ToolControllerTemplate.ExprProp], exprDef[ToolControllerTemplate.ExprExpr])
+        version = 0
+        if template.get(ToolControllerTemplate.Version):
+            version = int(template.get(ToolControllerTemplate.Version))
+            if version == 1 or version == 2:
+                if template.get(ToolControllerTemplate.Label):
+                    obj.Label = template.get(ToolControllerTemplate.Label)
+                if template.get(ToolControllerTemplate.VertFeed):
+                    obj.VertFeed = template.get(ToolControllerTemplate.VertFeed)
+                if template.get(ToolControllerTemplate.HorizFeed):
+                    obj.HorizFeed = template.get(ToolControllerTemplate.HorizFeed)
+                if template.get(ToolControllerTemplate.VertRapid):
+                    obj.VertRapid = template.get(ToolControllerTemplate.VertRapid)
+                if template.get(ToolControllerTemplate.HorizRapid):
+                    obj.HorizRapid = template.get(ToolControllerTemplate.HorizRapid)
+                if template.get(ToolControllerTemplate.SpindleSpeed):
+                    obj.SpindleSpeed = float(template.get(ToolControllerTemplate.SpindleSpeed))
+                if template.get(ToolControllerTemplate.SpindleDir):
+                    obj.SpindleDir = template.get(ToolControllerTemplate.SpindleDir)
+                if template.get(ToolControllerTemplate.ToolNumber):
+                    obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
+                if template.get(ToolControllerTemplate.Tool):
+                    toolVersion = template.get(ToolControllerTemplate.Tool).get(ToolControllerTemplate.Version)
+                    if toolVersion == 1:
+                        self.ensureUseLegacyTool(obj, True)
+                        obj.Tool.setFromTemplate(template.get(ToolControllerTemplate.Tool))
+                    else:
+                        self.ensureUseLegacyTool(obj, False)
+                        obj.Tool = PathToolBit.Factory.CreateFromAttrs(template.get(ToolControllerTemplate.Tool))
+                        if obj.Tool and obj.Tool.ViewObject and obj.Tool.ViewObject.Visibility:
+                            obj.ViewObject.Visibility = False
+                if template.get(ToolControllerTemplate.Expressions):
+                    for exprDef in template.get(ToolControllerTemplate.Expressions):
+                        if exprDef[ToolControllerTemplate.ExprExpr]:
+                            obj.setExpression(exprDef[ToolControllerTemplate.ExprProp], exprDef[ToolControllerTemplate.ExprExpr])
+            else:
+                PathLog.error(translate('PathToolController', "Unsupported PathToolController template version %s") % template.get(ToolControllerTemplate.Version))
         else:
-            PathLog.error(translate('PathToolController', "Unsupported PathToolController template version %s") % template.get(ToolControllerTemplate.Version))
+            PathLog.error(translate('PathToolController', 'PathToolController template has no version - corrupted template file?'))
 
     def templateAttrs(self, obj):
         '''templateAttrs(obj) ... answer a dictionary with all properties that should be stored for a template.'''
@@ -131,7 +141,10 @@ class ToolController:
         attrs[ToolControllerTemplate.HorizRapid]   = ("%s" % (obj.HorizRapid))
         attrs[ToolControllerTemplate.SpindleSpeed] = obj.SpindleSpeed
         attrs[ToolControllerTemplate.SpindleDir]   = obj.SpindleDir
-        attrs[ToolControllerTemplate.Tool]         = obj.Tool.templateAttrs()
+        if self.usesLegacyTool(obj):
+            attrs[ToolControllerTemplate.Tool]     = obj.Tool.templateAttrs()
+        else:
+            attrs[ToolControllerTemplate.Tool]     = obj.Tool.Proxy.templateAttrs(obj.Tool)
         expressions = []
         for expr in obj.ExpressionEngine:
             PathLog.debug('%s: %s' % (expr[0], expr[1]))
@@ -168,6 +181,15 @@ class ToolController:
     def usesLegacyTool(self, obj):
         '''returns True if the tool being controlled is a legacy tool'''
         return isinstance(obj.Tool, Path.Tool)
+
+    def ensureUseLegacyTool(self, obj, legacy):
+        if not hasattr(obj, 'Tool') or (legacy != self.usesLegacyTool(obj)):
+            if hasattr(obj, 'Tool'):
+                obj.removeProperty('Tool')
+            if legacy:
+                obj.addProperty("Path::PropertyTool", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
+            else:
+                obj.addProperty("App::PropertyLink", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
 
 def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
     PathLog.track(tool, toolNumber)

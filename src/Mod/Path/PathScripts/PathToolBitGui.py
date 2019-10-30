@@ -213,7 +213,7 @@ class ToolBitSelector(object):
 
     def createTool(self):
         PathLog.track()
-        tool = Create()
+        tool = PathToolBit.Factory.Create()
 
         def accept():
             self.editor.accept()
@@ -253,22 +253,16 @@ class ToolBitSelector(object):
         self.form.tools.itemSelectionChanged.connect(self.updateSelection)
         self.form.tools.doubleClicked.connect(self.form.accept)
 
-def Create(name = 'ToolBit'):
-    '''Create(name = 'ToolBit') ... creates a new tool bit.
-    It is assumed the tool will be edited immediately so the internal bit body is still attached.'''
-    FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Create ToolBit'))
-    tool = PathToolBit.Create(name)
-    PathIconViewProvider.Attach(tool.ViewObject, name)
-    FreeCAD.ActiveDocument.commitTransaction()
-    return tool
+class ToolBitGuiFactory(PathToolBit.ToolBitFactory):
 
-def CreateFrom(path, name = 'ToolBit'):
-    '''CreateFrom(path, name = 'ToolBit') ... creates an instance of a tool stored in path'''
-    FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Create ToolBit instance'))
-    tool = PathToolBit.CreateFrom(path, name)
-    PathIconViewProvider.Attach(tool.ViewObject, name)
-    FreeCAD.ActiveDocument.commitTransaction()
-    return tool
+    def Create(self, name='ToolBit', templateFile=None):
+        '''Create(name = 'ToolBit') ... creates a new tool bit.
+        It is assumed the tool will be edited immediately so the internal bit body is still attached.'''
+        FreeCAD.ActiveDocument.openTransaction(translate('PathToolBit', 'Create ToolBit'))
+        tool = PathToolBit.ToolBitFactory.Create(self, name, templateFile)
+        PathIconViewProvider.Attach(tool.ViewObject, name)
+        FreeCAD.ActiveDocument.commitTransaction()
+        return tool
 
 def GetToolFile(parent = None):
     if parent is None:
@@ -292,10 +286,13 @@ def GetToolFiles(parent = None):
 def LoadTool(parent = None):
     '''LoadTool(parent=None) ... Open a file dialog to load a tool from a file.'''
     foo = GetToolFile(parent)
-    return CreateFrom(foo) if foo else foo
+    return PathToolBit.Factory.CreateFrom(foo) if foo else foo
 
 def LoadTools(parent = None):
     '''LoadTool(parent=None) ... Open a file dialog to load a tool from a file.'''
-    return [CreateFrom(foo) for foo in GetToolFiles(parent)]
+    return [PathToolBit.Factory.CreateFrom(foo) for foo in GetToolFiles(parent)]
+
+# Set the factory so all tools are created with UI
+PathToolBit.Factory = ToolBitGuiFactory()
 
 PathIconViewProvider.RegisterViewProvider('ToolBit', ViewProvider)
