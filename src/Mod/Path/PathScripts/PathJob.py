@@ -222,6 +222,7 @@ class ObjectJob:
         PathLog.debug('taking down tool controller')
         for tc in obj.ToolController:
             PathUtil.clearExpressionEngine(tc)
+            tc.Proxy.onDelete(tc)
             doc.removeObject(tc.Name)
         obj.ToolController = []
         # SetupSheet
