@@ -193,6 +193,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         throw Base::RuntimeError("GeometryObject::projectShape - unknown error occurred while projecting shape");
 //        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");
     }
+
     auto end   = chrono::high_resolution_clock::now();
     auto diff  = end - start;
     double diffOut = chrono::duration <double, milli> (diff).count();
