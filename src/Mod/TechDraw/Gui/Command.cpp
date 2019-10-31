@@ -297,13 +297,10 @@ void CmdTechDrawNewView::activated(int iMsg)
         return;
     }
     std::string PageName = page->getNameInDocument();
-//    auto inlist = page->getInListEx(true);           //what is this??
-//    inlist.insert(page);
-
-    std::vector<App::DocumentObject*> shapes;
 
     //set projection direction from selected Face
     //use first object with a face selected
+    std::vector<App::DocumentObject*> shapes;
     App::DocumentObject* partObj = nullptr;
     std::string faceName;
     int resolve = 1;                                //mystery
@@ -313,10 +310,10 @@ void CmdTechDrawNewView::activated(int iMsg)
                                                    resolve,
                                                    single);
     for (auto& sel: selection) {
-//    for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
         auto obj = sel.getObject();
-//        if(!obj || inlist.count(obj))             //??????
-//            continue;
+        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ) {
+            continue;
+        }
         if (obj != nullptr) {                       //can this happen?
             shapes.push_back(obj);
         }
@@ -575,25 +572,37 @@ void CmdTechDrawProjGroup::activated(int iMsg)
         return;
     }
     std::string PageName = page->getNameInDocument();
-    auto inlist = page->getInListEx(true);
-    inlist.insert(page);
+//    auto inlist = page->getInListEx(true);
+//    inlist.insert(page);
 
     //set projection direction from selected Face
     //use first object with a face selected
-
     std::vector<App::DocumentObject*> shapes;
-    App::DocumentObject* partObj = 0;
-    std::string subName;
-    for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
+    App::DocumentObject* partObj = nullptr;
+    std::string faceName;
+    int resolve = 1;                                //mystery
+    bool single = false;                            //mystery
+    auto selection = getSelection().getSelectionEx(0,
+                                                   App::DocumentObject::getClassTypeId(),
+                                                   resolve,
+                                                   single);
+    for (auto& sel: selection) {
+//    for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
         auto obj = sel.getObject();
-        if(inlist.count(obj))
+        if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ) {
             continue;
-        shapes.push_back(obj);
-        if(partObj)
+        }
+//        if(!obj || inlist.count(obj))             //??????
+//            continue;
+        if (obj != nullptr) {                       //can this happen?
+            shapes.push_back(obj);
+        }
+        if(partObj != nullptr) {
             continue;
-        for(auto &sub : sel.getSubNames()) {
+        }
+        for(auto& sub : sel.getSubNames()) {
             if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
-                subName = sub;
+                faceName = sub;
                 partObj = obj;
                 break;
             }
@@ -621,8 +630,8 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     multiView->Source.setValues(shapes);
     doCommand(Doc,"App.activeDocument().%s.addProjection('Front')",multiViewName.c_str());
 
-    if (subName.size()) {
-        std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,subName);
+    if (faceName.size()) {
+        std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::getProjDirFromFace(partObj,faceName);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                       multiViewName.c_str(), dirs.first.x,dirs.first.y,dirs.first.z);

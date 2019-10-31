@@ -63,6 +63,14 @@
         <UserDocu>Rename a constraint of the sketch</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getIndexByName" Const="true">
+      <Documentation>
+        <UserDocu>
+Get the index of the constraint by name.
+If there is no such constraint an exception is raised.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="carbonCopy">
         <Documentation>
             <UserDocu>copy another sketch's geometry and constraints</UserDocu>
@@ -88,7 +96,7 @@
         <UserDocu>set the Datum of a Distance or Angle constraint</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getDatum">
+    <Methode Name="getDatum" Const="true">
       <Documentation>
         <UserDocu>Get the value of a datum constraint</UserDocu>
       </Documentation>
@@ -108,7 +116,7 @@
         <UserDocu>Moves all datum constraints to the end of the constraint list</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getDriving">
+    <Methode Name="getDriving" Const="true">
       <Documentation>
         <UserDocu>Get the Driving status of a datum constraint</UserDocu>
       </Documentation>
@@ -138,7 +146,7 @@
             <UserDocu>sets the constraint on/off (enforced or not)</UserDocu>
         </Documentation>
     </Methode>
-    <Methode Name="getActive">
+    <Methode Name="getActive" Const="true">
         <Documentation>
             <UserDocu>Get the constraint status (enforced or not)</UserDocu>
         </Documentation>
@@ -163,14 +171,14 @@
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getPoint">
+    <Methode Name="getPoint" Const="true">
       <Documentation>
         <UserDocu>
           getPoint(GeoIndex,PointPos) - retrieve the vector of a point in the sketch
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getAxis">
+    <Methode Name="getAxis" Const="true">
       <Documentation>
         <UserDocu>
           return an axis based on the corresponding construction line
