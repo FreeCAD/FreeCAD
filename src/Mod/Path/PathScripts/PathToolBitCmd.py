@@ -46,8 +46,7 @@ class CommandToolBitCreate:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        import PathScripts.PathToolBitGui as PathToolBitGui
-        obj = PathToolBit.Factory.Create()
+        obj = PathScripts.PathToolBit.Factory.Create()
         obj.ViewObject.Proxy.setCreate(obj.ViewObject)
 
 class CommandToolBitSave:
