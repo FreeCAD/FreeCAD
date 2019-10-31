@@ -39,6 +39,7 @@
 #include <QCursor>
 #include <QImage>
 
+#include <App/DocumentObserver.h>
 #include <Gui/Selection.h>
 #include <Gui/Namespace.h>
 
@@ -273,6 +274,7 @@ public:
     SoPickedPoint* getPickedPoint(SoEventCallback * n) const;
     SbBool pubSeekToPoint(const SbVec2s& pos);
     void pubSeekToPoint(const SbVec3f& pos);
+    std::vector<App::SubObjectT> getPickedList(const SbVec2s &pos) const;
     //@}
 
     /**

@@ -2821,6 +2821,12 @@ SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const
     return pp?pp->copy():0;
 }
 
+std::vector<App::SubObjectT>
+View3DInventorViewer::getPickedList(const SbVec2s &pos) const {
+    return selectionRoot->getPickedSelections(getSoRenderManager()->getViewportRegion(),
+            pos, getSoRenderManager()->getSceneGraph());
+}
+
 SbBool View3DInventorViewer::pubSeekToPoint(const SbVec2s& pos)
 {
     return this->seekToPoint(pos);
