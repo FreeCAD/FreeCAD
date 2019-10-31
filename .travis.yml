@@ -135,6 +135,7 @@ before_install:
                                libocct-visualization-dev        \
                                libvtk7-dev                      \
                                libmedc-dev                      \
+                               pybind11-dev                     \
                                swig                             \
                                qt4-qmake                        \
                                libqt4-opengl-dev                \
