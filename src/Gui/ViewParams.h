@@ -60,21 +60,24 @@ public:
     FC_VIEW_PARAM(UseNewSelection,bool,Bool,true) \
     FC_VIEW_PARAM(UseSelectionRoot,bool,Bool,true) \
     FC_VIEW_PARAM(EnableSelection,bool,Bool,true) \
+    FC_VIEW_PARAM(EnablePreselection,bool,Bool,true) \
     FC_VIEW_PARAM(RenderCache,int,Int,0) \
     FC_VIEW_PARAM(RandomColor,bool,Bool,false) \
-    FC_VIEW_PARAM(BoundingBoxColor,unsigned long,Unsigned,4294967295UL) \
-    FC_VIEW_PARAM(AnnotationTextColor,unsigned long,Unsigned,4294967295UL) \
+    FC_VIEW_PARAM(BoundingBoxColor,unsigned long,Unsigned,0xffffffff) \
+    FC_VIEW_PARAM(AnnotationTextColor,unsigned long,Unsigned,0xffffffff) \
+    FC_VIEW_PARAM(HighlightColor,unsigned long,Unsigned,0xe1e114ff) \
+    FC_VIEW_PARAM(SelectionColor,unsigned long,Unsigned,0x1cad1cff) \
     FC_VIEW_PARAM(MarkerSize,int,Int,9) \
-    FC_VIEW_PARAM(DefaultLinkColor,unsigned long,Unsigned,0x66FFFF00) \
-    FC_VIEW_PARAM(DefaultShapeLineColor,unsigned long,Unsigned,421075455UL) \
-    FC_VIEW_PARAM(DefaultShapeColor,unsigned long,Unsigned,0xCCCCCC00) \
+    FC_VIEW_PARAM(DefaultLinkColor,unsigned long,Unsigned,0x66FFFFFF) \
+    FC_VIEW_PARAM(DefaultShapeLineColor,unsigned long,Unsigned,0x191919FF) \
+    FC_VIEW_PARAM(DefaultShapeColor,unsigned long,Unsigned,0xCCCCCCFF) \
     FC_VIEW_PARAM(DefaultShapeLineWidth,int,Int,2) \
     FC_VIEW_PARAM(CoinCycleCheck,bool,Bool,true) \
     FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument,bool,Bool,true) \
     FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false) \
     FC_VIEW_PARAM(UpdateSelectionVisual,bool,Bool,true) \
     FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true) \
-    FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,true) \
+    FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,false) \
     FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.0) \
     FC_VIEW_PARAM(PickRadius,double,Float,5.0) \
     FC_VIEW_PARAM(SelectionTransparency,double,Float,0.5) \

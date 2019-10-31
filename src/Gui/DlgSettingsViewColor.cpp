@@ -26,8 +26,10 @@
 #ifndef _PreComp_
 #endif
 
+#include <App/Material.h>
 #include "DlgSettingsViewColor.h"
 #include "ui_DlgSettingsViewColor.h"
+#include "ViewParams.h"
 #include "PrefWidgets.h"
 
 using namespace Gui::Dialog;
@@ -45,6 +47,12 @@ DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
     ui->setupUi(this);
     ui->HighlightColor->setEnabled(ui->checkBoxPreselection->isChecked());
     ui->SelectionColor->setEnabled(ui->checkBoxSelection->isChecked());
+
+    ui->SelectionColor->setColor(App::Color(
+                (uint32_t)ViewParams::instance()->getSelectionColor()).asValue<QColor>());
+
+    ui->HighlightColor->setColor(App::Color(
+                (uint32_t)ViewParams::instance()->getHighlightColor()).asValue<QColor>());
 }
 
 /** 
