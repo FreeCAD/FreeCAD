@@ -26,7 +26,9 @@
 #ifndef _PreComp_
 #endif
 
+#include <App/Material.h>
 #include "DlgSettingsViewColor.h"
+#include "ViewParams.h"
 #include "PrefWidgets.h"
 
 using namespace Gui::Dialog;
@@ -73,6 +75,12 @@ void DlgSettingsViewColor::saveSettings()
 
 void DlgSettingsViewColor::loadSettings()
 {
+    SelectionColor->setColor(App::Color(
+                (uint32_t)ViewParams::instance()->getSelectionColor()).asValue<QColor>());
+
+    HighlightColor->setColor(App::Color(
+                (uint32_t)ViewParams::instance()->getHighlightColor()).asValue<QColor>());
+
     SelectionColor_Background->onRestore();
     backgroundColorFrom->onRestore();
     backgroundColorTo->onRestore();

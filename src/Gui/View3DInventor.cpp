@@ -68,6 +68,7 @@
 
 #include <App/DocumentObject.h>
 
+#include "ViewParams.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "Document.h"
@@ -116,6 +117,9 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     setMouseTracking(true);
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
+
+    // Make sure ViewParams receives parameter notification before us
+    ViewParams::instance();
 
     // attach parameter Observer
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
@@ -295,32 +299,26 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->getBacklight()->intensity.setValue((float)value/100.0f);
     }
     else if (strcmp(Reason,"EnablePreselection") == 0) {
-        const ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-        SoFCEnableHighlightAction cAct(rclGrp.GetBool("EnablePreselection", true));
+        SoFCEnableHighlightAction cAct(ViewParams::instance()->getEnablePreselection());
         cAct.apply(_viewer->getSceneGraph());
     }
     else if (strcmp(Reason,"EnableSelection") == 0) {
-        const ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-        SoFCEnableSelectionAction cAct(rclGrp.GetBool("EnableSelection", true));
+        SoFCEnableSelectionAction cAct(ViewParams::instance()->getEnableSelection());
         cAct.apply(_viewer->getSceneGraph());
     }
     else if (strcmp(Reason,"HighlightColor") == 0) {
-        float transparency;
-        SbColor highlightColor(0.8f, 0.1f, 0.1f);
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = rGrp.GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        SoSFColor col; col.setValue(highlightColor);
+        SbColor color;
+        float trans;
+        color.setPackedValue(ViewParams::instance()->getHighlightColor(),trans);
+        SoSFColor col; col.setValue(color);
         SoFCHighlightColorAction cAct(col);
         cAct.apply(_viewer->getSceneGraph());
     }
     else if (strcmp(Reason,"SelectionColor") == 0) {
-        float transparency;
-        SbColor selectionColor(0.1f, 0.8f, 0.1f);
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = rGrp.GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        SoSFColor col; col.setValue(selectionColor);
+        SbColor color;
+        float trans;
+        color.setPackedValue(ViewParams::instance()->getSelectionColor(),trans);
+        SoSFColor col; col.setValue(color);
         SoFCSelectionColorAction cAct(col);
         cAct.apply(_viewer->getSceneGraph());
     }
