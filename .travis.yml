@@ -48,14 +48,14 @@ matrix:
         dist: bionic
         compiler: clang
         env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
+          - CMAKE_OPTS="-DFREECAD_USE_PYBIND11=ON -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - PYTHON_MAJOR_VERSION=3
 
       - os: linux
         dist: bionic
         compiler: gcc
         env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
+          - CMAKE_OPTS="-DFREECAD_USE_PYBIND11=ON -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - PYTHON_MAJOR_VERSION=3
 
       - os: linux
