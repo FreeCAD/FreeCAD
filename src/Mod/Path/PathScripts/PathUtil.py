@@ -86,6 +86,9 @@ def isValidBaseObject(obj):
         # Can't link to anything inside a geo feature group anymore
         PathLog.debug("%s is inside a geo feature group" % obj.Label)
         return False
+    if hasattr(obj, 'BitBody') and hasattr(obj, 'BitTemplate'):
+        # ToolBit's are not valid base objects
+        return False
     if obj.TypeId in NotValidBaseTypeIds:
         PathLog.debug("%s is blacklisted (%s)" % (obj.Label, obj.TypeId))
         return False
