@@ -24,6 +24,8 @@
 #define TECHDRAW_GEOMETRY_H
 
 #include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 
 #include <Base/Tools2D.h>
 #include <Base/Vector3D.h>
@@ -288,7 +290,6 @@ class TechDrawExport Vertex
 
         virtual void Save(Base::Writer &/*writer*/) const;
         virtual void Restore(Base::XMLReader &/*reader*/);
-        virtual std::string getTagAsString() const { return std::string(); }
         virtual void dump();
 
         Base::Vector3d pnt;
@@ -301,12 +302,21 @@ class TechDrawExport Vertex
         Base::Vector3d point(void) const { return Base::Vector3d(pnt.x,pnt.y,0.0); }
         void point(Base::Vector3d v){ pnt = Base::Vector3d(v.x, v.y); }
         bool cosmetic;
-        int cosmeticLink;
-        boost::uuids::uuid cosmeticTag;
-
+        int cosmeticLink;                 //deprec. use cosmeticTag
+        std::string cosmeticTag;
 
         double x() {return pnt.x;}
         double y() {return pnt.y;}
+
+        boost::uuids::uuid getTag() const;
+        virtual std::string getTagAsString(void) const;
+
+    protected:
+        //Uniqueness
+        void createNewTag();
+        void assignTag(const TechDraw::Vertex* v);
+
+        boost::uuids::uuid tag;
 };
 
 /// Encapsulates some useful static methods

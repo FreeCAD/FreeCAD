@@ -75,7 +75,6 @@ public:
     virtual ~CosmeticVertex() = default;
 
     std::string toString(void) const;
-/*    bool fromCSV(std::string& lineSpec);*/
     void dump(char* title);
     Base::Vector3d scaled(double factor);
 
@@ -89,7 +88,7 @@ public:
     CosmeticVertex* clone(void) const;
 
     Base::Vector3d permaPoint;           //permanent, unscaled value
-    int            linkGeom;             //connection to corresponding "geom" Vertex
+    int            linkGeom;             //connection to corresponding "geom" Vertex (fragile - index based!)
     App::Color     color;
     double         size;
     int            style;
