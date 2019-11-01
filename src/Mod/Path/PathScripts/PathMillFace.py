@@ -131,7 +131,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                                 else:
                                     holes.append((b[0].Shape, wire))
                     else:
-                        PathLog.error('The base subobject, "{}," is not a face. Ignoring "{}."'.format(sub, sub))
+                        PathLog.error('The base subobject, "{0}," is not a face. Ignoring "{0}."'.format(sub))
 
             if obj.ExcludeRaisedAreas is True and len(holes) > 0:
                 for shape, wire in holes:

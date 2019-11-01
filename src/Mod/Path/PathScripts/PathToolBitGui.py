@@ -24,13 +24,11 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathGui as PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathToolBitEdit as PathToolBitEdit
-import PathScripts.PathUtil as PathUtil
 import os
 
 from PySide import QtCore, QtGui
@@ -53,6 +51,7 @@ class ViewProvider(object):
 
     def __init__(self, vobj, name):
         PathLog.track(name, vobj.Object)
+        self.panel = None
         self.icon = name
         self.obj = vobj.Object
         self.vobj = vobj
@@ -84,10 +83,10 @@ class ViewProvider(object):
 
     def _openTaskPanel(self, vobj, deleteOnReject):
         PathLog.track()
-        self.taskPanel = TaskPanel(vobj, deleteOnReject)
+        self.panel = TaskPanel(vobj, deleteOnReject)
         FreeCADGui.Control.closeDialog()
-        FreeCADGui.Control.showDialog(self.taskPanel)
-        self.taskPanel.setupUi()
+        FreeCADGui.Control.showDialog(self.panel)
+        self.panel.setupUi()
 
     def setCreate(self, vobj):
         PathLog.track()
@@ -101,7 +100,7 @@ class ViewProvider(object):
     def unsetEdit(self, vobj, mode):
         # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
-        self.taskPanel = None
+        self.panel = None
         return
 
     def claimChildren(self):
@@ -143,18 +142,12 @@ class TaskPanel:
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
 
-    def getFields(self):
-        self.editor.getFields()
-
     def updateUI(self):
         self.editor.updateUI()
 
     def updateModel(self):
         self.editor.updateTool()
         FreeCAD.ActiveDocument.recompute()
-
-    def setFields(self):
-        self.editor.setFields()
 
     def setupUi(self):
         self.editor.setupUI()
@@ -164,6 +157,9 @@ class ToolBitSelector(object):
     ToolRole = QtCore.Qt.UserRole + 1
 
     def __init__(self):
+        self.buttons = None
+        self.editor = None
+        self.dialog = None
         self.form = FreeCADGui.PySideUic.loadUi(':/panels/ToolBitSelector.ui')
         self.setupUI()
 

@@ -32,7 +32,7 @@ import PySide
 import json
 import os
 import traceback
-import uuid
+import uuid as UUID
 
 PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 PathLog.trackModule(PathLog.thisModule())
@@ -70,7 +70,6 @@ class _TableView(PySide.QtGui.QTableView):
 
     def _copyTool(self, uuid_, dstRow):
         model = self.model()
-        items = []
         model.insertRow(dstRow)
         srcRow = self._rowWithUuid(uuid_)
         for col in range(model.columnCount()):
@@ -81,7 +80,7 @@ class _TableView(PySide.QtGui.QTableView):
                 model.setData(model.index(dstRow, col), srcItem.data(_PathRole), _PathRole)
                 # Even a clone of a tool gets its own uuid so it can be identified when
                 # rearranging the order or inserting/deleting rows
-                model.setData(model.index(dstRow, col), uuid.uuid4(), _UuidRole)
+                model.setData(model.index(dstRow, col), UUID.uuid4(), _UuidRole)
             else:
                 model.item(dstRow, col).setEditable(False)
 
@@ -96,6 +95,7 @@ class _TableView(PySide.QtGui.QTableView):
         stream = PySide.QtCore.QDataStream(data)
         srcRows = []
         while not stream.atEnd():
+            # pylint: disable=unused-variable
             row = stream.readInt32()
             srcRows.append(row)
             col = stream.readInt32()
@@ -141,7 +141,7 @@ class ToolBitLibrary(object):
         toolNr = PySide.QtGui.QStandardItem()
         toolNr.setData(nr, PySide.QtCore.Qt.EditRole)
         toolNr.setData(path, _PathRole)
-        toolNr.setData(uuid.uuid4(), _UuidRole)
+        toolNr.setData(UUID.uuid4(), _UuidRole)
 
         toolName = PySide.QtGui.QStandardItem()
         toolName.setData(tool['name'], PySide.QtCore.Qt.EditRole)
@@ -159,6 +159,7 @@ class ToolBitLibrary(object):
 
     def toolAdd(self):
         PathLog.track()
+        # pylint: disable=broad-except
         try:
             nr = 0
             for row in range(self.model.rowCount()):
@@ -170,7 +171,7 @@ class ToolBitLibrary(object):
                 tool = PathToolBit.Declaration(foo)
                 self._toolAdd(nr + i, tool, foo)
             self.toolTableView.resizeColumnsToContents()
-        except:
+        except Exception:
             PathLog.error('something happened')
             PathLog.error(traceback.print_exc())
 
@@ -198,6 +199,7 @@ class ToolBitLibrary(object):
             self.model.setData(self.model.index(row, 0), row + 1, PySide.QtCore.Qt.EditRole)
 
     def toolSelect(self, selected, deselected):
+        # pylint: disable=unused-argument
         self.form.toolDelete.setEnabled(len(self.toolTableView.selectedIndexes()) > 0)
 
     def open(self, path=None, dialog=False):

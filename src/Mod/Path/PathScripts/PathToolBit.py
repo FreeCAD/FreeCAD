@@ -311,6 +311,7 @@ class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
 class ToolBitFactory(object):
 
     def CreateFromAttrs(self, attrs, name='ToolBit'):
+        # pylint: disable=protected-access
         obj = Factory.Create(name, attrs['shape'])
         obj.Label = attrs['name']
         params = attrs['parameter']

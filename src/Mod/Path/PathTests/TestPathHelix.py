@@ -36,6 +36,7 @@ PathLog.trackModule(PathLog.thisModule())
 class TestPathHelix(PathTestUtils.PathTestBase):
 
     def setUp(self):
+        self.clone = None
         self.doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_holes00.fcstd')
         self.job = PathJob.Create('Job', [self.doc.Body])
 

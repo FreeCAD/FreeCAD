@@ -28,7 +28,6 @@ import Part
 import PathScripts
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
-import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil

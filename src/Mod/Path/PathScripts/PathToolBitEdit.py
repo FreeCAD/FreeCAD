@@ -22,16 +22,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 import FreeCADGui
-import Path
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathToolBit as PathToolBit
-import copy
-import math
+import os
 import re
 
 from PySide import QtCore, QtGui
@@ -122,6 +119,7 @@ class ToolBitEditor(object):
         self.model.dataChanged.connect(self.updateData)
 
     def updateData(self, topLeft, bottomRight):
+        # pylint: disable=unused-argument
         if 0 == topLeft.column():
             isset = self.model.item(topLeft.row(), 0).checkState() == QtCore.Qt.Checked
             self.model.item(topLeft.row(), 1).setEnabled(isset)
@@ -138,11 +136,10 @@ class ToolBitEditor(object):
             if enabled and not prop.getValue() is None:
                 prop.setupProperty(self.tool, name, PathToolBit.PropertyGroupAttribute, prop.getValue())
             elif hasattr(self.tool, name):
-                self.obj.removeProperty(name)
+                self.tool.removeProperty(name)
 
     def reject(self):
         self.tool.Proxy.unloadBitBody(self.tool)
-        pass
 
     def updateUI(self):
         PathLog.track()
@@ -161,6 +158,7 @@ class ToolBitEditor(object):
             self.bitEditor[editor].updateSpinBox()
 
     def updateTool(self):
+        # pylint: disable=protected-access
         PathLog.track()
         self.tool.Label = str(self.form.toolName.text())
         self.tool.BitShape = str(self.form.shapePath.text())

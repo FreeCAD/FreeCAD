@@ -759,7 +759,13 @@ class ObjectTagDressup:
         obj.addProperty("App::PropertyIntegerList", "Disabled", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "IDs of disabled holding tags"))
         obj.addProperty("App::PropertyInteger", "SegmentationFactor", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Factor determining the # of segments used to approximate rounded tags."))
 
-        self.__setstate__(obj)
+        # for pylint ...
+        self.obj = obj
+        self.solids = []
+        self.tags = []
+        self.pathData = None
+        self.toolRadius = None
+        self.mappers = []
 
         obj.Proxy = self
         obj.Base = base

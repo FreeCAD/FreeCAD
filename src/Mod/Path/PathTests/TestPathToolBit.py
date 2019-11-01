@@ -29,16 +29,16 @@ import PathTests.PathTestUtils as PathTestUtils
 class TestPathToolBit(PathTestUtils.PathTestBase):
 
     def test00(self):
-        '''Find a tool template from file name'''
+        '''Find a tool shapee from file name'''
 
-        path = PathToolBit.findTemplate('endmill-straight.fcstd')
+        path = PathToolBit.findShape('endmill-straight.fcstd')
         self.assertIsNot(path, None)
         self.assertNotEqual(path, 'endmill-straight.fcstd')
 
     def test01(self):
-        '''Find a tool template from an invalid absolute path.'''
+        '''Find a tool shapee from an invalid absolute path.'''
 
-        path = PathToolBit.findTemplate('/this/is/unlikely/a/valid/path/v-bit.fcstd')
+        path = PathToolBit.findShape('/this/is/unlikely/a/valid/path/v-bit.fcstd')
         self.assertIsNot(path, None)
         self.assertNotEqual(path, '/this/is/unlikely/a/valid/path/v-bit.fcstd')
 
