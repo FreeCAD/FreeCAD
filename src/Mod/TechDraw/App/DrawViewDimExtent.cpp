@@ -74,6 +74,8 @@ DrawViewDimExtent::DrawViewDimExtent(void)
     Source3d.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(DirExtent ,(0),"",App::Prop_Output,"Horizontal / Vertical");
 
+    ADD_PROPERTY_TYPE(CosmeticTags ,(""),"",App::Prop_Output,"Id of cosmetic endpoints");
+
     //hide the properties the user can't edit in the property editor
     Source3d.setStatus(App::Property::Hidden,true);   //TBI
 
@@ -128,35 +130,34 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
 
     TechDraw::Vertex* v0 = nullptr;
     TechDraw::Vertex* v1 = nullptr;
-    const std::vector<std::string> &subElements = References2D.getSubValues();
-    if (subElements.size() > 1) {
-        int idx0 = DrawUtil::getIndexFromName(subElements[0]);
-        int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-        v0 = getViewPart()->getProjVertexByIndex(idx0);
-        v1 = getViewPart()->getProjVertexByIndex(idx1);
-
-        double length00 = (v0->pnt - refMin).Length();
-        double length11 = (v1->pnt - refMax).Length();
-        double length01 = (v0->pnt - refMax).Length();
-        double length10 = (v1->pnt - refMin).Length();
-        if (  ((length00 < tolerance) &&
-               (length11 < tolerance))  ||
-              ((length01 < tolerance) &&
-               (length10 < tolerance))  ) {
-        } else {
-            //update GV
-            v0->pnt = refMin;
-            v1->pnt = refMax;
-    //        v0->occVertex = ???
-    //        v1->occVertex = ???
-            //update CV
-            double scale = dvp->getScale();
-            int cv0 = v0->cosmeticLink;
-            CosmeticVertex* cvTemp = dvp->getCosmeticVertexByIndex(cv0);
-            cvTemp->permaPoint = refMin / scale;
-            int cv1 = v1->cosmeticLink;
-            cvTemp = dvp->getCosmeticVertexByIndex(cv1);
-            cvTemp->permaPoint = refMax / scale; 
+    std::vector<std::string> cTags = CosmeticTags.getValues();
+    if (cTags.size() > 1) {
+        v0 = dvp->getProjVertexByCosTag(cTags[0]);
+        v1 = dvp->getProjVertexByCosTag(cTags[1]);
+        if ( (v0 != nullptr) &&
+             (v1 != nullptr) ) {
+            double length00 = (v0->pnt - refMin).Length();
+            double length11 = (v1->pnt - refMax).Length();
+            double length01 = (v0->pnt - refMax).Length();
+            double length10 = (v1->pnt - refMin).Length();
+            if (  ((length00 < tolerance) &&
+                   (length11 < tolerance))  ||
+                  ((length01 < tolerance) &&
+                   (length10 < tolerance))  ) {
+                //nothing changed - nop
+            } else {
+                //update GV
+                v0->pnt = refMin;
+                v1->pnt = refMax;
+        //        v0->occVertex = ???
+        //        v1->occVertex = ???
+                //update CV
+                double scale = dvp->getScale();
+                CosmeticVertex* cvTemp = dvp->getCosmeticVertex(cTags[0]);
+                cvTemp->permaPoint = refMin / scale;
+                cvTemp = dvp->getCosmeticVertex(cTags[1]);
+                cvTemp->permaPoint = refMax / scale; 
+            }
         }
     }
 
@@ -177,35 +178,67 @@ std::vector<std::string> DrawViewDimExtent::getSubNames(void)
     return result;
 }
 
+pointPair DrawViewDimExtent::getPointsTwoVerts()
+{
+//    Base::Console().Message("DVDE::getPointsTwoVerts() - %s\n",getNameInDocument());
+    pointPair result;
+    result.first = Base::Vector3d(0.0, 0.0, 0.0);
+    result.second = Base::Vector3d(0.0, 0.0, 0.0);
+    TechDraw::Vertex* v0 = nullptr;
+    TechDraw::Vertex* v1 = nullptr;
+    TechDraw::DrawViewPart* dvp = getViewPart();
+    if (dvp == nullptr) {
+        return result;
+    }
+
+    std::vector<std::string> cTags = CosmeticTags.getValues();
+    if (cTags.size() > 1) {
+        v0 = dvp->getProjVertexByCosTag(cTags[0]);
+        v1 = dvp->getProjVertexByCosTag(cTags[1]);
+        if ( (v0 != nullptr) &&
+             (v1 != nullptr) ) {
+            result.first  = v0->pnt;
+            result.second = v1->pnt;
+        }
+    }
+    return result;
+}
+
+//! validate 2D references - only checks if the target exists
+bool DrawViewDimExtent::checkReferences2D() const
+{
+//    Base::Console().Message("DVDE::checkReFerences2d() - %s\n",getNameInDocument());
+    bool result = false;
+    TechDraw::DrawViewPart* dvp = getViewPart();
+    if (dvp == nullptr) {
+        return result;
+    }
+
+    std::vector<std::string> cTags = CosmeticTags.getValues();
+    if (cTags.size() > 1) {
+        CosmeticVertex* cv0 = dvp->getCosmeticVertex(cTags[0]);
+        CosmeticVertex* cv1 = dvp->getCosmeticVertex(cTags[1]);
+        if ( (cv0 != nullptr) &&
+             (cv1 != nullptr) ) {
+            result = true;
+        }
+    }
+    return result;
+}
+
 void DrawViewDimExtent::unsetupObject()
 {
-    //CV's need to be deleted, but deleting messes up all the indices to other CV's!
-//    TechDraw::DrawViewPart* dvp = getViewPart();
-//    std::vector<TechDraw::CosmeticVertex*> cVerts = dvp->CosmeticVertexes.getValues();
-//    Base::Console().Message("DVDE::unsetupObject() - cVerts: %d\n", cVerts.size());
-//    TechDraw::Vertex* v0 = nullptr;
-//    TechDraw::Vertex* v1 = nullptr;
-//    const std::vector<std::string> &subElements = References2D.getSubValues();
-//    if (subElements.size() > 1) {
-//        Base::Console().Message("DVDE::unsetupObject - more than 1 subElement\n");
-//        int idx1 = DrawUtil::getIndexFromName(subElements[1]);
-//        v1 = dvp->getProjVertexByIndex(idx1);
-//        if (v1 != nullptr) {
-//            int cv1 = v1->cosmeticLink;
-//            dvp->removeCosmeticVertex(cv1);
-//        }
+//    bool isRemoving = testStatus(App::ObjectStatus::Remove);
+//    Base::Console().Message("DVDE::unsetupObject - isRemove: %d status: %X\n",
+//                            isRemoving, getStatus());
+    TechDraw::DrawViewPart* dvp = getViewPart();
 
-//        int idx0 = DrawUtil::getIndexFromName(subElements[0]);
-//        v0 = dvp->getProjVertexByIndex(idx0);
-//        if (v0 != nullptr) {
-//            int cv0 = v0->cosmeticLink;
-//            dvp->removeCosmeticVertex(cv0);
-//        }
-//    }
-//    cVerts = dvp->CosmeticVertexes.getValues();
-//    Base::Console().Message("DVDE::unsetupObject - exit - cVerts: %d\n", cVerts.size());
+    std::vector<std::string> cTags = CosmeticTags.getValues();
+    dvp->removeCosmeticVertex(cTags);
     DrawViewDimension::unsetupObject();
-//    App::DocumentObject::unsetUpObject();
+
+    //dvp probably needs recomp/repaint here.
+    dvp->enforceRecompute();
 }
 
 PyObject *DrawViewDimExtent::getPyObject(void)

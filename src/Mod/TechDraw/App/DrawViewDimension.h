@@ -135,7 +135,7 @@ public:
     int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
     void clear3DMeasurements(void);
-    bool checkReferences2D(void) const;
+    virtual bool checkReferences2D(void) const;
     pointPair getLinearPoints(void) {return m_linearPoints; }
     arcPoints getArcPoints(void) {return m_arcPoints; }
     anglePoints getAnglePoints(void) {return m_anglePoints; }
@@ -143,16 +143,16 @@ public:
     bool references(std::string geomName) const;
 
 protected:
-    void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
     bool showUnits() const;
     bool useDecimals() const;
     std::string getPrefix() const;
     std::string getDefaultFormatSpec() const;
-    pointPair getPointsOneEdge();
-    pointPair getPointsTwoEdges();
-    pointPair getPointsTwoVerts();
-    pointPair getPointsEdgeVert();
+    virtual pointPair getPointsOneEdge();
+    virtual pointPair getPointsTwoEdges();
+    virtual pointPair getPointsTwoVerts();
+    virtual pointPair getPointsEdgeVert();
 
 protected:
     Measure::Measurement *measurement;

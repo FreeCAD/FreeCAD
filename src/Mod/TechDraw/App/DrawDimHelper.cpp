@@ -120,6 +120,30 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
     DrawViewDimExtent* extDim = dynamic_cast<DrawViewDimExtent*>(distDim);
     extDim->Source.setValue(dvp, edgeNames);
 
+    std::vector<std::string> subElements      = extDim->References2D.getSubValues();
+    std::vector<std::string> cvTags;
+    std::string tag0;
+    std::string tag1;
+    TechDraw::Vertex* v0 = nullptr;
+    TechDraw::Vertex* v1 = nullptr;
+    if (subElements.size() > 1) {
+        int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+        int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+        v0 = dvp->getProjVertexByIndex(idx0);
+        v1 = dvp->getProjVertexByIndex(idx1);
+        if ( (v0 != nullptr) && 
+             (!v0->cosmeticTag.empty()) ) {
+            tag0 = v0->cosmeticTag;
+        }
+        if ( (v1 != nullptr) && 
+             (!v1->cosmeticTag.empty()) ) {
+            tag1 = v1->cosmeticTag;
+        }
+        cvTags.push_back(tag0);
+        cvTags.push_back(tag1);
+        extDim->CosmeticTags.setValues(cvTags);
+    }
+
     //continue recomputes
     dvp->getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
     extDim->recomputeFeature();
@@ -315,8 +339,6 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     TechDraw::DrawPage* page = dvp->findParentPage();
     std::string pageName = page->getNameInDocument();
 
-    double scale = dvp->getScale();
-
     TechDraw::DrawViewDimension *dim = 0;
     App::Document* doc = dvp->getDocument();
     std::string dimName = doc->getUniqueObjectName("Dimension");
@@ -324,17 +346,15 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
         dimName = doc->getUniqueObjectName("DimExtent");
     }
 
-    Base::Vector3d cleanMin = DrawUtil::invertY(inMin) / scale;
-    int idx1 = dvp->addCosmeticVertex(cleanMin);   //CV index
-    dvp->add1CVToGV(idx1);
-    Base::Vector3d cleanMax = DrawUtil::invertY(inMax) / scale;
-    int idx2 = dvp->addCosmeticVertex(cleanMax);
-    dvp->add1CVToGV(idx2);
+    double scale = dvp->getScale();
 
-    CosmeticVertex* cv1 = dvp->getCosmeticVertexByIndex(idx1);
-    CosmeticVertex* cv2 = dvp->getCosmeticVertexByIndex(idx2);
-    int iGV1 = cv1->linkGeom;
-    int iGV2 = cv2->linkGeom;
+    //regular dims will have trouble with geom indexes!
+    Base::Vector3d cleanMin = DrawUtil::invertY(inMin) / scale;
+    std::string tag1 = dvp->addCosmeticVertexSS(cleanMin);
+    int iGV1 = dvp->add1CVToGV(tag1);
+    Base::Vector3d cleanMax = DrawUtil::invertY(inMax) / scale;
+    std::string tag2 = dvp->addCosmeticVertexSS(cleanMax);
+    int iGV2 = dvp->add1CVToGV(tag2);
 
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
@@ -346,7 +366,6 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     objs.push_back(dvp);
 
     ss.clear();
-    ss.str("");
     ss << "Vertex" << iGV2;
     vertexName = ss.str();
     subs.push_back(vertexName);
@@ -360,11 +379,12 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
         Base::Interpreter().runStringArg("App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",
                                          dimName.c_str());
     }
+
     Base::Interpreter().runStringArg("App.activeDocument().%s.Type = '%s'",
                                      dimName.c_str(), dimType.c_str());
+
     Base::Interpreter().runStringArg("App.activeDocument().%s.addView(App.activeDocument().%s)",
                                      pageName.c_str(),dimName.c_str());
-
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(doc->getObject(dimName.c_str()));
     if (!dim) {

@@ -1076,7 +1076,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             SubNames = (*itSel).getSubNames();
         }
-        std::vector<int> cv2Delete;
+        std::vector<std::string> cv2Delete;
         std::vector<int> ce2Delete;
         std::vector<int> cl2Delete;
         for (auto& s: SubNames) {
@@ -1098,11 +1098,13 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                     }
                 }
             } else if (geomType == "Vertex") {
+                //TODO: delete by tag
                 TechDraw::Vertex* tdv = objFeat->getProjVertexByIndex(idx);
                 if (tdv != nullptr) {
-                    int delIndex = tdv->cosmeticLink;
-                    if (!(delIndex < 0)) {
-                        cv2Delete.push_back(delIndex);
+//                    int delIndex = tdv->cosmeticLink;
+                    std::string delTag = tdv->cosmeticTag;
+                    if (!delTag.empty()) {
+                        cv2Delete.push_back(delTag);
                     } else {
                         Base::Console().Message("CMD::eraser - geom: %d has no cv\n", idx);
                     }
@@ -1116,14 +1118,13 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             }
 
         }
-        // delete items in reverse order so as not to invalidate indices
         if (!cv2Delete.empty()) {
-            std::sort(cv2Delete.begin(), cv2Delete.end());
-            auto it = cv2Delete.rbegin();
-            for ( ; it != cv2Delete.rend(); it++) {
-                objFeat->removeCosmeticVertex((*it));
+            for (auto& cvTag: cv2Delete) {
+                objFeat->removeCosmeticVertex(cvTag);
             }
+            objFeat->enforceRecompute();
         }
+        
         if (!ce2Delete.empty()) {
             std::sort(ce2Delete.begin(), ce2Delete.end());
             auto itce = ce2Delete.rbegin();
