@@ -111,7 +111,7 @@ import zipfile
 import tempfile
 import inspect
 import binascii
-from pivy import coin
+
 
 
 
@@ -310,6 +310,8 @@ def render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,bac
     #
     # But there are other ways, google of GLX indirect rendering
 
+    from pivy import coin
+
     if isinstance(camera,str):
         camera = getCoinCamera(camera)
 
@@ -363,6 +365,8 @@ def buildScene(objects,colors=None):
     objects. Optional colors argument can be a dicionary of objName:ShapeColorTuple
     or obj:DiffuseColorList pairs."""
 
+    from pivy import coin
+
     root = coin.SoSeparator()
     for o in objects:
         buf = None
@@ -409,6 +413,8 @@ def getCoinCamera(camerastring):
 
     """getCoinCamera(camerastring): Returns a coin camera node from a string"""
 
+    from pivy import coin
+
     if camerastring:
         inp = coin.SoInput()
         inp.setBuffer(camerastring)
@@ -431,7 +437,9 @@ def viewer(scene=None,background=(1.0,1.0,1.0),lightdir=None):
     be turned on. This might not work with some 3D drivers."""
 
     # Initialize Coin. This returns a main window to use
+    from pivy import coin
     from pivy import sogui
+
     win = sogui.SoGui.init()
     if win is None:
         print("Unable to create a SoGui window")
@@ -814,6 +822,8 @@ def openiv(filename):
 
     """openiv(filename): opens an .iv file and returns a coin node from it"""
 
+    from pivy import coin
+
     f = open(filename,"r")
     buf = f.read()
     f.close()
@@ -827,6 +837,8 @@ def openiv(filename):
 def saveiv(scene,filename):
 
     """saveiv(scene,filename): saves an .iv file with the contents of the given coin node"""
+
+    from pivy import coin
 
     wa=coin.SoWriteAction()
     wa.getOutput().openFile(filename)
