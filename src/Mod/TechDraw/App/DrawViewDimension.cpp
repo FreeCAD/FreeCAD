@@ -707,7 +707,7 @@ double DrawViewDimension::getDimValue()
     } else {
         // Projected Values
         if (!checkReferences2D()) {
-            Base::Console().Warning("DVD::getDimValue - %s - 2D references are corrupt\n",getNameInDocument());
+            Base::Console().Warning("DVD::getDimValue - %s - 2D references are corrupt (5)\n",getNameInDocument());
             return result;
         }
         if ( Type.isValue("Distance")  ||
@@ -775,7 +775,7 @@ pointPair DrawViewDimension::getPointsOneEdge()
     if (geom && geom->geomType == TechDraw::GeomType::GENERIC) {
         gen = static_cast<TechDraw::Generic*>(geom);
     } else {
-        Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        Base::Console().Error("Error: DVD - %s - 2D references are corrupt (1)\n",getNameInDocument());
         return result;
     }
     result.first = gen->points[0];
@@ -795,7 +795,7 @@ pointPair DrawViewDimension::getPointsTwoEdges()
     TechDraw::BaseGeom* geom1 = getViewPart()->getGeomByIndex(idx1);
     if ((geom0 == nullptr) ||
         (geom1 == nullptr) ) {
-        Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        Base::Console().Error("Error: DVD - %s - 2D references are corrupt (2)\n",getNameInDocument());
         return result;
     }
     result = closestPoints(geom0->occEdge,geom1->occEdge);
@@ -814,7 +814,7 @@ pointPair DrawViewDimension::getPointsTwoVerts()
     TechDraw::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
     if ((v0 == nullptr) ||
         (v1 == nullptr) ) {
-        Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        Base::Console().Error("Error: DVD - %s - 2D references are corrupt (3)\n",getNameInDocument());
         return result;
     }
     result.first  = v0->pnt;
@@ -841,7 +841,7 @@ pointPair DrawViewDimension::getPointsEdgeVert()
     }
     if ((v == nullptr) ||
         (e == nullptr) ) {
-        Base::Console().Error("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+        Base::Console().Error("Error: DVD - %s - 2D references are corrupt (4)\n",getNameInDocument());
         return result;
     }
     result = closestPoints(e->occEdge,v->occVertex);

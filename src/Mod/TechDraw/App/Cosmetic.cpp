@@ -149,7 +149,6 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
     //TODO: sort out 2x visible variables
     Vertex::visible = true;    //yuck
     cosmetic = true;
-    
 
     createNewTag();
 }
@@ -208,7 +207,8 @@ std::string CosmeticVertex::toString(void) const
           " / " <<
           style << ","  <<
           " / " <<
-          visible;
+          visible << " / " ;
+    ss << getTagAsString();
     return ss.str();
 }
 
@@ -232,6 +232,7 @@ void CosmeticVertex::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Style value=\"" <<  style << "\"/>" << endl;
     const char v = visible?'1':'0';
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
 void CosmeticVertex::Restore(Base::XMLReader &reader)
@@ -252,6 +253,11 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
     style = reader.getAttributeAsInteger("value");
     reader.readElement("Visible");
     visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    reader.readElement("Tag");
+    temp = reader.getAttribute("value");
+    boost::uuids::string_generator gen;
+    boost::uuids::uuid u1 = gen(temp);
+    tag = u1;
 }
 
 Base::Vector3d CosmeticVertex::scaled(double factor)
