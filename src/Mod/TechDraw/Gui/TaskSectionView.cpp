@@ -400,8 +400,8 @@ bool TaskSectionView::accept()
         Gui::Command::commitCommand();
     }
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-//    m_section->recomputeFeature();
     if (m_section != nullptr) {
+//        m_section->recomputeFeature();
         m_section->requestPaint();
     }
     if (m_base != nullptr) {

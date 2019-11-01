@@ -44,9 +44,9 @@ public:
     /// destructor
     virtual ~ViewProviderViewSection();
 
-    App::PropertyBool   ShowCutSurface;
+    App::PropertyBool   ShowCutSurface;        //obsolete - use CutSurfaceDisplay
     App::PropertyColor  CutSurfaceColor;
-    App::PropertyBool   HatchCutSurface;
+    App::PropertyBool   HatchCutSurface;       //obsolete - use CutSurfaceDisplay
     App::PropertyColor  HatchColor;
     App::PropertyFloat  WeightPattern;
 

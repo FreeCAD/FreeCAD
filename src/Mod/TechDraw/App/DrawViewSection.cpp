@@ -70,6 +70,7 @@
 #include <Base/BoundBox.h>
 #include <Base/Exception.h>
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 
@@ -95,6 +96,11 @@ const char* DrawViewSection::SectionDirEnums[]= {"Right",
                                             "Down",
                                              NULL};
 
+const char* DrawViewSection::CutSurfaceEnums[]= {"Hide",
+                                            "Color",
+                                            "SvgHatch",
+                                            "PatHatch",
+                                             NULL};
 
 
 //===========================================================================
@@ -117,15 +123,19 @@ DrawViewSection::DrawViewSection()
     ADD_PROPERTY_TYPE(SectionDirection,((long)0),sgroup, App::Prop_None, "Direction in Base View for this Section");
     ADD_PROPERTY_TYPE(FuseBeforeCut ,(false),sgroup,App::Prop_None,"Merge Source(s) into a single shape before cutting");
 
+    CutSurfaceDisplay.setEnums(CutSurfaceEnums);
+    ADD_PROPERTY_TYPE(CutSurfaceDisplay,((long)2),fgroup, App::Prop_None, "Appearance of Cut Surface");
     ADD_PROPERTY_TYPE(FileHatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
+    ADD_PROPERTY_TYPE(FileGeomPattern ,(""),fgroup,App::Prop_None,"The PAT pattern file for geometric hatching");
     ADD_PROPERTY_TYPE(NameGeomPattern ,(""),fgroup,App::Prop_None,"The pattern name for geometric hatching");
     ADD_PROPERTY_TYPE(HatchScale,(1.0),fgroup,App::Prop_None,"Hatch pattern size adjustment");
 
     getParameters();
 
-    std::string hatchFilter("Svg files (*.svg *.SVG);;PAT files (*.pat *.PAT);;All files (*)");
+    std::string hatchFilter("Svg files (*.svg *.SVG);;All files (*)");
     FileHatchPattern.setFilter(hatchFilter);
-
+    hatchFilter = ("PAT files (*.pat *.PAT);;All files (*)");
+    FileGeomPattern.setFilter(hatchFilter);
 }
 
 DrawViewSection::~DrawViewSection()
@@ -157,26 +167,28 @@ void DrawViewSection::onChanged(const App::Property* prop)
                                   " - " +
                                   std::string(SectionSymbol.getValue());
             Label.setValue(lblText);
-        }
-        if (prop == &SectionOrigin) {
+        } else if (prop == &SectionOrigin) {
             App::DocumentObject* base = BaseView.getValue();
             TechDraw::DrawView* dv = dynamic_cast<TechDraw::DrawView*>(base);
             if (dv != nullptr) {
                 dv->requestPaint();
             }
+        } else if (prop == &CutSurfaceDisplay) {
+//            Base::Console().Message("DVS::onChanged(%s)\n",prop->getName());
         }
     }
-    if (prop == &FileHatchPattern    ||
+    if (prop == &FileGeomPattern    ||
         prop == &NameGeomPattern ) {
-        std::string fileSpec = FileHatchPattern.getValue();
+        std::string fileSpec = FileGeomPattern.getValue();
         Base::FileInfo fi(fileSpec);
         std::string ext = fi.extension();
         if ( (ext == "pat") ||
              (ext == "PAT") ) {
-            if ((!FileHatchPattern.isEmpty())  &&
+            if ((!FileGeomPattern.isEmpty())  &&
                 (!NameGeomPattern.isEmpty())) {
                 std::vector<PATLineSpec> specs = 
-                           DrawGeomHatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
+                           DrawGeomHatch::getDecodedSpecsFromFile(FileGeomPattern.getValue(),
+                                                                  NameGeomPattern.getValue());
                 m_lineSets.clear();
                 for (auto& hl: specs) {
                     //hl.dump("hl from section");
@@ -203,14 +215,18 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn("BaseView object not found");
     }
 
-    if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
+    TechDraw::DrawViewPart* dvp = nullptr;
+    if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
         return new App::DocumentObjectExecReturn("BaseView object is not a DrawViewPart object");
-
+    } else {
+        dvp = static_cast<TechDraw::DrawViewPart*>(base);
+    }
+    
     TopoDS_Shape baseShape;
     if (FuseBeforeCut.getValue()) {
-        baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShapeFused();
+        baseShape = dvp->getSourceShapeFused();
     } else {
-        baseShape = static_cast<TechDraw::DrawViewPart*>(base)->getSourceShape();
+        baseShape = dvp->getSourceShape();
     }
     
     if (baseShape.IsNull()) {
@@ -301,8 +317,9 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
     }
     catch (Standard_Failure& e1) {
-        Base::Console().Log("LOG - DVS::execute - base shape failed for %s - %s **\n",getNameInDocument(),e1.GetMessageString());
-        return new App::DocumentObjectExecReturn(e1.GetMessageString());
+        Base::Console().Warning("DVS::execute - failed to build base shape %s - %s **\n",
+                                getNameInDocument(),e1.GetMessageString());
+        return DrawView::execute();
     }
 
     try {
@@ -336,22 +353,22 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         sectionFaces = newFaces;
     }
     catch (Standard_Failure& e2) {
-        Base::Console().Log("LOG - DVS::execute - failed building section faces for %s - %s **\n",getNameInDocument(),e2.GetMessageString());
-        return new App::DocumentObjectExecReturn(e2.GetMessageString());
+        Base::Console().Warning("DVS::execute - failed to build section faces for %s - %s **\n",
+                                getNameInDocument(),e2.GetMessageString());
+        return DrawView::execute();
     }
 
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
     addCenterLinesToGeom();
 
+    dvp->requestPaint();  //to refresh section line
     return DrawView::execute();
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const
 {
-    Base::Vector3d plnPnt = SectionOrigin.getValue();
-    Base::Vector3d plnNorm = SectionNormal.getValue();
-    gp_Ax2 viewAxis = getViewAxis(plnPnt,plnNorm,false);
+    gp_Ax2 viewAxis = getSectionCS();
     gp_Ax3 viewAxis3(viewAxis);
 
     return gp_Pln(viewAxis3);
@@ -361,6 +378,7 @@ gp_Pln DrawViewSection::getSectionPlane() const
 //! tries to find the intersection of the section plane with the shape giving a collection of planar faces
 TopoDS_Compound DrawViewSection::findSectionPlaneIntersections(const TopoDS_Shape& shape)
 {
+//    Base::Console().Message("DVS::findSectionPlaneIntersections()\n");
     TopoDS_Compound result;
     if(shape.IsNull()){
         Base::Console().Warning("DrawViewSection::getSectionSurface - Sectional View shape is Empty\n");
@@ -592,14 +610,14 @@ Base::Vector3d DrawViewSection::getSectionVector (const std::string sectionName)
 }
 
 //returns current section cs
-gp_Ax2 DrawViewSection::getSectionCS(void)
+gp_Ax2 DrawViewSection::getSectionCS(void) const
 {
     std::string dirName = SectionDirection.getValueAsString();
     return getSectionCS(dirName);
 }
 
 //! calculate the section Projection CS given section direction name
-gp_Ax2 DrawViewSection::getSectionCS (const std::string dirName)
+gp_Ax2 DrawViewSection::getSectionCS (const std::string dirName) const
 {
     Base::Vector3d view = getBaseDVP()->Direction.getValue();
     view.Normalize();
@@ -627,7 +645,7 @@ gp_Ax2 DrawViewSection::getSectionCS (const std::string dirName)
 //TODO: this should be able to handle arbitrary rotation of the CS
 //TODO: this is useful beyond DVS. move to GO or DU or ???
 //      or at least static in DVS. doesn't depend on DVS object
-gp_Ax2 DrawViewSection::rotateCSCardinal(gp_Ax2 oldCS, int cardinal) 
+gp_Ax2 DrawViewSection::rotateCSCardinal(gp_Ax2 oldCS, int cardinal) const
 {
     // cardinal: 0 - left, 1 - right, 2 - up, 3 - down
     // as in DVS::SectionDirection
@@ -677,7 +695,7 @@ gp_Ax2 DrawViewSection::rotateCSCardinal(gp_Ax2 oldCS, int cardinal)
 
 gp_Ax2 DrawViewSection::rotateCSArbitrary(gp_Ax2 oldCS,
                                           Base::Vector3d axis,
-                                          double degAngle) 
+                                          double degAngle) const
 {
     gp_Ax2 newCS;
 
@@ -715,7 +733,7 @@ void DrawViewSection::unsetupObject()
     DrawViewPart::unsetupObject();
 }
 
-TechDraw::DrawViewPart* DrawViewSection::getBaseDVP()
+TechDraw::DrawViewPart* DrawViewSection::getBaseDVP() const
 {
     TechDraw::DrawViewPart* baseDVP = nullptr;
     App::DocumentObject* base = BaseView.getValue();
@@ -727,7 +745,7 @@ TechDraw::DrawViewPart* DrawViewSection::getBaseDVP()
     return baseDVP;
 }
 
-TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI()
+TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
 {
     TechDraw::DrawProjGroupItem* baseDPGI = nullptr;
     App::DocumentObject* base = BaseView.getValue();
@@ -742,18 +760,24 @@ TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI()
 void DrawViewSection::getParameters()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
 
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/patterns/";
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
-    QString patternFileName = QString::fromStdString(hGrp->GetASCII("FileHatch",defaultFileName.c_str()));
-    if (patternFileName.isEmpty()) {
-        patternFileName = QString::fromStdString(defaultFileName);
+    std::string patternFileName = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
+    Base::FileInfo tfi(patternFileName);
+    if (tfi.isReadable()) {
+        FileHatchPattern.setValue(patternFileName);
     }
-    QFileInfo tfi(patternFileName);
-        if (tfi.isReadable()) {
-            FileHatchPattern.setValue(patternFileName.toUtf8().constData());
-        }
+
+    defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
+    defaultFileName = defaultDir + "FCPAT.pat";
+    patternFileName = hGrp->GetASCII("FilePattern",defaultFileName.c_str());
+    Base::FileInfo tfi2(patternFileName);
+    if (tfi2.isReadable()) {
+        FileGeomPattern.setValue(patternFileName);
+    }
+
     std::string patternName = hGrp->GetASCII("PatternName","Diamond");
     NameGeomPattern.setValue(patternName);
 
