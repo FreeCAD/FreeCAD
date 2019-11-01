@@ -209,11 +209,7 @@ class SetupSheet:
                 for propName in op.properties():
                     prop = OpPropertyName(opName, propName)
                     if hasattr(self.obj, prop):
-                        attr = getattr(self.obj, prop)
-                        if hasattr(attr, 'UserString'):
-                            settings[propName] = attr.UserString
-                        else:
-                            settings[propName] = attr
+                        settings[propName] = PathUtil.getPropertyValueString(self.obj, prop)
                 attrs[opName] = settings
 
         return attrs

@@ -63,6 +63,13 @@ def getProperty(obj, prop):
     o, attr, name = _getProperty(obj, prop) # pylint: disable=unused-variable
     return attr
 
+def getPropertyValueString(obj, prop):
+    '''getPropertyValueString(obj, prop) ... answer a string represntation of an object's property's value.'''
+    attr = getProperty(obj, prop)
+    if hasattr(attr, 'UserString'):
+        return attr.UserString
+    return str(attr)
+
 def setProperty(obj, prop, value):
     '''setProperty(obj, prop, value) ... set the property value of obj's property defined by its canonical name.'''
     o, attr, name = _getProperty(obj, prop) # pylint: disable=unused-variable

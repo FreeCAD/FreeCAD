@@ -126,13 +126,22 @@ class PropertyFloat(Property):
     def typeString(self):
         return "Float"
 
+    def valueFromString(self, string):
+        return float(string)
+
 class PropertyInteger(Property):
     def typeString(self):
         return "Integer"
 
+    def valueFromString(self, string):
+        return int(string)
+
 class PropertyBool(Property):
     def typeString(self):
         return "Bool"
+
+    def valueFromString(self, string):
+        return bool(string)
 
 class PropertyString(Property):
     def typeString(self):

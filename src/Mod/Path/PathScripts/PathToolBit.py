@@ -116,7 +116,8 @@ def updateConstraint(sketch, name, value):
                     PathLog.track(name, constraint.Type, 'unchanged')
             break
 
-PropertyGroupBit = 'Bit'
+PropertyGroupBit       = 'Bit'
+PropertyGroupAttribute = 'Attribute'
 
 class ToolBit(object):
 
@@ -128,7 +129,7 @@ class ToolBit(object):
         obj.addProperty('App::PropertyFile',       'File',        'Base', translate('PathToolBit', 'The file of the tool'))
         if templateFile is not None:
             obj.BitTemplate = templateFile
-            self._setupBitFromTemplate(obj)
+            self._setupBitShape(obj)
         self.onDocumentRestored(obj)
 
     def __getstate__(self):
@@ -141,8 +142,11 @@ class ToolBit(object):
                 break
         return None
 
-    def bitPropertyNames(self, obj):
+    def propertyNamesBit(self, obj):
         return [prop for prop in obj.PropertiesList if obj.getGroupOfProperty(prop) == PropertyGroupBit]
+
+    def propertyNamesAttribute(self, obj):
+        return [prop for prop in obj.PropertiesList if obj.getGroupOfProperty(prop) == PropertyGroupAttribute]
 
     def onDocumentRestored(self, obj):
         obj.setEditorMode('BitTemplate', 1)
@@ -150,20 +154,23 @@ class ToolBit(object):
         obj.setEditorMode('File', 1)
         obj.setEditorMode('Shape', 2)
 
-        for prop in self.bitPropertyNames(obj):
+        for prop in self.propertyNamesBit(obj):
             obj.setEditorMode(prop, 1)
+        # I currently don't see why these need to be read-only
+        #for prop in self.propertyNamesAttribute(obj):
+        #    obj.setEditorMode(prop, 1)
 
     def onChanged(self, obj, prop):
         PathLog.track(obj.Label, prop)
         if prop == 'BitTemplate' and not 'Restore' in obj.State:
-            self._setupBitFromTemplate(obj)
+            self._setupBitShape(obj)
         #elif obj.getGroupOfProperty(prop) == PropertyGroupBit:
         #    self._updateBitShape(obj, [prop])
 
     def _updateBitShape(self, obj, properties=None):
         if not obj.BitBody is None:
             if not properties:
-                properties = self.bitPropertyNames(obj)
+                properties = self.propertyNamesBit(obj)
             for prop in properties:
                 for sketch in [o for o in obj.BitBody.Group if o.TypeId == 'Sketcher::SketchObject']:
                     PathLog.track(obj.Label, sketch.Label, prop)
@@ -203,7 +210,7 @@ class ToolBit(object):
         PathLog.track(obj.Label)
         self._removeBitBody(obj)
         self._copyBitShape(obj)
-        for prop in self.bitPropertyNames(obj):
+        for prop in self.propertyNamesBit(obj):
             obj.removeProperty(prop)
 
     def loadBitBody(self, obj, force=False):
@@ -219,7 +226,7 @@ class ToolBit(object):
     def unloadBitBody(self, obj):
         self._removeBitBody(obj)
 
-    def _setupBitFromTemplate(self, obj, path=None):
+    def _setupBitShape(self, obj, path=None):
         (doc, docOpened) = self._loadBitBody(obj, path)
 
         obj.Label = doc.RootObjects[0].Label
@@ -277,14 +284,29 @@ class ToolBit(object):
         attrs['name'] = obj.Label
         attrs['template'] = obj.BitTemplate
         params = {}
-        for prop in self.bitPropertyNames(obj):
-            params[prop] = PathUtil.getProperty(obj, prop).UserString
+        for name in self.propertyNamesBit(obj):
+            params[name] = PathUtil.getPropertyValueString(obj, name)
         attrs['parameter'] = params
+        params = {}
+        for name in self.propertyNamesAttribute(obj):
+            params[name] = PathUtil.getPropertyValueString(obj, name)
+        attrs['attribute'] = params
         return attrs
 
 def Declaration(path):
     with open(path, 'r') as fp:
         return json.load(fp)
+
+class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
+
+    def __init__(self):
+        PathSetupSheetOpPrototype.OpPrototype.__init__(self, 'ToolBitAttribute')
+        self.addProperty('App::PropertyEnumeration', 'Material', PropertyGroupAttribute, translate('PathToolBit', 'Tool bit material'))
+        self.Material = ['Carbide', 'CastAlloy', 'Ceramics', 'Diamond', 'HighCarbonToolSteel', 'HighSpeedSteel', 'Sialon']
+        self.addProperty('App::PropertyDistance', 'LengthOffset', PropertyGroupAttribute, translate('PathToolBit', 'Length offset in Z direction'))
+        self.addProperty('App::PropertyInteger',  'Flutes', PropertyGroupAttribute, translate('PathToolBit', 'The number of flutes'))
+        self.addProperty('App::PropertyDistance', 'ChipLoad', PropertyGroupAttribute, translate('PathToolBit', 'Chipload as per manufacturer'))
+
 
 class ToolBitFactory(object):
 
@@ -296,6 +318,13 @@ class ToolBitFactory(object):
             PathUtil.setProperty(obj, prop, params[prop])
         obj.Proxy._updateBitShape(obj)
         obj.Proxy.unloadBitBody(obj)
+        params = attrs['attribute']
+        proto = AttributePrototype()
+        for pname in params:
+            prop = proto.getProperty(pname)
+            val =  prop.valueFromString(params[pname])
+            print("prop[%s] = %s (%s)" % (pname, params[pname], type(val)))
+            prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
         return obj
 
     def CreateFrom(self, path, name='ToolBit'):

@@ -27,19 +27,23 @@ import FreeCADGui
 import Path
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathSetupSheetGui as PathSetupSheetGui
 import PathScripts.PathToolBit as PathToolBit
 import copy
 import math
 import re
 
-from PySide import QtGui
+from PySide import QtCore, QtGui
 
 PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 PathLog.trackModule(PathLog.thisModule())
 
-LastPath = 'src/Mod/Path/Tools/Template'
+# Qt translation handling
+def translate(context, text, disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
-class ToolBitEditor:
+class ToolBitEditor(object):
     '''UI and controller for editing a ToolBit.
     The controller embeds the UI to the parentWidget which has to have a layout attached to it.
     '''
@@ -56,6 +60,7 @@ class ToolBitEditor:
             self.tool.BitTemplate = 'src/Mod/Path/Tools/Template/endmill-straight.fcstd'
         self.tool.Proxy.loadBitBody(self.tool)
         self.setupTool(self.tool)
+        self.setupAttributes(self.tool)
 
     def setupTool(self, tool):
         layout = self.form.bitParams.layout()
@@ -78,9 +83,62 @@ class ToolBitEditor:
         else:
             self.form.image.setPixmap(QtGui.QPixmap())
 
+    def setupAttributes(self, tool):
+        self.proto = PathToolBit.AttributePrototype()
+        self.props = sorted(self.proto.properties)
+        self.delegate = PathSetupSheetGui.Delegate(self.form)
+        self.model = QtGui.QStandardItemModel(len(self.props), 3, self.form)
+        self.model.setHorizontalHeaderLabels(['Set', 'Property', 'Value'])
+
+        for i, name in enumerate(self.props):
+            prop = self.proto.getProperty(name)
+            isset = hasattr(tool, name)
+            if isset:
+                prop.setValue(getattr(tool, name))
+
+            self.model.setData(self.model.index(i, 0), isset, QtCore.Qt.EditRole)
+            self.model.setData(self.model.index(i, 1), name,  QtCore.Qt.EditRole)
+            self.model.setData(self.model.index(i, 2), prop,  PathSetupSheetGui.Delegate.PropertyRole)
+            self.model.setData(self.model.index(i, 2), prop.displayString(),  QtCore.Qt.DisplayRole)
+
+            self.model.item(i, 0).setCheckable(True)
+            self.model.item(i, 0).setText('')
+            self.model.item(i, 1).setEditable(False)
+            self.model.item(i, 1).setToolTip(prop.info)
+            self.model.item(i, 2).setToolTip(prop.info)
+
+            if isset:
+                self.model.item(i, 0).setCheckState(QtCore.Qt.Checked)
+            else:
+                self.model.item(i, 0).setCheckState(QtCore.Qt.Unchecked)
+                self.model.item(i, 1).setEnabled(False)
+                self.model.item(i, 2).setEnabled(False)
+
+        self.form.attrTable.setModel(self.model)
+        self.form.attrTable.setItemDelegateForColumn(2, self.delegate)
+        self.form.attrTable.resizeColumnsToContents()
+        self.form.attrTable.verticalHeader().hide()
+
+        self.model.dataChanged.connect(self.updateData)
+
+    def updateData(self, topLeft, bottomRight):
+        if 0 == topLeft.column():
+            isset = self.model.item(topLeft.row(), 0).checkState() == QtCore.Qt.Checked
+            self.model.item(topLeft.row(), 1).setEnabled(isset)
+            self.model.item(topLeft.row(), 2).setEnabled(isset)
+
     def accept(self):
         self.refresh()
         self.tool.Proxy.unloadBitBody(self.tool)
+
+        # get the attributes
+        for i, name in enumerate(self.props):
+            prop = self.proto.getProperty(name)
+            enabled = self.model.item(i, 0).checkState() == QtCore.Qt.Checked
+            if enabled and not prop.getValue() is None:
+                prop.setupProperty(self.tool, name, PathToolBit.PropertyGroupAttribute, prop.getValue())
+            elif hasattr(self.tool, name):
+                self.obj.removeProperty(name)
 
     def reject(self):
         self.tool.Proxy.unloadBitBody(self.tool)
@@ -120,15 +178,15 @@ class ToolBitEditor:
         self.form.blockSignals(False)
 
     def selectTemplate(self):
-        global LastPath
         path = self.tool.BitTemplate
         if not path:
-            path = LastPath
+            path = PathPreferences.lastPathToolTemplate()
         foo = QtGui.QFileDialog.getOpenFileName(self.form,
                 "Path - Tool Template",
                 path,
                 "*.fcstd")
         if foo and foo[0]:
+            PathPreferences.setLastPathToolTemplate(os.path.dirname(foo[0]))
             self.form.templatePath.setText(foo[0])
             self.updateTemplate()
 
