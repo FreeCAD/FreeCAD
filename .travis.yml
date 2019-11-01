@@ -48,14 +48,14 @@ matrix:
         dist: bionic
         compiler: clang
         env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
+          - CMAKE_OPTS="-DPYTHON_EXECUTABLE="/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - PYTHON_MAJOR_VERSION=3
 
       - os: linux
         dist: bionic
         compiler: gcc
         env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
+          - CMAKE_OPTS="-DPYTHON_EXECUTABLE="/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - PYTHON_MAJOR_VERSION=3
 
       - os: linux
@@ -135,6 +135,7 @@ before_install:
                                libocct-visualization-dev        \
                                libvtk7-dev                      \
                                libmedc-dev                      \
+                               pybind11-dev                     \
                                swig                             \
                                qt4-qmake                        \
                                libqt4-opengl-dev                \
@@ -154,7 +155,7 @@ before_install:
                                pyside2-tools                    \
                                doxygen                          \
                                graphviz                         \
-                               netgen                           \
+                               libnglib-dev                     \
                                netgen-headers                   \
                                libmetis-dev                     \
                                libspnav-dev
