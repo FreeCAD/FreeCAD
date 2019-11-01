@@ -82,9 +82,9 @@ def _findTool(path, typ, dbg=False):
 
     return searchFor(path, '')
 
-def findTemplate(path):
-    '''findTemplate(path) ... search for path, full and partially in all known template directories.'''
-    return _findTool(path, 'Template')
+def findShape(path):
+    '''findShape(path) ... search for path, full and partially in all known shape directories.'''
+    return _findTool(path, 'Shape')
 
 def findBit(path):
     if path.endswith('.fctb'):
@@ -121,14 +121,14 @@ PropertyGroupAttribute = 'Attribute'
 
 class ToolBit(object):
 
-    def __init__(self, obj, templateFile):
-        PathLog.track(obj.Label, templateFile)
+    def __init__(self, obj, shapeFile):
+        PathLog.track(obj.Label, shapeFile)
         self.obj = obj
-        obj.addProperty('App::PropertyFile',       'BitTemplate', 'Base', translate('PathToolBit', 'Template for bit shape'))
+        obj.addProperty('App::PropertyFile',       'BitShape', 'Base', translate('PathToolBit', 'Shape for bit shape'))
         obj.addProperty('App::PropertyLink',       'BitBody',     'Base', translate('PathToolBit', 'The parametrized body representing the tool bit'))
         obj.addProperty('App::PropertyFile',       'File',        'Base', translate('PathToolBit', 'The file of the tool'))
-        if templateFile is not None:
-            obj.BitTemplate = templateFile
+        if shapeFile is not None:
+            obj.BitShape = shapeFile
             self._setupBitShape(obj)
         self.onDocumentRestored(obj)
 
@@ -149,7 +149,7 @@ class ToolBit(object):
         return [prop for prop in obj.PropertiesList if obj.getGroupOfProperty(prop) == PropertyGroupAttribute]
 
     def onDocumentRestored(self, obj):
-        obj.setEditorMode('BitTemplate', 1)
+        obj.setEditorMode('BitShape', 1)
         obj.setEditorMode('BitBody', 2)
         obj.setEditorMode('File', 1)
         obj.setEditorMode('Shape', 2)
@@ -162,7 +162,7 @@ class ToolBit(object):
 
     def onChanged(self, obj, prop):
         PathLog.track(obj.Label, prop)
-        if prop == 'BitTemplate' and not 'Restore' in obj.State:
+        if prop == 'BitShape' and not 'Restore' in obj.State:
             self._setupBitShape(obj)
         #elif obj.getGroupOfProperty(prop) == PropertyGroupBit:
         #    self._updateBitShape(obj, [prop])
@@ -185,7 +185,7 @@ class ToolBit(object):
             obj.Shape = Part.Shape()
 
     def _loadBitBody(self, obj, path=None):
-        p = path if path else obj.BitTemplate
+        p = path if path else obj.BitShape
         docOpened = False
         doc = None
         for d in FreeCAD.listDocuments():
@@ -193,9 +193,9 @@ class ToolBit(object):
                 doc = FreeCAD.getDocument(d)
                 break
         if doc is None:
-            p = findTemplate(p)
-            if not path and p != obj.BitTemplate:
-                obj.BitTemplate = p
+            p = findShape(p)
+            if not path and p != obj.BitShape:
+                obj.BitShape = p
             doc = FreeCAD.open(p)
             docOpened = True
         return (doc, docOpened)
@@ -257,8 +257,8 @@ class ToolBit(object):
                     PathUtil.setProperty(obj, prop, value)
 
     def getBitThumbnail(self, obj):
-        if obj.BitTemplate:
-            with open(obj.BitTemplate, 'rb') as fd:
+        if obj.BitShape:
+            with open(obj.BitShape, 'rb') as fd:
                 zf = zipfile.ZipFile(fd)
                 pf = zf.open('thumbnails/Thumbnail.png', 'r')
                 data = pf.read()
@@ -270,7 +270,7 @@ class ToolBit(object):
     def saveToFile(self, obj, path, setFile=True):
         try:
             with open(path, 'w') as fp:
-                json.dump(self.templateAttrs(obj), fp, indent='  ')
+                json.dump(self.shapeAttrs(obj), fp, indent='  ')
             if setFile:
                 obj.File = path
             return True
@@ -278,11 +278,11 @@ class ToolBit(object):
             PathLog.error("Could not save tool %s to %s (%s)" % (obj.Label, path, e))
             raise
 
-    def templateAttrs(self, obj):
+    def shapeAttrs(self, obj):
         attrs = {}
         attrs['version'] = 2 # Path.Tool is version 1
         attrs['name'] = obj.Label
-        attrs['template'] = obj.BitTemplate
+        attrs['shape'] = obj.BitShape
         params = {}
         for name in self.propertyNamesBit(obj):
             params[name] = PathUtil.getPropertyValueString(obj, name)
@@ -311,7 +311,7 @@ class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
 class ToolBitFactory(object):
 
     def CreateFromAttrs(self, attrs, name='ToolBit'):
-        obj = Factory.Create(name, attrs['template'])
+        obj = Factory.Create(name, attrs['shape'])
         obj.Label = attrs['name']
         params = attrs['parameter']
         for prop in params:
@@ -335,9 +335,9 @@ class ToolBitFactory(object):
             PathLog.error("%s not a valid tool file (%s)" % (path, e))
             raise
 
-    def Create(self, name='ToolBit', templateFile=None):
+    def Create(self, name='ToolBit', shapeFile=None):
         obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', name)
-        obj.Proxy = ToolBit(obj, templateFile)
+        obj.Proxy = ToolBit(obj, shapeFile)
         return obj
 
 Factory = ToolBitFactory()

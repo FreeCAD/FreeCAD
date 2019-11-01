@@ -56,8 +56,8 @@ class ToolBitEditor(object):
             parentWidget.layout().addWidget(self.form)
 
         self.tool = tool
-        if not tool.BitTemplate:
-            self.tool.BitTemplate = 'src/Mod/Path/Tools/Template/endmill-straight.fcstd'
+        if not tool.BitShape:
+            self.tool.BitShape = 'src/Mod/Path/Tools/Shape/endmill-straight.fcstd'
         self.tool.Proxy.loadBitBody(self.tool)
         self.setupTool(self.tool)
         self.setupAttributes(self.tool)
@@ -147,13 +147,13 @@ class ToolBitEditor(object):
     def updateUI(self):
         PathLog.track()
         self.form.toolName.setText(self.tool.Label)
-        self.form.templatePath.setText(self.tool.BitTemplate)
+        self.form.shapePath.setText(self.tool.BitShape)
 
         for editor in self.bitEditor:
             self.bitEditor[editor].updateSpinBox()
 
-    def updateTemplate(self):
-        self.tool.BitTemplate = str(self.form.templatePath.text())
+    def updateShape(self):
+        self.tool.BitShape = str(self.form.shapePath.text())
         self.setupTool(self.tool)
         self.form.toolName.setText(self.tool.Label)
 
@@ -163,7 +163,7 @@ class ToolBitEditor(object):
     def updateTool(self):
         PathLog.track()
         self.tool.Label = str(self.form.toolName.text())
-        self.tool.BitTemplate = str(self.form.templatePath.text())
+        self.tool.BitShape = str(self.form.shapePath.text())
 
         for editor in self.bitEditor:
             self.bitEditor[editor].updateProperty()
@@ -177,23 +177,23 @@ class ToolBitEditor(object):
         self.updateUI()
         self.form.blockSignals(False)
 
-    def selectTemplate(self):
-        path = self.tool.BitTemplate
+    def selectShape(self):
+        path = self.tool.BitShape
         if not path:
-            path = PathPreferences.lastPathToolTemplate()
+            path = PathPreferences.lastPathToolShape()
         foo = QtGui.QFileDialog.getOpenFileName(self.form,
-                "Path - Tool Template",
+                "Path - Tool Shape",
                 path,
                 "*.fcstd")
         if foo and foo[0]:
-            PathPreferences.setLastPathToolTemplate(os.path.dirname(foo[0]))
-            self.form.templatePath.setText(foo[0])
-            self.updateTemplate()
+            PathPreferences.setLastPathToolShape(os.path.dirname(foo[0]))
+            self.form.shapePath.setText(foo[0])
+            self.updateShape()
 
     def setupUI(self):
         PathLog.track()
         self.updateUI()
 
         self.form.toolName.editingFinished.connect(self.refresh)
-        self.form.templatePath.editingFinished.connect(self.updateTemplate)
-        self.form.templateSet.clicked.connect(self.selectTemplate)
+        self.form.shapePath.editingFinished.connect(self.updateShape)
+        self.form.shapeSet.clicked.connect(self.selectShape)

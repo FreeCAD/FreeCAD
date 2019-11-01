@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "T9",
-  "template": "src/Mod/Path/Tools/Template/endmill-straight.fcstd",
+  "template": "src/Mod/Path/Tools/Shape/endmill-straight.fcstd",
   "parameter": {
     "CuttingEdgeHeight": "30.000 mm",
     "Diameter": "9.000 mm",

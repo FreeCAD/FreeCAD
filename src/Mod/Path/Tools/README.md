@@ -43,7 +43,7 @@ The following directory structure is used for supplied (shipped with FreeCAD) to
   Tools
     + Bit
     + Library
-    + Template
+    + Shape
 ```
 
 Strictly speaking a user is free to store their tools wherever they want and however they want. By default the file
@@ -62,7 +62,7 @@ TechDraw's templates.
 1. Save the tool under path/file that makes sense to you
 
 
-## How to create a new tool bit Template
+## How to create a new tool bit Shape
 
 A tool bit template represents the physical shape of a tool. It does not completely desribe the bit - for that some
 additional parameters are needed which will be added when an actual bit is parametrized from the template.
@@ -80,7 +80,7 @@ additional parameters are needed which will be added when an actual bit is param
 1. Any unnamed constraint will not be editable for a specific tool
 1. Once the sketch is fully constrained, close the sketch
 1. Rotate the sketch around the z-axis
-1. Save the document as a new file in the Template directory
+1. Save the document as a new file in the Shape directory
    * Before saving the document make sure you have _Save Thumbnail_ selected, and _Add program logo_ deselected in
      FreeCAD's preferences.
    * Also make sure to switch to _Front View_ and _Fit content to screen_

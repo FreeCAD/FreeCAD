@@ -147,15 +147,15 @@ class ToolBitLibrary(object):
         toolName.setData(tool['name'], PySide.QtCore.Qt.EditRole)
         toolName.setEditable(False)
 
-        toolTemplate = PySide.QtGui.QStandardItem()
-        toolTemplate.setData(os.path.splitext(os.path.basename(tool['template']))[0], PySide.QtCore.Qt.EditRole)
-        toolTemplate.setEditable(False)
+        toolShape = PySide.QtGui.QStandardItem()
+        toolShape.setData(os.path.splitext(os.path.basename(tool['shape']))[0], PySide.QtCore.Qt.EditRole)
+        toolShape.setEditable(False)
 
         toolDiameter = PySide.QtGui.QStandardItem()
         toolDiameter.setData(tool['parameter']['Diameter'], PySide.QtCore.Qt.EditRole)
         toolDiameter.setEditable(False)
 
-        self.model.appendRow([toolNr, toolName, toolTemplate, toolDiameter])
+        self.model.appendRow([toolNr, toolName, toolShape, toolDiameter])
 
     def toolAdd(self):
         PathLog.track()
@@ -276,7 +276,7 @@ class ToolBitLibrary(object):
             self.updateToolbar()
 
     def columnNames(self):
-        return ['Nr', 'Tool', 'Template', 'Diameter']
+        return ['Nr', 'Tool', 'Shape', 'Diameter']
 
     def setupUI(self):
         PathLog.track('+')

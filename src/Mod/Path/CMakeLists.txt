@@ -155,10 +155,10 @@ SET(Tools_Library_SRCS
   Tools/Library/endmills.fctl
 )
 
-SET(Tools_Template_SRCS
-    Tools/Template/drill-straight.fcstd
-    Tools/Template/endmill-straight.fcstd
-    Tools/Template/v-bit.fcstd
+SET(Tools_Shape_SRCS
+  Tools/Shape/drill-straight.fcstd
+  Tools/Shape/endmill-straight.fcstd
+  Tools/Shape/v-bit.fcstd
 )
 
 SET(PathTests_SRCS
@@ -207,7 +207,7 @@ SET(all_files
     ${PathScripts_post_SRCS}
     ${Tools_Bit_SRCS}
     ${Tools_Library_SRCS}
-    ${Tools_Template_SRCS}
+    ${Tools_Shape_SRCS}
     ${Path_Images}
 )
 
@@ -264,9 +264,9 @@ INSTALL(
 
 INSTALL(
     FILES
-        ${Tools_Template_SRCS}
+      ${Tools_Shape_SRCS}
     DESTINATION
-        Mod/Path/Tools/Template
+      Mod/Path/Tools/Shape
 )
 
 INSTALL(

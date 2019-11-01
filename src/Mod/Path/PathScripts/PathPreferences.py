@@ -43,7 +43,7 @@ PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 
 LastPathToolBit           = "LastPathToolBit"
 LastPathToolLibrary       = "LastPathToolLibrary"
-LastPathToolTemplate      = "LastPathToolTemplate"
+LastPathToolShape      = "LastPathToolShape"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance       = "GeometryTolerance"
@@ -133,8 +133,8 @@ def searchPathsTool(sub='Bit'):
         paths.append(lastPathToolBit())
     if 'Library' == sub:
         paths.append(lastPathToolLibrary())
-    if 'Template' == sub:
-        paths.append(lastPathToolTemplate())
+    if 'Shape' == sub:
+        paths.append(lastPathToolShape())
 
     def appendPath(p, sub):
         if p:
@@ -210,8 +210,8 @@ def lastPathToolLibrary():
 def setLastPathToolLibrary(path):
     return preferences().SetString(LastPathToolLibrary, path)
 
-def lastPathToolTemplate():
-    return preferences().GetString(LastPathToolTemplate, pathDefaultToolsPath('Template'))
-def setLastPathToolTemplate(path):
-    return preferences().SetString(LastPathToolTemplate, path)
+def lastPathToolShape():
+    return preferences().GetString(LastPathToolShape, pathDefaultToolsPath('Shape'))
+def setLastPathToolShape(path):
+    return preferences().SetString(LastPathToolShape, path)
 
