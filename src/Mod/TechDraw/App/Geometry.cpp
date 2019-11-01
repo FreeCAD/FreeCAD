@@ -1310,6 +1310,7 @@ Vertex::Vertex()
     occVertex = mkVert.Vertex();
     cosmetic = false;
     cosmeticLink = -1;
+    cosmeticTag = std::string();
 }
 
 Vertex::Vertex(const Vertex* v)
@@ -1322,6 +1323,7 @@ Vertex::Vertex(const Vertex* v)
     occVertex = v->occVertex;
     cosmetic = v->cosmetic;
     cosmeticLink = v->cosmeticLink;
+    cosmeticTag = v->cosmeticTag;
 }
 
 Vertex::Vertex(double x, double y)
@@ -1335,6 +1337,7 @@ Vertex::Vertex(double x, double y)
     occVertex = mkVert.Vertex();
     cosmetic = false;
     cosmeticLink = -1;
+    cosmeticTag = std::string();
 }
 
 Vertex::Vertex(Base::Vector3d v) : Vertex(v.x,v.y)
@@ -1371,6 +1374,8 @@ void Vertex::Save(Base::Writer &writer) const
     const char c2 = cosmetic?'1':'0';
     writer.Stream() << writer.ind() << "<Cosmetic value=\"" <<  c2 << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticLink value=\"" <<  cosmeticLink << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
 void Vertex::Restore(Base::XMLReader &reader)
@@ -1392,15 +1397,34 @@ void Vertex::Restore(Base::XMLReader &reader)
     cosmetic = (bool)reader.getAttributeAsInteger("value")==0?false:true;
     reader.readElement("CosmeticLink");
     cosmeticLink = reader.getAttributeAsInteger("value");
+    reader.readElement("CosmeticTag");
+    cosmeticTag = reader.getAttribute("value");
+    reader.readElement("Tag");
+    std::string temp = reader.getAttribute("value");
+    boost::uuids::string_generator gen;
+    boost::uuids::uuid u1 = gen(temp);
+    tag = u1;
 
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(pnt.x, pnt.y, pnt.z));
     occVertex = mkVert.Vertex();
 }
 
+boost::uuids::uuid Vertex::getTag() const
+{
+    return tag;
+}
+
+std::string Vertex::getTagAsString(void) const
+{
+    std::string tmp = boost::uuids::to_string(getTag());
+    return tmp;
+}
+
 void Vertex::dump()
 {
-    Base::Console().Message("TD::Vertex point: %s vis: %d cosmetic: %d  cosLink: %d\n",
-                            DrawUtil::formatVector(pnt).c_str(), visible, cosmetic, cosmeticLink);
+    Base::Console().Message("TD::Vertex point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
+                            DrawUtil::formatVector(pnt).c_str(), visible, cosmetic, cosmeticLink,
+                            cosmeticTag.c_str());
 }
 
 

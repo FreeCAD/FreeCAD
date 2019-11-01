@@ -137,6 +137,7 @@ public:
 
     TechDraw::BaseGeom* getGeomByIndex(int idx) const;               //get existing geom for edge idx in projection
     TechDraw::Vertex* getProjVertexByIndex(int idx) const;           //get existing geom for vertex idx in projection
+    TechDraw::Vertex* getProjVertexByCosTag(std::string cosTag);
     std::vector<TechDraw::BaseGeom*> getFaceEdgesByIndex(int idx) const;  //get edges for face idx in projection
 
     virtual Base::BoundBox3d getBoundingBox() const;
@@ -171,17 +172,21 @@ public:
 
     virtual int addCosmeticVertex(Base::Vector3d pos);
     virtual int addCosmeticVertex(CosmeticVertex* cv);
+    std::string addCosmeticVertexSS(Base::Vector3d pos);
     virtual void removeCosmeticVertex(TechDraw::CosmeticVertex* cv);
     virtual void removeCosmeticVertex(int idx);
-    void replaceCosmeticVertex(int idx, TechDraw::CosmeticVertex* cv);
-    void replaceCosmeticVertexByGeom(int geomIndex, TechDraw::CosmeticVertex* cl);
+    virtual void removeCosmeticVertex(std::string tagString);
+    virtual void removeCosmeticVertex(std::vector<std::string> delTags);
+
+    int getCosmeticVertexIndex(std::string tagString);
+    TechDraw::CosmeticVertex* getCosmeticVertex(std::string tagString) const;
     TechDraw::CosmeticVertex* getCosmeticVertexByIndex(int idx) const;
     TechDraw::CosmeticVertex* getCosmeticVertexByGeom(int idx) const;
     void clearCosmeticVertexes(void); 
     void addCosmeticVertexesToGeom(void);
     void add1CosmeticVertexToGeom(int iCV);
-    int convertCosmeticVertexIndex(int idx);
     int add1CVToGV(int iCV);
+    int add1CVToGV(std::string tag);
 
 
     virtual int addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
@@ -214,6 +219,7 @@ public:
     void clearGeomFormats(void);
 
     void dumpVerts(std::string text);
+    void dumpCosVerts(std::string text);
 
 protected:
     TechDraw::GeometryObject *geometryObject;

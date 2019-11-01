@@ -135,12 +135,9 @@ public:
 
     //Are removeXXXXX functions really needed for GO?
     int addCosmeticVertex(Base::Vector3d pos, int link = -1);
-/*    void removeCosmeticVertex(TechDraw::CosmeticVertex* cv);*/
-/*    void removeCosmeticVertex(int idx);*/
+    int addCosmeticVertex(Base::Vector3d pos, std::string tagString, int link = -1);
     int addCosmeticEdge(TechDraw::BaseGeom* bg, int s = 0, int si = -1);
     int addCenterLine(TechDraw::BaseGeom* bg, int s = 0, int si = -1);
-/*    void removeCosmeticEdge(TechDraw::CosmeticEdge* ce);*/
-/*    void removeCosmeticEdge(int idx);*/
 
 protected:
     //HLR output
