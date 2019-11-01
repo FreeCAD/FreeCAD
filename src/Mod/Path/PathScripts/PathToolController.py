@@ -118,7 +118,7 @@ class ToolController:
                         self.ensureUseLegacyTool(obj, False)
                         obj.Tool = PathToolBit.Factory.CreateFromAttrs(template.get(ToolControllerTemplate.Tool))
                         if obj.Tool and obj.Tool.ViewObject and obj.Tool.ViewObject.Visibility:
-                            obj.ViewObject.Visibility = False
+                            obj.Tool.ViewObject.Visibility = False
                 if template.get(ToolControllerTemplate.Expressions):
                     for exprDef in template.get(ToolControllerTemplate.Expressions):
                         if exprDef[ToolControllerTemplate.ExprExpr]:
