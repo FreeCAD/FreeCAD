@@ -92,6 +92,9 @@
         </item>
         <item row="1" column="4">
          <widget class="Gui::PrefSpinBox" name="spinLineTransparency">
+          <property name="suffix">
+           <string>%</string>
+          </property>
           <property name="maximum">
            <number>100</number>
           </property>
@@ -112,6 +115,9 @@
         </item>
         <item row="0" column="4">
          <widget class="Gui::PrefSpinBox" name="spinMeshTransparency">
+          <property name="suffix">
+           <string>%</string>
+          </property>
           <property name="maximum">
            <number>100</number>
           </property>
