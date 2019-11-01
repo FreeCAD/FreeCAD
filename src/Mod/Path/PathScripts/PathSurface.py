@@ -117,7 +117,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def opFeatures(self, obj):
         '''opFeatures(obj) ... return all standard features and edges based geomtries'''
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown  | PathOp.FeatureCoolant 
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown  | PathOp.FeatureCoolant
 
     def initOperation(self, obj):
         '''initPocketOp(obj) ... create facing specific properties'''
@@ -474,9 +474,11 @@ class ObjectSurface(PathOp.ObjectOp):
         # self.reportThis("--pntsPerLine: " + str(pntsPerLine))
         if math.ceil(pntsPerLine) != math.floor(pntsPerLine):
             pntsPerLine = None
+        else:
+            pntsPerLine = math.ceil(pntsPerLine)
 
         # Create topo map for ignoring waste material
-        if ignoreWasteFlag is True:
+        if ignoreWasteFlag is True and pntsPerLine is not None:
             topoMap = createTopoMap(scanCLP, obj.IgnoreWasteDepth)
             self.topoMap = listToMultiDimensional(topoMap, numLines, pntsPerLine)
             self._bufferTopoMap(numLines, pntsPerLine)
