@@ -32,8 +32,8 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 def _vstr(v):
     if v:
@@ -45,8 +45,8 @@ class DressupPathBoundary(object):
     def __init__(self, obj, base, job):
         obj.addProperty("App::PropertyLink", "Base", "Base", QtCore.QT_TRANSLATE_NOOP("Path_DressupPathBoundary", "The base path to modify"))
         obj.Base = base
-        obj.addProperty("App::PropertyLink", "Boundary", "Boundary", QtCore.QT_TRANSLATE_NOOP("Path_DressupPathBoundary", "Solid object to be used to limit the generated Path."))
-        obj.Boundary = PathStock.CreateFromBase(job)
+        obj.addProperty("App::PropertyLink", "Stock", "Boundary", QtCore.QT_TRANSLATE_NOOP("Path_DressupPathBoundary", "Solid object to be used to limit the generated Path."))
+        obj.Stock = PathStock.CreateFromBase(job)
         obj.addProperty("App::PropertyBool", "Inside", "Boundary", QtCore.QT_TRANSLATE_NOOP("Path_DressupPathBoundary", "Determines if Boundary describes an inclusion or exclusion mask."))
         obj.Inside = True
 
@@ -63,9 +63,16 @@ class DressupPathBoundary(object):
         self.obj = obj
 
     def onDelete(self, obj, args):
-        if obj.Boundary:
-            obj.Document.removeObject(obj.Boundary.Name)
-            obj.Boundary = None
+        if obj.Base:
+            job = PathUtils.findParentJob(obj)
+            job.Proxy.addOperation(obj.Base, obj)
+            if obj.Base.ViewObject:
+                ob.Base.ViewObject.Visibility = True
+            obj.Base = None
+        if obj.Stock:
+            obj.Document.removeObject(obj.Stock.Name)
+            obj.Stock = None
+        return True
 
     def boundaryCommands(self, obj, begin, end):
         PathLog.track(_vstr(begin), _vstr(end))
@@ -92,7 +99,7 @@ class DressupPathBoundary(object):
             self.safeHeight = float(PathUtil.opProperty(obj.Base, 'SafeHeight'))
             self.clearanceHeight = float(PathUtil.opProperty(obj.Base, 'ClearanceHeight'))
 
-            boundary = obj.Boundary.Shape
+            boundary = obj.Stock.Shape
             cmd = obj.Base.Path.Commands[0]
             pos = cmd.Placement.Base
             commands = [cmd]
@@ -124,7 +131,7 @@ class DressupPathBoundary(object):
                         pos = PathGeom.commandEndPoint(cmd, pos)
                     else:
                         PathLog.track(_vstr(pos), _vstr(lastExit), len(inside), len(outside), cmd)
-                        # cmd pierces Boundary
+                        # cmd pierces boundary
                         while inside or outside:
                             ie = [e for e in inside if PathGeom.edgeConnectsTo(e, pos)]
                             PathLog.track(ie)
@@ -188,5 +195,5 @@ def Create(base, name='DressupPathBoundary'):
     obj = FreeCAD.ActiveDocument.addObject('Path::FeaturePython', name)
     job = PathUtils.findParentJob(base)
     obj.Proxy = DressupPathBoundary(obj, base, job)
-    job.Proxy.addOperation(obj, base)
+    job.Proxy.addOperation(obj, base, True)
     return obj
