@@ -258,14 +258,15 @@ class ToolBit(object):
 
     def getBitThumbnail(self, obj):
         if obj.BitShape:
-            with open(obj.BitShape, 'rb') as fd:
-                zf = zipfile.ZipFile(fd)
-                pf = zf.open('thumbnails/Thumbnail.png', 'r')
-                data = pf.read()
-                pf.close()
-                return data
-        else:
-            return None
+            path = findShape(obj.BitShape)
+            if path:
+                with open(path, 'rb') as fd:
+                    zf = zipfile.ZipFile(fd)
+                    pf = zf.open('thumbnails/Thumbnail.png', 'r')
+                    data = pf.read()
+                    pf.close()
+                    return data
+        return None
 
     def saveToFile(self, obj, path, setFile=True):
         try:
