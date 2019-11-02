@@ -762,10 +762,17 @@ private:
         try {
             Py::Sequence list(pEdgeList);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+#if PY_MAJOR_VERSION >= 3
                 if (PyUnicode_Check((*it).ptr())) {
                     std::string temp = PyUnicode_AsUTF8((*it).ptr());
                     edgeList.push_back(temp);
                 }
+#else
+                if (PyString_Check((*it).ptr())) {
+                    std::string temp = PyString_AsString((*it).ptr());         //py2 only!!!
+                    edgeList.push_back(temp);
+                }
+#endif
             }
         }
         catch (Standard_Failure& e) {
@@ -798,9 +805,16 @@ private:
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
         }
-        if (PyUnicode_Check(pDimType)) {
+#if PY_MAJOR_VERSION >= 3
+        if (PyUnicode_Check(pDimType) ) {
             dimType = PyUnicode_AsUTF8(pDimType);
         }
+#else
+        if (PyString_Check(pDimType) ) {
+            dimType = PyString_AsString(pDimType);
+        }
+#endif
+
         if (PyObject_TypeCheck(pFrom, &(Base::VectorPy::Type))) {
             from = static_cast<Base::VectorPy*>(pFrom)->value();
         }
@@ -834,9 +848,15 @@ private:
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pDvp)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
         }
+#if PY_MAJOR_VERSION >= 3
         if (PyUnicode_Check(pDimType)) {
             dimType = PyUnicode_AsUTF8(pDimType);
         }
+#else
+        if (PyString_Check(pDimType)) {
+            dimType = PyString_AsString(pDimType);
+        }
+#endif
         if (PyObject_TypeCheck(pFrom, &(Base::VectorPy::Type))) {
             from = static_cast<Base::VectorPy*>(pFrom)->value();
         }
