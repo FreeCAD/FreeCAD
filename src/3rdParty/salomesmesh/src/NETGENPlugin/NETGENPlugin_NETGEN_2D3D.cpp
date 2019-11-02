@@ -50,6 +50,10 @@ namespace nglib {
 # pragma clang diagnostic ignored "-Wmacro-redefined"
 #endif
 
+#ifdef NETGEN_PYTHON
+#undef NETGEN_PYTHON
+#endif
+
 #include <meshing.hpp>
 
 #if defined(__clang__)

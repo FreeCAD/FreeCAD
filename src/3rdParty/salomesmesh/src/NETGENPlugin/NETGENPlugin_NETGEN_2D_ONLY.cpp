@@ -68,6 +68,10 @@ namespace nglib {
 # pragma clang diagnostic ignored "-Wmacro-redefined"
 #endif
 
+#ifdef NETGEN_PYTHON
+#undef NETGEN_PYTHON
+#endif
+
 #include <occgeom.hpp>
 #include <meshing.hpp>
 //#include <meshing/meshtype.hpp>
