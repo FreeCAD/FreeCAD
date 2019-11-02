@@ -124,7 +124,7 @@ void QGIViewSection::drawSectionFace()
             newFace->setHatchColor(sectionVp->HatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
             newFace->setLineWeight(sectionVp->WeightPattern.getValue());
-            std::vector<LineSet> lineSets = section->getDrawableLines(i);
+            std::vector<TechDraw::LineSet> lineSets = section->getDrawableLines(i);
             if (!lineSets.empty()) {
                 newFace->clearLineSets();
                 for (auto& ls: lineSets) {
