@@ -47,6 +47,7 @@
 
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawViewCollection.h>
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
@@ -295,7 +296,7 @@ void CmdTechDrawCosmeticVertexGrp::languageChange()
 bool CmdTechDrawCosmeticVertexGrp::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
+    bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
 }
 
@@ -463,7 +464,7 @@ void CmdTechDrawCosmeticVertex::activated(int iMsg)
 bool CmdTechDrawCosmeticVertex::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
+    bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
 }
 
@@ -500,7 +501,7 @@ void CmdTechDrawMidpoints::activated(int iMsg)
 bool CmdTechDrawMidpoints::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
+    bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
 }
 
@@ -537,7 +538,7 @@ void CmdTechDrawQuadrant::activated(int iMsg)
 bool CmdTechDrawQuadrant::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
+    bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
 }
 
@@ -681,7 +682,7 @@ void CmdTechDrawCenterLineGrp::languageChange()
 bool CmdTechDrawCenterLineGrp::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
+    bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
 }
 //===========================================================================
@@ -833,7 +834,7 @@ void CmdTechDraw2LineCenterLine::activated(int iMsg)
 bool CmdTechDraw2LineCenterLine::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
+    bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
 }
 
@@ -945,7 +946,7 @@ void CmdTechDraw2PointCenterLine::activated(int iMsg)
 bool CmdTechDraw2PointCenterLine::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
+    bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
 }
 
@@ -1145,7 +1146,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
 bool CmdTechDrawCosmeticEraser::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
+    bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
 }
 
@@ -1222,7 +1223,7 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
 bool CmdTechDrawDecorateLine::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
+    bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
 }
 
@@ -1260,9 +1261,18 @@ void CmdTechDrawShowAll::activated(int iMsg)
     }
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawView* baseFeat = nullptr;
+    TechDraw::DrawViewPart* baseFeat = nullptr;
     if (!selection.empty()) {
-        baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
+        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+        if (baseFeat == nullptr)  {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                    QObject::tr("No Part Views in this selection"));
+            return;
+        } 
+    } else { //empty selection
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Nothing selected"));
+        return;
     }
 
     Gui::ViewProvider* vp = QGIView::getViewProvider(baseFeat);
@@ -1273,13 +1283,12 @@ void CmdTechDrawShowAll::activated(int iMsg)
         partVP->ShowAllEdges.setValue(state);
         baseFeat->requestPaint();
     }
-
 }
 
 bool CmdTechDrawShowAll::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
+    bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
 }
 
