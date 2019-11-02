@@ -77,6 +77,10 @@
 # pragma clang diagnostic ignored "-Wmacro-redefined"
 #endif
 
+#ifdef NETGEN_PYTHON
+#undef NETGEN_PYTHON
+#endif
+
 #include <occgeom.hpp>
 
 #if defined(__clang__)
