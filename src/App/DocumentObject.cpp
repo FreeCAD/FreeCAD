@@ -203,11 +203,9 @@ const char* DocumentObject::getStatusString(void) const
 }
 
 std::string DocumentObject::getFullName() const {
-    if(!getDocument() || !pcNameInDocument)
-        return "?";
-    std::string name(getDocument()->getName());
+    std::string name(getDocument()?getDocument()->getName():"?");
     name += '#';
-    name += *pcNameInDocument;
+    name += pcNameInDocument?*pcNameInDocument:oldLabel;
     return name;
 }
 
@@ -251,6 +249,12 @@ const char* DocumentObject::detachFromDocument()
 {
     const std::string* name = pcNameInDocument;
     pcNameInDocument = 0;
+
+    // Use 'oldLabel' to hold internal name when we are attached, so that
+    // getFullName() can return meaningful result even if detached, because
+    // it maybe used to diagnose problems of accessing a detached object.
+    if(name)
+        oldLabel = *name;
     return name ? name->c_str() : 0;
 }
 
