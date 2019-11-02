@@ -504,8 +504,7 @@ protected:
                     ViewProviderT::setOverrideMode(viewerMode);
                 }
                 if(!this->testStatus(Gui::isRestoring) && 
-                    ViewProviderT::canAddToSceneGraph() && 
-                    !imp->canAddToSceneGraph())
+                    ViewProviderT::canAddToSceneGraph()!=imp->canAddToSceneGraph())
                 {
                     this->getDocument()->toggleInSceneGraph(this);
                 }
