@@ -1341,6 +1341,8 @@ protected:
     void updateDeps(std::set<DocumentObject*> &&newDeps);
     void clearDeps();
 
+    void _onBreakLink(App::DocumentObject *obj);
+
 protected:
     std::set<App::DocumentObject*> _Deps;
     std::map<std::string, std::unique_ptr<PropertyXLink> > _XLinks;
