@@ -1,7 +1,8 @@
 {
   "version": 1,
   "name": "T6",
-  "template": "src/Mod/Path/Tools/Shape/endmill-straight.fcstd",
+  "shape": "src/Mod/Path/Tools/Shape/endmill-straight.fcstd",
+  "attribute": {},
   "parameter": {
     "CuttingEdgeHeight": "30.000 mm",
     "Diameter": "6.000 mm",
