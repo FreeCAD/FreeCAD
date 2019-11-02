@@ -2902,6 +2902,8 @@ void PropertyXLink::setValue(App::DocumentObject *lValue,
     if(lValue == owner)
         throw Base::ValueError("self linking");
 
+    aboutToSetValue();
+
     DocInfoPtr info;
     const char *name = "";
     if(lValue) {
@@ -2921,7 +2923,6 @@ void PropertyXLink::setValue(App::DocumentObject *lValue,
     }
 
     setFlag(LinkDetached,false);
-    aboutToSetValue();
 #ifndef USE_OLD_DAG
     if (!owner->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
         if(_pcLink)
@@ -2934,9 +2935,7 @@ void PropertyXLink::setValue(App::DocumentObject *lValue,
         unlink();
         docInfo = info;
     }
-    if(docInfo)
-        filePath = docInfo->filePath();
-    else
+    if(!docInfo)
         filePath.clear();
     _pcLink=lValue;
     if(docInfo && docInfo->pcDoc)
@@ -2981,9 +2980,7 @@ void PropertyXLink::setValue(std::string &&filename, std::string &&name,
         unlink();
         docInfo = info;
     }
-    if(docInfo)
-        filePath = docInfo->filePath();
-    else
+    if(!docInfo)
         filePath.clear();
     if(docInfo && docInfo->pcDoc)
         stamp=docInfo->pcDoc->LastModifiedDate.getValue();

@@ -3623,10 +3623,19 @@ QVariant PropertyLinkItem::toString(const QVariant& prop) const
 }
 
 QVariant PropertyLinkItem::data(int column, int role) const {
-    if(propertyItems.size() && column == 1 && role == Qt::TextColorRole) {
+    if(propertyItems.size() && column == 1 
+            && (role == Qt::TextColorRole || role == Qt::ToolTipRole))
+    {
         auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(propertyItems[0]);
-        if(xlink && xlink->checkRestore()>1)
-            return QVariant::fromValue(QColor(0xff,0,0));
+        if(xlink) {
+            if(role==Qt::TextColorRole && xlink->checkRestore()>1)
+                return QVariant::fromValue(QColor(0xff,0,0));
+            else if(role == Qt::ToolTipRole) {
+                const char *filePath = xlink->getFilePath();
+                if(filePath && filePath[0])
+                    return QVariant::fromValue(QString::fromUtf8(filePath));
+            }
+        }
     }
     return PropertyItem::data(column,role);
 }
