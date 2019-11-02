@@ -20,6 +20,11 @@ SET(Draft_tests
     drafttests/test_airfoildat.py
 )
 
+SET(Draft_utilities
+    draftutils/__init__.py
+    draftutils/utils.py
+)
+
 SET(Draft_objects
     draftobjects/__init__.py
     draftobjects/circulararray.py
@@ -47,6 +52,7 @@ SET(Draft_task_panels
 
 SET(Draft_SRCS
     ${Draft_tests}
+    ${Draft_utilities}
     ${Draft_objects}
     ${Draft_view_providers}
     ${Draft_GUI_tools}
