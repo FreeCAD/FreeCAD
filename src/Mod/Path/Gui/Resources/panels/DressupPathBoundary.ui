@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>263</width>
+    <height>508</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="boundaryGroup">
+     <property name="title">
+      <string>Boundary Body</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QWidget" name="widget_2" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QComboBox" name="boundary">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="currentIndex">
+            <number>2</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Create Box</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Create Cylinder</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Extend Model's Bound Box</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Use Existing Solid</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>6</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QFrame" name="boundaryFromExisting">
+        <layout class="QGridLayout" name="gridLayout_8">
+         <item row="0" column="1">
+          <widget class="QComboBox" name="boundaryExisting"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="boundaryFromBase">
+        <layout class="QGridLayout" name="gridLayout_9">
+         <item row="1" column="3">
+          <widget class="Gui::InputField" name="boundaryExtYpos"/>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="boundaryExtXLabel">
+           <property name="text">
+            <string>Ext. X</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="Gui::InputField" name="boundaryExtXpos">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="boundaryExtYLabel">
+           <property name="text">
+            <string>Ext. Y</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="Gui::InputField" name="boundaryExtXneg"/>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="boundaryExtZLabel">
+           <property name="text">
+            <string>Ext. Z</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="Gui::InputField" name="boundaryExtZneg"/>
+         </item>
+         <item row="2" column="3">
+          <widget class="Gui::InputField" name="boundaryExtZpos"/>
+         </item>
+         <item row="1" column="2">
+          <widget class="Gui::InputField" name="boundaryExtYneg"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="boundaryCreateCylinder">
+        <layout class="QGridLayout" name="gridLayout_10">
+         <item row="0" column="2">
+          <widget class="Gui::InputField" name="boundaryCylinderRadius"/>
+         </item>
+         <item row="1" column="2">
+          <widget class="Gui::InputField" name="boundaryCylinderHeight"/>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="boundaryCylinderRadiusLabel">
+           <property name="text">
+            <string>Radius</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="boundaryCylinderHeightLabel">
+           <property name="text">
+            <string>Height</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="boundaryCreateBox">
+        <layout class="QGridLayout" name="gridLayout_11">
+         <item row="0" column="1">
+          <widget class="QLabel" name="boundaryBoxLengthLabel">
+           <property name="text">
+            <string>Length</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="boundaryBoxWidthLabel">
+           <property name="text">
+            <string>Width</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="Gui::InputField" name="boundaryBoxLength"/>
+         </item>
+         <item row="2" column="2">
+          <widget class="Gui::InputField" name="boundaryBoxHeight"/>
+         </item>
+         <item row="1" column="2">
+          <widget class="Gui::InputField" name="boundaryBoxWidth"/>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="boundaryBoxHeightLabel">
+           <property name="text">
+            <string>Height</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="boundaryInside">
+     <property name="text">
+      <string>Constrained to Inside</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
