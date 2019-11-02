@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="boundaryGroup">
+    <widget class="QGroupBox" name="stockGroup">
      <property name="title">
       <string>Boundary Body</string>
      </property>
@@ -27,7 +27,7 @@
        <widget class="QWidget" name="widget_2" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <widget class="QComboBox" name="boundary">
+          <widget class="QComboBox" name="stock">
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -76,29 +76,29 @@
        </spacer>
       </item>
       <item>
-       <widget class="QFrame" name="boundaryFromExisting">
+       <widget class="QFrame" name="stockFromExisting">
         <layout class="QGridLayout" name="gridLayout_8">
          <item row="0" column="1">
-          <widget class="QComboBox" name="boundaryExisting"/>
+          <widget class="QComboBox" name="stockExisting"/>
          </item>
         </layout>
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="boundaryFromBase">
+       <widget class="QFrame" name="stockFromBase">
         <layout class="QGridLayout" name="gridLayout_9">
          <item row="1" column="3">
-          <widget class="Gui::InputField" name="boundaryExtYpos"/>
+          <widget class="Gui::InputField" name="stockExtYpos"/>
          </item>
          <item row="0" column="1">
-          <widget class="QLabel" name="boundaryExtXLabel">
+          <widget class="QLabel" name="stockExtXLabel">
            <property name="text">
             <string>Ext. X</string>
            </property>
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="Gui::InputField" name="boundaryExtXpos">
+          <widget class="Gui::InputField" name="stockExtXpos">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -108,52 +108,52 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLabel" name="boundaryExtYLabel">
+          <widget class="QLabel" name="stockExtYLabel">
            <property name="text">
             <string>Ext. Y</string>
            </property>
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="Gui::InputField" name="boundaryExtXneg"/>
+          <widget class="Gui::InputField" name="stockExtXneg"/>
          </item>
          <item row="2" column="1">
-          <widget class="QLabel" name="boundaryExtZLabel">
+          <widget class="QLabel" name="stockExtZLabel">
            <property name="text">
             <string>Ext. Z</string>
            </property>
           </widget>
          </item>
          <item row="2" column="2">
-          <widget class="Gui::InputField" name="boundaryExtZneg"/>
+          <widget class="Gui::InputField" name="stockExtZneg"/>
          </item>
          <item row="2" column="3">
-          <widget class="Gui::InputField" name="boundaryExtZpos"/>
+          <widget class="Gui::InputField" name="stockExtZpos"/>
          </item>
          <item row="1" column="2">
-          <widget class="Gui::InputField" name="boundaryExtYneg"/>
+          <widget class="Gui::InputField" name="stockExtYneg"/>
          </item>
         </layout>
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="boundaryCreateCylinder">
+       <widget class="QFrame" name="stockCreateCylinder">
         <layout class="QGridLayout" name="gridLayout_10">
          <item row="0" column="2">
-          <widget class="Gui::InputField" name="boundaryCylinderRadius"/>
+          <widget class="Gui::InputField" name="stockCylinderRadius"/>
          </item>
          <item row="1" column="2">
-          <widget class="Gui::InputField" name="boundaryCylinderHeight"/>
+          <widget class="Gui::InputField" name="stockCylinderHeight"/>
          </item>
          <item row="0" column="1">
-          <widget class="QLabel" name="boundaryCylinderRadiusLabel">
+          <widget class="QLabel" name="stockCylinderRadiusLabel">
            <property name="text">
             <string>Radius</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLabel" name="boundaryCylinderHeightLabel">
+          <widget class="QLabel" name="stockCylinderHeightLabel">
            <property name="text">
             <string>Height</string>
            </property>
@@ -163,33 +163,33 @@
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="boundaryCreateBox">
+       <widget class="QFrame" name="stockCreateBox">
         <layout class="QGridLayout" name="gridLayout_11">
          <item row="0" column="1">
-          <widget class="QLabel" name="boundaryBoxLengthLabel">
+          <widget class="QLabel" name="stockBoxLengthLabel">
            <property name="text">
             <string>Length</string>
            </property>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLabel" name="boundaryBoxWidthLabel">
+          <widget class="QLabel" name="stockBoxWidthLabel">
            <property name="text">
             <string>Width</string>
            </property>
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="Gui::InputField" name="boundaryBoxLength"/>
+          <widget class="Gui::InputField" name="stockBoxLength"/>
          </item>
          <item row="2" column="2">
-          <widget class="Gui::InputField" name="boundaryBoxHeight"/>
+          <widget class="Gui::InputField" name="stockBoxHeight"/>
          </item>
          <item row="1" column="2">
-          <widget class="Gui::InputField" name="boundaryBoxWidth"/>
+          <widget class="Gui::InputField" name="stockBoxWidth"/>
          </item>
          <item row="2" column="1">
-          <widget class="QLabel" name="boundaryBoxHeightLabel">
+          <widget class="QLabel" name="stockBoxHeightLabel">
            <property name="text">
             <string>Height</string>
            </property>
@@ -202,7 +202,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="boundaryInside">
+    <widget class="QCheckBox" name="stockInside">
      <property name="text">
       <string>Constrained to Inside</string>
      </property>

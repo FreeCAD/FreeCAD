@@ -24,6 +24,7 @@
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathDressupPathBoundary as PathDressupPathBoundary
+import PathScripts.PathJobGui as PathJobGui
 import PathScripts.PathLog as PathLog
 
 from PySide import QtGui, QtCore
@@ -42,11 +43,25 @@ class TaskPanel(object):
         self.obj = obj
         self.viewProvider = viewProvider
         self.form = FreeCADGui.PySideUic.loadUi(':/panels/DressupPathBoundary.ui')
-        self.visibilityBase = obj.Base.ViewObject.Visibility if obj.Base else None
-        self.visibilityBoundary = obj.Boundary.ViewObject.Visibility if obj.Boundary else None
+        if obj.Stock:
+            self.visibilityBoundary = obj.Stock.ViewObject.Visibility
+            obj.Stock.ViewObject.Visibility = True
+        else:
+            self.visibilityBoundary = False
+
+        self.stockFromBase = None
+        self.stockFromExisting = None
+        self.stockCreateBox = None
+        self.stockCreateCylinder = None
+        self.stockEdit = None
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
+
+    def clicked(self, button):
+        # callback for standard buttons
+        if button == QtGui.QDialogButtonBox.Apply:
+            self.obj.Proxy.execute(self.obj)
 
     def abort(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -69,18 +84,74 @@ class TaskPanel(object):
             FreeCADGui.ActiveDocument.resetEdit()
             FreeCADGui.Control.closeDialog()
             FreeCAD.ActiveDocument.recompute()
-            if self.obj.Base:
-                self.obj.Base.ViewObject.Visibility = self.visibilityBase
-            if self.obj.Boundary:
-                self.obj.Boundary.ViewObject.Visibility = self.visibilityBoundary
+            if self.obj.Stock:
+                self.obj.Stock.ViewObject.Visibility = self.visibilityBoundary
 
     def getFields(self):
         pass
     def setFields(self):
         pass
 
+    def updateStockEditor(self, index, force=False):
+        import PathScripts.PathStock as PathStock
+
+        def setupFromBaseEdit():
+            PathLog.track(index, force)
+            if force or not self.stockFromBase:
+                self.stockFromBase = PathJobGui.StockFromBaseBoundBoxEdit(self.obj, self.form, force)
+            self.stockEdit = self.stockFromBase
+
+        def setupCreateBoxEdit():
+            PathLog.track(index, force)
+            if force or not self.stockCreateBox:
+                self.stockCreateBox = PathJobGui.StockCreateBoxEdit(self.obj, self.form, force)
+            self.stockEdit = self.stockCreateBox
+
+        def setupCreateCylinderEdit():
+            PathLog.track(index, force)
+            if force or not self.stockCreateCylinder:
+                self.stockCreateCylinder = PathJobGui.StockCreateCylinderEdit(self.obj, self.form, force)
+            self.stockEdit = self.stockCreateCylinder
+
+        def setupFromExisting():
+            PathLog.track(index, force)
+            if force or not self.stockFromExisting:
+                self.stockFromExisting = PathJobGui.StockFromExistingEdit(self.obj, self.form, force)
+            if self.stockFromExisting.candidates(self.obj):
+                self.stockEdit = self.stockFromExisting
+                return True
+            return False
+
+        if index == -1:
+            if self.obj.Stock is None or PathJobGui.StockFromBaseBoundBoxEdit.IsStock(self.obj):
+                setupFromBaseEdit()
+            elif PathJobGui.StockCreateBoxEdit.IsStock(self.obj):
+                setupCreateBoxEdit()
+            elif PathJobGui.StockCreateCylinderEdit.IsStock(self.obj):
+                setupCreateCylinderEdit()
+            elif PathJobGui.StockFromExistingEdit.IsStock(self.obj):
+                setupFromExisting()
+            else:
+                PathLog.error(translate('PathJob', "Unsupported stock object %s") % self.obj.Stock.Label)
+        else:
+            if index == PathJobGui.StockFromBaseBoundBoxEdit.Index:
+                setupFromBaseEdit()
+            elif index == PathJobGui.StockCreateBoxEdit.Index:
+                setupCreateBoxEdit()
+            elif index == PathJobGui.StockCreateCylinderEdit.Index:
+                setupCreateCylinderEdit()
+            elif index == PathJobGui.StockFromExistingEdit.Index:
+                if not setupFromExisting():
+                    setupFromBaseEdit()
+                    index = -1
+            else:
+                PathLog.error(translate('PathJob', "Unsupported stock type %s (%d)") % (self.form.stock.currentText(), index))
+        self.stockEdit.activate(self.obj, index == -1)
+
     def setupUi(self):
-        pass
+        self.updateStockEditor(-1, False)
+
+        self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
 
 
 class DressupPathBoundaryViewProvider(object):
@@ -100,10 +171,11 @@ class DressupPathBoundaryViewProvider(object):
         self.panel = None
 
     def claimChildren(self):
-        return [self.obj.Base, self.obj.Boundary]
+        return [self.obj.Base, self.obj.Stock]
 
     def onDelete(self, vobj, args=None):
         vobj.Object.Proxy.onDelete(vobj.Object, args)
+        return True
 
     def setEdit(self, vobj, mode=0):
         panel = TaskPanel(vobj.Object, self)
@@ -128,6 +200,8 @@ def Create(base, name='DressupPathBoundary'):
     FreeCAD.ActiveDocument.openTransaction(translate('Path_DressupPathBoundary', 'Create a Boundary dressup'))
     obj = PathDressupPathBoundary.Create(base, name)
     obj.ViewObject.Proxy = DressupPathBoundaryViewProvider(obj.ViewObject)
+    obj.Base.ViewObject.Visibility = False
+    obj.Stock.ViewObject.Visibility = False
     FreeCAD.ActiveDocument.commitTransaction()
     obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
     return obj
