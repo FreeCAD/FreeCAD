@@ -63,8 +63,6 @@ else:
 def translate(ctx,txt):
     return txt
 
-arrowtypes = ["Dot","Circle","Arrow","Tick","Tick-2"]
-
 #---------------------------------------------------------------------------
 # Backwards compatibility
 #---------------------------------------------------------------------------
@@ -81,162 +79,37 @@ makeLayer = DraftLayer.makeLayer
 #---------------------------------------------------------------------------
 # General functions
 #---------------------------------------------------------------------------
+import draftutils.utils
+arrowtypes = draftutils.utils.ARROW_TYPES
 
-def stringencodecoin(ustr):
-    """stringencodecoin(str): Encodes a unicode object to be used as a string in coin"""
-    try:
-        from pivy import coin
-        coin4 = coin.COIN_MAJOR_VERSION >= 4
-    except (ImportError, AttributeError):
-        coin4 = False
-    if coin4:
-        return ustr.encode('utf-8')
-    else:
-        return ustr.encode('latin1')
+stringencodecoin = draftutils.utils.string_encode_coin
+string_encode_coin = draftutils.utils.string_encode_coin
 
-def typecheck (args_and_types, name="?"):
-    """typecheck([arg1,type),(arg2,type),...]): checks arguments types"""
-    for v,t in args_and_types:
-        if not isinstance (v,t):
-            w = "typecheck[" + str(name) + "]: "
-            w += str(v) + " is not " + str(t) + "\n"
-            FreeCAD.Console.PrintWarning(w)
-            raise TypeError("Draft." + str(name))
+typecheck = draftutils.utils.type_check
+type_check = draftutils.utils.type_check
 
-def getParamType(param):
-    if param in ["dimsymbol","dimPrecision","dimorientation","precision","defaultWP",
-                 "snapRange","gridEvery","linewidth","UiMode","modconstrain","modsnap",
-                 "maxSnapEdges","modalt","HatchPatternResolution","snapStyle",
-                 "dimstyle","gridSize"]:
-        return "int"
-    elif param in ["constructiongroupname","textfont","patternFile","template",
-                   "snapModes","FontFile","ClonePrefix","labeltype"] \
-        or "inCommandShortcut" in param:
-        return "string"
-    elif param in ["textheight","tolerance","gridSpacing","arrowsize","extlines","dimspacing",
-                   "dimovershoot","extovershoot"]:
-        return "float"
-    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
-                   "SvgLinesBlack","dxfStdSize","showSnapBar","hideSnapBar","alwaysShowGrid",
-                   "renderPolylineWidth","showPlaneTracker","UsePartPrimitives","DiscretizeEllipses",
-                   "showUnit"]:
-        return "bool"
-    elif param in ["color","constructioncolor","snapcolor","gridColor"]:
-        return "unsigned"
-    else:
-        return None
+getParamType = draftutils.utils.get_param_type
+get_param_type = draftutils.utils.get_param_type
 
-def getParam(param,default=None):
-    """getParam(parameterName): returns a Draft parameter value from the current config"""
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    t = getParamType(param)
-    #print("getting param ",param, " of type ",t, " default: ",str(default))
-    if t == "int":
-        if default is None:
-            default = 0
-        if param == "linewidth":
-            return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetInt("DefaultShapeLineWidth",default)
-        return p.GetInt(param,default)
-    elif t == "string":
-        if default is None:
-            default = ""
-        return p.GetString(param,default)
-    elif t == "float":
-        if default is None:
-            default = 0
-        return p.GetFloat(param,default)
-    elif t == "bool":
-        if default is None:
-            default = False
-        return p.GetBool(param,default)
-    elif t == "unsigned":
-        if default is None:
-            default = 0
-        if param == "color":
-            return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",default)
-        return p.GetUnsigned(param,default)
-    else:
-        return None
+getParam = draftutils.utils.get_param
+get_param = draftutils.utils.get_param
 
-def setParam(param,value):
-    """setParam(parameterName,value): sets a Draft parameter with the given value"""
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    t = getParamType(param)
-    if t == "int":
-        if param == "linewidth":
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetInt("DefaultShapeLineWidth",value)
-        else:
-            p.SetInt(param,value)
-    elif t == "string":
-        p.SetString(param,value)
-    elif t == "float":
-        p.SetFloat(param,value)
-    elif t == "bool":
-        p.SetBool(param,value)
-    elif t == "unsigned":
-        if param == "color":
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetUnsigned("DefaultShapeLineColor",value)
-        else:
-            p.SetUnsigned(param,value)
+setParam = draftutils.utils.set_param
+set_param = draftutils.utils.set_param
 
-def precision():
-    """precision(): returns the precision value from Draft user settings"""
-    return getParam("precision",6)
+precision = draftutils.utils.precision
+tolerance = draftutils.utils.tolerance
+epsilon = draftutils.utils.epsilon
 
-def tolerance():
-    """tolerance(): returns the tolerance value from Draft user settings"""
-    return getParam("tolerance",0.05)
+getRealName = draftutils.utils.get_real_name
+get_real_name = draftutils.utils.get_real_name
 
-def epsilon():
-    ''' epsilon(): returns a small number based on Draft.tolerance() for use in
-    floating point comparisons.  Use with caution. '''
-    return (1.0/(10.0**tolerance()))
+getType = draftutils.utils.get_type
+get_type = draftutils.utils.get_type
 
-def getRealName(name):
-    """getRealName(string): strips the trailing numbers from a string name"""
-    for i in range(1,len(name)):
-        if not name[-i] in '1234567890':
-            return name[:len(name)-(i-1)]
-    return name
+getObjectsOfType = draftutils.utils.get_objects_of_type
+get_objects_of_type = draftutils.utils.get_objects_of_type
 
-def getType(obj):
-    """getType(object): returns the Draft type of the given object"""
-    import Part
-    if not obj:
-        return None
-    if isinstance(obj,Part.Shape):
-        return "Shape"
-    if "Proxy" in obj.PropertiesList:
-        if hasattr(obj.Proxy,"Type"):
-            return obj.Proxy.Type
-    if obj.isDerivedFrom("Sketcher::SketchObject"):
-        return "Sketch"
-    if (obj.TypeId == "Part::Line"):
-        return "Part::Line"
-    if (obj.TypeId == "Part::Offset2D"):
-        return "Offset2D"
-    if obj.isDerivedFrom("Part::Feature"):
-        return "Part"
-    if (obj.TypeId == "App::Annotation"):
-        return "Annotation"
-    if obj.isDerivedFrom("Mesh::Feature"):
-        return "Mesh"
-    if obj.isDerivedFrom("Points::Feature"):
-        return "Points"
-    if (obj.TypeId == "App::DocumentObjectGroup"):
-        return "Group"
-    if (obj.TypeId == "App::Part"):
-        return "App::Part"
-    return "Unknown"
-
-def getObjectsOfType(objectslist,typ):
-    """getObjectsOfType(objectslist,typ): returns a list of objects of type "typ" found
-    in the given object list"""
-    objs = []
-    for o in objectslist:
-        if getType(o) == typ:
-            objs.append(o)
-    return objs
 
 def get3DView():
     """get3DView(): returns the current view if it is 3D, or the first 3D view found, or None"""
@@ -251,40 +124,15 @@ def get3DView():
             return v[0]
     return None
 
-def isClone(obj,objtype,recursive=False):
-    """isClone(obj,objtype,[recursive]): returns True if the given object is
-    a clone of an object of the given type. If recursive is True, also check if
-    the clone is a clone of clone (of clone...)  of the given type."""
-    if isinstance(objtype,list):
-        return any([isClone(obj,t,recursive) for t in objtype])
-    if getType(obj) == "Clone":
-        if len(obj.Objects) == 1:
-            if getType(obj.Objects[0]) == objtype:
-                return True
-            elif recursive and (getType(obj.Objects[0]) == "Clone"):
-                return isClone(obj.Objects[0],objtype,recursive)
-    elif hasattr(obj,"CloneOf"):
-        if obj.CloneOf:
-            return True
-    return False
 
-def getGroupNames():
-    """returns a list of existing groups in the document"""
-    glist = []
-    doc = FreeCAD.ActiveDocument
-    for obj in doc.Objects:
-        if obj.isDerivedFrom("App::DocumentObjectGroup") or (getType(obj) in ["Floor","Building","Site"]):
-            glist.append(obj.Name)
-    return glist
+isClone = draftutils.utils.is_clone
+is_clone = draftutils.utils.is_clone
 
-def ungroup(obj):
-    """removes the current object from any group it belongs to"""
-    for g in getGroupNames():
-        grp = FreeCAD.ActiveDocument.getObject(g)
-        if obj in grp.Group:
-            g = grp.Group
-            g.remove(obj)
-            grp.Group = g
+getGroupNames = draftutils.utils.get_group_names
+get_group_names = draftutils.utils.get_group_names
+
+ungroup = draftutils.utils.ungroup
+
 
 def autogroup(obj):
     """adds a given object to the autogroup, if applicable"""
@@ -361,91 +209,12 @@ def dimDash(p1, p2):
     dash.addChild(l)
     return dash
 
-def shapify(obj):
-    """shapify(object): transforms a parametric shape object into
-    non-parametric and returns the new object"""
-    try:
-        shape = obj.Shape
-    except Exception:
-        return None
-    if len(shape.Faces) == 1:
-        name = "Face"
-    elif len(shape.Solids) == 1:
-        name = "Solid"
-    elif len(shape.Solids) > 1:
-        name = "Compound"
-    elif len(shape.Faces) > 1:
-        name = "Shell"
-    elif len(shape.Wires) == 1:
-        name = "Wire"
-    elif len(shape.Edges) == 1:
-        import DraftGeomUtils
-        if DraftGeomUtils.geomType(shape.Edges[0]) == "Line":
-            name = "Line"
-        else:
-            name = "Circle"
-    else:
-        name = getRealName(obj.Name)
-    FreeCAD.ActiveDocument.removeObject(obj.Name)
-    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
-    newobj.Shape = shape
 
-    return newobj
+shapify = draftutils.utils.shapify
 
-def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False,noarchchild=False):
-    """getGroupContents(objectlist,[walls,addgroups]): if any object of the given list
-    is a group, its content is appended to the list, which is returned. If walls is True,
-    walls and structures are also scanned for included windows or rebars. If addgroups
-    is true, the group itself is also included in the list."""
-    def getWindows(obj):
-        l = []
-        if getType(obj) in ["Wall","Structure"]:
-            for o in obj.OutList:
-                l.extend(getWindows(o))
-            for i in obj.InList:
-                if (getType(i) in ["Window"]) or isClone(obj,"Window"):
-                    if hasattr(i,"Hosts"):
-                        if obj in i.Hosts:
-                            l.append(i)
-                elif (getType(i) in ["Rebar"]) or isClone(obj,"Rebar"):
-                    if hasattr(i,"Host"):
-                        if obj == i.Host:
-                            l.append(i)
-        elif (getType(obj) in ["Window","Rebar"]) or isClone(obj,["Window","Rebar"]):
-            l.append(obj)
-        return l
+getGroupContents = draftutils.utils.get_group_contents
+get_group_contents = draftutils.utils.get_group_contents
 
-    newlist = []
-    if not isinstance(objectslist,list):
-        objectslist = [objectslist]
-    for obj in objectslist:
-        if obj:
-            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["App::Part","Building","BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
-                if getType(obj) == "Site":
-                    if obj.Shape:
-                        newlist.append(obj)
-                if obj.isDerivedFrom("Drawing::FeaturePage"):
-                    # skip if the group is a page
-                    newlist.append(obj)
-                else:
-                    if addgroups or (spaces and (getType(obj) == "Space")):
-                        newlist.append(obj)
-                    if noarchchild and (getType(obj) in ["Building","BuildingPart"]):
-                        pass
-                    else:
-                        newlist.extend(getGroupContents(obj.Group,walls,addgroups))
-            else:
-                #print("adding ",obj.Name)
-                newlist.append(obj)
-                if walls:
-                    newlist.extend(getWindows(obj))
-
-    # cleaning possible duplicates
-    cleanlist = []
-    for obj in newlist:
-        if not obj in cleanlist:
-            cleanlist.append(obj)
-    return cleanlist
 
 def removeHidden(objectslist):
     """removeHidden(objectslist): removes hidden objects from the list"""
@@ -456,47 +225,13 @@ def removeHidden(objectslist):
                 newlist.remove(o)
     return newlist
 
-def printShape(shape):
-    """prints detailed information of a shape"""
-    print("solids: ", len(shape.Solids))
-    print("faces: ", len(shape.Faces))
-    print("wires: ", len(shape.Wires))
-    print("edges: ", len(shape.Edges))
-    print("verts: ", len(shape.Vertexes))
-    if shape.Faces:
-        for f in range(len(shape.Faces)):
-            print("face ",f,":")
-            for v in shape.Faces[f].Vertexes:
-                print("    ",v.Point)
-    elif shape.Wires:
-        for w in range(len(shape.Wires)):
-            print("wire ",w,":")
-            for v in shape.Wires[w].Vertexes:
-                print("    ",v.Point)
-    else:
-        for v in shape.Vertexes:
-            print("    ",v.Point)
 
-def compareObjects(obj1,obj2):
-    """Prints the differences between 2 objects"""
+printShape = draftutils.utils.print_shape
+print_shape = draftutils.utils.print_shape
 
-    if obj1.TypeId != obj2.TypeId:
-        print(obj1.Name + " and " + obj2.Name + " are of different types")
-    elif getType(obj1) != getType(obj2):
-        print(obj1.Name + " and " + obj2.Name + " are of different types")
-    else:
-        for p in obj1.PropertiesList:
-            if p in obj2.PropertiesList:
-                if p in ["Shape","Label"]:
-                    pass
-                elif p ==  "Placement":
-                    delta = str((obj1.Placement.Base.sub(obj2.Placement.Base)).Length)
-                    print("Objects have different placements. Distance between the 2: " + delta + " units")
-                else:
-                    if getattr(obj1,p) != getattr(obj2,p):
-                        print("Property " + p + " has a different value")
-            else:
-                print("Property " + p + " doesn't exist in one of the objects")
+compareObjects = draftutils.utils.compare_objects
+compare_objects = draftutils.utils.compare_objects
+
 
 def formatObject(target,origin=None):
     """
@@ -582,42 +317,13 @@ def select(objs=None):
                 if obj:
                     FreeCADGui.Selection.addSelection(obj)
 
-def loadSvgPatterns():
-    """loads the default Draft SVG patterns and custom patters if available"""
-    import importSVG
-    from PySide import QtCore
-    FreeCAD.svgpatterns = {}
-    # getting default patterns
-    patfiles = QtCore.QDir(":/patterns").entryList()
-    for fn in patfiles:
-        fn = ":/patterns/"+str(fn)
-        f = QtCore.QFile(fn)
-        f.open(QtCore.QIODevice.ReadOnly)
-        p = importSVG.getContents(str(f.readAll()),'pattern',True)
-        if p:
-            for k in p:
-                p[k] = [p[k],fn]
-            FreeCAD.svgpatterns.update(p)
-    # looking for user patterns
-    altpat = getParam("patternFile","")
-    if os.path.isdir(altpat):
-        for f in os.listdir(altpat):
-            if f[-4:].upper() == ".SVG":
-                p = importSVG.getContents(altpat+os.sep+f,'pattern')
-                if p:
-                    for k in p:
-                        p[k] = [p[k],altpat+os.sep+f]
-                    FreeCAD.svgpatterns.update(p)
 
-def svgpatterns():
-    """svgpatterns(): returns a dictionary with installed SVG patterns"""
-    if hasattr(FreeCAD,"svgpatterns"):
-        return FreeCAD.svgpatterns
-    else:
-        loadSvgPatterns()
-        if hasattr(FreeCAD,"svgpatterns"):
-            return FreeCAD.svgpatterns
-    return {}
+loadSvgPatterns = draftutils.utils.load_svg_patterns
+load_svg_patterns = draftutils.utils.load_svg_patterns
+
+svgpatterns = draftutils.utils.svg_patterns
+svg_patterns = draftutils.utils.svg_patterns
+
 
 def loadTexture(filename,size=None):
     """loadTexture(filename,[size]): returns a SoSFImage from a file. If size
@@ -698,36 +404,10 @@ def loadTexture(filename,size=None):
             return img
     return None
 
-def getMovableChildren(objectslist,recursive=True):
-    """getMovableChildren(objectslist,[recursive]): extends the given list of objects
-    with all child objects that have a "MoveWithHost" property set to True. If
-    recursive is True, all descendents are considered, otherwise only direct children."""
-    added = []
-    if not isinstance(objectslist,list):
-        objectslist = [objectslist]
-    for obj in objectslist:
-        if not (getType(obj) in ["Clone","SectionPlane","Facebinder","BuildingPart"]):
-            # objects that should never move their children
-            children = obj.OutList
-            if  hasattr(obj,"Proxy"):
-                if obj.Proxy:
-                    if hasattr(obj.Proxy,"getSiblings") and not(getType(obj) in ["Window"]):
-                        #children.extend(obj.Proxy.getSiblings(obj))
-                        pass
-            for child in children:
-                if hasattr(child,"MoveWithHost"):
-                    if child.MoveWithHost:
-                        if hasattr(obj,"CloneOf"):
-                            if obj.CloneOf:
-                                if obj.CloneOf.Name != child.Name:
-                                    added.append(child)
-                            else:
-                                added.append(child)
-                        else:
-                            added.append(child)
-            if recursive:
-                added.extend(getMovableChildren(children))
-    return added
+
+getMovableChildren = draftutils.utils.get_movable_children
+get_movable_children = draftutils.utils.get_movable_children
+
 
 def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None, support=None):
     """makeCircle(radius,[placement,face,startangle,endangle])
