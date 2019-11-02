@@ -50,7 +50,7 @@
 
 #include "PropertyLinks.h"
 
-FC_LOG_LEVEL_INIT("PropertyLinks",true,true)
+FC_LOG_LEVEL_INIT("App",true,true)
 
 using namespace App;
 using namespace Base;
@@ -2740,6 +2740,16 @@ public:
         return false;
     }
 
+#define CATCH_ON_BREAK_LINK(_prop) \
+    catch (Base::Exception &e) {\
+        e.ReportException();\
+        FC_ERR("Exception on breaking link property " << _prop->getFullName());\
+    } catch (std::exception &e) {\
+        FC_ERR("Exception on breaking link property " << _prop->getFullName() << ": " << e.what());\
+    } catch (...) {\
+        FC_ERR("Exception on breaking link property " << _prop->getFullName());\
+    }
+
     static void breakLinks(App::DocumentObject *obj, bool clear) {
         auto doc = obj->getDocument();
         for(auto itD=_DocInfoMap.begin(),itDNext=itD;itD!=_DocInfoMap.end();itD=itDNext) {
@@ -2756,11 +2766,17 @@ public:
                     continue;
                 if(link->parentProp)
                     parentLinks.insert(link->parentProp);
-                else
-                    link->breakLink(obj,clear);
+                else {
+                    try {
+                        link->breakLink(obj,clear);
+                    } CATCH_ON_BREAK_LINK(link);
+                }
             }
-            for(auto link : parentLinks) 
-                link->breakLink(obj,clear);
+            for(auto link : parentLinks) {
+                try {
+                    link->breakLink(obj,clear);
+                } CATCH_ON_BREAK_LINK(link);
+            }
         }
     }
 };
@@ -2773,9 +2789,12 @@ void PropertyLinkBase::breakLinks(App::DocumentObject *link,
         props.clear();
         obj->getPropertyList(props);
         for(auto prop : props) {
-            auto linkProp = dynamic_cast<PropertyLinkBase*>(prop);
-            if(linkProp)
-                linkProp->breakLink(link,clear);
+            auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+            if(linkProp) {
+                try {
+                    linkProp->breakLink(link,clear);
+                } CATCH_ON_BREAK_LINK(linkProp);
+            }
         }
     }
     DocInfo::breakLinks(link,clear);
@@ -4119,18 +4138,13 @@ void PropertyXLinkSubList::breakLink(App::DocumentObject *obj, bool clear) {
         setValue(0);
         return;
     }
-    bool touched = false;
     for(auto &l : _Links) {
         if(l.getValue() == obj) {
-            if(!touched) {
-                touched = true;
-                aboutToSetValue();
-            }
-            l.setValue(0);
+            try {
+                l.setValue(0);
+            } CATCH_ON_BREAK_LINK(this);
         }
     }
-    if(touched)
-        hasSetValue();
 }
 
 bool PropertyXLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inList) {
@@ -4251,14 +4265,14 @@ void PropertyXLinkContainer::afterRestore() {
 void PropertyXLinkContainer::breakLink(App::DocumentObject *obj, bool clear) {
     if(!obj || !obj->getNameInDocument())
         return;
-    auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     if(!owner || !owner->getNameInDocument())
         return;
     if(!clear || obj!=owner) {
         if(!_Deps.erase(obj))
             return;
         aboutToSetValue();
-        onBreakLink(obj);
+        _onBreakLink(obj);
         if(obj->getDocument() == owner->getDocument())
             obj->_removeBackLink(owner);
         else
@@ -4271,7 +4285,7 @@ void PropertyXLinkContainer::breakLink(App::DocumentObject *obj, bool clear) {
     for(auto obj : _Deps) {
         if(!obj || !obj->getNameInDocument())
             continue;
-        onBreakLink(obj);
+        _onBreakLink(obj);
         if(obj->getDocument()==owner->getDocument())
             obj->_removeBackLink(owner);
     }
@@ -4361,11 +4375,17 @@ void PropertyXLinkContainer::aboutToSetChildValue(App::Property &prop) {
     auto xlink = dynamic_cast<App::PropertyXLink*>(&prop);
     if(xlink && xlink->testFlag(LinkDetached)) {
         if(_Deps.erase(const_cast<App::DocumentObject*>(xlink->getValue())))
-            onBreakLink(xlink->getValue());
+            _onBreakLink(xlink->getValue());
     }
 }
 
 void PropertyXLinkContainer::onBreakLink(DocumentObject *) {
+}
+
+void PropertyXLinkContainer::_onBreakLink(DocumentObject *obj) {
+    try {
+        onBreakLink(obj);
+    } CATCH_ON_BREAK_LINK(this);
 }
 
 PropertyXLink *PropertyXLinkContainer::createXLink() {
