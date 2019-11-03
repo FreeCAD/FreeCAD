@@ -51,9 +51,9 @@ public:
     App::PropertyFont         Font;
     App::PropertyColor        TextColor;
     App::PropertyLength       TextSize;
-    App::PropertyInteger      LineSpace;
+    App::PropertyPercent      LineSpace;
     App::PropertyEnumeration  TextStyle; // Plain,Bold,Italic,Bold-Italic
-    App::PropertyFloat        MaxWidth;
+    App::PropertyLength       MaxWidth;
 
     virtual QRectF getRect() const;
 
