@@ -31,7 +31,7 @@ MeshCurvature<Real>::MeshCurvature (int iVQuantity,
 
     // compute normal vectors
     m_akNormal = WM4_NEW Vector3<Real>[m_iVQuantity];
-    memset(m_akNormal,0,m_iVQuantity*sizeof(Vector3<Real>));
+    std::fill_n(m_akNormal,m_iVQuantity,Vector3<Real>{0,0,0});
     int i, iV0, iV1, iV2;
     for (i = 0; i < m_iTQuantity; i++)
     {
@@ -58,8 +58,8 @@ MeshCurvature<Real>::MeshCurvature (int iVQuantity,
     Matrix3<Real>* akDNormal = WM4_NEW Matrix3<Real>[m_iVQuantity];
     Matrix3<Real>* akWWTrn = WM4_NEW Matrix3<Real>[m_iVQuantity];
     Matrix3<Real>* akDWTrn = WM4_NEW Matrix3<Real>[m_iVQuantity];
-    memset(akWWTrn,0,m_iVQuantity*sizeof(Matrix3<Real>));
-    memset(akDWTrn,0,m_iVQuantity*sizeof(Matrix3<Real>));
+    std::fill_n(akWWTrn,m_iVQuantity,Matrix3<Real>{0,0,0,0,0,0,0,0,0});
+    std::fill_n(akDWTrn,m_iVQuantity,Matrix3<Real>{0,0,0,0,0,0,0,0,0});
 
     int iRow, iCol;
     aiIndex = m_aiIndex;
