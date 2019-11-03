@@ -7,13 +7,13 @@ import os,sys,string
 #os.chdir("E:\\Develop\\FreeCADWin\\scripts")
 
 
-file = open(sys.argv[1])
+file = open(sys.argv[1],encoding="utf-8")
 
 if(len(sys.argv) > 4):
     sys.stderr.write("Wrong Parameter\n  Usage:\n  PythonToCPP Infile.py [Outfile][Variable]\n")
 
 if(len(sys.argv) > 2):
-    out = open(sys.argv[2],"w");
+    out = open(sys.argv[2],"w",encoding="utf-8");
 else:
     out = sys.stdout
 
