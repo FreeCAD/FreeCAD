@@ -95,7 +95,7 @@ CmdTechDrawNewPageDef::CmdTechDrawNewPageDef()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert new default page");
-	sToolTipText    = sMenuText;
+    sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_New_Default";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-new-default";
@@ -165,7 +165,7 @@ CmdTechDrawNewPage::CmdTechDrawNewPage()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert new page using template");
-	sToolTipText    = sMenuText;
+    sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_New_Pick";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-new-pick";
@@ -246,7 +246,7 @@ CmdTechDrawRedraw::CmdTechDrawRedraw()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Redraw a page");
-	sToolTipText    = sMenuText;
+    sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Redraw";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-forceredraw";
@@ -283,7 +283,7 @@ CmdTechDrawNewView::CmdTechDrawNewView()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert View");
-	sToolTipText    = QT_TR_NOOP("Insert a View");
+    sToolTipText    = QT_TR_NOOP("Insert a View");
     sWhatsThis      = "TechDraw_NewView";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-view";
@@ -419,7 +419,7 @@ CmdTechDrawNewViewSection::CmdTechDrawNewViewSection()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Section View");
-	sToolTipText    = sMenuText;
+    sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_NewSection";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-viewsection";
@@ -489,7 +489,7 @@ CmdTechDrawNewViewDetail::CmdTechDrawNewViewDetail()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Detail View");
-	sToolTipText    = sMenuText;
+    sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_NewDetail";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-viewdetail";
@@ -769,7 +769,7 @@ CmdTechDrawNewBalloon::CmdTechDrawNewBalloon()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Balloon annotation");
-	sToolTipText    = sMenuText;
+    sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Balloon";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Balloon";
@@ -818,7 +818,7 @@ CmdTechDrawClip::CmdTechDrawClip()
     // setting the
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Insert Clip Group");
-	sToolTipText  = sMenuText;
+    sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_Clip";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-clip";
@@ -857,7 +857,7 @@ CmdTechDrawClipPlus::CmdTechDrawClipPlus()
 {
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Add View to Clip Group");
-	sToolTipText  = sMenuText;
+    sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipPlus";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-clipplus";
@@ -940,7 +940,7 @@ CmdTechDrawClipMinus::CmdTechDrawClipMinus()
 {
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Remove View from Clip Group");
-	sToolTipText  = sMenuText;
+    sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ClipMinus";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-clipminus";
@@ -1276,7 +1276,7 @@ CmdTechDrawExportPageDxf::CmdTechDrawExportPageDxf()
 {
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("Export page as DXF");
-	sToolTipText  = sMenuText;
+    sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_SaveDXF";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-saveDXF";
