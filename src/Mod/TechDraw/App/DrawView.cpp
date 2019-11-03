@@ -75,10 +75,10 @@ DrawView::DrawView(void):
     mouseMove(false)
 {
     static const char *group = "Base";
-    ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in internal units (mm)");
-    ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in internal units (mm)");
+    ADD_PROPERTY_TYPE(X ,(0.0),group,App::Prop_None,"X position in internal units");
+    ADD_PROPERTY_TYPE(Y ,(0.0),group,App::Prop_None,"Y position in internal units");
     ADD_PROPERTY_TYPE(LockPosition ,(false),group,App::Prop_None,"Lock View position to parent Page or Group");
-    ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view on the page in degrees counterclockwise");
+    ADD_PROPERTY_TYPE(Rotation ,(0.0),group,App::Prop_None,"Rotation in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);
     ADD_PROPERTY_TYPE(ScaleType,((long)0),group, App::Prop_None, "Scale Type");
