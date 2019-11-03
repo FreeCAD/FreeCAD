@@ -45,6 +45,10 @@ IF(EIGEN3_FOUND)
     if(BUILD_SKETCHER)
       add_subdirectory(Sketcher)
     endif(BUILD_SKETCHER)
+
+    if(BUILD_CONSTRAINTSOLVER)
+      add_subdirectory(ConstraintSolver)
+    endif(BUILD_CONSTRAINTSOLVER)
     
     if(BUILD_ROBOT)
       add_subdirectory(Robot)
