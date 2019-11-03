@@ -2479,7 +2479,13 @@ void TreeWidget::onItemEntered(QTreeWidgetItem * item)
         objItem->displayStatusInfo();
 
         if(TreeParams::Instance()->PreSelection()) {
-            int timeout = TreeParams::Instance()->PreSelectionDelay();
+            int timeout = TreeParams::Instance()->PreSelectionMinDelay();
+            if(timeout > 0 && preselectTime.elapsed() < timeout ) {
+                preselectTime.restart();
+                preselectTimer->start(timeout);
+                return;
+            }
+            timeout = TreeParams::Instance()->PreSelectionDelay();
             if(timeout < 0)
                 timeout = 1;
             if(preselectTime.elapsed() < timeout)

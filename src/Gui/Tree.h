@@ -533,6 +533,7 @@ public:
     FC_TREEPARAM_DEF(SelectionTimeout,int,Int,100) \
     FC_TREEPARAM_DEF(PreSelectionTimeout,int,Int,500) \
     FC_TREEPARAM_DEF(PreSelectionDelay,int,Int,700) \
+    FC_TREEPARAM_DEF(PreSelectionMinDelay,int,Int,200) \
     FC_TREEPARAM_DEF(RecomputeOnDrop,bool,Bool,true) \
     FC_TREEPARAM_DEF(KeepRootOrder,bool,Bool,true) \
     FC_TREEPARAM_DEF(TreeActiveAutoExpand,bool,Bool,true) \
