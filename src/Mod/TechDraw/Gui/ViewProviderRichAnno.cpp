@@ -63,7 +63,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderRichAnno, TechDrawGui::ViewProviderDraw
 
 ViewProviderRichAnno::ViewProviderRichAnno()
 {
-    sPixmap = "actions/techdraw-textleader";
+    sPixmap = "actions/techdraw-RichTextAnnotation";
 
 }
 
