@@ -431,7 +431,7 @@ TaskDlgLineDecor::TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
     TaskDialog()
 {
     widget  = new TaskLineDecor(partFeat, edgeNames);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-linedecor"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-DecorateLine"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -442,7 +442,7 @@ TaskDlgLineDecor::TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
     TaskLineDecor* parent = dynamic_cast<TaskLineDecor*>(widget);
     if (parent != nullptr) {
         restore = new TaskRestoreLines(partFeat, parent);
-        restoreBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-linedecor"),
+        restoreBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-DecorateLine"),
                                              tr("Restore Invisible Lines"), true, 0);
         restoreBox->groupLayout()->addWidget(restore);
         Content.push_back(restoreBox);
