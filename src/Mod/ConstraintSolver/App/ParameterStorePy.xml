@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="BaseClassPy" 
+      Name="ParameterStorePy" 
+      Twin="ParameterStore" 
+      TwinPointer="ParameterStore" 
+      Include="Mod/ConstraintSolver/App/ParameterStore.h" 
+      FatherInclude="Base/BaseClassPy.h" 
+      Namespace="GCS" 
+      Constructor="true"
+      Delete="true"
+      FatherNamespace="Base"
+      DisableNotify="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+      <DeveloperDocu>Complete list of parameters describing a solver problem</DeveloperDocu>
+      <UserDocu>Complete list of parameters describing a solver problem</UserDocu>
+    </Documentation>
+
+    <Attribute Name="Values">
+      <Documentation>
+        <UserDocu>List of values of parameters</UserDocu>
+      </Documentation>
+      <Parameter Name="Values" Type="List" />
+    </Attribute>
+    <Attribute Name="Scales">
+      <Documentation>
+        <UserDocu>Scales of values of parameters. Scale sets the order-of-magnitude of the parameter, and affects solver's tendency to change it, and the resulting precision.</UserDocu>
+      </Documentation>
+      <Parameter Name="Scales" Type="List" />
+    </Attribute>
+
+    <Methode Name="addOne" Keyword="true">
+      <Documentation>
+        <UserDocu>addOne(label = '', value = 0.0, scale = 1.0, fixed = False, tag = 0): creates a new parameter and returns a reference to it.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="addN">
+      <Documentation>
+        <UserDocu>
+        addN(n): creates n parameters, and returns list of references to created parameters.
+        n can also be a list of tuples (label, value, scale, fixed, tag), to initialize the parameters.</UserDocu>
+      </Documentation>
+    </Methode>
+    
+    <Methode Name="copy">
+      <Documentation>
+        <UserDocu>copy(): returns a deep copy.</UserDocu>
+      </Documentation>
+    </Methode>
+    
+    <Sequence 
+        sq_length =         "true"
+        sq_concat =         "false"
+        sq_repeat =         "false"
+        sq_item =           "true"
+        mp_subscript =      "true"
+        sq_ass_item =       "true"
+        mp_ass_subscript =  "false"
+        sq_contains =       "true"
+        sq_inplace_concat = "false"
+        sq_inplace_repeat = "false"
+    />
+
+  </PythonExport>
+</GenerateModel>

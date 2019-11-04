@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="PyObjectBase" 
+      Name="ParameterRefPy" 
+      Twin="ParameterRef" 
+      TwinPointer="ParameterRef" 
+      Include="Mod/ConstraintSolver/App/ParameterRef.h" 
+      FatherInclude="Base/PyObjectBase.h" 
+      Namespace="GCS" 
+      Constructor="false"
+      Delete="true"
+      FatherNamespace="Base"
+      DisableNotify="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+      <DeveloperDocu>Refers to a parameter in store. Also is used as a key into value vectors, for constraint code.</DeveloperDocu>
+      <UserDocu>Refers to a parameter in store. Also is used as a key into value vectors, for constraint code.</UserDocu>
+    </Documentation>
+
+    
+    <Attribute Name="Host" ReadOnly="true">
+      <Documentation>
+        <UserDocu>ParameterStore object of the referenced parameter</UserDocu>
+      </Documentation>
+      <Parameter Name="Host" Type="Object" />
+    </Attribute>
+    <Attribute Name="OwnIndex" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Index of the referenced parameter in its store.</UserDocu>
+      </Documentation>
+      <Parameter Name="OwnIndex" Type="Long" />
+    </Attribute>
+    <Attribute Name="MasterIndex" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Index of the parameter this one is redirected to, in its store.</UserDocu>
+      </Documentation>
+      <Parameter Name="MasterIndex" Type="Long" />
+    </Attribute>
+    <Attribute Name="Master" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Reference to the redirected parameter.</UserDocu>
+      </Documentation>
+      <Parameter Name="Master" Type="Object" />
+    </Attribute>
+    
+    <Attribute Name="Value">
+      <Documentation>
+        <UserDocu>Value (obeying redirection)</UserDocu>
+      </Documentation>
+      <Parameter Name="Value" Type="Float" />
+    </Attribute>
+    <Attribute Name="OwnValue">
+      <Documentation>
+        <UserDocu>Value of the parameter (bypassing redirection)</UserDocu>
+      </Documentation>
+      <Parameter Name="OwnValue" Type="Float" />
+    </Attribute>
+    <Attribute Name="MasterScale">
+      <Documentation>
+        <UserDocu>Scale (obeying redirection)</UserDocu>
+      </Documentation>
+      <Parameter Name="MasterScale" Type="Float" />
+    </Attribute>
+    <Attribute Name="OwnScale">
+      <Documentation>
+        <UserDocu>Scale of the parameter (bypassing redirection)</UserDocu>
+      </Documentation>
+      <Parameter Name="OwnScale" Type="Float" />
+    </Attribute>
+    <Attribute Name="Fixed">
+      <Documentation>
+        <UserDocu>Sets if this parameter should be fixed or not. Note, if you explicitly add the parameter to sover's unknowns, the fixedness can be ignored.</UserDocu>
+      </Documentation>
+      <Parameter Name="Fixed" Type="Boolean" />
+    </Attribute>
+    <Attribute Name="Tag">
+      <Documentation>
+        <UserDocu>Stores any integer for identification purposes</UserDocu>
+      </Documentation>
+      <Parameter Name="Tag" Type="Long" />
+    </Attribute>
+    <Attribute Name="Label">
+      <Documentation>
+        <UserDocu>Stores any string for identification purposes</UserDocu>
+      </Documentation>
+      <Parameter Name="Label" Type="String" />
+    </Attribute>
+
+    <Methode Name="isSameRef" Const="true">
+      <Documentation>
+        <UserDocu>Returns if these references point to same parameter (ignoring redirections)</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isSameValue" Const="true">
+      <Documentation>
+        <UserDocu>Returns if these references point to same parameter (obeying redirections)</UserDocu>
+      </Documentation>
+    </Methode>
+        
+  </PythonExport>
+</GenerateModel>

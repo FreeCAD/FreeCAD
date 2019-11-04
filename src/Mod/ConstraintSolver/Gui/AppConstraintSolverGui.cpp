@@ -30,8 +30,6 @@
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 
-#include "Workbench.h"
-
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 

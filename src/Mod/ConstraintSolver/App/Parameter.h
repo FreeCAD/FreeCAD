@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) YEAR YOUR NAME         <Your e-mail address>            *
+ *   Copyright (c) 2019 Viktor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,43 +20,49 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef FREECAD_CONSTRAINTSOLVER_PARAMETER_H
+#define FREECAD_CONSTRAINTSOLVER_PARAMETER_H
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
-
-#include <FCConfig.h>
-
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define ConstraintSolverAppExport __declspec(dllexport)
-#else // for Linux
-# define ConstraintSolverAppExport
-#endif
-#define GCSExport ConstraintSolverAppExport
-
-#ifdef _PreComp_
-
-// standard
-#include <cstdio>
-#include <cassert>
-#include <iostream>
-
-// STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
 #include <string>
-#include <vector>
 
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
+namespace GCS {
 
-#endif //_PreComp_
+class ParameterRef;
+
+class GCSExport Parameter
+{
+public://data
+    double value = 0.0;
+    double scale = 1.0;
+    double lowerlim = -1e100;
+    double upperlim = 1e100;
+    ///flag for implicit declaring of unknowns / data storage. Solvers can be instructed to vary any parameter regardless.
+    bool fixed = false;
+    int tag = 0;
+    std::string label;
+protected:
+    int _ownIndex = -1;
+    int _masterIndex = -1;
+public://methods
+    Parameter(){}
+    /**
+     * constructors are only for providing initializations for ParameterStore::add, like so:
+     * store.add(Parameter("X", -5, 10))
+     * Only parameters in a ParameterStore can be used for solver and geometry.
+     */
+    Parameter(double value, double scale = 1.0, bool fixed = false, int tag = 0);
+    Parameter(const std::string& label, double value, double scale = 1.0, bool fixed = false, int tag = 0);
+    ///returns index of the parameter in its container
+    inline int ownIndex(){return _ownIndex;}
+    inline int masterIndex(){return _masterIndex;}
+    ///copy everything but indexes, from another parameter
+    void pasteFrom(const Parameter& from);
+    ///copy everything but indexes, from another parameter
+    void pasteFrom(const ParameterRef from);
+public://friends
+    friend class ParameterStore;
+};
+
+} //namespace
 
 #endif
-

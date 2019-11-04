@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) YEAR YOUR NAME         <Your e-mail address>            *
+ *   Copyright (c) 2019 Viktor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,44 +19,58 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+#pragma once //to make qt creator happy, see QTCREATORBUG-20883
 
+#ifndef FREECAD_CONSTRAINTSOLVER_PARAMETERREF_H
+#define FREECAD_CONSTRAINTSOLVER_PARAMETERREF_H
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#include "Utils.h"
+#include "Parameter.h"
+#include "ParameterStore.h"
 
-#include <FCConfig.h>
+namespace GCS {
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define ConstraintSolverAppExport __declspec(dllexport)
-#else // for Linux
-# define ConstraintSolverAppExport
+class ParameterStore;
+typedef UnsafePyHandle<ParameterStore> HParameterStore;
+
+/**
+ * @brief ParameterRef class: refers to a parameter in store. Also is used as a key into value vectors, for constraint code.
+ * Memory management: regular. getPyObject returns a copy.
+ */
+class GCSExport ParameterRef
+{
+protected://data
+    HParameterStore _store;
+    int _ownIndex;
+public://methods
+    ParameterRef(HParameterStore st, int index);
+    ~ParameterRef();
+
+    const HParameterStore& host() const {return _store;}
+    int ownIndex() const {return _ownIndex;}
+
+    int masterIndex() const;
+
+    ///value of the parameter, bypassing redirection
+    double& ownValue() const;
+    ///returns value, obeying redirection
+    double& value() const;
+
+    ///scale of the parameter, bypassing redirection
+    double& ownScale() const;
+    ///scale of the parameter, obeying redirection
+    double& masterScale() const;
+
+    Parameter& param() const;
+    ///the parameter object this parameter is redirected to
+    ParameterRef masterParam() const;
+
+    bool isSameRef(const ParameterRef &other) const;
+    bool isSameValue(const ParameterRef &other) const;
+
+    UnsafePyHandle<ParameterRef> getPyObject() const;
+};
+
+} //namespace
+
 #endif
-#define GCSExport ConstraintSolverAppExport
-
-#ifdef _PreComp_
-
-// standard
-#include <cstdio>
-#include <cassert>
-#include <iostream>
-
-// STL
-#include <algorithm>
-#include <iostream>
-#include <list>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <vector>
-
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
-
-#endif //_PreComp_
-
-#endif
-

@@ -27,11 +27,14 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
+#include "ParameterStore.h"
+#include "ParameterStorePy.h"
 
 namespace ConstraintSolver {
 class Module : public Py::ExtensionModule<Module>
@@ -59,10 +62,17 @@ PyObject* initModule()
 /* Python entry */
 PyMOD_INIT_FUNC(ConstraintSolver)
 {
-    // ADD YOUR CODE HERE
-    //
-    //
     PyObject* mod = ConstraintSolver::initModule();
+
+    //rename python types
+    GCS::ParameterStorePy::Type.tp_name = "ConstraintSolver.ParameterStore";
+
+    //add python types as module members
+    Base::Interpreter().addType(&GCS::ParameterStorePy::Type, mod, "ParameterStore");
+
+    //fill type system
+    GCS::ParameterStore::init();
+
     Base::Console().Log("Loading ConstraintSolver module... done\n");
     PyMOD_Return(mod);
 }
