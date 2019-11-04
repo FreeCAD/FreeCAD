@@ -52,18 +52,69 @@ class QGIArrow;
 class QGIDimLines;
 class QGIViewBalloon;
 
-class QGIBalloonLabel : public QGIDatumLabel
+class QGIBalloonLabel : public QGraphicsObject
 {
 Q_OBJECT
 
 public:
+    QGIBalloonLabel();
+    virtual ~QGIBalloonLabel() = default;
+
     enum {Type = QGraphicsItem::UserType + 141};
     int type() const override { return Type;}
 
+    virtual QRectF boundingRect() const override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void paint( QPainter *painter,
+                        const QStyleOptionGraphicsItem *option,
+                        QWidget *widget = nullptr ) override;
+    void setLabelCenter();
+    void setPosFromCenter(const double &xCenter, const double &yCenter);
+    double X() const { return posX; }
+    double Y() const { return posY; }              //minus posY?
+    
+    void setFont(QFont f);
+    QFont getFont(void) { return m_labelText->font(); }
+    void setDimString(QString t);
+    void setDimString(QString t, qreal maxWidth);
+    void setPrettySel(void);
+    void setPrettyPre(void);
+    void setPrettyNormal(void);
+    void setColor(QColor c);
+
+    bool verticalSep;
+    std::vector<int> seps;
+
+    QGCustomText* getDimText(void) { return m_labelText; }
+    void setDimText(QGCustomText* newText) { m_labelText = newText; }
+
+    bool hasHover;
+
     QGIViewBalloon *parent;
 
+Q_SIGNALS:
+    void dragging(bool);
+    void hover(bool state);
+    void selected(bool state);
+    void dragFinished();
+
 protected:
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+//    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+
+    QGCustomText* m_labelText;
+    QColor m_colNormal;
+    bool m_ctrl;
+
+    double posX;
+    double posY;
+    
+private:
 };
 
 //*******************************************************************
