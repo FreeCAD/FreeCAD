@@ -41,8 +41,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class to deal with and represent a tool bit."
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule()
+#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+#PathLog.trackModule()
 
 def translate(context, text, disambig=None):
     return PySide.QtCore.QCoreApplication.translate(context, text, disambig)

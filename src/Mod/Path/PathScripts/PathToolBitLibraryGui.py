@@ -34,8 +34,8 @@ import os
 import traceback
 import uuid as UUID
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 _UuidRole = PySide.QtCore.Qt.UserRole + 1
 _PathRole = PySide.QtCore.Qt.UserRole + 2

@@ -33,8 +33,8 @@ import re
 
 from PySide import QtCore, QtGui
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):
