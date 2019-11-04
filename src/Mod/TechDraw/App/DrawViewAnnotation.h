@@ -51,9 +51,9 @@ public:
     App::PropertyFont         Font;
     App::PropertyColor        TextColor;
     App::PropertyLength       TextSize;
-    App::PropertyInteger      LineSpace;
+    App::PropertyPercent      LineSpace;
     App::PropertyEnumeration  TextStyle; // Plain,Bold,Italic,Bold-Italic
-    App::PropertyFloat        MaxWidth;
+    App::PropertyLength       MaxWidth;
 
     virtual QRectF getRect() const;
 
@@ -70,6 +70,7 @@ public:
 
 protected:
     virtual void onChanged(const App::Property* prop);
+    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
 
 private:
     static const char* TextStyleEnums[];

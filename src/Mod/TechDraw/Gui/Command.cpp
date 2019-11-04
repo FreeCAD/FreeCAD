@@ -246,7 +246,7 @@ CmdTechDrawRedraw::CmdTechDrawRedraw()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Redraw a page");
-    sToolTipText    = QT_TR_NOOP("Redraw a page");
+    sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Redraw";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-forceredraw";
@@ -384,7 +384,7 @@ CmdTechDrawActiveView::CmdTechDrawActiveView()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert ActiveView(3D) as View in Page");
+    sMenuText       = QT_TR_NOOP("Insert Active View (3D View)");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_ActiveView";
     sStatusTip      = sToolTipText;
@@ -1067,7 +1067,7 @@ CmdTechDrawDraftView::CmdTechDrawDraftView()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert a DraftWB object");
+    sMenuText     = QT_TR_NOOP("Insert DraftWB object");
     sToolTipText  = QT_TR_NOOP("Insert a View of a Draft Workbench object");
     sWhatsThis    = "TechDraw_NewDraft";
     sStatusTip    = sToolTipText;
@@ -1120,8 +1120,8 @@ CmdTechDrawArchView::CmdTechDrawArchView()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert a Section Plane");
-    sToolTipText  = QT_TR_NOOP("Inserts a view of a Section Plane from Arch Workbench");
+    sMenuText     = QT_TR_NOOP("Insert Section Plane");
+    sToolTipText  = QT_TR_NOOP("Insert a View of a Section Plane from Arch Workbench");
     sWhatsThis    = "TechDraw_NewArch";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-ArchView";

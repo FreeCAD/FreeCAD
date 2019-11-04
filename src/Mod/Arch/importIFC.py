@@ -300,8 +300,13 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
         FreeCADGui.ActiveDocument.activeView().viewAxonometric()
 
     # Create the base project object
-    projectImporter = importIFCHelper.ProjectImporter(ifcfile, objects)
-    projectImporter.execute()
+    if len(ifcfile.by_type("IfcProject")) > 0:
+        projectImporter = importIFCHelper.ProjectImporter(ifcfile, objects)
+        projectImporter.execute()
+    else:
+        # https://forum.freecadweb.org/viewtopic.php?f=39&t=40624
+        print("No IfcProject found in the ifc file. Nothing imported")
+        return doc
 
     # handle IFC products
 
