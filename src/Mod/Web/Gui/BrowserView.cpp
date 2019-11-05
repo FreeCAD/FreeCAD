@@ -411,6 +411,8 @@ BrowserView::BrowserView(QWidget* parent)
     palette.setBrush(QPalette::Base, Qt::white);
     view->page()->setPalette(palette);
 
+    connect(view->page(), SIGNAL(linkHovered(const QString &, const QString &, const QString &)),
+            this, SLOT(onLinkHovered(const QString &, const QString &, const QString &)));
     connect(view, SIGNAL(linkClicked(const QUrl &)),
             this, SLOT(onLinkClicked(const QUrl &)));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
@@ -439,9 +441,9 @@ BrowserView::BrowserView(QWidget* parent)
             this, SLOT(onDownloadRequested(QWebEngineDownloadItem*)));
     connect(view->page(), SIGNAL(iconChanged(const QIcon &)),
             this, SLOT(setWindowIcon(const QIcon &)));
-#endif
     connect(view->page(), SIGNAL(linkHovered(const QString &)),
             this, SLOT(onLinkHovered(const QString &)));
+#endif
     connect(view, SIGNAL(viewSource(const QUrl&)),
             this, SLOT(onViewSource(const QUrl&)));
     connect(view, SIGNAL(loadStarted()),
@@ -463,11 +465,6 @@ BrowserView::~BrowserView()
     delete interceptLinks; // cleanup not handled implicitly
 #endif
     delete view;
-}
-
-void BrowserView::onLinkHovered(const QString& url)
-{
-    Gui::getMainWindow()->statusBar()->showMessage(url);
 }
 
 #ifdef QTWEBENGINE
@@ -570,6 +567,11 @@ void BrowserView::setWindowIcon(const QIcon &icon)
     Gui::MDIView::setWindowIcon(icon);
 }
 
+void BrowserView::onLinkHovered(const QString& url)
+{
+    Gui::getMainWindow()->statusBar()->showMessage(url);
+}
+
 void BrowserView::onViewSource(const QUrl &url)
 {
     Q_UNUSED(url);
@@ -599,6 +601,15 @@ void BrowserView::onUnsupportedContent(QNetworkReply* reply)
     // slot is called even when clicking on a downloadable file but the page
     // then fails to load. Thus, we reload the previous url.
     view->reload();
+}
+
+void BrowserView::onLinkHovered(const QString& link, const QString& title, const QString& textContent)
+{
+    Q_UNUSED(title)
+    Q_UNUSED(textContent)
+    QUrl url = QUrl::fromEncoded(link.toLatin1());
+    QString str = url.isValid() ? url.toString() : link;
+    Gui::getMainWindow()->statusBar()->showMessage(str);
 }
 
 void BrowserView::onViewSource(const QUrl &url)
