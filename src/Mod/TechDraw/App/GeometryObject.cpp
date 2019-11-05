@@ -109,7 +109,7 @@ const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges(const bool smo
     bool seamOK = seam;
 
     for (auto& e:edgeGeom) {
-        if (e->visible) {
+        if (e->hlrVisible) {
             switch (e->classOfEdge) {
                 case ecHARD:
                 case ecOUTLINE:
@@ -334,11 +334,11 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
 }
 
 //!add edges meeting filter criteria for category, visibility
-void GeometryObject::extractGeometry(edgeClass category, bool visible)
+void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
 {
-//    Base::Console().Message("GO::extractGeometry(%d, %d)\n",category, visible);
+//    Base::Console().Message("GO::extractGeometry(%d, %d)\n",category, hlrVisible);
     TopoDS_Shape filtEdges;
-    if (visible) {
+    if (hlrVisible) {
         switch (category) {
             case ecHARD:
                 filtEdges = visHard;
@@ -356,7 +356,7 @@ void GeometryObject::extractGeometry(edgeClass category, bool visible)
                 filtEdges = visIso;
                 break;
             default:
-                Base::Console().Warning("GeometryObject::ExtractGeometry - unsupported visible edgeClass: %d\n",category);
+                Base::Console().Warning("GeometryObject::ExtractGeometry - unsupported hlrVisible edgeClass: %d\n",category);
                 return;
         }
     } else {
@@ -382,11 +382,11 @@ void GeometryObject::extractGeometry(edgeClass category, bool visible)
         }
     }
 
-    addGeomFromCompound(filtEdges, category, visible);
+    addGeomFromCompound(filtEdges, category, hlrVisible);
 }
 
 //! update edgeGeom and vertexGeom from Compound of edges
-void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool visible)
+void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool hlrVisible)
 {
 //    Base::Console().Message("GO::addGeomFromCompound()\n");
     if(edgeCompound.IsNull()) {
@@ -416,11 +416,11 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         base->source(0);             //object geometry
         base->sourceIndex(i-1);
         base->classOfEdge = category;
-        base->visible = visible;
+        base->hlrVisible = hlrVisible;
         edgeGeom.push_back(base);
 
         //add vertices of new edge if not already in list
-        if (visible) {
+        if (hlrVisible) {
             BaseGeom* lastAdded = edgeGeom.back();
             bool v1Add = true, v2Add = true;
             bool c1Add = true;
@@ -431,7 +431,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             if (circle) {
                 c1 = new TechDraw::Vertex(circle->center);
                 c1->isCenter = true;
-                c1->visible = true;
+                c1->hlrVisible = true;
             }
 
             std::vector<Vertex *>::iterator itVertex = vertexGeom.begin();
@@ -451,13 +451,13 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             }
             if (v1Add) {
                 vertexGeom.push_back(v1);
-                v1->visible = true;
+                v1->hlrVisible = true;
             } else {
                 delete v1;
             }
             if (v2Add) {
                 vertexGeom.push_back(v2);
-                v2->visible = true;
+                v2->hlrVisible = true;
             } else {
                 delete v2;
             }
@@ -465,7 +465,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             if (circle) {
                 if (c1Add) {
                     vertexGeom.push_back(c1);
-                    c1->visible = true;
+                    c1->hlrVisible = true;
                 } else {
                     delete c1;
                 }
@@ -482,7 +482,7 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos, int link)
     v->cosmetic = true;
     v->cosmeticLink = link;
     v->cosmeticTag = "tbi";
-    v->visible = true;
+    v->hlrVisible = true;
     int idx = vertexGeom.size();
     vertexGeom.push_back(v);
     return idx;
@@ -495,18 +495,18 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString,
     v->cosmetic = true;
     v->cosmeticLink = link;
     v->cosmeticTag = tagString;
-    v->visible = true;
+    v->hlrVisible = true;
     int idx = vertexGeom.size();
     vertexGeom.push_back(v);
     return idx;
 }
 
+//do not need source index anymore.  base has CosmeticTag
 int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
-                                    int s, int si)
+                                    int s)
 {
     base->cosmetic = true;
     base->source(s);           //1-CosmeticEdge, 2-CenterLine
-    base->sourceIndex(si);     //index into source;
     
     edgeGeom.push_back(base);
     int idx = edgeGeom.size() - 1;
