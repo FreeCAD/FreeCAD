@@ -67,7 +67,7 @@ class DressupPathBoundary(object):
             job = PathUtils.findParentJob(obj)
             job.Proxy.addOperation(obj.Base, obj)
             if obj.Base.ViewObject:
-                ob.Base.ViewObject.Visibility = True
+                obj.Base.ViewObject.Visibility = True
             obj.Base = None
         if obj.Stock:
             obj.Document.removeObject(obj.Stock.Name)
