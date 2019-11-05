@@ -107,7 +107,7 @@ protected:
 
 };
 
-class TechDrawExport CosmeticEdge : public Base::Persistence
+class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::BaseGeom
 {
     TYPESYSTEM_HEADER();
 public:
@@ -138,6 +138,7 @@ public:
     LineFormat m_format;
 
     boost::uuids::uuid getTag() const;
+    virtual std::string getTagAsString(void) const;
 
 protected:
     //Uniqueness
@@ -236,8 +237,12 @@ public:
     LineFormat m_format;
     bool m_flip2Line;
 
+    TechDraw::BaseGeom* m_geometry;
+
     //Uniqueness
     boost::uuids::uuid getTag() const;
+    virtual std::string getTagAsString(void) const;
+
 protected:
     void createNewTag();
     void assignTag(const TechDraw::CenterLine* cl);

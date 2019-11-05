@@ -1110,6 +1110,7 @@ int DrawViewPart::add1CVToGV(std::string tag)
 
 //CosmeticEdges -------------------------------------------------------------------
 
+//for completeness.  not actually used anywhere
 void DrawViewPart::clearCosmeticEdges(void)
 {
     std::vector<CosmeticEdge*> noEdges;
@@ -1120,7 +1121,8 @@ void DrawViewPart::clearCosmeticEdges(void)
     }
 }
 
-// adds a cosmetic edge to CEdgeTable and CosmeticEdgeList
+// adds a cosmetic edge to CosmeticEdges property
+// this should probably return tag instead of index
 int DrawViewPart::addCosmeticEdge(Base::Vector3d p1, Base::Vector3d p2)
 {
 //    Base::Console().Message("DVP::addCosmeticEdge(p1,p2)\n");
@@ -1133,9 +1135,11 @@ int DrawViewPart::addCosmeticEdge(Base::Vector3d p1, Base::Vector3d p2)
     return newIdx;
 }
 
+// adds a cosmetic edge to CosmeticEdges property
+// this should probably return tag instead of index
 int DrawViewPart::addCosmeticEdge(TopoDS_Edge e)
 {
-//    Base::Console().Message("DVP::addCosmeticEdge(p1,p2)\n");
+//    Base::Console().Message("DVP::addCosmeticEdge(occ edge)\n");
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(e);
     std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
     int newIdx = (int) (edges.size());
@@ -1145,8 +1149,11 @@ int DrawViewPart::addCosmeticEdge(TopoDS_Edge e)
     return newIdx;
 }
 
+// adds a cosmetic edge to CosmeticEdges property
+// this should probably return tag instead of index
 int DrawViewPart::addCosmeticEdge(CosmeticEdge* ce)
 {
+//    Base::Console().Message("DVP::addCosmeticEdge(%X)\n", ce);
     std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
     int newIdx = (int) (edges.size());
     edges.push_back(ce);
@@ -1157,25 +1164,16 @@ int DrawViewPart::addCosmeticEdge(CosmeticEdge* ce)
 
 void DrawViewPart::removeCosmeticEdge(TechDraw::CosmeticEdge* ce)
 {
-    bool found = false;
-    int i = 0;
-    std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
-    int stop = edges.size();
-    for ( ; i < stop; i++) {
-        TechDraw::CosmeticEdge* e = edges.at(i);
-        if (ce == e) {
-            found = true;
-            break;
-        }
-    }
-    if ( (ce != nullptr)  &&
-         (found) )  {
-        removeCosmeticEdge(i);
+//    Base::Console().Message("DVP::removeCosmeticEdge(%X)\n", ce);
+    if (ce != nullptr) {
+        std::string ceTag = ce->getTagAsString();
+        removeCosmeticEdge(ceTag);
     }
 }
 
 void DrawViewPart::removeCosmeticEdge(int idx)
 {
+//    Base::Console().Message("DVP::removeCosmeticEdge(%d) - deprecated. use by tag.\n", idx);
     std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
     if (idx < (int) edges.size()) {
         edges.erase(edges.begin() + idx);
@@ -1184,25 +1182,50 @@ void DrawViewPart::removeCosmeticEdge(int idx)
     }
 }
 
-void DrawViewPart::replaceCosmeticEdge(int idx, TechDraw::CosmeticEdge* ce)
+void DrawViewPart::removeCosmeticEdge(std::string delTag)
 {
-//    Base::Console().Message("DVP::replaceCosmeticEdge(%d, ce)\n", idx);
-    std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
-    if (idx < (int) edges.size())  {
-        edges.at(idx) = ce;
-        CosmeticEdges.setValues(edges);
-        recomputeFeature();
+//    Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
+    std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
+    std::vector<CosmeticEdge*> newEdges;
+    for (auto& ce: cEdges) {
+        if (ce->getTagAsString() != delTag)  {
+            newEdges.push_back(ce);
+        }
     }
+    CosmeticEdges.setValues(newEdges);
 }
 
-void DrawViewPart::replaceCosmeticEdgeByGeom(int geomIndex, TechDraw::CosmeticEdge* ce)
+void DrawViewPart::removeCosmeticEdge(std::vector<std::string> delTags)
 {
-    const std::vector<TechDraw::BaseGeom*> &geoms = getEdgeGeometry();
-    int source = geoms.at(geomIndex)->source();
-    if (source == 1) {     //CosmeticEdge
-        int sourceIndex = geoms.at(geomIndex)->sourceIndex();
-        replaceCosmeticEdge(sourceIndex, ce);
+    std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
+    std::vector<CosmeticEdge*> newEdges;
+    for (auto& ce: cEdges) {
+        bool found = false;
+        for (auto& dt: delTags) {
+            if (ce->getTagAsString() == dt)  {
+                found = true;          //this ce is in delete list
+                break; 
+            }
+        }
+        if (!found) {
+            newEdges.push_back(ce);
+        }
     }
+    CosmeticEdges.setValues(newEdges);
+}
+
+TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdge(std::string tagString) const
+{
+//    Base::Console().Message("DVP::getCosmeticEdge(%s)\n", tagString.c_str());
+    TechDraw::CosmeticEdge* result = nullptr;
+    const std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
+    for (auto& ce: cEdges) {
+        if (ce->getTagAsString() == tagString) {
+            result = ce;
+            break;
+        }
+    }
+    return result;
 }
 
 TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByIndex(int idx) const
@@ -1219,17 +1242,22 @@ TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByIndex(int idx) const
 //find the cosmetic edge corresponding to geometry edge idx
 TechDraw::CosmeticEdge* DrawViewPart::getCosmeticEdgeByGeom(int idx) const
 {
-    const std::vector<TechDraw::BaseGeom*> &geoms = getEdgeGeometry();
-    int sourceIndex = geoms.at(idx)->sourceIndex();
+//    Base::Console().Message("DVP::getCosmeticEdgeByGeom(%d)\n",idx);
     CosmeticEdge* result = nullptr;
-    const std::vector<TechDraw::CosmeticEdge*> edges = CosmeticEdges.getValues();
-    result = edges.at(sourceIndex);
+    BaseGeom* geom = getGeomByIndex(idx);
+    if (geom == nullptr) {
+        return result;
+    }
+    if (!geom->getCosmeticTag().empty()) {
+        result = getCosmeticEdge(geom->getCosmeticTag());
+    }
     return result;
 }
 
 //find the index of a cosmetic edge
 int DrawViewPart::getCosmeticEdgeIndex(TechDraw::CosmeticEdge* ce) const
 {
+//    Base::Console().Message("DVP::getCosmeticEdgeIndex(%X) - deprec?\n",ce);
     int result = -1;
     const std::vector<TechDraw::CosmeticEdge*> edges = CosmeticEdges.getValues();
     int i = 0;
@@ -1243,20 +1271,18 @@ int DrawViewPart::getCosmeticEdgeIndex(TechDraw::CosmeticEdge* ce) const
     return result;
 }
 
-//add the cosmetic edges to geometry Edges list
+//add the cosmetic edges to geometryObject edges list
 void DrawViewPart::addCosmeticEdgesToGeom(void)
 {
-    int i = 0;
     const std::vector<TechDraw::CosmeticEdge*> edges = CosmeticEdges.getValues();
-    int stop = (int) edges.size();
-    for ( ; i < stop; i++) {
-        TechDraw::BaseGeom* scaledGeom = edges.at(i)->scaledGeometry(getScale());
+    for (auto& ce: edges) {
+        TechDraw::BaseGeom* scaledGeom = ce->scaledGeometry(getScale());
         if (scaledGeom == nullptr) {
             Base::Console().Error("DVP::addCosmeticEdgesToGeom - scaledGeometry is null\n");
             continue;
         }
 //        int idx =
-        (void) geometryObject->addCosmeticEdge(scaledGeom, 1, i);
+        (void) geometryObject->addCosmeticEdge(scaledGeom, 1);
     }
 }
 
