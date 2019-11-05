@@ -58,11 +58,6 @@
         <UserDocu>getCosmeticEdgeByGeom(idx) - returns CosmeticEdge using geometry index.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="replaceCosmeticEdge">
-      <Documentation>
-        <UserDocu>replaceCosmeticEdge(idx, ce) - replaces CosmeticEdge[idx] with ce.</UserDocu>
-      </Documentation>
-    </Methode>
     <Methode Name="removeCosmeticEdge">
       <Documentation>
         <UserDocu>removeCosmeticEdge(idx) - remove CosmeticEdge[idx] from View. Returns None.</UserDocu>

@@ -333,21 +333,21 @@ PyObject* DrawViewPartPy::getCosmeticEdgeByGeom(PyObject *args)
     return result;
 }
 
-PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
-{
-//    Base::Console().Message("DVPPI::replaceCosmeticEdge()\n");
-    int idx = 0;
-    PyObject* result = Py_None;
-    PyObject* pCE;
-    if (!PyArg_ParseTuple(args, "iO!", &idx, &(TechDraw::CosmeticEdgePy::Type), &pCE)) {
-        throw Py::TypeError("expected (index, CosmeticEdge)");
-    }
-    TechDraw::CosmeticEdge* ce = static_cast<CosmeticEdgePy*>(pCE)->getCosmeticEdgePtr();
-    DrawViewPart* dvp = getDrawViewPartPtr();
-    dvp->replaceCosmeticEdge(idx, ce);
+//PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
+//{
+////    Base::Console().Message("DVPPI::replaceCosmeticEdge()\n");
+//    int idx = 0;
+//    PyObject* result = Py_None;
+//    PyObject* pCE;
+//    if (!PyArg_ParseTuple(args, "iO!", &idx, &(TechDraw::CosmeticEdgePy::Type), &pCE)) {
+//        throw Py::TypeError("expected (index, CosmeticEdge)");
+//    }
+//    TechDraw::CosmeticEdge* ce = static_cast<CosmeticEdgePy*>(pCE)->getCosmeticEdgePtr();
+//    DrawViewPart* dvp = getDrawViewPartPtr();
+//    dvp->replaceCosmeticEdge(idx, ce);
 
-    return result;
-}
+//    return result;
+//}
 
 PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 {

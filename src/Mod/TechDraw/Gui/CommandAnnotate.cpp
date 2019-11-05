@@ -1015,20 +1015,27 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
             subNames = (*itSel).getSubNames();
         }
+        if (objFeat == nullptr) {
+            break;
+        }
         std::vector<std::string> cv2Delete;
-        std::vector<int> ce2Delete;
+        std::vector<std::string> ce2Delete;
         std::vector<int> cl2Delete;
         for (auto& s: subNames) {
             int idx = TechDraw::DrawUtil::getIndexFromName(s);
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
                 TechDraw::BaseGeom* bg = objFeat->getGeomByIndex(idx);
+                Base::Console().Message("CMD::Eraser - have an edge: %s - bg: %X\n", s.c_str(), bg);
                 if ((bg != nullptr) &&
                     (bg->cosmetic) ) {
+                    Base::Console().Message("CMD::Eraser - cos: %d source: %d tag: %s\n",
+                                            bg->cosmetic, bg->sourceIndex(), bg->getCosmeticTag().c_str());
                     int source = bg->source();
                     int sourceIndex = bg->sourceIndex();
+                    std::string tag = bg->getCosmeticTag();
                     if (source == 1) {  //this is a "CosmeticEdge"
-                        ce2Delete.push_back(sourceIndex);
+                        ce2Delete.push_back(tag);
                     } else if (source == 2) { //this is a "CenterLine"
                         cl2Delete.push_back(sourceIndex);
                     } else {
@@ -1037,15 +1044,13 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                     }
                 }
             } else if (geomType == "Vertex") {
-                //TODO: delete by tag
                 TechDraw::Vertex* tdv = objFeat->getProjVertexByIndex(idx);
                 if (tdv != nullptr) {
-//                    int delIndex = tdv->cosmeticLink;
                     std::string delTag = tdv->cosmeticTag;
                     if (!delTag.empty()) {
                         cv2Delete.push_back(delTag);
                     } else {
-                        Base::Console().Message("CMD::eraser - geom: %d has no cv\n", idx);
+                        Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
                     }
                 } else {
                     Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
@@ -1058,18 +1063,11 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
 
         }
         if (!cv2Delete.empty()) {
-            for (auto& cvTag: cv2Delete) {
-                objFeat->removeCosmeticVertex(cvTag);
-            }
-            objFeat->enforceRecompute();
+            objFeat->removeCosmeticVertex(cv2Delete);
         }
         
         if (!ce2Delete.empty()) {
-            std::sort(ce2Delete.begin(), ce2Delete.end());
-            auto itce = ce2Delete.rbegin();
-            for ( ; itce != ce2Delete.rend(); itce++) {
-                objFeat->removeCosmeticEdge((*itce));
-            }
+            objFeat->removeCosmeticEdge(ce2Delete);
         }
         if (!cl2Delete.empty()) {
             std::sort(cl2Delete.begin(), cl2Delete.end());
@@ -1078,6 +1076,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                 objFeat->removeCenterLine((*itcl));
             }
         }
+    objFeat->recomputeFeature();
     }
 }
 
