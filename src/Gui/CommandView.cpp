@@ -2470,7 +2470,7 @@ StdBoxSelection::StdBoxSelection()
 
 typedef enum { CENTER, INTERSECT } SelectionMode;
 
-static std::vector<std::string> getBoxSelection(
+static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
         ViewProviderDocumentObject *vp, SelectionMode mode, bool selectElement,
         const Base::ViewProjMethod &proj, const Base::Polygon2d &polygon,
         const Base::Matrix4D &mat, bool transform=true, int depth=0)
@@ -2491,8 +2491,9 @@ static std::vector<std::string> getBoxSelection(
 
     // check if both two boundary points are inside polygon, only
     // valid since we know the given polygon is a box.
-    if(polygon.Contains(Base::Vector2d(bbox.MinX,bbox.MinY)) && 
-       polygon.Contains(Base::Vector2d(bbox.MaxX,bbox.MaxY))) 
+    if(!selectElement 
+            && polygon.Contains(Base::Vector2d(bbox.MinX,bbox.MinY))
+            && polygon.Contains(Base::Vector2d(bbox.MaxX,bbox.MaxY))) 
     {
         ret.emplace_back("");
         return ret;
@@ -2530,6 +2531,35 @@ static std::vector<std::string> getBoxSelection(
                     continue;
                 std::vector<Base::Vector3d> points;
                 std::vector<Data::ComplexGeoData::Line> lines;
+                Base::Polygon2d loop;
+
+                if(dir) {
+                    std::vector<Base::Vector3d> pointNormals; // not used
+                    std::vector<Data::ComplexGeoData::Facet> faces;
+
+                    // Call getFacesFromSubelement to obtain the triangulation of
+                    // the segment. We use it for back cull filtering.
+                    data->getFacesFromSubelement(segment.get(),points,pointNormals,faces);
+                    if(faces.empty())
+                        continue;
+
+                    bool culled = true;
+                    for(auto &facet : faces) {
+                        Base::Vector3d normal = (points[facet.I2] - points[facet.I1])
+                            % (points[facet.I3] - points[facet.I1]);
+                        normal.Normalize();
+                        if (normal.Dot(*dir) > 0.0f) {
+                            culled = false;
+                            break;
+                        }
+                    }
+                    if(culled)
+                        continue;
+
+                    points.clear();
+                }
+                
+                // Call getLinesFromSubelement to get the outer loop of the entire segment
                 data->getLinesFromSubelement(segment.get(),points,lines);
                 if(lines.empty()) {
                     if(points.empty())
@@ -2539,7 +2569,6 @@ static std::vector<std::string> getBoxSelection(
                         ret.push_back(element);
                     continue;
                 }
-                Base::Polygon2d loop;
                 // TODO: can we assume the line returned above are in proper
                 // order if the element is a face?
                 auto v = proj(points[lines.front().I1]);
@@ -2580,7 +2609,7 @@ static std::vector<std::string> getBoxSelection(
         if(!svp)
             continue;
 
-        const auto &sels = getBoxSelection(svp,mode,selectElement,proj,polygon,smat,false,depth+1);
+        const auto &sels = getBoxSelection(dir,svp,mode,selectElement,proj,polygon,smat,false,depth+1);
         if(sels.size()==1 && sels[0] == "")
             ++count;
         for(auto &sel : sels)
@@ -2602,6 +2631,10 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
 
     SelectionMode selectionMode = CENTER;
+
+    SbVec3f pnt, dir;
+    view->getNearPlane(pnt, dir);
+    Base::Vector3d vdir(dir[0],dir[1],dir[2]);
 
     std::vector<SbVec2f> picked = view->getGLPolygon();
     SoCamera* cam = view->getSoRenderManager()->getCamera();
@@ -2630,9 +2663,13 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
     if (doc) {
         cb->setHandled();
 
+        Base::Vector3d *pdir = &vdir;
         const SoEvent* ev = cb->getEvent();
-        if (ev && !ev->wasCtrlDown()) {
-            Gui::Selection().clearSelection(doc->getName());
+        if (ev) {
+            if(!ev->wasCtrlDown())
+                Gui::Selection().clearSelection(doc->getName());
+            if(ev->wasAltDown())
+                pdir = 0;
         }
 
         for(auto obj : doc->getObjects()) {
@@ -2644,7 +2681,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
                 continue;
 
             Base::Matrix4D mat;
-            for(auto &sub : getBoxSelection(vp,selectionMode,selectElement,proj,polygon,mat)) 
+            for(auto &sub : getBoxSelection(pdir,vp,selectionMode,selectElement,proj,polygon,mat)) 
                 Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
         }
     }
