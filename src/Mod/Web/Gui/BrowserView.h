@@ -119,6 +119,7 @@ protected Q_SLOTS:
     void onUnsupportedContent(QNetworkReply* reply);
     void onLinkClicked (const QUrl& url);
 #endif
+    void onLinkHovered(const QString& url);
     void onViewSource(const QUrl &url);
     void onOpenLinkInExternalBrowser(const QUrl& url);
     void onOpenLinkInNewWindow(const QUrl&);
