@@ -126,7 +126,7 @@ Py::Object BrowserViewPy::setHtml(const Py::Tuple& args)
     PyMem_Free(HtmlCode);
 
     if (myWebView)
-        myWebView->setHtml(QString::fromUtf8(EncodedHtml.c_str()), QUrl(QString::fromLatin1(BaseUrl)));
+        myWebView->setHtml(QString::fromUtf8(EncodedHtml.c_str()), QUrl(QString::fromUtf8(BaseUrl)));
     return Py::None();
 }
 }
@@ -327,7 +327,12 @@ void BrowserView::onLinkClicked (const QUrl & url)
                         Gui::Command::doCommand(Gui::Command::Gui,q.toStdString().c_str());
                     }
                     // Gui::Command::doCommand(Gui::Command::Gui,"execfile('%s')",(const char*) fi.absoluteFilePath().	toLocal8Bit());
-                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) fi.absoluteFilePath()	.toLocal8Bit());
+                    QString filename = fi.absoluteFilePath();
+#if PY_MAJOR_VERSION < 3
+                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open(unicode('%s', 'utf-8')).read())",(const char*) filename.toUtf8());
+#else
+                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) filename.toUtf8());
+#endif
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(this, tr("Error"), QString::fromUtf8(e.what()));
