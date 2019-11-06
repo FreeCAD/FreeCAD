@@ -78,6 +78,8 @@ public:
     void dump(char* title);
     Base::Vector3d scaled(double factor);
 
+    static bool restoreCosmetic(void);
+
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
