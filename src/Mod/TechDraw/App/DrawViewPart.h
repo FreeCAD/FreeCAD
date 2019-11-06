@@ -205,6 +205,8 @@ public:
     virtual int addCenterLine(TechDraw::CenterLine*);
     virtual void removeCenterLine(TechDraw::CenterLine* cl);
     virtual void removeCenterLine(int idx);
+    void removeCenterLine(std::string delTag);
+    void removeCenterLine(std::vector<std::string> delTags);
     TechDraw::CenterLine* getCenterLineByIndex(int idx) const;
     TechDraw::CenterLine* getCenterLineByGeom(int idx) const;
     void replaceCenterLine(int idx, TechDraw::CenterLine* cl);

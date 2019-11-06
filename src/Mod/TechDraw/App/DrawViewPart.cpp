@@ -1328,6 +1328,38 @@ void DrawViewPart::removeCenterLine(int idx)
     }
 }
 
+void DrawViewPart::removeCenterLine(std::string delTag)
+{
+//    Base::Console().Message("DVP::removeCL(%s)\n", delTag.c_str());
+    std::vector<CenterLine*> cLines = CenterLines.getValues();
+    std::vector<CenterLine*> newLines;
+    for (auto& cl: cLines) {
+        if (cl->getTagAsString() != delTag)  {
+            newLines.push_back(cl);
+        }
+    }
+    CenterLines.setValues(newLines);
+}
+
+void DrawViewPart::removeCenterLine(std::vector<std::string> delTags)
+{
+    std::vector<CenterLine*> cLines = CenterLines.getValues();
+    std::vector<CenterLine*> newLines;
+    for (auto& cl: cLines) {
+        bool found = false;
+        for (auto& dt: delTags) {
+            if (cl->getTagAsString() == dt)  {
+                found = true;          //this cl is in delete list
+                break; 
+            }
+        }
+        if (!found) {
+            newLines.push_back(cl);
+        }
+    }
+    CenterLines.setValues(newLines);
+}
+
 void DrawViewPart::replaceCenterLine(int idx, TechDraw::CenterLine* cl)
 {
     std::vector<CenterLine*> lines = CenterLines.getValues();
