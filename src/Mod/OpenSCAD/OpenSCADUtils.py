@@ -57,6 +57,17 @@ class OpenSCADError(BaseError):
     def __str__(self):
         return repr(self.value)
 
+def getopenscadexe(osfilename=None):
+    import os,subprocess,time
+    if not osfilename:
+        import FreeCAD
+        osfilename = FreeCAD.ParamGet(\
+            "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetString('openscadexecutable')
+    if osfilename and os.path.isfile(osfilename):
+        return osfilename
+    return searchforopenscadexe()
+
 def searchforopenscadexe():
     import os,sys,subprocess
     if sys.platform == 'win32':

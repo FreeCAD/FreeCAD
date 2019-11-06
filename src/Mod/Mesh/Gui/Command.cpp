@@ -254,7 +254,7 @@ void CmdMeshUnion::activated(int)
         PyObject* dict = PyModule_GetDict(main);
         Py::Dict d(PyDict_Copy(dict), true);
 
-        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.searchforopenscadexe()";
+        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.getopenscadexe()";
         PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
         Py_XDECREF(result);
 
@@ -324,7 +324,7 @@ void CmdMeshDifference::activated(int)
         PyObject* dict = PyModule_GetDict(main);
         Py::Dict d(PyDict_Copy(dict), true);
 
-        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.searchforopenscadexe()";
+        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.getopenscadexe()";
         PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
         Py_XDECREF(result);
 
@@ -394,7 +394,7 @@ void CmdMeshIntersection::activated(int)
         PyObject* dict = PyModule_GetDict(main);
         Py::Dict d(PyDict_Copy(dict), true);
 
-        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.searchforopenscadexe()";
+        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.getopenscadexe()";
         PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
         Py_XDECREF(result);
 
