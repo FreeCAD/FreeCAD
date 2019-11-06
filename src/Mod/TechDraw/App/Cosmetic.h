@@ -177,7 +177,6 @@ public:
         VERTEX
     };
 
-
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
@@ -244,6 +243,8 @@ public:
     virtual std::string getTagAsString(void) const;
 
 protected:
+    void initialize();
+    
     void createNewTag();
     void assignTag(const TechDraw::CenterLine* cl);
 
@@ -274,7 +275,7 @@ public:
     std::string toString(void) const;
     void dump(char* title) const;
 
-    int m_geomIndex;
+    int m_geomIndex; 
     LineFormat m_format;
 
     //Uniqueness
