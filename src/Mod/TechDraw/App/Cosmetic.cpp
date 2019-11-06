@@ -150,8 +150,7 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
     size  = 3.0;
     style = 1;
     visible = true;
-    //TODO: sort out 2x visible variables
-    hlrVisible = true;    //yuck
+    hlrVisible = true;
     cosmetic = true;
 
     createNewTag();
@@ -165,7 +164,7 @@ CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::V
     size  = cv->size;
     style = cv->style;
     visible = cv->visible;
-    hlrVisible = true;    //yuck
+    hlrVisible = true;
     cosmetic = true;
 
     createNewTag();
@@ -241,6 +240,9 @@ void CosmeticVertex::Save(Base::Writer &writer) const
 
 void CosmeticVertex::Restore(Base::XMLReader &reader)
 {
+    if (!CosmeticVertex::restoreCosmetic()) {
+        return;
+    }
     TechDraw::Vertex::Restore(reader);
     reader.readElement("PermaPoint");
     permaPoint.x = reader.getAttributeAsFloat("X");
@@ -461,6 +463,10 @@ void CosmeticEdge::Save(Base::Writer &writer) const
 
 void CosmeticEdge::Restore(Base::XMLReader &reader)
 {
+    if (!CosmeticVertex::restoreCosmetic()) {
+        return;
+    }
+//    Base::Console().Message("CE::Restore - reading elements\n");
     reader.readElement("Style");
     m_format.m_style = reader.getAttributeAsInteger("value");
     reader.readElement("Weight");
@@ -1213,6 +1219,10 @@ void CenterLine::Save(Base::Writer &writer) const
 
 void CenterLine::Restore(Base::XMLReader &reader)
 {
+    if (!CosmeticVertex::restoreCosmetic()) {
+        return;
+    }
+//    Base::Console().Message("CL::Restore - reading elements\n");
     // read my Element
     reader.readElement("Start");
     // get the value of my Attribute
@@ -1498,6 +1508,9 @@ void GeomFormat::Save(Base::Writer &writer) const
 
 void GeomFormat::Restore(Base::XMLReader &reader)
 {
+    if (!CosmeticVertex::restoreCosmetic()) {
+        return;
+    }
     // read my Element
     reader.readElement("GeomIndex");
     // get the value of my Attribute
@@ -1565,4 +1578,13 @@ PyObject* GeomFormat::getPyObject(void)
 {
     return new GeomFormatPy(new GeomFormat(this->copy()));
 }
+
+bool CosmeticVertex::restoreCosmetic(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool result = hGrp->GetBool("restoreCosmetic", 1l);
+    return result;
+}
+
 
