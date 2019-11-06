@@ -79,8 +79,9 @@ class Edit():
         self.originalNodes = None
 
         # settings
-        self.maxObjects = 1
-        self.pick_radius = self.getPickRadius()
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        self.maxObjects = param.GetInt("DraftEditMaxObjects", 5)
+        self.pick_radius = param.GetInt("DraftEditPickRadius", 20)
 
         # preview
         self.ghost = None
@@ -93,15 +94,6 @@ class Edit():
         #TODO: Add support for "Part::Circle" "Part::RegularPolygon" "Part::Plane" "Part::Ellipse" "Part::Vertex" "Part::Spiral"
         self.supportedPartObjs = ["Sketch", "Sketcher::SketchObject", \
                                 "Part", "Part::Line", "Part::Box"]
-
-    def getPickRadius(self):
-        """return DraftEditPickRadius from user preferences"""
-        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        if param.GetInt("DraftEditPickRadius", 0) == 0: 
-            param.SetInt("DraftEditPickRadius", 20)
-            return 20
-        else:
-            return param.GetInt("DraftEditPickRadius")
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Edit',
