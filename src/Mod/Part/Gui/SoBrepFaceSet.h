@@ -31,14 +31,13 @@
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 #include <vector>
 #include <memory>
 #include <Gui/SoFCSelectionContext.h>
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
-
-// #define RENDER_GLARRAYS
 
 namespace PartGui {
 
@@ -115,12 +114,12 @@ private:
     };
     Binding findMaterialBinding(SoState * const state) const;
     Binding findNormalBinding(SoState * const state) const;
-    void renderShape(SoGLRenderAction * action,
-                     SbBool hasVBO,
-                     const SoGLCoordinateElement * const vertexlist,
+
+    void renderFaces(const SoCoordinateElement *coords,
                      const int32_t *vertexindices,
                      int num_vertexindices,
                      const int32_t *partindices,
+                     int start_partindex,
                      int num_partindices,
                      const SbVec3f *normals,
                      const int32_t *normindices,
@@ -128,14 +127,15 @@ private:
                      const int32_t *matindices,
                      SoTextureCoordinateBundle * const texcoords,
                      const int32_t *texindices,
-                     const int nbind,
-                     const int mbind,
-                     const int texture);
-
-    void renderShape(SoGLRenderAction *action, SoMaterialBundle &mb, bool partial);
+                     int nbind,
+                     int mbind,
+                     int texture);
 
     typedef Gui::SoFCSelectionContextEx SelContext;
     typedef Gui::SoFCSelectionContextExPtr SelContextPtr;
+
+    void renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bool checkTransp);
+    void renderShape(SoGLRenderAction *action, bool check_override);
 
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
@@ -143,23 +143,25 @@ private:
     bool overrideMaterialBinding(SoGLRenderAction *action,
             int selected, SelContextPtr ctx, SelContextPtr ctx2);
 
-#ifdef RENDER_GLARRAYS
-    void renderSimpleArray();
-    void renderColoredArray(SoMaterialBundle *const materials);
-#endif
+    void onPartIndexChange();
+    void sortParts(SoState *state, SelContextPtr ctx2, const float *trans, int numtrans);
+    void buildPartBBoxes(SoState *state);
+    void buildPartIndexCache();
+    int getPartFromFace(int index);
 
 private:
-#ifdef RENDER_GLARRAYS
-    std::vector<int32_t> index_array;
-    std::vector<float> vertex_array;
-#endif
     SelContextPtr selContext;
     SelContextPtr selContext2;
+    std::map<int32_t, int32_t> partIndexMap;
+    std::vector<int32_t> indexOffset;
     std::vector<int32_t> matIndex;
     std::vector<uint32_t> packedColors;
     uint32_t packedColor;
     Gui::SoFCSelectionCounter selCounter;
     std::vector<SoNode*> siblings;
+
+    SoFieldSensor partIndexSensor;
+    std::vector<SbBox3f> partBBoxes;
 
     // Define some VBO pointer for the current mesh
     class VBO;

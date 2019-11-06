@@ -242,7 +242,9 @@ SoFCSelectionCounter::~SoFCSelectionCounter()
 {}
 
 
-bool SoFCSelectionCounter::checkCache(SoState *state) {
+bool SoFCSelectionCounter::checkCache(SoState *state, bool secondary) {
+    if(secondary) 
+        return *counter!=0;
     if(*counter || 
        (hasSelection && Selection().hasSelection()) ||
        (hasPreselection && Selection().hasPreselection()))
@@ -263,7 +265,7 @@ void SoFCSelectionCounter::checkAction(SoHighlightElementAction *hlaction) {
         hasPreselection = true;
 }
 
-void SoFCSelectionCounter::checkAction(SoSelectionElementAction *selaction, SoFCSelectionContextPtr ctx) {
+void SoFCSelectionCounter::checkAction(SoSelectionElementAction *selaction, SoFCSelectionContextBasePtr ctx) {
     switch(selaction->getType()) {
     case SoSelectionElementAction::None:
         return;

@@ -112,10 +112,9 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     }
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
-    if(ctx2 && ctx2->selectionIndex.empty()) {
-        SoCacheElement::invalidate(state);
+    if(ctx2 && ctx2->selectionIndex.empty())
         return;
-    }
+
     if(selContext2->checkGlobal(ctx)) {
         SoCacheElement::invalidate(state);
         ctx = selContext2;
@@ -159,7 +158,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         }
     }
 
-    if(ctx2 && ctx2->selectionIndex.size())
+    if(ctx2 && ctx2->isSelected())
         renderSelection(action,ctx2,false);
     else
         inherited::GLRender(action);
@@ -179,7 +178,7 @@ void SoBrepPointSet::GLRenderBelowPath(SoGLRenderAction * action)
 
 void SoBrepPointSet::getBoundingBox(SoGetBoundingBoxAction * action) {
     auto state = action->getState();
-    selCounter.checkCache(state);
+    selCounter.checkCache(state, true);
 
     SelContextPtr ctx2 = Gui::SoFCSelectionRoot::getSecondaryActionContext<SelContext>(action,this);
     if(!ctx2 || ctx2->isSelectAll()) {
