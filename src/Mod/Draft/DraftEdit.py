@@ -159,8 +159,9 @@ class Edit():
         "terminates Edit Tool"
         self.unregister_selection_callback()
         self.unregister_editing_callbacks()
-        FreeCADGui.Snapper.setSelectMode(False)
+        self.editing = None
         self.finalizeGhost()
+        FreeCADGui.Snapper.setSelectMode(False)
         if self.obj and closed:
             if "Closed" in self.obj.PropertiesList:
                 if not self.obj.Closed:
@@ -245,11 +246,7 @@ class Edit():
             key = event.getKey()
             #FreeCAD.Console.PrintMessage("pressed key : "+str(key)+"\n")
             if key == 65307: # ESC
-                if self.editing is None: self.finish()
-                else:
-                    self.finalizeGhost()
-                    self.setEditPoints(self.obj)
-                    self.resetTrackers()
+                self.finish()
             if key == 97: # "a"
                 self.finish()
             if key == 111: # "o"
