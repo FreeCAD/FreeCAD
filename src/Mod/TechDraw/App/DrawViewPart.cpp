@@ -1110,15 +1110,11 @@ int DrawViewPart::add1CVToGV(std::string tag)
 
 //CosmeticEdges -------------------------------------------------------------------
 
-//for completeness.  not actually used anywhere
+//for completeness.  not actually used anywhere?
 void DrawViewPart::clearCosmeticEdges(void)
 {
     std::vector<CosmeticEdge*> noEdges;
-    std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
     CosmeticEdges.setValues(noEdges);
-    for (auto& e: edges) {
-        delete e;
-    }
 }
 
 // adds a cosmetic edge to CosmeticEdges property
@@ -1290,11 +1286,7 @@ void DrawViewPart::addCosmeticEdgesToGeom(void)
 void DrawViewPart::clearCenterLines(void)
 {
     std::vector<CenterLine*> noLines;
-    std::vector<CenterLine*> lines = CenterLines.getValues();
     CenterLines.setValues(noLines);
-    for (auto& l: lines) {
-        delete l;
-    }
 }
 
 int DrawViewPart::addCenterLine(CenterLine* cl)
