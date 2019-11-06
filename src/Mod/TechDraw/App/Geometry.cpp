@@ -127,6 +127,7 @@ BaseGeom::BaseGeom() :
     m_source(0),
     m_sourceIndex(-1)
 {
+    occEdge = TopoDS_Edge();
     cosmeticTag = std::string();
 }
 
@@ -145,9 +146,20 @@ BaseGeom* BaseGeom::copy()
             result->source(m_source);
             result->sourceIndex(m_sourceIndex);
             result->cosmeticTag = cosmeticTag;
-       }
+        }
+    } else {
+        result = new BaseGeom();
+        result->extractType = extractType;
+        result->classOfEdge = classOfEdge;
+        result->hlrVisible = hlrVisible;
+        result->reversed = reversed;
+        result->ref3D = ref3D;
+        result->cosmetic = cosmetic;
+        result->source(m_source);
+        result->sourceIndex(m_sourceIndex);
+        result->cosmeticTag = cosmeticTag;
     }
-    
+   
     return result;
 }
 
