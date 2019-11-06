@@ -654,22 +654,26 @@ bool DelaunayTriangulator::Triangulate()
     Wm4::Delaunay2d del(static_cast<int>(akVertex.size()), &(akVertex[0]), 0.001, false, Wm4::Query::QT_INT64);
     int iTQuantity = del.GetSimplexQuantity();
     std::vector<int> aiTVertex(static_cast<size_t>(3*iTQuantity));
-    size_t uiSize = static_cast<size_t>(3*iTQuantity)*sizeof(int);
-    Wm4::System::Memcpy(&(aiTVertex[0]),uiSize,del.GetIndices(),uiSize);
 
-    // If H is the number of hull edges and N is the number of vertices,
-    // then the triangulation must have 2*N-2-H triangles and 3*N-3-H
-    // edges.
-    int iEQuantity = 0;
-    int* aiIndex = 0;
-    del.GetHull(iEQuantity,aiIndex);
-    int iUniqueVQuantity = del.GetUniqueVertexQuantity();
-    int iTVerify = 2*iUniqueVQuantity - 2 - iEQuantity;
-    (void)iTVerify;  // avoid warning in release build
-    bool succeeded = (iTVerify == iTQuantity);
-    int iEVerify = 3*iUniqueVQuantity - 3 - iEQuantity;
-    (void)iEVerify;  // avoid warning about unused variable
-    delete[] aiIndex;
+    bool succeeded = false;
+    if (iTQuantity > 0) {
+        size_t uiSize = static_cast<size_t>(3*iTQuantity)*sizeof(int);
+        Wm4::System::Memcpy(&(aiTVertex[0]),uiSize,del.GetIndices(),uiSize);
+
+        // If H is the number of hull edges and N is the number of vertices,
+        // then the triangulation must have 2*N-2-H triangles and 3*N-3-H
+        // edges.
+        int iEQuantity = 0;
+        int* aiIndex = 0;
+        del.GetHull(iEQuantity,aiIndex);
+        int iUniqueVQuantity = del.GetUniqueVertexQuantity();
+        int iTVerify = 2*iUniqueVQuantity - 2 - iEQuantity;
+        (void)iTVerify;  // avoid warning in release build
+        succeeded = (iTVerify == iTQuantity);
+        int iEVerify = 3*iUniqueVQuantity - 3 - iEQuantity;
+        (void)iEVerify;  // avoid warning about unused variable
+        delete[] aiIndex;
+    }
 
     MeshGeomFacet triangle;
     MeshFacet facet;
