@@ -455,7 +455,7 @@ void CosmeticEdge::Save(Base::Writer &writer) const
         TechDraw::AOC* aoc = static_cast<TechDraw::AOC*>(m_geometry);
         aoc->Save(writer);
     } else {
-        Base::Console().Message("CE::Save - unimplemented geomType: %d\n", m_geometry->geomType);
+        Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", m_geometry->geomType);
     }
 }
 
@@ -490,7 +490,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         aoc->occEdge = GeometryUtils::edgeFromCircleArc(aoc);
         m_geometry = (TechDraw::BaseGeom*) aoc;
     } else {
-        Base::Console().Message("CE::Restore - unimplemented geomType: %d\n", gType);
+        Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", gType);
     }
 }
 
@@ -569,7 +569,7 @@ CenterLine::CenterLine(void)
 
     m_geometry = new TechDraw::BaseGeom();
 
-    createNewTag();
+    initialize();
 }
 
 CenterLine::CenterLine(CenterLine* cl)
@@ -590,9 +590,10 @@ CenterLine::CenterLine(CenterLine* cl)
 
     TechDraw::BaseGeom* newGeom = cl->m_geometry->copy();
     m_geometry = newGeom;
-    m_format   = cl->m_format;
 
-    createNewTag();
+    initialize();
+    
+    m_format   = cl->m_format;
 }
 
 CenterLine::CenterLine(Base::Vector3d pt1, Base::Vector3d pt2)
@@ -614,7 +615,7 @@ CenterLine::CenterLine(Base::Vector3d pt1, Base::Vector3d pt2)
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     m_geometry = TechDraw::BaseGeom::baseFactory(e);
 
-    createNewTag();
+    initialize();
 }
 
 CenterLine::CenterLine(Base::Vector3d pt1, Base::Vector3d pt2,
@@ -642,11 +643,22 @@ CenterLine::CenterLine(Base::Vector3d pt1, Base::Vector3d pt2,
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     m_geometry = TechDraw::BaseGeom::baseFactory(e);
 
-    createNewTag();
+    initialize();
 }
 
 CenterLine::~CenterLine()
 {
+}
+
+void CenterLine::initialize()
+{
+    m_geometry->classOfEdge = ecHARD;
+    m_geometry->hlrVisible = true;
+    m_geometry->cosmetic = true;
+    m_geometry->source(CENTERLINE);
+
+    createNewTag();
+    m_geometry->setCosmeticTag(getTagAsString());
 }
 
 CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat, 
@@ -717,25 +729,32 @@ TechDraw::BaseGeom* CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
     }
     
     std::pair<Base::Vector3d, Base::Vector3d> ends;
-    if (m_type == CLTYPE::FACE) {
-        ends = calcEndPoints(partFeat,
-                             m_faces,
-                             m_mode, m_extendBy,
-                             m_hShift,m_vShift, m_rotate);
-    } else if (m_type == CLTYPE::EDGE) {
-        ends = calcEndPoints2Lines(partFeat,
-                                   m_edges,
-                                   m_mode,
-                                   m_extendBy,
-                                   m_hShift, m_vShift, m_rotate, m_flip2Line);
-    } else if (m_type == CLTYPE::VERTEX) {
-        ends = calcEndPoints2Points(partFeat,
-                                    m_verts,
-                                    m_mode,
-                                    m_extendBy,
-                                    m_hShift, m_vShift, m_rotate, m_flip2Line);
+    try {
+        if (m_type == CLTYPE::FACE) {
+            ends = calcEndPoints(partFeat,
+                                 m_faces,
+                                 m_mode, m_extendBy,
+                                 m_hShift,m_vShift, m_rotate);
+        } else if (m_type == CLTYPE::EDGE) {
+            ends = calcEndPoints2Lines(partFeat,
+                                       m_edges,
+                                       m_mode,
+                                       m_extendBy,
+                                       m_hShift, m_vShift, m_rotate, m_flip2Line);
+        } else if (m_type == CLTYPE::VERTEX) {
+            ends = calcEndPoints2Points(partFeat,
+                                        m_verts,
+                                        m_mode,
+                                        m_extendBy,
+                                        m_hShift, m_vShift, m_rotate, m_flip2Line);
+        }
     }
-                             
+
+    catch (...) {
+        Base::Console().Error("CL::scaledGeometry - failed to calculate endpoints!\n");
+        return nullptr;
+    }
+
     TechDraw::BaseGeom* newGeom = nullptr;
     Base::Vector3d p1 = ends.first;
     Base::Vector3d p2 = ends.second;
@@ -748,6 +767,8 @@ TechDraw::BaseGeom* CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
     newGeom->classOfEdge = ecHARD;
     newGeom->hlrVisible = true;
     newGeom->cosmetic = true;
+    newGeom->source(CENTERLINE);
+    newGeom->setCosmeticTag(getTagAsString());
     return newGeom;
 }
 
@@ -794,10 +815,10 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
                                                       double hShift, double vShift,
                                                       double rotate)
 {
-    Base::Console().Message("CL::calcEndPoints()\n");
+//    Base::Console().Message("CL::calcEndPoints()\n");
     std::pair<Base::Vector3d, Base::Vector3d> result;
     if (faceNames.empty()) {
-        Base::Console().Message("CL::calcEndPoints - no faces!\n");
+        Base::Console().Warning("CL::calcEndPoints - no faces!\n");
         return result;
     }
 
@@ -813,16 +834,19 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
         int idx = TechDraw::DrawUtil::getIndexFromName(fn);
         std::vector<TechDraw::BaseGeom*> faceEdges = 
                                                 partFeat->getFaceEdgesByIndex(idx);
-        for (auto& fe: faceEdges) {
-            if (!fe->cosmetic) {
-                BRepBndLib::Add(fe->occEdge, faceBox);
+        if (!faceEdges.empty()) {
+            for (auto& fe: faceEdges) {
+                if (!fe->cosmetic) {
+                    BRepBndLib::Add(fe->occEdge, faceBox);
+                }
             }
         }
     }
 
     if (faceBox.IsVoid()) {
         Base::Console().Error("CL::calcEndPoints - faceBox is void!\n");
-        return result;
+//        return result;
+        throw Base::IndexError("CenterLine wrong number of faces.");
     }
 
     double Xmin,Ymin,Zmin,Xmax,Ymax,Zmax;
@@ -897,10 +921,10 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
                                                       double rotate, bool flip)
                                                       
 {
-    Base::Console().Message("CL::calc2Lines() - mode: %d flip: %d\n", mode, flip);
+//    Base::Console().Message("CL::calc2Lines() - mode: %d flip: %d\n", mode, flip);
     std::pair<Base::Vector3d, Base::Vector3d> result;
     if (edgeNames.empty()) {
-        Base::Console().Message("CL::calcEndPoints2Lines - no edges!\n");
+        Base::Console().Warning("CL::calcEndPoints2Lines - no edges!\n");
         return result;
     }
 
@@ -913,11 +937,14 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
         }
         int idx = TechDraw::DrawUtil::getIndexFromName(en);
         TechDraw::BaseGeom* bg = partFeat->getGeomByIndex(idx);
-        edges.push_back(bg);
+        if (bg != nullptr) {
+            edges.push_back(bg);
+        }
     }
     if (edges.size() != 2) {
-        Base::Console().Message("CL::calcEndPoints2Lines - wrong number of edges!\n");
-        return result;
+//        Base::Console().Message("CL::calcEndPoints2Lines - wrong number of edges!\n");
+//        return result;
+        throw Base::IndexError("CenterLine wrong number of edges.");
     }
 
     Base::Vector3d l1p1 = edges.front()->getStartPoint();
@@ -992,10 +1019,10 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
                                                       double rotate, bool flip)
                                                       
 {
-    Base::Console().Message("CL::calc2Points()\n");
+//    Base::Console().Message("CL::calc2Points()\n");
     std::pair<Base::Vector3d, Base::Vector3d> result;
     if (vertNames.empty()) {
-        Base::Console().Message("CL::calcEndPoints2Points - no points!\n");
+        Base::Console().Warning("CL::calcEndPoints2Points - no points!\n");
         return result;
     }
 
@@ -1008,11 +1035,15 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
         }
         int idx = TechDraw::DrawUtil::getIndexFromName(vn);
         TechDraw::Vertex* v = partFeat->getProjVertexByIndex(idx);
-        points.push_back(v);
+        if (v != nullptr) {
+            points.push_back(v);
+        }
     }
     if (points.size() != 2) {
-        Base::Console().Message("CL::calcEndPoints2Points - wrong number of points!\n");
-        return result;
+        //this should fail harder.  maybe be in a try/catch.
+//        Base::Console().Message("CL::calcEndPoints2Points - wrong number of points!\n");
+//        return result;
+        throw Base::IndexError("CenterLine wrong number of points.");
     }
 
     Base::Vector3d v1 = points.front()->point();
@@ -1140,18 +1171,18 @@ void CenterLine::Save(Base::Writer &writer) const
 
     writer.Stream()
          << writer.ind()
-             << "<Points "
-                << "PointCount=\"" <<  m_verts.size() <<
+             << "<CLPoints "
+                << "CLPointCount=\"" <<  m_verts.size() <<
              "\">" << endl;
 
     writer.incInd();
     for (auto& p: m_verts) {
         writer.Stream()
             << writer.ind()
-            << "<Point value=\"" << p <<"\"/>" << endl;
+            << "<CLPoint value=\"" << p <<"\"/>" << endl;
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</Points>" << endl ;
+    writer.Stream() << writer.ind() << "</CLPoints>" << endl ;
 
     writer.Stream() << writer.ind() << "<Style value=\"" <<  m_format.m_style << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Weight value=\"" <<  m_format.m_weight << "\"/>" << endl;
@@ -1160,20 +1191,24 @@ void CenterLine::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
 
 //stored geometry
-    writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->geomType <<"\"/>" << endl;
-    if (m_geometry->geomType == TechDraw::GeomType::GENERIC) {
-        Generic* gen = static_cast<Generic*>(m_geometry);
-        gen->Save(writer);
-    } else if (m_geometry->geomType == TechDraw::GeomType::CIRCLE) {
-        TechDraw::Circle* circ = static_cast<TechDraw::Circle*>(m_geometry);
-        circ->Save(writer);
-    } else if (m_geometry->geomType == TechDraw::GeomType::ARCOFCIRCLE) {
-        TechDraw::AOC* aoc = static_cast<TechDraw::AOC*>(m_geometry);
-        aoc->Save(writer);
+    if (m_geometry != nullptr) {
+        writer.Stream() << writer.ind() << "<GeometryType value=\"" << m_geometry->geomType <<"\"/>" << endl;
+        if (m_geometry->geomType == TechDraw::GeomType::GENERIC) {
+            Generic* gen = static_cast<Generic*>(m_geometry);
+            gen->Save(writer);
+        } else if (m_geometry->geomType == TechDraw::GeomType::CIRCLE) {
+            TechDraw::Circle* circ = static_cast<TechDraw::Circle*>(m_geometry);
+            circ->Save(writer);
+        } else if (m_geometry->geomType == TechDraw::GeomType::ARCOFCIRCLE) {
+            TechDraw::AOC* aoc = static_cast<TechDraw::AOC*>(m_geometry);
+            aoc->Save(writer);
+        } else {
+            Base::Console().Message("CL::Save - unimplemented geomType: %d\n", m_geometry->geomType);
+        }
     } else {
-        Base::Console().Message("CE::Save - unimplemented geomType: %d\n", m_geometry->geomType);
+        Base::Console().Error("CL::Save - m_geometry is null\n");
+        //TODO: create a placeholder for missing geom???
     }
-
 }
 
 void CenterLine::Restore(Base::XMLReader &reader)
@@ -1228,16 +1263,16 @@ void CenterLine::Restore(Base::XMLReader &reader)
     }
     reader.readEndElement("Edges");
 
-    reader.readElement("Points");
-    count = reader.getAttributeAsInteger("PointCount");
+    reader.readElement("CLPoints");
+    count = reader.getAttributeAsInteger("CLPointCount");
 
     i = 0;
     for ( ; i < count; i++) {
-        reader.readElement("Point");
+        reader.readElement("CLPoint");
         std::string p = reader.getAttribute("value");
         m_verts.push_back(p);
     }
-    reader.readEndElement("Points");
+    reader.readEndElement("CLPoints");
 
     reader.readElement("Style");
     m_format.m_style = reader.getAttributeAsInteger("value");
@@ -1257,7 +1292,6 @@ void CenterLine::Restore(Base::XMLReader &reader)
         gen->Restore(reader);
         gen->occEdge = GeometryUtils::edgeFromGeneric(gen);
         m_geometry = (TechDraw::BaseGeom*) gen;
-        
     } else if (gType == TechDraw::GeomType::CIRCLE) {
         TechDraw::Circle* circ = new TechDraw::Circle();
         circ->Restore(reader);
@@ -1269,9 +1303,8 @@ void CenterLine::Restore(Base::XMLReader &reader)
         aoc->occEdge = GeometryUtils::edgeFromCircleArc(aoc);
         m_geometry = (TechDraw::BaseGeom*) aoc;
     } else {
-        Base::Console().Message("CE::Restore - unimplemented geomType: %d\n", gType);
-    }
-
+        Base::Console().Warning("CL::Restore - unimplemented geomType: %d\n", gType);
+    } 
 }
 
 CenterLine* CenterLine::copy(void) const
@@ -1290,11 +1323,12 @@ CenterLine* CenterLine::copy(void) const
     newCL->m_faces = m_faces;
     newCL->m_edges = m_edges;
     newCL->m_verts = m_verts;
+    
+    TechDraw::BaseGeom* newGeom = m_geometry->copy();
+    newCL->m_geometry = newGeom;
 
-    newCL->m_format.m_style = m_format.m_style;
-    newCL->m_format.m_weight = m_format.m_weight;
-    newCL->m_format.m_color = m_format.m_color;
-    newCL->m_format.m_visible = m_format.m_visible;
+    newCL->m_format = m_format;
+
     return newCL;
 }
 
