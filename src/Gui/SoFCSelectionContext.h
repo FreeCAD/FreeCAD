@@ -37,6 +37,8 @@ struct SoFCSelectionContextBase;
 typedef std::shared_ptr<SoFCSelectionContextBase> SoFCSelectionContextBasePtr;
 
 struct GuiExport SoFCSelectionContextBase {
+    std::shared_ptr<int> counter;
+
     virtual ~SoFCSelectionContextBase() {}
     typedef int MergeFunc(int status, SoFCSelectionContextBasePtr &output, 
             SoFCSelectionContextBasePtr input, SoFCSelectionRoot *node);
@@ -51,7 +53,6 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
     std::set<int> selectionIndex;
     SbColor selectionColor;
     SbColor highlightColor;
-    std::shared_ptr<int> counter;
 
     virtual ~SoFCSelectionContext();
 
@@ -132,13 +133,14 @@ public:
     virtual ~SoFCSelectionCounter();
 
     /// Invalids cache if there are selections
-    bool checkCache(SoState *state);
+    bool checkCache(SoState *state, bool secondary=false);
 
     /// Count highlight action
     void checkAction(SoHighlightElementAction *hlaction);
 
     /// Count selection action
-    void checkAction(SoSelectionElementAction *selaction, SoFCSelectionContextPtr ctx = SoFCSelectionContextPtr());
+    void checkAction(SoSelectionElementAction *selaction,
+            SoFCSelectionContextBasePtr ctx = SoFCSelectionContextBasePtr());
 
 protected:
     std::shared_ptr<int> counter;

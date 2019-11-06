@@ -1704,11 +1704,14 @@ void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, bool inPath) {
 }
 
 bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, bool &pushed) {
+
+    auto state = action->getState();
+    selCounter.checkCache(state,true);
+
     auto ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(SelStack,this,SelContext::merge));
     if(ctx2 && ctx2->hideAll)
         return false;
 
-    auto state = action->getState();
     SelContextPtr ctx = getRenderContext<SelContext>(this);
 
     int style = selectionStyle.getValue();
@@ -1931,8 +1934,10 @@ void SoFCSelectionRoot::getPrimitiveCount(SoGetPrimitiveCountAction * action) {
 void SoFCSelectionRoot::getBoundingBox(SoGetBoundingBoxAction * action)
 {
     BEGIN_ACTION;
-    if(doActionPrivate(stack,action))
+    if(doActionPrivate(stack,action)) {
+        selCounter.checkCache(action->getState(),true);
         inherited::getBoundingBox(action);
+    }
     END_ACTION;
 }
 
@@ -1997,6 +2002,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
                 action->getWhatAppliedTo()==SoAction::NODE))
             {
                 auto ctx = getActionContext(action,this,SelContextPtr(),false);
+                selCounter.checkAction(selAction,ctx);
                 if(ctx && ctx->hideAll) {
                     ctx->hideAll = false;
                     if(!ctx->hlAll && !ctx->selAll)
@@ -2011,6 +2017,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
             }else if(selAction->getType() == SoSelectionElementAction::Hide) {
                 if(action->getCurPathCode()==SoAction::BELOW_PATH || isTail) {
                     auto ctx = getActionContext(action,this,SelContextPtr());
+                    selCounter.checkAction(selAction,ctx);
                     if(ctx && !ctx->hideAll) {
                         ctx->hideAll = true;
                         touch();
@@ -2036,6 +2043,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
             }
 
             auto ctx = getActionContext(action,this,SelContextPtr(),false);
+            selCounter.checkAction(selAction,ctx);
             if(ctx && ctx->selAll) {
                 ctx->selAll = false;
                 touch();
@@ -2044,6 +2052,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
         } else if(selAction->getType() == SoSelectionElementAction::All) {
             auto ctx = getActionContext(action,this,SelContextPtr());
             assert(ctx);
+            selCounter.checkAction(selAction,ctx);
             ctx->selAll = true;
             ctx->selColor = selAction->getColor();
             touch();
@@ -2055,6 +2064,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     if(action->isOfType(SoHighlightElementAction::getClassTypeId())) {
         auto hlAction = static_cast<SoHighlightElementAction*>(action);
         if(hlAction->isHighlighted()) {
+            selCounter.checkAction(hlAction);
             if(hlAction->getElement()) {
                 auto ctx = getActionContext(action,this,SelContextPtr(),false);
                 if(ctx && ctx->hlAll) {

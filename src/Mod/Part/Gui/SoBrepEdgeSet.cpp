@@ -111,10 +111,9 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
 
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
-    if(ctx2 && ctx2->selectionIndex.empty()) {
-        SoCacheElement::invalidate(state);
+    if(ctx2 && !ctx2->isSelected())
         return;
-    }
+
     if(selContext2->checkGlobal(ctx)) {
         SoCacheElement::invalidate(state);
         if(selContext2->isSelectAll()) {
@@ -122,7 +121,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
             selContext2->sl.push_back(-1);
         }else if(ctx)
             selContext2->sl = ctx->sl;
-        if(selContext2->highlightIndex==INT_MAX) {
+        if(selContext2->isHighlightAll()) {
             selContext2->hl.clear();
             selContext2->hl.push_back(-1);
         }else if(ctx)
@@ -135,7 +134,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
         depthGuard.set(GL_LEQUAL);
 
     if(ctx && ctx->isHighlightAll()) {
-        if(ctx2) {
+        if(ctx2 && !ctx2->isSelectAll()) {
             ctx2->selectionColor = ctx->highlightColor;
             renderSelection(action,ctx2); 
         } else
@@ -145,9 +144,10 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
 
     int pass = 2;
 
-    if(!ctx2 && Gui::ViewParams::instance()->getShowSelectionOnTop()
-             && (!ctx || !ctx->isSelectAll())
-             && !Gui::ViewParams::instance()->getShowSelectionBoundingBox()) 
+    if((!ctx2 || !ctx2->isSelectAll())
+       && Gui::ViewParams::instance()->getShowSelectionOnTop()
+       && (!ctx || !ctx->isSelectAll())
+       && !Gui::ViewParams::instance()->getShowSelectionBoundingBox()) 
     {
         // If we are rendering on top, we shall perform a two pass rendering.
         // The first pass keep depth test disabled (default in on top
@@ -200,9 +200,9 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
             pass = 2;
         }
 
-        if(ctx && ctx->selectionIndex.size()) {
+        if(ctx && ctx->isSelected()) {
             if(ctx->isSelectAll()) {
-                if(ctx2) {
+                if(ctx2 && !ctx2->isSelectAll()) {
                     ctx2->selectionColor = ctx->selectionColor;
                     renderSelection(action,ctx2); 
                 }else if(ctx->isSelectAll())
@@ -211,14 +211,14 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
                 continue;
             }
         }
-        if(ctx2 && ctx2->selectionIndex.size())
+        if(ctx2 && ctx2->isSelected())
             renderSelection(action,ctx2,false);
         else
             inherited::GLRender(action);
 
         // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
-        if(ctx && ctx->selectionIndex.size())
+        if(ctx && ctx->isSelected())
             renderSelection(action,ctx);
         renderHighlight(action,ctx);
 //#endif
@@ -233,15 +233,15 @@ void SoBrepEdgeSet::GLRenderBelowPath(SoGLRenderAction * action)
 void SoBrepEdgeSet::getBoundingBox(SoGetBoundingBoxAction * action) {
 
     auto state = action->getState();
-    selCounter.checkCache(state);
+    selCounter.checkCache(state,true);
 
     SelContextPtr ctx2 = Gui::SoFCSelectionRoot::getSecondaryActionContext<SelContext>(action,this);
-    if(!ctx2 || (ctx2->sl.size()==1 && ctx2->sl[0]<0)) {
+    if(!ctx2 || ctx2->isSelectAll()) {
         inherited::getBoundingBox(action);
         return;
     }
 
-    if(ctx2->sl.empty())
+    if(!ctx2->isSelected())
         return;
 
     auto coords = SoCoordinateElement::getInstance(state);

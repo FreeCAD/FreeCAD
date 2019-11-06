@@ -75,6 +75,9 @@
 # include <Inventor/C/glue/gl.h>
 #endif
 
+#include <Inventor/elements/SoCullElement.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
+
 #include <boost/algorithm/string/predicate.hpp>
 #include "SoBrepFaceSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
@@ -106,7 +109,7 @@ static inline SbColor makeDistinctColor(const SbColor &color, const SbColor &oth
     return makeDistinctColor(c,color,other)?c:color;
 }
 
-static bool makeDistinctColor(uint32_t &res, uint32_t color, uint32_t other) {
+static inline bool makeDistinctColor(uint32_t &res, uint32_t color, uint32_t other) {
     SbColor r, c, o;
     float t;
     o.setPackedValue(other,t);
@@ -152,11 +155,38 @@ public:
         }
     }
 
+    bool isVboAvailable(SoGLRenderAction *action) const {
+        SoState *state = action->getState();
+
+        if(!vboAvailable || !Gui::SoGLVBOActivatedElement::get(state))
+            return false;
+
+        uint32_t flags = SoOverrideElement::getFlags(state);
+        if(flags & (SoOverrideElement::NORMAL_VECTOR|SoOverrideElement::NORMAL_BINDING))
+            return false;
+
+        if(flags & (SoOverrideElement::COLOR_INDEX|
+                    SoOverrideElement::DIFFUSE_COLOR|
+                    SoOverrideElement::MATERIAL_BINDING|
+                    SoOverrideElement::TRANSPARENCY))
+        {
+            auto it = vbomap.find(action->getCacheContext());
+            if(it == vbomap.end())
+                return false;
+            auto &info = it->second;
+            return info.vboLoaded && !info.updateVbo;
+        }
+        return true;
+    }
+
     void render(SoGLRenderAction * action,
-                const SoGLCoordinateElement * const vertexlist,
+                bool color_override,
+                const std::vector<int32_t> &render_indices,
+                const SoCoordinateElement *coords,
                 const int32_t *vertexindices,
                 int num_vertexindices,
                 const int32_t *partindices,
+                const int32_t *indexoffsets,
                 int num_partindices,
                 const SbVec3f *normals,
                 const int32_t *normindices,
@@ -209,10 +239,44 @@ SoBrepFaceSet::SoBrepFaceSet()
     selContext2 = std::make_shared<SelContext>();
 
     pimpl.reset(new VBO);
+
+    partIndexSensor.attach(&partIndex);
+    partIndexSensor.setData(this);
+    partIndexSensor.setFunction([](void *data, SoSensor*){
+        reinterpret_cast<SoBrepFaceSet*>(data)->onPartIndexChange();
+    });
 }
 
 SoBrepFaceSet::~SoBrepFaceSet()
 {
+}
+
+void SoBrepFaceSet::onPartIndexChange() {
+    partBBoxes.clear();
+    indexOffset.clear();
+    partIndexMap.clear();
+}
+
+void SoBrepFaceSet::buildPartIndexCache() {
+    if(partIndex.getNum()+1 == (int)indexOffset.size())
+        return;
+
+    indexOffset.resize(partIndex.getNum()+1);
+    const int32_t *piptr = partIndex.getValues(0);
+    int32_t c = 0;
+    for(int i=0,count=partIndex.getNum();i<count;++i) {
+        indexOffset[i] = c;
+        c += piptr[i];
+    }
+    indexOffset[partIndex.getNum()] = c;
+    partIndexMap.clear();
+    if(partIndex.getNum() > 200) {
+        c = 0;
+        for(int i=0,count=partIndex.getNum();i<count;++i) {
+            partIndexMap[c] = i;
+            c += piptr[i];
+        }
+    }
 }
 
 void SoBrepFaceSet::doAction(SoAction* action)
@@ -380,169 +444,6 @@ void SoBrepFaceSet::doAction(SoAction* action)
     inherited::doAction(action);
 }
 
-#ifdef RENDER_GLARRAYS
-void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
-{
-    SoState * state = action->getState();
-    // Disable caching for this node
-    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-
-    SoMaterialBundle mb(action);
-    Binding mbind = this->findMaterialBinding(state);
-
-    SoTextureCoordinateBundle tb(action, true, false);
-    SbBool doTextures = tb.needCoordinates();
-
-    if (ctx->coordIndex.getNum() < 3)
-        return;
-
-    SelContextPtr ctx2;
-    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
-    if(ctx2 && ctx2->selectionIndex.empty())
-        return;
-
-    int32_t hl_idx = ctx?ctx->highlightIndex:-1;
-    int32_t num_selected = ctx?ctx->selectionIndex.size():0;
-
-    renderHighlight(action,ctx);
-    if(ctx && ctx->selectionIndex.size()) {
-        if(ctx->isSelectAll()) {
-            if(ctx2 && ctx2->selectionIndex.size()) {
-                ctx2->selectionColor = ctx->selectionColor;
-                renderSelection(action,ctx2); 
-            } else
-                renderSelection(action,ctx); 
-            return;
-        }
-        renderSelection(action,ctx); 
-    }
-    if(ctx2 && ctx2->selectionIndex.size()) {
-        renderSelection(action,ctx2,false);
-    }else{
-
-        // When setting transparency shouldGLRender() handles the rendering and returns false.
-        // Therefore generatePrimitives() needs to be re-implemented to handle the materials
-        // correctly.
-        if (!this->shouldGLRender(action))
-            return;
-
-#ifdef RENDER_GLARRAYS
-        if (!doTextures && index_array.size() && hl_idx < 0 && num_selected <= 0) {
-            if (mbind == 0) {
-                mb.sendFirst(); // only one material -> apply it!
-                renderSimpleArray();
-                return;
-            }
-            else if (mbind == 1) {
-                renderColoredArray(&mb);
-                return;
-            }
-        }
-#endif
-
-        Binding nbind = this->findNormalBinding(state);
-
-        const SoCoordinateElement * coords;
-        const SbVec3f * normals;
-        const int32_t * cindices;
-        int numindices;
-        const int32_t * nindices;
-        const int32_t * tindices;
-        const int32_t * mindices;
-        const int32_t * pindices;
-        int numparts;
-        SbBool normalCacheUsed;
-
-        SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
-
-        this->getVertexData(state, coords, normals, cindices,
-                            nindices, tindices, mindices, numindices,
-                            sendNormals, normalCacheUsed);
-
-        mb.sendFirst(); // make sure we have the correct material
-
-        // just in case someone forgot
-        if (!mindices) mindices = cindices;
-        if (!nindices) nindices = cindices;
-        pindices = this->partIndex.getValues(0);
-        numparts = this->partIndex.getNum();
-
-        renderShape(state, vboAvailable, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
-            pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
-
-        if(normalCacheUsed)
-            this->readUnlockNormalCache();
-    }
-
-    // Workaround for #0000433
-//#if !defined(FC_OS_WIN32)
-    renderHighlight(action,ctx);
-    renderSelection(action,ctx);
-//#endif
-}
-
-//****************************************************************************
-// renderSimpleArray: normal and coord from vertex_array;
-// no texture, color, highlight or selection but highet possible speed;
-// all vertices written in one go!
-//
-void SoBrepFaceSet::renderSimpleArray()
-{
-    int cnt = index_array.size();
-    if (cnt == 0) return;
-
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_VERTEX_ARRAY);
-
-#if 0
-    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
-    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, index_array.data());
-#else
-    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
-    glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, &(index_array[0]));
-#endif
-
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-}
-
-//****************************************************************************
-// renderColoredArray: normal and coord from vertex_array;
-// no texture, highlight or selection but color / material array.
-// needs to iterate over parts (i.e. geometry faces)
-//
-void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
-{
-    int num_parts = partIndex.getNum();
-    int cnt = index_array.size();
-    if (cnt == 0) return;
-
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_VERTEX_ARRAY);
-
-#if 0
-    glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
-    const int32_t* ptr = index_array.data();
-#else
-    glInterleavedArrays(GL_N3F_V3F, 0, &(vertex_array[0]));
-    const int32_t* ptr = &(index_array[0]);
-#endif
-
-    for (int part_id = 0; part_id < num_parts; part_id++) {
-        int tris = partIndex[part_id];
-
-        if (tris > 0) {
-            materials->send(part_id, true);
-            glDrawElements(GL_TRIANGLES, 3 * tris, GL_UNSIGNED_INT, ptr);
-            ptr += 3 * tris;
-        }
-    }
-
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-}
-#else
-
 void SoBrepFaceSet::setSiblings(std::vector<SoNode*> &&s) {
     // No need to ref() here, because we only use the pointer as keys to lookup
     // selection context
@@ -563,28 +464,51 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if (this->coordIndex.getNum() < 3)
         return;
 
+    auto state = action->getState();
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Copied from SoShape::shouldGLRender(). We are replacing it so that we
+    // can do our own transparency sorting.
+    // TODO: check SoShape::shouldGLRender() code in case we want to render shadow
+    const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
+    unsigned int shapestyleflags = shapestyle->getFlags();
+    if (shapestyleflags & SoShapeStyleElement::INVISIBLE)
+        return;
+    if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
+        if (getBoundingBoxCache()->isValid(state)) {
+            if (SoCullElement::cullTest(state, getBoundingBoxCache()->getProjectedBox())) {
+                return;
+            }
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    selCounter.checkCache(state);
+
     SelContextPtr ctx2;
     std::vector<SelContextPtr> ctxs;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext(this,selContext,ctx2);
     if(ctx2 && ctx2->selectionIndex.empty())
         return;
-    if(selContext2->checkGlobal(ctx))
+
+    if(selContext2->checkGlobal(ctx)) {
         ctx = selContext2;
+        SoCacheElement::invalidate(state);
+    }
     if(ctx && (!ctx->selectionIndex.size() && ctx->highlightIndex<0))
         ctx.reset();
 
-    if(!ctx2 && ctx && ctx->isHighlightAll() 
-            && Gui::ViewParams::instance()->getShowHighlightEdgeOnly()) 
-    {
+    if((!ctx2||ctx2->isSelectAll()) && ctx && ctx->isHighlightAll()) {
         // Highlight (preselect) all is done in View3DInventerViewer with a
         // dedicated GroupOnTopPreSel. We shall only render edge and point.
         // But if we have partial rendering (ctx2), then edges and points are
         // not rendered, so we have to proceed as normal
-        return;
+        if(!action->isRenderingDelayedPaths()) {
+            if(!Gui::ViewParams::instance()->getShowHighlightEdgeOnly())
+                return;
+        } else if(Gui::ViewParams::instance()->getShowHighlightEdgeOnly())
+            return;
     }
-
-    auto state = action->getState();
-    selCounter.checkCache(state);
 
     // Check this node's selection state first
     int selected = 0;
@@ -593,7 +517,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
             selected = 1;
         else if(ctx->isHighlighted() && Gui::Selection().needPickedList())
             selected = 2;
-    } else if (!ctx2 
+    } else if ((!ctx2 || ctx2->isSelectAll())
                 && (Gui::Selection().needPickedList() 
                     || (Gui::ViewParams::instance()->getShowSelectionOnTop()
                         && !Gui::ViewParams::instance()->getShowSelectionBoundingBox())))
@@ -613,56 +537,29 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
     // If 'ShowSelectionOnTop' is enabled, and this node is selected, and we
     // are NOT rendering on top (!isRenderingDelayedPath), and we are not
-    // partial rendering (!ctx2)
+    // partial rendering.
     if(Gui::ViewParams::instance()->getShowSelectionOnTop()
             && !Gui::ViewParams::instance()->getShowSelectionBoundingBox()
-            && !ctx2 && selected == 1
+            && (!ctx2||ctx2->isSelectAll()) 
+            && selected == 1
             && !action->isRenderingDelayedPaths())
     {
-        // Then only render the face if we are select all. If we are not select
-        // all, the face will be rendered in group on top.
-        if(!ctx || !ctx->isSelectAll()) 
-            return;
+        // Then the face will be rendered in group on top, i.e. when
+        // action->isRenderingDelayedPaths(). So we just return here.
+        return;
     }
-
-    bool depthWrite = false;
 
     // override material binding to PER_PART_INDEX to achieve
     // preselection/selection with transparency
     bool pushed = overrideMaterialBinding(action,selected,ctx,ctx2);
-
-    // If 'ShowSelectionOnTop' is enabled, and we ARE rendering on top
-    // (isRenderingDelayedPath), and we are not partial rendering (!ctx2).
-    if(Gui::ViewParams::instance()->getShowSelectionOnTop()
-            && !Gui::ViewParams::instance()->getShowSelectionBoundingBox()
-            && !ctx2
-            && action->isRenderingDelayedPaths())
-    {
-        if(!ctx || !ctx->isSelectAll()) {
-            // If we are not select all, then we'll later on perform a depth
-            // buffer only write with color buffer disabled for SoBrepEdgeSet
-            // outline rendering.
-            depthWrite = true;
-
-        } else if(!Gui::SoFCSwitch::testTraverseState(Gui::SoFCSwitch::TraverseInvisible)) {
-            // If we are select all and is visible, DO NOT render face
-            renderHighlight(action,ctx);
-            if(pushed) {
-                SbBool notify = enableNotify(FALSE);
-                materialIndex.setNum(0);
-                if(notify) enableNotify(notify);
-                state->pop();
-            }
-            return;
-        }
-    }
 
     if(!pushed){
         // for non transparent cases, we still use the old selection rendering
         // code, because it can override emission color, which gives a more
         // distinguishable selection highlight. The above material binding
         // override method can't, because Coin does not support per part
-        // emission color
+        // emission color, also because emission color does not really work
+        // with transparency.
 
         // There are a few factors affects the rendering order.
         //
@@ -683,7 +580,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         // handled inside overrideMaterialBinding()
         //
         if(ctx && ctx->isHighlightAll()) {
-            if(ctx2) {
+            if(ctx2 && !ctx2->isSelectAll()) {
                 ctx2->selectionColor = ctx->highlightColor;
                 renderSelection(action,ctx2); 
             } else
@@ -693,9 +590,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
         if(!action->isRenderingDelayedPaths())
             renderHighlight(action,ctx);
-        if(ctx && ctx->selectionIndex.size()) {
+        if(ctx && ctx->isSelected()) {
             if(ctx->isSelectAll()) {
-                if(ctx2) {
+                if(ctx2 && !ctx2->isSelectAll()) {
                     ctx2->selectionColor = ctx->selectionColor;
                     renderSelection(action,ctx2); 
                 } else
@@ -717,25 +614,24 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         }
     }
 
-    SoMaterialBundle mb(action);
-    // It is important to send material before shouldGLRender(), otherwise
-    // material override with transparncy won't work.
-    mb.sendFirst(); 
-
-    if(depthWrite) {
-        Gui::FCDepthFunc guard(GL_LEQUAL);
+    // If 'ShowSelectionOnTop' is enabled, and we ARE rendering on top
+    // (isRenderingDelayedPath), and we are not partial rendering (!ctx2).
+    if(Gui::ViewParams::instance()->getShowSelectionOnTop()
+            && !Gui::ViewParams::instance()->getShowSelectionBoundingBox()
+            && (!ctx2 || ctx2->isSelectAll())
+            && (!ctx || (!ctx->isHighlightAll() && !ctx->isSelectAll()))
+            && action->isRenderingDelayedPaths())
+    {
         // Perform a depth buffer only rendering so that we can draw the
-        // correct outline in SoBrepEdgeSet
+        // correct outline in SoBrepEdgeSet. But only do this if vbo is
+        // available for performance reason.
+        Gui::FCDepthFunc guard(GL_LEQUAL);
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-        renderShape(action,mb,false);
+        renderShape(action,ctx2,false);
         glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
     }
 
-    // When setting transparency shouldGLRender() handles the rendering and returns false.
-    // Therefore generatePrimitives() needs to be re-implemented to handle the materials
-    // correctly.
-    if(this->shouldGLRender(action))
-        renderShape(action, mb, !!ctx2);
+    renderShape(action,ctx2,true);
 
     if(pushed) {
         SbBool notify = enableNotify(FALSE);
@@ -747,68 +643,134 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         renderHighlight(action,ctx);
     }
 }
-#endif
 
-void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SoMaterialBundle &mb, bool partial) {
-    auto state = action->getState();
-    Binding mbind = this->findMaterialBinding(state);
-    Binding nbind = this->findNormalBinding(state);
+static inline bool isOpaque(int id, const float *trans, int numtrans, 
+        const std::vector<int32_t> mindices, const std::vector<uint32_t> &packed) 
+{
+    if(id < (int)mindices.size())
+        return (packed[mindices[id]]&0xff)==0xff;
+    if(numtrans==1)
+        id = 0;
+    if(id < numtrans) 
+        return trans[id]==0.0f;
+    return true;
+}
 
-    const SoCoordinateElement * coords;
-    const SbVec3f * normals;
-    const int32_t * cindices;
-    int numindices;
-    const int32_t * nindices;
-    const int32_t * tindices;
-    const int32_t * mindices;
-    const int32_t * pindices;
-    int numparts;
-    SbBool doTextures;
-    SbBool normalCacheUsed;
-
-    SoTextureCoordinateBundle tb(action, true, false);
-    doTextures = tb.needCoordinates();
-    SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
-
-    this->getVertexData(state, coords, normals, cindices,
-                        nindices, tindices, mindices, numindices,
-                        sendNormals, normalCacheUsed);
-
-    // just in case someone forgot
-    if (!mindices) mindices = cindices;
-    if (!nindices) nindices = cindices;
-    pindices = this->partIndex.getValues(0);
-    numparts = this->partIndex.getNum();
-
-    SbBool hasVBO = !partial && PRIVATE(this)->vboAvailable;
-    if (hasVBO) {
-        // get the VBO status of the viewer
-        Gui::SoGLVBOActivatedElement::get(state, hasVBO);
-        //
-        //if (SoGLVBOElement::shouldCreateVBO(state, numindices)) {
-        //    this->startVertexArray(action, coords, normals, false, false);
-        //}
+static inline bool isTranslucent(int id, const float *trans, int numtrans, 
+        const std::vector<int32_t> mindices, const std::vector<uint32_t> &packed) 
+{
+    if(id < (int)mindices.size()) {
+        uint32_t t = packed[mindices[id]] & 0xff;
+        return t && t<0xff;
     }
-    renderShape(action, hasVBO, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
-        pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+    if(numtrans==1)
+        id = 0;
+    if(id < numtrans) 
+        return trans[id]!=0.0f && trans[id]<1.0;
+    return false;
+}
 
-    // if (!hasVBO) {
-    //     // Disable caching for this node
-    //     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-    // }else
-    //     SoGLCacheContextElement::setAutoCacheBits(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+static thread_local std::vector<int> RenderIndices;
 
-    if (normalCacheUsed)
-        this->readUnlockNormalCache();
+struct PartDist {
+    int index;
+    float dist;
+    PartDist(int i, float d)
+        :index(i),dist(d)
+    {}
+};
+static thread_local std::vector<PartDist> SortedParts;
+
+void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bool checkTransp) 
+{
+    SoState *state = action->getState();
+
+    bool transparent = checkTransp 
+        && (SoShapeStyleElement::get(state)->getFlags() 
+            & (SoShapeStyleElement::TRANSP_TEXTURE|SoShapeStyleElement::TRANSP_MATERIAL));
+
+    if(transparent) {
+        auto element = SoLazyElement::getInstance(state);
+        const float *trans = element->getTransparencyPointer();
+        int numtrans = element->getNumTransparencies();
+
+        // In case not all faces are transparent, render opaque one first, with
+        // depth test enabled
+        if(!action->isRenderingTranspPaths()) {
+            if(SoMaterialBindingElement::get(state) != SoMaterialBindingElement::OVERALL) {
+                RenderIndices.clear();
+                int numparts = partIndex.getNum();
+                if(ctx2 && !ctx2->isSelectAll() && ctx2->isSelected()) {
+                    for(auto id : ctx2->selectionIndex) {
+                        if(id<0 || id>=numparts || !isOpaque(id,trans,numtrans,matIndex,packedColors))
+                            continue;
+                        RenderIndices.push_back(id);
+                    }
+
+                } else {
+                    for(int id=0;id<numparts;++id) {
+                        if(!isOpaque(id,trans,numtrans,matIndex,packedColors))
+                            continue;
+                        RenderIndices.push_back(id);
+                    }
+                }
+                if(RenderIndices.size()) {
+                    Gui::FCDepthFunc guard(GL_LEQUAL);
+                    renderShape(action, true);
+                }
+            }
+            // Calling handleTransparency() here to get us queued in the
+            // delayed transparency rendering paths
+            action->handleTransparency(true);
+        } 
+        
+        if(action->isRenderingDelayedPaths() || action->isRenderingTranspPaths()) {
+
+            // We perform our own "per part" face sorting to avoid artifacts in
+            // transparent face rendering, where some triangle inside a part is
+            // mis-sorted.
+            sortParts(state, ctx2, trans, numtrans);
+
+            RenderIndices.clear();
+            for(auto &v : SortedParts)
+                RenderIndices.push_back(v.index);
+
+            if(RenderIndices.size()) {
+                // Calling handleTransparency() here will setup blending for us
+                action->handleTransparency(true);
+                renderShape(action,checkTransp);
+            }
+        }
+    } else  if (ctx2 && !ctx2->isSelectAll() && ctx2->isSelected()) {
+        RenderIndices.clear();
+        for(auto id : ctx2->selectionIndex) {
+            if(id>=0 && id<partIndex.getNum())
+                RenderIndices.push_back(id);
+        }
+        if(RenderIndices.size()) 
+            renderShape(action,checkTransp);
+
+    } else {
+        RenderIndices.clear();
+        renderShape(action,checkTransp);
+    }
 }
 
 bool SoBrepFaceSet::overrideMaterialBinding(
         SoGLRenderAction *action, int selected, SelContextPtr ctx, SelContextPtr ctx2) 
 {
-    if(!selected && !ctx && !ctx2)
-        return false;
+    packedColors.clear();
+    matIndex.clear();
 
     auto state = action->getState();
+    if(!selected && !ctx && !ctx2) {
+        if(!(SoShapeStyleElement::get(state)->getFlags() 
+                & (SoShapeStyleElement::TRANSP_TEXTURE|SoShapeStyleElement::TRANSP_MATERIAL)))
+        {
+            return false;
+        }
+    }
+
     auto mb = SoMaterialBindingElement::get(state);
 
     auto element = SoLazyElement::getInstance(state);
@@ -850,12 +812,10 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         (mb==SoMaterialBindingElement::PER_PART && diffuse_size>=partIndex.getNum())) 
         &&
        ((selected && Gui::Selection().needPickedList()) || 
-        trans0!=0.0 ||
+        (trans0!=0.0 && ctx && (ctx->isSelected() || ctx->isHighlighted())) ||
         (ctx2 && ctx2->colors.size())))
     {
         state->push();
-
-        packedColors.clear();
 
         if(selected && Gui::Selection().needPickedList()) {
             hasTransparency = true;
@@ -868,30 +828,34 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             ctx2->trans0 = 0.0;
 
         uint32_t diffuseColor = diffuse[0].getPackedValue(trans0);
+        uint32_t highlightColor;
+        uint32_t selectionColor;
+        if(ctx) {
+            highlightColor = ctx->highlightColor.getPackedValue(trans0);
+            selectionColor = ctx->selectionColor.getPackedValue(trans0);
+        }
+
         int singleColor = 0;
         if(ctx && ctx->isHighlightAll()) {
             singleColor = 1;
-            SbColor color;
-            diffuseColor = makeDistinctColor(ctx->highlightColor,diffuse[0]).getPackedValue(trans0);
+            diffuseColor = highlightColor;
         }else if(ctx && ctx->isSelectAll()) {
-            diffuseColor = makeDistinctColor(ctx->selectionColor,diffuse[0]).getPackedValue(trans0);
+            diffuseColor = selectionColor;
             singleColor = ctx->isHighlighted()?-1:1;
         } else if(ctx2 && ctx2->isSingleColor(diffuseColor,hasTransparency)) {
             singleColor = ctx?-1:1;
         }
 
         if(hasTransparency) {
-            SbColor color;
             // Emissive color in opengl increase objects color intensity, but
             // only works in single color. We have to turn off emissive when
             // there is transparency, otherwise it will drastically decrease
             // transparency.
-            SoLazyElement::setEmissive(state, &color);
+            SbColor c(0,0,0);
+            SoLazyElement::setEmissive(state, &c);
         }
 
-        bool partialRender = ctx2 && !ctx2->isSelectAll();
-
-        if(singleColor>0 && !partialRender) {
+        if(singleColor>0) {
             //optimization for single color non-partial rendering
             SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
             SoOverrideElement::setMaterialBindingOverride(state, this, true);
@@ -899,102 +863,84 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             SoLazyElement::setPacked(state, this,1, &packedColors[0], hasTransparency);
             SoTextureEnabledElement::set(state,this,false);
 
-            // if(hasTransparency && action->isRenderingDelayedPaths()) {
-            //     SoLazyElement::enableSeparateBlending(state,
-            //             GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
-            // }
+            if(hasTransparency) {
+                // Override transparency type. We'll do our own sorting in sortParts()
+                SoLazyElement::setTransparencyType(state, SoTransparencyType::SORTED_OBJECT_BLEND);
+                SoShapeStyleElement::setTransparencyType(state, SoTransparencyType::SORTED_OBJECT_BLEND);
+            }
+
             return true;
         }
 
-        matIndex.clear();
         matIndex.reserve(partIndex.getNum());
 
-        if(ctx && (ctx->isSelectAll() || ctx->isHighlightAll())) {
+        bool partialRender = ctx2 && !ctx2->isSelectAll();
+        if(partialRender) {
+            packedColors.push_back(SbColor(1.0,1.0,1.0).getPackedValue(1.0));
             matIndex.resize(partIndex.getNum(),0);
-            if(!partialRender)
+
+            if(mb == SoMaterialBindingElement::OVERALL || singleColor) {
                 packedColors.push_back(diffuseColor);
-            else {
-                // default to full transparent
-                packedColors.push_back(SbColor(1.0,1.0,1.0).getPackedValue(1.0));
-                packedColors.push_back(diffuseColor);
+                auto cidx = packedColors.size()-1;
                 for(auto idx : ctx2->selectionIndex) {
-                    if(idx>=0 && idx<partIndex.getNum())
-                        matIndex[idx] = packedColors.size()-1; // show only the selected
-                }
-            }
-            if(ctx->highlightIndex>=0 && ctx->highlightIndex<partIndex.getNum()) {
-                packedColors.push_back(ctx->highlightColor.getPackedValue(trans0));
-                matIndex[ctx->highlightIndex] = packedColors.size()-1;
-            }
-        }else{
-            if(partialRender) {
-                packedColors.push_back(SbColor(1.0,1.0,1.0).getPackedValue(1.0));
-                matIndex.resize(partIndex.getNum(),0);
-
-                if(mb == SoMaterialBindingElement::OVERALL || singleColor) {
-                    packedColors.push_back(diffuseColor);
-                    auto cidx = packedColors.size()-1;
-                    for(auto idx : ctx2->selectionIndex) {
-                        if(idx>=0 && idx<partIndex.getNum()) {
-                            if(!singleColor && ctx2->applyColor(idx,packedColors,hasTransparency))
-                                matIndex[idx] = packedColors.size()-1;
-                            else
-                                matIndex[idx] = cidx;
-                        }
-                    }
-                }else{
-                    assert(diffuse_size >= partIndex.getNum());
-                    for(auto idx : ctx2->selectionIndex) {
-                        if(idx>=0 && idx<partIndex.getNum()) {
-                            if(!ctx2->applyColor(idx,packedColors,hasTransparency)) {
-                                auto t = idx<trans_size?trans[idx]:trans0;
-                                packedColors.push_back(diffuse[idx].getPackedValue(t));
-                            }
+                    if(idx>=0 && idx<partIndex.getNum()) {
+                        if(!singleColor && ctx2->applyColor(idx,packedColors,hasTransparency))
                             matIndex[idx] = packedColors.size()-1;
-                        }
-                    }
-                }
-            }else if(mb==SoMaterialBindingElement::OVERALL || singleColor) {
-                packedColors.push_back(diffuseColor);
-                matIndex.resize(partIndex.getNum(),0);
-
-                if(ctx2 && !singleColor) {
-                    for(auto &v : ctx2->colors) {
-                        int idx = v.first;
-                        if(idx>=0 && idx<partIndex.getNum()) {
-                            packedColors.push_back(ctx2->packColor(v.second,hasTransparency));
-                            matIndex[idx] = packedColors.size()-1;
-                        }
+                        else
+                            matIndex[idx] = cidx;
                     }
                 }
             }else{
                 assert(diffuse_size >= partIndex.getNum());
-                packedColors.reserve(diffuse_size+3);
-                for(int i=0;i<diffuse_size;++i) {
-                    auto t = i<trans_size?trans[i]:trans0;
-                    matIndex.push_back(i);
-                    if(!ctx2 || !ctx2->applyColor(i,packedColors,hasTransparency))
-                        packedColors.push_back(diffuse[i].getPackedValue(t));
-                }
-            }
-
-            if(ctx && ctx->selectionIndex.size()) {
-                packedColors.push_back(ctx->selectionColor.getPackedValue(trans0));
-                for(auto idx : ctx->selectionIndex) {
+                for(auto idx : ctx2->selectionIndex) {
                     if(idx>=0 && idx<partIndex.getNum()) {
-                        uint32_t c;
-                        if(makeDistinctColor(c,packedColors.back(),packedColors[matIndex[idx]]))
-                            packedColors.push_back(c);
+                        if(!ctx2->applyColor(idx,packedColors,hasTransparency)) {
+                            auto t = idx<trans_size?trans[idx]:trans0;
+                            packedColors.push_back(diffuse[idx].getPackedValue(t));
+                        }
                         matIndex[idx] = packedColors.size()-1;
                     }
                 }
             }
-            if(ctx && ctx->highlightIndex>=0 && ctx->highlightIndex<partIndex.getNum()) {
-                packedColors.push_back(ctx->highlightColor.getPackedValue(trans0));
-                makeDistinctColor(packedColors.back(), packedColors.back(),
-                        packedColors[matIndex[ctx->highlightIndex]]);
-                matIndex[ctx->highlightIndex] = packedColors.size()-1;
+        }else if(mb==SoMaterialBindingElement::OVERALL || singleColor) {
+            packedColors.push_back(diffuseColor);
+            matIndex.resize(partIndex.getNum(),0);
+
+            if(ctx2 && !singleColor) {
+                for(auto &v : ctx2->colors) {
+                    int idx = v.first;
+                    if(idx>=0 && idx<partIndex.getNum()) {
+                        packedColors.push_back(ctx2->packColor(v.second,hasTransparency));
+                        matIndex[idx] = packedColors.size()-1;
+                    }
+                }
             }
+        }else{
+            assert(diffuse_size >= partIndex.getNum());
+            packedColors.reserve(diffuse_size+3);
+            for(int i=0;i<partIndex.getNum();++i) {
+                auto t = i<trans_size?trans[i]:trans0;
+                matIndex.push_back(i);
+                if(!ctx2 || !ctx2->applyColor(i,packedColors,hasTransparency))
+                    packedColors.push_back(diffuse[i].getPackedValue(t));
+            }
+        }
+
+        if(ctx && ctx->selectionIndex.size()) {
+            packedColors.push_back(selectionColor);
+            for(auto idx : ctx->selectionIndex) {
+                if(idx>=0 && idx<partIndex.getNum()) {
+                    uint32_t c;
+                    if(makeDistinctColor(c,packedColors.back(),packedColors[matIndex[idx]]))
+                        packedColors.push_back(c);
+                    matIndex[idx] = packedColors.size()-1;
+                }
+            }
+        }
+        if(ctx && ctx->highlightIndex>=0 && ctx->highlightIndex<partIndex.getNum()) {
+            packedColors.push_back(highlightColor);
+            makeDistinctColor(packedColors.back(), packedColors.back(), packedColors[matIndex[ctx->highlightIndex]]);
+            matIndex[ctx->highlightIndex] = packedColors.size()-1;
         }
 
         SbBool notify = enableNotify(FALSE);
@@ -1002,13 +948,15 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         if(notify) enableNotify(notify);
 
         SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::PER_PART_INDEXED);
+        SoOverrideElement::setMaterialBindingOverride(state, this, true);
         SoLazyElement::setPacked(state, this, packedColors.size(), &packedColors[0], hasTransparency);
         SoTextureEnabledElement::set(state,this,false);
 
-        // if(hasTransparency && action->isRenderingDelayedPaths()) {
-        //     SoLazyElement::enableSeparateBlending(state,
-        //             GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
-        // }
+        if(hasTransparency) {
+            // Override transparency type. We'll do our own sorting in sortParts()
+            SoShapeStyleElement::setTransparencyType(state, SoTransparencyType::SORTED_OBJECT_BLEND);
+            SoLazyElement::setTransparencyType(state, SoTransparencyType::SORTED_OBJECT_BLEND);
+        }
         return true;
     }
     return false;
@@ -1025,7 +973,7 @@ void SoBrepFaceSet::getBoundingBox(SoGetBoundingBoxAction * action) {
         return;
 
     auto state = action->getState();
-    selCounter.checkCache(state);
+    selCounter.checkCache(state,true);
 
     SelContextPtr ctx2 = Gui::SoFCSelectionRoot::getSecondaryActionContext<SelContext>(action,this);
     if(!ctx2 || ctx2->isSelectAll()) {
@@ -1036,36 +984,104 @@ void SoBrepFaceSet::getBoundingBox(SoGetBoundingBoxAction * action) {
     if(ctx2->selectionIndex.empty())
         return;
 
-    auto coords = SoCoordinateElement::getInstance(state);
-    const SbVec3f *coords3d = static_cast<const SoGLCoordinateElement*>(coords)->getArrayPtr3();
-    const int32_t *cindices = this->coordIndex.getValues(0);
-    const int32_t *pindices = this->partIndex.getValues(0);
-    int numparts = this->partIndex.getNum();
+    buildPartBBoxes(state);
 
-    SbBox3f bbox;
+    int numparts = this->partIndex.getNum();
     for(auto id : ctx2->selectionIndex) {
         if (id<0 || id >= numparts)
             break;
-        // coords
-        int length=0;
-        int start=0;
-        length = (int)pindices[id]*4;
-        for (int j=0;j<id;j++)
-            start+=(int)pindices[j];
-        start *= 4;
+        if(!partBBoxes[id].isEmpty())
+            action->extendBy(partBBoxes[id]);
+    }
+}
+
+void SoBrepFaceSet::buildPartBBoxes(SoState *state) {
+    if(partIndex.getNum() == (int)partBBoxes.size())
+        return;
+
+    partBBoxes.clear();
+
+    int numparts = partIndex.getNum();
+    if(!numparts)
+        return;
+
+    partBBoxes.resize(numparts);
+
+    const int32_t *pindices = this->partIndex.getValues(0);
+    if(!pindices)
+        return;
+
+    const int32_t *cindices = coordIndex.getValues(0);
+    int numindices = coordIndex.getNum();
+
+    auto coords = static_cast<const SoGLCoordinateElement*>(SoCoordinateElement::getInstance(state));
+    if(!coords)
+        return;
+
+    const SbVec3f *coords3d = coords->getArrayPtr3();
+    int numverts = coords->getNum();
+
+    buildPartIndexCache();
+
+    for(int id=0;id<numparts;++id) {
+        auto &bbox = partBBoxes[id];
+
+        int length = (int)pindices[id]*4;
+        int start = (int)indexOffset[id]*4;
+
+        if(start+length > numindices)
+            continue;
 
         auto viptr = &cindices[start];
         auto viendptr = viptr + length;
-        while (viptr + 2 < viendptr) {
-            bbox.extendBy(coords3d[*viptr++]);
-            bbox.extendBy(coords3d[*viptr++]);
-            bbox.extendBy(coords3d[*viptr++]);
-            ++viptr;
+        while (viptr < viendptr) {
+            int v = *viptr++;
+            if(v >= 0 && v <numverts) 
+                bbox.extendBy(coords3d[v]);
         }
     }
+}
 
-    if(!bbox.isEmpty())
-        action->extendBy(bbox);
+
+void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx2, const float *trans, int numtrans) {
+
+    SortedParts.clear();
+
+    if (coordIndex.getNum() < 3)
+        return;
+
+    // refresh part bboxes if necessary
+    buildPartBBoxes(state);
+
+    SortedParts.reserve(partBBoxes.size());
+    if(ctx2 && ctx2->isSelected() && !ctx2->isSelectAll()) {
+        for(auto id : ctx2->selectionIndex) {
+            if(id<0 || id>=partIndex.getNum())
+                continue;
+            if(!isTranslucent(id,trans,numtrans,matIndex,packedColors))
+                continue;
+            SbVec3f center;
+            SoModelMatrixElement::get(state).multVecMatrix(partBBoxes[id].getCenter(), center);
+            float dist = -SoViewVolumeElement::get(state).getPlane(0.0f).getDistance(center);
+            SortedParts.emplace_back(id,dist);
+        }
+    } else {
+        int id=-1;
+        for(auto &bbox : partBBoxes) {
+            ++id;
+            if(!isTranslucent(id,trans,numtrans,matIndex,packedColors))
+                continue;
+            SbVec3f center;
+            SoModelMatrixElement::get(state).multVecMatrix(bbox.getCenter(), center);
+            float dist = -SoViewVolumeElement::get(state).getPlane(0.0f).getDistance(center);
+            SortedParts.emplace_back(id,dist);
+        }
+    }
+    std::sort(SortedParts.begin(),SortedParts.end(),
+        [](const PartDist &a, const PartDist &b) {
+            return a.dist > b.dist;
+        }
+    );
 }
 
   // this macro actually makes the code below more readable  :-)
@@ -1351,80 +1367,25 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
         packedColor = ctx->highlightColor.getPackedValue(0.0);
         SoLazyElement::setPacked(state, this,1, &packedColor,false);
     }
+    SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
+    SoOverrideElement::setMaterialBindingOverride(state,this,true);
     SoTextureEnabledElement::set(state,this,false);
 
-    Binding mbind = this->findMaterialBinding(state);
-    Binding nbind = this->findNormalBinding(state);
-
-    const SoCoordinateElement * coords;
-    const SbVec3f * normals;
-    const int32_t * cindices;
-    int numindices;
-    const int32_t * nindices;
-    const int32_t * tindices;
-    const int32_t * mindices;
-    const int32_t * pindices;
-    SbBool doTextures;
-    SbBool normalCacheUsed;
-
-    SoMaterialBundle mb(action);
-    SoTextureCoordinateBundle tb(action, true, false);
-    doTextures = tb.needCoordinates();
-    SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
-
-    this->getVertexData(state, coords, normals, cindices,
-                        nindices, tindices, mindices, numindices,
-                        sendNormals, normalCacheUsed);
-
-    mb.sendFirst(); // make sure we have the correct material
-
     int id = ctx->highlightIndex;
-    if (id!=INT_MAX && id >= this->partIndex.getNum()) {
-        SoDebugError::postWarning("SoBrepFaceSet::renderHighlight", "highlightIndex out of range");
+    if(id == INT_MAX) {
+        RenderIndices.clear();
+        renderShape(action, true);
+    } else if(id < partIndex.getNum()) {
+        RenderIndices.resize(1,id);
+        renderShape(action, true);
     }
-    else {
-        // just in case someone forgot
-        if (!mindices) mindices = cindices;
-        if (!nindices) nindices = cindices;
-        pindices = this->partIndex.getValues(0);
 
-        // coords
-        int start=0;
-        int length;
-        if(id==INT_MAX) {
-            length = numindices;
-            id = 0;
-        } else {
-            length = (int)pindices[id]*4;
-            for (int i=0;i<id;i++)
-                start+=(int)pindices[i];
-            start *= 4;
-        }
-
-        // normals
-        if (nbind == PER_VERTEX_INDEXED)
-            nindices = &(nindices[start]);
-        else if (nbind == PER_VERTEX)
-            normals = &(normals[start]);
-        else
-            nbind = OVERALL;
-
-        // materials
-        mbind = OVERALL;
-        doTextures = false;
-
-        renderShape(action, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
-            &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
-    }
     state->pop();
-
-    if (normalCacheUsed)
-        this->readUnlockNormalCache();
 }
 
 void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
 {
-    if(!ctx || ctx->selectionIndex.empty())
+    if(!ctx || !ctx->isSelected())
         return;
 
     SoState * state = action->getState();
@@ -1439,94 +1400,36 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
             SoLazyElement::setPacked(state, this,1, &packedColor,false);
         }
         SoTextureEnabledElement::set(state,this,false);
+        SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
+        SoOverrideElement::setMaterialBindingOverride(state,this,true);
     }
 
-    Binding mbind = this->findMaterialBinding(state);
-    Binding nbind = this->findNormalBinding(state);
-
-    const SoCoordinateElement * coords;
-    const SbVec3f * normals;
-    const int32_t * cindices;
-    int numindices;
-    const int32_t * nindices;
-    const int32_t * tindices;
-    const int32_t * mindices;
-    const int32_t * pindices;
-    SbBool doTextures;
-    SbBool normalCacheUsed;
-
-    SoMaterialBundle mb(action);
-    SoTextureCoordinateBundle tb(action, true, false);
-    doTextures = tb.needCoordinates();
-    SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
-
-    this->getVertexData(state, coords, normals, cindices,
-                        nindices, tindices, mindices, numindices,
-                        sendNormals, normalCacheUsed);
-
-    mb.sendFirst(); // make sure we have the correct material
-
-    // just in case someone forgot
-    if (!mindices) mindices = cindices;
-    if (!nindices) nindices = cindices;
-    pindices = this->partIndex.getValues(0);
-
-    if(push) {
-        // materials
-        mbind = OVERALL;
-        doTextures = false;
-    }
-
-    for(auto id : ctx->selectionIndex) {
-        if (id >= this->partIndex.getNum()) {
-            SoDebugError::postWarning("SoBrepFaceSet::renderSelection", "selectionIndex out of range");
-            break;
+    if(ctx->isSelectAll()) {
+        RenderIndices.clear();
+        renderShape(action,true);
+    } else {
+        RenderIndices.clear();
+        for(auto id : ctx->selectionIndex) {
+            if (id<0 || id>=partIndex.getNum() || id == ctx->highlightIndex)
+                continue;
+            RenderIndices.push_back(id);
         }
-        if (id>=0 && id==ctx->highlightIndex)
-            continue;
-
-        // coords
-        int length=0;
-        int start=0;
-        int numparts=1;
-        // if < 0 then select everything
-        if (id < 0) {
-            length = numindices;
-            id = 0;
-        } else {
-            length = (int)pindices[id]*4;
-            for (int j=0;j<id;j++)
-                start+=(int)pindices[j];
-            start *= 4;
-        }
-
-        // normals
-        const SbVec3f * normals_s = normals;
-        const int32_t * nindices_s = nindices;
-        if (nbind == PER_VERTEX_INDEXED)
-            nindices_s = &(nindices[start]);
-        else if (nbind == PER_VERTEX)
-            normals_s = &(normals[start]);
-        else
-            nbind = OVERALL;
-
-        renderShape(action, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
-            &(pindices[id]), numparts, normals_s, nindices_s, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+        if(RenderIndices.size())
+            renderShape(action,true);
     }
-    if(push) {
+
+    if(push)
         state->pop();
-        // SoCacheElement::invalidate(state);
-    }
-    
-    if (normalCacheUsed)
-        this->readUnlockNormalCache();
 }
 
 void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
-                                const SoGLCoordinateElement * const vertexlist,
+                                bool color_override,
+                                const std::vector<int32_t> &render_indices,
+                                const SoCoordinateElement *coords,
                                 const int32_t *vertexindices,
                                 int num_indices,
                                 const int32_t *partindices,
+                                const int32_t *indexoffsets,
                                 int num_partindices,
                                 const SbVec3f *normals,
                                 const int32_t *normalindices,
@@ -1538,12 +1441,15 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                 const int mbind,
                                 const int texture)
 {
+    auto vertexlist = static_cast<const SoGLCoordinateElement*>(coords);
+
     (void)texcoords; (void)texindices; (void)texture;
     const SbVec3f * coords3d = NULL;
     SbVec3f * cur_coords3d = NULL;
     coords3d = vertexlist->getArrayPtr3();
     cur_coords3d = ( SbVec3f *)coords3d;
 
+    const int32_t *mindices = matindices;
     const int32_t *viptr = vertexindices;
     const int32_t *viendptr = viptr + num_indices;
     const int32_t *piptr = partindices;
@@ -1561,6 +1467,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     float * vertex_array = NULL;
     GLuint * index_array = NULL;
     SbColor  mycolor1,mycolor2,mycolor3;
+    float t1, t2, t3;
     SbVec3f *mynormal1 = (SbVec3f *)currnormal;
     SbVec3f *mynormal2 = (SbVec3f *)currnormal;
     SbVec3f *mynormal3 = (SbVec3f *)currnormal;
@@ -1568,12 +1475,15 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     uint32_t RGBA,R,G,B,A;
     float Rf,Gf,Bf,Af;
 
+#ifdef FC_OS_WIN32
+    const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
+#endif
+
     uint32_t contextId = action->getCacheContext();
     auto res = this->vbomap.insert(std::make_pair(contextId,VBO::Buffer()));
     VBO::Buffer &buf = res.first->second;
     if (res.second) {
 #ifdef FC_OS_WIN32
-        const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
         PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
 #endif
         glGenBuffersARB(2, buf.myvbo);
@@ -1594,11 +1504,12 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     // the graphic card
     // TODO FINISHING THE COLOR SUPPORT !
 
+#ifdef FC_OS_WIN32
+    PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glBindBufferARB");
+#endif
+
     if (!buf.vboLoaded || buf.updateVbo) {
 #ifdef FC_OS_WIN32
-        const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-
-        PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glBindBufferARB");
         PFNGLMAPBUFFERARBPROC glMapBufferARB = (PFNGLMAPBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glMapBufferARB");
         PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
         PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
@@ -1617,9 +1528,14 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
 
         // Get the initial colors
         SoState * state = action->getState();
-        mycolor1=SoLazyElement::getDiffuse(state,0);
-        mycolor2=SoLazyElement::getDiffuse(state,0);
-        mycolor3=SoLazyElement::getDiffuse(state,0);
+
+        if(mbind == PER_PART_INDEXED || mbind == PER_VERTEX_INDEXED || mbind == PER_FACE_INDEXED) {
+            mycolor1 = mycolor2 = mycolor3 = SoLazyElement::getDiffuse(state,matindices[0]);
+            t1 = t2 = t3 = SoLazyElement::getTransparency(state,matindices[0]);
+        } else {
+            mycolor1 = mycolor2 = mycolor3 = SoLazyElement::getDiffuse(state,0);
+            t1 = t2 = t3 = SoLazyElement::getTransparency(state,0);
+        }
 
         pi = piptr < piendptr ? *piptr++ : -1;
         while (pi == 0) {
@@ -1645,21 +1561,39 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
 
             if (mbind == PER_PART) {
                 if (trinr == 0) {
-                    materials->send(matnr++, true);
-                    mycolor1=SoLazyElement::getDiffuse(state,matnr-1);
+                    mycolor1=SoLazyElement::getDiffuse(state,matnr);
+                    t1 = t2 =t3 = SoLazyElement::getTransparency(state,matnr);
+                    matnr++;
                     mycolor2=mycolor1;
                     mycolor3=mycolor1;
                 }
             }
             else if (mbind == PER_PART_INDEXED) {
-                if (trinr == 0)
-                    materials->send(*matindices++, true);
+                if (trinr == 0) {
+                    mycolor1=SoLazyElement::getDiffuse(state,*matindices);
+                    t1 = t2 = t3 = SoLazyElement::getTransparency(state,*matindices);
+                    matindices++;
+                    mycolor2=mycolor1;
+                    mycolor3=mycolor1;
+                }
             }
             else if (mbind == PER_VERTEX || mbind == PER_FACE) {
-                materials->send(matnr++, true);
+                mycolor1 = SoLazyElement::getDiffuse(state,matnr);
+                t1 = SoLazyElement::getTransparency(state,matnr);
+                matnr++;
+                if(mbind == PER_FACE) {
+                    mycolor2 = mycolor3 = mycolor1;
+                    t2 = t3 = t1;
+                }
             }
             else if (mbind == PER_VERTEX_INDEXED || mbind == PER_FACE_INDEXED) {
-                materials->send(*matindices++, true);
+                mycolor1 = SoLazyElement::getDiffuse(state,*matindices);
+                t1 = SoLazyElement::getTransparency(state,*matindices);
+                matindices++;
+                if(mbind == PER_FACE_INDEXED) {
+                    mycolor2 = mycolor3 = mycolor1;
+                    t2 = t3 = t1;
+                }
             }
 
             if (normals) {
@@ -1672,10 +1606,16 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                     mynormal1 =(SbVec3f *) currnormal;
                 }
             }
-            if (mbind == PER_VERTEX)
-                materials->send(matnr++, true);
-            else if (mbind == PER_VERTEX_INDEXED)
-                materials->send(*matindices++, true);
+            if (mbind == PER_VERTEX) {
+                mycolor2 = SoLazyElement::getDiffuse(state,matnr);
+                t2 = SoLazyElement::getTransparency(state,matnr);
+                ++matnr;
+
+            } else if (mbind == PER_VERTEX_INDEXED) {
+                mycolor2 = SoLazyElement::getDiffuse(state,*matindices);
+                t2 = SoLazyElement::getTransparency(state,*matindices);
+                ++matindices;
+            }
 
             if (normals) {
                 if (nbind == PER_VERTEX) {
@@ -1688,10 +1628,16 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                  }
              }
 
-            if (mbind == PER_VERTEX)
-                materials->send(matnr++, true);
-            else if (mbind == PER_VERTEX_INDEXED)
-                materials->send(*matindices++, true);
+            if (mbind == PER_VERTEX) {
+                mycolor3 = SoLazyElement::getDiffuse(state,matnr);
+                t3 = SoLazyElement::getTransparency(state,matnr);
+                ++matnr;
+            } else if (mbind == PER_VERTEX_INDEXED) {
+                mycolor3 = SoLazyElement::getDiffuse(state,*matindices);
+                t3 = SoLazyElement::getTransparency(state,*matindices);
+                ++matindices;
+            }
+
             if (normals) {
                 if (nbind == PER_VERTEX) {
                     currnormal = normals++;
@@ -1724,7 +1670,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                                vertex_array[indice+5]);
 
             /* We decode the Vertex1 color */
-            RGBA = mycolor1.getPackedValue();
+            RGBA = mycolor1.getPackedValue(t1);
             R = ( RGBA & 0xFF000000 ) >> 24 ;
             G = ( RGBA & 0xFF0000 ) >> 16;
             B = ( RGBA & 0xFF00 ) >> 8;
@@ -1748,7 +1694,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                                vertex_array[indice+4],
                                                vertex_array[indice+5]);
 
-            RGBA = mycolor2.getPackedValue();
+            RGBA = mycolor2.getPackedValue(t2);
             R = ( RGBA & 0xFF000000 ) >> 24 ;
             G = ( RGBA & 0xFF0000 ) >> 16;
             B = ( RGBA & 0xFF00 ) >> 8;
@@ -1772,7 +1718,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                                vertex_array[indice+4],
                                                vertex_array[indice+5]);
 
-            RGBA = mycolor3.getPackedValue();
+            RGBA = mycolor3.getPackedValue(t3);
             R = ( RGBA & 0xFF000000 ) >> 24 ;
             G = ( RGBA & 0xFF0000 ) >> 16;
             B = ( RGBA & 0xFF00 ) >> 8;
@@ -1811,20 +1757,16 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
         glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, buf.myvbo[1]);
         glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(GLuint) * this->indice_array , &index_array[0], GL_DYNAMIC_DRAW_ARB);
 
-        glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
-        glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
+        // glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
+        // glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
 
+        buf.updateVbo = true; // set to true here avoid calling glBindBuffer below
         buf.vboLoaded = true;
-        buf.updateVbo = false;
         free(vertex_array);
         free(index_array);
     }
 
     // This is the VBO rendering code
-#ifdef FC_OS_WIN32
-    const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
-    PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
-#endif
 
     if (!buf.updateVbo) {
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, buf.myvbo[0]);
@@ -1833,13 +1775,55 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
 
     glVertexPointer(3,GL_FLOAT,10*sizeof(GLfloat),0);
     glNormalPointer(GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(3*sizeof(GLfloat)));
-    glColorPointer(4,GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(6*sizeof(GLfloat)));
 
-    glDrawElements(GL_TRIANGLES, this->indice_array, GL_UNSIGNED_INT, (void *)0);
+    if(!color_override && render_indices.empty()) {
+        // no color override, no out of order rendering, just render with vbo buffer
+
+        glEnableClientState(GL_COLOR_ARRAY);
+        glColorPointer(4,GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(6*sizeof(GLfloat)));
+        glDrawElements(GL_TRIANGLES, this->indice_array, GL_UNSIGNED_INT, (void *)0);
+
+    } else if(!color_override) {
+        // no color override, but out of order rendering
+
+        glEnableClientState(GL_COLOR_ARRAY);
+        glColorPointer(4,GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(6*sizeof(GLfloat)));
+
+        for(int id : render_indices) {
+            uint32_t count = (uint32_t)partindices[id]*3;
+            intptr_t offset = (intptr_t)indexoffsets[id]*3*4;
+            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *)offset);
+        }
+
+    } else if(render_indices.empty()) {
+
+        // color override only
+        for(int id=0;id<num_partindices;++id) {
+            if (mbind == PER_PART)
+                materials->send(id, true);
+            else if (mbind == PER_PART_INDEXED)
+                materials->send(mindices[id], true);
+            uint32_t count = (uint32_t)partindices[id]*3;
+            intptr_t offset = (intptr_t)indexoffsets[id]*3*4;
+            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *)offset);
+        }
+
+    } else {
+
+        // color override and out of order rendering
+        for(int id : render_indices) {
+            if (mbind == PER_PART)
+                materials->send(id, true);
+            else if (mbind == PER_PART_INDEXED)
+                materials->send(mindices[id], true);
+            uint32_t count = (uint32_t)partindices[id]*3;
+            intptr_t offset = (intptr_t)indexoffsets[id]*3*4;
+            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *)offset);
+        }
+    }
 
     glDisableClientState(GL_COLOR_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -1847,15 +1831,101 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
     glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
     buf.updateVbo = false;
-    // The data is within the VBO we can clear it at application level
 }
 
-void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
-                                SbBool hasVBO,
-                                const SoGLCoordinateElement * const vertexlist,
+void SoBrepFaceSet::renderShape(SoGLRenderAction * action, bool check_override) {
+
+    SoMaterialBundle mb(action);
+    mb.sendFirst(); 
+
+    auto state = action->getState();
+    Binding mbind = this->findMaterialBinding(state);
+    Binding nbind = this->findNormalBinding(state);
+
+    const SoCoordinateElement * coords;
+    const SbVec3f * normals;
+    const int32_t * cindices;
+    int numindices;
+    const int32_t * nindices;
+    const int32_t * tindices;
+    const int32_t * mindices;
+    const int32_t * pindices;
+    int numparts;
+    SbBool normalCacheUsed;
+
+    SoTextureCoordinateBundle tb(action, true, false);
+    int doTextures = tb.needCoordinates()?1:0;
+    SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
+
+    this->getVertexData(state, coords, normals, cindices,
+                        nindices, tindices, mindices, numindices,
+                        sendNormals, normalCacheUsed);
+
+    // just in case someone forgot
+    if (!mindices) mindices = cindices;
+    if (!nindices) nindices = cindices;
+    pindices = this->partIndex.getValues(0);
+    numparts = this->partIndex.getNum();
+
+    buildPartIndexCache();
+    // Can we use vertex buffer objects?
+    if(PRIVATE(this)->isVboAvailable(action)) {
+        SoState* state = action->getState();
+        if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
+            // if no shading is set then the normals are all equal
+            nbind = OVERALL;
+        }
+
+        check_override = check_override && (SoOverrideElement::getFlags(state)
+                                            & (SoOverrideElement::COLOR_INDEX|
+                                                SoOverrideElement::DIFFUSE_COLOR|
+                                                SoOverrideElement::MATERIAL_BINDING|
+                                                SoOverrideElement::TRANSPARENCY));
+
+        PRIVATE(this)->render(action, check_override, RenderIndices, coords, cindices, numindices,
+                              pindices, &indexOffset[0], numparts, normals, nindices,
+                              &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
+        if (normalCacheUsed)
+            this->readUnlockNormalCache();
+        RenderIndices.clear();
+        return;
+    }
+
+    if(RenderIndices.empty())
+        renderFaces(coords, cindices, numindices, pindices, 0, numparts,
+                normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
+    else {
+        int start = 0;
+        int next = 0;
+        for(int id : RenderIndices) {
+            // try to render together consequtive indices
+            if(next == id) {
+                ++next;
+                continue;
+            }
+            if(next!=start) {
+                renderFaces(coords, cindices, numindices, pindices, start, next-start,
+                        normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
+            }
+            start = id;
+            next = id+1;
+        }
+        if(next!=start) {
+            renderFaces(coords, cindices, numindices, pindices, start, next-start,
+                    normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
+        }
+        RenderIndices.clear();
+    }
+
+    if (normalCacheUsed)
+        this->readUnlockNormalCache();
+}
+
+void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,
                                 const int32_t *vertexindices,
                                 int num_indices,
                                 const int32_t *partindices,
+                                int start_partindex,
                                 int num_partindices,
                                 const SbVec3f *normals,
                                 const int32_t *normalindices,
@@ -1863,24 +1933,46 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
                                 const int32_t *matindices,
                                 SoTextureCoordinateBundle * const texcoords,
                                 const int32_t *texindices,
-                                const int nbind,
-                                const int mbind,
-                                const int texture)
+                                int nbind,
+                                int mbind,
+                                int texture)
 {
-    // Can we use vertex buffer objects?
-    if (hasVBO) {
-        int nbinding = nbind;
-        SoState* state = action->getState();
-        if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
-            // if no shading is set then the normals are all equal
-            nbinding = static_cast<int>(OVERALL);
-        }
-        PRIVATE(this)->render(action, vertexlist, vertexindices, num_indices, partindices, num_partindices, normals,
-                    normalindices, materials, matindices, texcoords, texindices, nbinding, mbind, texture);
-        return;
+    auto vertexlist = static_cast<const SoGLCoordinateElement*>(coords);
+
+    int matnr = 0;
+    int texidx = 0;
+
+    assert(partIndex.getNum()+1 == (int)indexOffset.size());
+
+    int start = (int)indexOffset[start_partindex]*4;
+    int length = (int)(indexOffset[start_partindex+num_partindices]
+                        - indexOffset[start_partindex])*4;
+    // normals
+    if (nbind == PER_VERTEX_INDEXED)
+        normalindices += start;
+    else if(nbind == PER_VERTEX)
+        normals += start;
+    else
+        nbind = OVERALL;
+
+    if(mbind == PER_PART_INDEXED) {
+        matindices += start_partindex;
+        if(texindices)
+            texindices += start_partindex;
+    } else if (mbind == PER_VERTEX_INDEXED) {
+        matindices += start;
+        if(texindices)
+            texindices += start;
+    else if (mbind == PER_FACE_INDEXED)
+        matindices += start/4;
+        if(texindices)
+            texindices += start/4;
     }
 
-    int texidx = 0;
+    vertexindices += start;
+    num_indices = length;
+    partindices += start_partindex;
+    texidx = matnr = start_partindex;
 
     const SbVec3f * coords3d = NULL;
     coords3d = vertexlist->getArrayPtr3();
@@ -1896,7 +1988,6 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
     const SbVec3f *currnormal = &dummynormal;
     if (normals) currnormal = normals;
 
-    int matnr = 0;
     int trinr = 0;
 
     // Legacy code without VBO support
@@ -1912,9 +2003,9 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
 
     glBegin(GL_TRIANGLES);
     while (viptr + 2 < viendptr) {
-                v1 = *viptr++;
-                v2 = *viptr++;
-                v3 = *viptr++;
+        v1 = *viptr++;
+        v2 = *viptr++;
+        v3 = *viptr++;
         if (v1 < 0 || v2 < 0 || v3 < 0 ||
             v1 >= numverts || v2 >= numverts || v3 >= numverts) {
             break;
@@ -2032,6 +2123,30 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
     glEnd();
 }
 
+int SoBrepFaceSet::getPartFromFace(int index) {
+    const int32_t * indices = this->partIndex.getValues(0);
+    int num = this->partIndex.getNum();
+    if(!indices)
+        return -1;
+
+    buildPartIndexCache();
+    if(num == (int)partIndexMap.size()) {
+        auto it = partIndexMap.upper_bound(index);
+        if(it==partIndexMap.end())
+            return num-1;
+        else
+            return it->second-1;
+    } else {
+        int count = 0;
+        for (int i=0; i<num; i++) {
+            count += indices[i];
+            if (index < count)
+                return i;
+        }
+        return num-1;
+    }
+}
+
 SoDetail * SoBrepFaceSet::createTriangleDetail(SoRayPickAction * action,
                                                const SoPrimitiveVertex * v1,
                                                const SoPrimitiveVertex * v2,
@@ -2039,20 +2154,8 @@ SoDetail * SoBrepFaceSet::createTriangleDetail(SoRayPickAction * action,
                                                SoPickedPoint * pp)
 {
     SoDetail* detail = inherited::createTriangleDetail(action, v1, v2, v3, pp);
-    const int32_t * indices = this->partIndex.getValues(0);
-    int num = this->partIndex.getNum();
-    if (indices) {
-        SoFaceDetail* face_detail = static_cast<SoFaceDetail*>(detail);
-        int index = face_detail->getFaceIndex();
-        int count = 0;
-        for (int i=0; i<num; i++) {
-            count += indices[i];
-            if (index < count) {
-                face_detail->setPartIndex(i);
-                break;
-            }
-        }
-    }
+    SoFaceDetail* face_detail = static_cast<SoFaceDetail*>(detail);
+    face_detail->setPartIndex(getPartFromFace(face_detail->getFaceIndex()));
     return detail;
 }
 
