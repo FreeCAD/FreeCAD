@@ -39,6 +39,7 @@
 
 #include <Inventor/sensors/SoTimerSensor.h>
 
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include "NavigationStyle.h"
 #include "View3DInventorViewer.h"
@@ -63,6 +64,7 @@ struct NavigationStyleP {
     SoTimerSensor * animsensor;
     float sensitivity;
     SbBool resetcursorpos;
+    bool menuactive;
 
     NavigationStyleP()
     {
@@ -74,6 +76,7 @@ struct NavigationStyleP {
         this->rotationCenterFound = false;
         this->rotationCenterMode = NavigationStyle::ScenePointAtCursor;
         this->dragAtCursor = false;
+        this->menuactive = false;
     }
     static void viewAnimationCB(void * data, SoSensor * sensor);
 };
@@ -1421,6 +1424,9 @@ int NavigationStyle::getViewingMode() const
 
 SbBool NavigationStyle::processEvent(const SoEvent * const ev)
 {
+    if(PRIVATE(this)->menuactive)
+        return false;
+
     // If we're in picking mode then all events must be redirected to the
     // appropriate mouse model.
     if (mouseSelection) {
@@ -1579,6 +1585,10 @@ SbBool NavigationStyle::isPopupMenuEnabled(void) const
 
 void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
+    if(PRIVATE(this)->menuactive)
+        return;
+    Base::FlagToggler<> guard(PRIVATE(this)->menuactive);
+
     Q_UNUSED(position); 
     // ask workbenches and view provider, ...
     MenuItem* view = new MenuItem;
