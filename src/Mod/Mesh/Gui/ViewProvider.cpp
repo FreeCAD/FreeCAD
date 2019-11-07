@@ -314,8 +314,9 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
         CreaseAngle.setValue(angle);
     }
 
-    if (hGrp->GetBool("ShowBoundingBox", false))
+    if (hGrp->GetBool("ShowBoundingBox", false)) {
         SelectionStyle.setValue(1);
+    }
 
     Coloring.setStatus(App::Property::Hidden, true);
 }
@@ -371,8 +372,8 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         tryColorPerVertexOrFace(Coloring.getValue());
     }
     else if (prop == &SelectionStyle) {
-        pcHighlight->style = SelectionStyle.getValue()
-            ?Gui::SoFCSelection::BOX:Gui::SoFCSelection::EMISSIVE;
+        pcHighlight->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
+                                                       : Gui::SoFCSelection::EMISSIVE;
     }
     else {
         // Set the inverse color for open edges
@@ -1582,6 +1583,7 @@ void ViewProviderMesh::fillHoleCallback(void * ud, SoEventCallback * n)
         QAction* id = menu.exec(QCursor::pos());
         if (cl == id) {
             view->setEditing(false);
+            view->setSelectionEnabled(true);
             view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), fillHoleCallback,ud);
         }
@@ -1629,6 +1631,7 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
             QAction* id = menu.exec(QCursor::pos());
             if (cl == id) {
                 view->setEditing(false);
+                view->setSelectionEnabled(true);
                 view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), markPartCallback,ud);
 
                 std::vector<ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());

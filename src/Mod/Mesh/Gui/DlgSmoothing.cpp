@@ -149,6 +149,7 @@ TaskSmoothing::TaskSmoothing()
 
     selection = new Selection();
     selection->setObjects(Gui::Selection().getSelectionEx(0, Mesh::Feature::getClassTypeId()));
+    Gui::Selection().clearSelection();
 #if !defined (QSINT_ACTIONPANEL)
     Gui::TaskView::TaskGroup* tasksel = new Gui::TaskView::TaskGroup();
 #else
