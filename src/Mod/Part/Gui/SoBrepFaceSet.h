@@ -100,6 +100,7 @@ protected:
         SoPickedPoint * pp);
     virtual void generatePrimitives(SoAction * action);
     virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+    virtual void rayPick(SoRayPickAction *action);
 
 private:
     enum Binding {
@@ -148,6 +149,8 @@ private:
     void buildPartBBoxes(SoState *state);
     void buildPartIndexCache();
     int getPartFromFace(int index);
+
+    void generatePrimitivesRange(SoAction * action, int pstart, int fstart, int vstart, int vend);
 
 private:
     SelContextPtr selContext;
