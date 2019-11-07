@@ -223,7 +223,7 @@ public:
     static void PyDestructor(PyObject *P)   // python wrapper
     {  delete ((PyObjectBase *) P);  }
     void* twinPtr() const {
-        return _pcTwinPtr;
+        return _pcTwinPointer;
     }
     /// incref method wrapper (see python extending manual)
     PyObjectBase* IncRef(void) {Py_INCREF(this);return this;}
