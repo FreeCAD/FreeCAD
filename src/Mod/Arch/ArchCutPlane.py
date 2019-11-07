@@ -1,7 +1,8 @@
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2014                                                    *
-#*   Jonathan Wiedemann <wood.galaxy@gmail.com>                            *
+#*   Jonathan Wiedemann <wood.galaxy@gmail.com> (cutplan)                  *
+#*   Jerome Laverroux <jerome.laverroux@free.fr (cutline)                  *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -24,7 +25,7 @@
 import FreeCAD,ArchCommands
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
-    import FreeCADGui
+    import FreeCADGui,Part
     from PySide import QtCore, QtGui
     from DraftTools import translate
 else:
@@ -42,6 +43,15 @@ __url__ = "http://www.freecadweb.org"
 #  \brief The Cut plane object and tools
 #
 #  This module handles the Cut Plane object
+
+def getPlanWithLine(line):
+    """Function to make a plane along Normal plan"""
+    plan= FreeCAD.DraftWorkingPlane
+    w=plan.getNormal()
+    part=Part.Shape(line)
+    out=part.extrude(w)
+    return out
+
 
 def cutComponentwithPlane(archObject, cutPlane, sideFace):
     """cut object from a plan define by a face, Behind = 0 , front = 1"""
@@ -62,6 +72,28 @@ def cutComponentwithPlane(archObject, cutPlane, sideFace):
             cutObj.Base = archObject.Object
             cutObj.Tool = obj
             return cutObj
+
+
+class _CommandCutLine:
+    "the Arch CutPlane command definition"
+    def GetResources(self):
+       return {'Pixmap'  : 'Arch_CutLine',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut with a line"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut an object with a line with normal workplane")}
+
+    def IsActive(self):
+        return len(FreeCADGui.Selection.getSelection()) > 1
+
+    def Activated(self):
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) != 2:
+            FreeCAD.Console.PrintError("You must select exactly two objects, the shape to be cut and a line\n")
+            return
+        if not sel[1].SubObjects:
+            FreeCAD.Console.PrintError("You must select a line from the second object (cut line), not the whole object\n")
+            return
+        panel=_CutPlaneTaskPanel(linecut=True)
+        FreeCADGui.Control.showDialog(panel)
 
 class _CommandCutPlane:
     "the Arch CutPlane command definition"
@@ -85,7 +117,14 @@ class _CommandCutPlane:
         FreeCADGui.Control.showDialog(panel)
 
 class _CutPlaneTaskPanel:
-    def __init__(self):
+    def __init__(self,linecut=False):
+        self.linecut=linecut
+        self.plan=None
+        if linecut:
+            self.plan=plan=getPlanWithLine(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0])
+        else :
+            self.plan = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)
@@ -113,7 +152,10 @@ class _CutPlaneTaskPanel:
             if s[1].SubObjects:
                 FreeCAD.ActiveDocument.openTransaction(translate("Arch","Cutting"))
                 FreeCADGui.addModule("Arch")
-                FreeCADGui.doCommand("Arch.cutComponentwithPlane(FreeCADGui.Selection.getSelectionEx()[0],FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0],"+ str(val) +")")
+                ###TODO redo FreeCADGui.doCommand by using self.plan:
+                #FreeCADGui.doCommand("Arch.cutComponentwithPlane(FreeCADGui.Selection.getSelectionEx()[0],self.plan,"+ str(val) +")")
+                cutComponentwithPlane(FreeCADGui.Selection.getSelectionEx()[0],self.plan,val)
+
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
                 return True
@@ -129,7 +171,7 @@ class _CutPlaneTaskPanel:
         return int(QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
 
     def previewCutVolume(self, i):
-        cutVolume = ArchCommands.getCutVolume(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0], FreeCADGui.Selection.getSelectionEx()[0].Object.Shape)
+        cutVolume = ArchCommands.getCutVolume(self.plan,FreeCADGui.Selection.getSelectionEx()[0].Object.Shape)
         FreeCAD.ActiveDocument.removeObject(self.previewObj.Name)
         self.previewObj = FreeCAD.ActiveDocument.addObject("Part::Feature", "PreviewCutVolume")
         self.previewObj.ViewObject.ShapeColor = (1.00,0.00,0.00)
@@ -150,3 +192,4 @@ class _CutPlaneTaskPanel:
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_CutPlane',_CommandCutPlane())
+    FreeCADGui.addCommand('Arch_CutLine', _CommandCutLine())
