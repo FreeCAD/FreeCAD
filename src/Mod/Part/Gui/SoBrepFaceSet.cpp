@@ -75,15 +75,20 @@
 # include <Inventor/C/glue/gl.h>
 #endif
 
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 
 #include <boost/algorithm/string/predicate.hpp>
+
 #include "SoBrepFaceSet.h"
+#include <Base/Console.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/ViewParams.h>
+
+FC_LOG_LEVEL_INIT("SoBrepFaceSet",true,true);
 
 using namespace PartGui;
 
@@ -124,6 +129,7 @@ static inline bool makeDistinctColor(uint32_t &res, uint32_t color, uint32_t oth
 
 class SoBrepFaceSet::VBO {
 public:
+    
     struct Buffer {
         uint32_t myvbo[2];
         std::size_t vertex_array_size;
@@ -141,6 +147,7 @@ public:
         SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
         indice_array = 0;
     }
+
     ~VBO()
     {
         SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
@@ -1118,13 +1125,17 @@ void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx2, const float *t
 
 void SoBrepFaceSet::generatePrimitives(SoAction * action)
 {
-    //TODO
-#if 0
-    inherited::generatePrimitives(action);
-#else
-    //This is highly experimental!!!
+    generatePrimitivesRange(action,0,0,0,coordIndex.getNum());
+}
 
-    if (this->coordIndex.getNum() < 3) return;
+void SoBrepFaceSet::generatePrimitivesRange(SoAction * action, int pstart, int fstart, int vstart, int vend) {
+    if (pstart<0 || pstart>=this->partIndex.getNum() 
+            || vstart<0 || vend > this->coordIndex.getNum() 
+            || vend - vstart < 3)
+    {
+        return;
+    }
+
     SoState * state = action->getState();
 
     if (this->vertexProperty.getValue()) {
@@ -1151,6 +1162,8 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
     this->getVertexData(state, coords, normals, cindices,
                         nindices, tindices, mindices, numindices,
                         sendNormals, normalCacheUsed);
+
+    cindices += vstart;
 
     SoTextureCoordinateBundle tb(action, false, false);
     doTextures = tb.needCoordinates();
@@ -1191,30 +1204,54 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
         }
         else {
             tbind = PER_VERTEX_INDEXED;
-            if (tindices == NULL) tindices = cindices;
+            if (tindices == NULL)
+                tindices = cindices;
+            else
+                tindices += vstart;
         }
     }
 
-    if (nbind == PER_VERTEX_INDEXED && nindices == NULL) {
-        nindices = cindices;
+    if (nbind == PER_VERTEX_INDEXED) {
+        if(nindices == NULL)
+            nindices = cindices;
+        else
+            nindices += vstart;
+    } else if (nbind == PER_PART_INDEXED) {
+        if(nindices)
+            nindices += pstart;
+        else
+            nbind = NONE;
+    } else if (nbind == PER_FACE) {
+        // TODO: add support for that
     }
-    if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
-        mindices = cindices;
+            
+    if (mbind == PER_VERTEX_INDEXED) {
+        if(mindices == NULL)
+            mindices = cindices;
+        else
+            mindices += vstart;
+    } else if (mbind == PER_PART_INDEXED) {
+        if(mindices)
+            mindices += pstart;
+        else
+            mbind = NONE;
+    } else if (mbind == PER_FACE) {
+        // TODO: add support for that
     }
 
-    int texidx = 0;
     TriangleShape mode = POLYGON;
     TriangleShape newmode;
     const int32_t *viptr = cindices;
-    const int32_t *viendptr = viptr + numindices;
-    const int32_t *piptr = this->partIndex.getValues(0);
-    int num_partindices = this->partIndex.getNum();
+    const int32_t *viendptr = viptr + (vend-vstart);
+    const int32_t *piptr = this->partIndex.getValues(0) + pstart;
+    int num_partindices = this->partIndex.getNum() - pstart;
     const int32_t *piendptr = piptr + num_partindices;
     int32_t v1, v2, v3, v4, v5 = 0, pi; // v5 init unnecessary, but kills a compiler warning.
 
     SoPrimitiveVertex vertex;
     SoPointDetail pointDetail;
     SoFaceDetail faceDetail;
+    faceDetail.setFaceIndex(fstart);
 
     vertex.setDetail(&pointDetail);
 
@@ -1223,8 +1260,9 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
     if (normals) currnormal = normals;
     vertex.setNormal(*currnormal);
 
-    int matnr = 0;
-    int normnr = 0;
+    int texidx = vstart;
+    int matnr = vstart;
+    int normnr = vstart;
     int trinr = 0;
     pi = piptr < piendptr ? *piptr++ : -1;
     while (pi == 0) {
@@ -1348,7 +1386,6 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
     if (this->vertexProperty.getValue()) {
         state->pop();
     }
-#endif
 }
 
 #undef DO_VERTEX
@@ -1868,6 +1905,7 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action, bool check_override) 
     numparts = this->partIndex.getNum();
 
     buildPartIndexCache();
+
     // Can we use vertex buffer objects?
     if(PRIVATE(this)->isVboAvailable(action)) {
         SoState* state = action->getState();
@@ -2227,6 +2265,75 @@ SoBrepFaceSet::findNormalBinding(SoState * const state) const
         break;
     }
     return binding;
+}
+
+void SoBrepFaceSet::rayPick(SoRayPickAction *action) {
+
+    SelContextPtr ctx2 = Gui::SoFCSelectionRoot::getSecondaryActionContext<SelContext>(action,this);
+    if(ctx2 && !ctx2->isSelected())
+        return;
+
+    if (!shouldRayPick(action))
+        return;
+
+    computeObjectSpaceRay(action);
+
+    SoState *state = action->getState();
+
+    if (getBoundingBoxCache() && getBoundingBoxCache()->isValid(state)) {
+        SbBox3f box = getBoundingBoxCache()->getProjectedBox();
+        if(box.isEmpty() || !action->intersect(box,TRUE))
+            return;
+    }
+
+    buildPartIndexCache();
+
+    FC_TIME_INIT(t);
+
+    auto pick = [&](int id) {
+        this->generatePrimitivesRange(action,id,
+                this->indexOffset[id], this->indexOffset[id]*4, this->indexOffset[id+1]*4);
+    };
+
+    int threshold = Gui::ViewParams::instance()->getSelectionPickThreshold();
+    int numparts = partIndex.getNum();
+
+    if(threshold && numparts && indexOffset[numparts-1]/numparts > threshold) {
+        // If face per part exceeds the threshold, then force computes bbox per
+        // part. The computed bboxes will be cached until partIndex changes
+        buildPartBBoxes(state);
+    }
+
+    Binding mbind = this->findMaterialBinding(state);
+    Binding nbind = this->findNormalBinding(state);
+
+    if(!threshold || numparts!=(int)partBBoxes.size() 
+            || mbind==PER_FACE || mbind==PER_FACE_INDEXED 
+            || nbind==PER_FACE || nbind==PER_FACE_INDEXED ) 
+    {
+        generatePrimitives(action);
+        FC_TIME_TRACE(t,"pick");
+        return;
+    }
+
+    if(ctx2 && !ctx2->isSelectAll()) {
+        for(auto id : ctx2->selectionIndex) {
+            if(id<0 || id>=numparts)
+                continue;
+            auto &box = partBBoxes[id];
+            if(box.isEmpty() || !action->intersect(box,TRUE))
+                continue;
+            pick(id);
+        }
+    } else {
+        for(int id=0;id<numparts;++id) {
+            auto &box = partBBoxes[id];
+            if(box.isEmpty() || !action->intersect(box,TRUE))
+                continue;
+            pick(id);
+        }
+        FC_TIME_TRACE(t,"pick new");
+    }
 }
 
 #undef PRIVATE
