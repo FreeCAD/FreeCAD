@@ -97,6 +97,14 @@ MeshSelection::~MeshSelection()
     }
 }
 
+void MeshSelection::setEnabledViewerSelection(bool on)
+{
+    Gui::View3DInventorViewer* viewer = this->getViewer();
+    if (viewer) {
+        viewer->setSelectionEnabled(on);
+    }
+}
+
 void MeshSelection::setCallback(SoEventCallbackCB *cb)
 {
     selectionCB = cb;
