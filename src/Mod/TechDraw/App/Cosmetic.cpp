@@ -1583,7 +1583,7 @@ bool CosmeticVertex::restoreCosmetic(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    bool result = hGrp->GetBool("restoreCosmetic", 1l);
+    bool result = hGrp->GetBool("restoreCosmetic", true);
     return result;
 }
 
