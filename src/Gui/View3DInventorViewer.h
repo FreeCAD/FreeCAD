@@ -236,6 +236,8 @@ public:
     std::vector<SbVec2f> getGLPolygon(SelectionRole* role=0) const;
     std::vector<SbVec2f> getGLPolygon(const std::vector<SbVec2s>&) const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role=0) const;
+    void setSelectionEnabled(const SbBool enable);
+    SbBool isSelectionEnabled(void) const;
     //@}
     
     /// Returns the screen coordinates of the origin of the path's tail object
