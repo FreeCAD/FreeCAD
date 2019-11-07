@@ -265,6 +265,7 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
     sharedobjects = {}  # { representationmapid:object }
     parametrics = []  # a list of imported objects whose parametric relationships need processing after all objects have been created
     profiles = {}  # to store reused extrusion profiles {ifcid:fcobj,...}
+    layers = {}  # { layer_name, [ids] }
     # filled relation tables
     # TODO for the following tables might be better use inverse attributes, done for properties
     # see https://forum.freecadweb.org/viewtopic.php?f=39&t=37892
@@ -321,6 +322,21 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
 
         # build list of related property sets
         psets = importIFCHelper.getIfcPropertySets(ifcfile, pid)
+
+        # add layer names to layers
+        if hasattr(product, "Representation") and hasattr(product.Representation, "Representations"):
+            if len(product.Representation.Representations) > 0:
+                lays = product.Representation.Representations[0].LayerAssignments
+                if len(lays) > 0:
+                    layer_name = lays[0].Name
+                    if layer_name not in list(layers.keys()):
+                        layers[layer_name] = [pid]
+                    else:
+                        layers[layer_name].append(pid)
+                    if preferences['DEBUG']: print(" layer ", layer_name, " found", ptype,end="")
+                else:
+                    if preferences['DEBUG']: print(" no layer found", ptype,end="")
+   
 
         # checking for full FreeCAD parametric definition, overriding everything else
         if psets and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("IfcImportFreeCADProperties",False):
@@ -1176,6 +1192,20 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                                 # print("    ", m, ": ", colors[m])
 
     if preferences['DEBUG'] and materials: print("done")
+
+    # Layers
+
+    if preferences['DEBUG'] and layers: print("Creating layers...", end="")
+    # print(layers)
+    for layer_name, layer_objects in layers.items():
+        lay = Draft.makeLayer(layer_name)
+        lay_grp = []
+        for lobj_id in layer_objects:
+            if lobj_id in objects:
+                lay_grp.append(objects[lobj_id])
+        lay.Group = lay_grp
+    FreeCAD.ActiveDocument.recompute()
+    if preferences['DEBUG'] and layers: print("done")
 
     # restore links from full parametric definitions
     for p in parametrics:
