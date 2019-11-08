@@ -608,9 +608,15 @@ void SoFCUnifiedSelection::onPreselectTimer() {
     
 }
 
+void SoFCUnifiedSelection::removeHighlight() {
+    if(this->preSelection == 1)
+        setHighlight(0,0,0,0,0.0,0.0,0.0);
+}
+
 bool SoFCUnifiedSelection::setHighlight(const PickedInfo &info) {
-    if(!info.pp)
+    if(!info.pp) {
         return setHighlight(0,0,0,0,0.0,0.0,0.0);
+    }
     const auto &pt = info.pp->getPoint();
     return setHighlight(static_cast<SoFullPath*>(info.pp->getPath()), 
             info.pp->getDetail(), info.vpd, info.element.c_str(), pt[0],pt[1],pt[2]);
