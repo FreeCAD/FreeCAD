@@ -301,7 +301,7 @@ class TechDrawExport Vertex
 
         virtual void Save(Base::Writer &/*writer*/) const;
         virtual void Restore(Base::XMLReader &/*reader*/);
-        virtual void dump();
+        virtual void dump(char* title = "");
 
         Base::Vector3d pnt;
         ExtractionType extractType;       //obs?

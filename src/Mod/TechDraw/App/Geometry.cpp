@@ -1460,10 +1460,10 @@ std::string Vertex::getTagAsString(void) const
 //        throw Base::TypeError("Vertex tag can not be assigned as types do not match.");
 //}
 
-void Vertex::dump()
+void Vertex::dump(char* title)
 {
-    Base::Console().Message("TD::Vertex point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
-                            DrawUtil::formatVector(pnt).c_str(), hlrVisible, cosmetic, cosmeticLink,
+    Base::Console().Message("TD::Vertex - %s - point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
+                            title, DrawUtil::formatVector(pnt).c_str(), hlrVisible, cosmetic, cosmeticLink,
                             cosmeticTag.c_str());
 }
 

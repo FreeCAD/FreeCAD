@@ -195,6 +195,7 @@ void MeshFaceAddition::startEditing(MeshGui::ViewProviderMesh* vp)
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(parent());
     Gui::View3DInventorViewer* viewer = view->getViewer();
     viewer->setEditing(true);
+    viewer->setSelectionEnabled(false);
     viewer->setRedirectToSceneGraph(true);
     viewer->setRedirectToSceneGraphEnabled(true);
 
@@ -211,6 +212,7 @@ void MeshFaceAddition::finishEditing()
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(parent());
     Gui::View3DInventorViewer* viewer = view->getViewer();
     viewer->setEditing(false);
+    viewer->setSelectionEnabled(true);
     viewer->setRedirectToSceneGraph(false);
     viewer->setRedirectToSceneGraphEnabled(false);
 
