@@ -114,6 +114,9 @@ private:
     bool setHighlight(const PickedInfo &);
     bool setHighlight(SoFullPath *path, const SoDetail *det, 
             ViewProviderDocumentObject *vpd, const char *element, float x, float y, float z);
+
+    void removeHighlight();
+
     bool setSelection(const std::vector<PickedInfo> &, bool ctrlDown=false, bool shiftDown=false);
 
     std::vector<PickedInfo> getPickedList(SoHandleEventAction* action, bool singlePick) const;

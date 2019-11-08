@@ -637,6 +637,13 @@ void View3DInventorViewer::init()
 
 View3DInventorViewer::~View3DInventorViewer()
 {
+    // FIXME: SoUnfifiedSelection class has a static currentHighlight path that
+    // may have a reference to our selection root. Sometimes, we'll get warning
+    // "SoBase()::unref ref count less than zero", when the currentHighlight is
+    // released after this viewer is destroyed. Can't figure out why. Just
+    // clear preselection before destruction for now.
+    selectionRoot->removeHighlight();
+
     // to prevent following OpenGL error message: "Texture is not valid in the current context. Texture has not been destroyed"
     aboutToDestroyGLContext();
 
