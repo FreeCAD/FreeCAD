@@ -6,7 +6,7 @@
 using namespace GCS;
 
 Parameter::Parameter(double value, double scale, bool fixed, int tag){
-    this->value = value;
+    this->savedValue = value;
     this->scale = scale;
     this->fixed = fixed;
     this->tag = tag;
@@ -14,7 +14,7 @@ Parameter::Parameter(double value, double scale, bool fixed, int tag){
 
 Parameter::Parameter(const std::string& label, double value, double scale, bool fixed, int tag)
 {
-    this->value = value;
+    this->savedValue = value;
     this->scale = scale;
     this->fixed = fixed;
     this->tag = tag;
@@ -34,5 +34,5 @@ void Parameter::pasteFrom(const Parameter& from)
 void Parameter::pasteFrom(const ParameterRef from)
 {
     pasteFrom(from.param());
-    value = from.value();//make sure to obey redirects
+    savedValue = from.savedValue();//make sure to obey redirects
 }

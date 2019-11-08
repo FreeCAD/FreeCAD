@@ -19,7 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
+#define GCSExport
 #ifndef FREECAD_CONSTRAINTSOLVER_PARAMETER_H
 #define FREECAD_CONSTRAINTSOLVER_PARAMETER_H
 
@@ -32,7 +32,7 @@ class ParameterRef;
 class GCSExport Parameter
 {
 public://data
-    double value = 0.0;
+    double savedValue = 0.0;
     double scale = 1.0;
     double lowerlim = -1e100;
     double upperlim = 1e100;

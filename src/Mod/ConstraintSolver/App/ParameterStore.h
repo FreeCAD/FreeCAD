@@ -56,7 +56,7 @@ public:
     ParameterStore(const ParameterStore&) = delete; //delete copy constructor because handle-only memory management
     virtual ~ParameterStore();
 
-    HParameterStore copy(HParameterStore other);
+    HParameterStore copy();
 
     ///adds one new parameter and returns a reference to it
     ParameterRef add();
@@ -73,8 +73,42 @@ public:
     double& value(int index);
     double value(int index) const;
 
-    PyObject* getPyObject() override {return _twin;}
+    /**
+     * @brief redirect: worker behind constrainEqual. Can be used to bypass checks for fixedness.
+     * @param who: parameter to be redirected (all from the equality group will be redirected)
+     * @param where: parameter to redirect to (auto resolves to master of equality group)
+     * @param mean_out: if true, picks the fixed value of the two, or averages out if both are variable.
+     */
+    void redirect(ParameterRef who, ParameterRef where, bool mean_out = true);
+    ///returns list of all parameters redirected (constrained) to one value
+    std::vector<ParameterRef> getEqualityGroup(ParameterRef param);
+
+    enum class eConstrainEqual_Result{
+        Constrained,
+        Redundant
+    };
+    ///creates redirects to make the parameters equal. Throws if conflicting. It is important that "fixed" fields of related parameters are properly filled for conflict detection.
+    eConstrainEqual_Result constrainEqual(ParameterRef param1, ParameterRef param2, bool mean_out = true);
+    ///dismantles all equality groups (undoes all calls constrainEqual, except parameter value changes).
+    void free();
+    ///frees the parameter from equality group (undoes constrainEqual)
+    void free(ParameterRef param);
+    ///update own values of parameters to match that of equality group (aka its masterValue).
+    void sync();
+    ///update own value of parameter to match that of equality group (aka its masterValue).
+    void sync(ParameterRef param);
+
+    ///marks this parameter as fixed, and makes sure that the equality group it belongs to is fixed too.
+    void fix(ParameterRef param);
+
+
+    PyObject* getPyObject() override;
     HParameterStore getPyHandle() const;
+
+public: //for range-based for looping. Using ParameterRef as an iterator.
+    ParameterRef begin();
+    ///returns an invalid parameter, only for looping
+    ParameterRef end();
 public:
     friend class ParameterRef;
 };

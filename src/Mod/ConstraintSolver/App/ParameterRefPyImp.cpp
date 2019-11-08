@@ -10,22 +10,37 @@ std::string ParameterRefPy::representation(void) const
     return std::string("<ParameterRef object>");
 }
 
-PyObject* ParameterRefPy::isSameRef(PyObject *args)
+PyObject* ParameterRefPy::isSameRef(PyObject* args)
 {
-    ParameterRefPy* pyother;
+    PyObject* pyother;
     if (!PyArg_ParseTuple(args, "O!", &(ParameterRefPy::Type), &pyother))
         return nullptr;
-    bool ret = this->getParameterRefPtr()->isSameRef(*(pyother->getParameterRefPtr()));
+    bool ret = this->getParameterRefPtr()->isSameRef(*(UnsafePyHandle<ParameterRef>(pyother, false)));
     return Py::new_reference_to(Py::Boolean(ret));
 }
 
-PyObject* ParameterRefPy::isSameValue(PyObject *args)
+PyObject* ParameterRefPy::isSameValue(PyObject* args)
 {
-    ParameterRefPy* pyother;
+    PyObject* pyother;
     if (!PyArg_ParseTuple(args, "O!", &(ParameterRefPy::Type), &pyother))
         return nullptr;
-    bool ret = this->getParameterRefPtr()->isSameValue(*(pyother->getParameterRefPtr()));
+    bool ret = this->getParameterRefPtr()->isSameValue(*(UnsafePyHandle<ParameterRef>(pyother, false)));
     return Py::new_reference_to(Py::Boolean(ret));
+}
+
+PyObject* ParameterRefPy::isFixed(PyObject* args)
+{
+    if (! PyArg_ParseTuple(args, ""))
+        return nullptr;
+    return new_reference_to(Py::Boolean(getParameterRefPtr()->isFixed()));
+}
+
+PyObject* ParameterRefPy::fix(PyObject* args)
+{
+    if (! PyArg_ParseTuple(args, ""))
+        return nullptr;
+    getParameterRefPtr()->fix();
+    return new_reference_to(Py::None());
 }
 
 
@@ -52,22 +67,22 @@ Py::Object ParameterRefPy::getMaster(void) const
 
 Py::Float ParameterRefPy::getValue(void) const
 {
-    return Py::Float(this->getParameterRefPtr()->value());
+    return Py::Float(this->getParameterRefPtr()->savedValue());
 }
 
 void  ParameterRefPy::setValue(Py::Float arg)
 {
-    this->getParameterRefPtr()->value() = arg.as_double();
+    this->getParameterRefPtr()->savedValue() = arg.as_double();
 }
 
 Py::Float ParameterRefPy::getOwnValue(void) const
 {
-    return Py::Float(this->getParameterRefPtr()->ownValue());
+    return Py::Float(this->getParameterRefPtr()->ownSavedValue());
 }
 
 void  ParameterRefPy::setOwnValue(Py::Float arg)
 {
-    this->getParameterRefPtr()->ownValue() = arg.as_double();
+    this->getParameterRefPtr()->ownSavedValue() = arg.as_double();
 }
 
 Py::Float ParameterRefPy::getMasterScale(void) const
@@ -90,12 +105,12 @@ void  ParameterRefPy::setOwnScale(Py::Float arg)
     this->getParameterRefPtr()->ownScale() = arg.as_double();
 }
 
-Py::Boolean ParameterRefPy::getFixed(void) const
+Py::Boolean ParameterRefPy::getOwnFixed(void) const
 {
     return Py::Boolean(this->getParameterRefPtr()->param().fixed);
 }
 
-void  ParameterRefPy::setFixed(Py::Boolean arg)
+void  ParameterRefPy::setOwnFixed(Py::Boolean arg)
 {
     this->getParameterRefPtr()->param().fixed = arg.as_bool();
 }

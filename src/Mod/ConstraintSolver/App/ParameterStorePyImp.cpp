@@ -1,6 +1,7 @@
 #include "PreCompiled.h"
 
 #include "ParameterStore.h"
+#include "ParameterRefPy.h"
 
 #include "ParameterStorePy.h"
 #include "ParameterStorePy.cpp"
@@ -34,7 +35,7 @@ PyObject* ParameterStorePy::addOne(PyObject* args, PyObject* kwd)
     int tag = 0;
     bool parsed =
     PyArg_ParseTupleAndKeywords(args, kwd, "|sddO!i", const_cast<char**>(kwlist),
-        &label, &value, &scale, &fixed, &PyBool_Type, &tag
+        &label, &value, &scale, &PyBool_Type, &fixed, &tag
     );
     if (!parsed)
         return nullptr;
@@ -57,7 +58,7 @@ PyObject* ParameterStorePy::addN(PyObject *args)
     }
 
     PyObject* arg = nullptr;
-    if(PyArg_ParseTuple(args, "O", arg)){
+    if(PyArg_ParseTuple(args, "O", &arg)){
         Py::List ret;
         try{
             Py::Sequence seq(arg);
@@ -85,8 +86,57 @@ PyObject* ParameterStorePy::addN(PyObject *args)
 
 PyObject* ParameterStorePy::copy(PyObject* args)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    if (! PyArg_ParseTuple(args, ""))
+        return nullptr;
+    return Py::new_reference_to(getParameterStorePtr()->copy());
+}
+
+PyObject* ParameterStorePy::constrainEqual(PyObject* args)
+{
+    PyObject* param1 = nullptr;
+    PyObject* param2 = nullptr;
+    PyObject* mean_out = Py_True;
+    if (! PyArg_ParseTuple(args, "O!O!|O!", &ParameterRefPy::Type, &param1, &ParameterRefPy::Type, &param2, &PyBool_Type, &mean_out))
+        return nullptr;
+    auto emsg = getParameterStorePtr()->constrainEqual(
+        *(static_cast<ParameterRefPy*>(param1)->getParameterRefPtr()),
+        *(static_cast<ParameterRefPy*>(param2)->getParameterRefPtr()),
+        Py::Boolean(mean_out).isTrue()
+    );
+    std::string ret;
+    switch(emsg){
+        case ParameterStore::eConstrainEqual_Result::Redundant:
+            ret = "Redundant";
+        break;
+        case ParameterStore::eConstrainEqual_Result::Constrained:
+            ret = "Constrained";
+        break;
+    }
+    return Py::new_reference_to(Py::String(ret));
+}
+
+PyObject* ParameterStorePy::free(PyObject* args)
+{
+    PyObject* param = Py_None;
+    if (! PyArg_ParseTuple(args, "|O!", &ParameterRefPy::Type, &param))
+        return nullptr;
+    if (param == Py_None)
+        getParameterStorePtr()->free();
+    else
+        getParameterStorePtr()->free(*UnsafePyHandle<ParameterRef>(param, /*owned=*/false));
+    return Py::new_reference_to(Py::None());
+}
+
+PyObject* ParameterStorePy::sync(PyObject* args)
+{
+    PyObject* param = Py_None;
+    if (! PyArg_ParseTuple(args, "|O", &param, &ParameterRefPy::Type))
+        return nullptr;
+    if (param == Py_None)
+        getParameterStorePtr()->sync();
+    else
+        getParameterStorePtr()->sync(*UnsafePyHandle<ParameterRef>(param, /*owned=*/false));
+    return Py::new_reference_to(Py::None());
 }
 
 
@@ -112,7 +162,7 @@ void  ParameterStorePy::setValues(Py::List arg)
         throw Py::ValueError(ss.str());
     }
     for(int i = 0; i < sz; ++i){
-        getParameterStorePtr()->value(i) = Py::Float(arg[i]).as_double();
+        (*getParameterStorePtr())[i].ownSavedValue() = Py::Float(arg[i]).as_double();
     }
 }
 

@@ -50,16 +50,22 @@ public://methods
     int ownIndex() const {return _ownIndex;}
 
     int masterIndex() const;
+    bool isMaster() const;
+    ParameterRef master() const;
 
     ///value of the parameter, bypassing redirection
-    double& ownValue() const;
+    double& ownSavedValue() const;
     ///returns value, obeying redirection
-    double& value() const;
+    double& savedValue() const;
 
     ///scale of the parameter, bypassing redirection
     double& ownScale() const;
     ///scale of the parameter, obeying redirection
     double& masterScale() const;
+
+    bool& ownFixed() const;
+    bool isFixed() const;
+    void fix();
 
     Parameter& param() const;
     ///the parameter object this parameter is redirected to
@@ -69,6 +75,9 @@ public://methods
     bool isSameValue(const ParameterRef &other) const;
 
     UnsafePyHandle<ParameterRef> getPyObject() const;
+public://iterator interface
+    void operator++(){++_ownIndex;}
+    bool operator!=(const ParameterRef& other) const {return _ownIndex != other._ownIndex;}
 };
 
 } //namespace

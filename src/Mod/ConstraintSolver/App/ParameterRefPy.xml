@@ -68,11 +68,15 @@
       </Documentation>
       <Parameter Name="OwnScale" Type="Float" />
     </Attribute>
-    <Attribute Name="Fixed">
+    <Attribute Name="OwnFixed">
       <Documentation>
-        <UserDocu>Sets if this parameter should be fixed or not. Note, if you explicitly add the parameter to sover's unknowns, the fixedness can be ignored.</UserDocu>
+        <UserDocu>Sets if this parameter should be fixed or not. It is writable, but writing manually is discouraged
+        when there are redirections. Use fix() method instead.
+
+        Solvers don't care about this flag. It is only here to help with generating list of unknowns,
+        and to manage constrainEqual() behavior.</UserDocu>
       </Documentation>
-      <Parameter Name="Fixed" Type="Boolean" />
+      <Parameter Name="OwnFixed" Type="Boolean" />
     </Attribute>
     <Attribute Name="Tag">
       <Documentation>
@@ -97,6 +101,17 @@
         <UserDocu>Returns if these references point to same parameter (obeying redirections)</UserDocu>
       </Documentation>
     </Methode>
-        
+    <Methode Name="isFixed" Const="true">
+      <Documentation>
+        <UserDocu>Returns if the parameter (or master parameter of the equality group this one is in) is fixed.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fix">
+      <Documentation>
+        <UserDocu>Fixes this parameter. If this parameter belongs to a non-fixed equality group,
+        this parameter becomes the master parameter of the group (in order for the whole group to become fixed).</UserDocu>
+      </Documentation>
+    </Methode>
+
   </PythonExport>
 </GenerateModel>

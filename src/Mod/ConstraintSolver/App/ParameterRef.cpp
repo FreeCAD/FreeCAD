@@ -23,12 +23,22 @@ int ParameterRef::masterIndex() const {
     return _store->_params[_ownIndex].masterIndex();
 }
 
-double& ParameterRef::ownValue() const {
-    return _store->_params[_ownIndex].value;
+bool ParameterRef::isMaster() const
+{
+    return ownIndex() == masterIndex();
 }
 
-double& ParameterRef::value() const {
-    return _store->_params[masterIndex()].value;
+ParameterRef ParameterRef::master() const
+{
+    return ParameterRef(this->host(), this->masterIndex());
+}
+
+double& ParameterRef::ownSavedValue() const {
+    return _store->_params[_ownIndex].savedValue;
+}
+
+double& ParameterRef::savedValue() const {
+    return _store->_params[masterIndex()].savedValue;
 }
 
 double& ParameterRef::ownScale() const {
@@ -37,6 +47,21 @@ double& ParameterRef::ownScale() const {
 
 double& ParameterRef::masterScale() const {
     return _store->_params[masterIndex()].scale;
+}
+
+bool& ParameterRef::ownFixed() const
+{
+    return param().fixed;
+}
+
+bool ParameterRef::isFixed() const
+{
+    return master().param().fixed;
+}
+
+void ParameterRef::fix()
+{
+    host()->fix(*this);
 }
 
 Parameter& ParameterRef::param() const {
