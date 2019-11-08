@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -54,29 +54,29 @@ public:
   /*!
    * Sets coordinates of node positions along an axis (countered from 0)
    */
-  void SetGrid(std::vector<double>& xNodes, int axis);
+  void SetGrid(std::vector<double>& xNodes, int axis) noexcept(false);
   /*!
    * Return coordinates of node positions along the three axes
    */
-  void GetGrid(std::vector<double>& xNodes, int axis) const;
+  void GetGrid(std::vector<double>& xNodes, int axis) const noexcept(false);
 
   /*!
    * \brief Set grid spacing along the three axes
    *  \param spaceFunctions - functions defining spacing values at given point on axis
    *  \param internalPoints - points dividing a grid into parts along each direction
    *
-   * Parameter t of spaceFunction f(t) is a position [0,1] withing bounding box of
+   * Parameter t of spaceFunction f(t) is a position [0,1] within bounding box of
    * the shape to mesh
    */
   void SetGridSpacing(std::vector<std::string>& spaceFunctions,
                       std::vector<double>&      internalPoints,
-                      const int                 axis);
+                      const int                 axis) noexcept(false);
 
   void GetGridSpacing(std::vector<std::string>& spaceFunctions,
                       std::vector<double>&      internalPoints,
-                      const int                 axis) const;
+                      const int                 axis) const noexcept(false);
 
-  bool IsGridBySpacing(const int axis) const;
+  bool IsGridBySpacing(const int axis) const noexcept(false);
 
   /*!
    * Set/unset a fixed point, at which a node will be created provided that grid
@@ -99,7 +99,7 @@ public:
                                  std::vector<double>&      points,
                                  std::vector<double>&      coords,
                                  const std::string&        axis,
-                                 const double*             xForced=0);
+                                 const double*             xForced=0) noexcept(false);
   /*!
    * Return coordinates of node positions along the three axes.
    * If the grid is defined by spacing functions, the coordinates are computed
@@ -107,12 +107,12 @@ public:
   void GetCoordinates(std::vector<double>& xNodes,
                       std::vector<double>& yNodes,
                       std::vector<double>& zNodes,
-                      const Bnd_Box&       bndBox) const;
+                      const Bnd_Box&       bndBox) const noexcept(false);
 
   /*!
    * \brief Set custom direction of axes
    */
-  void SetAxisDirs(const double* the9DirComps);
+  void SetAxisDirs(const double* the9DirComps) noexcept(false);
   const double* GetAxisDirs() const { return _axisDirs; }
   /*!
    * \brief Returns axes at which number of hexahedra is maximal
@@ -125,7 +125,7 @@ public:
    * hexahedron by geometry boundary is considered small and is removed if
    * it's size is \athreshold times less than the size of the initial hexahedron.
    */
-  void SetSizeThreshold(const double threshold);
+  void SetSizeThreshold(const double threshold) noexcept(false);
   /*!
    * \brief Return size threshold
    */

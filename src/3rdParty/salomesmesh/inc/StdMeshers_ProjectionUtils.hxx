@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -30,11 +30,11 @@
 
 #include "SMESH_StdMeshers.hxx"
 
-#include "SMDS_MeshNode.hxx"
+#include "SMDS_MeshElement.hxx"
 
 #include <TopTools_DataMapOfShapeShape.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -92,7 +92,7 @@ namespace StdMeshers_ProjectionUtils
 
 
   /*!
-   * \brief Finds transformation beween two sets of 2D points using
+   * \brief Finds transformation between two sets of 2D points using
    *        a least square approximation
    */
   class TrsfFinder2D
@@ -112,7 +112,7 @@ namespace StdMeshers_ProjectionUtils
     bool IsIdentity() const { return ( _trsf.Form() == gp_Identity ); }
   };
   /*!
-   * \brief Finds transformation beween two sets of 3D points using
+   * \brief Finds transformation between two sets of 3D points using
    *        a least square approximation
    */
   class TrsfFinder3D

@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -43,8 +43,8 @@
 
 class SMDS_Mesh;
 
-namespace SMESH{
-  namespace Controls{
+namespace SMESH {
+  namespace Controls {
 
     /*
       Class       : Functor
@@ -53,7 +53,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT Functor
     {
     public:
-      ~Functor(){}
+      virtual ~Functor(){}
       virtual void SetMesh( const SMDS_Mesh* theMesh ) = 0;
       virtual SMDSAbs_ElementType GetType() const = 0;
     };
@@ -67,10 +67,11 @@ namespace SMESH{
       Class       : Predicate
       Description : Base class for all predicates
     */
-    class SMESHCONTROLS_EXPORT Predicate: public virtual Functor{
+    class SMESHCONTROLS_EXPORT Predicate: public virtual Functor {
     public:
       virtual bool IsSatisfy( long theElementId ) = 0;
       virtual SMDSAbs_ElementType GetType() const = 0;
+      virtual Predicate* clone() const { return 0; } // return a thread-safe copy of this
     };
     typedef boost::shared_ptr<Predicate> PredicatePtr;
 

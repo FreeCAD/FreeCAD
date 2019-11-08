@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,8 @@
 #ifndef _NETGENPlugin_NETGEN_2D_ONLY_HXX_
 #define _NETGENPlugin_NETGEN_2D_ONLY_HXX_
 
+#include <NETGENPlugin_Defs.hxx>
+
 #include <SMESH_Algo.hxx>
 #include <SMESH_Mesh.hxx>
 
@@ -39,7 +41,7 @@ class NETGENPlugin_Hypothesis_2D;
  * the class is named NETGENPlugin_NETGEN_2D_ONLY. Renaming is useless as
  * algorithm field "_name" can't be changed
  */
-class NETGENPlugin_NETGEN_2D_ONLY: public SMESH_2D_Algo
+class NETGENPLUGIN_EXPORT NETGENPlugin_NETGEN_2D_ONLY: public SMESH_2D_Algo
 {
 public:
   NETGENPlugin_NETGEN_2D_ONLY(int hypId, int studyId, SMESH_Gen* gen);

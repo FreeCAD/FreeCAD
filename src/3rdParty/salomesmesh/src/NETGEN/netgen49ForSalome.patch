@@ -1,0 +1,1121 @@
+diff -Naur netgen-4.9.13_orig/libsrc/meshing/meshtype.cpp netgen-4.9.13_new/libsrc/meshing/meshtype.cpp
+--- netgen-4.9.13_orig/libsrc/meshing/meshtype.cpp	2009-09-13 14:28:38.000000000 +0400
++++ netgen-4.9.13_new/libsrc/meshing/meshtype.cpp	2014-07-22 13:01:28.000000000 +0400
+@@ -1,4 +1,5 @@
+ #include <mystdlib.h>
++#include <float.h> // to get DBL_MIN defined
+ 
+ #include "meshing.hpp"  
+ 
+@@ -650,7 +651,8 @@
+ 
+         double det = trans.Det();
+ 
+-        if (det <= 0)
++        // if (det <= 0)
++        if (det <= DBL_MIN) // avoid FPE
+           err += 1e12;
+         else
+           err += frob * frob / det;
+@@ -706,7 +708,8 @@
+ 
+             double det = trans(0,0)*trans(1,1)-trans(1,0)*trans(0,1);
+ 
+-            if (det <= 0)
++            // if (det <= 0)
++            if (det <= DBL_MIN)  // avoid FPE
+               {
+                 dd = 0;
+                 return 1e12;
+@@ -790,7 +793,8 @@
+           = dtrans(0,0) * trans(1,1) - trans(0,1) * dtrans(1,0)
+           + trans(0,0) * dtrans(1,1) - dtrans(0,1) * trans(1,0);
+ 
+-        if (det <= 0)
++        // if (det <= 0)
++        if (det <= DBL_MIN) // avoid FPE
+           err += 1e12;
+         else
+           {
+@@ -840,7 +844,8 @@
+         frob /= 2;
+ 
+         double det = trans.Det();
+-        if (det <= 0)
++        //if (det <= 0)
++        if (det <= DBL_MIN) // avoid FPE
+           err += 1e12;
+         else
+           err += frob * frob / det;
+@@ -1857,7 +1862,8 @@
+       case PYRAMID:
+         {
+           double noz = 1-p(2);
+-          if (noz == 0.0) noz = 1e-10;
++          //if (noz == 0.0) noz = 1e-10;
++          if (noz <= DBL_MIN) noz = 1e-10; // avoid FPE
+ 
+           double xi  = p(0) / noz;
+           double eta = p(1) / noz;
+@@ -2035,7 +2041,8 @@
+ 
+         double det = -trans.Det();
+       
+-        if (det <= 0)
++        //if (det <= 0)
++        if (det <= DBL_MIN) // avoid FPE
+           err += 1e12;
+         else
+           err += frob * frob * frob / det;
+@@ -2107,7 +2114,8 @@
+         ddet *= -1;
+ 
+       
+-        if (det <= 0)
++        //if (det <= 0)
++        if (det <= DBL_MIN) // avoid FPE
+           err += 1e12;
+         else
+           {
+@@ -2189,7 +2197,7 @@
+       
+         det *= -1;
+       
+-        if (det <= 0)
++        if (det <= DBL_MIN)
+           err += 1e12;
+         else
+           {
+@@ -2522,10 +2530,10 @@
+ 
+   MeshingParameters :: MeshingParameters ()
+   {
+-    optimize3d = "cmdmustm";
++    optimize3d = (char*)"cmdmustm"; // optimize3d = "cmdmustm";
+     //optimize3d = "cmdmstm";
+     optsteps3d = 3;
+-    optimize2d = "smsmsmSmSmSm";
++    optimize2d = (char*)"smsmsmSmSmSm"; // optimize2d = "smsmsmSmSmSm";
+     optsteps2d = 3;
+     opterrpow = 2;
+     blockfill = 1;
+diff -Naur netgen-4.9.13_orig/libsrc/meshing/meshtype.hpp netgen-4.9.13_new/libsrc/meshing/meshtype.hpp
+--- netgen-4.9.13_orig/libsrc/meshing/meshtype.hpp	2009-11-09 13:50:43.000000000 +0300
++++ netgen-4.9.13_new/libsrc/meshing/meshtype.hpp	2014-07-22 13:01:28.000000000 +0400
+@@ -12,6 +12,7 @@
+     Classes for NETGEN
+ */
+ 
++class Mesh; // added due to compilation errors on some platforms
+ 
+ enum ELEMENT_TYPE { 
+   SEGMENT = 1, SEGMENT3 = 2,
+diff -Naur netgen-4.9.13_orig/libsrc/meshing/smoothing2.cpp netgen-4.9.13_new/libsrc/meshing/smoothing2.cpp
+--- netgen-4.9.13_orig/libsrc/meshing/smoothing2.cpp	2009-11-09 13:47:09.000000000 +0300
++++ netgen-4.9.13_new/libsrc/meshing/smoothing2.cpp	2014-07-22 13:01:28.000000000 +0400
+@@ -302,7 +302,8 @@
+     vgrad = 0;
+     badness = 0;
+ 
+-    meshthis -> GetNormalVector (surfi, sp1, gi1, n);
++    //normal already computed: meshthis -> GetNormalVector (surfi, sp1, gi1, n);
++    n = normal;
+     pp1 = sp1 + x(0) * t1 + x(1) * t2;
+ 
+     //  meshthis -> ProjectPoint (surfi, pp1);
+@@ -360,7 +361,8 @@
+     vgrad = 0;
+     badness = 0;
+ 
+-    meshthis -> GetNormalVector (surfi, sp1, gi1, n);
++    //normal already computed: meshthis -> GetNormalVector (surfi, sp1, gi1, n);
++    n = normal;
+ 
+     pp1 = sp1 + x(0) * t1 + x(1) * t2;
+ 
+@@ -514,7 +516,8 @@
+     vgrad = 0;
+     badness = 0;
+ 
+-    meshthis -> GetNormalVector (surfi, sp1, gi1, n);
++    //normal already computed: meshthis -> GetNormalVector (surfi, sp1, gi1, n);
++    n = normal;
+ 
+     pp1 = sp1 + x(0) * t1 + x(1) * t2;
+ 
+@@ -586,7 +589,8 @@
+     vgrad = 0;
+     badness = 0;
+ 
+-    meshthis -> GetNormalVector (surfi, sp1, gi1, n);
++    //normal already computed: meshthis -> GetNormalVector (surfi, sp1, gi1, n);
++    n = normal;
+ 
+     // pp1 = sp1;
+     //    pp1.Add2 (x.Get(1), t1, x.Get(2), t2);
+@@ -973,7 +977,7 @@
+ 		{
+ 		  mesh[pi] = Point<3> (origp);
+ 		}
+-	    
++	      break; // exit as <fact> is not used anymore
+ 	    }
+ 	}
+ 
+diff -Naur netgen-4.9.13_orig/libsrc/occ/occconstruction.cpp netgen-4.9.13_new/libsrc/occ/occconstruction.cpp
+--- netgen-4.9.13_orig/libsrc/occ/occconstruction.cpp	2009-08-24 06:32:47.000000000 +0400
++++ netgen-4.9.13_new/libsrc/occ/occconstruction.cpp	2014-07-22 13:01:28.000000000 +0400
+@@ -28,7 +28,7 @@
+ #include <BRepAlgoAPI_Common.hxx>
+ #include <BRepAlgoAPI_Fuse.hxx>
+ #include <BRepAlgoAPI_Section.hxx>
+-#include <BRepOffsetAPI_Sewing.hxx>
++//#include <BRepOffsetAPI_Sewing.hxx>
+ //#include <BRepAlgo_Sewing.hxx>
+ #include <BRepOffsetAPI_MakeOffsetShape.hxx>
+ #include <ShapeFix_Shape.hxx>
+diff -Naur netgen-4.9.13_orig/libsrc/occ/occgenmesh.cpp netgen-4.9.13_new/libsrc/occ/occgenmesh.cpp
+--- netgen-4.9.13_orig/libsrc/occ/occgenmesh.cpp	2010-03-16 09:30:07.000000000 +0300
++++ netgen-4.9.13_new/libsrc/occ/occgenmesh.cpp	2014-07-22 13:01:28.000000000 +0400
+@@ -15,6 +15,8 @@
+ 
+ #define DIVIDEEDGESECTIONS 1000
+ #define IGNORECURVELENGTH 1e-4
++// a small value used to avoid FPE
++#define VSMALL 1e-10
+ 
+ 
+    bool merge_solids = 1;
+@@ -26,7 +28,8 @@
+       double nq = n*q;
+ 
+       Point<3> p = p0 + 0.5*n;
+-      double lambda = (p-l.p0)*n / nq;
++      // double lambda = (p-l.p0)*n / nq;  -- avoid FPE
++      double lambda = (fabs(nq) > 1e-10) ? (p-l.p0)*n / nq : -1;
+ 
+       if (lambda >= 0 && lambda <= 1)
+       {
+@@ -54,6 +57,8 @@
+ 
+ 
+ 
++   
++   static // useless out of this file
+    double ComputeH (double kappa)
+    {
+       double hret;
+@@ -62,7 +67,8 @@
+       if (mparam.maxh * kappa < 1)
+          hret = mparam.maxh;
+       else
+-         hret = 1 / kappa;
++        // hret = 1 / kappa; -- avoid FPE
++        hret = 1 / (kappa + VSMALL);
+ 
+       if (mparam.maxh < hret)
+          hret = mparam.maxh;
+@@ -71,8 +77,7 @@
+    }
+ 
+ 
+-
+-
++   static // useless out of this file
+    void RestrictHTriangle (gp_Pnt2d & par0, gp_Pnt2d & par1, gp_Pnt2d & par2,
+                            BRepLProp_SLProps * prop, Mesh & mesh, int depth, double h = 0)
+    {
+@@ -168,8 +173,8 @@
+          if(h < 1e-4*maxside)
+             return;
+ 
+-
+-         if (h > 30) return;
++         // commented to restrict H on a large sphere for example
++         //if (h > 30) return;
+       }
+ 
+       if (h < maxside && depth < 10)
+@@ -228,6 +233,7 @@
+ 
+ 
+ 
++   static // useless out of this file
+    void DivideEdge (TopoDS_Edge & edge, Array<MeshPoint> & ps,
+                     Array<double> & params, Mesh & mesh)
+    {
+@@ -247,8 +253,8 @@
+       hvalue[0] = 0;
+       pnt = c->Value(s0);
+ 
+-      double olddist = 0;
+-      double dist = 0;
++      //double olddist = 0; -- useless variables
++      //double dist = 0;
+ 
+       int tmpVal = (int)(DIVIDEEDGESECTIONS);
+ 
+@@ -256,15 +262,19 @@
+       {
+          oldpnt = pnt;
+          pnt = c->Value(s0+(i/double(DIVIDEEDGESECTIONS))*(s1-s0));
++         // -- no more than 1 segment per <edge length>/DIVIDEEDGESECTIONS
+          hvalue[i] = hvalue[i-1] +
+-            1.0/mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z()))*
+-            pnt.Distance(oldpnt);
++         //   1.0/mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z()))*
++         //   pnt.Distance(oldpnt);
++           min( 1.0,
++                1.0/mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z()))*
++                pnt.Distance(oldpnt));
+ 
+          //(*testout) << "mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z())) " << mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z()))
+          //	   <<  " pnt.Distance(oldpnt) " << pnt.Distance(oldpnt) << endl;
+ 
+-         olddist = dist;
+-         dist = pnt.Distance(oldpnt);
++         //olddist = dist; -- useless variables
++         //dist = pnt.Distance(oldpnt);
+       }
+ 
+       //  nsubedges = int(ceil(hvalue[DIVIDEEDGESECTIONS]));
+@@ -279,7 +289,10 @@
+       {
+          if (hvalue[i1]/hvalue[DIVIDEEDGESECTIONS]*nsubedges >= i)
+          {
+-            params[i] = s0+(i1/double(DIVIDEEDGESECTIONS))*(s1-s0);
++            // -- for nsubedges comparable to DIVIDEEDGESECTIONS
++            //params[i] = s0+(i1/double(DIVIDEEDGESECTIONS))*(s1-s0);
++            double d1 = i1 - (hvalue[i1] - i*hvalue[DIVIDEEDGESECTIONS]/nsubedges)/(hvalue[i1]-hvalue[i1-1]);
++            params[i] = s0+(d1/double(DIVIDEEDGESECTIONS))*(s1-s0);
+             pnt = c->Value(params[i]);
+             ps[i-1] = MeshPoint (Point3d(pnt.X(), pnt.Y(), pnt.Z()));
+             i++;
+@@ -323,6 +336,9 @@
+       (*testout) << "nedges = " << nedges << endl;
+ 
+       double eps = 1e-6 * geom.GetBoundingBox().Diam();
++      const double eps2 = eps * eps; // -- small optimization
++
++      int first_vp = mesh.GetNP()+1; // -- to support SALOME sub-meshes
+ 
+       for (int i = 1; i <= nvertices; i++)
+       {
+@@ -332,7 +348,8 @@
+          bool exists = 0;
+          if (merge_solids)
+             for (PointIndex pi = 1; pi <= mesh.GetNP(); pi++)
+-               if ( Dist2 (mesh[pi], Point<3>(mp)) < eps*eps)
++               //if ( Dist2 (mesh[pi], Point<3>(mp)) < eps*eps)              
++               if ( Dist2 (mesh[pi], Point<3>(mp)) < eps2 ) // -- small optimization
+                {
+                   exists = 1;
+                   break;
+@@ -362,6 +379,7 @@
+          {
+             TopoDS_Face face = TopoDS::Face(exp1.Current());
+             int facenr = geom.fmap.FindIndex(face);
++            if ( facenr < 1 ) continue; // -- to support SALOME sub-meshes
+ 
+             if (face2solid[0][facenr-1] == 0)
+                face2solid[0][facenr-1] = solidnr;
+@@ -381,6 +399,7 @@
+       int facenr = 0;
+       int edgenr = 0;
+ 
++      edgenr = mesh.GetNSeg(); // to support SALOME sub-meshes
+ 
+       (*testout) << "faces = " << geom.fmap.Extent() << endl;
+       int curr = 0;
+@@ -442,6 +461,7 @@
+                   //(*testout) << "ignoring degenerated edge" << endl;
+                   continue;
+                }
++               if ( geom.emap.FindIndex(edge) < 1 ) continue; // to support SALOME sub-meshes
+ 
+                if (geom.vmap.FindIndex(TopExp::FirstVertex (edge)) ==
+                   geom.vmap.FindIndex(TopExp::LastVertex (edge)))
+@@ -474,20 +494,104 @@
+ 
+                if (!merge_solids)
+                {
+-                  pnums[0] = geom.vmap.FindIndex (TopExp::FirstVertex (edge));
+-                  pnums[pnums.Size()-1] = geom.vmap.FindIndex (TopExp::LastVertex (edge));
++                 //pnums[0] = geom.vmap.FindIndex (TopExp::FirstVertex (edge));
++                 //pnums[pnums.Size()-1] = geom.vmap.FindIndex (TopExp::LastVertex (edge));
++                 MeshPoint dfltP ( Point<3> ( 0, 0, 0 ) );
++                 int *ipp[] = { &pnums[0], &pnums[pnums.Size()-1] };
++                 TopoDS_Iterator vIt( edge, false );
++                 TopoDS_Vertex v[2];
++                 v[0] = TopoDS::Vertex( vIt.Value() ); vIt.Next();
++                 v[1] = TopoDS::Vertex( vIt.Value() );
++                 if ( v[0].Orientation() == TopAbs_REVERSED )
++                   std::swap( v[0], v[1] );
++                 for ( int i = 0; i < 2; ++i)
++                 {
++                   int &ip = *ipp[i];
++                   ip = geom.vmap.FindIndex ( v[i] );
++                   if ( ip == 0 || ip > nvertices )
++                   {
++                     int iv = ip;
++                     if ( ip == 0 )
++                       ip = iv = geom.vmap.Add( v[i] );
++                     gp_Pnt pnt = BRep_Tool::Pnt( v[i] );
++                     MeshPoint mp( Point<3>(pnt.X(), pnt.Y(), pnt.Z()) );
++                     for (PointIndex pi = 1; pi < first_vp; pi++)
++                       if ( Dist2 (mesh.Point(pi), Point<3>(mp)) < 1e-100 )
++                       {
++                         ip = pi;
++                         if ( mesh.Point(ip).GetLayer() != dfltP.GetLayer() && mesh.Point(ip).GetLayer() != iv )
++                           continue;
++                         if ( mesh.Point(ip).GetLayer() == dfltP.GetLayer())
++                           mesh.Point(ip) = MeshPoint( mesh.Point(ip), iv );
++                         break;
++                       }
++                   }
++                   else
++                   {
++                     ip += first_vp - 1;
++                   }
++                 }
+                }
+                else
+                {
+-                  Point<3> fp = occ2ng (BRep_Tool::Pnt (TopExp::FirstVertex (edge)));
+-                  Point<3> lp = occ2ng (BRep_Tool::Pnt (TopExp::LastVertex (edge)));
++                 TopoDS_Iterator vIt( edge, false );
++                 TopoDS_Vertex v1 = TopoDS::Vertex( vIt.Value() ); vIt.Next();
++                 TopoDS_Vertex v2 = TopoDS::Vertex( vIt.Value() );
++                 if ( v1.Orientation() == TopAbs_REVERSED )
++                   std::swap( v1, v2 );
++                 const bool isClosedEdge = v1.IsSame( v2 );
++                 
++                  Point<3> fp = occ2ng (BRep_Tool::Pnt (v1));
++                  Point<3> lp = occ2ng (BRep_Tool::Pnt (v2));
++                  double tol2 = std::min( eps*eps, 1e-6 * Dist2( fp, lp ));
++                  if ( isClosedEdge )
++                    tol2 = BRep_Tool::Tolerance( v1 ) * BRep_Tool::Tolerance( v1 );
+ 
+                   pnums[0] = -1;
+                   pnums.Last() = -1;
+                   for (PointIndex pi = 1; pi < first_ep; pi++)
+                   {
+-                     if (Dist2 (mesh[pi], fp) < eps*eps) pnums[0] = pi;
+-                     if (Dist2 (mesh[pi], lp) < eps*eps) pnums.Last() = pi;
++                    if (Dist2 (mesh[pi], fp) < tol2) pnums[0] = pi;
++                    if (Dist2 (mesh[pi], lp) < tol2) pnums.Last() = pi;
++                  }
++                  if (( isClosedEdge && pnums[0] != pnums.Last() ) ||
++                      ( !isClosedEdge && pnums[0] == pnums.Last() ))
++                    pnums[0] = pnums.Last() = -1;
++                  if ( pnums[0] == -1 || pnums.Last() == -1 )
++                  {
++                    // take into account a possible large gap between a vertex and an edge curve
++                    // end and a large vertex tolerance covering the whole edge
++                    if ( pnums[0] == -1 )
++                    {
++                      double tol = BRep_Tool::Tolerance( v1 );
++                      for (PointIndex pi = 1; pi < first_ep; pi++)
++                        if (pi != pnums.Last() && Dist2 (mesh[pi], fp) < 2*tol*tol)
++                          pnums[0] = pi;
++
++                      if ( pnums[0] == -1 )
++                        pnums[0] = first_ep-1- nvertices + geom.vmap.FindIndex ( v1 );
++                    }
++                    if ( isClosedEdge )
++                    {
++                      pnums.Last() = pnums[0];
++                    }
++                    else
++                    {
++                      if ( pnums.Last() == -1 )
++                      {
++                        double tol = BRep_Tool::Tolerance( v2 );
++                        for (PointIndex pi = 1; pi < first_ep; pi++)
++                          if (pi != pnums[0] && Dist2 (mesh[pi], lp) < 2*tol*tol)
++                            pnums.Last() = pi;
++
++                        if ( pnums.Last() == -1 )
++                          pnums.Last() = first_ep-1-nvertices + geom.vmap.FindIndex ( v2 );
++                      }
++
++                      if ( Dist2( fp, mesh[PointIndex(pnums[0])]) >
++                           Dist2( lp, mesh[PointIndex(pnums.Last())]))
++                      std::swap( pnums[0], pnums.Last() );
++                    }
+                   }
+                }
+ 
+@@ -497,17 +601,20 @@
+                   bool exists = 0;
+                   int j;
+                   for (j = first_ep; j <= mesh.GetNP(); j++)
++                  {
++                     if (!merge_solids && mesh.Point(j).GetLayer() != geomedgenr ) continue; // to support SALOME fuse edges
+                      if ((mesh.Point(j)-Point<3>(mp[i-1])).Length() < eps)
+                      {
+                         exists = 1;
+                         break;
+                      }
++                  }
+ 
+                      if (exists)
+                         pnums[i] = j;
+                      else
+                      {
+-                        mesh.AddPoint (mp[i-1]);
++                        mesh.AddPoint (mp[i-1], geomedgenr); // to support SALOME fuse edges
+                         (*testout) << "add meshpoint " << mp[i-1] << endl;
+                         pnums[i] = mesh.GetNP();
+                      }
+@@ -591,6 +698,8 @@
+       //		(*testout) << "edge " << mesh.LineSegment(i).edgenr << " face " << mesh.LineSegment(i).si
+       //				<< " p1 " << mesh.LineSegment(i)[0] << " p2 " << mesh.LineSegment(i)[1] << endl;
+       //	exit(10);
++      for (int j = 1; j <= mesh.GetNP(); j++) // to support SALOME fuse edges: set level to zero
++        mesh.Point(j) = MeshPoint( (Point<3>&) mesh.Point(j) );
+ 
+       mesh.CalcSurfacesOfNode();
+       multithread.task = savetask;
+@@ -633,7 +742,8 @@
+          }
+ 
+          (*testout) << "mesh face " << k << endl;
+-         multithread.percent = 100 * k / (mesh.GetNFD()+1e-10);
++         // multithread.percent = 100 * k / (mesh.GetNFD()+1e-10); -- avoid FPE
++         multithread.percent = 100 * k / (mesh.GetNFD() + VSMALL);
+          geom.facemeshstatus[k-1] = -1;
+ 
+ 
+@@ -901,7 +1011,8 @@
+          //      if (k != 36) continue;
+ 
+          //      (*testout) << "optimize face " << k << endl;
+-         multithread.percent = 100 * k / (mesh.GetNFD()+1e-10);
++         //multithread.percent = 100 * k / (mesh.GetNFD()+1e-10); -- avoid FPE
++         multithread.percent = 100 * k / (mesh.GetNFD() + VSMALL);
+ 
+          FaceDescriptor & fd = mesh.GetFaceDescriptor(k);
+ 
+@@ -1456,3 +1567,4 @@
+ }
+ 
+ #endif
++
+diff -Naur netgen-4.9.13_orig/libsrc/occ/occgeom.cpp netgen-4.9.13_new/libsrc/occ/occgeom.cpp
+--- netgen-4.9.13_orig/libsrc/occ/occgeom.cpp	2010-03-05 16:16:21.000000000 +0300
++++ netgen-4.9.13_new/libsrc/occ/occgeom.cpp	2014-07-22 13:01:28.000000000 +0400
+@@ -8,6 +8,8 @@
+ #include "ShapeAnalysis_CheckSmallFace.hxx"
+ #include "ShapeAnalysis_DataMapOfShapeListOfReal.hxx"
+ #include "ShapeAnalysis_Surface.hxx"
++#include <BRepTopAdaptor_FClass2d.hxx> // -- to optimize Project() and FastProject()
++#include <TopAbs_State.hxx>
+ #include "BRepAlgoAPI_Fuse.hxx"
+ #include "BRepCheck_Analyzer.hxx"
+ #include "BRepLib.hxx"
+@@ -16,10 +18,17 @@
+ #include "ShapeFix_FixSmallFace.hxx"
+ #include "Partition_Spliter.hxx"
+ 
+-
+ namespace netgen
+ {
+-   void OCCGeometry :: PrintNrShapes ()
++  // free data used to optimize Project() and FastProject()
++  OCCGeometry::~OCCGeometry()
++  {
++    NCollection_DataMap<int,BRepTopAdaptor_FClass2d*>::Iterator it(fclsmap);
++    for (; it.More(); it.Next())
++      delete it.Value();
++  }
++
++  void OCCGeometry :: PrintNrShapes ()
+    {
+       TopExp_Explorer e;
+       int count = 0;
+@@ -951,25 +960,58 @@
+    }
+ 
+ 
++   // returns a projector and a classifier for the given surface
++   void OCCGeometry::GetFaceTools(int surfi, Handle(ShapeAnalysis_Surface)& proj,
++                                  BRepTopAdaptor_FClass2d*& cls) const
++   {
++     //MSV: organize caching projector in the map
++     if (fprjmap.IsBound(surfi))
++     {
++       proj = fprjmap.Find(surfi);
++       cls = fclsmap.Find(surfi);
++     }
++     else
++     {
++       const TopoDS_Face& aFace = TopoDS::Face(fmap(surfi));
++       Handle(Geom_Surface) aSurf = BRep_Tool::Surface(aFace);
++       proj = new ShapeAnalysis_Surface(aSurf);
++       fprjmap.Bind(surfi, proj);
++       cls = new BRepTopAdaptor_FClass2d(aFace,Precision::Confusion());
++       fclsmap.Bind(surfi, cls);
++     }
++   }
+ 
+-
+-   void OCCGeometry :: Project (int surfi, Point<3> & p) const
++   // void OCCGeometry :: Project (int surfi, Point<3> & p) const
++   bool OCCGeometry :: Project (int surfi, Point<3> & p, double& u, double& v) const
+    {
+       static int cnt = 0;
+       if (++cnt % 1000 == 0) cout << "Project cnt = " << cnt << endl;
+ 
+       gp_Pnt pnt(p(0), p(1), p(2));
+ 
+-      double u,v;
+-      Handle( Geom_Surface ) thesurf = BRep_Tool::Surface(TopoDS::Face(fmap(surfi)));
+-      Handle( ShapeAnalysis_Surface ) su = new ShapeAnalysis_Surface( thesurf );
+-      gp_Pnt2d suval = su->ValueOfUV ( pnt, BRep_Tool::Tolerance( TopoDS::Face(fmap(surfi)) ) );
+-      suval.Coord( u, v);
+-      pnt = thesurf->Value( u, v );
+-
+-
++      // -- Optimization: use cached projector and classifier
++      // double u,v;
++      // Handle( Geom_Surface ) thesurf = BRep_Tool::Surface(TopoDS::Face(fmap(surfi)));
++      // Handle( ShapeAnalysis_Surface ) su = new ShapeAnalysis_Surface( thesurf );
++      // gp_Pnt2d suval = su->ValueOfUV ( pnt, BRep_Tool::Tolerance( TopoDS::Face(fmap(surfi)) ) );
++      // suval.Coord( u, v);
++      // pnt = thesurf->Value( u, v );  
++
++      Handle(ShapeAnalysis_Surface) proj;
++      BRepTopAdaptor_FClass2d *cls;
++      GetFaceTools(surfi, proj, cls);
++  
++      gp_Pnt2d p2d = proj->ValueOfUV(pnt, Precision::Confusion());
++      if (cls->Perform(p2d) == TopAbs_OUT)
++      {
++        return false;
++      }
++      pnt = proj->Value(p2d);
++      p2d.Coord(u, v);
++  
+       p = Point<3> (pnt.X(), pnt.Y(), pnt.Z());
+ 
++      return true;
+    }
+ 
+ 
+@@ -979,54 +1021,69 @@
+    {
+       gp_Pnt p(ap(0), ap(1), ap(2));
+ 
+-      Handle(Geom_Surface) surface = BRep_Tool::Surface(TopoDS::Face(fmap(surfi)));
+-
+-      gp_Pnt x = surface->Value (u,v);
+-
+-      if (p.SquareDistance(x) <= sqr(PROJECTION_TOLERANCE)) return true;
+-
+-      gp_Vec du, dv;
+-
+-      surface->D1(u,v,x,du,dv);
+-
+-      int count = 0;
+-
+-      gp_Pnt xold;
+-      gp_Vec n;
+-      double det, lambda, mu;
+-
+-      do {
+-         count++;
+-
+-         n = du^dv;
+-
+-         det = Det3 (n.X(), du.X(), dv.X(),
+-            n.Y(), du.Y(), dv.Y(),
+-            n.Z(), du.Z(), dv.Z());
+-
+-         if (det < 1e-15) return false;
+-
+-         lambda = Det3 (n.X(), p.X()-x.X(), dv.X(),
+-            n.Y(), p.Y()-x.Y(), dv.Y(),
+-            n.Z(), p.Z()-x.Z(), dv.Z())/det;
+-
+-         mu     = Det3 (n.X(), du.X(), p.X()-x.X(),
+-            n.Y(), du.Y(), p.Y()-x.Y(),
+-            n.Z(), du.Z(), p.Z()-x.Z())/det;
+-
+-         u += lambda;
+-         v += mu;
+-
+-         xold = x;
+-         surface->D1(u,v,x,du,dv);
+-
+-      } while (xold.SquareDistance(x) > sqr(PROJECTION_TOLERANCE) && count < 50);
+-
+-      //    (*testout) << "FastProject count: " << count << endl;
+-
+-      if (count == 50) return false;
+-
+-      ap = Point<3> (x.X(), x.Y(), x.Z());
++      // -- Optimization: use cached projector and classifier
++      // Handle(Geom_Surface) surface = BRep_Tool::Surface(TopoDS::Face(fmap(surfi)));
++      // 
++      // gp_Pnt x = surface->Value (u,v);
++      // 
++      // if (p.SquareDistance(x) <= sqr(PROJECTION_TOLERANCE)) return true;
++      // 
++      // gp_Vec du, dv;
++      // 
++      // surface->D1(u,v,x,du,dv);
++      // 
++      // int count = 0;
++      // 
++      // gp_Pnt xold;
++      // gp_Vec n;
++      // double det, lambda, mu;
++      // 
++      // do {
++      //    count++;
++      // 
++      //    n = du^dv;
++      // 
++      //    det = Det3 (n.X(), du.X(), dv.X(),
++      //       n.Y(), du.Y(), dv.Y(),
++      //       n.Z(), du.Z(), dv.Z());
++      // 
++      //    if (det < 1e-15) return false;
++      // 
++      //    lambda = Det3 (n.X(), p.X()-x.X(), dv.X(),
++      //       n.Y(), p.Y()-x.Y(), dv.Y(),
++      //       n.Z(), p.Z()-x.Z(), dv.Z())/det;
++      // 
++      //    mu     = Det3 (n.X(), du.X(), p.X()-x.X(),
++      //       n.Y(), du.Y(), p.Y()-x.Y(),
++      //       n.Z(), du.Z(), p.Z()-x.Z())/det;
++      // 
++      //    u += lambda;
++      //    v += mu;
++      // 
++      //    xold = x;
++      //    surface->D1(u,v,x,du,dv);
++      // 
++      // } while (xold.SquareDistance(x) > sqr(PROJECTION_TOLERANCE) && count < 50);
++      // 
++      // //    (*testout) << "FastProject count: " << count << endl;
++      // 
++      // if (count == 50) return false;
++      // 
++      // ap = Point<3> (x.X(), x.Y(), x.Z());
++      Handle(ShapeAnalysis_Surface) proj;
++      BRepTopAdaptor_FClass2d *cls;
++      GetFaceTools(surfi, proj, cls);
++    
++      gp_Pnt2d p2d = proj->NextValueOfUV(gp_Pnt2d(u,v), p, Precision::Confusion());
++      if (cls->Perform(p2d) == TopAbs_OUT)
++      {
++        //cout << "Projection fails" << endl;
++        return false;
++      }
++    
++      p = proj->Value(p2d);
++      p2d.Coord(u, v);
++      ap = Point<3> (p.X(), p.Y(), p.Z());
+ 
+       return true;
+    }
+@@ -1038,9 +1095,9 @@
+    {
+       cout << "writing stl..."; cout.flush();
+       StlAPI_Writer writer;
+-      writer.RelativeMode() = Standard_False;
++      // writer.RelativeMode() = Standard_False;
+ 
+-      writer.SetDeflection(0.02);
++      // writer.SetDeflection(0.02);
+       writer.Write(shape,filename);
+ 
+       cout << "done" << endl;
+diff -Naur netgen-4.9.13_orig/libsrc/occ/occgeom.hpp netgen-4.9.13_new/libsrc/occ/occgeom.hpp
+--- netgen-4.9.13_orig/libsrc/occ/occgeom.hpp	2010-01-14 19:56:19.000000000 +0300
++++ netgen-4.9.13_new/libsrc/occ/occgeom.hpp	2014-07-22 13:09:03.000000000 +0400
+@@ -15,8 +15,8 @@
+ #include "Geom_Curve.hxx"
+ #include "Geom2d_Curve.hxx"
+ #include "Geom_Surface.hxx"
+-#include "GeomAPI_ProjectPointOnSurf.hxx"
+-#include "GeomAPI_ProjectPointOnCurve.hxx"
++// #include "GeomAPI_ProjectPointOnSurf.hxx"
++// #include "GeomAPI_ProjectPointOnCurve.hxx"
+ #include "BRepTools.hxx"
+ #include "TopExp.hxx"
+ #include "BRepBuilderAPI_MakeVertex.hxx"
+@@ -42,8 +42,8 @@
+ #include "Geom_Curve.hxx"
+ #include "Geom2d_Curve.hxx"
+ #include "Geom_Surface.hxx"
+-#include "GeomAPI_ProjectPointOnSurf.hxx"
+-#include "GeomAPI_ProjectPointOnCurve.hxx"
++// #include "GeomAPI_ProjectPointOnSurf.hxx"
++// #include "GeomAPI_ProjectPointOnCurve.hxx"
+ #include "TopoDS_Wire.hxx"
+ #include "BRepTools_WireExplorer.hxx"
+ #include "BRepTools.hxx"
+@@ -68,18 +68,26 @@
+ #include "IGESToBRep_Reader.hxx"
+ #include "Interface_Static.hxx"
+ #include "GeomAPI_ExtremaCurveCurve.hxx"
+-#include "Standard_ErrorHandler.hxx"
++//#include "Standard_ErrorHandler.hxx"
+ #include "Standard_Failure.hxx"
+ #include "ShapeUpgrade_ShellSewing.hxx"
+ #include "ShapeFix_Shape.hxx"
+ #include "ShapeFix_Wireframe.hxx"
++#include <Standard_Version.hxx>
++#if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) <= 0x060702
++// porting to OCCT6.7.3
+ #include "BRepMesh.hxx"
++#endif
+ #include "BRepMesh_IncrementalMesh.hxx"
+ #include "BRepBndLib.hxx"
+ #include "Bnd_Box.hxx"
+ #include "ShapeAnalysis.hxx"
+ #include "ShapeBuild_ReShape.hxx"
+ 
++// -- Optimization: to use cached projector and classifier
++#include <NCollection_DataMap.hxx>
++class Handle_ShapeAnalysis_Surface;
++class BRepTopAdaptor_FClass2d;
+ 
+ // Philippose - 29/01/2009
+ // OpenCascade XDE Support
+@@ -190,6 +198,9 @@
+    class OCCGeometry : public NetgenGeometry
+    {
+       Point<3> center;
++      // -- Optimization: to use cached projector and classifier
++      mutable NCollection_DataMap<int,Handle_ShapeAnalysis_Surface> fprjmap;
++      mutable NCollection_DataMap<int,BRepTopAdaptor_FClass2d*> fclsmap;
+ 
+    public:
+       TopoDS_Shape shape;
+@@ -241,6 +252,8 @@
+          vmap.Clear();
+       }
+ 
++      ~OCCGeometry();      // -- to free cached projector and classifier
++
+       void BuildFMap();
+ 
+       Box<3> GetBoundingBox()
+@@ -260,9 +273,14 @@
+       Point<3> Center()
+       {  return center;}
+ 
+-      void Project (int surfi, Point<3> & p) const;
++      // void Project (int surfi, Point<3> & p) const; -- optimization
++      bool Project (int surfi, Point<3> & p, double& u, double& v) const;
+       bool FastProject (int surfi, Point<3> & ap, double& u, double& v) const;
+ 
++      // -- Optimization: to use cached projector and classifier
++      void GetFaceTools(int surfi, Handle(ShapeAnalysis_Surface)& proj,
++                        BRepTopAdaptor_FClass2d*& cls) const;
++
+       OCCSurface GetSurface (int surfi)
+       {
+          cout << "OCCGeometry::GetSurface using PLANESPACE" << endl;
+diff -Naur netgen-4.9.13_orig/libsrc/occ/occmeshsurf.cpp netgen-4.9.13_new/libsrc/occ/occmeshsurf.cpp
+--- netgen-4.9.13_orig/libsrc/occ/occmeshsurf.cpp	2009-08-24 06:32:47.000000000 +0400
++++ netgen-4.9.13_new/libsrc/occ/occmeshsurf.cpp	2014-07-22 13:01:28.000000000 +0400
+@@ -6,6 +6,7 @@
+ #include <meshing.hpp>
+ #include <GeomLProp_SLProps.hxx>
+ #include <ShapeAnalysis_Surface.hxx>
++#include <GeomAPI_ProjectPointOnCurve.hxx> // -- moved here from occgeom.hpp
+ 
+ 
+ namespace netgen
+@@ -434,23 +435,33 @@
+ 
+   void MeshOptimize2dOCCSurfaces :: ProjectPoint (INDEX surfind, Point<3> & p) const
+   {
+-    geometry.Project (surfind, p);
++    // geometry.Project (surfind, p); -- signature of Project() changed for optimization
++    double u, v;
++    geometry.Project (surfind, p, u, v);
+   }
+ 
+ 
+   int MeshOptimize2dOCCSurfaces :: ProjectPointGI (INDEX surfind, Point<3> & p, PointGeomInfo & gi) const
+   {
+-    double u = gi.u;
+-    double v = gi.v;
++    //double u = gi.u;
++    //double v = gi.v;
+ 
+     Point<3> hp = p;
+-    if (geometry.FastProject (surfind, hp, u, v))
+-      {
+-	p = hp;
+-	return 1;
+-      }
+-    ProjectPoint (surfind, p); 
+-    return CalcPointGeomInfo (surfind, gi, p); 
++    // -- u and v are computed by FastProject() and Project(), no need to call CalcPointGeomInfo()
++    // if (geometry.FastProject (surfind, hp, u, v))
++    //   {
++    //    p = hp;
++    //    return 1;
++    //   }
++    // ProjectPoint (surfind, p); 
++    // return CalcPointGeomInfo (surfind, gi, p); 
++    bool ok;
++    if (gi.trignum > 0)
++      ok = geometry.FastProject (surfind, hp, gi.u, gi.v);
++    else
++      ok = geometry.Project (surfind, hp, gi.u, gi.v);
++    p = hp;
++    return ok;
+   }
+ 
+ 
+@@ -680,7 +691,8 @@
+ 	if (!geometry.FastProject (surfi, hnewp, u, v))
+ 	  {
+ 	  //  cout << "Fast projection to surface fails! Using OCC projection" << endl;
+-	    geometry.Project (surfi, hnewp);
++	    // geometry.Project (surfi, hnewp); -- Project() changed for optimization
++	    geometry.Project (surfi, hnewp, u, v);
+ 	  }
+ 
+ 	newgi.trignum = 1;
+@@ -689,7 +701,7 @@
+       }
+   
+     newp = hnewp;
+-  }
++  }//; -- to compile with -Wall -pedantic
+ 
+ 
+   void OCCRefinementSurfaces :: 
+@@ -708,14 +720,18 @@
+     hnewp = Point<3> (pnt.X(), pnt.Y(), pnt.Z());
+     newp = hnewp;
+     newgi = ap1;
+-  };
++  }
+ 
+ 
+   void OCCRefinementSurfaces :: ProjectToSurface (Point<3> & p, int surfi)
+   {
+     if (surfi > 0)
+-      geometry.Project (surfi, p);
+-  };
++      // geometry.Project (surfi, p); -- Project() changed for optimization
++    {
++      double u, v;
++      geometry.Project (surfi, p, u, v);
++    }
++  }//; -- to compile with -Wall -pedantic
+ 
+   void OCCRefinementSurfaces :: ProjectToSurface (Point<3> & p, int surfi, PointGeomInfo & gi)
+   {
+@@ -723,9 +739,10 @@
+       if (!geometry.FastProject (surfi, p, gi.u, gi.v))
+ 	{
+ 	  cout << "Fast projection to surface fails! Using OCC projection" << endl;
+-	  geometry.Project (surfi, p);
++          double u, v;
++	  geometry.Project (surfi, p, u, v);
+ 	}
+-  };
++  }
+ 
+ 
+ 
+diff -Naur netgen-4.9.13_orig/libsrc/occ/Partition_Inter3d.cxx netgen-4.9.13_new/libsrc/occ/Partition_Inter3d.cxx
+--- netgen-4.9.13_orig/libsrc/occ/Partition_Inter3d.cxx	2009-08-24 06:12:24.000000000 +0400
++++ netgen-4.9.13_new/libsrc/occ/Partition_Inter3d.cxx	2014-07-22 13:01:28.000000000 +0400
+@@ -86,6 +86,9 @@
+ #include <TopOpeBRepTool_OutCurveType.hxx>
+ #include <TopOpeBRep_DSFiller.hxx>
+ #include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
++
++#include <Standard_Version.hxx>
++
+ #include <stdio.h>
+ 
+ //=======================================================================
+@@ -243,7 +246,12 @@
+       Standard_Integer i, nbExt = anExtPS.NbExt();
+       Extrema_POnSurf aPOnSurf;
+       for (i = 1; i <= nbExt; ++i )
++#if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) > 0x060400
++// porting to OCCT6.5.1
++        if (anExtPS.SquareDistance( i ) <= TolE * TolE) {
++#else
+         if (anExtPS.Value( i ) <= TolE) {
++#endif
+           aPOnSurf = anExtPS.Point( i );
+           break;
+         }
+diff -Naur netgen-4.9.13_orig/libsrc/occ/Partition_Loop2d.cxx netgen-4.9.13_new/libsrc/occ/Partition_Loop2d.cxx
+--- netgen-4.9.13_orig/libsrc/occ/Partition_Loop2d.cxx	2009-08-24 06:12:24.000000000 +0400
++++ netgen-4.9.13_new/libsrc/occ/Partition_Loop2d.cxx	2014-07-22 13:01:28.000000000 +0400
+@@ -22,7 +22,6 @@
+ #include <BRepAdaptor_Surface.hxx>
+ #include <BRepAlgo_AsDes.hxx>
+ #include <BRepAlgo_FaceRestrictor.hxx>
+-#include <BRepOffset_DataMapOfShapeReal.hxx>
+ #include <BRepTopAdaptor_FClass2d.hxx>
+ #include <BRep_Builder.hxx>
+ #include <BRep_Tool.hxx>
+@@ -51,6 +50,15 @@
+ #include <gp_Pnt.hxx>
+ #include <gp_Pnt2d.hxx>
+ 
++#include <Standard_Version.hxx>
++
++#if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) > 0x060400
++// porting to OCCT6.5.1
++#include <TopTools_DataMapOfShapeReal.hxx>
++#else
++#include <BRepOffset_DataMapOfShapeReal.hxx>
++#endif
++
+ //=======================================================================
+ //function : Partition_Loop2d
+ //purpose  :
+@@ -209,7 +217,7 @@
+     Cc->D1(uc, PC, CTg1);
+     if (!isForward) CTg1.Reverse();
+ 
+-    Standard_Real anglemin = 3 * PI, tolAng = 1.e-8;
++    Standard_Real anglemin = 3 * M_PI, tolAng = 1.e-8;
+ 
+     // select an edge whose first derivative is most left of CTg1
+     // ie an angle between Tg1 and CTg1 is least
+@@ -233,7 +241,7 @@
+       // -PI < angle < PI
+       Standard_Real angle = Tg1.Angle(CTg1);
+ 
+-      if (PI - Abs(angle) <= tolAng)
++      if (M_PI - Abs(angle) <= tolAng)
+       {
+         // an angle is too close to PI; assure that an angle sign really
+         // reflects an edge position: +PI - an edge is worst,
+@@ -519,7 +527,12 @@
+     DC.Initialize( DegEdge, F );
+ 
+   // avoid intersecting twice the same edge
++#if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) > 0x060400
++// porting to OCCT6.5.1
++  TopTools_DataMapOfShapeReal EUMap ( EdgesList.Extent() );
++#else
+   BRepOffset_DataMapOfShapeReal EUMap ( EdgesList.Extent() );
++#endif
+ 
+   Standard_Real U, f, l;
+   BRep_Tool::Range (DegEdge, f, l);
+diff -Naur netgen-4.9.13_orig/libsrc/occ/Partition_Loop.cxx netgen-4.9.13_new/libsrc/occ/Partition_Loop.cxx
+--- netgen-4.9.13_orig/libsrc/occ/Partition_Loop.cxx	2009-08-24 06:12:24.000000000 +0400
++++ netgen-4.9.13_new/libsrc/occ/Partition_Loop.cxx	2014-07-22 13:01:28.000000000 +0400
+@@ -178,7 +178,7 @@
+       }
+     }
+ 
+-    Standard_Real anglemax = - PI;
++    Standard_Real anglemax = - M_PI;
+     TopoDS_Edge   SelectedEdge;	
+     for ( itl.Initialize(LE); itl.More(); itl.Next()) {
+       const TopoDS_Edge& E = TopoDS::Edge(itl.Value());
+diff -Naur netgen-4.9.13_orig/libsrc/occ/Partition_Spliter.cxx netgen-4.9.13_new/libsrc/occ/Partition_Spliter.cxx
+--- netgen-4.9.13_orig/libsrc/occ/Partition_Spliter.cxx	2009-08-24 06:12:24.000000000 +0400
++++ netgen-4.9.13_new/libsrc/occ/Partition_Spliter.cxx	2014-07-22 13:01:28.000000000 +0400
+@@ -79,6 +79,8 @@
+ #include <GeomAdaptor_Curve.hxx>
+ #include <TopOpeBRepTool_CurveTool.hxx>
+ 
++#include <Standard_Version.hxx>
++
+ #ifdef DEB
+ //# define PART_PERF
+ #endif
+@@ -1169,7 +1171,12 @@
+           for (; j<=nbj && ok; ++j) {
+             if (Extrema.IsMin(j)) {
+ 	      hasMin = Standard_True;
++#if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) > 0x060400
++// porting to OCCT6.5.1
++              ok = Extrema.SquareDistance(j) <= tol * tol;
++#else
+               ok = Extrema.Value(j) <= tol;
++#endif
+ 	    }
+           }
+         }
+diff -Naur netgen-4.9.13_orig/libsrc/occ/utilities.h netgen-4.9.13_new/libsrc/occ/utilities.h
+--- netgen-4.9.13_orig/libsrc/occ/utilities.h	2009-08-24 06:12:24.000000000 +0400
++++ netgen-4.9.13_new/libsrc/occ/utilities.h	2014-07-22 13:01:28.000000000 +0400
+@@ -33,6 +33,7 @@
+ 
+ #include <string>
+ #include <iostream>
++#include <iomanip>
+ #include <cstdlib>
+ // #include "SALOME_Log.hxx"
+ 
+diff -Naur netgen-4.9.13_orig/libsrc/stlgeom/stlgeommesh.cpp netgen-4.9.13_new/libsrc/stlgeom/stlgeommesh.cpp
+--- netgen-4.9.13_orig/libsrc/stlgeom/stlgeommesh.cpp	2009-08-10 15:40:51.000000000 +0400
++++ netgen-4.9.13_new/libsrc/stlgeom/stlgeommesh.cpp	2014-07-22 13:01:28.000000000 +0400
+@@ -1435,7 +1435,8 @@
+ 
+ 	  if (!optstring || strlen(optstring) == 0)
+ 	    {
+-	      mparam.optimize2d = "smcm";
++	      //mparam.optimize2d = (char*)"smcm";
++              mparam.optimize2d = (char*)"smcm";
+ 	    }
+ 	  else
+ 	    {
+@@ -1451,7 +1452,8 @@
+ 				 mparam.grading);
+ 	      mesh -> LoadLocalMeshSize (mparam.meshsizefilename);	      
+ 	      mesh -> CalcLocalHFromSurfaceCurvature (stlparam.resthsurfmeshcurvfac);
+-	      mparam.optimize2d = "cmsmSm";
++	      //mparam.optimize2d = (char*)"cmsmSm";
++              mparam.optimize2d = (char*)"cmsmSm";
+ 	      STLSurfaceOptimization (*stlgeometry, *mesh, mparam);
+ #ifdef STAT_STREAM
+ 	      (*statout) << GetTime() << " & ";
+@@ -1557,7 +1559,8 @@
+ 
+ 	  if (!optstring || strlen(optstring) == 0)
+ 	    {
+-	      mparam.optimize3d = "cmdmstm";
++              //mparam.optimize3d = "cmdmstm";
++	      mparam.optimize3d = (char*)"cmdmstm";
+ 	    }
+ 	  else
+ 	    {
+diff -Naur netgen-4.9.13_orig/ng/Makefile.in netgen-4.9.13_new/ng/Makefile.in
+--- netgen-4.9.13_orig/ng/Makefile.in	2010-05-21 01:29:28.000000000 +0200
++++ netgen-4.9.13_new/ng/Makefile.in	2016-05-26 14:39:47.128141997 +0200
+@@ -287,7 +287,7 @@
+ 	$(top_builddir)/libsrc/gprim/libgprim.la \
+ 	$(top_builddir)/libsrc/linalg/libla.la \
+ 	$(top_builddir)/libsrc/general/libgen.la \
+-	$(OCCLIBS) -L$(TK_BIN_DIR)/Togl1.7 $(TOGLLIBDIR) -lTogl1.7 $(LIBGLU) $(TK_LIB_SPEC) $(TCL_LIB_SPEC) $(MPI_LIBS) $(FFMPEG_LIBS) $(JPEGLIB_LIBS) $(PKG_LIBS) 
++	$(OCCLIBS) -L$(TK_BIN_DIR)/Togl1.7 $(TOGLLIBDIR) -lTogl $(LIBGLU) $(TK_LIB_SPEC) $(TCL_LIB_SPEC) $(MPI_LIBS) $(FFMPEG_LIBS) $(JPEGLIB_LIBS) $(PKG_LIBS) 
+ 
+ 
+ # add for static linkage of ngsolve:
+diff -Naur netgen-4.9.13_orig/nglib/nglib.h netgen-4.9.13_new/nglib/nglib.h
+--- netgen-4.9.13_orig/nglib/nglib.h	2010-05-18 15:20:25.000000000 +0400
++++ netgen-4.9.13_new/nglib/nglib.h	2014-07-22 13:01:28.000000000 +0400
+@@ -24,7 +24,7 @@
+ // Philippose - 14.02.2009
+ // Modifications for creating a DLL in Windows
+ #ifdef WIN32
+-   #ifdef NGLIB_EXPORTS || nglib_EXPORTS
++   #if defined NGLIB_EXPORTS || defined nglib_EXPORTS
+       #define DLL_HEADER   __declspec(dllexport)
+    #else
+       #define DLL_HEADER   __declspec(dllimport)

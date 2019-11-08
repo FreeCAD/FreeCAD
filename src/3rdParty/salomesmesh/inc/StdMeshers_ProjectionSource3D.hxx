@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -56,7 +56,8 @@ public:
   /*!
    * Sets a source <shape> to take a mesh pattern from
    */
-  void SetSource3DShape(const TopoDS_Shape& shape);
+  void SetSource3DShape(const TopoDS_Shape& shape)
+    noexcept(false);
 
   /*!
    * Returns the source shape
@@ -81,19 +82,20 @@ public:
   void SetVertexAssociation(const TopoDS_Shape& sourceVertex1,
                             const TopoDS_Shape& sourceVertex2,
                             const TopoDS_Shape& targetVertex1,
-                            const TopoDS_Shape& targetVertex2);
+                            const TopoDS_Shape& targetVertex2)
+    noexcept(false);
 
   /*!
    * Returns the <i>-th source vertex associated with the <i>-th target vertex.
    * Result may be nil if association not set.
    */
-  TopoDS_Vertex GetSourceVertex(int i) const;
+  TopoDS_Vertex GetSourceVertex(int i) const noexcept(false);
 
   /*!
    * Returns the <i>-th target vertex associated with the <i>-th source vertex.
    * Result may be nil if association not set.
    */
-  TopoDS_Vertex GetTargetVertex(int i) const;
+  TopoDS_Vertex GetTargetVertex(int i) const noexcept(false);
 
   /*!
    * \brief Test if vertex association defined

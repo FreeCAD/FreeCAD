@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -27,8 +27,6 @@
 #ifndef _SMESH_SMDS_HXX_
 #define _SMESH_SMDS_HXX_
 
-#include <vtkType.h>
-
 #ifdef WIN32
  #if defined SMDS_EXPORTS
   #define SMDS_EXPORT __declspec( dllexport )
@@ -37,12 +35,6 @@
  #endif
 #else
  #define SMDS_EXPORT
-#endif
-
-#ifdef VTK_HAS_MTIME_TYPE
-#define VTK_MTIME_TYPE vtkMTimeType
-#else
-#define VTK_MTIME_TYPE unsigned long
 #endif
 
 #endif

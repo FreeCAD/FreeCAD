@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -58,15 +58,17 @@ class SMDS_EXPORT SMDS_VolumeTool
 
   SMDS_VolumeTool ();
   ~SMDS_VolumeTool ();
-  SMDS_VolumeTool (const SMDS_MeshElement* theVolume,
-                   const bool              ignoreCentralNodes=true);
+  SMDS_VolumeTool( const SMDS_MeshElement* theVolume,
+                   const bool              ignoreCentralNodes = true);
 
-  bool Set (const SMDS_MeshElement* theVolume,
-            const bool              ignoreCentralNodes=true);
+  bool Set( const SMDS_MeshElement*                  theVolume,
+            const bool                               ignoreCentralNodes = true,
+            const std::vector<const SMDS_MeshNode*>* nodes = 0);
   // Set volume.
   // Return false if theVolume is not of type SMDSAbs_Volume.
   // ignoreCentralNodes makes skip nodes at face centers when returning
-  // nodes of faces of SMDSEntity_TriQuad_Hexa
+  // nodes of faces of SMDSEntity_TriQuad_Hexa.
+  // alternative nodes can be provided
 
   const SMDS_MeshVolume* Element() const;
   // return element
@@ -74,7 +76,7 @@ class SMDS_EXPORT SMDS_VolumeTool
   int ID() const;
   // return element ID
 
-  bool IsPoly() const { return myPolyedre != 0; }
+  bool IsPoly() const { return myPolyedre; }
 
   // -----------------------
   // general info
@@ -91,10 +93,10 @@ class SMDS_EXPORT SMDS_VolumeTool
   // top and bottom faces are reversed.
   // Result of IsForward() and methods returning nodes change
 
-  const SMDS_MeshNode** GetNodes() { return &myVolumeNodes[0]; }
+  const SMDS_MeshNode** GetNodes() const { return (const SMDS_MeshNode**) &myVolumeNodes[0]; }
   // Return array of volume nodes
 
-  int NbNodes() { return myVolumeNodes.size(); }
+  int NbNodes() const { return myVolumeNodes.size(); }
   // Return array of volume nodes
 
   double GetSize() const;

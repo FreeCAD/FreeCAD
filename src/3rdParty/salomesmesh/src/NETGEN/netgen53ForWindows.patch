@@ -1,0 +1,1155 @@
+diff -Naur netgen-5.3.1_SRC_orig/CMakeLists.txt netgen-5.3.1_SRC_modif/CMakeLists.txt
+--- netgen-5.3.1_SRC_orig/CMakeLists.txt	1970-01-01 03:00:00.000000000 +0300
++++ netgen-5.3.1_SRC_modif/CMakeLists.txt	2016-11-25 11:04:22.150776900 +0300
+@@ -0,0 +1,75 @@
++# Copyright (C) 2016 OPEN CASCADE
++#
++# This library is free software; you can redistribute it and/or
++# modify it under the terms of the GNU Lesser General Public
++# License as published by the Free Software Foundation; either
++# version 2.1 of the License, or (at your option) any later version.
++#
++# This library is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# Lesser General Public License for more details.
++#
++# You should have received a copy of the GNU Lesser General Public
++# License along with this library; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++#
++# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
++#
++CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8 FATAL_ERROR)
++INCLUDE(CMakeDependentOption)
++
++PROJECT(netgen C CXX)
++
++# Ensure a proper linker behavior:
++CMAKE_POLICY(SET CMP0003 NEW)
++
++# Versioning
++# ===========
++# Project name, upper case
++STRING(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UC)
++
++SET(${PROJECT_NAME_UC}_MAJOR_VERSION 5)
++SET(${PROJECT_NAME_UC}_MINOR_VERSION 3)
++SET(${PROJECT_NAME_UC}_PATCH_VERSION 1)
++SET(${PROJECT_NAME_UC}_VERSION
++  ${${PROJECT_NAME_UC}_MAJOR_VERSION}.${${PROJECT_NAME_UC}_MINOR_VERSION}.${${PROJECT_NAME_UC}_PATCH_VERSION})
++
++# Common CMake macros
++# ===================
++LIST(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
++# Detect platform
++INCLUDE(FindPLATFORM) 
++# Detect OCCT
++INCLUDE(FindCAS)
++
++# Detect ZLIB on Windows
++IF(WIN32)
++  SET(ZLIB_ROOT_DIR $ENV{ZLIB_ROOT_DIR})
++  IF(EXISTS ${ZLIB_ROOT_DIR})
++    SET(ZLIB_ROOT ${ZLIB_ROOT_DIR})
++    INCLUDE(FindZLIB)
++    IF (NOT ${ZLIB_FOUND})
++      MESSAGE(FATAL_ERROR "We absolutely need the zlib library, please check zlib installation !")
++    ENDIF()
++  ELSE()
++    MESSAGE(FATAL_ERROR "We absolutely need the zlib library, please define ZLIB_ROOT_DIR !")
++  ENDIF()
++ENDIF()
++
++
++# Common definitions
++# ==================
++ADD_DEFINITIONS(-DNO_PARALLEL_THREADS)
++ADD_DEFINITIONS(-DOCCGEOMETRY)
++
++# Target directories
++SET(NETGEN_INSTALL_BINS "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Install path: netgen binaries")
++SET(NETGEN_INSTALL_LIBS "${CMAKE_INSTALL_PREFIX}/lib" CACHE PATH "Install path: netgen libs")
++SET(NETGEN_INSTALL_HEADERS "${CMAKE_INSTALL_PREFIX}/include" CACHE PATH "Install path: netgen headers")
++SET(NETGEN_INSTALL_CMAKE "${CMAKE_INSTALL_PREFIX}/cmake" CACHE PATH "Install path: netgen cmake files")
++
++# Sub-directories
++ADD_SUBDIRECTORY(nglib)
++ADD_SUBDIRECTORY(cmake)
++
+diff -Naur netgen-5.3.1_SRC_orig/cmake/CMakeLists.txt netgen-5.3.1_SRC_modif/cmake/CMakeLists.txt
+--- netgen-5.3.1_SRC_orig/cmake/CMakeLists.txt	1970-01-01 03:00:00.000000000 +0300
++++ netgen-5.3.1_SRC_modif/cmake/CMakeLists.txt	2016-11-25 11:06:44.049656800 +0300
+@@ -0,0 +1,22 @@
++# Copyright (C) 2016 OPEN CASCADE
++#
++# This library is free software; you can redistribute it and/or
++# modify it under the terms of the GNU Lesser General Public
++# License as published by the Free Software Foundation; either
++# version 2.1 of the License, or (at your option) any later version.
++#
++# This library is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# Lesser General Public License for more details.
++#
++# You should have received a copy of the GNU Lesser General Public
++# License along with this library; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++#
++# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
++#
++
++IF(WIN32)
++ INSTALL(FILES FindZLIB.cmake DESTINATION ${NETGEN_INSTALL_CMAKE})
++ENDIF()
+\ В конце файла нет новой строки
+diff -Naur netgen-5.3.1_SRC_orig/cmake/FindCAS.cmake netgen-5.3.1_SRC_modif/cmake/FindCAS.cmake
+--- netgen-5.3.1_SRC_orig/cmake/FindCAS.cmake	1970-01-01 03:00:00.000000000 +0300
++++ netgen-5.3.1_SRC_modif/cmake/FindCAS.cmake	2016-11-23 16:14:01.050542400 +0300
+@@ -0,0 +1,152 @@
++#  Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
++#
++#  This library is free software; you can redistribute it and/or
++#  modify it under the terms of the GNU Lesser General Public
++#  License as published by the Free Software Foundation; either
++#  version 2.1 of the License.
++#
++#  This library is distributed in the hope that it will be useful,
++#  but WITHOUT ANY WARRANTY; without even the implied warranty of
++#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++#  Lesser General Public License for more details.
++#
++#  You should have received a copy of the GNU Lesser General Public
++#  License along with this library; if not, write to the Free Software
++#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++#
++#  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
++#
++
++SET(CASROOT $ENV{CASROOT})
++ADD_DEFINITIONS(-DLIN -DLINTEL -DCSFDB)
++ADD_DEFINITIONS(-DNo_exception)
++ADD_DEFINITIONS(-DHAVE_LIMITS_H)
++
++IF(CMAKE_SIZEOF_VOID_P STREQUAL 8)
++  ADD_DEFINITIONS(-D_OCC64)
++ENDIF(CMAKE_SIZEOF_VOID_P STREQUAL 8)
++
++IF(NOT WINDOWS)
++  FIND_LIBRARY(Xmu Xmu)
++  IF(Xmu)
++    SET(CAS_LDPATH ${Xmu})
++  ENDIF(Xmu)
++ENDIF(NOT WINDOWS)
++
++IF(WINDOWS)
++  IF(CMAKE_BUILD_TYPE STREQUAL Debug)
++    SET(CASROOT_LIBDIR ${CASROOT}/win32/libd ${CASROOT}/win64/vc10/lib)
++  ELSE(CMAKE_BUILD_TYPE STREQUAL Release)
++    SET(CASROOT_LIBDIR ${CASROOT}/win32/lib ${CASROOT}/win64/vc10/lib)
++  ENDIF(CMAKE_BUILD_TYPE STREQUAL Debug)
++ELSE(WINDOWS)
++  SET(CASROOT_LIBDIR ${CASROOT}/lib)
++ENDIF(WINDOWS)
++
++SET(_CAS_VERSION_FILE_NAME Standard_Version.hxx)
++
++# Include directories:
++FIND_PATH(CAS_INCLUDE_DIRS ${_CAS_VERSION_FILE_NAME} PATHS ${CASROOT} PATH_SUFFIXES include/opencascade)
++IF(CAS_INCLUDE_DIRS)
++ELSE()
++  FIND_PATH(CAS_INCLUDE_DIRS ${_CAS_VERSION_FILE_NAME} PATHS ${CASROOT} PATH_SUFFIXES include inc)
++ENDIF()
++
++
++FIND_LIBRARY(BinLPlugin BinLPlugin PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(BinPlugin BinPlugin PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(BinTObjPlugin BinTObjPlugin PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(BinXCAFPlugin BinXCAFPlugin PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(FWOSPlugin FWOSPlugin PATHS ${CASROOT_LIBDIR})
++
++FIND_LIBRARY(PTKernel PTKernel PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(StdLPlugin StdLPlugin PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(StdPlugin StdPlugin PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKAdvTools TKAdvTools PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKBin TKBin PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKBinL TKBinL PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKBinTObj TKBinTObj PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKBinXCAF TKBinXCAF PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKBO TKBO PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKBool TKBool PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKBRep TKBRep PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKCAF TKCAF PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKCDF TKCDF PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKernel TKernel PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKFeat TKFeat PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKFillet TKFillet PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKG2d TKG2d PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKG3d TKG3d PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKGeomAlgo TKGeomAlgo PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKGeomBase TKGeomBase PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKHLR TKHLR PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKIGES TKIGES PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKLCAF TKLCAF PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKMath TKMath PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKMesh TKMesh PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKMeshVS TKMeshVS PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKNIS TKNIS PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKOffset TKOffset PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKOpenGl TKOpenGl PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKPCAF TKPCAF PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKPLCAF TKPLCAF PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKPrim TKPrim PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKPShape TKPShape PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKService TKService PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKShapeSchema TKShapeSchema PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKShHealing TKShHealing PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKStdLSchema TKStdLSchema PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKStdSchema TKStdSchema PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKSTEP TKSTEP PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKSTEP209 TKSTEP209 PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKSTEPAttr TKSTEPAttr PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKSTEPBase TKSTEPBase PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKSTL TKSTL PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKTObj TKTObj PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKTopAlgo TKTopAlgo PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKV2d TKV2d PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKV3d TKV3d PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKVRML TKVRML PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKXCAF TKXCAF PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKXCAFSchema TKXCAFSchema PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKXDEIGES TKXDEIGES PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKXDESTEP TKXDESTEP PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKXMesh TKXMesh PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKXml TKXml PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKXmlL TKXmlL PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKXmlTObj TKXmlTObj PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKXmlXCAF TKXmlXCAF PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(TKXSBase TKXSBase PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(XCAFPlugin XCAFPlugin PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(XmlLPlugin XmlLPlugin PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(XmlPlugin XmlPlugin PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(XmlTObjPlugin XmlTObjPlugin PATHS ${CASROOT_LIBDIR})
++FIND_LIBRARY(XmlXCAFPlugin XmlXCAFPlugin PATHS ${CASROOT_LIBDIR})
++
++SET(CAS_KERNEL ${TKernel} ${TKMath})
++SET(CAS_OCAF ${TKernel} ${TKMath} ${TKCDF} ${TKLCAF})
++SET(CAS_VIEWER ${TKService} ${TKV3d} ${TKG3d} ${TKGeomBase} ${TKBRep})
++SET(CAS_OCAFVIS ${TKCAF} ${TKBRep} ${TKG2d})
++SET(CAS_MODELER ${TKG3d} ${TKGeomBase} ${TKGeomAlgo} ${TKBRep} ${TKTopAlgo} ${TKG2d})
++
++SET(TKV3d_EA ${TKernel} ${TKMath} ${TKV3d})
++SET(TKBool_EA ${TKernel} ${TKMath} ${TKBRep} ${TKG2d} ${TKG3d} ${TKGeomBase} ${TKGeomAlgo} ${TKTopAlgo} ${TKBool})
++SET(TKBRep_EA ${TKernel} ${TKMath} ${TKBRep})
++SET(TKIGES_EA ${TKernel} ${TKMath} ${TKXSBase} ${TKBRep} ${TKIGES})
++SET(TKSTEP_EA ${TKernel} ${TKMath} ${TKXSBase} ${TKBRep} ${TKSTEP})
++SET(TKSTL_EA ${TKernel} ${TKMath} ${TKSTL})
++SET(TKCAF_EA ${TKPrim} ${TKCAF})
++
++SET(TKV3d ${TKV3d_EA})
++SET(TKBool ${TKBool_EA})
++SET(TKBRep ${TKBRep_EA})
++SET(TKIGES ${TKIGES_EA})
++SET(TKSTEP ${TKSTEP_EA})
++SET(TKSTL ${TKSTL_EA})
++SET(TKCAF ${TKCAF_EA})
++
++#LIBRARIES
++SET(OCCLIBS ${CAS_LDPATH})
++SET(OCCLIBS ${OCCLIBS} ${TKernel} ${TKGeomBase} ${TKMath} ${TKG2d} ${TKG3d} ${TKXSBase} ${TKOffset} ${TKFillet} ${TKShHealing})
++SET(OCCLIBS ${OCCLIBS} ${TKMesh} ${TKMeshVS} ${TKTopAlgo} ${TKGeomAlgo} ${TKBool} ${TKPrim} ${TKBO} ${TKIGES} ${TKBRep})
++SET(OCCLIBS ${OCCLIBS} ${TKSTEPBase} ${TKSTEP} ${TKSTL} ${TKSTEPAttr} ${TKSTEP209} ${TKXDESTEP} ${TKXDEIGES} ${TKXCAF} ${TKLCAF})
+\ В конце файла нет новой строки
+diff -Naur netgen-5.3.1_SRC_orig/cmake/FindPLATFORM.cmake netgen-5.3.1_SRC_modif/cmake/FindPLATFORM.cmake
+--- netgen-5.3.1_SRC_orig/cmake/FindPLATFORM.cmake	1970-01-01 03:00:00.000000000 +0300
++++ netgen-5.3.1_SRC_modif/cmake/FindPLATFORM.cmake	2016-11-22 19:05:57.195348500 +0300
+@@ -0,0 +1,96 @@
++#  Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
++#
++#  This library is free software; you can redistribute it and/or
++#  modify it under the terms of the GNU Lesser General Public
++#  License as published by the Free Software Foundation; either
++#  version 2.1 of the License.
++#
++#  This library is distributed in the hope that it will be useful,
++#  but WITHOUT ANY WARRANTY; without even the implied warranty of
++#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++#  Lesser General Public License for more details.
++#
++#  You should have received a copy of the GNU Lesser General Public
++#  License along with this library; if not, write to the Free Software
++#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++#
++#  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
++#
++
++MARK_AS_ADVANCED(ISSUE)
++FIND_FILE(ISSUE issue /etc)
++IF(ISSUE)
++  SET(WINDOWS 0)
++ELSE()
++  SET(WINDOWS 1)
++ENDIF(ISSUE)
++
++IF(WINDOWS)
++  SET(MACHINE WINDOWS)
++ELSE(WINDOWS)
++  SET(MACHINE PCLINUX)
++ENDIF(WINDOWS)
++
++SET(CMAKE_INSTALL_PREFIX_ENV $ENV{CMAKE_INSTALL_PREFIX})
++IF(CMAKE_INSTALL_PREFIX_ENV)
++  SET(CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX_ENV} CACHE PATH "installation prefix" FORCE)
++ENDIF(CMAKE_INSTALL_PREFIX_ENV)
++
++IF(NOT CMAKE_BUILD_TYPE)
++  SET(CMAKE_BUILD_TYPE $ENV{CMAKE_BUILD_TYPE})
++ENDIF(NOT CMAKE_BUILD_TYPE)
++
++IF(NOT CMAKE_BUILD_TYPE)
++  SET(CMAKE_BUILD_TYPE Release)
++ENDIF(NOT CMAKE_BUILD_TYPE)
++
++IF(WINDOWS)
++ELSE(WINDOWS)
++  SET(ADD_WERROR ON)
++  SET(NAMES ACCEPT_SALOME_WARNINGS ACCEPT_${MODULE}_WARNINGS I_AM_A_TROLL_I_DO_NOT_FIX_${MODULE}_WARNINGS)
++  FOREACH(name ${NAMES})
++    SET(VAL $ENV{${name}})
++    IF(X${VAL} STREQUAL X0)
++      SET(ADD_WERROR ON)
++    ENDIF(X${VAL} STREQUAL X0)
++    IF(X${VAL} STREQUAL X1)
++      SET(ADD_WERROR OFF)
++    ENDIF(X${VAL} STREQUAL X1)
++  ENDFOREACH(name ${NAMES})
++  IF(ADD_WERROR)
++    SET(CMAKE_C_FLAGS "-Werror")
++    SET(CMAKE_CXX_FLAGS "-Werror")
++  ENDIF(ADD_WERROR)
++ENDIF(WINDOWS)
++
++IF(CMAKE_BUILD_TYPE)
++  IF(WINDOWS)
++    MARK_AS_ADVANCED(CLEAR CMAKE_CONFIGURATION_TYPES)
++    SET(CMAKE_CONFIGURATION_TYPES ${CMAKE_BUILD_TYPE} CACHE STRING "compilation types" FORCE)
++  ELSE(WINDOWS)
++    IF(CMAKE_BUILD_TYPE STREQUAL Debug)
++      SET(CMAKE_C_FLAGS_DEBUG "-g")
++      SET(CMAKE_CXX_FLAGS_DEBUG "-g")
++    ENDIF(CMAKE_BUILD_TYPE STREQUAL Debug)
++    IF(CMAKE_BUILD_TYPE STREQUAL Release)
++      SET(CMAKE_C_FLAGS_RELEASE "-O1 -DNDEBUG")
++      SET(CMAKE_CXX_FLAGS_RELEASE "-O1 -DNDEBUG")
++    ENDIF(CMAKE_BUILD_TYPE STREQUAL Release)
++  ENDIF(WINDOWS)
++ENDIF(CMAKE_BUILD_TYPE)
++
++SET(PLATFORM_CPPFLAGS)
++SET(PLATFORM_LDFLAGS)
++SET(PLATFORM_LIBADD)
++IF(WINDOWS)
++  ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS)  # To disable windows warnings for strcpy, fopen, ...
++  ADD_DEFINITIONS(-D_SCL_SECURE_NO_WARNINGS)  # To disable windows warnings std::copy, std::transform, ...
++  ADD_DEFINITIONS(-DWNT)
++  ADD_DEFINITIONS(-DPPRO_NT) # For medfile
++  ADD_DEFINITIONS(-D_USE_MATH_DEFINES) # At least for MEDMEM
++  ADD_DEFINITIONS(-D_WIN32_WINNT=0x0500) # Windows 2000 or later API is required
++  SET(PLATFORM_LIBADD ${PLATFORM_LIBADD} Ws2_32.lib)
++  SET(PLATFORM_LIBADD ${PLATFORM_LIBADD} Userenv.lib) # At least for GEOM suit
++ELSE(WINDOWS)
++  SET(PLATFORM_LIBADD ${PLATFORM_LIBADD} -ldl)
++ENDIF(WINDOWS) 
+\ В конце файла нет новой строки
+diff -Naur netgen-5.3.1_SRC_orig/cmake/FindZLIB.cmake netgen-5.3.1_SRC_modif/cmake/FindZLIB.cmake
+--- netgen-5.3.1_SRC_orig/cmake/FindZLIB.cmake	1970-01-01 03:00:00.000000000 +0300
++++ netgen-5.3.1_SRC_modif/cmake/FindZLIB.cmake	2016-11-25 10:50:13.990626900 +0300
+@@ -0,0 +1,45 @@
++#  Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
++#
++#  This library is free software; you can redistribute it and/or
++#  modify it under the terms of the GNU Lesser General Public
++#  License as published by the Free Software Foundation; either
++#  version 2.1 of the License.
++#
++#  This library is distributed in the hope that it will be useful,
++#  but WITHOUT ANY WARRANTY; without even the implied warranty of
++#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++#  Lesser General Public License for more details.
++#
++#  You should have received a copy of the GNU Lesser General Public
++#  License along with this library; if not, write to the Free Software
++#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++#
++#  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
++#
++
++SET(_ZLIB_SDIRS)
++
++# Search in ZLIB_ROOT_DIR first
++IF(ZLIB_ROOT_DIR)
++  SET(_ZLIB_SEARCH_ROOT PATHS ${ZLIB_ROOT_DIR} NO_DEFAULT_PATH)
++  list(APPEND _ZLIB_SDIRS _ZLIB_SEARCH_ROOT)
++ENDIF()
++
++SET(ZLIB_NAMES z zlib zdll zlib1 zlibd zlibd1 zlib1d)
++
++# Try each search configuration.
++FOREACH(search ${_ZLIB_SDIRS})
++  FIND_PATH(ZLIB_INCLUDE_DIR NAMES zlib.h        ${${search}} PATH_SUFFIXES include)
++  FIND_LIBRARY(ZLIB_LIBRARY  NAMES ${ZLIB_NAMES} ${search} PATH_SUFFIXES lib)
++ENDFOREACH()
++
++MARK_AS_ADVANCED(ZLIB_LIBRARY ZLIB_INCLUDE_DIR)
++
++
++INCLUDE(FindPackageHandleStandardArgs)
++FIND_PACKAGE_HANDLE_STANDARD_ARGS(ZLIB REQUIRED_VARS ZLIB_LIBRARY ZLIB_INCLUDE_DIR)
++
++IF(ZLIB_FOUND)
++    SET(ZLIB_INCLUDE_DIRS ${ZLIB_INCLUDE_DIR})
++    SET(ZLIB_LIBRARIES ${ZLIB_LIBRARY})
++ENDIF()
+diff -Naur netgen-5.3.1_SRC_orig/libsrc/csg/specpoin.hpp netgen-5.3.1_SRC_modif/libsrc/csg/specpoin.hpp
+--- netgen-5.3.1_SRC_orig/libsrc/csg/specpoin.hpp	2014-08-29 12:54:06.000000000 +0300
++++ netgen-5.3.1_SRC_modif/libsrc/csg/specpoin.hpp	2016-11-25 16:14:55.370008500 +0300
+@@ -8,10 +8,12 @@
+ /* Date:   01. Okt. 95                                                    */
+ /**************************************************************************/
+ 
++#include <myadt.hpp>
++
+ namespace netgen
+ {
+ 
+-  extern DLL_HEADER MeshingParameters mparam;
++  DLL_HEADER extern MeshingParameters mparam;
+ 
+   /*
+ 
+diff -Naur netgen-5.3.1_SRC_orig/libsrc/general/template.hpp netgen-5.3.1_SRC_modif/libsrc/general/template.hpp
+--- netgen-5.3.1_SRC_orig/libsrc/general/template.hpp	2014-08-29 12:54:06.000000000 +0300
++++ netgen-5.3.1_SRC_modif/libsrc/general/template.hpp	2016-11-25 15:43:03.276818300 +0300
+@@ -26,10 +26,10 @@
+ DLL_HEADER extern ostream * testout;
+ 
+ /** use instead of cout */
+-extern ostream * mycout;
++DLL_HEADER extern ostream * mycout;
+ 
+ /** error output stream */
+-extern ostream * myerr;
++DLL_HEADER extern ostream * myerr;
+ 
+ /** Error messages display.
+   Error messages are displayed by this function */
+diff -Naur netgen-5.3.1_SRC_orig/libsrc/include/mystdlib.h netgen-5.3.1_SRC_modif/libsrc/include/mystdlib.h
+--- netgen-5.3.1_SRC_orig/libsrc/include/mystdlib.h	2014-08-29 12:54:03.000000000 +0300
++++ netgen-5.3.1_SRC_modif/libsrc/include/mystdlib.h	2016-11-22 20:32:24.590261200 +0300
+@@ -66,6 +66,7 @@
+ #  ifdef MSVC_EXPRESS
+ #   include <pthread.h>
+ #  else
++    #define _AFXDLL
+ #   include <afxwin.h>
+ #   include <afxmt.h>
+ #  endif // MSVC_EXPRESS
+diff -Naur netgen-5.3.1_SRC_orig/libsrc/interface/nginterface.cpp netgen-5.3.1_SRC_modif/libsrc/interface/nginterface.cpp
+--- netgen-5.3.1_SRC_orig/libsrc/interface/nginterface.cpp	2014-08-29 12:54:02.000000000 +0300
++++ netgen-5.3.1_SRC_modif/libsrc/interface/nginterface.cpp	2016-11-23 14:28:40.204193800 +0300
+@@ -1,3 +1,16 @@
++#ifdef _MSC_VER
++#ifndef MSVC_EXPRESS
++
++#define _AFXDLL
++
++#include <Afxwin.h>
++#include <winsock2.h>
++#include <winsock.h>
++#include <windows.h>
++
++#endif
++#endif
++
+ #include <mystdlib.h>
+ 
+ #include <meshing.hpp>
+@@ -11,7 +24,6 @@
+ #include "nginterface.h"
+ #include "../visualization/soldata.hpp"
+ 
+-
+ #ifdef _MSC_VER
+ // Philippose - 30/01/2009
+ // MSVC Express Edition Support
+diff -Naur netgen-5.3.1_SRC_orig/libsrc/meshing/global.hpp netgen-5.3.1_SRC_modif/libsrc/meshing/global.hpp
+--- netgen-5.3.1_SRC_orig/libsrc/meshing/global.hpp	2014-08-29 12:54:05.000000000 +0300
++++ netgen-5.3.1_SRC_modif/libsrc/meshing/global.hpp	2016-11-25 16:03:52.591737300 +0300
+@@ -8,6 +8,8 @@
+ /* Date:   01. Okt. 95                                                    */
+ /**************************************************************************/
+ 
++#include <myadt.hpp>
++
+ /*
+   global functions and variables
+ */
+@@ -29,7 +31,7 @@
+ 
+   extern Array<int> tets_in_qualclass;
+ 
+-  class multithreadt
++  class DLL_HEADER multithreadt
+   {
+   public:
+     int pause;
+@@ -44,7 +46,7 @@
+     multithreadt();
+   };
+ 
+-  extern volatile multithreadt multithread;
++  DLL_HEADER extern volatile multithreadt multithread;
+ 
+   DLL_HEADER extern string ngdir;
+   extern DebugParameters debugparam;
+diff -Naur netgen-5.3.1_SRC_orig/libsrc/meshing/meshclass.hpp netgen-5.3.1_SRC_modif/libsrc/meshing/meshclass.hpp
+--- netgen-5.3.1_SRC_orig/libsrc/meshing/meshclass.hpp	2014-08-29 12:54:05.000000000 +0300
++++ netgen-5.3.1_SRC_modif/libsrc/meshing/meshclass.hpp	2016-11-25 15:13:36.136123300 +0300
+@@ -311,7 +311,7 @@
+     { return lockedpoints; }
+ 
+     /// Returns number of domains
+-    int GetNDomains() const;
++    DLL_HEADER int GetNDomains() const;
+ 
+     ///
+     int GetDimension() const 
+@@ -320,7 +320,7 @@
+     { dimension = dim; }
+ 
+     /// sets internal tables
+-    void CalcSurfacesOfNode ();
++    void DLL_HEADER CalcSurfacesOfNode ();
+ 
+     /// additional (temporarily) fix points 
+     void FixPoints (const BitArray & fixpoints);
+@@ -390,13 +390,13 @@
+     ///
+     DLL_HEADER void SetGlobalH (double h);
+     ///
+-    void SetMinimalH (double h);
++    void DLL_HEADER SetMinimalH (double h);
+     ///
+     double MaxHDomain (int dom) const;
+     ///
+     void SetMaxHDomain (const Array<double> & mhd);
+     ///
+-    double GetH (const Point3d & p) const;
++    double DLL_HEADER GetH (const Point3d & p) const;
+     ///
+     double GetMinH (const Point3d & pmin, const Point3d & pmax);
+     ///
+diff -Naur netgen-5.3.1_SRC_orig/libsrc/meshing/meshtype.hpp netgen-5.3.1_SRC_modif/libsrc/meshing/meshtype.hpp
+--- netgen-5.3.1_SRC_orig/libsrc/meshing/meshtype.hpp	2016-11-23 16:20:00.392157700 +0300
++++ netgen-5.3.1_SRC_modif/libsrc/meshing/meshtype.hpp	2016-11-25 15:34:15.767388200 +0300
+@@ -324,19 +324,19 @@
+ 
+   public:
+     ///
+-    Element2d ();
++    DLL_HEADER Element2d ();
+     ///
+-    Element2d (int anp);
++    DLL_HEADER Element2d (int anp);
+     ///
+     DLL_HEADER Element2d (ELEMENT_TYPE type);
+     ///
+-    Element2d (int pi1, int pi2, int pi3);
++    DLL_HEADER Element2d (int pi1, int pi2, int pi3);
+     ///
+-    Element2d (int pi1, int pi2, int pi3, int pi4);
++    DLL_HEADER Element2d (int pi1, int pi2, int pi3, int pi4);
+     ///
+-    ELEMENT_TYPE GetType () const { return typ; }
++    DLL_HEADER ELEMENT_TYPE GetType () const { return typ; }
+     /// 
+-    void SetType (ELEMENT_TYPE atyp)
++    DLL_HEADER  void SetType (ELEMENT_TYPE atyp)
+     {
+       typ = atyp;
+       switch (typ)
+@@ -351,9 +351,9 @@
+ 	}
+     }
+     ///
+-    int GetNP() const { return np; }
++    DLL_HEADER int GetNP() const { return np; }
+     ///
+-    int GetNV() const
++    DLL_HEADER int GetNV() const
+     {
+       if (typ == TRIG || typ == TRIG6)
+         return 3;
+@@ -385,95 +385,95 @@
+     }
+ 
+     ///
+-    PointIndex & operator[] (int i) { return pnum[i]; }
++    DLL_HEADER  PointIndex & operator[] (int i) { return pnum[i]; }
+     ///
+-    const PointIndex & operator[] (int i) const { return pnum[i]; }
++    DLL_HEADER const PointIndex & operator[] (int i) const { return pnum[i]; }
+ 
+-    FlatArray<const PointIndex> PNums () const 
++    DLL_HEADER  FlatArray<const PointIndex> PNums () const 
+     { return FlatArray<const PointIndex> (np, &pnum[0]); }
+     
+     ///
+-    PointIndex & PNum (int i) { return pnum[i-1]; }
++    DLL_HEADER PointIndex & PNum (int i) { return pnum[i-1]; }
+     ///
+-    const PointIndex & PNum (int i) const { return pnum[i-1]; }
++    DLL_HEADER const PointIndex & PNum (int i) const { return pnum[i-1]; }
+     ///
+-    PointIndex & PNumMod (int i) { return pnum[(i-1) % np]; }
++    DLL_HEADER PointIndex & PNumMod (int i) { return pnum[(i-1) % np]; }
+     ///
+-    const PointIndex & PNumMod (int i) const { return pnum[(i-1) % np]; }
++    DLL_HEADER const PointIndex & PNumMod (int i) const { return pnum[(i-1) % np]; }
+     ///
+ 
+     ///
+-    PointGeomInfo & GeomInfoPi (int i) { return geominfo[i-1]; }
++    DLL_HEADER PointGeomInfo & GeomInfoPi (int i) { return geominfo[i-1]; }
+     ///
+-    const PointGeomInfo & GeomInfoPi (int i) const { return geominfo[i-1]; }
++    DLL_HEADER const PointGeomInfo & GeomInfoPi (int i) const { return geominfo[i-1]; }
+     ///
+-    PointGeomInfo & GeomInfoPiMod (int i) { return geominfo[(i-1) % np]; }
++    DLL_HEADER PointGeomInfo & GeomInfoPiMod (int i) { return geominfo[(i-1) % np]; }
+     ///
+-    const PointGeomInfo & GeomInfoPiMod (int i) const { return geominfo[(i-1) % np]; }
++    DLL_HEADER const PointGeomInfo & GeomInfoPiMod (int i) const { return geominfo[(i-1) % np]; }
+ 
+ 
+-    void SetIndex (int si) { index = si; }
++    DLL_HEADER void SetIndex (int si) { index = si; }
+     ///
+-    int GetIndex () const { return index; }
++    DLL_HEADER int GetIndex () const { return index; }
+ 
+-    int GetOrder () const { return orderx; }
+-    void SetOrder (int aorder) { orderx = ordery = aorder; }
++    DLL_HEADER int GetOrder () const { return orderx; }
++    DLL_HEADER void SetOrder (int aorder) { orderx = ordery = aorder; }
+ 
+ 
+-    void GetOrder (int & ox, int & oy) const { ox = orderx, oy =ordery;};
+-    void GetOrder (int & ox, int & oy, int & oz) const { ox = orderx; oy = ordery; oz=0; }
+-    void SetOrder (int ox, int oy, int  /* oz */) { orderx = ox; ordery = oy;}
+-    void SetOrder (int ox, int oy) { orderx = ox; ordery = oy;}
++    DLL_HEADER void GetOrder (int & ox, int & oy) const { ox = orderx, oy =ordery;};
++    DLL_HEADER void GetOrder (int & ox, int & oy, int & oz) const { ox = orderx; oy = ordery; oz=0; }
++    DLL_HEADER void SetOrder (int ox, int oy, int  /* oz */) { orderx = ox; ordery = oy;}
++    DLL_HEADER void SetOrder (int ox, int oy) { orderx = ox; ordery = oy;}
+ 
+ 
+     ///
+-    void GetBox (const T_POINTS & points, Box3d & box) const;
++    DLL_HEADER void GetBox (const T_POINTS & points, Box3d & box) const;
+     /// invert orientation
+-    inline void Invert ();
++    DLL_HEADER inline void Invert ();
+     ///
+-    void Invert2 ();
++    DLL_HEADER void Invert2 ();
+     /// first point number is smallest
+-    inline void NormalizeNumbering ();
++    DLL_HEADER inline void NormalizeNumbering ();
+     ///
+-    void NormalizeNumbering2 ();
++    DLL_HEADER void NormalizeNumbering2 ();
+ 
+-    bool BadElement() const { return badel; }
++    DLL_HEADER bool BadElement() const { return badel; }
+ 
+     // friend ostream & operator<<(ostream  & s, const Element2d & el);
+     friend class Mesh;
+ 
+ 
+     /// get number of 'integration points'
+-    int GetNIP () const;
+-    void GetIntegrationPoint (int ip, Point2d & p, double & weight) const;
++    DLL_HEADER int GetNIP () const;
++    DLL_HEADER void GetIntegrationPoint (int ip, Point2d & p, double & weight) const;
+ 
+-    void GetTransformation (int ip, const Array<Point2d> & points,
++    DLL_HEADER void GetTransformation (int ip, const Array<Point2d> & points,
+ 			    class DenseMatrix & trans) const;
+-    void GetTransformation (int ip, class DenseMatrix & pmat,
++    DLL_HEADER void GetTransformation (int ip, class DenseMatrix & pmat,
+ 			    class DenseMatrix & trans) const;
+ 
+-    void GetShape (const Point2d & p, class Vector & shape) const;
+-    void GetShapeNew (const Point<2> & p, class FlatVector & shape) const;
++    DLL_HEADER void GetShape (const Point2d & p, class Vector & shape) const;
++    DLL_HEADER void GetShapeNew (const Point<2> & p, class FlatVector & shape) const;
+     /// matrix 2 * np
+-    void GetDShape (const Point2d & p, class DenseMatrix & dshape) const;
+-    void GetDShapeNew (const Point<2> & p, class MatrixFixWidth<2> & dshape) const;
++    DLL_HEADER void GetDShape (const Point2d & p, class DenseMatrix & dshape) const;
++    DLL_HEADER void GetDShapeNew (const Point<2> & p, class MatrixFixWidth<2> & dshape) const;
+     /// matrix 2 * np
+-    void GetPointMatrix (const Array<Point2d> & points,
++    DLL_HEADER void GetPointMatrix (const Array<Point2d> & points,
+ 			 class DenseMatrix & pmat) const; 
+ 
+-    void ComputeIntegrationPointData () const;
++    DLL_HEADER void ComputeIntegrationPointData () const;
+   
+ 
+-    double CalcJacobianBadness (const Array<Point2d> & points) const;
+-    double CalcJacobianBadness (const T_POINTS & points, 
++    DLL_HEADER double CalcJacobianBadness (const Array<Point2d> & points) const;
++    DLL_HEADER double CalcJacobianBadness (const T_POINTS & points, 
+ 				const Vec<3> & n) const;
+-    double CalcJacobianBadnessDirDeriv (const Array<Point2d> & points,
++    DLL_HEADER double CalcJacobianBadnessDirDeriv (const Array<Point2d> & points,
+ 					int pi, Vec2d & dir, double & dd) const;
+ 
+ 
+ 
+-    void Delete () { deleted = 1; pnum[0] = pnum[1] = pnum[2] = pnum[3] = PointIndex::BASE-1; }
+-    bool IsDeleted () const 
++    DLL_HEADER void Delete () { deleted = 1; pnum[0] = pnum[1] = pnum[2] = pnum[3] = PointIndex::BASE-1; }
++    DLL_HEADER bool IsDeleted () const 
+     {
+ #ifdef DEBUG
+       if (pnum[0] < PointIndex::BASE && !deleted)
+@@ -484,27 +484,27 @@
+ 
+     // Philippose - 08 August 2010
+     // Access functions for the new property: visible
+-    void Visible(bool vis = 1) 
++    DLL_HEADER void Visible(bool vis = 1) 
+     { visible = vis; }
+-    bool IsVisible () const 
++    DLL_HEADER bool IsVisible () const 
+     { return visible; }
+    
+-    void SetRefinementFlag (bool rflag = 1) 
++    DLL_HEADER void SetRefinementFlag (bool rflag = 1) 
+     { refflag = rflag; }
+-    bool TestRefinementFlag () const
++    DLL_HEADER bool TestRefinementFlag () const
+     { return refflag; }
+ 
+-    void SetStrongRefinementFlag (bool rflag = 1) 
++    DLL_HEADER void SetStrongRefinementFlag (bool rflag = 1) 
+     { strongrefflag = rflag; }
+-    bool TestStrongRefinementFlag () const
++    DLL_HEADER bool TestStrongRefinementFlag () const
+     { return strongrefflag; }
+ 
+   
+-    SurfaceElementIndex NextElement() { return next; }
++    DLL_HEADER SurfaceElementIndex NextElement() { return next; }
+ 
+-    bool operator==(const Element2d & el2) const;
++    DLL_HEADER bool operator==(const Element2d & el2) const;
+ 
+-    int HasFace(const Element2d& el) const;
++    DLL_HEADER int HasFace(const Element2d& el) const;
+     ///
+     int meshdocval;
+     ///
+@@ -517,7 +517,7 @@
+   };
+ 
+ 
+-  ostream & operator<<(ostream  & s, const Element2d & el);
++  DLL_HEADER ostream & operator<<(ostream  & s, const Element2d & el);
+ 
+ 
+ 
+diff -Naur netgen-5.3.1_SRC_orig/libsrc/occ/occgenmesh.cpp netgen-5.3.1_SRC_modif/libsrc/occ/occgenmesh.cpp
+--- netgen-5.3.1_SRC_orig/libsrc/occ/occgenmesh.cpp	2016-11-23 16:20:00.432158900 +0300
++++ netgen-5.3.1_SRC_modif/libsrc/occ/occgenmesh.cpp	2016-11-25 16:26:13.181305600 +0300
+@@ -18,7 +18,7 @@
+ #define VSMALL 1e-10
+ 
+ 
+-   bool merge_solids = 1;
++   DLL_HEADER bool merge_solids = 1;
+ 
+ 
+   // can you please explain what you intend to compute here (JS) !!!
+@@ -540,7 +540,7 @@
+                  
+                   Point<3> fp = occ2ng (BRep_Tool::Pnt (v1));
+                   Point<3> lp = occ2ng (BRep_Tool::Pnt (v2));
+-                  double tol2 = std::min( eps*eps, 1e-6 * Dist2( fp, lp ));
++                  double tol2 = min( eps*eps, 1e-6 * Dist2( fp, lp ));
+                   if ( isClosedEdge )
+                     tol2 = BRep_Tool::Tolerance( v1 ) * BRep_Tool::Tolerance( v1 );
+ 
+diff -Naur netgen-5.3.1_SRC_orig/libsrc/occ/occgeom.hpp netgen-5.3.1_SRC_modif/libsrc/occ/occgeom.hpp
+--- netgen-5.3.1_SRC_orig/libsrc/occ/occgeom.hpp	2016-11-23 16:20:00.442159200 +0300
++++ netgen-5.3.1_SRC_modif/libsrc/occ/occgeom.hpp	2016-11-25 15:59:20.505531400 +0300
+@@ -9,6 +9,8 @@
+ 
+ #ifdef OCCGEOMETRY
+ 
++#include <myadt.hpp>
++
+ #include <meshing.hpp>
+ 
+ #include "BRep_Tool.hxx"
+@@ -122,7 +124,7 @@
+ {
+ #include "occmeshsurf.hpp"
+ 
+-  extern DLL_HEADER MeshingParameters mparam;
++  DLL_HEADER extern MeshingParameters mparam;
+ 
+ #define PROJECTION_TOLERANCE 1e-10
+ 
+@@ -197,7 +199,7 @@
+ 
+ 
+ 
+-   class OCCGeometry : public NetgenGeometry
++   class DLL_HEADER OCCGeometry : public NetgenGeometry
+    {
+       Point<3> center;
+       // -- Optimization: to use cached projector and classifier
+@@ -413,7 +415,7 @@
+ 
+ 
+ 
+-   class OCCParameters
++   class DLL_HEADER OCCParameters
+    {
+    public:
+ 
+@@ -453,21 +455,21 @@
+    OCCGeometry * LoadOCC_STEP (const char * filename);
+    OCCGeometry * LoadOCC_BREP (const char * filename);
+ 
+-   extern OCCParameters occparam;
++   extern DLL_HEADER OCCParameters occparam;
+ 
+ 
+    // Philippose - 31.09.2009
+    // External access to the mesh generation functions within the OCC
+    // subsystem (Not sure if this is the best way to implement this....!!)
+-   extern int OCCGenerateMesh (OCCGeometry & occgeometry, Mesh*& mesh,
++   extern DLL_HEADER int OCCGenerateMesh (OCCGeometry & occgeometry, Mesh*& mesh,
+ 			       MeshingParameters & mparam,
+ 			       int perfstepsstart, int perfstepsend);
+ 
+-  extern void OCCSetLocalMeshSize(OCCGeometry & geom, Mesh & mesh);
++  extern DLL_HEADER void OCCSetLocalMeshSize(OCCGeometry & geom, Mesh & mesh);
+ 
+-   extern void OCCMeshSurface (OCCGeometry & geom, Mesh & mesh, int perfstepsend);
++   extern DLL_HEADER void OCCMeshSurface (OCCGeometry & geom, Mesh & mesh, int perfstepsend);
+ 
+-   extern void OCCFindEdges (OCCGeometry & geom, Mesh & mesh);
++   extern DLL_HEADER void OCCFindEdges (OCCGeometry & geom, Mesh & mesh);
+ }
+ 
+ #endif
+diff -Naur netgen-5.3.1_SRC_orig/libsrc/occ/occmeshsurf.hpp netgen-5.3.1_SRC_modif/libsrc/occ/occmeshsurf.hpp
+--- netgen-5.3.1_SRC_orig/libsrc/occ/occmeshsurf.hpp	2014-08-29 12:54:03.000000000 +0300
++++ netgen-5.3.1_SRC_modif/libsrc/occ/occmeshsurf.hpp	2016-11-25 12:46:27.828676600 +0300
+@@ -169,7 +169,7 @@
+ class OCCGeometry;
+ 
+ 
+-class OCCRefinementSurfaces : public Refinement
++class DLL_HEADER OCCRefinementSurfaces : public Refinement
+ {
+   const OCCGeometry & geometry;
+ 
+diff -Naur netgen-5.3.1_SRC_orig/libsrc/stlgeom/stlgeom.hpp netgen-5.3.1_SRC_modif/libsrc/stlgeom/stlgeom.hpp
+--- netgen-5.3.1_SRC_orig/libsrc/stlgeom/stlgeom.hpp	2014-08-29 12:54:05.000000000 +0300
++++ netgen-5.3.1_SRC_modif/libsrc/stlgeom/stlgeom.hpp	2016-11-25 16:22:27.290718800 +0300
+@@ -38,7 +38,7 @@
+     return true;
+   }
+   
+-  extern DLL_HEADER MeshingParameters mparam;
++  DLL_HEADER extern MeshingParameters mparam;
+   
+ 
+ 
+diff -Naur netgen-5.3.1_SRC_orig/nglib/CMakeLists.txt netgen-5.3.1_SRC_modif/nglib/CMakeLists.txt
+--- netgen-5.3.1_SRC_orig/nglib/CMakeLists.txt	1970-01-01 03:00:00.000000000 +0300
++++ netgen-5.3.1_SRC_modif/nglib/CMakeLists.txt	2016-11-23 16:28:18.630104800 +0300
+@@ -0,0 +1,252 @@
++# Copyright (C) 2016 OPEN CASCADE
++#
++# This library is free software; you can redistribute it and/or
++# modify it under the terms of the GNU Lesser General Public
++# License as published by the Free Software Foundation; either
++# version 2.1 of the License, or (at your option) any later version.
++#
++# This library is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# Lesser General Public License for more details.
++#
++# You should have received a copy of the GNU Lesser General Public
++# License along with this library; if not, write to the Free Software
++# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
++#
++# See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
++#
++INCLUDE_DIRECTORIES(
++    ${CMAKE_CURRENT_SOURCE_DIR}
++    ${PROJECT_SOURCE_DIR}/libsrc/include
++    ${ZLIB_INCLUDE_DIRS}
++    ${CAS_INCLUDE_DIRS}
++)
++
++
++# CGS
++SET(CGS_SOURCES 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/algprim.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/brick.cpp
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/bspline2d.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/csgeom.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/csgparser.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/curve2d.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/edgeflw.cpp	
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/explicitcurve2d.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/extrusion.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/gencyl.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/genmesh.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/identify.cpp  
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/manifold.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/meshsurf.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/polyhedra.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/revolution.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/singularref.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/solid.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/specpoin.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/spline3d.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/surface.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/csg/triapprox.cpp)
++
++# GENERAL
++SET(GENERAL_SOURCES 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/array.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/bitarray.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/dynamicmem.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/flags.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/hashtabl.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/mystring.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/ngexception.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/optmem.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/parthreads.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/profiler.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/seti.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/sort.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/spbita2d.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/symbolta.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/table.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/mpi_interface.cpp 
++   ${PROJECT_SOURCE_DIR}/libsrc/general/gzstream.cpp)
++
++FILE(GLOB GENERAL_INCLUDES "${PROJECT_SOURCE_DIR}/libsrc/general/*.hpp")
++LIST(APPEND GENERAL_INCLUDES ${PROJECT_SOURCE_DIR}/libsrc/general/gzstream.h)
++
++# GEOM2D
++SET (GEOM2D_SOURCES 
++     ${PROJECT_SOURCE_DIR}/libsrc/geom2d/genmesh2d.cpp 
++     ${PROJECT_SOURCE_DIR}/libsrc/geom2d/geom2dmesh.cpp 
++     ${PROJECT_SOURCE_DIR}/libsrc/geom2d/geometry2d.cpp)
++
++# GPRIM
++SET(GPRIM_SOURCES 
++    ${PROJECT_SOURCE_DIR}/libsrc/gprim/adtree.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/gprim/geom2d.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/gprim/geom3d.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/gprim/geomfuncs.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/gprim/geomtest3d.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/gprim/transform3d.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/gprim/spline.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/gprim/splinegeometry.cpp)
++
++FILE(GLOB GPRIM_INCLUDES "${PROJECT_SOURCE_DIR}/libsrc/gprim/*.hpp")
++
++# INCLUDE
++SET(INCLUDE_INCLUDES 
++    ${PROJECT_SOURCE_DIR}/libsrc/include/nginterface.h
++    ${PROJECT_SOURCE_DIR}/libsrc/include/nginterface_v2.hpp
++    ${PROJECT_SOURCE_DIR}/libsrc/include/mystdlib.h
++    ${PROJECT_SOURCE_DIR}/libsrc/include/mydefs.hpp)
++
++# INTERFACE
++SET(INTERFACE_SOURCES 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/nginterface.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/nginterface_v2.cpp
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/read_fnf_mesh.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/readtetmesh.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/readuser.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writeabaqus.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writediffpack.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writedolfin.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writeelmer.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writefeap.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writefluent.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writegmsh.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writejcm.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writepermas.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writetecplot.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writetet.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writetochnog.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writeuser.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/wuchemnitz.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writegmsh2.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/interface/writeOpenFOAM15x.cpp)
++
++# LINALG
++SET (LINALG_SOURCES 
++     ${PROJECT_SOURCE_DIR}/libsrc/linalg/densemat.cpp 
++     ${PROJECT_SOURCE_DIR}/libsrc/linalg/polynomial.cpp 
++     ${PROJECT_SOURCE_DIR}/libsrc/linalg/bfgs.cpp 
++     ${PROJECT_SOURCE_DIR}/libsrc/linalg/linopt.cpp 
++     ${PROJECT_SOURCE_DIR}/libsrc/linalg/linsearch.cpp)
++
++FILE(GLOB LINALG_INCLUDES "${PROJECT_SOURCE_DIR}/libsrc/linalg/*.hpp")
++
++# MESHING
++SET(MESHING_SOURCES 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/adfront2.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/adfront3.cpp
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/bisect.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/boundarylayer.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/clusters.cpp      
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/curvedelems.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/delaunay.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/delaunay2d.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/geomsearch.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/global.cpp     
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/hprefinement.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/improve2.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/improve2gen.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/improve3.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/localh.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/meshclass.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/meshfunc.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/meshfunc2d.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/meshing2.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/meshing3.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/meshtool.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/meshtype.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/msghandler.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/netrule2.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/netrule3.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/parser2.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/parser3.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/prism2rls.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/pyramid2rls.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/pyramidrls.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/quadrls.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/refine.cpp	
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/ruler2.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/ruler3.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/secondorder.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/smoothing2.5.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/smoothing2.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/smoothing3.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/specials.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/tetrarls.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/topology.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/triarls.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/validate.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/zrefine.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/bcfunctions.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/parallelmesh.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/paralleltop.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/paralleltop.hpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/meshing/basegeom.cpp)
++
++FILE(GLOB MESHING_INCLUDES "${PROJECT_SOURCE_DIR}/libsrc/meshing/*.hpp")
++
++# OCC
++SET(OCC_SOURCES 
++    ${PROJECT_SOURCE_DIR}/libsrc/occ/Partition_Inter2d.cxx 
++    ${PROJECT_SOURCE_DIR}/libsrc/occ/Partition_Inter3d.cxx 
++    ${PROJECT_SOURCE_DIR}/libsrc/occ/Partition_Loop.cxx 
++    ${PROJECT_SOURCE_DIR}/libsrc/occ/Partition_Loop2d.cxx 
++    ${PROJECT_SOURCE_DIR}/libsrc/occ/Partition_Loop3d.cxx 
++    ${PROJECT_SOURCE_DIR}/libsrc/occ/Partition_Spliter.cxx 
++    ${PROJECT_SOURCE_DIR}/libsrc/occ/occconstruction.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/occ/occgenmesh.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/occ/occgeom.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/occ/occmeshsurf.cpp)
++
++SET(OCC_INCLUDES ${PROJECT_SOURCE_DIR}/libsrc/occ/occgeom.hpp ${PROJECT_SOURCE_DIR}/libsrc/occ/occmeshsurf.hpp)
++
++# STLGEOM
++SET(STLGEOM_SOURCES 
++    ${PROJECT_SOURCE_DIR}/libsrc/stlgeom/meshstlsurface.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/stlgeom/stlgeom.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/stlgeom/stlgeomchart.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/stlgeom/stlgeommesh.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/stlgeom/stlline.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/stlgeom/stltool.cpp 
++    ${PROJECT_SOURCE_DIR}/libsrc/stlgeom/stltopology.cpp)
++
++# NGLIB
++SET(NGLIB_SOURCES nglib.cpp)
++ADD_LIBRARY(nglib SHARED 
++            ${NGLIB_SOURCES}
++            ${CGS_SOURCES} 
++            ${GENERAL_SOURCES}
++            ${GPRIM_SOURCES}
++            ${GEOM2D_SOURCES}
++            ${INTERFACE_SOURCES} 
++            ${LINALG_SOURCES} 
++            ${MESHING_SOURCES} 
++            ${OCC_SOURCES}
++            ${STLGEOM_SOURCES})
++
++TARGET_LINK_LIBRARIES(nglib ${OCCLIBS} ${PLATFORM_LIBADD} ${ZLIB_LIBRARIES})
++INSTALL(TARGETS nglib DESTINATION ${NETGEN_INSTALL_LIBS}) 
++
++# Install headers
++INSTALL(FILES ${GENERAL_INCLUDES} 
++              ${INCLUDE_INCLUDES}
++              ${GPRIM_INCLUDES} 
++              ${LINALG_INCLUDES} 
++              ${MESHING_INCLUDES} 
++              ${OCC_INCLUDES} 
++              nglib.h 
++              DESTINATION ${NETGEN_INSTALL_HEADERS})
++
++
++# NG_VOL
++SET(NG_VOL_SOURCES ng_vol.cpp)
++ADD_EXECUTABLE(ng_vol ${NG_VOL_SOURCES})
++TARGET_LINK_LIBRARIES(ng_vol nglib)
++INSTALL(TARGETS ng_vol  DESTINATION ${NETGEN_INSTALL_BINS})
++
++# NG_STL
++SET(NG_STL_SOURCES ng_stl.cpp)
++ADD_EXECUTABLE(ng_stl ${NG_STL_SOURCES})
++TARGET_LINK_LIBRARIES(ng_stl nglib)
++INSTALL(TARGETS ng_stl  DESTINATION ${NETGEN_INSTALL_BINS})
+diff -Naur netgen-5.3.1_SRC_orig/nglib/nglib.cpp netgen-5.3.1_SRC_modif/nglib/nglib.cpp
+--- netgen-5.3.1_SRC_orig/nglib/nglib.cpp	2014-08-29 12:54:00.000000000 +0300
++++ netgen-5.3.1_SRC_modif/nglib/nglib.cpp	2016-11-23 14:58:26.631177200 +0300
+@@ -87,7 +87,8 @@
+    // Clean-up functions before ending usage of nglib
+    DLL_HEADER void Ng_Exit ()
+    {
+-      ;
++       delete testout;
++       testout = 0;
+    }
+ 
+ 

@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -56,7 +56,8 @@ public:
   /*!
    * Sets source <edge> to take a mesh pattern from
    */
-  void SetSourceEdge(const TopoDS_Shape& edge);
+  void SetSourceEdge(const TopoDS_Shape& edge)
+    noexcept(false);
 
   /*!
    * Returns the source edge or a group containing edges
@@ -84,7 +85,8 @@ public:
    * This parameter is optional
    */
   void SetVertexAssociation(const TopoDS_Shape& sourceVertex,
-                            const TopoDS_Shape& targetVertex);
+                            const TopoDS_Shape& targetVertex)
+    noexcept(false);
 
   /*!
    * Returns the vertex associated with the target vertex.

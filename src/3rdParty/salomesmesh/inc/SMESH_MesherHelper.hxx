@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -30,8 +30,6 @@
 #include "SMESH_SMESH.hxx"
 
 #include "SMESH_MeshEditor.hxx" // needed for many meshers
-#include <SMDS_MeshNode.hxx>
-#include <SMDS_QuadraticEdge.hxx>
 
 #include <Geom_Surface.hxx>
 #include <ShapeAnalysis_Surface.hxx>
@@ -42,8 +40,11 @@
 #include <map>
 #include <vector>
 
-class GeomAPI_ProjectPointOnSurf;
 class GeomAPI_ProjectPointOnCurve;
+class GeomAPI_ProjectPointOnSurf;
+class SMDS_MeshNode;
+class SMESHDS_Hypothesis;
+class SMESH_Gen;
 class SMESH_ProxyMesh;
 
 typedef std::map<SMESH_TLink, const SMDS_MeshNode*>           TLinkNodeMap;
@@ -121,7 +122,9 @@ class SMESH_EXPORT SMESH_MesherHelper
   /*!
    * \brief Return true if 2D mesh on FACE is distored
    */
-  static bool IsDistorted2D( SMESH_subMesh* faceSM, bool checkUV=false );
+  static bool IsDistorted2D( SMESH_subMesh*      faceSM,
+                             bool                checkUV = false,
+                             SMESH_MesherHelper* faceHelper = NULL);
 
   /*!
    * \brief Returns true if given node is medium
@@ -186,7 +189,7 @@ class SMESH_EXPORT SMESH_MesherHelper
    * \brief Count nb of sub-shapes
     * \param shape - the shape
     * \param type - the type of sub-shapes to count
-    * \param ignoreSame - if true, use map not to count same shapes, esle use explorer
+    * \param ignoreSame - if true, use map not to count same shapes, else use explorer
     * \retval int - the calculated number
    */
   static int Count(const TopoDS_Shape&    shape,
@@ -200,11 +203,12 @@ class SMESH_EXPORT SMESH_MesherHelper
                          const SMESH_Mesh&   mesh,
                          TopAbs_ShapeEnum    ancestorType=TopAbs_SHAPE);
   /*!
-   * \brief Return iterator on ancestors of the given type
+   * \brief Return iterator on ancestors of the given type, included into a container shape
    */
   static PShapeIteratorPtr GetAncestors(const TopoDS_Shape& shape,
                                         const SMESH_Mesh&   mesh,
-                                        TopAbs_ShapeEnum    ancestorType);
+                                        TopAbs_ShapeEnum    ancestorType,
+                                        const TopoDS_Shape* container = 0);
   /*!
    * \brief Find a common ancestor, of the given type, of two shapes
    */
@@ -248,12 +252,12 @@ public:
   // constructor
   SMESH_MesherHelper(SMESH_Mesh& theMesh);
 
-  SMESH_Gen*    GetGen() const { return GetMesh()->GetGen(); }
+  SMESH_Gen*    GetGen() const;
     
   SMESH_Mesh*   GetMesh() const { return myMesh; }
     
-  SMESHDS_Mesh* GetMeshDS() const { return GetMesh()->GetMeshDS(); }
-    
+  SMESHDS_Mesh* GetMeshDS() const;
+
   /*!
    * Check submesh for given shape: if all elements on this shape are quadratic,
    * quadratic elements will be created. Also fill myTLinkNodeMap
@@ -316,6 +320,17 @@ public:
    * \brief Return the shape set by IsQuadraticSubMesh() or SetSubShape() 
    */
   const TopoDS_Shape& GetSubShape() const  { return myShape; }
+  /*!
+   * \brief Copy shape information from another helper to improve performance
+   *        since SetSubShape() can be time consuming if there are many edges
+   */
+  void CopySubShapeInfo(const SMESH_MesherHelper& other);
+
+
+  /*!
+   * \brief Convert a shape to its index in the SMESHDS_Mesh
+   */
+  int ShapeToIndex( const TopoDS_Shape& S ) const;
 
   /*!
    * Creates a node (!Note ID before u=0.,v0.)
@@ -569,7 +584,7 @@ public:
     * Seam shape has two 2D alternative represenations on the face
    */
   bool IsSeamShape(const TopoDS_Shape& subShape) const
-  { return IsSeamShape( GetMeshDS()->ShapeToIndex( subShape )); }
+  { return IsSeamShape( ShapeToIndex( subShape )); }
   /*!
    * \brief Return true if an edge or a vertex encounters twice in face wire
    *  \param subShape - Id of edge or vertex
@@ -581,7 +596,7 @@ public:
    *  \param subShape - edge or vertex
    */
   bool IsRealSeam(const TopoDS_Shape& subShape) const
-  { return IsRealSeam( GetMeshDS()->ShapeToIndex( subShape)); }
+  { return IsRealSeam( ShapeToIndex( subShape )); }
   /*!
    * \brief Check if the shape set through IsQuadraticSubMesh() or SetSubShape()
    *        has a seam edge, i.e. an edge that has two parametric representations
@@ -604,6 +619,10 @@ public:
    * \brief Return an alternative parameter for a node on seam
    */
   double GetOtherParam(const double param) const;
+  /*!
+   * \brief Check if UV is on seam. Return 0 if not, 1 for U seam, 2 for V seam
+   */
+  int IsOnSeam(const gp_XY& uv) const;
 
   /*!
    * \brief Return existing or create new medium nodes between given ones
@@ -684,6 +703,9 @@ public:
   
   virtual ~SMESH_MesherHelper();
 
+  static void WriteShape(const TopoDS_Shape& s);
+
+
  protected:
 
   /*!
@@ -700,9 +722,10 @@ public:
 
   double getFaceMaxTol( const TopoDS_Shape& face ) const;
 
+
  private:
 
-  // Forbiden copy constructor
+  // forbidden copy constructor
   SMESH_MesherHelper (const SMESH_MesherHelper& theOther);
 
   // key of a map of bi-quadratic face to it's central node

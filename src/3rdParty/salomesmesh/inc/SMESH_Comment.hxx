@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -30,46 +30,46 @@
 # include <string>
 # include <sstream>
 
-using namespace std;
-
 /*!
  * \brief Class to generate string from any type
  */
-class SMESH_Comment : public string
+class SMESH_Comment : public std::string
 {
-  ostringstream _s ;
+  std::ostringstream _s ;
 
 public :
 
-  SMESH_Comment():string("") {}
+  SMESH_Comment():std::string("") {}
 
-  SMESH_Comment(const SMESH_Comment& c):string() {
+  SMESH_Comment(const SMESH_Comment& c):std::string() {
     _s << c.c_str() ;
-    this->string::operator=( _s.str() );
+    this->std::string::operator=( _s.str() );
   }
 
   SMESH_Comment & operator=(const SMESH_Comment& c) {
     _s << c.c_str() ;
-    this->string::operator=( _s.str() );
+    this->std::string::operator=( _s.str() );
     return *this;
   }
 
   template <class T>
   SMESH_Comment( const T &anything ) {
     _s << anything ;
-    this->string::operator=( _s.str() );
+    this->std::string::operator=( _s.str() );
   }
 
   template <class T>
   SMESH_Comment & operator<<( const T &anything ) {
     _s << anything ;
-    this->string::operator=( _s.str() );
+    this->std::string::operator=( _s.str() );
     return *this ;
   }
 
   operator char*() const {
     return (char*)c_str();
   }
+
+  std::ostream& Stream() { return _s; }
 };
 
 

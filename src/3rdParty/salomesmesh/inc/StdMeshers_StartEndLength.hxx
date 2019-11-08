@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -40,7 +40,7 @@ class STDMESHERS_EXPORT StdMeshers_StartEndLength:public SMESH_Hypothesis
   StdMeshers_StartEndLength(int hypId, int studyId, SMESH_Gen * gen);
   virtual ~ StdMeshers_StartEndLength();
 
-  void SetLength(double length, bool isStartLength);
+  void SetLength(double length, bool isStartLength) noexcept(false);
 
   double GetLength(bool isStartLength) const;
 

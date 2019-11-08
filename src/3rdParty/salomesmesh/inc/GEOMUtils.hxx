@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -54,6 +54,16 @@ inline Standard_Boolean IsEqual (const TopoDS_Shape& S1, const TopoDS_Shape& S2)
 
 namespace GEOMUtils
 {
+
+  /**
+   * This enumeration represents comparison conditions.
+   */
+  enum ComparisonCondition {
+    CC_GT, ///< Greater then
+    CC_GE, ///< Greater then or equal to
+    CC_LT, ///< Less then
+    CC_LE  ///< Less then or equal to
+  };
 
   typedef std::vector<std::string> NodeLinks;
   typedef std::map<std::string, NodeLinks> LevelInfo;
@@ -242,6 +252,15 @@ namespace GEOMUtils
    * \return \c true if shape is valid or \c false otherwise
    */
   Standard_EXPORT bool CheckShape( TopoDS_Shape& shape, bool checkGeometry = false );
+
+  /*!
+   * \brief Check boolean and partition operations agruments
+   *
+   * \param theShape the agrument of an operation to be checked
+   * \return \c true if the agrument is valid for a boolean or partition
+   *         operation or \c false otherwise
+   */
+  Standard_EXPORT bool CheckBOPArguments(const TopoDS_Shape &theShape);
   
   /*!
    * \brief Limit shape tolerance to the given value
@@ -340,6 +359,36 @@ namespace GEOMUtils
    * \return true if theShape is not a closed wire or edge.
    */
   Standard_EXPORT bool IsOpenPath(const TopoDS_Shape &theShape);
+
+  /**
+   * This function compares two tolerances. The shape tolerance (the first
+   * argument) is considered less than the reference tolerance (the second
+   * argument) if theTolShape < theTolRef - Tolerance(theTolRef). theTolShape is
+   * considered greater than theTolRef if theTolShape > theTolRef +
+   * Tolerance(theTolRef). Otherwise these tolerances are equal.
+   * Tolerance(theTolRef) = theTolRef*DEFAULT_TOLERANCE_TOLERANCE. But this value
+   * should not be greated than DEFAULT_MAX_TOLERANCE_TOLERANCE.
+   *
+   * \param theTolShape the shape tolerance
+   * \param theTolRef the reference tolerance
+   * \return -1 if theTolShape is less than theTolRef; 1 if theTolShape is greater
+   * than theTolRef; 0 if they are equal
+   */
+  Standard_EXPORT int CompareToleranceValues(const double theTolShape,
+                                             const double theTolRef);
+
+  /**
+   * Check if the comarison of tolerances fit the condition. The comparison of
+   * tolerances is performed using the function CompareToleranceValues.
+   *
+   * \param theCondition the condition
+   * \param theTolShape the shape tolerance
+   * \param theTolRef the reference tolerance
+   * \return true if the shape tolerance fits the condition; false otherwise.
+   */
+  Standard_EXPORT bool IsFitCondition(const ComparisonCondition theCondition,
+                                      const double              theTolShape,
+                                      const double              theTolRef);
 
 };
 

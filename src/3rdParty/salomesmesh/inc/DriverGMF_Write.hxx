@@ -32,26 +32,7 @@
 #include "Driver_SMESHDS_Mesh.h"
 #include "SMDSAbs_ElementType.hxx"
 #include "SMDS_ElemIterator.hxx"
-
-#include <gp_Pnt.hxx>
-
-/*!
- * \brief Class for storing control points for writing GMF size maps
- */
-class MESHDriverGMF_EXPORT Control_Pnt : public gp_Pnt
-{
-public:
-  Control_Pnt();
-  Control_Pnt(const gp_Pnt& aPnt, double theSize);
-  Control_Pnt(double x, double y, double z);
-  Control_Pnt(double x, double y, double z, double size);
-
-  double Size() const { return size; };
-  void SetSize( double theSize ) { size = theSize; };
-  
-private:
-  double size;
-};
+#include "SMESH_ControlPnt.hxx"
 
 /*!
  * \brief Driver Writing a mesh into a GMF file.
@@ -71,7 +52,7 @@ public:
   virtual Status Perform();
   
   // Size Maps
-  Status PerformSizeMap( const std::vector<Control_Pnt>& points );
+  Status PerformSizeMap( const std::vector<SMESHUtils::ControlPnt>& points );
   void SetSizeMapPrefix( std::string prefix )
   {
     myVerticesFile = prefix + ".mesh";

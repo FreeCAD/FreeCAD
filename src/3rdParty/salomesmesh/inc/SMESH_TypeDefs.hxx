@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -80,8 +80,11 @@ namespace SMESHUtils
   struct Deleter
   {
     TOBJ* _obj;
-    Deleter( TOBJ* obj = (TOBJ*)NULL ): _obj( obj ) {}
+    explicit Deleter( TOBJ* obj = (TOBJ*)NULL ): _obj( obj ) {}
     ~Deleter() { delete _obj; _obj = 0; }
+    TOBJ& operator*()  const { return *_obj; }
+    TOBJ* operator->() const { return _obj; }
+    operator bool()    const { return _obj; }
   private:
     Deleter( const Deleter& );
   };
@@ -113,6 +116,16 @@ struct SMESH_TLink: public NLink
   { if ( first->GetID() < second->GetID() ) std::swap( first, second ); }
   const SMDS_MeshNode* node1() const { return first; }
   const SMDS_MeshNode* node2() const { return second; }
+
+  // methods for usage of SMESH_TLink as a hasher in NCollection maps
+  static int HashCode(const SMESH_TLink& link, int aLimit)
+  {
+    return ::HashCode( link.node1()->GetID() + link.node2()->GetID(), aLimit );
+  }
+  static Standard_Boolean IsEqual(const SMESH_TLink& l1, const SMESH_TLink& l2)
+  {
+    return ( l1.node1() == l2.node1() && l1.node2() == l2.node2() );
+  }
 };
 
 //=======================================================================
@@ -156,6 +169,7 @@ struct SMESH_TNodeXYZ : public gp_XYZ
   double SquareDistance(const SMDS_MeshNode* n) const { return (SMESH_TNodeXYZ( n )-*this).SquareModulus(); }
   bool operator==(const SMESH_TNodeXYZ& other) const { return _node == other._node; }
 };
+typedef SMESH_TNodeXYZ SMESH_NodeXYZ;
 
 //--------------------------------------------------
 /*!
@@ -173,6 +187,7 @@ typedef struct uvPtStruct
   uvPtStruct(): node(NULL) {}
 
   inline gp_XY UV() const { return gp_XY( u, v ); }
+  inline void  SetUV( const gp_XY& uv ) { u = uv.X(); v = uv.Y(); }
 
   struct NodeAccessor // accessor to iterate on nodes in UVPtStructVec
   {

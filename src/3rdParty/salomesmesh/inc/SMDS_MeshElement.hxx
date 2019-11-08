@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -57,7 +57,7 @@ class SMDS_Mesh;
 // ============================================================
 
 
-class SMDS_EXPORT SMDS_MeshElement:public SMDS_MeshObject
+class SMDS_EXPORT SMDS_MeshElement : public SMDS_MeshObject
 {
 public:
 
@@ -82,13 +82,13 @@ public:
   inline int GetID() const { return myID; }
 
   ///Return the type of the current element
-  virtual SMDSAbs_ElementType GetType() const = 0;
-  virtual SMDSAbs_EntityType GetEntityType() const = 0;
+  virtual SMDSAbs_ElementType  GetType() const = 0;
+  virtual SMDSAbs_EntityType   GetEntityType() const = 0;
   virtual SMDSAbs_GeometryType GetGeomType() const = 0;
-  virtual vtkIdType GetVtkType() const = 0;
+  virtual vtkIdType            GetVtkType() const = 0;
+
   virtual bool IsPoly() const { return false; }
   virtual bool IsQuadratic() const;
-
   virtual bool IsMediumNode(const SMDS_MeshNode* node) const;
   virtual int  NbCornerNodes() const;
 
@@ -143,10 +143,14 @@ public:
    */
   virtual int GetNodeIndex( const SMDS_MeshNode* node ) const;
 
-  inline ShortType getMeshId()  const { return myMeshId; }
-  inline LongType  getshapeId() const { return myShapeId; }
-  inline int getIdInShape()     const { return myIdInShape; }
-  inline int getVtkId()         const { return myVtkID; }
+  inline ShortType getMeshId()    const { return myMeshId; }
+  inline LongType  getshapeId()   const { return myShapeId >> BITS_SHIFT; }
+  inline int       getIdInShape() const { return myIdInShape; }
+  inline int       getVtkId()     const { return myVtkID; }
+
+  // mark this element; to be used in algos
+  inline void setIsMarked( bool is ) const;
+  inline bool isMarked() const;
 
   /*!
    * \brief Filters of elements, to be used with SMDS_SetIterator
@@ -158,7 +162,7 @@ public:
   };
   struct NonNullFilter: public Filter
   {
-    bool operator()(const SMDS_MeshElement* e) const { return e != 0; }
+    bool operator()(const SMDS_MeshElement* e) const { return e; }
   };
   struct TypeFilter : public Filter
   {
@@ -180,10 +184,10 @@ public:
   };
 
 protected:
-  inline void setId(int id) {myID = id; }
-  inline void setShapeId(LongType shapeId) {myShapeId = shapeId; }
-  inline void setIdInShape(int id) { myIdInShape = id; }
-  inline void setVtkId(int vtkId) { myVtkID = vtkId; }
+  inline void setId(int id)                { myID = id; }
+  inline void setVtkId(int vtkId)          { myVtkID = vtkId; }
+  inline void setIdInShape(int id)         { myIdInShape = id; }
+  inline void setShapeId(LongType shapeId) { myShapeId = ( shapeId << BITS_SHIFT ) | ( myShapeId & BIT_IS_MARKED ); }
   SMDS_MeshElement(int ID=-1);
   SMDS_MeshElement(int id, ShortType meshId, LongType shapeId = 0);
   virtual void init(int id = -1, ShortType meshId = -1, LongType shapeId = 0);
@@ -195,12 +199,25 @@ protected:
   int myVtkID;
   //! SMDS_Mesh identification in SMESH
   ShortType myMeshId;
-  //! SubShape and SubMesh identification in SMESHDS
+  //! SubShape and SubMesh identification in SMESHDS; one bit is used to mark the element
   LongType myShapeId;
   //! Element index in SMESHDS_SubMesh vector
   int myIdInShape;
+
+  enum Bits { // use the 1st right bit of myShapeId to set/unset a mark
+    BIT_IS_MARKED = 1,
+    BITS_SHIFT = 1
+  };
 };
 
+inline void SMDS_MeshElement::setIsMarked( bool is ) const
+{
+  const_cast< SMDS_MeshElement* >( this )->myShapeId = ( myShapeId & ~BIT_IS_MARKED ) | is;
+}
+inline bool SMDS_MeshElement::isMarked() const
+{
+  return myShapeId & BIT_IS_MARKED;
+}
 
 // ============================================================
 /*!
@@ -216,8 +233,8 @@ struct TIDTypeCompare {
 // WARNING: this comparator makes impossible to store both nodes and elements in the same set
 // because there are nodes and elements with the same ID. Use TIDTypeCompare for such containers.
 struct TIDCompare {
-  bool operator () (const SMDS_MeshElement* e1, const SMDS_MeshElement* e2) const
-  { return e1->GetID() < e2->GetID(); }
+  template<typename T> bool operator () (const T* e1, const T* e2) const
+  { return static_cast<const SMDS_MeshElement*>(e1)->GetID() < static_cast<const SMDS_MeshElement*>(e2)->GetID(); }
 };
 
 #endif

@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -37,8 +37,8 @@ class STDMESHERS_EXPORT StdMeshers_Geometric1D: public StdMeshers_Reversible1D
 public:
   StdMeshers_Geometric1D(int hypId, int studyId, SMESH_Gen* gen);
 
-  void SetStartLength(double length);
-  void SetCommonRatio(double factor);
+  void SetStartLength(double length) noexcept(false);
+  void SetCommonRatio(double factor) noexcept(false);
 
   double GetStartLength() const;
   double GetCommonRatio() const;

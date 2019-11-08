@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -43,20 +43,20 @@ class STDMESHERS_EXPORT StdMeshers_Adaptive1D : public SMESH_Hypothesis
   /*!
    * Sets minimal allowed segment length
    */
-  void SetMinSize( double minSegLen );
+  void SetMinSize( double minSegLen ) noexcept(false);
   double GetMinSize() const { return myMinSize; }
 
   /*!
    * Sets maximal allowed segment length
    */
-  void SetMaxSize( double maxSegLen );
+  void SetMaxSize( double maxSegLen ) noexcept(false);
   double GetMaxSize() const { return myMaxSize; }
 
   /*!
    * Sets <deflection> parameter value, 
    * i.e. a maximal allowed distance between a segment and an edge.
    */
-  void SetDeflection(double value);
+  void SetDeflection(double value) noexcept(false);
   double GetDeflection() const { return myDeflection; }
   
   virtual std::ostream & SaveTo(std::ostream & save);

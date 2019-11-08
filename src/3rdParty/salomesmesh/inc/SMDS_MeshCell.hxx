@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2010-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -33,7 +33,7 @@ public:
   virtual ~SMDS_MeshCell();
 
   virtual bool ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes)= 0;
-  virtual bool vtkOrder(const SMDS_MeshNode* /*nodes*/[], const int /*nbNodes*/) {return true; }
+  virtual bool vtkOrder(const SMDS_MeshNode* nodes[], const int nbNodes) { return true; }
 
   static VTKCellType         toVtkType (SMDSAbs_EntityType vtkType);
   static SMDSAbs_EntityType  toSmdsType(VTKCellType vtkType);
@@ -53,7 +53,7 @@ public:
   template< class VECT > // interlacedIDs[i] = smdsIDs[ indices[ i ]]
     static void applyInterlace( const std::vector<int>& interlace, VECT & data)
   {
-    if ( interlace.empty() ) return;
+    if ( interlace.size() < data.size() ) return;
     VECT tmpData( data.size() );
     for ( size_t i = 0; i < data.size(); ++i )
       tmpData[i] = data[ interlace[i] ];
@@ -62,7 +62,7 @@ public:
   template< class VECT > // interlacedIDs[ indices[ i ]] = smdsIDs[i]
     static void applyInterlaceRev( const std::vector<int>& interlace, VECT & data)
   {
-    if ( interlace.empty() ) return;
+    if ( interlace.size() < data.size() ) return;
     VECT tmpData( data.size() );
     for ( size_t i = 0; i < data.size(); ++i )
       tmpData[ interlace[i] ] = data[i];

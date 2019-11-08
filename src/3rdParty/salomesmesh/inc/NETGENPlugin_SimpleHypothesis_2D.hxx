@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -45,7 +45,7 @@ public:
   /*!
    * Sets <number of segments> value
    */
-  void SetNumberOfSegments(int nb);
+  void SetNumberOfSegments(int nb) noexcept(false);
   /*!
    * Returns <number of segments> value.
    * Can be zero in case if LocalLength() has been set
@@ -55,7 +55,7 @@ public:
   /*!
    * Sets <segment length> value
    */
-  void SetLocalLength(double segmentLength);
+  void SetLocalLength(double segmentLength) noexcept(false);
   /*!
    * Returns <segment length> value.
    * Can be zero in case if NumberOfSegments() has been set

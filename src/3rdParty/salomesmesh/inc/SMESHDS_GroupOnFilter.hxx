@@ -65,13 +65,14 @@ class SMESHDS_EXPORT SMESHDS_GroupOnFilter: public SMESHDS_GroupBase
 
   virtual SMDS_ElemIteratorPtr GetElements() const;
 
-  virtual VTK_MTIME_TYPE GetTic() const;
+  virtual int  GetTic() const;
 
   bool         IsUpToDate() const;
 
  private:
 
   void update() const;
+  bool updateParallel() const;
   void setChanged(bool changed=true);
   const SMDS_MeshElement* setNbElemToSkip( SMDS_ElemIteratorPtr& elIt );
   int getElementIds( void* ids, size_t idSize ) const;
@@ -86,7 +87,7 @@ class SMESHDS_EXPORT SMESHDS_GroupOnFilter: public SMESHDS_GroupBase
   std::vector< int >                    myMeshInfo;
   std::vector< const SMDS_MeshElement*> myElements;
   bool                                  myElementsOK;
-  VTK_MTIME_TYPE                        myMeshModifTime; // when myMeshInfo was updated
+  size_t                                myMeshModifTime; // when myMeshInfo was updated
   int                                   myPredicateTic;
   size_t                                myNbElemToSkip;
 };

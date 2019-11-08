@@ -28,50 +28,24 @@
 #define _SMESH_MeshVSLink_HeaderFile
 
 #if OCC_VERSION_HEX < 0x070000
-#ifndef _Handle_SMESH_MeshVSLink_HeaderFile
 #include <Handle_SMESH_MeshVSLink.hxx>
 #endif
-#endif
 
-#ifndef _Standard_HeaderFile
 #include <Standard.hxx>
-#endif
-#ifndef _TColStd_PackedMapOfInteger_HeaderFile
 #include <TColStd_PackedMapOfInteger.hxx>
-#endif
-#ifndef _TColStd_HArray2OfInteger_HeaderFile
 #include <TColStd_HArray2OfInteger.hxx>
-#endif
-#ifndef _TColStd_HArray2OfReal_HeaderFile
 #include <TColStd_HArray2OfReal.hxx>
-#endif
-#ifndef _MeshVS_DataSource3D_HeaderFile
 #include <MeshVS_DataSource3D.hxx>
-#endif
-#ifndef _Standard_Boolean_HeaderFile
 #include <Standard_Boolean.hxx>
-#endif
-#ifndef _Standard_Integer_HeaderFile
 #include <Standard_Integer.hxx>
-#endif
-#ifndef _MeshVS_EntityType_HeaderFile
 #include <MeshVS_EntityType.hxx>
-#endif
-#ifndef _Standard_Address_HeaderFile
 #include <Standard_Address.hxx>
-#endif
-#ifndef _TColStd_HArray1OfInteger_HeaderFile
 #include <TColStd_HArray1OfInteger.hxx>
-#endif
-#ifndef _Standard_Real_HeaderFile
 #include <Standard_Real.hxx>
-#endif
-#ifndef _SMESH_Mesh_HeaderFile
-#include <SMESH_Mesh.hxx>
-#endif
-#ifndef _Standard_Version_HeaderFile
 #include <Standard_Version.hxx>
-#endif
+
+#include <SMESH_Mesh.hxx>
+#include <SMESH_subMesh.hxx>
 
 #if OCC_VERSION_HEX >= 0x070000
 DEFINE_STANDARD_HANDLE(SMESH_MeshVSLink, MeshVS_DataSource3D)
@@ -83,7 +57,9 @@ class SMESH_MeshVSLink : public MeshVS_DataSource3D {
 	//
 
 	//! Constructor <br>
-	Standard_EXPORT SMESH_MeshVSLink(const SMESH_Mesh *aMesh);
+	SMESH_EXPORT SMESH_MeshVSLink(const SMESH_Mesh *aMesh);
+
+	SMESH_EXPORT SMESH_MeshVSLink(const SMESH_subMesh *aSubMesh);
 
 	//Not implemented yet
 	/*
@@ -105,32 +81,38 @@ class SMESH_MeshVSLink : public MeshVS_DataSource3D {
 	//! by co-ordinates. For element this method must return all its nodes co-ordinates in the strict order: X, Y, Z and <br>
 	//! with nodes order is the same as in wire bounding the face or link. NbNodes is number of nodes of element. <br>
 	//! It is recommended to return 1 for node. Type is an element type. <br>
-	Standard_EXPORT   Standard_Boolean GetGeom(const Standard_Integer ID,const Standard_Boolean IsElement,TColStd_Array1OfReal& Coords,Standard_Integer& NbNodes,MeshVS_EntityType& Type) const override;
+	SMESH_EXPORT   Standard_Boolean GetGeom(const Standard_Integer ID,const Standard_Boolean IsElement,TColStd_Array1OfReal& Coords,Standard_Integer& NbNodes,MeshVS_EntityType& Type) const override;
 
-	Standard_EXPORT   Standard_Boolean Get3DGeom(const Standard_Integer ID,Standard_Integer& NbNodes,Handle(MeshVS_HArray1OfSequenceOfInteger)& Data) const override;
+	SMESH_EXPORT   Standard_Boolean Get3DGeom(const Standard_Integer ID,Standard_Integer& NbNodes,Handle(MeshVS_HArray1OfSequenceOfInteger)& Data) const override;
 
 	//! This method is similar to GetGeom, but returns only element or node type. This method is provided for <br>
 	//! a fine performance. <br>
-	Standard_EXPORT   Standard_Boolean GetGeomType(const Standard_Integer ID,const Standard_Boolean IsElement,MeshVS_EntityType& Type) const override;
+	SMESH_EXPORT   Standard_Boolean GetGeomType(const Standard_Integer ID,const Standard_Boolean IsElement,MeshVS_EntityType& Type) const override;
 
 	//! This method returns by number an address of any entity which represents element or node data structure. <br>
-	Standard_EXPORT   Standard_Address GetAddr(const Standard_Integer ID,const Standard_Boolean IsElement) const override;
+	SMESH_EXPORT   Standard_Address GetAddr(const Standard_Integer ID,const Standard_Boolean IsElement) const override;
 
 	//! This method returns information about what node this element consist of. <br>
-	Standard_EXPORT /*virtual*/  Standard_Boolean GetNodesByElement(const Standard_Integer ID,TColStd_Array1OfInteger& NodeIDs,Standard_Integer& NbNodes) const override;
+	SMESH_EXPORT /*virtual*/  Standard_Boolean GetNodesByElement(const Standard_Integer ID,TColStd_Array1OfInteger& NodeIDs,Standard_Integer& NbNodes) const override;
 
 	//! This method returns map of all nodes the object consist of. <br>
-	Standard_EXPORT  const TColStd_PackedMapOfInteger& GetAllNodes() const override;
+	SMESH_EXPORT  const TColStd_PackedMapOfInteger& GetAllNodes() const override;
 
 	//! This method returns map of all elements the object consist of. <br>
-	Standard_EXPORT  const TColStd_PackedMapOfInteger& GetAllElements() const override;
+	SMESH_EXPORT  const TColStd_PackedMapOfInteger& GetAllElements() const override;
 
 	//! This method calculates normal of face, which is using for correct reflection presentation. <br>
 	//! There is default method, for advance reflection this method can be redefined. <br>
-	Standard_EXPORT Standard_Boolean GetNormal(const Standard_Integer Id,const Standard_Integer Max,Standard_Real& nx,Standard_Real& ny,Standard_Real& nz) const override;
+	SMESH_EXPORT Standard_Boolean GetNormal(const Standard_Integer Id,const Standard_Integer Max,Standard_Real& nx,Standard_Real& ny,Standard_Real& nz) const override;
 
 	//! This method returns map of all groups the object contains. <br>
-	Standard_EXPORT void GetAllGroups(TColStd_PackedMapOfInteger& Ids) const override;
+	SMESH_EXPORT void GetAllGroups(TColStd_PackedMapOfInteger& Ids) const override;
+
+	// Find element from mesh element ID
+	SMESH_EXPORT const SMDS_MeshElement* FindElement(const int ID) const;
+
+	// Find node from mesh node ID
+	SMESH_EXPORT const SMDS_MeshNode* FindNode(const int ID) const;
 
 	// Type management
 	//
@@ -157,6 +139,7 @@ class SMESH_MeshVSLink : public MeshVS_DataSource3D {
 	TColStd_PackedMapOfInteger myNodes;
 	TColStd_PackedMapOfInteger myElements;
 	TColStd_PackedMapOfInteger myGroups;
+	SMESH_subMesh *mySubMesh;
 };
 #include <SMESH_MeshVSLink.ixx>
 // other Inline functions and methods (like "C++: function call" methods)

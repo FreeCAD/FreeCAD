@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -69,7 +69,6 @@ protected:
   void AddInverseElement(const SMDS_MeshElement * ME);
   void RemoveInverseElement(const SMDS_MeshElement * parent);
   void ClearInverseElements();
-  bool emptyInverseElements();
 
   SMDS_ElemIteratorPtr
   elementsIterator(SMDSAbs_ElementType type) const;

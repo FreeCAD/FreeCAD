@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -186,6 +186,16 @@ class STDMESHERS_EXPORT StdMeshers_PrismAsBlock: public SMESH_Block
   }
 
   /*!
+   * \brief Return pointer to column of nodes
+    * \param node - bottom node from which the returned column goes up
+    * \retval const TNodeColumn* - the found column
+   */
+  bool HasNodeColumn(const SMDS_MeshNode* node) const
+  {
+    return myShapeIndex2ColumnMap.count( node->getshapeId() );
+  }
+
+  /*!
    * \brief Return transformations to get coordinates of nodes of each internal layer
    *        by nodes of the bottom. Layer is a set of nodes at a certain step
    *        from bottom to top.
@@ -270,7 +280,7 @@ private:
     TParam2ColumnMap*               myParamToColumnMap;
     PSurface                        mySurface;
     TopoDS_Edge                     myBaseEdge;
-    map< int, PSurface >            myShapeID2Surf;
+    std::map< int, PSurface >       myShapeID2Surf;
     // first and last normalized params and orientaion for each component or it-self
     std::vector< std::pair< double, double> > myParams; // select my columns in myParamToColumnMap
     bool                            myIsForward;
@@ -472,7 +482,7 @@ public:
     * \param nodeColumns - columns of nodes generated from nodes of a mesh face
     * \param helper - helper initialized by mesh and shape to add prisms to
    */
-  static void AddPrisms( std::vector<const TNodeColumn*> & nodeColumns,
+  static bool AddPrisms( std::vector<const TNodeColumn*> & nodeColumns,
                          SMESH_MesherHelper*               helper);
 
   static bool IsApplicable(const TopoDS_Shape & aShape, bool toCheckAll);

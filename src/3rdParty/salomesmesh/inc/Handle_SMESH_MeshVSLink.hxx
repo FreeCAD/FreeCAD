@@ -27,15 +27,9 @@
 #ifndef _Handle_SMESH_MeshVSLink_HeaderFile
 #define _Handle_SMESH_MeshVSLink_HeaderFile
 
-#ifndef _Standard_Macro_HeaderFile
 #include <Standard_Macro.hxx>
-#endif
-#ifndef _Standard_HeaderFile
 #include <Standard.hxx>
-#endif
-#ifndef _Standard_Version_HeaderFile
 #include <Standard_Version.hxx>
-#endif
 
 #if OCC_VERSION_HEX < 0x070000
 #ifndef _Handle_MeshVS_DataSource3D_HeaderFile
@@ -48,7 +42,7 @@ class Standard_Transient;
 class Standard_Type;
 class SMESH_MeshVSLink;
 
-Standard_EXPORT Handle(Standard_Type)& STANDARD_TYPE(SMESH_MeshVSLink);
+SMESH_EXPORT Handle(Standard_Type)& STANDARD_TYPE(SMESH_MeshVSLink);
 
 class Handle(SMESH_MeshVSLink) : public Handle(MeshVS_DataSource3D) {
   public:
@@ -78,7 +72,7 @@ class Handle(SMESH_MeshVSLink) : public Handle(MeshVS_DataSource3D) {
       return (SMESH_MeshVSLink *)ControlAccess();
      }
  
-   Standard_EXPORT static const Handle(SMESH_MeshVSLink) DownCast(const Handle(Standard_Transient)& AnObject);
+   SMESH_EXPORT static const Handle(SMESH_MeshVSLink) DownCast(const Handle(Standard_Transient)& AnObject);
 };
 #endif // OCC_VERSION_HEX < 0x070000
 #endif

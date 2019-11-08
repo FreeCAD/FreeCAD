@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -69,12 +69,12 @@ public:
 
   SMDS_Mesh();
   
-  //! to retreive this SMDS_Mesh instance from its elements (index stored in SMDS_Elements)
+  //! to retrieve this SMDS_Mesh instance from its elements (index stored in SMDS_Elements)
   static std::vector<SMDS_Mesh*> _meshList;
 
   //! actual nodes coordinates, cells definition and reverse connectivity are stored in a vtkUnstructuredGrid
-  inline SMDS_UnstructuredGrid* getGrid() {return myGrid; }
-  inline int getMeshId() {return myMeshId; }
+  inline SMDS_UnstructuredGrid* getGrid() { return myGrid; }
+  inline int getMeshId() { return myMeshId; }
 
   virtual SMDS_NodeIteratorPtr   nodesIterator     (bool idInceasingOrder=false) const;
   virtual SMDS_EdgeIteratorPtr   edgesIterator     (bool idInceasingOrder=false) const;
@@ -695,7 +695,7 @@ public:
     * \param doNotRaise - if true, suppres exception, just return free memory size
     * \retval int - amount of available memory in MB or negative number in failure case
    */
-  static int CheckMemory(const bool doNotRaise=false);
+  static int CheckMemory(const bool doNotRaise=false) noexcept(false);
 
   int MaxNodeID() const;
   int MinNodeID() const;
@@ -705,6 +705,7 @@ public:
   const SMDS_MeshInfo& GetMeshInfo() const { return myInfo; }
 
   virtual int NbNodes() const;
+  virtual int NbElements() const;
   virtual int Nb0DElements() const;
   virtual int NbBalls() const;
   virtual int NbEdges() const;
@@ -739,22 +740,18 @@ public:
   typedef std::vector<SMDS_MeshNode *> SetOfNodes;
   typedef std::vector<SMDS_MeshCell *> SetOfCells;
 
-  void updateNodeMinMax();
-  void updateBoundingBox();
+  //void updateBoundingBox();
   double getMaxDim();
   int fromVtkToSmds(int vtkid);
 
-  void incrementNodesCapacity(int nbNodes);
-  void incrementCellsCapacity(int nbCells);
-  void adjustStructure();
-  void dumpGrid(string ficdump="dumpGrid");
+  void dumpGrid(std::string ficdump="dumpGrid");
   static int chunkSize;
 
   //! low level modification: add, change or remove node or element
   inline void setMyModified() { this->myModified = true; }
 
   void Modified();
-  VTK_MTIME_TYPE GetMTime() const;
+  vtkMTimeType GetMTime() const;
   bool isCompacted();
 
 protected:
@@ -789,7 +786,7 @@ protected:
   {
     assert(ID >= 0);
     myElementIDFactory->adjustMaxId(ID);
-    if (ID >= static_cast<int>(myCells.size()))
+    if (ID >= (int)myCells.size())
       myCells.resize(ID+SMDS_Mesh::chunkSize,0);
   }
 
@@ -809,10 +806,10 @@ protected:
   int myMeshId;
 
   //! actual nodes coordinates, cells definition and reverse connectivity are stored in a vtkUnstructuredGrid
-  SMDS_UnstructuredGrid*      myGrid;
+  SMDS_UnstructuredGrid*        myGrid;
 
   //! Small objects like SMDS_MeshNode are allocated by chunks to limit memory costs of new
-  ObjectPool<SMDS_MeshNode>* myNodePool;
+  ObjectPool<SMDS_MeshNode>*    myNodePool;
 
   //! Small objects like SMDS_VtkVolume are allocated by chunks to limit memory costs of new
   ObjectPool<SMDS_VtkVolume>*   myVolumePool;
@@ -820,36 +817,30 @@ protected:
   ObjectPool<SMDS_VtkEdge>*     myEdgePool;
   ObjectPool<SMDS_BallElement>* myBallPool;
 
-  //! SMDS_MeshNodes refer to vtk nodes (vtk id = index in myNodes),store reference to this mesh, and sub-shape
-  SetOfNodes             myNodes;
-
-  //! SMDS_MeshCells refer to vtk cells (vtk id != index in myCells),store reference to this mesh, and sub-shape
-  SetOfCells             myCells;
+  //! SMDS_MeshNodes refer to vtk nodes (vtk id != index in myNodes),store reference to this mesh, and sub-shape
+  SetOfNodes                    myNodes;
+  SetOfCells                    myCells;
 
   //! a buffer to speed up elements addition by excluding some memory allocation
-  std::vector<vtkIdType> myNodeIds;
+  std::vector<vtkIdType>        myNodeIds;
 
   //! for cells only: index = ID in vtkUnstructuredGrid, value = ID for SMDS users
-  std::vector<int>       myCellIdVtkToSmds;
+  std::vector<int>              myCellIdVtkToSmds;
 
-  SMDS_Mesh *            myParent;
-  std::list<SMDS_Mesh *> myChildren;
-  SMDS_MeshNodeIDFactory *myNodeIDFactory;
-  SMDS_MeshElementIDFactory *myElementIDFactory;
-  SMDS_MeshInfo          myInfo;
+  SMDS_Mesh *                   myParent;
+  std::list<SMDS_Mesh *>        myChildren;
+  SMDS_MeshNodeIDFactory *      myNodeIDFactory;
+  SMDS_MeshElementIDFactory *   myElementIDFactory;
+  SMDS_MeshInfo                 myInfo;
 
+  //! any add, remove or change of node or cell
+  bool myModified;
   //! use a counter to keep track of modifications
   unsigned long myModifTime, myCompactTime;
-
-  int myNodeMin;
-  int myNodeMax;
 
   bool myHasConstructionEdges;
   bool myHasConstructionFaces;
   bool myHasInverseElements;
-
-  //! any add, remove or change of node or cell
-  bool myModified;
 
   double xmin;
   double xmax;

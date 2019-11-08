@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -21,8 +21,8 @@
 //  File   : StdMeshers_CompositeBlock_3D.hxx
 //  Module : SMESH
 //
-#ifndef _SMESH_CompositeSegment_1D_HXX_
-#define _SMESH_CompositeSegment_1D_HXX_
+#ifndef _SMESH_CompositeHexa_3D_HXX_
+#define _SMESH_CompositeHexa_3D_HXX_
 
 #include "SMESH_StdMeshers.hxx"
 #include "SMESH_Algo.hxx"
@@ -57,15 +57,15 @@ public:
 
 private:
 
-  bool findBoxFaces( const TopoDS_Shape&    shape,
+  bool findBoxFaces( const TopoDS_Shape&         shape,
                      std::list< _QuadFaceGrid >& boxFaceContainer,
-                     SMESH_Mesh&            mesh,
-                     _QuadFaceGrid * &      fBottom,
-                     _QuadFaceGrid * &      fTop,
-                     _QuadFaceGrid * &      fFront,
-                     _QuadFaceGrid * &      fBack,
-                     _QuadFaceGrid * &      fLeft,
-                     _QuadFaceGrid * &      fRight);
+                     SMESH_Mesh&                 mesh,
+                     _QuadFaceGrid * &           fBottom,
+                     _QuadFaceGrid * &           fTop,
+                     _QuadFaceGrid * &           fFront,
+                     _QuadFaceGrid * &           fBack,
+                     _QuadFaceGrid * &           fLeft,
+                     _QuadFaceGrid * &           fRight);
 };
 
 #endif

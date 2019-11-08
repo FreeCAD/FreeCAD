@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -20,13 +20,13 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-#ifndef MED_Utilities_HeaderFile
-#define MED_Utilities_HeaderFile
+#ifndef UNV_Utilities_HeaderFile
+#define UNV_Utilities_HeaderFile
 
 #include "SMESH_DriverUNV.hxx"
 
-#include <iostream>     
-#include <sstream>      
+#include <iostream>
+#include <sstream>
 #include <fstream>
 #include <string>
 #include <stdexcept>
@@ -48,7 +48,7 @@ namespace UNV{
   };
 
   /**
-   * @returns \p false when error occured, \p true otherwise.
+   * @returns \p false when error occurred, \p true otherwise.
    * Adjusts the \p in_stream to the beginning of the
    * dataset \p ds_name.
    */
@@ -95,17 +95,17 @@ namespace UNV{
    */
   inline double D_to_e(std::string& number)
   {
-    /* find "D" in string, start looking at 
+    /* find "D" in string, start looking at
      * 6th element, to improve speed.
-     * We dont expect a "D" earlier
+     * We don't expect a "D" earlier
      */
-    const int position = number.find("D",6);
-    if(position != std::string::npos){
-      number.replace(position, 1, "e"); 
-    }
+    const size_t position = number.find("D",6);
+    if ( position != std::string::npos )
+      number.replace(position, 1, "e");
+
     return atof (number.c_str());
   }
-  
+
   /**
    * @returns \p false when file is incorrect, \p true otherwise.
    * Check file with name \p theFileName for correct terminate

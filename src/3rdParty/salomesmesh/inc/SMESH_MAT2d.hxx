@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -30,7 +30,6 @@
 
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Edge.hxx>
-#include <gp.hxx> //added for occ6
 
 #include <vector>
 #include <map>
@@ -121,9 +120,9 @@ namespace SMESH_MAT2d
 
   public: // internal: construction
 
-    void init( std::vector<const TVDEdge*>&                maEdges,
-               const Boundary*                             boundary,
-               std::map< const TVDVertex*, BranchEndType > endType);
+    void init( std::vector<const TVDEdge*>&                 maEdges,
+               const Boundary*                              boundary,
+               std::map< const TVDVertex*, BranchEndType >& endType);
     void setBranchesToEnds( const std::vector< Branch >&   branches);
     BranchPoint getPoint( const TVDVertex* vertex ) const;
     void setRemoved( const BranchPoint& proxyPoint );

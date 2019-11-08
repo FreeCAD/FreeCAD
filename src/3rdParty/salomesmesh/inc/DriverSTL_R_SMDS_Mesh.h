@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -35,16 +35,18 @@ class MESHDRIVERSTL_EXPORT DriverSTL_R_SMDS_Mesh: public Driver_SMDS_Mesh
   DriverSTL_R_SMDS_Mesh();
   virtual Status Perform();
   void           SetIsCreateFaces( const bool theIsCreate = true );
+  std::string    GetName() const { return myName; }
   
  private:
   // PRIVATE METHODS
-  Status           readAscii (SMESH_File& file) const;
-  Status           readBinary(SMESH_File& file) const;
-  
+  Status         readAscii (SMESH_File& file) const;
+  Status         readBinary(SMESH_File& file) const;
+
  private:
   // PRIVATE FIELDS
-  bool myIsCreateFaces;
-  bool myIsAscii;
+  bool        myIsCreateFaces;
+  bool        myIsAscii;
+  std::string myName;
 };
 
 #endif

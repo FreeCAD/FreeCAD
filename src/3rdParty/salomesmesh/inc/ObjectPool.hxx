@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2010-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -44,6 +44,7 @@ private:
   int _chunkSize;
   int _maxOccupied;
   int _nbHoles;
+  int _lastDelChunk;
 
   int getNextFree()
   {
@@ -84,6 +85,7 @@ public:
     _nbHoles = 0;
     _chunkList.clear();
     _freeList.clear();
+    _lastDelChunk = 0;
   }
 
   virtual ~ObjectPool()
@@ -126,27 +128,30 @@ public:
 
   void destroy(X* obj)
   {
-    long adrobj = (long) (obj);
-    for (size_t i = 0; i < _chunkList.size(); i++)
+    size_t i = 0;
+    if ( obj >= _chunkList[ _lastDelChunk ] &&
+         obj <  _chunkList[ _lastDelChunk ] + _chunkSize )
+      i = _lastDelChunk;
+    else
+      for ( ; i < _chunkList.size(); i++ )
       {
-        X* chunk = _chunkList[i];
-        long adrmin = (long) (chunk);
-        if (adrobj < adrmin)
-          continue;
-        long adrmax = (long) (chunk + _chunkSize);
-        if (adrobj >= adrmax)
-          continue;
-        int rank = (adrobj - adrmin) / sizeof(X);
-        int toFree = i * _chunkSize + rank;
-        _freeList[toFree] = true;
-        if (toFree < _nextFree)
-          _nextFree = toFree;
-        if (toFree < _maxOccupied)
-          _nbHoles += 1;
-        //obj->clean();
-        //checkDelete(i); compactage non fait
-        break;
+        if ( obj >= _chunkList[ i ] &&
+             obj <  _chunkList[ i ] + _chunkSize )
+          break;
       }
+    X*    chunk = _chunkList[i];
+    long adrobj = (long) (obj);
+    long adrmin = (long) (chunk);
+    int  rank   = (adrobj - adrmin) / sizeof(X);
+    int  toFree = i * _chunkSize + rank;
+    _freeList[toFree] = true;
+    if (toFree < _nextFree)
+      _nextFree = toFree;
+    if (toFree < _maxOccupied)
+      _nbHoles += 1;
+    _lastDelChunk = i;
+    //obj->clean();
+    //checkDelete(i); compactage non fait
   }
 
   void clear()
@@ -155,6 +160,7 @@ public:
     _maxAvail = 0;
     _maxOccupied = 0;
     _nbHoles = 0;
+    _lastDelChunk = 0;
     for (size_t i = 0; i < _chunkList.size(); i++)
       delete[] _chunkList[i];
     clearVector( _chunkList );

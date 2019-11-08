@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -87,12 +87,7 @@ public:
    *        parameters of hypothesis.
    */
   virtual bool DataDependOnParams() const { return false; }
-  void  SetParameters(const char *theParameters);
-  char* GetParameters() const;
 
-  void SetLastParameters(const char* theParameters);
-  char* GetLastParameters() const;
-  void ClearParameters();
   /*!
    * \brief Initialize my parameter values by the mesh built on the geometry
    *  \param theMesh - the built mesh
@@ -119,7 +114,7 @@ public:
    * 
    * An auxiliary hypothesis is optional, i.e. an algorithm
    * can work without it and another hypothesis of the same
-   * dimention can be assigned to the shape
+   * dimension can be assigned to the shape
    */
   virtual bool IsAuxiliary() const
   { return GetType() == PARAM_ALGO && _param_algo_dim < 0; }
@@ -137,8 +132,8 @@ protected:
 
 private:
   std::string _libName; // name of library of plug-in Engine
-  std::string _parameters;
-  std::string _lastParameters;
+  //std::string _parameters;
+  //std::string _lastParameters;
 };
 
 #endif

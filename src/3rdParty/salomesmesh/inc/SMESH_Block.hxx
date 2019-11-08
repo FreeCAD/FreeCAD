@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -29,9 +29,9 @@
 
 #include "SMESH_Utils.hxx"
 
-// #include <Geom2d_Curve.hxx>
-// #include <Geom_Curve.hxx>
-// #include <Geom_Surface.hxx>
+//#include <Geom2d_Curve.hxx>
+//#include <Geom_Curve.hxx>
+//#include <Geom_Surface.hxx>
 
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfOrientedShape.hxx>
@@ -314,7 +314,7 @@ public:
   // TFace, TEdge's and points for that face only
 
   // Note 2: curve adaptors need to have only Value(double), FirstParameter() and
-  // LastParameter() defined to be used by Block algoritms
+  // LastParameter() defined to be used by Block algorithms
 
   class SMESHUtils_EXPORT TEdge {
     int                myCoordInd;

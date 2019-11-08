@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,6 @@
 
 #include "SMESH_SMESH.hxx"
 
-#include "SMDS_MeshElement.hxx"
 #include "SMESHDS_SubMesh.hxx"
 #include "SMESH_TypeDefs.hxx"
 
@@ -37,6 +36,7 @@
 #include <boost/shared_ptr.hpp>
 
 class SMDS_MeshNode;
+class SMDS_MeshElement;
 class SMESHDS_Mesh;
 class SMESH_Mesh;
 
@@ -66,8 +66,8 @@ public:
     virtual void         AddElement(const SMDS_MeshElement * e);
     virtual int          NbElements() const;
     virtual int          NbNodes() const;
-    virtual SMDS_ElemIteratorPtr GetElements() const;
-    virtual SMDS_NodeIteratorPtr GetNodes() const;
+    virtual SMDS_ElemIteratorPtr GetElements(bool reverse=false) const;
+    virtual SMDS_NodeIteratorPtr GetNodes(bool reverse=false) const;
     virtual void         Clear();
     virtual bool         Contains(const SMDS_MeshElement * ME) const;
 

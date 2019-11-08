@@ -1,4 +1,4 @@
-// Copyright (C) 2006-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2006-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -46,11 +46,11 @@ protected:
   static int _nbChrono;
 };
 
-class SMDS_EXPORT chrono
+class SMDS_EXPORT salome_chrono
 {
 public:
-  chrono(int i);
-  ~chrono();
+  salome_chrono(int i);
+  ~salome_chrono();
   void stop();
 protected:
   bool _run;
@@ -61,7 +61,7 @@ protected:
 #ifdef CHRONODEF
 #define CHRONO(i) counters::_ctrs[i]._ctrNames = (char *)__FILE__; \
   counters::_ctrs[i]._ctrLines = __LINE__; \
-  chrono aChrono##i(i);
+  salome_chrono aChrono##i(i);
 
 #define CHRONOSTOP(i) aChrono##i.stop();
 

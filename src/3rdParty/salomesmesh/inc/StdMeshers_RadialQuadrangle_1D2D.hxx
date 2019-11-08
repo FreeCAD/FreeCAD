@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -24,20 +24,19 @@
 #ifndef _SMESH_RadialQuadrangle_1D2D_HXX_
 #define _SMESH_RadialQuadrangle_1D2D_HXX_
 
-#include "SMESH_StdMeshers.hxx"
-
-#include "SMESH_Algo.hxx"
-
-#include <TopoDS_Edge.hxx>
+#include "StdMeshers_Quadrangle_2D.hxx"
 
 #include <vector>
 
 class StdMeshers_NumberOfLayers;
 class StdMeshers_LayerDistribution;
-class SMESH_MesherHelper;
-class gp_Pnt;
 
-class STDMESHERS_EXPORT StdMeshers_RadialQuadrangle_1D2D: public SMESH_2D_Algo
+/*!
+ * \brief Algorithm generating quadrangles on a full or a part of an elliptic face.
+ *        Elements around an ellipse center are triangles.
+ */
+
+class STDMESHERS_EXPORT StdMeshers_RadialQuadrangle_1D2D: public StdMeshers_Quadrangle_2D
 {
 public:
   StdMeshers_RadialQuadrangle_1D2D(int hypId, int studyId, SMESH_Gen* gen);
@@ -63,16 +62,14 @@ public:
 
 protected:
 
-  bool computeLayerPositions(const gp_Pnt&      p1,
-                             const gp_Pnt&      p2,
-                             const TopoDS_Edge& linEdge=TopoDS_Edge(),
-                             bool*              linEdgeComputed = 0);
+  int computeLayerPositions(StdMeshers_FaceSidePtr linSide,
+                            std::vector< double >& positions,
+                            int*                   nbEdgesComputed = 0,
+                            bool                   useHalf = false);
 
 
   const StdMeshers_NumberOfLayers*    myNbLayerHypo;
   const StdMeshers_LayerDistribution* myDistributionHypo;
-  SMESH_MesherHelper*                 myHelper;
-  std::vector< double >               myLayerPositions;
 };
 
 #endif

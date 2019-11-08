@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -67,10 +67,10 @@ class NETGENPLUGIN_EXPORT NETGENPlugin_NETGEN_3D: public SMESH_3D_Algo
 
  protected:
 
-  bool compute(SMESH_Mesh&                     mesh,
-               SMESH_MesherHelper&             helper,
-               vector< const SMDS_MeshNode* >& nodeVec,
-               nglib::Ng_Mesh*                 ngMesh);
+  bool compute(SMESH_Mesh&                          mesh,
+               SMESH_MesherHelper&                  helper,
+               std::vector< const SMDS_MeshNode* >& nodeVec,
+               nglib::Ng_Mesh*                      ngMesh);
 
   double _maxElementVolume;
 

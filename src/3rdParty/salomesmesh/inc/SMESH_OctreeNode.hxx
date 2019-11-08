@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -62,7 +62,7 @@ class SMESHUtils_EXPORT SMESH_OctreeNode : public SMESH_Octree
   virtual ~SMESH_OctreeNode () {};
 
   // Tells us if Node is inside the current box with the precision "precision"
-  virtual bool isInside(const gp_XYZ& p, const double precision = 0.);
+  virtual const bool isInside(const gp_XYZ& p, const double precision = 0.);
 
   // Return in Result a list of Nodes potentials to be near Node
   void               NodesAround(const SMDS_MeshNode *            node,

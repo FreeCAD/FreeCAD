@@ -1,0 +1,1380 @@
+From 6a85ded471847ff756c70a00b43b057221999b6e Mon Sep 17 00:00:00 2001
+From: Trevor Laughlin <trevor@laughlinresearch.com>
+Date: Wed, 25 Oct 2017 22:21:31 -0400
+Subject: [PATCH 1/7] Initial fixes for OCCT 7.2.0
+
+---
+ libsrc/occ/occgeom.cpp | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/libsrc/occ/occgeom.cpp b/libsrc/occ/occgeom.cpp
+index 1d8e86d..46a4741 100644
+--- a/libsrc/occ/occgeom.cpp
++++ b/libsrc/occ/occgeom.cpp
+@@ -27,7 +27,7 @@
+ 
+ #if OCC_VERSION_HEX < 0x070000
+ #else
+-   #include "StlTransfer.hxx"
++   // #include "StlTransfer.hxx"
+    #include "TopoDS_Iterator.hxx"
+ #endif
+ 
+@@ -170,7 +170,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+          {
+             TopoDS_Edge edge = TopoDS::Edge(exp1.Current());
+             if ( BRep_Tool::Degenerated(edge) )
+-               rebuild->Remove(edge, false);
++               rebuild->Remove(edge);
+          }
+          shape = rebuild->Apply(shape);
+       }
+@@ -239,7 +239,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+                   cout << "(natural bounds added)" <<endl;
+                TopoDS_Face newface = sff->Face();
+ 
+-               rebuild->Replace(face, newface, Standard_False);
++               rebuild->Replace(face, newface);
+             }
+ 
+             // Set the original colour of the face to the newly created 
+@@ -258,7 +258,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+          {
+             TopoDS_Edge edge = TopoDS::Edge(exp1.Current());
+             if ( BRep_Tool::Degenerated(edge) )
+-               rebuild->Remove(edge, false);
++               rebuild->Remove(edge);
+          }
+          shape = rebuild->Apply(shape);
+       }
+@@ -322,7 +322,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+                if(replace)
+                {
+                   TopoDS_Wire newwire = sfw->Wire();
+-                  rebuild->Replace(oldwire, newwire, Standard_False);
++                  rebuild->Replace(oldwire, newwire);
+                }
+ 
+                //delete sfw; sfw = NULL;
+@@ -352,7 +352,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+                      cout << "removing degenerated edge " << emap.FindIndex(edge)
+                         << " from vertex " << vmap.FindIndex(TopExp::FirstVertex (edge))
+                         << " to vertex " << vmap.FindIndex(TopExp::LastVertex (edge)) << endl;
+-                     rebuild->Remove(edge, false);
++                     rebuild->Remove(edge);
+                   }
+                }
+             }
+@@ -370,7 +370,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+             {
+                TopoDS_Edge edge = TopoDS::Edge(exp1.Current());
+                if ( BRep_Tool::Degenerated(edge) )
+-                  rebuild->Remove(edge, false);
++                  rebuild->Remove(edge);
+             }
+             shape = rebuild->Apply(shape);
+          }
+@@ -496,7 +496,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+          {
+             TopoDS_Edge edge = TopoDS::Edge(exp1.Current());
+             if ( BRep_Tool::Degenerated(edge) )
+-               rebuild->Remove(edge, false);
++               rebuild->Remove(edge);
+          }
+          shape = rebuild->Apply(shape);
+       }
+@@ -537,7 +537,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+                   BRepLib::OrientClosedSolid (newsolid);
+                   Handle_ShapeBuild_ReShape rebuild = new ShapeBuild_ReShape;
+                   //		  rebuild->Apply(shape);
+-                  rebuild->Replace(solid, newsolid, Standard_False);
++                  rebuild->Replace(solid, newsolid);
+                   TopoDS_Shape newshape = rebuild->Apply(shape, TopAbs_COMPSOLID);//, 1);
+                   //		  TopoDS_Shape newshape = rebuild->Apply(shape);
+                   shape = newshape;
+@@ -959,7 +959,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+             TopoDS_Solid newsolid = solid;
+             BRepLib::OrientClosedSolid (newsolid);
+             Handle_ShapeBuild_ReShape rebuild = new ShapeBuild_ReShape;
+-            rebuild->Replace(solid, newsolid, Standard_False);
++            rebuild->Replace(solid, newsolid);
+ 
+             TopoDS_Shape newshape = rebuild->Apply(shape, TopAbs_SHAPE, 1);
+             shape = newshape;
+-- 
+2.15.0.windows.1
+
+
+From 1d891eba83d8c4b6c8eb4cf248858f3063435bf6 Mon Sep 17 00:00:00 2001
+From: Trevor Laughlin <trevor@laughlinresearch.com>
+Date: Sat, 28 Oct 2017 12:59:29 -0400
+Subject: [PATCH 2/7] Export symbols needed for SMESH
+
+---
+ libsrc/meshing/meshclass.hpp |  2 +-
+ libsrc/meshing/meshtype.hpp  | 16 ++++++++--------
+ libsrc/occ/occgeom.hpp       |  6 +++---
+ libsrc/occ/occmeshsurf.hpp   |  3 ++-
+ nglib/nglib.cpp              |  3 ++-
+ 5 files changed, 16 insertions(+), 14 deletions(-)
+
+diff --git a/libsrc/meshing/meshclass.hpp b/libsrc/meshing/meshclass.hpp
+index 563a559..b677073 100644
+--- a/libsrc/meshing/meshclass.hpp
++++ b/libsrc/meshing/meshclass.hpp
+@@ -343,7 +343,7 @@ namespace netgen
+     void SetDimension (int dim) { dimension = dim; }
+ 
+     /// sets internal tables
+-    void CalcSurfacesOfNode ();
++	DLL_HEADER void CalcSurfacesOfNode ();
+ 
+     /// additional (temporarily) fix points 
+     void FixPoints (const BitArray & fixpoints);
+diff --git a/libsrc/meshing/meshtype.hpp b/libsrc/meshing/meshtype.hpp
+index 8f04a2f..ca0c989 100644
+--- a/libsrc/meshing/meshtype.hpp
++++ b/libsrc/meshing/meshtype.hpp
+@@ -377,19 +377,19 @@ namespace netgen
+ 
+   public:
+     ///
+-    Element2d () = default;
+-    Element2d (const Element2d &) = default;
+-    Element2d (Element2d &&) = default;
+-    Element2d & operator= (const Element2d &) = default;
+-    Element2d & operator= (Element2d &&) = default;
++	DLL_HEADER Element2d () = default;
++	DLL_HEADER Element2d (const Element2d &) = default;
++	DLL_HEADER Element2d (Element2d &&) = default;
++	DLL_HEADER Element2d & operator= (const Element2d &) = default;
++	DLL_HEADER Element2d & operator= (Element2d &&) = default;
+     ///
+-    Element2d (int anp);
++	DLL_HEADER Element2d (int anp);
+     ///
+     DLL_HEADER Element2d (ELEMENT_TYPE type);
+     ///
+-    Element2d (int pi1, int pi2, int pi3);
++	DLL_HEADER Element2d (int pi1, int pi2, int pi3);
+     ///
+-    Element2d (int pi1, int pi2, int pi3, int pi4);
++	DLL_HEADER Element2d (int pi1, int pi2, int pi3, int pi4);
+     ///
+     ELEMENT_TYPE GetType () const { return typ; }
+     /// 
+diff --git a/libsrc/occ/occgeom.hpp b/libsrc/occ/occgeom.hpp
+index 831b54e..222fcd2 100644
+--- a/libsrc/occ/occgeom.hpp
++++ b/libsrc/occ/occgeom.hpp
+@@ -244,7 +244,7 @@ namespace netgen
+       }
+ 
+ 
+-     virtual void Save (string filename) const;
++	  DLL_HEADER virtual void Save (string filename) const;
+ 
+ 
+       DLL_HEADER void BuildFMap();
+@@ -275,7 +275,7 @@ namespace netgen
+          return OCCSurface (TopoDS::Face(fmap(surfi)), PLANESPACE);
+       }
+ 
+-      void CalcBoundingBox ();
++	  DLL_HEADER void CalcBoundingBox ();
+       DLL_HEADER void BuildVisualizationMesh (double deflection);
+ 
+       void RecursiveTopologyTree (const TopoDS_Shape & sh,
+@@ -440,7 +440,7 @@ namespace netgen
+    // Philippose - 31.09.2009
+    // External access to the mesh generation functions within the OCC
+    // subsystem (Not sure if this is the best way to implement this....!!)
+-   extern int OCCGenerateMesh (OCCGeometry & occgeometry, shared_ptr<Mesh> & mesh,
++   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry & occgeometry, shared_ptr<Mesh> & mesh,
+ 			       MeshingParameters & mparam);
+ 
+    DLL_HEADER extern void OCCSetLocalMeshSize(OCCGeometry & geom, Mesh & mesh);
+diff --git a/libsrc/occ/occmeshsurf.hpp b/libsrc/occ/occmeshsurf.hpp
+index 198ade6..3817207 100644
+--- a/libsrc/occ/occmeshsurf.hpp
++++ b/libsrc/occ/occmeshsurf.hpp
+@@ -4,6 +4,7 @@
+ #define FILE_OCCMESHSURF
+ 
+ #include "occgeom.hpp"
++#include "mydefs.hpp"
+ 
+ #define PARAMETERSPACE -1
+ #define PLANESPACE     1
+@@ -169,7 +170,7 @@ public:
+ class OCCGeometry;
+ 
+ 
+-class OCCRefinementSurfaces : public Refinement
++class DLL_HEADER OCCRefinementSurfaces : public Refinement
+ {
+   const OCCGeometry & geometry;
+ 
+diff --git a/nglib/nglib.cpp b/nglib/nglib.cpp
+index 5fea184..3e773ed 100644
+--- a/nglib/nglib.cpp
++++ b/nglib/nglib.cpp
+@@ -91,7 +91,8 @@ namespace nglib
+    // Clean-up functions before ending usage of nglib
+    DLL_HEADER void Ng_Exit ()
+    {
+-      ;
++	   delete testout;
++	   testout = 0;
+    }
+ 
+ 
+-- 
+2.15.0.windows.1
+
+
+From 85b4fcda85a4c141a6d9593defcbbbebf3249075 Mon Sep 17 00:00:00 2001
+From: Trevor Laughlin <trevor@laughlinresearch.com>
+Date: Sat, 28 Oct 2017 13:09:45 -0400
+Subject: [PATCH 3/7] Optional build for GUI. Use c++1y.
+
+---
+ CMakeLists.txt            |  2 +-
+ libsrc/occ/CMakeLists.txt | 10 +++++++---
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index be79eb6..1f537b2 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -207,7 +207,7 @@ if(WIN32)
+ else(WIN32)
+     # build shared libraries
+     set(NG_LIB_TYPE SHARED)
+-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
++    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
+ endif(WIN32)
+ if(APPLE)
+     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -undefined dynamic_lookup")
+diff --git a/libsrc/occ/CMakeLists.txt b/libsrc/occ/CMakeLists.txt
+index 2f10e54..065b25f 100644
+--- a/libsrc/occ/CMakeLists.txt
++++ b/libsrc/occ/CMakeLists.txt
+@@ -5,12 +5,16 @@ add_library(occ ${NG_LIB_TYPE}
+         occconstruction.cpp occgenmesh.cpp occgeom.cpp occmeshsurf.cpp python_occ.cpp
+         )
+ 
+-add_library(occvis ${NG_LIB_TYPE} vsocc.cpp)
++if(USE_GUI)
++    add_library(occvis ${NG_LIB_TYPE} vsocc.cpp)
++endif(USE_GUI)
+ 
+ if(NOT WIN32)
+     target_link_libraries( occ ${OCC_LIBRARIES} ${PYTHON_LIBRARIES})
+-    target_link_libraries( occvis occ )
+-    install( TARGETS occ occvis ${NG_INSTALL_DIR})
++    if(USE_GUI)
++        target_link_libraries( occvis occ )
++        install( TARGETS occ occvis ${NG_INSTALL_DIR})
++    endif(USE_GUI)
+ endif(NOT WIN32)
+ 
+ install(FILES
+-- 
+2.15.0.windows.1
+
+
+From e668ff4592dac6a663ec25560c1ce00684ad07b4 Mon Sep 17 00:00:00 2001
+From: Trevor Laughlin <trevor@laughlinresearch.com>
+Date: Sat, 28 Oct 2017 13:14:52 -0400
+Subject: [PATCH 4/7] Install mydefs.hpp to make it easier to determine version
+
+---
+ libsrc/include/CMakeLists.txt | 2 +-
+ libsrc/include/mydefs.hpp     | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/libsrc/include/CMakeLists.txt b/libsrc/include/CMakeLists.txt
+index 2be510c..be20944 100644
+--- a/libsrc/include/CMakeLists.txt
++++ b/libsrc/include/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-install(FILES nginterface.h nginterface_v2.hpp DESTINATION ${NG_INSTALL_DIR_INCLUDE} COMPONENT netgen_devel)
++install(FILES nginterface.h nginterface_v2.hpp mydefs.hpp DESTINATION ${NG_INSTALL_DIR_INCLUDE} COMPONENT netgen_devel)
+ 
+ install(FILES
+   acisgeom.hpp csg.hpp geometry2d.hpp gprim.hpp incopengl.hpp
+diff --git a/libsrc/include/mydefs.hpp b/libsrc/include/mydefs.hpp
+index 694dc97..735c4c4 100644
+--- a/libsrc/include/mydefs.hpp
++++ b/libsrc/include/mydefs.hpp
+@@ -7,6 +7,8 @@
+ /* Date:   10. Mar. 98                                                    */
+ /**************************************************************************/
+ 
++#define PACKAGE_VERSION "6.2"
++
+ /*
+   defines for graphics, testmodes, ...
+ */
+-- 
+2.15.0.windows.1
+
+
+From bfe452ca6c1f5f1175a632dc7130a9c444f076c8 Mon Sep 17 00:00:00 2001
+From: Trevor Laughlin <trevor@laughlinresearch.com>
+Date: Sat, 28 Oct 2017 13:21:17 -0400
+Subject: [PATCH 5/7] Install nglib.h
+
+---
+ nglib/CMakeLists.txt | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/nglib/CMakeLists.txt b/nglib/CMakeLists.txt
+index 965abc8..6a4e232 100644
+--- a/nglib/CMakeLists.txt
++++ b/nglib/CMakeLists.txt
+@@ -43,4 +43,9 @@ if(USE_PYTHON)
+ endif(USE_PYTHON)
+ 
+ install(TARGETS nglib ${NG_INSTALL_DIR})
+-install(FILES nglib.h DESTINATION ${NG_INSTALL_DIR_INCLUDE}/include COMPONENT netgen_devel)
++install(FILES nglib.h DESTINATION ${NG_INSTALL_DIR_INCLUDE}/nglib COMPONENT netgen_devel)
++install(FILES nglib.h DESTINATION ${NG_INSTALL_DIR_INCLUDE} COMPONENT netgen_devel)
++install(FILES
++  nglib.h
++  DESTINATION ${INCDIR}/nglib COMPONENT netgen_devel
++)
+-- 
+2.15.0.windows.1
+
+
+From 27cb17d923214cf9f641e78522ed27f47644b851 Mon Sep 17 00:00:00 2001
+From: Trevor Laughlin <trevor@laughlinresearch.com>
+Date: Sun, 29 Oct 2017 22:39:46 -0400
+Subject: [PATCH 6/7] Support for SMESH 8.3.0
+
+---
+ libsrc/occ/occgenmesh.cpp | 4 ++--
+ libsrc/occ/occgeom.cpp    | 7 +++++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/libsrc/occ/occgenmesh.cpp b/libsrc/occ/occgenmesh.cpp
+index 7a26bf1..1a0062e 100644
+--- a/libsrc/occ/occgenmesh.cpp
++++ b/libsrc/occ/occgenmesh.cpp
+@@ -1291,8 +1291,8 @@ namespace netgen
+       if (mparam.perfstepsstart <= MESHCONST_ANALYSE)
+       {
+         // delete mesh;
+-        // mesh = make_shared<Mesh>();
+-         mesh->geomtype = Mesh::GEOM_OCC;
++        mesh = make_shared<Mesh>();
++        mesh->geomtype = Mesh::GEOM_OCC;
+          
+          OCCSetLocalMeshSize(geom,*mesh);
+       }
+diff --git a/libsrc/occ/occgeom.cpp b/libsrc/occ/occgeom.cpp
+index 46a4741..2d86696 100644
+--- a/libsrc/occ/occgeom.cpp
++++ b/libsrc/occ/occgeom.cpp
+@@ -26,9 +26,12 @@
+ #endif
+ 
+ #if OCC_VERSION_HEX < 0x070000
++// pass
++#elif OCC_VERSION_HEX < 0x070200
++#include "StlTransfer.hxx"
++#include "TopoDS_Iterator.hxx"
+ #else
+-   // #include "StlTransfer.hxx"
+-   #include "TopoDS_Iterator.hxx"
++#include "TopoDS_Iterator.hxx"
+ #endif
+ 
+ namespace netgen
+-- 
+2.15.0.windows.1
+
+
+From 39b4e2cee340a8c58828eeb9a18e6c0a7178dc3a Mon Sep 17 00:00:00 2001
+From: Trevor Laughlin <trevor@laughlinresearch.com>
+Date: Mon, 30 Oct 2017 21:34:25 -0400
+Subject: [PATCH 7/7] Manually apply netgen53ForSalome.patch
+
+---
+ libsrc/meshing/findip.hpp        |   3 +
+ libsrc/meshing/improve3.cpp      |   6 +-
+ libsrc/meshing/meshtype.cpp      |  15 ++--
+ libsrc/occ/Partition_Inter3d.cxx |   6 +-
+ libsrc/occ/Partition_Inter3d.hxx |   8 +-
+ libsrc/occ/Partition_Spliter.hxx |   2 +-
+ libsrc/occ/occgenmesh.cpp        | 153 +++++++++++++++++++++++++++++++++------
+ libsrc/occ/occgeom.cpp           | 111 ++++++++++++++++++++++------
+ libsrc/occ/occgeom.hpp           |  30 ++++++--
+ libsrc/occ/occmeshsurf.cpp       |  55 +++++++++-----
+ libsrc/occ/utilities.h           |   1 +
+ nglib/nglib.h                    |   2 +-
+ 12 files changed, 305 insertions(+), 87 deletions(-)
+
+diff --git a/libsrc/meshing/findip.hpp b/libsrc/meshing/findip.hpp
+index f5d8e42..31d5a4c 100644
+--- a/libsrc/meshing/findip.hpp
++++ b/libsrc/meshing/findip.hpp
+@@ -75,6 +75,9 @@ inline int FindInnerPoint (POINTArray & points,
+   static int timer = NgProfiler::CreateTimer ("FindInnerPoint");
+   NgProfiler::RegionTimer reg (timer);
+ 
++  if (points.Size() < 3)
++	  return 0;
++
+   Array<Vec3d> a;
+   Array<double> c;
+   Mat<3> m, inv;
+diff --git a/libsrc/meshing/improve3.cpp b/libsrc/meshing/improve3.cpp
+index 0dde9ba..672e1e7 100644
+--- a/libsrc/meshing/improve3.cpp
++++ b/libsrc/meshing/improve3.cpp
+@@ -1207,6 +1207,7 @@ void MeshOptimize3d :: SwapImprove (Mesh & mesh, OPTIMIZEGOAL goal,
+ 
+ 	      tetused = false;
+ 	      tetused[0] = true;
++		  int nbtetused = 0;
+ 
+ 	      for (int l = 2; l < nsuround; l++)
+ 		{
+@@ -1227,10 +1228,13 @@ void MeshOptimize3d :: SwapImprove (Mesh & mesh, OPTIMIZEGOAL goal,
+ 
+ 			      tetused[k] = true; 
+ 			      suroundpts[l] = newpi;
++				  ++nbtetused;
+ 			    }
+ 			}
+ 		}
+-	      
++
++		  if (nbtetused < nsuround)
++			  continue;
+ 	      
+ 	      bad1 = 0;
+ 	      for (int k = 0; k < nsuround; k++)
+diff --git a/libsrc/meshing/meshtype.cpp b/libsrc/meshing/meshtype.cpp
+index 5fab1c5..3c56ac0 100644
+--- a/libsrc/meshing/meshtype.cpp
++++ b/libsrc/meshing/meshtype.cpp
+@@ -1,4 +1,5 @@
+ #include <mystdlib.h>
++#include <float.h>
+ 
+ #include "meshing.hpp"  
+ 
+@@ -703,7 +704,7 @@ namespace netgen
+ 
+         double det = trans.Det();
+ 
+-        if (det <= 0)
++        if (det <= DBL_MIN)
+           err += 1e12;
+         else
+           err += frob * frob / det;
+@@ -759,7 +760,7 @@ namespace netgen
+ 
+             double det = trans(0,0)*trans(1,1)-trans(1,0)*trans(0,1);
+ 
+-            if (det <= 0)
++            if (det <= DBL_MIN)
+               {
+                 dd = 0;
+                 return 1e12;
+@@ -843,7 +844,7 @@ namespace netgen
+           = dtrans(0,0) * trans(1,1) - trans(0,1) * dtrans(1,0)
+           + trans(0,0) * dtrans(1,1) - dtrans(0,1) * trans(1,0);
+ 
+-        if (det <= 0)
++        if (det <= DBL_MIN)
+           err += 1e12;
+         else
+           {
+@@ -893,7 +894,7 @@ namespace netgen
+         frob /= 2;
+ 
+         double det = trans.Det();
+-        if (det <= 0)
++        if (det <= DBL_MIN)
+           err += 1e12;
+         else
+           err += frob * frob / det;
+@@ -2119,7 +2120,7 @@ namespace netgen
+ 
+         double det = -trans.Det();
+       
+-        if (det <= 0)
++        if (det <= DBL_MIN)
+           err += 1e12;
+         else
+           err += frob * frob * frob / det;
+@@ -2191,7 +2192,7 @@ namespace netgen
+         ddet *= -1;
+ 
+       
+-        if (det <= 0)
++        if (det <= DBL_MIN)
+           err += 1e12;
+         else
+           {
+@@ -2273,7 +2274,7 @@ namespace netgen
+       
+         det *= -1;
+       
+-        if (det <= 0)
++        if (det <= DBL_MIN)
+           err += 1e12;
+         else
+           {
+diff --git a/libsrc/occ/Partition_Inter3d.cxx b/libsrc/occ/Partition_Inter3d.cxx
+index 9fe1641..a401088 100644
+--- a/libsrc/occ/Partition_Inter3d.cxx
++++ b/libsrc/occ/Partition_Inter3d.cxx
+@@ -206,7 +206,7 @@ static void PutInBounds (const TopoDS_Face&          F,
+   Handle (Geom_Surface) S   = BRep_Tool::Surface(F,L);
+ 
+   if (S->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
+-    S = (*(Handle_Geom_RectangularTrimmedSurface*)&S)->BasisSurface();
++	S = Handle(Geom_RectangularTrimmedSurface)::DownCast(S)->BasisSurface();
+   }
+   if (!S->IsUPeriodic() && !S->IsVPeriodic())
+     return;
+@@ -702,7 +702,7 @@ TopTools_MapOfShape& Partition_Inter3d::TouchedFaces()
+ //purpose  : 
+ //=======================================================================
+ 
+-Handle_BRepAlgo_AsDes Partition_Inter3d::AsDes() const 
++Handle(BRepAlgo_AsDes) Partition_Inter3d::AsDes() const 
+ {
+   return myAsDes;
+ }
+@@ -829,7 +829,7 @@ TopoDS_Vertex Partition_Inter3d::ReplaceSameDomainV(const TopoDS_Vertex& V,
+ //purpose  : 
+ //=======================================================================
+ 
+-Handle_BRepAlgo_AsDes Partition_Inter3d::SectionEdgesAD() const
++Handle(BRepAlgo_AsDes) Partition_Inter3d::SectionEdgesAD() const
+ {
+   return mySectionEdgesAD;
+ }
+diff --git a/libsrc/occ/Partition_Inter3d.hxx b/libsrc/occ/Partition_Inter3d.hxx
+index 93af077..f2133c2 100644
+--- a/libsrc/occ/Partition_Inter3d.hxx
++++ b/libsrc/occ/Partition_Inter3d.hxx
+@@ -96,13 +96,13 @@ public:
+    void FacesPartition(const TopoDS_Face& F1,const TopoDS_Face& F2) ;
+    Standard_Boolean IsDone(const TopoDS_Face& F1,const TopoDS_Face& F2) const;
+    TopTools_MapOfShape& TouchedFaces() ;
+-   Handle_BRepAlgo_AsDes AsDes() const;
++   Handle(BRepAlgo_AsDes) AsDes() const;
+    TopTools_MapOfShape& NewEdges() ;
+    Standard_Boolean HasSameDomainF(const TopoDS_Shape& F) const;
+    Standard_Boolean IsSameDomainF(const TopoDS_Shape& F1,const TopoDS_Shape& F2) const;
+    const TopTools_ListOfShape& SameDomain(const TopoDS_Face& F) const;
+    TopoDS_Vertex ReplaceSameDomainV(const TopoDS_Vertex& V,const TopoDS_Edge& E) const;
+-   Handle_BRepAlgo_AsDes SectionEdgesAD() const;
++   Handle(BRepAlgo_AsDes) SectionEdgesAD() const;
+    Standard_Boolean IsSectionEdge(const TopoDS_Edge& E) const;
+    Standard_Boolean HasSectionEdge(const TopoDS_Face& F) const;
+    Standard_Boolean IsSplitOn(const TopoDS_Edge& NewE,const TopoDS_Edge& OldE,const TopoDS_Face& F) const;
+@@ -134,11 +134,11 @@ private:
+ 
+    // Fields PRIVATE
+    //
+-   Handle_BRepAlgo_AsDes myAsDes;
++   Handle(BRepAlgo_AsDes) myAsDes;
+    TopTools_DataMapOfShapeListOfShape myDone;
+    TopTools_MapOfShape myTouched;
+    TopTools_MapOfShape myNewEdges;
+-   Handle_BRepAlgo_AsDes mySectionEdgesAD;
++   Handle(BRepAlgo_AsDes) mySectionEdgesAD;
+    TopTools_DataMapOfShapeListOfShape mySameDomainFM;
+    TopTools_DataMapOfShapeShape mySameDomainVM;
+ 
+diff --git a/libsrc/occ/Partition_Spliter.hxx b/libsrc/occ/Partition_Spliter.hxx
+index e75e989..1cb6c57 100644
+--- a/libsrc/occ/Partition_Spliter.hxx
++++ b/libsrc/occ/Partition_Spliter.hxx
+@@ -143,7 +143,7 @@ private:
+    TopTools_DataMapOfShapeShape myFaceShapeMap;
+    TopTools_DataMapOfShapeShape myInternalFaces;
+    TopTools_DataMapOfShapeShape myIntNotClFaces;
+-   Handle_BRepAlgo_AsDes myAsDes;
++   Handle(BRepAlgo_AsDes) myAsDes;
+    BRepAlgo_Image myImagesFaces;
+    BRepAlgo_Image myImagesEdges;
+    BRepAlgo_Image myImageShape;
+diff --git a/libsrc/occ/occgenmesh.cpp b/libsrc/occ/occgenmesh.cpp
+index 1a0062e..79f0d03 100644
+--- a/libsrc/occ/occgenmesh.cpp
++++ b/libsrc/occ/occgenmesh.cpp
+@@ -172,7 +172,8 @@ namespace netgen
+             return;
+ 
+ 
+-         if (h > 30) return;
++		 // commented to restrict H on a large sphere for example
++		 //if (h > 30) return;
+       }
+ 
+       if (h < maxside && depth < 10)
+@@ -250,8 +251,8 @@ namespace netgen
+       hvalue[0] = 0;
+       pnt = c->Value(s0);
+ 
+-      double olddist = 0;
+-      double dist = 0;
++      // double olddist = 0; -- useless variables
++      // double dist = 0;
+ 
+       int tmpVal = (int)(DIVIDEEDGESECTIONS);
+ 
+@@ -259,15 +260,17 @@ namespace netgen
+       {
+          oldpnt = pnt;
+          pnt = c->Value(s0+(i/double(DIVIDEEDGESECTIONS))*(s1-s0));
++		 // -- no more than 1 segment per <edge length>/DIVIDEEDGESECTIONS
+          hvalue[i] = hvalue[i-1] +
+-            1.0/mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z()))*
+-            pnt.Distance(oldpnt);
++            // 1.0/mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z()))*
++            // pnt.Distance(oldpnt);
++			min(1.0, 1.0 / mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z())) * pnt.Distance(oldpnt));
+ 
+          //(*testout) << "mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z())) " << mesh.GetH(Point3d(pnt.X(), pnt.Y(), pnt.Z()))
+          //	   <<  " pnt.Distance(oldpnt) " << pnt.Distance(oldpnt) << endl;
+ 
+-         olddist = dist;
+-         dist = pnt.Distance(oldpnt);
++         // olddist = dist; -- useless variables
++         // dist = pnt.Distance(oldpnt);
+       }
+ 
+       //  nsubedges = int(ceil(hvalue[DIVIDEEDGESECTIONS]));
+@@ -282,7 +285,10 @@ namespace netgen
+       {
+          if (hvalue[i1]/hvalue[DIVIDEEDGESECTIONS]*nsubedges >= i)
+          {
+-            params[i] = s0+(i1/double(DIVIDEEDGESECTIONS))*(s1-s0);
++			// -- for nsubedges comparable to DIVIDEEDGESECTIONS
++			//params[i] = s0+(i1/double(DIVIDEEDGESECTIONS))*(s1-s0);
++			double d1 = i1 - (hvalue[i1] - i*hvalue[DIVIDEEDGESECTIONS] / nsubedges) / (hvalue[i1] - hvalue[i1 - 1]);
++			params[i] = s0 + (d1 / double(DIVIDEEDGESECTIONS))*(s1 - s0);
+             pnt = c->Value(params[i]);
+             ps[i-1] = MeshPoint (Point3d(pnt.X(), pnt.Y(), pnt.Z()));
+             i++;
+@@ -327,6 +333,9 @@ namespace netgen
+ 
+       double eps = 1e-6 * geom.GetBoundingBox().Diam();
+ 
++	  const double eps2 = eps * eps; // -- small optimization
++	  int first_vp = mesh.GetNP() + 1; // -- to support SALOME sub-meshes
++
+       for (int i = 1; i <= nvertices; i++)
+       {
+          gp_Pnt pnt = BRep_Tool::Pnt (TopoDS::Vertex(geom.vmap(i)));
+@@ -334,8 +343,8 @@ namespace netgen
+ 
+          bool exists = 0;
+          if (merge_solids)
+-            for (PointIndex pi = 1; pi <= mesh.GetNP(); pi++)
+-               if ( Dist2 (mesh[pi], Point<3>(mp)) < eps*eps)
++            for (PointIndex pi = 1; pi <= mesh.GetNP(); pi++)
++			   if (Dist2(mesh[pi], Point<3>(mp)) < eps2) // -- small optimization
+                {
+                   exists = 1;
+                   break;
+@@ -365,6 +374,7 @@ namespace netgen
+          {
+             TopoDS_Face face = TopoDS::Face(exp1.Current());
+             int facenr = geom.fmap.FindIndex(face);
++			if (facenr < 1) continue; // -- to support SALOME sub-meshes
+ 
+             if (face2solid[0][facenr-1] == 0)
+                face2solid[0][facenr-1] = solidnr;
+@@ -384,6 +394,7 @@ namespace netgen
+       int facenr = 0;
+       int edgenr = 0;
+ 
++	  edgenr = mesh.GetNSeg(); // to support SALOME sub-meshes
+ 
+       (*testout) << "faces = " << geom.fmap.Extent() << endl;
+       int curr = 0;
+@@ -449,6 +460,7 @@ namespace netgen
+                   //(*testout) << "ignoring degenerated edge" << endl;
+                   continue;
+                }
++			   if (geom.emap.FindIndex(edge) < 1) continue; // to support SALOME sub-meshes
+ 
+                if (geom.vmap.FindIndex(TopExp::FirstVertex (edge)) ==
+                   geom.vmap.FindIndex(TopExp::LastVertex (edge)))
+@@ -481,20 +493,109 @@ namespace netgen
+ 
+                if (!merge_solids)
+                {
+-                  pnums[0] = geom.vmap.FindIndex (TopExp::FirstVertex (edge));
+-                  pnums[pnums.Size()-1] = geom.vmap.FindIndex (TopExp::LastVertex (edge));
++				  //pnums[0] = geom.vmap.FindIndex (TopExp::FirstVertex (edge));
++				  //pnums[pnums.Size()-1] = geom.vmap.FindIndex (TopExp::LastVertex (edge));
++				  MeshPoint dfltP(Point<3>(0, 0, 0));
++				  int *ipp[] = { &pnums[0], &pnums[pnums.Size() - 1] };
++				  TopoDS_Iterator vIt(edge, false);
++				  TopoDS_Vertex v[2];
++				  v[0] = TopoDS::Vertex(vIt.Value()); vIt.Next();
++				  v[1] = TopoDS::Vertex(vIt.Value());
++				  if (v[0].Orientation() == TopAbs_REVERSED)
++				    std::swap(v[0], v[1]);
++				  for (int i = 0; i < 2; ++i)
++				  {
++				    int &ip = *ipp[i];
++					ip = geom.vmap.FindIndex(v[i]);
++					if (ip == 0 || ip > nvertices)
++					{
++					  int iv = ip;
++					  if (ip == 0)
++					  ip = iv = geom.vmap.Add(v[i]);
++					  gp_Pnt pnt = BRep_Tool::Pnt(v[i]);
++					  MeshPoint mp(Point<3>(pnt.X(), pnt.Y(), pnt.Z()));
++					  for (PointIndex pi = 1; pi < first_vp; pi++)
++					  if (Dist2(mesh.Point(pi), Point<3>(mp)) < 1e-100)
++					  {
++					    ip = pi;
++						if (mesh.Point(ip).GetLayer() != dfltP.GetLayer() && mesh.Point(ip).GetLayer() != iv)
++						  continue;
++						if (mesh.Point(ip).GetLayer() == dfltP.GetLayer())
++						  mesh.Point(ip) = MeshPoint(mesh.Point(ip), iv);
++						  break;
++					   }
+                }
+                else
+                {
+-                  Point<3> fp = occ2ng (BRep_Tool::Pnt (TopExp::FirstVertex (edge)));
+-                  Point<3> lp = occ2ng (BRep_Tool::Pnt (TopExp::LastVertex (edge)));
++                  // Point<3> fp = occ2ng (BRep_Tool::Pnt (TopExp::FirstVertex (edge)));
++                  // Point<3> lp = occ2ng (BRep_Tool::Pnt (TopExp::LastVertex (edge)));
++				  ip += first_vp - 1;
++			     }
++			    }
++			   }
++			   else
++			   {
++				 TopoDS_Iterator vIt(edge, false);
++				 TopoDS_Vertex v1 = TopoDS::Vertex(vIt.Value()); vIt.Next();
++				 TopoDS_Vertex v2 = TopoDS::Vertex(vIt.Value());
++				 if (v1.Orientation() == TopAbs_REVERSED)
++			       std::swap(v1, v2);
++				   const bool isClosedEdge = v1.IsSame(v2);
++
++				   Point<3> fp = occ2ng(BRep_Tool::Pnt(v1));
++				   Point<3> lp = occ2ng(BRep_Tool::Pnt(v2));
++				   double tol2 = std::min(eps*eps, 1e-6 * Dist2(fp, lp));
++				   if (isClosedEdge)
++				     tol2 = BRep_Tool::Tolerance(v1) * BRep_Tool::Tolerance(v1);
+ 
+                   pnums[0] = -1;
+                   pnums.Last() = -1;
+                   for (PointIndex pi = 1; pi < first_ep; pi++)
+                   {
+-                     if (Dist2 (mesh[pi], fp) < eps*eps) pnums[0] = pi;
+-                     if (Dist2 (mesh[pi], lp) < eps*eps) pnums.Last() = pi;
++                     // if (Dist2 (mesh[pi], fp) < eps*eps) pnums[0] = pi;
++                     // if (Dist2 (mesh[pi], lp) < eps*eps) pnums.Last() = pi;
++					 if (Dist2(mesh[pi], fp) < tol2) pnums[0] = pi;
++					 if (Dist2(mesh[pi], lp) < tol2) pnums.Last() = pi;
++
++				   }
++				   if ((isClosedEdge && pnums[0] != pnums.Last()) ||
++					  (!isClosedEdge && pnums[0] == pnums.Last()))
++					   pnums[0] = pnums.Last() = -1;
++				   if (pnums[0] == -1 || pnums.Last() == -1)
++				     {
++					  // take into account a possible large gap between a vertex and an edge curve
++					  // end and a large vertex tolerance covering the whole edge
++					  if (pnums[0] == -1)
++					  {
++						double tol = BRep_Tool::Tolerance(v1);
++						for (PointIndex pi = 1; pi < first_ep; pi++)
++						  if (pi != pnums.Last() && Dist2(mesh[pi], fp) < 2 * tol*tol)
++						    pnums[0] = pi;
++
++						if (pnums[0] == -1)
++						  pnums[0] = first_ep - 1 - nvertices + geom.vmap.FindIndex(v1);
++					   }
++					   if (isClosedEdge)
++					   {
++						 pnums.Last() = pnums[0];
++						}
++					   else
++					   {
++						 if (pnums.Last() == -1)
++						 {
++						   double tol = BRep_Tool::Tolerance(v2);
++						   for (PointIndex pi = 1; pi < first_ep; pi++)
++						     if (pi != pnums[0] && Dist2(mesh[pi], lp) < 2 * tol*tol)
++							   pnums.Last() = pi;
++
++						   if (pnums.Last() == -1)
++						     pnums.Last() = first_ep - 1 - nvertices + geom.vmap.FindIndex(v2);
++						  }
++						  
++						  if (Dist2(fp, mesh[PointIndex(pnums[0])]) >
++						    Dist2(lp, mesh[PointIndex(pnums.Last())]))
++							std::swap(pnums[0], pnums.Last());
++					 }
+                   }
+                }
+ 
+@@ -503,18 +604,22 @@ namespace netgen
+                {
+                   bool exists = 0;
+                   int j;
+-                  for (j = first_ep; j <= mesh.GetNP(); j++)
+-                     if ((mesh.Point(j)-Point<3>(mp[i-1])).Length() < eps)
+-                     {
+-                        exists = 1;
+-                        break;
+-                     }
++				  for (j = first_ep; j <= mesh.GetNP(); j++)
++				  {
++					  if (!merge_solids && mesh.Point(j).GetLayer() != geomedgenr) continue; // to support SALOME fuse edges
++					  if ((mesh.Point(j) - Point<3>(mp[i - 1])).Length() < eps)
++					  {
++						  exists = 1;
++						  break;
++					  }
++				  }
+ 
+                      if (exists)
+                         pnums[i] = j;
+                      else
+                      {
+-                        mesh.AddPoint (mp[i-1]);
++                        // mesh.AddPoint (mp[i-1]);
++						mesh.AddPoint(mp[i - 1], geomedgenr); // to support SALOME fuse edges
+                         (*testout) << "add meshpoint " << mp[i-1] << endl;
+                         pnums[i] = mesh.GetNP();
+                      }
+@@ -598,6 +703,8 @@ namespace netgen
+       //		(*testout) << "edge " << mesh.LineSegment(i).edgenr << " face " << mesh.LineSegment(i).si
+       //				<< " p1 " << mesh.LineSegment(i)[0] << " p2 " << mesh.LineSegment(i)[1] << endl;
+       //	exit(10);
++	  for (int j = 1; j <= mesh.GetNP(); j++) // to support SALOME fuse edges: set level to zero
++		mesh.Point(j) = MeshPoint((Point<3>&) mesh.Point(j));
+ 
+       mesh.CalcSurfacesOfNode();
+       multithread.task = savetask;
+diff --git a/libsrc/occ/occgeom.cpp b/libsrc/occ/occgeom.cpp
+index 2d86696..0fa7a53 100644
+--- a/libsrc/occ/occgeom.cpp
++++ b/libsrc/occ/occgeom.cpp
+@@ -21,6 +21,9 @@
+ #include "XSControl_TransferReader.hxx"
+ #include "StepRepr_RepresentationItem.hxx"
+ 
++#include <BRepTopAdaptor_FClass2d.hxx> // -- to optimize Project() and FastProject()
++#include <TopAbs_State.hxx>
++
+ #ifndef _Standard_Version_HeaderFile
+ #include <Standard_Version.hxx>
+ #endif
+@@ -36,6 +39,15 @@
+ 
+ namespace netgen
+ {
++	// free data used to optimize Project() and FastProject()
++	OCCGeometry::~OCCGeometry()
++	{
++		NCollection_DataMap<int, BRepTopAdaptor_FClass2d*>::Iterator it(fclsmap);
++		for (; it.More(); it.Next())
++			delete it.Value();
++	}
++
++
+ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * aReader, char * acName)
+ {
+    const Handle(XSControl_WorkSession)& theSession = aReader->Reader().WS();
+@@ -167,7 +179,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+       double surfacecont = 0;
+ 
+       {
+-         Handle_ShapeBuild_ReShape rebuild = new ShapeBuild_ReShape;
++         Handle(ShapeBuild_ReShape) rebuild = new ShapeBuild_ReShape;
+          rebuild->Apply(shape);
+          for (exp1.Init (shape, TopAbs_EDGE); exp1.More(); exp1.Next())
+          {
+@@ -198,7 +210,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+          cout << endl << "- repairing faces" << endl;
+ 
+          Handle(ShapeFix_Face) sff;
+-         Handle_ShapeBuild_ReShape rebuild = new ShapeBuild_ReShape;
++         Handle(ShapeBuild_ReShape) rebuild = new ShapeBuild_ReShape;
+          rebuild->Apply(shape);
+ 
+ 
+@@ -255,7 +267,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+ 
+ 
+       {
+-         Handle_ShapeBuild_ReShape rebuild = new ShapeBuild_ReShape;
++         Handle(ShapeBuild_ReShape) rebuild = new ShapeBuild_ReShape;
+          rebuild->Apply(shape);
+          for (exp1.Init (shape, TopAbs_EDGE); exp1.More(); exp1.Next())
+          {
+@@ -272,7 +284,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+          cout << endl << "- fixing small edges" << endl;
+ 
+          Handle(ShapeFix_Wire) sfw;
+-         Handle_ShapeBuild_ReShape rebuild = new ShapeBuild_ReShape;
++         Handle(ShapeBuild_ReShape) rebuild = new ShapeBuild_ReShape;
+          rebuild->Apply(shape);
+ 
+ 
+@@ -339,7 +351,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+ 
+          {
+             BuildFMap();
+-            Handle_ShapeBuild_ReShape rebuild = new ShapeBuild_ReShape;
++            Handle(ShapeBuild_ReShape) rebuild = new ShapeBuild_ReShape;
+             rebuild->Apply(shape);
+ 
+             for (exp1.Init (shape, TopAbs_EDGE); exp1.More(); exp1.Next())
+@@ -367,7 +379,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+ 
+ 
+          {
+-            Handle_ShapeBuild_ReShape rebuild = new ShapeBuild_ReShape;
++            Handle(ShapeBuild_ReShape) rebuild = new ShapeBuild_ReShape;
+             rebuild->Apply(shape);
+             for (exp1.Init (shape, TopAbs_EDGE); exp1.More(); exp1.Next())
+             {
+@@ -493,7 +505,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+ 
+ 
+       {
+-         Handle_ShapeBuild_ReShape rebuild = new ShapeBuild_ReShape;
++         Handle(ShapeBuild_ReShape) rebuild = new ShapeBuild_ReShape;
+          rebuild->Apply(shape);
+          for (exp1.Init (shape, TopAbs_EDGE); exp1.More(); exp1.Next())
+          {
+@@ -538,7 +550,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+                   TopoDS_Solid solid = TopoDS::Solid(exp0.Current());
+                   TopoDS_Solid newsolid = solid;
+                   BRepLib::OrientClosedSolid (newsolid);
+-                  Handle_ShapeBuild_ReShape rebuild = new ShapeBuild_ReShape;
++                  Handle(ShapeBuild_ReShape) rebuild = new ShapeBuild_ReShape;
+                   //		  rebuild->Apply(shape);
+                   rebuild->Replace(solid, newsolid);
+                   TopoDS_Shape newshape = rebuild->Apply(shape, TopAbs_COMPSOLID);//, 1);
+@@ -961,7 +973,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+             TopoDS_Solid solid = TopoDS::Solid(exp0.Current());
+             TopoDS_Solid newsolid = solid;
+             BRepLib::OrientClosedSolid (newsolid);
+-            Handle_ShapeBuild_ReShape rebuild = new ShapeBuild_ReShape;
++            Handle(ShapeBuild_ReShape) rebuild = new ShapeBuild_ReShape;
+             rebuild->Replace(solid, newsolid);
+ 
+             TopoDS_Shape newshape = rebuild->Apply(shape, TopAbs_SHAPE, 1);
+@@ -1010,25 +1022,60 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+    }
+ 
+ 
+-
+-
+-   void OCCGeometry :: Project (int surfi, Point<3> & p) const
++	// returns a projector and a classifier for the given surface
++	void OCCGeometry::GetFaceTools(int surfi, Handle(ShapeAnalysis_Surface)& proj, BRepTopAdaptor_FClass2d*& cls) const
++	{
++		//MSV: organize caching projector in the map
++		if (fprjmap.IsBound(surfi))
++		{
++			proj = fprjmap.Find(surfi);
++		    cls = fclsmap.Find(surfi);
++		}
++		else
++		{
++			const TopoDS_Face& aFace = TopoDS::Face(fmap(surfi));
++			Handle(Geom_Surface) aSurf = BRep_Tool::Surface(aFace);
++		    proj = new ShapeAnalysis_Surface(aSurf);
++		    fprjmap.Bind(surfi, proj);
++		    cls = new BRepTopAdaptor_FClass2d(aFace, Precision::Confusion());
++		    fclsmap.Bind(surfi, cls);
++		 }
++	}
++
++
++   // void OCCGeometry :: Project (int surfi, Point<3> & p) const
++   bool OCCGeometry::Project(int surfi, Point<3> & p, double& u, double& v) const
+    {
+       static int cnt = 0;
+       if (++cnt % 1000 == 0) cout << "Project cnt = " << cnt << endl;
+ 
+       gp_Pnt pnt(p(0), p(1), p(2));
+ 
+-      double u,v;
++      /*
++	  double u,v;
+       Handle( Geom_Surface ) thesurf = BRep_Tool::Surface(TopoDS::Face(fmap(surfi)));
+       Handle( ShapeAnalysis_Surface ) su = new ShapeAnalysis_Surface( thesurf );
+       gp_Pnt2d suval = su->ValueOfUV ( pnt, BRep_Tool::Tolerance( TopoDS::Face(fmap(surfi)) ) );
+       suval.Coord( u, v);
+       pnt = thesurf->Value( u, v );
++	  */
+ 
++	  Handle(ShapeAnalysis_Surface) proj;
++	  BRepTopAdaptor_FClass2d *cls;
++	  GetFaceTools(surfi, proj, cls);
++
++	  gp_Pnt2d p2d = proj->ValueOfUV(pnt, Precision::Confusion());
++	  if (cls->Perform(p2d) == TopAbs_OUT)
++      {
++		return false;
++	  }
++	  pnt = proj->Value(p2d);
++	  p2d.Coord(u, v);
+ 
+       p = Point<3> (pnt.X(), pnt.Y(), pnt.Z());
+ 
++	  return true;
++
+    }
+ 
+ 
+@@ -1038,7 +1085,9 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+    {
+       gp_Pnt p(ap(0), ap(1), ap(2));
+ 
+-      Handle(Geom_Surface) surface = BRep_Tool::Surface(TopoDS::Face(fmap(surfi)));
++	  // -- Optimization: use cached projector and classifier
++	  /*
++	  Handle(Geom_Surface) surface = BRep_Tool::Surface(TopoDS::Face(fmap(surfi)));
+ 
+       gp_Pnt x = surface->Value (u,v);
+ 
+@@ -1086,6 +1135,22 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+       if (count == 50) return false;
+ 
+       ap = Point<3> (x.X(), x.Y(), x.Z());
++	  */
++
++	  Handle(ShapeAnalysis_Surface) proj;
++	  BRepTopAdaptor_FClass2d *cls;
++	  GetFaceTools(surfi, proj, cls);
++
++	  gp_Pnt2d p2d = proj->NextValueOfUV(gp_Pnt2d(u, v), p, Precision::Confusion());
++	  if (cls->Perform(p2d) == TopAbs_OUT)
++	   {
++		//cout << "Projection fails" << endl;
++		return false;
++	   }
++
++	  p = proj->Value(p2d);
++	  p2d.Coord(u, v);
++	  ap = Point<3>(p.X(), p.Y(), p.Z());
+ 
+       return true;
+    }
+@@ -1118,10 +1183,10 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+       occgeo = new OCCGeometry;
+ 
+       // Initiate a dummy XCAF Application to handle the IGES XCAF Document
+-      static Handle_XCAFApp_Application dummy_app = XCAFApp_Application::GetApplication();
++      static Handle(XCAFApp_Application) dummy_app = XCAFApp_Application::GetApplication();
+ 
+       // Create an XCAF Document to contain the IGES file itself
+-      Handle_TDocStd_Document iges_doc;
++      Handle(TDocStd_Document) iges_doc;
+ 
+       // Check if a IGES File is already open under this handle, if so, close it to prevent
+       // Segmentation Faults when trying to create a new document
+@@ -1148,8 +1213,8 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+       reader.Transfer(iges_doc);
+ 
+       // Read in the shape(s) and the colours present in the IGES File
+-      Handle_XCAFDoc_ShapeTool iges_shape_contents = XCAFDoc_DocumentTool::ShapeTool(iges_doc->Main());
+-      Handle_XCAFDoc_ColorTool iges_colour_contents = XCAFDoc_DocumentTool::ColorTool(iges_doc->Main());
++      Handle(XCAFDoc_ShapeTool) iges_shape_contents = XCAFDoc_DocumentTool::ShapeTool(iges_doc->Main());
++      Handle(XCAFDoc_ColorTool) iges_colour_contents = XCAFDoc_DocumentTool::ColorTool(iges_doc->Main());
+ 
+       TDF_LabelSequence iges_shapes;
+       iges_shape_contents->GetShapes(iges_shapes);
+@@ -1196,10 +1261,10 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+       occgeo = new OCCGeometry;
+ 
+       // Initiate a dummy XCAF Application to handle the STEP XCAF Document
+-      static Handle_XCAFApp_Application dummy_app = XCAFApp_Application::GetApplication();
++      static Handle(XCAFApp_Application) dummy_app = XCAFApp_Application::GetApplication();
+ 
+       // Create an XCAF Document to contain the STEP file itself
+-      Handle_TDocStd_Document step_doc;
++      Handle(TDocStd_Document) step_doc;
+ 
+       // Check if a STEP File is already open under this handle, if so, close it to prevent
+       // Segmentation Faults when trying to create a new document
+@@ -1226,8 +1291,8 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+       reader.Transfer(step_doc);
+ 
+       // Read in the shape(s) and the colours present in the STEP File
+-      Handle_XCAFDoc_ShapeTool step_shape_contents = XCAFDoc_DocumentTool::ShapeTool(step_doc->Main());
+-      Handle_XCAFDoc_ColorTool step_colour_contents = XCAFDoc_DocumentTool::ColorTool(step_doc->Main());
++      Handle(XCAFDoc_ShapeTool) step_shape_contents = XCAFDoc_DocumentTool::ShapeTool(step_doc->Main());
++      Handle(XCAFDoc_ColorTool) step_colour_contents = XCAFDoc_DocumentTool::ColorTool(step_doc->Main());
+ 
+       TDF_LabelSequence step_shapes;
+       step_shape_contents->GetShapes(step_shapes);
+@@ -1311,7 +1376,7 @@ void STEP_GetEntityName(const TopoDS_Shape & theShape, STEPCAFControl_Reader * a
+       // Fixed a bug in the OpenCascade XDE Colour handling when 
+       // opening BREP Files, since BREP Files have no colour data.
+       // Hence, the face_colours Handle needs to be created as a NULL handle.
+-      occgeo->face_colours = Handle_XCAFDoc_ColorTool();
++      occgeo->face_colours = Handle(XCAFDoc_ColorTool)();
+       occgeo->face_colours.Nullify();
+       occgeo->changed = 1;
+       occgeo->BuildFMap();
+diff --git a/libsrc/occ/occgeom.hpp b/libsrc/occ/occgeom.hpp
+index 222fcd2..050634d 100644
+--- a/libsrc/occ/occgeom.hpp
++++ b/libsrc/occ/occgeom.hpp
+@@ -15,8 +15,8 @@
+ #include "Geom_Curve.hxx"
+ #include "Geom2d_Curve.hxx"
+ #include "Geom_Surface.hxx"
+-#include "GeomAPI_ProjectPointOnSurf.hxx"
+-#include "GeomAPI_ProjectPointOnCurve.hxx"
++// #include "GeomAPI_ProjectPointOnSurf.hxx"
++// #include "GeomAPI_ProjectPointOnCurve.hxx"
+ #include "BRepTools.hxx"
+ #include "TopExp.hxx"
+ #include "BRepBuilderAPI_MakeVertex.hxx"
+@@ -42,8 +42,8 @@
+ #include "Geom_Curve.hxx"
+ #include "Geom2d_Curve.hxx"
+ #include "Geom_Surface.hxx"
+-#include "GeomAPI_ProjectPointOnSurf.hxx"
+-#include "GeomAPI_ProjectPointOnCurve.hxx"
++// #include "GeomAPI_ProjectPointOnSurf.hxx"
++// #include "GeomAPI_ProjectPointOnCurve.hxx"
+ #include "TopoDS_Wire.hxx"
+ #include "BRepTools_WireExplorer.hxx"
+ #include "BRepTools.hxx"
+@@ -68,18 +68,26 @@
+ #include "IGESToBRep_Reader.hxx"
+ #include "Interface_Static.hxx"
+ #include "GeomAPI_ExtremaCurveCurve.hxx"
+-#include "Standard_ErrorHandler.hxx"
++// #include "Standard_ErrorHandler.hxx"
+ #include "Standard_Failure.hxx"
+ #include "ShapeUpgrade_ShellSewing.hxx"
+ #include "ShapeFix_Shape.hxx"
+ #include "ShapeFix_Wireframe.hxx"
++#include <Standard_Version.hxx>
++#if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) <= 0x060702
++// porting to OCCT6.7.3
+ #include "BRepMesh.hxx"
++#endif
+ #include "BRepMesh_IncrementalMesh.hxx"
+ #include "BRepBndLib.hxx"
+ #include "Bnd_Box.hxx"
+ #include "ShapeAnalysis.hxx"
+ #include "ShapeBuild_ReShape.hxx"
+ 
++// -- Optimization: to use cached projector and classifier
++#include <NCollection_DataMap.hxx>
++class ShapeAnalysis_Surface;
++class BRepTopAdaptor_FClass2d;
+ 
+ // Philippose - 29/01/2009
+ // OpenCascade XDE Support
+@@ -192,6 +200,9 @@ namespace netgen
+    class OCCGeometry : public NetgenGeometry
+    {
+       Point<3> center;
++	  // -- Optimization: to use cached projector and classifier
++	  mutable NCollection_DataMap<int, Handle(ShapeAnalysis_Surface)> fprjmap;
++	  mutable NCollection_DataMap<int, BRepTopAdaptor_FClass2d*> fclsmap;
+ 
+    public:
+       TopoDS_Shape shape;
+@@ -203,7 +214,7 @@ namespace netgen
+       // OpenCascade XDE Support
+       // XCAF Handle to make the face colours available to the rest of
+       // the system
+-      Handle_XCAFDoc_ColorTool face_colours;
++      Handle(XCAFDoc_ColorTool) face_colours;
+ 
+      mutable int changed;
+       Array<int> facemeshstatus;
+@@ -246,6 +257,7 @@ namespace netgen
+ 
+ 	  DLL_HEADER virtual void Save (string filename) const;
+ 
++	  DLL_HEADER ~OCCGeometry(); // -- to free cached projector and classifier
+ 
+       DLL_HEADER void BuildFMap();
+ 
+@@ -266,9 +278,13 @@ namespace netgen
+       Point<3> Center()
+       {  return center;}
+ 
+-      void Project (int surfi, Point<3> & p) const;
++	  bool Project(int surfi, Point<3> & p, double& u, double& v) const;
++
+       bool FastProject (int surfi, Point<3> & ap, double& u, double& v) const;
+ 
++	  // -- Optimization: to use cached projector and classifier
++	  void GetFaceTools(int surfi, Handle(ShapeAnalysis_Surface)& proj, BRepTopAdaptor_FClass2d*& cls) const;
++
+       OCCSurface GetSurface (int surfi)
+       {
+          cout << "OCCGeometry::GetSurface using PLANESPACE" << endl;
+diff --git a/libsrc/occ/occmeshsurf.cpp b/libsrc/occ/occmeshsurf.cpp
+index a1f60db..35cee52 100644
+--- a/libsrc/occ/occmeshsurf.cpp
++++ b/libsrc/occ/occmeshsurf.cpp
+@@ -6,6 +6,7 @@
+ #include <meshing.hpp>
+ #include <GeomLProp_SLProps.hxx>
+ #include <ShapeAnalysis_Surface.hxx>
++#include <GeomAPI_ProjectPointOnCurve.hxx> // -- moved here from occgeom.hpp
+ 
+ 
+ namespace netgen
+@@ -96,12 +97,16 @@ namespace netgen
+ 
+ 	n.Normalize();
+       }
+-    else
++	else if (lprop.IsNormalDefined())
+       {
+ 	n(0)=lprop.Normal().X();
+ 	n(1)=lprop.Normal().Y();
+ 	n(2)=lprop.Normal().Z();
+       }
++	else
++	  {
++	    n = 0;
++	   }
+ 
+     if(glob_testout)
+       {
+@@ -434,23 +439,34 @@ namespace netgen
+ 
+   void MeshOptimize2dOCCSurfaces :: ProjectPoint (INDEX surfind, Point<3> & p) const
+   {
+-    geometry.Project (surfind, p);
++	// geometry.Project (surfind, p); -- signature of Project() changed for optimization
++	double u, v;
++	geometry.Project(surfind, p, u, v);
+   }
+ 
+ 
+   int MeshOptimize2dOCCSurfaces :: ProjectPointGI (INDEX surfind, Point<3> & p, PointGeomInfo & gi) const
+   {
+-    double u = gi.u;
+-    double v = gi.v;
++    // double u = gi.u;
++    // double v = gi.v;
+ 
+     Point<3> hp = p;
+-    if (geometry.FastProject (surfind, hp, u, v))
+-      {
++	// -- u and v are computed by FastProject() and Project(), no need to call CalcPointGeomInfo()
++	// if (geometry.FastProject (surfind, hp, u, v))
++	//   {
++	//    p = hp;
++	//    return 1;
++	//   }
++	// ProjectPoint (surfind, p); 
++	// return CalcPointGeomInfo (surfind, gi, p); 
++	bool ok;
++	if (gi.trignum > 0)
++	  ok = geometry.FastProject(surfind, hp, gi.u, gi.v);
++	else
++	  ok = geometry.Project(surfind, hp, gi.u, gi.v);
+ 	p = hp;
+-	return 1;
+-      }
+-    ProjectPoint (surfind, p); 
+-    return CalcPointGeomInfo (surfind, gi, p); 
++
++	return ok;
+   }
+ 
+ 
+@@ -680,7 +696,8 @@ namespace netgen
+ 	if (!geometry.FastProject (surfi, hnewp, u, v))
+ 	  {
+ 	  //  cout << "Fast projection to surface fails! Using OCC projection" << endl;
+-	    geometry.Project (surfi, hnewp);
++	  // geometry.Project (surfi, hnewp); -- Project() changed for optimization
++	  geometry.Project(surfi, hnewp, u, v);
+ 	  }
+ 
+ 	newgi.trignum = 1;
+@@ -708,14 +725,17 @@ namespace netgen
+     hnewp = Point<3> (pnt.X(), pnt.Y(), pnt.Z());
+     newp = hnewp;
+     newgi = ap1;
+-  };
++  }
+ 
+ 
+   void OCCRefinementSurfaces :: ProjectToSurface (Point<3> & p, int surfi) const
+   {
+-    if (surfi > 0)
+-      geometry.Project (surfi, p);
+-  };
++	  if (surfi > 0)
++	  {
++		  double u, v;
++		  geometry.Project(surfi, p, u, v);
++	}
++  }
+ 
+   void OCCRefinementSurfaces :: ProjectToSurface (Point<3> & p, int surfi, PointGeomInfo & gi) const
+   {
+@@ -723,9 +743,10 @@ namespace netgen
+       if (!geometry.FastProject (surfi, p, gi.u, gi.v))
+ 	{
+ 	  cout << "Fast projection to surface fails! Using OCC projection" << endl;
+-	  geometry.Project (surfi, p);
++	  double u, v;
++	  geometry.Project(surfi, p, u, v);
+ 	}
+-  };
++  }
+ 
+ 
+ 
+diff --git a/libsrc/occ/utilities.h b/libsrc/occ/utilities.h
+index 8cb9e30..a385a49 100644
+--- a/libsrc/occ/utilities.h
++++ b/libsrc/occ/utilities.h
+@@ -33,6 +33,7 @@
+ 
+ #include <string>
+ #include <iostream>
++#include <iomanip>
+ #include <cstdlib>
+ // #include "SALOME_Log.hxx"
+ 
+diff --git a/nglib/nglib.h b/nglib/nglib.h
+index 8a78da0..2001a2c 100644
+--- a/nglib/nglib.h
++++ b/nglib/nglib.h
+@@ -24,7 +24,7 @@
+ // Philippose - 14.02.2009
+ // Modifications for creating a DLL in Windows
+ #ifdef WIN32
+-   #ifdef NGLIB_EXPORTS || nglib_EXPORTS
++   #if defined NGLIB_EXPORTS || defined nglib_EXPORTS
+       #define DLL_HEADER   __declspec(dllexport)
+    #else
+       #define DLL_HEADER   __declspec(dllimport)
+-- 
+2.15.0.windows.1
+

@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -28,7 +28,7 @@
 //
 #ifndef _NETGENPlugin_Mesher_HXX_
 #define _NETGENPlugin_Mesher_HXX_
-#include <TopTools_IndexedMapOfShape.hxx>
+
 #include "NETGENPlugin_Defs.hxx"
 
 #include <StdMeshers_FaceSide.hxx>
@@ -38,6 +38,8 @@
 
 #define NETGEN_VERSION_STRING(a,b) (a << 16) + (b << 8)
 
+#include <TopTools_IndexedMapOfShape.hxx>
+
 namespace nglib {
 #include <nglib.h>
 }
@@ -45,14 +47,12 @@ namespace nglib {
 #include <map>
 #include <vector>
 #include <set>
-#include <memory>
 
 class SMESHDS_Mesh;
 class SMESH_Comment;
 class SMESH_Mesh;
 class SMESH_MesherHelper;
 class TopoDS_Shape;
-// class TopTools_IndexedMapOfShape;
 class NETGENPlugin_Hypothesis;
 class NETGENPlugin_SimpleHypothesis_2D;
 class NETGENPlugin_Internals;
@@ -95,11 +95,16 @@ struct NETGENPLUGIN_EXPORT NETGENPlugin_NetgenLibWrapper
   ~NETGENPlugin_NetgenLibWrapper();
   void setMesh( nglib::Ng_Mesh* mesh );
 
+  static void RemoveTmpFiles();
+  static int& instanceCounter();
+
  private:
   std::string getOutputFileName();
   void        removeOutputFile();
   std::string _outputFileName;
 
+  ostream *       _ngcout;
+  ostream *       _ngcerr;
   std::streambuf* _coutBuffer;   // to re-/store cout.rdbuf()
 };
 
@@ -122,6 +127,7 @@ class NETGENPLUGIN_EXPORT NETGENPlugin_Mesher
   void SetParameters(const NETGENPlugin_Hypothesis*          hyp);
   void SetParameters(const NETGENPlugin_SimpleHypothesis_2D* hyp);
   void SetViscousLayers2DAssigned(bool isAssigned) { _isViscousLayers2D = isAssigned; }
+  static void SetLocalSize( netgen::OCCGeometry& occgeo, netgen::Mesh& ngMesh );
 
   bool Compute();
 
@@ -188,13 +194,10 @@ class NETGENPLUGIN_EXPORT NETGENPlugin_Mesher
 
   void SetDefaultParameters();
 
-  static void RemoveTmpFiles();
-
   static SMESH_ComputeErrorPtr ReadErrors(const std::vector< const SMDS_MeshNode* >& nodeVec);
 
 
-  static void toPython( const netgen::Mesh* ngMesh,
-                        const std::string&  pyFile); // debug
+  static void toPython( const netgen::Mesh* ngMesh ); // debug
 
  private:
 

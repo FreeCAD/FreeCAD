@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -32,19 +32,22 @@
 
 #include "Utils_SALOME_Exception.hxx"
 
-#include "SMESH_Hypothesis.hxx"
-#include "SMESH_ComputeError.hxx"
 #include "SMESH_Algo.hxx"
-#include "SMESH_Mesh.hxx"
-
-#include <TopoDS_Shape.hxx>
+#include "SMESH_ComputeError.hxx"
 
 #include <map>
 #include <list>
+#include <set>
 #include <vector>
 #include <string>
 
+#include <TopoDS_Shape.hxx>
+
 class SMESHDS_Document;
+class SMESH_Algo;
+class SMESH_Mesh;
+class TopoDS_Shape;
+class SMESH_subMesh;
 
 typedef SMESH_Hypothesis::Hypothesis_Status TAlgoStateErrorName;
 
@@ -57,27 +60,34 @@ typedef struct studyContextStruct
 
 typedef std::set<int> TSetOfInt;
 
-class SMESH_EXPORT  SMESH_Gen
+class SMESH_EXPORT SMESH_Gen
 {
 public:
   SMESH_Gen();
   ~SMESH_Gen();
 
-  SMESH_Mesh* CreateMesh(int theStudyId, bool theIsEmbeddedMode);
+  SMESH_Mesh* CreateMesh(int theStudyId, bool theIsEmbeddedMode)
+    noexcept(false);
 
+  enum ComputeFlags
+  {
+    SHAPE_ONLY        = 1, // to ignore algo->OnlyUnaryInput() feature and to compute a given shape only.
+    UPWARD            = 2, // to compute from vertices up to more complex shape (internal usage)
+    COMPACT_MESH      = 4, // to compact the mesh at the end
+    SHAPE_ONLY_UPWARD = 3  // SHAPE_ONLY | UPWARD
+  };
   /*!
    * \brief Computes aMesh on aShape 
-   *  \param aShapeOnly - if true, algo->OnlyUnaryInput() feature is ignored and
-   *                      only \a aShape is computed.
-   *  \param anUpward - compute from vertices up to more complex shape (internal usage)
-   *  \param aDim - upper level dimension of the mesh computation
+   *  \param aMesh - the mesh.
+   *  \param aShape - the shape.
+   *  \param aFlags - ComputeFlags. By default compute the whole mesh and compact at the end.
+   *  \param aDim - upper level dimension of the mesh computation (for preview)
    *  \param aShapesId - list of shapes with computed mesh entities (elements or nodes)
-   *  \retval bool - true if none submesh failed to compute
+   *  \retval bool - true if none sub-mesh failed to compute
    */
   bool Compute(::SMESH_Mesh &        aMesh,
                const TopoDS_Shape &  aShape,
-               const bool            aShapeOnly=false,
-               const bool            anUpward=false,
+               const int             aFlags = COMPACT_MESH,
                const ::MeshDimension aDim=::MeshDim_3D,
                TSetOfInt*            aShapesId=0);
 
@@ -140,7 +150,7 @@ public:
   StudyContextStruct *GetStudyContext(int studyId);
 
   static int GetShapeDim(const TopAbs_ShapeEnum & aShapeType);
-  static int GetShapeDim(const TopoDS_Shape & aShape)
+  static int GetShapeDim(const TopoDS_Shape &     aShape)
   { return GetShapeDim( aShape.ShapeType() ); }
 
   SMESH_Algo* GetAlgo(SMESH_Mesh & aMesh, const TopoDS_Shape & aShape, TopoDS_Shape* assignedTo=0);
@@ -151,12 +161,6 @@ public:
   static std::vector< std::string > GetPluginXMLPaths();
 
   int GetANewId();
-
-  // std::map < int, SMESH_Algo * >_mapAlgo;
-  // std::map < int, SMESH_0D_Algo * >_map0D_Algo;
-  // std::map < int, SMESH_1D_Algo * >_map1D_Algo;
-  // std::map < int, SMESH_2D_Algo * >_map2D_Algo;
-  // std::map < int, SMESH_3D_Algo * >_map3D_Algo;
 
 private:
 

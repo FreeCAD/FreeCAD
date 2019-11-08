@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -41,9 +41,11 @@ public:
   StdMeshers_FixedPoints1D(int hypId, int studyId, SMESH_Gen* gen);
   virtual ~StdMeshers_FixedPoints1D();
 
-  void SetPoints(std::vector<double>& listParams);
+  void SetPoints(std::vector<double>& listParams)
+    noexcept(false);
 
-  void SetNbSegments(std::vector<int>& listNbSeg);
+  void SetNbSegments(std::vector<int>& listNbSeg) 
+    noexcept(false);
 
   const std::vector<double>& GetPoints() const { return _params; }
 
@@ -59,14 +61,12 @@ public:
 
   virtual std::ostream & SaveTo(std::ostream & save);
   virtual std::istream & LoadFrom(std::istream & load);
-  friend std::ostream& operator << (std::ostream & save, StdMeshers_FixedPoints1D & hyp);
-  friend std::istream& operator >> (std::istream & load, StdMeshers_FixedPoints1D & hyp);
 
   /*!
    * \brief Initialize start and end length by the mesh built on the geometry
-    * \param theMesh - the built mesh
-    * \param theShape - the geometry of interest
-    * \retval bool - true if parameter values have been successfully defined
+   *  \param theMesh - the built mesh
+   *  \param theShape - the geometry of interest
+   *  \retval bool - true if parameter values have been successfully defined
    */
   virtual bool SetParametersByMesh(const SMESH_Mesh* theMesh, const TopoDS_Shape& theShape);
 

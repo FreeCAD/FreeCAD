@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -53,12 +53,12 @@ class SMDS_Mesh;
 
 struct SMESHUtils_EXPORT SMESH_NodeSearcher
 {
-  virtual ~SMESH_NodeSearcher() {}
   virtual const SMDS_MeshNode* FindClosestTo( const gp_Pnt& pnt ) = 0;
   virtual void MoveNode( const SMDS_MeshNode* node, const gp_Pnt& toPnt ) = 0;
   virtual int  FindNearPoint(const gp_Pnt&                        point,
                              const double                         tolerance,
                              std::vector< const SMDS_MeshNode* >& foundNodes) = 0;
+  virtual ~SMESH_NodeSearcher() {}
 };
 
 //=======================================================================
@@ -87,6 +87,13 @@ struct SMESHUtils_EXPORT SMESH_ElementSearcher
    * \brief Return elements possibly intersecting the line
    */
   virtual void GetElementsNearLine( const gp_Ax1&                           line,
+                                    SMDSAbs_ElementType                     type,
+                                    std::vector< const SMDS_MeshElement* >& foundElems) = 0;
+  /*!
+   * \brief Return elements whose bounding box intersects a sphere
+   */
+  virtual void GetElementsInSphere( const gp_XYZ&                           center,
+                                    const double                            radius,
                                     SMDSAbs_ElementType                     type,
                                     std::vector< const SMDS_MeshElement* >& foundElems) = 0;
   /*!
@@ -153,6 +160,9 @@ namespace SMESH_MeshAlgos
   SMESHUtils_EXPORT
   SMESH_NodeSearcher* GetNodeSearcher( SMDS_Mesh& mesh );
 
+  SMESHUtils_EXPORT
+  SMESH_NodeSearcher* GetNodeSearcher( SMDS_ElemIteratorPtr elemIt );
+
   /*!
    * \brief Return SMESH_ElementSearcher. The caller is responsible for deleting it
    */
@@ -196,6 +206,16 @@ namespace SMESH_MeshAlgos
                                  CoincidentFreeBorders & foundFreeBordes);
   
 
-} // SMESH_MeshAlgos
+  /*!
+   * \brief Find nodes whose merge makes the element invalid
+   *
+   * (Implemented in SMESH_DeMerge.cxx)
+   */
+  SMESHUtils_EXPORT
+  void DeMerge(const SMDS_MeshElement*              elem,
+               std::vector< const SMDS_MeshNode* >& newNodes,
+               std::vector< const SMDS_MeshNode* >& noMergeNodes);
+
+} // namespace SMESH_MeshAlgos
 
 #endif

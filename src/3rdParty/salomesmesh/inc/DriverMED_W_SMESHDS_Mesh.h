@@ -59,6 +59,7 @@ class MESHDRIVERMED_EXPORT DriverMED_W_SMESHDS_Mesh: public Driver_SMESHDS_Mesh
   void AddGroupOfVolumes();
   void AddGroupOf0DElems();
   void AddGroupOfBalls();
+  void AddAllToGroup();
 
   /*! functions to prepare adding one mesh
    */
@@ -88,6 +89,7 @@ class MESHDRIVERMED_EXPORT DriverMED_W_SMESHDS_Mesh: public Driver_SMESHDS_Mesh
   bool myDoGroupOfBalls;
   bool myAutoDimension;
   bool myAddODOnVertices;
+  bool myDoAllInGroups;
 };
 
 #endif

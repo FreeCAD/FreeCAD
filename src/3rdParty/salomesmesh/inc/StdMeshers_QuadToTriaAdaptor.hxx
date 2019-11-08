@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -26,15 +26,15 @@
 #include "SMESH_StdMeshers.hxx"
 
 #include "SMESH_ProxyMesh.hxx"
-#include <TColgp_HArray1OfPnt.hxx>
-#include <TColgp_HArray1OfVec.hxx>
+
+#include <TColgp_Array1OfPnt.hxx>
+#include <TColgp_Array1OfVec.hxx>
+
 class SMESH_Mesh;
 struct SMESH_ElementSearcher;
 class SMDS_MeshElement;
 class SMDS_MeshNode;
 class SMDS_MeshFace;
-// class Handle(TColgp_HArray1OfPnt);
-// class Handle(TColgp_HArray1OfVec);
 class gp_Pnt;
 class gp_Vec;
 
@@ -66,16 +66,20 @@ public:
 protected:
 
   int Preparation(const SMDS_MeshElement* face,
-                  Handle(TColgp_HArray1OfPnt)& PN,
-                  Handle(TColgp_HArray1OfVec)& VN,
+                  TColgp_Array1OfPnt& PN,
+                  TColgp_Array1OfVec& VN,
                   std::vector<const SMDS_MeshNode*>& FNodes,
                   gp_Pnt& PC, gp_Vec& VNorm,
                   const SMDS_MeshElement** volumes=0);
 
-  bool CheckIntersection(const gp_Pnt& P, const gp_Pnt& PC,
-                         gp_Pnt& Pint, SMESH_Mesh& aMesh,
-                         const TopoDS_Shape& aShape,
-                         const SMDS_MeshElement* NotCheckedFace);
+  bool LimitHeight (gp_Pnt&                                  Papex,
+                    const gp_Pnt&                            PC,
+                    const TColgp_Array1OfPnt&                PN,
+                    const std::vector<const SMDS_MeshNode*>& FNodes,
+                    SMESH_Mesh&                              aMesh,
+                    const SMDS_MeshElement*                  NotCheckedFace,
+                    const bool                               UseApexRay,
+                    const TopoDS_Shape&                      Shape = TopoDS_Shape());
 
   bool Compute2ndPart(SMESH_Mesh&                                 aMesh,
                       const std::vector<const SMDS_MeshElement*>& pyramids);
@@ -86,7 +90,8 @@ protected:
                       std::set<const SMDS_MeshNode*> & nodesToMove);
 
   void MergeAdjacent(const SMDS_MeshElement*         PrmI,
-                     std::set<const SMDS_MeshNode*>& nodesToMove);
+                     std::set<const SMDS_MeshNode*>& nodesToMove,
+                     const bool                      isRecursion = false);
 
 
   TopoDS_Shape                      myShape;

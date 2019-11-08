@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -30,14 +30,11 @@
 
 #include "SMESH_SMESH.hxx"
 
-#include "SMDS_MeshNode.hxx"
 #include "SMDSAbs_ElementType.hxx"
 #include "SMESH_Comment.hxx"
 #include "SMESH_ComputeError.hxx"
 #include "SMESH_Hypothesis.hxx"
 
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
 #include <GeomAbs_Shape.hxx>
 
 #include <string>
@@ -46,6 +43,7 @@
 #include <map>
 #include <set>
 
+class SMDS_MeshNode;
 class SMESHDS_Mesh;
 class SMESHDS_SubMesh;
 class SMESH_Gen;
@@ -54,6 +52,7 @@ class SMESH_Mesh;
 class SMESH_MesherHelper;
 class SMESH_ProxyMesh;
 class SMESH_subMesh;
+class TopoDS_Edge;
 class TopoDS_Face;
 class TopoDS_Shape;
 class TopoDS_Vertex;
@@ -256,7 +255,7 @@ public:
   // ==================================================================
 
   // SMESH_Hypothesis::GetDim();
-  // 1 - dimention of target mesh
+  // 1 - dimension of target mesh
 
   bool OnlyUnaryInput() const { return _onlyUnaryInput; }
   // 2 - is collection of tesselatable shapes inacceptable as input;
@@ -270,7 +269,7 @@ public:
   // 3 - is a Dim-1 mesh prerequisite
 
   bool NeedShape() const { return _requireShape; }
-  // 4 - is shape existance required
+  // 4 - is shape existence required
 
   bool SupportSubmeshes() const { return _supportSubmeshes; }
   // 5 - whether supports submeshes if !NeedDiscreteBoundary()
@@ -349,7 +348,7 @@ public:
     * \param E2 - the 2nd edge
     * \retval GeomAbs_Shape - regularity at the junction between E1 and E2
    */
-  static GeomAbs_Shape Continuity(TopoDS_Edge E1, TopoDS_Edge E2);
+  static GeomAbs_Shape Continuity(const TopoDS_Edge& E1, const TopoDS_Edge& E2);
 
   /*!
    * \brief Return true if an edge can be considered as a continuation of another
@@ -364,7 +363,7 @@ public:
   /*!
    * \brief Return true if an edge has no 3D curve
    */
-  static bool isDegenerated( const TopoDS_Edge & E );
+  static bool isDegenerated( const TopoDS_Edge & E, const bool checkLength=false );
 
   /*!
    * \brief Return the node built on a vertex

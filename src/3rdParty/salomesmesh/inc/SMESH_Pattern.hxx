@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -71,13 +71,15 @@ class SMESH_EXPORT SMESH_Pattern {
   bool Load (SMESH_Mesh*        theMesh,
              const TopoDS_Face& theFace,
              bool               theProject = false,
-             TopoDS_Vertex      the1stVertex=TopoDS_Vertex());
+             TopoDS_Vertex      the1stVertex=TopoDS_Vertex(),
+             bool               theKeepNodes = false );
   // Create a pattern from the mesh built on <theFace>.
   // <theProject>==true makes override nodes positions
   // on <theFace> computed by mesher
 
   bool Load (SMESH_Mesh*         theMesh,
-             const TopoDS_Shell& theBlock);
+             const TopoDS_Shell& theBlock,
+             bool                theKeepNodes = false);
   // Create a pattern from the mesh built on <theBlock>
 
   bool Save (std::ostream& theFile);
@@ -176,11 +178,11 @@ class SMESH_EXPORT SMESH_Pattern {
     ERR_LOADF_CANT_PROJECT, // impossible to project nodes
     // Load(volume)
     ERR_LOADV_BAD_SHAPE, // volume is not a brick of 6 faces
-    ERR_LOADV_COMPUTE_PARAMS, // cant compute point parameters
+    ERR_LOADV_COMPUTE_PARAMS, // can't compute point parameters
     // Apply(shape)
     ERR_APPL_NOT_COMPUTED, // mapping failed
     ERR_APPL_NOT_LOADED, // pattern was not loaded
-    ERR_APPL_BAD_DIMENTION, // wrong shape dimention
+    ERR_APPL_BAD_DIMENTION, // wrong shape dimension
     ERR_APPL_BAD_NB_VERTICES, // keypoints - vertices mismatch
     // Apply(face)
     ERR_APPLF_BAD_TOPOLOGY, // bad pattern topology
@@ -215,6 +217,11 @@ class SMESH_EXPORT SMESH_Pattern {
   const std::list< std::list< int > >& GetElementPointIDs (bool applied) const
   { return myElemXYZIDs.empty() || !applied ? myElemPointIDs : myElemXYZIDs; }
   // Return nodal connectivity of the elements of the pattern
+
+  void GetInOutNodes( std::vector< const SMDS_MeshNode* > *& inNodes,
+                      std::vector< const SMDS_MeshNode* > *& outNodes )
+  { inNodes = & myInNodes; outNodes = & myOutNodes; }
+  // Return loaded and just created nodes
 
   void DumpPoints() const;
   // Debug
@@ -253,8 +260,8 @@ private:
   std::list< TPoint* > & getShapePoints(const TopoDS_Shape& theShape);
   // Return list of points located on theShape.
   // A list of edge-points include vertex-points (for 2D pattern only).
-  // A list of face-points doesnt include edge-points.
-  // A list of volume-points doesnt include face-points.
+  // A list of face-points doesn't include edge-points.
+  // A list of volume-points doesn't include face-points.
 
   std::list< TPoint* > & getShapePoints(const int theShapeID);
   // Return list of points located on the shape
@@ -368,7 +375,11 @@ private:
   // nb of key-points in each of pattern boundaries
   std::list< int >                     myNbKeyPntInBoundary;
 
-  
+  // nodes corresponding to myPoints
+  bool                                 myToKeepNodes; // to keep these data
+  std::vector< const SMDS_MeshNode* >  myInNodes;     // loaded nodes
+  std::vector< const SMDS_MeshNode* >  myOutNodes;    // created nodes
+
   // to compute while applying to mesh elements, not to shapes
 
   std::vector<gp_XYZ>                  myXYZ;            // XYZ of nodes to create
@@ -377,7 +388,7 @@ private:
   std::vector<const SMDS_MeshElement*> myElements;       // refined elements
   std::vector<const SMDS_MeshNode*>    myOrderedNodes;
 
-   // elements to replace with polygon or polyhedron
+  // elements to replace with polygon or polyhedron
   std::vector<const SMDS_MeshElement*> myPolyElems;
   // definitions of new poly elements
   std::list< TElemDef >                myPolyElemXYZIDs;

@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2010-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -20,24 +20,32 @@
 #ifndef _MEMOIRE_H_
 #define _MEMOIRE_H_
 
-// #include <malloc>
+#ifdef __APPLE__
+#include <stdlib.h>
+#else
+#include <malloc.h>
+#endif
 #include <iostream>
 
 void memostat(const char* f, int l);
 
 void memostat(const char* f, int l)
 {
-#ifdef WIN32
+#if defined WIN32 || defined __APPLE__
         //rnv: TODO: find alternative of the malloc_stats() on windows platform
 #else
-  /*  struct mallinfo mem = mallinfo(); */
-  /*  std::cerr << f << ":"<< l << " " << mem.arena << " " << mem.ordblks << " " << mem.hblks << " " << mem.hblkhd << " "  << mem.uordblks << " "  << mem.fordblks << " " << mem.keepcost << std::endl; */
+  struct mallinfo mem = mallinfo();
+  std::cerr << f << ":"<< l << " " << mem.arena << " " << mem.ordblks << " " << mem.hblks << " " << mem.hblkhd << " "  << mem.uordblks << " "  << mem.fordblks << " " << mem.keepcost << std::endl;
   std::cerr << f << ":" << l << " --------------------------" << std::endl;
-  // malloc_stats();
+  malloc_stats();
   std::cerr << f << ":" << l << " --------------------------" << std::endl;
 #endif
 }
 
+#if defined(_DEBUG_) || defined(_DEBUG)
 #define MEMOSTAT //memostat( __FILE__, __LINE__ )
+#else
+#define MEMOSTAT
+#endif
 
 #endif

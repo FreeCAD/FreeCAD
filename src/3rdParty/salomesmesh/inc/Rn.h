@@ -1,6 +1,6 @@
 //  MEFISTO :  library to compute 2D triangulation from segmented boundaries
 //
-// Copyright (C) 2006-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2006-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -180,12 +180,12 @@ class R4: public R3
 {
   friend std::ostream& operator <<(std::ostream& f, const R4 & P )
   { f << P.x << ' ' << P.y << ' ' << P.z << ' ' << P.omega; return f; }
-  friend std::istream& operator >>(std::istream& f,  R4 & P)
+  friend istream& operator >>(istream& f,  R4 & P)
   { f >> P.x >>  P.y >>  P.z >> P.omega ; return f; }
 
   friend std::ostream& operator <<(std::ostream& f, const R4 * P )
   { f << P->x << ' ' << P->y << ' ' << P->z << ' ' << P->omega; return f; }
-  friend std::istream& operator >>(std::istream& f,  R4 * P)
+  friend istream& operator >>(istream& f,  R4 * P)
   { f >> P->x >>  P->y >>  P->z >> P->omega ; return f; }
 
 public:  

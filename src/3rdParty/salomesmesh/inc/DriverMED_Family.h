@@ -38,6 +38,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <set>
+#include <limits>
 
 #define REST_NODES_FAMILY 1
 #define FIRST_NODE_FAMILY 2
@@ -48,6 +49,14 @@
 #define REST_0DELEM_FAMILY  -4
 #define REST_BALL_FAMILY    -5
 #define FIRST_ELEM_FAMILY   -6
+
+// Not In Group families
+#define NIG_EDGES_FAMILY   INT_MAX-1
+#define NIG_FACES_FAMILY   INT_MAX-2
+#define NIG_VOLS_FAMILY    INT_MAX-3
+#define NIG_0DELEM_FAMILY  INT_MAX-4
+#define NIG_BALL_FAMILY    INT_MAX-5
+#define NIG_GROUP_PREFIX "NOT_IN_GRP"
 
 typedef std::list<DriverMED_FamilyPtr               > DriverMED_FamilyPtrList;
 typedef std::map<int,SMESHDS_SubMesh*               > SMESHDS_SubMeshPtrMap;
@@ -76,7 +85,8 @@ class MESHDRIVERMED_EXPORT DriverMED_Family
                 const bool doGroupOfFaces,
                 const bool doGroupOfVolumes,
                 const bool doGroupOf0DElems,
-                const bool doGroupOfBalls);
+                const bool doGroupOfBalls,
+                const bool doAllInGroups);
 
   //! Create TFamilyInfo for this family
   MED::PFamilyInfo 

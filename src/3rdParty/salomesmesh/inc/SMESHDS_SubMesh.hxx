@@ -65,9 +65,9 @@ class SMESHDS_EXPORT SMESHDS_SubMesh
 
   // for both types
   virtual int NbElements() const;
-  virtual SMDS_ElemIteratorPtr GetElements() const;
+  virtual SMDS_ElemIteratorPtr GetElements(bool reverse=false) const;
   virtual int NbNodes() const;
-  virtual SMDS_NodeIteratorPtr GetNodes() const;
+  virtual SMDS_NodeIteratorPtr GetNodes(bool reverse=false) const;
   virtual bool Contains(const SMDS_MeshElement * ME) const;      // check if elem or node is in
   virtual bool IsQuadratic() const;
 

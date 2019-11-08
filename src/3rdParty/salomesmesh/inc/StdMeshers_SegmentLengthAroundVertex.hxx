@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -43,7 +43,7 @@ class STDMESHERS_EXPORT StdMeshers_SegmentLengthAroundVertex:public SMESH_Hypoth
   StdMeshers_SegmentLengthAroundVertex(int hypId, int studyId, SMESH_Gen * gen);
   virtual ~ StdMeshers_SegmentLengthAroundVertex();
 
-  void SetLength(double length);
+  void SetLength(double length) noexcept(false);
 
   double GetLength() const;
 

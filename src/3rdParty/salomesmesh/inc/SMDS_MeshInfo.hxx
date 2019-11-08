@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,6 @@
 #define SMDS_MeshInfo_HeaderFile
 
 #include <vector>
-using namespace std;
 
 #include "SMESH_SMDS.hxx"
 
@@ -192,7 +191,7 @@ inline SMDS_MeshInfo::SMDS_MeshInfo():
 
 inline SMDS_MeshInfo& // operator=
 SMDS_MeshInfo::operator=(const SMDS_MeshInfo& other)
-{ for ( std::size_t i=0; i<myNb.size(); ++i ) if ( myNb[i] ) (*myNb[i])=(*other.myNb[i]);
+{ for ( size_t i=0; i<myNb.size(); ++i ) if ( myNb[i] ) (*myNb[i])=(*other.myNb[i]);
   myNbPolygons     = other.myNbPolygons;
   myNbQuadPolygons = other.myNbQuadPolygons;
   myNbPolyhedrons  = other.myNbPolyhedrons;
@@ -201,7 +200,7 @@ SMDS_MeshInfo::operator=(const SMDS_MeshInfo& other)
 
 inline void // Clear
 SMDS_MeshInfo::Clear()
-{ for ( std::size_t i=0; i<myNb.size(); ++i ) if ( myNb[i] ) (*myNb[i])=0;
+{ for ( size_t i=0; i<myNb.size(); ++i ) if ( myNb[i] ) (*myNb[i])=0;
   myNbPolygons=myNbQuadPolygons=myNbPolyhedrons=0;
 }
 
@@ -221,9 +220,7 @@ inline void // addWithPoly
 SMDS_MeshInfo::addWithPoly(const SMDS_MeshElement* el) {
   switch ( el->GetEntityType() ) {
   case SMDSEntity_Polygon:      ++myNbPolygons; break;
-#ifndef VTK_NO_QUAD_POLY
   case SMDSEntity_Quad_Polygon: ++myNbQuadPolygons; break;
-#endif
   case SMDSEntity_Polyhedra:    ++myNbPolyhedrons; break;
   default:                      add(el);
   }
@@ -236,9 +233,7 @@ inline void // RemoveFace
 SMDS_MeshInfo::RemoveFace(const SMDS_MeshElement* el) {
   switch ( el->GetEntityType() ) {
   case SMDSEntity_Polygon:      --myNbPolygons; break;
-#ifndef VTK_NO_QUAD_POLY
   case SMDSEntity_Quad_Polygon: --myNbQuadPolygons; break;
-#endif
   default:                      remove(el);
   }
 }
@@ -297,7 +292,7 @@ SMDS_MeshInfo::NbElements(SMDSAbs_ElementType type) const
   int nb = 0;
   switch (type) {
   case SMDSAbs_All:
-    for ( std::size_t i=1+index( SMDSAbs_Node,1 ); i<myNb.size(); ++i ) if ( myNb[i] ) nb += *myNb[i];
+    for ( size_t i=1+index( SMDSAbs_Node,1 ); i<myNb.size(); ++i ) if ( myNb[i] ) nb += *myNb[i];
     nb += myNbPolygons + myNbQuadPolygons + myNbPolyhedrons;
     break;
   case SMDSAbs_Volume:
@@ -354,12 +349,9 @@ SMDS_MeshInfo::NbEntities(SMDSAbs_EntityType type) const
   case SMDSEntity_Polyhedra:        return myNbPolyhedrons;
   case SMDSEntity_0D:               return myNb0DElements;
   case SMDSEntity_Ball:             return myNbBalls;
-#ifndef VTK_NO_QUAD_POLY
   case SMDSEntity_Quad_Polygon:     return myNbQuadPolygons;
-#endif
   case SMDSEntity_Quad_Polyhedra:
-    break;
-  default:
+  case SMDSEntity_Last:
     break;
   }
   return 0;
@@ -430,12 +422,9 @@ SMDS_MeshInfo::setNb(const SMDSAbs_EntityType geomType, const int nb)
   case SMDSEntity_Tetra:            myNbTetras            = nb; break;
   case SMDSEntity_TriQuad_Hexa:     myNbTriQuadHexas      = nb; break;
   case SMDSEntity_Triangle:         myNbTriangles         = nb; break;
-#ifndef VTK_NO_QUAD_POLY
   case SMDSEntity_Quad_Polygon:     myNbQuadPolygons      = nb; break;
-#endif
   case SMDSEntity_Quad_Polyhedra:
-    break;
-  default:
+  case SMDSEntity_Last:
     break;
   }
 }

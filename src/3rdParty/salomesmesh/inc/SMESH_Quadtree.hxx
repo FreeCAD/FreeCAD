@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -28,7 +28,7 @@
 #define _SMESH_Quadtree_HXX_
 
 #include "SMESH_Utils.hxx"
-#include "SMESH_tree.hxx"
+#include "SMESH_Tree.hxx"
 #include <Bnd_B2d.hxx>
 
 /*!
@@ -57,6 +57,9 @@ public:
 
   // Allocate a bndbox according to childIndex. childIndex is zero based
   virtual Bnd_B2d*       newChildBox(int childIndex) const;
+
+  // Change size of a box by a factor; each dimension changes independently of others
+  virtual void           enlargeByFactor( Bnd_B2d* box, double factor ) const;
 };
 
 //================================================================================

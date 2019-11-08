@@ -32,7 +32,7 @@
 #include <Standard_TypeMismatch.hxx>
 #endif
 
-Standard_EXPORT Handle_Standard_Type& SMESH_MeshVSLink_Type_()
+SMESH_EXPORT Handle_Standard_Type& SMESH_MeshVSLink_Type_()
 {
   static Handle_Standard_Type aType1 = STANDARD_TYPE(MeshVS_DataSource3D);
   static Handle_Standard_Type aType2 = STANDARD_TYPE(MeshVS_DataSource);

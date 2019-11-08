@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2010-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -45,6 +45,14 @@
 // allow very huge polyhedrons in tests
 #define NBMAXNODESINCELL 5000
 
+// Keep compatibility with paraview 5.0.1 on Linux
+//#ifndef WIN32
+  #ifndef VTK_HAS_MTIME_TYPE
+  #define VTK_HAS_MTIME_TYPE
+  typedef unsigned long int vtkMTimeType;
+  #endif
+//#endif
+
 class SMDS_Downward;
 class SMDS_Mesh;
 class SMDS_MeshCell;
@@ -54,6 +62,7 @@ class SMDS_EXPORT SMDS_CellLinks: public vtkCellLinks
 {
 public:
   void ResizeForPoint(vtkIdType vtkID);
+  void BuildLinks(vtkDataSet *data, vtkCellArray *Connectivity, vtkUnsignedCharArray* types);
   static SMDS_CellLinks* New();
 protected:
   SMDS_CellLinks();
@@ -68,15 +77,10 @@ public:
                    int               newNodeSize,
                    std::vector<int>& idCellsOldToNew,
                    int               newCellSize);
-  virtual VTK_MTIME_TYPE GetMTime();
-  // OUV_PORTING_VTK6: seems to be useless
-  //virtual void Update();
-  //virtual void UpdateInformation();
+  virtual vtkMTimeType GetMTime();
   virtual vtkPoints *GetPoints();
 
-  //#ifdef VTK_HAVE_POLYHEDRON
   int InsertNextLinkedCell(int type, int npts, vtkIdType *pts);
-  //#endif
 
   int CellIdToDownId(int vtkCellId);
   void setCellIdToDownId(int vtkCellId, int downId);
@@ -88,15 +92,15 @@ public:
   void GetNodeIds(std::set<int>& nodeSet, int downId, unsigned char downType);
   void ModifyCellNodes(int vtkVolId, std::map<int, int> localClonedNodeIds);
   int getOrderedNodesOfFace(int vtkVolId, int& dim, std::vector<vtkIdType>& orderedNodes);
-  void BuildLinks();
   SMDS_MeshCell* extrudeVolumeFromFace(int vtkVolId, int domain1, int domain2,
                                        std::set<int>&                      originalNodes,
                                        std::map<int, std::map<int, int> >& nodeDomains,
                                        std::map<int, std::map<long,int> >& nodeQuadDomains);
-  vtkCellLinks* GetLinks()
-  {
-    return Links;
-  }
+  void BuildLinks();
+  void DeleteLinks();
+  SMDS_CellLinks* GetLinks();
+  bool HasLinks() const { return this->Links; }
+
   SMDS_Downward* getDownArray(unsigned char vtkType)
   {
     return _downArray[vtkType];

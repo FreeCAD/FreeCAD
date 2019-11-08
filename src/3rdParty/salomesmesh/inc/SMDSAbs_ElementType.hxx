@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -67,8 +67,7 @@ enum SMDSAbs_GeometryType
   };
 
 
-enum SMDSAbs_ElementOrder
-{
+enum SMDSAbs_ElementOrder {
   ORDER_ANY,          /*! entities of any order */
   ORDER_LINEAR,       /*! entities of 1st order */
   ORDER_QUADRATIC     /*! entities of 2nd order */
@@ -77,8 +76,7 @@ enum SMDSAbs_ElementOrder
 /*!
  * Enumeration of entity type used in mesh info array
  */
-enum SMDSAbs_EntityType
-{
+enum SMDSAbs_EntityType {
   SMDSEntity_Node,
   SMDSEntity_0D,
   SMDSEntity_Edge,
@@ -90,9 +88,7 @@ enum SMDSAbs_EntityType
   SMDSEntity_Quad_Quadrangle,
   SMDSEntity_BiQuad_Quadrangle,
   SMDSEntity_Polygon,
-#ifndef VTK_NO_QUAD_POLY
   SMDSEntity_Quad_Polygon,
-#endif
   SMDSEntity_Tetra,
   SMDSEntity_Quad_Tetra,
   SMDSEntity_Pyramid,

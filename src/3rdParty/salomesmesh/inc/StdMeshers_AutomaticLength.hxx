@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -55,12 +55,14 @@ public:
   /*!
    * \brief Computes segment for a given edge
    */
-  double GetLength(const SMESH_Mesh* aMesh, const TopoDS_Shape& anEdge);
+  double GetLength(const SMESH_Mesh* aMesh, const TopoDS_Shape& anEdge)
+    noexcept(false);
 
   /*!
    * \brief Computes segment length for an edge of given length
    */
-  double GetLength(const SMESH_Mesh* aMesh, const double edgeLength);
+  double GetLength(const SMESH_Mesh* aMesh, const double edgeLength)
+    noexcept(false);
 
   /*!
    * \brief Set Fineness
@@ -72,7 +74,8 @@ public:
    * The "Initial Number of Elements on the Shortest Edge" (S0)
    * is divided by (0.5 + 4.5 x theFineness)
    */
-  void SetFineness(double theFineness);
+  void SetFineness(double theFineness)
+    noexcept(false);
 
   /*!
    * \brief Return mesh Fineness

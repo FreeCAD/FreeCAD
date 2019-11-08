@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
 // CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
@@ -25,7 +25,6 @@
 
 #include "SMESH_Controls.hxx"
 
-#include "SMDS_MeshNode.hxx"
 #include "SMESH_TypeDefs.hxx"
 
 #include <BRepClass3d_SolidClassifier.hxx>
@@ -110,7 +109,7 @@ namespace SMESH{
      */
     class SMESHCONTROLS_EXPORT TMeshModifTracer
     {
-      VTK_MTIME_TYPE   myMeshModifTime;
+      unsigned long    myMeshModifTime;
       const SMDS_Mesh* myMesh;
     public:
       TMeshModifTracer();
@@ -352,6 +351,17 @@ namespace SMESH{
       virtual SMDSAbs_ElementType GetType() const;
     };
     
+    /*
+      Class       : NodeConnectivityNumber
+      Description : Functor returning number of elements connected to a node
+    */
+    class SMESHCONTROLS_EXPORT NodeConnectivityNumber: public virtual NumericalFunctor{
+    public:
+      virtual double GetValue( long theNodeId );
+      virtual double GetBadRate( double Value, int nbNodes ) const;
+      virtual SMDSAbs_ElementType GetType() const;
+    };
+
 
     /*
       PREDICATES
@@ -364,6 +374,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT CoincidentNodes: public Predicate {
     public:
       CoincidentNodes();
+      //virtual Predicate* clone() const { return new CoincidentNodes( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh );
       virtual bool IsSatisfy( long theElementId );
       virtual SMDSAbs_ElementType GetType() const;
@@ -395,14 +406,17 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT CoincidentElements1D: public CoincidentElements {
     public:
       virtual SMDSAbs_ElementType GetType() const;
+      //virtual Predicate* clone() const { return new CoincidentElements1D( *this ); }
     };
     class SMESHCONTROLS_EXPORT CoincidentElements2D: public CoincidentElements {
     public:
       virtual SMDSAbs_ElementType GetType() const;
+      //virtual Predicate* clone() const { return new CoincidentElements2D( *this ); }
     };
     class SMESHCONTROLS_EXPORT CoincidentElements3D: public CoincidentElements {
     public:
       virtual SMDSAbs_ElementType GetType() const;
+      //virtual Predicate* clone() const { return new CoincidentElements3D( *this ); }
     };
 
     /*
@@ -412,6 +426,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT FreeBorders: public virtual Predicate{
     public:
       FreeBorders();
+      //virtual Predicate* clone() const { return new FreeBorders( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh );
       virtual bool IsSatisfy( long theElementId );
       virtual SMDSAbs_ElementType GetType() const;
@@ -428,6 +443,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT BadOrientedVolume: public virtual Predicate{
     public:
       BadOrientedVolume();
+      //virtual Predicate* clone() const { return new BadOrientedVolume( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh );
       virtual bool IsSatisfy( long theElementId );
       virtual SMDSAbs_ElementType GetType() const;
@@ -443,6 +459,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT ElemEntityType: public virtual Predicate{
       public:
       ElemEntityType();
+      //virtual Predicate*   clone() const { return new ElemEntityType( *this ); }
       virtual void         SetMesh( const SMDS_Mesh* theMesh );
       virtual bool         IsSatisfy( long theElementId );
       void                 SetType( SMDSAbs_ElementType theType );
@@ -465,6 +482,7 @@ namespace SMESH{
     {
     public:
       BareBorderVolume():myMesh(0) {}
+      virtual Predicate* clone() const { return new BareBorderVolume( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh ) { myMesh = theMesh; }
       virtual SMDSAbs_ElementType GetType() const      { return SMDSAbs_Volume; }
       virtual bool IsSatisfy( long theElementId );
@@ -480,6 +498,7 @@ namespace SMESH{
     {
     public:
       BareBorderFace():myMesh(0) {}
+      //virtual Predicate* clone() const { return new BareBorderFace( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh ) { myMesh = theMesh; }
       virtual SMDSAbs_ElementType GetType() const      { return SMDSAbs_Face; }
       virtual bool IsSatisfy( long theElementId );
@@ -496,6 +515,7 @@ namespace SMESH{
     {
     public:
       OverConstrainedVolume():myMesh(0) {}
+      virtual Predicate* clone() const { return new OverConstrainedVolume( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh ) { myMesh = theMesh; }
       virtual SMDSAbs_ElementType GetType() const      { return SMDSAbs_Volume; }
       virtual bool IsSatisfy( long theElementId );
@@ -511,6 +531,7 @@ namespace SMESH{
     {
     public:
       OverConstrainedFace():myMesh(0) {}
+      //virtual Predicate* clone() const { return new OverConstrainedFace( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh ) { myMesh = theMesh; }
       virtual SMDSAbs_ElementType GetType() const      { return SMDSAbs_Face; }
       virtual bool IsSatisfy( long theElementId );
@@ -526,6 +547,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT FreeEdges: public virtual Predicate{
     public:
       FreeEdges();
+      //virtual Predicate* clone() const { return new FreeEdges( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh );
       virtual bool IsSatisfy( long theElementId );
       virtual SMDSAbs_ElementType GetType() const;
@@ -553,6 +575,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT FreeNodes: public virtual Predicate{
     public:
       FreeNodes();
+      //virtual Predicate* clone() const { return new FreeNodes( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh );
       virtual bool IsSatisfy( long theNodeId );
       virtual SMDSAbs_ElementType GetType() const;
@@ -573,7 +596,8 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT RangeOfIds: public virtual Predicate
     {
     public:
-                                    RangeOfIds();
+      RangeOfIds();
+      //virtual Predicate*            clone() const { return new RangeOfIds( *this ); }
       virtual void                  SetMesh( const SMDS_Mesh* theMesh );
       virtual bool                  IsSatisfy( long theNodeId );
       virtual SMDSAbs_ElementType   GetType() const;
@@ -625,6 +649,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT LessThan: public virtual Comparator{
     public:
       virtual bool IsSatisfy( long theElementId );
+      //virtual Predicate* clone() const { return new LessThan( *this ); }
     };
   
   
@@ -635,6 +660,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT MoreThan: public virtual Comparator{
     public:
       virtual bool IsSatisfy( long theElementId );
+      //virtual Predicate* clone() const { return new MoreThan( *this ); }
     };
   
   
@@ -645,6 +671,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT EqualTo: public virtual Comparator{
     public:
       EqualTo();
+      //virtual Predicate* clone() const { return new EqualTo( *this ); }
       virtual bool IsSatisfy( long theElementId );
       virtual void SetTolerance( double theTol );
       virtual double GetTolerance();
@@ -662,6 +689,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT LogicalNOT: public virtual Predicate{
     public:
       LogicalNOT();
+      //virtual Predicate* clone() const { return new LogicalNOT( *this ); }
       virtual ~LogicalNOT();
       virtual bool IsSatisfy( long theElementId );
       virtual void SetMesh( const SMDS_Mesh* theMesh );
@@ -701,6 +729,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT LogicalAND: public virtual LogicalBinary{
     public:
       virtual bool IsSatisfy( long theElementId );
+      //virtual Predicate* clone() const { return new LogicalAND( *this ); }
     };
   
   
@@ -711,6 +740,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT LogicalOR: public virtual LogicalBinary{
     public:
       virtual bool IsSatisfy( long theElementId );
+      //virtual Predicate* clone() const { return new LogicalOR( *this ); }
     };
   
   
@@ -747,6 +777,7 @@ namespace SMESH{
       
       ManifoldPart();
       ~ManifoldPart();
+      //virtual Predicate* clone() const { return new ManifoldPart( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh );
       // inoke when all parameters already set
       virtual bool IsSatisfy( long theElementId );
@@ -795,6 +826,7 @@ namespace SMESH{
     {
     public:
       BelongToMeshGroup();
+      //virtual Predicate* clone() const { return new BelongToMeshGroup( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh );
       virtual bool IsSatisfy( long theElementId );
       virtual SMDSAbs_ElementType GetType() const;
@@ -818,6 +850,7 @@ namespace SMESH{
     public:
       ElementsOnSurface();
       ~ElementsOnSurface();
+      //virtual Predicate* clone() const { return new ElementsOnSurface( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh );
       virtual bool IsSatisfy( long theElementId );
       virtual      SMDSAbs_ElementType GetType() const;
@@ -852,12 +885,13 @@ namespace SMESH{
       Description : Predicate elements that lying on indicated shape
                     (1D, 2D or 3D)
     */
-    class SMESHCONTROLS_EXPORT ElementsOnShape : public virtual Predicate
+    class SMESHCONTROLS_EXPORT ElementsOnShape : public Predicate
     {
     public:
       ElementsOnShape();
       ~ElementsOnShape();
 
+      virtual Predicate* clone() const;
       virtual void SetMesh (const SMDS_Mesh* theMesh);
       virtual bool IsSatisfy (long theElementId);
       virtual SMDSAbs_ElementType GetType() const;
@@ -871,42 +905,24 @@ namespace SMESH{
 
     private:
 
-      struct TClassifier
-      {
-        TClassifier(const TopoDS_Shape& s, double tol) { Init(s,tol); }
-        void Init(const TopoDS_Shape& s, double tol);
-        bool IsOut(const gp_Pnt& p);
-        TopAbs_ShapeEnum ShapeType() const;
-      private:
-        bool isOutOfSolid (const gp_Pnt& p);
-        bool isOutOfBox   (const gp_Pnt& p);
-        bool isOutOfFace  (const gp_Pnt& p);
-        bool isOutOfEdge  (const gp_Pnt& p);
-        bool isOutOfVertex(const gp_Pnt& p);
-        bool isBox        (const TopoDS_Shape& s);
+      struct Classifier;
+      struct OctreeClassifier;
 
-        bool (TClassifier::* myIsOutFun)(const gp_Pnt& p);
-        BRepClass3d_SolidClassifier mySolidClfr;
-        Bnd_B3d                     myBox;
-        GeomAPI_ProjectPointOnSurf  myProjFace;
-        GeomAPI_ProjectPointOnCurve myProjEdge;
-        gp_Pnt                      myVertexXYZ;
-        TopoDS_Shape                myShape;
-        double                      myTol;
-      };
       void clearClassifiers();
       bool getNodeIsOut( const SMDS_MeshNode* n, bool& isOut );
       void setNodeIsOut( const SMDS_MeshNode* n, bool  isOut );
 
-      std::vector< TClassifier* > myClassifiers;
-      SMDSAbs_ElementType         myType;
-      TopoDS_Shape                myShape;
-      double                      myToler;
-      bool                        myAllNodesFlag;
+      std::vector< Classifier >  myClassifiers;
+      std::vector< Classifier* > myWorkClassifiers;
+      OctreeClassifier*          myOctree;
+      SMDSAbs_ElementType        myType;
+      TopoDS_Shape               myShape;
+      double                     myToler;
+      bool                       myAllNodesFlag;
 
-      TMeshModifTracer            myMeshModifTracer;
-      std::vector<bool>           myNodeIsChecked;
-      std::vector<bool>           myNodeIsOut;
+      TMeshModifTracer           myMeshModifTracer;
+      std::vector<bool>          myNodeIsChecked;
+      std::vector<bool>          myNodeIsOut;
     };
 
     typedef boost::shared_ptr<ElementsOnShape> ElementsOnShapePtr;
@@ -921,6 +937,7 @@ namespace SMESH{
     {
     public:
       BelongToGeom();
+      virtual Predicate* clone() const;
 
       virtual void                    SetMesh( const SMDS_Mesh* theMesh );
       virtual void                    SetGeom( const TopoDS_Shape& theShape );
@@ -940,6 +957,7 @@ namespace SMESH{
       virtual void                    init();
 
       TopoDS_Shape                    myShape;
+      TColStd_MapOfInteger            mySubShapesIDs;
       const SMESHDS_Mesh*             myMeshDS;
       SMDSAbs_ElementType             myType;
       bool                            myIsSubshape;
@@ -957,6 +975,7 @@ namespace SMESH{
     {
     public:
       LyingOnGeom();
+      virtual Predicate* clone() const;
       
       virtual void                    SetMesh( const SMDS_Mesh* theMesh );
       virtual void                    SetGeom( const TopoDS_Shape& theShape );
@@ -972,12 +991,7 @@ namespace SMESH{
       void                            SetTolerance( double );
       double                          GetTolerance();
       
-      virtual bool                    Contains( const SMESHDS_Mesh*     theMeshDS,
-                                                const TopoDS_Shape&     theShape,
-                                                const SMDS_MeshElement* theElem,
-                                                TopAbs_ShapeEnum        theFindShapeEnum,
-                                                TopAbs_ShapeEnum        theAvoidShapeEnum = TopAbs_SHAPE );
-    private:
+   private:
       virtual void                    init();
 
       TopoDS_Shape                    myShape;
@@ -997,6 +1011,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT FreeFaces: public virtual Predicate{
     public:
       FreeFaces();
+      //virtual Predicate* clone() const { return new FreeFaces( *this ); }
       virtual void SetMesh( const SMDS_Mesh* theMesh );
       virtual bool IsSatisfy( long theElementId );
       virtual SMDSAbs_ElementType GetType() const;
@@ -1012,6 +1027,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT LinearOrQuadratic: public virtual Predicate{
     public:
       LinearOrQuadratic();
+      //virtual Predicate*  clone() const { return new LinearOrQuadratic( *this ); }
       virtual void        SetMesh( const SMDS_Mesh* theMesh );
       virtual bool        IsSatisfy( long theElementId );
       void                SetType( SMDSAbs_ElementType theType );
@@ -1025,11 +1041,12 @@ namespace SMESH{
 
     /*
       Class       : GroupColor
-      Description : Functor for check color of group to whic mesh element belongs to
+      Description : Functor for check color of group to which mesh element belongs to
     */
     class SMESHCONTROLS_EXPORT GroupColor: public virtual Predicate{
     public:
       GroupColor();
+      //virtual Predicate*  clone() const { return new GroupColor( *this ); }
       virtual void        SetMesh( const SMDS_Mesh* theMesh );
       virtual bool        IsSatisfy( long theElementId );
       void                SetType( SMDSAbs_ElementType theType );
@@ -1053,6 +1070,7 @@ namespace SMESH{
     class SMESHCONTROLS_EXPORT ElemGeomType: public virtual Predicate{
     public:
       ElemGeomType();
+      //virtual Predicate*   clone() const { return new ElemGeomType( *this ); }
       virtual void         SetMesh( const SMDS_Mesh* theMesh );
       virtual bool         IsSatisfy( long theElementId );
       void                 SetType( SMDSAbs_ElementType theType );
@@ -1075,6 +1093,7 @@ namespace SMESH{
     {
     public:
       CoplanarFaces();
+      //virtual Predicate*   clone() const { return new CoplanarFaces( *this ); }
       void                 SetFace( long theID )                   { myFaceID = theID; }
       long                 GetFace() const                         { return myFaceID; }
       void                 SetTolerance (const double theToler)    { myToler = theToler; }
@@ -1088,7 +1107,7 @@ namespace SMESH{
       TMeshModifTracer     myMeshModifTracer;
       long                 myFaceID;
       double               myToler;
-      std::set< long >     myCoplanarIDs;
+      TColStd_MapOfInteger myCoplanarIDs;
     };
     typedef boost::shared_ptr<CoplanarFaces> CoplanarFacesPtr;
 
@@ -1100,6 +1119,7 @@ namespace SMESH{
     {
     public:
       ConnectedElements();
+      //virtual Predicate*   clone() const { return new ConnectedElements( *this ); }
       void                 SetNode( int nodeID );
       void                 SetPoint( double x, double y, double z );
       int                  GetNode() const;

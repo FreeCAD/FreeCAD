@@ -1,4 +1,4 @@
-// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2016  CEA/DEN, EDF R&D, OPEN CASCADE
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -35,7 +35,7 @@ class STDMESHERS_EXPORT StdMeshers_MaxLength: public SMESH_Hypothesis
   StdMeshers_MaxLength(int hypId, int studyId, SMESH_Gen * gen);
   virtual ~ StdMeshers_MaxLength();
 
-  void SetLength(double length);
+  void SetLength(double length) noexcept(false);
   double GetLength() const;
 
   bool HavePreestimatedLength() const  { return _preestimated > 0.; }
