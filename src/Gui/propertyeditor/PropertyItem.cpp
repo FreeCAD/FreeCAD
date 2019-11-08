@@ -526,13 +526,15 @@ QVariant PropertyItem::data(int column, int role) const
 {
     // property name
     if (column == 0) {
-        if (role == Qt::BackgroundRole) {
+        if (role == Qt::BackgroundRole || role == Qt::TextColorRole) {
             if(PropertyView::showAll()
                 && propertyItems.size() == 1
                 && propertyItems.front()->testStatus(App::Property::PropDynamic)
                 && !propertyItems.front()->testStatus(App::Property::LockDynamic))
             {
-                return QBrush(QColor(0xFF,0xFF,0x99));
+                return role==Qt::BackgroundRole
+                    ? QVariant::fromValue(QColor(0xFF,0xFF,0x99)) 
+                    : QVariant::fromValue(QColor(0,0,0));
             }
             return QVariant();
         }
