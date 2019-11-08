@@ -85,6 +85,7 @@
 
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <CXX/Extensions.hxx>
 
 using namespace WebGui;
@@ -224,7 +225,7 @@ Py::Object BrowserViewPy::setHtml(const Py::Tuple& args)
     PyMem_Free(HtmlCode);
 
     if (myWebView)
-        myWebView->setHtml(QString::fromUtf8(EncodedHtml.c_str()), QUrl(QString::fromLatin1(BaseUrl)));
+        myWebView->setHtml(QString::fromUtf8(EncodedHtml.c_str()), QUrl(QString::fromUtf8(BaseUrl)));
     return Py::None();
 }
 }
@@ -410,6 +411,8 @@ BrowserView::BrowserView(QWidget* parent)
     palette.setBrush(QPalette::Base, Qt::white);
     view->page()->setPalette(palette);
 
+    connect(view->page(), SIGNAL(linkHovered(const QString &, const QString &, const QString &)),
+            this, SLOT(onLinkHovered(const QString &, const QString &, const QString &)));
     connect(view, SIGNAL(linkClicked(const QUrl &)),
             this, SLOT(onLinkClicked(const QUrl &)));
     connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
@@ -438,8 +441,9 @@ BrowserView::BrowserView(QWidget* parent)
             this, SLOT(onDownloadRequested(QWebEngineDownloadItem*)));
     connect(view->page(), SIGNAL(iconChanged(const QIcon &)),
             this, SLOT(setWindowIcon(const QIcon &)));
+    connect(view->page(), SIGNAL(linkHovered(const QString &)),
+            this, SLOT(onLinkHovered(const QString &)));
 #endif
-
     connect(view, SIGNAL(viewSource(const QUrl&)),
             this, SLOT(onViewSource(const QUrl&)));
     connect(view, SIGNAL(loadStarted()),
@@ -523,7 +527,12 @@ void BrowserView::onLinkClicked (const QUrl & url)
                         Gui::Command::doCommand(Gui::Command::Gui,q.toStdString().c_str());
                     }
                     // Gui::Command::doCommand(Gui::Command::Gui,"execfile('%s')",(const char*) fi.absoluteFilePath().	toLocal8Bit());
-                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) fi.absoluteFilePath()	.toLocal8Bit());
+                    QString filename = Base::Tools::escapeEncodeFilename(fi.absoluteFilePath());
+#if PY_MAJOR_VERSION < 3
+                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open(unicode('%s', 'utf-8')).read())",(const char*) filename.toUtf8());
+#else
+                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) filename.toUtf8());
+#endif
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(this, tr("Error"), QString::fromUtf8(e.what()));
@@ -558,6 +567,11 @@ void BrowserView::setWindowIcon(const QIcon &icon)
     Gui::MDIView::setWindowIcon(icon);
 }
 
+void BrowserView::onLinkHovered(const QString& url)
+{
+    Gui::getMainWindow()->statusBar()->showMessage(url);
+}
+
 void BrowserView::onViewSource(const QUrl &url)
 {
     Q_UNUSED(url);
@@ -587,6 +601,15 @@ void BrowserView::onUnsupportedContent(QNetworkReply* reply)
     // slot is called even when clicking on a downloadable file but the page
     // then fails to load. Thus, we reload the previous url.
     view->reload();
+}
+
+void BrowserView::onLinkHovered(const QString& link, const QString& title, const QString& textContent)
+{
+    Q_UNUSED(title)
+    Q_UNUSED(textContent)
+    QUrl url = QUrl::fromEncoded(link.toLatin1());
+    QString str = url.isValid() ? url.toString() : link;
+    Gui::getMainWindow()->statusBar()->showMessage(str);
 }
 
 void BrowserView::onViewSource(const QUrl &url)

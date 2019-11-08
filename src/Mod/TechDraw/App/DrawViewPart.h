@@ -188,23 +188,25 @@ public:
     int add1CVToGV(int iCV);
     int add1CVToGV(std::string tag);
 
-
     virtual int addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
     virtual int addCosmeticEdge(TopoDS_Edge e);
     virtual int addCosmeticEdge(TechDraw::CosmeticEdge*);
     virtual void removeCosmeticEdge(TechDraw::CosmeticEdge* ce);
     virtual void removeCosmeticEdge(int idx);
+    virtual void removeCosmeticEdge(std::string delTag);
+    virtual void removeCosmeticEdge(std::vector<std::string> delTags);
+    TechDraw::CosmeticEdge* getCosmeticEdge(std::string tagString) const;
     TechDraw::CosmeticEdge* getCosmeticEdgeByIndex(int idx) const;
     TechDraw::CosmeticEdge* getCosmeticEdgeByGeom(int idx) const;
     int getCosmeticEdgeIndex(TechDraw::CosmeticEdge* ce) const;
-    void replaceCosmeticEdge(int idx, TechDraw::CosmeticEdge* ce);
-    void replaceCosmeticEdgeByGeom(int geomIndex, TechDraw::CosmeticEdge* ce);
     void clearCosmeticEdges(void);
     void addCosmeticEdgesToGeom(void);
 
     virtual int addCenterLine(TechDraw::CenterLine*);
     virtual void removeCenterLine(TechDraw::CenterLine* cl);
     virtual void removeCenterLine(int idx);
+    void removeCenterLine(std::string delTag);
+    void removeCenterLine(std::vector<std::string> delTags);
     TechDraw::CenterLine* getCenterLineByIndex(int idx) const;
     TechDraw::CenterLine* getCenterLineByGeom(int idx) const;
     void replaceCenterLine(int idx, TechDraw::CenterLine* cl);

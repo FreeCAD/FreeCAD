@@ -652,11 +652,11 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
                  Base::Tools::toStdString(specVal) +
                  ssSuffix;
     } else if (partial == 2) {                       //just the unit
-        if (showUnits()) {
-            if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
-                QRegExp space(QString::fromUtf8("\\s"));
-                userUnits.remove(space);
-            }
+        if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
+            QRegExp space(QString::fromUtf8("\\s"));
+            userUnits.remove(space);
+            result = Base::Tools::toStdString(userUnits);
+        } else if (showUnits()) {
             result = Base::Tools::toStdString(userUnits);
         } else {
             result = "";

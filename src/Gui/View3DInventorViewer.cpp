@@ -1669,6 +1669,18 @@ const std::vector<SbVec2s>& View3DInventorViewer::getPolygon(SelectionRole* role
     return navigation->getPolygon(role);
 }
 
+void View3DInventorViewer::setSelectionEnabled(const SbBool enable)
+{
+    SoNode* root = getSceneGraph();
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(enable);
+}
+
+SbBool View3DInventorViewer::isSelectionEnabled(void) const
+{
+    SoNode* root = getSceneGraph();
+    return static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.getValue();
+}
+
 SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath* path) const
 {
     // Generate a matrix (well, a SoGetMatrixAction) that
