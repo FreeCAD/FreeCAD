@@ -497,6 +497,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
                 view->setEditing(false);
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
+                view->setSelectionEnabled(true);
                 view->removeEventCallback(SoEvent::getClassTypeId(), curvatureInfoCallback, ud);
             }
         }
