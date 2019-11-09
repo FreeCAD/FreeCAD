@@ -62,7 +62,7 @@ Py::Long ParameterRefPy::getMasterIndex(void) const
 
 Py::Object ParameterRefPy::getMaster(void) const
 {
-    return this->getParameterRefPtr()->getPyObject();
+    return this->getParameterRefPtr()->getPyHandle();
 }
 
 Py::Float ParameterRefPy::getValue(void) const

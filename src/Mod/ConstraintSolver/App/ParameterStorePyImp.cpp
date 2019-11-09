@@ -40,8 +40,7 @@ PyObject* ParameterStorePy::addOne(PyObject* args, PyObject* kwd)
     if (!parsed)
         return nullptr;
     ParameterRef ref = getParameterStorePtr()->add(Parameter(label, value, scale, fixed == Py_True, tag));
-    Py::Object r = ref.getPyObject();
-    return Py::new_reference_to(ref.getPyObject());
+    return Py::new_reference_to(ref.getPyHandle());
 }
 
 PyObject* ParameterStorePy::addN(PyObject *args)
@@ -49,7 +48,6 @@ PyObject* ParameterStorePy::addN(PyObject *args)
     int n;
     if(PyArg_ParseTuple(args, "i", &n)){
         std::vector<ParameterRef> refs = this->getParameterStorePtr()->add(n);
-        Py::List ret(refs.size());
         for(int i = 0; i < refs.size(); ++i){
             ret[i] = refs[i].getPyObject();
         }
@@ -120,9 +118,9 @@ PyObject* ParameterStorePy::free(PyObject* args)
     if (! PyArg_ParseTuple(args, "|O!", &ParameterRefPy::Type, &param))
         return nullptr;
     if (param == Py_None)
-        getParameterStorePtr()->free();
+        getParameterStorePtr()->deconstrain();
     else
-        getParameterStorePtr()->free(*UnsafePyHandle<ParameterRef>(param, /*owned=*/false));
+        getParameterStorePtr()->deconstrain(*UnsafePyHandle<ParameterRef>(param, /*owned=*/false));
     return Py::new_reference_to(Py::None());
 }
 
@@ -190,7 +188,7 @@ PyObject* ParameterStorePy::sequence_item(PyObject* self, Py_ssize_t index)
         PyErr_SetString(PyExc_IndexError, "Index out of range");
         return nullptr;
     }
-    return Py::new_reference_to((*myself)[int(index)].getPyObject());
+    return Py::new_reference_to((*myself)[int(index)].getPyHandle());
 }
 
 PyObject* ParameterStorePy::mapping_subscript(PyObject* self, PyObject* item)
@@ -225,7 +223,7 @@ PyObject* ParameterStorePy::mapping_subscript(PyObject* self, PyObject* item)
 
             for (cur = start, i = 0; i < slicelength;
                  cur += step, i++) {
-                ret.setItem(i, (*myself)[cur].getPyObject());
+                ret.setItem(i, (*myself)[cur].getPyHandle());
             }
 
             return Py::new_reference_to(ret);
@@ -250,8 +248,8 @@ int ParameterStorePy::sequence_contains(PyObject* self, PyObject* pcItem)
     Py::Object it(pcItem);
     if(!(PyObject_TypeCheck(pcItem, &ParameterRefPy::Type)))
         return false;
-    UnsafePyHandle<ParameterRef> param(pcItem, false);
-    return param->host().is(myself);
+    HParameterRef param(pcItem, false);
+    return myself->has(*param);
 }
 
 

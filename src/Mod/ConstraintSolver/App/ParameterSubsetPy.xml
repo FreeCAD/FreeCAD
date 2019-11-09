@@ -14,11 +14,57 @@
 	  DisableNotify="true">
 	<Documentation>
 	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
-	  <DeveloperDocu>A subset of parameters from one ParameterStore</DeveloperDocu>
-	  <UserDocu>A subset of parameters from one ParameterStore</UserDocu>
+	  <DeveloperDocu>An ordered subset of parameters from one ParameterStore</DeveloperDocu>
+	  <UserDocu>An ordered subset of parameters from one ParameterStore</UserDocu>
 	</Documentation>
 
-<!--
+    <Attribute Name="Host" ReadOnly="true">
+      <Documentation>
+        <UserDocu>ParameterStore object hosting the parameters</UserDocu>
+      </Documentation>
+      <Parameter Name="Host" Type="Object" />
+    </Attribute>
+    <Attribute Name="Parameters" ReadOnly="true">
+      <Documentation>
+        <UserDocu>All parameters from the set, as python list. Read-only, use add/remove/clear methods to modify.</UserDocu>
+      </Documentation>
+      <Parameter Name="Parameters" Type="List" />
+    </Attribute>
+    
+    
+    <Methode Name="copy" Const="true">
+      <Documentation>
+        <UserDocu>Shallow copy (copies set, doesn't copy parameters).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="add">
+      <Documentation>
+        <UserDocu>add(parameter_or_list): adds parameter(s) to the set. Returns number of new parameters added. 
+        When adding equality groups, only master parameter is actually added, with the effect of adding 
+        the whole equality group.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="remove">
+      <Documentation>
+        <UserDocu>remove(parameter): removes a parameter (and all in its equality group) from this set.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clear">
+      <Documentation>
+        <UserDocu>clear(): empties the set.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="has">
+      <Documentation>
+        <UserDocu>has(parameter): tests if the parameter (or any from its equality group) is in this set .</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="indexOf">
+      <Documentation>
+        <UserDocu>indexOf(parameter): looks up index of the parameter (equality group) in this set. If not in the set, returns -1.</UserDocu>
+      </Documentation>
+    </Methode>
+
 	<Sequence 
 		sq_length =		 "true"
 		sq_concat =		 "false"
@@ -31,6 +77,5 @@
 		sq_inplace_concat = "false"
 		sq_inplace_repeat = "false"
 	/>
--->
   </PythonExport>
 </GenerateModel>

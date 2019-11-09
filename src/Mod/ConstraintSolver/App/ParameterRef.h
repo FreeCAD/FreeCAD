@@ -30,7 +30,9 @@
 
 namespace GCS {
 
-typedef UnsafePyHandle<ParameterStore> HParameterStore;
+class ParameterRef;
+typedef Base::UnsafePyHandle<ParameterRef> HParameterRef;
+typedef UnsafePyHandle<ParameterStore> HParameterStore; //why do I have to repeat this? Anyone? --DeepSOIC
 
 /**
  * @brief ParameterRef class: refers to a parameter in store. Also is used as a key into value vectors, for constraint code.
@@ -73,7 +75,8 @@ public://methods
     bool isSameRef(const ParameterRef &other) const;
     bool isSameValue(const ParameterRef &other) const;
 
-    UnsafePyHandle<ParameterRef> getPyObject() const;
+    UnsafePyHandle<ParameterRef> getPyHandle() const;
+    PyObject* getPyObject();
 public://iterator interface
     void operator++(){++_ownIndex;}
     bool operator!=(const ParameterRef& other) const {return _ownIndex != other._ownIndex;}

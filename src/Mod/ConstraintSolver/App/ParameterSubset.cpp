@@ -39,6 +39,8 @@ void ParameterSubset::onStoreExpand()
 
 bool ParameterSubset::checkParameter(ParameterRef param) const
 {
+    if (host().isNone())
+        return false;
     return host()->has(param);
 }
 
@@ -91,6 +93,15 @@ bool ParameterSubset::add(ParameterRef param)
     return true;
 }
 
+int ParameterSubset::add(const std::vector<ParameterRef>& params)
+{
+    int cnt = 0;
+    for(const ParameterRef& r : params){
+        cnt += add(r);
+    }
+    return cnt;
+}
+
 bool ParameterSubset::remove(ParameterRef param)
 {
     if (! has(param))
@@ -136,7 +147,17 @@ int ParameterSubset::indexOf(ParameterRef param) const
     return _lut[param.masterIndex()];
 }
 
+ParameterRef ParameterSubset::operator[](int index) const
+{
+    return _params[index];
+}
+
 HParameterSubset ParameterSubset::self() const
 {
     return HParameterSubset(_twin, false);
+}
+
+PyObject* ParameterSubset::getPyObject()
+{
+    return Py::new_reference_to(self());
 }

@@ -65,7 +65,7 @@ public://methods
     int size() const;
 
     bool add(ParameterRef param);
-    int add(std::vector<ParameterRef> params);
+    int add(const std::vector<ParameterRef>& params);
     /// remove: removes whole equality group, not just the parameter.
     bool remove(ParameterRef param);
     void clear();
@@ -81,7 +81,10 @@ public://methods
      */
     int indexOf(ParameterRef param) const;
 
+    ParameterRef operator[](int index) const;
+
     HParameterSubset self() const;
+    PyObject* getPyObject();
 
 public://friends
     friend class ParameterStore;

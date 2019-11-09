@@ -79,8 +79,13 @@ bool ParameterRef::isSameValue(const ParameterRef& other) const {
             && (masterIndex() == other.masterIndex());
 }
 
-UnsafePyHandle<ParameterRef> ParameterRef::getPyObject() const
+UnsafePyHandle<ParameterRef> ParameterRef::getPyHandle() const
 {
     UnsafePyHandle<ParameterRef> ret(new ParameterRefPy(new ParameterRef(*this)), /*new_reference=*/true);
     return ret;
+}
+
+PyObject* ParameterRef::getPyObject()
+{
+    return Py::new_reference_to(getPyHandle());
 }
