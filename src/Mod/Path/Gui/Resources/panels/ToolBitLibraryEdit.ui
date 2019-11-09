@@ -31,6 +31,9 @@
       </property>
       <item>
        <widget class="QToolButton" name="libraryNew">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create a new library with an empty list of Tool Bits.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>...</string>
         </property>
@@ -42,6 +45,9 @@
       </item>
       <item>
        <widget class="QToolButton" name="libraryOpen">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Open an existing Tool Bit library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>...</string>
         </property>
@@ -53,6 +59,9 @@
       </item>
       <item>
        <widget class="QToolButton" name="librarySave">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save Tool Bit library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>...</string>
         </property>
@@ -64,6 +73,9 @@
       </item>
       <item>
        <widget class="QToolButton" name="librarySaveAs">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save Tool Bit library under new name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>...</string>
         </property>
@@ -88,6 +100,9 @@
       </item>
       <item>
        <widget class="QToolButton" name="libraryPref">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit Tool Bit library editor settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>...</string>
         </property>
@@ -113,6 +128,9 @@
        <widget class="QTableView" name="toolTable">
         <property name="acceptDrops">
          <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="dragEnabled">
          <bool>true</bool>
@@ -151,6 +169,9 @@
          </property>
          <item>
           <widget class="QPushButton" name="toolAdd">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add another Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="text">
             <string>Add ...</string>
            </property>
@@ -162,6 +183,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="toolDelete">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected Tool Bit(s) from the library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="text">
             <string>Delete</string>
            </property>
@@ -173,6 +197,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="toolEnumerate">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Assigne numbers to each Tool Bit according to its current position in the library. The first Tool Bit is assigned the ID 1.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="text">
             <string>Enumerate</string>
            </property>
