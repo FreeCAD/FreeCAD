@@ -601,21 +601,28 @@ class _Wall(ArchComponent.Component):
             extv = extdata[2].Rotation.multVec(extdata[1])
             if isinstance(bplates,list):
                 shps = []
+                # Test : if base is Sketch, then fuse all solid; otherwise, makeCompound
+                sketchBaseToFuse = obj.Base.isDerivedFrom("Sketcher::SketchObject")
                 for b in bplates:
                     b.Placement = extdata[2].multiply(b.Placement)
                     b = b.extrude(extv)
 
                     # See getExtrusionData() - not fusing baseplates there - fuse solids here
                     # Remarks - If solids are fused, but exportIFC.py use underlying baseplates w/o fuse, the result in ifc look slightly different from in FC.
-                    #shps.append(b)
-                    if shps:
-                        shps = shps.fuse(b) #shps.fuse(b)
-                    else:
-                        shps=b
-                    # TODO - To let user to select whether to fuse (slower) or to do a compound (faster) only ?
-                #base = Part.makeCompound(shps)
-                base = shps
 
+                    if sketchBaseToFuse:
+                        if shps:
+                            shps = shps.fuse(b) #shps.fuse(b)
+                        else:
+                            shps=b
+                    else:
+                        shps.append(b)
+                    # TODO - To let user to select whether to fuse (slower) or to do a compound (faster) only ?
+
+                if sketchBaseToFuse:
+                    base = shps
+                else:
+                    base = Part.makeCompound(shps)
             else:
                 bplates.Placement = extdata[2].multiply(bplates.Placement)
                 base = bplates.extrude(extv)
