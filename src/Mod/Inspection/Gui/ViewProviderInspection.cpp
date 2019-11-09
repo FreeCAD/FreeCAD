@@ -473,6 +473,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
                 view->setRedirectToSceneGraphEnabled(false);
+                view->setSelectionEnabled(true);
                 view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback, ud);
             }
         }
@@ -508,8 +509,8 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                     const SoPickedPoint * point = pps[i];
                     vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
                     if (vp && vp->getTypeId().isDerivedFrom(ViewProviderInspection::getClassTypeId())) {
-                        ViewProviderInspection* that = static_cast<ViewProviderInspection*>(vp);
-                        QString info = that->inspectDistance(point);
+                        ViewProviderInspection* self = static_cast<ViewProviderInspection*>(vp);
+                        QString info = self->inspectDistance(point);
                         Gui::getMainWindow()->setPaneText(1,info);
                         if (addflag)
                             ViewProviderProxyObject::addFlag(view, info, point);
