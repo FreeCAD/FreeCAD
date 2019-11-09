@@ -41,7 +41,6 @@ PyObject* ParameterStorePy::addOne(PyObject* args, PyObject* kwd)
         return nullptr;
     ParameterRef ref = getParameterStorePtr()->add(Parameter(label, value, scale, fixed == Py_True, tag));
     Py::Object r = ref.getPyObject();
-    Base::Console().Warning("ref cnt: %i", int( r.reference_count()));
     return Py::new_reference_to(ref.getPyObject());
 }
 

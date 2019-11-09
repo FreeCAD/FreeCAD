@@ -1,7 +1,6 @@
 #include "PreCompiled.h"
 #include "ParameterStore.h"
 #include <ParameterStorePy.h>
-#include <Base/Console.h>
 
 using namespace GCS;
 
@@ -30,7 +29,6 @@ HParameterStore ParameterStore::make(int prealloc) {
 
 ParameterStore::~ParameterStore()
 {
-    Base::Console().Warning("destruct ParameterStore\n");
 }
 
 HParameterStore ParameterStore::copy()

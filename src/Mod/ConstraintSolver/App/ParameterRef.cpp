@@ -3,7 +3,6 @@
 #include "ParameterRef.h"
 #include "ParameterRefPy.h"
 #include <Base/Exception.h>
-#include <Base/Console.h>
 
 using namespace GCS;
 
@@ -16,7 +15,6 @@ ParameterRef::ParameterRef(HParameterStore st, int index)
 
 ParameterRef::~ParameterRef()
 {
-    Base::Console().Warning("destruct ParameterRef\n");
 }
 
 int ParameterRef::masterIndex() const {
@@ -84,6 +82,5 @@ bool ParameterRef::isSameValue(const ParameterRef& other) const {
 UnsafePyHandle<ParameterRef> ParameterRef::getPyObject() const
 {
     UnsafePyHandle<ParameterRef> ret(new ParameterRefPy(new ParameterRef(*this)), /*new_reference=*/true);
-    Base::Console().Warning("ref cnt: %i", int( ret.reference_count()));
     return ret;
 }
