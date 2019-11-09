@@ -23,6 +23,7 @@ SET(Draft_tests
 SET(Draft_utilities
     draftutils/__init__.py
     draftutils/utils.py
+    draftutils/gui_utils.py
 )
 
 SET(Draft_objects
