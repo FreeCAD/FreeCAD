@@ -124,7 +124,7 @@ public:
     void spinCW(void);
     void spinCCW(void);
     
-    void dumpISO(char * title);
+    void dumpISO(const char * title);
     std::vector<DrawProjGroupItem*> getViewsAsDPGI();
 
     void recomputeChildren(void);

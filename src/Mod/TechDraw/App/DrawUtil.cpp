@@ -203,7 +203,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
     return result;
 }
 
-//! find angle of edge with x-Axis at First/LastVertex 
+//! find angle of edge with x-Axis at First/LastVertex
 double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
 {
     double result = 0;
@@ -359,7 +359,7 @@ std::string DrawUtil::formatVector(const QPointF& v)
 }
 
 //! compare 2 vectors for sorting - true if v1 < v2
-bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)  
+bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)
 {
     bool result = false;
     if ((v1 - v2).Length() > Precision::Confusion()) {      //ie v1 != v2
@@ -372,7 +372,7 @@ bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)
         }
     }
     return result;
-}  
+}
 
 //!convert fromPoint in coordinate system fromSystem to reference coordinate system
 Base::Vector3d DrawUtil::toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint)
@@ -423,7 +423,7 @@ Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d v)
     Base::Vector3d  stdYr(0.0,-1.0,0.0);
     Base::Vector3d  stdZr(0.0,0.0,-1.0);
     double angleX,angleY,angleZ,angleXr,angleYr,angleZr, angleMin;
-    
+
     //first check if already a basis
     if (checkParallel(v,stdZ)) {
         return v;
@@ -432,7 +432,7 @@ Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d v)
     } else if (checkParallel(v,stdX)) {
         return v;
     }
-    
+
     //not a basis. find smallest angle with a basis.
     angleX = stdX.GetAngle(v);
     angleY = stdY.GetAngle(v);
@@ -501,7 +501,7 @@ double DrawUtil::getDefaultLineWeight(std::string lineType)
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
     auto lg = LineGroup::lineGroupFactory(lgName);
-    
+
     double weight = lg->getWeight(lineType);
     delete lg;                                    //Coverity CID 174671
     return weight;
@@ -548,7 +548,7 @@ Base::Vector3d DrawUtil::Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
 
 std::string DrawUtil::shapeToString(TopoDS_Shape s)
 {
-    std::ostringstream buffer; 
+    std::ostringstream buffer;
     BRepTools::Write(s, buffer);
     return buffer.str();
 }
@@ -594,7 +594,7 @@ std::vector<std::string> DrawUtil::tokenize(std::string csvLine, std::string del
         tokens.push_back(s.substr(0, pos));
         s.erase(0, pos + delimiter.length());
     }
-    if (!s.empty()) {     
+    if (!s.empty()) {
         tokens.push_back(s);
     }
     return tokens;
@@ -955,7 +955,7 @@ void DrawUtil::findLineSegmentRectangleIntersections(const Base::Vector2d &lineP
     }
 
     // Try to add the line segment end points
-    mergeBoundedPoint(linePoint + segmentBasePosition*segmentDirection, 
+    mergeBoundedPoint(linePoint + segmentBasePosition*segmentDirection,
                       rectangle, intersections);
     mergeBoundedPoint(linePoint + (segmentBasePosition + segmentLength)*segmentDirection,
                       rectangle, intersections);
@@ -1044,7 +1044,7 @@ void DrawUtil::dump1Vertex(const char* text, const TopoDS_Vertex& v)
     Base::Console().Message("%s: (%.3f,%.3f,%.3f)\n",text,pnt.X(),pnt.Y(),pnt.Z());
 }
 
-void DrawUtil::dumpEdge(char* label, int i, TopoDS_Edge e)
+void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
 {
     BRepAdaptor_Curve adapt(e);
     double start = BRepLProp_CurveTool::FirstParameter(adapt);

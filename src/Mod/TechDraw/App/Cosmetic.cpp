@@ -86,7 +86,7 @@ LineFormat::LineFormat(int style,
 {
 }
 
-void LineFormat::dump(char* title)
+void LineFormat::dump(const char* title)
 {
     Base::Console().Message("LF::dump - %s \n",title);
     Base::Console().Message("LF::dump - %s \n",toString().c_str());
@@ -326,7 +326,7 @@ PyObject* CosmeticVertex::getPyObject(void)
     return new CosmeticVertexPy(new CosmeticVertex(this->copy()));
 }
 
-void CosmeticVertex::dump(char* title)
+void CosmeticVertex::dump(const char* title)
 {
     Base::Console().Message("CV::dump - %s \n",title);
     Base::Console().Message("CV::dump - %s \n",toString().c_str());
@@ -426,7 +426,7 @@ std::string CosmeticEdge::toString(void) const
     return ss.str();
 }
 
-void CosmeticEdge::dump(char* title)
+void CosmeticEdge::dump(const char* title)
 {
     Base::Console().Message("CE::dump - %s \n",title);
     Base::Console().Message("CE::dump - %s \n",toString().c_str());
@@ -808,7 +808,7 @@ std::string CenterLine::toString(void) const
     return clCSV + ",$$$," + fmtCSV;
 }
 
-void CenterLine::dump(char* title)
+void CenterLine::dump(const char* title)
 {
     Base::Console().Message("CL::dump - %s \n",title);
     Base::Console().Message("CL::dump - %s \n",toString().c_str());
@@ -1476,7 +1476,7 @@ GeomFormat::~GeomFormat()
 {
 }
 
-void GeomFormat::dump(char* title) const
+void GeomFormat::dump(const char* title) const
 {
     Base::Console().Message("GF::dump - %s \n",title);
     Base::Console().Message("GF::dump - %s \n",toString().c_str());

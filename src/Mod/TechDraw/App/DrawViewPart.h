@@ -220,8 +220,8 @@ public:
     TechDraw::GeomFormat* getGeomFormatByGeom(int idx) const;
     void clearGeomFormats(void);
 
-    void dumpVerts(std::string text);
-    void dumpCosVerts(std::string text);
+    void dumpVerts(const std::string text);
+    void dumpCosVerts(const std::string text);
 
 protected:
     TechDraw::GeometryObject *geometryObject;

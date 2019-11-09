@@ -60,7 +60,7 @@ public:
     static App::Color getDefEdgeColor();
     static int getDefEdgeStyle();
 
-    void dump(char* title);
+    void dump(const char* title);
     std::string toString() const;
 };
 
@@ -75,7 +75,7 @@ public:
     virtual ~CosmeticVertex() = default;
 
     std::string toString(void) const;
-    void dump(char* title);
+    void dump(const char* title);
     Base::Vector3d scaled(double factor);
 
     static bool restoreCosmetic(void);
@@ -125,7 +125,7 @@ public:
 
     virtual std::string toString(void) const;
 /*    virtual bool fromCSV(std::string& lineSpec);*/
-    void dump(char* title);
+    void dump(const char* title);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -213,7 +213,7 @@ public:
                                           int vert, double ext,
                                           double m_hShift, double m_vShift,
                                           double rotate, bool flip);
-    void dump(char* title);
+    void dump(const char* title);
     void setShifts(double h, double v);
     double getHShift(void);
     double getVShift(void);
@@ -275,7 +275,7 @@ public:
     GeomFormat* clone(void) const;
 
     std::string toString(void) const;
-    void dump(char* title) const;
+    void dump(const char* title) const;
 
     int m_geomIndex; 
     LineFormat m_format;
