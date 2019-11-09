@@ -25,28 +25,149 @@
 
 #include <CXX/Objects.hxx>
 #include "PyObjectBase.h"
+#include "Exception.h"
+#include <sstream>
 
 namespace Base {
+/**
+ * An unsafe version of PyHandle. It is designed to have the least possible
+ * performance penalty of accessing the C++ object.
+ *
+ * Compared to PyHandle:
+ *
+ * * almost no typechecking (only checks against PyObjectBase)
+ *
+ * * doesn't check isValid on every dereference attempt. That is, if you
+ * dereference it when it is None, you get a crash (dereference of null
+ * pointer). And if the object was deleted, you get an even nastier situation
+ * of unpredictable results, because the pointer isn't nulled out.
+ */
+ // It was made to become the main memory management construct of
+ // ConstraintSolver. Performance is critical, as every readout of a number is
+ // done through the handle.
+template <class CppType>
+class UnsafePyHandle : public Py::Object
+{
+public:
+    virtual bool typecheck(PyObject* pyob, bool throw_instead_of_return = false) const {
+        if (! PyObject_TypeCheck(pyob, &(Base::PyObjectBase::Type))){
+            if (throw_instead_of_return){
+                std::stringstream ss;
+                Py::Object ob(pyob);
+                ss << "Can only accept " << PyObjectBase::Type.tp_name
+                   << " or None, but got " << ob.type().as_string();
+                throw Base::TypeError(ss.str());
+            }
+            return false;
+        }
+        if (! static_cast<Base::PyObjectBase*>(pyob)->isValid()){
+            if (throw_instead_of_return){
+                throw Base::ReferencesError("Can't accept a deleted object");
+            }
+            return false;
+        }
+        return true;
+    }
 
-/** UnsafePyHandle: a convenient way to use python references as smart pointers for C++ objects.
- * "Unsafe" stands for lack of runtime checks: type checking is limited; dereferencing the object
- * if the C++ object was deleted will crash the application (you can check isValid() to guard
- * against the latter).
+    //We can't override Py::Object::set
+    //so, mask out all methods to change pointer of Py::Object
+    //it may still be possible to bypass with typecasts,
+    //but at least that isn't straightforward.
+    explicit UnsafePyHandle(PyObject* pyob, bool owned)
+    {
+        setObject(pyob, owned);
+    }
+
+    UnsafePyHandle( const Py::Object &other )
+    {
+        setObject(other.ptr());
+    }
+
+    UnsafePyHandle& operator=(PyObject* pyob){
+        setObject(pyob);
+        return *this;
+    }
+
+    UnsafePyHandle& operator=(Py::Object other){
+        setObject(other.ptr());
+        return *this;
+    }
+
+    /**
+     * @brief isValid: if the C++ object was deleted but Py object is still
+     * around, isValid will return false. Attempting to dereference the handle
+     * in such state is dereferencing a null pointer (i.e., crash).
+     * @return if it's ok to dereference the handle.
+     */
+    bool isValid(bool throw_instead_of_return = false) const {
+        if (isNone()){
+            if (throw_instead_of_return)
+                throw Base::ReferencesError("PyHandle is None and can't be dereferenced");
+            return false;
+        }
+        if (! static_cast<Base::PyObjectBase*>(this->ptr())->isValid()){
+            if (throw_instead_of_return)
+                throw Base::ReferencesError("Object referenced by PyHandle is deleted");
+            return false;
+        }
+        return true;
+    }
+
+    CppType& operator*() const {
+        return *cppptr;
+    }
+    CppType* operator->() const {
+        return cppptr;
+    }
+    ///returns pointer to C++ object
+    CppType* cptr() const {
+        return cppptr;
+    }
+
+protected: //methods
+    virtual void setObject(PyObject* pyob, bool owned = false){
+        if (typecheck(pyob))
+            cppptr = static_cast<CppType*>(static_cast<Base::PyObjectBase*>(pyob)->twinPtr());
+        else if (pyob == Py_None) {
+            cppptr = nullptr;
+        } else {
+            typecheck(pyob, /*throw=*/true);
+        }
+        this->set(pyob, owned);
+    }
+
+    virtual bool accepts(PyObject* pyob) const override {
+        if (pyob == Py_None)
+            return true;
+        else
+            return this->typecheck(pyob);
+    }
+
+protected://data
+    CppType* cppptr;
+
+};
+
+/** PyHandle: a convenient way to use python references as smart pointers for C++ objects.
+ *
+ * PyHandle can also hold None + nullptr combo.
  *
  * Usage example:
- *     //create a py object, and save it into the handle
- *     UnsafePyHandle<Base::Placement> h (new Base::PlacementPy(new Base::Placement), true);
- *     //use the handle as if it is a pointer to C++ object
- *     h->getPosition()
- *     //and when the handle is destroyed, so is the py object, if it isn't referred to by something else.
+ * ```cpp
+ * //create a py object, and save it into the handle
+ * PyHandle<Base::Placement, Base::PlacementPy> h (new Base::PlacementPy(new Base::Placement), true);
+ * //use the handle as if it is a pointer to C++ object
+ * h->getPosition()
+ * //and when the handle is destroyed, so is the py object, if it isn't referred to by something else.
+ * ```
  *
  * ## Memory management
  *
  * * when PyHandle is created, reference counter is incremented (except if
- * "new_reference" constructor argument is true).
+ * "owned" constructor argument is true).
  *
  * * when PyHandle is destroyed, reference counter is decremented (no matter
- * what "new_reference" value was passed to constructor). If resulting refcount
+ * what "owned" value was passed to constructor). If resulting refcount
  * is zero, the object is deleted.
  *
  * * Py::new_reference_to(PyHandle) increments reference count and returns PyObject*
@@ -54,13 +175,13 @@ namespace Base {
  * Cheatsheet:
  *
  * * when constructing from "new SomethingSomethingPy(new SomethingSomething)",
- * use "new_reference". That is because SomethingSomethingPy sets reference counter
+ * use "owned". That is because SomethingSomethingPy sets reference counter
  * to 1 in its constructor.
  *
- * * when constructing from getPyObject, use "new_reference"
+ * * when constructing from getPyObject, use "owned"
  *
  * * when constructing from PyObject* you got as an argument of ...PyImp method
- * implementation, don't use "new_reference".
+ * implementation, don't use "owned".
  *
  * * when returning PyObject* from a getPyObject, use
  * Py::new_reference_to(<PyHangle> object).
@@ -71,80 +192,49 @@ namespace Base {
  * The handle derives from PyCXX's Py::Object, so it can be conveniently used
  * for adding to tuples and the like, when programming python API.
  */
- // Since it was made to become the main memory management construct of
- // ConstraintSolver, checks for isValid() are intentionally not done to maximize
- // performance. It is named "Unsafe" with the intention to have room for a safer
- // "PyHandle" replica.
-template <class CppType>
-class UnsafePyHandle : public Py::Object
-{
-private:
-    CppType* cppptr;
-protected:
-    virtual void setObject(PyObject* pyob, bool new_reference = false){
-        if (typecheck(pyob))
-            cppptr = static_cast<CppType*>(static_cast<Base::PyObjectBase*>(pyob)->twinPtr());
-        else
-            throw Base::TypeError("Not a freecad object");
-        this->set(pyob, new_reference);
-    }
-
+template<class CppType, class PyType>
+class PyHandle: public UnsafePyHandle<CppType>{
 public:
-    virtual bool typecheck(PyObject* pyob) {
-        if (! PyObject_TypeCheck(pyob, &(Base::PyObjectBase::Type)))
+    virtual bool typecheck(PyObject* pyob, bool throw_instead_of_return = false) const override {
+        if (! PyObject_TypeCheck(pyob, &(PyType::Type))){
+            if (throw_instead_of_return){
+                std::stringstream ss;
+                Py::Object ob(pyob);
+                ss << "Can only accept " << PyType::Type.tp_name
+                   << " or None, but got " << ob.type().as_string();
+                throw Base::TypeError(ss.str());
+            }
             return false;
-        if (! static_cast<Base::PyObjectBase*>(pyob)->isValid())
-            return false;
-        return true;
+        }
+        return UnsafePyHandle<CppType>::typecheck(pyob, throw_instead_of_return);
     }
 
-    //We can't override Py::Object::set
-    //so, mask out all methods to change pointer of Py::Object
-    //it may still be possible to bypass with typecasts,
-    //but at least that isn't straightforward.
     /**
-     * @brief UnsafePyHandle constructor
+     * @brief constructor
      * @param pyob
-     * @param new_reference: specify True if the reference is "owned" by the calling function,
-     * particularly when creating a new object like UnsafePyHandle<Base::Placement> hplm (new PlacementPy(...))
+     * @param owned: specify True if constructing from "new reference".
+     * particularly when creating a new object:
+     * ```cpp
+     * PyHandle<Placement, PlacemenyPy> hplm (new PlacementPy(...), true)
+     *                                                              ^^^^
+     * ```
      * For more info, see docs for PyCXX's Object's "owned" argument.
      */
-    explicit UnsafePyHandle(PyObject* pyob, bool new_reference)
-    {
-        setObject(pyob, new_reference);
-    }
+    explicit PyHandle(PyObject* pyob, bool owned)
+        : PyHandle(pyob, owned){}
 
-    UnsafePyHandle( const Object &other )
-    {
-        setObject(other.ptr());
-    }
-
-    UnsafePyHandle& operator=(PyObject* pyob){
-        setObject(pyob);
-    }
-
-    UnsafePyHandle& operator=(Py::Object other){
-        setObject(other.ptr());
-    }
-
-    /**
-     * @brief isValid: if the C++ object was deleted but Py object is still
-     * around, isValid will return false. Attempting to dereference the handle
-     * in such state is dereferencing a null pointer (i.e., crash).
-     * @return if it's ok to dereference the handle.
-     */
-    bool isValid() const {
-        return static_cast<Base::PyObjectBase*>(this->ptr())->isValid();
-    }
+    PyHandle( const Py::Object &other )
+        : PyHandle(other){}
 
     CppType& operator*() const {
-        return *cppptr;
+        this->isValid(/*throw=*/true);
+        return *(this->cppptr);
     }
     CppType* operator->() const {
-        return cppptr;
+        this->isValid(/*throw=*/true);
+        return this->cppptr;
     }
 
-    bool operator==(UnsafePyHandle<CppType> &other){return ptr() == other.ptr();}
 };
 
 } //namespace
