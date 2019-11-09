@@ -129,7 +129,7 @@ PyObject* ParameterStorePy::free(PyObject* args)
 PyObject* ParameterStorePy::sync(PyObject* args)
 {
     PyObject* param = Py_None;
-    if (! PyArg_ParseTuple(args, "|O", &param, &ParameterRefPy::Type))
+    if (! PyArg_ParseTuple(args, "|O!", &ParameterRefPy::Type, &param))
         return nullptr;
     if (param == Py_None)
         getParameterStorePtr()->sync();
