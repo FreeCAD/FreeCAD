@@ -1525,7 +1525,7 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
 
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
-        Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+        Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
         if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
             return;
 
@@ -1599,7 +1599,7 @@ void ViewProviderMesh::fillHoleCallback(void * ud, SoEventCallback * n)
 
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
-        Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+        Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
         if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
             return;
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);
@@ -1666,7 +1666,7 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
 
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
-            Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+            Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
             if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
                 return;
             ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);

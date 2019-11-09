@@ -485,7 +485,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
             n->setHandled();
 
             // check if we have picked one a node of the view provider we are insterested in
-            Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+            Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
             if (vp && vp->getTypeId().isDerivedFrom(ViewProviderInspection::getClassTypeId())) {
                 ViewProviderInspection* that = static_cast<ViewProviderInspection*>(vp);
                 QString info = that->inspectDistance(point);
@@ -505,7 +505,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 const SoPickedPointList& pps = action.getPickedPointList();
                 for (int i=0; i<pps.getLength(); ++i) {
                     const SoPickedPoint * point = pps[i];
-                    vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+                    vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
                     if (vp && vp->getTypeId().isDerivedFrom(ViewProviderInspection::getClassTypeId())) {
                         ViewProviderInspection* that = static_cast<ViewProviderInspection*>(vp);
                         QString info = that->inspectDistance(point);
