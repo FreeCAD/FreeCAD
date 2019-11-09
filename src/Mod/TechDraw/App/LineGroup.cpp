@@ -89,7 +89,7 @@ void LineGroup::setWeight(std::string s, double weight)
     }
 }
 
-void LineGroup::dump(char* title)
+void LineGroup::dump(const char* title)
 {
     Base::Console().Message( "DUMP: %s\n",title);
     Base::Console().Message( "Name: %s\n", m_name.c_str());

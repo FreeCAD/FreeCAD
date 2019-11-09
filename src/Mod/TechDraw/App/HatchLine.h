@@ -61,7 +61,7 @@ public:
       bool                empty(void) {return m_parms.empty();}
       int                 size(void)  {return m_parms.size();}
       double              length(void);
-      void                dump(char* title);
+      void                dump(const char* title);
       DashSpec            reversed(void);
       
 private:
@@ -95,7 +95,7 @@ public:
     
     bool isDashed(void);
 
-    void dump(char* title);
+    void dump(const char* title);
 
 private: 
     void init(void);

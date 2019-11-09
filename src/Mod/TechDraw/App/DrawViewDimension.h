@@ -166,7 +166,7 @@ protected:
 private:
     static const char* TypeEnums[];
     static const char* MeasureTypeEnums[];
-    void dumpRefs2D(char* text) const;
+    void dumpRefs2D(const char* text) const;
     //Dimension "geometry"
     pointPair   m_linearPoints;
     arcPoints   m_arcPoints;

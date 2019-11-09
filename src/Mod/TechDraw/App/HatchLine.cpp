@@ -284,7 +284,7 @@ std::vector<double> PATLineSpec::split(std::string line)
     return result;
 }
 
-void PATLineSpec::dump(char* title)
+void PATLineSpec::dump(const char* title)
 {
     Base::Console().Message( "DUMP: %s\n",title);
     Base::Console().Message( "Angle: %.3f\n", m_angle);
@@ -475,7 +475,7 @@ DashSpec DashSpec::reversed(void)
     return result;
 }
 
-void DashSpec::dump(char* title)
+void DashSpec::dump(const char* title)
 {
     std::stringstream ss;
     ss << title << ": " ;
