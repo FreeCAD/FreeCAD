@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="PyObjectBase" 
+	  Name="ParameterSubsetPy" 
+	  Twin="ParameterSubset" 
+	  TwinPointer="ParameterSubset" 
+	  Include="Mod/ConstraintSolver/App/ParameterSubset.h" 
+	  FatherInclude="Base/PyObjectBase.h" 
+	  Namespace="GCS" 
+	  Constructor="true"
+	  Delete="true"
+	  FatherNamespace="Base"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu>A subset of parameters from one ParameterStore</DeveloperDocu>
+	  <UserDocu>A subset of parameters from one ParameterStore</UserDocu>
+	</Documentation>
+
+<!--
+	<Sequence 
+		sq_length =		 "true"
+		sq_concat =		 "false"
+		sq_repeat =		 "false"
+		sq_item =		   "true"
+		mp_subscript =	  "true"
+		sq_ass_item =	   "true"
+		mp_ass_subscript =  "false"
+		sq_contains =	   "true"
+		sq_inplace_concat = "false"
+		sq_inplace_repeat = "false"
+	/>
+-->
+  </PythonExport>
+</GenerateModel>

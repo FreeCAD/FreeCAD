@@ -1,0 +1,142 @@
+#include "PreCompiled.h"
+
+#include "ParameterSubset.h"
+#include "ParameterSubsetPy.h"
+#include "ParameterRef.h"
+#include "ParameterStore.h"
+
+#include <Base/Console.h>
+
+using namespace GCS;
+
+GCS::ParameterSubset::ParameterSubset(int prealloc)
+    : _host(Py::None())
+{
+    this->_params.reserve(size_t(prealloc));
+    if(host().isNone())
+        Base::Console().Warning("ok\n");
+}
+
+void GCS::ParameterSubset::attach(GCS::HParameterStore store)
+{
+    _host = store;
+    _host->onNewSubset(self());
+    onStoreExpand();
+}
+
+void ParameterSubset::detach()
+{
+    if (host().isNone())
+        return;
+    _host->onDeletedSubset(self());
+    _host = Py::None();
+}
+
+void ParameterSubset::onStoreExpand()
+{
+    _lut.resize(host()->size(), -1);
+}
+
+bool ParameterSubset::checkParameter(ParameterRef param) const
+{
+    return host()->has(param);
+}
+
+HParameterSubset ParameterSubset::make(int prealloc)
+{
+    ParameterSubset* obj = new ParameterSubset(prealloc);
+    PyObject* pyobj = new ParameterSubsetPy(obj);
+    obj->_twin = pyobj;
+    return HParameterSubset(pyobj, /*new_reference=*/true);
+}
+
+HParameterSubset ParameterSubset::copy() const
+{
+    HParameterSubset cpy = make(this->size());
+    if (size() > 0){
+        cpy->attach(this->host());
+        cpy->_lut = _lut;
+        cpy->_params = _params;
+    }
+    return cpy;
+}
+
+ParameterSubset::~ParameterSubset()
+{
+    detach();
+}
+
+GCS::HParameterStore GCS::ParameterSubset::host() const
+{
+    return _host;
+}
+
+int ParameterSubset::size() const
+{
+    return _params.size();
+}
+
+bool ParameterSubset::add(ParameterRef param)
+{
+    if (host().isNone()){
+        attach(param.host());
+    }
+    if (!checkParameter(param))
+        throw Base::ValueError("Can't add a parameter from a different store");
+    if (indexOf(param) != -1)
+        return false; //already added
+    _params.push_back(param);
+    std::vector<ParameterRef> grp = host()->getEqualityGroup(param);
+    _lut[param.masterIndex()] = int(_params.size()) - 1;
+    return true;
+}
+
+bool ParameterSubset::remove(ParameterRef param)
+{
+    if (! has(param))
+        return false;
+
+    if(size() == 1){
+        clear();
+        return true;
+    }
+
+    int i_param = indexOf(param);
+
+    _params.erase(_params.begin() + i_param);
+
+    //update lookup table
+    _lut[param.masterIndex()] = -1;
+    for (int& i : _lut){
+        if (i > i_param)
+            --i;
+    }
+    return true;
+}
+
+void ParameterSubset::clear()
+{
+    _lut.assign(_lut.size(), -1);
+    _params.clear();
+    detach();
+}
+
+bool ParameterSubset::has(ParameterRef param) const
+{
+    if (! checkParameter(param))
+        return false;
+    return indexOf(param) != -1;
+}
+
+int ParameterSubset::indexOf(ParameterRef param) const
+{
+    assert(checkParameter(param));
+    if(size() == 0)
+        return -1; //a guard against when host is still None
+    return _lut[param.masterIndex()];
+}
+
+HParameterSubset ParameterSubset::self() const
+{
+    return HParameterSubset(_twin, false);
+}

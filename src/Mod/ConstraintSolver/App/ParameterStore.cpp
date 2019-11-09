@@ -1,6 +1,8 @@
 #include "PreCompiled.h"
 #include "ParameterStore.h"
 #include <ParameterStorePy.h>
+#include "ParameterSubset.h"
+#include <Base/Console.h>
 
 using namespace GCS;
 
@@ -18,6 +20,19 @@ void ParameterStore::on_added(int old_sz, int new_sz)
         p._ownIndex = i;
         p._masterIndex = i;
     }
+    for(ParameterSubset* p : _subsets){
+        p->onStoreExpand();
+    }
+}
+
+void ParameterStore::onNewSubset(HParameterSubset ss)
+{
+    _subsets.insert(ss.cptr());
+}
+
+void ParameterStore::onDeletedSubset(HParameterSubset ss)
+{
+    _subsets.erase(ss.cptr());
 }
 
 HParameterStore ParameterStore::make(int prealloc) {
@@ -87,6 +102,11 @@ std::vector<ParameterRef> ParameterStore::add(const std::vector<Parameter>& pp)
 
 }
 
+bool ParameterStore::has(ParameterRef param) const
+{
+    return param.host().is(self());
+}
+
 int ParameterStore::size() const {return _params.size();}
 
 void ParameterStore::resize(int newSize)
@@ -100,7 +120,7 @@ void ParameterStore::resize(int newSize)
 ParameterRef ParameterStore::operator[](int index) const
 {
     //FIXME: range-check, maybe? watch out the usage in method "end".
-    return ParameterRef(getPyHandle(), index);
+    return ParameterRef(self(), index);
 }
 
 double& ParameterStore::value(int index){
@@ -130,6 +150,8 @@ void ParameterStore::redirect(ParameterRef who, ParameterRef where, bool mean_ou
             where.savedValue() = mean;
         }
     }
+    if (inSubsets(who) || inSubsets(where))
+        Base::Console().Warning("Redirection when there are ParameterSets around are likely to break the sets.\n");
     for (ParameterRef &p : grpWho){
         p.param()._masterIndex = where.masterIndex();
     }
@@ -169,6 +191,8 @@ ParameterStore::eConstrainEqual_Result ParameterStore::constrainEqual(ParameterR
 
 void ParameterStore::free()
 {
+    if (! _subsets.empty())
+        Base::Console().Warning("Redirection when there are ParameterSets around are likely to break the sets.\n");
     sync();
     for (Parameter& p : _params){
         p._masterIndex = p.ownIndex();
@@ -177,6 +201,8 @@ void ParameterStore::free()
 
 void ParameterStore::free(ParameterRef param)
 {
+    if (this->inSubsets(param))
+        Base::Console().Warning("Redirection when there are ParameterSets around are likely to break the sets.\n");
     sync(param);
     param.param()._masterIndex = param.param().ownIndex();
 }
@@ -197,21 +223,32 @@ void ParameterStore::fix(ParameterRef param)
 {
     std::vector<ParameterRef> grp = getEqualityGroup(param);
     param.ownFixed() = true;
-    if (! param.isFixed()){
+    if (! param.isFixed() && grp.size() > 1){
         //the whole group should become fixed. To avoid changing the flag of master,
         //we redirect the group to use this parameter as master.
+        if (inSubsets(grp[0]))
+            Base::Console().Warning("Redirection when there are ParameterSets around are likely to break the sets.\n");
         for (ParameterRef &p : grp){
             p.param()._masterIndex = param.ownIndex();
         }
     }
 }
 
-PyObject* ParameterStore::getPyObject()
+bool ParameterStore::inSubsets(ParameterRef param) const
 {
-    return Py::new_reference_to(getPyHandle());
+    for(ParameterSubset* ss : _subsets){
+        if(ss->has(param))
+            return true;
+    }
+    return false;
 }
 
-HParameterStore ParameterStore::getPyHandle() const {
+PyObject* ParameterStore::getPyObject()
+{
+    return Py::new_reference_to(self());
+}
+
+HParameterStore ParameterStore::self() const {
     return HParameterStore(_twin, /*new_reference = */false);
 }
 

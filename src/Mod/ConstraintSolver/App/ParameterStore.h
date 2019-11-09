@@ -32,12 +32,16 @@ class ParameterStore;
 #include "Parameter.h"
 #include "ParameterRef.h"
 
+#include <vector>
+#include <set>
+
 namespace GCS {
 
 
 class ParameterRef;
-class ParameterSet;
+class ParameterSubset;
 typedef UnsafePyHandle<ParameterStore> HParameterStore;
+typedef UnsafePyHandle<ParameterSubset> HParameterSubset;
 
 
 class GCSExport ParameterStore : public Base::BaseClass {
@@ -45,10 +49,13 @@ class GCSExport ParameterStore : public Base::BaseClass {
 protected: //data
     std::vector<Parameter> _params;
     PyObject* _twin;
+    std::set<ParameterSubset*> _subsets;
 protected: //methods
     ParameterStore(int prealloc = 0); //protect all constructors because handle-only memory management
     ///fills indexes for newly created parameters
     void on_added(int old_sz, int new_sz);
+    void onNewSubset(HParameterSubset ss);
+    void onDeletedSubset(HParameterSubset ss);
 public:
     ///the constructor
     static HParameterStore make(int prealloc = 0);
@@ -63,6 +70,7 @@ public:
     ParameterRef add(const Parameter& p);
     std::vector<ParameterRef> add(int count);
     std::vector<ParameterRef> add(const std::vector<Parameter>& pp);
+    bool has(ParameterRef param) const;
 
     int size() const;
     void resize(int newSize);
@@ -100,9 +108,12 @@ public:
     ///marks this parameter as fixed, and makes sure that the equality group it belongs to is fixed too.
     void fix(ParameterRef param);
 
+    //mostly for internal use, but doesn't hurt to be public:
+    ///tests if a parameter was added to any subset (either directly, or through redirection)
+    bool inSubsets(ParameterRef param) const;
 
     PyObject* getPyObject() override;
-    HParameterStore getPyHandle() const;
+    HParameterStore self() const;
 
 public: //for range-based for looping. Using ParameterRef as an iterator.
     ParameterRef begin();
@@ -110,6 +121,7 @@ public: //for range-based for looping. Using ParameterRef as an iterator.
     ParameterRef end();
 public:
     friend class ParameterRef;
+    friend class ParameterSubset;
 };
 
 } //namespace

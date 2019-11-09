@@ -21,64 +21,73 @@
  ***************************************************************************/
 #pragma once //to make qt creator happy, see QTCREATORBUG-20883
 
-#ifndef FREECAD_CONSTRAINTSOLVER_PARAMETERREF_H
-#define FREECAD_CONSTRAINTSOLVER_PARAMETERREF_H
+#ifndef FREECAD_CONSTRAINTSOLVER_PARAMETERSUBSET_H
+#define FREECAD_CONSTRAINTSOLVER_PARAMETERSUBSET_H
 
-#include "Utils.h"
-#include "Parameter.h"
+#include <vector>
+#include "ParameterRef.h"
 #include "ParameterStore.h"
 
 namespace GCS {
 
-typedef UnsafePyHandle<ParameterStore> HParameterStore;
+class ParameterSubset;
+typedef UnsafePyHandle<ParameterSubset> HParameterSubset;
 
-/**
- * @brief ParameterRef class: refers to a parameter in store. Also is used as a key into value vectors, for constraint code.
- * Memory management: regular. getPyObject returns a copy.
- */
-class GCSExport ParameterRef
+class ParameterSubset
 {
 protected://data
-    HParameterStore _store;
-    int _ownIndex;
+    std::vector<ParameterRef> _params;
+    ///Lookup table. Input = index of parameter in store. Output = index of parameter in the set.
+    std::vector<int> _lut;
+    HParameterStore _host;
+    PyObject* _twin;
+
+protected://methods
+    ParameterSubset(int prealloc = 0);
+    ///called on adding first parameter
+    void attach(HParameterStore store);
+    void detach();
+    void onStoreExpand();
+    bool checkParameter(ParameterRef param) const;
+
 public://methods
-    ParameterRef(HParameterStore st, int index);
-    ~ParameterRef();
 
-    const HParameterStore& host() const {return _store;}
-    int ownIndex() const {return _ownIndex;}
+    //constructors
+    static HParameterSubset make(int prealloc = 0);
+    static HParameterSubset make(std::vector<ParameterRef> params);
+    HParameterSubset copy() const;
 
-    int masterIndex() const;
-    bool isMaster() const;
-    ParameterRef master() const;
+    //destructors
+    ~ParameterSubset();
 
-    ///value of the parameter, bypassing redirection
-    double& ownSavedValue() const;
-    ///returns value, obeying redirection
-    double& savedValue() const;
+    HParameterStore host() const;
 
-    ///scale of the parameter, bypassing redirection
-    double& ownScale() const;
-    ///scale of the parameter, obeying redirection
-    double& masterScale() const;
+    int size() const;
 
-    bool& ownFixed() const;
-    bool isFixed() const;
-    void fix();
+    bool add(ParameterRef param);
+    int add(std::vector<ParameterRef> params);
+    /// remove: removes whole equality group, not just the parameter.
+    bool remove(ParameterRef param);
+    void clear();
+    bool has(ParameterRef param) const;
+    /**
+     * @brief indexOf
+     *
+     * @param param: the parameter to look up (feeding parameters that don't
+     * belong to the same store can lead to crashes - checks are disabled in
+     * release builds. If in doubt - check has() first.).
+     *
+     * @return index of this parameter in the subset, or -1 if it isn't in the subset.
+     */
+    int indexOf(ParameterRef param) const;
 
-    Parameter& param() const;
-    ///the parameter object this parameter is redirected to
-    ParameterRef masterParam() const;
+    HParameterSubset self() const;
 
-    bool isSameRef(const ParameterRef &other) const;
-    bool isSameValue(const ParameterRef &other) const;
-
-    UnsafePyHandle<ParameterRef> getPyObject() const;
-public://iterator interface
-    void operator++(){++_ownIndex;}
-    bool operator!=(const ParameterRef& other) const {return _ownIndex != other._ownIndex;}
+public://friends
+    friend class ParameterStore;
 };
 
 } //namespace
+
 
 #endif
