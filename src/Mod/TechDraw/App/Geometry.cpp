@@ -82,6 +82,10 @@
 using namespace TechDraw;
 using namespace std;
 
+#define GEOMETRYEDGE 0
+#define COSMETICEDGE 1
+#define CENTERLINE   2
+
 // Collection of Geometric Features
 Wire::Wire()
 {
@@ -116,13 +120,15 @@ BaseGeom::BaseGeom() :
     geomType(NOTDEF),
     extractType(Plain),             //obs
     classOfEdge(ecNONE),
-    visible(true),
+    hlrVisible(true),
     reversed(false),
     ref3D(-1),                      //obs?
     cosmetic(false),
     m_source(0),
     m_sourceIndex(-1)
 {
+    occEdge = TopoDS_Edge();
+    cosmeticTag = std::string();
 }
 
 BaseGeom* BaseGeom::copy()
@@ -133,15 +139,27 @@ BaseGeom* BaseGeom::copy()
         if (result != nullptr) {
             result->extractType = extractType;
             result->classOfEdge = classOfEdge;
-            result->visible = visible;
+            result->hlrVisible = hlrVisible;
             result->reversed = reversed;
             result->ref3D = ref3D;
             result->cosmetic = cosmetic;
             result->source(m_source);
             result->sourceIndex(m_sourceIndex);
-       }
+            result->cosmeticTag = cosmeticTag;
+        }
+    } else {
+        result = new BaseGeom();
+        result->extractType = extractType;
+        result->classOfEdge = classOfEdge;
+        result->hlrVisible = hlrVisible;
+        result->reversed = reversed;
+        result->ref3D = ref3D;
+        result->cosmetic = cosmetic;
+        result->source(m_source);
+        result->sourceIndex(m_sourceIndex);
+        result->cosmeticTag = cosmeticTag;
     }
-    
+   
     return result;
 }
 
@@ -151,7 +169,7 @@ std::string BaseGeom::toString(void) const
     ss << geomType << "," <<
           extractType << "," <<
           classOfEdge << "," <<
-          visible << "," <<
+          hlrVisible << "," <<
           reversed << "," <<
           ref3D << "," <<
           cosmetic << "," <<
@@ -160,38 +178,24 @@ std::string BaseGeom::toString(void) const
     return ss.str();
 }
 
-//bool BaseGeom::fromCSV(std::string lineSpec)
-//{
-//    unsigned int maxCells = 9;
-//    if (lineSpec.length() == 0) {
-//        Base::Console().Message( "BG::fromCSV - lineSpec empty\n");
-//        return false;
-//    }
-//    std::vector<std::string> values = DrawUtil::split(lineSpec);
-//    if (values.size() < maxCells) {
-//        Base::Console().Message( "BG::fromCSV(%s) invalid CSV entry\n",lineSpec.c_str() );
-//        return false;
-//    }
+boost::uuids::uuid BaseGeom::getTag() const
+{
+    return tag;
+}
 
-//    geomType = (TechDraw::GeomType) atoi(values[0].c_str());
-//    extractType = (TechDraw::ExtractionType) atoi(values[1].c_str());
-//    classOfEdge = (TechDraw::edgeClass) atoi(values[2].c_str());
-//    visible = (bool) atoi(values[3].c_str());
-//    reversed = (bool) atoi(values[4].c_str());
-//    ref3D = atoi(values[5].c_str());
-//    cosmetic = (bool) atoi(values[6].c_str());
-//    m_source = atoi(values[7].c_str());
-//    m_sourceIndex = atoi(values[8].c_str());
-//    return true;
-//}
+std::string BaseGeom::getTagAsString(void) const
+{
+    std::string tmp = boost::uuids::to_string(getTag());
+    return tmp;
+}
 
 void BaseGeom::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<GeomType value=\"" << geomType << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<ExtractType value=\"" << extractType << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<EdgeClass value=\"" << classOfEdge << "\"/>" << endl;
-    const char v = visible?'1':'0';
-    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+    const char v = hlrVisible?'1':'0';
+    writer.Stream() << writer.ind() << "<HLRVisible value=\"" <<  v << "\"/>" << endl;
     const char r = reversed?'1':'0';
     writer.Stream() << writer.ind() << "<Reversed value=\"" << r << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Ref3D value=\"" << ref3D << "\"/>" << endl;
@@ -199,6 +203,8 @@ void BaseGeom::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Cosmetic value=\"" << c << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Source value=\"" << m_source << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<SourceIndex value=\"" << m_sourceIndex << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
+//    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
 void BaseGeom::Restore(Base::XMLReader &reader)
@@ -209,8 +215,8 @@ void BaseGeom::Restore(Base::XMLReader &reader)
     extractType = (TechDraw::ExtractionType) reader.getAttributeAsInteger("value");
     reader.readElement("EdgeClass");
     classOfEdge = (TechDraw::edgeClass) reader.getAttributeAsInteger("value");
-    reader.readElement("Visible");
-    visible = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    reader.readElement("HLRVisible");
+    hlrVisible = (int)reader.getAttributeAsInteger("value")==0?false:true;
     reader.readElement("Reversed");
     reversed = (int)reader.getAttributeAsInteger("value")==0?false:true;
     reader.readElement("Ref3D");
@@ -221,6 +227,13 @@ void BaseGeom::Restore(Base::XMLReader &reader)
     m_source = reader.getAttributeAsInteger("value");
     reader.readElement("SourceIndex");
     m_sourceIndex = reader.getAttributeAsInteger("value");
+    reader.readElement("CosmeticTag");
+    cosmeticTag = reader.getAttribute("value");
+//    reader.readElement("Tag");
+//    std::string temp = reader.getAttribute("value");
+//    boost::uuids::string_generator gen;
+//    boost::uuids::uuid u1 = gen(temp);
+//    tag = u1;
 }
 
 std::vector<Base::Vector3d> BaseGeom::findEndPoints()
@@ -352,7 +365,7 @@ std::string BaseGeom::dump()
     Base::Vector3d end   = getEndPoint();
     std::stringstream ss;
     ss << "BaseGeom: s:(" << start.x << "," << start.y << ") e:(" << end.x << "," << end.y << ") ";
-    ss << "type: " << geomType << " class: " << classOfEdge << " viz: " << visible << " rev: " << reversed;
+    ss << "type: " << geomType << " class: " << classOfEdge << " viz: " << hlrVisible << " rev: " << reversed;
     ss << "cosmetic: " << cosmetic << " source: " << source() << " iSource: " << sourceIndex();
     return ss.str();
 }
@@ -1303,7 +1316,7 @@ Vertex::Vertex()
 {
     pnt = Base::Vector3d(0.0, 0.0, 0.0);
     extractType = ExtractionType::Plain;       //obs?
-    visible = false;
+    hlrVisible = false;
     ref3D = -1;                        //obs. never used.
     isCenter = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(0.0, 0.0, 0.0));
@@ -1311,26 +1324,28 @@ Vertex::Vertex()
     cosmetic = false;
     cosmeticLink = -1;
     cosmeticTag = std::string();
+    createNewTag();
 }
 
 Vertex::Vertex(const Vertex* v)
 {
     pnt = v->pnt;
     extractType = v->extractType;       //obs?
-    visible = v->visible;
+    hlrVisible = v->hlrVisible;
     ref3D = v->ref3D;                  //obs. never used.
     isCenter = v->isCenter;
     occVertex = v->occVertex;
     cosmetic = v->cosmetic;
     cosmeticLink = v->cosmeticLink;
     cosmeticTag = v->cosmeticTag;
+    createNewTag();
 }
 
 Vertex::Vertex(double x, double y)
 {
     pnt = Base::Vector3d(x, y, 0.0);
     extractType = ExtractionType::Plain;       //obs?
-    visible = false;
+    hlrVisible = false;
     ref3D = -1;                        //obs. never used.
     isCenter = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(x,y,0.0));
@@ -1338,6 +1353,7 @@ Vertex::Vertex(double x, double y)
     cosmetic = false;
     cosmeticLink = -1;
     cosmeticTag = std::string();
+    createNewTag();
 }
 
 Vertex::Vertex(Base::Vector3d v) : Vertex(v.x,v.y)
@@ -1366,8 +1382,8 @@ void Vertex::Save(Base::Writer &writer) const
                  "\"/>" << endl;
 
     writer.Stream() << writer.ind() << "<Extract value=\"" <<  extractType << "\"/>" << endl;
-    const char v = visible?'1':'0';
-    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+    const char v = hlrVisible?'1':'0';
+    writer.Stream() << writer.ind() << "<HLRVisible value=\"" <<  v << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<Ref3D value=\"" <<  ref3D << "\"/>" << endl;
     const char c = isCenter?'1':'0';
     writer.Stream() << writer.ind() << "<IsCenter value=\"" <<  c << "\"/>" << endl;
@@ -1375,7 +1391,7 @@ void Vertex::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Cosmetic value=\"" <<  c2 << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticLink value=\"" <<  cosmeticLink << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Tag value=\"" <<  getTagAsString() << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<VertexTag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
 void Vertex::Restore(Base::XMLReader &reader)
@@ -1387,19 +1403,19 @@ void Vertex::Restore(Base::XMLReader &reader)
 
     reader.readElement("Extract");
     extractType = (ExtractionType) reader.getAttributeAsInteger("value");
-    reader.readElement("Visible");
-    visible = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+//    reader.readElement("Visible");
+//    hlrVisible = (bool)reader.getAttributeAsInteger("value")==0?false:true;
     reader.readElement("Ref3D");
     ref3D = reader.getAttributeAsInteger("value");
     reader.readElement("IsCenter");
-    visible = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+    hlrVisible = (bool)reader.getAttributeAsInteger("value")==0?false:true;
     reader.readElement("Cosmetic");
     cosmetic = (bool)reader.getAttributeAsInteger("value")==0?false:true;
     reader.readElement("CosmeticLink");
     cosmeticLink = reader.getAttributeAsInteger("value");
     reader.readElement("CosmeticTag");
     cosmeticTag = reader.getAttribute("value");
-    reader.readElement("Tag");
+    reader.readElement("VertexTag");
     std::string temp = reader.getAttribute("value");
     boost::uuids::string_generator gen;
     boost::uuids::uuid u1 = gen(temp);
@@ -1408,6 +1424,22 @@ void Vertex::Restore(Base::XMLReader &reader)
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(pnt.x, pnt.y, pnt.z));
     occVertex = mkVert.Vertex();
 }
+
+void Vertex::createNewTag()
+{
+    // Initialize a random number generator, to avoid Valgrind false positives.
+    static boost::mt19937 ran;
+    static bool seeded = false;
+
+    if (!seeded) {
+        ran.seed(static_cast<unsigned int>(std::time(0)));
+        seeded = true;
+    }
+    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
+
+    tag = gen();
+}
+
 
 boost::uuids::uuid Vertex::getTag() const
 {
@@ -1420,10 +1452,18 @@ std::string Vertex::getTagAsString(void) const
     return tmp;
 }
 
-void Vertex::dump()
+//void Vertex::assignTag(const TechDraw::Vertex* v)
+//{
+//    if(v->getTypeId() == this->getTypeId())
+//        this->tag = v->tag;
+//    else
+//        throw Base::TypeError("Vertex tag can not be assigned as types do not match.");
+//}
+
+void Vertex::dump(char* title)
 {
-    Base::Console().Message("TD::Vertex point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
-                            DrawUtil::formatVector(pnt).c_str(), visible, cosmetic, cosmeticLink,
+    Base::Console().Message("TD::Vertex - %s - point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
+                            title, DrawUtil::formatVector(pnt).c_str(), hlrVisible, cosmetic, cosmeticLink,
                             cosmeticTag.c_str());
 }
 

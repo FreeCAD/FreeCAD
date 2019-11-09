@@ -314,8 +314,9 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
         CreaseAngle.setValue(angle);
     }
 
-    if (hGrp->GetBool("ShowBoundingBox", false))
+    if (hGrp->GetBool("ShowBoundingBox", false)) {
         SelectionStyle.setValue(1);
+    }
 
     Coloring.setStatus(App::Property::Hidden, true);
 }
@@ -371,8 +372,8 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         tryColorPerVertexOrFace(Coloring.getValue());
     }
     else if (prop == &SelectionStyle) {
-        pcHighlight->style = SelectionStyle.getValue()
-            ?Gui::SoFCSelection::BOX:Gui::SoFCSelection::EMISSIVE;
+        pcHighlight->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
+                                                       : Gui::SoFCSelection::EMISSIVE;
     }
     else {
         // Set the inverse color for open edges
@@ -916,7 +917,7 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
     if (clPoly.front() != clPoly.back())
         clPoly.push_back(clPoly.front());
 
-    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+    std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     if (!views.empty()) {
         Gui::Application::Instance->activeDocument()->openCommand("Cut");
         bool commitCommand = false;
@@ -977,7 +978,7 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
     if (clPoly.front() != clPoly.back())
         clPoly.push_back(clPoly.front());
 
-    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+    std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     if (!views.empty()) {
         Gui::Application::Instance->activeDocument()->openCommand("Trim");
         bool commitCommand = false;
@@ -1059,7 +1060,7 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
     Gui::Application::Instance->activeDocument()->openCommand("Split");
 
     try {
-        std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+        std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
             ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
             if (that->getEditingMode() > -1) {
@@ -1123,7 +1124,7 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
     Gui::Application::Instance->activeDocument()->openCommand("Segment");
 
     try {
-        std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+        std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
             ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
             if (that->getEditingMode() > -1) {
@@ -1188,7 +1189,7 @@ void ViewProviderMesh::selectGLCallback(void * ud, SoEventCallback * n)
     if (h<0) h = -h;
 
     std::vector<Gui::ViewProvider*> views;
-    views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+    views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
         if (that->getEditingMode() > -1) {
@@ -1524,7 +1525,7 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
 
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
-        Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+        Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
         if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
             return;
 
@@ -1582,6 +1583,7 @@ void ViewProviderMesh::fillHoleCallback(void * ud, SoEventCallback * n)
         QAction* id = menu.exec(QCursor::pos());
         if (cl == id) {
             view->setEditing(false);
+            view->setSelectionEnabled(true);
             view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), fillHoleCallback,ud);
         }
@@ -1597,7 +1599,7 @@ void ViewProviderMesh::fillHoleCallback(void * ud, SoEventCallback * n)
 
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
-        Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+        Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
         if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
             return;
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);
@@ -1629,22 +1631,23 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
             QAction* id = menu.exec(QCursor::pos());
             if (cl == id) {
                 view->setEditing(false);
+                view->setSelectionEnabled(true);
                 view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), markPartCallback,ud);
 
-                std::vector<ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+                std::vector<ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
                 for (std::vector<ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
                     static_cast<ViewProviderMesh*>(*it)->clearSelection();
                 }
             }
             else if (cf == id) {
-                std::vector<ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+                std::vector<ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
                 for (std::vector<ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
                     static_cast<ViewProviderMesh*>(*it)->clearSelection();
                 }
             }
             else if (rm == id) {
                 Gui::Application::Instance->activeDocument()->openCommand("Delete");
-                std::vector<ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+                std::vector<ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
                 for (std::vector<ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
                     static_cast<ViewProviderMesh*>(*it)->deleteSelection();
                 }
@@ -1663,7 +1666,7 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
 
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
-            Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+            Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
             if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
                 return;
             ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);

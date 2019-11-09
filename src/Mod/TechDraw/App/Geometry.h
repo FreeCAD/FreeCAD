@@ -81,7 +81,7 @@ class TechDrawExport BaseGeom
         GeomType geomType;
         ExtractionType extractType;     //obs
         edgeClass classOfEdge;
-        bool visible;
+        bool hlrVisible;
         bool reversed;
         int ref3D;                      //obs?
         TopoDS_Edge occEdge;            //projected Edge
@@ -90,6 +90,8 @@ class TechDrawExport BaseGeom
         void source(int s) { m_source = s; }
         int sourceIndex(void) { return m_sourceIndex; }
         void sourceIndex(int si) { m_sourceIndex = si; }
+        std::string getCosmeticTag(void) { return cosmeticTag; }
+        void setCosmeticTag(std::string t) { cosmeticTag = t; }
 
         virtual std::string toString(void) const;
 /*        virtual bool fromCSV(std::string s);*/
@@ -108,10 +110,19 @@ class TechDrawExport BaseGeom
         BaseGeom* copy();
         std::string dump();
 
-    protected:
+        //Uniqueness
+        boost::uuids::uuid getTag() const;
+        virtual std::string getTagAsString(void) const;
+
+protected:
         int m_source;         //0 - geom, 1 - cosmetic edge, 2 - centerline
         int m_sourceIndex;
+        std::string cosmeticTag;
 
+        void createNewTag();
+/*        void assignTag(const TechDraw::BaseGeom* bg);*/
+
+        boost::uuids::uuid tag;
 };
 
 typedef std::vector<BaseGeom *> BaseGeomPtrVector;        //obs?
@@ -290,11 +301,11 @@ class TechDrawExport Vertex
 
         virtual void Save(Base::Writer &/*writer*/) const;
         virtual void Restore(Base::XMLReader &/*reader*/);
-        virtual void dump();
+        virtual void dump(char* title = "");
 
         Base::Vector3d pnt;
         ExtractionType extractType;       //obs?
-        bool visible;
+        bool hlrVisible;                 //visible according to HLR
         int ref3D;                        //obs. never used.
         bool isCenter;
         TopoDS_Vertex occVertex;

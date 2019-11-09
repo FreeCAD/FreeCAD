@@ -694,6 +694,7 @@ void CmdMeshVertexCurvatureInfo::activated(int)
         Gui::View3DInventorViewer* viewer = view->getViewer();
         viewer->setEditing(true);
         viewer->setRedirectToSceneGraph(true);
+        viewer->setSelectionEnabled(false);
         viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("mesh_pipette",QSize(32,32)),4,29));
         viewer->addEventCallback(SoEvent::getClassTypeId(),
             MeshGui::ViewProviderMeshCurvature::curvatureInfoCallback);
@@ -1280,6 +1281,7 @@ void CmdMeshRemoveCompByHand::activated(int)
         viewer->setEditing(true);
         viewer->setEditingCursor(QCursor(Qt::OpenHandCursor));
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::markPartCallback);
+        viewer->setSelectionEnabled(false);
     }
 }
 
@@ -1595,6 +1597,7 @@ void CmdMeshFillInteractiveHole::activated(int)
         viewer->setEditing(true);
         viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmap("mesh_fillhole"),5,5));
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::fillHoleCallback);
+        viewer->setSelectionEnabled(false);
      }
 }
 

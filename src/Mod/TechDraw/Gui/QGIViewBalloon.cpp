@@ -150,6 +150,8 @@ void QGIBalloonLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     hasHover = true;
     if (!isSelected()) {
         setPrettyPre();
+    } else {
+        setPrettySel();
     }
     QGraphicsItem::hoverEnterEvent(event);
 }
@@ -164,6 +166,8 @@ void QGIBalloonLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     hasHover = false;
     if (!isSelected()) {
         setPrettyNormal();
+    } else {
+        setPrettySel();
     }
     QGraphicsItem::hoverLeaveEvent(event);
 }
@@ -253,12 +257,19 @@ QGIViewBalloon::QGIViewBalloon() :
 
     balloonLines = new QGIDimLines();
     addToGroup(balloonLines);
+    balloonLines->setNormalColor(getNormalColor());
+    balloonLines->setPrettyNormal();
 
     balloonShape = new QGIDimLines();
     addToGroup(balloonShape);
-
+    balloonShape->setNormalColor(getNormalColor());
+    balloonShape->setPrettyNormal();
+    
     arrow = new QGIArrow();
     addToGroup(arrow);
+    arrow->setNormalColor(getNormalColor());
+    arrow->setFillColor(getNormalColor());
+    arrow->setPrettyNormal();
 
     balloonLabel->setZValue(ZVALUE::LABEL);
     arrow->setZValue(ZVALUE::DIMENSION);

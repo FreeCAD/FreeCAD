@@ -78,6 +78,8 @@ public:
     void dump(char* title);
     Base::Vector3d scaled(double factor);
 
+    static bool restoreCosmetic(void);
+
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
@@ -107,7 +109,7 @@ protected:
 
 };
 
-class TechDrawExport CosmeticEdge : public Base::Persistence
+class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::BaseGeom
 {
     TYPESYSTEM_HEADER();
 public:
@@ -138,6 +140,7 @@ public:
     LineFormat m_format;
 
     boost::uuids::uuid getTag() const;
+    virtual std::string getTagAsString(void) const;
 
 protected:
     //Uniqueness
@@ -175,7 +178,6 @@ public:
         EDGE,
         VERTEX
     };
-
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -236,9 +238,15 @@ public:
     LineFormat m_format;
     bool m_flip2Line;
 
+    TechDraw::BaseGeom* m_geometry;
+
     //Uniqueness
     boost::uuids::uuid getTag() const;
+    virtual std::string getTagAsString(void) const;
+
 protected:
+    void initialize();
+    
     void createNewTag();
     void assignTag(const TechDraw::CenterLine* cl);
 
@@ -269,7 +277,7 @@ public:
     std::string toString(void) const;
     void dump(char* title) const;
 
-    int m_geomIndex;
+    int m_geomIndex; 
     LineFormat m_format;
 
     //Uniqueness
