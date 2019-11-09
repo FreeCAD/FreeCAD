@@ -124,9 +124,9 @@ DrawViewDimension::DrawViewDimension(void)
     Caption.setStatus(App::Property::Hidden,true);
 
     measurement = new Measure::Measurement();
-    //TODO: should have better initial datumLabel position than (0,0) in the DVP?? something closer to the object being measured? 
+    //TODO: should have better initial datumLabel position than (0,0) in the DVP?? something closer to the object being measured?
 
-    //initialize the descriptive geometry. 
+    //initialize the descriptive geometry.
     //TODO: should this be more like DVP with a "geometry object"?
     m_linearPoints.first  = Base::Vector3d(0,0,0);
     m_linearPoints.second = Base::Vector3d(0,0,0);
@@ -272,7 +272,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         arcPoints pts;
         pts.center = Base::Vector3d(0.0,0.0,0.0);
         pts.radius = 0.0;
-        if( (base && base->geomType == TechDraw::GeomType::CIRCLE) || 
+        if( (base && base->geomType == TechDraw::GeomType::CIRCLE) ||
            (base && base->geomType == TechDraw::GeomType::ARCOFCIRCLE))  {
             circle = static_cast<TechDraw::Circle*> (base);
             pts.center = Base::Vector3d(circle->center.x,circle->center.y,0.0);
@@ -304,7 +304,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
                 pts.isArc = false;
                 pts.onCurve.first  = pts.center + Base::Vector3d(1,0,0) * rAvg;   //arbitrary point on edge
                 pts.onCurve.second = pts.center + Base::Vector3d(-1,0,0) * rAvg;  //arbitrary point on edge
-            } else {    
+            } else {
                 TechDraw::AOE* aoe = static_cast<TechDraw::AOE*> (base);
                 double r1 = aoe->minor;
                 double r2 = aoe->major;
@@ -359,7 +359,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         arcPoints pts;
         pts.center = Base::Vector3d(0.0,0.0,0.0);
         pts.radius = 0.0;
-        if ((base && base->geomType == TechDraw::GeomType::CIRCLE) || 
+        if ((base && base->geomType == TechDraw::GeomType::CIRCLE) ||
            (base && base->geomType == TechDraw::GeomType::ARCOFCIRCLE)) {
             circle = static_cast<TechDraw::Circle*> (base);
             pts.center = Base::Vector3d(circle->center.x,circle->center.y,0.0);
@@ -491,7 +491,7 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         int idx0 = DrawUtil::getIndexFromName(subElements[0]);
         int idx1 = DrawUtil::getIndexFromName(subElements[1]);
         int idx2 = DrawUtil::getIndexFromName(subElements[2]);
-                               
+
         TechDraw::Vertex* vert0 = getViewPart()->getProjVertexByIndex(idx0);
         TechDraw::Vertex* vert1 = getViewPart()->getProjVertexByIndex(idx1);
         TechDraw::Vertex* vert2 = getViewPart()->getProjVertexByIndex(idx2);
@@ -590,7 +590,7 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
         }
 
         //find the %x.y tag in FormatSpec
-        QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec 
+        QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec
         QString match;
 //        QString specVal = userVal;                                             //sensible default
         specVal = userVal;                                             //sensible default
@@ -726,7 +726,7 @@ double DrawViewDimension::getDimValue()
         } else if(Type.isValue("Radius")){
             arcPoints pts = m_arcPoints;
             result = pts.radius / getViewPart()->getScale();            //Projected BaseGeom is scaled for drawing
-            
+
         } else if(Type.isValue("Diameter")){
             arcPoints pts = m_arcPoints;
             result = (pts.radius  * 2.0) / getViewPart()->getScale();   //Projected BaseGeom is scaled for drawing
@@ -820,7 +820,7 @@ pointPair DrawViewDimension::getPointsTwoVerts()
     result.first  = v0->pnt;
     result.second = v1->pnt;
     return result;
-}    
+}
 
 pointPair DrawViewDimension::getPointsEdgeVert()
 {
@@ -907,7 +907,7 @@ int DrawViewDimension::getRefType3(const std::string g1,
 {
     int refType = invalidRef;
     if ((DrawUtil::getGeomTypeFromName(g1) == "Vertex") &&
-        (DrawUtil::getGeomTypeFromName(g2) == "Vertex") && 
+        (DrawUtil::getGeomTypeFromName(g2) == "Vertex") &&
         (DrawUtil::getGeomTypeFromName(g3) == "Vertex") ) {
         refType = threeVertex;
     }
@@ -926,7 +926,7 @@ bool DrawViewDimension::checkReferences2D() const
         const std::vector<std::string> &subElements      = References2D.getSubValues();
         if (!subElements.empty()) {
             for (auto& s: subElements) {
-                if (!s.empty()) { 
+                if (!s.empty()) {
                     int idx = DrawUtil::getIndexFromName(s);
                     if (DrawUtil::getGeomTypeFromName(s) == "Edge") {
                         TechDraw::BaseGeom* geom = getViewPart()->getGeomByIndex(idx);
@@ -995,7 +995,7 @@ void DrawViewDimension::clear3DMeasurements()
     measurement->clear();
 }
 
-void DrawViewDimension::dumpRefs2D(char* text) const
+void DrawViewDimension::dumpRefs2D(const char* text) const
 {
     Base::Console().Message("DUMP - %s\n",text);
     const std::vector<App::DocumentObject*> &objects = References2D.getValues();
@@ -1165,20 +1165,20 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
         QString formatPrecision = QString::number(precision);
 
         std::string prefix = getPrefix();
-        
+
         if (!prefix.empty()) {
             qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
         }
 
         formatSpec = qPrefix + format1 + formatPrecision + format2;
     } else {
-        
+
         std::string prefix = getPrefix();
         qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
         formatSpec = qPrefix + QString::fromStdString(prefFormat);
-        
+
     }
-    
+
     return Base::Tools::toStdString(formatSpec);
 }
 
@@ -1192,7 +1192,7 @@ bool DrawViewDimension::references(std::string refName) const
         const std::vector<std::string> &subElements = References2D.getSubValues();
         if (!subElements.empty()) {
             for (auto& s: subElements) {
-                if (!s.empty()) { 
+                if (!s.empty()) {
                     if (s == refName) {
                         result = true;
                         break;

@@ -158,7 +158,7 @@ class TechDrawExport DrawUtil {
 
         //debugging routines
         static void dumpVertexes(const char* text, const TopoDS_Shape& s);
-        static void dumpEdge(char* label, int i, TopoDS_Edge e);
+        static void dumpEdge(const char* label, int i, TopoDS_Edge e);
         static void dump1Vertex(const char* label, const TopoDS_Vertex& v);
         static void countFaces(const char* label, const TopoDS_Shape& s);
         static void countWires(const char* label, const TopoDS_Shape& s);
