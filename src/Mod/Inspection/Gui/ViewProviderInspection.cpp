@@ -97,6 +97,7 @@ ViewProviderInspection::ViewProviderInspection() : search_radius(FLT_MAX)
     pcPointStyle->ref();
     pcPointStyle->style = SoDrawStyle::POINTS;
     pcPointStyle->pointSize = PointSize.getValue();
+    SelectionStyle.setValue(1); // BBOX
 }
 
 ViewProviderInspection::~ViewProviderInspection()
