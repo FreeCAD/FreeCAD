@@ -244,10 +244,14 @@ int ParameterStorePy::sequence_ass_item(PyObject *, Py_ssize_t, PyObject *)
     return -1;
 }
 
-int ParameterStorePy::sequence_contains(PyObject *, PyObject *)
+int ParameterStorePy::sequence_contains(PyObject* self, PyObject* pcItem)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return -1;
+    HParameterStore myself(self, false);
+    Py::Object it(pcItem);
+    if(!(PyObject_TypeCheck(pcItem, &ParameterRefPy::Type)))
+        return false;
+    UnsafePyHandle<ParameterRef> param(pcItem, false);
+    return param->host().is(myself);
 }
 
 
