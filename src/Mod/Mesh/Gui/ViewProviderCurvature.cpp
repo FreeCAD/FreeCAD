@@ -129,6 +129,7 @@ ViewProviderMeshCurvature::ViewProviderMeshCurvature()
     }
 
     ADD_PROPERTY(TextureMaterial,(mat));
+    SelectionStyle.setValue(1); // BBOX
 }
 
 ViewProviderMeshCurvature::~ViewProviderMeshCurvature()
