@@ -189,7 +189,7 @@ ParameterStore::eConstrainEqual_Result ParameterStore::constrainEqual(ParameterR
     return ret;
 }
 
-void ParameterStore::free()
+void ParameterStore::deconstrain()
 {
     if (! _subsets.empty())
         Base::Console().Warning("Redirection when there are ParameterSets around are likely to break the sets.\n");
@@ -199,7 +199,7 @@ void ParameterStore::free()
     }
 }
 
-void ParameterStore::free(ParameterRef param)
+void ParameterStore::deconstrain(ParameterRef param)
 {
     if (this->inSubsets(param))
         Base::Console().Warning("Redirection when there are ParameterSets around are likely to break the sets.\n");
@@ -243,6 +243,46 @@ bool ParameterStore::inSubsets(ParameterRef param) const
     return false;
 }
 
+std::vector<ParameterRef> ParameterStore::allFree() const
+{
+    std::vector<ParameterRef> ret;
+    for(ParameterRef r : *this){
+        if (r.isMaster() && ! r.isFixed())
+            ret.push_back(r);
+    }
+    return ret;
+}
+
+std::vector<ParameterRef> ParameterStore::allFixed() const
+{
+    std::vector<ParameterRef> ret;
+    for(ParameterRef r : *this){
+        if (r.isFixed())
+            ret.push_back(r);
+    }
+    return ret;
+}
+
+std::vector<ParameterRef> ParameterStore::allDriven() const
+{
+    std::vector<ParameterRef> ret;
+    for(ParameterRef r : *this){
+        if (!r.isMaster())
+            ret.push_back(r);
+    }
+    return ret;
+}
+
+int ParameterStore::dofCount() const
+{
+    int ret = 0;
+    for(ParameterRef r : *this){
+        if (r.isMaster() && ! r.isFixed())
+            ++ret;
+    }
+    return ret;
+}
+
 PyObject* ParameterStore::getPyObject()
 {
     return Py::new_reference_to(self());
@@ -252,11 +292,21 @@ HParameterStore ParameterStore::self() const {
     return HParameterStore(_twin, /*new_reference = */false);
 }
 
-ParameterRef ParameterStore::begin(){
-    return (*this)[0];
+ParameterStore::const_iterator ParameterStore::begin() const{
+    return const_iterator(*this, 0);
 }
 
-ParameterRef ParameterStore::end(){
-    return (*this)[size()];
+ParameterStore::const_iterator ParameterStore::end() const{
+    return const_iterator(*this, size());
 }
 
+
+ParameterStore::const_iterator::const_iterator(const ParameterStore& host, int index)
+    : host(host.self()), index(index)
+{
+}
+
+ParameterRef ParameterStore::const_iterator::operator*()
+{
+    return (*(this->host))[index];
+}

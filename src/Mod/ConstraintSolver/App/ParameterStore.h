@@ -97,9 +97,9 @@ public:
     ///creates redirects to make the parameters equal. Throws if conflicting. It is important that "fixed" fields of related parameters are properly filled for conflict detection.
     eConstrainEqual_Result constrainEqual(ParameterRef param1, ParameterRef param2, bool mean_out = true);
     ///dismantles all equality groups (undoes all calls constrainEqual, except parameter value changes).
-    void free();
+    void deconstrain();
     ///frees the parameter from equality group (undoes constrainEqual)
-    void free(ParameterRef param);
+    void deconstrain(ParameterRef param);
     ///update own values of parameters to match that of equality group (aka its masterValue).
     void sync();
     ///update own value of parameter to match that of equality group (aka its masterValue).
@@ -112,13 +112,29 @@ public:
     ///tests if a parameter was added to any subset (either directly, or through redirection)
     bool inSubsets(ParameterRef param) const;
 
+    std::vector<ParameterRef> allFree() const;
+    std::vector<ParameterRef> allFixed() const;
+    std::vector<ParameterRef> allDriven() const;
+    int dofCount() const;
+
+
     PyObject* getPyObject() override;
     HParameterStore self() const;
 
-public: //for range-based for looping. Using ParameterRef as an iterator.
-    ParameterRef begin();
-    ///returns an invalid parameter, only for looping
-    ParameterRef end();
+public: //for range-based for looping.
+    class const_iterator
+    {
+    public:
+        HParameterStore host;
+        int index = 0;
+    public:
+        const_iterator(const ParameterStore& host,int index);
+        void operator++(){++index;}
+        bool operator!=(const_iterator& other){return index != other.index;}
+        ParameterRef operator*();
+    };
+    const_iterator begin() const;
+    const_iterator end() const;
 public:
     friend class ParameterRef;
     friend class ParameterSubset;

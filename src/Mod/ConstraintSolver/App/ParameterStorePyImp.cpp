@@ -6,7 +6,7 @@
 #include "ParameterStorePy.h"
 #include "ParameterStorePy.cpp"
 
-PyObject *ParameterStorePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject* ParameterStorePy::PyMake(struct _typeobject *, PyObject* , PyObject* )  // Python wrapper
 {
     // create a new instance of ParameterStorePy and the Twin object
     return Py::new_reference_to(ParameterStore::make());
@@ -43,15 +43,12 @@ PyObject* ParameterStorePy::addOne(PyObject* args, PyObject* kwd)
     return Py::new_reference_to(ref.getPyHandle());
 }
 
-PyObject* ParameterStorePy::addN(PyObject *args)
+PyObject* ParameterStorePy::addN(PyObject* args)
 {
     int n;
     if(PyArg_ParseTuple(args, "i", &n)){
         std::vector<ParameterRef> refs = this->getParameterStorePtr()->add(n);
-        for(int i = 0; i < refs.size(); ++i){
-            ret[i] = refs[i].getPyObject();
-        }
-        return Py::new_reference_to(ret);
+        return Py::new_reference_to(asPyList(refs));
     }
 
     PyObject* arg = nullptr;
@@ -112,7 +109,7 @@ PyObject* ParameterStorePy::constrainEqual(PyObject* args)
     return Py::new_reference_to(Py::String(ret));
 }
 
-PyObject* ParameterStorePy::free(PyObject* args)
+PyObject* ParameterStorePy::deconstrain(PyObject* args)
 {
     PyObject* param = Py_None;
     if (! PyArg_ParseTuple(args, "|O!", &ParameterRefPy::Type, &param))
@@ -135,6 +132,31 @@ PyObject* ParameterStorePy::sync(PyObject* args)
         getParameterStorePtr()->sync(*UnsafePyHandle<ParameterRef>(param, /*owned=*/false));
     return Py::new_reference_to(Py::None());
 }
+
+PyObject* ParameterStorePy::allFree(PyObject* args)
+{
+    if (! PyArg_ParseTuple(args, ""))
+        return nullptr;
+    auto vec = getParameterStorePtr()->allFree();
+    return Py::new_reference_to(asPyList(vec));
+}
+
+PyObject* ParameterStorePy::allFixed(PyObject* args)
+{
+    if (! PyArg_ParseTuple(args, ""))
+        return nullptr;
+    auto vec = getParameterStorePtr()->allFixed();
+    return Py::new_reference_to(asPyList(vec));
+}
+
+PyObject* ParameterStorePy::allDriven(PyObject* args)
+{
+    if (! PyArg_ParseTuple(args, ""))
+        return nullptr;
+    auto vec = getParameterStorePtr()->allDriven();
+    return Py::new_reference_to(asPyList(vec));
+}
+
 
 
 
@@ -172,6 +194,11 @@ Py::List ParameterStorePy::getScales(void) const
 void  ParameterStorePy::setScales(Py::List arg)
 {
     throw Py::AttributeError("Not yet implemented");
+}
+
+Py::Long ParameterStorePy::getDofCount(void) const
+{
+    return Py::Long(getParameterStorePtr()->dofCount());
 }
 
 
@@ -236,7 +263,7 @@ PyObject* ParameterStorePy::mapping_subscript(PyObject* self, PyObject* item)
     return nullptr;
 }
 
-int ParameterStorePy::sequence_ass_item(PyObject *, Py_ssize_t, PyObject *)
+int ParameterStorePy::sequence_ass_item(PyObject* , Py_ssize_t, PyObject* )
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return -1;
@@ -253,7 +280,7 @@ int ParameterStorePy::sequence_contains(PyObject* self, PyObject* pcItem)
 }
 
 
-PyObject *ParameterStorePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ParameterStorePy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }

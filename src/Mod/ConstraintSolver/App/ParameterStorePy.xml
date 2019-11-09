@@ -30,6 +30,12 @@
 	  </Documentation>
 	  <Parameter Name="Scales" Type="List" />
 	</Attribute>
+	<Attribute Name="DofCount" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>How many degrees of freedom there is in this ParameterStore.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="DofCount" Type="Long" />
+	</Attribute>
 
 	<Methode Name="addOne" Keyword="true">
 	  <Documentation>
@@ -64,14 +70,29 @@
 		(i.e., constraining two fixed unequal parameters), an exception is raised.</UserDocu>
 	  </Documentation>
 	</Methode>
-	<Methode Name="free">
+	<Methode Name="deconstrain">
 	  <Documentation>
-		<UserDocu>free(parameter = None): resets MasterIndex of specified parameter. If None, all redirections are cleared, i.e. all constraints added via constrainEqual are removed.</UserDocu>
+		<UserDocu>deconstrain(parameter = None): resets MasterIndex of specified parameter. If None, all redirections are cleared, i.e. all constraints added via constrainEqual are removed.</UserDocu>
 	  </Documentation>
 	</Methode>
 	<Methode Name="sync">
 	  <Documentation>
 		<UserDocu>sync(parameter = None): updates ownValue of parameter to match the value of equality group. If None, it's done to all parameters.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="allFree" Const="true">
+	  <Documentation>
+		<UserDocu>allFree(): returns list of uniquely variable parameters, the degrees of freedom.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="allFixed" Const="true">
+	  <Documentation>
+		<UserDocu>allFixed(): returns all fixed parameters (both directly fixed, and locked down by constrainEqual)</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="allDriven" Const="true">
+	  <Documentation>
+		<UserDocu>allDriven(): returns all parameters that are redirected (their OwnValue's may be not up to date).</UserDocu>
 	  </Documentation>
 	</Methode>
 
