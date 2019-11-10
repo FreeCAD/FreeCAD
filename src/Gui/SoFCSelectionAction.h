@@ -28,8 +28,11 @@
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/events/SoSubEvent.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SbColor.h>
+#include <Inventor/SbViewportRegion.h>
 #include <vector>
+#include <memory>
 
 class SoSFString;
 class SoSFColor;
@@ -365,6 +368,44 @@ protected:
 
 private:
     static void callDoAction(SoAction *action,SoNode *node);
+};
+
+/** Customized ray pick action
+ *
+ * It differs from SoRayPickAction in that when it not set to 'PickAll', this
+ * action priorities differnt types of primitives with the near same distances,
+ * so that it can pick vertex over edge, over face, when the pick points are
+ * near the same.
+ *
+ * The action does this by overwrite SoRayPickAction handling method in SoShape
+ * node. See SoFCRayPickAction::initClass().
+ */
+class GuiExport SoFCRayPickAction: public SoRayPickAction {
+    SO_ACTION_HEADER(SoFCRayPickAction);
+
+    typedef SoRayPickAction inherited;
+
+public:
+    SoFCRayPickAction(const SbViewportRegion &vp = SbViewportRegion());
+    ~SoFCRayPickAction();
+
+    static void initClass();
+    static void finish(void);
+
+    const SoPickedPointList &getPrioPickedPointList() const;
+
+    void afterPick();
+
+    void cleanup();
+
+protected:
+    virtual void beginTraversal(SoNode *); 
+
+private:
+    std::unique_ptr<SoPickedPointList> ppList;
+    int lastPriority;
+    float lastDist;
+    SoNode *lastRoot;
 };
 
 } // namespace Gui

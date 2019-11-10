@@ -52,6 +52,7 @@ namespace Gui {
 
 class Document;
 class ViewProviderDocumentObject;
+class SoFCRayPickAction;
 
 /**  Unified Selection node
  *  This is the new selection node for the 3D Viewer which will 
@@ -95,6 +96,8 @@ public:
 
     static bool hasHighlight();
 
+    static int getPriority(const SoPickedPoint* p);
+
     friend class View3DInventorViewer;
 
 protected:
@@ -107,7 +110,6 @@ private:
     //void setOverride(SoGLRenderAction * action);
     //SbBool isHighlighted(SoAction *action);
     //SbBool preRender(SoGLRenderAction *act, GLint &oldDepthFunc);
-    static int getPriority(const SoPickedPoint* p);
     SoPickedPoint* getPickedPoint(SoHandleEventAction*) const;
 
     class PickedInfo;
@@ -119,6 +121,9 @@ private:
 
     bool setSelection(const std::vector<PickedInfo> &, bool ctrlDown=false, bool shiftDown=false);
 
+    std::vector<PickedInfo> getPickedList(const SbVec2s &pos,
+            const SbViewportRegion &vp, bool singlePick) const;
+
     std::vector<PickedInfo> getPickedList(SoHandleEventAction* action, bool singlePick) const;
 
     static void postProcessPickedList(std::vector<PickedInfo> &, bool singlePick);
@@ -126,12 +131,11 @@ private:
     void getPickedInfo(std::vector<PickedInfo> &, const SoPickedPointList &, bool singlePick, bool copy,
             std::set<std::pair<ViewProvider*, std::string> > &filter) const;
 
-    void getPickedInfoOnTop(std::vector<PickedInfo> &,const SbViewportRegion &viewport,
-            const SbVec2s &pos, bool singlePick,
+    void getPickedInfoOnTop(std::vector<PickedInfo> &, bool singlePick,
             std::set<std::pair<ViewProvider*, std::string> > &filter) const;
 
-    std::vector<App::SubObjectT> getPickedSelections(
-            const SbViewportRegion &viewport, const SbVec2s pos, SoNode *scene) const;
+    std::vector<App::SubObjectT> getPickedSelections(const SbVec2s &pos,
+            const SbViewportRegion &viewport, bool singlePick) const;
 
     void onPreselectTimer();
 
@@ -152,7 +156,7 @@ private:
     SbVec2s preselPos;
     SbViewportRegion preselViewport;
 
-    SoRayPickAction *pcOnTopPickAction;
+    SoFCRayPickAction *pcRayPick;
 };
 
 
@@ -436,7 +440,9 @@ public:
 
     static void moveActionStack(SoAction *from, SoAction *to, bool erase);
 
-    static SoNode *getCurrentRoot(bool front, SoNode *def);
+    static SoNode *getCurrentRoot(bool front=false, SoNode *def=0);
+
+    static SoNode *getCurrentActionRoot(SoAction *action, bool front=false, SoNode *def=0);
 
     void resetContext();
 

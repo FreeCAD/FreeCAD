@@ -87,6 +87,7 @@ public:
     FC_VIEW_PARAM(ShowHighlightEdgeOnly,bool,Bool,false) \
     FC_VIEW_PARAM(PreSelectionDelay,double,Float,0.1) \
     FC_VIEW_PARAM(SelectionPickThreshold,int,Int,50) \
+    FC_VIEW_PARAM(UseNewRayPick,bool,Bool,true) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
