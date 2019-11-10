@@ -33,7 +33,7 @@ namespace GCS {
 class ParameterSubset;
 typedef UnsafePyHandle<ParameterSubset> HParameterSubset;
 
-class ParameterSubset
+class GCSExport ParameterSubset
 {
 protected://data
     std::vector<ParameterRef> _params;
@@ -44,6 +44,7 @@ protected://data
 
 protected://methods
     ParameterSubset(int prealloc = 0);
+    ParameterSubset(const ParameterSubset& other) = delete;//handle-only, so no copy constructor
     ///called on adding first parameter
     void attach(HParameterStore store);
     void detach();
@@ -53,8 +54,8 @@ protected://methods
 public://methods
 
     //constructors
-    static HParameterSubset make(int prealloc = 0);
     static HParameterSubset make(std::vector<ParameterRef> params);
+    static HParameterSubset make(HParameterStore store, int prealloc = 0);
     HParameterSubset copy() const;
 
     //destructors

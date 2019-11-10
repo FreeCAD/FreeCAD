@@ -39,6 +39,8 @@
 #include "ParameterRefPy.h"
 #include "ParameterSubset.h"
 #include "ParameterSubsetPy.h"
+#include "ValueSet.h"
+#include "ValueSetPy.h"
 
 namespace ConstraintSolver {
 class Module : public Py::ExtensionModule<Module>
@@ -69,14 +71,16 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     PyObject* mod = ConstraintSolver::initModule();
 
     //rename python types
-    GCS::ParameterStorePy::Type.tp_name = "ConstraintSolver.ParameterStore";
-    GCS::ParameterRefPy::Type.tp_name = "ConstraintSolver.ParameterRef";
+    GCS::ParameterStorePy ::Type.tp_name = "ConstraintSolver.ParameterStore";
+    GCS::ParameterRefPy   ::Type.tp_name = "ConstraintSolver.ParameterRef";
     GCS::ParameterSubsetPy::Type.tp_name = "ConstraintSolver.ParameterSubset";
+    GCS::ValueSetPy       ::Type.tp_name = "ConstraintSolver.ParameterSubset";
 
     //add python types as module members
-    Base::Interpreter().addType(&GCS::ParameterStorePy::Type, mod, "ParameterStore");
-    Base::Interpreter().addType(&GCS::ParameterRefPy::Type, mod, "ParameterRef");
+    Base::Interpreter().addType(&GCS::ParameterStorePy ::Type, mod, "ParameterStore" );
+    Base::Interpreter().addType(&GCS::ParameterRefPy   ::Type, mod, "ParameterRef"   );
     Base::Interpreter().addType(&GCS::ParameterSubsetPy::Type, mod, "ParameterSubset");
+    Base::Interpreter().addType(&GCS::ValueSetPy       ::Type, mod, "ValueSet"       );
 
     //fill type system
     GCS::ParameterStore::init();

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="PyObjectBase" 
+	  Name="ValueSetPy" 
+	  Twin="ValueSet" 
+	  TwinPointer="ValueSet" 
+	  Include="Mod/ConstraintSolver/App/ValueSet.h" 
+	  FatherInclude="Base/PyObjectBase.h" 
+	  Namespace="GCS" 
+	  Constructor="true"
+	  Delete="true"
+	  FatherNamespace="Base"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+      <DeveloperDocu>A (temporary) set of replacement values for parameters. Pass ParameterRef object to index operator [] to get the overridden dual value.</DeveloperDocu>
+      <UserDocu>A (temporary) set of replacement values for parameters.  Pass ParameterRef object to index operator [] to get the overridden dual value.</UserDocu>
+	</Documentation>
+
+    <Attribute Name="Host" ReadOnly="true">
+      <Documentation>
+        <UserDocu>ParameterStore object hosting the parameters</UserDocu>
+      </Documentation>
+      <Parameter Name="Host" Type="Object" />
+    </Attribute>
+    <Attribute Name="Subset" ReadOnly="true">
+      <Documentation>
+        <UserDocu>All parameters from the set, as python list. Read-only, use add/remove/clear methods to modify.</UserDocu>
+      </Documentation>
+      <Parameter Name="Subset" Type="Object" />
+    </Attribute>
+    <Attribute Name="Values" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Returns/sets values, scaled to ~1.0 magnitudes using Scale fields of corresponding parameters.</UserDocu>
+      </Documentation>
+      <Parameter Name="Values" Type="List" />
+    </Attribute>
+    <Attribute Name="Duals" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Returns/sets dual parts (with save scaling as Values). Dual parts are set to 1 for whatever parameter the derivative should be computed for, or to arbitrary value for computing derivative along a direction.</UserDocu>
+      </Documentation>
+      <Parameter Name="Duals" Type="List" />
+    </Attribute>
+    <Attribute Name="SavedValues" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Returns/sets values saved in parameters, scaled to ~1.0 magnitudes using Scale fields of corresponding parameters.</UserDocu>
+      </Documentation>
+      <Parameter Name="Values" Type="List" />
+    </Attribute>
+
+    
+    <Methode Name="copy" Const="true">
+      <Documentation>
+        <UserDocu>Shallow copy (copies values, doesn't copy parameters and subset).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="reset">
+      <Documentation>
+        <UserDocu>reset(): fills values from originals stored in parameters.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="apply">
+      <Documentation>
+        <UserDocu>apply(): writes values to parameters.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setUpForDerivative">
+      <Documentation>
+        <UserDocu>setUpForDerivative(arg): fills dual parts to compute a derivative.
+        arg can be a ParameterRef object, or a list of values.
+        If arg is a ParameterRef, the dals are set up to calculate derivatives by that parameter (all zeros except for the given parameter).
+
+        If arg is a list of numbers, list content is copied to Duals, to set up for a derivative along a direction.
+
+        Returns True if successful, False if parameter is not in the set (then, duals are zeroed out).</UserDocu>
+      </Documentation>
+    </Methode>
+
+	<Sequence 
+        sq_length =		    "true"
+        sq_concat =		    "false"
+        sq_repeat =		    "false"
+        sq_item =		    "true"
+        mp_subscript =	    "true"
+        sq_ass_item =	    "true"
+        mp_ass_subscript =  "false"
+        sq_contains =	    "true"
+		sq_inplace_concat = "false"
+		sq_inplace_repeat = "false"
+	/>
+  </PythonExport>
+</GenerateModel>

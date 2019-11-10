@@ -50,6 +50,7 @@ PyObject* ParameterStorePy::addN(PyObject* args)
         std::vector<ParameterRef> refs = this->getParameterStorePtr()->add(n);
         return Py::new_reference_to(asPyList(refs));
     }
+    PyErr_Clear();
 
     PyObject* arg = nullptr;
     if(PyArg_ParseTuple(args, "O", &arg)){
@@ -59,10 +60,10 @@ PyObject* ParameterStorePy::addN(PyObject* args)
             for(Py::Object it : seq){
                 if(it.isTuple()){//typecheck, throws if not tuple
                     Py::Dict d;
-                    ret.append(Py::Object(this->addOne(it.ptr(), d.ptr())));
+                    ret.append(Py::Object(this->addOne(it.ptr(), d.ptr()), true));
                 } else if (it.isDict()) {
                     Py::Tuple t;
-                    ret.append(Py::Object(this->addOne(t.ptr(), it.ptr())));
+                    ret.append(Py::Object(this->addOne(t.ptr(), it.ptr()), true));
                 } else {
                     std::stringstream ss;
                     ss << "addN: elements of list can be tuples or dicts, got "
@@ -70,7 +71,8 @@ PyObject* ParameterStorePy::addN(PyObject* args)
                     throw Py::Exception(PyExc_TypeError, ss.str());
                 }
             }
-        } catch (Py::Exception) {
+            return Py::new_reference_to(ret);
+        } catch (Py::Exception &e) {
             return nullptr; //error message whould already be set by PyCXX
         }
     };

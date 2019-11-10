@@ -44,19 +44,29 @@ bool ParameterSubset::checkParameter(ParameterRef param) const
     return host()->has(param);
 }
 
-HParameterSubset ParameterSubset::make(int prealloc)
+HParameterSubset ParameterSubset::make(std::vector<ParameterRef> params)
+{
+    if (params.size() == 0)
+        throw Base::ValueError("Can't construct on empty parameter list, use another constructor to construct an empty set.");
+    HParameterSubset s = make(params[0].host(), params.size());
+    s->add(params);
+    return s;
+}
+
+
+HParameterSubset ParameterSubset::make(HParameterStore store, int prealloc)
 {
     ParameterSubset* obj = new ParameterSubset(prealloc);
     PyObject* pyobj = new ParameterSubsetPy(obj);
     obj->_twin = pyobj;
+    obj->attach(store);
     return HParameterSubset(pyobj, /*new_reference=*/true);
 }
 
 HParameterSubset ParameterSubset::copy() const
 {
-    HParameterSubset cpy = make(this->size());
+    HParameterSubset cpy = make(this->host());
     if (size() > 0){
-        cpy->attach(this->host());
         cpy->_lut = _lut;
         cpy->_params = _params;
     }

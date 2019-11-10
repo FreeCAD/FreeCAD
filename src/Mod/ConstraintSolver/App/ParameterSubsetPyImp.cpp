@@ -1,15 +1,20 @@
 #include "PreCompiled.h"
 
 #include "ParameterStore.h"
+#include "ParameterStorePy.h"
 #include "ParameterRefPy.h"
 
 #include "ParameterSubsetPy.h"
 #include "ParameterSubsetPy.cpp"
 
-PyObject* ParameterSubsetPy::PyMake(struct _typeobject *, PyObject* , PyObject* )  // Python wrapper
+PyObject* ParameterSubsetPy::PyMake(struct _typeobject*, PyObject* args, PyObject* /*??*/)  // Python wrapper
 {
+    PyObject* store;
+    if (!PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store))
+        return nullptr;
     // create a new instance of ParameterSubsetPy and the Twin object
-    return Py::new_reference_to(ParameterSubset::make());
+    HParameterStore hstore (store, false);
+    return Py::new_reference_to(ParameterSubset::make(hstore));
 }
 
 // constructor method
@@ -41,6 +46,7 @@ PyObject* ParameterSubsetPy::add(PyObject* args)
         int ret = getParameterSubsetPtr()->add(*HParameterRef(param, false));
         return Py::new_reference_to(Py::Long(ret));
     }
+    PyErr_Clear();
     if (PyArg_ParseTuple(args, "O", &list)){
         try {
             Py::Sequence seq(list);

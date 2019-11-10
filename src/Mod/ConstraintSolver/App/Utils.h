@@ -47,6 +47,15 @@ inline Py::List asPyList(Vec& vec){ //vec is usually not changed... unless getPy
     }
     return ret;
 }
+
+template<class Vec, class PyCxxConstruct>
+inline Py::List asPyList(Vec& vec){ //vec is usually not changed... unless getPyObject changes the object, which does happen to some
+    Py::List ret(vec.size());
+    for (int i = 0; i < vec.size(); ++i) {
+        ret[i] = PyCxxConstruct(vec[i]);
+    }
+    return ret;
+}
 //
 ///** UnsafePyHandle: a convenient way to use python references as smart pointers for C++ objects.
 // * "Unsafe" stands for lack of runtime checks: type checking is limited, and dereferencing the object
