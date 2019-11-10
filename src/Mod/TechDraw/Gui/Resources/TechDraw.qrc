@@ -27,11 +27,11 @@
         <file>icons/TechDraw_AngleDimension.svg</file>
         <file>icons/TechDraw_3PtAngleDimension.svg</file>
         <file>icons/TechDraw_DiameterDimension.svg</file>
-        <file>icons/TechDraw_DistanceHorizontalDimension.svg</file>
+        <file>icons/TechDraw_HorizontalDimension.svg</file>
         <file>icons/TechDraw_LengthDimension.svg</file>
         <file>icons/TechDraw_RadiusDimension.svg</file>
         <file>icons/TechDraw_Balloon.svg</file>
-        <file>icons/TechDraw_DistanceVerticalDimension.svg</file>
+        <file>icons/TechDraw_VerticalDimension.svg</file>
         <file>icons/TechDraw_Dimension_Link.svg</file>
         <file>icons/TechDraw_HorizontalExtentDimension.svg</file>
         <file>icons/TechDraw_VerticalExtentDimension.svg</file>

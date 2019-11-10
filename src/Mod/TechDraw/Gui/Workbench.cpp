@@ -53,7 +53,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 	// dimensions
 	Gui::MenuItem* dimensions = new Gui::MenuItem;
 	dimensions->setCommand("Dimensions");
-	*dimensions << "TechDraw_LengthDimension" << "TechDraw_DistanceHorizontalDimension" << "TechDraw_DistanceVerticalDimension"
+	*dimensions << "TechDraw_LengthDimension" << "TechDraw_HorizontalDimension" << "TechDraw_VerticalDimension"
 		<< "TechDraw_RadiusDimension" << "TechDraw_DiameterDimension" << "TechDraw_AngleDimension"
 		<< "TechDraw_HorizontalExtentDimension" << "TechDraw_VerticalExtentDimension" << "TechDraw_LinkDimension";
 
@@ -144,8 +144,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
     *dims << "TechDraw_LengthDimension";
-    *dims << "TechDraw_DistanceHorizontalDimension";
-    *dims << "TechDraw_DistanceVerticalDimension";
+    *dims << "TechDraw_HorizontalDimension";
+    *dims << "TechDraw_VerticalDimension";
     *dims << "TechDraw_RadiusDimension";
     *dims << "TechDraw_DiameterDimension";
     *dims << "TechDraw_AngleDimension";
@@ -216,8 +216,8 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem *dims = new Gui::ToolBarItem(root);
     dims->setCommand("TechDraw Dimensions");
     *dims << "TechDraw_LengthDimension";
-    *dims << "TechDraw_DistanceHorizontalDimension";
-    *dims << "TechDraw_DistanceVerticalDimension";
+    *dims << "TechDraw_HorizontalDimension";
+    *dims << "TechDraw_VerticalDimension";
     *dims << "TechDraw_RadiusDimension";
     *dims << "TechDraw_DiameterDimension";
     *dims << "TechDraw_AngleDimension";
