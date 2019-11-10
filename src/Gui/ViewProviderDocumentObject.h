@@ -199,6 +199,8 @@ protected:
 
     virtual void setModeSwitch() override;
 
+    void setSelectable(bool Selectable=true);
+
 protected:
     App::DocumentObject *pcObject;
     Gui::Document* pcDocument;

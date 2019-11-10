@@ -1769,8 +1769,6 @@ ViewProviderLink::ViewProviderLink()
 {
     sPixmap = _LinkIcon;
 
-    ADD_PROPERTY_TYPE(Selectable, (true), " Link", App::Prop_None, 0);
-
     ADD_PROPERTY_TYPE(OverrideMaterial, (false), " Link", App::Prop_None, "Override linked object's material");
 
     App::Material mat(App::Material::DEFAULT);

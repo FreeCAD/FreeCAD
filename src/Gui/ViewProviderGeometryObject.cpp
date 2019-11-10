@@ -103,10 +103,6 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     App::Material mat(App::Material::DEFAULT);
     ADD_PROPERTY(ShapeMaterial,(mat));
     ADD_PROPERTY(BoundingBox,(false));
-    ADD_PROPERTY(Selectable,(true));
-
-    bool enableSel = hGrp->GetBool("EnableSelection", true);
-    Selectable.setValue(enableSel);
 
     pcShapeMaterial = new SoMaterial;
     pcShapeMaterial->ref();
@@ -132,11 +128,7 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
     // Actually, the properties 'ShapeColor' and 'Transparency' are part of the property 'ShapeMaterial'.
     // Both redundant properties are kept due to more convenience for the user. But we must keep the values
     // consistent of all these properties.
-    if (prop == &Selectable) {
-        bool Sel = Selectable.getValue();
-        setSelectable(Sel);
-    }
-    else if (prop == &ShapeColor) {
+    if (prop == &ShapeColor) {
         const App::Color& c = ShapeColor.getValue();
         pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != ShapeMaterial.getValue().diffuseColor)
@@ -284,30 +276,3 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
     }
 }
 
-void ViewProviderGeometryObject::setSelectable(bool selectable)
-{
-    SoSearchAction sa;
-    sa.setInterest(SoSearchAction::ALL);
-    sa.setSearchingAll(true);
-    sa.setType(Gui::SoFCSelection::getClassTypeId());
-    sa.apply(pcRoot);
-
-    SoPathList & pathList = sa.getPaths();
-
-    for (int i=0;i<pathList.getLength();i++) {
-        SoFCSelection *selNode = dynamic_cast<SoFCSelection*>(pathList[i]->getTail());
-        if (selectable) {
-            if (selNode) {
-                selNode->selectionMode = SoFCSelection::SEL_ON;
-                selNode->highlightMode = SoFCSelection::AUTO;
-            }
-        }
-        else {
-            if (selNode) {
-                selNode->selectionMode = SoFCSelection::SEL_OFF;
-                selNode->highlightMode = SoFCSelection::OFF;
-                selNode->selected = SoFCSelection::NOTSELECTED;
-            }
-        }
-    }
-}

@@ -58,6 +58,8 @@
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
 #include "SoFCUnifiedSelection.h"
+#include "SoFCSelection.h"
+#include "ViewParams.h"
 #include "Tree.h"
 #include <Gui/ViewProviderDocumentObjectPy.h>
 
@@ -79,6 +81,9 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
     ADD_PROPERTY(SelectionStyle,((long)0));
     static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
     SelectionStyle.setEnums(SelectionStyleEnum);
+
+    ADD_PROPERTY(Selectable,(true));
+    Selectable.setValue(ViewParams::instance()->getEnableSelection());
 
     static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",NULL};
     ADD_PROPERTY(OnTopWhenSelected,((long int)0));
@@ -186,11 +191,17 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             getObject()->Visibility.setValue(Visibility.getValue());
         }
     }
-    else if (prop == &SelectionStyle) {
+    else if (prop == &SelectionStyle || prop == &Selectable) {
         if(getRoot()->isOfType(SoFCSelectionRoot::getClassTypeId())) {
-            static_cast<SoFCSelectionRoot*>(getRoot())->selectionStyle = SelectionStyle.getValue()
-                ? SoFCSelectionRoot::Box : SoFCSelectionRoot::Full;
+            auto root = static_cast<SoFCSelectionRoot*>(getRoot());
+            if(Selectable.getValue()) {
+                root->selectionStyle = SelectionStyle.getValue()
+                    ? SoFCSelectionRoot::Box : SoFCSelectionRoot::Full;
+            } else
+                root->selectionStyle = SoFCSelectionRoot::Unpickable;
         }
+        if(prop == &Selectable)
+            setSelectable(Selectable.getValue());
     }
 
     if (pcDocument && !pcDocument->isModified() && testStatus(Gui::ViewStatus::TouchDocument)) {
@@ -620,4 +631,32 @@ std::string ViewProviderDocumentObject::getFullName() const {
     if(pcObject)
         return pcObject->getFullName() + ".ViewObject";
     return std::string();
+}
+
+void ViewProviderDocumentObject::setSelectable(bool selectable)
+{
+    SoSearchAction sa;
+    sa.setInterest(SoSearchAction::ALL);
+    sa.setSearchingAll(true);
+    sa.setType(Gui::SoFCSelection::getClassTypeId());
+    sa.apply(pcRoot);
+
+    SoPathList & pathList = sa.getPaths();
+
+    for (int i=0;i<pathList.getLength();i++) {
+        SoFCSelection *selNode = dynamic_cast<SoFCSelection*>(pathList[i]->getTail());
+        if (selectable) {
+            if (selNode) {
+                selNode->selectionMode = SoFCSelection::SEL_ON;
+                selNode->highlightMode = SoFCSelection::AUTO;
+            }
+        }
+        else {
+            if (selNode) {
+                selNode->selectionMode = SoFCSelection::SEL_OFF;
+                selNode->highlightMode = SoFCSelection::OFF;
+                selNode->selected = SoFCSelection::NOTSELECTED;
+            }
+        }
+    }
 }

@@ -227,11 +227,6 @@ SoDetail* ViewProviderDatum::getDetail(const char* subelement) const
     return NULL;
 }
 
-bool ViewProviderDatum::isSelectable(void) const
-{
-    return true;
-}
-
 void ViewProviderDatum::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;

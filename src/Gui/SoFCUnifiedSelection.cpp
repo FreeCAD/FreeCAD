@@ -1493,6 +1493,7 @@ SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode)
     SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Full);
     SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Box);
     SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, PassThrough);
+    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Unpickable);
     SO_NODE_SET_SF_ENUM_TYPE(selectionStyle, SelectStyles);
 }
 
@@ -1926,6 +1927,8 @@ void SoFCSelectionRoot::pick(SoPickAction * action) {
 }
 
 void SoFCSelectionRoot::rayPick(SoRayPickAction * action) {
+    if(selectionStyle.getValue() == Unpickable)
+        return;
     BEGIN_ACTION;
     if(doActionPrivate(stack,action))
         inherited::rayPick(action);

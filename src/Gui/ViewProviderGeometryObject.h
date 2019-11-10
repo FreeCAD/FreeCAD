@@ -59,15 +59,12 @@ public:
     App::PropertyPercent Transparency;
     App::PropertyMaterial ShapeMaterial;
     App::PropertyBool BoundingBox;
-    App::PropertyBool Selectable;
 
     /**
      * Attaches the document object to this view provider.
      */
     void attach(App::DocumentObject *pcObject);
     void updateData(const App::Property*);
-
-    bool isSelectable(void) const {return Selectable.getValue();}
 
     /**
      * Returns a list of picked points from the geometry under \a getRoot().
@@ -90,7 +87,6 @@ public:
 protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop);
-    void setSelectable(bool Selectable=true);
 
     virtual unsigned long getBoundColor() const;
     void updateBoundingBox();
