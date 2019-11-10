@@ -280,6 +280,8 @@ ViewProviderPartExt::ViewProviderPartExt()
 
     coords = new SoCoordinate3();
     coords->ref();
+    pcoords = new SoCoordinate3();
+    pcoords->ref();
     faceset = new SoBrepFaceSet();
     faceset->ref();
     norm = new SoNormal;
@@ -349,6 +351,7 @@ ViewProviderPartExt::~ViewProviderPartExt()
     pcPointStyle->unref();
     pShapeHints->unref();
     coords->unref();
+    pcoords->unref();
     faceset->unref();
     norm->unref();
     normb->unref();
@@ -546,6 +549,10 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
     pcWireframeRoot->addChild(pcPointsRoot);
 
     // normal viewing with edges and points
+    auto pnormb = new SoNormalBinding;
+    pnormb->value = SoNormalBinding::OVERALL;
+    pcPointsRoot->addChild(pnormb);
+    pcPointsRoot->addChild(pcoords);
     pcPointsRoot->addChild(pcPointBind);
     pcPointsRoot->addChild(pcPointMaterial);
     pcPointsRoot->addChild(pcPointStyle);
@@ -1014,6 +1021,7 @@ void ViewProviderPartExt::updateVisual()
     TopoDS_Shape cShape = Part::Feature::getShape(getObject());
     if (cShape.IsNull()) {
         coords  ->point      .setNum(0);
+        pcoords ->point      .setNum(0);
         norm    ->vector     .setNum(0);
         faceset ->coordIndex .setNum(0);
         faceset ->partIndex  .setNum(0);
@@ -1102,11 +1110,6 @@ void ViewProviderPartExt::updateVisual()
                 }
             }
         }
-
-        // handling of the vertices
-        TopTools_IndexedMapOfShape vertexMap;
-        TopExp::MapShapes(cShape, TopAbs_VERTEX, vertexMap);
-        numNodes += vertexMap.Extent();
 
         // create memory for the nodes and indexes
         coords  ->point      .setNum(numNodes);
@@ -1296,11 +1299,17 @@ void ViewProviderPartExt::updateVisual()
             }
         }
 
-        nodeset->startIndex.setValue(faceNodeOffset);
+        // handling of the vertices
+        TopTools_IndexedMapOfShape vertexMap;
+        TopExp::MapShapes(cShape, TopAbs_VERTEX, vertexMap);
+
+        pcoords->point.setNum(vertexMap.Extent());
+        verts = pcoords->point.startEditing();
+
         for (int i=0; i<vertexMap.Extent(); i++) {
             const TopoDS_Vertex& aVertex = TopoDS::Vertex(vertexMap(i+1));
             gp_Pnt pnt = BRep_Tool::Pnt(aVertex);
-            verts[faceNodeOffset+i].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
+            verts[i].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
         }
 
         // normalize all normals 
@@ -1324,6 +1333,7 @@ void ViewProviderPartExt::updateVisual()
 
         // end the editing of the nodes
         coords  ->point       .finishEditing();
+        pcoords ->point       .finishEditing();
         norm    ->vector      .finishEditing();
         faceset ->coordIndex  .finishEditing();
         faceset ->partIndex   .finishEditing();
