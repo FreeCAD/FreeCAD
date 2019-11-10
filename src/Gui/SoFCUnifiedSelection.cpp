@@ -52,7 +52,6 @@
 #include <Inventor/elements/SoProfileElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/elements/SoUnitsElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -74,6 +73,8 @@
 # endif
 # include <GL/gl.h>
 #endif
+
+#include <Inventor/SbDPLine.h>
 
 #include <QtOpenGL.h>
 
@@ -97,7 +98,7 @@
 #include "ViewProviderGeometryObject.h"
 #include "ViewParams.h"
 
-FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true)
+FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true)
 
 using namespace Gui;
 
@@ -110,7 +111,7 @@ SO_NODE_SOURCE(SoFCUnifiedSelection)
 /*!
   Constructor.
 */
-SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0), pcViewer(0), pcOnTopPickAction(0)
+SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0), pcViewer(0), pcRayPick(0)
 {
     SO_NODE_CONSTRUCTOR(SoFCUnifiedSelection);
 
@@ -139,7 +140,7 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0), pcViewer(0), pcOnT
         reinterpret_cast<SoFCUnifiedSelection*>(data)->onPreselectTimer();
     });
 
-    pcOnTopPickAction = new SoRayPickAction(SbViewportRegion());
+    pcRayPick = new SoFCRayPickAction;
 }
 
 /*!
@@ -158,7 +159,7 @@ SoFCUnifiedSelection::~SoFCUnifiedSelection()
         detailPath = NULL;
     }
 
-    delete pcOnTopPickAction;
+    delete pcRayPick;
 }
 
 // doc from parent
@@ -300,7 +301,6 @@ void SoFCUnifiedSelection::getPickedInfo(std::vector<PickedInfo> &ret,
 }
 
 void SoFCUnifiedSelection::getPickedInfoOnTop(std::vector<PickedInfo> &ret,
-        const SbViewportRegion &viewport, const SbVec2s &pos,
         bool singlePick, std::set<std::pair<ViewProvider*,std::string> > &filter) const
 {
     if(ViewParams::instance()->getShowSelectionBoundingBox())
@@ -313,22 +313,13 @@ void SoFCUnifiedSelection::getPickedInfoOnTop(std::vector<PickedInfo> &ret,
 
     SoGroup *group = static_cast<SoGroup*>(path->getNodeFromTail(0));
 
-    SoRayPickAction *action = pcOnTopPickAction;
-    action->setViewportRegion(viewport);
-    action->setPoint(pos);
-    action->setPickAll(true);
-    action->setRadius(ViewParams::instance()->getPickRadius());
-
-    SoPickStyleElement::set(action->getState(),SoPickStyleElement::SHAPE);
-    SoOverrideElement::setPickStyleOverride(action->getState(),0,true);
-
     for(int i=0,count=group->getNumChildren();i<count;++i) {
         auto child = group->getChild(i);
         if(!child->isOfType(SoFCPathAnnotation::getClassTypeId()))
             continue;
-        static_cast<SoFCPathAnnotation*>(child)->doPick(path,action);
-        getPickedInfo(ret,action->getPickedPointList(),singlePick,true,filter);
-        action->reset();
+        static_cast<SoFCPathAnnotation*>(child)->doPick(path,pcRayPick);
+        getPickedInfo(ret,pcRayPick->getPrioPickedPointList(),singlePick,true,filter);
+        pcRayPick->cleanup();
         if(singlePick && ret.size()>=1)
             break;
     }
@@ -336,18 +327,60 @@ void SoFCUnifiedSelection::getPickedInfoOnTop(std::vector<PickedInfo> &ret,
 }
 
 std::vector<SoFCUnifiedSelection::PickedInfo> 
-SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick) const
+SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick) const {
+    return getPickedList(action->getEvent()->getPosition(),action->getViewportRegion(), singlePick);
+}
+
+std::vector<SoFCUnifiedSelection::PickedInfo> 
+SoFCUnifiedSelection::getPickedList(const SbVec2s &pos, const SbViewportRegion &viewport, bool singlePick) const
 {
     std::vector<PickedInfo> ret;
     std::set<std::pair<ViewProvider*,std::string> > filter;
 
-    getPickedInfoOnTop(ret, action->getViewportRegion(),
-            action->getEvent()->getPosition(), singlePick, filter);
+    FC_TIME_INIT(t);
 
-    if(ret.empty() || !singlePick)
-        getPickedInfo(ret,action->getPickedPointList(),singlePick,false,filter);
+    float radius = ViewParams::instance()->getPickRadius();
+    pcRayPick->setRadius(radius);
+    pcRayPick->setViewportRegion(viewport);
+    pcRayPick->setPoint(pos);
+    pcRayPick->setPickAll(!singlePick || !ViewParams::instance()->getUseNewRayPick());
 
-    postProcessPickedList(ret, singlePick);
+    SoPickStyleElement::set(pcRayPick->getState(),
+            singlePick ? SoPickStyleElement::SHAPE_FRONTFACES : SoPickStyleElement::SHAPE);
+    SoOverrideElement::setPickStyleOverride(pcRayPick->getState(),0,true);
+
+    getPickedInfoOnTop(ret, singlePick, filter);
+
+    if(ret.empty() || !singlePick) {
+        SoOverrideElement::setPickStyleOverride(pcRayPick->getState(),0,false);
+        pcRayPick->apply(pcViewer->getSoRenderManager()->getSceneGraph());
+
+        getPickedInfo(ret,pcRayPick->getPrioPickedPointList(),singlePick,false,filter);
+    }
+
+    FC_TIME_TRACE(t,"pick radius " << radius << ", count " << ret.size() << ',');
+
+    // postProcessPickedList() is used to resolve overlapping primitives
+    // (point, line and face). We will pick point over line over face if
+    // the picked points overalps.
+    //
+    // The disadvantage of doing post process here is that we must obtain all
+    // picked points of all objects. When the user zooms the camera far out,
+    // the pick radius (default to 5 pixel) may cause large amount (100k+ for
+    // bigger assembly) of primitves (mostly points and lines) in the picked
+    // point list. The fact that each SoPickedPoint contains a full path of the
+    // node hierarchy may cause system slow down, with most of the time
+    // spending on cleaning up the path.
+    //
+    // This problem can be solved by replacing SoRayPickAction with a derived
+    // SoFCRayPickAction. After picking each shape node, it will consider the
+    // primitive priority before choosing which picked point to retain (see
+    // SoFCRayPickAction::afterPick()). With this action, all picked points are
+    // processed on the fly, and only the primitive with the closest picked
+    // point and the highest priority will be returned.
+    //
+    if(singlePick && pcRayPick->isPickAll())
+        postProcessPickedList(ret, singlePick);
     return ret;
 }
 
@@ -392,24 +425,11 @@ void SoFCUnifiedSelection::postProcessPickedList(std::vector<PickedInfo> &ret, b
 }
 
 std::vector<App::SubObjectT>
-SoFCUnifiedSelection::getPickedSelections(
-        const SbViewportRegion &viewport, const SbVec2s pos, SoNode *scene) const
+SoFCUnifiedSelection::getPickedSelections(const SbVec2s &pos,
+        const SbViewportRegion &viewport, bool singlePick) const
 {
-    std::vector<PickedInfo> infos;
-    std::set<std::pair<ViewProvider*,std::string> > filter;
-
-    getPickedInfoOnTop(infos, viewport, pos, false, filter);
-
-    SoRayPickAction action(viewport);
-    action.setPoint(pos);
-    action.setPickAll(true);
-    action.setRadius(ViewParams::instance()->getPickRadius());
-    action.apply(scene);
-    getPickedInfo(infos,action.getPickedPointList(),false,false,filter);
-
-    postProcessPickedList(infos,false);
-
     std::vector<App::SubObjectT> sels;
+    auto infos = getPickedList(pos,viewport,singlePick);
     sels.reserve(infos.size());
     for(auto &info : infos) {
         if(info.vpd)
@@ -586,31 +606,22 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
 }
 
 void SoFCUnifiedSelection::onPreselectTimer() {
-    preselTimer.unschedule();
+    if(preselTimer.isScheduled())
+        preselTimer.unschedule();
 
-    std::vector<PickedInfo> infos;
-    std::set<std::pair<ViewProvider*,std::string> > filter;
-    getPickedInfoOnTop(infos, preselViewport, preselPos, true, filter);
-
-    SoRayPickAction action(preselViewport);
-    if(infos.empty()) {
-        action.setPoint(preselPos);
-        action.setPickAll(true);
-        action.setRadius(ViewParams::instance()->getPickRadius());
-        action.apply(pcViewer->getSoRenderManager()->getSceneGraph());
-        getPickedInfo(infos,action.getPickedPointList(),true,false,filter);
-    }
-    postProcessPickedList(infos,true);
+    auto infos = getPickedList(preselPos, preselViewport, true);
     if(infos.size())
         setHighlight(infos[0]);
     else
         setHighlight(PickedInfo());
-    
+
+    preselTime = SbTime::getTimeOfDay();
 }
 
 void SoFCUnifiedSelection::removeHighlight() {
     if(this->preSelection == 1)
         setHighlight(0,0,0,0,0.0,0.0,0.0);
+    pcRayPick->cleanup();
 }
 
 bool SoFCUnifiedSelection::setHighlight(const PickedInfo &info) {
@@ -888,24 +899,18 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         // set has been selected.
         if (mymode == AUTO || mymode == ON) {
             double delay = ViewParams::instance()->getPreSelectionDelay();
+
+            preselPos = action->getEvent()->getPosition();
+            preselViewport = action->getViewportRegion();
+
             // Rate limit picking action
             if(delay>0.0 && (SbTime::getTimeOfDay()-preselTime).getValue()<delay) {
-                preselPos = action->getEvent()->getPosition();
-                preselViewport = action->getViewportRegion();
                 if(!preselTimer.isScheduled()) {
                     preselTimer.setInterval(delay);
                     preselTimer.schedule();
                 }
             } else {
-                if(preselTimer.isScheduled())
-                    preselTimer.unschedule();
-                // check to see if the mouse is over our geometry...
-                auto infos = this->getPickedList(action,true);
-                if(infos.size()) 
-                    setHighlight(infos[0]);
-                else
-                    setHighlight(PickedInfo());
-                preselTime = SbTime::getTimeOfDay();
+                onPreselectTimer();
             }
         }
     }
@@ -1516,6 +1521,14 @@ SoNode *SoFCSelectionRoot::getCurrentRoot(bool front, SoNode *def) {
         return front?SelStack.front():SelStack.back();
     return def;
 }
+
+SoNode *SoFCSelectionRoot::getCurrentActionRoot(SoAction *action, bool front, SoNode *def) {
+    auto it = ActionStacks.find(action);
+    if(it == ActionStacks.end() || it->second.empty())
+        return def;
+    return front?it->second.front():it->second.back();
+}
+
 
 SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
         Stack &stack, SoNode *node, SoFCSelectionContextBasePtr def)
