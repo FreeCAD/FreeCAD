@@ -74,15 +74,22 @@ class CommandToolBitLibraryLoad:
         return not self.selectedJob() is None
 
     def Activated(self):
+        job = self.selectedJob()
+        self.Execute(job)
+
+    @classmethod
+    def Execute(cls, job):
         import PathScripts.PathToolBitLibraryGui as PathToolBitLibraryGui
         import PathScripts.PathToolControllerGui as PathToolControllerGui
-        job = self.selectedJob()
+
         library = PathToolBitLibraryGui.ToolBitLibrary()
-        if 1 == library.open(dialog=True):
+        if 1 == library.open(dialog=True) and job:
             for nr, tool in library.selectedOrAllTools():
                 tc = PathToolControllerGui.Create("TC: {}".format(tool.Label), tool, nr)
                 job.Proxy.addToolController(tc)
             FreeCAD.ActiveDocument.recompute()
+            return True
+        return False
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_ToolBitLibraryOpen', CommandToolBitLibraryOpen())

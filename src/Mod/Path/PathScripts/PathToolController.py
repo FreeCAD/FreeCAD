@@ -26,6 +26,7 @@
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
 
 from PySide import QtCore
@@ -195,20 +196,25 @@ class ToolController:
 def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
     PathLog.track(tool, toolNumber)
 
+    legacyTool = PathPreferences.toolsUseLegacyTools() if tool is None else isinstance(tool, Path.Tool)
+
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Label = name
-    obj.Proxy = ToolController(obj, tool is None or isinstance(tool, Path.Tool))
+    obj.Proxy = ToolController(obj, legacyTool)
 
     if FreeCAD.GuiUp and assignViewProvider:
         ViewProvider(obj.ViewObject)
 
     if tool is None:
-        tool = Path.Tool()
-        tool.Diameter = 5.0
-        tool.Name = "Default Tool"
-        tool.CuttingEdgeHeight = 15.0
-        tool.ToolType = "EndMill"
-        tool.Material = "HighSpeedSteel"
+        if legacyTool:
+            tool = Path.Tool()
+            tool.Diameter = 5.0
+            tool.Name = "Default Tool"
+            tool.CuttingEdgeHeight = 15.0
+            tool.ToolType = "EndMill"
+            tool.Material = "HighSpeedSteel"
+        else:
+            tool = PathToolBit.Factory.Create()
 
     obj.Tool = tool
     obj.ToolNumber = toolNumber

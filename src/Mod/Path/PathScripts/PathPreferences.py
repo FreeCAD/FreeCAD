@@ -43,7 +43,10 @@ PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 
 LastPathToolBit           = "LastPathToolBit"
 LastPathToolLibrary       = "LastPathToolLibrary"
-LastPathToolShape      = "LastPathToolShape"
+LastPathToolShape         = "LastPathToolShape"
+
+UseLegacyTools            = "UseLegacyTools"
+UseRelativeToolPaths      = "UseRelativeToolPaths"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance       = "GeometryTolerance"
@@ -145,6 +148,17 @@ def searchPathsTool(sub='Bit'):
     appendPath(macroFilePath(), sub)
     appendPath(os.path.join(FreeCAD.getHomePath(), "Mod/Path/"), sub)
     return paths
+
+def toolsUseLegacyTools():
+    return preferences().GetBool(UseLegacyTools, True)
+
+def toolsStoreRelativePaths():
+    return preferences().GetBool(UseRelativeToolPaths, True)
+
+def setToolsSettings(legacy, relative):
+    pref = preferences()
+    pref.SetBool(UseLegacyTools, legacy)
+    pref.SetBool(UseRelativeToolPaths, relative)
 
 def defaultJobTemplate():
     template = preferences().GetString(DefaultJobTemplate)
