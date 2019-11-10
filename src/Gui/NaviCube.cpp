@@ -854,6 +854,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	glClearDepth(1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+	glLineWidth(2.0);
 
 	glDisable(GL_LIGHTING);
 	//glDisable(GL_BLEND);
