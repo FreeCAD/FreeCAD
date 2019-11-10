@@ -399,48 +399,17 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False,noarch
     is a group, its content is appended to the list, which is returned. If walls is True,
     walls and structures are also scanned for included windows or rebars. If addgroups
     is true, the group itself is also included in the list."""
-    def getWindows(obj):
-        l = []
-        if getType(obj) in ["Wall","Structure"]:
-            for o in obj.OutList:
-                l.extend(getWindows(o))
-            for i in obj.InList:
-                if (getType(i) in ["Window"]) or isClone(obj,"Window"):
-                    if hasattr(i,"Hosts"):
-                        if obj in i.Hosts:
-                            l.append(i)
-                elif (getType(i) in ["Rebar"]) or isClone(obj,"Rebar"):
-                    if hasattr(i,"Host"):
-                        if obj == i.Host:
-                            l.append(i)
-        elif (getType(obj) in ["Window","Rebar"]) or isClone(obj,["Window","Rebar"]):
-            l.append(obj)
-        return l
 
     newlist = []
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
     for obj in objectslist:
         if obj:
-            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["App::Part","Building","BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
-                if getType(obj) == "Site":
-                    if obj.Shape:
-                        newlist.append(obj)
-                if obj.isDerivedFrom("Drawing::FeaturePage"):
-                    # skip if the group is a page
-                    newlist.append(obj)
-                else:
-                    if addgroups or (spaces and (getType(obj) == "Space")):
-                        newlist.append(obj)
-                    if noarchchild and (getType(obj) in ["Building","BuildingPart"]):
-                        pass
-                    else:
-                        newlist.extend(getGroupContents(obj.Group,walls,addgroups))
+            if obj.isDerivedFrom("App::DocumentObjectGroup") and hasattr(obj,"Group"):
+                newlist.extend(getGroupContents(obj.Group,walls,addgroups))
             else:
                 #print("adding ",obj.Name)
                 newlist.append(obj)
-                if walls:
-                    newlist.extend(getWindows(obj))
 
     # cleaning possible duplicates
     cleanlist = []

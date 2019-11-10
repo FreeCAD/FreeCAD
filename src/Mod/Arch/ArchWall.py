@@ -752,10 +752,18 @@ class _Wall(ArchComponent.Component):
         obj.Area = obj.Length.Value * obj.Height.Value
 
     def onBeforeChange(self,obj,prop):
+        if prop == "Placement":
+            self.oldPlacement = FreeCAD.Placement(obj.Placement)
+
         if prop == "Length":
             self.oldLength = obj.Length.Value
 
     def onChanged(self, obj, prop):
+        if prop == "Placement":
+            print("placement changed")
+            super().onChanged(obj, prop)
+            self.oldPlacement = None
+
         if prop == "Length":
             if obj.Base and obj.Length.Value and hasattr(self,"oldLength") and (self.oldLength != None) and (self.oldLength != obj.Length.Value):
                 if obj.Base.isDerivedFrom("Part::Feature"):
