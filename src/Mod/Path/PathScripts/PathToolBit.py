@@ -96,6 +96,26 @@ def findLibrary(path, dbg=False):
         return _findTool(path, 'Library', dbg)
     return _findTool("{}.fctl".format(path), 'Library', dbg)
 
+def _findRelativePath(path, typ):
+    relative = path
+    for p in PathPreferences.searchPathsTool(typ):
+        if path.startswith(p):
+            p = path[len(p):]
+            if '/' == p[0]:
+                p = p[1:]
+            if len(p) < len(relative):
+                relative = p
+    return relative
+
+def findRelativePathShape(path):
+    return _findRelativePath(path, 'Shape')
+
+def findRelativePathTool(path):
+    return _findRelativePath(path, 'Bit')
+
+def findRelativePathLibrary(path):
+    return _findRelativePath(path, 'Library')
+
 def updateConstraint(sketch, name, value):
     for i, constraint in enumerate(sketch.Constraints):
         if constraint.Name.split(';')[0] == name:
@@ -116,6 +136,7 @@ def updateConstraint(sketch, name, value):
                     PathLog.track(name, constraint.Type, 'unchanged')
             break
 
+
 PropertyGroupBit       = 'Bit'
 PropertyGroupAttribute = 'Attribute'
 
@@ -124,9 +145,9 @@ class ToolBit(object):
     def __init__(self, obj, shapeFile):
         PathLog.track(obj.Label, shapeFile)
         self.obj = obj
-        obj.addProperty('App::PropertyFile',       'BitShape', 'Base', translate('PathToolBit', 'Shape for bit shape'))
-        obj.addProperty('App::PropertyLink',       'BitBody',     'Base', translate('PathToolBit', 'The parametrized body representing the tool bit'))
-        obj.addProperty('App::PropertyFile',       'File',        'Base', translate('PathToolBit', 'The file of the tool'))
+        obj.addProperty('App::PropertyFile', 'BitShape', 'Base', translate('PathToolBit', 'Shape for bit shape'))
+        obj.addProperty('App::PropertyLink', 'BitBody',  'Base', translate('PathToolBit', 'The parametrized body representing the tool bit'))
+        obj.addProperty('App::PropertyFile', 'File',     'Base', translate('PathToolBit', 'The file of the tool'))
         if shapeFile is not None:
             obj.BitShape = shapeFile
             self._setupBitShape(obj)
@@ -283,7 +304,10 @@ class ToolBit(object):
         attrs = {}
         attrs['version'] = 2 # Path.Tool is version 1
         attrs['name'] = obj.Label
-        attrs['shape'] = obj.BitShape
+        if PathPreferences.toolsStoreAbsolutePaths():
+            attrs['shape'] = obj.BitShape
+        else:
+            attrs['shape'] = findRelativePathShape(obj.BitShape)
         params = {}
         for name in self.propertyNamesBit(obj):
             params[name] = PathUtil.getPropertyValueString(obj, name)
@@ -332,7 +356,9 @@ class ToolBitFactory(object):
     def CreateFrom(self, path, name='ToolBit'):
         try:
             data = Declaration(path)
-            return Factory.CreateFromAttrs(data, name)
+            bit = Factory.CreateFromAttrs(data, name)
+            bit.File = path
+            return bit
         except (OSError, IOError) as e:
             PathLog.error("%s not a valid tool file (%s)" % (path, e))
             raise

@@ -263,7 +263,10 @@ class ToolBitLibrary(object):
         for row in range(self.model.rowCount()):
             toolNr   = self.model.data(self.model.index(row, 0), PySide.QtCore.Qt.EditRole)
             toolPath = self.model.data(self.model.index(row, 0), _PathRole)
-            tools.append({'nr': toolNr, 'path': toolPath})
+            if PathPreferences.toolsStoreAbsolutePaths():
+                tools.append({'nr': toolNr, 'path': toolPath})
+            else:
+                tools.append({'nr': toolNr, 'path': PathToolBit.findRelativePathTool(toolPath)})
 
         with open(self.path, 'w') as fp:
             json.dump(library, fp, sort_keys=True, indent=2)

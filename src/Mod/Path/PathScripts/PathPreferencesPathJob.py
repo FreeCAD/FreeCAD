@@ -109,7 +109,7 @@ class JobPreferencesPage:
             PathPreferences.setDefaultStockTemplate('')
 
     def saveToolsSettings(self):
-        PathPreferences.setToolsSettings(self.form.toolsUseLegacy.isChecked(), self.form.toolsRelativePaths.isChecked())
+        PathPreferences.setToolsSettings(self.form.toolsUseLegacy.isChecked(), self.form.toolsAbsolutePaths.isChecked())
 
     def selectComboEntry(self, widget, text):
         index = widget.findText(text, QtCore.Qt.MatchFixedString)
@@ -251,7 +251,7 @@ class JobPreferencesPage:
 
     def loadToolSettings(self):
         self.form.toolsUseLegacy.setChecked(PathPreferences.toolsUseLegacyTools())
-        self.form.toolsRelativePaths.setChecked(PathPreferences.toolsStoreRelativePaths())
+        self.form.toolsAbsolutePaths.setChecked(PathPreferences.toolsStoreAbsolutePaths())
 
     def getPostProcessor(self, name):
         if not name in self.processor.keys():

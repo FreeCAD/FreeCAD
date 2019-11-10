@@ -1,12 +1,12 @@
 {
-  "version": 1,
+  "version": 2,
   "name": "T1",
-  "shape": "src/Mod/Path/Tools/Shape/endmill-straight.fcstd",
-  "attribute": {},
+  "shape": "endmill-straight.fcstd",
   "parameter": {
     "CuttingEdgeHeight": "30.000 mm",
-    "Diameter": "1.000 mm",
+    "Diameter": "5.000 mm",
     "Length": "50.000 mm",
     "ShankDiameter": "3.000 mm"
-  }
+  },
+  "attribute": {}
 }

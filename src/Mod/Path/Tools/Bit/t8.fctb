@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "T8",
-  "shape": "src/Mod/Path/Tools/Shape/endmill-straight.fcstd",
+  "shape": "endmill-straight.fcstd",
   "attribute": {},
   "parameter": {
     "CuttingEdgeHeight": "30.000 mm",

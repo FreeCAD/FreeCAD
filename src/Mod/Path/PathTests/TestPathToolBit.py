@@ -43,3 +43,18 @@ class TestPathToolBit(PathTestUtils.PathTestBase):
         self.assertNotEqual(path, '/this/is/unlikely/a/valid/path/v-bit.fcstd')
 
 
+    def test10(self):
+        '''find the relative path of a tool bit'''
+        shape = 'endmill-straight.fcstd'
+        path = PathToolBit.findShape(shape)
+        self.assertIsNot(path, None)
+        self.assertGreater(len(path), len(shape))
+        rel = PathToolBit.findRelativePathShape(path)
+        self.assertEqual(rel, shape)
+
+    def test11(self):
+        '''store full path if relative path isn't found'''
+        path = '/this/is/unlikely/a/valid/path/v-bit.fcstd'
+        rel = PathToolBit.findRelativePathShape(path)
+        self.assertEqual(rel, path)
+
