@@ -105,7 +105,13 @@ struct DocumentP
     std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
+
+    // cache map from view provider to its 3D claimed children
     std::unordered_map<const ViewProvider*,std::vector<App::DocumentObject*> > _ChildrenMap;
+
+    // Reference counted view providers that are 3D claimed by other object.
+    // These view providers shouldn't appear at secen graph root.
+    std::unordered_map<const ViewProvider*, int> _ClaimedViewProviders;
 
     typedef boost::signals2::connection Connection;
     Connection connectNewObject;
@@ -1563,26 +1569,6 @@ MDIView *Document::createView(const Base::Type& typeId)
             view3D->getViewer()->setOverrideMode(overrideMode);
         }
 
-        // attach the viewproviders. we need to make sure that we only attach the toplevel ones
-        // and not viewproviders which are claimed by other providers. To ensure this we first
-        // add all providers and then remove the ones already claimed
-        std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
-        std::vector<App::DocumentObject*> child_vps;
-        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1) {
-            view3D->getViewer()->addViewProvider(It1->second);
-            std::vector<App::DocumentObject*> children = It1->second->claimChildren3D();
-            child_vps.insert(child_vps.end(), children.begin(), children.end());
-        }
-        std::map<std::string,ViewProvider*>::const_iterator It2;
-        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2) {
-            view3D->getViewer()->addViewProvider(It2->second);
-            std::vector<App::DocumentObject*> children = It2->second->claimChildren3D();
-            child_vps.insert(child_vps.end(), children.begin(), children.end());
-        }
-
-        for (App::DocumentObject* obj : child_vps)
-            view3D->getViewer()->removeViewProvider(getViewProvider(obj));
-
         const char* name = getDocument()->Label.getValue();
         QString title = QString::fromLatin1("%1 : %2[*]")
             .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
@@ -1613,26 +1599,6 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
         View3DInventor* firstView = static_cast<View3DInventor*>(oldview);
         std::string overrideMode = firstView->getViewer()->getOverrideMode();
         view3D->getViewer()->setOverrideMode(overrideMode);
-
-        // attach the viewproviders. we need to make sure that we only attach the toplevel ones
-        // and not viewproviders which are claimed by other providers. To ensure this we first
-        // add all providers and then remove the ones already claimed
-        std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
-        std::vector<App::DocumentObject*> child_vps;
-        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1) {
-            view3D->getViewer()->addViewProvider(It1->second);
-            std::vector<App::DocumentObject*> children = It1->second->claimChildren3D();
-            child_vps.insert(child_vps.end(), children.begin(), children.end());
-        }
-        std::map<std::string,ViewProvider*>::const_iterator It2;
-        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2) {
-            view3D->getViewer()->addViewProvider(It2->second);
-            std::vector<App::DocumentObject*> children = It2->second->claimChildren3D();
-            child_vps.insert(child_vps.end(), children.begin(), children.end());
-        }
-
-        for (App::DocumentObject* obj : child_vps)
-            view3D->getViewer()->removeViewProvider(getViewProvider(obj));
 
         view3D->setWindowTitle(oldview->windowTitle());
         view3D->setWindowModified(oldview->isWindowModified());
@@ -2223,7 +2189,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
 
         for(auto it=children.begin();it!=children.end();) {
             auto child = *it;
-            auto* vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getViewProvider(child));
+            auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getViewProvider(child));
             if(!vp || !vp->getRoot()) {
                 it = children.erase(it);
                 continue;
@@ -2236,17 +2202,29 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
                 childGroup->addChild(vp->getRoot());
             }
 
-            oldChildren.erase(vp);
-
-            foreachView<View3DInventor>([=](View3DInventor* view){
-                // remove the viewprovider serves the purpose of detaching the inventor nodes from the
-                // top level root in the viewer. However, if some of the children were grouped beneath the object
-                // earlier they are not anymore part of the toplevel inventor node. we need to check for that.
-                view->getViewer()->removeViewProvider(vp);
-            });
+            auto iter = oldChildren.find(vp);
+            if(iter!=oldChildren.end())
+                oldChildren.erase(iter);
+            else if(++d->_ClaimedViewProviders[vp] == 1) {
+                foreachView<View3DInventor>([=](View3DInventor* view){
+                    view->getViewer()->toggleViewProvider(vp);
+                });
+            }
         }
 
         *childCache = std::move(children);
+    }
+
+    for(auto it=oldChildren.begin();it!=oldChildren.end();) {
+        auto iter = d->_ClaimedViewProviders.find(*it);
+        if(iter != d->_ClaimedViewProviders.end()) {
+            if(--iter->second > 0) {
+                it = oldChildren.erase(it);
+                continue;
+            } else
+                d->_ClaimedViewProviders.erase(iter);
+        }
+        ++it;
     }
 
     // add the remaining old children back to toplevel invertor node
@@ -2254,30 +2232,19 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
         for(auto vpd : oldChildren) {
             auto obj = vpd->getObject();
             if(obj && obj->getNameInDocument())
-                view->getViewer()->addViewProvider(vpd);
+                view->getViewer()->toggleViewProvider(vpd);
         }
     });
 }
 
+bool Document::isClaimed3D(ViewProvider *vp) const {
+    return d->_ClaimedViewProviders.count(vp)!=0;
+}
+
 void Document::toggleInSceneGraph(ViewProvider *vp) {
-    for (auto view : d->baseViews) {
-        View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
-        if (!activeView)
-            continue;
-        auto root = vp->getRoot();
-        if(!root)
-            continue;
-        auto scenegraph = dynamic_cast<SoGroup*>(
-                activeView->getViewer()->getSceneGraph());
-        if(!scenegraph)
-            continue;
-        int idx = scenegraph->findChild(root);
-        if(idx<0) {
-            if(vp->canAddToSceneGraph())
-                scenegraph->addChild(root);
-        }else if(!vp->canAddToSceneGraph())
-            scenegraph->removeChild(idx);
-    }
+    foreachView<View3DInventor>([&](View3DInventor *view) {
+        view->getViewer()->toggleViewProvider(vp);
+    });
 }
 
 void Document::slotChangePropertyEditor(const App::Document &doc, const App::Property &Prop) {

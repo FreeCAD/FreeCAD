@@ -314,6 +314,9 @@ public:
     const char *getCameraSettings() const;
     bool saveCameraSettings(const char *) const;
 
+    /// check if a view provider is 3D claimed by other
+    bool isClaimed3D(ViewProvider *) const;
+
 protected:
     // pointer to the python class
     Gui::DocumentPy *_pcDocPy;
