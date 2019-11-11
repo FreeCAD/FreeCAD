@@ -24,13 +24,12 @@
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathDressupPathBoundary as PathDressupPathBoundary
-import PathScripts.PathJobGui as PathJobGui
 import PathScripts.PathLog as PathLog
 
 from PySide import QtGui, QtCore
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule()
+#PathLog.trackModule()
 
 
 # Qt translation handling
@@ -49,6 +48,9 @@ class TaskPanel(object):
         else:
             self.visibilityBoundary = False
 
+        self.buttonBox = None
+        self.isDirty = False
+
         self.stockFromBase = None
         self.stockFromExisting = None
         self.stockCreateBox = None
@@ -58,10 +60,22 @@ class TaskPanel(object):
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
 
+    def modifyStandardButtons(self, buttonBox):
+        self.buttonBox = buttonBox
+
+    def setDirty(self):
+        self.isDirty = True
+        self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(True)
+
+    def setClean(self):
+        self.isDirty = False
+        self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(False)
+
     def clicked(self, button):
         # callback for standard buttons
         if button == QtGui.QDialogButtonBox.Apply:
-            self.obj.Proxy.execute(self.obj)
+            self.updateDressup()
+            FreeCAD.ActiveDocument.recompute()
 
     def abort(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -72,11 +86,10 @@ class TaskPanel(object):
         self.cleanup(True)
 
     def accept(self):
+        if self.isDirty:
+            self.updateDressup()
         FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup(True)
-        #if self.isDirty:
-        #    self.getFields()
-        #    FreeCAD.ActiveDocument.recompute()
 
     def cleanup(self, gui):
         self.viewProvider.clearTaskPanel()
@@ -87,12 +100,14 @@ class TaskPanel(object):
             if self.obj.Stock:
                 self.obj.Stock.ViewObject.Visibility = self.visibilityBoundary
 
-    def getFields(self):
-        pass
-    def setFields(self):
-        pass
+    def updateDressup(self):
+        if self.obj.Inside != self.form.stockInside.isChecked():
+            self.obj.Inside = self.form.stockInside.isChecked()
+        self.stockEdit.getFields(self.obj)
+        self.setClean()
 
     def updateStockEditor(self, index, force=False):
+        import PathScripts.PathJobGui as PathJobGui
         import PathScripts.PathStock as PathStock
 
         def setupFromBaseEdit():
@@ -150,8 +165,10 @@ class TaskPanel(object):
 
     def setupUi(self):
         self.updateStockEditor(-1, False)
+        self.form.stockInside.setChecked(self.obj.Inside)
 
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
+        self.form.stockInside.stateChanged.connect(self.setDirty)
 
 
 class DressupPathBoundaryViewProvider(object):
@@ -161,7 +178,7 @@ class DressupPathBoundaryViewProvider(object):
 
     def __getstate__(self):
         return None
-    def __setstate_(self, state):
+    def __setstate__(self, state):
         return None
 
 
