@@ -13,6 +13,16 @@
       <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
       <UserDocu>Feature for creating and manipulating Technical Drawing Part Views</UserDocu>
     </Documentation>
+    <Methode Name="getVisibleEdges">
+      <Documentation>
+        <UserDocu>getVisibleEdges() - get the visible edges in the View as Part::TopoShapeEdges</UserDocu>
+      </Documentation>
+    </Methode>
+   <Methode Name="getHiddenEdges">
+      <Documentation>
+        <UserDocu>getHiddenEdges() - get the hidden edges in the View as Part::TopoShapeEdges</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="makeCosmeticVertex">
       <Documentation>
         <UserDocu>makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns index of created vertex.</UserDocu>
