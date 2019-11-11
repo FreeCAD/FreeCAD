@@ -43,6 +43,7 @@
 # include <QFile>
 #endif
 
+#include <Inventor/SbXfBox3d.h>
 #include <boost/algorithm/string/replace.hpp>
 
 #include "ViewProviderPath.h"
@@ -136,7 +137,7 @@ public:
 PROPERTY_SOURCE(PathGui::ViewProviderPath, Gui::ViewProviderGeometryObject)
 
 ViewProviderPath::ViewProviderPath()
-    :pt0Index(-1),blockPropertyChange(false),edgeStart(-1),coordStart(-1),coordEnd(-1)
+    :pt0Index(-1),blockPropertyChange(false),edgeStart(-1),coordStart(-1),coordEnd(-1),bboxCached(false)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
     unsigned long lcol = hGrp->GetUnsigned("DefaultNormalPathColor",11141375UL); // dark green (0,170,0)
@@ -201,7 +202,7 @@ ViewProviderPath::ViewProviderPath()
     pcArrowSwitch = new SoSwitch();
     pcArrowSwitch->ref();
 
-    auto pArrowGroup = new SoSkipBoundingGroup;
+    auto pArrowGroup = new SoSeparator;
     pcArrowTransform = new SoTransform();
     pArrowGroup->addChild(pcArrowTransform);
 
@@ -634,6 +635,7 @@ void ViewProviderPath::updateVisual(bool rebuild) {
             for(unsigned int i=0;i<markers.size();i++)
                 pcMarkerCoords->point.set1Value(i,markers[i].x,markers[i].y,markers[i].z);
 
+            bboxCached = false;
             updateBoundingBox();
         }
     }
@@ -680,25 +682,40 @@ void ViewProviderPath::updateVisual(bool rebuild) {
     NormalColor.touch();
 }
 
-Base::BoundBox3d ViewProviderPath::getBoundingBox(
-        const char *, bool transform, Gui::MDIView *) const 
+Base::BoundBox3d ViewProviderPath::_getBoundingBox(
+        const char *, const Base::Matrix4D *_mat, unsigned transform,
+        const Gui::View3DInventorViewer *, int) const 
 {
     // update the boundbox
-    Base::Placement pl;
-    if(transform) {
+    Base::Matrix4D mat;
+    if(_mat)
+        mat = *_mat;
+    if(transform & Gui::ViewProvider::Transform) {
         Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
-        pl = *(&pcPathObj->Placement.getValue());
+        mat *= pcPathObj->Placement.getValue().toMatrix();
     }
+
+    if(!bboxCached) {
+        bboxCached = true;
+        Base::BoundBox3d bbox;
+        Base::Vector3d pt;
+        for (int i=1;i<pcLineCoords->point.getNum();i++) {
+            pt.x = pcLineCoords->point[i].getValue()[0];
+            pt.y = pcLineCoords->point[i].getValue()[1];
+            pt.z = pcLineCoords->point[i].getValue()[2];
+            bbox.Add(pt);
+        }
+        bboxCache = bbox;
+    }
+
+    SbXfBox3d xbox;
+    xbox.setBounds(bboxCache.MinX,bboxCache.MinY,bboxCache.MinZ,
+                   bboxCache.MaxX,bboxCache.MaxY,bboxCache.MaxZ);
+    xbox.setTransform(ViewProvider::convert(mat));
+
     Base::BoundBox3d bbox;
-    Base::Vector3d pt;
-    for (int i=1;i<pcLineCoords->point.getNum();i++) {
-        pt.x = pcLineCoords->point[i].getValue()[0];
-        pt.y = pcLineCoords->point[i].getValue()[1];
-        pt.z = pcLineCoords->point[i].getValue()[2];
-        if(transform)
-            pl.multVec(pt,pt);
-        bbox.Add(pt);
-    }
+    xbox.project().getBounds(bbox.MinX,bbox.MinY,bbox.MinZ,
+                             bbox.MaxX,bbox.MaxY,bbox.MaxZ);
     return bbox;
 }
 

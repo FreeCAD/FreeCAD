@@ -169,7 +169,7 @@ colors: color dictionary of type elementName:(r,g,b,a)
                 <UserDocu>Trigger icon changed signal</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="getBoundingBox">
+        <Methode Name="getBoundingBox" Keyword="true">
             <Documentation>
                 <UserDocu>
 getBoundingBox(subname=None, transform=True, view=None): obtain the bounding box of this view object

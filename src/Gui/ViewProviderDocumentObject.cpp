@@ -660,3 +660,64 @@ void ViewProviderDocumentObject::setSelectable(bool selectable)
         }
     }
 }
+
+Base::BoundBox3d ViewProviderDocumentObject::_getBoundingBox(
+        const char *subname, const Base::Matrix4D *mat, bool transform,
+        const View3DInventorViewer *viewer, int depth) const 
+{
+    if(!viewer) {
+        viewer = getActiveViewer();
+        if(!viewer) {
+            FC_ERR("no view");
+            return Base::BoundBox3d();
+        }
+    }
+
+    App::DocumentObject *obj = getObject();
+    if(!subname || !subname[0] || !obj) {
+        if(obj) {
+            auto subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
+            if(subs.size()) {
+                Base::BoundBox3d box;
+                for(std::string &sub : subs) {
+                    Base::Matrix4D smat;
+                    if(mat)
+                        smat = *mat;
+                    App::DocumentObject *parent = 0;
+                    std::string childName;
+                    auto sobj = obj->resolve(sub.c_str(),&parent,&childName,0,0,&smat,transform,depth+1);
+                    if(!sobj) 
+                        continue;
+                    int vis;
+                    if(!parent || (vis=parent->isElementVisible(childName.c_str()))<0)
+                        vis = sobj->Visibility.getValue()?1:0;
+                    if(!vis)
+                        continue;
+                    auto vp = Application::Instance->getViewProvider(sobj);
+                    if(!vp)
+                        continue;
+                    auto sbox = vp->getBoundingBox(0,&smat,false,viewer,depth+1);
+                    if(sbox.IsValid())
+                        box.Add(sbox);
+                }
+                return box;
+            }
+        }
+
+        return ViewProvider::_getBoundingBox(0,mat,transform,viewer,depth);
+    }
+
+    Base::Matrix4D smat;
+    if(mat)
+        smat = *mat;
+    const char *subelement = Data::ComplexGeoData::findElementName(subname);
+    if(subelement == subname)
+        return ViewProvider::_getBoundingBox(subname,&smat,false,viewer,depth+1);
+
+    auto sobj = getObject()->getSubObject(subname,0,&smat,transform,depth);
+    auto vp = Application::Instance->getViewProvider(sobj);
+    if(!vp || vp==this)
+        return Base::BoundBox3d();
+    return vp->getBoundingBox(subelement, &smat,false,viewer,depth+1);
+}
+

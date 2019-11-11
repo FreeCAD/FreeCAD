@@ -981,31 +981,13 @@ void LinkView::setInvalid(void) {
         delete this;
 }
 
-Base::BoundBox3d _getBoundBox(ViewProviderDocumentObject *vpd, SoNode *rootNode) {
-    auto doc = vpd->getDocument();
-    if(!doc) 
-        LINK_THROW(Base::RuntimeError,"no document");
-    Gui::MDIView* view = doc->getViewOfViewProvider(vpd);
-    if(!view)
-        LINK_THROW(Base::RuntimeError,"no view");
-    
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
-    bboxAction.apply(rootNode);
-    auto bbox = bboxAction.getBoundingBox();
-    float minX,minY,minZ,maxX,maxY,maxZ;
-    bbox.getMax().getValue(maxX,maxY,maxZ);
-    bbox.getMin().getValue(minX,minY,minZ);
-    return Base::BoundBox3d(minX,minY,minZ,maxX,maxY,maxZ);
-}
-
 Base::BoundBox3d LinkView::getBoundBox(ViewProviderDocumentObject *vpd) const {
     if(!vpd) {
         if(!linkOwner || !linkOwner->isLinked())
             LINK_THROW(Base::ValueError,"no ViewProvider");
         vpd = linkOwner->pcLinked;
     }
-    return _getBoundBox(vpd,pcLinkRoot);
+    return vpd->getBoundingBox();
 }
 
 ViewProviderDocumentObject *LinkView::getOwner() const {
@@ -2573,12 +2555,12 @@ bool ViewProviderLink::initDraggingPlacement() {
     const auto &pla = ext->getPlacementProperty()?
         ext->getPlacementValue():ext->getLinkPlacementValue();
 
-    // Cancel out our our transformation from the editing transform, because
+    // Cancel out our own transformation from the editing transform, because
     // the dragger is meant to change our transformation.
     dragCtx->preTransform *= pla.inverse().toMatrix();
 
-    dragCtx->bbox = getBoundingBox(0,false);
-    // The returned bounding box is before out own transform, but we still need
+    dragCtx->bbox = getBoundingBox(0,0,false);
+    // The returned bounding box is before our own transform, but we still need
     // to scale it to get the correct center.
     auto scale = ext->getScaleVector();
     dragCtx->bbox.ScaleX(scale.x);
@@ -3334,6 +3316,48 @@ ViewProviderDocumentObject *ViewProviderLink::getLinkedViewProvider(
     if(res)
         return res;
     return self;
+}
+
+Base::BoundBox3d ViewProviderLink::_getBoundingBox(
+        const char *subname, const Base::Matrix4D *mat, bool transform,
+        const View3DInventorViewer *viewer, int depth) const 
+{
+    Base::BoundBox3d bbox;
+    auto obj = getObject();
+    if(!obj)
+        return bbox;
+
+    auto ext = getLinkExtension();
+    if(!ext || obj->getLinkedObject(false)==obj || (subname && subname[0]))
+        return inherited::_getBoundingBox(subname,mat,transform,viewer,depth);
+
+    Base::Matrix4D smat;
+    if(mat)
+        smat = *mat;
+
+    ViewProvider *vp = 0;
+    subname = ext->getSubName();
+    if(subname && subname[0]) {
+        auto sobj = obj->getSubObject(subname,0,&smat,transform,depth);
+        if(!sobj || sobj == obj)
+            return bbox;
+        vp = Application::Instance->getViewProvider(sobj);
+    } else {
+        auto linked = obj->getLinkedObject(true,&smat,transform,depth);
+        if(!linked || linked==obj)
+            return bbox;
+        vp = Application::Instance->getViewProvider(linked);
+    }
+    if(!vp || vp == this)
+        return Base::BoundBox3d();
+
+    const auto &subs = ext->getSubElements();
+    if(subs.empty())
+        return vp->getBoundingBox(0,&smat,false,viewer,depth+1);
+
+    for(const auto &s : subs) 
+        bbox.Add(vp->getBoundingBox(s.c_str(),&smat,false,viewer,depth+1));
+    return bbox;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////

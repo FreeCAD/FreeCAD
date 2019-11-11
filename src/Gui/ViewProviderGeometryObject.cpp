@@ -79,6 +79,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     : pcBoundingBox(0)
     , pcBoundSwitch(0)
     , pcBoundColor(0)
+    , pcSwitchSensor(0)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool randomColor = hGrp->GetBool("RandomColor", false);
@@ -121,6 +122,7 @@ ViewProviderGeometryObject::~ViewProviderGeometryObject()
         pcBoundSwitch->unref();
     if(pcBoundColor)
         pcBoundColor->unref();
+    delete pcSwitchSensor;
 }
 
 void ViewProviderGeometryObject::onChanged(const App::Property* prop)
@@ -172,20 +174,17 @@ void ViewProviderGeometryObject::attach(App::DocumentObject *pcObj)
 
 void ViewProviderGeometryObject::updateData(const App::Property* prop)
 {
-    if (pcBoundingBox) {
-       if(prop->isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())
-               || prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()))
-       {
-           updateBoundingBox();
-       }
-    }
+    if(prop->isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId()))
+        updateBoundingBox();
 
     ViewProviderDragger::updateData(prop);
 }
 
 void ViewProviderGeometryObject::updateBoundingBox() {
     if(pcBoundingBox) {
-        Base::BoundBox3d box = getBoundingBox();
+        Base::BoundBox3d box = this->getBoundingBox(0,0,false);
+        if(!box.IsValid())
+            return;
         pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
         pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
     }
@@ -235,6 +234,25 @@ unsigned long ViewProviderGeometryObject::getBoundColor() const
     return ViewParams::instance()->getBoundingBoxColor();
 }
 
+void ViewProviderGeometryObject::addBoundSwitch() {
+    if(!pcBoundSwitch)
+        return;
+    for(int i=0;i<pcModeSwitch->getNumChildren();++i) {
+        auto node = pcModeSwitch->getChild(i);
+        if(!node->isOfType(SoGroup::getClassTypeId()))
+            continue;
+        auto group = static_cast<SoGroup*>(node);
+        int idx = group->findChild(pcBoundSwitch);
+        if(idx >= 0) {
+            // make sure we are added last
+            if(idx == group->getNumChildren()-1)
+                continue;
+            group->removeChild(idx);
+        }
+        group->addChild(pcBoundSwitch);
+    }
+}
+
 void ViewProviderGeometryObject::showBoundingBox(bool show)
 {
     if (!pcBoundSwitch && show) {
@@ -256,8 +274,6 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
         pcBoundColor->rgb.setValue(r, g, b);
         pBoundingSep->addChild(pcBoundColor);
 
-        pBoundingSep->addChild(new SoResetTransform());
-
         if(!pcBoundingBox) {
             pcBoundingBox = new SoFCBoundingBox;
             pcBoundingBox->ref();
@@ -268,7 +284,16 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
 
         // add to the highlight node
         pcBoundSwitch->addChild(pBoundingSep);
-        pcRoot->addChild(pcBoundSwitch);
+
+        updateBoundingBox();
+
+        addBoundSwitch();
+        pcSwitchSensor = new SoNodeSensor;
+        pcSwitchSensor->setData(this);
+        pcSwitchSensor->attach(pcModeSwitch);
+        pcSwitchSensor->setFunction([](void *data, SoSensor*) {
+            reinterpret_cast<ViewProviderGeometryObject*>(data)->addBoundSwitch();
+        });
     }
 
     if (pcBoundSwitch) {

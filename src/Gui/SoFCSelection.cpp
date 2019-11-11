@@ -692,8 +692,13 @@ SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
     }
 
 #ifdef NO_FRONTBUFFER
-    // check if preselection is active
-    if(this->setOverride(action,ctx)) {
+    if(this->style.getValue() == SoFCSelection::BOX 
+            || ViewParams::instance()->getShowSelectionBoundingBox()) 
+    {
+        inherited::GLRenderBelowPath(action);
+        if(this->setOverride(action,ctx))
+            state->pop();
+    } else if(this->setOverride(action,ctx)) {
         inherited::GLRenderBelowPath(action);
         state->pop();
     } else 
@@ -733,8 +738,13 @@ void SoFCSelection::GLRender(SoGLRenderAction * action)
     }
 
 #ifdef NO_FRONTBUFFER
-    // check if preselection is active
-    if(this->setOverride(action,ctx)) {
+    if(this->style.getValue() == SoFCSelection::BOX 
+            || ViewParams::instance()->getShowSelectionBoundingBox()) 
+    {
+        inherited::GLRender(action);
+        if(this->setOverride(action,ctx))
+            state->pop();
+    } else if(this->setOverride(action,ctx)) {
         inherited::GLRender(action);
         state->pop();
     } else
@@ -776,7 +786,13 @@ SoFCSelection::GLRenderInPath(SoGLRenderAction * action)
 #ifdef NO_FRONTBUFFER
     // check if preselection is active
     SoState * state = action->getState();
-    if(this->setOverride(action,ctx)) {
+    if(this->style.getValue() == SoFCSelection::BOX 
+            || ViewParams::instance()->getShowSelectionBoundingBox()) 
+    {
+        inherited::GLRenderInPath(action);
+        if(this->setOverride(action,ctx))
+            state->pop();
+    } else if(this->setOverride(action,ctx)) {
         inherited::GLRenderInPath(action);
         state->pop();
     } else
@@ -975,9 +991,11 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 
     Styles mystyle = (Styles) this->style.getValue();
 
-    if(mystyle == SoFCSelection::BOX) {
-        SoFCSelectionRoot::renderBBox(
-                action,this,preselected?ctx->highlightColor:ctx->selectionColor);
+    if(mystyle == SoFCSelection::BOX || ViewParams::instance()->getShowSelectionBoundingBox()) {
+        if(!ctx->isSelectAll() && !ctx->isHighlightAll()) {
+            SoFCSelectionRoot::renderBBox(action,this,
+                    preselected?ctx->highlightColor:ctx->selectionColor,0,true);
+        }
         this->uniqueId = oldId;
         return false;
     }

@@ -2483,11 +2483,11 @@ static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
     // DO NOT check this view object Visibility, let the caller do this. Because
     // we may be called by upper object hierarchy that manages our visibility.
 
-    auto bbox3 = vp->getBoundingBox(0,transform);
+    auto bbox3 = vp->getBoundingBox(0,&mat,transform);
     if(!bbox3.IsValid())
         return ret;
 
-    auto bbox = bbox3.Transformed(mat).ProjectBox(&proj);
+    auto bbox = bbox3.ProjectBox(&proj);
 
     // check if both two boundary points are inside polygon, only
     // valid since we know the given polygon is a box.
@@ -2624,11 +2624,26 @@ static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
 
 static void selectionCallback(void * ud, SoEventCallback * cb)
 {
-    bool selectElement = ud?true:false;
+    const SoEvent* ev = cb->getEvent();
+    cb->setHandled();
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
-    view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
-    SoNode* root = view->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+    if(ev) {
+        if(ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
+            if(static_cast<const SoKeyboardEvent*>(ev)->getKey() == SoKeyboardEvent::ESCAPE) {
+                view->stopSelection();
+                view->removeEventCallback(SoEvent::getClassTypeId(), selectionCallback, ud);
+                view->setEditing(false);
+                view->setSelectionEnabled(true);
+            }
+            return;
+        } else if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId()))
+            return;
+    }
+
+    bool selectElement = ud?true:false;
+    view->removeEventCallback(SoEvent::getClassTypeId(), selectionCallback, ud);
+    view->setEditing(false);
+    view->setSelectionEnabled(true);
 
     SelectionMode selectionMode = CENTER;
 
@@ -2661,10 +2676,12 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (doc) {
-        cb->setHandled();
-
         Base::Vector3d *pdir = &vdir;
-        const SoEvent* ev = cb->getEvent();
+
+        std::vector<App::SubObjectT> sels; 
+        if(ViewParams::instance()->getShowSelectionOnTop() && selectElement)
+            sels = Gui::Selection().getSelectionT(doc->getName(),0);
+
         if (ev) {
             if(!ev->wasCtrlDown())
                 Gui::Selection().clearSelection(doc->getName());
@@ -2672,17 +2689,38 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
                 pdir = 0;
         }
 
-        for(auto obj : doc->getObjects()) {
-            if(App::GeoFeatureGroupExtension::getGroupOfObject(obj))
-                continue;
+        if(sels.size()) {
+            std::set<std::pair<App::DocumentObject*,std::string> > selSet;
+            for(auto &sel : sels) {
+                auto info = std::make_pair(sel.getObject(),sel.getSubNameNoElement());
+                if(!info.first || !selSet.insert(info).second)
+                    continue;
 
-            auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
-            if (!vp || !vp->isVisible())
-                continue;
+                Base::Matrix4D mat;
+                auto sobj = info.first->getSubObject(info.second.c_str(),0,&mat);
+                auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                        Application::Instance->getViewProvider(sobj));
+                if(!vp)
+                    continue;
+                for(auto &sub : getBoxSelection(pdir,vp,selectionMode,selectElement,proj,polygon,mat,false)) 
+                    Gui::Selection().addSelection(doc->getName(), 
+                            info.first->getNameInDocument(), (info.second+sub).c_str());
+            }
 
-            Base::Matrix4D mat;
-            for(auto &sub : getBoxSelection(pdir,vp,selectionMode,selectElement,proj,polygon,mat)) 
-                Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
+        } else {
+            for(auto obj : doc->getObjects()) {
+                if(App::GeoFeatureGroupExtension::isNonGeoGroup(obj)
+                        || App::GeoFeatureGroupExtension::getGroupOfObject(obj))
+                    continue;
+
+                auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+                if (!vp || !vp->isVisible())
+                    continue;
+
+                Base::Matrix4D mat;
+                for(auto &sub : getBoxSelection(pdir,vp,selectionMode,selectElement,proj,polygon,mat)) 
+                    Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
+            }
         }
     }
 }
@@ -2701,10 +2739,11 @@ void StdBoxSelection::activated(int iMsg)
                 SoKeyboardEvent ev;
                 viewer->navigationStyle()->processEvent(&ev);
             }
+            viewer->setEditing(true);
+            viewer->setEditingCursor(QCursor(Qt::CrossCursor));
             viewer->startSelection(View3DInventorViewer::Rubberband);
-            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback);
-            SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+            viewer->addEventCallback(SoEvent::getClassTypeId(), selectionCallback);
+            viewer->setSelectionEnabled(false);
         }
     }
 }
@@ -2725,7 +2764,7 @@ StdBoxElementSelection::StdBoxElementSelection()
 #if QT_VERSION >= 0x040200
     sPixmap       = "edit-element-select-box";
 #endif
-    sAccel        = "Shift+E";
+    sAccel        = "Ctrl+Shift+E";
     eType         = AlterSelection;
 }
 
@@ -2743,10 +2782,11 @@ void StdBoxElementSelection::activated(int iMsg)
                 SoKeyboardEvent ev;
                 viewer->navigationStyle()->processEvent(&ev);
             }
+            viewer->setEditing(true);
+            viewer->setEditingCursor(QCursor(Qt::CrossCursor));
             viewer->startSelection(View3DInventorViewer::Rubberband);
-            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, this);
-            SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+            viewer->addEventCallback(SoEvent::getClassTypeId(), selectionCallback, this);
+            viewer->setSelectionEnabled(false);
         }
     }
 }
@@ -3494,6 +3534,32 @@ VIEW_CMD_DEF(SelBoundingBox, ShowSelectionBoundingBox)
 }
 
 //======================================================================
+// Std_TightBoundingBox
+//======================================================================
+VIEW_CMD_DEF(TightBoundingBox, UseTightBoundingBox)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Tighten bounding box");
+  sToolTipText  = QT_TR_NOOP("Show more accurate bounds when using bounding box selection style");
+  sWhatsThis    = "Std_TightBoundingBox";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
+}
+
+//======================================================================
+// Std_ProjectBoundingBox
+//======================================================================
+VIEW_CMD_DEF(ProjectBoundingBox, RenderProjectedBBox)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Project bounding box");
+  sToolTipText  = QT_TR_NOOP("Show projected bounding box that is aligned to axes of global coordinate space");
+  sWhatsThis    = "Std_ProjectBoundingBox";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
+}
+
+//======================================================================
 // Std_SelOnTop
 //======================================================================
 VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
@@ -3539,6 +3605,9 @@ public:
         bCanLog       = false;
 
         addCommand(new StdCmdSelBoundingBox());
+        addCommand(new StdCmdTightBoundingBox());
+        addCommand(new StdCmdProjectBoundingBox());
+        addCommand();
         addCommand(new StdCmdSelOnTop());
         addCommand(new StdCmdPreselEdgeOnly());
         addCommand(new StdTreePreSelection());

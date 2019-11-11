@@ -2663,9 +2663,13 @@ void TreeWidget::syncView(ViewProviderDocumentObject *vp)
 {
     if(currentDocItem && TreeParams::Instance()->SyncView()) {
         bool focus = hasFocus();
-        currentDocItem->document()->setActiveView(vp);
+        auto view = currentDocItem->document()->setActiveView(vp);
         if(focus)
             setFocus();
+        if(view) {
+            const char** pReturnIgnore=0;
+            view->onMsg("ViewSelectionExtend",pReturnIgnore);
+        }
     }
 }
 
@@ -4270,8 +4274,13 @@ void DocumentItem::selectItems(SelectionReason reason) {
     if(sync) {
         if(!newSelect)
             newSelect = oldSelect;
-        else
-            getTree()->syncView(newSelect->object());
+        else {
+            // Here the selection change is most likely trigger from some thing
+            // other than the tree widget. May be from 3d view, or python code,
+            // or whatever. And thus, We better not touch the view.
+            //
+            // getTree()->syncView(newSelect->object());
+        }
         if(newSelect) 
             getTree()->scrollToItem(newSelect);
     }

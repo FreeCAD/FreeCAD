@@ -40,9 +40,12 @@
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 #endif
 
+#include <unordered_map>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Base/BoundBox.h>
 #include <Base/Matrix.h>
 #include <App/PropertyGeo.h>
@@ -112,7 +115,7 @@ ViewProvider::ViewProvider()
     // selection context tracking.
     //
     // pcRoot = new SoFCSeparator(true);
-    pcRoot = new SoFCSelectionRoot(true);
+    pcRoot = new SoFCSelectionRoot(true,this);
     pcRoot->ref();
     pcModeSwitch = new SoFCSwitch();
     pcModeSwitch->ref();
@@ -133,6 +136,9 @@ ViewProvider::~ViewProvider()
         pyViewObject->setInvalid();
         pyViewObject->DecRef();
     }
+
+    if(pcRoot && pcRoot->isOfType(SoFCSelectionRoot::getClassTypeId()))
+        static_cast<SoFCSelectionRoot*>(pcRoot)->setViewProvider(0);
 
     pcRoot->unref();
     pcTransform->unref();
@@ -886,38 +892,145 @@ void ViewProvider::setRenderCacheMode(int mode) {
         mode==0?SoSeparator::AUTO:(mode==1?SoSeparator::ON:SoSeparator::OFF);
 }
 
-Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transform, MDIView *view) const {
-    if(!pcRoot || !pcModeSwitch || pcRoot->findChild(pcModeSwitch)<0)
-        return Base::BoundBox3d();
-
-    if(!view)
-        view  = Application::Instance->activeView();
-    auto iview = dynamic_cast<View3DInventor*>(view);
-    if(!iview) {
+const View3DInventorViewer *ViewProvider::getActiveViewer() {
+    auto view  = dynamic_cast<View3DInventor*>(Application::Instance->activeView());
+    if(!view) {
         auto doc = Application::Instance->activeDocument();
         if(doc) {
             auto views = doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
             if(views.size())
-                iview = dynamic_cast<View3DInventor*>(views.front());
+                view = dynamic_cast<View3DInventor*>(views.front());
         }
-        if(!iview) {
+        if(!view)
+            return 0;
+    }
+    return view->getViewer();
+}
+
+static int BBoxCacheId;
+struct BBoxKey {
+    std::string subname;
+    Base::Matrix4D mat;
+    bool transform;
+
+    BBoxKey(const char *s, const Base::Matrix4D *m, bool t)
+        :subname(s?s:""),transform(t)
+    {
+        if(m)
+            mat = *m;
+    }
+
+    bool operator==(const BBoxKey &other) const {
+        return subname==other.subname && mat==other.mat;
+    }
+};
+
+// copied from boost::hash_combine, because boost changes hearder location in
+// different version. 
+template <class T>
+inline void hash_combine(std::size_t& seed, const T& v)
+{
+    std::hash<T> hasher;
+    seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+}
+
+static std::hash<std::string> StringHasher;
+static std::hash<bool> BoolHasher;
+static std::hash<double> DoubleHasher;
+
+struct BBoxKeyHasher {
+    std::size_t operator()(const BBoxKey &key) const {
+        std::size_t seed = StringHasher(key.subname);
+        hash_combine(seed,BoolHasher(key.transform)); 
+        hash_combine(seed,DoubleHasher(key.mat[0][0])); 
+        hash_combine(seed,DoubleHasher(key.mat[0][1])); 
+        hash_combine(seed,DoubleHasher(key.mat[0][2])); 
+        hash_combine(seed,DoubleHasher(key.mat[0][3])); 
+        hash_combine(seed,DoubleHasher(key.mat[1][0])); 
+        hash_combine(seed,DoubleHasher(key.mat[1][1])); 
+        hash_combine(seed,DoubleHasher(key.mat[1][2])); 
+        hash_combine(seed,DoubleHasher(key.mat[1][3])); 
+        hash_combine(seed,DoubleHasher(key.mat[2][0])); 
+        hash_combine(seed,DoubleHasher(key.mat[2][1])); 
+        hash_combine(seed,DoubleHasher(key.mat[2][2])); 
+        hash_combine(seed,DoubleHasher(key.mat[2][3])); 
+        hash_combine(seed,DoubleHasher(key.mat[3][0])); 
+        hash_combine(seed,DoubleHasher(key.mat[3][1])); 
+        hash_combine(seed,DoubleHasher(key.mat[3][2])); 
+        hash_combine(seed,DoubleHasher(key.mat[3][3])); 
+        return seed;
+    }
+};
+
+struct ViewProvider::BoundingBoxCache {
+    int cacheId = 0;
+    bool busy = false;
+    std::unordered_map<BBoxKey, Base::BoundBox3d, BBoxKeyHasher> cache;
+};
+
+void ViewProvider::clearBoundingBoxCache() {
+    ++BBoxCacheId;
+}
+
+Base::BoundBox3d ViewProvider::getBoundingBox(
+        const char *subname, const Base::Matrix4D *mat,
+        bool transform, const View3DInventorViewer *viewer, int depth) const 
+{
+    if(!bboxCache)
+        bboxCache.reset(new BoundingBoxCache);
+
+    if(bboxCache->busy)
+        return ViewProvider::_getBoundingBox(subname,mat,transform,viewer,depth);
+
+    if(!ViewParams::instance()->getUseBoundingBoxCache()) {
+        Base::FlagToggler<> guard(bboxCache->busy);
+        return _getBoundingBox(subname,mat,transform,viewer,depth);
+    }
+
+    if(bboxCache->cacheId != BBoxCacheId) {
+        bboxCache->cache.clear();
+        bboxCache->cacheId = BBoxCacheId;
+    }
+
+    auto &bbox = bboxCache->cache[BBoxKey(subname,mat,transform)];
+    if(!bbox.IsValid()) {
+        Base::FlagToggler<> guard(bboxCache->busy);
+        bbox = _getBoundingBox(subname,mat,transform,viewer,depth);
+    }
+    return bbox;
+}
+
+Base::BoundBox3d ViewProvider::_getBoundingBox(
+        const char *subname, const Base::Matrix4D *mat,
+        bool transform, const View3DInventorViewer *viewer, int) const 
+{
+    if(!pcRoot || !pcModeSwitch || pcRoot->findChild(pcModeSwitch)<0)
+        return Base::BoundBox3d();
+
+    if(!viewer) {
+        viewer = getActiveViewer();
+        if(!viewer) {
             FC_ERR("no view");
             return Base::BoundBox3d();
         }
     }
 
-    View3DInventorViewer* viewer = iview->getViewer();
     SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
 
-    SoTempPath path(20);
+    SoTempPath path(3);
     path.ref();
+    SoSelectionElementAction selAction(SoSelectionElementAction::Append,true);
+    SoDetail *det=0;
     if(subname && subname[0]) {
-        SoDetail *det=0;
         if(!getDetailPath(subname,&path,true,det)) {
             path.unrefNoDelete();
             return Base::BoundBox3d();
         }
-        delete det;
+        if(det) {
+            selAction.setElement(det);
+            SoFCSwitch::switchDefault(&selAction);
+            selAction.apply(&path);
+        }
     }
     SoTempPath resetPath(3);
     resetPath.ref();
@@ -932,9 +1045,22 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
     }
     SoFCSwitch::switchDefault(&bboxAction);
     bboxAction.apply(&path);
+
+    if(det) {
+        delete det;
+        selAction.setElement(0);
+        selAction.setType(SoSelectionElementAction::None);
+        SoFCSwitch::switchDefault(&selAction);
+        selAction.apply(&path);
+    }
+
     resetPath.unrefNoDelete();
     path.unrefNoDelete();
-    auto bbox = bboxAction.getBoundingBox();
+
+    auto xbbox = bboxAction.getXfBoundingBox();
+    if(mat) 
+        xbbox.transform(convert(*mat));
+    auto bbox = xbbox.project();
     float minX,minY,minZ,maxX,maxY,maxZ;
     bbox.getMax().getValue(maxX,maxY,maxZ);
     bbox.getMin().getValue(minX,minY,minZ);
