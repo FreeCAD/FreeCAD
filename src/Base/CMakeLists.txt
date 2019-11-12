@@ -78,6 +78,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     list(APPEND FreeCADBase_LIBS -lutil -ldl)
 endif()
 
+generate_from_xml(TypePy)
 generate_from_xml(BaseClassPy)
 generate_from_xml(BoundBoxPy)
 generate_from_xml(CoordinateSystemPy)
@@ -173,6 +174,7 @@ SET(FreeCADBase_XML_SRCS
     RotationPy.xml
     VectorPy.xml
     QuantityPy.xml
+    TypePy.xml
     UnitPy.xml
 )
 SOURCE_GROUP("XML" FILES ${FreeCADBase_XML_SRCS})
@@ -276,6 +278,7 @@ SET(FreeCADBase_CPP_SRCS
     Tools2D.cpp
     Translate.cpp
     Type.cpp
+    TypePyImp.cpp
     Uuid.cpp
     Vector3D.cpp
     VectorPyImp.cpp
