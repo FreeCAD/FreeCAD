@@ -82,7 +82,7 @@ class DraftWorkbench(Workbench):
         self.modList = ["Draft_Move", "Draft_Rotate", "Draft_Offset",
                         "Draft_Trimex", "Draft_Join", "Draft_Split",
                         "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
-                        "Draft_Edit", "Draft_SubelementModify",
+                        "Draft_Edit", "Draft_SubelementHighlight",
                         "Draft_WireToBSpline", "Draft_AddPoint",
                         "Draft_DelPoint", "Draft_Shape2DView",
                         "Draft_Draft2Sketch", "Draft_Array", "Draft_LinkArray",

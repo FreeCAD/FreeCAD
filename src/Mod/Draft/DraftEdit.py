@@ -79,8 +79,9 @@ class Edit():
         self.originalNodes = None
 
         # settings
-        self.maxObjects = 1
-        self.pick_radius = self.getPickRadius()
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        self.maxObjects = param.GetInt("DraftEditMaxObjects", 5)
+        self.pick_radius = param.GetInt("DraftEditPickRadius", 20)
 
         # preview
         self.ghost = None
@@ -93,15 +94,6 @@ class Edit():
         #TODO: Add support for "Part::Circle" "Part::RegularPolygon" "Part::Plane" "Part::Ellipse" "Part::Vertex" "Part::Spiral"
         self.supportedPartObjs = ["Sketch", "Sketcher::SketchObject", \
                                 "Part", "Part::Line", "Part::Box"]
-
-    def getPickRadius(self):
-        """return DraftEditPickRadius from user preferences"""
-        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        if param.GetInt("DraftEditPickRadius", 0) == 0: 
-            param.SetInt("DraftEditPickRadius", 20)
-            return 20
-        else:
-            return param.GetInt("DraftEditPickRadius")
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Edit',
@@ -159,8 +151,9 @@ class Edit():
         "terminates Edit Tool"
         self.unregister_selection_callback()
         self.unregister_editing_callbacks()
-        FreeCADGui.Snapper.setSelectMode(False)
+        self.editing = None
         self.finalizeGhost()
+        FreeCADGui.Snapper.setSelectMode(False)
         if self.obj and closed:
             if "Closed" in self.obj.PropertiesList:
                 if not self.obj.Closed:
@@ -245,11 +238,7 @@ class Edit():
             key = event.getKey()
             #FreeCAD.Console.PrintMessage("pressed key : "+str(key)+"\n")
             if key == 65307: # ESC
-                if self.editing is None: self.finish()
-                else:
-                    self.finalizeGhost()
-                    self.setEditPoints(self.obj)
-                    self.resetTrackers()
+                self.finish()
             if key == 97: # "a"
                 self.finish()
             if key == 111: # "o"
