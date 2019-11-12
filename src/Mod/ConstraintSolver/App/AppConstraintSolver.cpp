@@ -71,19 +71,19 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     PyObject* mod = ConstraintSolver::initModule();
 
     //rename python types
-    GCS::ParameterStorePy ::Type.tp_name = "ConstraintSolver.ParameterStore";
-    GCS::ParameterRefPy   ::Type.tp_name = "ConstraintSolver.ParameterRef";
-    GCS::ParameterSubsetPy::Type.tp_name = "ConstraintSolver.ParameterSubset";
-    GCS::ValueSetPy       ::Type.tp_name = "ConstraintSolver.ParameterSubset";
+    FCS::ParameterStorePy ::Type.tp_name = "ConstraintSolver.ParameterStore";
+    FCS::ParameterRefPy   ::Type.tp_name = "ConstraintSolver.ParameterRef";
+    FCS::ParameterSubsetPy::Type.tp_name = "ConstraintSolver.ParameterSubset";
+    FCS::ValueSetPy       ::Type.tp_name = "ConstraintSolver.ParameterSubset";
 
     //add python types as module members
-    Base::Interpreter().addType(&GCS::ParameterStorePy ::Type, mod, "ParameterStore" );
-    Base::Interpreter().addType(&GCS::ParameterRefPy   ::Type, mod, "ParameterRef"   );
-    Base::Interpreter().addType(&GCS::ParameterSubsetPy::Type, mod, "ParameterSubset");
-    Base::Interpreter().addType(&GCS::ValueSetPy       ::Type, mod, "ValueSet"       );
+    Base::Interpreter().addType(&FCS::ParameterStorePy ::Type, mod, "ParameterStore" );
+    Base::Interpreter().addType(&FCS::ParameterRefPy   ::Type, mod, "ParameterRef"   );
+    Base::Interpreter().addType(&FCS::ParameterSubsetPy::Type, mod, "ParameterSubset");
+    Base::Interpreter().addType(&FCS::ValueSetPy       ::Type, mod, "ValueSet"       );
 
     //fill type system
-    GCS::ParameterStore::init();
+    FCS::ParameterStore::init();
 
     Base::Console().Log("Loading ConstraintSolver module... done\n");
     PyMOD_Return(mod);

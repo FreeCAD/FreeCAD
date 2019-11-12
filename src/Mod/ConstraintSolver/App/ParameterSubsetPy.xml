@@ -7,7 +7,7 @@
 	  TwinPointer="ParameterSubset" 
 	  Include="Mod/ConstraintSolver/App/ParameterSubset.h" 
 	  FatherInclude="Base/PyObjectBase.h" 
-	  Namespace="GCS" 
+	  Namespace="FCS" 
 	  Constructor="true"
 	  Delete="true"
 	  FatherNamespace="Base"

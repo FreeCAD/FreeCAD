@@ -3,10 +3,10 @@
 #include "ValueSet.h"
 #include "ValueSetPy.h"
 
-using namespace GCS;
+using namespace FCS;
 using DualNumer = Base::DualNumber;
 
-GCS::ValueSet::ValueSet(GCS::HParameterSubset subset)
+FCS::ValueSet::ValueSet(FCS::HParameterSubset subset)
     : _subset(subset)
 {
     reset();

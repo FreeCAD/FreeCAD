@@ -7,7 +7,7 @@
 	  TwinPointer="ValueSet" 
 	  Include="Mod/ConstraintSolver/App/ValueSet.h" 
 	  FatherInclude="Base/PyObjectBase.h" 
-	  Namespace="GCS" 
+	  Namespace="FCS" 
 	  Constructor="true"
 	  Delete="true"
 	  FatherNamespace="Base"

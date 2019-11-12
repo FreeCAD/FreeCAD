@@ -7,9 +7,9 @@
 
 #include <Base/Console.h>
 
-using namespace GCS;
+using namespace FCS;
 
-GCS::ParameterSubset::ParameterSubset(int prealloc)
+FCS::ParameterSubset::ParameterSubset(int prealloc)
     : _host(Py::None())
 {
     this->_params.reserve(size_t(prealloc));
@@ -17,7 +17,7 @@ GCS::ParameterSubset::ParameterSubset(int prealloc)
         Base::Console().Warning("ok\n");
 }
 
-void GCS::ParameterSubset::attach(GCS::HParameterStore store)
+void FCS::ParameterSubset::attach(FCS::HParameterStore store)
 {
     _host = store;
     _host->onNewSubset(self());
@@ -78,7 +78,7 @@ ParameterSubset::~ParameterSubset()
     detach();
 }
 
-GCS::HParameterStore GCS::ParameterSubset::host() const
+FCS::HParameterStore FCS::ParameterSubset::host() const
 {
     return _host;
 }

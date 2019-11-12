@@ -3,7 +3,7 @@
 #include "Parameter.h"
 #include "ParameterRef.h"
 
-using namespace GCS;
+using namespace FCS;
 
 Parameter::Parameter(double value, double scale, bool fixed, int tag){
     this->savedValue = value;

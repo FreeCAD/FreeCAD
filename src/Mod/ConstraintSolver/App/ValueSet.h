@@ -30,7 +30,7 @@
 #include "Eigen/QR"
 #include <Base/DualNumber.h>
 
-namespace GCS {
+namespace FCS {
 
 class ValueSet;
 

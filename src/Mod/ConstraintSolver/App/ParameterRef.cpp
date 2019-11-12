@@ -4,7 +4,7 @@
 #include "ParameterRefPy.h"
 #include <Base/Exception.h>
 
-using namespace GCS;
+using namespace FCS;
 
 ParameterRef::ParameterRef(HParameterStore st, int index)
     : _store(st), _ownIndex(index)

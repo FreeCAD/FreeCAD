@@ -24,7 +24,7 @@
 #ifndef FREECAD_CONSTRAINTSOLVER_PARAMETERSTORE_H
 #define FREECAD_CONSTRAINTSOLVER_PARAMETERSTORE_H
 
-namespace GCS {
+namespace FCS {
 class ParameterStore;
 }
 
@@ -35,7 +35,7 @@ class ParameterStore;
 #include <vector>
 #include <set>
 
-namespace GCS {
+namespace FCS {
 
 
 class ParameterRef;

@@ -7,7 +7,7 @@
 	  TwinPointer="ParameterStore" 
 	  Include="Mod/ConstraintSolver/App/ParameterStore.h" 
 	  FatherInclude="Base/BaseClassPy.h" 
-	  Namespace="GCS" 
+	  Namespace="FCS" 
 	  Constructor="true"
 	  Delete="true"
 	  FatherNamespace="Base"

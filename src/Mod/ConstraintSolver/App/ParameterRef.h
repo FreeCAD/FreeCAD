@@ -28,7 +28,7 @@
 #include "Parameter.h"
 #include "ParameterStore.h"
 
-namespace GCS {
+namespace FCS {
 
 class ParameterRef;
 typedef Base::UnsafePyHandle<ParameterRef> HParameterRef;

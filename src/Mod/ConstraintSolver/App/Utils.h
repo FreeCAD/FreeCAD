@@ -28,7 +28,7 @@
 
 #include <Base/PyHandle.h>
 
-namespace GCS {
+namespace FCS {
 
 using Base::UnsafePyHandle;
 
@@ -56,6 +56,21 @@ inline Py::List asPyList(Vec& vec){ //vec is usually not changed... unless getPy
     }
     return ret;
 }
+
+/**
+ * ProblemSizeInfo stores information helpful for scaling of constraint
+ * error functions (to even out weights of angle-type and length-type
+ * constraints)
+ */
+struct ProblemSizeInfo
+{
+    ProblemSizeInfo(double avgElementSize = 1.0, double extent = 1.0)
+        : avgElementSize(avgElementSize), extent(extent) {}
+    ///average radius of geometric entities in the problem.
+    double avgElementSize = 1.0;
+    ///"radius" of sphere bounding the whole problem (approximate)
+    double extent = 1.0;
+};
 //
 ///** UnsafePyHandle: a convenient way to use python references as smart pointers for C++ objects.
 // * "Unsafe" stands for lack of runtime checks: type checking is limited, and dereferencing the object

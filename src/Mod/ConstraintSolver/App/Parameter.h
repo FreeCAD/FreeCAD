@@ -25,7 +25,7 @@
 
 #include <string>
 
-namespace GCS {
+namespace FCS {
 
 class ParameterRef;
 

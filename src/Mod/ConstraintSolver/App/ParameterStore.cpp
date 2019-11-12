@@ -4,9 +4,9 @@
 #include "ParameterSubset.h"
 #include <Base/Console.h>
 
-using namespace GCS;
+using namespace FCS;
 
-TYPESYSTEM_SOURCE(GCS::ParameterStore, Base::BaseClass);
+TYPESYSTEM_SOURCE(FCS::ParameterStore, Base::BaseClass);
 
 ParameterStore::ParameterStore(int prealloc)
 {
