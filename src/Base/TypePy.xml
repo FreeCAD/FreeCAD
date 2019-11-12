@@ -54,7 +54,7 @@ namespace Base {
         <UserDocu>Returns true if given type is a father</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getAllDerivedFrom" Const="true">
+    <Methode Name="getAllDerivedFrom" Static="true">
       <Documentation>
         <UserDocu>Returns all descendants</UserDocu>
       </Documentation>

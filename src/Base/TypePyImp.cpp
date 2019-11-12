@@ -95,22 +95,24 @@ PyObject*  TypePy::isBad(PyObject *args)
 
 PyObject*  TypePy::isDerivedFrom(PyObject *args)
 {
-    char *name;
-    if (!PyArg_ParseTuple(args, "s", &name))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception
+    const char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return NULL;
 
     Base::Type type = Base::Type::fromName(name);
     bool v = (type != Base::Type::badType() && getBaseTypePtr()->isDerivedFrom(type));
     return PyBool_FromLong(v ? 1 : 0);
 }
 
-PyObject*  TypePy::getAllDerivedFrom(PyObject *args)
+PyObject*  TypePy::staticCallback_getAllDerivedFrom(PyObject* /*self*/, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception
-    
+    const char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return NULL;
+
+    Base::Type type = Base::Type::fromName(name);
     std::vector<Base::Type> ary;
-    Base::Type::getAllDerivedFrom(*getBaseTypePtr(), ary);
+    Base::Type::getAllDerivedFrom(type, ary);
     Py::List res;
     for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it)
         res.append(Py::String(it->getName()));
