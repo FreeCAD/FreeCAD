@@ -46,22 +46,23 @@ __url__ = "https://www.freecadweb.org"
 """The Draft module offers a range of tools to create and manipulate basic 2D objects"""
 
 import FreeCAD, math, sys, os, DraftVecUtils, WorkingPlane
+import draftutils.translate
 from FreeCAD import Vector
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 
 if FreeCAD.GuiUp:
     import FreeCADGui, Draft_rc
     from PySide import QtCore
-    from PySide.QtCore import QT_TRANSLATE_NOOP
     gui = True
     #from DraftGui import translate
 else:
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
+    # def QT_TRANSLATE_NOOP(ctxt,txt):
+    #     return txt
     #print("FreeCAD Gui not present. Draft module will have some features disabled.")
     gui = False
 
-def translate(ctx,txt):
-    return txt
+translate = draftutils.translate.translate
 
 #---------------------------------------------------------------------------
 # Backwards compatibility
