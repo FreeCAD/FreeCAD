@@ -252,13 +252,13 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
     if(!isReallyInBox(gp_Pnt(orgPnt.x,orgPnt.y,orgPnt.z), centerBox)) {
         Base::Console().Warning("DVS: SectionOrigin doesn't intersect part in %s\n",getNameInDocument());
-        Base::Console().Warning("DVS: Using center of bounding box.\n");
-        double Xmin,Ymin,Zmin,Xmax,Ymax,Zmax;
-        centerBox.Get(Xmin,Ymin,Zmin,Xmax,Ymax,Zmax);
-        orgPnt = Base::Vector3d((Xmax + Xmin)/2.0,
-                                (Ymax + Ymin)/2.0,
-                                (Zmax + Zmin)/2.0);
-        SectionOrigin.setValue(orgPnt);
+//        Base::Console().Warning("DVS: Using center of bounding box.\n");
+//        double Xmin,Ymin,Zmin,Xmax,Ymax,Zmax;
+//        centerBox.Get(Xmin,Ymin,Zmin,Xmax,Ymax,Zmax);
+//        orgPnt = Base::Vector3d((Xmax + Xmin)/2.0,
+//                                (Ymax + Ymin)/2.0,
+//                                (Zmax + Zmin)/2.0);
+//        SectionOrigin.setValue(orgPnt);
     }
 
     // Make the extrusion face
@@ -281,34 +281,49 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     }
 
     TopoDS_Shape rawShape = mkCut.Shape();
-//    BRepTools::Write(myShape, "DVSCopy.brep");            //debug
-//    BRepTools::Write(prism, "DVSTool.brep");              //debug
-//    BRepTools::Write(rawShape, "DVSResult.brep");         //debug
+    if (debugSection()) {
+        BRepTools::Write(myShape, "DVSCopy.brep");            //debug
+        BRepTools::Write(aProjFace, "DVSFace.brep");          //debug
+        BRepTools::Write(prism, "DVSTool.brep");              //debug
+        BRepTools::Write(rawShape, "DVSResult.brep");         //debug
+    }
 
     Bnd_Box testBox;
     BRepBndLib::Add(rawShape, testBox);
     testBox.SetGap(0.0);
-    if (testBox.IsVoid()) {                        //prism & input don't intersect.  rawShape is garbage, don't bother.
-        Base::Console().Message("INFO - DVS::execute - prism & input don't intersect\n");
+    if (testBox.IsVoid()) {           //prism & input don't intersect.  rawShape is garbage, don't bother.
+        Base::Console().Warning("DVS::execute - prism & input don't intersect - %s\n", Label.getValue());
         return DrawView::execute();
     }
 
     m_cutShape = rawShape;
-    m_cutShape = TechDraw::moveShape(m_cutShape,                     //centre on origin
-                                  -SectionOrigin.getValue());
+//    m_cutShape = TechDraw::moveShape(m_cutShape,                     //centre on origin
+//                                  -SectionOrigin.getValue());
+    if (debugSection()) {
+        BRepTools::Write(m_cutShape, "DVSMCut.brep");         //debug
+    }
+
     gp_Pnt inputCenter;
     gp_Ax2 viewAxis;
     try {
         inputCenter = TechDraw::findCentroid(rawShape,
                                              Direction.getValue());
-        TopoDS_Shape mirroredShape = TechDraw::mirrorShape(rawShape,
-                                                    inputCenter,
-                                                    getScale());
+        TopoDS_Shape scaledShape   = TechDraw::scaleShape(rawShape,
+                                                          getScale());
+        TopoDS_Shape mirroredShape = TechDraw::mirrorShape(scaledShape,
+                                                           inputCenter,
+                                                           1.0);
+//                                                    getScale());
         viewAxis = getSectionCS(SectionDirection.getValueAsString());
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
             mirroredShape = TechDraw::rotateShape(mirroredShape,
                                                           viewAxis,
                                                           Rotation.getValue());
+        }
+        if (debugSection()) {
+            BRepTools::Write(scaledShape, "DVSScaled.brep");              //debug
+            BRepTools::Write(mirroredShape, "DVSMirror.brep");            //debug
+            DrawUtil::dumpCS("DVS::execute - CS to GO", viewAxis);
         }
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);
 
@@ -552,13 +567,74 @@ bool DrawViewSection::isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const
     return !bb.IsOut(p);
 }
 
-void DrawViewSection::setNormalFromBase(const std::string sectionName)
+void DrawViewSection::setCSFromBase(const std::string sectionName) 
 {
-//    Base::Console().Message("DVS::setNormalFromBase(%s)\n", sectionName.c_str());
-    Base::Vector3d normal = getSectionVector(sectionName);
-    Direction.setValue(normal);
-    SectionNormal.setValue(normal);
+    gp_Ax2 CS = getCSFromBase(sectionName);
+    gp_Dir gDir = CS.Direction();
+    Base::Vector3d vDir(gDir.X(),
+                        gDir.Y(),
+                        gDir.Z());
+    Direction.setValue(vDir);
+    SectionNormal.setValue(vDir);
 }
+
+gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName)
+{
+//    Base::Console().Message("DVS::getCSFromBase(%s)\n", sectionName.c_str());
+    Base::Vector3d sectionNormal;
+    Base::Vector3d sectionXDir;
+    Base::Vector3d origin(0.0, 0.0, 0.0);
+    Base::Vector3d dvpDir = getBaseDVP()->Direction.getValue();
+    gp_Ax2 dvpCS = getBaseDVP()->getViewAxis(origin,
+                                             dvpDir);
+//                                             flip);  //what to do with this!??
+    
+    if (debugSection()) {
+        DrawUtil::dumpCS("DVS::getCSFromBase - dvp VA", dvpCS);
+    }
+    gp_Dir dvpUp = dvpCS.YDirection();
+    gp_Dir dvpRight = dvpCS.XDirection();
+    Base::Vector3d dir = getBaseDVP()->Direction.getValue();
+    Base::Vector3d up(dvpUp.X(), dvpUp.Y(), dvpUp.Z());
+    Base::Vector3d right(dvpRight.X(), dvpRight.Y(), dvpRight.Z());
+
+    if (sectionName == "Up") {
+//        sectionNormal = up * -1.0;
+        sectionNormal = up;
+        sectionXDir   = right;       //
+    } else if (sectionName == "Down") {
+//        sectionNormal = up;
+        sectionNormal = up * -1.0;
+        sectionXDir   = right;
+    } else if (sectionName == "Left") {
+        sectionNormal = right;
+        sectionXDir   = dir * -1.0;
+    } else if (sectionName == "Right") {
+        sectionNormal = right * -1.0;
+        sectionXDir   = dir;
+    } else {
+        Base::Console().Log("Error - DVS::getCSFromBase - bad sectionName: %s\n",sectionName.c_str());
+        sectionNormal = right;
+        sectionXDir   = dir;
+    }
+
+    gp_Dir dvsDir(sectionNormal.x,
+                  sectionNormal.y,
+                  sectionNormal.z);
+    gp_Dir dvsXDir(sectionXDir.x,
+                   sectionXDir.y,
+                   sectionXDir.z);
+    gp_Pnt dvsLoc(0.0, 0.0, 0.0);
+    gp_Ax2 CS(dvsLoc,
+              dvsDir,
+              dvsXDir);
+    if (debugSection()) {
+        DrawUtil::dumpCS("DVS::getCSFromBase - sectionCS out", CS);
+    }
+    return CS;
+}
+
+
 
 //! calculate the section Normal/Projection Direction given section name
 //TODO: this should take base view rotation into account.
@@ -786,6 +862,15 @@ void DrawViewSection::getParameters()
 
     bool fuseFirst = hGrp->GetBool("SectionFuseFirst",true);
     FuseBeforeCut.setValue(fuseFirst);
+}
+
+bool DrawViewSection::debugSection(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
+
+    bool result = hGrp->GetBool("debugSection",false);
+    return result;
 }
 
 // Python Drawing feature ---------------------------------------------------------

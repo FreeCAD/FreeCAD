@@ -810,7 +810,7 @@ TopoDS_Shape TechDraw::rotateShape(const TopoDS_Shape &input,
     return transShape;
 }
 
-//!scales a shape about a origin
+//!scales a shape about origin
 TopoDS_Shape TechDraw::scaleShape(const TopoDS_Shape &input,
                                           double scale)
 {

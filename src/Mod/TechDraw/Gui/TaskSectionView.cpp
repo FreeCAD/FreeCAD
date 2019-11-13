@@ -98,6 +98,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
             this, SLOT(onRightClicked(bool)));
     connect(ui->pbLeft, SIGNAL(clicked(bool)),
             this, SLOT(onLeftClicked(bool)));
+    connect(ui->pbApply, SIGNAL(clicked(bool)),
+            this, SLOT(onApplyClicked(bool)));
 
     setUiPrimary();
 }
@@ -137,8 +139,10 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
             this, SLOT(onRightClicked(bool)));
     connect(ui->pbLeft, SIGNAL(clicked(bool)),
             this, SLOT(onLeftClicked(bool)));
+    connect(ui->pbApply, SIGNAL(clicked(bool)),
+            this, SLOT(onApplyClicked(bool)));
 
-    m_dirName = m_section->SectionDirection.getValue();
+    m_dirName = m_section->SectionDirection.getValueAsString();
     saveSectionState();
     setUiEdit();
 }
@@ -193,7 +197,7 @@ void TaskSectionView::saveSectionState()
         m_saveNormal = m_section->SectionNormal.getValue();
         m_saveDirection = m_section->Direction.getValue();
         m_saveOrigin    = m_section->SectionOrigin.getValue();
-        m_saveDirName   = m_section->SectionDirection.getValue();
+        m_saveDirName   = m_section->SectionDirection.getValueAsString();
         m_saved = true;
     }
 }
@@ -253,9 +257,17 @@ void TaskSectionView::onRightClicked(bool b)
     applyQuick("Right");
 }
 
-bool TaskSectionView::apply()
+void TaskSectionView::onApplyClicked(bool b)
 {
-//    Base::Console().Message("TSV::apply()\n");
+//    Base::Console().Message("TSV::onApplyClicked()\n");
+    Q_UNUSED(b);
+    checkAll(false);
+    apply();
+}
+
+void TaskSectionView::apply(void)
+{
+//    Base::Console().Message("TSV::apply() - m_dirName: %s\n", m_dirName.c_str());
     if (m_dirName.empty()) {
         std::string msg = Base::Tools::toStdString(tr("TSV::apply - No section direction picked yet"));
         Base::Console().Error((msg + "\n").c_str());
@@ -263,7 +275,6 @@ bool TaskSectionView::apply()
         checkAll(false);
         applyQuick(m_dirName);
     }
-    return true;
 }
 
 void TaskSectionView::checkAll(bool b)
@@ -280,13 +291,11 @@ void TaskSectionView::applyQuick(std::string dir)
 //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
     m_dirName = dir;
     Gui::Command::openCommand("Apply Quick");
-    m_dirName = dir;
     if (m_section == nullptr) {
         m_section = createSectionView();
     }
     updateSectionView();
     m_section->recomputeFeature();
-//    m_section->requestPaint();
     m_base->requestPaint();
 }
 
@@ -354,18 +363,18 @@ void TaskSectionView::updateSectionView(void)
         Command::doCommand(Command::Doc,"App.activeDocument().%s.SectionSymbol = '%s'",
                            sectionName.c_str(),
                            temp.c_str());
-        m_section->setNormalFromBase(m_dirName.c_str());
+        m_section->setCSFromBase(m_dirName.c_str());
     }
 }
 
-void TaskSectionView::saveButtons(QPushButton* btnOK,
-                             QPushButton* btnCancel,
-                             QPushButton* btnApply)
-{
-    m_btnOK = btnOK;
-    m_btnCancel = btnCancel;
-    m_btnApply = btnApply;
-}
+//void TaskSectionView::saveButtons(QPushButton* btnOK,
+//                             QPushButton* btnCancel,
+//                             QPushButton* btnApply)
+//{
+//    m_btnOK = btnOK;
+//    m_btnCancel = btnCancel;
+//    m_btnApply = btnApply;
+//}
 
 //std::string TaskSectionView::prefViewSection()
 //{
@@ -385,12 +394,10 @@ bool TaskSectionView::accept()
         if (m_section == nullptr) {
             apply();
         }
-        Gui::Command::updateActive();
-        Gui::Command::commitCommand();
     } else {
         Gui::Command::openCommand("Edit SectionView");
         try {
-            updateSectionView();
+            apply();
         }
         catch (...) {
             Base::Console().Error("TSV::accept - failed to update section\n");
@@ -401,7 +408,6 @@ bool TaskSectionView::accept()
     }
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     if (m_section != nullptr) {
-//        m_section->recomputeFeature();
         m_section->requestPaint();
     }
     if (m_base != nullptr) {
@@ -424,13 +430,11 @@ bool TaskSectionView::reject()
                                     "App.activeDocument().removeObject('%s')",
                                     SectionName.c_str());
         } else {
-            Base::Console().Message("TSV::reject() - edit mode\n");
             restoreSectionState();
             //check undo stack?
             m_section->requestPaint();
             m_base->requestPaint();
         }
-
     }
 
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
@@ -475,27 +479,9 @@ void TaskDlgSectionView::update()
     //widget->updateTask();
 }
 
-void TaskDlgSectionView::modifyStandardButtons(QDialogButtonBox* box)
-{
-    QPushButton* btnOK = box->button(QDialogButtonBox::Ok);
-    QPushButton* btnCancel = box->button(QDialogButtonBox::Cancel);
-    QPushButton* btnApply = box->button(QDialogButtonBox::Apply);
-    widget->saveButtons(btnOK, btnCancel, btnApply);
-}
-
-
 //==== calls from the TaskView ===============================================================
 void TaskDlgSectionView::open()
 {
-}
-
-void TaskDlgSectionView::clicked(int i)
-{
-//    Q_UNUSED(i);
-//    Base::Console().Message("TDSV::clicked(%X)\n",i);
-    if (i == QMessageBox::Apply) {
-        widget->apply();
-    }
 }
 
 bool TaskDlgSectionView::accept()
@@ -503,13 +489,6 @@ bool TaskDlgSectionView::accept()
     widget->accept();
     return true;
 }
-
-//bool TaskDlgSectionView::apply()
-//{
-//    Base::Console().Message("TDSV::apply()\n");
-//    widget->apply();
-//    return true;
-//}
 
 bool TaskDlgSectionView::reject()
 {
