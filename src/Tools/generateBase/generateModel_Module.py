@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Generated Mon Aug 21 13:00:21 2017 by generateDS.py.
+# Generated Tue Nov 12 21:18:34 2019 by generateDS.py.
 # Update it with: python generateDS.py -o generateModel_Module.py generateMetaModel_Module.xsd
 #
 # WARNING! All changes made in this file will be lost!
@@ -221,7 +221,7 @@ class GenerateModel:
 
 class PythonExport:
     subclass = None
-    def __init__(self, FatherNamespace='', DisableNotify=0, RichCompare=0, Name='', Reference=0, FatherInclude='', Namespace='', Initialization=0, Father='', PythonName='', Twin='', Constructor=0, TwinPointer='', Include='', NumberProtocol=0, Delete=0, Documentation=None, Methode=None, Attribute=None, Sequence=None, CustomAttributes='', ClassDeclarations=''):
+    def __init__(self, FatherNamespace='', DisableNotify=0, RichCompare=0, Name='', Reference=0, FatherInclude='', Namespace='', Initialization=0, Father='', PythonName='', Twin='', Constructor=0, TwinPointer='', Include='', NumberProtocol=0, Delete=0, Documentation=None, Methode=None, Attribute=None, Sequence=None, CustomAttributes='', ClassDeclarations='', ForwardDeclarations=''):
         self.FatherNamespace = FatherNamespace
         self.DisableNotify = DisableNotify
         self.RichCompare = RichCompare
@@ -250,6 +250,7 @@ class PythonExport:
         self.Sequence = Sequence
         self.CustomAttributes = CustomAttributes
         self.ClassDeclarations = ClassDeclarations
+        self.ForwardDeclarations = ForwardDeclarations
     def factory(*args_, **kwargs_):
         if PythonExport.subclass:
             return PythonExport.subclass(*args_, **kwargs_)
@@ -272,6 +273,8 @@ class PythonExport:
     def setCustomattributes(self, CustomAttributes): self.CustomAttributes = CustomAttributes
     def getClassdeclarations(self): return self.ClassDeclarations
     def setClassdeclarations(self, ClassDeclarations): self.ClassDeclarations = ClassDeclarations
+    def getForwarddeclarations(self): return self.ForwardDeclarations
+    def setForwarddeclarations(self, ForwardDeclarations): self.ForwardDeclarations = ForwardDeclarations
     def getFathernamespace(self): return self.FatherNamespace
     def setFathernamespace(self, FatherNamespace): self.FatherNamespace = FatherNamespace
     def getDisablenotify(self): return self.DisableNotify
@@ -350,6 +353,8 @@ class PythonExport:
         outfile.write('<CustomAttributes>%s</CustomAttributes>\n' % quote_xml(self.getCustomattributes()))
         showIndent(outfile, level)
         outfile.write('<ClassDeclarations>%s</ClassDeclarations>\n' % quote_xml(self.getClassdeclarations()))
+        showIndent(outfile, level)
+        outfile.write('<ForwardDeclarations>%s</ForwardDeclarations>\n' % quote_xml(self.getForwarddeclarations()))
     def exportLiteral(self, outfile, level, name_='PythonExport'):
         level += 1
         self.exportLiteralAttributes(outfile, level, name_)
@@ -428,6 +433,8 @@ class PythonExport:
         outfile.write('CustomAttributes=%s,\n' % quote_python(self.getCustomattributes()))
         showIndent(outfile, level)
         outfile.write('ClassDeclarations=%s,\n' % quote_python(self.getClassdeclarations()))
+        showIndent(outfile, level)
+        outfile.write('ForwardDeclarations=%s,\n' % quote_python(self.getForwarddeclarations()))
     def build(self, node_):
         attrs = node_.attributes
         self.buildAttributes(attrs)
@@ -535,15 +542,23 @@ class PythonExport:
             for text__content_ in child_.childNodes:
                 ClassDeclarations_ += text__content_.nodeValue
             self.ClassDeclarations = ClassDeclarations_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'ForwardDeclarations':
+            ForwardDeclarations_ = ''
+            for text__content_ in child_.childNodes:
+                ForwardDeclarations_ += text__content_.nodeValue
+            self.ForwardDeclarations = ForwardDeclarations_
 # end class PythonExport
 
 
 class Methode:
     subclass = None
-    def __init__(self, Const=0, Name='', Keyword=0, Documentation=None, Parameter=None):
+    def __init__(self, Static=0, Const=0, Name='', Keyword=0, Class=0, Documentation=None, Parameter=None):
+        self.Static = Static
         self.Const = Const
         self.Name = Name
         self.Keyword = Keyword
+        self.Class = Class
         self.Documentation = Documentation
         if Parameter is None:
             self.Parameter = []
@@ -561,12 +576,16 @@ class Methode:
     def setParameter(self, Parameter): self.Parameter = Parameter
     def addParameter(self, value): self.Parameter.append(value)
     def insertParameter(self, index, value): self.Parameter[index] = value
+    def getStatic(self): return self.Static
+    def setStatic(self, Static): self.Static = Static
     def getConst(self): return self.Const
     def setConst(self, Const): self.Const = Const
     def getName(self): return self.Name
     def setName(self, Name): self.Name = Name
     def getKeyword(self): return self.Keyword
     def setKeyword(self, Keyword): self.Keyword = Keyword
+    def getClass(self): return self.Class
+    def setClass(self, Class): self.Class = Class
     def export(self, outfile, level, name_='Methode'):
         showIndent(outfile, level)
         outfile.write('<%s' % (name_, ))
@@ -576,11 +595,15 @@ class Methode:
         showIndent(outfile, level)
         outfile.write('</%s>\n' % name_)
     def exportAttributes(self, outfile, level, name_='Methode'):
+        if self.getStatic() is not None:
+            outfile.write(' Static="%s"' % (self.getStatic(), ))
         if self.getConst() is not None:
             outfile.write(' Const="%s"' % (self.getConst(), ))
         outfile.write(' Name="%s"' % (self.getName(), ))
         if self.getKeyword() is not None:
             outfile.write(' Keyword="%s"' % (self.getKeyword(), ))
+        if self.getClass() is not None:
+            outfile.write(' Class="%s"' % (self.getClass(), ))
     def exportChildren(self, outfile, level, name_='Methode'):
         if self.Documentation:
             self.Documentation.export(outfile, level)
@@ -592,11 +615,15 @@ class Methode:
         self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, name_):
         showIndent(outfile, level)
+        outfile.write('Static = "%s",\n' % (self.getStatic(),))
+        showIndent(outfile, level)
         outfile.write('Const = "%s",\n' % (self.getConst(),))
         showIndent(outfile, level)
         outfile.write('Name = "%s",\n' % (self.getName(),))
         showIndent(outfile, level)
         outfile.write('Keyword = "%s",\n' % (self.getKeyword(),))
+        showIndent(outfile, level)
+        outfile.write('Class = "%s",\n' % (self.getClass(),))
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Documentation:
             showIndent(outfile, level)
@@ -623,6 +650,13 @@ class Methode:
             nodeName_ = child_.nodeName.split(':')[-1]
             self.buildChildren(child_, nodeName_)
     def buildAttributes(self, attrs):
+        if attrs.get('Static'):
+            if attrs.get('Static').value in ('true', '1'):
+                self.Static = 1
+            elif attrs.get('Static').value in ('false', '0'):
+                self.Static = 0
+            else:
+                raise ValueError('Bad boolean attribute (Static)')
         if attrs.get('Const'):
             if attrs.get('Const').value in ('true', '1'):
                 self.Const = 1
@@ -639,6 +673,13 @@ class Methode:
                 self.Keyword = 0
             else:
                 raise ValueError('Bad boolean attribute (Keyword)')
+        if attrs.get('Class'):
+            if attrs.get('Class').value in ('true', '1'):
+                self.Class = 1
+            elif attrs.get('Class').value in ('false', '0'):
+                self.Class = 0
+            else:
+                raise ValueError('Bad boolean attribute (Class)')
     def buildChildren(self, child_, nodeName_):
         if child_.nodeType == Node.ELEMENT_NODE and \
             nodeName_ == 'Documentation':
@@ -1920,6 +1961,14 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
             done = 1
         elif name == 'Methode':
             obj = Methode.factory()
+            val = attrs.get('Static', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setStatic(1)
+                elif val in ('false', '0'):
+                    obj.setStatic(0)
+                else:
+                    self.reportError('"Static" attribute must be boolean ("true", "1", "false", "0")')
             val = attrs.get('Const', None)
             if val is not None:
                 if val in ('true', '1'):
@@ -1939,6 +1988,14 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setKeyword(0)
                 else:
                     self.reportError('"Keyword" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('Class', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setClass(1)
+                elif val in ('false', '0'):
+                    obj.setClass(0)
+                else:
+                    self.reportError('"Class" attribute must be boolean ("true", "1", "false", "0")')
             stackObj = SaxStackElement('Methode', obj)
             self.stack.append(stackObj)
             done = 1
@@ -2062,6 +2119,10 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
             stackObj = SaxStackElement('ClassDeclarations', None)
             self.stack.append(stackObj)
             done = 1
+        elif name == 'ForwardDeclarations':
+            stackObj = SaxStackElement('ForwardDeclarations', None)
+            self.stack.append(stackObj)
+            done = 1
         elif name == 'Dependencies':
             obj = Dependencies.factory()
             stackObj = SaxStackElement('Dependencies', obj)
@@ -2183,6 +2244,12 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
             if len(self.stack) >= 2:
                 content = self.stack[-1].content
                 self.stack[-2].obj.setClassdeclarations(content)
+                self.stack.pop()
+                done = 1
+        elif name == 'ForwardDeclarations':
+            if len(self.stack) >= 2:
+                content = self.stack[-1].content
+                self.stack[-2].obj.setForwarddeclarations(content)
                 self.stack.pop()
                 done = 1
         elif name == 'Dependencies':
