@@ -40,6 +40,10 @@
 #include "GroupExtension.h"
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#endif
 
 #define LINK_THROW(_type,_msg) do{\
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))\
@@ -540,5 +544,9 @@ typedef App::FeaturePythonT<LinkGroup> LinkGroupPython;
 
 } //namespace App
 
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 #endif // APP_LINK_H
