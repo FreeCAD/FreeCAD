@@ -52,6 +52,7 @@ SET(Draft_utilities
     draftutils/utils.py
     draftutils/gui_utils.py
     draftutils/todo.py
+    draftutils/translate.py
 )
 
 SET(Draft_objects
