@@ -83,7 +83,7 @@ private:
     Py::Object setActiveAnalysis(const Py::Tuple& args)
     {
         if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
-            FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::Blue,false);
+            FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::HighlightMode::Blue,false);
             FemGui::ActiveAnalysisObserver::instance()->setActiveObject(0);
         }
 
@@ -96,7 +96,7 @@ private:
 
             // get the gui document of the Analysis Item
             FemGui::ActiveAnalysisObserver::instance()->setActiveObject(static_cast<Fem::FemAnalysis*>(obj));
-            FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::Blue,true);
+            FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::HighlightMode::Blue,true);
         }
 
         return Py::None();
