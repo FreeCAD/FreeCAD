@@ -1094,6 +1094,7 @@ def export(exportList,filename,colors=None,preferences=None):
             zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
             ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
             gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+            placement = ifcbin.createIfcLocalPlacement(gpl)
             if anno.isDerivedFrom("Part::Feature"):
                 reps = []
                 sh = anno.Shape.copy()
@@ -1159,7 +1160,7 @@ def export(exportList,filename,colors=None,preferences=None):
                 history,l,
                 '',
                 None,
-                gpl,
+                placement,
                 rep
             )
             annos[anno.Name] = ann
