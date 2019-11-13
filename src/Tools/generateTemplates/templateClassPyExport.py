@@ -45,6 +45,11 @@ class TemplateClassPyExport (template.ModelTemplate):
 #include <@self.export.Include@>
 #include <string>
 
++ if(self.export.ForwardDeclarations != ""):
+// Forward declarations
+@self.export.ForwardDeclarations@
+-
+
 namespace @self.export.Namespace@
 {
 
@@ -96,13 +101,17 @@ public:
 + if i.Keyword:
     /// callback for the @i.Name@() method
     static PyObject * staticCallback_@i.Name@ (PyObject *self, PyObject *args, PyObject *kwd);
++ if not i.Static and not i.Class:
     /// implementer for the @i.Name@() method
     PyObject*  @i.Name@(PyObject *args, PyObject *kwd);
+-
 = else:
     /// callback for the @i.Name@() method
     static PyObject * staticCallback_@i.Name@ (PyObject *self, PyObject *args);
++ if not i.Static and not i.Class:
     /// implementer for the @i.Name@() method
     PyObject*  @i.Name@(PyObject *args);
+-
 -
 -
     //@}
@@ -231,7 +240,7 @@ public:
     /// getter for the object handled by this class
     @self.export.TwinPointer@ *get@self.export.Twin@Ptr(void) const;
 
-+ if(self.export.ClassDeclarations != None):
++ if(self.export.ClassDeclarations != ""):
     /** @name additional declarations and methods for the wrapper class */
     //@{
 @self.export.ClassDeclarations@
@@ -352,8 +361,22 @@ PyMethodDef @self.export.Name@::Methods[] = {
 + for i in self.export.Methode:
     {"@i.Name@",
 + if i.Keyword:
++ if i.Class:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        METH_VARARGS|METH_KEYWORDS|METH_CLASS,
+= elif i.Static:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        METH_VARARGS|METH_KEYWORDS|METH_STATIC,
+= else:
         reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
         METH_VARARGS|METH_KEYWORDS,
+-
+= elif i.Class:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        METH_VARARGS|METH_CLASS,
+= elif i.Static:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( staticCallback_@i.Name@ )),
+        METH_VARARGS|METH_STATIC,
 = else:
         reinterpret_cast<PyCFunction>( staticCallback_@i.Name@ ),
         METH_VARARGS,
@@ -510,6 +533,7 @@ PyGetSetDef @self.export.Name@::GetterSetter[] = {
 // @i.Name@() callback and implementer
 // PyObject*  @self.export.Name@::@i.Name@(PyObject *args){};
 // has to be implemented in @self.export.Name@Imp.cpp
++ if not i.Static and not i.Class:
 + if i.Keyword:
 PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject *args, PyObject * kwd)
 = else:
@@ -587,6 +611,7 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 #endif
 }
 
+-
 -
 + for i in self.export.Attribute:
 // @i.Name@() callback and implementer
@@ -869,6 +894,7 @@ std::string @self.export.Name@::representation(void) const
 }
 + for i in self.export.Methode:
 
++ if not i.Static and not i.Class:
 + if i.Keyword:
 PyObject* @self.export.Name@::@i.Name@(PyObject *args, PyObject *kwds)
 = else:
@@ -878,6 +904,7 @@ PyObject* @self.export.Name@::@i.Name@(PyObject *args)
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
+-
 -
 
 + if (self.export.NumberProtocol):
@@ -1186,6 +1213,7 @@ int @self.export.Name@::finalization()
 
 + for i in self.export.Methode:
 
++ if not i.Static and not i.Class:
 + if i.Keyword:
 PyObject* @self.export.Name@::@i.Name@(PyObject * /*args*/, PyObject * /*kwds*/)
 = else:
@@ -1195,6 +1223,7 @@ PyObject* @self.export.Name@::@i.Name@(PyObject * /*args*/)
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
+-
 -
 
 + if (self.export.NumberProtocol):
