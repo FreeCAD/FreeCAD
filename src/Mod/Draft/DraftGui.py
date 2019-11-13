@@ -51,48 +51,9 @@ import DraftVecUtils
 from PySide import QtCore, QtGui, QtSvg
 
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8 if six.PY2 else None
-    def translate(context, text, utf8_decode=True):
-        """convenience function for Qt translator
-            context: str
-                context is typically a class name (e.g., "MyDialog")
-            text: str
-                text which gets translated
-            utf8_decode: bool [False]
-                if set to true utf8 encoded unicode will be returned. This option does not have influence
-                on python3 as for python3 we are returning utf-8 encoded unicode by default!
-        """
-        if six.PY3:
-            return QtGui.QApplication.translate(context, text, None)
-        elif utf8_decode:
-            return QtGui.QApplication.translate(context, text, None, _encoding)
-        else:
-            return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
+import draftutils.translate
+translate = draftutils.translate.translate
 
-except AttributeError:
-    def translate(context, text, utf8_decode=False):
-        """convenience function for Qt translator
-            context: str
-                context is typically a class name (e.g., "MyDialog")
-            text: str
-                text which gets translated
-            utf8_decode: bool [False]
-                if set to true utf8 encoded unicode will be returned. This option does not have influence
-                on python3 as for python3 we are returning utf-8 encoded unicode by default!
-        """
-        if six.PY3:
-            return QtGui.QApplication.translate(context, text, None)
-        elif QtCore.qVersion() > "4":
-            if utf8_decode:
-                return QtGui.QApplication.translate(context, text, None)
-            else:
-                return QtGui.QApplication.translate(context, text, None).encode("utf8")
-        else:
-            if utf8_decode:
-                return QtGui.QApplication.translate(context, text, None, _encoding)
-            else:
-                return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
 
 import draftutils.utils
 utf8_decode = draftutils.utils.utf8_decode
