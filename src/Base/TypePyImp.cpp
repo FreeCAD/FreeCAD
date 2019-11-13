@@ -41,7 +41,7 @@ PyObject* TypePy::staticCallback_fromName (PyObject * /*self*/, PyObject *args)
 {
     const char *name;
     if (!PyArg_ParseTuple(args, "s", &name))
-        return NULL;
+        return nullptr;
 
     Base::Type type = Base::Type::fromName(name);
     return new TypePy(new Base::Type(type));
@@ -51,7 +51,7 @@ PyObject* TypePy::staticCallback_fromKey (PyObject * /*self*/, PyObject *args)
 {
     unsigned int index;
     if (!PyArg_ParseTuple(args, "I", &index))
-        return NULL;
+        return nullptr;
 
     Base::Type type = Base::Type::fromKey(index);
     return new TypePy(new Base::Type(type));
@@ -60,7 +60,7 @@ PyObject* TypePy::staticCallback_fromKey (PyObject * /*self*/, PyObject *args)
 PyObject* TypePy::staticCallback_getNumTypes (PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     int num = Base::Type::getNumTypes();
     return PyLong_FromLong(num);
@@ -69,7 +69,7 @@ PyObject* TypePy::staticCallback_getNumTypes (PyObject * /*self*/, PyObject *arg
 PyObject* TypePy::staticCallback_getBadType (PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     Base::Type type = Base::Type::badType();
     return new TypePy(new Base::Type(type));
@@ -78,7 +78,7 @@ PyObject* TypePy::staticCallback_getBadType (PyObject * /*self*/, PyObject *args
 PyObject*  TypePy::getParent(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     Base::Type type = getBaseTypePtr()->getParent();
     return new TypePy(new Base::Type(type));
@@ -87,7 +87,7 @@ PyObject*  TypePy::getParent(PyObject *args)
 PyObject*  TypePy::isBad(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     bool v = getBaseTypePtr()->isBad();
     return PyBool_FromLong(v ? 1 : 0);
@@ -95,27 +95,75 @@ PyObject*  TypePy::isBad(PyObject *args)
 
 PyObject*  TypePy::isDerivedFrom(PyObject *args)
 {
-    const char *name;
-    if (!PyArg_ParseTuple(args, "s", &name))
-        return NULL;
+    Base::Type type;
 
-    Base::Type type = Base::Type::fromName(name);
+    do {
+        const char *name;
+        if (PyArg_ParseTuple(args, "s", &name)) {
+            type = Base::Type::fromName(name);
+            break;
+        }
+
+        PyErr_Clear();
+        PyObject* t;
+        if (PyArg_ParseTuple(args, "O!", &TypePy::Type, &t)) {
+            type = *static_cast<TypePy*>(t)->getBaseTypePtr();
+            break;
+        }
+
+        PyErr_SetString(PyExc_TypeError, "TypeId or str expected");
+        return nullptr;
+    }
+    while (false);
+
     bool v = (type != Base::Type::badType() && getBaseTypePtr()->isDerivedFrom(type));
     return PyBool_FromLong(v ? 1 : 0);
 }
 
 PyObject*  TypePy::staticCallback_getAllDerivedFrom(PyObject* /*self*/, PyObject *args)
 {
-    const char *name;
-    if (!PyArg_ParseTuple(args, "s", &name))
-        return NULL;
+    Base::Type type;
 
-    Base::Type type = Base::Type::fromName(name);
+    do {
+        const char *name;
+        if (PyArg_ParseTuple(args, "s", &name)) {
+            type = Base::Type::fromName(name);
+            break;
+        }
+
+        PyErr_Clear();
+        PyObject* t;
+        if (PyArg_ParseTuple(args, "O!", &TypePy::Type, &t)) {
+            type = *static_cast<TypePy*>(t)->getBaseTypePtr();
+            break;
+        }
+
+        PyErr_SetString(PyExc_TypeError, "TypeId or str expected");
+        return nullptr;
+    }
+    while (false);
+
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(type, ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it)
-        res.append(Py::String(it->getName()));
+    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
+        res.append(Py::asObject(new TypePy(new Base::Type(*it))));
+    }
+    return Py::new_reference_to(res);
+}
+
+PyObject*  TypePy::getAllDerived(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Base::Type type = Base::Type::fromName(getBaseTypePtr()->getName());
+    std::vector<Base::Type> ary;
+    Base::Type::getAllDerivedFrom(type, ary);
+    Py::List res;
+    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
+        res.append(Py::asObject(new TypePy(new Base::Type(*it))));
+    }
     return Py::new_reference_to(res);
 }
 

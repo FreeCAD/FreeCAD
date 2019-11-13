@@ -39,6 +39,11 @@ namespace Base {
         <UserDocu>Returns an invalid type id</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getAllDerivedFrom" Static="true">
+      <Documentation>
+        <UserDocu>Returns all descendants</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getParent" Const="true">
       <Documentation>
         <UserDocu>Returns the parent type id</UserDocu>
@@ -54,7 +59,7 @@ namespace Base {
         <UserDocu>Returns true if given type is a father</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getAllDerivedFrom" Static="true">
+    <Methode Name="getAllDerived" Const="true">
       <Documentation>
         <UserDocu>Returns all descendants</UserDocu>
       </Documentation>
