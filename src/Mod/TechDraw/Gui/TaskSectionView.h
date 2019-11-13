@@ -48,19 +48,14 @@ public:
 
 public:
     virtual bool accept();
-    virtual bool apply();
     virtual bool reject();
-    void modifyStandardButtons(QDialogButtonBox* box);
-    void saveButtons(QPushButton* btnOK,
-                     QPushButton* btnCancel,
-                     QPushButton* btnApply);
-
 
 protected Q_SLOTS:
     void onUpClicked(bool b);
     void onDownClicked(bool b);
     void onLeftClicked(bool b);
     void onRightClicked(bool b);
+    void onApplyClicked(bool b);
 
 protected:
     void blockButtons(bool b);
@@ -69,6 +64,7 @@ protected:
     void saveSectionState();
     void restoreSectionState();
 
+    void apply(void);
     void applyQuick(std::string dir);
     void applyAligned(void);
 
@@ -79,8 +75,6 @@ protected:
     void setUiEdit();
 
     void checkAll(bool b);
-
-//    std::string prefViewSection();
 
 private:
     Ui_TaskSectionView * ui;
@@ -98,10 +92,6 @@ private:
     Base::Vector3d m_saveOrigin;
 
     std::string m_dirName;
-
-    QPushButton* m_btnOK;
-    QPushButton* m_btnCancel;
-    QPushButton* m_btnApply;
 
     bool m_createMode;
     bool m_saved;
@@ -121,7 +111,7 @@ public:
     /// is called the TaskView when the dialog is opened
     virtual void open();
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+/*    virtual void clicked(int);*/
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
@@ -133,8 +123,8 @@ public:
     { return false; }
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel; }
-    virtual void modifyStandardButtons(QDialogButtonBox* box);
+    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+/*    virtual void modifyStandardButtons(QDialogButtonBox* box);*/
 
     void update();
 

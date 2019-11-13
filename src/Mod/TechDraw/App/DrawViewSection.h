@@ -91,7 +91,8 @@ public:
     std::vector<TechDraw::Face*> getFaceGeometry();
 
     Base::Vector3d getSectionVector (const std::string sectionName);
-    void setNormalFromBase(const std::string sectionName);
+    void setCSFromBase(const std::string sectionName);
+    gp_Ax2 getCSFromBase(const std::string sectionName);
 
     gp_Ax2 rotateCSCardinal(gp_Ax2 oldCS, int cardinal) const;
     gp_Ax2 rotateCSArbitrary(gp_Ax2 oldCS,
@@ -121,13 +122,14 @@ protected:
     std::vector<TopoDS_Wire> sectionFaceWires;
     std::vector<LineSet> m_lineSets;
 
-
     gp_Pln getSectionPlane() const;
     TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);
     TopoDS_Face projectFace(const TopoDS_Shape &face,
                                      gp_Pnt faceCenter,
                                      const Base::Vector3d &direction);
     void getParameters(void);
+    bool debugSection(void) const;
+
     TopoDS_Shape m_cutShape;
 };
 
