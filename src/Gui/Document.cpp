@@ -1239,7 +1239,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 pObj->Restore(*localreader);
             if (pObj && expanded) {
                 Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
-                this->signalExpandObject(*vp, Gui::ExpandItem,0,0);
+                this->signalExpandObject(*vp, TreeItemMode::ExpandItem,0,0);
             }
             localreader->readEndElement("ViewProvider");
         }
@@ -1475,7 +1475,7 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
                 if(vpd) vpd->startRestoring();
                 pObj->Restore(*localreader);
                 if (expanded && vpd) 
-                    this->signalExpandObject(*vpd, Gui::ExpandItem,0,0);
+                    this->signalExpandObject(*vpd, TreeItemMode::ExpandItem,0,0);
             }
             localreader->readEndElement("ViewProvider");
             if (it == obj.end())
