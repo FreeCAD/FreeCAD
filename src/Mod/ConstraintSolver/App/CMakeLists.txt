@@ -27,10 +27,14 @@ generate_from_xml(ParameterStorePy)
 generate_from_xml(ParameterRefPy)
 generate_from_xml(ParameterSubsetPy)
 generate_from_xml(ValueSetPy)
+generate_from_xml(ConstraintPy)
+generate_from_xml(SimpleConstraintPy)
 
 SET(ConstraintSolver_Utils_SRCS
     Utils.h
     Utils.cpp
+    PyUtils.h
+    PyUtils.cpp
 )
 
 SET(Python_Solver_SRCS
@@ -42,6 +46,10 @@ SET(Python_Solver_SRCS
     ParameterSubsetPyImp.cpp
     ValueSetPy.xml
     ValueSetPyImp.cpp
+    ConstraintPy.xml
+    ConstraintPyImp.cpp
+    SimpleConstraintPy.xml
+    SimpleConstraintPyImp.cpp
 )
 
 SET(ConstraintSolver_Solver_SRCS
@@ -55,6 +63,10 @@ SET(ConstraintSolver_Solver_SRCS
     ParameterSubset.cpp
     ValueSet.h
     ValueSet.cpp
+    Constraint.h
+    Constraint.cpp
+    SimpleConstraint.h
+    SimpleConstraint.cpp
 )
 
 SET(ConstraintSolver_Module_SRCS

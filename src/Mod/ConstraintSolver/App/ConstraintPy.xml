@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="BaseClassPy" 
+	  Name="ConstraintPy" 
+	  Twin="Constraint" 
+	  TwinPointer="Constraint" 
+	  Include="Mod/ConstraintSolver/App/Constraint.h" 
+	  FatherInclude="Base/BaseClassPy.h" 
+	  Namespace="FCS" 
+	  Constructor="false"
+	  Delete="true"
+	  FatherNamespace="Base"
+      Initialization = "true"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu>Consraint base class.</DeveloperDocu>
+	  <UserDocu>Constraint base class</UserDocu>
+	</Documentation>
+
+	<Attribute Name="Parameters" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>List of parameters the constraint depends on</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Parameters" Type="List" />
+	</Attribute>
+	<Attribute Name="Weight">
+	  <Documentation>
+		<UserDocu>Weight of the constraint (a multiplier for error function).</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Weight" Type="Float" />
+	</Attribute>
+	<Attribute Name="NetError" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>Total error value computed on saved values (positive for multiconstraints, +- for simple constraints)</UserDocu>
+	  </Documentation>
+	  <Parameter Name="NetError" Type="Float" />
+	</Attribute>
+	<Attribute Name="Rank" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>How many degrees of freedom the constraint removes.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Rank" Type="Long" />
+	</Attribute>
+	<Attribute Name="UserData">
+	  <Documentation>
+		<UserDocu>Stores any python object.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="UserData" Type="Object" />
+	</Attribute>
+	<Attribute Name="Label">
+	  <Documentation>
+		<UserDocu>Stores any string.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Label" Type="String" />
+	</Attribute>
+	<Attribute Name="Tag">
+	  <Documentation>
+		<UserDocu>Stores an integer, for identification.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Tag" Type="Long" />
+	</Attribute>
+
+	<Methode Name="netError">
+	  <Documentation>
+		<UserDocu>netError(vals): total error value computed on ValueSet, with derivative(as a DualNumber).</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="errorVec">
+	  <Documentation>
+		<UserDocu>errorVec(vals): returns a list of (signed) error values for each subconstraint.</UserDocu>
+	  </Documentation>
+	</Methode>	
+	<Methode Name="copy" Const="true">
+	  <Documentation>
+		<UserDocu>copy(): returns a shallow copy (copy refers to same parameters).</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="update">
+	  <Documentation>
+		<UserDocu>update(): updates this constraint. Call before solving. (some constraints may depend on external objects, and fetch the values from this func, for example).</UserDocu>
+	  </Documentation>
+	</Methode>
+
+  </PythonExport>
+</GenerateModel>

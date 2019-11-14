@@ -38,25 +38,6 @@ inline void extend(Vec& to, const Vec& what){
     to.insert(to.begin, what.begin, what.end);
 }
 
-///converts std::vector (or whatever container) to Py::List. The elements must have getPyObject method.
-template<class Vec>
-inline Py::List asPyList(Vec& vec){ //vec is usually not changed... unless getPyObject changes the object, which does happen to some
-    Py::List ret;
-    for (auto &v : vec) {
-        ret.append(Py::Object(v.getPyObject(), true));
-    }
-    return ret;
-}
-
-template<class Vec, class PyCxxConstruct>
-inline Py::List asPyList(Vec& vec){ //vec is usually not changed... unless getPyObject changes the object, which does happen to some
-    Py::List ret(vec.size());
-    for (int i = 0; i < vec.size(); ++i) {
-        ret[i] = PyCxxConstruct(vec[i]);
-    }
-    return ret;
-}
-
 /**
  * ProblemSizeInfo stores information helpful for scaling of constraint
  * error functions (to even out weights of angle-type and length-type

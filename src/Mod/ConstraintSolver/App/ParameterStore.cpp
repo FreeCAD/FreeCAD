@@ -2,6 +2,7 @@
 #include "ParameterStore.h"
 #include <ParameterStorePy.h>
 #include "ParameterSubset.h"
+#include "ValueSet.h"
 #include <Base/Console.h>
 
 using namespace FCS;
@@ -9,6 +10,7 @@ using namespace FCS;
 TYPESYSTEM_SOURCE(FCS::ParameterStore, Base::BaseClass);
 
 ParameterStore::ParameterStore(int prealloc)
+    : _trivialValueSet(Py::None())
 {
     _params.reserve(size_t(prealloc));
 }
@@ -290,6 +292,13 @@ PyObject* ParameterStore::getPyObject()
 
 HParameterStore ParameterStore::self() const {
     return HParameterStore(_twin, /*new_reference = */false);
+}
+
+const ValueSet& ParameterStore::savedValues()
+{
+    if (_trivialValueSet.isNone())
+        _trivialValueSet = ValueSet::makeTrivial(self());
+    return *_trivialValueSet;
 }
 
 ParameterStore::const_iterator ParameterStore::begin() const{

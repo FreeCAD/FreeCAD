@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="ConstraintPy" 
+	  Name="SimpleConstraintPy" 
+	  Twin="SimpleConstraint" 
+	  TwinPointer="SimpleConstraint" 
+	  Include="Mod/ConstraintSolver/App/SimpleConstraint.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/ConstraintPy.h" 
+	  Namespace="FCS" 
+	  Constructor="false"
+	  Delete="true"
+	  FatherNamespace="FCS"
+	  DisableNotify="true" >
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu>Simple consraint base class. Simple constraint removes one degree of freedom.</DeveloperDocu>
+	  <UserDocu>Simple consraint base class. Simple constraint removes one degree of freedom.</UserDocu>
+	</Documentation>
+
+	<Methode Name="error1">
+	  <Documentation>
+		<UserDocu>error1(vals): error function (returns DualNumber).</UserDocu>
+	  </Documentation>
+	</Methode>
+
+  </PythonExport>
+</GenerateModel>

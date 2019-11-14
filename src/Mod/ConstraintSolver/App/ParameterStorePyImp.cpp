@@ -6,6 +6,8 @@
 #include "ParameterStorePy.h"
 #include "ParameterStorePy.cpp"
 
+#include "PyUtils.h"
+
 PyObject* ParameterStorePy::PyMake(struct _typeobject *, PyObject* , PyObject* )  // Python wrapper
 {
     // create a new instance of ParameterStorePy and the Twin object

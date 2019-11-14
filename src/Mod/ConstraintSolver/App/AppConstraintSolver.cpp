@@ -41,6 +41,10 @@
 #include "ParameterSubsetPy.h"
 #include "ValueSet.h"
 #include "ValueSetPy.h"
+#include "Constraint.h"
+#include "ConstraintPy.h"
+#include "SimpleConstraint.h"
+#include "SimpleConstraintPy.h"
 
 namespace ConstraintSolver {
 class Module : public Py::ExtensionModule<Module>
@@ -71,16 +75,20 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     PyObject* mod = ConstraintSolver::initModule();
 
     //rename python types
-    FCS::ParameterStorePy ::Type.tp_name = "ConstraintSolver.ParameterStore";
-    FCS::ParameterRefPy   ::Type.tp_name = "ConstraintSolver.ParameterRef";
-    FCS::ParameterSubsetPy::Type.tp_name = "ConstraintSolver.ParameterSubset";
-    FCS::ValueSetPy       ::Type.tp_name = "ConstraintSolver.ParameterSubset";
+    FCS::ParameterStorePy  ::Type.tp_name = "ConstraintSolver.ParameterStore";
+    FCS::ParameterRefPy    ::Type.tp_name = "ConstraintSolver.ParameterRef";
+    FCS::ParameterSubsetPy ::Type.tp_name = "ConstraintSolver.ParameterSubset";
+    FCS::ValueSetPy        ::Type.tp_name = "ConstraintSolver.ParameterSubset";
+    FCS::ConstraintPy      ::Type.tp_name = "ConstraintSolver.ParameterSubset";
+    FCS::SimpleConstraintPy::Type.tp_name = "ConstraintSolver.ParameterSubset";
 
     //add python types as module members
-    Base::Interpreter().addType(&FCS::ParameterStorePy ::Type, mod, "ParameterStore" );
-    Base::Interpreter().addType(&FCS::ParameterRefPy   ::Type, mod, "ParameterRef"   );
-    Base::Interpreter().addType(&FCS::ParameterSubsetPy::Type, mod, "ParameterSubset");
-    Base::Interpreter().addType(&FCS::ValueSetPy       ::Type, mod, "ValueSet"       );
+    Base::Interpreter().addType(&FCS::ParameterStorePy  ::Type, mod, "ParameterStore"  );
+    Base::Interpreter().addType(&FCS::ParameterRefPy    ::Type, mod, "ParameterRef"    );
+    Base::Interpreter().addType(&FCS::ParameterSubsetPy ::Type, mod, "ParameterSubset" );
+    Base::Interpreter().addType(&FCS::ValueSetPy        ::Type, mod, "ValueSet"        );
+    Base::Interpreter().addType(&FCS::ConstraintPy      ::Type, mod, "Constraint"      );
+    Base::Interpreter().addType(&FCS::SimpleConstraintPy::Type, mod, "SimpleConstraint");
 
     //fill type system
     FCS::ParameterStore::init();

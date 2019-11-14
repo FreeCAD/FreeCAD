@@ -76,7 +76,7 @@ public://methods
     bool isSameValue(const ParameterRef &other) const;
 
     UnsafePyHandle<ParameterRef> getPyHandle() const;
-    PyObject* getPyObject();
+    PyObject* getPyObject() const;
 public://iterator interface
     void operator++(){++_ownIndex;}
     bool operator!=(const ParameterRef& other) const {return _ownIndex != other._ownIndex;}

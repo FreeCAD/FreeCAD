@@ -85,7 +85,7 @@ UnsafePyHandle<ParameterRef> ParameterRef::getPyHandle() const
     return ret;
 }
 
-PyObject* ParameterRef::getPyObject()
+PyObject* ParameterRef::getPyObject() const
 {
     return Py::new_reference_to(getPyHandle());
 }

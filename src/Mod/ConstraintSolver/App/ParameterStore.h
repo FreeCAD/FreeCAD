@@ -40,8 +40,10 @@ namespace FCS {
 
 class ParameterRef;
 class ParameterSubset;
+class ValueSet;
 typedef UnsafePyHandle<ParameterStore> HParameterStore;
 typedef UnsafePyHandle<ParameterSubset> HParameterSubset;
+typedef UnsafePyHandle<ValueSet> HValueSet;
 
 
 class FCSExport ParameterStore : public Base::BaseClass {
@@ -50,6 +52,7 @@ protected: //data
     std::vector<Parameter> _params;
     PyObject* _twin;
     std::set<ParameterSubset*> _subsets;
+    HValueSet _trivialValueSet;
 protected: //methods
     ParameterStore(int prealloc = 0); //protect all constructors because handle-only memory management
     ///fills indexes for newly created parameters
@@ -120,6 +123,8 @@ public:
 
     PyObject* getPyObject() override;
     HParameterStore self() const;
+
+    const ValueSet& savedValues();
 
 public: //for range-based for looping.
     class const_iterator
