@@ -75,9 +75,6 @@ Section -Configure
 
   ${if} $CreateFileAssociations == "true"
    WriteRegStr SHCTX "${APP_DIR_REGKEY}" "" "$INSTDIR\${APP_RUN}"
-  ${endif}
-
-  ${if} $CreateFileAssociations == "true"
    WriteRegStr SHCTX "Software\Classes\${APP_REGNAME_DOC}" "" "${APP_NAME} Document"
    WriteRegStr SHCTX "Software\Classes\${APP_REGNAME_DOC}\DefaultIcon" "" "$INSTDIR\${APP_RUN},0"
    WriteRegStr SHCTX "Software\Classes\${APP_REGNAME_DOC}\Shell\open\command" "" '"$INSTDIR\${APP_RUN}" "%1"'
@@ -90,9 +87,15 @@ Section -Configure
    # .FCStd
    WriteRegStr SHCTX "Software\Classes\${APP_EXT}" "" "${APP_REGNAME_DOC}"
    WriteRegStr SHCTX "Software\Classes\${APP_EXT}" "Content Type" "${APP_MIME_TYPE}"
-   # FIXME: what about .FCMat and .FCMacro?
-  
-   # Refresh shell
+   # if the user is admin, also install the DLL toe preview .FCStd files
+   ${if} $MultiUser.Privileges == "Admin"
+    # see https://nsis.sourceforge.io/Docs/AppendixB.html#library_install for a description of InstallLib
+    !insertmacro InstallLib REGDLL NOTSHARED NOREBOOT_NOTPROTECTED ${FILES_THUMBS}\FCStdThumbnail.dll $SYSDIR\FCStdThumbnail.dll $SYSDIR
+   ${endif}
+   # in any case remove the FCStdThumbnail.dll
+   RMDir /r "$INSTDIR\thumbnail"
+   
+   # Eventually refresh shell icons
    ${RefreshShellIcons}
   ${endif}
   

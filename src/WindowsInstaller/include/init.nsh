@@ -60,6 +60,7 @@ Function .onInit
   # check if it is a 64bit system
   ${if} ${RunningX64}
    SetRegView 64
+   !define LIBRARY_X64
   ${endif}
   
   # Check that FreeCAD is not currently running
@@ -149,11 +150,6 @@ Function .onInit
   ${IfNot} ${Silent}
     # Show banner while installer is intializating 
     Banner::show /NOUNLOAD "Checking system"
-  ${EndIf}
- 
-  Call SearchExternal
-  
-  ${IfNot} ${Silent}
     Banner::destroy
   ${EndIf}
 
