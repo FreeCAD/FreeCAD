@@ -110,6 +110,8 @@ public:
     void markItem(const App::DocumentObject* Obj,bool mark);
     void syncView(ViewProviderDocumentObject *vp);
 
+    virtual void selectAll() override;
+
     const char *getTreeName() const;
 
     static void updateStatus(bool delay=true);

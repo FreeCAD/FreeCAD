@@ -568,6 +568,21 @@ const char *TreeWidget::getTreeName() const {
     return myName.c_str();
 }
 
+// reimpelement to select only objects in the active document
+void TreeWidget::selectAll() {
+    auto gdoc = Application::Instance->getDocument(
+            App::GetApplication().getActiveDocument());
+    if(!gdoc)
+        return;
+    auto itDoc = DocumentMap.find(gdoc);
+    if(itDoc == DocumentMap.end())
+        return;
+    if(TreeParams::Instance()->RecordSelection())
+        Gui::Selection().selStackPush();
+    Gui::Selection().clearSelection();
+    Gui::Selection().setSelection(gdoc->getDocument()->getName(),gdoc->getDocument()->getObjects());
+}
+
 bool TreeWidget::isObjectShowable(App::DocumentObject *obj) {
     if(!obj || !obj->getNameInDocument())
         return true;
@@ -2723,29 +2738,18 @@ void TreeWidget::onItemSelectionChanged ()
     auto selItems = selectedItems();
 
     // do not allow document item multi-selection
-    auto itDoc = selItems.end();
-    auto itObj = selItems.end();
-    for(auto it=selItems.begin();it!=selItems.end();) {
-        auto item = *it;
-        if(item->type() == ObjectType) {
-            itObj = it;
-            if(itDoc!=selItems.end()) {
-                (*itDoc)->setSelected(false);
-                selItems.erase(itDoc);
-                itDoc = selItems.end();
-            }
-        }else if(item->type() == DocumentType) {
-            if(itObj!=selItems.end()) {
+    if(selItems.size()) {
+        auto firstType = selItems.back()->type();
+        for(auto it=selItems.begin();it!=selItems.end();) {
+            auto item = *it;
+            if((firstType==ObjectType && item->type()!=ObjectType)
+                    || (firstType==DocumentType && item!=selItems.back()))
+            {
                 item->setSelected(false);
                 it = selItems.erase(it);
-                continue;
-            }else if(itDoc!=selItems.end()) {
-                (*itDoc)->setSelected(false);
-                selItems.erase(itDoc);
-            }
-            itDoc = it;
+            } else
+                ++it;
         }
-        ++it;
     }
 
     if(selItems.size()<=1) {
@@ -4232,7 +4236,7 @@ DocumentObjectItem *DocumentItem::findItem(
 void DocumentItem::selectItems(SelectionReason reason) {
     const auto &sels = Selection().getSelection(pDocument->getDocument()->getName(),false);
 
-    bool sync = reason==SR_SELECT?false:true;
+    bool sync = (sels.size()>50 || reason==SR_SELECT)?false:true;
 
     for(const auto &sel : sels)
         findItemByObject(sync,sel.pObject,sel.SubName,true);
