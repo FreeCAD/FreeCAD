@@ -42,7 +42,7 @@ typedef UnsafePyHandle<ValueSet> HValueSet;
  *
  * It is based on Eigen::VectorXd, and can be used in place of one.
  */
-class GCSExport ValueSet
+class FCSExport ValueSet
 {
 protected://data
     Eigen::VectorXd _values;

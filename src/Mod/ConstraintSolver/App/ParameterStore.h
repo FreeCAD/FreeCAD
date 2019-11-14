@@ -44,7 +44,7 @@ typedef UnsafePyHandle<ParameterStore> HParameterStore;
 typedef UnsafePyHandle<ParameterSubset> HParameterSubset;
 
 
-class GCSExport ParameterStore : public Base::BaseClass {
+class FCSExport ParameterStore : public Base::BaseClass {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 protected: //data
     std::vector<Parameter> _params;

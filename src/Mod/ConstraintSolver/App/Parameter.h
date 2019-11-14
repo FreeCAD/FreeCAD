@@ -19,7 +19,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#define GCSExport
+
 #ifndef FREECAD_CONSTRAINTSOLVER_PARAMETER_H
 #define FREECAD_CONSTRAINTSOLVER_PARAMETER_H
 
@@ -29,7 +29,7 @@ namespace FCS {
 
 class ParameterRef;
 
-class GCSExport Parameter
+class FCSExport Parameter
 {
 public://data
     double savedValue = 0.0;

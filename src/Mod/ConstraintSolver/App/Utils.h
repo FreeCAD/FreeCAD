@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define GCSExport        //temporary!
+#define FCSExport        //temporary!
 #include <FCConfig.h>    //
 
 #ifndef FREECAD_CONSTRAINTSOLVER_UTILS_H
@@ -92,7 +92,7 @@ struct ProblemSizeInfo
 // * you might want to check isValid.
 // */
 //template <class CppType>
-//class GCSExport UnsafePyHandle : public Py::Object
+//class FCSExport UnsafePyHandle : public Py::Object
 //{
 //private:
 //    CppType* cppptr;

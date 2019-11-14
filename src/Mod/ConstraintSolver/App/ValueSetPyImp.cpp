@@ -6,6 +6,7 @@
 #include "ParameterSubsetPy.h"
 #include "ParameterRef.h"
 #include "ParameterRefPy.h"
+#include "PyUtils.h"
 
 #include "ValueSetPy.h"
 #include "ValueSetPy.cpp"
@@ -107,13 +108,6 @@ Py_ssize_t ValueSetPy::sequence_length(PyObject* self)
 {
     HValueSet myself(self, /*new_reference = */false);
     return myself->size();
-}
-
-inline Py::Tuple pyDualNumber(DualNumber v){
-    Py::Tuple tup(2);
-    tup[0] = Py::Float(v.re);
-    tup[1] = Py::Float(v.du);
-    return tup;
 }
 
 PyObject*  ValueSetPy::sequence_item(PyObject* self, Py_ssize_t index)

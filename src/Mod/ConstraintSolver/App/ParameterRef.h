@@ -38,7 +38,7 @@ typedef UnsafePyHandle<ParameterStore> HParameterStore; //why do I have to repea
  * @brief ParameterRef class: refers to a parameter in store. Also is used as a key into value vectors, for constraint code.
  * Memory management: regular. getPyObject returns a copy.
  */
-class GCSExport ParameterRef
+class FCSExport ParameterRef
 {
 protected://data
     HParameterStore _store;

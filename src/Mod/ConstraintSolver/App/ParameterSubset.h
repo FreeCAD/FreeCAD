@@ -33,7 +33,7 @@ namespace FCS {
 class ParameterSubset;
 typedef UnsafePyHandle<ParameterSubset> HParameterSubset;
 
-class GCSExport ParameterSubset
+class FCSExport ParameterSubset
 {
 protected://data
     std::vector<ParameterRef> _params;

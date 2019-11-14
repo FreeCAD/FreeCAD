@@ -32,7 +32,8 @@
 #else // for Linux
 # define ConstraintSolverAppExport
 #endif
-#define GCSExport ConstraintSolverAppExport
+
+#define FCSExport ConstraintSolverAppExport
 
 #ifdef _PreComp_
 
