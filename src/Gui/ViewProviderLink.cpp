@@ -1941,6 +1941,10 @@ void ViewProviderLink::updateData(const App::Property *prop) {
     return inherited::updateData(prop);
 }
 
+static inline bool canScale(const Base::Vector3d &v) {
+    return fabs(v.x)>1e-7 && fabs(v.y)>1e-7 && fabs(v.z)>1e-7;
+}
+
 void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App::Property *prop) {
     if(!prop) return;
     if(prop == &ext->_ChildCache) {
@@ -1956,8 +1960,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop==ext->getScaleProperty() || prop==ext->getScaleVectorProperty()) {
         if(!prop->testStatus(App::Property::User3)) {
             const auto &v = ext->getScaleVector();
-            pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
-            linkView->renderDoubleSide(v.x*v.y*v.z < 0);
+            if(canScale(v)) {
+                pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
+                linkView->renderDoubleSide(v.x*v.y*v.z < 0);
+            }
         }
     }else if(prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
         auto propLinkPlacement = ext->getLinkPlacementProperty();
@@ -1965,8 +1971,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             const auto &pla = static_cast<const App::PropertyPlacement*>(prop)->getValue();
             ViewProviderGeometryObject::updateTransform(pla, pcTransform);
             const auto &v = ext->getScaleVector();
-            pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
-            linkView->renderDoubleSide(v.x*v.y*v.z < 0);
+            if(canScale(v)) {
+                pcTransform->scaleFactor.setValue(v.x,v.y,v.z);
+                linkView->renderDoubleSide(v.x*v.y*v.z < 0);
+            }
         }
     }else if(prop == ext->getLinkedObjectProperty()) {
 
@@ -2069,7 +2077,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                         Base::Matrix4D mat;
                         if(propPlacements->getSize()>i) 
                             mat = (*propPlacements)[i].toMatrix();
-                        if(propScales && propScales->getSize()>i) {
+                        if(propScales && propScales->getSize()>i && canScale((*propScales)[i])) {
                             Base::Matrix4D s;
                             s.scale((*propScales)[i]);
                             mat *= s;
@@ -2083,7 +2091,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                         Base::Matrix4D mat;
                         if(propPlacements->getSize()>i) 
                             mat = (*propPlacements)[i].toMatrix();
-                        if(propScales && propScales->getSize()>i) {
+                        if(propScales && propScales->getSize()>i && canScale((*propScales)[i])) {
                             Base::Matrix4D s;
                             s.scale((*propScales)[i]);
                             mat *= s;
