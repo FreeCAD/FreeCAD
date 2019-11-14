@@ -1085,7 +1085,23 @@ void DrawUtil::dumpCS(const char* text,
     gp_Dir baseAxis = CS.Direction();
     gp_Dir baseX    = CS.XDirection();
     gp_Dir baseY    = CS.YDirection();
-    Base::Console().Message("DU::dumpCSDVS - %s Axis: %s X: %s Y: %s\n", text,
+    gp_Pnt baseOrg  = CS.Location();
+    Base::Console().Message("DU::dumpCS - %s Loc: %s Axis: %s X: %s Y: %s\n", text,
+                            DrawUtil::formatVector(baseOrg).c_str(),
+                            DrawUtil::formatVector(baseAxis).c_str(),
+                            DrawUtil::formatVector(baseX).c_str(),
+                            DrawUtil::formatVector(baseY).c_str());
+}
+
+void DrawUtil::dumpCS3(const char* text,
+                       gp_Ax3 CS)
+{
+    gp_Dir baseAxis = CS.Direction();
+    gp_Dir baseX    = CS.XDirection();
+    gp_Dir baseY    = CS.YDirection();
+    gp_Pnt baseOrg  = CS.Location();
+    Base::Console().Message("DU::dumpCS - %s Loc: %s Axis: %s X: %s Y: %s\n", text,
+                            DrawUtil::formatVector(baseOrg).c_str(),
                             DrawUtil::formatVector(baseAxis).c_str(),
                             DrawUtil::formatVector(baseX).c_str(),
                             DrawUtil::formatVector(baseY).c_str());
