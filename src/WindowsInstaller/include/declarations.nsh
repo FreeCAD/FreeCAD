@@ -69,7 +69,6 @@ Var CreateFileAssociations
 Var OldVersionNumber
 Var Pointer
 Var Search
-Var SVGPath
 Var StartmenuFolder
 Var String
 Var UserList
