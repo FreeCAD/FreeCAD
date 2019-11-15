@@ -450,8 +450,11 @@ public:
      *
      * @sa Command::_doCommand()
      */
-//#define doCommand(...) _doCommand(__FILE__,__LINE__,__VA_ARGS__)
+#ifdef FC_OS_WIN32
 #define doCommand(_type,...) _doCommand(__FILE__,__LINE__,_type,##__VA_ARGS__)
+#else
+#define doCommand(...) _doCommand(__FILE__,__LINE__,__VA_ARGS__)
+#endif
 
     /** Run a command with printf like formatter
      *
