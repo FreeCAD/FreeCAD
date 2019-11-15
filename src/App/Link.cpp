@@ -29,7 +29,7 @@
 #include <boost/preprocessor/stringize.hpp>
 #include "Application.h"
 #include "Document.h"
-#include "GroupExtension.h"
+#include "GeoFeatureGroupExtension.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
 #include <Base/Console.h>
@@ -200,7 +200,7 @@ App::GroupExtension *LinkBaseExtension::linkedPlainGroup() const {
     auto linked = getTrueLinkedObject(false);
     if(!linked)
         return 0;
-    return linked->getExtensionByType<GroupExtension>(true,false);
+    return GeoFeatureGroupExtension::getNonGeoGroup(linked);
 }
 
 App::PropertyLinkList *LinkBaseExtension::_getElementListProperty() const {
@@ -408,7 +408,7 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
         if(_ChildCache.getSize()) {
             auto obj=_ChildCache.find(name,&idx);
             if(obj) {
-                auto group = obj->getExtensionByType<GroupExtension>(true,false);
+                auto group = GeoFeatureGroupExtension::getNonGeoGroup(obj);
                 if(group) {
                     int nidx = getElementIndex(dot+1,psubname);
                     if(nidx >= 0)
@@ -443,7 +443,7 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
             return -1;
         auto obj = elements[idx];
         if(obj && _ChildCache.getSize()) {
-            auto group = obj->getExtensionByType<GroupExtension>(true,false);
+            auto group = GeoFeatureGroupExtension::getNonGeoGroup(obj);
             if(group) {
                 int nidx = getElementIndex(dot+1,psubname);
                 if(nidx >= 0)
@@ -739,7 +739,7 @@ void LinkBaseExtension::updateGroup() {
         for(auto o : getElementListProperty()->getValues()) {
             if(!o || !o->getNameInDocument())
                 continue;
-            auto ext = o->getExtensionByType<GroupExtension>(true,false);
+            auto ext = GeoFeatureGroupExtension::getNonGeoGroup(o);
             if(ext) 
                 groups.push_back(ext);
         }
@@ -756,7 +756,7 @@ void LinkBaseExtension::updateGroup() {
             ext->getAllChildren(children,childSet);
             for(;count<children.size();++count) {
                 auto child = children[count];
-                auto childGroup = child->getExtensionByType<GroupExtension>(true,false);
+                auto childGroup = GeoFeatureGroupExtension::getNonGeoGroup(child);
                 if(!childGroup)
                     continue;
                 plainGroupConns.push_back(childGroup->Group.signalChanged.connect(
@@ -1305,7 +1305,7 @@ std::vector<App::DocumentObject*> LinkBaseExtension::getLinkedChildren(bool filt
         return _getElementListValue();
     std::vector<App::DocumentObject*> ret;
     for(auto o : _getElementListValue()) {
-        if(!o->hasExtension(GroupExtension::getExtensionClassTypeId(),false))
+        if(!GeoFeatureGroupExtension::isNonGeoGroup(o))
             ret.push_back(o);
     }
     return ret;
@@ -1322,7 +1322,7 @@ const char *LinkBaseExtension::flattenSubname(const char *subname) const {
             extensionGetSubObject(obj,s.c_str());
             if(!obj)
                 break;
-            if(!obj->hasExtension(GroupExtension::getExtensionClassTypeId(),false))
+            if(!GeoFeatureGroupExtension::isNonGeoGroup(obj))
                 return sub;
         }
     }

@@ -341,7 +341,7 @@ DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
     //That is important as there are clear differences between groups/geofeature groups (e.g. an object
     //can be in only one group, and only one geofeaturegroup, however, it can be in both at the same time)
     for (auto o : obj->getInList()) {
-        if(o->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false))
+        if(GeoFeatureGroupExtension::isNonGeoGroup(o))
             return o;
     }
 
@@ -377,7 +377,7 @@ void GroupExtension::extensionOnChanged(const Property* p) {
                 //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
                 //would return anyone of it and hence it is possible that we miss an error. We need a custom check
                 for(auto in : obj->getInList()) {
-                    if(in!=owner && in->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false)) {
+                    if(in!=owner && GeoFeatureGroupExtension::isNonGeoGroup(in)) {
                         FC_WARN("Remove " << obj->getFullName() <<  " from " 
                                 << owner->getFullName() << " because of multiple owner groups");
                         return true;
@@ -573,7 +573,7 @@ void GroupExtension::getAllChildren(std::vector<App::DocumentObject*> &res,
         if(!rset.insert(obj).second)
             continue;
         res.push_back(obj);
-        auto ext = obj->getExtensionByType<GroupExtension>(true,false);
+        auto ext = GeoFeatureGroupExtension::getNonGeoGroup(obj);
         if(ext) 
             ext->getAllChildren(res,rset);
     }

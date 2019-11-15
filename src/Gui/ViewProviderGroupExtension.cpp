@@ -37,6 +37,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/GroupExtension.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Expression.h>
 #include <Base/Console.h>
 #include <QMessageBox>
@@ -62,6 +63,12 @@ bool ViewProviderGroupExtension::extensionCanDragObject(App::DocumentObject*) co
 
     //we can drag anything out
     return true;
+}
+
+void ViewProviderGroupExtension::extensionAttach(App::DocumentObject* pcObject)
+{
+    if(App::GeoFeatureGroupExtension::isNonGeoGroup(pcObject)) 
+        getExtendedViewProvider()->SelectionStyle.setValue(1);
 }
 
 void ViewProviderGroupExtension::extensionDragObject(App::DocumentObject* obj) {
