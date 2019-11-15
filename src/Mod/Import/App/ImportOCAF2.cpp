@@ -1344,14 +1344,14 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         }
         int vis = -1;
         if(parent) {
-            vis = parent->isElementVisible(childName.c_str());
+            vis = parent->isElementVisibleEx(childName.c_str());
             if(groupLinks.size()) {
                 auto group = App::GeoFeatureGroupExtension::getNonGeoGroup(parent);
                 if(group) {
                     if(group->ExportMode.getValue()==App::GroupExtension::EXPORT_BY_CHILD_QUERY)
                         vis = 1;
                     else
-                        vis = groupLinks.back()->isElementVisible(childName.c_str());
+                        vis = groupLinks.back()->isElementVisibleEx(childName.c_str());
                 }
             }
         }

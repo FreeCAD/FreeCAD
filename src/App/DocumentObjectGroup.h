@@ -49,8 +49,6 @@ public:
     }
     
     virtual PyObject *getPyObject(void) override;
-
-    virtual void setupObject() override;
 };
 
 typedef App::FeaturePythonT<DocumentObjectGroup> DocumentObjectGroupPython;
