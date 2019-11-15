@@ -165,7 +165,7 @@ def getObjectData(obj,wireframeMode=wireframeStyle):
     result = ""
     wires = []
 
-    if obj.isDerivedFrom("Part::Feature"):
+    if hasattr(obj,'Shape'):
         fcmesh = obj.Shape.tessellate(0.1)
         result = "var geom = new THREE.Geometry();\n"
         # adding vertices data
