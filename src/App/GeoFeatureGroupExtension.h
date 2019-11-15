@@ -100,6 +100,14 @@ public:
                !obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     }
 
+    /// Returns the group extension in the object if it is a non geo group
+    static GroupExtension *getNonGeoGroup(const DocumentObject* obj) {
+        auto ext = obj->getExtensionByType<GroupExtension>(true);
+        if(ext && !ext->extensionIsDerivedFrom(GeoFeatureGroupExtension::getExtensionClassTypeId()))
+            return ext;
+        return 0;
+    }
+
     virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname, PyObject **pyObj,
             Base::Matrix4D *mat, bool transform, int depth) const override;
 

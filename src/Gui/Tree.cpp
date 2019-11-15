@@ -4504,20 +4504,15 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon &icon1, QIcon &icon2
     if(parentItem) {
         Timing(testStatus1);
         auto parent = parentItem->object()->getObject();
-        auto ext = parent->getExtensionByType<App::GroupExtension>(true,false);
-        if(!ext) 
-            visible = parent->hasChildElement()?
-                parent->isElementVisible(pObject->getNameInDocument()):-1;
-        else {
+        visible = parent->isElementVisible(pObject->getNameInDocument());
+        if(App::GeoFeatureGroupExtension::isNonGeoGroup(parent)) {
             // We are dealing with a plain group. It has special handling when
             // linked, which allows it to have indpenedent visibility control.
             // We need to go up the hierarchy and see if there is any link to
             // it.
             for(auto pp=parentItem->getParentItem();pp;pp=pp->getParentItem()) {
                 auto obj = pp->object()->getObject();
-                if(!obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)
-                        && obj->hasChildElement()) 
-                {
+                if(!App::GeoFeatureGroupExtension::isNonGeoGroup(obj)) {
                     visible = obj->isElementVisible(pObject->getNameInDocument());
                     break;
                 }
@@ -4819,12 +4814,12 @@ int DocumentObjectItem::isGroup() const {
         return PartGroup;
     if(obj->hasChildElement())
         return LinkGroup;
-    if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false)) {
+    if(App::GeoFeatureGroupExtension::isNonGeoGroup(obj)) {
         for(auto parent=getParentItem();parent;parent=parent->getParentItem()) {
             auto pobj = parent->object()->getObject();
-            if(pobj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false))
+            if(App::GeoFeatureGroupExtension::isNonGeoGroup(pobj))
                 continue;
-            if(pobj->hasChildElement() && pobj->isElementVisible(obj->getNameInDocument())>=0)
+            if(pobj->isElementVisible(obj->getNameInDocument())>=0)
                 return LinkGroup;
         }
     }

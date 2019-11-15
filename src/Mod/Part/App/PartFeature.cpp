@@ -419,7 +419,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                 if(!parent || !subObj)
                     continue;
                 if(linkStack.size() 
-                    && parent->getExtensionByType<App::GroupExtension>(true,false))
+                    && App::GeoFeatureGroupExtension::isNonGeoGroup(parent))
                 {
                     visible = linkStack.back()->isElementVisible(childName.c_str());
                 }else

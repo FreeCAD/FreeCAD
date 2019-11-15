@@ -48,6 +48,8 @@ public:
     virtual void extensionDropObject(App::DocumentObject*) override;   
  
     virtual bool extensionOnDelete(const std::vector<std::string> &) override;
+
+    virtual void extensionAttach(App::DocumentObject* pcObject) override;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension> ViewProviderGroupExtensionPython;

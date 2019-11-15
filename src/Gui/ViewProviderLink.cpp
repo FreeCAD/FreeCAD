@@ -56,6 +56,7 @@
 #include <Base/Tools.h>
 #include <App/ComplexGeoData.h>
 #include <App/GeoFeature.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"
@@ -462,7 +463,18 @@ public:
         LinkInfoPtr me(this);
         for(auto link : links)
             link->onLinkedUpdateData(me,prop);
-        // update();
+
+        if(prop && prop->getName()
+                && strcmp(prop->getName(),"Group")==0 
+                && prop->getContainer()
+                && prop->getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId()))
+        {
+            auto owner = static_cast<App::DocumentObject*>(prop->getContainer());
+            if(App::GeoFeatureGroupExtension::isNonGeoGroup(owner)) {
+                // Special handling for plain group update
+                update();
+            }
+        }
     }
 
     void update() {
@@ -908,7 +920,7 @@ public:
         if(!isLinked())
             return;
 
-        isGroup = obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(),false);
+        isGroup = App::GeoFeatureGroupExtension::isNonGeoGroup(obj);
 
         nodeType = handle.childType;
         if(nodeType == LinkView::SnapshotMax) {
