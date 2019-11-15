@@ -226,10 +226,9 @@ ViewProviderPath::ViewProviderPath()
 
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
     
-    static const char *SelectionStyleEnum[] = {"Shape","BoundBox","None",0};
-    SelectionStyle.setEnums(SelectionStyleEnum);
     unsigned long sstyle = hGrp->GetInt("DefaultSelectionStyle",0);
-    SelectionStyle.setValue(sstyle);
+    if(sstyle==0 || sstyle==1)
+        SelectionStyle.setValue(sstyle);
 
     PathSelectionObserver::init();
 }
@@ -278,7 +277,7 @@ void ViewProviderPath::attach(App::DocumentObject *pcObj)
 }
 
 bool ViewProviderPath::useNewSelectionModel(void) const {
-    return SelectionStyle.getValue()!=2;
+    return true;
 }
 
 void ViewProviderPath::setDisplayMode(const char* ModeName)
@@ -388,11 +387,8 @@ void ViewProviderPath::onChanged(const App::Property* prop)
             pcLineCoords->point.set1Value(0,pt.x,pt.y,pt.z);
             pcMarkerCoords->point.set1Value(0,pt.x,pt.y,pt.z);
         }
-    } else {
+    } else 
         inherited::onChanged(prop);
-        if(prop == &SelectionStyle && SelectionStyle.getValue()==2)
-            hideSelection();
-    }
 }
 
 void ViewProviderPath::showBoundingBox(bool show) {
