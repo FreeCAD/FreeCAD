@@ -370,7 +370,7 @@ def buildScene(objects,colors=None):
     root = coin.SoSeparator()
     for o in objects:
         buf = None
-        if o.isDerivedFrom("Part::Feature"):
+        if hasattr(o,'Shape'):
             # writeInventor of shapes needs tessellation values
             buf = o.Shape.writeInventor(2,0.01)
         elif o.isDerivedFrom("Mesh::Feature"):
