@@ -35,6 +35,8 @@ SET(ConstraintSolver_Utils_SRCS
     Utils.cpp
     PyUtils.h
     PyUtils.cpp
+    DualMath.h
+    DualMath.cpp
 )
 
 SET(Python_Solver_SRCS

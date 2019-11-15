@@ -85,8 +85,28 @@ inline DualNumber operator/(DualNumber a, double b){
     return DualNumber(a.re / b, a.du / b);
 }
 
+#define IMPLEMENT_DUALNUMBER_OPERATOR(op)              \
+inline bool operator op (DualNumber a, DualNumber b){  \
+    return a.re op b.re;                               \
+}                                                      \
+inline bool operator op (double a, DualNumber b){      \
+    return a op b.re;                                  \
+}                                                      \
+inline bool operator op (DualNumber a, double b){      \
+    return a.re op b;                                  \
+}                                                      \
+
+IMPLEMENT_DUALNUMBER_OPERATOR(<);
+IMPLEMENT_DUALNUMBER_OPERATOR(<=);
+IMPLEMENT_DUALNUMBER_OPERATOR(>);
+IMPLEMENT_DUALNUMBER_OPERATOR(>=);
+
 inline DualNumber pow(DualNumber a, double pw){
     return Base::DualNumber(std::pow(a.re, pw), pw * std::pow(a.re, pw - 1.0) * a.du);
+}
+
+inline DualNumber abs(DualNumber a){
+    return a < 0 ? -a : a;
 }
 } //namespace
 
