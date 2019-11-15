@@ -379,7 +379,10 @@ class _Rebar(ArchComponent.Component):
         self.wires = []
         rot = FreeCAD.Rotation()
         if obj.Amount == 1:
-            barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+            if obj.ViewObject:
+                barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+            else:
+                barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
             placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = 0
@@ -388,13 +391,16 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
             else:
                 baseoffset = None
-            if obj.ViewObject.RebarShape == "Stirrup":
+            if obj.ViewObject and obj.ViewObject.RebarShape == "Stirrup":
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
             else:
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             interval = interval / (obj.Amount - 1)
             for i in range(obj.Amount):
-                barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+                if obj.ViewObject:
+                    barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+                else:
+                    barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
                 placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = interval
