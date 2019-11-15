@@ -570,6 +570,10 @@ void GeoFeatureGroupExtension::getInvalidLinkObjects(const DocumentObject* obj, 
     }
 }
 
+int GeoFeatureGroupExtension::extensionIsElementVisible(const char *) const {
+    return -1;
+}
+
 // Python feature ---------------------------------------------------------
 
 namespace App {

@@ -119,7 +119,13 @@ public:
 
     virtual int extensionIsElementVisible(const char *element) const override;
 
+    virtual int extensionIsElementVisibleEx(const char *element, int reason) const override;
+
+    virtual void onExtendedDocumentRestored() override;
+
     virtual App::DocumentObjectExecReturn *extensionExecute(void) override;
+
+    virtual void onExtendedSetupObject() override;
 
     std::vector<DocumentObject*> getAllChildren() const;
     void getAllChildren(std::vector<DocumentObject*> &, std::set<DocumentObject*> &) const;
@@ -129,6 +135,7 @@ public:
     /// Properties
     PropertyLinkList Group;
     PropertyBool _GroupTouched;
+    PropertyInteger _GroupVersion;
 
     enum ExportModeValue {
         EXPORT_DISABLED,
@@ -145,6 +152,8 @@ protected:
     }
 
     bool queryChildExport(App::DocumentObject *obj) const;
+
+    void initSetup();
 
 private:
     void removeObjectFromDocument(DocumentObject*);

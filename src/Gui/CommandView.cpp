@@ -2590,7 +2590,7 @@ static std::vector<std::string> getBoxSelection(
         if(!sobj) 
             continue;
         int vis;
-        if(!parent || (vis=parent->isElementVisible(childName.c_str()))<0)
+        if(!parent || (vis=parent->isElementVisibleEx(childName.c_str(),App::DocumentObject::GS_SELECT))<0)
             vis = sobj->Visibility.getValue()?1:0;
 
         if(!vis)

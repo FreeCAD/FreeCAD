@@ -986,6 +986,27 @@ int DocumentObject::isElementVisible(const char *element) const {
     return res;
 }
 
+int DocumentObject::isElementVisibleEx(const char *subname, int reason) const {
+    int res = -1;
+    foreachExtension<DocumentObjectExtension>([&res,subname,reason](DocumentObjectExtension *ext) {
+        res = ext->extensionIsElementVisibleEx(subname, reason);
+        return res>=0;
+    });
+
+    if(res>=0 || !subname || !subname[0])
+        return res;
+
+    const char *dot = strchr(subname,'.');
+    if(dot==0 || Data::ComplexGeoData::isMappedElement(subname))
+        return res;
+
+    std::string sub(subname,dot+1);
+    auto sobj = getSubObject(sub.c_str());
+    if(!sobj || !sobj->getNameInDocument())
+        return -1;
+    return sobj->isElementVisibleEx(dot+1,reason);
+}
+
 bool DocumentObject::hasChildElement() const {
     return queryExtension(&DocumentObjectExtension::extensionHasChildElement);
 }
@@ -1048,14 +1069,14 @@ DocumentObject *DocumentObject::resolve(const char *subname,
                 if(parent) {
                     // Link/LinkGroup has special visiblility handling of plain
                     // group, so keep ascending
-                    if(!sobj->hasExtension(GroupExtension::getExtensionClassTypeId(),false)) {
+                    if(!GeoFeatureGroupExtension::isNonGeoGroup(sobj)) {
                         *parent = sobj;
                         break;
                     }
                     for(auto ddot=dot-1;ddot!=subname;--ddot) {
                         if(*ddot != '.') continue;
                         auto sobj = getSubObject(std::string(subname,ddot-subname+1).c_str());
-                        if(!sobj->hasExtension(GroupExtension::getExtensionClassTypeId(),false)) {
+                        if(!GeoFeatureGroupExtension::isNonGeoGroup(sobj)) {
                             *parent = sobj;
                             break;
                         }
@@ -1186,3 +1207,4 @@ void DocumentObject::onPropertyStatusChanged(const Property &prop, unsigned long
     if(!Document::isAnyRestoring() && getNameInDocument() && getDocument())
         getDocument()->signalChangePropertyEditor(*getDocument(),prop);
 }
+

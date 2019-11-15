@@ -92,7 +92,13 @@ public:
             Base::Matrix4D *mat, bool transform, int depth) const;
 
     virtual int extensionSetElementVisible(const char *, bool) {return -1;}
+
     virtual int extensionIsElementVisible(const char *) const {return -1;}
+
+    virtual int extensionIsElementVisibleEx(const char *element, int) const {
+        return extensionIsElementVisible(element);
+    }
+
     virtual bool extensionHasChildElement() const {return false;}
 };
 
