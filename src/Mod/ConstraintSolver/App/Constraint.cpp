@@ -1,4 +1,5 @@
 #include "Constraint.h"
+#include "DualMath.h"
 
 using namespace FCS;
 using DualNumber = Base::DualNumber;
@@ -47,9 +48,9 @@ Base::DualNumber Constraint::netError(const ValueSet& on) const
 
     DualNumber acc;
     for(DualNumber v : buf){
-        acc = acc + v*v;
+        acc = acc + sq(v);
     }
-    return Base::pow(acc, 0.5); //#FIXME: use sqrt
+    return sqrt(acc);
 }
 
 double Constraint::netError() const
