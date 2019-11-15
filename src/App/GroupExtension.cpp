@@ -60,6 +60,9 @@ GroupExtension::GroupExtension()
     EXTENSION_ADD_PROPERTY_TYPE(_GroupTouched, (false), "Base", 
             PropertyType(Prop_Hidden|Prop_Transient),0);
 
+    EXTENSION_ADD_PROPERTY_TYPE(_GroupVersion,(0),"Base",
+            (App::PropertyType)(Prop_Hidden|Prop_ReadOnly|Prop_Output),"Internal use for migration");
+
     static const char *ExportModeEnum[] = {"Disabled", "By Visibility", "Child Query", "Both", 0};
     ExportMode.setEnums(ExportModeEnum);
     ExportMode.setStatus(Property::Hidden,true);
@@ -440,6 +443,20 @@ void GroupExtension::extensionOnChanged(const Property* p) {
                 return false;
             });
 
+            auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
+                    owner->getPropertyByName("HiddenChildren"));
+            if(hiddenChildren) {
+                auto hiddens = hiddenChildren->getValues();
+                for(auto it=hiddens.begin();it!=hiddens.end();) {
+                    if(!Group.find(it->first.c_str()))
+                        it = hiddens.erase(it);
+                    else
+                        ++it;
+                }
+                if(hiddenChildren->getSize()!=(int)hiddens.size())
+                    hiddenChildren->setValues(std::move(hiddens));
+            }
+
             if(error) {
                 // Since we are auto correcting, just issue a warning
                 //
@@ -471,12 +488,6 @@ void GroupExtension::extensionOnChanged(const Property* p) {
             bool touched = false;
             bool vis = owner->Visibility.getValue();
 
-            // _checkParentGroup is used by GeoFeatureExtensionGroup (actually
-            // its view provider) to inform us that we should not toggle
-            // children visibility here.
-            _checkParentGroup = _checkParentGroup 
-                && GeoFeatureGroupExtension::getGroupOfObject(owner);
-
             auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
                     owner->getPropertyByName("HiddenChildren"));
             if(hiddenChildren && hiddenChildren->getContainer()!=owner)
@@ -484,29 +495,30 @@ void GroupExtension::extensionOnChanged(const Property* p) {
 
             Base::FlagToggler<> guard(_togglingVisibility);
 
-            std::map<std::string,std::string> hc;
-
+            int visCount = 0;
             for(auto obj : Group.getValues()) {
                 if(!obj || !obj->getNameInDocument())
                     continue;
                 if(obj->Visibility.getValue()!=vis) {
                     if(vis && hiddenChildren && hiddenChildren->getValue(obj->getNameInDocument()))
                         continue;
-                    if(!_checkParentGroup) {
-                        touched = true;
-                        obj->Visibility.setValue(vis);
-                    }
-                } else if (!vis && hiddenChildren)
-                    hc.emplace(obj->getNameInDocument(),"");
+                    touched = true;
+                    obj->Visibility.setValue(vis);
+                }
+                if(vis) 
+                    ++visCount;
             }
 
-            if(!vis && hiddenChildren) {
-                // If all children are invisible, do not keep the record, so
-                // that next time this group is shown, all its children will be
-                // shown.
-                if(hc.size() == Group.getValues().size())
-                    hc.clear();
-                hiddenChildren->setValues(std::move(hc));
+            if(hiddenChildren && vis && !visCount) {
+                // In case all children is invisible, and the group itself is
+                // made visible. Set all children as visible.
+                for(auto obj : Group.getValues()) {
+                    if(!obj || !obj->getNameInDocument())
+                        continue;
+                    obj->Visibility.setValue(true);
+                }
+                std::map<std::string,std::string> hc;
+                hiddenChildren->setValues(hc);
             }
 
             if(touched) {
@@ -607,12 +619,39 @@ bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int r
     return true;
 }
 
+int GroupExtension::extensionIsElementVisibleEx(const char *subname, int reason) const {
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    if(subname != element) {
+        if(reason!=DocumentObject::GS_SELECT)
+            return -1;
+        return 0;
+    }
+    if(reason == DocumentObject::GS_DEFAULT && ExportMode.getValue()==ExportByChildQuery)
+        return 1;
+    return extensionIsElementVisible(element);
+}
+
 int GroupExtension::extensionIsElementVisible(const char *element) const {
     auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
             getExtendedObject()->getPropertyByName("HiddenChildren"));
     if(!hiddenChildren || hiddenChildren->getContainer()!=getExtendedObject())
         return -1;
     return hiddenChildren->getValue(element)?0:1;
+}
+
+int GroupExtension::extensionSetElementVisible(const char *element, bool vis)
+{
+    auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
+            getExtendedObject()->getPropertyByName("HiddenChildren"));
+    if(!hiddenChildren || hiddenChildren->getContainer()!=getExtendedObject())
+        return -1;
+    auto child = Group.find(element);
+    if (!child)
+        return -1;
+    Base::FlagToggler<> guard(_togglingVisibility);
+    hiddenChildren->setValue(element, (!vis) ? "" : nullptr);
+    child->Visibility.setValue(vis);
+    return 1;
 }
 
 void GroupExtension::onExtendedDocumentRestored() {
@@ -647,7 +686,6 @@ void GroupExtension::initSetup() {
 
 void GroupExtension::onExtendedSetupObject() {
     initSetup();
->>>>>>> 06d82a8613... vis
 }
 
 App::DocumentObjectExecReturn *GroupExtension::extensionExecute(void) {

@@ -1386,7 +1386,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
                     if(group->ExportMode.getValue() == App::GroupExtension::ExportByVisibility)
                         vis = 1;
                     else
-                        vis = groupLinks.back()->isElementVisible(childName.c_str());
+                        vis = groupLinks.back()->isElementVisibleEx(childName.c_str());
                 }
             }
         }

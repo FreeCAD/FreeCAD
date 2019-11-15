@@ -4752,7 +4752,9 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
             for (auto pp = parentItem->getParentItem(); pp; pp = pp->getParentItem()) {
                 auto obj = pp->object()->getObject();
                 if (!App::GeoFeatureGroupExtension::isNonGeoGroup(obj)) {
-                    visible = obj->isElementVisible(pObject->getNameInDocument());
+                    int vis = obj->isElementVisible(pObject->getNameInDocument());
+                    if (vis>=0)
+                        visible = vis;
                     break;
                 }
             }
