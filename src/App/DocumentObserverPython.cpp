@@ -59,29 +59,62 @@ void DocumentObserverPython::removeObserver(const Py::Object& obj)
 
 DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj)
 {
-#define signalCreatedDocument signalNewDocument
-#define signalCreatedObject signalNewObject
-#define signalRecomputedObject signalObjectRecomputed
-#define signalRecomputedDocument signalRecomputed
-#define signalActivateDocument signalActiveDocument
-#define signalDeletedDocument signalDeleteDocument
+#define FC_PY_ELEMENT_ARG0(_name1, _name2) do {\
+        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
+        if (!py##_name1.py.isNone())\
+            py##_name1.slot = App::GetApplication().signal##_name2.connect(\
+                    boost::bind(&DocumentObserverPython::slot##_name1, this));\
+    }\
+    while(0);
 
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name,...) do{\
-        FC_PY_GetCallable(obj.ptr(),"slot" #_name, py##_name);\
-        if(!py##_name.isNone())\
-            connect##_name = App::GetApplication().signal##_name.connect(\
-                    boost::bind(&DocumentObserverPython::slot##_name, this, ##__VA_ARGS__));\
-    }while(0);
 
-    FC_PY_DOC_OBSERVER
+#define FC_PY_ELEMENT_ARG1(_name1, _name2) do {\
+        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
+        if (!py##_name1.py.isNone())\
+            py##_name1.slot = App::GetApplication().signal##_name2.connect(\
+                    boost::bind(&DocumentObserverPython::slot##_name1, this, _1));\
+    }\
+    while(0);
+
+#define FC_PY_ELEMENT_ARG2(_name1, _name2) do {\
+        FC_PY_GetCallable(obj.ptr(), "slot" #_name1, py##_name1.py);\
+        if (!py##_name1.py.isNone())\
+            py##_name1.slot = App::GetApplication().signal##_name2.connect(\
+                    boost::bind(&DocumentObserverPython::slot##_name1, this, _1, _2));\
+    }\
+    while(0);
+
+    FC_PY_ELEMENT_ARG1(CreatedDocument, NewDocument)
+    FC_PY_ELEMENT_ARG1(DeletedDocument, DeleteDocument)
+    FC_PY_ELEMENT_ARG1(RelabelDocument, RelabelDocument)
+    FC_PY_ELEMENT_ARG1(ActivateDocument, ActiveDocument)
+    FC_PY_ELEMENT_ARG1(UndoDocument, UndoDocument)
+    FC_PY_ELEMENT_ARG1(RedoDocument, RedoDocument)
+    FC_PY_ELEMENT_ARG2(BeforeChangeDocument, BeforeChangeDocument)
+    FC_PY_ELEMENT_ARG2(ChangedDocument, ChangedDocument)
+    FC_PY_ELEMENT_ARG1(CreatedObject, NewObject)
+    FC_PY_ELEMENT_ARG1(DeletedObject, DeletedObject)
+    FC_PY_ELEMENT_ARG2(BeforeChangeObject, BeforeChangeObject)
+    FC_PY_ELEMENT_ARG2(ChangedObject, ChangedObject)
+    FC_PY_ELEMENT_ARG1(RecomputedObject, ObjectRecomputed)
+    FC_PY_ELEMENT_ARG1(BeforeRecomputeDocument, BeforeRecomputeDocument)
+    FC_PY_ELEMENT_ARG1(RecomputedDocument, Recomputed)
+    FC_PY_ELEMENT_ARG2(OpenTransaction, OpenTransaction)
+    FC_PY_ELEMENT_ARG1(CommitTransaction, CommitTransaction)
+    FC_PY_ELEMENT_ARG1(AbortTransaction, AbortTransaction)
+    FC_PY_ELEMENT_ARG0(Undo, Undo)
+    FC_PY_ELEMENT_ARG0(Redo, Redo)
+    FC_PY_ELEMENT_ARG1(BeforeCloseTransaction, BeforeCloseTransaction)
+    FC_PY_ELEMENT_ARG1(CloseTransaction, CloseTransaction)
+    FC_PY_ELEMENT_ARG2(StartSaveDocument, StartSaveDocument)
+    FC_PY_ELEMENT_ARG2(FinishSaveDocument, FinishSaveDocument)
+    FC_PY_ELEMENT_ARG1(AppendDynamicProperty, AppendDynamicProperty)
+    FC_PY_ELEMENT_ARG1(RemoveDynamicProperty, RemoveDynamicProperty)
+    FC_PY_ELEMENT_ARG2(ChangePropertyEditor, ChangePropertyEditor)
 }
 
 DocumentObserverPython::~DocumentObserverPython()
 {
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name,...) connect##_name.disconnect();
-    FC_PY_DOC_OBSERVER
 }
 
 void DocumentObserverPython::slotCreatedDocument(const App::Document& Doc)
