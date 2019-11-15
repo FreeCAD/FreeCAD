@@ -445,7 +445,7 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         shapes = []
         for child in Draft.getGroupContents(obj):
-            if child.isDerivedFrom("Part::Feature"):
+            if hasattr(child,'Shape'):
                 shapes.extend(child.Shape.Faces)
         return shapes
 
@@ -645,7 +645,7 @@ class ViewProviderBuildingPart:
 
         colors = []
         for child in Draft.getGroupContents(obj):
-            if child.isDerivedFrom("Part::Feature"):
+            if hasattr(child,'Shape'):
                 if len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
                     colors.extend(child.ViewObject.DiffuseColor)
                 else:

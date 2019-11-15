@@ -120,7 +120,7 @@ class _CommandRebar:
             if Draft.getType(obj) == "Structure":
                 if len(sel) > 1:
                     sk = sel[1].Object
-                    if sk.isDerivedFrom("Part::Feature"):
+                    if hasattr(sk,'Shape'):
                         if len(sk.Shape.Wires) == 1:
                             # we have a structure and a wire: create the rebar now
                             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
@@ -136,7 +136,7 @@ class _CommandRebar:
                     FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Rebar")
                     FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
                     return
-            elif obj.isDerivedFrom("Part::Feature"):
+            elif hasattr(obj,'Shape'):
                 if len(obj.Shape.Wires) == 1:
                     # we have only a wire: extract its support object, if available, and make the rebar
                     support = "None"
@@ -321,7 +321,7 @@ class _Rebar(ArchComponent.Component):
                     if obj in obj.InList[0].Armatures:
                         father = obj.InList[0]
         if father:
-            if father.isDerivedFrom("Part::Feature"):
+            if hasattr(father,'Shape'):
                 fathershape = father.Shape
 
         wire = obj.Base.Shape.Wires[0]

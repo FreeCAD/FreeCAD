@@ -187,18 +187,18 @@ class _CommandEquipment:
             base = ""
             mesh = ""
             if len(s) == 2:
-                if s[0].isDerivedFrom("Part::Feature"):
+                if hasattr(s[0],'Shape'):
                     base = s[0].Name
                 elif s[0].isDerivedFrom("Mesh::Feature"):
                     mesh = s[0].Name
-                if s[1].isDerivedFrom("Part::Feature"):
+                if hasattr(s[1],'Shape'):
                     if mesh:
                         base = s[1].Name
                 elif s[1].isDerivedFrom("Mesh::Feature"):
                     if base:
                         mesh = s[1].Name
             else:
-                if s[0].isDerivedFrom("Part::Feature"):
+                if hasattr(s[0],'Shape'):
                     base = s[0].Name
                 elif s[0].isDerivedFrom("Mesh::Feature"):
                     mesh = s[0].Name
@@ -315,7 +315,7 @@ class _Equipment(ArchComponent.Component):
         pl = obj.Placement
         if obj.Base:
             base = None
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 base = obj.Base.Shape.copy()
                 base = self.processSubShapes(obj,base,pl)
                 self.applyShape(obj,base,pl,allowinvalid=False,allownosolid=True)

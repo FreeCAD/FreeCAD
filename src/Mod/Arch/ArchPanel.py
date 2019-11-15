@@ -458,7 +458,7 @@ class _Panel(ArchComponent.Component):
 
         # base tests
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.isNull():
                     return
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
@@ -478,7 +478,7 @@ class _Panel(ArchComponent.Component):
         else:
             if not obj.Base:
                 return
-            elif obj.Base.isDerivedFrom("Part::Feature"):
+            elif hasattr(obj.Base,'Shape'):
                 if not obj.Base.Shape.Solids:
                     return
         if hasattr(obj,"Material"):
@@ -980,7 +980,7 @@ class PanelCut(Draft._DraftObject):
                 if obj.Source.Base:
                     baseobj = obj.Source.Base
                 if baseobj:
-                    if baseobj.isDerivedFrom("Part::Feature"):
+                    if hasattr(baseobj,'Shape'):
                         if baseobj.Shape.Solids:
                             center = baseobj.Shape.BoundBox.Center
                             diag = baseobj.Shape.BoundBox.DiagonalLength
@@ -1275,7 +1275,7 @@ class PanelSheet(Draft._DraftObject):
             area = obj.Width.Value * obj.Height.Value
             subarea = 0
             for v in obj.Group:
-                if v.isDerivedFrom("Part::Feature"):
+                if hasattr(v,'Shape'):
                     wires.extend(v.Shape.Wires)
                     if Draft.getType(v) == "PanelCut":
                         if v.Source:
@@ -1321,7 +1321,7 @@ class PanelSheet(Draft._DraftObject):
                             w.Placement = obj.Placement.multiply(w.Placement)
                         outp.append(w)
             if not ispanel:
-                if p.isDerivedFrom("Part::Feature"):
+                if hasattr(p,'Shape'):
                     for w in p.Shape.Wires:
                         w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:
@@ -1581,7 +1581,7 @@ class NestTaskPanel:
 
         s = FreeCADGui.Selection.getSelection()
         if len(s) == 1:
-            if s[0].isDerivedFrom("Part::Feature"):
+            if hasattr(s[0],'Shape'):
                 if len(s[0].Shape.Faces) == 1:
                     if not (s[0] in self.shapes):
                         self.form.Container.clear()
@@ -1598,7 +1598,7 @@ class NestTaskPanel:
 
         s = FreeCADGui.Selection.getSelection()
         for o in s:
-            if o.isDerivedFrom("Part::Feature"):
+            if hasattr(o,'Shape'):
                 if not o in self.shapes:
                     if o != self.container:
                         self.addObject(o,self.form.Shapes)

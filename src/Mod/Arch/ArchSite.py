@@ -596,20 +596,20 @@ class _Site(ArchIFC.IfcProduct):
 
     def execute(self,obj):
 
-        if not obj.isDerivedFrom("Part::Feature"): # old-style Site
+        if not hasattr(obj,'Shape'): # old-style Site
             return
 
         pl = obj.Placement
         shape = None
         if obj.Terrain:
-            if obj.Terrain.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Terrain,'Shape'):
                 if obj.Terrain.Shape:
                     if not obj.Terrain.Shape.isNull():
                         shape = obj.Terrain.Shape.copy()
         if shape:
             shells = []
             for sub in obj.Subtractions:
-                if sub.isDerivedFrom("Part::Feature"):
+                if hasattr(sub,'Shape'):
                     if sub.Shape:
                         if sub.Shape.Solids:
                             for sol in sub.Shape.Solids:
@@ -617,7 +617,7 @@ class _Site(ArchIFC.IfcProduct):
                                 shells.append(sol.Shells[0].common(shape.extrude(obj.ExtrusionVector)))
                                 shape = rest
             for sub in obj.Additions:
-                if sub.isDerivedFrom("Part::Feature"):
+                if hasattr(sub,'Shape'):
                     if sub.Shape:
                         if sub.Shape.Solids:
                             for sol in sub.Shape.Solids:

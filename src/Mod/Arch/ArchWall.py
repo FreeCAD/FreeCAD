@@ -68,7 +68,7 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     if FreeCAD.GuiUp:
         _ViewProviderWall(obj.ViewObject)
     if baseobj:
-        if baseobj.isDerivedFrom("Part::Feature") or baseobj.isDerivedFrom("Mesh::Feature"):
+        if hasattr(baseobj,'Shape') or baseobj.isDerivedFrom("Mesh::Feature"):
             obj.Base = baseobj
         else:
             FreeCAD.Console.PrintWarning(str(translate("Arch","Walls can only be based on Part or Mesh objects")))
@@ -602,7 +602,7 @@ class _Wall(ArchComponent.Component):
             if isinstance(bplates,list):
                 shps = []
                 # Test : if base is Sketch, then fuse all solid; otherwise, makeCompound
-                sketchBaseToFuse = obj.Base.isDerivedFrom("Sketcher::SketchObject")
+                sketchBaseToFuse = obj.Base.getLinkedObject().isDerivedFrom("Sketcher::SketchObject")
                 for b in bplates:
                     b.Placement = extdata[2].multiply(b.Placement)
                     b = b.extrude(extv)
@@ -627,7 +627,7 @@ class _Wall(ArchComponent.Component):
                 bplates.Placement = extdata[2].multiply(bplates.Placement)
                 base = bplates.extrude(extv)
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.isNull():
                     return
                 if not obj.Base.Shape.isValid():
@@ -760,7 +760,7 @@ class _Wall(ArchComponent.Component):
 
         # set the length property
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.Edges:
                     if not obj.Base.Shape.Faces:
                         if hasattr(obj.Base.Shape,"Length"):
@@ -779,7 +779,7 @@ class _Wall(ArchComponent.Component):
     def onChanged(self, obj, prop):
         if prop == "Length":
             if obj.Base and obj.Length.Value and hasattr(self,"oldLength") and (self.oldLength != None) and (self.oldLength != obj.Length.Value):
-                if obj.Base.isDerivedFrom("Part::Feature"):
+                if hasattr(obj.Base,'Shape'):
                     if len(obj.Base.Shape.Edges) == 1:
                         import DraftGeomUtils
                         e = obj.Base.Shape.Edges[0]
@@ -868,7 +868,7 @@ class _Wall(ArchComponent.Component):
                         elif varwidth:
                             layers.append(varwidth)
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
                         return None

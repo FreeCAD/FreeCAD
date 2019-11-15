@@ -70,7 +70,7 @@ def makeRoof(baseobj=None,facenr=0, angles=[45.,], run = [], idrel = [0,],thickn
         _ViewProviderRoof(obj.ViewObject)
     if baseobj:
         obj.Base = baseobj
-        if obj.Base.isDerivedFrom("Part::Feature"):
+        if hasattr(obj.Base,'Shape'):
             if obj.Base.Shape.Solids:
                 if FreeCAD.GuiUp:
                     obj.Base.ViewObject.hide()
@@ -156,7 +156,7 @@ class _CommandRoof:
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
                     return
-            if obj.isDerivedFrom("Part::Feature"):
+            if hasattr(obj,'Shape'):
                 if obj.Shape.Wires:
                     FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Roof"))
                     FreeCADGui.addModule("Arch")
@@ -591,7 +591,7 @@ class _Roof(ArchComponent.Component):
         base = None
         w = None
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.Solids:
                     base = obj.Base.Shape
                     #pl = obj.Base.Placement
@@ -670,7 +670,7 @@ class _Roof(ArchComponent.Component):
 
         "returns a volume to be subtracted"
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.Solids:
                     return obj.Shape
                 else :
