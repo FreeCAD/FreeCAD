@@ -65,6 +65,8 @@ public:
 
     virtual void extensionUpdateData(const App::Property*) override;
 
+    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/);
+
 protected:
     void buildExport() const;
 

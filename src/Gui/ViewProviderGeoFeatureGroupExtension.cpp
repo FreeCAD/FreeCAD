@@ -35,6 +35,8 @@
 #include "Command.h"
 #include "Application.h"
 #include "Document.h"
+#include <App/Application.h>
+#include <App/DocumentObserver.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include "SoFCUnifiedSelection.h"
 
@@ -222,6 +224,56 @@ void ViewProviderGeoFeatureGroupExtension::buildExport() const {
 
     if(group->_ExportChildren.getSize()!=(int)model.size())
         group->_ExportChildren.setValues(std::move(model));
+}
+
+int ViewProviderGeoFeatureGroupExtension::extensionReplaceObject(
+        App::DocumentObject* oldValue, App::DocumentObject* newValue)
+{
+    auto owner = getExtendedViewProvider()->getObject();
+    auto group = owner->getExtensionByType<App::GeoFeatureGroupExtension>();
+    if(!group)
+        return 0;
+
+    if(group->_ExportChildren.find(oldValue->getNameInDocument()) != oldValue)
+        return 0;
+
+    auto children = group->_ExportChildren.getValues();
+    for(auto &child : children) {
+        if(child == oldValue)
+            child = newValue;
+    }
+
+    std::vector<std::pair<App::DocumentObjectT, std::unique_ptr<App::Property> > > propChanges;
+
+    // Global search for affected links
+    for(auto doc : App::GetApplication().getDocuments()) {
+        for(auto o : doc->getObjects()) {
+            if(o == owner)
+                continue;
+            std::vector<App::Property*> props;
+            o->getPropertyList(props);
+            for(auto prop : props) {
+                auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+                if(!linkProp)
+                    continue;
+                std::unique_ptr<App::Property> copy(
+                        linkProp->CopyOnLinkReplace(owner,oldValue,newValue));
+                if(!copy)
+                    continue;
+                propChanges.emplace_back(App::DocumentObjectT(prop),std::move(copy));
+            }
+        }
+    }
+
+    group->Group.setValues({});
+    group->addObjects(children);
+
+    for(auto &v : propChanges) {
+        auto prop = v.first.getProperty();
+        if(prop)
+            prop->Paste(*v.second.get());
+    }
+    return 1;
 }
 
 namespace Gui {
