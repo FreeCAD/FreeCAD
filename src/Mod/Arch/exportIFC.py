@@ -483,7 +483,7 @@ def export(exportList,filename,colors=None,preferences=None):
                     for key,value in obj.IfcProperties.items():
                         pset, pname, ptype, pvalue = getPropertyData(key,value,preferences)
                         if pvalue is None:
-                            if preferences['DEBUG']: print("      property ", pname," ignored because no value found.)
+                            if preferences['DEBUG']: print("      property ", pname," ignored because no value found.")
                             continue
                         p = ifcbin.createIfcPropertySingleValue(str(pname),str(ptype),pvalue)
                         psets.setdefault(pset,[]).append(p)
