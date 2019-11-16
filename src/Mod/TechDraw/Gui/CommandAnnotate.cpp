@@ -82,7 +82,9 @@ void execQuadrant(Gui::Command* cmd);
 void execCenterLine(Gui::Command* cmd);
 void exec2LineCenterLine(Gui::Command* cmd);
 void exec2PointCenterLine(Gui::Command* cmd);
-
+std::vector<std::string> getSelectedSubElements(Gui::Command* cmd, 
+                                                TechDraw::DrawViewPart* &dvp,
+                                                std::string subType = "Edge");
 
 //===========================================================================
 // TechDraw_Leader
@@ -123,12 +125,12 @@ void CmdTechDrawLeaderLine::activated(int iMsg)
     if (!selection.empty()) {
         baseFeat =  dynamic_cast<TechDraw::DrawView *>(selection[0].getObject());
         if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("Can not attach leader.  No base View selected."));
             return;
         }
     } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("You must select a base View for the line."));
             return;
     }
@@ -238,7 +240,6 @@ void CmdTechDrawCosmeticVertexGrp::activated(int iMsg)
         default:
             Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n",iMsg);
     };
-//    Base::Console().Message("CMD::CosmeticVertexGrp - activated - exits\n");
 }
 
 Gui::Action * CmdTechDrawCosmeticVertexGrp::createAction(void)
@@ -321,96 +322,60 @@ void execCosmeticVertex(Gui::Command* cmd)
         return;
     }
 
+    //shapes not empty and only contains dvp
     TechDraw::DrawViewPart* baseFeat = nullptr;
     baseFeat =  dynamic_cast<TechDraw::DrawViewPart*>((*shapes.begin()));
-    if (baseFeat == nullptr) {
-        Base::Console().Message("CMD::CosmeticVertex - 1st shape is not DVP.  WTF?\n");
-        return;
-    }
 
     Gui::Control().showDialog(new TaskDlgCosVertex(baseFeat,
                                                    page));
-//    Base::Console().Message("execCosmeticVertex - exits\n");
 }
 
 void execMidpoints(Gui::Command* cmd)
 {
 //    Base::Console().Message("execMidpoints()\n");
-    TechDraw::DrawViewPart * objFeat = 0;
-    std::vector<std::string> SubNames;
+    TechDraw::DrawViewPart * dvp = nullptr;
+    std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
 
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
-        }
+    if ( (dvp == nullptr) || 
+         (selectedEdges.empty()) ) {
+        return;
     }
 
-    for (auto& s: SubNames) {
-        if (TechDraw::DrawUtil::getGeomTypeFromName(s) == "Edge") {
-            continue;
-        } else {
-            std::stringstream edgeMsg;
-            edgeMsg << "Please select only Edges for this function";
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr(edgeMsg.str().c_str()));
-            return;
-        }
-    }
-
-    const std::vector<TechDraw::BaseGeom*> edges = objFeat->getEdgeGeometry();
-    double scale = objFeat->getScale();
-    for (auto& s: SubNames) {
+    const std::vector<TechDraw::BaseGeom*> edges = dvp->getEdgeGeometry();
+    double scale = dvp->getScale();
+    for (auto& s: selectedEdges) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
         TechDraw::BaseGeom* geom = edges.at(GeoId);
         Base::Vector3d mid = geom->getMidPoint();
         mid = DrawUtil::invertY(mid);
-        objFeat->addCosmeticVertex(mid / scale);
+        dvp->addCosmeticVertex(mid / scale);
     }
-    cmd->updateActive();
+    dvp->recomputeFeature();
 }
 
 void execQuadrant(Gui::Command* cmd)
 {
 //    Base::Console().Message("execQuadrant()\n");
-    TechDraw::DrawViewPart * objFeat = 0;
-    std::vector<std::string> SubNames;
+    TechDraw::DrawViewPart* dvp = nullptr;
+    std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
 
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
-        }
+    if ( (dvp == nullptr) || 
+         (selectedEdges.empty()) ) {
+        return;
     }
 
-    for (auto& s: SubNames) {
-        if (TechDraw::DrawUtil::getGeomTypeFromName(s) == "Edge") {
-            continue;
-        } else {
-            std::stringstream edgeMsg;
-            edgeMsg << "Please select only Edges for this function";
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr(edgeMsg.str().c_str()));
-            return;
-        }
-    }
-
-    const std::vector<TechDraw::BaseGeom*> edges = objFeat->getEdgeGeometry();
-    double scale = objFeat->getScale();
-    for (auto& s: SubNames) {
+    const std::vector<TechDraw::BaseGeom*> edges = dvp->getEdgeGeometry();
+    double scale = dvp->getScale();
+    for (auto& s: selectedEdges) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
         TechDraw::BaseGeom* geom = edges.at(GeoId);
             std::vector<Base::Vector3d> quads = geom->getQuads();
             for (auto& q: quads) {
                 Base::Vector3d iq = DrawUtil::invertY(q);
-                objFeat->addCosmeticVertex(iq / scale);
+                dvp->addCosmeticVertex(iq / scale);
             }
     }
-    cmd->updateActive();
+    dvp->recomputeFeature();
 }
 
 DEF_STD_CMD_A(CmdTechDrawCosmeticVertex)
@@ -496,6 +461,8 @@ void CmdTechDrawMidpoints::activated(int iMsg)
         return;
     }
     execMidpoints(this);
+    updateActive();
+    Gui::Selection().clearSelection();
 }
 
 bool CmdTechDrawMidpoints::isActive(void)
@@ -533,6 +500,8 @@ void CmdTechDrawQuadrant::activated(int iMsg)
         return;
     }
     execQuadrant(this);
+    updateActive();
+    Gui::Selection().clearSelection();
 }
 
 bool CmdTechDrawQuadrant::isActive(void)
@@ -736,28 +705,28 @@ void execCenterLine(Gui::Command* cmd)
     if (!selection.empty()) {
         baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
         if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("No base View in Selection."));
             return;
         }
     } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("You must select a base View for the line."));
             return;
     }
 
-    std::vector<std::string> SubNames;
+    std::vector<std::string> subNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
+            subNames = (*itSel).getSubNames();
         }
     }
     std::vector<std::string> faceNames;
     std::vector<std::string> edgeNames;
-    for (auto& s: SubNames) {
+    for (auto& s: subNames) {
         std::string geomType = DrawUtil::getGeomTypeFromName(s);
         if (geomType == "Face") {
             faceNames.push_back(s);
@@ -768,7 +737,7 @@ void execCenterLine(Gui::Command* cmd)
 
     if ( (faceNames.empty()) && 
          (edgeNames.empty()) ) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("You must select a Face(s) or an existing CenterLine."));
         return;
     }
@@ -777,7 +746,7 @@ void execCenterLine(Gui::Command* cmd)
                                                         page,
                                                         faceNames));
     } else if (edgeNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("No CenterLine in selection."));
         return;
     } else {
@@ -788,7 +757,7 @@ void execCenterLine(Gui::Command* cmd)
         int clIdx = bg->sourceIndex();
         TechDraw::CenterLine* cl = baseFeat->getCenterLineByIndex(clIdx);
         if (cl == nullptr) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("No CenterLine in selection."));
             return;
         }
@@ -844,69 +813,38 @@ void exec2LineCenterLine(Gui::Command* cmd)
     if (!page) {
         return;
     }
+    TechDraw::DrawViewPart* dvp = nullptr;
+    std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
 
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* baseFeat = nullptr;
-    if (!selection.empty()) {
-        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-        if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                 QObject::tr("No base View in Selection."));
-            return;
-        }
-    } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                                 QObject::tr("You must select a base View for the line."));
-            return;
-    }
-
-    std::vector<std::string> SubNames;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++)  {
-        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-            baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
-        }
-    }
-    std::vector<std::string> faceNames;
-    std::vector<std::string> edgeNames;
-    for (auto& s: SubNames) {
-        std::string geomType = DrawUtil::getGeomTypeFromName(s);
-        if (geomType == "Edge") {
-            edgeNames.push_back(s);
-        }
-    }
-
-    if (edgeNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                             QObject::tr("You must select 2 lines or an existing CenterLine."));
+    if ( (dvp == nullptr) || 
+         (selectedEdges.empty()) ) {
         return;
     }
-    if (!edgeNames.empty() && (edgeNames.size() == 2)) {
-        Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
+
+    if (selectedEdges.size() == 2) {
+        Gui::Control().showDialog(new TaskDlgCenterLine(dvp,
                                                         page,
-                                                        edgeNames));
-    } else if (!edgeNames.empty() && (edgeNames.size() == 1)) {
-        std::string edgeName = edgeNames.front();
+                                                        selectedEdges));
+    } else if (selectedEdges.size() == 1) {
+        std::string edgeName = selectedEdges.front();
         int geomIdx = DrawUtil::getIndexFromName(edgeName);
-        const std::vector<TechDraw::BaseGeom  *> &geoms = baseFeat->getEdgeGeometry();
+        const std::vector<TechDraw::BaseGeom  *> &geoms = dvp->getEdgeGeometry();
         BaseGeom* bg = geoms.at(geomIdx);
         int clIdx = bg->sourceIndex();
-        TechDraw::CenterLine* cl = baseFeat->getCenterLineByIndex(clIdx);
+        TechDraw::CenterLine* cl = dvp->getCenterLineByIndex(clIdx);
         if (cl == nullptr) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("No CenterLine in selection."));
             return;
         } else {
-            Base::Console().Message("CMD::2LineCenter - show edit dialog here\n");
-            Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
+//            Base::Console().Message("CMD::2LineCenter - show edit dialog here\n");
+            Gui::Control().showDialog(new TaskDlgCenterLine(dvp,
                                                             page,
-                                                            edgeNames.front()));
+                                                            selectedEdges.front()));
         }
-    } else if (edgeNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
-                             QObject::tr("No CenterLine in selection."));
+    } else {  //not create, not edit, what is this???
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+                             QObject::tr("Selection not understood."));
         return;
     }
 }
@@ -962,28 +900,28 @@ void exec2PointCenterLine(Gui::Command* cmd)
     if (!selection.empty()) {
         baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
         if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("No base View in Selection."));
             return;
         }
     } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("You must select a base View for the line."));
             return;
     }
 
-    std::vector<std::string> SubNames;
+    std::vector<std::string> subNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
+            subNames = (*itSel).getSubNames();
         }
     }
     std::vector<std::string> edgeNames;
     std::vector<std::string> vertexNames;
-    for (auto& s: SubNames) {
+    for (auto& s: subNames) {
         std::string geomType = DrawUtil::getGeomTypeFromName(s);
         if (geomType == "Vertex") {
             vertexNames.push_back(s);
@@ -994,7 +932,7 @@ void exec2PointCenterLine(Gui::Command* cmd)
 
     if (vertexNames.empty() &&
         edgeNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("You must select 2 Vertexes or an existing CenterLine."));
         return;
     }
@@ -1007,7 +945,7 @@ void exec2PointCenterLine(Gui::Command* cmd)
                                                         page,
                                                         edgeNames.front()));
     } else if (vertexNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("No CenterLine in selection."));
         return;
     }
@@ -1070,17 +1008,20 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
     }
 
     TechDraw::DrawViewPart * objFeat = nullptr;
-    std::vector<std::string> SubNames;
+    std::vector<std::string> subNames;
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             objFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
+            subNames = (*itSel).getSubNames();
+        }
+        if (objFeat == nullptr) {
+            break;
         }
         std::vector<std::string> cv2Delete;
-        std::vector<int> ce2Delete;
-        std::vector<int> cl2Delete;
-        for (auto& s: SubNames) {
+        std::vector<std::string> ce2Delete;
+        std::vector<std::string> cl2Delete;
+        for (auto& s: subNames) {
             int idx = TechDraw::DrawUtil::getIndexFromName(s);
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
@@ -1088,26 +1029,24 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                 if ((bg != nullptr) &&
                     (bg->cosmetic) ) {
                     int source = bg->source();
-                    int sourceIndex = bg->sourceIndex();
+                    std::string tag = bg->getCosmeticTag();
                     if (source == 1) {  //this is a "CosmeticEdge"
-                        ce2Delete.push_back(sourceIndex);
+                        ce2Delete.push_back(tag);
                     } else if (source == 2) { //this is a "CenterLine"
-                        cl2Delete.push_back(sourceIndex);
+                        cl2Delete.push_back(tag);
                     } else {
                         Base::Console().Message(
                             "CMD::CosmeticEraserP - edge: %d is confused - source: %d\n",idx,source);
                     }
                 }
             } else if (geomType == "Vertex") {
-                //TODO: delete by tag
                 TechDraw::Vertex* tdv = objFeat->getProjVertexByIndex(idx);
                 if (tdv != nullptr) {
-//                    int delIndex = tdv->cosmeticLink;
                     std::string delTag = tdv->cosmeticTag;
                     if (!delTag.empty()) {
                         cv2Delete.push_back(delTag);
                     } else {
-                        Base::Console().Message("CMD::eraser - geom: %d has no cv\n", idx);
+                        Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
                     }
                 } else {
                     Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
@@ -1120,26 +1059,16 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
 
         }
         if (!cv2Delete.empty()) {
-            for (auto& cvTag: cv2Delete) {
-                objFeat->removeCosmeticVertex(cvTag);
-            }
-            objFeat->enforceRecompute();
+            objFeat->removeCosmeticVertex(cv2Delete);
         }
         
         if (!ce2Delete.empty()) {
-            std::sort(ce2Delete.begin(), ce2Delete.end());
-            auto itce = ce2Delete.rbegin();
-            for ( ; itce != ce2Delete.rend(); itce++) {
-                objFeat->removeCosmeticEdge((*itce));
-            }
+            objFeat->removeCosmeticEdge(ce2Delete);
         }
         if (!cl2Delete.empty()) {
-            std::sort(cl2Delete.begin(), cl2Delete.end());
-            auto itcl = cl2Delete.rbegin();
-            for ( ; itcl != cl2Delete.rend(); itcl++) {
-                objFeat->removeCenterLine((*itcl));
-            }
+            objFeat->removeCenterLine(cl2Delete);
         }
+    objFeat->recomputeFeature();
     }
 }
 
@@ -1189,27 +1118,27 @@ void CmdTechDrawDecorateLine::activated(int iMsg)
     if (!selection.empty()) {
         baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
         if( baseFeat == nullptr ) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("No View in Selection."));
             return;
         }
     } else {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("You must select a View and/or line(s)."));
             return;
     }
 
-    std::vector<std::string> SubNames;
+    std::vector<std::string> subNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
             baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
-            SubNames = (*itSel).getSubNames();
+            subNames = (*itSel).getSubNames();
         }
     }
     std::vector<std::string> edgeNames;
-    for (auto& s: SubNames) {
+    for (auto& s: subNames) {
         std::string geomType = DrawUtil::getGeomTypeFromName(s);
         if (geomType == "Edge") {
             edgeNames.push_back(s);
@@ -1379,3 +1308,45 @@ void CreateTechDrawCommandsAnnotate(void)
 //===========================================================================
 // Selection Validation Helpers
 //===========================================================================
+
+std::vector<std::string> getSelectedSubElements(Gui::Command* cmd,
+                                                TechDraw::DrawViewPart* &dvp,
+                                                std::string subType)
+{
+//    Base::Console().Message("getSelectedSubElements() - dvp: %X\n", dvp);
+    std::vector<std::string> selectedSubs;
+    std::vector<std::string> subNames;
+    dvp = nullptr;
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            dvp = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            subNames = (*itSel).getSubNames();
+            break;
+        }
+    }
+    if (dvp == nullptr) {
+        std::stringstream edgeMsg;
+        edgeMsg << "No Part View in Selection";
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+                             QObject::tr(edgeMsg.str().c_str()));
+            return selectedSubs;
+    }
+    
+    for (auto& s: subNames) {
+        if (TechDraw::DrawUtil::getGeomTypeFromName(s) == subType) {
+            selectedSubs.push_back(s);
+        }
+    }
+
+    if (selectedSubs.empty()) {
+        std::stringstream edgeMsg;
+        edgeMsg << "No " << subType << " in Selection";
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
+                            QObject::tr(edgeMsg.str().c_str()));
+        return selectedSubs;
+    }
+
+    return selectedSubs;
+}

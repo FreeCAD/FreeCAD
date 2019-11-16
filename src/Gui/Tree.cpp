@@ -2572,7 +2572,7 @@ void TreeWidget::expandSelectedItems(TreeItemMode mode)
 
     for(auto item : selectedItems()) {
         switch (mode) {
-        case Gui::ExpandPath: {
+        case TreeItemMode::ExpandPath: {
             QTreeWidgetItem* parentItem = item->parent();
             while (parentItem) {
                 parentItem->setExpanded(true);
@@ -2581,13 +2581,13 @@ void TreeWidget::expandSelectedItems(TreeItemMode mode)
             item->setExpanded(true);
             break;
         }
-        case Gui::ExpandItem:
+        case TreeItemMode::ExpandItem:
             item->setExpanded(true);
             break;
-        case Gui::CollapseItem:
+        case TreeItemMode::CollapseItem:
             item->setExpanded(false);
             break;
-        case Gui::ToggleItem:
+        case TreeItemMode::ToggleItem:
             if (item->isExpanded())
                 item->setExpanded(false);
             else
@@ -2597,8 +2597,8 @@ void TreeWidget::expandSelectedItems(TreeItemMode mode)
     }
 }
 
-
-void TreeWidget::setupText() {
+void TreeWidget::setupText()
+{
     this->headerItem()->setText(0, tr("Labels & Attributes"));
     this->headerItem()->setText(1, tr("Description"));
     this->rootItem->setText(0, tr("Application"));
@@ -2638,7 +2638,8 @@ void TreeWidget::setupText() {
     this->recomputeObjectAction->setStatusTip(tr("Recompute the selected object"));
 }
 
-void TreeWidget::syncView(ViewProviderDocumentObject *vp) {
+void TreeWidget::syncView(ViewProviderDocumentObject *vp)
+{
     if(currentDocItem && TreeParams::Instance()->SyncView()) {
         bool focus = hasFocus();
         currentDocItem->document()->setActiveView(vp);
@@ -2647,7 +2648,8 @@ void TreeWidget::syncView(ViewProviderDocumentObject *vp) {
     }
 }
 
-void TreeWidget::onShowHidden() {
+void TreeWidget::onShowHidden()
+{
     if (!this->contextItem) return;
     DocumentItem *docItem = nullptr;
     if(this->contextItem->type() == DocumentType)
@@ -2658,13 +2660,13 @@ void TreeWidget::onShowHidden() {
         docItem->setShowHidden(showHiddenAction->isChecked());
 }
 
-void TreeWidget::onHideInTree() {
+void TreeWidget::onHideInTree()
+{
     if (this->contextItem && this->contextItem->type() == ObjectType) {
         auto item = static_cast<DocumentObjectItem*>(contextItem);
         item->object()->ShowInTree.setValue(!hideInTreeAction->isChecked());
     }
 }
-
 
 void TreeWidget::changeEvent(QEvent *e)
 {
@@ -3739,17 +3741,18 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
 {
     getTree()->_updateStatus(false);
 
-    if((mode==Gui::ExpandItem||mode==Gui::ExpandPath) 
-            && obj.getDocument()->getDocument()->testStatus(App::Document::Restoring)) 
-    {
-        if(!_ExpandInfo)
+    if ((mode == TreeItemMode::ExpandItem ||
+         mode == TreeItemMode::ExpandPath) &&
+        obj.getDocument()->getDocument()->testStatus(App::Document::Restoring)) {
+        if (!_ExpandInfo)
             _ExpandInfo.reset(new ExpandInfo);
-        _ExpandInfo->emplace(std::string("*")+obj.getObject()->getNameInDocument(),ExpandInfoPtr());
+        _ExpandInfo->emplace(std::string("*") + obj.getObject()->getNameInDocument(),ExpandInfoPtr());
         return;
     }
-    if(parent && parent->getDocument()!=document()->getDocument()) {
+
+    if (parent && parent->getDocument()!=document()->getDocument()) {
         auto it = getTree()->DocumentMap.find(Application::Instance->getDocument(parent->getDocument()));
-        if(it!=getTree()->DocumentMap.end())
+        if (it!=getTree()->DocumentMap.end())
             it->second->slotExpandObject(obj,mode,parent,subname);
         return;
     }
@@ -3761,7 +3764,7 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
         assert(item->parent());
 
         switch (mode) {
-        case Gui::ExpandPath:
+        case TreeItemMode::ExpandPath:
             if(!parent) {
                 QTreeWidgetItem* parentItem = item->parent();
                 while (parentItem) {
@@ -3772,7 +3775,7 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
                 break;
             }
             // fall through
-        case Gui::ExpandItem: 
+        case TreeItemMode::ExpandItem: 
             if(!parent) {
                 if(item->parent()->isExpanded()) 
                     item->setExpanded(true);
@@ -3789,10 +3792,10 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
                 item->setExpanded(true);
             }
             break;
-        case Gui::CollapseItem:
+        case TreeItemMode::CollapseItem:
             item->setExpanded(false);
             break;
-        case Gui::ToggleItem:
+        case TreeItemMode::ToggleItem:
             if (item->isExpanded())
                 item->setExpanded(false);
             else
@@ -4376,25 +4379,25 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     };
 
     switch (high) {
-    case Gui::Bold:
+    case HighlightMode::Bold:
         f.setBold(set);
         break;
-    case Gui::Italic:
+    case HighlightMode::Italic:
         f.setItalic(set);
         break;
-    case Gui::Underlined:
+    case HighlightMode::Underlined:
         f.setUnderline(set);
         break;
-    case Gui::Overlined:
+    case HighlightMode::Overlined:
         f.setOverline(set);
         break;
-    case Gui::Blue:
+    case HighlightMode::Blue:
         highlight(QColor(200,200,255));
         break;
-    case Gui::LightBlue:
+    case HighlightMode::LightBlue:
         highlight(QColor(230,230,255));
         break;
-    case Gui::UserDefined:
+    case HighlightMode::UserDefined:
     {
         QColor color(230,230,255);
         if (set) {
@@ -4425,7 +4428,8 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     this->setFont(0,f);
 }
 
-const char *DocumentObjectItem::getTreeName() const {
+const char *DocumentObjectItem::getTreeName() const
+{
     return myData->getTreeName();
 }
 
@@ -4434,7 +4438,8 @@ Gui::ViewProviderDocumentObject* DocumentObjectItem::object() const
     return myData->viewObject;
 }
 
-void DocumentObjectItem::testStatus(bool resetStatus) {
+void DocumentObjectItem::testStatus(bool resetStatus)
+{
     QIcon icon,icon2;
     testStatus(resetStatus,icon,icon2);
 }

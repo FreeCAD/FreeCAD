@@ -60,7 +60,7 @@ public:
     static App::Color getDefEdgeColor();
     static int getDefEdgeStyle();
 
-    void dump(char* title);
+    void dump(const char* title);
     std::string toString() const;
 };
 
@@ -75,8 +75,10 @@ public:
     virtual ~CosmeticVertex() = default;
 
     std::string toString(void) const;
-    void dump(char* title);
+    void dump(const char* title);
     Base::Vector3d scaled(double factor);
+
+    static bool restoreCosmetic(void);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -107,7 +109,7 @@ protected:
 
 };
 
-class TechDrawExport CosmeticEdge : public Base::Persistence
+class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::BaseGeom
 {
     TYPESYSTEM_HEADER();
 public:
@@ -123,7 +125,7 @@ public:
 
     virtual std::string toString(void) const;
 /*    virtual bool fromCSV(std::string& lineSpec);*/
-    void dump(char* title);
+    void dump(const char* title);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -138,6 +140,7 @@ public:
     LineFormat m_format;
 
     boost::uuids::uuid getTag() const;
+    virtual std::string getTagAsString(void) const;
 
 protected:
     //Uniqueness
@@ -176,7 +179,6 @@ public:
         VERTEX
     };
 
-
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
@@ -211,7 +213,7 @@ public:
                                           int vert, double ext,
                                           double m_hShift, double m_vShift,
                                           double rotate, bool flip);
-    void dump(char* title);
+    void dump(const char* title);
     void setShifts(double h, double v);
     double getHShift(void);
     double getVShift(void);
@@ -236,9 +238,15 @@ public:
     LineFormat m_format;
     bool m_flip2Line;
 
+    TechDraw::BaseGeom* m_geometry;
+
     //Uniqueness
     boost::uuids::uuid getTag() const;
+    virtual std::string getTagAsString(void) const;
+
 protected:
+    void initialize();
+    
     void createNewTag();
     void assignTag(const TechDraw::CenterLine* cl);
 
@@ -267,9 +275,9 @@ public:
     GeomFormat* clone(void) const;
 
     std::string toString(void) const;
-    void dump(char* title) const;
+    void dump(const char* title) const;
 
-    int m_geomIndex;
+    int m_geomIndex; 
     LineFormat m_format;
 
     //Uniqueness

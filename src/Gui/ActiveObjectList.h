@@ -59,7 +59,7 @@ namespace Gui
             return dynamic_cast<_T>(getObject(it->second,true,parent,subname));
         }
         void setObject(App::DocumentObject*, const char*, const char *subname=0,
-                const Gui::HighlightMode& m = Gui::UserDefined);
+                const Gui::HighlightMode& m = HighlightMode::UserDefined);
         bool hasObject(const char*)const;
         void objectDeleted(const ViewProviderDocumentObject& viewProviderIn);
         bool hasObject(App::DocumentObject *obj, const char *, const char *subname=0) const;

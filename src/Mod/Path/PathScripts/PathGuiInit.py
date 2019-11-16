@@ -48,6 +48,7 @@ def Startup():
         from PathScripts import PathDressupDogbone
         from PathScripts import PathDressupDragknife
         from PathScripts import PathDressupRampEntry
+        from PathScripts import PathDressupPathBoundaryGui
         from PathScripts import PathDressupTagGui
         from PathScripts import PathDressupLeadInOut
         from PathScripts import PathDrillingGui

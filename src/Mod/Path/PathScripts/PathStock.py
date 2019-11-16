@@ -233,9 +233,22 @@ def SetupStockObject(obj, stockType):
         obj.ViewObject.Transparency = 90
         obj.ViewObject.DisplayMode = 'Wireframe'
 
+class FakeJob(object):
+    def __init__(self, base):
+        self.Group = [base]
+
+def _getBase(job):
+    if job and hasattr(job, 'Model'):
+        return job.Model
+    if job:
+        import PathScripts.PathUtils as PathUtils
+        job = PathUtils.findParentJob(job)
+        return job.Model if job else None
+    return None
+
 def CreateFromBase(job, neg=None, pos=None, placement=None):
     PathLog.track(job.Label, neg, pos, placement)
-    base = job.Model if job else None
+    base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     obj.Proxy = StockFromBase(obj, base)
 
@@ -258,7 +271,7 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
     return obj
 
 def CreateBox(job, extent=None, placement=None):
-    base = job.Model if job else None
+    base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     obj.Proxy = StockCreateBox(obj)
 
@@ -283,7 +296,7 @@ def CreateBox(job, extent=None, placement=None):
     return obj
 
 def CreateCylinder(job, radius=None, height=None, placement=None):
-    base = job.Model if job else None
+    base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
     obj.Proxy = StockCreateCylinder(obj)
 

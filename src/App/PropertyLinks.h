@@ -1125,6 +1125,10 @@ public:
 
     virtual void setAllowPartial(bool enable) override;
 
+    const char *getFilePath() const {
+        return filePath.c_str();
+    }
+
 protected:
     void unlink();
     void detach();

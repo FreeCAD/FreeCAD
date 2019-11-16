@@ -68,15 +68,19 @@ def isSolid(obj):
     shape = Part.getShape(obj)
     return not shape.isNull() and shape.Volume and shape.isClosed()
 
+def opProperty(op, prop):
+    '''opProperty(op, prop) ... return the value of property prop of the underlying operation (or None if prop does not exist)'''
+    if hasattr(op, prop):
+        return getattr(op, prop)
+    if hasattr(op, 'Base'):
+        return opProperty(op.Base, prop)
+    return None
+
 def toolControllerForOp(op):
     '''toolControllerForOp(op) ... return the tool controller used by the op.
     If the op doesn't have its own tool controller but has a Base object, return its tool controller.
     Otherwise return None.'''
-    if hasattr(op, 'ToolController'):
-        return op.ToolController
-    if hasattr(op, 'Base'):
-        return toolControllerForOp(op.Base)
-    return None
+    return opProperty(op, 'ToolController')
 
 def getPublicObject(obj):
     '''getPublicObject(obj) ... returns the object which should be used to reference a feature of the given object.'''

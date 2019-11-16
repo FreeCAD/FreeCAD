@@ -14,7 +14,7 @@
    <string>TechDraw General</string>
   </property>
   <property name="toolTip">
-   <string>Default value for new Page</string>
+   <string/>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="3" column="0">
@@ -27,6 +27,9 @@
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="1">
          <widget class="Gui::PrefFileChooser" name="pfc_DefTemp">
+          <property name="toolTip">
+           <string>Default template file for new pages</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>TemplateFile</cstring>
           </property>
@@ -58,6 +61,9 @@
         </item>
         <item row="1" column="1">
          <widget class="Gui::PrefFileChooser" name="pfc_DefDir">
+          <property name="toolTip">
+           <string>Starting directory for menu 'Insert new page using Template'</string>
+          </property>
           <property name="mode">
            <enum>Gui::FileChooser::Directory</enum>
           </property>
@@ -86,7 +92,7 @@
         <item row="2" column="1">
          <widget class="Gui::PrefFileChooser" name="pfc_HatchFile">
           <property name="toolTip">
-           <string>Location of default svg/png fill file</string>
+           <string>Default SVG or bitmap file for hatching</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>FileHatch</cstring>
@@ -106,7 +112,7 @@
         <item row="5" column="1">
          <widget class="Gui::PrefFileChooser" name="pfc_FilePattern">
           <property name="toolTip">
-           <string>Default location for PAT file</string>
+           <string>Default PAT pattern definition file for hatching</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>FilePattern</cstring>
@@ -119,7 +125,7 @@
         <item row="3" column="1">
          <widget class="Gui::PrefFileChooser" name="pfc_LineGroup">
           <property name="toolTip">
-           <string>Alternate Line Group file</string>
+           <string>Alternate file for personal LineGroup definition</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LineGroupFile</cstring>
@@ -152,7 +158,7 @@
         <item row="0" column="2">
          <widget class="Gui::PrefLineEdit" name="le_NamePattern">
           <property name="toolTip">
-           <string>Default PAT pattern</string>
+           <string>Name of the default PAT pattern</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>NamePattern</cstring>
@@ -247,7 +253,7 @@
         <item row="0" column="2">
          <widget class="Gui::PrefFontBox" name="pfb_LabelFont">
           <property name="toolTip">
-           <string>Font for View Labels</string>
+           <string>Font for labels</string>
           </property>
           <property name="currentFont">
            <font>
@@ -298,7 +304,7 @@
         <item row="1" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="plsb_LabelSize">
           <property name="toolTip">
-           <string>View Label size in units</string>
+           <string>Label size</string>
           </property>
           <property name="value">
            <double>8.000000000000000</double>
@@ -314,7 +320,7 @@
         <item row="2" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="plsb_TemplateDot">
           <property name="toolTip">
-           <string>Size of editable text marker in Templates (green dot).</string>
+           <string>Size of editable text marker in templates (green dots)</string>
           </property>
           <property name="value">
            <double>3.000000000000000</double>
@@ -489,7 +495,7 @@
         <item row="0" column="2">
          <widget class="Gui::PrefColorButton" name="pcb_Normal">
           <property name="toolTip">
-           <string>Normal lne color</string>
+           <string>Normal line color</string>
           </property>
           <property name="color">
            <color>
@@ -522,7 +528,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="lbl_PreSelect">
           <property name="text">
-           <string>PreSelected</string>
+           <string>Preselected</string>
           </property>
          </widget>
         </item>
@@ -536,7 +542,7 @@
         <item row="1" column="6">
          <widget class="Gui::PrefColorButton" name="pcb_Surface">
           <property name="toolTip">
-           <string>Section Face color</string>
+           <string>Section face color</string>
           </property>
           <property name="color">
            <color>
@@ -563,7 +569,7 @@
         <item row="2" column="6">
          <widget class="Gui::PrefColorButton" name="pcb_Hatch">
           <property name="toolTip">
-           <string>Section Face Hatch color</string>
+           <string>Section face hatch color</string>
           </property>
           <property name="color">
            <color>
@@ -590,14 +596,14 @@
         <item row="3" column="4">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Geom Hatch</string>
+           <string>Geometric Hatch</string>
           </property>
          </widget>
         </item>
         <item row="3" column="6">
          <widget class="Gui::PrefColorButton" name="pcb_GeomHatch">
           <property name="toolTip">
-           <string>Default geometric hatch color</string>
+           <string>Geometric hatch color</string>
           </property>
           <property name="color">
            <color>
@@ -617,7 +623,7 @@
         <item row="4" column="2">
          <widget class="Gui::PrefColorButton" name="pcb_Face">
           <property name="toolTip">
-           <string>Default Face Color</string>
+           <string>Face color</string>
           </property>
           <property name="color">
            <color>
@@ -688,6 +694,9 @@
         </item>
         <item row="0" column="1">
          <widget class="Gui::PrefComboBox" name="cb_Angle">
+          <property name="toolTip">
+           <string>First- or third-angle projection</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>ProjectionAngle</cstring>
           </property>
@@ -762,7 +771,10 @@
         <item row="2" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_Faces">
           <property name="toolTip">
-           <string>Perform/skip face processing</string>
+           <string>If checked, TechDraw will attempt to build faces using the
+line segments returned by the hidden line removal algorithm.
+Faces must be detected in order to use hatching, but there
+can be a performance penalty in complex models.</string>
           </property>
           <property name="text">
            <string>Detect Faces</string>
@@ -781,7 +793,7 @@
         <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_SectionEdges">
           <property name="toolTip">
-           <string>Debugging option</string>
+           <string>Highlights the border of the section cut in section views</string>
           </property>
           <property name="text">
            <string>Show Section Edges</string>
@@ -797,10 +809,11 @@
         <item row="4" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_AutoDist">
           <property name="toolTip">
-           <string>Automatically distribute secondary views.</string>
+           <string>Automatically distribute secondary views
+for ProjectionGroups</string>
           </property>
           <property name="text">
-           <string>AutoDistribute Secondary Views</string>
+           <string>Auto-distribute Secondary Views</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -829,10 +842,10 @@
         <item row="6" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_Global">
           <property name="toolTip">
-           <string>Update drawings with changes in 3D model</string>
+           <string>Whether or not pages are updated every time the 3D model is changed</string>
           </property>
           <property name="text">
-           <string>Update with 3D (Global Policy)</string>
+           <string>Update With 3D (global policy)</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -848,10 +861,11 @@
         <item row="7" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_Override">
           <property name="toolTip">
-           <string>Allow Page to override Global update setting</string>
+           <string>Whether or not a page's 'Keep Update' property
+can override the global 'Update With 3D' parameter</string>
           </property>
           <property name="text">
-           <string>Allow Page Override</string>
+           <string>Allow Page Override (global policy)</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -867,10 +881,11 @@
         <item row="8" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_PageUpdate">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Update Pages as scheduled or skip updates. This is the default setting for new Pages.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Update pages as scheduled or skip updates.
+Checked is the default for new pages.</string>
           </property>
           <property name="text">
-           <string>Keep Page Up to Date (default)</string>
+           <string>Keep Page Up To Date (default)</string>
           </property>
           <property name="checked">
            <bool>true</bool>

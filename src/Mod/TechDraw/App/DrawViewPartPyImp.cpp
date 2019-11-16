@@ -70,6 +70,38 @@ std::string DrawViewPartPy::representation(void) const
 }
 //TODO: gets & sets for geometry
 
+PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
+{
+    (void) args;
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    PyObject* pEdgeList = PyList_New(0);
+    std::vector<TechDraw::BaseGeom*> geoms = dvp->getEdgeGeometry();
+    for (auto& g: geoms) {
+        if (g->hlrVisible) {
+            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
+            PyList_Append(pEdgeList, pEdge);
+        }
+    }
+
+    return pEdgeList;
+}
+
+PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
+{
+    (void) args;
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    PyObject* pEdgeList = PyList_New(0);
+    std::vector<TechDraw::BaseGeom*> geoms = dvp->getEdgeGeometry();
+    for (auto& g: geoms) {
+        if (!g->hlrVisible) {
+            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->occEdge));
+            PyList_Append(pEdgeList, pEdge);
+        }
+    }
+
+    return pEdgeList;
+}
+
 PyObject* DrawViewPartPy::clearCosmeticVertices(PyObject *args)
 {
     (void) args;
@@ -238,7 +270,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     // right result, but ugly:
     // Qt angles are cw, OCC angles are CCW
     // Qt -y is up, OCC -y is down
-    
+
     TopoDS_Edge edge = aMakeEdge.Edge();
     int idx = dvp->addCosmeticEdge(edge);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
@@ -314,7 +346,7 @@ PyObject* DrawViewPartPy::getCosmeticEdgeByGeom(PyObject *args)
         throw Py::TypeError("expected (index)");
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
-    
+
     TechDraw::BaseGeom* bg = dvp->getGeomByIndex(idx);
     if (bg == nullptr) {
         Base::Console().Error("DVPPI::getCEbyGeom - geom: %d not found\n",idx);
@@ -333,21 +365,21 @@ PyObject* DrawViewPartPy::getCosmeticEdgeByGeom(PyObject *args)
     return result;
 }
 
-PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
-{
-//    Base::Console().Message("DVPPI::replaceCosmeticEdge()\n");
-    int idx = 0;
-    PyObject* result = Py_None;
-    PyObject* pCE;
-    if (!PyArg_ParseTuple(args, "iO!", &idx, &(TechDraw::CosmeticEdgePy::Type), &pCE)) {
-        throw Py::TypeError("expected (index, CosmeticEdge)");
-    }
-    TechDraw::CosmeticEdge* ce = static_cast<CosmeticEdgePy*>(pCE)->getCosmeticEdgePtr();
-    DrawViewPart* dvp = getDrawViewPartPtr();
-    dvp->replaceCosmeticEdge(idx, ce);
+//PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
+//{
+////    Base::Console().Message("DVPPI::replaceCosmeticEdge()\n");
+//    int idx = 0;
+//    PyObject* result = Py_None;
+//    PyObject* pCE;
+//    if (!PyArg_ParseTuple(args, "iO!", &idx, &(TechDraw::CosmeticEdgePy::Type), &pCE)) {
+//        throw Py::TypeError("expected (index, CosmeticEdge)");
+//    }
+//    TechDraw::CosmeticEdge* ce = static_cast<CosmeticEdgePy*>(pCE)->getCosmeticEdgePtr();
+//    DrawViewPart* dvp = getDrawViewPartPtr();
+//    dvp->replaceCosmeticEdge(idx, ce);
 
-    return result;
-}
+//    return result;
+//}
 
 PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 {
@@ -502,7 +534,7 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
                                  visible);
         TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(idx,
                                                                fmt);
-//                    int idx = 
+//                    int idx =
         dvp->addGeomFormat(newGF);
     }
     return Py_None;

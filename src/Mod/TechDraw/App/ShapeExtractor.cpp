@@ -59,9 +59,9 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         auto shape = Part::Feature::getShape(l);    //finds shape within DocObj??
         if(!shape.IsNull()) {
 //            BRepTools::Write(shape, "DVPgetShape.brep");            //debug
-            if (shape.ShapeType() > TopAbs_COMPSOLID)  {
+            if (shape.ShapeType() > TopAbs_COMPSOLID)  {              //simple shape
                 sourceShapes.push_back(shape);
-            } else {
+            } else {                                                  //complex shape
                 std::vector<TopoDS_Shape> drawable = extractDrawableShapes(shape);
                 if (!drawable.empty()) {
                     sourceShapes.insert(sourceShapes.end(),drawable.begin(),drawable.end());
@@ -98,6 +98,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
 
 std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::DocumentObject* docObj)
 {
+//    Base::Console().Message("SE::getShapesFromObject(%s)\n", docObj->getNameInDocument());
     std::vector<TopoDS_Shape> result;
     
     const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(docObj);
@@ -146,6 +147,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
 
 TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObject*> links)
 {
+//    Base::Console().Message("SE::getShapesFused()\n");
     TopoDS_Shape baseShape = getShapes(links);
     if (!baseShape.IsNull()) {
         TopoDS_Iterator it(baseShape);
@@ -166,20 +168,56 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
     return baseShape;
 }
 
-std::vector<TopoDS_Shape>  ShapeExtractor::extractDrawableShapes(const TopoDS_Shape shapeIn)
+std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Shape shapeIn)
 {
-    //this pulls solids out of compound
-    //should it pull Shells, Faces, Wires, Edges, Vertexes too???
+//    Base::Console().Message("SE::extractDrawableShapes()\n");
     std::vector<TopoDS_Shape> result;
-    if ( (shapeIn.ShapeType() == TopAbs_COMPOUND) ||
-         (shapeIn.ShapeType() == TopAbs_COMPSOLID) )  {    //not sure about this one
+    std::vector<TopoDS_Shape> extShapes;            //extracted Shapes (solids mostly)
+    std::vector<TopoDS_Shape> extEdges;             //extracted loose Edges
+    if (shapeIn.ShapeType() == TopAbs_COMPOUND) {          //Compound is most general shape type
+        //getSolids from Compound
         TopExp_Explorer expSolid(shapeIn, TopAbs_SOLID);
         for (int i = 1; expSolid.More(); expSolid.Next(), i++) {
             TopoDS_Solid s = TopoDS::Solid(expSolid.Current());
             if (!s.IsNull()) {
-                result.push_back(s);
+                extShapes.push_back(s);
             }
         }
+        //get edges not part of a solid
+        //???? should this look for Faces(Wires?) before Edges?
+        TopExp_Explorer expEdge(shapeIn, TopAbs_EDGE, TopAbs_SOLID);
+        for (int i = 1; expEdge.More(); expEdge.Next(), i++) {
+            TopoDS_Shape s = expEdge.Current();
+            if (!s.IsNull()) {
+                extEdges.push_back(s);
+            }
+        }
+    } else if (shapeIn.ShapeType() == TopAbs_COMPSOLID) {
+        //get Solids from compSolid
+        TopExp_Explorer expSolid(shapeIn, TopAbs_SOLID);
+        for (int i = 1; expSolid.More(); expSolid.Next(), i++) {
+            TopoDS_Solid s = TopoDS::Solid(expSolid.Current());
+            if (!s.IsNull()) {
+                extShapes.push_back(s);
+            }
+        }
+        //get edges not part of a solid
+        //???? should this look for Faces(Wires?) before Edges?
+        TopExp_Explorer expEdge(shapeIn, TopAbs_EDGE, TopAbs_SOLID);
+        for (int i = 1; expEdge.More(); expEdge.Next(), i++) {
+            TopoDS_Shape s = expEdge.Current();
+            if (!s.IsNull()) {
+                extEdges.push_back(s);
+            }
+        }
+    } else {
+        //not a Compound or a CompSolid just push_back shape_In)
+        extShapes.push_back(shapeIn);
+    }
+    
+    result = extShapes;
+    if (!extEdges.empty()) {
+        result.insert(std::end(result), std::begin(extEdges), std::end(extEdges));
     }
     return result;
 }

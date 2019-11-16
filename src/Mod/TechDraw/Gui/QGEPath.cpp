@@ -249,7 +249,7 @@ void QGEPath::startPathEdit()
     inEdit(true);
     m_saveDeltas = m_deltas;
     showMarkers(m_deltas);
-}    
+}
 
 void QGEPath::restoreState()
 {
@@ -262,7 +262,7 @@ void QGEPath::restoreState()
     }
     m_deltas = m_saveDeltas;
     updatePath();
-}    
+}
 
 
 void QGEPath::showMarkers(std::vector<QPointF> deltas)
@@ -278,7 +278,7 @@ void QGEPath::showMarkers(std::vector<QPointF> deltas)
     }
 
     clearMarkers();
-    
+
     int pointDx = 0;
     for (auto& p: deltas) {
         QGMarker* v = new QGMarker(pointDx);
@@ -308,10 +308,10 @@ void QGEPath::showMarkers(std::vector<QPointF> deltas)
         v->setZValue(ZVALUE::VERTEX);
         v->setPos(p * m_scale);
         v->show();
-        
+
         m_markers.push_back(v);
         pointDx++;
-    }        
+    }
 }
 
 void QGEPath::clearMarkers()
@@ -373,7 +373,7 @@ void QGEPath::onEndEdit(void)
     inEdit(false);
     updatePath();
     updateFeature();         //Q_EMIT pointsUpdated(m_deltas) ==> onLineEditComplete  <<<1
-    clearMarkers(); 
+    clearMarkers();
 }
 
 //updates the painterpath using our deltas
@@ -504,7 +504,7 @@ void QGEPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * optio
     QGIPrimPath::paint (painter, &myOption, widget);
 }
 
-void QGEPath::addPoint(unsigned int before, unsigned int after) 
+void QGEPath::addPoint(unsigned int before, unsigned int after)
 {
     std::vector<QPointF> deltaCopy = getDeltas();
     unsigned int iMax = deltaCopy.size() - 1;
@@ -533,34 +533,34 @@ void QGEPath::deletePoint(unsigned int atX)
     setDeltas(deltaCopy);
 }
 
-void QGEPath::dumpDeltas(char* text)
+void QGEPath::dumpDeltas(const char* text)
 {
     int idb = 0;
     for (auto& d: m_deltas) {
         Base::Console().Message("QGEP - %s - delta: %d %s\n", text,
                                  idb,TechDraw::DrawUtil::formatVector(d).c_str());
         idb++;
-    } 
+    }
 }
 
-void QGEPath::dumpPoints(char* text)
+void QGEPath::dumpPoints(const char* text)
 {
     int idb = 0;
     for (auto& d: m_points) {
         Base::Console().Message("QGEP - %s - point: %d %s\n", text,
                                  idb,TechDraw::DrawUtil::formatVector(d).c_str());
         idb++;
-    } 
+    }
 }
 
-void QGEPath::dumpMarkerPos(char* text)
+void QGEPath::dumpMarkerPos(const char* text)
 {
     int idb = 0;
     for (auto& m: m_markers) {
         Base::Console().Message("QGEP - %s - markerPos: %d %s\n", text,
                                  idb,TechDraw::DrawUtil::formatVector(m->pos()).c_str());
         idb++;
-    } 
+    }
 }
 
 #include <Mod/TechDraw/Gui/moc_QGEPath.cpp>

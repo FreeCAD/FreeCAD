@@ -118,9 +118,9 @@ public:
     void updateFeature();
     void drawGhost(void);
 
-    void dumpDeltas(char* text);
-    void dumpPoints(char* text);
-    void dumpMarkerPos(char* text);
+    void dumpDeltas(const char* text);
+    void dumpPoints(const char* text);
+    void dumpMarkerPos(const char* text);
     void restoreState(void);
     void setStartAdjust(double adjust);
     void setEndAdjust(double adjust);

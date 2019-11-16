@@ -2367,7 +2367,7 @@ class Move(Modifier):
     def Activated(self):
         self.name = translate("draft","Move", utf8_decode=True)
         Modifier.Activated(self, self.name,
-                           is_subtool=isinstance(FreeCAD.activeDraftCommand, SubelementModify))
+                           is_subtool=isinstance(FreeCAD.activeDraftCommand, SubelementHighlight))
         if not self.ui:
             return
         self.ghosts = []
@@ -4270,8 +4270,8 @@ class ToggleDisplayMode():
                 if "Flat Lines" in obj.ViewObject.listDisplayModes():
                     obj.ViewObject.DisplayMode = "Flat Lines"
 
-class SubelementModify(Modifier):
-    """The Draft_SubelementModify FreeCAD command definition"""
+class SubelementHighlight(Modifier):
+    """The Draft_SubelementHighlight FreeCAD command definition"""
 
     def __init__(self):
         self.is_running = False
@@ -4279,18 +4279,20 @@ class SubelementModify(Modifier):
         self.original_view_settings = {}
 
     def GetResources(self):
-        return {'Pixmap'  : 'Draft_SubelementModify',
+        return {'Pixmap'  : 'Draft_SubelementHighlight',
                 'Accel' : "D, E",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SubelementModify", "Subelement modify"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_SubelementModify",
-                                                    "Allows editing the subelements "
-                                                    "of the selected objects with other modification tools")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SubelementHighlight", "Subelement highlight"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_SubelementHighlight",
+                                                    "Highlight the subelements "
+                                                    "of the selected objects, "
+                                                    "so that they can then be edited "
+                                                    "with the move, rotate, and scale tools")}
 
     def Activated(self):
         if self.is_running:
             return self.finish()
         self.is_running = True
-        Modifier.Activated(self, "SubelementModify")
+        Modifier.Activated(self, "SubelementHighlight")
         self.get_selection()
 
     def proceed(self):
@@ -5683,7 +5685,7 @@ FreeCADGui.addCommand('Draft_Downgrade',Downgrade())
 FreeCADGui.addCommand('Draft_Trimex',Trimex())
 FreeCADGui.addCommand('Draft_Scale',Scale())
 FreeCADGui.addCommand('Draft_Drawing',Drawing())
-FreeCADGui.addCommand('Draft_SubelementModify', SubelementModify())
+FreeCADGui.addCommand('Draft_SubelementHighlight', SubelementHighlight())
 FreeCADGui.addCommand('Draft_AddPoint',AddPoint())
 FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
 FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())

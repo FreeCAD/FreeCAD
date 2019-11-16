@@ -38,7 +38,7 @@
   # include <QSvgGenerator>
   # include <QApplication>
 
-  # include <math.h>
+  # include <cmath>
 #endif
 
 #include <App/Application.h>
@@ -46,12 +46,9 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <string>
-
-#include <Mod/Part/App/PartFeature.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
@@ -72,17 +69,174 @@
 #include "MDIViewPage.h"
 #include "TaskBalloon.h"
 
-#define PI  3.14159
-
 //TODO: hide the Qt coord system (+y down).  
 
 using namespace TechDraw;
 using namespace TechDrawGui;
 
+QGIBalloonLabel::QGIBalloonLabel()
+{
+    posX = 0;
+    posY = 0;
+
+    setCacheMode(QGraphicsItem::NoCache);
+    setFlag(ItemSendsGeometryChanges, true);
+    setFlag(ItemIsMovable, true);
+    setFlag(ItemIsSelectable, true);
+    setAcceptHoverEvents(true);
+
+    m_labelText = new QGCustomText();
+    m_labelText->setParentItem(this);
+
+    m_ctrl = false;
+    hasHover = false;
+}
+
+QVariant QGIBalloonLabel::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemSelectedHasChanged && scene()) {
+        if(isSelected()) {
+            Q_EMIT selected(true);
+            setPrettySel();
+        } else {
+            Q_EMIT selected(false);
+            setPrettyNormal();
+        }
+        update();
+    } else if(change == ItemPositionHasChanged && scene()) {
+        setLabelCenter();
+        Q_EMIT dragging(m_ctrl);
+    }
+
+    return QGraphicsItem::itemChange(change, value);
+}
+
+void QGIBalloonLabel::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+    if(event->modifiers() & Qt::ControlModifier) {
+        m_ctrl = true;
+    }
+
+    if(scene() && this == scene()->mouseGrabberItem()) {
+        Q_EMIT dragFinished();
+    }
+      QGraphicsItem::mousePressEvent(event);
+}
+
+void QGIBalloonLabel::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
+void QGIBalloonLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+    m_ctrl = false;
+    if(scene() && this == scene()->mouseGrabberItem()) {
+        Q_EMIT dragFinished();
+    }
+
+    QGraphicsItem::mouseReleaseEvent(event);
+}
+
 void QGIBalloonLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
     Gui::Control().showDialog(new TaskDlgBalloon(parent));
     QGraphicsItem::mouseDoubleClickEvent(event);
+}
+
+void QGIBalloonLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    Q_EMIT hover(true);
+    hasHover = true;
+    if (!isSelected()) {
+        setPrettyPre();
+    } else {
+        setPrettySel();
+    }
+    QGraphicsItem::hoverEnterEvent(event);
+}
+
+void QGIBalloonLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    QGIView *view = dynamic_cast<QGIView *> (parentItem());
+    assert(view != 0);
+    Q_UNUSED(view);
+
+    Q_EMIT hover(false);
+    hasHover = false;
+    if (!isSelected()) {
+        setPrettyNormal();
+    } else {
+        setPrettySel();
+    }
+    QGraphicsItem::hoverLeaveEvent(event);
+}
+
+QRectF QGIBalloonLabel::boundingRect() const
+{
+    return childrenBoundingRect();
+}
+
+void QGIBalloonLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(widget);
+    Q_UNUSED(painter);
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
+
+    //QGraphicsObject/QGraphicsItem::paint gives link error.
+}
+
+void QGIBalloonLabel::setPosFromCenter(const double &xCenter, const double &yCenter)
+{
+    //set label's Qt position(top,left) given boundingRect center point
+    setPos(xCenter - m_labelText->boundingRect().width() / 2., yCenter - m_labelText->boundingRect().height() / 2.);
+}
+
+void QGIBalloonLabel::setLabelCenter()
+{
+    //save label's bRect center (posX,posY) given Qt position (top,left)
+    posX = x() + m_labelText->boundingRect().width() / 2.;
+    posY = y() + m_labelText->boundingRect().height() / 2.;
+}
+
+void QGIBalloonLabel::setFont(QFont f)
+{
+    m_labelText->setFont(f);
+}
+
+void QGIBalloonLabel::setDimString(QString t)
+{
+    prepareGeometryChange();
+    m_labelText->setPlainText(t);
+} 
+
+void QGIBalloonLabel::setDimString(QString t, qreal maxWidth)
+{
+    prepareGeometryChange();
+    m_labelText->setPlainText(t);
+    m_labelText->setTextWidth(maxWidth);
+}
+
+void QGIBalloonLabel::setPrettySel(void)
+{
+    m_labelText->setPrettySel();
+}
+
+void QGIBalloonLabel::setPrettyPre(void)
+{
+    m_labelText->setPrettyPre();
+}
+
+void QGIBalloonLabel::setPrettyNormal(void)
+{
+    m_labelText->setPrettyNormal();
+}
+
+void QGIBalloonLabel::setColor(QColor c)
+{
+    m_colNormal = c;
+    m_labelText->setColor(m_colNormal);
 }
 
 //**************************************************************
@@ -103,12 +257,19 @@ QGIViewBalloon::QGIViewBalloon() :
 
     balloonLines = new QGIDimLines();
     addToGroup(balloonLines);
+    balloonLines->setNormalColor(getNormalColor());
+    balloonLines->setPrettyNormal();
 
     balloonShape = new QGIDimLines();
     addToGroup(balloonShape);
-
+    balloonShape->setNormalColor(getNormalColor());
+    balloonShape->setPrettyNormal();
+    
     arrow = new QGIArrow();
     addToGroup(arrow);
+    arrow->setNormalColor(getNormalColor());
+    arrow->setFillColor(getNormalColor());
+    arrow->setPrettyNormal();
 
     balloonLabel->setZValue(ZVALUE::LABEL);
     arrow->setZValue(ZVALUE::DIMENSION);
@@ -173,23 +334,22 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
         return;
     }
 
-        balloon->OriginX.setValue(mapFromScene(pos).x());
-        balloon->OriginY.setValue(mapFromScene(pos).y());
+    balloon->OriginX.setValue(mapFromScene(pos).x());
+    balloon->OriginY.setValue(mapFromScene(pos).y());
 
-        int idx = featPage->getNextBalloonIndex();
-        QString labelText = QString::number(idx);
-        balloon->Text.setValue(std::to_string(idx).c_str());
-     
-        QFont font = balloonLabel->getFont();
-        font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
-        font.setFamily(QString::fromUtf8(vp->Font.getValue()));
-        balloonLabel->setFont(font);
-        prepareGeometryChange();
+    int idx = featPage->getNextBalloonIndex();
+    QString labelText = QString::number(idx);
+    balloon->Text.setValue(std::to_string(idx).c_str());
+ 
+    QFont font = balloonLabel->getFont();
+    font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
+    font.setFamily(QString::fromUtf8(vp->Font.getValue()));
+    balloonLabel->setFont(font);
+    prepareGeometryChange();
 
-        // Default label position
-        balloonLabel->setPosFromCenter(mapFromScene(pos).x() + 200, mapFromScene(pos).y() -200);
-        balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
-//    }
+    // Default label position
+    balloonLabel->setPosFromCenter(mapFromScene(pos).x() + 200, mapFromScene(pos).y() -200);
+    balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
 
     draw();
 }
@@ -393,13 +553,13 @@ void QGIViewBalloon::draw_modifier(bool modifier)
         double radius = sqrt(pow((textHeight / 2.0), 2) + pow((textWidth / 2.0), 2));
         radius = radius * scale;
         radius += Rez::guiX(3.0);
-        offset = (tan(30 * PI / 180) * radius);
+        offset = (tan(30 * M_PI / 180) * radius);
         QPolygonF triangle;
-        double startAngle = -PI / 2;
+        double startAngle = -M_PI / 2;
         double angle = startAngle;
         for (int i = 0; i < 4; i++) {
             triangle += QPointF(lblCenter.x + (radius * cos(angle)), lblCenter.y + (radius * sin(angle)));
-            angle += (2 * PI / 3);
+            angle += (2 * M_PI / 3);
         }
         balloonPath.moveTo(lblCenter.x + (radius * cos(startAngle)), lblCenter.y + (radius * sin(startAngle)));
         balloonPath.addPolygon(triangle);
@@ -427,11 +587,11 @@ void QGIViewBalloon::draw_modifier(bool modifier)
         radius += Rez::guiX(1.0);
         offset = radius;
         QPolygonF triangle;
-        double startAngle = -2 * PI / 3;
+        double startAngle = -2 * M_PI / 3;
         double angle = startAngle;
         for (int i = 0; i < 7; i++) {
             triangle += QPointF(lblCenter.x + (radius * cos(angle)), lblCenter.y + (radius * sin(angle)));
-            angle += (2 * PI / 6);
+            angle += (2 * M_PI / 6);
         }
         balloonPath.moveTo(lblCenter.x + (radius * cos(startAngle)), lblCenter.y + (radius * sin(startAngle)));
         balloonPath.addPolygon(triangle);

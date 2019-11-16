@@ -41,7 +41,8 @@ FC_LOG_LEVEL_INIT("MDIView",true,true)
 using namespace Gui;
 
 App::DocumentObject *ActiveObjectList::getObject(const ObjectInfo &info, bool resolve,
-        App::DocumentObject **parent, std::string *subname) const
+                                                 App::DocumentObject **parent,
+                                                 std::string *subname) const
 {
     if(parent) *parent = info.obj;
     if(subname) *subname = info.subname;
@@ -56,21 +57,22 @@ App::DocumentObject *ActiveObjectList::getObject(const ObjectInfo &info, bool re
     return resolve?obj->getLinkedObject(true):obj;
 }
 
-void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, bool enable) {
+void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, bool enable)
+{
     auto obj = getObject(info,false);
     if(!obj) return;
     auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
     if(!vp) return;
 
-    if(TreeParams::Instance()->TreeActiveAutoExpand())
-        vp->getDocument()->signalExpandObject(*vp, 
-                enable?Gui::ExpandPath:Gui::CollapseItem, info.obj, info.subname.c_str());
+    if (TreeParams::Instance()->TreeActiveAutoExpand()) {
+        vp->getDocument()->signalExpandObject(*vp, enable ? TreeItemMode::ExpandPath : TreeItemMode::CollapseItem,
+                                              info.obj, info.subname.c_str());
+    }
 
     vp->getDocument()->signalHighlightObject(*vp, mode,enable,info.obj,info.subname.c_str());
 }
 
-Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(
-        App::DocumentObject *obj, const char *subname) const 
+Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::DocumentObject *obj, const char *subname) const
 {
     ObjectInfo info;
     info.obj = 0;

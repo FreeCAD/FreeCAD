@@ -83,6 +83,11 @@
 using namespace TechDraw;
 using namespace TechDrawGui;
 
+#define GEOMETRYEDGE 0
+#define COSMETICEDGE 1
+#define CENTERLINE   2
+
+
 const float lineScaleFactor = Rez::guiX(1.);   // temp fiddle for devel
 
 QGIViewPart::QGIViewPart()
@@ -437,7 +442,7 @@ void QGIViewPart::drawViewPart()
     QGIEdge* item;
     for(int i = 0 ; itGeom != geoms.end(); itGeom++, i++) {
         bool showEdge = false;
-        if ((*itGeom)->visible) {
+        if ((*itGeom)->hlrVisible) {
             if (((*itGeom)->classOfEdge == ecHARD) ||
                 ((*itGeom)->classOfEdge == ecOUTLINE) ||
                 (((*itGeom)->classOfEdge == ecSMOOTH) && viewPart->SmoothVisible.getValue()) ||
@@ -463,9 +468,11 @@ void QGIViewPart::drawViewPart()
             if ((*itGeom)->cosmetic == true) {
                 int source = (*itGeom)->source();
                 int sourceIndex = (*itGeom)->sourceIndex();
-                if (source == 1) {  //this is a "CosmeticEdge"
-                    showItem = formatGeomFromCosmetic(sourceIndex, item);
-                } else if (source == 2) { //this is a "CenterLine"
+                if (source == COSMETICEDGE) {
+//                    showItem = formatGeomFromCosmetic(sourceIndex, item);
+                    std::string cTag = (*itGeom)->getCosmeticTag();
+                    showItem = formatGeomFromCosmetic(cTag, item);
+                } else if (source == CENTERLINE) {
                     showItem = formatGeomFromCenterLine(sourceIndex, item);
                 } else {
                     Base::Console().Message("QGIVP::drawVP - edge: %d is confused - source: %d\n",i,source);
@@ -484,7 +491,7 @@ void QGIViewPart::drawViewPart()
             item->setPos(0.0,0.0);                  //now at group(0,0)
             item->setPath(drawPainterPath(*itGeom));
             item->setZValue(ZVALUE::EDGE);
-            if(!(*itGeom)->visible) {
+            if(!(*itGeom)->hlrVisible) {
                 item->setWidth(lineWidthHid);
                 item->setHiddenEdge(true);
                 item->setZValue(ZVALUE::HIDEDGE);
@@ -592,6 +599,22 @@ bool QGIViewPart::formatGeomFromCosmetic(int sourceIndex, QGIEdge* item)
     }
     return result;
 }
+
+bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
+{
+//    Base::Console().Message("QGIVP::formatGeomFromCosmetic(%s)\n", cTag.c_str());
+    bool result = true;
+    auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
+    TechDraw::CosmeticEdge* ce = partFeat->getCosmeticEdge(cTag);
+    if (ce != nullptr) {
+        item->setNormalColor(ce->m_format.m_color.asValue<QColor>());
+        item->setWidth(ce->m_format.m_weight * lineScaleFactor);
+        item->setStyle(ce->m_format.m_style);
+        result = ce->m_format.m_visible;
+    }
+    return result;
+}
+
 
 bool QGIViewPart::formatGeomFromCenterLine(int sourceIndex, QGIEdge* item)
 {

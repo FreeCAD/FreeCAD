@@ -32,7 +32,6 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoWindowElement.h>
 
 #include <Inventor/SoFullPath.h>
@@ -45,6 +44,7 @@
 #include <Inventor/elements/SoElements.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
@@ -1231,8 +1231,9 @@ bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, SbCol
 
     SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
     SoLazyElement::setEmissive(state, &color);
-    SoLazyElement::setDiffuse(state, node,1, &color,data->packer);
-    SoDrawStyleElement::set(state,node,SoDrawStyleElement::LINES);
+    SoLazyElement::setDiffuse(state, node,1, &color, data->packer);
+    SoDrawStyleElement::set(state, node, SoDrawStyleElement::LINES);
+    SoLineWidthElement::set(state, node, 1.0f);
 
     const static float trans = 0.0;
     SoLazyElement::setTransparency(state, node, 1, &trans, data->packer);
