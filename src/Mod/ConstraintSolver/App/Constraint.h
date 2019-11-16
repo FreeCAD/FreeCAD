@@ -24,6 +24,7 @@
 #ifndef FREECAD_CONSTRAINTSOLVER_CONSTRAINT_H
 #define FREECAD_CONSTRAINTSOLVER_CONSTRAINT_H
 
+#include "ParaObject.h"
 #include "ParameterRef.h"
 #include "ValueSet.h"
 #include "Utils.h"
@@ -34,7 +35,7 @@
 
 namespace FCS {
 
-class FCSExport Constraint;
+class Constraint;
 typedef UnsafePyHandle<Constraint> HConstraint;
 
 /**
@@ -42,20 +43,15 @@ typedef UnsafePyHandle<Constraint> HConstraint;
  * multidimensional - i.e., they make rank()-many error values, and remove
  * rank() degrees of freedom. If your constraint doesn't need it, consider overriding SimpleConstraint.
  */
-class FCSExport Constraint : public Base::BaseClass
+class FCSExport Constraint : public ParaObject
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 protected://data members
-    std::vector<ParameterRef> _parameters;
     ///user-modified weight of the constraint
     double _weight = 1.0;
     ProblemSizeInfo _sz;
-    PyObject* _twin = nullptr;
 
 public://data members
-    int tag = 0;
-    Py::Object userData;
-    std::string label;
     /**
      * @brief scale is used by solver: the return from the error function is
      * multiplied internally by the scale. You must set the scale from
@@ -73,8 +69,6 @@ public://data members
 public://main interface for overriding
     //mandatory
     virtual PyObject* getPyObject() override = 0;
-    ///updates parameters, and possibly does some precomputations. Called by solver when constraint is added to the system.
-    virtual void update() = 0;
     ///returns number of DOFs taken away by the constraint.
     virtual int rank() const = 0;
     /**
@@ -97,7 +91,6 @@ public://main interface for overriding
     virtual std::vector<double> caluclateDatum();
 
 public://methods
-    virtual HConstraint copy() const;
     const std::vector<ParameterRef>& parameters() const {return _parameters;}
     Base::DualNumber netError(const ValueSet& on) const;
     double netError() const;
@@ -105,7 +98,7 @@ public://methods
 
 protected://methods
     virtual void operator=(HConstraint other);
-    virtual ~Constraint();
+
 public: //friends
     friend class ConstraintPy;
 };

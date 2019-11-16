@@ -23,9 +23,7 @@ int ConstraintPy::finalization()
 // returns a string which represents the object e.g. when printed in python
 std::string ConstraintPy::representation(void) const
 {
-    std::stringstream ss;
-    ss << "<" << getConstraintPtr()->getTypeId().getName() << " object>";
-    return ss.str();
+    return ParaObjectPy::representation();
 }
 
 PyObject* ConstraintPy::netError(PyObject* args)
@@ -33,6 +31,8 @@ PyObject* ConstraintPy::netError(PyObject* args)
     PyObject* vals = Py_None;
     if (!PyArg_ParseTuple(args, "O!", &(ValueSetPy::Type), &vals))
         return nullptr;
+
+    getConstraintPtr()->throwIfIncomplete();
 
     HValueSet hvals (vals, false);
     DualNumber ret = getConstraintPtr()->netError(*hvals);
@@ -45,6 +45,9 @@ PyObject* ConstraintPy::errorVec(PyObject* args)
     PyObject* pyvals = Py_None;
     if (!PyArg_ParseTuple(args, "O!", &(ValueSetPy::Type), &pyvals))
         return nullptr;
+
+    getConstraintPtr()->throwIfIncomplete();
+
     HValueSet vals(pyvals, false);
     std::vector<DualNumber> errvec(getConstraintPtr()->rank());
     getConstraintPtr()->error(*vals, errvec.data());
@@ -56,29 +59,6 @@ PyObject* ConstraintPy::errorVec(PyObject* args)
     return Py::new_reference_to(ret);
 }
 
-PyObject* ConstraintPy::copy(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
-    return Py::new_reference_to(getConstraintPtr()->copy());
-}
-
-PyObject* ConstraintPy::update(PyObject* args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return nullptr;
-    getConstraintPtr()->update();
-    return Py::new_reference_to(Py::None());
-}
-
-
-
-Py::List ConstraintPy::getParameters(void) const
-{
-    return asPyList(
-        getConstraintPtr()->parameters()
-    );
-}
 
 Py::Float ConstraintPy::getWeight(void) const
 {
@@ -92,6 +72,7 @@ void  ConstraintPy::setWeight(Py::Float arg)
 
 Py::Float ConstraintPy::getNetError(void) const
 {
+    getConstraintPtr()->throwIfIncomplete();
     return Py::Float(getConstraintPtr()->netError());
 }
 
@@ -100,43 +81,12 @@ Py::Long ConstraintPy::getRank(void) const
     return Py::Long(getConstraintPtr()->rank());
 }
 
-Py::Object ConstraintPy::getUserData(void) const
+PyObject* ConstraintPy::getCustomAttributes(const char* attr) const
 {
-    return getConstraintPtr()->userData;
-    throw Py::AttributeError("Not yet implemented");
+    return ParaObjectPy::getCustomAttributes(attr);
 }
 
-void  ConstraintPy::setUserData(Py::Object arg)
+int ConstraintPy::setCustomAttributes(const char* attr, PyObject* obj)
 {
-    getConstraintPtr()->userData = arg;
-}
-
-Py::String ConstraintPy::getLabel(void) const
-{
-    return Py::String(getConstraintPtr()->label,"utf-8");
-}
-
-void  ConstraintPy::setLabel(Py::String arg)
-{
-    getConstraintPtr()->label = arg.as_std_string("utf-8");
-}
-
-Py::Long ConstraintPy::getTag(void) const
-{
-    return Py::Long(getConstraintPtr()->tag);
-}
-
-void  ConstraintPy::setTag(Py::Long arg)
-{
-    getConstraintPtr()->tag = arg.as_long();
-}
-
-PyObject* ConstraintPy::getCustomAttributes(const char* /*attr*/) const
-{
-    return 0;
-}
-
-int ConstraintPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
-{
-    return 0;
+    return ParaObjectPy::setCustomAttributes(attr, obj);
 }

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
   <PythonExport 
-	  Father="BaseClassPy" 
+	  Father="ParaObjectPy" 
 	  Name="ConstraintPy" 
 	  Twin="Constraint" 
 	  TwinPointer="Constraint" 
 	  Include="Mod/ConstraintSolver/App/Constraint.h" 
-	  FatherInclude="Base/BaseClassPy.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/ParaObjectPy.h" 
 	  Namespace="FCS" 
 	  Constructor="false"
 	  Delete="true"
-	  FatherNamespace="Base"
+	  FatherNamespace="FCS"
       Initialization = "true"
 	  DisableNotify="true">
 	<Documentation>
@@ -19,12 +19,6 @@
 	  <UserDocu>Constraint base class</UserDocu>
 	</Documentation>
 
-	<Attribute Name="Parameters" ReadOnly="true">
-	  <Documentation>
-		<UserDocu>List of parameters the constraint depends on</UserDocu>
-	  </Documentation>
-	  <Parameter Name="Parameters" Type="List" />
-	</Attribute>
 	<Attribute Name="Weight">
 	  <Documentation>
 		<UserDocu>Weight of the constraint (a multiplier for error function).</UserDocu>
@@ -43,24 +37,6 @@
 	  </Documentation>
 	  <Parameter Name="Rank" Type="Long" />
 	</Attribute>
-	<Attribute Name="UserData">
-	  <Documentation>
-		<UserDocu>Stores any python object.</UserDocu>
-	  </Documentation>
-	  <Parameter Name="UserData" Type="Object" />
-	</Attribute>
-	<Attribute Name="Label">
-	  <Documentation>
-		<UserDocu>Stores any string.</UserDocu>
-	  </Documentation>
-	  <Parameter Name="Label" Type="String" />
-	</Attribute>
-	<Attribute Name="Tag">
-	  <Documentation>
-		<UserDocu>Stores an integer, for identification.</UserDocu>
-	  </Documentation>
-	  <Parameter Name="Tag" Type="Long" />
-	</Attribute>
 
 	<Methode Name="netError">
 	  <Documentation>
@@ -72,16 +48,6 @@
 		<UserDocu>errorVec(vals): returns a list of (signed) error values for each subconstraint.</UserDocu>
 	  </Documentation>
 	</Methode>	
-	<Methode Name="copy" Const="true">
-	  <Documentation>
-		<UserDocu>copy(): returns a shallow copy (copy refers to same parameters).</UserDocu>
-	  </Documentation>
-	</Methode>
-	<Methode Name="update">
-	  <Documentation>
-		<UserDocu>update(): updates this constraint. Call before solving. (some constraints may depend on external objects, and fetch the values from this func, for example).</UserDocu>
-	  </Documentation>
-	</Methode>
 
   </PythonExport>
 </GenerateModel>

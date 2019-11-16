@@ -4,7 +4,7 @@
 using namespace FCS;
 using DualNumber = Base::DualNumber;
 
-TYPESYSTEM_SOURCE_ABSTRACT(FCS::Constraint, Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(FCS::Constraint, FCS::ParaObject);
 
 double Constraint::maxStep(const ValueSet& /*dir*/) const
 {
@@ -31,11 +31,6 @@ std::vector<ParameterRef> Constraint::datumParameters() const
 std::vector<double> Constraint::caluclateDatum()
 {
     return std::vector<double>();
-}
-
-HConstraint Constraint::copy() const
-{
-    throw Py::NotImplementedError("Constraint: copy not implemented yet");
 }
 
 Base::DualNumber Constraint::netError(const ValueSet& on) const
@@ -71,9 +66,4 @@ void Constraint::operator=(HConstraint other)
     userData = other->userData;
     label = other->label;
     scale = other->scale;
-}
-
-Constraint::~Constraint()
-{
-
 }
