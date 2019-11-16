@@ -63,16 +63,15 @@ DrawViewAnnotation::DrawViewAnnotation(void)
     std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
     double defFontSize = hGrp->GetFloat("LabelSize", 5.0);
 
-    ADD_PROPERTY_TYPE(Text ,("Default Text"),vgroup,App::Prop_None,"The text to be displayed");
-    ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),vgroup,App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(TextColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The color of the text");
-
-    ADD_PROPERTY_TYPE(TextSize,(defFontSize),vgroup,App::Prop_None,"The size of the text in units");
-    ADD_PROPERTY_TYPE(MaxWidth,(-1.0),vgroup,App::Prop_None,"The maximum width of the Annotation block");
-    ADD_PROPERTY_TYPE(LineSpace,(80),vgroup,App::Prop_None,"Line spacing adjustment. 100 is normal spacing.");
+    ADD_PROPERTY_TYPE(Text ,("Default Text"),vgroup,App::Prop_None,"Annotation text");
+    ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),vgroup,App::Prop_None, "Font name");
+    ADD_PROPERTY_TYPE(TextColor,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"Text color");
+    ADD_PROPERTY_TYPE(TextSize,(defFontSize),vgroup,App::Prop_None,"Text size");
+    ADD_PROPERTY_TYPE(MaxWidth,(-1.0),vgroup,App::Prop_None,"Maximum width of the annotation block.\n -1 means no maximum width.");
+    ADD_PROPERTY_TYPE(LineSpace,(80),vgroup,App::Prop_None,"Line spacing in %. 100 means the height of a line.");
 
     TextStyle.setEnums(TextStyleEnums);
-    ADD_PROPERTY(TextStyle, ((long)0));
+    ADD_PROPERTY_TYPE(TextStyle,((long)0),vgroup,App::Prop_None,"Text style");
 
     Scale.setStatus(App::Property::Hidden,true);
     ScaleType.setStatus(App::Property::Hidden,true);
@@ -96,6 +95,24 @@ void DrawViewAnnotation::onChanged(const App::Property* prop)
         }
     }
     TechDraw::DrawView::onChanged(prop);
+}
+
+void DrawViewAnnotation::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+// transforms properties that had been changed
+{
+	// property LineSpace had the App::PropertyInteger and was changed to App::PropertyPercent
+	if (prop == &LineSpace && strcmp(TypeName, "App::PropertyInteger") == 0) {
+		App::PropertyInteger LineSpaceProperty;
+		// restore the PropertyInteger to be able to set its value
+		LineSpaceProperty.Restore(reader);
+		LineSpace.setValue(LineSpaceProperty.getValue());
+	}
+	// property MaxWidth had the App::PropertyFloat and was changed to App::PropertyLength
+	else if (prop == &MaxWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
+		App::PropertyFloat MaxWidthProperty;
+		MaxWidthProperty.Restore(reader);
+		MaxWidth.setValue(MaxWidthProperty.getValue());
+	}
 }
 
 QRectF DrawViewAnnotation::getRect() const

@@ -82,7 +82,7 @@ class PathWorkbench (Workbench):
         threedopcmdlist = ["Path_Pocket_3D"]
         engravecmdlist = ["Path_Engrave", "Path_Deburr"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
-        dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
+        dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupPathBoundary", "Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
         extracmdlist = []
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]

@@ -254,7 +254,7 @@ void CmdMeshUnion::activated(int)
         PyObject* dict = PyModule_GetDict(main);
         Py::Dict d(PyDict_Copy(dict), true);
 
-        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.searchforopenscadexe()";
+        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.getopenscadexe()";
         PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
         Py_XDECREF(result);
 
@@ -324,7 +324,7 @@ void CmdMeshDifference::activated(int)
         PyObject* dict = PyModule_GetDict(main);
         Py::Dict d(PyDict_Copy(dict), true);
 
-        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.searchforopenscadexe()";
+        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.getopenscadexe()";
         PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
         Py_XDECREF(result);
 
@@ -394,7 +394,7 @@ void CmdMeshIntersection::activated(int)
         PyObject* dict = PyModule_GetDict(main);
         Py::Dict d(PyDict_Copy(dict), true);
 
-        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.searchforopenscadexe()";
+        const char* cmd = "import OpenSCADUtils\nopenscadfilename = OpenSCADUtils.getopenscadexe()";
         PyObject* result = PyRun_String(cmd, Py_file_input, d.ptr(), d.ptr());
         Py_XDECREF(result);
 
@@ -694,6 +694,7 @@ void CmdMeshVertexCurvatureInfo::activated(int)
         Gui::View3DInventorViewer* viewer = view->getViewer();
         viewer->setEditing(true);
         viewer->setRedirectToSceneGraph(true);
+        viewer->setSelectionEnabled(false);
         viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmapFromSvg("mesh_pipette",QSize(32,32)),4,29));
         viewer->addEventCallback(SoEvent::getClassTypeId(),
             MeshGui::ViewProviderMeshCurvature::curvatureInfoCallback);
@@ -1280,6 +1281,7 @@ void CmdMeshRemoveCompByHand::activated(int)
         viewer->setEditing(true);
         viewer->setEditingCursor(QCursor(Qt::OpenHandCursor));
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::markPartCallback);
+        viewer->setSelectionEnabled(false);
     }
 }
 
@@ -1595,6 +1597,7 @@ void CmdMeshFillInteractiveHole::activated(int)
         viewer->setEditing(true);
         viewer->setEditingCursor(QCursor(Gui::BitmapFactory().pixmap("mesh_fillhole"),5,5));
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::fillHoleCallback);
+        viewer->setSelectionEnabled(false);
      }
 }
 

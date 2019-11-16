@@ -42,7 +42,7 @@ public:
     double getWeight(std::string s);
     void setWeight(std::string s, double weight);
 //    void setWeight(const char* s, double weight);
-    void dump(char* title);
+    void dump(const char* title);
     std::string getName(void) { return m_name; }
     void setName(std::string s) { m_name = s; }
 

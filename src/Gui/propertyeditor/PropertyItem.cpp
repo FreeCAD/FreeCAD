@@ -526,13 +526,15 @@ QVariant PropertyItem::data(int column, int role) const
 {
     // property name
     if (column == 0) {
-        if (role == Qt::BackgroundRole) {
+        if (role == Qt::BackgroundRole || role == Qt::TextColorRole) {
             if(PropertyView::showAll()
                 && propertyItems.size() == 1
                 && propertyItems.front()->testStatus(App::Property::PropDynamic)
                 && !propertyItems.front()->testStatus(App::Property::LockDynamic))
             {
-                return QBrush(QColor(0xFF,0xFF,0x99));
+                return role==Qt::BackgroundRole
+                    ? QVariant::fromValue(QColor(0xFF,0xFF,0x99)) 
+                    : QVariant::fromValue(QColor(0,0,0));
             }
             return QVariant();
         }
@@ -3623,10 +3625,19 @@ QVariant PropertyLinkItem::toString(const QVariant& prop) const
 }
 
 QVariant PropertyLinkItem::data(int column, int role) const {
-    if(propertyItems.size() && column == 1 && role == Qt::TextColorRole) {
+    if(propertyItems.size() && column == 1 
+            && (role == Qt::TextColorRole || role == Qt::ToolTipRole))
+    {
         auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(propertyItems[0]);
-        if(xlink && xlink->checkRestore()>1)
-            return QVariant::fromValue(QColor(0xff,0,0));
+        if(xlink) {
+            if(role==Qt::TextColorRole && xlink->checkRestore()>1)
+                return QVariant::fromValue(QColor(0xff,0,0));
+            else if(role == Qt::ToolTipRole) {
+                const char *filePath = xlink->getFilePath();
+                if(filePath && filePath[0])
+                    return QVariant::fromValue(QString::fromUtf8(filePath));
+            }
+        }
     }
     return PropertyItem::data(column,role);
 }

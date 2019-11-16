@@ -23,13 +23,12 @@
 #ifndef _DrawDimHelper_h_
 #define _DrawDimHelper_h_
 
-#include <Standard_Handle.hxx>
+#include <Geom2d_Curve.hxx>
 
 #include <string>
 #include <Base/Vector3D.h>
 
 class gp_Pnt2d;
-class Geom2d_Curve;
 
 namespace TechDraw
 {

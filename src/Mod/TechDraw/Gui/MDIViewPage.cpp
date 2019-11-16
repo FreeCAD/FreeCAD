@@ -442,7 +442,7 @@ void MDIViewPage::updateDrawing(bool force)
 
     // get all the DrawViews for this page, including the second level ones
     // if we ever have collections of collections, we'll need to revisit this
-    DrawPage* thisPage = m_vpPage->getDrawPage();
+    TechDraw::DrawPage* thisPage = m_vpPage->getDrawPage();
 
     if(!thisPage->getNameInDocument())
         return;
@@ -468,7 +468,7 @@ void MDIViewPage::updateDrawing(bool force)
         if (obj == nullptr) {
             m_view->removeQView(qv);
         } else {
-            DrawPage* pp = qv->getViewObject()->findParentPage();
+            TechDraw::DrawPage* pp = qv->getViewObject()->findParentPage();
             if (thisPage != pp) {
                m_view->removeQView(qv);
             }

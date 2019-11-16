@@ -600,7 +600,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void * ud, SoEventCallback * n)
             if (pp) {
                 CurveOnMeshHandler* self = static_cast<CurveOnMeshHandler*>(ud);
                 if (!self->d_ptr->wireClosed) {
-                    Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(pp->getPath()));
+                    Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(pp->getPath());
                     if (vp && vp->getTypeId().isDerivedFrom(MeshGui::ViewProviderMesh::getClassTypeId())) {
                         MeshGui::ViewProviderMesh* mesh = static_cast<MeshGui::ViewProviderMesh*>(vp);
                         const SoDetail* detail = pp->getDetail();

@@ -2065,6 +2065,13 @@ void Application::runApplication(void)
     mdi->setProperty("showImage", hGrp->GetBool("TiledBackground", false));
 
     std::string style = hGrp->GetASCII("StyleSheet");
+    if (style.empty()) {
+        // check the branding settings
+        const auto& config = App::Application::Config();
+        auto it = config.find("StyleSheet");
+        if (it != config.end())
+            style = it->second;
+    }
     if (!style.empty()) {
         QFile f(QLatin1String(style.c_str()));
         if (f.open(QFile::ReadOnly)) {
