@@ -66,14 +66,18 @@ void ExternalGeometryExtension::Restore(Base::XMLReader &reader)
 
 std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy(void) const
 {
-    std::unique_ptr<ExternalGeometryExtension> cpy = std::make_unique<ExternalGeometryExtension>();
+    auto cpy = std::make_unique<ExternalGeometryExtension>();
 
     cpy->Ref = this->Ref;
     cpy->Flags = this->Flags;
 
     cpy->setName(this->getName()); // Base Class
 
+#if defined (__GNUC__) && (__GNUC__ <=4)
     return std::move(cpy);
+#else
+    return cpy;
+#endif
 }
 
 PyObject * ExternalGeometryExtension::getPyObject(void)
