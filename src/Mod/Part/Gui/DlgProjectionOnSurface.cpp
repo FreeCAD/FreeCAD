@@ -542,7 +542,7 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
       }
     }
   }
-  return std::move(aCompound);
+  return TopoDS_Shape(std::move(aCompound));
 }
 
 void PartGui::DlgProjectionOnSurface::show_projected_shapes(const std::vector<SShapeStore>& iShapeStoreVec)

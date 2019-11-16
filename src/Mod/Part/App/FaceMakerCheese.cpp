@@ -236,7 +236,7 @@ TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
                 builder.Add(comp, aFace);
         }
 
-        return std::move(comp);
+        return TopoDS_Shape(std::move(comp));
     }
     else {
         return TopoDS_Shape(); // error
