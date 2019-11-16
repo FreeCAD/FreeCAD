@@ -24,6 +24,13 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#endif
+
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObserver.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/DocumentObject.h>
 #include <App/GeoFeatureGroupExtension.h>
 
@@ -33,6 +40,8 @@
 #include "View3DInventor.h"
 #include "Command.h"
 #include "Application.h"
+#include "Document.h"
+
 #include "SoFCUnifiedSelection.h"
 
 
