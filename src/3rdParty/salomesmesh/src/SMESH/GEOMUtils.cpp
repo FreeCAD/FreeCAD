@@ -643,7 +643,7 @@ TopoDS_Shape GEOMUtils::CompsolidToCompound (const TopoDS_Shape& theCompsolid)
     }
   }
 
-  return std::move(aCompound);
+  return TopoDS_Shape(std::move(aCompound));
 }
 
 //=======================================================================
