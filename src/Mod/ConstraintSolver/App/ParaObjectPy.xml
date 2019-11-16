@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="BaseClassPy" 
+	  Name="ParaObjectPy" 
+	  Twin="ParaObject" 
+	  TwinPointer="ParaObject" 
+	  Include="Mod/ConstraintSolver/App/ParaObject.h" 
+	  FatherInclude="Base/BaseClassPy.h" 
+	  Namespace="FCS" 
+	  Constructor="false"
+	  Delete="true"
+	  FatherNamespace="Base"
+      Initialization = "true"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu>Base class for all objects having solver parameters.</DeveloperDocu>
+	  <UserDocu>Base class for all objects having solver parameters.</UserDocu>
+	</Documentation>
+
+	<Attribute Name="Parameters" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>List of parameters the object depends on</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Parameters" Type="List" />
+	</Attribute>
+	<Attribute Name="NamedParameters" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>Returns list of tuples [('attr_name', &lt;ParameterRef object&gt;)]. The parameters are also accessible directly as attributes.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="NamedParameters" Type="List" />
+	</Attribute>
+	<Attribute Name="NamedChildren" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>Returns list of used parameter-based objects, as tuples [('attr_name', &lt;ParaObject object&gt;)]. The child objects are also accessible directly as attributes.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="NamedChildren" Type="List" />
+	</Attribute>
+	<Attribute Name="Touched" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>Touched flag, indicates that Parameters may be out of date and should be recomputed (call update()).
+        It is auto set when changing referred parameters. But it doesn't react to changes in child objects. So, make 
+        sure to touch the object if you do change some children.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Touched" Type="Boolean" />
+	</Attribute>
+	<Attribute Name="Tag">
+	  <Documentation>
+		<UserDocu>Stores an integer, for identification.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Tag" Type="Long" />
+	</Attribute>
+	<Attribute Name="UserData">
+	  <Documentation>
+		<UserDocu>Stores any python object.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="UserData" Type="Object" />
+	</Attribute>
+	<Attribute Name="Label">
+	  <Documentation>
+		<UserDocu>Stores any string.</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Label" Type="String" />
+	</Attribute>
+
+	<Methode Name="update">
+	  <Documentation>
+		<UserDocu>Updates list of parameters, and other object-dependent caching. If any of 
+        child objects are touched, they are updated too. This object is forced to update, 
+        regardless of if it is touched or not. Touched flag is cleared after a successful 
+        update.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="touch">
+	  <Documentation>
+		<UserDocu>Marks this object that it needs updating.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="copy" Const="true">
+	  <Documentation>
+		<UserDocu>copy(): returns a shallow copy (copy refers to same parameters).</UserDocu>
+	  </Documentation>
+	</Methode>
+    <Methode Name="makeParameters">
+	  <Documentation>
+		<UserDocu>makeParameters(store): Creates new parameters for each named parameter. 
+        Doesn't create any child objects or their parameters.
+        
+        store argument must be a ParameterStore object where to create the parameters.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="isComplete">
+	  <Documentation>
+		<UserDocu>Returns True if all vital parameters and object references are set up.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="throwIfIncomplete">
+	  <Documentation>
+		<UserDocu>Same as isComplete, but raises an exception with an error message saying what parameter is missing.</UserDocu>
+	  </Documentation>
+	</Methode>    
+
+  </PythonExport>
+</GenerateModel>

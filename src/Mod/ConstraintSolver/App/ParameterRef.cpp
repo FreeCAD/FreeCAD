@@ -13,6 +13,12 @@ ParameterRef::ParameterRef(HParameterStore st, int index)
         throw Base::ValueError("Parameter index is out of bounds");
 }
 
+ParameterRef::ParameterRef()
+    : _store(Py::None()), _ownIndex(0)
+{
+
+}
+
 ParameterRef::~ParameterRef()
 {
 }
@@ -77,6 +83,17 @@ bool ParameterRef::isSameRef(const ParameterRef& other) const {
 bool ParameterRef::isSameValue(const ParameterRef& other) const {
     return (_store == other._store)
             && (masterIndex() == other.masterIndex());
+}
+
+bool ParameterRef::isNull() const
+{
+    return host().isNone();
+}
+
+void ParameterRef::throwNull() const
+{
+    if (isNull())
+        throw Py::TypeError("ParameterRef is null");
 }
 
 UnsafePyHandle<ParameterRef> ParameterRef::getPyHandle() const

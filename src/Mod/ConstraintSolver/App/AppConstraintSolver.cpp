@@ -41,6 +41,8 @@
 #include "ParameterSubsetPy.h"
 #include "ValueSet.h"
 #include "ValueSetPy.h"
+#include "ParaObject.h"
+#include "ParaObjectPy.h"
 #include "Constraint.h"
 #include "ConstraintPy.h"
 #include "SimpleConstraint.h"
@@ -78,20 +80,25 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::ParameterStorePy  ::Type.tp_name = "ConstraintSolver.ParameterStore";
     FCS::ParameterRefPy    ::Type.tp_name = "ConstraintSolver.ParameterRef";
     FCS::ParameterSubsetPy ::Type.tp_name = "ConstraintSolver.ParameterSubset";
-    FCS::ValueSetPy        ::Type.tp_name = "ConstraintSolver.ParameterSubset";
-    FCS::ConstraintPy      ::Type.tp_name = "ConstraintSolver.ParameterSubset";
-    FCS::SimpleConstraintPy::Type.tp_name = "ConstraintSolver.ParameterSubset";
+    FCS::ValueSetPy        ::Type.tp_name = "ConstraintSolver.ValueSet";
+    FCS::ParaObjectPy      ::Type.tp_name = "ConstraintSolver.ParaObject";
+    FCS::ConstraintPy      ::Type.tp_name = "ConstraintSolver.Constraint";
+    FCS::SimpleConstraintPy::Type.tp_name = "ConstraintSolver.SimpleConstraint";
 
     //add python types as module members
     Base::Interpreter().addType(&FCS::ParameterStorePy  ::Type, mod, "ParameterStore"  );
     Base::Interpreter().addType(&FCS::ParameterRefPy    ::Type, mod, "ParameterRef"    );
     Base::Interpreter().addType(&FCS::ParameterSubsetPy ::Type, mod, "ParameterSubset" );
     Base::Interpreter().addType(&FCS::ValueSetPy        ::Type, mod, "ValueSet"        );
+    Base::Interpreter().addType(&FCS::ParaObjectPy      ::Type, mod, "ParaObject"      );
     Base::Interpreter().addType(&FCS::ConstraintPy      ::Type, mod, "Constraint"      );
     Base::Interpreter().addType(&FCS::SimpleConstraintPy::Type, mod, "SimpleConstraint");
 
     //fill type system
-    FCS::ParameterStore::init();
+    FCS::ParameterStore   ::init();
+    FCS::ParaObject       ::init();
+    FCS::Constraint       ::init();
+    FCS::SimpleConstraint ::init();
 
     Base::Console().Log("Loading ConstraintSolver module... done\n");
     PyMOD_Return(mod);

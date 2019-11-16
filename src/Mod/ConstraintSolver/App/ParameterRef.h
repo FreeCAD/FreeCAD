@@ -45,6 +45,7 @@ protected://data
     int _ownIndex;
 public://methods
     ParameterRef(HParameterStore st, int index);
+    ParameterRef();
     ~ParameterRef();
 
     const HParameterStore& host() const {return _store;}
@@ -74,12 +75,15 @@ public://methods
 
     bool isSameRef(const ParameterRef &other) const;
     bool isSameValue(const ParameterRef &other) const;
+    bool isNull() const;
+    void throwNull() const;
 
     UnsafePyHandle<ParameterRef> getPyHandle() const;
     PyObject* getPyObject() const;
 public://iterator interface
     void operator++(){++_ownIndex;}
     bool operator!=(const ParameterRef& other) const {return _ownIndex != other._ownIndex;}
+    bool operator==(const ParameterRef& other) const {return _ownIndex == other._ownIndex;}
 };
 
 } //namespace
