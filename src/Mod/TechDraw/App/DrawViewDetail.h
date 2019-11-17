@@ -75,6 +75,7 @@ protected:
     Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
     void getParameters(void);
     double m_fudge;
+    bool debugDetail(void) const;
 
 };
 

@@ -722,6 +722,7 @@ void QGIView::makeMark(double x, double y, QColor c)
     vItem->setWidth(2.0);
     vItem->setRadius(20.0);
     vItem->setNormalColor(c);
+    vItem->setFillColor(c);
     vItem->setPrettyNormal();
     vItem->setZValue(ZVALUE::VERTEX);
 }

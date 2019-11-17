@@ -135,7 +135,9 @@ DrawViewPart::DrawViewPart(void) :
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Direction ,(0.0,-1.0,0.0),
-                      group,App::Prop_None,"Projection direction. The direction you are looking from.");
+                      group,App::Prop_None,"Projection Plane normal. The direction you are looking from.");
+    ADD_PROPERTY_TYPE(XDirection ,(0.0,0.0,0.0),
+                      group,App::Prop_None,"Projection Plane X Axis in R3. Rotates/Mirrors View");
     ADD_PROPERTY_TYPE(Perspective ,(false),group,App::Prop_None,
                       "Perspective(true) or Orthographic(false) projection");
     ADD_PROPERTY_TYPE(Focus,(defDist),group,App::Prop_None,"Perspective view focus distance");
@@ -239,26 +241,10 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    gp_Pnt inputCenter;
-    Base::Vector3d stdOrg(0.0,0.0,0.0);
+    checkXDirection();
 
-    inputCenter = TechDraw::findCentroid(shape,
-                                         getViewAxis(stdOrg,Direction.getValue()));
-                                                 
-
-    shapeCentroid = Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
-    TopoDS_Shape mirroredShape;
-    mirroredShape = TechDraw::mirrorShape(shape,
-                                          inputCenter,
-                                          getScale());
-
-    gp_Ax2 viewAxis = getViewAxis(shapeCentroid,Direction.getValue());
-    if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
-        mirroredShape = TechDraw::rotateShape(mirroredShape,
-                                                      viewAxis,
-                                                      Rotation.getValue());
-     }
-    geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
+    m_saveShape = shape;
+    geometryObject = makeGeometryForShape(shape);
 
 #if MOD_TECHDRAW_HANDLE_FACES
     auto start = std::chrono::high_resolution_clock::now();
@@ -318,6 +304,36 @@ void DrawViewPart::onChanged(const App::Property* prop)
 //TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.
 }
 
+GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
+{
+//    Base::Console().Message("DVP::makeGeometryforShape() - %s\n", Label.getValue());
+    gp_Pnt inputCenter;
+    Base::Vector3d stdOrg(0.0,0.0,0.0);
+
+    gp_Ax2 viewAxis = getProjectionCS(stdOrg);
+
+    inputCenter = TechDraw::findCentroid(shape,
+                                         viewAxis);
+    Base::Vector3d centroid(inputCenter.X(),
+                            inputCenter.Y(),
+                            inputCenter.Z());
+
+    //center shape on origin
+    TopoDS_Shape centeredShape = TechDraw::moveShape(shape,
+                                                     centroid * -1.0);
+
+    TopoDS_Shape scaledShape = TechDraw::scaleShape(centeredShape,
+                                                    getScale());
+    if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+        scaledShape = TechDraw::rotateShape(scaledShape,
+                                            viewAxis,
+                                            Rotation.getValue());
+     }
+//    BRepTools::Write(scaledShape, "DVPScaled.brep");            //debug
+    GeometryObject* go =  buildGeometryObject(scaledShape,viewAxis);
+    return go;
+}
+
 //note: slightly different than routine with same name in DrawProjectSplit
 TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)
 {
@@ -326,9 +342,6 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
     go->isPerspective(Perspective.getValue());
     go->setFocus(Focus.getValue());
     go->usePolygonHLR(CoarseView.getValue());
-
-    Base::Vector3d baseProjDir = Direction.getValue();
-    saveParamSpace(baseProjDir);
 
     if (go->usePolygonHLR()){
         go->projectShapeWithPolygonAlgo(shape,
@@ -399,7 +412,6 @@ void DrawViewPart::extractFaces()
     for (;itEdge != goEdges.end(); itEdge++) {
         origEdges.push_back((*itEdge)->occEdge);
     }
-
 
     std::vector<TopoDS_Edge> faceEdges;
     std::vector<TopoDS_Edge> nonZero;
@@ -702,22 +714,19 @@ QRectF DrawViewPart::getRect() const
     return result;
 }
 
-//used to project pt (ex SectionOrigin) onto paper plane
+//used to project a pt (ex SectionOrigin) onto paper plane
 Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt) const
 {
-    gp_Trsf mirrorTransform;
-    mirrorTransform.SetMirror( gp_Ax2(gp_Pnt(shapeCentroid.x,shapeCentroid.y,shapeCentroid.z),
-                                      gp_Dir(0, -1, 0)) );
-    gp_Pnt basePt(pt.x,pt.y,pt.z);
-    gp_Pnt mirrorGp = basePt.Transformed(mirrorTransform);
-    Base::Vector3d mirrorPt(mirrorGp.X(),mirrorGp.Y(), mirrorGp.Z());
-    Base::Vector3d centeredPoint = mirrorPt - shapeCentroid;
-    Base::Vector3d direction = Direction.getValue();
-    gp_Ax2 viewAxis = getViewAxis(centeredPoint,direction);
+    Base::Vector3d stdOrg(0.0,0.0,0.0);
+    gp_Ax2 viewAxis = getProjectionCS(stdOrg);
+    gp_Pnt gPt(pt.x,pt.y,pt.z);
+
     HLRAlgo_Projector projector( viewAxis );
     gp_Pnt2d prjPnt;
-    projector.Project(gp_Pnt(centeredPoint.x,centeredPoint.y,centeredPoint.z), prjPnt);
-    return Base::Vector3d(prjPnt.X(),prjPnt.Y(), 0.0);
+    projector.Project(gPt, prjPnt);
+    Base::Vector3d result(prjPnt.X(),prjPnt.Y(), 0.0);
+    result = DrawUtil::invertY(result);
+    return result;
 }
 
 bool DrawViewPart::hasGeometry(void) const
@@ -737,30 +746,51 @@ bool DrawViewPart::hasGeometry(void) const
     return result;
 }
 
-//boring here. gets more interesting in descendents.
-gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
-                                 const Base::Vector3d& axis,
-                                 const bool flip)  const
+gp_Ax2 DrawViewPart::getProjectionCS(const Base::Vector3d pt) const
 {
-    gp_Ax2 viewAxis = TechDraw::getViewAxis(pt,axis,flip);
-
+//    Base::Console().Message("DVP::getProjectionCS() - %s - %s\n", getNameInDocument(), Label.getValue());
+    Base::Vector3d direction = Direction.getValue();
+    gp_Dir gDir(direction.x,
+                direction.y,
+                direction.z);
+    Base::Vector3d xDir = getXDirection();
+    gp_Dir gXDir(xDir.x,
+                 xDir.y,
+                 xDir.z);
+    gp_Pnt gOrg(pt.x,
+                pt.y,
+                pt.z);
+    gp_Ax2 viewAxis(gOrg,
+                    gDir);
+    try {
+        viewAxis = gp_Ax2(gOrg,
+                          gDir,
+                          gXDir);
+    }
+    catch (...) {
+        Base::Console().Warning("DVP - %s - failed to create projection CS\n", getNameInDocument());
+    }
     return viewAxis;
 }
 
-void DrawViewPart::saveParamSpace(const Base::Vector3d& direction, const Base::Vector3d& xAxis)
+gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
+                               const Base::Vector3d& direction,
+                               const bool flip) const
 {
-    (void)xAxis;
-    Base::Vector3d origin(0.0,0.0,0.0);
-    gp_Ax2 viewAxis = getViewAxis(origin,direction);
-
-    gp_Dir xdir = viewAxis.XDirection();
-    uDir = Base::Vector3d(xdir.X(),xdir.Y(),xdir.Z());
-    gp_Dir ydir = viewAxis.YDirection();
-    vDir = Base::Vector3d(ydir.X(),ydir.Y(),ydir.Z());
-    wDir = Base::Vector3d(direction.x, -direction.y, direction.z);
-    wDir.Normalize();
+    (void) direction;
+    (void) flip;
+    Base::Console().Message("DVP::getViewAxis - deprecated. Use getProjectionCS.\n");
+    return getProjectionCS(pt);
 }
 
+//TODO: make saveShape a property
+Base::Vector3d DrawViewPart::getCentroid(void) const
+{
+    Base::Vector3d stdOrg(0.0,0.0,0.0);
+    Base::Vector3d centroid = TechDraw::findCentroidVec(m_saveShape,
+                                                        getProjectionCS(stdOrg));
+    return centroid;
+}
 
 std::vector<DrawViewSection*> DrawViewPart::getSectionRefs(void) const
 {
@@ -789,16 +819,6 @@ std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs(void) const
 const std::vector<TechDraw::BaseGeom  *> DrawViewPart::getVisibleFaceEdges() const
 {
     return geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
-}
-
-gp_Pln DrawViewPart::getProjPlane() const
-{
-    Base::Vector3d plnPnt(0.0,0.0,0.0);
-    Base::Vector3d plnNorm = Direction.getValue();
-    gp_Ax2 viewAxis = getViewAxis(plnPnt,plnNorm,false);
-    gp_Ax3 viewAxis3(viewAxis);
-
-    return gp_Pln(viewAxis3);
 }
 
 void DrawViewPart::getRunControl()
@@ -887,6 +907,61 @@ bool DrawViewPart::isIso(void) const
          DrawUtil::fpCompare(fabs(dir.x),fabs(dir.z)) ) {
         result = true;
     }
+    return result;
+}
+
+bool DrawViewPart::checkXDirection(void) const
+{
+//    Base::Console().Message("DVP::checkXDirection()\n");
+    Base::Vector3d xDir = XDirection.getValue();
+    if (DrawUtil::fpCompare(xDir.Length(), 0.0))  {
+        Base::Vector3d dir = Direction.getValue();
+        Base::Vector3d origin(0.0,0.0,0.0);
+        Base::Vector3d xDir = getLegacyX(origin,
+                                         dir);
+        Base::Console().Warning("DVP - %s - XDirection property not set. Try %s\n",
+                                getNameInDocument(),
+                                DrawUtil::formatVector(xDir).c_str());
+        return false;
+    }
+    return true;
+}
+
+//
+Base::Vector3d DrawViewPart::getXDirection(void) const
+{
+//    Base::Console().Message("DVP::getXDirection() - %s\n", Label.getValue());
+    Base::Vector3d result(1.0, 0.0, 0.0);               //default X
+    App::Property* prop = getPropertyByName("XDirection");
+    if (prop != nullptr) {                              //have an XDirection property
+        Base::Vector3d propVal = XDirection.getValue();
+        if (DrawUtil::fpCompare(propVal.Length(), 0.0))  {   //but it has no value
+            Base::Vector3d dir = Direction.getValue();       //make a sensible default
+            Base::Vector3d org(0.0, 0.0, 0.0);
+            result = getLegacyX(org,
+                                dir);
+        } else {
+            result = propVal;                               //normal case.  XDirection is set.
+        }
+    } else {                                                //no Property.  can this happen?
+            Base::Vector3d dir = Direction.getValue();      //make a sensible default
+            Base::Vector3d org(0.0, 0.0, 0.0);
+            result = getLegacyX(org,
+                                dir);
+    }
+    return result;
+}
+
+Base::Vector3d DrawViewPart::getLegacyX(const Base::Vector3d& pt,
+                                        const Base::Vector3d& axis,
+                                        const bool flip)  const
+{
+//    gp_Ax2 viewAxis = TechDraw::getViewAxis(pt,axis,flip);
+    gp_Ax2 viewAxis = TechDraw::legacyViewAxis1(pt, axis, flip);
+    gp_Dir gXDir = viewAxis.XDirection();
+    Base::Vector3d result(gXDir.X(),
+                          gXDir.Y(),
+                          gXDir.Z());
     return result;
 }
 
