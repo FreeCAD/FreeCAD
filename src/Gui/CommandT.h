@@ -25,6 +25,8 @@
 #define GUI_COMMAND_T_H
 
 #include <Base/Exception.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Command.h>
 #include <exception>
 #include <type_traits>
@@ -58,6 +60,7 @@ public:
 //@{
 
 /** Runs a command for accessing document attribute or method
+ * This function is an alternative to _FCMD_DOC_CMD
  * @param doc: pointer to a document
  * @param mod: module name, "Gui" or "App"
  * @param cmd: command string, streamable
@@ -84,6 +87,7 @@ void _cmdDocument(Gui::Command::DoCmd_Type cmdType, App::Document* doc, const st
 }
 
 /** Runs a command for accessing App.Document attribute or method
+ * This function is an alternative to FCMD_DOC_CMD
  *
  * @param doc: pointer to a document
  * @param cmd: command string, streamable
@@ -128,6 +132,7 @@ inline void cmdGuiDocument(App::Document* doc, T&& cmd) {
 }
 
 /** Runs a command for accessing an object's document attribute or method
+ * This function is an alternative to _FCMD_OBJ_DOC_CMD
  * @param obj: pointer to a DocumentObject
  * @param mod: module name, "Gui" or "App"
  * @param cmd: command string, streamable
@@ -138,6 +143,7 @@ inline void _cmdDocument(Gui::Command::DoCmd_Type cmdType, App::DocumentObject* 
 }
 
 /** Runs a command for accessing an object's App::Document attribute or method
+ * This function is an alternative to FCMD_OBJ_DOC_CMD
  * @param obj: pointer to a DocumentObject
  * @param cmd: command string, streamable
  */
@@ -147,6 +153,7 @@ inline void cmdAppDocument(App::DocumentObject* obj, T&& cmd) {
 }
 
 /** Runs a command for accessing an object's Gui::Document attribute or method
+ * This function is an alternative to FCMD_VOBJ_DOC_CMD
  * @param obj: pointer to a DocumentObject
  * @param cmd: command string, streamable
  */
@@ -156,6 +163,7 @@ inline void cmdGuiDocument(App::DocumentObject* obj, T&& cmd) {
 }
 
 /** Runs a command for accessing a document/view object's attribute or method
+ * This function is an alternative to _FCMD_OBJ_CMD
  * @param cmdType: Command type
  * @param obj: pointer to a DocumentObject
  * @param mod: module name, "Gui" or "App"
@@ -184,6 +192,7 @@ void _cmdObject(Gui::Command::DoCmd_Type cmdType, App::DocumentObject* obj, cons
 }
 
 /** Runs a command for accessing an document object's attribute or method
+ * This function is an alternative to FCMD_OBJ_CMD
  * @param obj: pointer to a DocumentObject
  * @param cmd: command string, streamable
  * @sa _cmdObject()
@@ -194,6 +203,7 @@ inline void cmdAppObject(App::DocumentObject* obj, T&& cmd) {
 }
 
 /** Runs a command for accessing an view object's attribute or method
+ * This function is an alternative to FCMD_VOBJ_CMD
  * @param obj: pointer to a DocumentObject
  * @param cmd: command string, streamable
  * @sa _cmdObject()
@@ -214,6 +224,7 @@ inline void cmdAppObjectShow(App::DocumentObject* obj) {
 }
 
 /** Runs a command to start editing a give object
+ * This function is an alternative to FCMD_SET_EDIT
  * @param obj: pointer to a DocumentObject
  *
  * Unlike other helper functions, this one editing the object using the current
@@ -230,6 +241,7 @@ inline void cmdSetEdit(App::DocumentObject* obj) {
 }
 
 /** Runs a command for accessing a document object's attribute or method
+ * This function is an alternative to FCMD_OBJ_CMD2
  * @param cmd: command string, supporting printf like formatter
  * @param obj: pointer to a DocumentObject
  *
@@ -264,9 +276,10 @@ void cmdAppObjectArgs(App::DocumentObject* obj, const std::string& cmd, Args&&..
 }
 
 /** Runs a command for accessing a view object's attribute or method
+ * This function is an alternative to FCMD_VOBJ_CMD2
  * @param cmd: command string, supporting printf like formatter
  * @param obj: pointer to a DocumentObject
- * @sa cmdObject()
+ * @sa cmdAppObjectArgs()
  */
 template<typename...Args>
 void cmdGuiObjectArgs(App::DocumentObject* obj, const std::string& cmd, Args&&... args) {
