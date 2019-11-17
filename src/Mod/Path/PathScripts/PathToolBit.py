@@ -148,9 +148,10 @@ class ToolBit(object):
         obj.addProperty('App::PropertyFile', 'BitShape', 'Base', translate('PathToolBit', 'Shape for bit shape'))
         obj.addProperty('App::PropertyLink', 'BitBody',  'Base', translate('PathToolBit', 'The parametrized body representing the tool bit'))
         obj.addProperty('App::PropertyFile', 'File',     'Base', translate('PathToolBit', 'The file of the tool'))
-        if shapeFile is not None:
-            obj.BitShape = shapeFile
-            self._setupBitShape(obj)
+        if shapeFile is None:
+            shapeFile = 'endmill.fcstd'
+        obj.BitShape = shapeFile
+        self._setupBitShape(obj)
         self.onDocumentRestored(obj)
 
     def __getstate__(self):
@@ -238,9 +239,11 @@ class ToolBit(object):
         if force or not obj.BitBody:
             if force:
                 self._removeBitBody(obj)
+            activeDoc = FreeCAD.ActiveDocument
             (doc, opened) = self._loadBitBody(obj)
             obj.BitBody = obj.Document.copyObject(doc.RootObjects[0], True)
             if opened:
+                FreeCAD.setActiveDocument(activeDoc.Name)
                 FreeCAD.closeDocument(doc.Name)
             self._updateBitShape(obj)
 
@@ -248,12 +251,14 @@ class ToolBit(object):
         self._removeBitBody(obj)
 
     def _setupBitShape(self, obj, path=None):
+        activeDoc = FreeCAD.ActiveDocument
         (doc, docOpened) = self._loadBitBody(obj, path)
 
         obj.Label = doc.RootObjects[0].Label
         self._deleteBitSetup(obj)
         obj.BitBody = obj.Document.copyObject(doc.RootObjects[0], True)
         if docOpened:
+            FreeCAD.setActiveDocument(activeDoc.Name)
             FreeCAD.closeDocument(doc.Name)
 
         if obj.BitBody.ViewObject:
