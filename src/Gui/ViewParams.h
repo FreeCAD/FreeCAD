@@ -93,6 +93,7 @@ public:
     FC_VIEW_PARAM(UseTightBoundingBox,bool,Bool,true) \
     FC_VIEW_PARAM(UseBoundingBoxCache,bool,Bool,true) \
     FC_VIEW_PARAM(RenderProjectedBBox,bool,Bool,true) \
+    FC_VIEW_PARAM(SelectionFaceWire,bool,Bool,false) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \

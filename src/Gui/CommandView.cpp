@@ -3560,6 +3560,19 @@ VIEW_CMD_DEF(ProjectBoundingBox, RenderProjectedBBox)
 }
 
 //======================================================================
+// Std_SelectionFaceWire
+//======================================================================
+VIEW_CMD_DEF(SelectionFaceWire, SelectionFaceWire)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Show selected face wires");
+  sToolTipText  = QT_TR_NOOP("Show hidden tirangulation wires for selected face");
+  sWhatsThis    = "Std_SelectionFaceWire";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
+}
+
+//======================================================================
 // Std_SelOnTop
 //======================================================================
 VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
@@ -3609,6 +3622,7 @@ public:
         addCommand(new StdCmdProjectBoundingBox());
         addCommand();
         addCommand(new StdCmdSelOnTop());
+        addCommand(new StdCmdSelectionFaceWire());
         addCommand(new StdCmdPreselEdgeOnly());
         addCommand(new StdTreePreSelection());
     };

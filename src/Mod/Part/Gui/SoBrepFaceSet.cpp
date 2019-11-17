@@ -100,12 +100,12 @@ static bool makeDistinctColor(SbColor &res, const SbColor &color, const SbColor 
     float h2,s2,v2;
     other.getHSVValue(h2,s2,v2);
 
-    if(fabs(h-h2) > 0.05)
+    if(fabs(h-h2) > 0.07)
         return false;
     h += 0.3;
     if(h>1.0)
         h = 1.0-h;
-    res.setHSVValue(h,s,v);
+    res.setHSVValue(h,s,1.0f);
     return true;
 }
 
@@ -649,6 +649,31 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         renderSelection(action,ctx); 
         renderHighlight(action,ctx);
     }
+
+    if(Gui::ViewParams::instance()->getSelectionFaceWire()
+            && ctx && ctx->isSelected() && !ctx->isSelectAll()) 
+    {
+        // If SelectionFaceWire is enabled, draw the hidden lines of each face
+        // primitives
+        state->push();
+        SbColor c = ctx->selectionColor;
+        if(!pushed) {
+            // !pushed usually means no transparency, so crank up the color
+            // intensity to make it more distinct.
+            float h,s,v;
+            c.getHSVValue(h,s,v);
+            s = 1.0f;
+            v = 1.0f;
+            c.setHSVValue(h,s,v);
+        }
+        uint32_t color = c.getPackedValue(0.0f);
+        Gui::SoFCSelectionRoot::setupSelectionLineRendering(state,this,&color);
+        SoPolygonOffsetElement::set(state, this, 0.0f, 0.0f,
+                                    SoPolygonOffsetElement::FILLED, FALSE);
+        SoDrawStyleElement::set(state, this, SoDrawStyleElement::LINES);
+        renderSelection(action,ctx,false); 
+        state->pop();
+    }
 }
 
 static inline bool isOpaque(int id, const float *trans, int numtrans, 
@@ -855,14 +880,14 @@ bool SoBrepFaceSet::overrideMaterialBinding(
 
         if(hasTransparency) {
             // Emissive color in opengl increase objects color intensity, but
-            // only works in single color. We have to turn off emissive when
-            // there is transparency, otherwise it will drastically decrease
-            // transparency.
+            // only works in single color.
             SbColor c(0,0,0);
             SoLazyElement::setEmissive(state, &c);
         }
 
-        if(singleColor>0) {
+        bool partialRender = ctx2 && !ctx2->isSelectAll();
+
+        if(singleColor>0 && !partialRender) {
             //optimization for single color non-partial rendering
             SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
             SoOverrideElement::setMaterialBindingOverride(state, this, true);
@@ -875,13 +900,11 @@ bool SoBrepFaceSet::overrideMaterialBinding(
                 SoLazyElement::setTransparencyType(state, SoTransparencyType::SORTED_OBJECT_BLEND);
                 SoShapeStyleElement::setTransparencyType(state, SoTransparencyType::SORTED_OBJECT_BLEND);
             }
-
             return true;
         }
 
         matIndex.reserve(partIndex.getNum());
 
-        bool partialRender = ctx2 && !ctx2->isSelectAll();
         if(partialRender) {
             packedColors.push_back(SbColor(1.0,1.0,1.0).getPackedValue(1.0));
             matIndex.resize(partIndex.getNum(),0);
@@ -891,10 +914,20 @@ bool SoBrepFaceSet::overrideMaterialBinding(
                 auto cidx = packedColors.size()-1;
                 for(auto idx : ctx2->selectionIndex) {
                     if(idx>=0 && idx<partIndex.getNum()) {
-                        if(!singleColor && ctx2->applyColor(idx,packedColors,hasTransparency))
+                        if(!singleColor && ctx2->applyColor(idx,packedColors,hasTransparency)) {
                             matIndex[idx] = packedColors.size()-1;
-                        else
-                            matIndex[idx] = cidx;
+                            continue;
+                        }
+                        if(singleColor>0) {
+                            uint32_t c;
+                            const SbColor &c2 = idx<diffuse_size?diffuse[idx]:diffuse[0];
+                            if(makeDistinctColor(c,packedColors[cidx],c2.getPackedValue(trans0))) {
+                                packedColors.push_back(c);
+                                matIndex[idx] = packedColors.size()-1;
+                                continue;
+                            }
+                        }
+                        matIndex[idx] = cidx;
                     }
                 }
             }else{
@@ -935,10 +968,11 @@ bool SoBrepFaceSet::overrideMaterialBinding(
 
         if(ctx && ctx->selectionIndex.size()) {
             packedColors.push_back(selectionColor);
+            auto cidx = packedColors.size()-1;
             for(auto idx : ctx->selectionIndex) {
                 if(idx>=0 && idx<partIndex.getNum()) {
                     uint32_t c;
-                    if(makeDistinctColor(c,packedColors.back(),packedColors[matIndex[idx]]))
+                    if(makeDistinctColor(c,packedColors[cidx],packedColors[matIndex[idx]]))
                         packedColors.push_back(c);
                     matIndex[idx] = packedColors.size()-1;
                 }
@@ -946,7 +980,8 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         }
         if(ctx && ctx->highlightIndex>=0 && ctx->highlightIndex<partIndex.getNum()) {
             packedColors.push_back(highlightColor);
-            makeDistinctColor(packedColors.back(), packedColors.back(), packedColors[matIndex[ctx->highlightIndex]]);
+            makeDistinctColor(packedColors.back(),
+                    packedColors.back(), packedColors[matIndex[ctx->highlightIndex]]);
             matIndex[ctx->highlightIndex] = packedColors.size()-1;
         }
 
@@ -1398,10 +1433,25 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
     SoState * state = action->getState();
     state->push();
 
-    SoLazyElement::setEmissive(state, &ctx->highlightColor);
+    SbColor color = ctx->highlightColor;
+    if(!ctx->isHighlightAll()) {
+        switch(SoMaterialBindingElement::get(state)) {
+        case SoMaterialBindingElement::OVERALL:
+            makeDistinctColor(color,color,SoLazyElement::getDiffuse(state,0));
+            break;
+        case SoMaterialBindingElement::PER_PART:
+            if(SoLazyElement::getInstance(state)->getNumDiffuse() > ctx->highlightIndex)
+                makeDistinctColor(color,color,SoLazyElement::getDiffuse(state,ctx->highlightIndex));
+            break;
+        default:
+            break;
+        }
+    }
+
+    SoLazyElement::setEmissive(state, &color);
     // if shading is disabled then set also the diffuse color
     if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
-        packedColor = ctx->highlightColor.getPackedValue(0.0);
+        packedColor = color.getPackedValue(0.0);
         SoLazyElement::setPacked(state, this,1, &packedColor,false);
     }
     SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
@@ -1425,38 +1475,87 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
     if(!ctx || !ctx->isSelected())
         return;
 
+    RenderIndices.clear();
+    if(!ctx->isSelectAll()) {
+        for(auto id : ctx->selectionIndex) {
+            if (id<0 || id>=partIndex.getNum())
+                continue;
+            RenderIndices.push_back(id);
+        }
+        if(RenderIndices.empty())
+            return;
+    }
+
+    bool resetMatIndices = false;
     SoState * state = action->getState();
 
     if(push) {
         state->push();
 
-        SoLazyElement::setEmissive(state, &ctx->selectionColor);
-        // if shading is disabled then set also the diffuse color
-        if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
-            packedColor = ctx->selectionColor.getPackedValue(0.0);
-            SoLazyElement::setPacked(state, this,1, &packedColor,false);
+        SbColor color = ctx->selectionColor;
+
+        auto mb = SoMaterialBindingElement::get(state);
+        if(ctx->isSelectAll())
+            mb = SoMaterialBindingElement::OVERALL;
+        else {
+            switch(mb) {
+            case SoMaterialBindingElement::OVERALL:
+                makeDistinctColor(color,color,SoLazyElement::getDiffuse(state,0));
+                break;
+            case SoMaterialBindingElement::PER_PART:
+                if(partIndex.getNum()<SoLazyElement::getInstance(state)->getNumDiffuse())
+                    break;
+                packedColors.resize(1,color.getPackedValue(0.0));
+                matIndex.resize(partIndex.getNum(),0);
+                for(int id : RenderIndices) {
+                    SbColor c;
+                    if(makeDistinctColor(c,color,SoLazyElement::getDiffuse(state,id))) {
+                        packedColors.push_back(c.getPackedValue(0.0));
+                        matIndex[id] = packedColors.size()-1;
+                    }
+                }
+                if(packedColors.size() == 1) {
+                    packedColors.clear();
+                    matIndex.clear();
+                    mb = SoMaterialBindingElement::OVERALL;
+                } else {
+                    SbBool notify = enableNotify(FALSE);
+                    materialIndex.setValuesPointer(matIndex.size(),&matIndex[0]);
+                    if(notify) enableNotify(notify);
+                    resetMatIndices = true;
+                    mb = SoMaterialBindingElement::PER_PART_INDEXED;
+                    SoLazyElement::setPacked(state,this,packedColors.size(),&packedColors[0],false);
+                }
+                break;
+            default:
+                mb = SoMaterialBindingElement::OVERALL;
+                break;
+            }
+        }
+
+        if(mb == SoMaterialBindingElement::OVERALL) {
+            SoLazyElement::setEmissive(state, &color);
+            // if shading is disabled then set also the diffuse color
+            if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
+                packedColor = color.getPackedValue(0.0);
+                SoLazyElement::setPacked(state, this,1, &packedColor,false);
+            }
         }
         SoTextureEnabledElement::set(state,this,false);
-        SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
+        SoMaterialBindingElement::set(state,mb);
         SoOverrideElement::setMaterialBindingOverride(state,this,true);
     }
 
-    if(ctx->isSelectAll()) {
-        RenderIndices.clear();
-        renderShape(action,true);
-    } else {
-        RenderIndices.clear();
-        for(auto id : ctx->selectionIndex) {
-            if (id<0 || id>=partIndex.getNum() || id == ctx->highlightIndex)
-                continue;
-            RenderIndices.push_back(id);
-        }
-        if(RenderIndices.size())
-            renderShape(action,true);
-    }
+    renderShape(action,true);
 
-    if(push)
+    if(push) {
+        if(resetMatIndices) {
+            SbBool notify = enableNotify(FALSE);
+            materialIndex.setNum(0);
+            if(notify) enableNotify(notify);
+        }
         state->pop();
+    }
 }
 
 void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
