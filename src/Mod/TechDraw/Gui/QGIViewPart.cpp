@@ -779,13 +779,22 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         }
         sectionLine->setDirection(arrowDir.x,arrowDir.y);
 
+        //dvp is centered on centroid looking along dvp direction
+        //dvs is centered on SO looking along section normal
+        //need to subtract SO from centroid to get displacement 
         Base::Vector3d org = viewSection->SectionOrigin.getValue();
+        Base::Vector3d cent = viewPart->getCentroid();
+        Base::Vector3d adjOrg = org - cent;
         double scale = viewPart->getScale();
-        Base::Vector3d pOrg = scale * viewPart->projectPoint(org);
+
+        Base::Vector3d pAdjOrg = scale * viewPart->projectPoint(adjOrg);
+
         //now project pOrg onto arrowDir
         Base::Vector3d displace;
-        displace.ProjectToLine(pOrg, arrowDir);
-        Base::Vector3d offset = pOrg + displace;
+        displace.ProjectToLine(pAdjOrg, arrowDir);
+        Base::Vector3d offset = pAdjOrg + displace;
+
+//        makeMark(0.0, 0.0);
 
         sectionLine->setPos(Rez::guiX(offset.x),Rez::guiX(offset.y));
         double sectionSpan;
@@ -811,7 +820,6 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
             } else {
                 sectionSpan = height + sectionFudge;
             }
-//            sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
             xVal = 0.0;
             yVal = sectionSpan / 2.0;
         }

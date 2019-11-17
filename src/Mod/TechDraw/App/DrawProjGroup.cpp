@@ -421,7 +421,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
             if (strcmp(viewProjType, "Front") != 0 ) {  //not Front!
                 vecs = getDirsFromFront(view);
                 view->Direction.setValue(vecs.first);
-                view->RotationVector.setValue(vecs.second);
+                view->XDirection.setValue(vecs.second);
                 view->recomputeFeature();
             } else {  //Front
                 Anchor.setValue(view);
@@ -516,7 +516,7 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::st
     }
 
     Base::Vector3d dirAnch = anch->Direction.getValue();
-    Base::Vector3d rotAnch = anch->RotationVector.getValue();
+    Base::Vector3d rotAnch = anch->getXDirection();
     Base::Vector3d upAnch  = dirAnch.Cross(rotAnch);             //this can get weird after rotations
     projDir = dirAnch;        //need default
     rotVec  = rotAnch;
@@ -1034,7 +1034,7 @@ void DrawProjGroup::updateSecondaryDirs()
 {
     DrawProjGroupItem* anchor = getAnchor();
     Base::Vector3d anchDir = anchor->Direction.getValue();
-    Base::Vector3d anchRot = anchor->RotationVector.getValue();
+    Base::Vector3d anchRot = anchor->getXDirection();
 
     std::map<std::string, std::pair<Base::Vector3d,Base::Vector3d> > saveVals;
     std::string key;
@@ -1120,11 +1120,11 @@ void DrawProjGroup::updateSecondaryDirs()
                 //TARFU invalid secondary type
                 Base::Console().Message("ERROR - DPG::updateSecondaryDirs - invalid projection type\n");
                 newDir = v->Direction.getValue();
-                newRot = v->RotationVector.getValue();
+                newRot = v->getXDirection();
             }
         }
 //        v->Direction.setValue(newDir);
-//        v->RotationVector.setValue(newRot);
+//        v->XDirection.setValue(newRot);
     }
 
     //not sure if this is required.
@@ -1133,7 +1133,7 @@ void DrawProjGroup::updateSecondaryDirs()
         std::string type = v->Type.getValueAsString();
         data = saveVals[type];
         v->Direction.setValue(data.first);
-        v->RotationVector.setValue(data.second);
+        v->XDirection.setValue(data.second);
     }
 
     auto page = findParentPage();
@@ -1149,7 +1149,7 @@ void DrawProjGroup::rotateRight()
     newDirs  = getDirsFromFront("Left");
     DrawProjGroupItem* anchor = getAnchor();
     anchor->Direction.setValue(newDirs.first);
-    anchor->RotationVector.setValue(newDirs.second);
+    anchor->XDirection.setValue(newDirs.second);
     updateSecondaryDirs();
 }
 
@@ -1160,7 +1160,7 @@ void DrawProjGroup::rotateLeft()
     newDirs  = getDirsFromFront("Right");
     DrawProjGroupItem* anchor = getAnchor();
     anchor->Direction.setValue(newDirs.first);
-    anchor->RotationVector.setValue(newDirs.second);
+    anchor->XDirection.setValue(newDirs.second);
     updateSecondaryDirs();
 }
 
@@ -1171,7 +1171,7 @@ void DrawProjGroup::rotateUp()
     newDirs  = getDirsFromFront("Bottom");
     DrawProjGroupItem* anchor = getAnchor();
     anchor->Direction.setValue(newDirs.first);
-    anchor->RotationVector.setValue(newDirs.second);
+    anchor->XDirection.setValue(newDirs.second);
     updateSecondaryDirs();
 }
 
@@ -1182,7 +1182,7 @@ void DrawProjGroup::rotateDown()
     newDirs  = getDirsFromFront("Top");
     DrawProjGroupItem* anchor = getAnchor();
     anchor->Direction.setValue(newDirs.first);
-    anchor->RotationVector.setValue(newDirs.second);
+    anchor->XDirection.setValue(newDirs.second);
     updateSecondaryDirs();
 }
 
@@ -1192,10 +1192,10 @@ void DrawProjGroup::spinCW()
     DrawProjGroupItem* anchor = getAnchor();
     double angle = M_PI / 2.0;
     Base::Vector3d org(0.0,0.0,0.0);
-    Base::Vector3d curRot = anchor->RotationVector.getValue();
+    Base::Vector3d curRot = anchor->getXDirection();
     Base::Vector3d curDir = anchor->Direction.getValue();
     Base::Vector3d newRot = DrawUtil::vecRotate(curRot,angle,curDir,org);
-    anchor->RotationVector.setValue(newRot);
+    anchor->XDirection.setValue(newRot);
     updateSecondaryDirs();
 }
 
@@ -1205,10 +1205,10 @@ void DrawProjGroup::spinCCW()
     DrawProjGroupItem* anchor = getAnchor();
     double angle = M_PI / 2.0;
     Base::Vector3d org(0.0,0.0,0.0);
-    Base::Vector3d curRot = anchor->RotationVector.getValue();
+    Base::Vector3d curRot = anchor->getXDirection();
     Base::Vector3d curDir = anchor->Direction.getValue();
     Base::Vector3d newRot = DrawUtil::vecRotate(curRot,-angle,curDir,org);
-    anchor->RotationVector.setValue(newRot);
+    anchor->XDirection.setValue(newRot);
 
     updateSecondaryDirs();
 }
@@ -1244,7 +1244,7 @@ void DrawProjGroup::dumpISO(const char * title)
         DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
         std::string t = v->Type.getValueAsString();
         dir = v->Direction.getValue();
-        axis = v->RotationVector.getValue();
+        axis = v->getXDirection();
 
         Base::Console().Message("%s:  %s/%s\n",
                                 t.c_str(),DrawUtil::formatVector(dir).c_str(),DrawUtil::formatVector(axis).c_str());

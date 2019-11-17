@@ -93,6 +93,7 @@ public:
 
     App::PropertyLinkList     Source;
     App::PropertyVector       Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
+    App::PropertyVector       XDirection;
     App::PropertyBool         Perspective;
     App::PropertyDistance     Focus;
 
@@ -144,29 +145,31 @@ public:
     double getBoxX(void) const;
     double getBoxY(void) const;
     virtual QRectF getRect() const override;
-    virtual std::vector<DrawViewSection*> getSectionRefs() const;                    //are there ViewSections based on this ViewPart?
+    virtual std::vector<DrawViewSection*> getSectionRefs() const;       //are there ViewSections based on this ViewPart?
     virtual std::vector<DrawViewDetail*> getDetailRefs() const;
-    const Base::Vector3d& getUDir(void) const {return uDir;}                       //paperspace X
-    const Base::Vector3d& getVDir(void) const {return vDir;}                       //paperspace Y
-    const Base::Vector3d& getWDir(void) const {return wDir;}                       //paperspace Z
-    virtual const Base::Vector3d& getCentroid(void) const {return shapeCentroid;}
-    Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
+
+
+    virtual Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction,
                                const bool flip=true) const;
+    virtual gp_Ax2 getProjectionCS(Base::Vector3d pt) const;
+    virtual Base::Vector3d getXDirection(void) const;       //don't use XDirection.getValue()
+    virtual Base::Vector3d getCentroid(void) const;
+    virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt,
+                                      const Base::Vector3d& axis,
+                                      const bool flip = true)  const;
+
 
     bool handleFaces(void);
     bool showSectionEdges(void);
 
     bool isUnsetting(void) { return nowUnsetting; }
     
-    gp_Pln getProjPlane(void) const;
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
 
     virtual TopoDS_Shape getSourceShape(void) const; 
-/*    virtual std::vector<TopoDS_Shape> getShapesFromObject(App::DocumentObject* docObj) const; */
     virtual TopoDS_Shape getSourceShapeFused(void) const; 
-/*    std::vector<TopoDS_Shape> extractDrawableShapes(TopoDS_Shape shapeIn) const;*/
 
     bool isIso(void) const;
 
@@ -224,25 +227,26 @@ public:
     void dumpCosVerts(const std::string text);
 
 protected:
+    bool checkXDirection(void) const;
+
     TechDraw::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
     virtual void onChanged(const App::Property* prop) override;
     virtual void unsetupObject() override;
 
-    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis);
+    virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis); //const??
+    virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape shape);   //const??
+
     void extractFaces();
 
-    //Projection parameter space
-    virtual void saveParamSpace(const Base::Vector3d& direction, const Base::Vector3d& xAxis=Base::Vector3d(0.0,0.0,0.0));
-    Base::Vector3d uDir;                       //paperspace X
-    Base::Vector3d vDir;                       //paperspace Y
-    Base::Vector3d wDir;                       //paperspace Z
     Base::Vector3d shapeCentroid;
     void getRunControl(void);
     
     bool m_sectionEdges;
     bool m_handleFaces;
+
+    TopoDS_Shape m_saveShape;    //TODO: make this a Property.  Part::TopoShapeProperty??
 
 private:
     bool nowUnsetting;
