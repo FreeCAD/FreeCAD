@@ -149,9 +149,12 @@ class ToolBit(object):
         obj.addProperty('App::PropertyLink', 'BitBody',  'Base', translate('PathToolBit', 'The parametrized body representing the tool bit'))
         obj.addProperty('App::PropertyFile', 'File',     'Base', translate('PathToolBit', 'The file of the tool'))
         if shapeFile is None:
-            shapeFile = 'endmill.fcstd'
-        obj.BitShape = shapeFile
-        self._setupBitShape(obj)
+            obj.BitShape = 'endmill.fcstd'
+            self._setupBitShape(obj)
+            self.unloadBitBody(obj)
+        else:
+            obj.BitShape = shapeFile
+            self._setupBitShape(obj)
         self.onDocumentRestored(obj)
 
     def __getstate__(self):
@@ -188,6 +191,10 @@ class ToolBit(object):
             self._setupBitShape(obj)
         #elif obj.getGroupOfProperty(prop) == PropertyGroupBit:
         #    self._updateBitShape(obj, [prop])
+
+    def onDelete(self, obj, arg2=None):
+        PathLog.track(obj.Label)
+        self.unloadBitBody(obj)
 
     def _updateBitShape(self, obj, properties=None):
         if not obj.BitBody is None:
@@ -237,9 +244,9 @@ class ToolBit(object):
 
     def loadBitBody(self, obj, force=False):
         if force or not obj.BitBody:
+            activeDoc = FreeCAD.ActiveDocument
             if force:
                 self._removeBitBody(obj)
-            activeDoc = FreeCAD.ActiveDocument
             (doc, opened) = self._loadBitBody(obj)
             obj.BitBody = obj.Document.copyObject(doc.RootObjects[0], True)
             if opened:

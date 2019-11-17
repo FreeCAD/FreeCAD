@@ -31,13 +31,8 @@ import PathScripts.PathToolBit as PathToolBit
 
 from PySide import QtCore
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -86,6 +81,8 @@ class ToolController:
         # pylint: disable=unused-argument
         if not self.usesLegacyTool(obj):
             if len(obj.Tool.InList) == 1:
+                if hasattr(obj.Tool.Proxy, 'onDelete'):
+                    obj.Tool.Proxy.onDelete(obj.Tool)
                 obj.Document.removeObject(obj.Tool.Name)
 
     def setFromTemplate(self, obj, template):
@@ -186,17 +183,23 @@ class ToolController:
 
     def ensureUseLegacyTool(self, obj, legacy):
         if not hasattr(obj, 'Tool') or (legacy != self.usesLegacyTool(obj)):
+            if legacy and hasattr(obj, 'Tool') and len(obj.Tool.InList) == 1:
+                if hasattr(obj.Tool.Proxy, 'onDelete'):
+                    obj.Tool.Proxy.onDelete(obj.Tool)
+                obj.Document.removeObject(obj.Tool.Name)
+
             if hasattr(obj, 'Tool'):
                 obj.removeProperty('Tool')
+
             if legacy:
                 obj.addProperty("Path::PropertyTool", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
             else:
                 obj.addProperty("App::PropertyLink", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
 
 def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
-    PathLog.track(tool, toolNumber)
+    legacyTool = PathPreferences.toolsReallyUseLegacyTools() if tool is None else isinstance(tool, Path.Tool)
 
-    legacyTool = PathPreferences.toolsUseLegacyTools() if tool is None else isinstance(tool, Path.Tool)
+    PathLog.track(tool, toolNumber, legacyTool)
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Label = name
@@ -215,6 +218,8 @@ def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=Tr
             tool.Material = "HighSpeedSteel"
         else:
             tool = PathToolBit.Factory.Create()
+            if tool.ViewObject:
+                tool.ViewObject.Visibility = False
 
     obj.Tool = tool
     obj.ToolNumber = toolNumber

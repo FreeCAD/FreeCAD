@@ -441,7 +441,7 @@ class CommandToolLibraryEdit():
         pass
 
     def edit(self, job=None, cb=None):
-        if PathPreferences.toolsUseLegacyTools():
+        if PathPreferences.toolsReallyUseLegacyTools():
             editor = EditorPanel(job, cb)
             editor.setupUi()
             editor.form.exec_()

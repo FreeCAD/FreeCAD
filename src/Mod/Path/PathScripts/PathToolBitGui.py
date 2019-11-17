@@ -77,6 +77,10 @@ class ViewProvider(object):
         # pylint: disable=unused-argument
         return None
 
+    def onDelete(self, vobj, arg2=None):
+        PathLog.track(vobj.Object.Label)
+        vobj.Object.Proxy.onDelete(vobj.Object)
+
     def getDisplayMode(self, mode):
         # pylint: disable=unused-argument
         return 'Default'

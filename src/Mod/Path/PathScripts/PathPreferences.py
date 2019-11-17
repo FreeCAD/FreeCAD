@@ -152,6 +152,9 @@ def searchPathsTool(sub='Bit'):
 def toolsUseLegacyTools():
     return preferences().GetBool(UseLegacyTools, True)
 
+def toolsReallyUseLegacyTools():
+    return toolsUseLegacyTools() or not experimentalFeaturesEnabled()
+
 def toolsStoreAbsolutePaths():
     return preferences().GetBool(UseAbsoluteToolPaths, False)
 
