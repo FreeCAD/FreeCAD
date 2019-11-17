@@ -527,7 +527,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     } else if ((!ctx2 || ctx2->isSelectAll())
                 && (Gui::Selection().needPickedList() 
                     || (Gui::ViewParams::instance()->getShowSelectionOnTop()
-                        && !Gui::ViewParams::instance()->getShowSelectionBoundingBox())))
+                        && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox())))
     {
         // Check the sibling selection state
         for(auto node : siblings) {
@@ -546,7 +546,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // are NOT rendering on top (!isRenderingDelayedPath), and we are not
     // partial rendering.
     if(Gui::ViewParams::instance()->getShowSelectionOnTop()
-            && !Gui::ViewParams::instance()->getShowSelectionBoundingBox()
+            && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
             && (!ctx2||ctx2->isSelectAll()) 
             && selected == 1
             && !action->isRenderingDelayedPaths())
@@ -624,7 +624,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // If 'ShowSelectionOnTop' is enabled, and we ARE rendering on top
     // (isRenderingDelayedPath), and we are not partial rendering (!ctx2).
     if(Gui::ViewParams::instance()->getShowSelectionOnTop()
-            && !Gui::ViewParams::instance()->getShowSelectionBoundingBox()
+            && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
             && (!ctx2 || ctx2->isSelectAll())
             && (!ctx || (!ctx->isHighlightAll() && !ctx->isSelectAll()))
             && action->isRenderingDelayedPaths())
