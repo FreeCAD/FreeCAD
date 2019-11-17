@@ -762,6 +762,8 @@ void TreeWidget::itemSearch(const QString& text, bool select) {
             return;
         }
         scrollToItem(item);
+
+        SelectionNoTopParentCheck guard;
         Selection().setPreselect(obj->getDocument()->getName(),
             obj->getNameInDocument(), subname.c_str(), 0, 0, 0, 2);
         if (select) {
@@ -1785,11 +1787,13 @@ void TreeWidget::dropEvent(QDropEvent* event)
         Selection().clearCompleteSelection();
         if (targetParent) {
             targetSubname << vp->getObject()->getNameInDocument() << '.';
+            SelectionNoTopParentCheck guard;
             Selection().addSelection(targetParent->getDocument()->getName(),
                 targetParent->getNameInDocument(), targetSubname.str().c_str());
         }
         else {
             targetParent = targetItemObj->object()->getObject();
+            SelectionNoTopParentCheck guard;
             Selection().addSelection(targetParent->getDocument()->getName(),
                 targetParent->getNameInDocument());
         }
@@ -2081,11 +2085,11 @@ void TreeWidget::dropEvent(QDropEvent* event)
                 }
                 droppedObjects.emplace_back(dropParent, dropName);
             }
-            Base::FlagToggler<> guard(_DisableCheckTopParent);
-            if (setSelection && droppedObjects.size()) {
+            if(setSelection && droppedObjects.size()) {
                 Selection().selStackPush();
                 Selection().clearCompleteSelection();
-                for (auto& v : droppedObjects)
+                SelectionNoTopParentCheck guard;
+                for(auto &v : droppedObjects)
                     Selection().addSelection(v.first->getDocument()->getName(),
                         v.first->getNameInDocument(), v.second.c_str());
                 Selection().selStackPush();
@@ -2283,8 +2287,8 @@ void TreeWidget::dropEvent(QDropEvent* event)
                 }
             }
             touched = true;
-            Base::FlagToggler<> guard(_DisableCheckTopParent);
-            Selection().setSelection(thisDoc->getName(), droppedObjs);
+            SelectionNoTopParentCheck guard;
+            Selection().setSelection(thisDoc->getName(),droppedObjs);
 
         }
         catch (const Base::Exception& e) {
@@ -3266,12 +3270,15 @@ const char* DocumentItem::getTreeName() const {
     return treeName;
 }
 
-#define FOREACH_ITEM(_item, _obj) \
+#define _FOREACH_ITEM(_item, _obj) \
     auto _it = ObjectMap.end();\
-    if(_obj.getObject() && _obj.getObject()->getNameInDocument())\
-        _it = ObjectMap.find(_obj.getObject());\
+    if(_obj && _obj->getNameInDocument())\
+        _it = ObjectMap.find(_obj);\
     if(_it != ObjectMap.end()) {\
         for(auto _item : _it->second->items) {
+
+#define FOREACH_ITEM(_item, _obj) \
+    _FOREACH_ITEM(_item, _obj.getObject())
 
 #define FOREACH_ITEM_ALL(_item) \
     for(auto _v : ObjectMap) {\
@@ -4230,12 +4237,14 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item) {
     }
     selected = false;
     if (item->mySubs.size()) {
+        SelectionNoTopParentCheck guard;
         for (auto& sub : item->mySubs) {
             if (Gui::Selection().addSelection(docname, objname, (subname + sub).c_str()))
                 selected = true;
         }
     }
     if (!selected) {
+        SelectionNoTopParentCheck guard;
         item->mySubs.clear();
         if (!Gui::Selection().addSelection(docname, objname, subname.c_str())) {
             item->selected = 0;
@@ -4247,86 +4256,113 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item) {
     getTree()->syncView(item->object());
 }
 
-App::DocumentObject* DocumentItem::getTopParent(App::DocumentObject* obj, std::string& subname) {
+App::DocumentObject *DocumentItem::getTopParent(
+        App::DocumentObject *obj, std::string &subname, DocumentObjectItem **ppitem) {
     auto it = ObjectMap.find(obj);
     if (it == ObjectMap.end() || it->second->items.empty())
         return nullptr;
 
     // already a top parent
-    if (it->second->rootItem)
+    if(it->second->rootItem) {
+        if(ppitem)
+            *ppitem = it->second->rootItem;
         return obj;
-
-    for (auto item : it->second->items) {
-        // non group object do not provide a coordinate system, hence its
-        // claimed child is still in the global coordinate space, so the
-        // child can still be considered a top level object
-        if (!item->isParentGroup())
-            return obj;
     }
 
-    // If no top level item, find an item that is closest to the top level
-    std::multimap<int, DocumentObjectItem*> items;
-    for (auto item : it->second->items) {
-        int i = 0;
-        for (auto parent = item->parent(); parent; ++i, parent = parent->parent()) {
-            if (parent->isHidden())
-                i += 1000;
-            ++i;
-        }
-        items.emplace(i, item);
-    }
-
-    App::DocumentObject* topParent = nullptr;
     std::ostringstream ss;
-    items.begin()->second->getSubName(ss, topParent);
-    if (!topParent) {
-        // this shouldn't happen
-        FC_WARN("No top parent for " << obj->getFullName() << '.' << subname);
-        return obj;
+    bool noParent = false;
+    std::string curSub;
+    App::DocumentObject *topParent = nullptr;
+    int curLevel = -1;
+    auto countLevel = [&](QTreeWidgetItem *item) {
+        int count = -1;
+        DocumentObjectItem *objItem = nullptr;
+        for (auto parent = item; parent; parent = parent->parent()) {
+            if (parent->type() != TreeWidget::ObjectType)
+                break;
+            if (count < 0) {
+                auto oitem = static_cast<DocumentObjectItem*>(parent);
+                if (oitem->object()->getObject() != obj)
+                    continue;
+                objItem = oitem;
+            }
+            if (parent->isHidden())
+                count += 1000;
+            else
+                ++count;
+        }
+        if (!objItem)
+            return false;
+
+        ss.str("");
+        App::DocumentObject *parentObj = nullptr;
+        objItem->getSubName(ss, parentObj);
+        // prefer item with no logical top parent so that we don't need to
+        // correct the given sub object path.
+        if (!parentObj) {
+            if (noParent && curLevel >= 0 && count >= curLevel)
+                return false;
+            noParent = true;
+        } else if (noParent || (curLevel >= 0 && count >= curLevel))
+            return false;
+        if (ppitem)
+            *ppitem = objItem;
+        topParent = parentObj;
+        curLevel = count;
+        curSub = ss.str();
+        return true;
+    };
+
+    // First check the current item
+    if (!countLevel(getTree()->currentItem())) {
+        // check the selected items, pick one that's nearest to the root
+        bool found = false;
+        for (auto item : getTree()->selectedItems()) {
+            if (countLevel(item))
+                found = true;
+        }
+        if (!found) {
+            while(auto group = App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
+                if (group->getDocument() != document()->getDocument())
+                    break;
+                ss.str("");
+                ss << obj->getNameInDocument() << "." << subname;
+                subname = ss.str();
+                obj = group;
+            }
+
+            // check all items corresponding to the requested object, pick one
+            // that's nearest to the root
+            _FOREACH_ITEM(item, obj)
+                countLevel(item);
+            END_FOREACH_ITEM;
+        }
     }
-    ss << obj->getNameInDocument() << '.' << subname;
-    FC_LOG("Subname correction " << obj->getFullName() << '.' << subname
-        << " -> " << topParent->getFullName() << '.' << ss.str());
-    subname = ss.str();
-    return topParent;
+
+    if (topParent) {
+        ss.str("");
+        ss << curSub << obj->getNameInDocument() << '.' << subname;
+        FC_LOG("Subname correction " << obj->getFullName() << '.' << subname
+                << " -> " << topParent->getFullName() << '.' << ss.str());
+        subname = ss.str();
+    }
+    return topParent ? topParent : obj;
 }
 
 DocumentObjectItem* DocumentItem::findItemByObject(
     bool sync, App::DocumentObject* obj, const char* subname, bool select)
 {
+    DocumentObjectItem *item = nullptr;
+    if(!obj)
+        return item;
     if (!subname)
         subname = "";
 
-    auto it = ObjectMap.find(obj);
-    if (it == ObjectMap.end() || it->second->items.empty())
-        return nullptr;
-
-    // prefer top level item of this object
-    if (it->second->rootItem)
-        return findItem(sync, it->second->rootItem, subname, select);
-
-    for (auto item : it->second->items) {
-        // non group object do not provide a coordinate system, hence its
-        // claimed child is still in the global coordinate space, so the
-        // child can still be considered a top level object
-        if (!item->isParentGroup())
-            return findItem(sync, item, subname, select);
-    }
-
-    // If no top level item, find an item that is closest to the top level
-    std::multimap<int, DocumentObjectItem*> items;
-    for (auto item : it->second->items) {
-        int i = 0;
-        for (auto parent = item->parent(); parent; ++i, parent = parent->parent())
-            ++i;
-        items.emplace(i, item);
-    }
-    for (auto& v : items) {
-        auto item = findItem(sync, v.second, subname, select);
-        if (item)
-            return item;
-    }
-    return nullptr;
+    std::string sub(subname);
+    getTopParent(obj,sub,&item);
+    if(item)
+        item = findItem(sync,item,sub.c_str(),select);
+    return item;
 }
 
 DocumentObjectItem* DocumentItem::findItem(
