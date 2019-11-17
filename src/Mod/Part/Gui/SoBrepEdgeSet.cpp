@@ -299,7 +299,7 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
     state->push();
 
     uint32_t color = ctx->highlightColor.getPackedValue(0.0);
-    Gui::SoFCSelectionRoot::setupSelectionLineRendering(state,this,color);
+    Gui::SoFCSelectionRoot::setupSelectionLineRendering(state,this,&color);
     SoLinePatternElement::set(state, this, 0xFFFF);
 
     const SoCoordinateElement * coords;
@@ -342,7 +342,7 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
     if(push){
         state->push();
         color = ctx->selectionColor.getPackedValue(0.0);
-        Gui::SoFCSelectionRoot::setupSelectionLineRendering(state,this,color);
+        Gui::SoFCSelectionRoot::setupSelectionLineRendering(state,this,&color);
     }
 
     const SoCoordinateElement * coords;

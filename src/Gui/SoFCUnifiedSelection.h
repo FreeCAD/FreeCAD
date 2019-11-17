@@ -481,7 +481,7 @@ public:
     static bool renderBBox(SoGLRenderAction *action, SoNode *node,
         const SbBox3f &bbox, SbColor color, const SbMatrix *mat=0);
 
-    static void setupSelectionLineRendering(SoState *state, SoNode *node, const uint32_t &color);
+    static void setupSelectionLineRendering(SoState *state, SoNode *node, const uint32_t *color);
 
 protected:
     virtual ~SoFCSelectionRoot();
