@@ -85,6 +85,8 @@ public:
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*) override;
 
+    virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) override;
+
 protected:
     void slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop );
     void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj, const App::Property& prop );

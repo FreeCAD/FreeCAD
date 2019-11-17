@@ -517,3 +517,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
         }
     }
 }
+
+int ViewProviderBody::replaceObject(App::DocumentObject *, App::DocumentObject *) {
+    return 0;
+}
