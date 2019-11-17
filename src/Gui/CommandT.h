@@ -77,7 +77,7 @@ public:
  * @endcode
  */
 template<typename T>
-void _cmdDocument(Gui::Command::DoCmd_Type cmdType, App::Document* doc, const std::string& mod, T&& cmd) {
+void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const App::Document* doc, const std::string& mod, T&& cmd) {
     if (doc && doc->getName()) {
         std::stringstream str;
         str << mod << ".getDocument('" << doc->getName() << "')."
@@ -105,7 +105,7 @@ void _cmdDocument(Gui::Command::DoCmd_Type cmdType, App::Document* doc, const st
  * @endcode
  */
 template<typename T>
-inline void cmdAppDocument(App::Document* doc, T&& cmd) {
+inline void cmdAppDocument(const App::Document* doc, T&& cmd) {
     _cmdDocument(Gui::Command::Doc, doc, "App", std::forward<T>(cmd));
 }
 
@@ -127,7 +127,7 @@ inline void cmdAppDocument(App::Document* doc, T&& cmd) {
  * @endcode
  */
 template<typename T>
-inline void cmdGuiDocument(App::Document* doc, T&& cmd) {
+inline void cmdGuiDocument(const App::Document* doc, T&& cmd) {
     _cmdDocument(Gui::Command::Gui, doc, "Gui", std::forward<T>(cmd));
 }
 
@@ -138,7 +138,7 @@ inline void cmdGuiDocument(App::Document* doc, T&& cmd) {
  * @param cmd: command string, streamable
  */
 template<typename T>
-inline void _cmdDocument(Gui::Command::DoCmd_Type cmdType, App::DocumentObject* obj, const std::string& mod, T&& cmd) {
+inline void _cmdDocument(Gui::Command::DoCmd_Type cmdType, const App::DocumentObject* obj, const std::string& mod, T&& cmd) {
     if (obj) _cmdDocument(cmdType, obj->getDocument(), mod, std::forward<T>(cmd));
 }
 
@@ -148,7 +148,7 @@ inline void _cmdDocument(Gui::Command::DoCmd_Type cmdType, App::DocumentObject* 
  * @param cmd: command string, streamable
  */
 template<typename T>
-inline void cmdAppDocument(App::DocumentObject* obj, T&& cmd) {
+inline void cmdAppDocument(const App::DocumentObject* obj, T&& cmd) {
     _cmdDocument(Gui::Command::Doc, obj, "App", std::forward<T>(cmd));
 }
 
@@ -158,7 +158,7 @@ inline void cmdAppDocument(App::DocumentObject* obj, T&& cmd) {
  * @param cmd: command string, streamable
  */
 template<typename T>
-inline void cmdGuiDocument(App::DocumentObject* obj, T&& cmd) {
+inline void cmdGuiDocument(const App::DocumentObject* obj, T&& cmd) {
     _cmdDocument(Gui::Command::Gui, obj, "Gui", std::forward<T>(cmd));
 }
 
@@ -181,7 +181,7 @@ inline void cmdGuiDocument(App::DocumentObject* obj, T&& cmd) {
  * @endcode
  */
 template<typename T>
-void _cmdObject(Gui::Command::DoCmd_Type cmdType, App::DocumentObject* obj, const std::string& mod, T&& cmd) {
+void _cmdObject(Gui::Command::DoCmd_Type cmdType, const App::DocumentObject* obj, const std::string& mod, T&& cmd) {
     if (obj && obj->getNameInDocument()) {
         std::ostringstream str;
         str << mod << ".getDocument('" << obj->getDocument()->getName() << "')"
@@ -198,7 +198,7 @@ void _cmdObject(Gui::Command::DoCmd_Type cmdType, App::DocumentObject* obj, cons
  * @sa _cmdObject()
  */
 template<typename T>
-inline void cmdAppObject(App::DocumentObject* obj, T&& cmd) {
+inline void cmdAppObject(const App::DocumentObject* obj, T&& cmd) {
     _cmdObject(Gui::Command::Doc, obj, "App", std::forward<T>(cmd));
 }
 
@@ -209,17 +209,17 @@ inline void cmdAppObject(App::DocumentObject* obj, T&& cmd) {
  * @sa _cmdObject()
  */
 template<typename T>
-inline void cmdGuiObject(App::DocumentObject* obj, T&& cmd) {
+inline void cmdGuiObject(const App::DocumentObject* obj, T&& cmd) {
     _cmdObject(Gui::Command::Gui, obj, "Gui", std::forward<T>(cmd));
 }
 
 /// Hides an object
-inline void cmdAppObjectHide(App::DocumentObject* obj) {
+inline void cmdAppObjectHide(const App::DocumentObject* obj) {
     cmdAppObject(obj, "Visibility = False");
 }
 
 /// Shows an object
-inline void cmdAppObjectShow(App::DocumentObject* obj) {
+inline void cmdAppObjectShow(const App::DocumentObject* obj) {
     cmdAppObject(obj, "Visibility = True");
 }
 
@@ -232,7 +232,7 @@ inline void cmdAppObjectShow(App::DocumentObject* obj) {
  * in-place editing an object, which may be brought in through linking to an
  * external group.
  */
-inline void cmdSetEdit(App::DocumentObject* obj) {
+inline void cmdSetEdit(const App::DocumentObject* obj) {
     if (obj && obj->getNameInDocument()) {
         Gui::Command::doCommand(Gui::Command::Gui,
             "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'))",
@@ -257,7 +257,7 @@ inline void cmdSetEdit(App::DocumentObject* obj) {
  * @endcode
  */
 template<typename...Args>
-void cmdAppObjectArgs(App::DocumentObject* obj, const std::string& cmd, Args&&... args) {
+void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Args&&... args) {
     std::string _cmd;
     try {
         boost::format fmt(cmd);
@@ -282,7 +282,7 @@ void cmdAppObjectArgs(App::DocumentObject* obj, const std::string& cmd, Args&&..
  * @sa cmdAppObjectArgs()
  */
 template<typename...Args>
-void cmdGuiObjectArgs(App::DocumentObject* obj, const std::string& cmd, Args&&... args) {
+void cmdGuiObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Args&&... args) {
     std::string _cmd;
     try {
         boost::format fmt(cmd);

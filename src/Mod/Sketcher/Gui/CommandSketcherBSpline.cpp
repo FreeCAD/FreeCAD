@@ -36,7 +36,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
 
@@ -380,19 +380,13 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
         if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
 
             int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
-
-            FCMD_OBJ_CMD2("convertToNURBS(%d) ",
-                                    selection[0].getObject(),GeoId);
-            
+            Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
             nurbsized = true;
         }
         else if (SubNames[i].size() > 12 && SubNames[i].substr(0,12) == "ExternalEdge") {
 
             int GeoId = - (std::atoi(SubNames[i].substr(12,4000).c_str()) + 2);
-
-            FCMD_OBJ_CMD2("convertToNURBS(%d) ",
-                                    selection[0].getObject(),GeoId);
-            
+            Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
             nurbsized = true;
         }
 
@@ -463,13 +457,10 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
             const Part::Geometry * geo = Obj->getGeometry(GeoId);
 
             if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
-                FCMD_OBJ_CMD2("increaseBSplineDegree(%d) ",
-                                        selection[0].getObject(),GeoId);
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "increaseBSplineDegree(%d) ", GeoId);
                 
                 // add new control points
-                FCMD_OBJ_CMD2("exposeInternalGeometry(%d)",
-                                        selection[0].getObject(),
-                                        GeoId);
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
             }
             else {
                 ignored=true;
@@ -564,8 +555,8 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
                 notaknot = false;
 
                 try {
-                    FCMD_OBJ_CMD2("modifyBSplineKnotMultiplicity(%d,%d,%d) ",
-                        selection[0].getObject(),(*it)->Second, (*it)->InternalAlignmentIndex + 1, 1);
+                    Gui::cmdAppObjectArgs(selection[0].getObject(), "modifyBSplineKnotMultiplicity(%d,%d,%d) ",
+                        (*it)->Second, (*it)->InternalAlignmentIndex + 1, 1);
 
                     applied = true;
 
@@ -623,9 +614,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
         if(ngfound) {
             try {
                 // add internalalignment for new pole
-                FCMD_OBJ_CMD2("exposeInternalGeometry(%d)",
-                                        selection[0].getObject(),
-                                        ngeoid);
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -723,8 +712,8 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
                 notaknot = false;
 
                 try {
-                    FCMD_OBJ_CMD2("modifyBSplineKnotMultiplicity(%d,%d,%d) ",
-                                            selection[0].getObject(),(*it)->Second, (*it)->InternalAlignmentIndex + 1, -1);
+                    Gui::cmdAppObjectArgs(selection[0].getObject(), "modifyBSplineKnotMultiplicity(%d,%d,%d) ",
+                                          (*it)->Second, (*it)->InternalAlignmentIndex + 1, -1);
                     
                     applied = true;
 
@@ -769,15 +758,12 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
         if(ngfound) {
             try {
                 // add internalalignment for new pole
-                FCMD_OBJ_CMD2("exposeInternalGeometry(%d)",
-                                        selection[0].getObject(),
-                                        ngeoid);
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
                 getSelection().clearSelection();
             }
-
         }
     }
 

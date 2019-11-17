@@ -43,7 +43,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/Selection.h>
@@ -350,8 +350,7 @@ public:
 
             try {
                 Gui::Command::openCommand("Add sketch line");
-                FCMD_OBJ_CMD2("addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
-                          sketchgui->getObject(),
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                           EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                           geometryCreationMode==Construction?"True":"False");
 
@@ -1093,8 +1092,7 @@ public:
                 try {
                     // open the transaction
                     Gui::Command::openCommand("Add line to sketch wire");
-                    FCMD_OBJ_CMD2("addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
-                        sketchgui->getObject(),
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                         EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                         geometryCreationMode==Construction?"True":"False");
                 }
@@ -1114,9 +1112,8 @@ public:
 
                 try {
                     Gui::Command::openCommand("Add arc to sketch wire");
-                    FCMD_OBJ_CMD2("addGeometry(Part.ArcOfCircle"
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
                         "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
-                        sketchgui->getObject(),
                         CenterPoint.x, CenterPoint.y, std::abs(arcRadius),
                         std::min(startAngle,endAngle), std::max(startAngle,endAngle),
                         geometryCreationMode==Construction?"True":"False");
@@ -1146,9 +1143,8 @@ public:
                              TransitionMode == TRANSITION_MODE_Perpendicular_R)
                         constrType = "Perpendicular";
                 }
-                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('%s',%i,%i,%i,%i)) ",
-                    sketchgui->getObject(), constrType.c_str(),
-                    previousCurve, previousPosId, lastCurve, lastStartPosId);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('%s',%i,%i,%i,%i)) ",
+                     constrType.c_str(), previousCurve, previousPosId, lastCurve, lastStartPosId);
 
                 if(SnapMode == SNAP_MODE_45Degree && Mode != STATUS_Close) {
                     // -360, -315, -270, -225, -180, -135, -90, -45,  0, 45,  90, 135, 180, 225, 270, 315, 360
@@ -1157,15 +1153,13 @@ public:
                     // #3974: if in radians, the printf %f defaults to six decimals, which leads to loss of precision
                     double arcAngle = abs(round( (endAngle - startAngle) / (M_PI/4)) * 45); // in degrees
 
-                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Angle',%i,App.Units.Quantity('%f deg'))) ",
-                                            sketchgui->getObject(),
-                                            lastCurve, arcAngle);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Angle',%i,App.Units.Quantity('%f deg'))) ",
+                                          lastCurve, arcAngle);
                 }
                 if (Mode == STATUS_Close) {
                     // close the loop by constrain to the first curve point
-                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) ",
-                        sketchgui->getObject(),
-                        lastCurve,lastEndPosId,firstCurve,firstPosId);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) ",
+                                          lastCurve,lastEndPosId,firstCurve,firstPosId);
                 }
                 Gui::Command::commitCommand();
 
@@ -1601,10 +1595,8 @@ public:
 
             try {
                 Gui::Command::openCommand("Add sketch arc");
-                FCMD_OBJ_CMD2("addGeometry(Part.ArcOfCircle"
-                    "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),"
-                    "%f,%f),%s)",
-                          sketchgui->getObject(),
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
+                    "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                           CenterPoint.x, CenterPoint.y, sqrt(rx*rx + ry*ry),
                           startAngle, endAngle,
                           geometryCreationMode==Construction?"True":"False"); //arcAngle > 0 ? 0 : 1);
@@ -1912,10 +1904,8 @@ public:
 
             try {
                 Gui::Command::openCommand("Add sketch arc");
-                FCMD_OBJ_CMD2("addGeometry(Part.ArcOfCircle"
-                    "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),"
-                    "%f,%f),%s)",
-                          sketchgui->getObject(),
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
+                    "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                           CenterPoint.x, CenterPoint.y, radius,
                           startAngle, endAngle,
                           geometryCreationMode==Construction?"True":"False");
@@ -2223,9 +2213,8 @@ public:
 
             try {
                 Gui::Command::openCommand("Add sketch circle");
-                FCMD_OBJ_CMD2("addGeometry(Part.Circle"
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle"
                     "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
-                          sketchgui->getObject(),
                           EditCurve[0].x, EditCurve[0].y,
                           sqrt(rx*rx + ry*ry),
                           geometryCreationMode==Construction?"True":"False");
@@ -3024,9 +3013,8 @@ private:
 
         try {
             Gui::Command::openCommand("Add sketch ellipse");
-            FCMD_OBJ_CMD2("addGeometry(Part.Ellipse"
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Ellipse"
                                     "(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
-                                    sketchgui->getObject(),
                                     periapsis.x, periapsis.y,
                                     positiveB.x, positiveB.y,
                                     centroid.x, centroid.y,
@@ -3034,9 +3022,7 @@ private:
 
             currentgeoid++;
 
-            FCMD_OBJ_CMD2("exposeInternalGeometry(%d)",
-                                sketchgui->getObject(),
-                                currentgeoid);
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
         }
         catch (const Base::Exception& e) {
             Base::Console().Error("%s\n", e.what());
@@ -3437,10 +3423,8 @@ public:
             try {
                 Gui::Command::openCommand("Add sketch arc of ellipse");
 
-                FCMD_OBJ_CMD2("addGeometry(Part.ArcOfEllipse"
-                    "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),"
-                    "%f,%f),%s)",
-                        sketchgui->getObject(),
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfEllipse"
+                    "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%f,%f),%s)",
                         majAxisPoint.x, majAxisPoint.y,
                         minAxisPoint.x, minAxisPoint.y,
                         centerPoint.x, centerPoint.y,
@@ -3449,9 +3433,7 @@ public:
 
                 currentgeoid++;
 
-                FCMD_OBJ_CMD2("exposeInternalGeometry(%d)",
-                                        sketchgui->getObject(),
-                                        currentgeoid);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -3817,27 +3799,22 @@ public:
 
             try {
 
-            Gui::Command::openCommand("Add sketch arc of hyperbola");
+                Gui::Command::openCommand("Add sketch arc of hyperbola");
 
-            //Add arc of hyperbola, point and constrain point as focus2. We add focus2 for it to balance
-            //the intrinsic focus1, in order to balance out the intrinsic invisible focus1 when AOE is
-            //dragged by its center
-            FCMD_OBJ_CMD2("addGeometry(Part.ArcOfHyperbola"
-                "(Part.Hyperbola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),"
-                "%f,%f),%s)",
-                    sketchgui->getObject(),
+                //Add arc of hyperbola, point and constrain point as focus2. We add focus2 for it to balance
+                //the intrinsic focus1, in order to balance out the intrinsic invisible focus1 when AOE is
+                //dragged by its center
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfHyperbola"
+                    "(Part.Hyperbola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%f,%f),%s)",
                     majAxisPoint.x, majAxisPoint.y,
                     minAxisPoint.x, minAxisPoint.y,
                     centerPoint.x, centerPoint.y,
                     startAngle, endAngle,
                     geometryCreationMode==Construction?"True":"False");
 
-            currentgeoid++;
+                currentgeoid++;
 
-            FCMD_OBJ_CMD2("exposeInternalGeometry(%d)",
-                                    sketchgui->getObject(),
-                                    currentgeoid);
-
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4167,10 +4144,8 @@ public:
                 Gui::Command::openCommand("Add sketch arc of Parabola");
 
                 //Add arc of parabola
-                FCMD_OBJ_CMD2("addGeometry(Part.ArcOfParabola"
-                    "(Part.Parabola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(0,0,1)),"
-                    "%f,%f),%s)",
-                        sketchgui->getObject(),
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfParabola"
+                    "(Part.Parabola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(0,0,1)),%f,%f),%s)",
                         focusPoint.x, focusPoint.y,
                         axisPoint.x, axisPoint.y,
                         startAngle, endAngle,
@@ -4178,10 +4153,7 @@ public:
 
                 currentgeoid++;
 
-                FCMD_OBJ_CMD2("exposeInternalGeometry(%d)",
-                    sketchgui->getObject(),
-                    currentgeoid);
-
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4535,9 +4507,8 @@ public:
                 Gui::Command::openCommand("Add Pole circle");
 
                 //Add pole
-                FCMD_OBJ_CMD2("addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
-                                        sketchgui->getObject(),
-                                        EditCurve[0].x,EditCurve[0].y);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
+                                      EditCurve[0].x,EditCurve[0].y);
 
             }
             catch (const Base::Exception& e) {
@@ -4618,18 +4589,16 @@ public:
 
                 guess = normalize(guess);
 
-                FCMD_OBJ_CMD2("addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
-                                        sketchgui->getObject(),
-                                        EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
+                                      EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
 
                 if(EditCurve.size() == 2) {
-                    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                            sketchgui->getObject(), FirstPoleGeoId, guess );
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                                          FirstPoleGeoId, guess );
                 }
 
-                FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
-                                        sketchgui->getObject(), FirstPoleGeoId, FirstPoleGeoId+ EditCurve.size()-1);
-
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
+                                      FirstPoleGeoId, FirstPoleGeoId+ EditCurve.size()-1);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4690,19 +4659,16 @@ public:
 
                 //Gui::Command::openCommand("Add B-spline curve");
 
-                /*FCMD_OBJ_CMD2("addGeometry(Part.BSplineCurve"
+                /*Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
                     "(%s,%s),"
                     "%s)",
-                        sketchgui->getObject(),
                         controlpoints.c_str(),
                         ConstrMethod == 0 ?"False":"True",
                         geometryCreationMode==Construction?"True":"False"); */
 
                 // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
-                FCMD_OBJ_CMD2("addGeometry(Part.BSplineCurve"
-                                        "(%s,None,None,%s,3,None,False),"
-                                        "%s)",
-                                        sketchgui->getObject(),
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
+                                        "(%s,None,None,%s,3,None,False),%s)",
                                         controlpoints.c_str(),
                                         ConstrMethod == 0 ?"False":"True",
                                         geometryCreationMode==Construction?"True":"False");
@@ -4744,10 +4710,7 @@ public:
                 Gui::Command::doCommand(Gui::Command::Doc, cstream.str().c_str());
 
                 // for showing the knots on creation
-                FCMD_OBJ_CMD2("exposeInternalGeometry(%d)",
-                                        sketchgui->getObject(),
-                                        currentgeoid);
-
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -5198,9 +5161,8 @@ public:
 
             try {
                 Gui::Command::openCommand("Add sketch circle");
-                FCMD_OBJ_CMD2("addGeometry(Part.Circle"
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle"
                     "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
-                          sketchgui->getObject(),
                           CenterPoint.x, CenterPoint.y,
                           radius,
                           geometryCreationMode==Construction?"True":"False");
@@ -5466,8 +5428,7 @@ public:
 
             try {
                 Gui::Command::openCommand("Add sketch point");
-                FCMD_OBJ_CMD2("addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                          sketchgui->getObject(),
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
                           EditPoint.x,EditPoint.y);
 
                 Gui::Command::commitCommand();
@@ -5751,14 +5712,10 @@ public:
                 // create fillet at point
                 try {
                     Gui::Command::openCommand("Create fillet");
-                    FCMD_OBJ_CMD2("fillet(%d,%d,%f)",
-                              sketchgui->getObject(),
-                              GeoId, PosId, radius);
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f)", GeoId, PosId, radius);
 
-                    if(construction) {
-                        FCMD_OBJ_CMD2("toggleConstruction(%d) ",
-                            sketchgui->getObject(),
-                            currentgeoid+1);
+                    if (construction) {
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ", currentgeoid+1);
                     }
 
                     Gui::Command::commitCommand();
@@ -5831,8 +5788,7 @@ public:
                     // create fillet between lines
                     try {
                         Gui::Command::openCommand("Create fillet");
-                        FCMD_OBJ_CMD2("fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f)",
-                                  sketchgui->getObject(),
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f)",
                                   firstCurve, secondCurve,
                                   firstPos.x, firstPos.y,
                                   secondPos.x, secondPos.y, radius);
@@ -5858,8 +5814,7 @@ public:
                     tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
                     if(construction) {
-                        FCMD_OBJ_CMD2("toggleConstruction(%d) ",
-                            sketchgui->getObject(),
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "toggleConstruction(%d) ",
                             currentgeoid+1);
                     }
 
@@ -6026,8 +5981,7 @@ public:
                 geom->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
                 try {
                     Gui::Command::openCommand("Trim edge");
-                    FCMD_OBJ_CMD2("trim(%d,App.Vector(%f,%f,0))",
-                              sketchgui->getObject(),
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "trim(%d,App.Vector(%f,%f,0))",
                               GeoId, onSketchPos.x, onSketchPos.y);
                     Gui::Command::commitCommand();
                     tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
@@ -6338,9 +6292,8 @@ public:
         } else if (Mode == STATUS_SEEK_Second) {
             try {
                 Gui::Command::openCommand("Extend edge");
-                FCMD_OBJ_CMD2("extend(%d, %f, %d)\n", // GeoId, increment, PointPos
-                    sketchgui->getObject(), BaseGeoId, Increment,
-                    ExtendFromStart ? Sketcher::start : Sketcher::end);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "extend(%d, %f, %d)\n", // GeoId, increment, PointPos
+                    BaseGeoId, Increment, ExtendFromStart ? Sketcher::start : Sketcher::end);
                 Gui::Command::commitCommand();
 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -6596,8 +6549,7 @@ public:
                 (subName.size() > 4 && subName.substr(0,4) == "Face")) {
                 try {
                     Gui::Command::openCommand("Add external geometry");
-                    FCMD_OBJ_CMD2("addExternal(\"%s\",\"%s\")",
-                              sketchgui->getObject(),
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addExternal(\"%s\",\"%s\")",
                               msg.pObjectName, msg.pSubName);
                     Gui::Command::commitCommand();
 
@@ -6818,9 +6770,8 @@ static const char *cursor_carboncopy[]={
 
                     try {
                         Gui::Command::openCommand("Add carbon copy");
-                        FCMD_OBJ_CMD2("carbonCopy(\"%s\",%s)",
-                                                sketchgui->getObject(),
-                                                msg.pObjectName, geometryCreationMode==Construction?"True":"False");
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "carbonCopy(\"%s\",%s)",
+                                              msg.pObjectName, geometryCreationMode==Construction?"True":"False");
 
                         Gui::Command::commitCommand();
 

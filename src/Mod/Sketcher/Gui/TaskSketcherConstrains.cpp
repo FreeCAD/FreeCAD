@@ -51,7 +51,7 @@
 #include <Gui/Selection.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/PrefWidgets.h>
 
@@ -603,15 +603,12 @@ void ConstraintView::swapNamedOfSelectedItems()
     std::string tmpname = ss.str();
 
     Gui::Command::openCommand("Swap constraint names");
-    FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
-                            item1->sketch,
-                            item1->ConstraintNbr, tmpname.c_str());
-    FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
-                            item2->sketch,
-                            item2->ConstraintNbr, escapedstr1.c_str());
-    FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
-                            item1->sketch,
-                            item1->ConstraintNbr, escapedstr2.c_str());
+    Gui::cmdAppObjectArgs(item1->sketch, "renameConstraint(%d, u'%s')",
+                          item1->ConstraintNbr, tmpname.c_str());
+    Gui::cmdAppObjectArgs(item2->sketch, "renameConstraint(%d, u'%s')",
+                          item2->ConstraintNbr, escapedstr1.c_str());
+    Gui::cmdAppObjectArgs(item1->sketch, "renameConstraint(%d, u'%s')",
+                          item1->ConstraintNbr, escapedstr2.c_str());
     Gui::Command::commitCommand();
 }
 
@@ -775,7 +772,6 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetI
 
     // if its the right constraint
     if (it->isDimensional()) {
-
         EditDatumDialog *editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
         editDatumDialog->exec(false);
         delete editDatumDialog;
@@ -831,9 +827,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
 
         Gui::Command::openCommand("Rename sketch constraint");
         try {
-            FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
-                                    sketch,
-                                    it->ConstraintNbr, escapedstr.c_str());
+            Gui::cmdAppObjectArgs(sketch ,"renameConstraint(%d, u'%s')",
+                                  it->ConstraintNbr, escapedstr.c_str());
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception & e) {
@@ -847,10 +842,9 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     // update constraint virtual space status
     Gui::Command::openCommand("Update constraint's virtual space");
     try {
-        FCMD_OBJ_CMD2("setVirtualSpace(%d, %s)",
-                                sketch,
-                                it->ConstraintNbr,
-                                ((item->checkState() == Qt::Checked) != sketchView->getIsShownVirtualSpace())?"False":"True");
+        Gui::cmdAppObjectArgs(sketch, "setVirtualSpace(%d, %s)",
+                              it->ConstraintNbr,
+                              ((item->checkState() == Qt::Checked) != sketchView->getIsShownVirtualSpace())?"False":"True");
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception & e) {
