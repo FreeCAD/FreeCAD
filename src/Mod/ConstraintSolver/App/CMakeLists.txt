@@ -30,6 +30,7 @@ generate_from_xml(ValueSetPy)
 generate_from_xml(ConstraintPy)
 generate_from_xml(SimpleConstraintPy)
 generate_from_xml(ParaObjectPy)
+generate_from_xml(ParaGeometryPy)
 
 SET(ConstraintSolver_Utils_SRCS
     Utils.h
@@ -55,6 +56,8 @@ SET(Python_Solver_SRCS
     SimpleConstraintPyImp.cpp
     ParaObjectPy.xml
     ParaObjectPyImp.cpp
+    ParaGeometryPy.xml
+    ParaGeometryPyImp.cpp
 )
 
 SET(ConstraintSolver_Solver_SRCS
@@ -74,6 +77,8 @@ SET(ConstraintSolver_Solver_SRCS
     SimpleConstraint.cpp
     ParaObject.h
     ParaObject.cpp
+    ParaGeometry.h
+    ParaGeometry.cpp
 )
 
 SET(ConstraintSolver_Module_SRCS

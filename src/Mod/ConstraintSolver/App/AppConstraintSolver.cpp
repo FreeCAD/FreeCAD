@@ -47,6 +47,8 @@
 #include "ConstraintPy.h"
 #include "SimpleConstraint.h"
 #include "SimpleConstraintPy.h"
+#include "ParaGeometry.h"
+#include "ParaGeometryPy.h"
 
 namespace ConstraintSolver {
 class Module : public Py::ExtensionModule<Module>
@@ -77,13 +79,14 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     PyObject* mod = ConstraintSolver::initModule();
 
     //rename python types
-    FCS::ParameterStorePy  ::Type.tp_name = "ConstraintSolver.ParameterStore";
-    FCS::ParameterRefPy    ::Type.tp_name = "ConstraintSolver.ParameterRef";
-    FCS::ParameterSubsetPy ::Type.tp_name = "ConstraintSolver.ParameterSubset";
-    FCS::ValueSetPy        ::Type.tp_name = "ConstraintSolver.ValueSet";
-    FCS::ParaObjectPy      ::Type.tp_name = "ConstraintSolver.ParaObject";
-    FCS::ConstraintPy      ::Type.tp_name = "ConstraintSolver.Constraint";
+    FCS::ParameterStorePy  ::Type.tp_name = "ConstraintSolver.ParameterStore"  ;
+    FCS::ParameterRefPy    ::Type.tp_name = "ConstraintSolver.ParameterRef"    ;
+    FCS::ParameterSubsetPy ::Type.tp_name = "ConstraintSolver.ParameterSubset" ;
+    FCS::ValueSetPy        ::Type.tp_name = "ConstraintSolver.ValueSet"        ;
+    FCS::ParaObjectPy      ::Type.tp_name = "ConstraintSolver.ParaObject"      ;
+    FCS::ConstraintPy      ::Type.tp_name = "ConstraintSolver.Constraint"      ;
     FCS::SimpleConstraintPy::Type.tp_name = "ConstraintSolver.SimpleConstraint";
+    FCS::ParaGeometryPy    ::Type.tp_name = "ConstraintSolver.ParaGeometry"    ;
 
     //add python types as module members
     Base::Interpreter().addType(&FCS::ParameterStorePy  ::Type, mod, "ParameterStore"  );
@@ -93,6 +96,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::ParaObjectPy      ::Type, mod, "ParaObject"      );
     Base::Interpreter().addType(&FCS::ConstraintPy      ::Type, mod, "Constraint"      );
     Base::Interpreter().addType(&FCS::SimpleConstraintPy::Type, mod, "SimpleConstraint");
+    Base::Interpreter().addType(&FCS::ParaGeometryPy    ::Type, mod, "ParaGeometry"    );
 
     //fill type system
     FCS::ParameterStore   ::init();

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="ParaObjectPy" 
+	  Name="ParaGeometryPy" 
+	  Twin="ParaGeometry" 
+	  TwinPointer="ParaGeometry" 
+	  Include="Mod/ConstraintSolver/App/ParaGeometry.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/ParaObjectPy.h" 
+	  Namespace="FCS" 
+	  Constructor="false"
+	  Delete="true"
+	  FatherNamespace="FCS"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu>Base class for all geometry on parameters.</DeveloperDocu>
+	  <UserDocu>Base class for all geometry on parameters.</UserDocu>
+	</Documentation>
+
+  </PythonExport>
+</GenerateModel>
