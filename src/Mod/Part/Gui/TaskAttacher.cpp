@@ -49,7 +49,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Mod/Part/Gui/TaskAttacher.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
 #include <Mod/Part/App/AttachExtension.h>
@@ -1041,21 +1041,19 @@ bool TaskDlgAttacher::accept()
             Base::Placement plm = pcAttach->AttachmentOffset.getValue();
             double yaw, pitch, roll;
             plm.getRotation().getYawPitchRoll(yaw,pitch,roll);
-            FCMD_OBJ_CMD2("AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
-                                    obj,
-                                    plm.getPosition().x, plm.getPosition().y, plm.getPosition().z,
-                                    yaw, pitch, roll);
+            Gui::cmdAppObjectArgs(obj, "AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
+                                  plm.getPosition().x, plm.getPosition().y, plm.getPosition().z, yaw, pitch, roll);
         }
 
-        FCMD_OBJ_CMD2("MapReversed = %s", obj, pcAttach->MapReversed.getValue() ? "True" : "False");
+        Gui::cmdAppObjectArgs(obj, "MapReversed = %s", pcAttach->MapReversed.getValue() ? "True" : "False");
 
-        FCMD_OBJ_CMD2("Support = %s", obj, pcAttach->Support.getPyReprString().c_str());
+        Gui::cmdAppObjectArgs(obj, "Support = %s", pcAttach->Support.getPyReprString().c_str());
 
-        FCMD_OBJ_CMD2("MapMode = '%s'", obj, AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
+        Gui::cmdAppObjectArgs(obj, "MapMode = '%s'", AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
 
-        FCMD_OBJ_DOC_CMD(obj, "recompute()");
+        Gui::cmdAppObject(obj, "recompute()");
 
-        FCMD_VOBJ_DOC_CMD(obj,"resetEdit()");
+        Gui::cmdGuiDocument(obj, "resetEdit()");
         document->commitCommand();
     }
     catch (const Base::Exception& e) {

@@ -33,7 +33,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -180,12 +180,12 @@ bool OffsetWidget::accept()
 {
     try {
         double offsetValue = d->ui.spinOffset->value().getValue();
-        FCMD_OBJ_CMD2("Value = %f", d->offset,offsetValue);
+        Gui::cmdAppObjectArgs(d->offset, "Value = %f", offsetValue);
         d->ui.spinOffset->apply();
-        FCMD_OBJ_CMD2("Mode = %i", d->offset,d->ui.modeType->currentIndex());
-        FCMD_OBJ_CMD2("Join = %i", d->offset,d->ui.joinType->currentIndex());
-        FCMD_OBJ_CMD2("Intersection = %s", d->offset,d->ui.intersection->isChecked() ? "True" : "False");
-        FCMD_OBJ_CMD2("SelfIntersection = %s", d->offset,d->ui.selfIntersection->isChecked() ? "True" : "False");
+        Gui::cmdAppObjectArgs(d->offset, "Mode = %i", d->ui.modeType->currentIndex());
+        Gui::cmdAppObjectArgs(d->offset, "Join = %i", d->ui.joinType->currentIndex());
+        Gui::cmdAppObjectArgs(d->offset, "Intersection = %s", d->ui.intersection->isChecked() ? "True" : "False");
+        Gui::cmdAppObjectArgs(d->offset, "SelfIntersection = %s", d->ui.selfIntersection->isChecked() ? "True" : "False");
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!d->offset->isValid())

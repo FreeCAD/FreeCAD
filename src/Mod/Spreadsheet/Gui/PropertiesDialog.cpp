@@ -27,7 +27,7 @@
 #include <App/Range.h>
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include "ui_PropertiesDialog.h"
 
 using namespace App;
@@ -231,17 +231,17 @@ void PropertiesDialog::apply()
 
         for (; i != ranges.end(); ++i) {
             if (orgAlignment != alignment) {
-                FCMD_OBJ_CMD2("setAlignment('%s', '%s')", sheet,
+                Gui::cmdAppObjectArgs(sheet, "setAlignment('%s', '%s')",
                                         i->rangeString().c_str(), Cell::encodeAlignment(alignment).c_str());
                 changes = true;
             }
             if (orgStyle != style) {
-                FCMD_OBJ_CMD2("setStyle('%s', '%s')", sheet,
+                Gui::cmdAppObjectArgs(sheet, "setStyle('%s', '%s')",
                                         i->rangeString().c_str(), Cell::encodeStyle(style).c_str());
                 changes = true;
             }
             if (orgForegroundColor != foregroundColor) {
-                FCMD_OBJ_CMD2("setForeground('%s', (%f,%f,%f,%f))", sheet,
+                Gui::cmdAppObjectArgs(sheet, "setForeground('%s', (%f,%f,%f,%f))",
                                         i->rangeString().c_str(),
                                         foregroundColor.r,
                                         foregroundColor.g,
@@ -250,7 +250,7 @@ void PropertiesDialog::apply()
                 changes = true;
             }
             if (orgBackgroundColor != backgroundColor) {
-                FCMD_OBJ_CMD2("setBackground('%s', (%f,%f,%f,%f))", sheet,
+                Gui::cmdAppObjectArgs(sheet, "setBackground('%s', (%f,%f,%f,%f))",
                                         i->rangeString().c_str(),
                                         backgroundColor.r,
                                         backgroundColor.g,
@@ -260,12 +260,12 @@ void PropertiesDialog::apply()
             }
             if (orgDisplayUnit != displayUnit) {
                 std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(displayUnit.stringRep.c_str());
-                FCMD_OBJ_CMD2("setDisplayUnit('%s', '%s')", sheet,
+                Gui::cmdAppObjectArgs(sheet, "setDisplayUnit('%s', '%s')",
                                         i->rangeString().c_str(), escapedstr.c_str());
                 changes = true;               
             }
             if (ranges.size() == 1 && ranges[0].size() == 1 && orgAlias != alias) {
-                FCMD_OBJ_CMD2("setAlias('%s', '%s')", sheet,
+                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
                                         i->address().c_str(), alias.c_str());
                 changes = true;
             }
