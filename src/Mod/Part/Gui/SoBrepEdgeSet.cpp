@@ -147,7 +147,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
     if((!ctx2 || !ctx2->isSelectAll())
        && Gui::ViewParams::instance()->getShowSelectionOnTop()
        && (!ctx || !ctx->isSelectAll())
-       && !Gui::ViewParams::instance()->getShowSelectionBoundingBox()) 
+       && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()) 
     {
         // If we are rendering on top, we shall perform a two pass rendering.
         // The first pass keep depth test disabled (default in on top

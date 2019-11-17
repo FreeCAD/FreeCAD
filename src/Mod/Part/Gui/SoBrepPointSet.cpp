@@ -134,7 +134,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     }
 
     if(Gui::ViewParams::instance()->getShowSelectionOnTop()
-            && !Gui::ViewParams::instance()->getShowSelectionBoundingBox()
+            && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
             && !action->isRenderingDelayedPaths()
             && !ctx2 
             && isSelected(ctx))

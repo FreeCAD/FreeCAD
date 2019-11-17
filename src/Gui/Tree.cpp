@@ -62,6 +62,7 @@
 #include "MainWindow.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "ViewParams.h"
 #include "Macro.h"
 #include "Workbench.h"
 #include "Widgets.h"
@@ -4222,7 +4223,11 @@ DocumentObjectItem *DocumentItem::findItem(
 void DocumentItem::selectItems(SelectionReason reason) {
     const auto &sels = Selection().getSelection(pDocument->getDocument()->getName(),false);
 
-    bool sync = (sels.size()>50 || reason==SR_SELECT)?false:true;
+    bool sync;
+    if (ViewParams::instance()->getMaxOnTopSelections()<(int)sels.size() || reason==SR_SELECT)
+        sync = false;
+    else
+        sync = true;
 
     for(const auto &sel : sels)
         findItemByObject(sync,sel.pObject,sel.SubName,true);

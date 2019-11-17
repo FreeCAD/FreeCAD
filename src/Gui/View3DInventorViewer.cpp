@@ -811,13 +811,23 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
         clearGroupOnTop();
         if(!guiDocument)
             return;
-        for(auto &sel : Gui::Selection().getSelection(guiDocument->getDocument()->getName(),0)) {
-            checkGroupOnTop(SelectionChanges(SelectionChanges::AddSelection,
-                        sel.DocName,sel.FeatName,sel.SubName));
+        else {
+            auto sels = Gui::Selection().getSelection(guiDocument->getDocument()->getName(),0);
+            if(ViewParams::instance()->getMaxOnTopSelections() < (int)sels.size()) {
+                // setSelection() is normally used for selectAll(). Let's not blow up
+                // the whole scene with all those invisible objects
+                selectionRoot->selectAll = true;
+                return;
+            }
+            for(auto &sel : sels ) {
+                checkGroupOnTop(SelectionChanges(SelectionChanges::AddSelection,
+                            sel.DocName,sel.FeatName,sel.SubName));
+            }
         }
         break;
     case SelectionChanges::ClrSelection:
         clearGroupOnTop();
+        selectionRoot->selectAll = false;
         return;
     case SelectionChanges::SetPreselect:
     case SelectionChanges::SetPreselectSignal:
