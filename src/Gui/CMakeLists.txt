@@ -499,6 +499,7 @@ SET(Command_SRCS
     Action.h
     ActionFunction.h
     Command.h
+    CommandT.h
 )
 SOURCE_GROUP("Command" FILES ${Command_SRCS})
 
