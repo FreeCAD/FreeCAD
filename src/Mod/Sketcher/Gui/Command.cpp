@@ -36,7 +36,7 @@
 #include <App/OriginFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
@@ -400,8 +400,8 @@ void CmdSketcherReorientSketch::activated(int iMsg)
     }
 
     openCommand("Reorient Sketch");
-    FCMD_OBJ_CMD2("Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
-                 ,sketch,p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
+    Gui::cmdAppObjectArgs(sketch, "Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
+                                , p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",sketch->getNameInDocument());
 }
 
@@ -456,7 +456,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
             items, 0, false, &ok);
         if (!ok) return;
         int index = items.indexOf(text);
-        Part2DObject &sketch = *(static_cast<Part2DObject*>(sketches[index]));
+        Part2DObject* sketch = static_cast<Part2DObject*>(sketches[index]);
 
 
         // check circular dependency
@@ -468,7 +468,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
                 throw Base::ValueError("Unexpected null pointer in CmdSketcherMapSketch::activated");
             }
             std::vector<App::DocumentObject*> input = part->getOutList();
-            if (std::find(input.begin(), input.end(), &sketch) != input.end()) {
+            if (std::find(input.begin(), input.end(), sketch) != input.end()) {
                 throw ExceptionWrongInput(QT_TR_NOOP("Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed!"));
             }
         }
@@ -485,7 +485,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
         bool bAttach = true;
         bool bCurIncompatible = false;
         // * find out the modes that are compatible with selection.
-        eMapMode curMapMode = eMapMode(sketch.MapMode.getValue());
+        eMapMode curMapMode = eMapMode(sketch->MapMode.getValue());
         // * Test if current mode is OK.
         if (std::find(validModes.begin(), validModes.end(), curMapMode) == validModes.end())
             bCurIncompatible = true;
@@ -547,13 +547,13 @@ void CmdSketcherMapSketch::activated(int iMsg)
             std::string supportString = support.getPyReprString();
 
             openCommand("Attach Sketch");
-            FCMD_OBJ_CMD2("MapMode = \"%s\"",&sketch,AttachEngine::getModeName(suggMapMode).c_str());
-            FCMD_OBJ_CMD2("Support = %s",&sketch,supportString.c_str());
+            Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
+            Gui::cmdAppObjectArgs(sketch, "Support = %s",supportString.c_str());
             commitCommand();
         } else {
             openCommand("Detach Sketch");
-            FCMD_OBJ_CMD2("MapMode = \"%s\"",&sketch,AttachEngine::getModeName(suggMapMode).c_str());
-            FCMD_OBJ_CMD2("Support = None",&sketch);
+            Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
+            Gui::cmdAppObjectArgs(sketch, "Support = None");
             commitCommand();
         }
     } catch (ExceptionWrongInput &e) {

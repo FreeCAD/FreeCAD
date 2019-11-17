@@ -36,7 +36,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
 
@@ -169,7 +169,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
                 int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
                 Gui::Command::openCommand("Update constraint's virtual space");
                 try {
-                    FCMD_OBJ_CMD2("toggleVirtualSpace(%d)", Obj, ConstrId);
+                    Gui::cmdAppObjectArgs(Obj, "toggleVirtualSpace(%d)", ConstrId);
                 }
                 catch(const Base::Exception&) {
                     successful--;

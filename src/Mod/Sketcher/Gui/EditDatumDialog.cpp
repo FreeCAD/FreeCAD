@@ -32,7 +32,7 @@
 
 #include <Base/Tools.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -153,17 +153,15 @@ void EditDatumDialog::exec(bool atCursor)
                         if (ui_ins_datum.labelEdit->hasExpression())
                             ui_ins_datum.labelEdit->apply();
                         else
-                            FCMD_OBJ_CMD2("setDatum(%i,App.Units.Quantity('%f %s'))",
-                                                    sketch,
-                                                    ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
+                            Gui::cmdAppObjectArgs(sketch, "setDatum(%i,App.Units.Quantity('%f %s'))",
+                                                  ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
                     }
 
                     QString constraintName = ui_ins_datum.name->text().trimmed();
                     if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
                         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
-                        FCMD_OBJ_CMD2("renameConstraint(%d, u'%s')",
-                                                sketch,
-                                                ConstrNbr, escapedstr.c_str());
+                        Gui::cmdAppObjectArgs(sketch, "renameConstraint(%d, u'%s')",
+                                              ConstrNbr, escapedstr.c_str());
                     }
 
                     Gui::Command::commitCommand();

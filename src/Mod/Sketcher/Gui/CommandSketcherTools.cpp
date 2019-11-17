@@ -36,7 +36,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
 
@@ -169,14 +169,14 @@ void CmdSketcherCloseShape::activated(int iMsg)
                 return;
             }
 
-            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-                selection[0].getObject(),GeoId1,Sketcher::end,GeoId2,Sketcher::start);
+            Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                GeoId1,Sketcher::end,GeoId2,Sketcher::start);
         }
     }
 
     // Close Last Edge with First Edge
-    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-        selection[0].getObject(),GeoIdLast,Sketcher::end,GeoIdFirst,Sketcher::start);
+    Gui::cmdAppObjectArgs(selection[0].getObject(),"addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+        GeoIdLast,Sketcher::end,GeoIdFirst,Sketcher::start);
 
     // finish the transaction and update
     commitCommand();
@@ -257,8 +257,8 @@ void CmdSketcherConnect::activated(int iMsg)
                 return;
             }
 
-            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-                selection[0].getObject(),GeoId1,Sketcher::end,GeoId2,Sketcher::start);
+            Gui::cmdAppObjectArgs(selection[0].getObject(),"addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                GeoId1,Sketcher::end,GeoId2,Sketcher::start);
         }
     }
 
@@ -872,12 +872,12 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
                 try {
                     Gui::Command::openCommand("Exposing Internal Geometry");
-                    FCMD_OBJ_CMD2("exposeInternalGeometry(%d)", Obj, GeoId);
+                    Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", GeoId);
 
                     int aftergeoid = Obj->getHighestCurveIndex();
 
                     if(aftergeoid == currentgeoid) { // if we did not expose anything, deleteunused
-                        FCMD_OBJ_CMD2("deleteUnusedInternalGeometry(%d)", Obj, GeoId);
+                        Gui::cmdAppObjectArgs(Obj, "deleteUnusedInternalGeometry(%d)", GeoId);
                     }
                 }
                 catch (const Base::Exception& e) {
@@ -1076,7 +1076,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
     Gui::Command::openCommand("Create Symmetric geometry");
 
     try{
-        FCMD_OBJ_CMD2("addSymmetric(%s,%d,%d)", Obj, geoIdList.c_str(), LastGeoId, LastPointPos);
+        Gui::cmdAppObjectArgs(Obj, "addSymmetric(%s,%d,%d)", geoIdList.c_str(), LastGeoId, LastPointPos);
 
         Gui::Command::commitCommand();
     }
@@ -1220,14 +1220,12 @@ static const char *cursor_createcopy[]={
 
                 try{
                     if( Op != SketcherCopy::Move) {
-                        FCMD_OBJ_CMD2("addCopy(%s,App.Vector(%f,%f,0),%s)",
-                                            sketchgui->getObject(),
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addCopy(%s,App.Vector(%f,%f,0),%s)",
                                             geoIdList.c_str(), vector.x, vector.y,
                                             (Op == SketcherCopy::Clone?"True":"False"));
                     }
                     else {
-                        FCMD_OBJ_CMD2("addMove(%s,App.Vector(%f,%f,0))",
-                            sketchgui->getObject(),
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addMove(%s,App.Vector(%f,%f,0))",
                             geoIdList.c_str(), vector.x, vector.y);
                     }
 
@@ -1743,13 +1741,12 @@ static const char *cursor_createrectangulararray[]={
                 Gui::Command::openCommand("Create copy of geometry");
 
                 try {
-                    FCMD_OBJ_CMD2("addRectangularArray(%s, App.Vector(%f,%f,0),%s,%d,%d,%s,%f)",
-                                            sketchgui->getObject(),
-                                            geoIdList.c_str(), vector.x, vector.y,
-                                            (Clone?"True":"False"),
-                                            Cols, Rows,
-                                            (ConstraintSeparation?"True":"False"),
-                                            (EqualVerticalHorizontalSpacing?1.0:0.5));
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addRectangularArray(%s, App.Vector(%f,%f,0),%s,%d,%d,%s,%f)",
+                                          geoIdList.c_str(), vector.x, vector.y,
+                                          (Clone?"True":"False"),
+                                          Cols, Rows,
+                                          (ConstraintSeparation?"True":"False"),
+                                          (EqualVerticalHorizontalSpacing?1.0:0.5));
 
                     Gui::Command::commitCommand();
                 }
@@ -1965,7 +1962,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
 
         try {
             Gui::Command::openCommand("Delete All Geometry");
-            FCMD_OBJ_CMD2("deleteAllGeometry()", Obj);
+            Gui::cmdAppObjectArgs(Obj, "deleteAllGeometry()");
 
             Gui::Command::commitCommand();
         }
@@ -2028,7 +2025,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
 
         try {
             Gui::Command::openCommand("Delete All Constraints");
-            FCMD_OBJ_CMD2("deleteAllConstraints()", Obj);
+            Gui::cmdAppObjectArgs(Obj, "deleteAllConstraints()");
 
             Gui::Command::commitCommand();
         }
