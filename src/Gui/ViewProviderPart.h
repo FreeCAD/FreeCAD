@@ -56,6 +56,7 @@ public:
 protected:
     App::PropertyLinkSub *getColoredElementsProperty() const;
     void applyColors();
+    virtual void buildChildren3D();
 
 protected:
     /// get called by the container whenever a property has been changed

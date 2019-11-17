@@ -69,6 +69,7 @@ public:
 
 protected:
     void buildExport() const;
+    virtual void buildChildren3D();
 
 protected:
     SoGroup *pcGroupChildren;
