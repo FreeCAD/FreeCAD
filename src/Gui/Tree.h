@@ -342,7 +342,8 @@ protected:
 
     DocumentObjectItem *findItem(bool sync, DocumentObjectItem *item, const char *subname, bool select=true);
 
-    App::DocumentObject *getTopParent(App::DocumentObject *obj, std::string &subname);
+    App::DocumentObject *getTopParent(
+            App::DocumentObject *obj, std::string &subname, DocumentObjectItem **item=0);
 
     typedef std::unordered_map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> > ViewParentMap;
     void populateParents(const ViewProvider *vp, ViewParentMap &);
