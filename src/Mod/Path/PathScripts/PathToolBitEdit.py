@@ -54,7 +54,7 @@ class ToolBitEditor(object):
 
         self.tool = tool
         if not tool.BitShape:
-            self.tool.BitShape = 'src/Mod/Path/Tools/Shape/endmill-straight.fcstd'
+            self.tool.BitShape = 'endmill.fcstd'
         self.tool.Proxy.loadBitBody(self.tool)
         self.setupTool(self.tool)
         self.setupAttributes(self.tool)

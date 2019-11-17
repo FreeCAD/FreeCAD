@@ -31,9 +31,9 @@ class TestPathToolBit(PathTestUtils.PathTestBase):
     def test00(self):
         '''Find a tool shapee from file name'''
 
-        path = PathToolBit.findShape('endmill-straight.fcstd')
+        path = PathToolBit.findShape('endmill.fcstd')
         self.assertIsNot(path, None)
-        self.assertNotEqual(path, 'endmill-straight.fcstd')
+        self.assertNotEqual(path, 'endmill.fcstd')
 
     def test01(self):
         '''Find a tool shapee from an invalid absolute path.'''
@@ -45,7 +45,7 @@ class TestPathToolBit(PathTestUtils.PathTestBase):
 
     def test10(self):
         '''find the relative path of a tool bit'''
-        shape = 'endmill-straight.fcstd'
+        shape = 'endmill.fcstd'
         path = PathToolBit.findShape(shape)
         self.assertIsNot(path, None)
         self.assertGreater(len(path), len(shape))

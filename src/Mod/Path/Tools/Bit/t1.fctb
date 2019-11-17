@@ -1,7 +1,7 @@
 {
   "version": 2,
   "name": "T1",
-  "shape": "endmill-straight.fcstd",
+  "shape": "endmill.fcstd",
   "parameter": {
     "CuttingEdgeHeight": "30.000 mm",
     "Diameter": "5.000 mm",

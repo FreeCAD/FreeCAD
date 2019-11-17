@@ -1796,6 +1796,7 @@ class ObjectSurface(PathOp.ObjectOp):
         lenOfst = obj.ToolController.Tool.LengthOffset if hasattr(obj.ToolController.Tool, 'LengthOffset') else 0
         FR = obj.ToolController.Tool.FlatRadius if hasattr(obj.ToolController.Tool, 'FlatRadius') else 0
         CEH = obj.ToolController.Tool.CuttingEdgeHeight if hasattr(obj.ToolController.Tool, 'CuttingEdgeHeight') else 0
+        CEA = obj.ToolController.Tool.CuttingEdgeAngle if hasattr(obj.ToolController.Tool, 'CuttingEdgeAngle') else 0
 
         if obj.ToolController.Tool.ToolType == 'EndMill':
             # Standard End Mill
@@ -1817,13 +1818,13 @@ class ObjectSurface(PathOp.ObjectOp):
             # Bull Nose or Corner Radius cutter
             # Reference: https://www.fine-tools.com/halbstabfraeser.html
             # OCL -> ConeCutter::ConeCutter(diameter, angle, lengthOffset)
-            self.cutter = ocl.ConeCutter(diam_1, (obj.ToolController.Tool.CuttingEdgeAngle / 2), lenOfst)
+            self.cutter = ocl.ConeCutter(diam_1, (CEA / 2), lenOfst)
 
         elif obj.ToolController.Tool.ToolType == 'ChamferMill':
             # Bull Nose or Corner Radius cutter
             # Reference: https://www.fine-tools.com/halbstabfraeser.html
             # OCL -> ConeCutter::ConeCutter(diameter, angle, lengthOffset)
-            self.cutter = ocl.ConeCutter(diam_1, (obj.ToolController.Tool.CuttingEdgeAngle / 2), lenOfst)
+            self.cutter = ocl.ConeCutter(diam_1, (CEA / 2), lenOfst)
         else:
             # Default to standard end mill
             self.cutter = ocl.CylCutter(diam_1, (CEH + lenOfst))

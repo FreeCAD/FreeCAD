@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "T5",
-  "shape": "endmill-straight.fcstd",
+  "shape": "endmill.fcstd",
   "attribute": {},
   "parameter": {
     "CuttingEdgeHeight": "30.000 mm",

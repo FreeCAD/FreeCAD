@@ -156,8 +156,10 @@ SET(Tools_Library_SRCS
 )
 
 SET(Tools_Shape_SRCS
-  Tools/Shape/drill-straight.fcstd
-  Tools/Shape/endmill-straight.fcstd
+  Tools/Shape/ballend.fcstd
+  Tools/Shape/bullnose.fcstd
+  Tools/Shape/drill.fcstd
+  Tools/Shape/endmill.fcstd
   Tools/Shape/v-bit.fcstd
 )
 
