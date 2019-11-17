@@ -26,7 +26,7 @@
 #include <App/DocumentObject.h>
 
 #include "Application.h"
-#include "Command.h"
+#include "CommandT.h"
 #include "Document.h"
 #include "Selection.h"
 #include "ViewProvider.h"
@@ -79,7 +79,7 @@ StdCmdRandomColor::StdCmdRandomColor()
 
 void StdCmdRandomColor::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
@@ -93,14 +93,14 @@ void StdCmdRandomColor::activated(int iMsg)
         auto vpLink = dynamic_cast<ViewProviderLink*>(view);
         if(vpLink) {
             if(!vpLink->OverrideMaterial.getValue())
-                FCMD_VOBJ_CMD2("OverrideMaterial = True",it->pObject);
-            FCMD_VOBJ_CMD2("ShapeMaterial.DiffuseColor=(%.2f,%.2f,%.2f)", it->pObject, fRed, fGrn, fBlu);
+                cmdGuiObjectArgs(it->pObject, "OverrideMaterial = True");
+            cmdGuiObjectArgs(it->pObject, "ShapeMaterial.DiffuseColor=(%.2f,%.2f,%.2f)", fRed, fGrn, fBlu);
             continue;
         }
         auto color = dynamic_cast<App::PropertyColor*>(view->getPropertyByName("ShapeColor"));
         if (color) {
             // get the view provider of the selected object and set the shape color
-            FCMD_VOBJ_CMD2("ShapeColor=(%.2f,%.2f,%.2f)" , it->pObject, fRed, fGrn, fBlu);
+            cmdGuiObjectArgs(it->pObject, "ShapeColor=(%.2f,%.2f,%.2f)", fRed, fGrn, fBlu);
         }
     }
 }
