@@ -1180,6 +1180,7 @@ SoFCSwitch::SoFCSwitch()
 {
     SO_NODE_CONSTRUCTOR(SoFCSwitch);
     SO_NODE_ADD_FIELD(defaultChild,  (0));
+    SO_NODE_ADD_FIELD(tailChild,  (-1));
     SO_NODE_ADD_FIELD(overrideSwitch,(OverrideNone));
     SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideNone);
     SO_NODE_DEFINE_ENUM_VALUE(OverrideSwitch, OverrideDefault);
@@ -1265,6 +1266,7 @@ void SoFCSwitch::doAction(SoAction *action) {
                 ((SoCallbackAction *)action)->isCallbackAll()))
     {
         inherited::doAction(action);
+        traverseTail(action,whichChild.getValue());
         return;
     }
 
@@ -1310,6 +1312,7 @@ void SoFCSwitch::doAction(SoAction *action) {
 
     if(idx!=SO_SWITCH_ALL && (idx<0 || idx>=this->getNumChildren())) {
         inherited::doAction(action);
+        traverseTail(action,whichChild.getValue());
         return;
     }
 
@@ -1358,11 +1361,66 @@ void SoFCSwitch::doAction(SoAction *action) {
                 break;
             }
         }
-    } else
+    } else {
         this->children->traverse(action, idx);
+        traverseTail(action,idx);
+    }
 
     if(tstate.to_ulong())
         _SwitchTraverseStack.pop_back();
+}
+
+void SoFCSwitch::notify(SoNotList * nl)
+{
+    // SoSwitch ignores child change other than whichChild. But we shall
+    // include tailChild and defaultChild as well.
+
+    SoNotRec * rec = nl->getLastRec();
+    SbBool ignoreit = FALSE;
+
+    // if getBase() == this, the notification is from a field under this
+    // node, and should _not_ be ignored
+    if (rec && (rec->getBase() != (SoBase*) this)) {
+        int which = this->whichChild.getValue();
+        int tail = this->tailChild.getValue();
+        int def = this->defaultChild.getValue();
+        if(which==-1 && tail==-1 && def==-1)
+            ignoreit = TRUE;
+        else if(which!=SO_SWITCH_ALL && def!=SO_SWITCH_ALL) {
+            int fromchild = this->findChild((SoNode*) rec->getBase());
+            if (fromchild >= 0 
+                    && fromchild!=which 
+                    && fromchild!=tail
+                    && fromchild!=def)
+            {
+                ignoreit = TRUE;
+            }
+        }
+    }
+    if (!ignoreit)
+        SoGroup::notify(nl);
+}
+
+void SoFCSwitch::traverseTail(SoAction *action, int idx) {
+    int tail = tailChild.getValue();
+    if(tail<0 || idx==tail || tail>=getNumChildren())
+        return;
+
+    int numindices = 0;
+    const int * indices = 0;
+    SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
+    if(pathcode != SoAction::IN_PATH) {
+        this->children->traverse(action,tail);
+        return;
+    }
+
+    // If traverse in path, traverse if tailChild is in the path
+    for (int i = 0; i < numindices; i++) {
+        if (indices[i] == tail) {
+            this->children->traverse(action, tail);
+            break;
+        }
+    }
 }
 
 void SoFCSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
@@ -2352,11 +2410,10 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
             bool bbox = ViewParams::instance()->getShowSelectionBoundingBox();
             if(!bbox) {
                 for(int i=0,count=path->getLength();i<count;++i) {
-                    if(!path->getNode(i)->isOfType(SoFCSelectionRoot::getClassTypeId()))
-                        continue;
-                    auto node = static_cast<SoFCSelectionRoot*>(path->getNode(i));
-                    if(node->selectionStyle.getValue()==SoFCSelectionRoot::Box) {
-                        bbox = true;
+                    auto node = path->getNodeFromTail(i);
+                    if(node->isOfType(SoFCSelectionRoot::getClassTypeId())) {
+                        if (static_cast<SoFCSelectionRoot*>(node)->selectionStyle.getValue() == SoFCSelectionRoot::Box)
+                            bbox = true;
                         break;
                     }
                 }

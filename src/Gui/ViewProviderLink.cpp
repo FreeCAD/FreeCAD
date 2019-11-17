@@ -125,7 +125,7 @@ public:
     SoNodeSensor transformSensor;
 
     std::array<CoinPtr<SoSeparator>,LinkView::SnapshotMax> pcSnapshots;
-    std::array<CoinPtr<SoSwitch>,LinkView::SnapshotMax> pcSwitches;
+    std::array<CoinPtr<SoFCSwitch>,LinkView::SnapshotMax> pcSwitches;
     CoinPtr<SoSwitch> pcLinkedSwitch;
 
     // for group type view providers
@@ -289,13 +289,10 @@ public:
             if(!pcSwitches[i] || (node && node!=pcSwitches[i])) 
                 continue;
 
-            if(pcSwitches[i]->isOfType(SoFCSwitch::getClassTypeId())) {
-                auto node = static_cast<SoFCSwitch*>(pcSwitches[i].get());
-                if(node->defaultChild.getValue() != defIndex)
-                    node->defaultChild.setValue(defIndex);
-                if(node->overrideSwitch.getValue() != overrideSwitch)
-                    node->overrideSwitch.setValue(overrideSwitch);
-            }
+            if(pcSwitches[i]->defaultChild.getValue() != defIndex)
+                pcSwitches[i]->defaultChild.setValue(defIndex);
+            if(pcSwitches[i]->overrideSwitch.getValue() != overrideSwitch)
+                pcSwitches[i]->overrideSwitch.setValue(overrideSwitch);
 
             int count = pcSwitches[i]->getNumChildren();
             if((!pcLinked->Visibility.getValue() && i==LinkView::SnapshotChild) || !count)
@@ -402,6 +399,13 @@ public:
             pcModeSwitch = new SoFCSwitch;
         }
 
+        if(pcSnapshot->isOfType(SoFCSelectionRoot::getClassTypeId())
+                && root->isOfType(SoFCSelectionRoot::getClassTypeId()))
+        {
+            static_cast<SoFCSelectionRoot*>(pcSnapshot.get())->selectionStyle =
+                static_cast<SoFCSelectionRoot*>(root)->selectionStyle.getValue();
+        }
+
         pcLinkedSwitch.reset();
 
         coinRemoveAllChildren(pcSnapshot);
@@ -452,8 +456,11 @@ public:
                 else
                     pcModeSwitch->addChild(child);
             }
-            if(pcChildGroup && !childRoot)
+            if(pcChildGroup && !childRoot) {
                 pcModeSwitch->addChild(pcChildGroup);
+                if(type == LinkView::SnapshotChild)
+                    pcModeSwitch->tailChild = pcModeSwitch->getNumChildren()-1;
+            }
         }
         updateSwitch(pcUpdateSwitch);
         return pcSnapshot;
@@ -491,9 +498,7 @@ public:
     void updateChildren() {
         if(isLinked()) {
             if(!pcLinked->getChildRoot()) {
-                if(pcLinked->getObject()->hasExtension(
-                        App::GroupExtension::getExtensionClassTypeId(),false))
-                {
+                if(App::GeoFeatureGroupExtension::isNonGeoGroup(pcLinked->getObject())) {
                     childSensor.detach();
                     _updateChildren(pcLinked->claimChildren());
                     return;
@@ -615,10 +620,7 @@ public:
 
         if(path){
             appendPath(path,pcChildGroup);
-            if(pcLinked->getChildRoot())
-                type = LinkView::SnapshotChild;
-            else
-                type = LinkView::SnapshotVisible;
+            type = LinkView::SnapshotChild;
         }
 
         // Special handling of nodes with childRoot, especially geo feature
@@ -940,9 +942,6 @@ public:
         else
             coinRemoveAllChildren(pcSwitch);
 
-        if(isGroup && linkInfo->pcLinked->getDefaultMode()>=0)
-            isGroup = false;
-
         if(!isGroup) 
             pcRoot = linkInfo->getSnapshot(nodeType);
         else {
@@ -950,10 +949,35 @@ public:
                 pcRoot = new SoFCSelectionRoot(true);
             else
                 coinRemoveAllChildren(pcRoot);
+            auto groupSep = linkInfo->pcLinked->getRoot();
+            if(pcRoot->isOfType(SoFCSelectionRoot::getClassTypeId())
+                    && groupSep->isOfType(SoFCSelectionRoot::getClassTypeId())) 
+            {
+                auto groot = static_cast<SoFCSelectionRoot*>(groupSep);
+                auto root = static_cast<SoFCSelectionRoot*>(pcRoot.get());
+                root->selectionStyle.disconnect();
+                root->selectionStyle.connectFrom(&groot->selectionStyle);
+            }
             pcRoot->setName(obj->getFullName().c_str());
         }
         pcSwitch->addChild(pcRoot);
         pcSwitch->whichChild = 0;
+    }
+
+    SoNode *initGroup() {
+        if(!isGroup)
+            return 0;
+        coinRemoveAllChildren(pcRoot);
+
+        // In case the plain group has its own display mode, we add it as the
+        // first child.
+        if(isLinked() && linkInfo->pcLinked->getDefaultMode()>=0) {
+            nodeType = SnapshotVisible;
+            auto node = linkInfo->getSnapshot(nodeType);
+            pcRoot->addChild(node);
+            return node;
+        }
+        return 0;
     }
 
     bool isLinked() const{
@@ -1212,7 +1236,7 @@ void LinkView::setSize(int _size) {
         nodeArray.push_back(std::unique_ptr<Element>(new Element(*this)));
         auto &info = *nodeArray.back();
         info.pcTransform = new SoTransform;
-        info.pcSwitch = new SoSwitch;
+        info.pcSwitch = new SoFCSwitch;
         info.pcRoot = new SoFCSelectionRoot;
         info.pcRoot->addChild(info.pcTransform);
         info.pcSwitch->addChild(info.pcRoot);
@@ -1261,10 +1285,10 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
     resetRoot();
 
     if(childType<0 || childType!=type) {
-        nameMap.clear();
-        nodeMap.clear();
         nodeArray.clear();
     }
+    nameMap.clear();
+    nodeMap.clear();
     childType = type;
 
     if(nodeArray.size() > children.size())
@@ -1280,14 +1304,15 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
         auto &info = *nodeArray[i];
         info.groupIndex = -1;
         info.link(obj);
-        if(info.pcSwitch)
+        if(info.pcSwitch && childType!=SnapshotChild)
             info.pcSwitch->whichChild = (vis.size()<=i||vis[i])?0:-1;
         if(info.isGroup) {
-            coinRemoveAllChildren(info.pcRoot);
+            auto node = info.initGroup();
+            if(node)
+                nodeMap[node] = i;
             groups.emplace(obj,i);
         }
     }
-    nodeMap.clear();
     for(size_t i=0;i<nodeArray.size();++i) {
         auto &info = *nodeArray[i];
         if(!info.isLinked())
@@ -1332,7 +1357,7 @@ void LinkView::setTransform(int index, const Base::Matrix4D &mat) {
 
 void LinkView::setElementVisible(int idx, bool visible) {
     if(idx>=0 && idx<(int)nodeArray.size()) {
-        if(nodeArray[idx]->pcSwitch)
+        if(nodeArray[idx]->pcSwitch && nodeArray[idx]->nodeType!=SnapshotChild)
             nodeArray[idx]->pcSwitch->whichChild = visible?0:-1;
     }
 }
@@ -1528,6 +1553,12 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
             auto iter = nodeMap.find(path->getNode(idx));
             if(iter == nodeMap.end())
                 return false;
+            if(nodeIdx == iter->second) {
+                // In case the plain group has its own mode, we'll insert a
+                // snapshot as the first child. So it is possible for the
+                // nodeMap points to the group itself.
+                break;
+            }
             nodeIdx = iter->second;
         }
         auto &info = *nodeArray[nodeIdx];
@@ -1536,7 +1567,7 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
         else
             ss << info.linkInfo->getLinkedName() << '.';
         if(info.isLinked()) {
-            if(!info.linkInfo->getElementPicked(false,childType,pp,ss))
+            if(!info.linkInfo->getElementPicked(false,info.nodeType,pp,ss))
                 return false;
             subname = ss.str();
             return true;

@@ -249,6 +249,8 @@ class GuiExport SoFCSwitch : public SoSwitch {
 public:
     /// Stores the child index used in switching override mode
     SoSFInt32 defaultChild;
+    /// Stores the child index that will be traversed as long as the switch index is not -1
+    SoSFInt32 tailChild;
 
     enum OverrideSwitch {
         /// No switch override
@@ -275,6 +277,7 @@ public:
     virtual void callback(SoCallbackAction *action);
     virtual void pick(SoPickAction *action);
     virtual void handleEvent(SoHandleEventAction *action);
+    virtual void notify(SoNotList * nl);
 
     /// Enables switching override for the give action
     static void switchOverride(SoAction *action, OverrideSwitch o=OverrideDefault);
@@ -300,6 +303,10 @@ public:
     void setBBoxCallback(F f) {
         cb = f;
     }
+
+private:
+    void traverseTail(SoAction *action, int idx);
+
 private:
     std::function<void(void)> cb;
 };

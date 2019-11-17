@@ -95,14 +95,27 @@ void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* 
 }
 
 bool ViewProviderGeoFeatureGroupExtension::extensionHandleChildren3D(
-        const std::vector<App::DocumentObject*> &children) 
+        const std::vector<App::DocumentObject*> &) 
 {
-    getExtendedViewProvider();
     if(linkView) {
-        linkView->setChildren(children);
+        buildChildren3D();
         return true;
     }
     return false;
+}
+
+void ViewProviderGeoFeatureGroupExtension::buildChildren3D() {
+    if(!linkView)
+        return;
+
+    auto children = getExtendedViewProvider()->claimChildren3D();
+    for(auto it=children.begin();it!=children.end();) {
+        if(App::GroupExtension::getGroupOfObject(*it))
+            it = children.erase(it);
+        else
+            ++it;
+    }
+    linkView->setChildren(children);
 } 
 
 bool ViewProviderGeoFeatureGroupExtension::extensionGetElementPicked(
@@ -159,10 +172,8 @@ void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Proper
                     ext->checkParentGroup();
                     plainGroupConns.push_back(
                             ext->Group.signalChanged.connect([=](const App::Property &){
-                                auto owner = this->getExtendedViewProvider();
-                                if(owner && this->linkView)
-                                    this->linkView->setChildren(owner->claimChildren3D());
-                            }));
+                                this->buildChildren3D();
+                        }));
                 }
             }
         } else if(prop == &group->placement()) 
