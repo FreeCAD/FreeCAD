@@ -94,6 +94,12 @@
 #include "Area.h"
 #include "../libarea/Area.h"
 
+//FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#endif
+
 
 namespace bg = boost::geometry;
 namespace bgi = boost::geometry::index;
@@ -3416,3 +3422,7 @@ void Area::setDefaultParams(const AreaStaticParams &params){
 const AreaStaticParams &Area::getDefaultParams() {
     return s_params;
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
