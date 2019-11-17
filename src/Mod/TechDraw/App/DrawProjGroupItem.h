@@ -56,7 +56,7 @@ public:
     virtual ~DrawProjGroupItem();
 
     App::PropertyEnumeration Type;
-    App::PropertyVector      RotationVector;
+    App::PropertyVector      RotationVector;    //this is superceded by dvp xdirection
 
     short mustExecute() const override;
     virtual void onDocumentRestored() override;
@@ -64,6 +64,10 @@ public:
 
     DrawProjGroup* getPGroup(void) const;
     double getRotateAngle();
+    virtual Base::Vector3d getXDirection(void) const override;
+    virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt,
+                                      const Base::Vector3d& axis,
+                                      const bool flip = true)  const override;
 
     virtual App::DocumentObjectExecReturn *execute(void) override;
     virtual const char* getViewProviderName(void) const override {
