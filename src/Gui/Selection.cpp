@@ -356,6 +356,23 @@ void SelectionObserverPython::removePreselection(const SelectionChanges& msg)
 
 // -------------------------------------------
 
+static int _DisableTopParentCheck;
+
+SelectionNoTopParentCheck::SelectionNoTopParentCheck() {
+    ++_DisableTopParentCheck;
+}
+
+SelectionNoTopParentCheck::~SelectionNoTopParentCheck() {
+    if(_DisableTopParentCheck>0)
+        --_DisableTopParentCheck;
+}
+
+bool SelectionNoTopParentCheck::enabled() {
+    return _DisableTopParentCheck>0;
+}
+
+// -------------------------------------------
+
 bool SelectionSingleton::hasSelection() const
 {
     return !_SelList.empty();
@@ -1560,6 +1577,10 @@ bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pS
             pObject->getNameInDocument(),pSubName,resolve,sel,&_SelList)>0;
 }
 
+void SelectionSingleton::checkTopParent(App::DocumentObject *&obj, std::string &subname) {
+    TreeWidget::checkTopParent(obj,subname);
+}
+
 int SelectionSingleton::checkSelection(const char *pDocName, const char *pObjectName, 
         const char *pSubName, int resolve, _SelObj &sel, const std::list<_SelObj> *selList) const
 {
@@ -1583,8 +1604,8 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
     }
     if(pSubName)
        sel.SubName = pSubName;
-    if(!resolve)
-        TreeWidget::checkTopParent(sel.pObject,sel.SubName);
+    if(!resolve && !SelectionNoTopParentCheck::enabled())
+        checkTopParent(sel.pObject,sel.SubName);
     pSubName = sel.SubName.size()?sel.SubName.c_str():0;
     sel.FeatName = sel.pObject->getNameInDocument();
     sel.TypeName = sel.pObject->getTypeId().getName();
@@ -1837,6 +1858,10 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "\n          0: do not resolve, 1: resolve, 2: resolve with element map"
      "\nindex - select stack index, 0 is the last pushed selection, positive index to trace further back,\n"
      "          and negative for forward stack item"},
+    {"checkTopParent",   (PyCFunction) SelectionSingleton::sCheckTopParent, METH_VARARGS,
+     "checkTopParent(obj, subname='')\n\n"
+     "Check object hierarchy to find the top parent of the given (sub)object.\n"
+     "Returns (topParent,subname)\n"},
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
@@ -2343,5 +2368,20 @@ PyObject *SelectionSingleton::sGetSelectionFromStack(PyObject * /*self*/, PyObje
         for(auto &sel : Selection().selStackGet(documentName, resolve, index))
             list.append(Py::asObject(sel.getPyObject()));
         return Py::new_reference_to(list);
+    } PY_CATCH;
+}
+
+PyObject* SelectionSingleton::sCheckTopParent(PyObject *, PyObject *args) {
+    PyObject *pyObj;
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(args, "O!|s", &App::DocumentObjectPy::Type,&pyObj,&subname))
+        return 0;
+    PY_TRY {
+        std::string sub;
+        if(subname)
+            sub = subname;
+        App::DocumentObject *obj = static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr();
+        checkTopParent(obj,sub);
+        return Py::new_reference_to(Py::TupleN(Py::asObject(obj->getPyObject()),Py::String(sub)));
     } PY_CATCH;
 }
