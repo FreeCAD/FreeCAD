@@ -67,12 +67,12 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderGeomHatch, Gui::ViewProviderDocumentObj
 
 ViewProviderGeomHatch::ViewProviderGeomHatch()
 {
-    sPixmap = "actions/techdraw-geomhatch";
+    sPixmap = "actions/techdraw-GeometricHatch";
 
     static const char *vgroup = "GeomHatch";
 
-    ADD_PROPERTY_TYPE(ColorPattern,(0),vgroup,App::Prop_None,"The color of the pattern");
-    ADD_PROPERTY_TYPE(WeightPattern,(0),vgroup,App::Prop_None,"GeomHatch pattern line thickness");
+    ADD_PROPERTY_TYPE(ColorPattern,(0),vgroup,App::Prop_None,"Color of the pattern");
+    ADD_PROPERTY_TYPE(WeightPattern,(0),vgroup,App::Prop_None,"GeometricHatch pattern line thickness");
 
     getParameters();
 

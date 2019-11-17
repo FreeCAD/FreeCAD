@@ -84,24 +84,24 @@ using namespace std;
 
 
 //===========================================================================
-// TechDraw_NewPageDef (default template)
+// TechDraw_PageDefault
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewPageDef)
+DEF_STD_CMD_A(CmdTechDrawPageDefault)
 
-CmdTechDrawNewPageDef::CmdTechDrawNewPageDef()
-  : Command("TechDraw_NewPageDef")
+CmdTechDrawPageDefault::CmdTechDrawPageDefault()
+  : Command("TechDraw_PageDefault")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert new default page");
+    sMenuText       = QT_TR_NOOP("Insert Default Page");
     sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_New_Default";
+    sWhatsThis      = "TechDraw_PageDefault";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-new-default";
+    sPixmap         = "actions/techdraw-PageDefault";
 }
 
-void CmdTechDrawNewPageDef::activated(int iMsg)
+void CmdTechDrawPageDefault::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -130,7 +130,7 @@ void CmdTechDrawNewPageDef::activated(int iMsg)
         commitCommand();
         TechDraw::DrawPage* fp = dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
         if (!fp) {
-            throw Base::TypeError("CmdTechDrawNewPageDef fp not found\n");
+            throw Base::TypeError("CmdTechDrawPageDefault fp not found\n");
         }
 
         Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
@@ -148,30 +148,30 @@ void CmdTechDrawNewPageDef::activated(int iMsg)
     }
 }
 
-bool CmdTechDrawNewPageDef::isActive(void)
+bool CmdTechDrawPageDefault::isActive(void)
 {
     return hasActiveDocument();
 }
 
 //===========================================================================
-// TechDraw_NewPage (with template choice)
+// TechDraw_PageTemplate
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewPage)
+DEF_STD_CMD_A(CmdTechDrawPageTemplate)
 
-CmdTechDrawNewPage::CmdTechDrawNewPage()
-  : Command("TechDraw_NewPage")
+CmdTechDrawPageTemplate::CmdTechDrawPageTemplate()
+  : Command("TechDraw_PageTemplate")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert new page using template");
+    sMenuText       = QT_TR_NOOP("Insert Page using Template");
     sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_New_Pick";
+    sWhatsThis      = "TechDraw_PageTemplate";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-new-pick";
+    sPixmap         = "actions/techdraw-PageTemplate";
 }
 
-void CmdTechDrawNewPage::activated(int iMsg)
+void CmdTechDrawPageTemplate::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -229,30 +229,30 @@ void CmdTechDrawNewPage::activated(int iMsg)
     }
 }
 
-bool CmdTechDrawNewPage::isActive(void)
+bool CmdTechDrawPageTemplate::isActive(void)
 {
     return hasActiveDocument();
 }
 
 //===========================================================================
-// TechDraw_Redraw
+// TechDraw_RedrawPage
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawRedraw)
+DEF_STD_CMD_A(CmdTechDrawRedrawPage)
 
-CmdTechDrawRedraw::CmdTechDrawRedraw()
-  : Command("TechDraw_Redraw")
+CmdTechDrawRedrawPage::CmdTechDrawRedrawPage()
+  : Command("TechDraw_RedrawPage")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Redraw a page");
+    sMenuText       = QT_TR_NOOP("Redraw Page");
     sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_Redraw";
+    sWhatsThis      = "TechDraw_RedrawPage";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-forceredraw";
+    sPixmap         = "actions/techdraw-RedrawPage";
 }
 
-void CmdTechDrawRedraw::activated(int iMsg)
+void CmdTechDrawRedrawPage::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
@@ -264,7 +264,7 @@ void CmdTechDrawRedraw::activated(int iMsg)
     page->redrawCommand();
 }
 
-bool CmdTechDrawRedraw::isActive(void)
+bool CmdTechDrawRedrawPage::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this,false);
@@ -272,24 +272,24 @@ bool CmdTechDrawRedraw::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewView
+// TechDraw_View
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewView)
+DEF_STD_CMD_A(CmdTechDrawView)
 
-CmdTechDrawNewView::CmdTechDrawNewView()
-  : Command("TechDraw_NewView")
+CmdTechDrawView::CmdTechDrawView()
+  : Command("TechDraw_View")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert View");
     sToolTipText    = QT_TR_NOOP("Insert a View");
-    sWhatsThis      = "TechDraw_NewView";
+    sWhatsThis      = "TechDraw_View";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-view";
+    sPixmap         = "actions/techdraw-View";
 }
 
-void CmdTechDrawNewView::activated(int iMsg)
+void CmdTechDrawView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
@@ -344,7 +344,7 @@ void CmdTechDrawNewView::activated(int iMsg)
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart *>(docObj);
     if (!dvp) {
-        throw Base::TypeError("CmdTechDrawNewView DVP not found\n");
+        throw Base::TypeError("CmdTechDrawView DVP not found\n");
     }
     dvp->Source.setValues(shapes);
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
@@ -368,30 +368,30 @@ void CmdTechDrawNewView::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawNewView::isActive(void)
+bool CmdTechDrawView::isActive(void)
 {
     return DrawGuiUtil::needPage(this);
 }
 
 //===========================================================================
-// TechDraw_NewActiveView
+// TechDraw_ActiveView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewActiveView)
+DEF_STD_CMD_A(CmdTechDrawActiveView)
 
-CmdTechDrawNewActiveView::CmdTechDrawNewActiveView()
-  : Command("TechDraw_NewActiveView")
+CmdTechDrawActiveView::CmdTechDrawActiveView()
+  : Command("TechDraw_ActiveView")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Active View (3D View)");
     sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_NewActiveView";
+    sWhatsThis      = "TechDraw_ActiveView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-activeview";
+    sPixmap         = "actions/techdraw-ActiveView";
 }
 
-void CmdTechDrawNewActiveView::activated(int iMsg)
+void CmdTechDrawActiveView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
@@ -402,30 +402,30 @@ void CmdTechDrawNewActiveView::activated(int iMsg)
     Gui::Control().showDialog(new TaskDlgActiveView(page));
 }
 
-bool CmdTechDrawNewActiveView::isActive(void)
+bool CmdTechDrawActiveView::isActive(void)
 {
     return DrawGuiUtil::needPage(this);
 }
 
 //===========================================================================
-// TechDraw_NewViewSection
+// TechDraw_SectionView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewViewSection)
+DEF_STD_CMD_A(CmdTechDrawSectionView)
 
-CmdTechDrawNewViewSection::CmdTechDrawNewViewSection()
-  : Command("TechDraw_NewViewSection")
+CmdTechDrawSectionView::CmdTechDrawSectionView()
+  : Command("TechDraw_SectionView")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Section View");
     sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_NewSection";
+    sWhatsThis      = "TechDraw_SectionView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-viewsection";
+    sPixmap         = "actions/techdraw-SectionView";
 }
 
-void CmdTechDrawNewViewSection::activated(int iMsg)
+void CmdTechDrawSectionView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
@@ -453,7 +453,7 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
 //    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
 //    TechDraw::DrawViewSection* dsv = dynamic_cast<TechDraw::DrawViewSection *>(docObj);
 //    if (!dsv) {
-//        throw Base::TypeError("CmdTechDrawNewViewSection DVS not found\n");
+//        throw Base::TypeError("CmdTechDrawSectionView DVS not found\n");
 //    }
 //    dsv->Source.setValues(dvp->Source.getValues());
 //    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
@@ -466,7 +466,7 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawNewViewSection::isActive(void)
+bool CmdTechDrawSectionView::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -478,24 +478,24 @@ bool CmdTechDrawNewViewSection::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewViewDetail
+// TechDraw_DetailView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewViewDetail)
+DEF_STD_CMD_A(CmdTechDrawDetailView)
 
-CmdTechDrawNewViewDetail::CmdTechDrawNewViewDetail()
-  : Command("TechDraw_NewViewDetail")
+CmdTechDrawDetailView::CmdTechDrawDetailView()
+  : Command("TechDraw_DetailView")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Detail View");
     sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_NewDetail";
+    sWhatsThis      = "TechDraw_DetailView";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-viewdetail";
+    sPixmap         = "actions/techdraw-DetailView";
 }
 
-void CmdTechDrawNewViewDetail::activated(int iMsg)
+void CmdTechDrawDetailView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
@@ -521,7 +521,7 @@ void CmdTechDrawNewViewDetail::activated(int iMsg)
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail *>(docObj);
     if (!dvd) {
-        throw Base::TypeError("CmdTechDrawNewViewDetail DVD not found\n");
+        throw Base::TypeError("CmdTechDrawDetailView DVD not found\n");
     }
     dvd->Source.setValues(dvp->Source.getValues());
 
@@ -533,7 +533,7 @@ void CmdTechDrawNewViewDetail::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawNewViewDetail::isActive(void)
+bool CmdTechDrawDetailView::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -544,27 +544,25 @@ bool CmdTechDrawNewViewDetail::isActive(void)
     return (havePage && haveView && !taskInProgress);
 }
 
-
-
 //===========================================================================
-// TechDraw_ProjGroup
+// TechDraw_ProjectionGroup
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawProjGroup)
+DEF_STD_CMD_A(CmdTechDrawProjectionGroup)
 
-CmdTechDrawProjGroup::CmdTechDrawProjGroup()
-  : Command("TechDraw_ProjGroup")
+CmdTechDrawProjectionGroup::CmdTechDrawProjectionGroup()
+  : Command("TechDraw_ProjectionGroup")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Projection Group");
     sToolTipText    = QT_TR_NOOP("Insert multiple linked views of drawable object(s)");
-    sWhatsThis      = "TechDraw_NewProjGroup";
+    sWhatsThis      = "TechDraw_ProjectionGroup";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-projgroup";
+    sPixmap         = "actions/techdraw-ProjectionGroup";
 }
 
-void CmdTechDrawProjGroup::activated(int iMsg)
+void CmdTechDrawProjectionGroup::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
@@ -656,7 +654,7 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     Gui::Control().showDialog(new TaskDlgProjGroup(multiView,true));
 }
 
-bool CmdTechDrawProjGroup::isActive(void)
+bool CmdTechDrawProjectionGroup::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool taskInProgress = false;
@@ -720,7 +718,7 @@ bool CmdTechDrawProjGroup::isActive(void)
 //}
 
 //===========================================================================
-// TechDraw_NewBalloon
+// TechDraw_Balloon
 //===========================================================================
 
 //! common checks of Selection for Dimension commands
@@ -761,21 +759,21 @@ bool _checkDrawViewPartBalloon(Gui::Command* cmd) {
     return true;
 }
 
-DEF_STD_CMD_A(CmdTechDrawNewBalloon)
+DEF_STD_CMD_A(CmdTechDrawBalloon)
 
-CmdTechDrawNewBalloon::CmdTechDrawNewBalloon()
-  : Command("TechDraw_NewBalloon")
+CmdTechDrawBalloon::CmdTechDrawBalloon()
+  : Command("TechDraw_Balloon")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Balloon annotation");
+    sMenuText       = QT_TR_NOOP("Insert Balloon Annotation");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Balloon";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Balloon";
 }
 
-void CmdTechDrawNewBalloon::activated(int iMsg)
+void CmdTechDrawBalloon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelectionBalloon(this,1);
@@ -799,7 +797,7 @@ void CmdTechDrawNewBalloon::activated(int iMsg)
 
 }
 
-bool CmdTechDrawNewBalloon::isActive(void)
+bool CmdTechDrawBalloon::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -807,24 +805,24 @@ bool CmdTechDrawNewBalloon::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_Clip
+// TechDraw_ClipGroup
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawClip)
+DEF_STD_CMD_A(CmdTechDrawClipGroup)
 
-CmdTechDrawClip::CmdTechDrawClip()
-  : Command("TechDraw_Clip")
+CmdTechDrawClipGroup::CmdTechDrawClipGroup()
+  : Command("TechDraw_ClipGroup")
 {
     // setting the
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Insert Clip Group");
-    sToolTipText  = sMenuText;
-    sWhatsThis    = "TechDraw_Clip";
+    sToolTipText  = sToolTipText;
+    sWhatsThis    = "TechDraw_ClipGroup";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-clip";
+    sPixmap       = "actions/techdraw-ClipGroup";
 }
 
-void CmdTechDrawClip::activated(int iMsg)
+void CmdTechDrawClipGroup::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
@@ -841,29 +839,29 @@ void CmdTechDrawClip::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawClip::isActive(void)
+bool CmdTechDrawClipGroup::isActive(void)
 {
     return DrawGuiUtil::needPage(this);
 }
 
 //===========================================================================
-// TechDraw_ClipPlus
+// TechDraw_ClipGroupAdd
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawClipPlus)
+DEF_STD_CMD_A(CmdTechDrawClipGroupAdd)
 
-CmdTechDrawClipPlus::CmdTechDrawClipPlus()
-  : Command("TechDraw_ClipPlus")
+CmdTechDrawClipGroupAdd::CmdTechDrawClipGroupAdd()
+  : Command("TechDraw_ClipGroupAdd")
 {
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Add View to Clip Group");
     sToolTipText  = sMenuText;
-    sWhatsThis    = "TechDraw_ClipPlus";
+    sWhatsThis    = "TechDraw_ClipGroupAdd";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-clipplus";
+    sPixmap       = "actions/techdraw-ClipGroupAdd";
 }
 
-void CmdTechDrawClipPlus::activated(int iMsg)
+void CmdTechDrawClipGroupAdd::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
@@ -907,7 +905,7 @@ void CmdTechDrawClipPlus::activated(int iMsg)
     std::string ClipName = clip->getNameInDocument();
     std::string ViewName = view->getNameInDocument();
 
-    openCommand("ClipPlus");
+    openCommand("ClipGroupAdd");
     doCommand(Doc,"App.activeDocument().%s.ViewObject.Visibility = False",ViewName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",ClipName.c_str(),ViewName.c_str());
     doCommand(Doc,"App.activeDocument().%s.ViewObject.Visibility = True",ViewName.c_str());
@@ -915,7 +913,7 @@ void CmdTechDrawClipPlus::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawClipPlus::isActive(void)
+bool CmdTechDrawClipGroupAdd::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveClip = false;
@@ -930,23 +928,23 @@ bool CmdTechDrawClipPlus::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_ClipMinus
+// TechDraw_ClipGroupRemove
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawClipMinus)
+DEF_STD_CMD_A(CmdTechDrawClipGroupRemove)
 
-CmdTechDrawClipMinus::CmdTechDrawClipMinus()
-  : Command("TechDraw_ClipMinus")
+CmdTechDrawClipGroupRemove::CmdTechDrawClipGroupRemove()
+  : Command("TechDraw_ClipGroupRemove")
 {
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Remove View from Clip Group");
     sToolTipText  = sMenuText;
-    sWhatsThis    = "TechDraw_ClipMinus";
+    sWhatsThis    = "TechDraw_ClipGroupRemove";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-clipminus";
+    sPixmap       = "actions/techdraw-ClipGroupRemove";
 }
 
-void CmdTechDrawClipMinus::activated(int iMsg)
+void CmdTechDrawClipGroupRemove::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     auto dObj( getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId()) );
@@ -980,7 +978,7 @@ void CmdTechDrawClipMinus::activated(int iMsg)
     std::string ClipName = clip->getNameInDocument();
     std::string ViewName = view->getNameInDocument();
 
-    openCommand("ClipMinus");
+    openCommand("ClipGroupRemove");
     doCommand(Doc,"App.activeDocument().%s.ViewObject.Visibility = False",ViewName.c_str());
     doCommand(Doc,"App.activeDocument().%s.removeView(App.activeDocument().%s)",ClipName.c_str(),ViewName.c_str());
     doCommand(Doc,"App.activeDocument().%s.ViewObject.Visibility = True",ViewName.c_str());
@@ -988,7 +986,7 @@ void CmdTechDrawClipMinus::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawClipMinus::isActive(void)
+bool CmdTechDrawClipGroupRemove::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveClip = false;
@@ -1014,7 +1012,7 @@ CmdTechDrawSymbol::CmdTechDrawSymbol()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert SVG symbol");
+    sMenuText     = QT_TR_NOOP("Insert SVG Symbol");
     sToolTipText  = QT_TR_NOOP("Insert symbol from a SVG file");
     sWhatsThis    = "TechDraw_Symbol";
     sStatusTip    = sToolTipText;
@@ -1069,11 +1067,11 @@ CmdTechDrawDraftView::CmdTechDrawDraftView()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert DraftWB object");
+    sMenuText     = QT_TR_NOOP("Insert Draft Workbench Object");
     sToolTipText  = QT_TR_NOOP("Insert a View of a Draft Workbench object");
     sWhatsThis    = "TechDraw_NewDraft";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-draft-view";
+    sPixmap       = "actions/techdraw-DraftView";
 }
 
 void CmdTechDrawDraftView::activated(int iMsg)
@@ -1126,7 +1124,7 @@ CmdTechDrawArchView::CmdTechDrawArchView()
     sToolTipText  = QT_TR_NOOP("Insert a View of a Section Plane from Arch Workbench");
     sWhatsThis    = "TechDraw_NewArch";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-arch-view";
+    sPixmap       = "actions/techdraw-ArchView";
 }
 
 void CmdTechDrawArchView::activated(int iMsg)
@@ -1162,24 +1160,24 @@ bool CmdTechDrawArchView::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_Spreadheet
+// TechDraw_SpreadsheetView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawSpreadsheet)
+DEF_STD_CMD_A(CmdTechDrawSpreadsheetView)
 
-CmdTechDrawSpreadsheet::CmdTechDrawSpreadsheet()
-  : Command("TechDraw_Spreadsheet")
+CmdTechDrawSpreadsheetView::CmdTechDrawSpreadsheetView()
+  : Command("TechDraw_SpreadsheetView")
 {
     // setting the
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Insert Spreadsheet View");
-    sToolTipText  = QT_TR_NOOP("Insert a View from a Spreadsheet");
-    sWhatsThis    = "TechDraw_Spreadsheet";
+    sToolTipText  = QT_TR_NOOP("Insert View to a spreadsheet");
+    sWhatsThis    = "TechDraw_SpreadsheetView";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-spreadsheet";
+    sPixmap       = "actions/techdraw-SpreadsheetView";
 }
 
-void CmdTechDrawSpreadsheet::activated(int iMsg)
+void CmdTechDrawSpreadsheetView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     const std::vector<App::DocumentObject*> spreads = getSelection().getObjectsOfType(Spreadsheet::Sheet::getClassTypeId());
@@ -1205,7 +1203,7 @@ void CmdTechDrawSpreadsheet::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdTechDrawSpreadsheet::isActive(void)
+bool CmdTechDrawSpreadsheetView::isActive(void)
 {
     //need a Page and a SpreadSheet::Sheet
     bool havePage = DrawGuiUtil::needPage(this);
@@ -1222,23 +1220,23 @@ bool CmdTechDrawSpreadsheet::isActive(void)
 
 
 //===========================================================================
-// TechDraw_ExportPage (Svg)
+// TechDraw_ExportPageSVG
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawExportPage)
+DEF_STD_CMD_A(CmdTechDrawExportPageSVG)
 
-CmdTechDrawExportPage::CmdTechDrawExportPage()
-  : Command("TechDraw_ExportPage")
+CmdTechDrawExportPageSVG::CmdTechDrawExportPageSVG()
+  : Command("TechDraw_ExportPageSVG")
 {
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("Export page as SVG");
-    sToolTipText  = QT_TR_NOOP("Export a page to a SVG file");
-    sWhatsThis    = "TechDraw_SaveSVG";
+    sToolTipText  = sMenuText;
+    sWhatsThis    = "TechDraw_ExportPageSVG";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-saveSVG";
+    sPixmap       = "actions/techdraw-ExportPageSVG";
 }
 
-void CmdTechDrawExportPage::activated(int iMsg)
+void CmdTechDrawExportPageSVG::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
@@ -1260,29 +1258,29 @@ void CmdTechDrawExportPage::activated(int iMsg)
     }
 }
 
-bool CmdTechDrawExportPage::isActive(void)
+bool CmdTechDrawExportPageSVG::isActive(void)
 {
     return DrawGuiUtil::needPage(this);
 }
 
 //===========================================================================
-// TechDraw_ExportPage (Dxf)
+// TechDraw_ExportPageDXF
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawExportPageDxf)
+DEF_STD_CMD_A(CmdTechDrawExportPageDXF)
 
-CmdTechDrawExportPageDxf::CmdTechDrawExportPageDxf()
-  : Command("TechDraw_ExportPageDxf")
+CmdTechDrawExportPageDXF::CmdTechDrawExportPageDXF()
+  : Command("TechDraw_ExportPageDXF")
 {
     sGroup        = QT_TR_NOOP("File");
     sMenuText     = QT_TR_NOOP("Export page as DXF");
     sToolTipText  = sMenuText;
-    sWhatsThis    = "TechDraw_SaveDXF";
+    sWhatsThis    = "TechDraw_ExportPageDXF";
     sStatusTip    = sToolTipText;
-    sPixmap       = "actions/techdraw-saveDXF";
+    sPixmap       = "actions/techdraw-ExportPageDXF";
 }
 
-void CmdTechDrawExportPageDxf::activated(int iMsg)
+void CmdTechDrawExportPageDXF::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
@@ -1325,7 +1323,7 @@ void CmdTechDrawExportPageDxf::activated(int iMsg)
 }
 
 
-bool CmdTechDrawExportPageDxf::isActive(void)
+bool CmdTechDrawExportPageDXF::isActive(void)
 {
     return DrawGuiUtil::needPage(this);
 }
@@ -1334,24 +1332,22 @@ void CreateTechDrawCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdTechDrawNewPageDef());
-    rcCmdMgr.addCommand(new CmdTechDrawNewPage());
-    rcCmdMgr.addCommand(new CmdTechDrawRedraw());
-    rcCmdMgr.addCommand(new CmdTechDrawNewView());
-    rcCmdMgr.addCommand(new CmdTechDrawNewActiveView());
-    rcCmdMgr.addCommand(new CmdTechDrawNewViewSection());
-    rcCmdMgr.addCommand(new CmdTechDrawNewViewDetail());
-//    rcCmdMgr.addCommand(new CmdTechDrawNewMulti());          //deprecated
-    rcCmdMgr.addCommand(new CmdTechDrawProjGroup());
-//    rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
-    rcCmdMgr.addCommand(new CmdTechDrawClip());
-    rcCmdMgr.addCommand(new CmdTechDrawClipPlus());
-    rcCmdMgr.addCommand(new CmdTechDrawClipMinus());
+    rcCmdMgr.addCommand(new CmdTechDrawPageDefault());
+    rcCmdMgr.addCommand(new CmdTechDrawPageTemplate());
+    rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
+    rcCmdMgr.addCommand(new CmdTechDrawView());
+    rcCmdMgr.addCommand(new CmdTechDrawActiveView());
+    rcCmdMgr.addCommand(new CmdTechDrawSectionView());
+    rcCmdMgr.addCommand(new CmdTechDrawDetailView());
+    rcCmdMgr.addCommand(new CmdTechDrawProjectionGroup());
+    rcCmdMgr.addCommand(new CmdTechDrawClipGroup());
+    rcCmdMgr.addCommand(new CmdTechDrawClipGroupAdd());
+    rcCmdMgr.addCommand(new CmdTechDrawClipGroupRemove());
     rcCmdMgr.addCommand(new CmdTechDrawSymbol());
-    rcCmdMgr.addCommand(new CmdTechDrawExportPage());
-    rcCmdMgr.addCommand(new CmdTechDrawExportPageDxf());
+    rcCmdMgr.addCommand(new CmdTechDrawExportPageSVG());
+    rcCmdMgr.addCommand(new CmdTechDrawExportPageDXF());
     rcCmdMgr.addCommand(new CmdTechDrawDraftView());
     rcCmdMgr.addCommand(new CmdTechDrawArchView());
-    rcCmdMgr.addCommand(new CmdTechDrawSpreadsheet());
-    rcCmdMgr.addCommand(new CmdTechDrawNewBalloon());
+    rcCmdMgr.addCommand(new CmdTechDrawSpreadsheetView());
+    rcCmdMgr.addCommand(new CmdTechDrawBalloon());
 }

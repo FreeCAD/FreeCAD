@@ -132,24 +132,24 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 //}
 
 ////===========================================================================
-//// TechDraw_RichAnno
+//// TechDraw_RichTextAnnotation
 ////===========================================================================
 
-//DEF_STD_CMD_A(CmdTechDrawRichAnno)
+//DEF_STD_CMD_A(CmdTechDrawRichTextAnnotation)
 
-//CmdTechDrawRichAnno::CmdTechDrawRichAnno()
-//  : Command("TechDraw_RichAnno")
+//CmdTechDrawRichTextAnnotation::CmdTechDrawRichTextAnnotation()
+//  : Command("TechDraw_RichTextAnnotation")
 //{
 //    sAppModule      = "TechDraw";
 //    sGroup          = QT_TR_NOOP("TechDraw");
-//    sMenuText       = QT_TR_NOOP("Add a rich text annotation");
-//    sToolTipText    = QT_TR_NOOP("Add a rich text annotation");
-//    sWhatsThis      = "TechDraw_RichAnno";
+//    sMenuText       = QT_TR_NOOP("Add Rich Text Annotation");
+//    sToolTipText    = sMenuText;
+//    sWhatsThis      = "TechDraw_RichTextAnnotation";
 //    sStatusTip      = sToolTipText;
-//    sPixmap         = "actions/techdraw-textleader";
+//    sPixmap         = "actions/techdraw-RichTextAnnotation";
 //}
 
-//void CmdTechDrawRichAnno::activated(int iMsg)
+//void CmdTechDrawRichTextAnnotation::activated(int iMsg)
 //{
 //    Q_UNUSED(iMsg);
 //    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
@@ -183,7 +183,7 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 //                                                  page));
 //}
 
-//bool CmdTechDrawRichAnno::isActive(void)
+//bool CmdTechDrawRichTextAnnotation::isActive(void)
 //{
 //    bool havePage = DrawGuiUtil::needPage(this);
 //    bool haveView = DrawGuiUtil::needView(this, false);
@@ -191,24 +191,24 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 //}
 
 //===========================================================================
-// TechDraw_NewHatch
+// TechDraw_Hatch
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewHatch)
+DEF_STD_CMD_A(CmdTechDrawHatch)
 
-CmdTechDrawNewHatch::CmdTechDrawNewHatch()
-  : Command("TechDraw_NewHatch")
+CmdTechDrawHatch::CmdTechDrawHatch()
+  : Command("TechDraw_Hatch")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Hatch a Face using image file");
-    sToolTipText    = QT_TR_NOOP("Hatch a Face using image file");
+    sMenuText       = QT_TR_NOOP("Hatch a Face using Image File");
+    sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Hatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-hatch";
 }
 
-void CmdTechDrawNewHatch::activated(int iMsg)
+void CmdTechDrawHatch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     if (!_checkSelectionHatch(this)) {
@@ -294,7 +294,7 @@ void CmdTechDrawNewHatch::activated(int iMsg)
 }
 
 
-bool CmdTechDrawNewHatch::isActive(void)
+bool CmdTechDrawHatch::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -302,24 +302,24 @@ bool CmdTechDrawNewHatch::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewGeomHatch
+// TechDraw_GeometricHatch
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewGeomHatch)
+DEF_STD_CMD_A(CmdTechDrawGeometricHatch)
 
-CmdTechDrawNewGeomHatch::CmdTechDrawNewGeomHatch()
-  : Command("TechDraw_NewGeomHatch")
+CmdTechDrawGeometricHatch::CmdTechDrawGeometricHatch()
+  : Command("TechDraw_GeometricHatch")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Apply geometric hatch to a Face");
-    sToolTipText    = QT_TR_NOOP("Apply geometric hatch to a Face");
-    sWhatsThis      = "TechDraw_GeomHatch";
+    sMenuText       = QT_TR_NOOP("Apply Geometric Hatch to a Face");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_GeometricHatch";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-geomhatch";
+    sPixmap         = "actions/techdraw-GeometricHatch";
 }
 
-void CmdTechDrawNewGeomHatch::activated(int iMsg)
+void CmdTechDrawGeometricHatch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     if (!_checkSelectionHatch(this)) {                 //same requirements as hatch - page, DrawViewXXX, face
@@ -364,7 +364,7 @@ void CmdTechDrawNewGeomHatch::activated(int iMsg)
     getDocument()->recompute();
 }
 
-bool CmdTechDrawNewGeomHatch::isActive(void)
+bool CmdTechDrawGeometricHatch::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -382,10 +382,10 @@ CmdTechDrawImage::CmdTechDrawImage()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert bitmap image");
-    sToolTipText  = QT_TR_NOOP("Inserts a bitmap from a file into a Page");
+    sMenuText     = QT_TR_NOOP("Insert Bitmap Image");
+    sToolTipText  = QT_TR_NOOP("Insert Bitmap from a file into a page");
     sWhatsThis    = "TechDraw_Image";
-    sStatusTip    = QT_TR_NOOP("Inserts a bitmap from a file into a Page");
+    sStatusTip    = QT_TR_NOOP("Insert Bitmap from a file into a page");
     sPixmap       = "actions/techdraw-image";
 }
 
@@ -476,12 +476,12 @@ void CreateTechDrawCommandsDecorate(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdTechDrawNewHatch());
-    rcCmdMgr.addCommand(new CmdTechDrawNewGeomHatch());
+    rcCmdMgr.addCommand(new CmdTechDrawHatch());
+    rcCmdMgr.addCommand(new CmdTechDrawGeometricHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
 //    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
-//    rcCmdMgr.addCommand(new CmdTechDrawRichAnno());
+//    rcCmdMgr.addCommand(new CmdTechDrawRichTextAnnotation());
 }
 
 //===========================================================================

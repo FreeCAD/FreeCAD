@@ -24,17 +24,17 @@
         <file>icons/TechDraw_ProjRight.svg</file>
         <file>icons/TechDraw_ProjTop.svg</file>
         <file>icons/TechDraw_Dimension.svg</file>
-        <file>icons/TechDraw_Dimension_Angle.svg</file>
-        <file>icons/TechDraw_Dimension_Angle3Pt.svg</file>
-        <file>icons/TechDraw_Dimension_Diameter.svg</file>
-        <file>icons/TechDraw_Dimension_Horizontal.svg</file>
-        <file>icons/TechDraw_Dimension_Length.svg</file>
-        <file>icons/TechDraw_Dimension_Radius.svg</file>
+        <file>icons/TechDraw_AngleDimension.svg</file>
+        <file>icons/TechDraw_3PtAngleDimension.svg</file>
+        <file>icons/TechDraw_DiameterDimension.svg</file>
+        <file>icons/TechDraw_HorizontalDimension.svg</file>
+        <file>icons/TechDraw_LengthDimension.svg</file>
+        <file>icons/TechDraw_RadiusDimension.svg</file>
         <file>icons/TechDraw_Balloon.svg</file>
-        <file>icons/TechDraw_Dimension_Vertical.svg</file>
+        <file>icons/TechDraw_VerticalDimension.svg</file>
         <file>icons/TechDraw_Dimension_Link.svg</file>
-        <file>icons/TechDraw_Dimension_HExtent.svg</file>
-        <file>icons/TechDraw_Dimension_VExtent.svg</file>
+        <file>icons/TechDraw_HorizontalExtentDimension.svg</file>
+        <file>icons/TechDraw_VerticalExtentDimension.svg</file>
         <file>icons/preferences-techdraw.svg</file>
         <file>icons/arrowdot.svg</file>
         <file>icons/arrowopendot.svg</file>
@@ -42,39 +42,39 @@
         <file>icons/arrowopen.svg</file>
         <file>icons/arrowtick.svg</file>
         <file>icons/arrowfork.svg</file>
-        <file>icons/actions/techdraw-new-default.svg</file>
-        <file>icons/actions/techdraw-new-pick.svg</file>
-        <file>icons/actions/techdraw-view.svg</file>
-        <file>icons/actions/techdraw-activeview.svg</file>
+        <file>icons/actions/techdraw-PageDefault.svg</file>
+        <file>icons/actions/techdraw-PageTemplate.svg</file>
+        <file>icons/actions/techdraw-View.svg</file>
+        <file>icons/actions/techdraw-ActiveView.svg</file>
         <file>icons/actions/techdraw-multiview.svg</file>
         <file>icons/actions/techdraw-annotation.svg</file>
-        <file>icons/actions/techdraw-clip.svg</file>
-        <file>icons/actions/techdraw-clipplus.svg</file>
-        <file>icons/actions/techdraw-clipminus.svg</file>
+        <file>icons/actions/techdraw-ClipGroup.svg</file>
+        <file>icons/actions/techdraw-ClipGroupAdd.svg</file>
+        <file>icons/actions/techdraw-ClipGroupRemove.svg</file>
         <file>icons/actions/techdraw-symbol.svg</file>
-        <file>icons/actions/techdraw-draft-view.svg</file>
-        <file>icons/actions/techdraw-arch-view.svg</file>
-        <file>icons/actions/techdraw-saveSVG.svg</file>
-        <file>icons/actions/techdraw-saveDXF.svg</file>
-        <file>icons/actions/techdraw-viewsection.svg</file>
+        <file>icons/actions/techdraw-DraftView.svg</file>
+        <file>icons/actions/techdraw-ArchView.svg</file>
+        <file>icons/actions/techdraw-ExportPageSVG.svg</file>
+        <file>icons/actions/techdraw-ExportPageDXF.svg</file>
+        <file>icons/actions/techdraw-SectionView.svg</file>
         <file>icons/actions/techdraw-hatch.svg</file>
-        <file>icons/actions/techdraw-geomhatch.svg</file>
+        <file>icons/actions/techdraw-GeometricHatch.svg</file>
         <file>icons/actions/techdraw-toggleframe.svg</file>
-        <file>icons/actions/techdraw-forceredraw.svg</file>
-        <file>icons/actions/techdraw-projgroup.svg</file>
-        <file>icons/actions/techdraw-spreadsheet.svg</file>
+        <file>icons/actions/techdraw-RedrawPage.svg</file>
+        <file>icons/actions/techdraw-ProjectionGroup.svg</file>
+        <file>icons/actions/techdraw-SpreadsheetView.svg</file>
         <file>icons/actions/techdraw-image.svg</file>
-        <file>icons/actions/techdraw-viewdetail.svg</file>
+        <file>icons/actions/techdraw-DetailView.svg</file>
         <file>icons/actions/techdraw-mline.svg</file>
-        <file>icons/actions/techdraw-textleader.svg</file>
+        <file>icons/actions/techdraw-RichTextAnnotation.svg</file>
         <file>icons/actions/techdraw-point.svg</file>
         <file>icons/actions/techdraw-midpoint.svg</file>
         <file>icons/actions/techdraw-quadrant.svg</file>
         <file>icons/actions/techdraw-facecenterline.svg</file>
         <file>icons/actions/techdraw-2linecenterline.svg</file>
         <file>icons/actions/techdraw-2pointcenterline.svg</file>
-        <file>icons/actions/techdraw-eraser.svg</file>
-        <file>icons/actions/techdraw-linedecor.svg</file>
+        <file>icons/actions/techdraw-CosmeticEraser.svg</file>
+        <file>icons/actions/techdraw-DecorateLine.svg</file>
         <file>icons/actions/techdraw-facedecor.svg</file>
         <file>icons/actions/techdraw-showall.svg</file>
         <file>icons/actions/techdraw-weldsymbol.svg</file>
