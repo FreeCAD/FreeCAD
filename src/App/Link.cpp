@@ -36,6 +36,12 @@
 #include "ComplexGeoData.h"
 #include "ComplexGeoDataPy.h"
 
+//FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#endif
+
 FC_LOG_LEVEL_INIT("App::Link", true,true)
 
 using namespace App;
@@ -1488,3 +1494,8 @@ template<> const char* App::LinkGroupPython::getViewProviderName(void) const {
 }
 template class AppExport FeaturePythonT<App::LinkGroup>;
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
+

@@ -482,6 +482,9 @@ def export(exportList,filename,colors=None,preferences=None):
                     psets = {}
                     for key,value in obj.IfcProperties.items():
                         pset, pname, ptype, pvalue = getPropertyData(key,value,preferences)
+                        if pvalue is None:
+                            if preferences['DEBUG']: print("      property ", pname," ignored because no value found.")
+                            continue
                         p = ifcbin.createIfcPropertySingleValue(str(pname),str(ptype),pvalue)
                         psets.setdefault(pset,[]).append(p)
                     for pname,props in psets.items():
@@ -1398,6 +1401,8 @@ def getPropertyData(key,value,preferences):
         return pset, pname, ptype, None
 
     #if preferences['DEBUG']: print("      property ",pname," : ",pvalue.encode("utf8"), " (", str(ptype), ") in ",pset)
+    if pvalue == "":
+        return pset, pname, ptype, None
     if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
         if six.PY2:
             pvalue = pvalue.encode("utf8")
