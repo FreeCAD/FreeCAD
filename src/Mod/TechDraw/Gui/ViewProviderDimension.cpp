@@ -1,5 +1,5 @@
 ﻿/***************************************************************************
- *   Copyright (c) 2004 J�rgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -121,17 +121,17 @@ void ViewProviderDimension::updateData(const App::Property* p)
 {
     if (p == &(getViewObject()->Type)) {
         if (getViewObject()->Type.isValue("DistanceX")) {
-            sPixmap = "TechDraw_Dimension_Horizontal";
+            sPixmap = "TechDraw_HorizontalDimension";
         } else if (getViewObject()->Type.isValue("DistanceY")) {
-            sPixmap = "TechDraw_Dimension_Vertical";
+            sPixmap = "TechDraw_VerticalDimension";
         } else if (getViewObject()->Type.isValue("Radius")) {
-            sPixmap = "TechDraw_Dimension_Radius";
+            sPixmap = "TechDraw_RadiusDimension";
         } else if (getViewObject()->Type.isValue("Diameter")) {
-            sPixmap = "TechDraw_Dimension_Diameter";
+            sPixmap = "TechDraw_DiameterDimension";
         } else if (getViewObject()->Type.isValue("Angle")) {
-            sPixmap = "TechDraw_Dimension_Angle";
+            sPixmap = "TechDraw_AngleDimension";
         } else if (getViewObject()->Type.isValue("Angle3Pt")) {
-            sPixmap = "TechDraw_Dimension_Angle3Pt";
+            sPixmap = "TechDraw_3PtAngleDimension";
         }
     }
     ViewProviderDrawingView::updateData(p);

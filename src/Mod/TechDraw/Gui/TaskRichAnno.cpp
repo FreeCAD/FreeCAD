@@ -499,7 +499,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDraw::DrawView* baseFeat,
     : TaskDialog()
 {
     widget  = new TaskRichAnno(baseFeat,page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-textleader"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-RichTextAnnotation"),
                                               widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -509,7 +509,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* leadVP)
     : TaskDialog()
 {
     widget  = new TaskRichAnno(leadVP);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-textleader"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-RichTextAnnotation"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
