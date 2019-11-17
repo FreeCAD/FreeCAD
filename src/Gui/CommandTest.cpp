@@ -43,6 +43,7 @@
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "Command.h"
+#include "CommandT.h"
 #include "Language/Translator.h"
 
 #include "ProgressBar.h"
@@ -278,6 +279,55 @@ void FCCmdTest6::activated(int iMsg)
 }
 
 bool FCCmdTest6::isActive(void)
+{
+    return (getDocument()!=NULL);
+}
+
+//===========================================================================
+// Std_TestCmdFuncs
+//===========================================================================
+DEF_STD_CMD_A(CmdTestCmdFuncs)
+
+CmdTestCmdFuncs::CmdTestCmdFuncs()
+  : Command("Std_TestCmdFuncs")
+{
+    sGroup          = "Standard-Test";
+    sMenuText       = "Test functions";
+    sToolTipText    = "Test functions";
+    sWhatsThis      = "Std_TestCmdFuncs";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdTestCmdFuncs::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document *doc = getDocument();
+    auto obj = doc->addObject("App::Annotation", "obj");
+    if (!obj) return;
+
+    std::string objName = obj->getNameInDocument();
+
+    Gui::cmdAppDocument(doc, std::ostringstream() << "getObject('" << objName << "')");
+    std::string cmd = "getObject('"; cmd += objName; cmd += "')";
+    Gui::cmdAppDocument(doc, cmd);
+
+    Gui::cmdAppDocument(doc, std::ostringstream() << "getObject('" << objName << "')");
+    Gui::cmdAppDocument(obj, std::ostringstream() << "getObject('" << objName << "')");
+    Gui::cmdGuiDocument(obj, std::ostringstream() << "getObject('" << objName << "')");
+    Gui::cmdAppObject(obj, "Visibility = False");
+    Gui::cmdGuiObject(obj, "Visibility = False");
+    Gui::cmdAppObject(obj, std::ostringstream() << "Visibility =" << "False");
+    Gui::cmdGuiObject(obj, std::ostringstream() << "Visibility =" << "False");
+    Gui::cmdAppObjectHide(obj);
+    Gui::cmdAppObjectShow(obj);
+    Gui::cmdAppObjectArgs(obj, "%s = %s", "Visibility", "True");
+    Gui::cmdGuiObjectArgs(obj, "%s = %s", "Visibility", "True");
+    Gui::cmdSetEdit(obj);
+    Gui::doCommandT(Gui::Command::Gui, "print('%s %s')", "Hello,", "World");
+    Gui::copyVisualT(objName.c_str(), "DisplayMode", objName.c_str());
+}
+
+bool CmdTestCmdFuncs::isActive(void)
 {
     return (getDocument()!=NULL);
 }
@@ -770,6 +820,7 @@ void CreateTestCommands(void)
     rcCmdMgr.addCommand(new FCCmdTest4());
     rcCmdMgr.addCommand(new FCCmdTest5());
     rcCmdMgr.addCommand(new FCCmdTest6());
+    rcCmdMgr.addCommand(new CmdTestCmdFuncs);
     rcCmdMgr.addCommand(new CmdTestProgress1());
     rcCmdMgr.addCommand(new CmdTestProgress2());
     rcCmdMgr.addCommand(new CmdTestProgress3());
