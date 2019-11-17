@@ -60,7 +60,12 @@ macro(CompilerChecksAndSetups)
             set(CMAKE_CXX_STANDARD 11)
         endif()
 
-        set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-write-strings ${CMAKE_CXX_FLAGS}")
+        # For now only set pedantic option for clang
+        if(CMAKE_COMPILER_IS_CLANGXX)
+            set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Wno-write-strings ${CMAKE_CXX_FLAGS}")
+        else()
+            set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-write-strings ${CMAKE_CXX_FLAGS}")
+        endif()
         include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
         # get linker errors as soon as possible and not at runtime e.g. for modules

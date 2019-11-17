@@ -8,6 +8,9 @@ macro(PrintFinalReport)
         message(STATUS "Build type:          ${CMAKE_BUILD_TYPE}")
     endif()
 
+    message(STATUS "Compiler:            ${CMAKE_CXX_COMPILER}")
+    message(STATUS "Flags:               ${CMAKE_CXX_FLAGS}")
+
     # Qt5 needs/sets PYTHON_CONFIG_SUFFIX regarding Shiboken
     message(STATUS "Python:              [${PYTHON_EXECUTABLE}] [${PYTHON_CONFIG_SUFFIX}]")
 
