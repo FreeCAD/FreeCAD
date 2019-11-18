@@ -362,6 +362,17 @@ PyObject* GroupExtension::getExtensionPyObject(void) {
     return Py::new_reference_to(ExtensionPythonObject);
 }
 
+static int _ToggleNestedVisibility;
+
+GroupExtension::ToggleNestedVisibility::ToggleNestedVisibility() {
+    ++_ToggleNestedVisibility;
+}
+
+GroupExtension::ToggleNestedVisibility::~ToggleNestedVisibility() {
+    if(_ToggleNestedVisibility>0)
+        --_ToggleNestedVisibility;
+}
+
 void GroupExtension::extensionOnChanged(const Property* p) {
 
     auto owner = getExtendedObject();
@@ -422,6 +433,21 @@ void GroupExtension::extensionOnChanged(const Property* p) {
                 hiddenChildren = 0;
 
             Base::FlagToggler<> guard(_togglingVisibility);
+
+            if(hiddenChildren && _ToggleNestedVisibility!=0) {
+                if(vis)
+                    hiddenChildren->setValues({});
+                else {
+                    std::map<std::string,std::string> hc;
+                    for(auto obj : Group.getValues()) {
+                        if(!obj || !obj->getNameInDocument())
+                            continue;
+                        hc.emplace(obj->getNameInDocument(),"");
+                    }
+                    hiddenChildren->setValues(std::move(hc));
+                }
+                hiddenChildren = 0;
+            }
 
             int visCount = 0;
             for(auto obj : Group.getValues()) {
