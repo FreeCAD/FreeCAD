@@ -161,6 +161,7 @@ public:
         ~ ToggleNestedVisibility();
     };
 
+
     /** Return the link list property for holding the children for export
      * @param reason: specify the reason for export. @sa App::DocumentObject::GSReason
      */

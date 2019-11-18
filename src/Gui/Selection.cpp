@@ -33,17 +33,18 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
+#include <App/DocumentObserver.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
-
 #include "Selection.h"
 #include "SelectionObject.h"
 #include "Application.h"
 #include "Document.h"
 #include "Macro.h"
+#include <Gui/SelectionObjectPy.h>
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "SelectionFilter.h"
@@ -383,6 +384,17 @@ bool SelectionSingleton::hasPreselection() const {
 std::vector<SelectionSingleton::SelObj> SelectionSingleton::getCompleteSelection(int resolve) const
 {
     return getSelection("*",resolve);
+}
+
+std::vector<App::SubObjectT> SelectionSingleton::getSelectionT(
+        const char* pDocName, int resolve, bool single) const
+{
+    auto sels = getSelection(pDocName,resolve,single);
+    std::vector<App::SubObjectT> res;
+    res.reserve(sels.size());
+    for(auto &sel : sels)
+        res.emplace_back(sel.pObject,sel.SubName);
+    return res;
 }
 
 std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const char* pDocName,
@@ -1432,7 +1444,7 @@ struct SelInfo {
     {}
 };
 
-void SelectionSingleton::setVisible(VisibleState vis) {
+void SelectionSingleton::setVisible(VisibleState vis, const std::vector<App::SubObjectT> &_sels) {
     std::set<std::pair<App::DocumentObject*,App::DocumentObject*> > filter;
     int visible;
     switch(vis) {
@@ -1446,25 +1458,15 @@ void SelectionSingleton::setVisible(VisibleState vis) {
         visible = 0;
     }
 
-    // Copy the selection in case it changes during this function
-    std::vector<SelInfo> sels;
-    sels.reserve(_SelList.size());
-    for(auto &sel : _SelList) {
-        if(sel.DocName.empty() || sel.FeatName.empty() || !sel.pObject)
-            continue;
-        sels.emplace_back(sel.DocName,sel.FeatName,sel.SubName);
-    }
-
+    const auto &sels = _sels.size()?_sels:getSelectionT(0,0);
     for(auto &sel : sels) {
-        App::Document *doc = App::GetApplication().getDocument(sel.DocName.c_str());
-        if(!doc) continue;
-        App::DocumentObject *obj = doc->getObject(sel.FeatName.c_str());
+        App::DocumentObject *obj = sel.getObject();
         if(!obj) continue;
 
         // get parent object
         App::DocumentObject *parent = nullptr;
         std::string elementName;
-        obj = obj->resolve(sel.SubName.c_str(),&parent,&elementName);
+        obj = obj->resolve(sel.getSubName().c_str(),&parent,&elementName);
         if (!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
             continue;
         // try call parent object's setElementVisible
@@ -1487,10 +1489,10 @@ void SelectionSingleton::setVisible(VisibleState vis) {
                 }
 
                 if (!visElement)
-                    updateSelection(false,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                    updateSelection(false,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
                 parent->setElementVisible(elementName.c_str(), visElement ? true : false);
                 if(vis && ViewParams::instance()->getUpdateSelectionVisual())
-                    updateSelection(true,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                    updateSelection(true,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
                 continue;
             }
 
@@ -1513,9 +1515,9 @@ void SelectionSingleton::setVisible(VisibleState vis) {
             if(visObject) {
                 vp->show();
                 if (ViewParams::instance()->getUpdateSelectionVisual())
-                    updateSelection(vis,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                    updateSelection(vis,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
             } else {
-                updateSelection(visObject,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                updateSelection(vis,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
                 vp->hide();
             }
         }
