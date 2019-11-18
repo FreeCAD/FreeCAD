@@ -1748,13 +1748,8 @@ void Application::runApplication(void)
     std::map<std::string,std::string>::const_iterator it;
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
-    QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-#endif
-
-    // A new QApplication
-    Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
-
-#if defined(QTWEBENGINE) && defined(Q_OS_LINUX)
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+#elif defined(QTWEBENGINE) && defined(Q_OS_LINUX)
     // Avoid warning of 'Qt WebEngine seems to be initialized from a plugin...'
     // QTWEBENGINE is defined in src/Gui/CMakeLists.txt, currently only enabled
     // when build with Conda.
@@ -1772,6 +1767,9 @@ void Application::runApplication(void)
     //Enable support for highres images (added in Qt 5.1, but off by default)
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif
+
+    // A new QApplication
+    Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
 
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
