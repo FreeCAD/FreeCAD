@@ -33,6 +33,7 @@
 #include <Inventor/SbTime.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SbViewportRegion.h>
+#include "InventorBase.h"
 #include "View3DInventorViewer.h"
 #include "SoFCSelectionContext.h"
 #include <list>
