@@ -44,6 +44,7 @@ Section -ProgramFiles SecProgramFiles
   File /r "${FILES_FREECAD}\lib"
   File /r "${FILES_FREECAD}\Mod"
   File /r "${FILES_FREECAD}\resources"
+  File /r "${FILES_THUMBS}"
     
   # Create uninstaller
   WriteUninstaller "$INSTDIR\${SETUP_UNINSTALLER}"
