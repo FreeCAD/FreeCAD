@@ -28,6 +28,10 @@
 #ifndef _PreComp_
 # include <Python.h>
 # include <climits>
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wextra-semi"
+#endif
 # include <Standard_Version.hxx>
 # include <NCollection_Vector.hxx>
 # include <TDocStd_Document.hxx>
@@ -51,6 +55,9 @@
 # include <XSControl_TransferReader.hxx>
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <OSD_Exception.hxx>
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 #endif
 
 #include <CXX/Extensions.hxx>
