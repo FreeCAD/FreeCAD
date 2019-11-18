@@ -1417,7 +1417,7 @@ void SoFCSwitch::notify(SoNotList * nl)
 
 void SoFCSwitch::traverseTail(SoAction *action, int idx) {
     int tail = tailChild.getValue();
-    if(tail<0 || idx==tail || tail>=getNumChildren())
+    if(idx<0 || tail<0 || idx==tail || tail>=getNumChildren())
         return;
 
     int numindices = 0;

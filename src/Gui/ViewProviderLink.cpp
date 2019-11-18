@@ -470,18 +470,7 @@ public:
         LinkInfoPtr me(this);
         for(auto link : links)
             link->onLinkedUpdateData(me,prop);
-
-        if(prop && prop->getName()
-                && strcmp(prop->getName(),"Group")==0 
-                && prop->getContainer()
-                && prop->getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId()))
-        {
-            auto owner = static_cast<App::DocumentObject*>(prop->getContainer());
-            if(App::GeoFeatureGroupExtension::isNonGeoGroup(owner)) {
-                // Special handling for plain group update
-                update();
-            }
-        }
+        update();
     }
 
     void update() {
@@ -498,11 +487,9 @@ public:
     void updateChildren() {
         if(isLinked()) {
             if(!pcLinked->getChildRoot()) {
-                if(App::GeoFeatureGroupExtension::isNonGeoGroup(pcLinked->getObject())) {
-                    childSensor.detach();
-                    _updateChildren(pcLinked->claimChildren());
-                    return;
-                }
+                childSensor.detach();
+                _updateChildren(pcLinked->claimChildren());
+                return;
             } else if (!ViewParams::instance()->getLinkChildrenDirect()) {
                 if(childSensor.getAttachedNode() != pcLinked->getChildRoot()) {
                     childSensor.detach();
