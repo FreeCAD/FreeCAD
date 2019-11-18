@@ -1155,11 +1155,38 @@ void ViewProviderPartExt::updateVisual()
             TColgp_Array1OfDir Normals (Nodes.Lower(), Nodes.Upper());
             if (NormalsFromUV)
                 getNormals(actFace, mesh, Normals);
-            
+
+            std::vector<std::pair<gp_Vec,int> > centers;
+            centers.reserve(nbTriInFace);
             for (int g=1;g<=nbTriInFace;g++) {
-                // Get the triangle
                 Standard_Integer N1,N2,N3;
                 Triangles(g).Get(N1,N2,N3);
+                gp_Vec V1(Nodes(N1).XYZ()), V2(Nodes(N2).XYZ()), V3(Nodes(N3).XYZ());
+                centers.emplace_back((V1+V2+V3)/3.0,g);
+            }
+            // Pre-sort the tiangles. This is necessary for per-part
+            // transparency sorting to work for highly curvatured surface
+            std::sort(centers.begin(),centers.end(),
+                [](const std::pair<gp_Vec,int> &a, const std::pair<gp_Vec,int> &b) {
+                    if(a.first.Z() < b.first.Z())
+                        return true;
+                    if(a.first.Z() > b.first.Z())
+                        return false;
+                    if(a.first.Y() < b.first.Y())
+                        return true;
+                    if(a.first.Y() > b.first.Y())
+                        return false;
+                    return a.first.X() < b.first.X();
+                }
+            );
+            
+            int g = 0;
+            for(auto &info : centers) {
+                ++g;
+
+                // Get the triangle
+                Standard_Integer N1,N2,N3;
+                Triangles(info.second).Get(N1,N2,N3);
 
                 // change orientation of the triangle if the face is reversed
                 if ( orient != TopAbs_FORWARD ) {
