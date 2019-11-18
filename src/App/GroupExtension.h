@@ -145,6 +145,12 @@ public:
     };
     PropertyEnumeration ExportMode;
 
+    /// Helper class to temperary enable old group visibility toggling behavior
+    struct AppExport ToggleNestedVisibility {
+        ToggleNestedVisibility();
+        ~ ToggleNestedVisibility();
+    };
+
 protected:
 
     virtual const PropertyLinkList& getExportGroupProperty() const {
