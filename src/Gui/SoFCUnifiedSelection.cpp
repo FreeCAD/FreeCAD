@@ -647,7 +647,7 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         const char *objname = vpd->getObject()->getNameInDocument();
 
         this->preSelection = 1;
-        static char buf[513];
+        char buf[513];
         snprintf(buf,512,"Preselected: %s.%s.%s (%g, %g, %g)"
                 ,docname,objname,element
                 ,fabs(x)>1e-7?x:0.0
@@ -731,7 +731,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     const auto &pt = pp->getPoint();
     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
     HighlightModes mymode = (HighlightModes) this->highlightMode.getValue();
-    static char buf[513];
+    char buf[513];
 
     if (ctrlDown && !shiftDown) {
         if(Gui::Selection().isSelected(docname,objname,info.element.c_str(),0))
@@ -930,7 +930,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
     inherited::handleEvent(action);
 }
 
-static thread_local bool _ShowBoundBox;
+static FC_COIN_THREAD_LOCAL bool _ShowBoundBox;
 
 bool SoFCUnifiedSelection::getShowSelectionBoundingBox() {
     return ViewParams::instance()->getShowSelectionBoundingBox()
@@ -1251,8 +1251,8 @@ struct SwitchInfo {
     }
 };
 
-static thread_local std::deque<SwitchInfo> _SwitchStack;
-static thread_local std::deque<SoFCSwitch::TraverseState> _SwitchTraverseStack;
+static FC_COIN_THREAD_LOCAL std::deque<SwitchInfo> _SwitchStack;
+static FC_COIN_THREAD_LOCAL std::deque<SoFCSwitch::TraverseState> _SwitchTraverseStack;
 
 bool SoFCSwitch::testTraverseState(TraverseStateFlag flag) {
     if(_SwitchTraverseStack.size())
@@ -2536,7 +2536,7 @@ void SoFCPathAnnotation::getBoundingBox(SoGetBoundingBoxAction * action)
     if(path) {
         _SwitchStack.emplace_back(path);
         // TODO: it is better to use SbStorage
-        static thread_local SoGetBoundingBoxAction *bboxAction = 0;
+        static FC_COIN_THREAD_LOCAL SoGetBoundingBoxAction *bboxAction = 0;
         if(!bboxAction)
             bboxAction = new SoGetBoundingBoxAction(SbViewportRegion());
         bboxAction->setViewportRegion(action->getViewportRegion());

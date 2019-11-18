@@ -702,7 +702,7 @@ static inline bool isTranslucent(int id, const float *trans, int numtrans,
     return false;
 }
 
-static thread_local std::vector<int> RenderIndices;
+static FC_COIN_THREAD_LOCAL std::vector<int> RenderIndices;
 
 struct PartDist {
     int index;
@@ -711,7 +711,7 @@ struct PartDist {
         :index(i),dist(d)
     {}
 };
-static thread_local std::vector<PartDist> SortedParts;
+static FC_COIN_THREAD_LOCAL std::vector<PartDist> SortedParts;
 
 void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bool checkTransp) 
 {
