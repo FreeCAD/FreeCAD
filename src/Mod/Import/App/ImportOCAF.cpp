@@ -62,7 +62,6 @@
 # include <TDataStd_Name.hxx>
 # include <Quantity_Color.hxx>
 # include <STEPCAFControl_Reader.hxx>
-# include <STEPCAFControl_Writer.hxx>
 # include <STEPControl_Writer.hxx>
 # include <IGESCAFControl_Reader.hxx>
 # include <IGESCAFControl_Writer.hxx>

@@ -51,9 +51,13 @@
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wmismatched-tags"
 # pragma clang diagnostic ignored "-Wunused-parameter"
+# if __clang_major__ > 3
+# pragma clang diagnostic ignored "-Wkeyword-macro"
+# endif
 #elif defined (__GNUC__)
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wunused-parameter"
+# pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
 #ifdef HAVE_SHIBOKEN

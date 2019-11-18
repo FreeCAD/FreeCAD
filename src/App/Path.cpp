@@ -27,7 +27,7 @@
 #endif
 
 #include "Path.h"
-#define new DEBUG_CLIENTBLOCK
+
 using namespace App;
 
 

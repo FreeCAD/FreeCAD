@@ -39,6 +39,7 @@
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Woverloaded-virtual"
+# pragma clang diagnostic ignored "-Wextra-semi"
 #elif defined (__GNUC__)
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wpedantic"
