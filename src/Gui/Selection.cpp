@@ -1113,7 +1113,8 @@ void SelectionSingleton::selStackGoBack(int count) {
     if(_SelList.size()) {
         selStackPush(false,true);
         clearCompleteSelection();
-    }
+    } else 
+        --count;
     for(int i=0;i<count;++i) {
         _SelStackForward.push_front(_SelStackBack.back());
         _SelStackBack.pop_back();
