@@ -75,7 +75,7 @@ class ObjectOp(PathOp.ObjectOp):
             if hasattr(obj, 'StartVertex'):
                 offset = DraftGeomUtils.rebaseWire(offset, obj.StartVertex)
 
-            edges = copy.copy(PathOpTools.orientWire(offset).Edges)
+            edges = copy.copy(offset.Edges)
             last = None
 
             for z in zValues:
