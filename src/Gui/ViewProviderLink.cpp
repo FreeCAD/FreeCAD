@@ -3370,7 +3370,7 @@ Base::BoundBox3d ViewProviderLink::_getBoundingBox(
         return bbox;
 
     auto ext = getLinkExtension();
-    if(!ext || obj->getLinkedObject(false)==obj || (subname && subname[0]))
+    if(!ext || isGroup(ext,true) || obj->getLinkedObject(false)==obj || (subname && subname[0]))
         return inherited::_getBoundingBox(subname,mat,transform,viewer,depth);
 
     Base::Matrix4D smat;
