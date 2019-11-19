@@ -38,14 +38,18 @@ __url__ = ["http://www.freecadweb.org"]
 Report to Draft.py for info
 """
 
+import os
 import six
+import sys
+import traceback
+import math
 import platform
-import FreeCAD, FreeCADGui, os, Draft, sys, traceback, DraftVecUtils, math
+import FreeCAD
+import FreeCADGui
+import Draft
+import DraftVecUtils
+from PySide import QtCore, QtGui, QtSvg
 
-try:
-    from PySide import QtCore, QtGui, QtSvg
-except ImportError:
-    FreeCAD.Console.PrintMessage("Error: Python-pyside package must be installed on your system to use the Draft module.")
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8 if six.PY2 else None
