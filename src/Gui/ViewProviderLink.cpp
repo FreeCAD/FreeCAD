@@ -458,8 +458,12 @@ public:
             }
             if(pcChildGroup && !childRoot) {
                 pcModeSwitch->addChild(pcChildGroup);
-                if(type == LinkView::SnapshotChild)
+                if(type==LinkView::SnapshotChild 
+                        && App::GeoFeatureGroupExtension::isNonGeoGroup(pcLinked->getObject()))
+                {
                     pcModeSwitch->tailChild = pcModeSwitch->getNumChildren()-1;
+                } else if(pcModeSwitch->tailChild.getValue()>=0)
+                   pcModeSwitch->tailChild = -1;
             }
         }
         updateSwitch(pcUpdateSwitch);
