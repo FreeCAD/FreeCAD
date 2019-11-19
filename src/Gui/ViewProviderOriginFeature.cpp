@@ -125,12 +125,20 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
 
     // Scale feature to the given size
     pScale->scaleFactor = SbVec3f (sz, sz, sz);
-    sep->addChild (pScale);
+    // sep->addChild (pScale);
+    pOriginFeatureRoot->addChild (pScale);
 
     // Setup font size
     SoFont *font = new SoFont ();
     font->size.setValue ( defaultSz/10.);
-    sep->addChild ( font );
+
+    // Adding font node under SoFCSelection node is crucial for its bounding
+    // box rendering to work. Because SoGetBoundingBoxAction is applied on the
+    // node itself, instead of a path. Without the font, SoAsciiText will
+    // report incorrect bounds.
+    //
+    // sep->addChild ( font );
+    pOriginFeatureRoot->addChild (font);
 
     SoShapeHints * hints = new SoShapeHints;
     hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE ;

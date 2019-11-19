@@ -126,44 +126,27 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
         return;
     }
 
-    Gui::Document* gdoc = getExtendedViewProvider()->getDocument();
-    if(!gdoc) 
-        return;
-    
-    Gui::MDIView* view = gdoc->getViewOfViewProvider(getExtendedViewProvider());
-    if(!view)
-        return;
-    
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
-
     // calculate the bounding box for out content
-    SbBox3f bbox(0,0,0, 0,0,0);
+    Base::BoundBox3d bbox(0,0,0,0,0,0);
     for(App::DocumentObject* obj : group->Group.getValues()) {
         ViewProvider *vp = Gui::Application::Instance->getViewProvider(obj);
-        if (!vp) {
+        if (!vp || !vp->isVisible()) {
             continue;
         }
-
-        bboxAction.apply ( vp->getRoot () );
-        bbox.extendBy ( bboxAction.getBoundingBox () );
+        bbox.Add ( vp->getBoundingBox() );
     };
     
-    // get the bounding box values
-    SbVec3f max = bbox.getMax();
-    SbVec3f min = bbox.getMin();
-
-    Base::Vector3d size;
+    Base::Vector3d size(std::max(std::abs(bbox.MinX),std::abs(bbox.MaxX)),
+                        std::max(std::abs(bbox.MinY),std::abs(bbox.MaxY)),
+                        std::max(std::abs(bbox.MinZ),std::abs(bbox.MaxZ)));
 
     for (uint_fast8_t i=0; i<3; i++) {
-        size[i] = std::max ( fabs ( max[i] ), fabs ( min[i] ) );
-
-        if (min[i]>max[i] || size[i] < 1e-7) { // TODO replace the magic values (2015-08-31, Fat-Zer)
+        if (size[i] < 1e-7) { // TODO replace the magic values (2015-08-31, Fat-Zer)
             size[i] = ViewProviderOrigin::defaultSize();
         }
     }
 
-    vpOrigin->Size.setValue ( size * 1.3 );
+    vpOrigin->Size.setValue ( size );
 }
 
 namespace Gui {
