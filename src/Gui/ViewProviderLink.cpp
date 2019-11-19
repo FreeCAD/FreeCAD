@@ -415,6 +415,8 @@ public:
         SoSwitch *pcUpdateSwitch = pcModeSwitch;
 
         auto childRoot = pcLinked->getChildRoot();
+        if(!childRoot)
+            childRoot = pcLinked->getChildrenGroup();
 
         for(int i=0,count=root->getNumChildren();i<count;++i) {
             SoNode *node = root->getChild(i);
@@ -453,13 +455,19 @@ public:
                 auto child = pcLinkedSwitch->getChild(i);
                 if(pcChildGroup && child==childRoot)
                     pcModeSwitch->addChild(pcChildGroup);
-                else
+                else 
                     pcModeSwitch->addChild(child);
             }
             if(pcChildGroup && !childRoot) {
                 pcModeSwitch->addChild(pcChildGroup);
-                if(type == LinkView::SnapshotChild)
+#if 0
+                if(type==LinkView::SnapshotChild 
+                        && App::GeoFeatureGroupExtension::isNonGeoGroup(pcLinked->getObject()))
+                {
                     pcModeSwitch->tailChild = pcModeSwitch->getNumChildren()-1;
+                } else if(pcModeSwitch->tailChild.getValue()>=0)
+                   pcModeSwitch->tailChild = -1;
+#endif
             }
         }
         updateSwitch(pcUpdateSwitch);
@@ -470,18 +478,7 @@ public:
         LinkInfoPtr me(this);
         for(auto link : links)
             link->onLinkedUpdateData(me,prop);
-
-        if(prop && prop->getName()
-                && strcmp(prop->getName(),"Group")==0 
-                && prop->getContainer()
-                && prop->getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId()))
-        {
-            auto owner = static_cast<App::DocumentObject*>(prop->getContainer());
-            if(App::GeoFeatureGroupExtension::isNonGeoGroup(owner)) {
-                // Special handling for plain group update
-                update();
-            }
-        }
+        update();
     }
 
     void update() {
@@ -496,12 +493,18 @@ public:
     }
 
     void updateChildren() {
-        if(isLinked()) {
+        if(isLinked() && !pcLinked->isDerivedFrom(ViewProviderLink::getClassTypeId())) {
             if(!pcLinked->getChildRoot()) {
-                if(App::GeoFeatureGroupExtension::isNonGeoGroup(pcLinked->getObject())) {
-                    childSensor.detach();
-                    _updateChildren(pcLinked->claimChildren());
-                    return;
+                if(!App::GeoFeatureGroupExtension::isNonGeoGroup(pcLinked->getObject())) {
+                    auto linked = pcLinked->getObject()->getLinkedObject(true);
+                    ViewProvider *vp = 0;
+                    if(linked && linked!=pcLinked->getObject())
+                        vp = Application::Instance->getViewProvider(linked);
+                    if(!vp || !vp->getChildRoot()) {
+                        childSensor.detach();
+                        _updateChildren(pcLinked->claimChildren());
+                        return;
+                    }
                 }
             } else if (!ViewParams::instance()->getLinkChildrenDirect()) {
                 if(childSensor.getAttachedNode() != pcLinked->getChildRoot()) {
@@ -515,6 +518,7 @@ public:
         coinRemoveAllChildren(pcChildGroup);
         childSensor.detach();
         nodeMap.clear();
+        pcChildGroup.reset();
     }
 
     void _updateChildren(const std::vector<App::DocumentObject *> &children) {
@@ -625,7 +629,7 @@ public:
 
         // Special handling of nodes with childRoot, especially geo feature
         // group. It's object hierarchy in the tree view (i.e. in subname) is
-        // difference from its coin hierarchy. All objects under a geo feature
+        // different from its coin hierarchy. All objects under a geo feature
         // group is visually grouped directly under the group's childRoot,
         // even though some object has secondary hierarchy in subname. E.g.
         //
@@ -642,26 +646,31 @@ public:
         const char *dot = strchr(subname,'.');
         const char *nextsub = subname;
         if(!dot) return false;
-        auto geoGroup = pcLinked->getObject();
-        auto sobj = geoGroup;
+        auto obj = pcLinked->getObject();
+        auto sobj = obj;
         while(1) {
             std::string objname = std::string(nextsub,dot-nextsub+1);
-            if(!geoGroup->getSubObject(objname.c_str())) {
-                // this object is not found under the geo group, abort.
+            if(!obj->getSubObject(objname.c_str())) {
+                // sub object is not found, abort.
                 break;
             }
-            // Object found under geo group, remember this subname
-            subname = nextsub;
-
             auto ssobj = sobj->getSubObject(objname.c_str());
             if(!ssobj) {
                 FC_ERR("invalid sub name " << nextsub << " of object " << sobj->getFullName());
                 return false;
             }
+            // Sub object found, remember this subname
+            subname = nextsub;
             sobj = ssobj;
+
+            if(ViewParams::instance()->getMapChildrenPlacement() 
+                    || sobj->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId())) {
+                // Link will contain all its children
+                break;
+            }
             auto vp = Application::Instance->getViewProvider(sobj);
             if(!vp) {
-                FC_ERR("cannot find view provider of " << sobj->getFullName());
+                FC_LOG("cannot find view provider of " << sobj->getFullName());
                 return false;
             }
             if(vp->getChildRoot()) {
@@ -682,8 +691,11 @@ public:
         }
 
         for(auto v : nodeMap) {
-            if(v.second->getDetail(true,type,subname,det,path))
-                return true;
+            if(v.second->isLinked() && v.second->pcLinked->getObject() == sobj) {
+                if(v.second->getDetail(true,type,subname,det,path))
+                    return true;
+                break;
+            }
         }
         if(path)
             path->truncate(len);
@@ -869,7 +881,7 @@ public:
     CoinPtr<SoTransform> pcTransform;
     int nodeType;
     int groupIndex = -1;
-    bool isGroup = false;
+    int isGroup = 0;
 
     friend LinkView;
 
@@ -897,7 +909,7 @@ public:
     void appendToPath(SoPath *path) {
         if(pcSwitch) 
             appendPath(path,pcSwitch);
-        if (pcRoot && isGroup)
+        if (pcRoot && isGroup>0)
             appendPath(path,pcRoot);
     }
 
@@ -911,7 +923,7 @@ public:
             coinRemoveAllChildren(pcRoot);
         else
             pcRoot.reset();
-        isGroup = false;
+        isGroup = 0;
     }
 
     void link(App::DocumentObject *obj) {
@@ -922,18 +934,14 @@ public:
         if(!isLinked())
             return;
 
-        isGroup = App::GeoFeatureGroupExtension::isNonGeoGroup(obj);
+        isGroup = App::GeoFeatureGroupExtension::isNonGeoGroup(obj)?1:0;
 
         nodeType = handle.childType;
         if(nodeType == LinkView::SnapshotMax) {
             pcSwitch.reset();
-            if (!isGroup) 
-                pcRoot = linkInfo->pcLinked->getRoot();
-            else {
-                nodeType = SnapshotChild;
-                pcRoot = linkInfo->getSnapshot(nodeType);
-                isGroup = false;
-            }
+            pcRoot = linkInfo->pcLinked->getRoot();
+            if(isGroup)
+                isGroup = -1;
             return;
         }
 
@@ -942,22 +950,13 @@ public:
         else
             coinRemoveAllChildren(pcSwitch);
 
-        if(!isGroup) 
+        if(isGroup<=0) 
             pcRoot = linkInfo->getSnapshot(nodeType);
         else {
             if(!pcRoot)
                 pcRoot = new SoFCSelectionRoot(true);
             else
                 coinRemoveAllChildren(pcRoot);
-            auto groupSep = linkInfo->pcLinked->getRoot();
-            if(pcRoot->isOfType(SoFCSelectionRoot::getClassTypeId())
-                    && groupSep->isOfType(SoFCSelectionRoot::getClassTypeId())) 
-            {
-                auto groot = static_cast<SoFCSelectionRoot*>(groupSep);
-                auto root = static_cast<SoFCSelectionRoot*>(pcRoot.get());
-                root->selectionStyle.disconnect();
-                root->selectionStyle.connectFrom(&groot->selectionStyle);
-            }
             pcRoot->setName(obj->getFullName().c_str());
         }
         pcSwitch->addChild(pcRoot);
@@ -965,7 +964,7 @@ public:
     }
 
     SoNode *initGroup() {
-        if(!isGroup)
+        if(isGroup<=0)
             return 0;
         coinRemoveAllChildren(pcRoot);
 
@@ -1306,7 +1305,7 @@ void LinkView::setChildren(const std::vector<App::DocumentObject*> &children,
         info.link(obj);
         if(info.pcSwitch && childType!=SnapshotChild)
             info.pcSwitch->whichChild = (vis.size()<=i||vis[i])?0:-1;
-        if(info.isGroup) {
+        if(info.isGroup>0) {
             auto node = info.initGroup();
             if(node)
                 nodeMap[node] = i;
@@ -1542,7 +1541,7 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
             return false;
         int nodeIdx = it->second;
         ++idx;
-        while(nodeArray[nodeIdx]->isGroup) {
+        while(nodeArray[nodeIdx]->isGroup>0) {
             auto &info = *nodeArray[nodeIdx];
             if(!info.isLinked())
                 return false;
@@ -1668,7 +1667,10 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
                     return false;
 
                 subname = dot+1;
-                if(!subname[0] || !nodeArray[idx]->isGroup)
+                if(!subname[0] || nodeArray[idx]->isGroup==0)
+                    break;
+                if(ViewParams::instance()->getMapChildrenPlacement()
+                        && nodeArray[idx]->isGroup<0)
                     break;
                 idx = -1;
             }
@@ -1684,7 +1686,7 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
 
         info.appendToPath(path);
 
-        if(info.isGroup && *subname == 0) 
+        if(info.isGroup!=0 && *subname == 0) 
             return true;
 
         if(info.isLinked()) {
@@ -1755,7 +1757,7 @@ void LinkView::unlink(LinkInfoPtr info) {
         else {
             for(auto &info : nodeArray) {
                 int idx;
-                if(!info->isLinked() && 
+                if(info->isLinked() && 
                    (idx=info->pcRoot->findChild(pcLinkedRoot))>=0)
                     info->pcRoot->removeChild(idx);
             }
@@ -2157,6 +2159,8 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop == ext->_getElementListProperty()) {
         if(ext->_getShowElementValue())
             updateElementList(ext);
+    }else if(prop == ext->getSyncGroupVisibilityProperty()) {
+        updateElementList(ext);
     }
 }
 
@@ -2177,7 +2181,10 @@ void ViewProviderLink::updateElementList(App::LinkBaseExtension *ext) {
         OverrideMaterialList.setSize(0);
         MaterialList.setSize(0);
     }
-    linkView->setChildren(elements, ext->getVisibilityListValue(),LinkView::SnapshotVisible);
+    if(ext->getSyncGroupVisibilityValue() && ext->linkedPlainGroup())
+        linkView->setChildren(elements);
+    else 
+        linkView->setChildren(elements, ext->getVisibilityListValue(), LinkView::SnapshotVisible);
     applyColors();
 }
 

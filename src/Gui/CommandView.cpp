@@ -3721,6 +3721,21 @@ VIEW_CMD_DEF(PreselEdgeOnly, ShowHighlightEdgeOnly)
   eType         = Alter3DView;
 }
 
+//======================================================================
+// Std_MapChildrenPlacement
+//======================================================================
+VIEW_CMD_DEF(MapChildrenPlacement, MapChildrenPlacement)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Map children (Experimental!)");
+  sToolTipText  = QT_TR_NOOP("Map child object into parent's coordinate space when showing on top.\n"
+                             "Note that once activated, this option will also activate option ShowOnTop.\n"
+                             "WARNING! This is an experimental option. Please use with caution.\n");
+  sWhatsThis    = "Std_MapChildrenPlacement";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
+}
+
 
 //////////////////////////////////////////////////////////
 
@@ -3746,6 +3761,8 @@ public:
         addCommand(new StdCmdSelectionFaceWire());
         addCommand(new StdCmdPreselEdgeOnly());
         addCommand(new StdTreePreSelection());
+        addCommand();
+        addCommand(new StdCmdMapChildrenPlacement());
     };
     virtual const char* className() const {return "StdCmdSelOptions";}
 };

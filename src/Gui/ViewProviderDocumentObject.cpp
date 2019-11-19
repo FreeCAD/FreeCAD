@@ -540,6 +540,8 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::
     SoPath* path = pp->getPath();
     int idx = -1;
     auto childRoot = getChildRoot();
+    if(!childRoot && ViewParams::instance()->getMapChildrenPlacement())
+        childRoot = getChildrenGroup();
     if(childRoot) 
         idx = path->findNode(childRoot);
     if(idx < 0) {
@@ -598,6 +600,9 @@ bool ViewProviderDocumentObject::getDetailPath(
     if(!vp) return false;
 
     auto childRoot = getChildRoot();
+    if(!childRoot && ViewParams::instance()->getMapChildrenPlacement())
+        childRoot = getChildrenGroup();
+
     for(;;) {
         if(!childRoot) {
             // If no child root, then this view provider does not stack children
@@ -608,8 +613,10 @@ bool ViewProviderDocumentObject::getDetailPath(
             // Do not account for our own visibility, we maybe called by a Link
             // that has independent visibility. Just make sure the child root node
             // is indeed a child of mode switch.
-            if(pcModeSwitch->findChild(childRoot)<0)
-                return false;
+            if(pcModeSwitch->findChild(childRoot)<0) {
+                childRoot = 0;
+                continue;
+            }
             path->append(childRoot);
         }
         if(path->getLength()) {
@@ -860,6 +867,25 @@ void ViewProviderDocumentObject::updateChildren(bool propagate) {
 
     signalChangedChildren(*this);
     Application::Instance->signalChangedChildren(*this);
+
+    if(!getChildRoot() && !isDerivedFrom(ViewProviderLink::getClassTypeId())) {
+        if(!pcChildGroup) {
+            pcChildGroup = new SoGroup;
+            pcModeSwitch->addChild(pcChildGroup);
+        } else
+            coinRemoveAllChildren(pcChildGroup);
+        for(auto child : childSet) {
+            auto vp = Application::Instance->getViewProvider(child);
+            if(vp)
+                pcChildGroup->addChild(vp->getRoot());
+        }
+    }
+}
+
+SoGroup *ViewProviderDocumentObject::getChildrenGroup() const {
+    if(pcChildGroup)
+        return pcChildGroup;
+    return 0;
 }
 
 bool ViewProviderDocumentObject::isShowable() const {

@@ -115,12 +115,14 @@ void ViewProviderGeoFeatureGroupExtension::buildChildren3D() {
         return;
 
     auto children = getExtendedViewProvider()->claimChildren3D();
+#if 0
     for(auto it=children.begin();it!=children.end();) {
         if(App::GroupExtension::getGroupOfObject(*it))
             it = children.erase(it);
         else
             ++it;
     }
+#endif
     linkView->setChildren(children);
 } 
 

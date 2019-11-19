@@ -237,6 +237,25 @@ unsigned long ViewProviderGeometryObject::getBoundColor() const
 void ViewProviderGeometryObject::addBoundSwitch() {
     if(!pcBoundSwitch)
         return;
+
+    if(pcModeSwitch->isOfType(SoFCSwitch::getClassTypeId())) {
+        if(pcModeSwitch->findChild(pcBoundSwitch)>=0)
+            return;
+        pcModeSwitch->addChild(pcBoundSwitch);
+        // SoFCSwitch::tailChild is shown together with whichChild as long as
+        // whichChild is not -1. Put the bound box there is better then putting
+        // as the last node in all mode group node.  For example,
+        // Arch.BuildingPart puts a SoTransform inside its mode group, which
+        // messes up the bound box display.
+        //
+        // It is also better than putting the bound switch outside of mode
+        // switch like before, because we can easily hide the bound box together
+        // with the object, and also good for Link as it won't show the bound
+        // box
+        static_cast<SoFCSwitch*>(pcModeSwitch)->tailChild = pcModeSwitch->getNumChildren()-1;
+        return;
+    }
+
     for(int i=0;i<pcModeSwitch->getNumChildren();++i) {
         auto node = pcModeSwitch->getChild(i);
         if(!node->isOfType(SoGroup::getClassTypeId()))
