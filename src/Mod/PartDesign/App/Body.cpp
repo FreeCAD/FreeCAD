@@ -486,6 +486,9 @@ void Body::onChanged (const App::Property* prop) {
 
 void Body::setupObject () {
     Part::BodyBase::setupObject ();
+
+    // make sure the origins are created
+    getOrigin()->getX();
 }
 
 void Body::unsetupObject () {

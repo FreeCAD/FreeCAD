@@ -50,6 +50,7 @@
 #include "View3DInventorViewer.h"
 #include "View3DViewerPy.h"
 #include "ActiveObjectList.h"
+#include "ViewParams.h"
 
 
 #include <Base/Console.h>
@@ -703,8 +704,7 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
         cam->orientation = rot;
 
         if (scale < 0.0){
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-            scale = hGrp->GetFloat("NewDocumentCameraScale",100.0);
+            scale = ViewParams::instance()->getNewDocumentCameraScale();
         }
         if (scale > 1e-7) {
             double f = 0.0; //focal dist
