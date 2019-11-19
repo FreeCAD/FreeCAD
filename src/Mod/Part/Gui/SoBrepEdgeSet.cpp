@@ -49,16 +49,16 @@
 # include <Inventor/elements/SoCoordinateElement.h>
 # include <Inventor/elements/SoGLCoordinateElement.h>
 # include <Inventor/elements/SoGLCacheContextElement.h>
-# include <Inventor/elements/SoLineWidthElement.h>
 # include <Inventor/elements/SoPointSizeElement.h>
 # include <Inventor/errors/SoDebugError.h>
 # include <Inventor/errors/SoReadError.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/misc/SoState.h>
-# include <Inventor/elements/SoCacheElement.h>
 #endif
 
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoLinePatternElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 

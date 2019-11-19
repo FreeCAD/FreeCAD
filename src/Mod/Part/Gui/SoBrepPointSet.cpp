@@ -56,10 +56,10 @@
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/misc/SoState.h>
-# include <Inventor/elements/SoCacheElement.h>
 #endif
 
 #include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 
 #include "SoBrepPointSet.h"
 #include <Gui/SoFCUnifiedSelection.h>

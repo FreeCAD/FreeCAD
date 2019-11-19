@@ -59,13 +59,13 @@ public:
         ViewProviderExtension::extensionHide();
     }
 
-    virtual bool extensionGetElementPicked(const SoPickedPoint *, std::string &) const;
-    virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const;
+    virtual bool extensionGetElementPicked(const SoPickedPoint *, std::string &) const override;
+    virtual bool extensionGetDetailPath(const char *, SoFullPath *, SoDetail *&) const override;
     virtual bool extensionHandleChildren3D(const std::vector<App::DocumentObject*> &) override;
 
     virtual void extensionUpdateData(const App::Property*) override;
 
-    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/);
+    virtual int extensionReplaceObject(App::DocumentObject*, App::DocumentObject*) override;
 
 protected:
     void buildExport() const;
@@ -75,7 +75,8 @@ protected:
     SoGroup *pcGroupChildren;
 
 private:
-    std::vector<boost::signals2::scoped_connection> plainGroupConns;
+    struct Private;
+    std::unique_ptr<Private> impl;
     LinkView *linkView;
 };
 

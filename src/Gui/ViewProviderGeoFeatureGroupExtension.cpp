@@ -42,10 +42,14 @@
 
 using namespace Gui;
 
+struct ViewProviderGeoFeatureGroupExtension::Private {
+    std::vector<boost::signals2::scoped_connection> conns;
+};
+
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGeoFeatureGroupExtension, Gui::ViewProviderGroupExtension)
 
 ViewProviderGeoFeatureGroupExtension::ViewProviderGeoFeatureGroupExtension()
-    :linkView(0)
+    :impl(new Private), linkView(0)
 {
     initExtensionType(ViewProviderGeoFeatureGroupExtension::getExtensionClassTypeId());
 
@@ -62,6 +66,8 @@ ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
 {
     if(linkView)
         linkView->setInvalid();
+
+    impl.reset();
 
     pcGroupChildren->unref();
     pcGroupChildren = 0;
@@ -159,18 +165,18 @@ void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Proper
 
             buildExport();
 
-            plainGroupConns.clear();
+            impl->conns.clear();
             if(linkView) {
                 for(auto obj : group->Group.getValues()) {
                     // check for plain group
                     if(!obj || !obj->getNameInDocument())
                         continue;
-                    auto ext = obj->getExtensionByType<App::GroupExtension>(true,false);
+                    auto ext = App::GeoFeatureGroupExtension::getNonGeoGroup(obj);
                     if(!ext)
                         continue;
                     // To inform GroupExtension to disable toggling children visibility
                     ext->checkParentGroup();
-                    plainGroupConns.push_back(
+                    impl->conns.push_back(
                             ext->Group.signalChanged.connect([=](const App::Property &){
                                 this->buildChildren3D();
                         }));

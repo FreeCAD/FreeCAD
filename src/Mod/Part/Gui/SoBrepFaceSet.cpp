@@ -47,7 +47,6 @@
 # include <Inventor/elements/SoGLCoordinateElement.h>
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoGLVBOElement.h>
-# include <Inventor/elements/SoLineWidthElement.h>
 # include <Inventor/elements/SoPointSizeElement.h>
 # include <Inventor/errors/SoDebugError.h>
 # include <Inventor/errors/SoReadError.h>
@@ -55,8 +54,6 @@
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/misc/SoState.h>
 # include <Inventor/misc/SoContextHandler.h>
-# include <Inventor/elements/SoShapeStyleElement.h>
-# include <Inventor/elements/SoCacheElement.h>
 # include <Inventor/elements/SoTextureEnabledElement.h>
 # ifdef FC_OS_WIN32
 #  include <windows.h>
@@ -78,6 +75,9 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/elements/SoLineWidthElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -100,11 +100,11 @@ static bool makeDistinctColor(SbColor &res, const SbColor &color, const SbColor 
     float h2,s2,v2;
     other.getHSVValue(h2,s2,v2);
 
-    if(fabs(h-h2) > 0.07)
+    if(fabs(h-h2) > 0.07f)
         return false;
-    h += 0.3;
-    if(h>1.0)
-        h = 1.0-h;
+    h += 0.3f;
+    if(h>1.0f)
+        h = 1.0f-h;
     res.setHSVValue(h,s,1.0f);
     return true;
 }
