@@ -92,7 +92,8 @@ Py::List ParaObjectPy::getNamedParameters(void) const
     for(int i = 0; i < params.size(); ++i){
         Py::Tuple tup(2);
         tup[0] = Py::String(params[i].name);
-        ret[i] = params[i].value->getPyHandle();
+        tup[1] = params[i].value->getPyHandle();
+        ret[i] = tup;
     }
     return ret;
 }
@@ -104,7 +105,8 @@ Py::List ParaObjectPy::getNamedChildren(void) const
     for(int i = 0; i < params.size(); ++i){
         Py::Tuple tup(2);
         tup[0] = Py::String(params[i].name);
-        ret[i] = *(params[i].value);
+        tup[1] = *(params[i].value);
+        ret[i] = tup;
     }
     return ret;
 }
