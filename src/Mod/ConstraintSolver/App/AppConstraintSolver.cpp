@@ -83,6 +83,7 @@ PyDoc_STRVAR(G2D_doc,
 // This is called via the PyImport_AppendInittab mechanism called
 // during initialization, to make the built-in __FreeCADBase__
 // module known to Python.
+//#FIXME: Py2 :
 PyMODINIT_FUNC
 init_freecad_FCS_G2D_module(void)
 {
@@ -104,6 +105,7 @@ init_freecad_FCS_G2D_module(void)
  */
 inline Py::Module makeSubmodule(PyObject* parentMod, const char* internal_module_name, const char* attrname, PyObject* (*initfunc)())
 {
+    //#FIXME: Py2
     PyObject* modules = PyImport_GetModuleDict();
     PyObject* mod = PyImport_ImportModule (internal_module_name);
     if (!mod) {
