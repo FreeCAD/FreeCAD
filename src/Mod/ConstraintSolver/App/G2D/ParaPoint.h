@@ -21,13 +21,16 @@
  ***************************************************************************/
 #pragma once //to make qt creator happy, see QTCREATORBUG-20883
 
-#ifndef FREECAD_CONSTRAINTSOLVER_SIMPLECONSTRAINT_H
-#define FREECAD_CONSTRAINTSOLVER_SIMPLECONSTRAINT_H
+#ifndef FREECAD_CONSTRAINTSOLVER_PARAPOINT_H
+#define FREECAD_CONSTRAINTSOLVER_PARAPOINT_H
 
 #include <Mod/ConstraintSolver/App/ParaGeometry.h>
 
 namespace FCS {
 namespace G2D {
+
+class ParaPoint;
+typedef Base::UnsafePyHandle<ParaPoint> HParaPoint;
 
 class FCSExport ParaPoint : public FCS::ParaGeometry
 {

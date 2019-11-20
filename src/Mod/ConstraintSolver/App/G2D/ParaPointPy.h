@@ -15,8 +15,6 @@ namespace FCS {namespace G2D
 // ParaPointPy - Python wrapper
 //===========================================================================
 
-class ParaPoint; //why do I have to put this?? --DeepSOIC
-
 /** The python export class for ParaPoint
  */
 class FCSExport ParaPointPy : public FCS::ParaGeometryPy

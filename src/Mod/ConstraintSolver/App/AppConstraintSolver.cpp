@@ -148,6 +148,8 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::Constraint       ::init();
     FCS::SimpleConstraint ::init();
 
+    FCS::G2D::ParaPoint ::init();
+
     Base::Console().Log("Loading ConstraintSolver module... done\n");
     PyMOD_Return(mod);
 }
