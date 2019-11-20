@@ -159,7 +159,7 @@ PyObject* ParaObjectPy::getCustomAttributes(const char* attr) const
 int ParaObjectPy::setCustomAttributes(const char* attr, PyObject* obj)
 {
     try {
-        getParaObjectPtr()->setAttr(attr, Py::Object(obj, true));
+        getParaObjectPtr()->setAttr(attr, Py::Object(obj, false));
         return 1;
     } catch (Py::AttributeError&) {
         PyErr_Clear();
