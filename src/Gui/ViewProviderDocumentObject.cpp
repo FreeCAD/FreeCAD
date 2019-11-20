@@ -215,7 +215,13 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
 
 void ViewProviderDocumentObject::hide(void)
 {
+    auto obj = getObject();
+    if(obj && obj->getDocument() && obj->getNameInDocument())
+        Gui::Selection().updateSelection(
+                false, obj->getDocument()->getName(), obj->getNameInDocument(),0);
+
     ViewProvider::hide();
+
     // use this bit to check whether 'Visibility' must be adjusted
     if (Visibility.getValue() && Visibility.testStatus(App::Property::User2) == false) {
         Visibility.setStatus(App::Property::User2, true);
@@ -238,6 +244,13 @@ void ViewProviderDocumentObject::setModeSwitch() {
 void ViewProviderDocumentObject::show(void)
 {
     ViewProvider::show();
+
+    if(ViewParams::instance()->getUpdateSelectionVisual()) {
+        auto obj = getObject();
+        if(obj && obj->getDocument() && obj->getNameInDocument())
+            Gui::Selection().updateSelection(
+                    true, obj->getDocument()->getName(), obj->getNameInDocument(),0);
+    }
 
     // use this bit to check whether 'Visibility' must be adjusted
     if (!Visibility.getValue() && Visibility.testStatus(App::Property::User2) == false) {
