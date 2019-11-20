@@ -31,6 +31,15 @@ generate_from_xml(ConstraintPy)
 generate_from_xml(SimpleConstraintPy)
 generate_from_xml(ParaObjectPy)
 generate_from_xml(ParaGeometryPy)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/G2D)
+# generate_from_xml(G2D/ParaPointPy)
+
+SET(ConstraintSolver_G2D
+    G2D/ParaPoint.h
+    G2D/ParaPoint.cpp
+    G2D/ParaPointPy.xml
+    G2D/ParaPointPyImp.cpp
+)
 
 SET(ConstraintSolver_Utils_SRCS
     Utils.h
@@ -92,6 +101,7 @@ SET(ConstraintSolver_SRCS
     ${ConstraintSolver_Solver_SRCS}
     ${Python_Solver_SRCS}
     ${ConstraintSolver_Module_SRCS}
+    ${ConstraintSolver_G2D}
 )
 
 add_library(ConstraintSolver SHARED ${ConstraintSolver_SRCS})

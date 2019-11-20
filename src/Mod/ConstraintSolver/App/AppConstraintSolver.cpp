@@ -50,6 +50,9 @@
 #include "ParaGeometry.h"
 #include "ParaGeometryPy.h"
 
+#include "G2D/ParaPoint.h"
+#include "G2D/ParaPointPy.h"
+
 namespace ConstraintSolver {
 class Module : public Py::ExtensionModule<Module>
 {
@@ -71,6 +74,39 @@ PyObject* initModule()
 
 
 } // namespace ConstraintSolver
+
+
+//submodule "G2D"
+PyDoc_STRVAR(G2D_doc,
+    "2D geometry and constraints"
+);
+// This is called via the PyImport_AppendInittab mechanism called
+// during initialization, to make the built-in __FreeCADBase__
+// module known to Python.
+PyMODINIT_FUNC
+init_freecad_FCS_G2D_module(void)
+{
+    static struct PyModuleDef moduleDef = {
+        PyModuleDef_HEAD_INIT,
+        "__FreeCAD_FCS_G2D__", G2D_doc, -1,
+        NULL, NULL, NULL, NULL, NULL
+    };
+    return PyModule_Create(&moduleDef);
+}
+
+inline Py::Module makeSubmodule(PyObject* parentMod, const char* internal_module_name, const char* attrname, PyObject* (*initfunc)())
+{
+    PyObject* modules = PyImport_GetModuleDict();
+    PyObject* mod = PyImport_ImportModule (internal_module_name);
+    if (!mod) {
+        PyErr_Clear();
+        mod = initfunc();
+        PyDict_SetItemString(modules, internal_module_name, mod);
+    }
+    PyModule_AddObject(parentMod, attrname, Py::new_reference_to(mod));
+    return Py::Module(mod, true);
+}
+
 
 
 /* Python entry */
@@ -97,6 +133,14 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::ConstraintPy      ::Type, mod, "Constraint"      );
     Base::Interpreter().addType(&FCS::SimpleConstraintPy::Type, mod, "SimpleConstraint");
     Base::Interpreter().addType(&FCS::ParaGeometryPy    ::Type, mod, "ParaGeometry"    );
+
+
+    Py::Module submodG2D =  makeSubmodule(mod, "__FreeCAD_FCS_G2D__", "G2D", init_freecad_FCS_G2D_module);
+
+
+    FCS::G2D::ParaPointPy       ::Type.tp_name = "ConstraintSolver.G2D.ParaGeometry"    ;
+
+    Base::Interpreter().addType(&FCS::G2D::ParaPointPy       ::Type, submodG2D.ptr(), "ParaPoint"       );
 
     //fill type system
     FCS::ParameterStore   ::init();
