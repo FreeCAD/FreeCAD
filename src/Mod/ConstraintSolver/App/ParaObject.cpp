@@ -15,9 +15,13 @@ TYPESYSTEM_SOURCE_ABSTRACT(FCS::ParaObject, Base::BaseClass);
 
 PyObject* ParaObject::getPyObject()
 {
-    if (_twin == nullptr)
+    if (_twin == nullptr){
         new ParaObjectPy(this);
-    return Py::new_reference_to(_twin);
+        assert(_twin);
+        return _twin;
+    } else {
+        return Py::new_reference_to(_twin);
+    }
 }
 
 HParaObject ParaObject::self()
