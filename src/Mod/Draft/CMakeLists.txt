@@ -4,7 +4,24 @@ IF (BUILD_GUI)
     PYSIDE_WRAP_RC(Draft_QRC_SRCS Resources/Draft.qrc)
 ENDIF (BUILD_GUI)
 
+SET(Draft_tests
+    drafttests/__init__.py
+    drafttests/auxiliary.py
+    drafttests/test_import.py
+    drafttests/test_import_gui.py
+    drafttests/test_import_tools.py
+    drafttests/test_pivy.py
+    drafttests/test_creation.py
+    drafttests/test_modification.py
+    drafttests/test_svg.py
+    drafttests/test_dxf.py
+    drafttests/test_dwg.py
+    drafttests/test_oca.py
+    drafttests/test_airfoildat.py
+)
+
 SET(Draft_SRCS
+    ${Draft_tests}
     Init.py
     InitGui.py
     Draft.py
