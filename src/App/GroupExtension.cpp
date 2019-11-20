@@ -52,7 +52,7 @@ GroupExtension::GroupExtension()
             PropertyType(Prop_Hidden|Prop_Transient),0);
 
     EXTENSION_ADD_PROPERTY_TYPE(_GroupVersion,(0),"Base",
-            (App::PropertyType)(Prop_Hidden|Prop_ReadOnly),"Internal use for migration");
+            (App::PropertyType)(Prop_Hidden|Prop_ReadOnly|Prop_Output),"Internal use for migration");
 
     static const char *ExportModeEnum[] = {"Disabled", "By Visibility", "Child Query", "Both", 0};
     ExportMode.setEnums(ExportModeEnum);
@@ -410,6 +410,20 @@ void GroupExtension::extensionOnChanged(const Property* p) {
                 return false;
             });
 
+            auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
+                    owner->getPropertyByName("HiddenChildren"));
+            if(hiddenChildren) {
+                auto hiddens = hiddenChildren->getValues();
+                for(auto it=hiddens.begin();it!=hiddens.end();) {
+                    if(!Group.find(it->first.c_str()))
+                        it = hiddens.erase(it);
+                    else
+                        ++it;
+                }
+                if(hiddenChildren->getSize()!=(int)hiddens.size())
+                    hiddenChildren->setValues(std::move(hiddens));
+            }
+
             if(error) {
 #if 1
                 FC_THROWM(Base::RuntimeError,"Auto correct group member for " << owner->getFullName());
@@ -594,7 +608,7 @@ int GroupExtension::extensionIsElementVisible(const char *element) const {
 
 void GroupExtension::onExtendedDocumentRestored() {
     if(_GroupVersion.getValue()==0) {
-        onExtendedSetupObject();
+        initSetup();
         auto hiddenChildren = Base::freecad_dynamic_cast<PropertyMap>(
                 getExtendedObject()->getPropertyByName("HiddenChildren"));
         if(hiddenChildren && hiddenChildren->getContainer()==getExtendedObject()) {
@@ -608,7 +622,7 @@ void GroupExtension::onExtendedDocumentRestored() {
     }
 }
 
-void GroupExtension::onExtendedSetupObject() {
+void GroupExtension::initSetup() {
     _GroupVersion.setValue(1);
     if(!this->extensionIsDerivedFrom(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
         auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preference/Group");
@@ -617,6 +631,10 @@ void GroupExtension::onExtendedSetupObject() {
                     "HiddenChildren", "Group",0,Prop_Output,true,true);
         }
     }
+}
+
+void GroupExtension::onExtendedSetupObject() {
+    initSetup();
 }
 
 App::DocumentObjectExecReturn *GroupExtension::extensionExecute(void) {

@@ -159,6 +159,8 @@ protected:
 
     bool queryChildExport(App::DocumentObject *obj) const;
 
+    void initSetup();
+
 private:
     void removeObjectFromDocument(DocumentObject*);
     //this version if has object stores the already searched objects to prevent infinite recursion
