@@ -3,12 +3,49 @@
 #include "G2D/ParaPointPy.h"
 #include "G2D/ParaPointPy.cpp"
 
+#include "ParameterStorePy.h"
+#include "ParameterRefPy.h"
+
 using namespace FCS;
 
-PyObject *ParaPointPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject *ParaPointPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kwd)  // Python wrapper
 {
-    // create a new instance of ParaPointPy and the Twin object
-    return new ParaPointPy(new ParaPoint);
+
+    {
+        if (PyArg_ParseTuple(args, "")){
+            HParaPoint p = (new ParaPoint)->self();
+            return Py::new_reference_to(p);
+        }
+        PyErr_Clear();
+    }
+    {
+        PyObject* store;
+        if (PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store)){
+            HParaPoint p = (new ParaPoint)->self();
+            p->makeParameters(HParameterStore(store, false));
+            return Py::new_reference_to(p);
+        }
+        PyErr_Clear();
+    }
+    {
+        PyObject* x;
+        PyObject* y;
+        if (PyArg_ParseTuple(args, "O!O!",&(ParameterRefPy::Type), &x, &(ParameterRefPy::Type), &y)){
+            HParaPoint p = (new ParaPoint(*HParameterRef(x,false), *HParameterRef(y,false)))->self();
+            return Py::new_reference_to(p);
+        }
+        PyErr_Clear();
+    }
+
+    PyErr_SetString(PyExc_TypeError,
+        "Wrong argument count or type. \n\n"
+        "supported signatures:"
+        "() - all parameters set to null references"
+        "(<ParameterStore object>) - creates new parameters into the store"
+        "(<ParameterRef object>, <ParameterRef object>) - assigns x and y parameter refs"
+    );
+
+    return nullptr;
 }
 
 // constructor method
