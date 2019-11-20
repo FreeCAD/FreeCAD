@@ -34,6 +34,7 @@
 #endif
 
 #define FCSExport ConstraintSolverAppExport
+#define FCS_G2DExport ConstraintSolverAppExport
 
 #ifdef _PreComp_
 

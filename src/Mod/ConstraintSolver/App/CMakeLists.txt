@@ -32,7 +32,7 @@ generate_from_xml(SimpleConstraintPy)
 generate_from_xml(ParaObjectPy)
 generate_from_xml(ParaGeometryPy)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/G2D)
-# generate_from_xml(G2D/ParaPointPy)
+generate_from_xml(G2D/ParaPointPy)
 
 SET(ConstraintSolver_G2D
     G2D/ParaPoint.h
