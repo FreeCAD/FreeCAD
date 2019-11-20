@@ -106,8 +106,8 @@ ParaPointPy::ParaPointPy(ParaPoint *pcObject, PyTypeObject *T)
 ParaPointPy::~ParaPointPy()                                // Everything handled in parent
 {
     // delete the handled object when the PyObject dies
-    ParaPointPy::PointerType ptr = static_cast<ParaPointPy::PointerType>(_pcTwinPointer);
-    delete ptr;
+    //ParaPointPy::PointerType ptr = static_cast<ParaPointPy::PointerType>(_pcTwinPointer);
+    //delete ptr;
 }
 
 //--------------------------------------------------------------------------

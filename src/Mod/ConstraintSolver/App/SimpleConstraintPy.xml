@@ -9,7 +9,7 @@
 	  FatherInclude="Mod/ConstraintSolver/App/ConstraintPy.h" 
 	  Namespace="FCS" 
 	  Constructor="false"
-	  Delete="true"
+	  Delete="false"
 	  FatherNamespace="FCS"
 	  DisableNotify="true" >
 	<Documentation>

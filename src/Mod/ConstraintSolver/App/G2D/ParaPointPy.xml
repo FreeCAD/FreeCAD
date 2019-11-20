@@ -9,7 +9,7 @@
 	  FatherInclude="Mod/ConstraintSolver/App/ParaGeometryPy.h" 
 	  Namespace="FCS::G2D" 
 	  Constructor="true"
-	  Delete="true"
+	  Delete="false"
 	  FatherNamespace="FCS"
 	  DisableNotify="true">
 	<Documentation>
