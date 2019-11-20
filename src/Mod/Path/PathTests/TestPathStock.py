@@ -47,7 +47,6 @@ class TestPathStock(PathTestBase):
         model = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "Model")
         model.addObject(self.base)
         self.job.Model = model
-        self.job.addProperty('App::PropertyLink', 'Proxy')
         self.job.Proxy = FakeJobProxy()
 
     def tearDown(self):

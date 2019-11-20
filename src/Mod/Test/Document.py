@@ -1331,7 +1331,7 @@ class DocumentPropertyCases(unittest.TestCase):
     # testing the up and downstream stuff
     props=self.Obj.supportedProperties()
     for i in props:
-        self.Obj.addProperty(i,i)
+        self.Obj.addProperty(i,i.replace(':','_'))
     tempPath = tempfile.gettempdir()
     tempFile = tempPath + os.sep + "PropertyTests.FCStd"
     self.Doc.saveAs(tempFile)
