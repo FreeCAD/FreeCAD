@@ -284,11 +284,12 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
                 Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
                 Group.setValues(children);
 
+#if 1
+                FC_THROWM(Base::RuntimeError,"Auto correct group member for " << owner->getFullName());
+#else
                 // Since we are auto correcting, just issue a warning
-                //
-                // throw Base::RuntimeError("Object can only be in a single GeoFeatureGroup");
-                //
                 FC_WARN("Auto correct group member for " << owner->getFullName());
+#endif
             }
         }
 

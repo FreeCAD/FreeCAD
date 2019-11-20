@@ -386,8 +386,17 @@ void GroupExtension::extensionOnChanged(const Property* p) {
             std::unordered_set<App::DocumentObject*> objSet;
 
             int error = Group.removeIf( [&](App::DocumentObject *obj) {
-                if(!obj || !obj->getNameInDocument() || !objSet.insert(obj).second)
+                if(!obj || !obj->getNameInDocument()) {
+                    if(obj)
+                        FC_WARN("Remove invalid member " << obj->getFullName() 
+                                <<  " from " << owner->getFullName());
                     return true;
+                }
+                if(!objSet.insert(obj).second) {
+                    FC_WARN("Remove duplicated member " << obj->getFullName() 
+                            <<  " from " << owner->getFullName());
+                    return true;
+                }
 
                 //we have already set the obj into the group, so in a case of multiple groups getGroupOfObject
                 //would return anyone of it and hence it is possible that we miss an error. We need a custom check
@@ -402,10 +411,12 @@ void GroupExtension::extensionOnChanged(const Property* p) {
             });
 
             if(error) {
+#if 1
+                FC_THROWM(Base::RuntimeError,"Auto correct group member for " << owner->getFullName());
+#else
                 // Since we are auto correcting, just issue a warning
-                //
-                // throw Base::RuntimeError("Object can only be in a single Group");
                 FC_WARN("Auto correct group member for " << owner->getFullName());
+#endif
             }
         }
     }
