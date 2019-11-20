@@ -94,6 +94,14 @@ init_freecad_FCS_G2D_module(void)
     return PyModule_Create(&moduleDef);
 }
 
+/**
+ * @brief makeSubmodule: creates a Py module, and assigns it as an attribute of parent module
+ * @param parentMod: parent module
+ * @param internal_module_name: well, I don't know, FreeCAD.Base has "__FreeCADBase__" as its internal name
+ * @param attrname: the name of the attribute of parent module to refer to the new submodule
+ * @param initfunc: submodule init func, init_freecad_FCS_G2D_module for example.
+ * @return the submodule.
+ */
 inline Py::Module makeSubmodule(PyObject* parentMod, const char* internal_module_name, const char* attrname, PyObject* (*initfunc)())
 {
     PyObject* modules = PyImport_GetModuleDict();
