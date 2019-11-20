@@ -23,7 +23,8 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_CornerCoordSystem">
         <property name="toolTip">
-         <string>Main coordinate system will always be shown at lower right in opened files</string>
+         <string>Main coordinate system will always be shown in
+lower right corner within opened files</string>
         </property>
         <property name="text">
          <string>Show coordinate system in the corner</string>
@@ -43,7 +44,7 @@
        <widget class="Gui::PrefCheckBox" name="CheckBox_ShowFPS">
         <property name="toolTip">
          <string>Time needed for last operation and resulting frame rate
-will be shown at the lower left in opened files</string>
+will be shown at the lower left corner in opened files</string>
         </property>
         <property name="text">
          <string>Show counter of frames per second</string>
@@ -132,16 +133,16 @@ will be shown at the lower left in opened files</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_useVBO">
         <property name="toolTip">
-         <string>If checked, Vertex Buffer Objects (VBO) will be used.
+         <string>If selected, Vertex Buffer Objects (VBO) will be used.
 A VBO is an OpenGL feature that provides methods for uploading
 vertex data (position, normal vector, color, etc.) to the graphics card.
 VBOs offer substantial performance gains because the data resides
 in the graphics memory rather than the system memory and so it
 can be rendered directly by GPU. 
 
-Note: Sometimes this feature may lead to a host of different issues ranging
-from graphical anomalies to GPU crash bugs. Remember to report this setting
-is enabled when seeking support on the FreeCAD forums.</string>
+Note: Sometimes this feature may lead to a host of different
+issues ranging from graphical anomalies to GPU crash bugs. Remember to
+report this setting as enabled when seeking support on the FreeCAD forums</string>
         </property>
         <property name="text">
          <string>Use OpenGL VBO (Vertex Buffer Object)</string>
