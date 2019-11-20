@@ -197,7 +197,11 @@ class DocumentBasicCases(unittest.TestCase):
   def testDuplicateLinks(self):
     obj = self.Doc.addObject("App::FeatureTest","obj")
     grp = self.Doc.addObject("App::DocumentObjectGroup","group")
-    grp.Group = [obj,obj]
+    try:
+        grp.Group = [obj,obj]
+    except Exception:
+        pass
+    self.assertListEqual(grp.Group, [obj])
     self.Doc.removeObject(obj.Name)
     self.assertListEqual(grp.Group, [])
 
