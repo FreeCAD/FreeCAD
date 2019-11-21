@@ -80,7 +80,7 @@ public://methods
      *
      * @return index of this parameter in the subset, or -1 if it isn't in the subset.
      */
-    int indexOf(ParameterRef param) const;
+    int indexOf(const ParameterRef& param) const;
 
     ParameterRef operator[](int index) const;
 

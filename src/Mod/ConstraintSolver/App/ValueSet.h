@@ -82,10 +82,10 @@ public:
     void setForDerivative(const Eigen::VectorXd& dir);
 
     ///accepts any parameter from store.
-    Base::DualNumber operator[](ParameterRef param) const;
+    Base::DualNumber operator[](const ParameterRef& param) const;
     Base::DualNumber operator[](int index) const;
     ///with checks against parameters from different stores
-    Base::DualNumber get(ParameterRef param) const;
+    Base::DualNumber get(const ParameterRef& param) const;
     operator Eigen::VectorXd&() {return _values;}
     operator const Eigen::VectorXd&() const {return _values;}
 

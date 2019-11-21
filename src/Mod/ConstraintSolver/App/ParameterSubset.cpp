@@ -149,7 +149,7 @@ bool ParameterSubset::has(ParameterRef param) const
     return indexOf(param) != -1;
 }
 
-int ParameterSubset::indexOf(ParameterRef param) const
+int ParameterSubset::indexOf(const ParameterRef& param) const
 {
     assert(checkParameter(param));
     if(size() == 0)

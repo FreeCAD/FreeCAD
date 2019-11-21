@@ -99,7 +99,7 @@ void ValueSet::setForDerivative(const Eigen::VectorXd& dir)
         _duals[i] = dir[i];
 }
 
-Base::DualNumber ValueSet::operator[](ParameterRef param) const
+Base::DualNumber ValueSet::operator[](const ParameterRef& param) const
 {
     int i = subset().indexOf(param);
     if (i != -1){
@@ -114,7 +114,7 @@ Base::DualNumber ValueSet::operator[](int index) const
     return DualNumer(_values[index], _duals[index]) * _scales[index];
 }
 
-Base::DualNumber ValueSet::get(ParameterRef param) const
+Base::DualNumber ValueSet::get(const ParameterRef& param) const
 {
     int i = subset().has(param) ? subset().indexOf(param) : -1;
     if (i != -1){
