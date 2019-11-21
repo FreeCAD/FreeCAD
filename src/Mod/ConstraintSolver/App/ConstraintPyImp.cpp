@@ -72,8 +72,16 @@ void  ConstraintPy::setWeight(Py::Float arg)
 
 Py::Float ConstraintPy::getNetError(void) const
 {
-    getConstraintPtr()->throwIfIncomplete();
-    return Py::Float(getConstraintPtr()->netError());
+    try {
+        getConstraintPtr()->throwIfIncomplete();
+        return Py::Float(getConstraintPtr()->netError());
+    } catch (Base::Exception& e) {
+        e.ReportException();
+        auto pye = e.getPyExceptionType();
+        if(!pye)
+            pye = Base::BaseExceptionFreeCADError;
+        throw Py::Exception(pye, e.what());
+    }
 }
 
 Py::Long ConstraintPy::getRank(void) const
