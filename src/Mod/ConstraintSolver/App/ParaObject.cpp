@@ -46,7 +46,7 @@ void ParaObject::update()
         add(*(v.value));
     };
     for(auto& v : this->_children){
-        ParaObject& child = **(v.value);
+        ParaObject& child = *HParaObject(*(v.value));
         if (child._touched)
             child.update();
         for(const ParameterRef& r : child.parameters()){
@@ -88,10 +88,22 @@ std::vector<ParameterRef> ParaObject::makeParameters(HParameterStore into)
     touch();
     std::vector<ParameterRef> ret;
     for(auto& v : this->_attrs){
+        if (! v.value->isNull())
+            continue;
         ParameterRef newp = into->add(Parameter(label + "." + v.name, v.defvalue));
         ret.push_back(newp);
         *v.value = newp;
     };
+    for(auto& v : this->_children){
+        if (!v.value->isNone())
+            continue;
+        if (!v.make)
+            continue;
+        HParaObject child (_PyObject_New(v.type), true);
+        *v.value = child;
+        child->label = this->label + "." + v.name;
+        extend(ret, child->makeParameters(into));
+    }
     return ret;
 }
 
@@ -116,7 +128,7 @@ void ParaObject::throwIfIncomplete() const
         if (v.value->isNone()){
             throw Base::ReferencesError("Child reference " + v.name + " is null");
         }
-        (*v.value)->throwIfIncomplete();
+        HParaObject(*v.value)->throwIfIncomplete();
     };
 }
 
@@ -128,7 +140,7 @@ Py::Object ParaObject::getAttr(const char* attrname)
     };
     for(auto& v : this->_children){
         if (v.name == attrname)
-            return (* v.value)->self();
+            return HParaObject(* v.value)->self();
     };
     std::stringstream ss;
     ss << self().repr().as_std_string() << " has no attribute "
