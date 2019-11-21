@@ -28,6 +28,17 @@ PyObject *ParaPointPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
         PyErr_Clear();
     }
     {
+        PyObject* store;
+        const char* label;
+        if (PyArg_ParseTuple(args, "sO!", &label, &(ParameterStorePy::Type), &store)){
+            HParaPoint p = (new ParaPoint)->self();
+            p->label = label;
+            p->makeParameters(HParameterStore(store, false));
+            return Py::new_reference_to(p);
+        }
+        PyErr_Clear();
+    }
+    {
         PyObject* x;
         PyObject* y;
         if (PyArg_ParseTuple(args, "O!O!",&(ParameterRefPy::Type), &x, &(ParameterRefPy::Type), &y)){
@@ -38,11 +49,12 @@ PyObject *ParaPointPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
     }
 
     PyErr_SetString(PyExc_TypeError,
-        "Wrong argument count or type. \n\n"
-        "supported signatures:"
-        "() - all parameters set to null references"
-        "(<ParameterStore object>) - creates new parameters into the store"
-        "(<ParameterRef object>, <ParameterRef object>) - assigns x and y parameter refs"
+        "Wrong argument count or type."
+        "\n\nsupported signatures:"
+        "\n() - all parameters set to null references"
+        "\n(<ParameterStore object>) - creates new parameters into the store"
+        "\n(label, <ParameterStore object>) - assigns the label (string), and creates new parameters into the store"
+        "\n(<ParameterRef object>, <ParameterRef object>) - assigns x and y parameter refs"
     );
 
     return nullptr;
