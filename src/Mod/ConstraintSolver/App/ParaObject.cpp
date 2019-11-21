@@ -140,7 +140,7 @@ Py::Object ParaObject::getAttr(const char* attrname)
     };
     for(auto& v : this->_children){
         if (v.name == attrname)
-            return HParaObject(* v.value)->self();
+            return *v.value;
     };
     std::stringstream ss;
     ss << self().repr().as_std_string() << " has no attribute "

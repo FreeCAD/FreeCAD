@@ -55,7 +55,7 @@ public://helper structs
 
     struct ChildAttribute
     {
-        Py::Object* value = nullptr;
+        Base::PyHandleBase* value = nullptr;
         std::string name;
         PyTypeObject *type;
         bool make = false; //true if it's an actual child, like an endpoint of an arc. False if it is a reference, like a constraint referring a point. If make, the object is auto-constructed upon call to makeParameters
