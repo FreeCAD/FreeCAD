@@ -111,7 +111,7 @@ bool ParaObject::isComplete() const
 {
     try {
         throwIfIncomplete();
-    } catch (Base::ReferencesError &e) {
+    } catch (Py::LookupError &) {
         return false;
     }
     return true;
@@ -121,12 +121,12 @@ void ParaObject::throwIfIncomplete() const
 {
     for(auto& v : this->_attrs){
         if (v.value->isNull()){
-            throw Base::ReferencesError("Parameter " + v.name + " is null");
+            throw Py::Exception(PyExc_LookupError,"Parameter '" + v.name + "' is null");
         }
     };
     for(auto& v : this->_children){
         if (v.value->isNone()){
-            throw Base::ReferencesError("Child reference " + v.name + " is null");
+            throw Py::Exception(PyExc_LookupError,"Child reference '" + v.name + "' is None");
         }
         HParaObject(*v.value)->throwIfIncomplete();
     };
