@@ -2313,7 +2313,7 @@ struct UpdateDisabler {
 
 void TreeWidget::onUpdateStatus(void)
 {
-    if(this->state()==DraggingState || App::GetApplication().isRestoring()) {
+    if(updateBlocked || this->state()==DraggingState || App::GetApplication().isRestoring()) {
         _updateStatus();
         return;
     }
@@ -4221,7 +4221,7 @@ DocumentObjectItem *DocumentItem::findItem(
 }
 
 void DocumentItem::selectItems(SelectionReason reason) {
-    const auto &sels = Selection().getSelection(pDocument->getDocument()->getName(),false);
+    const auto &sels = Selection().getSelection(pDocument->getDocument()->getName(),0);
 
     bool sync;
     if (ViewParams::instance()->getMaxOnTopSelections()<(int)sels.size() || reason==SR_SELECT)
@@ -4819,7 +4819,9 @@ int DocumentObjectItem::isGroup() const {
     if(linked && linked->hasExtension(
                 App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
         return PartGroup;
-    if(obj->hasChildElement())
+    if(linked!=obj)
+        return SuperGroup;
+    else if(obj->hasChildElement())
         return LinkGroup;
     if(App::GeoFeatureGroupExtension::isNonGeoGroup(obj)) {
         for(auto parent=getParentItem();parent;parent=parent->getParentItem()) {
