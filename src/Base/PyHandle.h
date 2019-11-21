@@ -29,6 +29,20 @@
 #include <sstream>
 
 namespace Base {
+
+///helper intermediate class to support assignment to arbitrary pyhandle by reference (see ConstraintSolver/App/ParaObject.cpp method setAttr)
+class PyHandleBase : public Py::Object
+{
+public:
+    virtual void setObject(PyObject* pyob, bool owned = false) = 0;
+    void operator=(PyObject* pyob){
+        setObject(pyob);
+    }
+    void operator=(Py::Object other){
+        setObject(other.ptr());
+    }
+};
+
 /**
  * An unsafe version of PyHandle. It is designed to have the least possible
  * performance penalty of accessing the C++ object.
@@ -46,7 +60,7 @@ namespace Base {
  // ConstraintSolver. Performance is critical, as every readout of a number is
  // done through the handle.
 template <class CppType>
-class UnsafePyHandle : public Py::Object
+class UnsafePyHandle : public PyHandleBase
 {
 public:
     virtual bool typecheck(PyObject* pyob, bool throw_instead_of_return = false) const {
@@ -81,16 +95,6 @@ public:
     UnsafePyHandle( const Py::Object &other )
     {
         setObject(other.ptr());
-    }
-
-    UnsafePyHandle& operator=(PyObject* pyob){
-        setObject(pyob);
-        return *this;
-    }
-
-    UnsafePyHandle& operator=(Py::Object other){
-        setObject(other.ptr());
-        return *this;
     }
 
     /**
