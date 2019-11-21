@@ -157,6 +157,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::ParaObject       ::init();
     FCS::Constraint       ::init();
     FCS::SimpleConstraint ::init();
+    FCS::ParaGeometry     ::init();
 
     FCS::G2D::ParaPoint ::init();
 
