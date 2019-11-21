@@ -35,6 +35,8 @@ generate_from_xml(ParaGeometryPy)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/G2D)
 generate_from_xml(G2D/ParaPointPy)
 
+generate_from_xml(G2D/ConstraintDistancePy)
+
 SET(ConstraintSolver_G2D
     G2D/Vector.h
     G2D/Vector.cpp
@@ -42,6 +44,10 @@ SET(ConstraintSolver_G2D
     G2D/ParaPoint.cpp
     G2D/ParaPointPy.xml
     G2D/ParaPointPyImp.cpp
+    G2D/ConstraintDistance.h
+    G2D/ConstraintDistance.cpp
+    G2D/ConstraintDistancePy.xml
+    G2D/ConstraintDistancePyImp.cpp
 )
 
 SET(ConstraintSolver_Utils_SRCS

@@ -52,6 +52,8 @@
 
 #include "G2D/ParaPoint.h"
 #include "G2D/ParaPointPy.h"
+#include "G2D/ConstraintDistance.h"
+#include "G2D/ConstraintDistancePy.h"
 
 namespace ConstraintSolver {
 class Module : public Py::ExtensionModule<Module>
@@ -148,9 +150,11 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Py::Module submodG2D =  makeSubmodule(mod, "__FreeCAD_FCS_G2D__", "G2D", init_freecad_FCS_G2D_module);
 
 
-    FCS::G2D::ParaPointPy       ::Type.tp_name = "ConstraintSolver.G2D.ParaGeometry"    ;
+    FCS::G2D::ParaPointPy          ::Type.tp_name = "ConstraintSolver.G2D.ParaGeometry"       ;
+    FCS::G2D::ConstraintDistancePy ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDistance" ;
 
-    Base::Interpreter().addType(&FCS::G2D::ParaPointPy       ::Type, submodG2D.ptr(), "ParaPoint"       );
+    Base::Interpreter().addType(&FCS::G2D::ParaPointPy          ::Type, submodG2D.ptr(), "ParaPoint"           );
+    Base::Interpreter().addType(&FCS::G2D::ConstraintDistancePy ::Type, submodG2D.ptr(), "ConstraintDistance"  );
 
     //fill type system
     FCS::ParameterStore   ::init();
@@ -159,7 +163,9 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::SimpleConstraint ::init();
     FCS::ParaGeometry     ::init();
 
-    FCS::G2D::ParaPoint ::init();
+
+    FCS::G2D::ParaPoint          ::init();
+    FCS::G2D::ConstraintDistance ::init();
 
     Base::Console().Log("Loading ConstraintSolver module... done\n");
     PyMOD_Return(mod);
