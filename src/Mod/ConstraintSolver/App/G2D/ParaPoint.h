@@ -25,6 +25,7 @@
 #define FREECAD_CONSTRAINTSOLVER_PARAPOINT_H
 
 #include <Mod/ConstraintSolver/App/ParaGeometry.h>
+#include "Vector.h"
 
 namespace FCS {
 namespace G2D {
@@ -38,13 +39,14 @@ class FCSExport ParaPoint : public FCS::ParaGeometry
 public://data
     ParameterRef x;
     ParameterRef y;
-    //Vector2dd pos(ValueSet& vals) const; //#FIXME: implement!
 
 public://methods
     ParaPoint();
     ParaPoint(ParameterRef x, ParameterRef y);
     void initAttrs() override;
     virtual PyObject* getPyObject() override;
+
+    Vector pos(const ValueSet& vals) const;
 
 public: //friends
     friend class ParaPointPy;
