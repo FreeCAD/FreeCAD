@@ -35,6 +35,8 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/G2D)
 generate_from_xml(G2D/ParaPointPy)
 
 SET(ConstraintSolver_G2D
+    G2D/Vector.h
+    G2D/Vector.cpp
     G2D/ParaPoint.h
     G2D/ParaPoint.cpp
     G2D/ParaPointPy.xml
