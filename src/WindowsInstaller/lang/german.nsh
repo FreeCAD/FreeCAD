@@ -1,4 +1,4 @@
-﻿/*
+/*
 FreeCAD Installer Language File
 Language: German
 Author: Uwe Stöhr

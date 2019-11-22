@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Settings for FreeCAD installer
 

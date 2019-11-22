@@ -1,4 +1,4 @@
-﻿/*
+/*
 init.nsh
 
 Initialization functions

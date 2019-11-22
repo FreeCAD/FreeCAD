@@ -1,4 +1,4 @@
-﻿/*
+/*
 FreeCAD Installer for Windows
 Author: Uwe Stöhr
 Compatible with NSIS 3.x

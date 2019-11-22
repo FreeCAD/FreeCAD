@@ -1,4 +1,4 @@
-﻿!macro LANG LANG_NAME
+!macro LANG LANG_NAME
   # NSIS language file
   !insertmacro MUI_LANGUAGE "${LANG_NAME}"
   # FreeCAD language file

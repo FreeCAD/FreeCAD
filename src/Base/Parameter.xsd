@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 To verify the user.cfg file against the XSD scheme add the following to the FCParameters element:
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
