@@ -76,7 +76,6 @@ Py::Float ConstraintPy::getNetError(void) const
         getConstraintPtr()->throwIfIncomplete();
         return Py::Float(getConstraintPtr()->netError());
     } catch (Base::Exception& e) {
-        e.ReportException();
         auto pye = e.getPyExceptionType();
         if(!pye)
             pye = Base::BaseExceptionFreeCADError;
