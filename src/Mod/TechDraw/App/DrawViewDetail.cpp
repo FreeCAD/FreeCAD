@@ -213,7 +213,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
             Base::Console().Error("Error: DVD::execute - Source shape is Null. - %s\n",
                                   getNameInDocument());
         }
-        return new App::DocumentObjectExecReturn("DVD - Linked shape object is invalid");
+        return DrawView::execute();
     }
 
     Base::Vector3d anchor = AnchorPoint.getValue();    //this is a 2D point (in unrotated coords)
@@ -259,7 +259,8 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     BRepBuilderAPI_MakeFace mkFace(gpln, -hideToolRadius,hideToolRadius,-hideToolRadius,hideToolRadius);
     TopoDS_Face aProjFace = mkFace.Face();
     if(aProjFace.IsNull()) {
-        return new App::DocumentObjectExecReturn("DrawViewDetail - Projected face is NULL");
+        Base::Console().Warning("DVD::execute - %s - failed to create tool base face\n", getNameInDocument());
+        return DrawView::execute();
     }
 
     Base::Vector3d extrudeVec = dirDetail * extrudeLength;
@@ -268,12 +269,12 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
 
     BRepAlgoAPI_Common mkCommon(copyShape,tool);
     if (!mkCommon.IsDone()) {
-        Base::Console().Log("DVD::execute - mkCommon not done\n");
-        return new App::DocumentObjectExecReturn("DVD::execute - mkCommon not done");
+        Base::Console().Warning("DVD::execute - %s - detail cut operation failed (1)\n", getNameInDocument());
+        return DrawView::execute();
     }
     if (mkCommon.Shape().IsNull()) {
-        Base::Console().Log("DVD::execute - mkCommon.Shape is Null\n");
-        return new App::DocumentObjectExecReturn("DVD::execute - mkCommon.Shape is Null");
+        Base::Console().Warning("DVD::execute - %s - detail cut operation failed (2)\n", getNameInDocument());
+        return DrawView::execute();
     }
 
     //Did we get a solid?
@@ -298,9 +299,9 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         if (go != nullptr) {
             go->clear();
         }
-        requestPaint();
         dvp->requestPaint();
-        return new App::DocumentObjectExecReturn("DVDetail - detail area contains no geometry");
+        Base::Console().Warning("DVD::execute - %s - detail area contains no geometry\n", getNameInDocument());
+        return DrawView::execute();
     }
 
 //for debugging show compound instead of common
