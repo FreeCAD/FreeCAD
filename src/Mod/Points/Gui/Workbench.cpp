@@ -81,4 +81,3 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Points_Merge";
     return root;
 }
-
