@@ -5717,6 +5717,12 @@ class _DraftLink(_DraftObject):
             obj.setPropertyStatus('PlacementList','Immutable')
         else:
             obj.setPropertyStatus('PlacementList','-Immutable')
+        if not hasattr(obj,'LinkTransform'):
+            obj.addProperty('App::PropertyBool','LinkTransform',' Link')
+        if not hasattr(obj,'ColoredElements'):
+            obj.addProperty('App::PropertyLinkSubHidden','ColoredElements',' Link')
+            obj.setPropertyStatus('ColoredElements','Hidden')
+        obj.configLinkProperty('LinkTransform','ColoredElements')
 
     def getViewProviderName(self,_obj):
         if self.useLink:
