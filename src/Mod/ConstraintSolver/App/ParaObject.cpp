@@ -5,6 +5,8 @@
 
 #include "ParameterSubset.h"
 #include "ParameterRefPy.h"
+#include "ParameterStorePy.h"
+#include "PyUtils.h"
 
 #include "unordered_set"
 
@@ -191,4 +193,22 @@ std::vector<std::string> ParaObject::listAttrs() const
         ret.push_back(v.name);
     };
     return ret;
+}
+
+void ParaObject::initFromDict(Py::Dict dict)
+{
+    for(Py::Object it : dict.items()){
+        Py::Tuple tup(it);
+        std::string key = Py::String(tup[0]);
+        Py::Object val = tup[1];
+        if (key == "store")
+            continue;//process it last
+        FCS::setAttr(self(), key, val);
+    }
+    if (dict.hasKey("store")){
+        HParameterStore store (dict["store"]);
+        if (!PyObject_TypeCheck(store.ptr(), &ParameterStorePy::Type))
+            throw Py::TypeError("'store' must be ParameterStore, not "+store.type().as_string());
+        makeParameters(store);
+    }
 }

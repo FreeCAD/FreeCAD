@@ -99,6 +99,8 @@ public: //methods
     virtual void setAttr(std::string attrname, Py::Object val);
     virtual std::vector<std::string> listAttrs() const;
 
+    virtual void initFromDict(Py::Dict dict);
+
 protected: //methods
     virtual void initAttrs() = 0;
     virtual ~ParaObject() = default; //protect destructor to enforce handle-only

@@ -11,55 +11,23 @@ using namespace FCS;
 
 PyObject *ConstraintDistancePy::PyMake(struct _typeobject *, PyObject* args, PyObject* kwd)  // Python wrapper
 {
-
-    {
-        if (PyArg_ParseTuple(args, "")){
-            HConstraintDistance p = (new ConstraintDistance)->self();
-            return Py::new_reference_to(p);
-        }
-        PyErr_Clear();
+    if (!PyArg_ParseTuple(args, "")){
+        PyErr_SetString(PyExc_TypeError, "Only keyword arguments are supported");
+        return nullptr;
     }
-    {
-        PyObject* store;
-        if (PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store)){
-            HConstraintDistance p = (new ConstraintDistance)->self();
-            p->makeParameters(HParameterStore(store, false));
-            return Py::new_reference_to(p);
-        }
-        PyErr_Clear();
+    try {
+        HConstraintDistance p = (new ConstraintDistance)->self();
+        p->initFromDict(Py::Dict(kwd));
+        return Py::new_reference_to(p);
+    } catch (Py::Exception&){
+        return nullptr;
+    } catch (Base::Exception& e) {
+        auto pye = e.getPyExceptionType();
+        if(!pye)
+            pye = Base::BaseExceptionFreeCADError;
+        PyErr_SetObject(pye, e.getPyObject());
+        return nullptr;
     }
-    {
-        PyObject* store;
-        const char* label;
-        if (PyArg_ParseTuple(args, "sO!", &label, &(ParameterStorePy::Type), &store)){
-            HConstraintDistance p = (new ConstraintDistance)->self();
-            p->label = label;
-            p->makeParameters(HParameterStore(store, false));
-            return Py::new_reference_to(p);
-        }
-        PyErr_Clear();
-    }
-    {
-        PyObject* p1;
-        PyObject* p2;
-        PyObject* dist;
-        if (PyArg_ParseTuple(args, "O!O!O!",&(ParaPointPy::Type), &p1, &(ParaPointPy::Type), &p2, &p1, &(ParameterRefPy::Type), &dist)){
-            HConstraintDistance p = (new ConstraintDistance(HParaPoint(p1,false), HParaPoint(p2,false), *HParameterRef(dist, false)))->self();
-            return Py::new_reference_to(p);
-        }
-        PyErr_Clear();
-    }
-
-    PyErr_SetString(PyExc_TypeError,
-        "Wrong argument count or type."
-        "\n\nsupported signatures:"
-        "\n() - all references are none/null"
-        "\n(<ParameterStore object>) - creates dist parameter into the store; Point references are left None."
-        "\n(label, <ParameterStore object>) - same, + assigns the label (string)"
-        "\n(<ParaPoint object>, <ParaPoint object>, <ParameterRef object>) - inits all references"
-    );
-
-    return nullptr;
 }
 
 // constructor method

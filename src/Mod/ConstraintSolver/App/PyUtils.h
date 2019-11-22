@@ -34,6 +34,15 @@ inline Py::Tuple pyDualNumber(Base::DualNumber v){
     return tup;
 }
 
+//temporary replacement for PyCXX's Object:::setAttr, that doesn't absorb the original error, for until PyCXX is uptated
+inline void setAttr(Py::Object obj, std::string attrname, Py::Object value)
+{
+    if( PyObject_SetAttrString( obj.ptr(), const_cast<char*>( attrname.c_str() ), value.ptr() ) == -1 )
+    {
+        throw Py::Exception();
+    }
+}
+
 } //namespace
 
 #endif
