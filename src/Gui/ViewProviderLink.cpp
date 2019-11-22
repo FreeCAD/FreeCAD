@@ -2068,6 +2068,8 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
             linkView->setSize(ext->_getElementCountValue());
             updateDataPrivate(ext,ext->getVisibilityListProperty());
             updateDataPrivate(ext,ext->getPlacementListProperty());
+            applyMaterial();
+            applyColors();
         }
     }else if(prop == ext->_getShowElementProperty()) {
         if(!ext->_getShowElementValue()) {
@@ -3232,13 +3234,15 @@ void ViewProviderLink::applyColors() {
 
 void ViewProviderLink::applyColorsTo(ViewProviderDocumentObject &vp) {
     auto obj = vp.getObject();
-    auto root = vp.getRoot();
-    if(!obj || !root)
+    auto node = vp.getModeSwitch();
+    if(!obj || !node)
         return;
 
     SoSelectionElementAction action(SoSelectionElementAction::Color,true);
     // reset color and visibility first
-    action.apply(root);
+    SoFCSwitch::switchOverride(&action, SoFCSwitch::OverrideVisible);
+    action.apply(node);
+    SoFCSwitch::switchOverride(&action, SoFCSwitch::OverrideDefault);
 
     std::map<std::string, std::map<std::string,App::Color> > colorMap;
     std::set<std::string> hideList;
@@ -3261,7 +3265,7 @@ void ViewProviderLink::applyColorsTo(ViewProviderDocumentObject &vp) {
     for(auto &v : colorMap) {
         action.swapColors(v.second);
         if(v.first.empty()) {
-            action.apply(root);
+            action.apply(node);
             continue;
         }
         SoDetail *det=0;

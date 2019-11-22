@@ -195,6 +195,11 @@ void ViewProviderPart::applyColors() {
     ViewProviderLink::applyColorsTo(*this);
 }
 
+void ViewProviderPart::buildChildren3D() {
+    ViewProviderGeoFeatureGroupExtension::buildChildren3D();
+    applyColors();
+}
+
 // Python feature -----------------------------------------------------------------------
 
 namespace Gui {

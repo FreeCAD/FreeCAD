@@ -1028,7 +1028,7 @@ Base::BoundBox3d ViewProvider::_getBoundingBox(
         }
         if(det) {
             selAction.setElement(det);
-            SoFCSwitch::switchDefault(&selAction);
+            SoFCSwitch::switchOverride(&selAction);
             selAction.apply(&path);
         }
     }
@@ -1043,14 +1043,14 @@ Base::BoundBox3d ViewProvider::_getBoundingBox(
         path.append(pcRoot);
         path.append(pcModeSwitch);
     }
-    SoFCSwitch::switchDefault(&bboxAction);
+    SoFCSwitch::switchOverride(&bboxAction);
     bboxAction.apply(&path);
 
     if(det) {
         delete det;
         selAction.setElement(0);
         selAction.setType(SoSelectionElementAction::None);
-        SoFCSwitch::switchDefault(&selAction);
+        SoFCSwitch::switchOverride(&selAction);
         selAction.apply(&path);
     }
 
