@@ -47,6 +47,7 @@
 #include <Gui/WaitCursor.h>
 
 #include "../App/PointsFeature.h"
+#include "../App/Structured.h"
 #include "../App/Properties.h"
 #include "DlgPointsReadImp.h"
 #include "ViewProvider.h"
@@ -351,6 +352,113 @@ bool CmdPointsMerge::isActive(void)
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 1;
 }
 
+DEF_STD_CMD_A(CmdPointsStructure)
+
+CmdPointsStructure::CmdPointsStructure()
+  :Command("Points_Structure")
+{
+    sAppModule    = "Points";
+    sGroup        = QT_TR_NOOP("Points");
+    sMenuText     = QT_TR_NOOP("Structured point cloud");
+    sToolTipText  = QT_TR_NOOP("Convert points to structured point cloud");
+    sWhatsThis    = "Points_Structure";
+    sStatusTip    = QT_TR_NOOP("Convert points to structured point cloud");
+}
+
+void CmdPointsStructure::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    doc->openTransaction("Structure point cloud");
+
+    std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
+    for (auto it : docObj) {
+        std::string name = it->Label.getValue();
+        name += " (Structured)";
+        Points::Structured* output = static_cast<Points::Structured*>(doc->addObject("Points::Structured", name.c_str()));
+        output->Label.setValue(name);
+
+        // Already sorted, so just make a copy
+        if (it->getTypeId().isDerivedFrom(Points::Structured::getClassTypeId())) {
+            Points::Structured* input = static_cast<Points::Structured*>(it);
+
+            Points::PointKernel* kernel = output->Points.startEditing();
+            const Points::PointKernel& k = input->Points.getValue();
+
+            kernel->resize(k.size());
+            for (std::size_t i=0; i<k.size(); ++i) {
+                kernel->setPoint(i, k.getPoint(i));
+            }
+            output->Points.finishEditing();
+            output->Width.setValue(input->Width.getValue());
+            output->Height.setValue(input->Height.getValue());
+        }
+        // Sort the points
+        else {
+            Points::Feature* input = static_cast<Points::Feature*>(it);
+
+            Points::PointKernel* kernel = output->Points.startEditing();
+            const Points::PointKernel& k = input->Points.getValue();
+
+            Base::BoundBox3d bbox = input->Points.getBoundingBox();
+            double width = bbox.LengthX();
+            double height = bbox.LengthY();
+
+            // Count the number of different x or y values to get the size
+            std::set<double> countX, countY;
+            for (std::size_t i=0; i<k.size(); ++i) {
+                Base::Vector3d pnt = k.getPoint(i);
+                countX.insert(pnt.x);
+                countY.insert(pnt.y);
+            }
+
+            long width_l = long(countX.size());
+            long height_l = long(countY.size());
+
+            double dx = width / (width_l - 1);
+            double dy = height / (height_l - 1);
+
+            // Pre-fill the vector with <nan, nan, nan> points and afterwards replace them
+            // with valid point coordinates
+            double nan = std::numeric_limits<double>::quiet_NaN();
+            std::vector<Base::Vector3d> sortedPoints(width_l * height_l, Base::Vector3d(nan, nan, nan));
+
+            for (std::size_t i=0; i<k.size(); ++i) {
+                Base::Vector3d pnt = k.getPoint(i);
+                double xi = (pnt.x - bbox.MinX) / dx;
+                double yi = (pnt.y - bbox.MinY) / dy;
+
+                double xx = std::fabs(xi - std::round(xi));
+                double yy = std::fabs(yi - std::round(yi));
+                if (xx < 0.01 && yy < 0.01) {
+                    xi = std::round(xi);
+                    yi = std::round(yi);
+                    long index = long(yi * width_l + xi);
+                    sortedPoints[index] = pnt;
+                }
+            }
+
+            kernel->resize(sortedPoints.size());
+            for (std::size_t index = 0; index < sortedPoints.size(); index++) {
+                kernel->setPoint(index, sortedPoints[index]);
+            }
+
+            output->Points.finishEditing();
+            output->Width.setValue(width_l);
+            output->Height.setValue(height_l);
+        }
+    }
+
+    doc->commitTransaction();
+    updateActive();
+}
+
+bool CmdPointsStructure::isActive(void)
+{
+    return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) == 1;
+}
+
 void CreatePointsCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -360,4 +468,5 @@ void CreatePointsCommands(void)
     rcCmdMgr.addCommand(new CmdPointsConvert());
     rcCmdMgr.addCommand(new CmdPointsPolyCut());
     rcCmdMgr.addCommand(new CmdPointsMerge());
+    rcCmdMgr.addCommand(new CmdPointsStructure());
 }
