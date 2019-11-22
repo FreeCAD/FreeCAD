@@ -229,28 +229,19 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
                                              dirDetail);
     Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
 
-    gp_Ax2 viewAxis;
-    gp_Ax2 vaBase;
-//    viewAxis = dvp->getProjectionCS(shapeCenter);
+    if (dvs != nullptr) {
+        //section cutShape should already be on origin
+    } else {
+        copyShape = TechDraw::moveShape(copyShape,                     //centre shape on origin
+                                       -shapeCenter);
+    }
 
-//    gpCenter = TechDraw::findCentroid(copyShape,                 //sb origin!
-//                                      dirDetail);
-//    shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
-
-//    if (dvs != nullptr) {
-//        Base::Vector3d so = dvs->SectionOrigin.getValue();
-//        copyShape = TechDraw::moveShape(copyShape,                     //centre section shape origin
-//                                        -so);
-//    } else {
-//        copyShape = TechDraw::moveShape(copyShape,                     //centre shape on origin
-//                                       -shapeCenter);
-//    }
     shapeCenter = Base::Vector3d(0.0, 0.0, 0.0);
+
+    gp_Ax2 viewAxis;
 
     viewAxis = dvp->getProjectionCS(shapeCenter);
     anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);
-
-
     Base::Vector3d anchorOffset3d = DrawUtil::toR3(viewAxis, anchor);     //anchor displacement in R3
 
     Bnd_Box bbxSource;
@@ -260,7 +251,6 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
 
     Base::Vector3d toolPlaneOrigin = anchorOffset3d + dirDetail * diag * -1.0;    //center tool about anchor
     double extrudeLength = 2.0 * toolPlaneOrigin.Length();
-
 
     gp_Pnt gpnt(toolPlaneOrigin.x,toolPlaneOrigin.y,toolPlaneOrigin.z);
     gp_Dir gdir(dirDetail.x,dirDetail.y,dirDetail.z);
