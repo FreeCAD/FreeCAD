@@ -1,16 +1,16 @@
-# FreeCAD module provding base classes for document objects and view provider  
+# FreeCAD module providing base classes for document objects and view provider  
 # (c) 2011 Werner Mayer LGPL
 
 import FreeCAD
 
 class DocumentObject(object):
     """The Document object is the base class for all FreeCAD objects."""
-    
+
     def __init__(self):
         self.__object__=None
         self.initialised=False
     #------------------------------Methods for the user to override :
-    
+
     def execute(self):
         "this method is executed on object creation and whenever the document is recomputed"
         raise NotImplementedError("Not yet implemented")
@@ -22,7 +22,7 @@ class DocumentObject(object):
         #will be called each time a property is changed
         pass
     #--------------------------------
-    
+
 
     def __getattr__(self, attr):
         if attr !="__object__" and hasattr(self.__object__,attr):
@@ -265,19 +265,19 @@ class ViewProvider(object):
         return self.__vobject__.Object
 
 
-#Example : 
+#Example :
 import Part
 
 class Box(DocumentObject):
     #type :
     type = "Part::FeaturePython"
-    
+
     #-----------------------------INIT----------------------------------------
     def init(self):
         self.addProperty("App::PropertyLength","Length","Box","Length of the box").Length=1.0
         self.addProperty("App::PropertyLength","Width","Box","Width of the box").Width=1.0
         self.addProperty("App::PropertyLength","Height","Box", "Height of the box").Height=1.0
-        
+
     #-----------------------------BEHAVIOR------------------------------------
     def propertyChanged(self,prop):
         FreeCAD.Console.PrintMessage("Box property changed : "+ prop+ "\n")
@@ -287,22 +287,22 @@ class Box(DocumentObject):
     def execute(self):
         FreeCAD.Console.PrintMessage("Recompute Python Box feature\n")
         self._recomputeShape()
-        
+
     #---------------------------PUBLIC FUNCTIONS-------------------------------
     #These functions will be present in the object
     def customFunctionSetLength(self,attr):
         self.Length = attr
         self._privateFunctionExample(attr)
-        
+
     #---------------------------PRIVATE FUNCTIONS------------------------------
     #These function won't be present in the object (begin with '_')
     def _privateFunctionExample(self,attr):
         FreeCAD.Console.PrintMessage("The length : "+str(attr)+"\n")
-        
+
     def _recomputeShape(self):
         if hasattr(self,"Length") and hasattr(self,"Width") and hasattr(self,"Height"):
             self.Shape = Part.makeBox(self.Length,self.Width,self.Height)
-        
+
 
 def makeBox():
     FreeCAD.newDocument()

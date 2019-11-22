@@ -433,7 +433,7 @@ def buildRelProperties(ifcfile):
 
 
 def getIfcPropertySets(ifcfile, pid):
-    """Returns a dicionary of {pset_id:[prop_id, prop_id...]} for an IFC object"""
+    """Returns a dictionary of {pset_id:[prop_id, prop_id...]} for an IFC object"""
 
     # get psets for this pid
     psets = {}

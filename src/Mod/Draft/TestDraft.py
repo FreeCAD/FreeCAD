@@ -462,7 +462,7 @@ class DraftCreation(unittest.TestCase):
         """Create a linear dimension."""
         operation = "Draft Dimension"
         _msg("  Test '{}'".format(operation))
-        _msg("  Occasionaly crashes")
+        _msg("  Occasionally crashes")
         a = Vector(0, 0, 0)
         b = Vector(9, 0, 0)
         c = Vector(4, -1, 0)
@@ -577,7 +577,7 @@ class DraftCreation(unittest.TestCase):
         """Create a label."""
         operation = "Draft Label"
         _msg("  Test '{}'".format(operation))
-        _msg("  Occasionaly crashes")
+        _msg("  Occasionally crashes")
         target_point = Vector(0, 0, 0)
         distance = -25
         placement = App.Placement(Vector(50, 50, 0), App.Rotation())

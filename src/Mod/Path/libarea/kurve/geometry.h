@@ -875,7 +875,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 
 		void	AddIndex(int vertexNumber, const SpanDataObject* data);
-		bool	Split(double MaximumRadius, double reslution);	// split arcs larger than MaximumRadius to resoultion
+		bool	Split(double MaximumRadius, double reslution);	// split arcs larger than MaximumRadius to resolution
 		int	IntExtWire( Kurve& kSec, double Ref, double Sec, double height, Kurve* kOut);	// interpolate / extrapolate a mid height kurve (wire)
 		void	SetZ(double z) { e[11] = z; if(fabs(z) > 1.0e-6) m_unit = false;}				// assigns kurve to fixed height (wire)
 

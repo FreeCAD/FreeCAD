@@ -96,7 +96,7 @@
 
 /** Pocket parameters
  *
- * These parameters cooresponds to CAreaPocketParams in libarea
+ * These parameters corresponds to CAreaPocketParams in libarea
  * */
 #define AREA_PARAMS_POCKET \
     ((enum,mode,PocketMode,0,"Selects the pocket toolpath pattern",\
