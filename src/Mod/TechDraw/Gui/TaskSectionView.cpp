@@ -163,7 +163,7 @@ void TaskSectionView::setUiPrimary()
     //TODO: get next symbol from page
 //    ui->leSymbol->setText();
 
-    Base::Vector3d origin = m_base->getCentroid();
+    Base::Vector3d origin = m_base->getOriginalCentroid();
     ui->sbOrgX->setValue(origin.x);
     ui->sbOrgY->setValue(origin.y);
     ui->sbOrgZ->setValue(origin.z);
@@ -294,9 +294,11 @@ void TaskSectionView::applyQuick(std::string dir)
     if (m_section == nullptr) {
         m_section = createSectionView();
     }
-    updateSectionView();
-    m_section->recomputeFeature();
-    m_base->requestPaint();
+    if (m_section != nullptr) {
+        updateSectionView();
+        m_section->recomputeFeature();
+        m_base->requestPaint();
+    }
 }
 
 void TaskSectionView::applyAligned(void) 
@@ -315,8 +317,14 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 {
 //    Base::Console().Message("TSV::createSectionView()\n");
 
+    if (m_base == nullptr) {
+        Base::Console().Error("TSV::createSectionView - base object not found!\n");
+        return nullptr;
+    }
+
     std::string sectionName;
     std::string baseName = m_base->getNameInDocument();
+    double baseScale = m_base->getScale();
 
     Gui::Command::openCommand("Create SectionView");
     TechDraw::DrawViewSection* newSection = nullptr;
@@ -335,6 +343,9 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
                            sectionName.c_str(),baseName.c_str());
         Command::doCommand(Command::Doc,"App.activeDocument().%s.Source = App.activeDocument().%s.Source",
                            sectionName.c_str(),baseName.c_str());
+        Command::doCommand(Command::Doc,"App.activeDocument().%s.Scale = %0.6f",
+                           sectionName.c_str(), baseScale);
+
         App::DocumentObject* newObj = m_base->getDocument()->getObject(sectionName.c_str());
         newSection = dynamic_cast<TechDraw::DrawViewSection*>(newObj);
         if ( (newObj == nullptr) ||
@@ -455,7 +466,7 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewPart* base) :
     TaskDialog()
 {
     widget  = new TaskSectionView(base);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-viewsection"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-SectionView"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -465,7 +476,7 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewSection* section) :
     TaskDialog()
 {
     widget  = new TaskSectionView(section);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-ViewSection"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-SectionView"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
