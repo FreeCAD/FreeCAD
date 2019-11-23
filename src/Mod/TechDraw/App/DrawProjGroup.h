@@ -34,6 +34,9 @@
 
 #include "DrawViewCollection.h"
 
+class gp_Dir;
+class gp_Pnt;
+
 namespace TechDraw
 {
 
@@ -168,6 +171,8 @@ protected:
     void updateChildrenLock(void);
     int getViewIndex(const char *viewTypeCStr) const;
     int getDefProjConv(void) const;
+    Base::Vector3d dir2vec(gp_Dir d);
+    gp_Dir vec2dir(Base::Vector3d v);
 
 };
 
