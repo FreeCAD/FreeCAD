@@ -131,10 +131,19 @@ bool DrawProjGroupItem::showLock(void) const
     return result;
 }
 
-
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 {
 //    Base::Console().Message("DPGI::execute(%s)\n",Label.getValue());
+
+    bool haveX = checkXDirection();
+    if (!haveX) {
+        //block touch/onChanged stuff
+        Base::Vector3d newX = getXDirection();
+        XDirection.setValue(newX);
+        XDirection.purgeTouched();  //don't trigger updates!
+        //unblock
+    }
+
     if (DrawUtil::checkParallel(Direction.getValue(),
                                 getXDirection())) {
         return new App::DocumentObjectExecReturn("DPGI: Direction and XDirection are parallel");

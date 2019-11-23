@@ -241,9 +241,16 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return App::DocumentObject::StdReturn;
     }
 
-    checkXDirection();
+    bool haveX = checkXDirection();
+    if (!haveX) {
+        //block touch/onChanged stuff
+        Base::Vector3d newX = getXDirection();
+        XDirection.setValue(newX);
+        XDirection.purgeTouched();  //don't trigger updates!
+        //unblock
+    }
 
-    m_saveShape = shape;
+//    m_saveShape = shape;
     geometryObject = makeGeometryForShape(shape);
 
 #if MOD_TECHDRAW_HANDLE_FACES
@@ -321,6 +328,7 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
     //center shape on origin
     TopoDS_Shape centeredShape = TechDraw::moveShape(shape,
                                                      centroid * -1.0);
+    m_saveShape = centeredShape;
 
     TopoDS_Shape scaledShape = TechDraw::scaleShape(centeredShape,
                                                     getScale());
@@ -919,7 +927,7 @@ bool DrawViewPart::checkXDirection(void) const
         Base::Vector3d origin(0.0,0.0,0.0);
         Base::Vector3d xDir = getLegacyX(origin,
                                          dir);
-        Base::Console().Warning("DVP - %s - XDirection property not set. Try %s\n",
+        Base::Console().Warning("DVP - %s - XDirection property not set. Trying %s\n",
                                 getNameInDocument(),
                                 DrawUtil::formatVector(xDir).c_str());
         return false;
