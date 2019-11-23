@@ -91,12 +91,13 @@ public:
     std::vector<TechDraw::Face*> getFaceGeometry();
 
     void setCSFromBase(const std::string sectionName);
-    gp_Ax2 getCSFromBase(const std::string sectionName);
+    gp_Ax2 getCSFromBase(const std::string sectionName) const;
 
     gp_Ax2 rotateCSArbitrary(gp_Ax2 oldCS,
                              Base::Vector3d axis,
                              double degAngle) const;
     gp_Ax2 getSectionCS() const;
+    virtual Base::Vector3d getXDirection(void) const override;       //don't use XDirection.getValue()
 
     TechDraw::DrawViewPart* getBaseDVP() const;
     TechDraw::DrawProjGroupItem* getBaseDPGI() const;

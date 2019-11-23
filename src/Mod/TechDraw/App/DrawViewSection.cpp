@@ -242,7 +242,15 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return new App::DocumentObjectExecReturn("BaseView Source object is Null");
     }
 
-    checkXDirection();
+//    checkXDirection();
+    bool haveX = checkXDirection();
+    if (!haveX) {
+        //block touch/onChanged stuff
+        Base::Vector3d newX = getXDirection();
+        XDirection.setValue(newX);
+        XDirection.purgeTouched();  //don't trigger updates!
+        //unblock
+    }
 
     //is SectionOrigin valid?
     Bnd_Box centerBox;
@@ -305,7 +313,6 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
         Base::Vector3d origin(0.0, 0.0, 0.0);
         viewAxis = getProjectionCS(origin);
-
         if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
             scaledShape = TechDraw::rotateShape(scaledShape,
                                                 viewAxis,
@@ -569,6 +576,35 @@ bool DrawViewSection::isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const
     return !bb.IsOut(p);
 }
 
+Base::Vector3d DrawViewSection::getXDirection(void) const
+{
+//    Base::Console().Message("DVS::getXDirection() - %s\n", Label.getValue());
+    Base::Vector3d result(1.0, 0.0, 0.0);               //default X
+    App::Property* prop = getPropertyByName("XDirection");
+    if (prop != nullptr) {                              //have an XDirection property
+        Base::Vector3d propVal = XDirection.getValue();
+        if (DrawUtil::fpCompare(propVal.Length(), 0.0))  {   //but it has no value
+            std::string sectName = SectionDirection.getValueAsString();
+            gp_Ax2 cs = getCSFromBase(sectName);
+            gp_Dir gXDir = cs.XDirection();
+            result = Base::Vector3d(gXDir.X(),
+                                    gXDir.Y(),
+                                    gXDir.Z());
+        } else {
+            result = propVal;                               //normal case.  XDirection is set.
+        }
+    } else {                                                //no Property.  can this happen?
+            std::string sectName = SectionDirection.getValueAsString();
+            gp_Ax2 cs = getCSFromBase(sectName);
+            gp_Dir gXDir = cs.XDirection();
+            result = Base::Vector3d(gXDir.X(),
+                                    gXDir.Y(),
+                                    gXDir.Z());
+
+    }
+    return result;
+}
+
 void DrawViewSection::setCSFromBase(const std::string sectionName) 
 {
 //    Base::Console().Message("DVS::setCSFromBase(%s)\n", sectionName.c_str());
@@ -586,7 +622,7 @@ void DrawViewSection::setCSFromBase(const std::string sectionName)
     XDirection.setValue(vXDir);
 }
 
-gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName)
+gp_Ax2 DrawViewSection::getCSFromBase(const std::string sectionName) const
 {
 //    Base::Console().Message("DVS::getCSFromBase(%s)\n", sectionName.c_str());
     Base::Vector3d sectionNormal;
@@ -663,7 +699,6 @@ gp_Ax2 DrawViewSection::getSectionCS(void) const
     catch (...) {
         Base::Console().Warning("DVS::getSectionCS - %s - failed to create section CS\n", getNameInDocument());
     }
-
     return sectionCS;
 }
 
