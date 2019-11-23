@@ -155,7 +155,7 @@ public:
                                const bool flip=true) const;
     virtual gp_Ax2 getProjectionCS(Base::Vector3d pt) const;
     virtual Base::Vector3d getXDirection(void) const;       //don't use XDirection.getValue()
-    virtual Base::Vector3d getCentroid(void) const;
+    virtual Base::Vector3d getOriginalCentroid(void) const;
     virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt,
                                       const Base::Vector3d& axis,
                                       const bool flip = true)  const;
@@ -247,6 +247,7 @@ protected:
     bool m_handleFaces;
 
     TopoDS_Shape m_saveShape;    //TODO: make this a Property.  Part::TopoShapeProperty??
+    Base::Vector3d m_saveCentroid;   //centroid before centering shape in origin
 
 private:
     bool nowUnsetting;
