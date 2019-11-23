@@ -50,6 +50,7 @@ public://helper structs
     {
         ParameterRef* value = nullptr;
         std::string name;
+        bool make = true; //if true, makeParameters makes it. False <-> doesn't make.
         double defvalue = 0.0;
     };
 

@@ -90,6 +90,8 @@ std::vector<ParameterRef> ParaObject::makeParameters(HParameterStore into)
     touch();
     std::vector<ParameterRef> ret;
     for(auto& v : this->_attrs){
+        if (! v.make)
+            continue;
         if (! v.value->isNull())
             continue;
         ParameterRef newp = into->add(Parameter(label + "." + v.name, v.defvalue));
