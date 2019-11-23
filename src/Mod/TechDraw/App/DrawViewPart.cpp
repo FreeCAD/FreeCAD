@@ -328,6 +328,7 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
     //center shape on origin
     TopoDS_Shape centeredShape = TechDraw::moveShape(shape,
                                                      centroid * -1.0);
+    m_saveCentroid = centroid;
     m_saveShape = centeredShape;
 
     TopoDS_Shape scaledShape = TechDraw::scaleShape(centeredShape,
@@ -792,12 +793,10 @@ gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
 }
 
 //TODO: make saveShape a property
-Base::Vector3d DrawViewPart::getCentroid(void) const
+
+Base::Vector3d DrawViewPart::getOriginalCentroid(void) const
 {
-    Base::Vector3d stdOrg(0.0,0.0,0.0);
-    Base::Vector3d centroid = TechDraw::findCentroidVec(m_saveShape,
-                                                        getProjectionCS(stdOrg));
-    return centroid;
+    return m_saveCentroid;
 }
 
 std::vector<DrawViewSection*> DrawViewPart::getSectionRefs(void) const
