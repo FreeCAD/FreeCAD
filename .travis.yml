@@ -273,7 +273,7 @@ script:
         # if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 140m 135m make -j2 install || true; fi
         # if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo make -j2 install; fi
         sudo make -j2 install
-        ${INSTALLED_APP_PATH} --console --run-test 0
+        ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
         ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
         sleep 10 && pkill FreeCAD
         cat /tmp/FreeCAD_installed.log
