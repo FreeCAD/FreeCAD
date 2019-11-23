@@ -258,7 +258,7 @@ script:
         cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\.travis\build.bat'
         # ls -lahR
         du -hs bin/
-        cp -a ../FreeCADLibs/bin/* bin/
+        mv ../FreeCADLibs/bin/* bin/
         du -hs bin/
         # show clcache hit stats
         cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
