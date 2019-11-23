@@ -81,6 +81,9 @@ ViewProviderPoints::ViewProviderPoints()
     if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
         Selectable.setValue(false);
 
+    // BBOX
+    SelectionStyle.setValue(1);
+
     pcPointsCoord = new SoCoordinate3();
     pcPointsCoord->ref();
     pcPointsNormal = new SoNormal();
@@ -107,6 +110,10 @@ void ViewProviderPoints::onChanged(const App::Property* prop)
 {
     if (prop == &PointSize) {
         pcPointStyle->pointSize = PointSize.getValue();
+    }
+    else if (prop == &SelectionStyle) {
+        pcHighlight->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
+                                                       : Gui::SoFCSelection::EMISSIVE;
     }
     else {
         ViewProviderGeometryObject::onChanged(prop);
