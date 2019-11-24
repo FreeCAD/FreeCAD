@@ -75,17 +75,17 @@ DrawView::DrawView(void):
     mouseMove(false)
 {
     static const char *group = "Base";
-    ADD_PROPERTY_TYPE(X ,(0.0),group,App::Prop_None,"X position in internal units");
-    ADD_PROPERTY_TYPE(Y ,(0.0),group,App::Prop_None,"Y position in internal units");
-    ADD_PROPERTY_TYPE(LockPosition ,(false),group,App::Prop_None,"Lock View position to parent Page or Group");
-    ADD_PROPERTY_TYPE(Rotation ,(0.0),group,App::Prop_None,"Rotation in degrees counterclockwise");
+    ADD_PROPERTY_TYPE(X, (0.0), group, App::Prop_None, "X position");
+    ADD_PROPERTY_TYPE(Y, (0.0), group, App::Prop_None, "Y position");
+    ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_None, "Lock View position to parent Page or Group");
+    ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_None, "Rotation in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);
-    ADD_PROPERTY_TYPE(ScaleType,((long)0),group, App::Prop_None, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
+    ADD_PROPERTY_TYPE(ScaleType, ((long)0), group, App::Prop_None, "Scale Type");
+    ADD_PROPERTY_TYPE(Scale, (1.0), group, App::Prop_None, "Scale factor of the view");
     Scale.setConstraints(&scaleRange);
 
-    ADD_PROPERTY_TYPE(Caption ,(""),group,App::Prop_None,"Short text about the view");
+    ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_None, "Short text about the view");
 }
 
 DrawView::~DrawView()
@@ -340,9 +340,8 @@ void DrawView::handleChangedPropertyType(
                 Scale.setValue(1.0);
             }
         } else {
-            // has Scale prop that isn't Float! 
-            Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
-            // no idea
+            // has Scale property that isn't float 
+            Base::Console().Log("DrawPage::Restore - old document Scale is not a float!\n");
         }
     } else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId()) 
             && strcmp(prop->getName(),"Source")==0) 
@@ -365,6 +364,21 @@ void DrawView::handleChangedPropertyType(
             }
         }
     }
+	// property X had App::PropertyFloat and was changed to App::PropertyLength
+	else if (prop == &X && strcmp(TypeName, "App::PropertyFloat") == 0) {
+		App::PropertyFloat XProperty;
+		XProperty.setContainer(this);
+		// restore the PropertyFloat to be able to set its value
+		XProperty.Restore(reader);
+		X.setValue(XProperty.getValue());
+	}
+	// property Y had App::PropertyFloat and was changed to App::PropertyLength
+	else if (prop == &Y && strcmp(TypeName, "App::PropertyFloat") == 0) {
+		App::PropertyFloat YProperty;
+		YProperty.setContainer(this);
+		YProperty.Restore(reader);
+		Y.setValue(YProperty.getValue());
+	}
 }
 
 bool DrawView::keepUpdated(void)
