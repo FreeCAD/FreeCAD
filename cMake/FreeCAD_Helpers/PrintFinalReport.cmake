@@ -70,7 +70,7 @@ macro(PrintFinalReport)
     endif(DEFINED EIGEN3_FOUND)
 
     if(NOT BUILD_QT5)
-        message(STATUS "Qt4:                 ${Qt4_VERSION}")
+        message(STATUS "Qt4:                 ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}")
         if(QT_QTWEBKIT_FOUND)
             message(STATUS "QtWebKit:            found")
         else(QT_QTWEBKIT_FOUND)
