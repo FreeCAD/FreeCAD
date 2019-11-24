@@ -156,6 +156,7 @@ before_install:
                                doxygen                          \
                                graphviz                         \
                                libnglib-dev                     \
+                               netgen                           \
                                netgen-headers                   \
                                libmetis-dev                     \
                                libspnav-dev
