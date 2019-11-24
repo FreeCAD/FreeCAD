@@ -243,14 +243,18 @@ SoFCSelectionCounter::~SoFCSelectionCounter()
 
 
 bool SoFCSelectionCounter::checkCache(SoState *state, bool secondary) {
-    if(secondary) 
-        return *counter!=0;
+    if(secondary) {
+        if(*counter!=0) {
+            SoCacheElement::invalidate(state);
+            return false;
+        }
+        return true;
+    }
     if(*counter || 
        (hasSelection && Selection().hasSelection()) ||
        (hasPreselection && Selection().hasPreselection()))
     {
-        if(SoFCSelectionRoot::getCacheMode()!=SoSeparator::OFF)
-            SoCacheElement::invalidate(state);
+        SoCacheElement::invalidate(state);
         return false;
     }
     if(!Selection().hasPreselection())
